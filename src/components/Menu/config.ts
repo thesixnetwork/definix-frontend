@@ -1,4 +1,4 @@
-import { MenuEntry } from '@pancakeswap-libs/uikit'
+import { MenuEntry } from 'definixswap-uikit'
 
 const config: MenuEntry[] = [
   {
