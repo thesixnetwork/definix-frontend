@@ -6,7 +6,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { FOOTER_HEIGHT } from 'uikit-dev/widgets/Menu/config'
+import { FOOTER_HEIGHT } from '../../widgets/Menu/config'
 import colorStrokeLong from '../../images/Color-stroke-long.png'
 import definixBlackLogo from '../../images/Definix-advance-crypto-assets.png'
 import facebookNormal from '../../images/Footer-Icon/Facebook-Normal.png'

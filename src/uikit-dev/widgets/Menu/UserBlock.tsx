@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading } from 'uikit-dev'
+import Heading from '../../components/Heading/Heading'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import LinkExternal from '../../components/Link/LinkExternal'
