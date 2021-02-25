@@ -1,14 +1,14 @@
-import { ButtonProps, Sizes, variants } from "../Button/types";
+import { ButtonProps, Sizes, variants } from '../Button/types'
 
 export type ButtonMenuItemProps = {
-  isActive?: boolean;
-  size?: Sizes;
-} & ButtonProps;
+  isActive?: boolean
+  size?: Sizes
+} & ButtonProps
 
 export interface ButtonMenuProps {
-  variant?: typeof variants.PRIMARY | typeof variants.SUBTLE;
-  activeIndex?: number;
-  onClick?: (index: number) => void;
-  size?: Sizes;
-  children: React.ReactElement[];
+  variant?: typeof variants.PRIMARY | typeof variants.SUBTLE
+  activeIndex?: number
+  onClick?: (index: number) => void
+  size?: Sizes
+  children: React.ReactElement[]
 }

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import throttle from "lodash/throttle";
-import styled from "styled-components";
+import React, { useState, useEffect, useRef } from 'react'
+import throttle from 'lodash/throttle'
+import styled from 'styled-components'
 import Footer from 'uikit-dev/components/Footer'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'

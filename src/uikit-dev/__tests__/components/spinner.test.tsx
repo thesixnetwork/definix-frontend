@@ -1,9 +1,9 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import { Spinner } from "../../components/Spinner";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import { Spinner } from '../../components/Spinner'
 
-it("renders correctly", () => {
-  const { asFragment } = renderWithTheme(<Spinner />);
+it('renders correctly', () => {
+  const { asFragment } = renderWithTheme(<Spinner />)
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
@@ -109,5 +109,5 @@ it("renders correctly", () => {
         </svg>
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import Heading from "../../components/Heading/Heading";
-import Flex from "../../components/Box/Flex";
-import { ArrowBackIcon, CloseIcon } from "../../components/Svg";
-import { IconButton } from "../../components/Button";
-import { InjectedProps } from "./types";
+import React from 'react'
+import styled from 'styled-components'
+import Heading from '../../components/Heading/Heading'
+import Flex from '../../components/Box/Flex'
+import { ArrowBackIcon, CloseIcon } from '../../components/Svg'
+import { IconButton } from '../../components/Button'
+import { InjectedProps } from './types'
 
 interface Props extends InjectedProps {
   title: string

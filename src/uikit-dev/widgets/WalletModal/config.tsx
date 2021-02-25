@@ -1,43 +1,43 @@
-import Metamask from "./icons/Metamask";
-import MathWallet from "./icons/MathWallet";
-import TokenPocket from "./icons/TokenPocket";
-import TrustWallet from "./icons/TrustWallet";
-import WalletConnect from "./icons/WalletConnect";
-import BinanceChain from "./icons/BinanceChain";
-import { Config } from "./types";
+import Metamask from './icons/Metamask'
+import MathWallet from './icons/MathWallet'
+import TokenPocket from './icons/TokenPocket'
+import TrustWallet from './icons/TrustWallet'
+import WalletConnect from './icons/WalletConnect'
+import BinanceChain from './icons/BinanceChain'
+import { Config } from './types'
 
 const connectors: Config[] = [
   {
-    title: "Metamask",
+    title: 'Metamask',
     icon: Metamask,
-    connectorId: "injected",
+    connectorId: 'injected',
   },
   {
-    title: "TrustWallet",
+    title: 'TrustWallet',
     icon: TrustWallet,
-    connectorId: "injected",
+    connectorId: 'injected',
   },
   {
-    title: "MathWallet",
+    title: 'MathWallet',
     icon: MathWallet,
-    connectorId: "injected",
+    connectorId: 'injected',
   },
   {
-    title: "TokenPocket",
+    title: 'TokenPocket',
     icon: TokenPocket,
-    connectorId: "injected",
+    connectorId: 'injected',
   },
   {
-    title: "WalletConnect",
+    title: 'WalletConnect',
     icon: WalletConnect,
-    connectorId: "walletconnect",
+    connectorId: 'walletconnect',
   },
   {
-    title: "Binance Chain Wallet",
+    title: 'Binance Chain Wallet',
     icon: BinanceChain,
-    connectorId: "bsc",
+    connectorId: 'bsc',
   },
-];
+]
 
-export default connectors;
-export const localStorageKey = "accountStatus";
+export default connectors
+export const localStorageKey = 'accountStatus'

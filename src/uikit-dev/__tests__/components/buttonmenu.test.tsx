@@ -1,17 +1,17 @@
-import React from "react";
-import { renderWithTheme } from "../../testHelpers";
-import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
-import ButtonMenuItem from "../../components/ButtonMenu/ButtonMenuItem";
+import React from 'react'
+import { renderWithTheme } from '../../testHelpers'
+import ButtonMenu from '../../components/ButtonMenu/ButtonMenu'
+import ButtonMenuItem from '../../components/ButtonMenu/ButtonMenuItem'
 
-const handleClick = jest.fn();
+const handleClick = jest.fn()
 
-it("renders correctly", () => {
+it('renders correctly', () => {
   const { asFragment } = renderWithTheme(
     <ButtonMenu activeIndex={0} onClick={handleClick}>
       <ButtonMenuItem>Item 1</ButtonMenuItem>
       <ButtonMenuItem>Item 2</ButtonMenuItem>
-    </ButtonMenu>
-  );
+    </ButtonMenu>,
+  )
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       <div
@@ -31,5 +31,5 @@ it("renders correctly", () => {
         </button>
       </div>
     </DocumentFragment>
-  `);
-});
+  `)
+})

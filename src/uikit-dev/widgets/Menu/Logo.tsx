@@ -1,10 +1,10 @@
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { LogoIcon } from "../../components/Svg";
-import Flex from "../../components/Box/Flex";
-import { HamburgerIcon, HamburgerCloseIcon } from "./icons";
-import MenuButton from "./MenuButton";
+import React from 'react'
+import styled from 'styled-components'
+import { Link } from 'react-router-dom'
+import { LogoIcon } from '../../components/Svg'
+import Flex from '../../components/Box/Flex'
+import { HamburgerIcon, HamburgerCloseIcon } from './icons'
+import MenuButton from './MenuButton'
 import logoMobile from '../../images/64x64.png'
 import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
 
