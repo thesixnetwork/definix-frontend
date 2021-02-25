@@ -1,4 +1,4 @@
-import { Toast } from 'definixswap-uikit'
+import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
 import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 

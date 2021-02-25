@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { ToastContainer, Toast } from 'definixswap-uikit'
+import { ToastContainer, Toast } from 'uikit-dev'
 import { useToast } from 'state/hooks'
 import { State } from 'state/types'
 

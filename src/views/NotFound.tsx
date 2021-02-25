@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Heading, Text, LogoIcon } from 'definixswap-uikit'
+import { Button, Heading, Text, LogoIcon } from 'uikit-dev'
 import Page from 'components/layout/Page'
 import useI18n from 'hooks/useI18n'
 

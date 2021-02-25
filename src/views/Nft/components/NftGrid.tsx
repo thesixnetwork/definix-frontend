@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { BaseLayout } from 'definixswap-uikit'
+import { BaseLayout } from 'uikit-dev'
 
 const NftGrid = styled(BaseLayout)`
   padding-bottom: 24px;

@@ -1,5 +1,5 @@
 import React from 'react'
-import { InjectedModalProps, Modal } from 'definixswap-uikit'
+import { InjectedModalProps, Modal } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import useEditProfile, { Views } from './reducer'
 import StartView from './StartView'

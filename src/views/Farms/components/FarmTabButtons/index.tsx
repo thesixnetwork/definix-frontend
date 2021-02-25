@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem, Text, Toggle } from 'definixswap-uikit'
+import { ButtonMenu, ButtonMenuItem, Text, Toggle } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly }) => {

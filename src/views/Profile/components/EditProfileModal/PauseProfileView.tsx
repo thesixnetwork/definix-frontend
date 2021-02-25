@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from 'definixswap-uikit'
+import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import { useDispatch } from 'react-redux'
 import { useProfile, useToast } from 'state/hooks'

@@ -5907,10 +5907,10 @@ defined@~1.0.0:
   resolved "https://registry.yarnpkg.com/defined/-/defined-1.0.0.tgz#c98d9bcef75674188e110969151199e39b1fa693"
   integrity sha1-yY2bzvdWdBiOEQlpFRGZ45sfppM=
 
-definixswap-uikit@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/definixswap-uikit/-/definixswap-uikit-0.0.1.tgz#0553744f2044d882c7002d106cb06d36725190a9"
-  integrity sha512-63t18eJ2LF5qnvtwxzxzlXi9uXmsFKOs4L/Kvl7+S8tD1WFQ6kY8JvdkhjSon0ZWOb/xWsauFaiDGMCHqbm2mg==
+definixswap-uikit@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/definixswap-uikit/-/definixswap-uikit-0.0.2.tgz#7ba22af045e48a9db542702eaba668978b13b0e9"
+  integrity sha512-pzJVn8Gn3WecOpxBL15fA2zldEuCFC5CGcEN/fDfNlxUvvbCDqPZuq/Ezgfeda7/wyvpEwdqiANPTRgC98Bs+w==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Heading } from 'definixswap-uikit'
+import { Heading } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import Page from 'components/layout/Page'
 import HowItWorks from './components/HowItWorks'

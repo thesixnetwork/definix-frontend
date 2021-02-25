@@ -42,7 +42,7 @@
     "bignumber.js": "^9.0.0",
     "chart.js": "^2.9.4",
     "date-fns": "^2.17.0",
-    "definixswap-uikit": "0.0.1",
+    "definixswap-uikit": "^0.0.2",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
     "react": "^17.0.1",

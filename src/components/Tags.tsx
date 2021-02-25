@@ -1,5 +1,5 @@
 import React from 'react'
-import { Tag, VerifiedIcon, CommunityIcon, BinanceIcon } from 'definixswap-uikit'
+import { Tag, VerifiedIcon, CommunityIcon, BinanceIcon } from 'uikit-dev'
 
 const CoreTag = () => (
   <Tag variant="secondary" outline startIcon={<VerifiedIcon />}>

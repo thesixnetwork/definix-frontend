@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, FlexProps, PrizeIcon, Text } from 'definixswap-uikit'
+import { Flex, FlexProps, PrizeIcon, Text } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 
 interface PointsLabelProps extends FlexProps {
