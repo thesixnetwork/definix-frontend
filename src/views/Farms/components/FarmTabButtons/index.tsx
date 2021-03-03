@@ -1,56 +1,23 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Heading } from 'uikit-dev'
+import { ButtonMenu, ButtonMenuItem, Heading } from 'uikit-dev'
+import { useRouteMatch, Link } from 'react-router-dom'
+import useI18n from 'hooks/useI18n'
 
-const StyledButton = styled(Button)`
-  border-radius: ${({ theme }) => theme.radii.default};
-  color: ${({ theme }) => theme.colors.textSubtle};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  font-weight: 400;
-  min-width: 120px;
-  box-shadow: none !important;
-
-  &.active {
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.primary};
-    border-color: ${({ theme }) => theme.colors.primary};
-  }
-`
-
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, activeFarmsCount }) => {
-  // const { url, isExact } = useRouteMatch()
-  // const TranslateString = useI18n()
+const FarmTabButtons = () => {
+  const { url, isExact } = useRouteMatch()
+  const TranslateString = useI18n()
 
   return (
     <Wrapper>
-      <Heading as="h2" fontSize="20px !important" className="my-6" textAlign="center">
-        All active farms
-        <span className="ml-2" style={{ fontSize: '16px', color: '#CCCCCC' }}>
-          ({activeFarmsCount})
-        </span>
-      </Heading>
-      <div className="flex">
-        <StyledButton
-          size="sm"
-          onClick={() => {
-            setStackedOnly(false)
-          }}
-          variant="secondary"
-          className={`mr-2 ${!stackedOnly ? 'active' : ''}`}
-        >
-          All
-        </StyledButton>
-        <StyledButton
-          size="sm"
-          onClick={() => {
-            setStackedOnly(true)
-          }}
-          variant="secondary"
-          className={stackedOnly ? 'active' : ''}
-        >
-          Staked
-        </StyledButton>
-      </div>
+      <ButtonMenu activeIndex={isExact ? 0 : 1} scale="sm" variant="subtle">
+        <ButtonMenuItem as={Link} to={`${url}`}>
+          {TranslateString(698, 'Active')}
+        </ButtonMenuItem>
+        <ButtonMenuItem as={Link} to={`${url}/history`}>
+          {TranslateString(700, 'Inactive')}
+        </ButtonMenuItem>
+      </ButtonMenu>
     </Wrapper>
   )
 }
@@ -62,4 +29,13 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+
+  a {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 16px;
+  }
 `

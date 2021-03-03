@@ -1,19 +1,22 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import React, { useEffect, Suspense, lazy } from 'react'
+import { Router, Redirect, Route, Switch } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
-import React, { lazy, Suspense, useEffect } from 'react'
-import { Redirect, Route, Router, Switch } from 'react-router-dom'
-import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { ResetCSS } from 'uikit-dev'
+import useEagerConnect from 'hooks/useEagerConnect'
+import { useFetchPriceList, useFetchProfile, useFetchPublicData } from 'state/hooks'
+import useGetDocumentTitlePrice from './hooks/useGetDocumentTitlePrice'
+import GlobalStyle from './style/Global'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
+import EasterEgg from './components/EasterEgg'
+import Pools from './views/Pools'
+import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
-import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
-import Pools from './views/Pools'
 
 // Route-based code splitting
-// Only pool is included in the main bundle because of it's the most visited page'
+// Only pool is included in the main bundle because of it's the most visited page
 const Home = lazy(() => import('./views/Home'))
 const Farms = lazy(() => import('./views/Farms'))
 const Lottery = lazy(() => import('./views/Lottery'))
@@ -31,22 +34,17 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  const { account, connect } = useWallet()
-
   // Monkey patch warn() because of web3 flood
   // To be removed when web3 1.3.5 is released
   useEffect(() => {
     console.warn = () => null
   }, [])
 
-  useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus')) {
-      connect('injected')
-    }
-  }, [account, connect])
-
+  useEagerConnect()
   useFetchPublicData()
   useFetchProfile()
+  useFetchPriceList()
+  useGetDocumentTitlePrice()
 
   return (
     <Router history={history}>
@@ -97,6 +95,7 @@ const App: React.FC = () => {
           </Switch>
         </Suspense>
       </Menu>
+      <EasterEgg iterations={2} />
       <ToastListener />
       <GlobalCheckBullHiccupClaimStatus />
     </Router>
