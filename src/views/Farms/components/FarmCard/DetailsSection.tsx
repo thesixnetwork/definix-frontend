@@ -1,7 +1,7 @@
-import React from 'react'
 import useI18n from 'hooks/useI18n'
+import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Link, LinkExternal } from 'uikit-dev'
+import { Flex, Link, LinkExternal, Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -12,7 +12,7 @@ export interface ExpandableSectionProps {
 }
 
 const Wrapper = styled.div`
-  margin-top: 24px;
+  padding: 0 1.5rem 1.5rem 1.5rem;
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
@@ -41,19 +41,19 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Wrapper>
-      <Flex justifyContent="space-between">
-        <Text>{TranslateString(316, 'Stake')}:</Text>
+      <Flex justifyContent="space-between" className="mb-2">
+        <Text>{TranslateString(316, 'Deposit')}:</Text>
         <StyledLinkExternal href={addLiquidityUrl}>{lpLabel}</StyledLinkExternal>
       </Flex>
       {!removed && (
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="space-between" className="mb-2">
           <Text>{TranslateString(23, 'Total Liquidity')}:</Text>
           <Text>{totalValueFormated}</Text>
         </Flex>
       )}
       <Flex justifyContent="flex-start">
         <Link external href={bscScanAddress} bold={false}>
-          {TranslateString(356, 'View on BscScan')}
+          {TranslateString(356, 'View on XXXscan')}
         </Link>
       </Flex>
     </Wrapper>

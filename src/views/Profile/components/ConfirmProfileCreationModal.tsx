@@ -68,7 +68,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
   })
 
   return (
-    <Modal title="Complete Profile" onDismiss={onDismiss}>
+    <Modal title="Complete Profile" onDismiss={onDismiss} isRainbow>
       <Text color="textSubtle" mb="8px">
         {TranslateString(999, 'Submitting NFT to contract and confirming User Name and Team.')}
       </Text>

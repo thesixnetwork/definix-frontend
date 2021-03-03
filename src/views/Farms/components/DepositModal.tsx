@@ -34,7 +34,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={TranslateString(1068, 'Stake LP tokens')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(1068, 'Stake LP tokens')} onDismiss={onDismiss} isRainbow>
       <ModalInput
         value={val}
         onSelectMax={handleSelectMax}
@@ -45,11 +45,10 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         inputTitle={TranslateString(1070, 'Stake')}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss} fullWidth>
+        <Button variant="secondary" onClick={onDismiss}>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
-          fullWidth
           disabled={pendingTx || fullBalance === '0' || val === '0'}
           onClick={async () => {
             setPendingTx(true)

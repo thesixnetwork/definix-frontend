@@ -23,7 +23,7 @@ const getBoxShadow = ({ isActive, isSuccess, isWarning, isRainbow, theme }: Styl
   }
 
   if (isRainbow) {
-    return theme.shadows.elevation1
+    return theme.shadows.elevation2
   }
 
   return theme.card.boxShadow

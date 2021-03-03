@@ -69,7 +69,7 @@ const ClaimBullHiccupNftModal: React.FC<ClaimBullHiccupNftModalProps> = ({
   }, [])
 
   return (
-    <Modal title={TranslateString(999, 'Congratulations!')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(999, 'Congratulations!')} onDismiss={onDismiss} isRainbow>
       <Flex flexDirection="column" alignItems="center" justifyContent="center">
         {renderNftPreview(isBullClaimable, isHiccupClaimable)}
         <Text bold color="secondary" fontSize="24px" mb="24px">

@@ -8,7 +8,7 @@ const WarningModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss }) => {
   const TranslateString = useI18n()
 
   return (
-    <Modal title={TranslateString(466, 'Warning')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(466, 'Warning')} onDismiss={onDismiss} isRainbow>
       <TicketsList>
         {TranslateString(468, 'Lottery ticket purchases are final.')}
         <br />

@@ -71,7 +71,7 @@ const ClaimGift: React.FC<ClaimGiftProps> = ({ onSuccess, onDismiss }) => {
   }
 
   return (
-    <Modal title={TranslateString(999, 'Claim your Gift!')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(999, 'Claim your Gift!')} onDismiss={onDismiss} isRainbow>
       <div style={{ maxWidth: '640px' }}>
         <Text as="p">{TranslateString(999, 'Thank you for being a day-one user of Pancake Profiles!')}</Text>
         <Text as="p" mb="8px">

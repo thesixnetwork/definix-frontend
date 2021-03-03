@@ -1,81 +1,55 @@
-import React, { useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import styled, { keyframes } from 'styled-components'
-import { Flex, Text, Skeleton } from 'uikit-dev'
-import { communityFarms } from 'config/constants'
-import { Farm } from 'state/types'
-import { provider } from 'web3-core'
-import useI18n from 'hooks/useI18n'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
-import { QuoteToken } from 'config/constants/types'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { communityFarms } from 'config/constants'
+import { QuoteToken } from 'config/constants/types'
+import useI18n from 'hooks/useI18n'
+import React, { useMemo, useState } from 'react'
+import { Farm } from 'state/types'
+import styled from 'styled-components'
+import { Flex, Skeleton, Text } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import DetailsSection from './DetailsSection'
-import CardHeading from './CardHeading'
+import { provider } from 'web3-core'
+import miniLogo from '../../../../uikit-dev/images/64x64.png'
+import colorStroke from '../../../../uikit-dev/images/Color-stroke.png'
 import CardActionsContainer from './CardActionsContainer'
-import ApyButton from './ApyButton'
+import CardHeading from './CardHeading'
+import DetailsSection from './DetailsSection'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
 }
 
-const RainbowLight = keyframes`
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+const MiniLogo = styled.img`
+  width: 16px;
+  height: auto;
+  margin-right: 6px;
 `
 
-const StyledCardAccent = styled.div`
-  background: linear-gradient(
-    45deg,
-    rgba(255, 0, 0, 1) 0%,
-    rgba(255, 154, 0, 1) 10%,
-    rgba(208, 222, 33, 1) 20%,
-    rgba(79, 220, 74, 1) 30%,
-    rgba(63, 218, 216, 1) 40%,
-    rgba(47, 201, 226, 1) 50%,
-    rgba(28, 127, 238, 1) 60%,
-    rgba(95, 21, 242, 1) 70%,
-    rgba(186, 12, 248, 1) 80%,
-    rgba(251, 7, 217, 1) 90%,
-    rgba(255, 0, 0, 1) 100%
-  );
-  background-size: 300% 300%;
-  animation: ${RainbowLight} 2s linear infinite;
-  border-radius: 16px;
-  filter: blur(6px);
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  bottom: -2px;
-  left: -2px;
-  z-index: -1;
+const ExpandableRainbow = styled.div`
+  position: relative;
+  padding-top: 4px;
+
+  .color-stroke {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    height: 4px;
+    width: 100%;
+  }
 `
 
 const FCard = styled.div`
   align-self: baseline;
   background: ${(props) => props.theme.card.background};
-  border-radius: 32px;
-  box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05);
+  border-radius: ${({ theme }) => theme.radii.default};
+  box-shadow: ${({ theme }) => theme.shadows.elevation1};
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  padding: 24px;
   position: relative;
   text-align: center;
-`
-
-const Divider = styled.div`
-  background-color: ${({ theme }) => theme.colors.borderColor};
-  height: 1px;
-  margin: 28px auto;
-  width: 100%;
 `
 
 const ExpandingWrapper = styled.div<{ expanded: boolean }>`
@@ -123,8 +97,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
     : '-'
 
-  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
-  const earnLabel = farm.dual ? farm.dual.earnLabel : 'CAKE'
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
+  const earnLabel = farm.dual ? farm.dual.earnLabel : 'FINIX'
   const farmAPY = farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
@@ -133,7 +107,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
 
   return (
     <FCard>
-      {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />}
+      {/* {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />} */}
       <CardHeading
         lpLabel={lpLabel}
         multiplier={farm.multiplier}
@@ -141,40 +115,48 @@ const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, cakePrice, bnbPrice,
         farmImage={farmImage}
         tokenSymbol={farm.tokenSymbol}
       />
-      {!removed && (
-        <Flex justifyContent="space-between" alignItems="center">
-          <Text>{TranslateString(736, 'APR')}:</Text>
-          <Text bold style={{ display: 'flex', alignItems: 'center' }}>
-            {farm.apy ? (
-              <>
-                <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} cakePrice={cakePrice} apy={farm.apy} />
-                {farmAPY}%
-              </>
-            ) : (
-              <Skeleton height={24} width={80} />
-            )}
-          </Text>
+      <div className="pa-5">
+        {!removed && (
+          <Flex justifyContent="space-between" alignItems="center" className="mb-2">
+            <Text>{TranslateString(736, 'APR')}:</Text>
+            <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+              {farm.apy ? (
+                <>
+                  {/* <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} cakePrice={cakePrice} apy={farm.apy} /> */}
+                  {farmAPY}%
+                </>
+              ) : (
+                <Skeleton height={24} width={80} />
+              )}
+            </Text>
+          </Flex>
+        )}
+        <Flex justifyContent="space-between" className="mb-2">
+          <Text>{TranslateString(318, 'Earn')}:</Text>
+          <Flex alignItems="center">
+            <MiniLogo src={miniLogo} alt="" />
+            <Text bold>{earnLabel}</Text>
+          </Flex>
         </Flex>
-      )}
-      <Flex justifyContent="space-between">
-        <Text>{TranslateString(318, 'Earn')}:</Text>
-        <Text bold>{earnLabel}</Text>
-      </Flex>
-      <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
-      <Divider />
-      <ExpandableSectionButton
-        onClick={() => setShowExpandableSection(!showExpandableSection)}
-        expanded={showExpandableSection}
-      />
-      <ExpandingWrapper expanded={showExpandableSection}>
-        <DetailsSection
-          removed={removed}
-          bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-          totalValueFormated={totalValueFormated}
-          lpLabel={lpLabel}
-          addLiquidityUrl={addLiquidityUrl}
+        <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
+      </div>
+
+      <ExpandableRainbow>
+        <img src={colorStroke} alt="" className="color-stroke" />
+        <ExpandableSectionButton
+          onClick={() => setShowExpandableSection(!showExpandableSection)}
+          expanded={showExpandableSection}
         />
-      </ExpandingWrapper>
+        <ExpandingWrapper expanded={showExpandableSection}>
+          <DetailsSection
+            removed={removed}
+            bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+            totalValueFormated={totalValueFormated}
+            lpLabel={lpLabel}
+            addLiquidityUrl={addLiquidityUrl}
+          />
+        </ExpandingWrapper>
+      </ExpandableRainbow>
     </FCard>
   )
 }

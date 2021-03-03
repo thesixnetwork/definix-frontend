@@ -45,6 +45,7 @@ const UserTicketsModal: React.FC<UserTicketsModalProps> = ({ myTicketNumbers, on
     <Modal
       title={TranslateString(490, `My Tickets (Total: ${myTicketNumbers.length})`, { TICKETS: myTicketNumbers.length })}
       onDismiss={onDismiss}
+      isRainbow
     >
       <TicketsList>
         <h2>{listItems}</h2>

@@ -6,7 +6,6 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import { FOOTER_HEIGHT } from '../../widgets/Menu/config'
 import colorStrokeLong from '../../images/Color-stroke-long.png'
 import definixBlackLogo from '../../images/Definix-advance-crypto-assets.png'
 import facebookNormal from '../../images/Footer-Icon/Facebook-Normal.png'
@@ -17,60 +16,59 @@ import redditNormal from '../../images/Footer-Icon/Reddit-Normal.png'
 import telegramNormal from '../../images/Footer-Icon/Telegram-Normal.png'
 import twitterNormal from '../../images/Footer-Icon/Twitter-Normal.png'
 
-function Footer() {
-  const FooterStyled = styled.footer`
-    position: relative;
-    padding-top: 6px;
-    flex-shrink: 0;
+const FooterStyled = styled.footer`
+  position: relative;
+  padding-top: 4px;
+  flex-shrink: 0;
 
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .color-stroke {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    height: 4px;
+    width: 100%;
+  }
+
+  .logo {
+    height: 28px;
+    margin: 8px;
+  }
+
+  .six-logo {
+    width: 200px;
+    margin: 8px;
+    display: block;
+  }
+
+  .social {
+    display: flex;
+    margin-top: 1rem;
+    margin: 8px;
+
+    a {
+      max-width: 4rem;
+      cursor: pointer;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
     .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
+      justify-content: space-between;
     }
-
-    .color-stroke {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translate(-50%);
-      height: 6px;
-      width: 100%;
-    }
-
-    .logo {
-      height: 28px;
-      margin: 8px;
-    }
-
-    .six-logo {
-      width: 200px;
-      margin: 8px;
-      display: block;
-    }
-
-    .social {
-      display: flex;
-      margin-top: 1rem;
-      margin: 8px;
-
-      a {
-        max-width: 4rem;
-        cursor: pointer;
-      }
-    }
-
-    ${({ theme }) => theme.mediaQueries.lg} {
-      .container {
-        justify-content: space-between;
-      }
-    }
-  `
-
+  }
+`
+function Footer() {
   return (
     <FooterStyled>
       <img src={colorStrokeLong} alt="" className="color-stroke" />

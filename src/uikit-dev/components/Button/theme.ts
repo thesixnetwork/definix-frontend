@@ -18,7 +18,7 @@ export const light: ButtonTheme = {
     background: 'transparent',
     backgroundActive: 'transparent',
     backgroundHover: 'transparent',
-    border: `2px solid ${lightColors.primary}`,
+    border: `1px solid ${lightColors.primary}`,
     borderColorHover: lightColors.primaryBright,
     boxShadow: 'none',
     boxShadowActive: 'none',

@@ -72,6 +72,12 @@ const MobileOnlyOverlay = styled(Overlay)`
   }
 `
 
+const Flag = styled.img`
+  width: 24px;
+  height: auto;
+  margin-right: 0.5rem;
+`
+
 const Menu: React.FC<NavProps> = ({
   account,
   login,
@@ -86,11 +92,6 @@ const Menu: React.FC<NavProps> = ({
   children,
   // profile,
 }) => {
-  const Flag = styled.img`
-    width: 24px;
-    height: auto;
-    margin-right: 0.5rem;
-  `
   const { isXl } = useMatchBreakpoints()
   const isMobile = isXl === false
   const [isPushed, setIsPushed] = useState(!isMobile)

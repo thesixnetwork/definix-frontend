@@ -26,6 +26,7 @@ export type Shadows = {
   focus: string
   inset: string
   elevation1: string
+  elevation2: string
 }
 
 export type Gradients = {
@@ -46,6 +47,7 @@ export type Colors = {
   input: string
   background: string
   backgroundDisabled: string
+  backgroundBox: string
   text: string
   textDisabled: string
   textSubtle: string
@@ -54,6 +56,7 @@ export type Colors = {
   border: string
   white: string
   placeholder: string
+  harvest: string
 
   // Gradients
   gradients: Gradients

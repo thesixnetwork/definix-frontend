@@ -1,25 +1,22 @@
-import React, { useEffect, useCallback, useState } from 'react'
-import { Route, useRouteMatch } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { provider } from 'web3-core'
-import { Image, Heading } from 'uikit-dev'
-import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
+import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
-import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
-import useRefresh from 'hooks/useRefresh'
-import { fetchFarmUserDataAsync } from 'state/actions'
+import { BLOCKS_PER_YEAR, CAKE_PER_BLOCK, CAKE_POOL_PID } from 'config'
 import { QuoteToken } from 'config/constants/types'
-import useI18n from 'hooks/useI18n'
+import useRefresh from 'hooks/useRefresh'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Route, useRouteMatch } from 'react-router-dom'
+import { fetchFarmUserDataAsync } from 'state/actions'
+import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
+import { Heading } from 'uikit-dev'
+import { provider } from 'web3-core'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
-import Divider from './components/Divider'
 
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
-  const TranslateString = useI18n()
   const farmsLP = useFarms()
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
@@ -96,12 +93,11 @@ const Farms: React.FC = () => {
 
   return (
     <Page>
-      <Heading as="h1" size="lg" color="secondary" mb="50px" style={{ textAlign: 'center' }}>
-        {TranslateString(696, 'Stake LP tokens to earn CAKE')}
+      <Heading as="h1" fontSize="32px !important" className="mt-6 mb-4" textAlign="center">
+        Farm
       </Heading>
-      <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+      <FarmTabButtons activeFarmsCount={activeFarms.length} stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
       <div>
-        <Divider />
         <FlexLayout>
           <Route exact path={`${path}`}>
             {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
@@ -111,7 +107,6 @@ const Farms: React.FC = () => {
           </Route>
         </FlexLayout>
       </div>
-      <Image src="/images/cakecat.png" alt="Pancake illustration" width={949} height={384} responsive />
     </Page>
   )
 }

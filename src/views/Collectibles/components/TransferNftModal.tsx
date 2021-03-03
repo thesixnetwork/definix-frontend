@@ -81,7 +81,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   }
 
   return (
-    <Modal title={TranslateString(999, 'Transfer NFT')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(999, 'Transfer NFT')} onDismiss={onDismiss} isRainbow>
       <ModalContent>
         {error && (
           <Text color="failure" mb="8px">

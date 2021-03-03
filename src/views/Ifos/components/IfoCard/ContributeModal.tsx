@@ -20,7 +20,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
   const balance = getFullDisplayBalance(useTokenBalance(currencyAddress))
 
   return (
-    <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
+    <Modal title={`Contribute ${currency}`} onDismiss={onDismiss} isRainbow>
       <BalanceInput
         value={value}
         onChange={(e) => setValue(e.currentTarget.value)}

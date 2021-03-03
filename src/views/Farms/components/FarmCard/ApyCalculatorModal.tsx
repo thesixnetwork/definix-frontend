@@ -46,7 +46,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   const cakeEarnedPerThousand365D = calculateCakeEarnedPerThousandDollars({ numberOfDays: 365, farmApy, cakePrice })
 
   return (
-    <Modal title="ROI" onDismiss={onDismiss}>
+    <Modal title="ROI" onDismiss={onDismiss} isRainbow>
       <Grid>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">

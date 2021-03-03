@@ -67,7 +67,7 @@ const BuyTicketModal: React.FC<BuyTicketModalProps> = ({ max, onDismiss }) => {
     return +amount * LOTTERY_TICKET_PRICE
   }
   return (
-    <Modal title={TranslateString(450, 'Enter amount of tickets to buy')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(450, 'Enter amount of tickets to buy')} onDismiss={onDismiss} isRainbow>
       <TicketInput
         value={val}
         onSelectMax={handleSelectMax}
