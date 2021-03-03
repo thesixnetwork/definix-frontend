@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'uikit-dev'
+import { Text } from '../Text'
 import OpenNewIcon from '../Svg/Icons/OpenNew'
 import Link from './Link'
 import { LinkProps } from './types'

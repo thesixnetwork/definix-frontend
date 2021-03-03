@@ -45,6 +45,7 @@ export type Colors = {
   contrast: string
   invertedContrast: string
   input: string
+  inputSecondary: string
   background: string
   backgroundDisabled: string
   backgroundBox: string

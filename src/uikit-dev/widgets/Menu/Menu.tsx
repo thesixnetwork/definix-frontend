@@ -13,11 +13,11 @@ import en from '../../images/en.png'
 import th from '../../images/th.png'
 import { MENU_HEIGHT, SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
 import * as IconModule from './icons'
-import Logo from './Logo'
-import MenuButton from './MenuButton'
-import Panel from './Panel'
+import MenuButton from './components/MenuButton'
 import { NavProps } from './types'
-import UserBlock from './UserBlock'
+import Logo from './components/Logo'
+import Panel from './components/Panel'
+import UserBlock from './components/UserBlock'
 
 const Wrapper = styled.div`
   position: relative;

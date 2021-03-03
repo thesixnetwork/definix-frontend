@@ -23,6 +23,8 @@ export const lightColors: Colors = {
   contrast: '#191326',
   invertedContrast: '#FFFFFF',
   input: '#EFF4F5',
+  inputSecondary: '#EFF4F5',
+  // inputSecondary: "#d7caec", OLD
   tertiary: '#EFF4F5',
   text: '#404041',
   textDisabled: '#BDC2C4',
@@ -48,6 +50,7 @@ export const darkColors: Colors = {
   contrast: '#FFFFFF',
   invertedContrast: '#191326',
   input: '#483f5a',
+  inputSecondary: '#66578D',
   primaryDark: '#0098A1',
   tertiary: '#353547',
   text: '#EAE2FC',
