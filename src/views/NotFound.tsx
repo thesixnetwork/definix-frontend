@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Button, Heading, Text, LogoIcon } from 'uikit-dev'
 import Page from 'components/layout/Page'
 import useI18n from 'hooks/useI18n'
+import React from 'react'
+import styled from 'styled-components'
+import { Button, Heading, Text } from 'uikit-dev'
 
 const StyledNotFound = styled.div`
   align-items: center;
@@ -18,11 +18,10 @@ const NotFound = () => {
   return (
     <Page>
       <StyledNotFound>
-        <LogoIcon width="64px" mb="8px" />
         <Heading size="xxl">404</Heading>
-        <Text mb="16px">{TranslateString(1122, 'Oops, page not found.')}</Text>
+        <Text mb="16px">{TranslateString(1122, 'Page not found.')}</Text>
         <Button as="a" href="/" size="sm">
-          {TranslateString(1124, 'Back Home')}
+          {TranslateString(1124, 'Back')}
         </Button>
       </StyledNotFound>
     </Page>
