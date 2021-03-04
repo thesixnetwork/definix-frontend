@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Skeleton } from '@pancakeswap-libs/uikit'
+import { Box, Skeleton } from 'uikit-dev'
 
 const ActiveSkeleton = () => (
   <Box>

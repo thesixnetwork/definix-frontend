@@ -13,7 +13,6 @@ import EasterEgg from './components/EasterEgg'
 import Pools from './views/Pools'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 import history from './routerHistory'
-import GlobalStyle from './style/Global'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page

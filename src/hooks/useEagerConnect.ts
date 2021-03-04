@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { connectorLocalStorageKey, ConnectorNames } from '@pancakeswap-libs/uikit'
+import { connectorLocalStorageKey, ConnectorNames } from 'uikit-dev'
 import useAuth from 'hooks/useAuth'
 
 const useEagerConnect = () => {

@@ -13,7 +13,6 @@ import { useApprove } from 'hooks/useApprove'
 import UnlockButton from 'components/UnlockButton'
 import StakeAction from './StakeAction'
 import HarvestAction from './HarvestAction'
-import StakeAction from './StakeAction'
 
 const Action = styled.div`
   padding-top: 16px;

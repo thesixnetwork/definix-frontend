@@ -4,16 +4,36 @@ import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import React, { useMemo, useState } from 'react'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import miniLogo from '../../../../uikit-dev/images/64x64.png'
-import colorStroke from '../../../../uikit-dev/images/Color-stroke.png'
+
+import styled, { keyframes } from 'styled-components'
+import { Flex, Text, Skeleton } from 'uikit-dev'
+import { communityFarms } from 'config/constants'
+import { Farm } from 'state/types'
+import { provider as ProviderType } from 'web3-core'
+import useI18n from 'hooks/useI18n'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
+
+import miniLogo from '../../../../uikit-dev/images/64x64.png'
+import colorStroke from '../../../../uikit-dev/images/Color-stroke.png'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
   liquidity?: BigNumber
 }
+
+const RainbowLight = keyframes`
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+`
 
 const MiniLogo = styled.img`
   width: 16px;

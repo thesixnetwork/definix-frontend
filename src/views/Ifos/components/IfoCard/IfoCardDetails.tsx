@@ -1,15 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import {
-  Text,
-  LinkExternal,
-  Link,
-  Box,
-  CardFooter,
-  Button,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from 'uikit-dev'
+import { Text, LinkExternal, Link, Box, CardFooter, Button, ChevronDownIcon, ChevronUpIcon } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import { Ifo } from 'config/constants/types'
 import { PublicIfoState } from '../../hooks/useGetPublicIfoData'
