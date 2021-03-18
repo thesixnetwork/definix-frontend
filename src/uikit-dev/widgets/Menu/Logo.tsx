@@ -24,11 +24,17 @@ const StyledLink = styled(Link)`
     }
   }
   .desktop-icon {
-    width: 156px;
+    height: 20px;
     display: none;
     ${({ theme }) => theme.mediaQueries.nav} {
       display: block;
     }
+  }
+`
+
+const StyledTogglePanel = styled(MenuButton)`
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
   }
 `
 
@@ -43,13 +49,13 @@ const Logo: React.FC<Props> = ({ isPushed, togglePush, href }) => {
 
   return (
     <Flex>
-      <MenuButton aria-label="Toggle menu" onClick={togglePush} mr="24px">
+      <StyledTogglePanel aria-label="Toggle menu" onClick={togglePush} mr="24px">
         {isPushed ? (
           <HamburgerCloseIcon width="24px" color="textSubtle" />
         ) : (
           <HamburgerIcon width="24px" color="textSubtle" />
         )}
-      </MenuButton>
+      </StyledTogglePanel>
       {isAbsoluteUrl ? (
         <StyledLink as="a" href={href} aria-label="Pancake home page">
           {innerLogo}

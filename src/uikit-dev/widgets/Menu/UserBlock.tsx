@@ -20,15 +20,15 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
 
   return (
-    <div>
+    <div className="mx-5">
       {account ? (
         <Dropdown
-          position="bottom-right"
+          position="bottom"
           isRainbow
           target={
             <Button
               size="sm"
-              variant="tertiary"
+              variant="secondary"
               // onClick={() => {
               //   onPresentAccountModal()
               // }}
@@ -46,6 +46,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
             <Button
               size="sm"
               variant="secondary"
+              fullWidth
               className="mt-4"
               onClick={() => {
                 logout()
@@ -60,11 +61,13 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
       ) : (
         <Button
           size="sm"
+          fullWidth
+          variant="secondary"
           onClick={() => {
             onPresentConnectModal()
           }}
         >
-          Connect
+          Connect wallet
         </Button>
       )}
     </div>

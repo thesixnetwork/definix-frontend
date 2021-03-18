@@ -55,7 +55,7 @@ const StyledButton = styled.button<ButtonProps>`
   cursor: pointer;
   display: inline-flex;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   /* max-content instead of auto for Safari fix */
   width: ${({ fullWidth }) => (fullWidth ? '100%' : 'max-content')};
@@ -73,9 +73,9 @@ const StyledButton = styled.button<ButtonProps>`
     border-color: ${getButtonVariantProp('borderColorHover')};
   }
 
-  &:focus:not(:active) {
-    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.secondary};
-  }
+  // &:focus:not(:active) {
+  //   box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.secondary};
+  // }
 
   &:active {
     background-color: ${getButtonVariantProp('backgroundActive')};

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
 import throttle from 'lodash/throttle'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import Footer from '../../components/Footer'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
+import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
-import Text from '../../components/Text/Text'
+import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
 import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
 import th from '../../images/th.png'
@@ -17,12 +17,12 @@ import Logo from './Logo'
 import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
-import UserBlock from './UserBlock'
+import FinixCoin from '../../images/finix-coin.png'
 
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `
@@ -33,21 +33,23 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 8px;
-  padding-right: 16px;
+  padding: 0 24px;
   width: 100%;
   z-index: 20;
   height: ${MENU_HEIGHT}px;
   background-color: ${({ theme }) => theme.nav.background};
-  border-bottom: solid 1px ${({ theme }) => theme.colors.border};
+  // border-bottom: solid 1px ${({ theme }) => theme.colors.border};
   transform: translate3d(0, 0, 0);
 `
 
 const BodyWrapper = styled.div`
   position: relative;
   display: flex;
-  flex-shrink: 0;
-  min-height: calc(100vh - 64px);
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: calc(100% - 120px);
+  }
+
+  height: 100%;
 `
 
 const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
@@ -56,6 +58,8 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   transition: margin-top 0.2s;
   transform: translate3d(0, 0, 0);
   max-width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   // ${({ theme }) => theme.mediaQueries.nav} {
   //   margin-left: ${({ isPushed }) => `${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px`};
@@ -72,10 +76,25 @@ const MobileOnlyOverlay = styled(Overlay)`
   }
 `
 
+const Price = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+
+  img {
+    width: 20px;
+    margin-right: 8px;
+  }
+
+  p {
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 14px;
+  }
+`
+
 const Flag = styled.img`
   width: 24px;
   height: auto;
-  margin-right: 0.5rem;
 `
 
 const Menu: React.FC<NavProps> = ({
@@ -111,11 +130,11 @@ const Menu: React.FC<NavProps> = ({
     return <LanguageIcon color="textSubtle" width="24px" />
   }
 
-  const getLanguageName = (lang) => {
-    return langs.find((l) => {
-      return l.code === lang
-    })?.language
-  }
+  // const getLanguageName = (lang) => {
+  //   return langs.find((l) => {
+  //     return l.code === lang
+  //   })?.language
+  // }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -159,11 +178,24 @@ const Menu: React.FC<NavProps> = ({
           href={homeLink?.href ?? '/'}
         />
         <Flex alignItems="center">
+          <Price>
+            <img src={FinixCoin} alt="" />
+            <p>
+              <span>FINIX : </span>
+              <strong>$66</strong>
+            </p>
+          </Price>
           <Dropdown
-            position="bottom"
+            position="bottom-right"
             target={
-              <Button className="mr-4" variant="text" size="sm" startIcon={<IconFlag />}>
-                <Text color="textSubtle">{getLanguageName(currentLang)}</Text>
+              <Button
+                variant="tertiary"
+                size="sm"
+                startIcon={<IconFlag />}
+                endIcon={<ChevronDownIcon className="ml-1" />}
+                style={{ borderRadius: '6px', padding: '0 8px 0 12px', boxShadow: '0 1px 2px rgba(0,0,0,0.16)' }}
+              >
+                {/* <Text color="textSubtle">{getLanguageName(currentLang)}</Text> */}
               </Button>
             }
           >
@@ -179,7 +211,6 @@ const Menu: React.FC<NavProps> = ({
               </MenuButton>
             ))}
           </Dropdown>
-          <UserBlock account={account} login={login} logout={logout} />
           {/* {profile && <Avatar profile={profile} />} */}
         </Flex>
       </StyledNav>
@@ -196,6 +227,9 @@ const Menu: React.FC<NavProps> = ({
           cakePriceUsd={cakePriceUsd}
           pushNav={setIsPushed}
           links={links}
+          account={account}
+          login={login}
+          logout={logout}
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
           {children}
