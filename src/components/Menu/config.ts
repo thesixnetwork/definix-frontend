@@ -1,20 +1,37 @@
 import { MenuEntry } from 'uikit-dev'
+import farmClick from 'uikit-dev/images/Menu-Icon/farm-click.png'
+import farm from 'uikit-dev/images/Menu-Icon/farm.png'
+import liquidityClick from 'uikit-dev/images/Menu-Icon/liquidity-click.png'
+import liquidity from 'uikit-dev/images/Menu-Icon/liquidity.png'
+import poolClick from 'uikit-dev/images/Menu-Icon/pool-click.png'
+import pool from 'uikit-dev/images/Menu-Icon/pool.png'
+import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
+import swap from 'uikit-dev/images/Menu-Icon/swap.png'
 
 const config: MenuEntry[] = [
   {
     label: 'Swap',
-    icon: 'SwapIcon',
+    icon: swapClick,
+    iconActive: swap,
     href: '/swap',
   },
   {
+    label: 'Liquidity',
+    icon: liquidityClick,
+    iconActive: liquidity,
+    href: '/liquidity',
+  },
+  {
     label: 'Pool',
-    icon: 'PoolIcon',
+    icon: poolClick,
+    iconActive: pool,
     href: '/pool',
   },
   {
     label: 'Farm',
-    icon: 'FarmIcon',
-    href: '/farms',
+    icon: farmClick,
+    iconActive: farm,
+    href: '/farm',
   },
   // {
   //   label: 'Investment',

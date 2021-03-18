@@ -1,21 +1,26 @@
 import { createGlobalStyle } from 'styled-components'
-// eslint-disable-next-line import/no-unresolved
-import { PancakeTheme } from 'uikit-dev/theme'
-
-declare module 'styled-components' {
-  /* eslint-disable @typescript-eslint/no-empty-interface */
-  export interface DefaultTheme extends PancakeTheme {}
-}
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: #EBEBEB;
+    background-image: url('/images/abstract.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+
+    ${({ theme }) => theme.mediaQueries.md} {
+      padding: 1.5rem 4rem !important;
+    }
 
     img {
       height: auto;
       max-width: 100%;
     }
   }
+
+  #root { height: 100%; }
+
   .flex {
     display: flex !important;
   
@@ -643,6 +648,9 @@ const GlobalStyle = createGlobalStyle`
     padding-top: 6rem !important;
     padding-bottom: 6rem !important;
   }
+  
+  /*# sourceMappingURL=s.css.map */
+  
 `
 
 export default GlobalStyle

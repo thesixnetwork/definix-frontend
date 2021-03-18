@@ -58,10 +58,10 @@ const App: React.FC = () => {
             <Route path="/" exact>
               <Home />
             </Route>
-            <Route path="/farms">
+            <Route path="/farm">
               <Farms />
             </Route>
-            <Route path="/pools">
+            <Route path="/pool">
               <Pools />
             </Route>
             <Route path="/lottery">

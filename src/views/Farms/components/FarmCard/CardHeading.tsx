@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Image, Tag } from 'uikit-dev'
+import ribbin from '../../../../uikit-dev/images/ribbin.png'
 
 export interface ExpandableSectionProps {
   lpLabel?: string
@@ -16,13 +17,27 @@ const Wrapper = styled(Flex)`
   }
 `
 
-const MultiplierTag = styled(Tag)`
+const MultiplierTag = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  border-bottom-right-radius: 50%;
-  height: 40px;
-  min-width: 40px;
+
+  img {
+    width: 80px;
+    height: auto;
+    margin-top: -19px;
+  }
+
+  p {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: ${({ theme }) => theme.colors.white};
+    font-weight: bold;
+    line-height: 22px;
+    width: 64px;
+    text-align: center;
+  }
 `
 
 const StyledFarmImages = styled.div`
@@ -58,7 +73,10 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Wrapper className="pt-5" flexDirection="column" alignItems="center" style={{ position: 'relative' }}>
-      <MultiplierTag variant="textSubtle">{multiplier}</MultiplierTag>
+      <MultiplierTag>
+        <img src={ribbin} alt="" />
+        <p>{multiplier}</p>
+      </MultiplierTag>
 
       <StyledFarmImages>
         <Image src={`/images/coins/${firstCoin}.png`} alt={tokenSymbol} width={48} height={48} />
