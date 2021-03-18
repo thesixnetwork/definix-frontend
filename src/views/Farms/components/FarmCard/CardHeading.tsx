@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Image, Tag } from 'uikit-dev'
+import { Flex, Heading, Image } from 'uikit-dev'
 import ribbin from '../../../../uikit-dev/images/ribbin.png'
 
 export interface ExpandableSectionProps {

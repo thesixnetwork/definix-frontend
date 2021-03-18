@@ -2,9 +2,7 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import Heading from '../../components/Heading/Heading'
-import { SvgProps } from '../../components/Svg'
 import { Login } from '../WalletModal/types'
-import * as IconModule from './icons'
 import { LinkLabel, MenuEntry } from './MenuEntry'
 import MenuLink from './MenuLink'
 import { PanelProps, PushedProps } from './types'
@@ -17,8 +15,6 @@ interface Props extends PanelProps, PushedProps {
   login: Login
   logout: () => void
 }
-
-const Icons = (IconModule as unknown) as { [key: string]: React.FC<SvgProps> }
 
 const Container = styled.div`
   display: flex;
