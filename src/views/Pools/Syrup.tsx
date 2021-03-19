@@ -1,23 +1,20 @@
-import React, { useState } from 'react'
-import { Route, useRouteMatch } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Heading } from 'uikit-dev'
+import BigNumber from 'bignumber.js'
+import Page from 'components/layout/Page'
 import { BLOCKS_PER_YEAR } from 'config'
+import { PoolCategory, QuoteToken } from 'config/constants/types'
+import useBlock from 'hooks/useBlock'
+import useI18n from 'hooks/useI18n'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import useI18n from 'hooks/useI18n'
-import useBlock from 'hooks/useBlock'
+import React, { useState } from 'react'
+import { Route, useRouteMatch } from 'react-router-dom'
+import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks'
+import styled from 'styled-components'
+import { Heading } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useFarms, usePriceBnbBusd, usePools, usePriceEthBnb } from 'state/hooks'
-import { QuoteToken, PoolCategory } from 'config/constants/types'
-import FlexLayout from 'components/layout/Flex'
-import Page from 'components/layout/Page'
 import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
-import PoolTabButtons from './components/PoolTabButtons'
-import Divider from './components/Divider'
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -78,22 +75,13 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      <Hero>
-        <div>
-          <Heading as="h1" size="xxl" mb="16px">
-            {TranslateString(738, 'Syrup Pool')}
-          </Heading>
-          <ul>
-            <li>{TranslateString(580, 'Stake CAKE to earn new tokens.')}</li>
-            <li>{TranslateString(486, 'You can unstake at any time.')}</li>
-            <li>{TranslateString(406, 'Rewards are calculated per block.')}</li>
-          </ul>
-        </div>
-        <img src="/images/syrup.png" alt="SYRUP POOL icon" width={410} height={191} />
-      </Hero>
-      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
-      <Divider />
-      <FlexLayout>
+      <Heading as="h1" fontSize="32px !important" className="mt-6 mb-4" textAlign="center">
+        Pool
+      </Heading>
+
+      {/* <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} /> */}
+
+      <div>
         <Route exact path={`${path}`}>
           <>
             {stackedOnly
@@ -107,7 +95,7 @@ const Farm: React.FC = () => {
             <PoolCard key={pool.sousId} pool={pool} />
           ))}
         </Route>
-      </FlexLayout>
+      </div>
     </Page>
   )
 }

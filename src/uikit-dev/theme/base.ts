@@ -16,7 +16,7 @@ const mediaQueries: MediaQueries = {
   md: `@media screen and (min-width: ${breakpointMap.md}px)`,
   lg: `@media screen and (min-width: ${breakpointMap.lg}px)`,
   xl: `@media screen and (min-width: ${breakpointMap.xl}px)`,
-  nav: `@media screen and (min-width: ${breakpointMap.lg}px)`,
+  nav: `@media screen and (min-width: ${breakpointMap.md}px)`,
 }
 
 export const shadows = {
@@ -47,6 +47,7 @@ const zIndices = {
 export default {
   siteWidth: 1200,
   breakpoints,
+  breakpointMap,
   mediaQueries,
   spacing,
   shadows,

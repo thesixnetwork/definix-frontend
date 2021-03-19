@@ -34,8 +34,8 @@ const getTransform = ({ position }: PositionProps) => {
   return 'translate(-50%, 0)'
 }
 
-const DropdownContent = styled.div<{ position: Position }>`
-  width: max-content;
+const DropdownContent = styled.div<{ position: Position; isFullWidth: boolean }>`
+  width: ${(props) => (props.isFullWidth ? '100%' : 'max-content')};
   display: none;
   flex-direction: column;
   position: absolute;
@@ -68,11 +68,17 @@ const Container = styled.div`
   }
 `
 
-const Dropdown: React.FC<DropdownProps> = ({ target, position = 'bottom', isRainbow, children }) => {
+const Dropdown: React.FC<DropdownProps> = ({
+  target,
+  position = 'bottom',
+  isRainbow,
+  children,
+  isFullWidth = false,
+}) => {
   return (
     <Container>
       {target}
-      <DropdownContent position={position}>
+      <DropdownContent position={position} isFullWidth={isFullWidth}>
         {children}
         {isRainbow && <img className="rainbow" alt="" src={rainbowImg} />}
       </DropdownContent>

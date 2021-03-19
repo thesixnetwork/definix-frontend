@@ -6,59 +6,65 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import colorStrokeLong from '../../images/Color-stroke-long.png'
 import definixBlackLogo from '../../images/Definix-advance-crypto-assets.png'
-import facebookNormal from '../../images/Footer-Icon/Facebook-Normal.png'
-import githubNormal from '../../images/Footer-Icon/Github-Normal.png'
-import kakaoNormal from '../../images/Footer-Icon/Kakao-Normal.png'
 import poweredbySIX from '../../images/Footer-Icon/Powered-by-SIX.png'
-import redditNormal from '../../images/Footer-Icon/Reddit-Normal.png'
-import telegramNormal from '../../images/Footer-Icon/Telegram-Normal.png'
-import twitterNormal from '../../images/Footer-Icon/Twitter-Normal.png'
+import facebookNormal from '../../images/Footer-Icon/without-text/Facebook-Normal.png'
+import githubNormal from '../../images/Footer-Icon/without-text/Github-Normal.png'
+import kakaoNormal from '../../images/Footer-Icon/without-text/Kakao-Normal.png'
+import redditNormal from '../../images/Footer-Icon/without-text/Reddit-Normal.png'
+import telegramNormal from '../../images/Footer-Icon/without-text/Telegram-Normal.png'
+import twitterNormal from '../../images/Footer-Icon/without-text/Twitter-Normal.png'
 
 const FooterStyled = styled.footer`
-  position: relative;
-  padding-top: 4px;
   flex-shrink: 0;
+  background: ${({ theme }) => theme.colors.white};
+  z-index: 10;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: 56px;
+  }
 
   .container {
     max-width: 1280px;
+    height: 100%;
     margin: 0 auto;
-    padding: 8px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
   }
 
-  .color-stroke {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%);
-    height: 4px;
-    width: 100%;
+  p {
+    font-size: 0.75rem;
   }
 
   .logo {
-    height: 28px;
-    margin: 8px;
+    height: 16px;
+    margin: 0.5rem;
   }
 
   .six-logo {
-    width: 200px;
-    margin: 8px;
+    width: 120px;
     display: block;
+
+    img {
+      display: block;
+    }
   }
 
   .social {
     display: flex;
     margin-top: 1rem;
-    margin: 8px;
+    margin: 0.5rem;
 
     a {
-      max-width: 4rem;
       cursor: pointer;
+      margin: 0 4px;
+    }
+
+    img {
+      width: 28px;
+      display: block;
     }
   }
 
@@ -68,16 +74,21 @@ const FooterStyled = styled.footer`
     }
   }
 `
+
 function Footer() {
   return (
     <FooterStyled>
-      <img src={colorStrokeLong} alt="" className="color-stroke" />
       <div className="container">
         <div className="flex align-center flex-wrap justify-center">
           <img src={definixBlackLogo} alt="" className="logo" />
-          <p className="pa-2">Advance your crypto assets</p>
-          <a href="https://coinmarketcap.com/currencies/six/markets/" target="_blank" rel="noreferrer">
-            <img src={poweredbySIX} alt="" className="six-logo" />
+          <p className="py-2 px-4">Advance your crypto assets</p>
+          <a
+            href="https://coinmarketcap.com/currencies/six/markets/"
+            target="_blank"
+            rel="noreferrer"
+            className="six-logo"
+          >
+            <img src={poweredbySIX} alt="" />
           </a>
         </div>
 

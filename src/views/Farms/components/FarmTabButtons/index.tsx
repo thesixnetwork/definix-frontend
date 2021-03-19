@@ -14,6 +14,7 @@ const StyledButton = styled(Button)`
     font-weight: bold;
     color: ${({ theme }) => theme.colors.primary};
     border-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.white};
   }
 `
 
@@ -25,7 +26,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, activeFarmsCount }) => {
     <Wrapper>
       <Heading as="h2" fontSize="20px !important" className="my-6" textAlign="center">
         All active farms
-        <span className="ml-2" style={{ fontSize: '16px', color: '#CCCCCC' }}>
+        <span className="ml-2" style={{ fontSize: '16px' }}>
           ({activeFarmsCount})
         </span>
       </Heading>
@@ -62,4 +63,5 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+  flex-wrap: wrap;
 `
