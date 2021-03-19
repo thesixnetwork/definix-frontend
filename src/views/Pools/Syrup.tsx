@@ -75,7 +75,7 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      <Heading as="h1" fontSize="32px !important" className="mt-6 mb-4" textAlign="center">
+      <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
         Pool
       </Heading>
 
@@ -87,7 +87,7 @@ const Farm: React.FC = () => {
             {stackedOnly
               ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
               : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
-            <Coming />
+            {/* <Coming /> */}
           </>
         </Route>
         <Route path={`${path}/history`}>

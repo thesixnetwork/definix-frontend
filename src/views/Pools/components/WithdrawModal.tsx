@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
+import ModalActions from 'components/ModalActions'
+import ModalInput from 'components/ModalInput'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Modal } from 'uikit-dev'
-import ModalActions from 'components/ModalActions'
-import TokenInput from '../../../components/TokenInput'
 import useI18n from '../../../hooks/useI18n'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
@@ -34,7 +34,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
 
   return (
     <Modal title={`Withdraw ${tokenName}`} onDismiss={onDismiss} isRainbow>
-      <TokenInput
+      <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         value={val}

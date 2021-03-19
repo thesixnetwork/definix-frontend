@@ -1,7 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import Label from 'components/Label'
 import UnlockButton from 'components/UnlockButton'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useSousApprove } from 'hooks/useApprove'
@@ -14,15 +13,12 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useState } from 'react'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
+import { AddIcon, Button, Heading, Image, Link, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
-import CardTitle from './CardTitle'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
-import HarvestButton from './HarvestButton'
-import OldSyrupTitle from './OldSyrupTitle'
 import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
@@ -249,7 +245,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         /> */}
       </div>
 
-      <div className="panel">
+      <div className="panel pa-5 pt-0 pr-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Funds
@@ -257,36 +253,24 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
         </CustomTitle>
 
-        <div className="flex flex-column align-center pa-5">
+        <div className="flex flex-column align-center">
           <p className="mb-2">{tokenName} Staked</p>
           <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
           <p className="mt-2">{tokenName}</p>
         </div>
 
-        <div className="flex flex-column align-stretch justify-end pa-5">
+        <div className="flex flex-column align-stretch justify-end">
           <Link href="/" target="_blank" className="mx-auto mb-4">
             Buy {tokenName}
           </Link>
-          {!account && <UnlockButton />}
-          {
-            account && (
-              // (needsApproval && !isOldSyrup ? (
-              //   <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
-              //     {`Approve ${stakingTokenName}`}
-              //   </Button>
-              // ) : (
+          {!account && <UnlockButton fullWidth />}
+          {account &&
+            (needsApproval && !isOldSyrup ? (
+              <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
+                {`Approve ${stakingTokenName}`}
+              </Button>
+            ) : (
               <div className="flex">
-                {!isOldSyrup && (
-                  <Button
-                    fullWidth
-                    disabled={isFinished && sousId !== 0}
-                    onClick={onPresentDeposit}
-                    variant="secondary"
-                    className="mr-2"
-                  >
-                    <AddIcon color="primary" />
-                  </Button>
-                )}
                 <Button
                   fullWidth
                   disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
@@ -303,14 +287,23 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                 >
                   <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
                 </Button>
+                {!isOldSyrup && (
+                  <Button
+                    fullWidth
+                    disabled={isFinished && sousId !== 0}
+                    onClick={onPresentDeposit}
+                    variant="secondary"
+                    className="ml-2"
+                  >
+                    <AddIcon color="primary" />
+                  </Button>
+                )}
               </div>
-            )
-            // ))
-          }
+            ))}
         </div>
       </div>
 
-      <div className="panel">
+      <div className="panel pa-5 pt-0 pl-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Rewards
@@ -318,13 +311,13 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           <Image src="/images/coins/FINIX.png" width={40} height={40} />
         </CustomTitle>
 
-        <div className="flex flex-column align-center pa-5">
+        <div className="flex flex-column align-center">
           <p className="mb-2">FINIX Earned</p>
           <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
           <p className="mt-2">FINIX</p>
         </div>
 
-        <div className="flex flex-column align-stretch justify-end pa-5">
+        <div className="flex flex-column align-stretch justify-end">
           <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
             = 0.00000 $
           </p>
