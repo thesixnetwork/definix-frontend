@@ -2,21 +2,21 @@ import contracts from './contracts'
 import { FarmConfig, QuoteToken } from './types'
 
 const farms: FarmConfig[] = [
-   {
-     pid: 0,
-     lpSymbol: 'FINIX',
-     lpAddresses: {
-       97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
-       56: '',
-     },
-     tokenSymbol: 'FINIX',
-     tokenAddresses: {
-       97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
-       56: '',
-     },
-     quoteTokenSymbol: QuoteToken.BNB,
-     quoteTokenAdresses: contracts.wbnb,
-   },
+  {
+    pid: 0,
+    lpSymbol: 'FINIX',
+    lpAddresses: {
+      97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
+      56: '',
+    },
+    tokenSymbol: 'FINIX',
+    tokenAddresses: {
+      97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
+      56: '',
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
   {
     pid: 1,
     lpSymbol: 'SIX-BNB LP',
@@ -43,11 +43,11 @@ const farms: FarmConfig[] = [
     tokenAddresses: {
       97: '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee',
       56: '',
-    },    
+    },
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
-  },      
-  {       
+  },
+  {
     pid: 6,
     lpSymbol: 'ETH-BNB LP',
     lpAddresses: {
