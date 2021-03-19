@@ -100,18 +100,18 @@ const ModalInput: React.FC<ModalInputProps> = ({
           <Text fontSize="16px">{symbol}</Text>
         </Flex>
       </StyledTokenInput>
-      {/* {isBalanceZero && ( */}
-      <StyledErrorMessage>
-        <div className="flex align-center">
-          <img src={exclamation} alt="" className="mr-2" />
-          <Text fontWeight="bold">No tokens to stake</Text>
-        </div>
+      {isBalanceZero && (
+        <StyledErrorMessage>
+          <div className="flex align-center">
+            <img src={exclamation} alt="" className="mr-2" />
+            <Text fontWeight="bold">No tokens to stake</Text>
+          </div>
 
-        <Link fontSize="14px" bold={false} href={addLiquidityUrl} external color="failure">
-          {TranslateString(999, 'Get')} {symbol}
-        </Link>
-      </StyledErrorMessage>
-      {/* )} */}
+          <Link fontSize="14px" bold={false} href={addLiquidityUrl} external color="failure">
+            {TranslateString(999, 'Get')} {symbol}
+          </Link>
+        </StyledErrorMessage>
+      )}
     </div>
   )
 }

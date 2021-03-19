@@ -25,9 +25,9 @@ const FooterStyled = styled.footer`
   }
 
   .container {
-    max-width: 1280px;
     height: 100%;
     margin: 0 auto;
+    padding: 0 24px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -40,7 +40,7 @@ const FooterStyled = styled.footer`
 
   .logo {
     height: 16px;
-    margin: 0.5rem;
+    margin: 0.5rem 0;
   }
 
   .six-logo {
@@ -55,7 +55,7 @@ const FooterStyled = styled.footer`
   .social {
     display: flex;
     margin-top: 1rem;
-    margin: 0.5rem;
+    margin: 0.5rem 0;
 
     a {
       cursor: pointer;
