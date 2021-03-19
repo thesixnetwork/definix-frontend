@@ -11,6 +11,14 @@ export default {
     97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
     56: '',
   },
+  six: {
+    97: '0x9bDAF16122eB64E62757BDbBDc4d442495EA6C67',
+    56: '',
+  },
+  finix: {
+    97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
+    56: '',
+  },
   // configured =====================================================
   syrup: {
     97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
