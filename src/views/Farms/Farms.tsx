@@ -9,7 +9,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { useFarms, usePriceBnbBusd, usePriceSixBusd, usePriceFinixBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
+import {
+  useFarms,
+  usePriceBnbBusd,
+  usePriceSixBusd,
+  usePriceFinixBusd,
+  usePriceCakeBusd,
+  usePriceEthBusd,
+} from 'state/hooks'
 import { Heading } from 'uikit-dev'
 import { provider } from 'web3-core'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'

@@ -69,7 +69,17 @@ interface FarmCardProps {
   account?: string
 }
 
-const FarmCard: React.FC<FarmCardProps> = ({ farm, removed, sixPrice, finixPrice, cakePrice, bnbPrice, ethPrice, ethereum, account }) => {
+const FarmCard: React.FC<FarmCardProps> = ({
+  farm,
+  removed,
+  sixPrice,
+  finixPrice,
+  cakePrice,
+  bnbPrice,
+  ethPrice,
+  ethereum,
+  account,
+}) => {
   const TranslateString = useI18n()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
