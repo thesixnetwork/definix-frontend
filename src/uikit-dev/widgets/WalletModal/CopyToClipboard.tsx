@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Text from '../../components/Text/Text'
 import { CopyIcon } from '../../components/Svg'
+import Text from '../../components/Text/Text'
 
 interface Props {
   toCopy: string
+  noPadding?: boolean
 }
 
-const StyleButton = styled(Text).attrs({ role: 'button' })`
+const StyleButton = styled(Text).attrs({ role: 'button' })<{ noPadding: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.primary};
+  padding: ${(props) => (props.noPadding ? '0 !important' : 'initial')};
 `
 
 const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
@@ -27,7 +29,7 @@ const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
   opacity: 0.7;
 `
 
-const CopyToClipboard: React.FC<Props> = ({ toCopy, children, ...props }) => {
+const CopyToClipboard: React.FC<Props> = ({ toCopy, children, noPadding = false, ...props }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
 
   return (
@@ -43,6 +45,7 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, children, ...props }) => {
           }, 1000)
         }
       }}
+      noPadding={noPadding}
       {...props}
     >
       <CopyIcon width="20px" color="primary" mr="8px" />
