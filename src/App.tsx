@@ -56,7 +56,7 @@ const App: React.FC = () => {
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
-              <Home />
+              <Pools />
             </Route>
             <Route path="/farm">
               <Farms />

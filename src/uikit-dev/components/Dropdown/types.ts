@@ -7,4 +7,5 @@ export interface PositionProps {
 export interface DropdownProps extends PositionProps {
   target: React.ReactElement
   isRainbow?: boolean
+  isFullWidth?: boolean
 }

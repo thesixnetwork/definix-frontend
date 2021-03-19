@@ -16,18 +16,20 @@ interface Props {
 
 const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
-  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
-  const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
+  const accountEllipsis = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
+  // const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
 
   return (
     <div className="mx-5">
       {account ? (
         <Dropdown
+          isFullWidth
           position="bottom"
           isRainbow
           target={
             <Button
               size="sm"
+              fullWidth
               variant="secondary"
               // onClick={() => {
               //   onPresentAccountModal()
@@ -37,12 +39,22 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
             </Button>
           }
         >
-          <div className="pa-2">
-            <Heading className="mb-4">{accountEllipsisLong}</Heading>
-            <LinkExternal isIconLeft small href={`https://bscscan.com/address/${account}`} className="mb-2">
-              View on Klaytnscope
+          <div className="pb-2">
+            <Heading fontSize="14px !important" className="mb-3 pa-0 pt-2">
+              {accountEllipsis}
+            </Heading>
+            <LinkExternal
+              isIconLeft
+              small
+              href={`https://bscscan.com/address/${account}`}
+              className="mb-2"
+              fontSize="13px"
+            >
+              View on bscscan
             </LinkExternal>
-            <CopyToClipboard toCopy={account}>Copy Address</CopyToClipboard>
+            <CopyToClipboard noPadding toCopy={account}>
+              Copy Address
+            </CopyToClipboard>
             <Button
               size="sm"
               variant="secondary"

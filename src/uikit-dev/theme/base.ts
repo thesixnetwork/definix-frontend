@@ -47,6 +47,7 @@ const zIndices = {
 export default {
   siteWidth: 1200,
   breakpoints,
+  breakpointMap,
   mediaQueries,
   spacing,
   shadows,

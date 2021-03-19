@@ -298,6 +298,11 @@ const GlobalStyle = createGlobalStyle`
     margin-left: 6rem !important;
     margin-right: 6rem !important;
   }
+
+  .mx-auto {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
   
   .my-0 {
     margin-top: 0 !important;

@@ -32,7 +32,7 @@ const BorderBox = styled.div`
     border: none;
   }
 
-  h2 {
+  > h2 {
     font-size: 12px !important;
     padding: 0 1.5rem;
     margin-bottom: 0.5rem;
