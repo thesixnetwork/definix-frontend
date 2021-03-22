@@ -107,7 +107,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
       <div className="panel">
-        {/* {isFinished && sousId !== 0 && <PoolFinishedSash />} */}
+        {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
         <CustomTitle className="bg-gray">
           <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} />

@@ -13,8 +13,8 @@ import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks
 import styled from 'styled-components'
 import { Heading } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
-import Coming from './components/Coming'
 import PoolCard from './components/PoolCard'
+import PoolTabButtons from './components/PoolTabButtons'
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -79,7 +79,7 @@ const Farm: React.FC = () => {
         Pool
       </Heading>
 
-      {/* <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} /> */}
+      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
 
       <div>
         <Route exact path={`${path}`}>
