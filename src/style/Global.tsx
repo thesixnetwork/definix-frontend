@@ -6,7 +6,7 @@ const GlobalStyle = createGlobalStyle`
     background-image: url('/images/abstract.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: cover;
+    background-size: 140%;
     height: 100vh;
 
     ${({ theme }) => theme.mediaQueries.md} {

@@ -27,10 +27,12 @@ const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.nav} {
     position: relative;
-
     background-color: rgba(255, 255, 255, 0.7);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
   }
 
   width: ${({ isPushed }) => (isPushed ? `${SIDEBAR_WIDTH_FULL}px` : 0)};
