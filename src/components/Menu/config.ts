@@ -13,13 +13,13 @@ const config: MenuEntry[] = [
     label: 'Swap',
     icon: swapClick,
     iconActive: swap,
-    href: '/swap',
+    href: 'https://youngexchange.definix.com/#/swap',
   },
   {
     label: 'Liquidity',
     icon: liquidityClick,
     iconActive: liquidity,
-    href: '/liquidity',
+    href: 'https://youngexchange.definix.com/#/liquidity',
   },
   {
     label: 'Pool',
