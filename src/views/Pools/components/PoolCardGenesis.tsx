@@ -109,46 +109,48 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-column align-stretch">
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
-      <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-4">
+      <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
         <ArrowBackIcon />
       </IconButton>
 
       <CardStake />
 
-      <MaxWidth className="pa-5">
-        <StyledDetails>
-          <p className="pr-4 col-6">APR:</p>
-          <div className="col-6">
-            <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
+      <div className="pa-3">
+        <MaxWidth>
+          <div className="mx-3 my-1">
+            <StyledDetails>
+              <p className="pr-4 col-6">APR:</p>
+              <div className="col-6">
+                <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
+              </div>
+            </StyledDetails>
+            <StyledDetails>
+              <p className="pr-4 col-6">Total FINIX Rewards</p>
+              <span className="col-6">2,000,000 FINIX</span>
+            </StyledDetails>
+            <StyledDetails>
+              <p className="pr-4 col-6">Stake period</p>
+              <span className="col-6">72 hours</span>
+            </StyledDetails>
+            <StakePeriod>
+              <div className="track">
+                <div className="progress" style={{ width: '40%' }} />
+              </div>
+              <p>48 hours until end.</p>
+            </StakePeriod>
+            <StyledDetails>
+              <p className="pr-4 col-6">Total {tokenName} Staked:</p>
+              <span className="col-6">
+                {getBalanceNumber(totalStaked)} {tokenName}
+              </span>
+            </StyledDetails>
           </div>
-        </StyledDetails>
-        <StyledDetails>
-          <p className="pr-4 col-6">Total FINIX Rewards</p>
-          <span className="col-6">2,000,000 FINIX</span>
-        </StyledDetails>
-        <StyledDetails>
-          <p className="pr-4 col-6">Stake period</p>
-          <span className="col-6">72 hours</span>
-        </StyledDetails>
-
-        <StakePeriod>
-          <div className="track">
-            <div className="progress" style={{ width: '40%' }} />
-          </div>
-          <p>48 hours until end.</p>
-        </StakePeriod>
-
-        <StyledDetails>
-          <p className="pr-4 col-6">Total {tokenName} Staked:</p>
-          <span className="col-6">
-            {getBalanceNumber(totalStaked)} {tokenName}
-          </span>
-        </StyledDetails>
-      </MaxWidth>
+        </MaxWidth>
+      </div>
 
       <BorderTopBox>
-        <Flex className="px-5">
-          <div className="compare-box pa-5 mr-3">
+        <Flex>
+          <div className="compare-box pa-5">
             <CustomTitle>
               <Heading as="h2" className="mr-3">
                 My Funds
@@ -169,7 +171,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
             </div>
           </div>
 
-          <div className="compare-box pa-5 ml-3">
+          <div className="compare-box pa-5">
             <CustomTitle>
               <Heading as="h2" className="mr-3">
                 My Rewards
@@ -191,7 +193,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           </div>
         </Flex>
 
-        <div className="mx-auto mt-6" style={{ width: '30%' }}>
+        <div className="mx-auto my-3" style={{ width: '240px' }}>
           {!account && <UnlockButton fullWidth />}
           {account &&
             (needsApproval && !isOldSyrup ? (
@@ -231,134 +233,6 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
             ))}
         </div>
       </BorderTopBox>
-      {/* <div className="panel">
-        {isFinished && sousId !== 0 && <PoolFinishedSash />}
-
-        <CustomTitle className="bg-gray">
-          <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} />
-          <Heading as="h2" fontSize="20px !important" className="ml-3">
-            {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
-          </Heading>
-        </CustomTitle>
-
-        <div className="flex flex-column align-center pa-5">
-          <p className="mb-3">Stake {tokenName} to earn FINIX</p>
-          <Image src="/images/coins/FINIX.png" width={96} height={96} />
-        </div>
-
-        <div className="pa-5 pt-0">
-          <StyledDetails>
-            <p className="pr-4 col-6">APR:</p>
-            <div className="col-6">
-              <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
-            </div>
-          </StyledDetails>
-          <StyledDetails>
-            <p className="pr-4 col-6">Total FINIX Rewards</p>
-            <span className="col-6">2,000,000 FINIX</span>
-          </StyledDetails>
-          <StyledDetails>
-            <p className="pr-4 col-6">Today’s FINIX Rewards</p>
-            <span className="col-6">0.000000000 FINIX</span>
-          </StyledDetails>
-          <StyledDetails>
-            <p className="pr-4 col-6">Total {tokenName} Staked:</p>
-            <span className="col-6">
-              {getBalanceNumber(totalStaked)} {tokenName}
-            </span>
-          </StyledDetails>
-        </div>
-      </div>
-
-      <div className="panel pa-5 pt-0 pr-3">
-        <CustomTitle>
-          <Heading as="h2" className="mr-3">
-            My Funds
-          </Heading>
-          <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
-        </CustomTitle>
-
-        <div className="flex flex-column align-center">
-          <p className="mb-2">{tokenName} Staked</p>
-          <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
-          <p className="mt-2">{tokenName}</p>
-        </div>
-
-        <div className="flex flex-column align-stretch justify-end">
-          <Link href="/" target="_blank" className="mx-auto mb-4">
-            Buy {tokenName}
-          </Link>
-          {!account && <UnlockButton fullWidth />}
-          {account &&
-            (needsApproval && !isOldSyrup ? (
-              <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
-                Approve
-              </Button>
-            ) : (
-              <div className="flex">
-                <Button
-                  fullWidth
-                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                  onClick={
-                    isOldSyrup
-                      ? async () => {
-                          setPendingTx(true)
-                          await onUnstake('0')
-                          setPendingTx(false)
-                        }
-                      : onPresentWithdraw
-                  }
-                  variant="secondary"
-                >
-                  <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
-                </Button>
-                {!isOldSyrup && (
-                  <Button
-                    fullWidth
-                    disabled={isFinished && sousId !== 0}
-                    onClick={onPresentDeposit}
-                    variant="secondary"
-                    className="ml-2"
-                  >
-                    <AddIcon color="primary" />
-                  </Button>
-                )}
-              </div>
-            ))}
-        </div>
-      </div>
-
-      <div className="panel pa-5 pt-0 pl-3">
-        <CustomTitle>
-          <Heading as="h2" className="mr-3">
-            My Rewards
-          </Heading>
-          <Image src="/images/coins/FINIX.png" width={40} height={40} />
-        </CustomTitle>
-
-        <div className="flex flex-column align-center">
-          <p className="mb-2">FINIX Earned</p>
-          <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-          <p className="mt-2">FINIX</p>
-        </div>
-
-        <div className="flex flex-column align-stretch justify-end">
-          <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
-            = 0.00000 $
-          </p>
-          <Button
-            fullWidth
-            disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
-            onClick={async () => {
-              setPendingTx(true)
-              await onReward()
-              setPendingTx(false)
-            }}
-          >
-            {pendingTx ? 'Collecting' : 'Claim Rewards'}
-          </Button>
-        </div>
-      </div> */}
 
       <img src={colorStroke} alt="" className="color-stroke" />
     </Card>
@@ -441,13 +315,21 @@ const MaxWidth = styled.div`
 
 const Flex = styled(MaxWidth)`
   display: flex;
+  flex-wrap: wrap;
   .compare-box {
-    width: calc(50% - 16px);
+    width: 100%;
+    margin: 16px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    .compare-box {
+      width: calc(50% - 32px);
+    }
   }
 `
 
 const BorderTopBox = styled.div`
-  padding: 40px 0;
+  padding: 16px;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
 `
 
