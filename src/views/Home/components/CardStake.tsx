@@ -22,6 +22,14 @@ const StyledCardStake = styled(Card)`
     padding: 24px 24px 0 24px;
   }
 
+  > div {
+    text-align: center;
+
+    .flex {
+      justify-content: center;
+    }
+  }
+
   a {
     background: ${({ theme }) => theme.colors.white};
     font-size: 1rem;
@@ -33,17 +41,16 @@ const StyledCardStake = styled(Card)`
 
     > img {
       width: 36%;
+      padding: 0;
     }
-  }
-`
 
-const Row = styled.div`
-  display: flex;
-  align-items: center;
+    > div {
+      text-align: left;
 
-  img {
-    flex-shrink: 0;
-    margin-left: 16px;
+      .flex {
+        justify-content: flex-start;
+      }
+    }
   }
 `
 
@@ -54,17 +61,19 @@ const CardStake = () => {
       <CardBody className="pa-6">
         <Heading mb="12px">First Come, First Served</Heading>
 
-        <Row className="mb-2">
-          <Heading fontSize="40px !important">Stake SIX</Heading>
+        <div className="flex align-center mb-2">
+          <Heading fontSize="40px !important" className="mr-4">
+            Stake SIX
+          </Heading>
           <Image src="/images/coins/SIX.png" width={32} height={32} />
-        </Row>
+        </div>
 
-        <Row className="mb-2">
-          <Heading fontSize="40px !important" color="primary">
+        <div className="flex align-center mb-2">
+          <Heading fontSize="40px !important" className="mr-4" color="primary">
             Earn FINIX
           </Heading>
           <Image src="/images/coins/FINIX.png" width={32} height={32} />
-        </Row>
+        </div>
 
         <Text small className="mb-5">
           Only 10,000,000 FINIX and Limited for 72 hours
