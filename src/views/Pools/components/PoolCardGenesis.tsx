@@ -13,8 +13,9 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useState } from 'react'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, Image, Link, MinusIcon, useModal } from 'uikit-dev'
+import { AddIcon, ArrowBackIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
+import CardStake from 'views/Home/components/CardStake'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
@@ -29,7 +30,7 @@ interface HarvestProps {
   pool: PoolWithApy
 }
 
-const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
+const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const {
     sousId,
     image,
@@ -105,8 +106,132 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   }, [onApprove, setRequestedApproval])
 
   return (
-    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex">
-      <div className="panel">
+    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-column align-stretch">
+      {isFinished && sousId !== 0 && <PoolFinishedSash />}
+
+      <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-4">
+        <ArrowBackIcon />
+      </IconButton>
+
+      <CardStake />
+
+      <MaxWidth className="pa-5">
+        <StyledDetails>
+          <p className="pr-4 col-6">APR:</p>
+          <div className="col-6">
+            <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
+          </div>
+        </StyledDetails>
+        <StyledDetails>
+          <p className="pr-4 col-6">Total FINIX Rewards</p>
+          <span className="col-6">2,000,000 FINIX</span>
+        </StyledDetails>
+        <StyledDetails>
+          <p className="pr-4 col-6">Stake period</p>
+          <span className="col-6">72 hours</span>
+        </StyledDetails>
+
+        <StakePeriod>
+          <div className="track">
+            <div className="progress" style={{ width: '40%' }} />
+          </div>
+          <p>48 hours until end.</p>
+        </StakePeriod>
+
+        <StyledDetails>
+          <p className="pr-4 col-6">Total {tokenName} Staked:</p>
+          <span className="col-6">
+            {getBalanceNumber(totalStaked)} {tokenName}
+          </span>
+        </StyledDetails>
+      </MaxWidth>
+
+      <BorderTopBox>
+        <Flex className="px-5">
+          <div className="compare-box pa-5 mr-3">
+            <CustomTitle>
+              <Heading as="h2" className="mr-3">
+                My Funds
+              </Heading>
+              <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
+            </CustomTitle>
+
+            <div className="flex flex-column align-center mb-5">
+              <p className="mb-2">{tokenName} Staked</p>
+              <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
+              <p className="mt-2">{tokenName}</p>
+            </div>
+
+            <div className="flex flex-column align-stretch justify-end">
+              <Link href="/" target="_blank" className="mx-auto mb-4">
+                Buy {tokenName}
+              </Link>
+            </div>
+          </div>
+
+          <div className="compare-box pa-5 ml-3">
+            <CustomTitle>
+              <Heading as="h2" className="mr-3">
+                My Rewards
+              </Heading>
+              <Image src="/images/coins/FINIX.png" width={40} height={40} />
+            </CustomTitle>
+
+            <div className="flex flex-column align-center mb-5">
+              <p className="mb-2">FINIX Earned</p>
+              <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
+              <p className="mt-2">FINIX</p>
+            </div>
+
+            <div className="flex flex-column align-stretch justify-end">
+              <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
+                = 0.00000 $
+              </p>
+            </div>
+          </div>
+        </Flex>
+
+        <div className="mx-auto mt-6" style={{ width: '30%' }}>
+          {!account && <UnlockButton fullWidth />}
+          {account &&
+            (needsApproval && !isOldSyrup ? (
+              <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
+                Approve
+              </Button>
+            ) : (
+              <div className="flex">
+                <Button
+                  fullWidth
+                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                  onClick={
+                    isOldSyrup
+                      ? async () => {
+                          setPendingTx(true)
+                          await onUnstake('0')
+                          setPendingTx(false)
+                        }
+                      : onPresentWithdraw
+                  }
+                  variant="secondary"
+                >
+                  <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
+                </Button>
+                {!isOldSyrup && (
+                  <Button
+                    fullWidth
+                    disabled={isFinished && sousId !== 0}
+                    onClick={onPresentDeposit}
+                    variant="secondary"
+                    className="ml-2"
+                  >
+                    <AddIcon color="primary" />
+                  </Button>
+                )}
+              </div>
+            ))}
+        </div>
+      </BorderTopBox>
+      {/* <div className="panel">
         {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
         <CustomTitle className="bg-gray">
@@ -143,109 +268,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
             </span>
           </StyledDetails>
         </div>
-
-        {/* <div style={{ padding: '24px' }}>
-          <CardTitle isFinished={isFinished && sousId !== 0}>
-            {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
-          </CardTitle>
-
-          <div style={{ marginBottom: '8px', display: 'flex', alignItems: 'center' }}>
-            <div style={{ flex: 1 }}>
-              <Image src={`/images/tokens/${image || tokenName}.png`} width={64} height={64} alt={tokenName} />
-            </div>
-            {account && harvest && !isOldSyrup && (
-              <HarvestButton
-                disabled={!earnings.toNumber() || pendingTx}
-                text={pendingTx ? 'Collecting' : 'Harvest'}
-                onClick={async () => {
-                  setPendingTx(true)
-                  await onReward()
-                  setPendingTx(false)
-                }}
-              />
-            )}
-          </div>
-          {!isOldSyrup ? (
-            <BalanceAndCompound>
-              <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-              {sousId === 0 && account && harvest && (
-                <HarvestButton
-                  disabled={!earnings.toNumber() || pendingTx}
-                  text={pendingTx ? TranslateString(999, 'Compounding') : TranslateString(704, 'Compound')}
-                  onClick={onPresentCompound}
-                />
-              )}
-            </BalanceAndCompound>
-          ) : (
-            <OldSyrupTitle hasBalance={accountHasStakedBalance} />
-          )}
-          <Label isFinished={isFinished && sousId !== 0} text={TranslateString(330, `${tokenName} earned`)} />
-
-          <StyledCardActions>
-            {!account && <UnlockButton />}
-            {account &&
-              (needsApproval && !isOldSyrup ? (
-                <div style={{ flex: 1 }}>
-                  <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
-                    Approve
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  <Button
-                    disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                    onClick={
-                      isOldSyrup
-                        ? async () => {
-                            setPendingTx(true)
-                            await onUnstake('0')
-                            setPendingTx(false)
-                          }
-                        : onPresentWithdraw
-                    }
-                  >
-                    {`Unstake ${stakingTokenName}`}
-                  </Button>
-                  <StyledActionSpacer />
-                  {!isOldSyrup && (
-                    <IconButton disabled={isFinished && sousId !== 0} onClick={onPresentDeposit}>
-                      <AddIcon color="background" />
-                    </IconButton>
-                  )}
-                </>
-              ))}
-          </StyledCardActions>
-
-          <StyledDetails>
-            <div style={{ flex: 1 }}>{TranslateString(736, 'APR')}:</div>
-            {isFinished || isOldSyrup || !apy || apy?.isNaN() || !apy?.isFinite() ? (
-              '-'
-            ) : (
-              <Balance fontSize="14px" isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
-            )}
-          </StyledDetails>
-
-          <StyledDetails>
-            <div style={{ flex: 1 }}>
-              <span role="img" aria-label={stakingTokenName}>
-                🥞{' '}
-              </span>
-              {TranslateString(384, 'Your Stake')}:
-            </div>
-            <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
-          </StyledDetails>
-        </div>
-        <CardFooter
-          projectLink={projectLink}
-          totalStaked={totalStaked}
-          blocksRemaining={blocksRemaining}
-          isFinished={isFinished}
-          blocksUntilStart={blocksUntilStart}
-          poolCategory={poolCategory}
-        /> */}
       </div>
 
-      <div className="panel compare-box no-border pa-5 pt-0 pr-3">
+      <div className="panel pa-5 pt-0 pr-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Funds
@@ -303,7 +328,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
       </div>
 
-      <div className="panel compare-box no-border pa-5 pt-0 pl-3">
+      <div className="panel pa-5 pt-0 pl-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Rewards
@@ -333,7 +358,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
             {pendingTx ? 'Collecting' : 'Claim Rewards'}
           </Button>
         </div>
-      </div>
+      </div> */}
 
       <img src={colorStroke} alt="" className="color-stroke" />
     </Card>
@@ -342,7 +367,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
 
 const CustomTitle = styled.div`
   height: 80px;
-  margin-top: 24px;
   padding: 12px;
   display: flex;
   align-items: center;
@@ -362,6 +386,7 @@ const PoolFinishedSash = styled.div`
   right: -24px;
   top: -24px;
   width: 135px;
+  z-index: 1;
 `
 
 const StyledCardActions = styled.div`
@@ -408,4 +433,48 @@ const StyledDetails = styled.div`
   }
 `
 
-export default PoolCard
+const MaxWidth = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+`
+
+const Flex = styled(MaxWidth)`
+  display: flex;
+  .compare-box {
+    width: calc(50% - 16px);
+  }
+`
+
+const BorderTopBox = styled.div`
+  padding: 40px 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+`
+
+const StakePeriod = styled.div`
+  margin: 16px 0 8px 0;
+
+  .track {
+    position: relative;
+    height: 16px;
+    background: ${({ theme }) => theme.colors.backgroundDisabled};
+    border-radius: 16px;
+    margin-bottom: 12px;
+
+    .progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      border-radius: 16px;
+      background: ${({ theme }) => theme.colors.primary};
+    }
+  }
+
+  p {
+    font-size: 12px;
+    text-align: center;
+  }
+`
+
+export default PoolCardGenesis

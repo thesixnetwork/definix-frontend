@@ -11,10 +11,12 @@ import React, { useState } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
-import PoolCard from './components/PoolCard'
-import PoolTabButtons from './components/PoolTabButtons'
+import PoolCardGenesis from './components/PoolCardGenesis'
+
+// import PoolCard from './components/PoolCard'
+// import { Heading } from 'uikit-dev'
+// import PoolTabButtons from './components/PoolTabButtons'
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -75,24 +77,26 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
+      {/* <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
         Pool
       </Heading>
 
-      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} /> */}
 
       <div>
         <Route exact path={`${path}`}>
           <>
             {stackedOnly
-              ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
-              : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
+              ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => (
+                  <PoolCardGenesis key={pool.sousId} pool={pool} />
+                ))
+              : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCardGenesis key={pool.sousId} pool={pool} />)}
             {/* <Coming /> */}
           </>
         </Route>
         <Route path={`${path}/history`}>
           {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-            <PoolCard key={pool.sousId} pool={pool} />
+            <PoolCardGenesis key={pool.sousId} pool={pool} />
           ))}
         </Route>
       </div>

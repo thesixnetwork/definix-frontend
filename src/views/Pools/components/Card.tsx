@@ -4,7 +4,6 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   background: ${(props) => props.theme.card.background};
   box-shadow: ${({ theme }) => theme.shadows.elevation2};
   border-radius: ${({ theme }) => theme.radii.default};
-  display: flex;
   // color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'secondary']};
   position: relative;
   margin-bottom: 16px;
@@ -18,9 +17,18 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
     &:nth-child(02),
     &:nth-child(03) {
       width: 27.5%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+    }
+  }
+
+  .compare-box {
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.radii.default};
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    &.no-border {
+      border: none;
     }
   }
 

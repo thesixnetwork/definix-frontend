@@ -100,7 +100,7 @@ const Home: React.FC = () => {
           <TotalValueLockedCard />
           <CakeStats />
         </Cards>
-        <CardStake />
+        <CardStake large />
         <div className="flex align-center justify-center mt-6">
           <Text small>Audited by</Text>
           <img src={certik} width="120" alt="" />
