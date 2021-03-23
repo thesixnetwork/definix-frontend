@@ -1,7 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
-import { Redirect, Route, Router, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { ResetCSS } from 'uikit-dev'
 import Menu from './components/Menu'
@@ -10,19 +10,19 @@ import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
-import Pools from './views/Pools'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
+const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
-const Lottery = lazy(() => import('./views/Lottery'))
-const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
-const Collectibles = lazy(() => import('./views/Collectibles'))
-const Teams = lazy(() => import('./views/Teams'))
-const Team = lazy(() => import('./views/Teams/Team'))
-const Profile = lazy(() => import('./views/Profile'))
+// const Lottery = lazy(() => import('./views/Lottery'))
+// const Ifos = lazy(() => import('./views/Ifos'))
+// const Collectibles = lazy(() => import('./views/Collectibles'))
+// const Teams = lazy(() => import('./views/Teams'))
+// const Team = lazy(() => import('./views/Teams/Team'))
+// const Profile = lazy(() => import('./views/Profile'))
 
 // This config is required for number formating
 BigNumber.config({
@@ -58,13 +58,17 @@ const App: React.FC = () => {
             <Route path="/" exact>
               <Pools />
             </Route>
-            <Route path="/farm">
-              <Farms />
+            <Route path="/dashboard">
+              <Home />
             </Route>
             <Route path="/pool">
               <Pools />
             </Route>
-            <Route path="/lottery">
+            <Route path="/farm">
+              <Farms />
+            </Route>
+
+            {/* <Route path="/lottery">
               <Lottery />
             </Route>
             <Route path="/ifo">
@@ -81,9 +85,10 @@ const App: React.FC = () => {
             </Route>
             <Route path="/profile">
               <Profile />
-            </Route>
+            </Route> */}
+
             {/* Redirect */}
-            <Route path="/staking">
+            {/* <Route path="/staking">
               <Redirect to="/pools" />
             </Route>
             <Route path="/syrup">
@@ -91,7 +96,8 @@ const App: React.FC = () => {
             </Route>
             <Route path="/nft">
               <Redirect to="/collectibles" />
-            </Route>
+            </Route> */}
+
             {/* 404 */}
             <Route component={NotFound} />
           </Switch>

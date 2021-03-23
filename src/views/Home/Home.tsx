@@ -1,15 +1,17 @@
+import Page from 'components/layout/Page'
+import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, BaseLayout } from 'uikit-dev'
-import useI18n from 'hooks/useI18n'
-import Page from 'components/layout/Page'
-import FarmStakingCard from 'views/Home/components/FarmStakingCard'
-import LotteryCard from 'views/Home/components/LotteryCard'
+import { BaseLayout, Heading, Text } from 'uikit-dev'
 import CakeStats from 'views/Home/components/CakeStats'
+import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
-import EarnAPYCard from 'views/Home/components/EarnAPYCard'
-import EarnAssetCard from 'views/Home/components/EarnAssetCard'
-import WinCard from 'views/Home/components/WinCard'
+import certik from 'assets/images/certik.png'
+// import FarmStakingCard from 'views/Home/components/FarmStakingCard'
+// import LotteryCard from 'views/Home/components/LotteryCard'
+// import EarnAPYCard from 'views/Home/components/EarnAPYCard'
+// import EarnAssetCard from 'views/Home/components/EarnAssetCard'
+// import WinCard from 'views/Home/components/WinCard'
 
 const Hero = styled.div`
   align-items: center;
@@ -44,7 +46,7 @@ const Cards = styled(BaseLayout)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     & > div {
-      grid-column: span 8;
+      grid-column: span 12;
     }
   }
 
@@ -81,14 +83,12 @@ const Home: React.FC = () => {
 
   return (
     <Page>
-      <Hero>
-        <Heading as="h1" size="xl" mb="24px" color="secondary">
-          {TranslateString(576, 'PancakeSwap')}
-        </Heading>
-        <Text>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
-      </Hero>
+      <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
+        Dashboard
+      </Heading>
+
       <div>
-        <Cards>
+        {/* <Cards>
           <FarmStakingCard />
           <LotteryCard />
         </Cards>
@@ -96,11 +96,16 @@ const Home: React.FC = () => {
           <EarnAPYCard />
           <EarnAssetCard />
           <WinCard />
-        </CTACards>
+        </CTACards> */}
         <Cards>
-          <CakeStats />
           <TotalValueLockedCard />
+          <CakeStats />
         </Cards>
+        <CardStake />
+        <div className="flex align-center justify-center mt-6">
+          <Text small>Audited by</Text>
+          <img src={certik} width="120" alt="" />
+        </div>
       </div>
     </Page>
   )

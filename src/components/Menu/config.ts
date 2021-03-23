@@ -7,8 +7,16 @@ import poolClick from 'uikit-dev/images/Menu-Icon/pool-click.png'
 import pool from 'uikit-dev/images/Menu-Icon/pool.png'
 import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
 import swap from 'uikit-dev/images/Menu-Icon/swap.png'
+import dashboardClick from 'uikit-dev/images/Menu-Icon/dashboard-click.png'
+import dashboard from 'uikit-dev/images/Menu-Icon/dashboard.png'
 
 const config: MenuEntry[] = [
+  {
+    label: 'Dashboard',
+    icon: dashboardClick,
+    iconActive: dashboard,
+    href: '/dashboard',
+  },
   {
     label: 'Swap',
     icon: swapClick,
