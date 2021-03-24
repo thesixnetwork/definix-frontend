@@ -19,6 +19,10 @@ export default {
     97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
     56: '',
   },
+  busd: {
+    56: '',
+    97: '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee',
+  },
   // configured =====================================================
   syrup: {
     97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
@@ -39,10 +43,6 @@ export default {
   mulltiCall: {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
     97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412',
-  },
-  busd: {
-    56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-    97: '',
   },
   ust: {
     56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
