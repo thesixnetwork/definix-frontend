@@ -24,8 +24,8 @@ import DepositModal from './DepositModal'
 import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
-  apy: BigNumber,
-  rewardPerBlock?: number,
+  apy: BigNumber
+  rewardPerBlock?: number
 }
 
 interface HarvestProps {
@@ -33,18 +33,18 @@ interface HarvestProps {
 }
 
 function secondsToDhms(i, onlyHour = false) {
-  const seconds = Number(i);
-  const d = Math.floor(seconds / (3600*24));
-  const h = Math.floor(seconds % (3600*24) / 3600);
-  const m = Math.floor(seconds % 3600 / 60);
-  const s = Math.floor(seconds % 60);
+  const seconds = Number(i)
+  const d = Math.floor(seconds / (3600 * 24))
+  const h = Math.floor((seconds % (3600 * 24)) / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = Math.floor(seconds % 60)
 
-  const dDisplay = d > 0 ? d + (d === 1 ? " day, " : " days, ") : "";
-  const hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-  if (onlyHour) return (dDisplay + hDisplay).replace(/,\s*$/, "")
-  const mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
-  const sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-  return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, "");
+  const dDisplay = d > 0 ? d + (d === 1 ? ' day, ' : ' days, ') : ''
+  const hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : ''
+  if (onlyHour) return (dDisplay + hDisplay).replace(/,\s*$/, '')
+  const mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : ''
+  const sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : ''
+  return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, '')
 }
 
 const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
@@ -69,16 +69,16 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   } = pool
   const finixPrice = usePriceFinixBusd()
   const block = useBlock()
-  const startBlockNumber = typeof startBlock === "number" ? startBlock : parseInt(startBlock, 10)
-  const endBlockNumber = typeof endBlock === "number" ? endBlock : parseInt(endBlock, 10)
-  const currentBlockNumber = typeof block === "number" ? block : parseInt(block, 10)
+  const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
+  const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)
+  const currentBlockNumber = typeof block === 'number' ? block : parseInt(block, 10)
   const totalDiffBlock = endBlockNumber - startBlockNumber
-  const totalReward = totalDiffBlock * (rewardPerBlock / (10 ** 18))
+  const totalReward = totalDiffBlock * (rewardPerBlock / 10 ** 18)
   const currentDiffBlock = currentBlockNumber - startBlockNumber
   const percentage = currentDiffBlock / (totalDiffBlock / 100)
   const totalTimeInSecond = secondsToDhms(totalDiffBlock * 3, true)
   const remainTime = secondsToDhms((totalDiffBlock - currentDiffBlock) * 3)
-  const totalBarWidthPercentage = `${(percentage || 0)}%`
+  const totalBarWidthPercentage = `${percentage || 0}%`
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
@@ -172,7 +172,12 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
             <StyledDetails>
               <p className="pr-4 col-6">Total {tokenName} Staked:</p>
               <div className="col-6">
-                <Balance isDisabled={isFinished} value={getBalanceNumber(totalStaked)} decimals={2} unit={` ${tokenName}`} />
+                <Balance
+                  isDisabled={isFinished}
+                  value={getBalanceNumber(totalStaked)}
+                  decimals={2}
+                  unit={` ${tokenName}`}
+                />
               </div>
             </StyledDetails>
           </div>
