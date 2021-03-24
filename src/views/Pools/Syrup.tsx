@@ -111,7 +111,6 @@ const Farm: React.FC = () => {
                   <PoolCardGenesis key={pool.sousId} pool={pool} />
                 ))
               : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCardGenesis key={pool.sousId} pool={pool} />)}
-            {/* <Coming /> */}
           </>
         </Route>
 

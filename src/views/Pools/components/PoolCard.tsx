@@ -105,7 +105,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   }, [onApprove, setRequestedApproval])
 
   return (
-    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex">
+    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-wrap">
       <div className="panel">
         {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
@@ -245,7 +245,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         /> */}
       </div>
 
-      <div className="panel compare-box no-border pa-5 pt-0 pr-3">
+      <div className="panel compare-box pa-5 pt-0 pr-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Funds
@@ -303,7 +303,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
       </div>
 
-      <div className="panel compare-box no-border pa-5 pt-0 pl-3">
+      <div className="panel compare-box pa-5 pt-0 pl-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Rewards
