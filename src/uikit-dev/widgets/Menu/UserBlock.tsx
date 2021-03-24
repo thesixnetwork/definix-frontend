@@ -1,7 +1,7 @@
 import React from 'react'
-import Heading from '../../components/Heading/Heading'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
+import Heading from '../../components/Heading/Heading'
 import LinkExternal from '../../components/Link/LinkExternal'
 import { useWalletModal } from '../WalletModal'
 import { localStorageKey } from '../WalletModal/config'
@@ -20,7 +20,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   // const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
 
   return (
-    <div className="mx-5">
+    <div className="mx-5 mb-4">
       {account ? (
         <Dropdown
           isFullWidth

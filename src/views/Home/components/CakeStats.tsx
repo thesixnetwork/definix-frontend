@@ -6,10 +6,19 @@ import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { getCakeAddress } from 'utils/addressHelpers'
 import CardValue from './CardValue'
+import stats from '../../../assets/images/stats.png'
 
 const StyledCakeStats = styled(Card)`
   margin-left: auto;
   margin-right: auto;
+  background: url(${stats});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: ${({ theme }) => theme.colors.white};
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    padding-left: 120px;
+  }
 `
 
 const Row = styled.div`
@@ -17,7 +26,11 @@ const Row = styled.div`
   display: flex;
   font-size: 14px;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+
+  &:last-child {
+    margin: 0;
+  }
 `
 
 const CakeStats = () => {
@@ -27,22 +40,20 @@ const CakeStats = () => {
   const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
 
   return (
-    <StyledCakeStats>
-      <CardBody>
-        <Heading size="xl" mb="24px">
-          {TranslateString(534, 'Cake Stats')}
-        </Heading>
+    <StyledCakeStats isRainbow>
+      <CardBody className="pa-6">
+        <Heading mb="20px">FINIX Stats</Heading>
         <Row>
-          <Text fontSize="14px">{TranslateString(536, 'Total CAKE Supply')}</Text>
-          {cakeSupply && <CardValue fontSize="14px" value={cakeSupply} />}
+          <Text small>{TranslateString(536, 'Total FINIX Supply')}</Text>
+          {cakeSupply && <CardValue fontSize="18px" fontWeight="bold" value={cakeSupply} />}
         </Row>
         <Row>
-          <Text fontSize="14px">{TranslateString(538, 'Total CAKE Burned')}</Text>
-          <CardValue fontSize="14px" decimals={0} value={burnedBalance} />
+          <Text small>{TranslateString(538, 'Total FINIX Burned')}</Text>
+          <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text fontSize="14px">{TranslateString(540, 'New CAKE/block')}</Text>
-          <CardValue fontSize="14px" decimals={0} value={25} />
+          <Text small>{TranslateString(540, 'New FINIX/block')}</Text>
+          <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={25} />
         </Row>
       </CardBody>
     </StyledCakeStats>

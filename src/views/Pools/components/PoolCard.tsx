@@ -105,9 +105,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   }, [onApprove, setRequestedApproval])
 
   return (
-    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0}>
+    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex">
       <div className="panel">
-        {/* {isFinished && sousId !== 0 && <PoolFinishedSash />} */}
+        {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
         <CustomTitle className="bg-gray">
           <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} />
@@ -187,7 +187,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               (needsApproval && !isOldSyrup ? (
                 <div style={{ flex: 1 }}>
                   <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
-                    {`Approve ${stakingTokenName}`}
+                    Approve
                   </Button>
                 </div>
               ) : (
@@ -245,7 +245,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         /> */}
       </div>
 
-      <div className="panel pa-5 pt-0 pr-3">
+      <div className="panel compare-box no-border pa-5 pt-0 pr-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Funds
@@ -267,7 +267,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           {account &&
             (needsApproval && !isOldSyrup ? (
               <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
-                {`Approve ${stakingTokenName}`}
+                Approve
               </Button>
             ) : (
               <div className="flex">
@@ -303,7 +303,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
       </div>
 
-      <div className="panel pa-5 pt-0 pl-3">
+      <div className="panel compare-box no-border pa-5 pt-0 pl-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Rewards

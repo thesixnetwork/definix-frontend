@@ -8,7 +8,7 @@ const StyledNotFound = styled.div`
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px);
+  height: calc(100% - 64px);
   justify-content: center;
 `
 
