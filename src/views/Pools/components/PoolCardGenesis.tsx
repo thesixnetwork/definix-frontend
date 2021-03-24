@@ -224,7 +224,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
 
             <div className="flex flex-column align-stretch justify-end">
               <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
-                = {numeral(finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)).format("0,0.0000")} $
+                = {numeral(finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)).format('0,0.0000')} $
               </p>
             </div>
           </div>
