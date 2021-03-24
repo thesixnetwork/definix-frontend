@@ -16,6 +16,7 @@ import styled from 'styled-components'
 import { AddIcon, ArrowBackIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardStake from 'views/Home/components/CardStake'
+import { usePriceFinixBusd } from 'state/hooks'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
@@ -24,10 +25,26 @@ import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
   apy: BigNumber
+  rewardPerBlock?: number
 }
 
 interface HarvestProps {
   pool: PoolWithApy
+}
+
+function secondsToDhms(i, onlyHour = false) {
+  const seconds = Number(i)
+  const d = Math.floor(seconds / (3600 * 24))
+  const h = Math.floor((seconds % (3600 * 24)) / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = Math.floor(seconds % 60)
+
+  const dDisplay = d > 0 ? d + (d === 1 ? ' day, ' : ' days, ') : ''
+  const hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : ''
+  if (onlyHour) return (dDisplay + hDisplay).replace(/,\s*$/, '')
+  const mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : ''
+  const sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : ''
+  return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, '')
 }
 
 const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
@@ -48,13 +65,25 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     isFinished,
     userData,
     stakingLimit,
+    rewardPerBlock,
   } = pool
+  const finixPrice = usePriceFinixBusd()
+  const block = useBlock()
+  const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
+  const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)
+  const currentBlockNumber = typeof block === 'number' ? block : parseInt(block, 10)
+  const totalDiffBlock = endBlockNumber - startBlockNumber
+  const totalReward = totalDiffBlock * (rewardPerBlock / 10 ** 18)
+  const currentDiffBlock = currentBlockNumber - startBlockNumber
+  const percentage = currentDiffBlock / (totalDiffBlock / 100)
+  const totalTimeInSecond = secondsToDhms(totalDiffBlock * 3, true)
+  const remainTime = secondsToDhms((totalDiffBlock - currentDiffBlock) * 3)
+  const totalBarWidthPercentage = `${percentage || 0}%`
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWallet()
-  const block = useBlock()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
@@ -126,23 +155,30 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
             </StyledDetails>
             <StyledDetails>
               <p className="pr-4 col-6">Total FINIX Rewards</p>
-              <span className="col-6">2,000,000 FINIX</span>
+              <div className="col-6">
+                <Balance isDisabled={isFinished} value={totalReward} decimals={2} unit=" FINIX" />
+              </div>
             </StyledDetails>
             <StyledDetails>
               <p className="pr-4 col-6">Stake period</p>
-              <span className="col-6">72 hours</span>
+              <span className="col-6">{totalTimeInSecond}</span>
             </StyledDetails>
             <StakePeriod>
               <div className="track">
-                <div className="progress" style={{ width: '40%' }} />
+                <div className="progress" style={{ width: totalBarWidthPercentage }} />
               </div>
-              <p>48 hours until end.</p>
+              <p>{remainTime} until end.</p>
             </StakePeriod>
             <StyledDetails>
               <p className="pr-4 col-6">Total {tokenName} Staked:</p>
-              <span className="col-6">
-                {getBalanceNumber(totalStaked)} {tokenName}
-              </span>
+              <div className="col-6">
+                <Balance
+                  isDisabled={isFinished}
+                  value={getBalanceNumber(totalStaked)}
+                  decimals={2}
+                  unit={` ${tokenName}`}
+                />
+              </div>
             </StyledDetails>
           </div>
         </MaxWidth>
@@ -165,7 +201,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
             </div>
 
             <div className="flex flex-column align-stretch justify-end">
-              <Link href="/" target="_blank" className="mx-auto mb-4">
+              <Link href="https://six.network" target="_blank" className="mx-auto mb-4">
                 Buy {tokenName}
               </Link>
             </div>
@@ -187,7 +223,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
 
             <div className="flex flex-column align-stretch justify-end">
               <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
-                = 0.00000 $
+                = {finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)} $
               </p>
             </div>
           </div>
