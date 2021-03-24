@@ -12,7 +12,7 @@ const Menu = (props) => {
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
   const { isDark, toggleTheme } = useTheme()
   const cakePriceUsd = usePriceCakeBusd()
-  const finixPriceUsd = usePriceCakeBusd()
+  const finixPriceUsd = usePriceFinixBusd()
   const { profile } = useProfile()
 
   return (
