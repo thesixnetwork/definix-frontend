@@ -1,5 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import Balance from 'components/Balance'
 import UnlockButton from 'components/UnlockButton'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
@@ -223,7 +224,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
 
             <div className="flex flex-column align-stretch justify-end">
               <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
-                = {finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)} $
+                = {numeral(finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)).format("0,0.0000")} $
               </p>
             </div>
           </div>
