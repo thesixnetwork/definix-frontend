@@ -138,7 +138,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-column align-stretch">
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
-      <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
+      <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
         <ArrowBackIcon />
       </IconButton>
 
