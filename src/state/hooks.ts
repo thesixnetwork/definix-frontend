@@ -104,10 +104,9 @@ export const usePriceCakeBusd = (): BigNumber => {
 
 export const usePriceFinixBusd = (): BigNumber => {
   // const pid = 1 // CAKE-BNB LP
-  const pid = 9 // FINIX-BNB LP
-  const sixPriceUSD = usePriceSixBusd()
+  const pid = 8 // FINIX-BUSD LP
   const farm = useFarmFromPid(pid)
-  return farm.tokenPriceVsQuote ? sixPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
+  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
 }
 
 export const usePriceEthBusd = (): BigNumber => {
