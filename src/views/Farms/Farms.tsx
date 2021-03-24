@@ -9,7 +9,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { useFarms, usePriceBnbBusd, usePriceCakeBusd, usePriceEthBusd } from 'state/hooks'
+import {
+  useFarms,
+  usePriceBnbBusd,
+  usePriceSixBusd,
+  usePriceFinixBusd,
+  usePriceCakeBusd,
+  usePriceEthBusd,
+} from 'state/hooks'
 import { Heading } from 'uikit-dev'
 import { provider } from 'web3-core'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
@@ -20,6 +27,8 @@ const Farms: React.FC = () => {
   const farmsLP = useFarms()
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
+  const sixPrice = usePriceSixBusd()
+  const finixPrice = usePriceFinixBusd()
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const ethPriceUsd = usePriceEthBusd()
 
@@ -83,12 +92,14 @@ const Farms: React.FC = () => {
           bnbPrice={bnbPrice}
           cakePrice={cakePrice}
           ethPrice={ethPriceUsd}
+          sixPrice={sixPrice}
+          finixPrice={finixPrice}
           ethereum={ethereum}
           account={account}
         />
       ))
     },
-    [farmsLP, bnbPrice, ethPriceUsd, cakePrice, ethereum, account],
+    [finixPrice, sixPrice, farmsLP, bnbPrice, ethPriceUsd, cakePrice, ethereum, account],
   )
 
   return (
