@@ -53,5 +53,6 @@ export interface NavProps extends PanelProps {
   account?: string
   login: Login
   profile?: Profile
+  price: number,
   logout: () => void
 }

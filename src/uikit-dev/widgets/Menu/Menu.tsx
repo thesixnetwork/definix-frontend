@@ -121,6 +121,7 @@ const Menu: React.FC<NavProps> = ({
   cakePriceUsd,
   links,
   children,
+  price,
   // profile,
 }) => {
   const { isXl } = useMatchBreakpoints()
@@ -194,7 +195,7 @@ const Menu: React.FC<NavProps> = ({
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
-              <strong>$66</strong>
+              <strong>${price}</strong>
             </p>
           </Price>
           <Dropdown

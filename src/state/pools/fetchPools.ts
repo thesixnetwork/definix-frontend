@@ -21,17 +21,26 @@ export const fetchPoolsBlockLimits = async () => {
       name: 'bonusEndBlock',
     }
   })
+  const callsRewardPerBlock = poolsWithEnd.map((poolConfig) => {
+    return {
+      address: getAddress(poolConfig.contractAddress),
+      name: 'rewardPerBlock',
+    }
+  })
 
   const starts = await multicall(sousChefABI, callsStartBlock)
   const ends = await multicall(sousChefABI, callsEndBlock)
+  const rewards = await multicall(sousChefABI, callsRewardPerBlock)
 
   return poolsWithEnd.map((cakePoolConfig, index) => {
     const startBlock = starts[index]
     const endBlock = ends[index]
+    const rewardPerBlock = rewards[index]
     return {
       sousId: cakePoolConfig.sousId,
       startBlock: new BigNumber(startBlock).toJSON(),
       endBlock: new BigNumber(endBlock).toJSON(),
+      rewardPerBlock: new BigNumber(rewardPerBlock).toJSON(),
     }
   })
 }
