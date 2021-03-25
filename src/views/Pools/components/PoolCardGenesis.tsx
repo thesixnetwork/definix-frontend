@@ -394,8 +394,8 @@ const BalanceAndCompound = styled.div`
 `
 
 const StyledActionSpacer = styled.div`
-  height: ${props => props.theme.spacing[4]}px;
-  width: ${props => props.theme.spacing[4]}px;
+  height: ${(props) => props.theme.spacing[4]}px;
+  width: ${(props) => props.theme.spacing[4]}px;
 `
 
 const StyledDetails = styled.div`
