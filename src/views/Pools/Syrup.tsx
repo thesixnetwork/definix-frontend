@@ -13,6 +13,8 @@ import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PoolCardGenesis from './components/PoolCardGenesis'
+import PoolCard from './components/PoolCard'
+import { IS_GENESIS } from '../../config'
 
 // import PoolCard from './components/PoolCard'
 // import { Heading } from 'uikit-dev'
@@ -40,10 +42,10 @@ const Farm: React.FC = () => {
     return tokenPriceBN
   }
 
-  const poolsWithApy = pools.map((pool) => {
+  const poolsWithApy = pools.map(pool => {
     const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
-    const stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
+    const rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
+    const stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
@@ -70,9 +72,9 @@ const Farm: React.FC = () => {
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithApy, pool => pool.isFinished)
   const stackedOnlyPools = openPools.filter(
-    (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
+    pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
 
   return (
@@ -83,23 +85,34 @@ const Farm: React.FC = () => {
 
       <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} /> */}
 
-      <div>
-        <Route exact path={`${path}`}>
-          <>
-            {stackedOnly
-              ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => (
-                  <PoolCardGenesis key={pool.sousId} pool={pool} />
-                ))
-              : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCardGenesis key={pool.sousId} pool={pool} />)}
-            {/* <Coming /> */}
-          </>
-        </Route>
-        <Route path={`${path}/history`}>
-          {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-            <PoolCardGenesis key={pool.sousId} pool={pool} />
-          ))}
-        </Route>
-      </div>
+      {IS_GENESIS ? (
+        <div>
+          <Route exact path={`${path}`}>
+            <>
+              {poolsWithApy.map(pool => (
+                <PoolCardGenesis key={pool.sousId} pool={pool} />
+              ))}
+              {/* <Coming /> */}
+            </>
+          </Route>
+        </div>
+      ) : (
+        <div>
+          <Route exact path={`${path}`}>
+            <>
+              {stackedOnly
+                ? orderBy(stackedOnlyPools, ['sortOrder']).map(pool => <PoolCard key={pool.sousId} pool={pool} />)
+                : orderBy(openPools, ['sortOrder']).map(pool => <PoolCard key={pool.sousId} pool={pool} />)}
+              {/* <Coming /> */}
+            </>
+          </Route>
+          <Route path={`${path}/history`}>
+            {orderBy(finishedPools, ['sortOrder']).map(pool => (
+              <PoolCard key={pool.sousId} pool={pool} />
+            ))}
+          </Route>
+        </div>
+      )}
     </Page>
   )
 }

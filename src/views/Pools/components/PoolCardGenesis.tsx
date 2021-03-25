@@ -83,7 +83,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const remainTime = secondsToDhms((totalDiffBlock - currentDiffBlock) * 3)
   const beforeStart = startBlockNumber - currentBlockNumber
   const beforeStartTime = secondsToDhms(beforeStart * 3)
-  const totalBarWidthPercentage = `${percentage || 0}%`
+  const totalBarWidthPercentage = `${(percentage || 0) > 100 ? 100 : percentage || 0}%`
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
@@ -143,6 +143,8 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   if (currentBlockNumber !== 0) {
     if (currentBlockNumber < startBlockNumber) {
       timeData = <p>Starting in {beforeStartTime}</p>
+    } else if (isFinished) {
+      timeData = <p>Finished.</p>
     } else {
       timeData = <p>{remainTime} until end.</p>
     }
@@ -392,8 +394,8 @@ const BalanceAndCompound = styled.div`
 `
 
 const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
+  height: ${props => props.theme.spacing[4]}px;
+  width: ${props => props.theme.spacing[4]}px;
 `
 
 const StyledDetails = styled.div`

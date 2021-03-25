@@ -1,6 +1,6 @@
 export default {
   cake: {
-    97: '0x9F36830A22210C21dB52820963349FbA823DAB08',
+    97: '0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e',
     56: '',
   },
   masterChef: {
@@ -16,7 +16,7 @@ export default {
     56: '',
   },
   finix: {
-    97: '0x9F36830A22210C21dB52820963349FbA823DAB08',
+    97: '0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e',
     56: '',
   },
   busd: {

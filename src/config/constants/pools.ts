@@ -7,7 +7,7 @@ const pools: PoolConfig[] = [
     stakingTokenName: QuoteToken.SIX,
     stakingTokenAddress: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
     contractAddress: {
-      97: '0x3AFCcaA6b53295CFdAEe60A63a9D4e173c94be88',
+      97: '0x5BA0C3af18949B856EA9610d0A63a77e22f7d4fa',
       56: '',
     },
     poolCategory: PoolCategory.CORE,

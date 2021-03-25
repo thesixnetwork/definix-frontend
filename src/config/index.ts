@@ -5,6 +5,7 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 })
 
+export const IS_GENESIS = true
 export const CAKE_PER_BLOCK = new BigNumber(40)
 export const BLOCKS_PER_YEAR = new BigNumber(10512000)
 export const BSC_BLOCK_TIME = 3
