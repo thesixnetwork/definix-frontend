@@ -1,6 +1,6 @@
 export default {
   cake: {
-    97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
+    97: '0x9F36830A22210C21dB52820963349FbA823DAB08',
     56: '',
   },
   masterChef: {
@@ -12,11 +12,11 @@ export default {
     56: '',
   },
   six: {
-    97: '0x9bDAF16122eB64E62757BDbBDc4d442495EA6C67',
+    97: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
     56: '',
   },
   finix: {
-    97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
+    97: '0x9F36830A22210C21dB52820963349FbA823DAB08',
     56: '',
   },
   busd: {

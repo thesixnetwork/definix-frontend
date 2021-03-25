@@ -2,81 +2,81 @@ import contracts from './contracts'
 import { FarmConfig, QuoteToken } from './types'
 
 const farms: FarmConfig[] = [
-  {
-    pid: 0,
-    lpSymbol: 'FINIX',
-    lpAddresses: {
-      97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
-      56: '',
-    },
-    tokenSymbol: 'FINIX',
-    tokenAddresses: {
-      97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
-      56: '',
-    },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
-  },
-  {
-    pid: 7,
-    lpSymbol: 'FINIX-SIX LP',
-    lpAddresses: {
-      97: '0x558C70427C536cbE0591C64005Dd1d79488e77F9',
-      56: '',
-    },
-    tokenSymbol: 'SIX',
-    tokenAddresses: {
-      97: '0x9bDAF16122eB64E62757BDbBDc4d442495EA6C67',
-      56: '',
-    },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
-  },
-  {
-    pid: 8,
-    lpSymbol: 'FINIX-BUSD LP',
-    lpAddresses: {
-      97: '0x1ECE46216AD3AEE81380e08955794d0B67c58CA0',
-      56: '',
-    },
-    tokenSymbol: 'BUSD',
-    tokenAddresses: {
-      97: '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee',
-      56: '',
-    },
-    quoteTokenSymbol: QuoteToken.FINIX,
-    quoteTokenAdresses: contracts.finix,
-  },
-  {
-    pid: 9,
-    lpSymbol: 'FINIX-BNB LP',
-    lpAddresses: {
-      97: '0x78a1B02f0627e8bB14216F4Cdc1de68e45874D58',
-      56: '',
-    },
-    tokenSymbol: 'FINIX',
-    tokenAddresses: {
-      97: '0x2B272DE1Dc9B42128f145D91E4a2dC3755C867CE',
-      56: '',
-    },
-    quoteTokenSymbol: QuoteToken.FINIX,
-    quoteTokenAdresses: contracts.finix,
-  },
-  {
-    pid: 10,
-    lpSymbol: 'SIX-BUSD LP',
-    lpAddresses: {
-      97: '0x5AcD166086f0Dc3f2A747f08f09f2103bD5220B3',
-      56: '',
-    },
-    tokenSymbol: 'SIX',
-    tokenAddresses: {
-      97: '0x9bDAF16122eB64E62757BDbBDc4d442495EA6C67',
-      56: '',
-    },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
-  },
+  // {
+  //   pid: 0,
+  //   lpSymbol: 'FINIX',
+  //   lpAddresses: {
+  //     97: '0xd60E1A425717a6E786A5Eed58F06Ef8F566Db529',
+  //     56: '',
+  //   },
+  //   tokenSymbol: 'FINIX',
+  //   tokenAddresses: {
+  //     97: '0xd60E1A425717a6E786A5Eed58F06Ef8F566Db529',
+  //     56: '',
+  //   },
+  //   quoteTokenSymbol: QuoteToken.SIX,
+  //   quoteTokenAdresses: contracts.six,
+  // },
+  // {
+  //   pid: 7,
+  //   lpSymbol: 'FINIX-SIX LP',
+  //   lpAddresses: {
+  //     97: '0xc9D9587a22cF8e00a36C9C54d339D77fD336e565',
+  //     56: '',
+  //   },
+  //   tokenSymbol: 'SIX',
+  //   tokenAddresses: {
+  //     97: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
+  //     56: '',
+  //   },
+  //   quoteTokenSymbol: QuoteToken.SIX,
+  //   quoteTokenAdresses: contracts.six,
+  // },
+  // {
+  //   pid: 8,
+  //   lpSymbol: 'FINIX-BUSD LP',
+  //   lpAddresses: {
+  //     97: '0x3d9954937F67c2Ca22b402aC95707871A226Fc9a',
+  //     56: '',
+  //   },
+  //   tokenSymbol: 'BUSD',
+  //   tokenAddresses: {
+  //     97: '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee',
+  //     56: '',
+  //   },
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
+  // },
+  // {
+  //   pid: 9,
+  //   lpSymbol: 'FINIX-BNB LP',
+  //   lpAddresses: {
+  //     97: '0xBBB7E15BFf71367705E1B4597F1c7a3fB989E6bA',
+  //     56: '',
+  //   },
+  //   tokenSymbol: 'FINIX',
+  //   tokenAddresses: {
+  //     97: '0xd60E1A425717a6E786A5Eed58F06Ef8F566Db529',
+  //     56: '',
+  //   },
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
+  // },
+  // {
+  //   pid: 10,
+  //   lpSymbol: 'SIX-BUSD LP',
+  //   lpAddresses: {
+  //     97: '0x0F96218AE8e6D03475A13fa7eC27DCBFeEA5e1A1',
+  //     56: '',
+  //   },
+  //   tokenSymbol: 'SIX',
+  //   tokenAddresses: {
+  //     97: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
+  //     56: '',
+  //   },
+  //   quoteTokenSymbol: QuoteToken.SIX,
+  //   quoteTokenAdresses: contracts.six,
+  // },
   // {
   //   pid: 1,
   //   lpSymbol: 'CAKE-BNB LP',

@@ -74,11 +74,15 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)
   const currentBlockNumber = typeof block === 'number' ? block : parseInt(block, 10)
   const totalDiffBlock = endBlockNumber - startBlockNumber
-  const totalReward = totalDiffBlock * (rewardPerBlock / 10 ** 18)
+  const totalDiffBlockCeil =
+    totalDiffBlock % 1200 > 1100 ? totalDiffBlock + (1200 - (totalDiffBlock % 1200)) : totalDiffBlock
+  const totalReward = totalDiffBlockCeil * (rewardPerBlock / 10 ** 18)
   const currentDiffBlock = currentBlockNumber - startBlockNumber
   const percentage = currentDiffBlock / (totalDiffBlock / 100)
-  const totalTimeInSecond = secondsToDhms(totalDiffBlock * 3, true)
+  const totalTimeInSecond = secondsToDhms(totalDiffBlockCeil * 3, true)
   const remainTime = secondsToDhms((totalDiffBlock - currentDiffBlock) * 3)
+  const beforeStart = startBlockNumber - currentBlockNumber
+  const beforeStartTime = secondsToDhms(beforeStart * 3)
   const totalBarWidthPercentage = `${percentage || 0}%`
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
@@ -135,6 +139,14 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     }
   }, [onApprove, setRequestedApproval])
 
+  let timeData = <p>Loading</p>
+  if (currentBlockNumber !== 0) {
+    if (currentBlockNumber < startBlockNumber) {
+      timeData = <p>Starting in {beforeStartTime}</p>
+    } else {
+      timeData = <p>{remainTime} until end.</p>
+    }
+  }
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-column align-stretch">
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
@@ -150,15 +162,23 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           <div className="mx-3 my-1">
             <StyledDetails>
               <p className="pr-4 col-6">APR:</p>
-              <div className="col-6">
-                <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
-              </div>
+              {apy?.toNumber() ? (
+                <div className="col-6">
+                  <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
+                </div>
+              ) : (
+                <span className="col-6">0</span>
+              )}
             </StyledDetails>
             <StyledDetails>
               <p className="pr-4 col-6">Total FINIX Rewards</p>
-              <div className="col-6">
-                <Balance isDisabled={isFinished} value={totalReward} decimals={2} unit=" FINIX" />
-              </div>
+              {currentBlockNumber === 0 ? (
+                <span className="col-6">Loading</span>
+              ) : (
+                <div className="col-6">
+                  <Balance isDisabled={isFinished} value={totalReward} decimals={2} unit=" FINIX" />
+                </div>
+              )}
             </StyledDetails>
             <StyledDetails>
               <p className="pr-4 col-6">Stake period</p>
@@ -168,18 +188,22 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               <div className="track">
                 <div className="progress" style={{ width: totalBarWidthPercentage }} />
               </div>
-              <p>{remainTime} until end.</p>
+              {timeData}
             </StakePeriod>
             <StyledDetails>
               <p className="pr-4 col-6">Total {tokenName} Staked:</p>
-              <div className="col-6">
-                <Balance
-                  isDisabled={isFinished}
-                  value={getBalanceNumber(totalStaked)}
-                  decimals={2}
-                  unit={` ${tokenName}`}
-                />
-              </div>
+              {getBalanceNumber(totalStaked) ? (
+                <div className="col-6">
+                  <Balance
+                    isDisabled={isFinished}
+                    value={getBalanceNumber(totalStaked)}
+                    decimals={2}
+                    unit={` ${tokenName}`}
+                  />
+                </div>
+              ) : (
+                <span className="col-6">0</span>
+              )}
             </StyledDetails>
           </div>
         </MaxWidth>
@@ -205,6 +229,47 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               <Link href="https://six.network" target="_blank" className="mx-auto mb-4">
                 Buy {tokenName}
               </Link>
+              <div className="mx-auto my-3" style={{ width: '240px' }}>
+                {!account && <UnlockButton fullWidth />}
+                {account &&
+                  (needsApproval && !isOldSyrup ? (
+                    <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
+                      Approve
+                    </Button>
+                  ) : (
+                    <div className="flex">
+                      <Button
+                        fullWidth
+                        disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                        onClick={
+                          isOldSyrup
+                            ? async () => {
+                                setPendingTx(true)
+                                await onUnstake('0')
+                                setPendingTx(false)
+                              }
+                            : onPresentWithdraw
+                        }
+                        variant="secondary"
+                      >
+                        <MinusIcon
+                          color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'}
+                        />
+                      </Button>
+                      {!isOldSyrup && (
+                        <Button
+                          fullWidth
+                          disabled={isFinished && sousId !== 0}
+                          onClick={onPresentDeposit}
+                          variant="secondary"
+                          className="ml-2"
+                        >
+                          <AddIcon color="primary" />
+                        </Button>
+                      )}
+                    </div>
+                  ))}
+              </div>
             </div>
           </div>
 
@@ -226,11 +291,22 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
                 = {numeral(finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)).format('0,0.0000')} $
               </p>
+              <Button
+                fullWidth
+                disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+                onClick={async () => {
+                  setPendingTx(true)
+                  await onReward()
+                  setPendingTx(false)
+                }}
+              >
+                {pendingTx ? 'Collecting' : 'Claim Rewards'}
+              </Button>
             </div>
           </div>
         </Flex>
 
-        <div className="mx-auto my-3" style={{ width: '240px' }}>
+        {/* <div className="mx-auto my-3" style={{ width: '240px' }}>
           {!account && <UnlockButton fullWidth />}
           {account &&
             (needsApproval && !isOldSyrup ? (
@@ -268,7 +344,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                 )}
               </div>
             ))}
-        </div>
+        </div> */}
       </BorderTopBox>
 
       <img src={colorStroke} alt="" className="color-stroke" />
@@ -316,8 +392,8 @@ const BalanceAndCompound = styled.div`
 `
 
 const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
+  height: ${props => props.theme.spacing[4]}px;
+  width: ${props => props.theme.spacing[4]}px;
 `
 
 const StyledDetails = styled.div`
