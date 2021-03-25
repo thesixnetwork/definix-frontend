@@ -30,7 +30,9 @@ const TotalValueLockedCard = () => {
         <Heading mb="16px">{TranslateString(762, 'Total Value Locked (TVL)')}</Heading>
         {data ? (
           <>
-            <Heading fontSize="28px !important" mb="12px">No data</Heading>
+            <Heading fontSize="28px !important" mb="12px">
+              No data
+            </Heading>
             <Text small>(Across all LPs and Pools)</Text>
           </>
         ) : (
