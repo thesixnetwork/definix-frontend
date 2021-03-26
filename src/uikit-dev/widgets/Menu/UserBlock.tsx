@@ -31,6 +31,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
               size="sm"
               fullWidth
               variant="secondary"
+              className="connect-btn"
               // onClick={() => {
               //   onPresentAccountModal()
               // }}
@@ -75,6 +76,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
           size="sm"
           fullWidth
           variant="secondary"
+          className="connect-btn"
           onClick={() => {
             onPresentConnectModal()
           }}

@@ -1,7 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
-import { Route, Router, Switch } from 'react-router-dom'
+import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { ResetCSS } from 'uikit-dev'
 import Menu from './components/Menu'
@@ -56,7 +56,7 @@ const App: React.FC = () => {
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
-              <Pools />
+              <Redirect to="/dashboard" />
             </Route>
             <Route path="/dashboard">
               <Home />

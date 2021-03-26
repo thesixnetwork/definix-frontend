@@ -29,6 +29,8 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .text-bold { font-weight: bold; color: ${({ theme }) => theme.colors.text}; }
+
   .flex {
     display: flex !important;
   

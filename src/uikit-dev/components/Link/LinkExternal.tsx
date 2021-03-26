@@ -7,7 +7,7 @@ import { LinkProps } from './types'
 const LinkExternal: React.FC<LinkProps> = ({ children, isIconLeft, ...props }) => {
   const { fontSize } = props
   return (
-    <Link external {...props}>
+    <Link external {...props} style={{ textDecoration: 'underline' }}>
       {isIconLeft && <OpenNewIcon color="primary" className="mr-2" />}
       <Text fontSize={fontSize} fontWeight="bold" color="primary">
         {children}

@@ -2,6 +2,22 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button, Heading } from 'uikit-dev'
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: space-between;
+
+    .flex {
+      margin: 0 !important;
+    }
+  } ;
+`
+
 const StyledButton = styled(Button)`
   border-radius: ${({ theme }) => theme.radii.default};
   min-width: 120px;
@@ -31,7 +47,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, activeFarmsCount }) => {
           ({activeFarmsCount})
         </span>
       </Heading>
-      <div className="flex">
+      <div className="flex mt-3">
         <StyledButton
           size="sm"
           onClick={() => {
@@ -58,11 +74,3 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, activeFarmsCount }) => {
 }
 
 export default FarmTabButtons
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-`

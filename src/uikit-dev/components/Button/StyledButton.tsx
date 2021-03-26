@@ -72,6 +72,10 @@ const StyledButton = styled.button<ButtonProps>`
     background-color: ${getButtonVariantProp('backgroundHover')};
     border-color: ${getButtonVariantProp('borderColorHover')};
     color: ${getButtonVariantProp('colorHover')};
+
+    svg {
+      fill: ${getButtonVariantProp('colorHover')};
+    }
   }
 
   // &:focus:not(:active) {

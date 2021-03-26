@@ -256,7 +256,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <div className="flex flex-column align-center">
           <p className="mb-2">{tokenName} Staked</p>
           <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
-          <p className="mt-2">{tokenName}</p>
+          <p className="mt-2 text-bold">{tokenName}</p>
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
@@ -314,7 +314,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <div className="flex flex-column align-center">
           <p className="mb-2">FINIX Earned</p>
           <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-          <p className="mt-2">FINIX</p>
+          <p className="mt-2 text-bold">FINIX</p>
         </div>
 
         <div className="flex flex-column align-stretch justify-end">

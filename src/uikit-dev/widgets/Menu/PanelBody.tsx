@@ -41,6 +41,15 @@ const BorderBox = styled.div`
   [role='button'] {
     padding: 0 1.75rem;
   }
+
+  .connect-btn {
+    background: transparent;
+  }
+
+  button.connect-btn {
+    color: ${({ theme }) => theme.colors.text};
+    border-color: ${({ theme }) => theme.colors.text};
+  }
 `
 
 const PanelBody: React.FC<Props> = (props) => {

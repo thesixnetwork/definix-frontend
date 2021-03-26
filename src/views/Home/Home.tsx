@@ -57,7 +57,7 @@ import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 const Cards = styled(BaseLayout)`
   align-items: stretch;
   justify-content: stretch;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
   & > div {
     grid-column: span 6;
