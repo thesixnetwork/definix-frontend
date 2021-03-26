@@ -57,15 +57,6 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, masterChefAddress })
         address: pair2,
         name: 'decimals',
       },
-      {
-        address: lpAddress,
-        name: 'balanceOf',
-        params: [masterChefAddress],
-      },
-      {
-        address: lpAddress,
-        name: 'totalSupply',
-      },
     ]
 
     const [
@@ -73,16 +64,10 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, masterChefAddress })
       pair2BalanceLP,
       pair1Decimals,
       pair2Decimals,
-      lpTokenBalanceMC,
-      lpTotalSupply,
     ] = await multicall(erc20, calls)
 
-    // Ratio in % a LP tokens that are in staking, vs the total number in circulation
-    const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
-
-    // Amount of token in the LP that are considered staking (i.e amount of token * lp ratio)
-    pair1Amount = new BigNumber(pair1BalanceLP).div(new BigNumber(10).pow(pair1Decimals)).times(lpTokenRatio).toNumber()
-    pair2Amount = new BigNumber(pair2BalanceLP).div(new BigNumber(10).pow(pair2Decimals)).times(lpTokenRatio).toNumber()
+    pair1Amount = new BigNumber(pair1BalanceLP).div(new BigNumber(10).pow(pair1Decimals)).toNumber()
+    pair2Amount = new BigNumber(pair2BalanceLP).div(new BigNumber(10).pow(pair2Decimals)).toNumber()
   } catch (error) {
     console.log(error)
   }
