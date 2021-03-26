@@ -90,7 +90,7 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, masterChefAddress })
 }
 
 // Thunks
-export const fetchFinixPrice = () => async dispatch => {
+export const fetchFinixPrice = () => async (dispatch) => {
   const fetchPromise = []
 
   fetchPromise.push(
@@ -143,23 +143,23 @@ export const fetchFinixPrice = () => async dispatch => {
   ] = await Promise.all(fetchPromise)
   // const totalFinixDefinixFinixSixPair = 10000000.0
   // const totalSixDefinixFinixSixPair = 12820512.82
-  const finixSixRatio = (totalSixDefinixFinixSixPair / totalFinixDefinixFinixSixPair) || 0
+  const finixSixRatio = totalSixDefinixFinixSixPair / totalFinixDefinixFinixSixPair || 0
   // FINIX-BUSD
   // const totalFinixDefinixFinixBusdPair = 10000000.0
   // const totalBusdDefinixFinixBusdPair = 500000.0
-  const finixBusdRatio = (totalBusdDefinixFinixBusdPair / totalFinixDefinixFinixBusdPair) || 0
+  const finixBusdRatio = totalBusdDefinixFinixBusdPair / totalFinixDefinixFinixBusdPair || 0
   // FINIX-BNB
   // const totalFinixDefinixFinixBnbPair = 10000000.0
   // const totalBnbDefinixFinixBnbPair = 1824.82
-  const finixBnbRatio = (totalBnbDefinixFinixBnbPair / totalFinixDefinixFinixBnbPair) || 0
+  const finixBnbRatio = totalBnbDefinixFinixBnbPair / totalFinixDefinixFinixBnbPair || 0
   // SIX-BUSD
   // const totalSixDefinixSixBusdPair = 12820512.82
   // const totalBnbDefinixSixBusdPair = 500000.0
-  const sixBusdRatio = (totalBnbDefinixSixBusdPair / totalSixDefinixSixBusdPair) || 0
+  const sixBusdRatio = totalBnbDefinixSixBusdPair / totalSixDefinixSixBusdPair || 0
   // PANCAKE BNB-BUSD
   // const totalBnbInPancakeBnbBusdPair = 557985
   // const totalBusdInPancakeBnbBusdPair = 152220163
-  const pancakeBnbBusdRatio = (totalBusdInPancakeBnbBusdPair / totalBnbInPancakeBnbBusdPair) || 0
+  const pancakeBnbBusdRatio = totalBusdInPancakeBnbBusdPair / totalBnbInPancakeBnbBusdPair || 0
   // Price cal
   const finixSixPrice = finixSixRatio * sixBusdRatio
   const finixBnbPrice = finixBnbRatio * pancakeBnbBusdRatio
