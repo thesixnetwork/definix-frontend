@@ -59,12 +59,7 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, masterChefAddress })
       },
     ]
 
-    const [
-      pair1BalanceLP,
-      pair2BalanceLP,
-      pair1Decimals,
-      pair2Decimals,
-    ] = await multicall(erc20, calls)
+    const [pair1BalanceLP, pair2BalanceLP, pair1Decimals, pair2Decimals] = await multicall(erc20, calls)
 
     pair1Amount = new BigNumber(pair1BalanceLP).div(new BigNumber(10).pow(pair1Decimals)).toNumber()
     pair2Amount = new BigNumber(pair2BalanceLP).div(new BigNumber(10).pow(pair2Decimals)).toNumber()
