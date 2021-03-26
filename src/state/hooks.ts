@@ -10,6 +10,7 @@ import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
+  fetchFinixPrice,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
@@ -27,6 +28,7 @@ export const useFetchPublicData = () => {
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync())
+    dispatch(fetchFinixPrice())
   }, [dispatch, slowRefresh])
 }
 
@@ -38,16 +40,16 @@ export const useFarms = (): Farm[] => {
 }
 
 export const useFarmFromPid = (pid): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
+  const farm = useSelector((state: State) => state.farms.data.find(f => f.pid === pid))
   return farm
 }
 
 export const useFarmFromSymbol = (lpSymbol: string): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
+  const farm = useSelector((state: State) => state.farms.data.find(f => f.lpSymbol === lpSymbol))
   return farm
 }
 
-export const useFarmUser = (pid) => {
+export const useFarmUser = pid => {
   const farm = useFarmFromPid(pid)
 
   return {
@@ -74,7 +76,7 @@ export const usePools = (account): Pool[] => {
 }
 
 export const usePoolFromPid = (sousId): Pool => {
-  const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
+  const pool = useSelector((state: State) => state.pools.data.find(p => p.sousId === sousId))
   return pool
 }
 
@@ -82,7 +84,7 @@ export const usePoolFromPid = (sousId): Pool => {
 
 export const usePriceBnbBusd = (): BigNumber => {
   // const pid = 5 // BUSD-BNB LP
-  const pid = 10 // BUSD-SIX LP
+  const pid = 5 // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
@@ -90,7 +92,7 @@ export const usePriceBnbBusd = (): BigNumber => {
 
 export const usePriceSixBusd = (): BigNumber => {
   // const pid = 5 // BUSD-BNB LP
-  const pid = 10 // BUSD-SIX LP
+  const pid = 4 // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
@@ -98,7 +100,7 @@ export const usePriceSixBusd = (): BigNumber => {
 
 export const usePriceCakeBusd = (): BigNumber => {
   // const pid = 1 // CAKE-BNB LP
-  const pid = 9 // FINIX-BNB LP
+  const pid = 3 // FINIX-BNB LP
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
@@ -107,10 +109,15 @@ export const usePriceCakeBusd = (): BigNumber => {
 
 export const usePriceFinixBusd = (): BigNumber => {
   // const pid = 1 // CAKE-BNB LP
-  const pid = 8 // FINIX-BUSD LP
+  const pid = 2 // FINIX-BUSD LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
+}
+
+export const usePriceFinixUsd = (): BigNumber => {
+  const finixPrice = useSelector((state: State) => state.finixPrice.price)
+  return new BigNumber(finixPrice)
 }
 
 export const usePriceEthBusd = (): BigNumber => {

@@ -13,7 +13,7 @@ import {
   useFarms,
   usePriceBnbBusd,
   usePriceSixBusd,
-  usePriceFinixBusd,
+  usePriceFinixUsd,
   usePriceCakeBusd,
   usePriceEthBusd,
 } from 'state/hooks'
@@ -28,7 +28,7 @@ const Farms: React.FC = () => {
   const cakePrice = usePriceCakeBusd()
   const bnbPrice = usePriceBnbBusd()
   const sixPrice = usePriceSixBusd()
-  const finixPrice = usePriceFinixBusd()
+  const finixPrice = usePriceFinixUsd()
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const ethPriceUsd = usePriceEthBusd()
 

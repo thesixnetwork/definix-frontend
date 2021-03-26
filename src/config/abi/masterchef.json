@@ -352,7 +352,7 @@
         "type": "address"
       }
     ],
-    "name": "pendingCake",
+    "name": "pendingFinix",
     "outputs": [
       {
         "internalType": "uint256",

@@ -17,30 +17,30 @@ const config: MenuEntry[] = [
     iconActive: dashboard,
     href: '/dashboard',
   },
-  // {
-  //   label: 'Swap',
-  //   icon: swapClick,
-  //   iconActive: swap,
-  //   href: 'https://youngexchange.definix.com/#/swap',
-  // },
-  // {
-  //   label: 'Liquidity',
-  //   icon: liquidityClick,
-  //   iconActive: liquidity,
-  //   href: 'https://youngexchange.definix.com/#/liquidity',
-  // },
+  {
+    label: 'Swap',
+    icon: swapClick,
+    iconActive: swap,
+    href: 'https://youngexchange.definix.com/#/swap',
+  },
+  {
+    label: 'Liquidity',
+    icon: liquidityClick,
+    iconActive: liquidity,
+    href: 'https://youngexchange.definix.com/#/liquidity',
+  },
   {
     label: 'Pool',
     icon: poolClick,
     iconActive: pool,
     href: '/pool',
   },
-  // {
-  //   label: 'Farm',
-  //   icon: farmClick,
-  //   iconActive: farm,
-  //   href: '/farm',
-  // },
+  {
+    label: 'Farm',
+    icon: farmClick,
+    iconActive: farm,
+    href: '/farm',
+  },
   // {
   //   label: 'Investment',
   //   icon: 'TradeIcon',

@@ -66,6 +66,10 @@ export interface PoolsState {
   data: Pool[]
 }
 
+export interface FinixPriceState {
+  price: number
+}
+
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
@@ -108,6 +112,7 @@ export interface AchievementState {
 // Global state
 
 export interface State {
+  finixPrice: FinixPriceState
   farms: FarmsState
   toasts: ToastsState
   pools: PoolsState

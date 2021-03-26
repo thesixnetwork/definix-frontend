@@ -10,6 +10,9 @@ export const getAddress = (address: Address): string => {
 export const getCakeAddress = () => {
   return getAddress(addresses.cake)
 }
+export const getPancakeMasterChefAddress = () => {
+  return getAddress(addresses.pancakeMasterChef)
+}
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
 }
@@ -18,6 +21,30 @@ export const getMulticallAddress = () => {
 }
 export const getWbnbAddress = () => {
   return getAddress(addresses.wbnb)
+}
+export const getSixAddress = () => {
+  return getAddress(addresses.six)
+}
+export const getFinixAddress = () => {
+  return getAddress(addresses.finix)
+}
+export const getBusdAddress = () => {
+  return getAddress(addresses.busd)
+}
+export const getFinixSixLPAddress = () => {
+  return getAddress(addresses.finixSixLP)
+}
+export const getFinixBusdLPAddress = () => {
+  return getAddress(addresses.finixBusdLP)
+}
+export const getFinixBnbLPAddress = () => {
+  return getAddress(addresses.finixBnbLP)
+}
+export const getSixBusdLPAddress = () => {
+  return getAddress(addresses.sixBusdLP)
+}
+export const getPancakeBnbBusdLPAddress = () => {
+  return getAddress(addresses.pancakeBnbBusdLP)
 }
 export const getLotteryAddress = () => {
   return getAddress(addresses.lottery)

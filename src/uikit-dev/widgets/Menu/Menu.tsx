@@ -1,6 +1,7 @@
 import throttle from 'lodash/throttle'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import numeral from 'numeral'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
@@ -195,7 +196,7 @@ const Menu: React.FC<NavProps> = ({
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
-              <strong>${price}</strong>
+              <strong>${numeral(price).format('0,0.0000')}</strong>
             </p>
           </Price>
           <Dropdown

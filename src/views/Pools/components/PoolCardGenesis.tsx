@@ -17,7 +17,7 @@ import styled from 'styled-components'
 import { AddIcon, ArrowBackIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardStake from 'views/Home/components/CardStake'
-import { usePriceFinixBusd } from 'state/hooks'
+import { usePriceFinixUsd } from 'state/hooks'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
@@ -68,7 +68,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     stakingLimit,
     rewardPerBlock,
   } = pool
-  const finixPrice = usePriceFinixBusd()
+  const finixPrice = usePriceFinixUsd()
   const block = useBlock()
   const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
   const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)

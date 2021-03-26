@@ -3,8 +3,12 @@ export default {
     97: '0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e',
     56: '',
   },
+  pancakeMasterChef: {
+    97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
+    56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+  },
   masterChef: {
-    97: '0xb20ED2192a949388173630fD03FC1e98D0036847',
+    97: '0x2Ac7c92c59dd3CAd6CF009BcAFBc8C6D48F9bA99',
     56: '',
   },
   wbnb: {
@@ -18,6 +22,26 @@ export default {
   finix: {
     97: '0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e',
     56: '',
+  },
+  finixSixLP: {
+    97: '0xa55fd967144C32Cb88f6dD1171C93e1Ab2903F07',
+    56: '',
+  },
+  finixBusdLP: {
+    97: '0xA5fCeF021ee4F04a2264aDd84BbDF2A61Ba50D03',
+    56: '',
+  },
+  finixBnbLP: {
+    97: '0xFF9864128FFBa4D8467A8AF2018299F42714394d',
+    56: '',
+  },
+  sixBusdLP: {
+    97: '0xb72B3794489A408aa68E847b1407496316b24F89',
+    56: '',
+  },
+  pancakeBnbBusdLP: {
+    97: '0x2f7682b64b88149ba3250aee32db712964de5fa9',
+    56: '0x1b96b92314c44b159149f7e0303511fb2fc4774f',
   },
   busd: {
     56: '',
