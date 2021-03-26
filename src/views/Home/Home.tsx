@@ -82,7 +82,7 @@ const Home: React.FC = () => {
 
   return (
     <Page>
-      <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
+      <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
         Dashboard
       </Heading>
 

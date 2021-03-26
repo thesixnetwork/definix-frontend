@@ -81,7 +81,7 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      {/* <Heading as="h1" fontSize="32px !important" className="mt-6 mb-4" textAlign="center">
+      {/* <Heading as="h1" fontSize="32px !important" className="mt-2 mb-4" textAlign="center">
         Pool
       </Heading>
 

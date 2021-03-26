@@ -26,8 +26,10 @@ const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   left: 0;
 
   ${({ theme }) => theme.mediaQueries.nav} {
-    position: relative;
+    position: sticky;
     background-color: rgba(255, 255, 255, 0.7);
+    min-height: calc(100vh - 80px);
+    height: 100%;
 
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
       -webkit-backdrop-filter: blur(16px);

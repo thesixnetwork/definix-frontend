@@ -45,6 +45,7 @@ export type ButtonThemeVariant = {
   boxShadow: string
   boxShadowActive: string
   color: string
+  colorHover: string
 }
 
 export type ButtonTheme = {

@@ -23,6 +23,7 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: calc(100vh - 48px);
   max-width: 1920px;
   margin: 0 auto;
   display: flex;
@@ -58,10 +59,9 @@ const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   ${({ theme }) => theme.mediaQueries.md} {
-    height: calc(100% - 120px);
+    min-height: calc(100% - 120px);
   }
-
-  height: 100%;
+  flex-grow: 1;
 `
 
 const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`

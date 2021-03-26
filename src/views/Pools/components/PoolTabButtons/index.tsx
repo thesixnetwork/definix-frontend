@@ -26,7 +26,7 @@ const PoolTabButtons = ({ poolsCount, stackedOnly, setStackedOnly, liveOnly, set
 
   return (
     <Wrapper>
-      <Heading as="h2" fontSize="20px !important" className="my-6" textAlign="center">
+      <Heading as="h2" fontSize="20px !important" className="mb-6 mt-4" textAlign="center">
         All pools
         <span className="ml-2" style={{ fontSize: '16px' }}>
           ({poolsCount})

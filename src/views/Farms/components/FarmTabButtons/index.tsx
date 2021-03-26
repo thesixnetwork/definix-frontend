@@ -4,17 +4,18 @@ import { Button, Heading } from 'uikit-dev'
 
 const StyledButton = styled(Button)`
   border-radius: ${({ theme }) => theme.radii.default};
-  color: ${({ theme }) => theme.colors.textSubtle};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  font-weight: 400;
   min-width: 120px;
-  box-shadow: none !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
 
-  &.active {
-    font-weight: bold;
-    color: ${({ theme }) => theme.colors.primary};
-    border-color: ${({ theme }) => theme.colors.primary};
-    background-color: ${({ theme }) => theme.colors.white};
+  &:not(.active) {
+    background: #f7f7f7;
+    border-color: transparent;
+    color: initial;
+    font-weight: normal;
+
+    &:hover {
+      font-weight: 600;
+    }
   }
 `
 
@@ -23,8 +24,8 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, activeFarmsCount }) => {
   // const TranslateString = useI18n()
 
   return (
-    <Wrapper>
-      <Heading as="h2" fontSize="20px !important" className="my-6" textAlign="center">
+    <Wrapper className="mb-6">
+      <Heading as="h2" fontSize="20px !important" textAlign="center">
         All active farms
         <span className="ml-2" style={{ fontSize: '16px' }}>
           ({activeFarmsCount})
