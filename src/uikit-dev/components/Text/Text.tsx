@@ -12,7 +12,7 @@ const getColor = ({ color, theme }: ThemedProps) => {
 }
 
 const getFontSize = ({ fontSize, small }: TextProps) => {
-  return fontSize || '16px'
+  return fontSize || '14px'
 }
 
 const Text = styled.div<TextProps>`
