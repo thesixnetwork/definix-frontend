@@ -1,7 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import Balance from 'components/Balance'
+import Flip from 'components/Flip'
 import UnlockButton from 'components/UnlockButton'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useSousApprove } from 'hooks/useApprove'
@@ -11,13 +11,14 @@ import { useSousHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
+import numeral from 'numeral'
 import React, { useCallback, useState } from 'react'
+import { usePriceFinixBusd } from 'state/hooks'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
 import { AddIcon, ArrowBackIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardStake from 'views/Home/components/CardStake'
-import { usePriceFinixBusd } from 'state/hooks'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
@@ -136,6 +137,12 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     }
   }, [onApprove, setRequestedApproval])
 
+  const currentDate = new Date()
+  const year =
+    currentDate.getMonth() === 11 && currentDate.getDate() > 23
+      ? currentDate.getFullYear() + 1
+      : currentDate.getFullYear()
+
   return (
     <Card
       isActive={isCardActive}
@@ -171,12 +178,15 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               <p className="pr-4 col-6">Stake period</p>
               <span className="col-6">{totalTimeInSecond}</span>
             </StyledDetails>
-            <StakePeriod>
+
+            <Flip date="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
+            {/* <StakePeriod>
               <div className="track">
                 <div className="progress" style={{ width: totalBarWidthPercentage }} />
               </div>
               <p>{remainTime} until end.</p>
-            </StakePeriod>
+            </StakePeriod> */}
+
             <StyledDetails>
               <p className="pr-4 col-6">Total {tokenName} Staked:</p>
               <div className="col-6">
