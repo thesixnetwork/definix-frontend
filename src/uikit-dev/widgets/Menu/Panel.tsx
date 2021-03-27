@@ -24,10 +24,12 @@ const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
+  height: 100%;
 
   ${({ theme }) => theme.mediaQueries.nav} {
     position: sticky;
     background-color: rgba(255, 255, 255, 0.7);
+    height: initial;
 
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
       -webkit-backdrop-filter: blur(16px);

@@ -19,6 +19,7 @@ import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
+import PoolFinishedSash from './PoolFinishedSash'
 import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
@@ -353,17 +354,6 @@ const CustomTitle = styled.div`
   }
 `
 
-const PoolFinishedSash = styled.div`
-  background-image: url('/images/pool-finished-sash.svg');
-  background-position: top right;
-  background-repeat: not-repeat;
-  height: 135px;
-  position: absolute;
-  right: -24px;
-  top: -24px;
-  width: 135px;
-`
-
 const StyledCardActions = styled.div`
   display: flex;
   justify-content: center;
@@ -404,7 +394,8 @@ const StyledDetails = styled.div`
   }
 
   .col-6 > div {
-    line-height: 0;
+    line-height: 1;
+    font-size: initial;
   }
 `
 

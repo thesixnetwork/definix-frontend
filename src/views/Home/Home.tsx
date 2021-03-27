@@ -81,7 +81,7 @@ const Home: React.FC = () => {
   // const TranslateString = useI18n()
 
   return (
-    <Page>
+    <Page style={{ maxWidth: '1280px' }}>
       <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
         Dashboard
       </Heading>

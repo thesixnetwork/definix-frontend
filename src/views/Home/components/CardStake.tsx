@@ -10,7 +10,6 @@ const StyledCardStake = styled(Card)`
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 1rem;
   background: url(${stake});
   background-size: cover;
   background-repeat: no-repeat;
@@ -25,14 +24,6 @@ const StyledCardStake = styled(Card)`
   h2 + div {
     margin-left: 0.5rem;
     width: 16px;
-  }
-
-  h2 {
-    font-size: 20px !important;
-  }
-  h3,
-  p {
-    font-size: 12px !important;
   }
   h3 {
     margin-bottom: 0.5rem;
@@ -50,6 +41,8 @@ const StyledCardStake = styled(Card)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 1rem;
   
     > div { 
       display: flex; flex-direction: column; align-items: center; width: 100%;
@@ -60,7 +53,15 @@ const StyledCardStake = styled(Card)`
     }
   
     .logo {
-      width: 35%;
+      width: 80%;
+    }
+
+    h2 {
+      font-size: 40px !important;
+    }
+    h3,
+    p {
+      font-size: 14px !important;
     }
   `
       : `
@@ -68,7 +69,15 @@ const StyledCardStake = styled(Card)`
   justify-content: center;
 
   .logo {
-    width: 80px;
+    width: 80px; margin-right: 1rem;
+  }
+
+  h2 {
+    font-size: 14px !important;
+  }
+  h3,
+  p {
+    font-size: 8px !important;
   }
 `}
 
@@ -81,18 +90,22 @@ const StyledCardStake = styled(Card)`
     a {
       font-size: 18px !important;
     }
-
     a {
       min-width: 200px;
     }
 
     ${({ large }) =>
-      !large
-        ? `.logo {
-        width: 160px;
-      }
-    `
-        : ``}
+      large
+        ? `
+        .logo {
+          width: 50%;
+        }
+        
+        `
+        : `.logo {
+          width: 160px;
+        }
+      `}
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -110,7 +123,7 @@ const StyledCardStake = styled(Card)`
         ? `
       flex-direction: row; padding: 1rem 4rem;
 
-      .logo { margin-right: 4rem; } 
+      .logo { margin-right: 4rem; width: 35%; } 
 
     > div {
       align-items: flex-start;
@@ -123,11 +136,25 @@ const StyledCardStake = styled(Card)`
         }
       }
     }`
-        : `
-      .logo {
-        margin-right: 1rem;
-      }
-    `}
+        : ``}
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    ${({ large }) =>
+      large
+        ? `
+        justify-content: center;
+  
+          .logo {
+            width: 20%;
+          }
+          > div { width: auto; }
+
+          `
+        : `.logo {
+          width: 160px;
+        }
+      `}
   }
 `
 
@@ -153,7 +180,7 @@ const Content = ({ large }) => {
         <p>Only 1,555,200 FINIX and Limited for 72 hours</p>
 
         {large && (
-          <Button as="a" href="/pool" variant="secondary" className="mt-5">
+          <Button as="a" href="/pool" variant="secondary" className="mt-5 mb-4">
             Go to stake
           </Button>
         )}

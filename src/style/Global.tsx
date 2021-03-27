@@ -8,6 +8,8 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Montserrat',sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: #404041;
+    font-weight: 500;
 
     &:before {
       content: "";

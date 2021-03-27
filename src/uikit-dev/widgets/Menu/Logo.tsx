@@ -17,23 +17,25 @@ interface Props {
 const StyledLink = styled(Link)`
   display: flex;
   align-items: center;
-  .mobile-icon {
-    width: 32px;
-    ${({ theme }) => theme.mediaQueries.nav} {
-      display: none;
-    }
+
+  img {
+    height: 14px;
   }
-  .desktop-icon {
-    height: 20px;
-    display: none;
-    ${({ theme }) => theme.mediaQueries.nav} {
-      display: block;
+
+  ${({ theme }) => theme.mediaQueries.nav} {
+    img {
+      height: 20px;
     }
   }
 `
 
 const StyledTogglePanel = styled(MenuButton)`
   padding: 0;
+  background: transparent !important;
+
+  svg {
+    fill: ${({ theme }) => theme.colors.text} !important;
+  }
 
   ${({ theme }) => theme.mediaQueries.md} {
     display: none;
@@ -45,28 +47,17 @@ const Logo: React.FC<Props> = ({ isPushed, togglePush, href }) => {
   const innerLogo = (
     <>
       <img src={logoMobile} alt="" className="mobile-icon" />
-      <img src={logoDesktop} alt="" className="desktop-icon" />
     </>
   )
 
   return (
-    <Flex>
-      <StyledTogglePanel aria-label="Toggle menu" onClick={togglePush} mr="24px">
-        {isPushed ? (
-          <HamburgerCloseIcon width="24px" color="textSubtle" />
-        ) : (
-          <HamburgerIcon width="24px" color="textSubtle" />
-        )}
+    <Flex alignItems="center">
+      <StyledTogglePanel aria-label="Toggle menu" onClick={togglePush} mr="16px">
+        <HamburgerIcon width="24px" color="textSubtle" />
       </StyledTogglePanel>
-      {isAbsoluteUrl ? (
-        <StyledLink as="a" href={href} aria-label="Pancake home page">
-          {innerLogo}
-        </StyledLink>
-      ) : (
-        <StyledLink to={href} aria-label="Pancake home page">
-          {innerLogo}
-        </StyledLink>
-      )}
+      <StyledLink as="a" href={href} aria-label="Definix home page">
+        <img src={logoDesktop} alt="" />
+      </StyledLink>
     </Flex>
   )
 }
