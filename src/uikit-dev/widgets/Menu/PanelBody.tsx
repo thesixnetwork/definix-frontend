@@ -107,7 +107,7 @@ const PanelBody: React.FC<Props> = (props) => {
       <BorderBox>
         <Heading fontSize="14px">DEX</Heading>
         {links.map((menu) => {
-          if (menu.href.includes('dashboard')) return <></>
+          if (menu.href && menu.href.includes('dashboard')) return <></>
           return <MenuItem menu={menu} key={menu.href} />
         })}
       </BorderBox>
