@@ -58,10 +58,10 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
 const BodyWrapper = styled.div`
   position: relative;
   display: flex;
+  flex-grow: 1;
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 120px);
   }
-  flex-grow: 1;
 `
 
 const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`

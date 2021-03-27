@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Login } from '../WalletModal/types'
 import { SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
 import PanelBody from './PanelBody'
 import { PanelProps, PushedProps } from './types'
-import { Login } from '../WalletModal/types'
 
 interface Props extends PanelProps, PushedProps {
   showMenu: boolean
@@ -28,8 +28,6 @@ const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   ${({ theme }) => theme.mediaQueries.nav} {
     position: sticky;
     background-color: rgba(255, 255, 255, 0.7);
-    min-height: calc(100vh - 80px);
-    height: 100%;
 
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
       -webkit-backdrop-filter: blur(16px);
@@ -38,7 +36,6 @@ const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   }
 
   width: ${({ isPushed }) => (isPushed ? `${SIDEBAR_WIDTH_FULL}px` : 0)};
-  height: 100%;
   z-index: 11;
   transition: padding-top 0.2s, width 0.2s;
   border: 1px solid ${({ theme }) => theme.colors.white};
