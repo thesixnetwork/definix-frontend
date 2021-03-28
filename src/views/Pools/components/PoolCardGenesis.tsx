@@ -1,6 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import Balance from 'components/Balance'
 import UnlockButton from 'components/UnlockButton'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
@@ -11,17 +10,20 @@ import { useSousHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
+import numeral from 'numeral'
 import React, { useCallback, useState } from 'react'
+import { usePriceFinixBusd } from 'state/hooks'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
 import { AddIcon, ArrowBackIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardStake from 'views/Home/components/CardStake'
-import { usePriceFinixBusd } from 'state/hooks'
+import Flip from '../../../uikit-dev/components/Flip'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
+import PoolFinishedSash from './PoolFinishedSash'
 import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
@@ -104,6 +106,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
+  const [readyToStake, setReadyToStake] = useState(false)
 
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
   const [onPresentDeposit] = useModal(
@@ -135,11 +138,22 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     }
   }, [onApprove, setRequestedApproval])
 
+  const currentDate = new Date()
+  const year =
+    currentDate.getMonth() === 11 && currentDate.getDate() > 23
+      ? currentDate.getFullYear() + 1
+      : currentDate.getFullYear()
+
   return (
-    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-column align-stretch">
+    <Card
+      isActive={isCardActive}
+      isFinished={isFinished && sousId !== 0}
+      className="flex flex-column align-stretch mx-auto"
+      style={{ maxWidth: '1280px' }}
+    >
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
-      <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
+      <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
         <ArrowBackIcon />
       </IconButton>
 
@@ -149,10 +163,11 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
         <MaxWidth>
           <div className="mx-3 my-1">
             <StyledDetails>
-              <p className="pr-4 col-6">APR:</p>
-              <div className="col-6">
+              <p className="pr-4 col-6">Reward Ratio</p>
+              <span className="col-6">1 FINIX ≈ X SIX</span>
+              {/* <div className="col-6">
                 <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
-              </div>
+              </div> */}
             </StyledDetails>
             <StyledDetails>
               <p className="pr-4 col-6">Total FINIX Rewards</p>
@@ -164,12 +179,15 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               <p className="pr-4 col-6">Stake period</p>
               <span className="col-6">{totalTimeInSecond}</span>
             </StyledDetails>
-            <StakePeriod>
+
+            <Flip date="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
+            {/* <StakePeriod>
               <div className="track">
                 <div className="progress" style={{ width: totalBarWidthPercentage }} />
               </div>
               <p>{remainTime} until end.</p>
-            </StakePeriod>
+            </StakePeriod> */}
+
             <StyledDetails>
               <p className="pr-4 col-6">Total {tokenName} Staked:</p>
               <div className="col-6">
@@ -187,88 +205,119 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
 
       <BorderTopBox>
         <Flex>
-          <div className="compare-box pa-5">
-            <CustomTitle>
-              <Heading as="h2" className="mr-3">
-                My Funds
-              </Heading>
-              <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
-            </CustomTitle>
+          <HalfBox>
+            <div className="compare-box pa-5">
+              <CustomTitle>
+                <Heading as="h2" className="mr-3">
+                  My Funds
+                </Heading>
+                <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
+              </CustomTitle>
 
-            <div className="flex flex-column align-center mb-5">
-              <p className="mb-2">{tokenName} Staked</p>
-              <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
-              <p className="mt-2">{tokenName}</p>
-            </div>
-
-            <div className="flex flex-column align-stretch justify-end">
-              <Link href="https://six.network" target="_blank" className="mx-auto mb-4">
-                Buy {tokenName}
-              </Link>
-            </div>
-          </div>
-
-          <div className="compare-box pa-5">
-            <CustomTitle>
-              <Heading as="h2" className="mr-3">
-                My Rewards
-              </Heading>
-              <Image src="/images/coins/FINIX.png" width={40} height={40} />
-            </CustomTitle>
-
-            <div className="flex flex-column align-center mb-5">
-              <p className="mb-2">FINIX Earned</p>
-              <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-              <p className="mt-2">FINIX</p>
-            </div>
-
-            <div className="flex flex-column align-stretch justify-end">
-              <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
-                = {numeral(finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)).format('0,0.0000')} $
-              </p>
-            </div>
-          </div>
-        </Flex>
-
-        <div className="mx-auto my-3" style={{ width: '240px' }}>
-          {!account && <UnlockButton fullWidth />}
-          {account &&
-            (needsApproval && !isOldSyrup ? (
-              <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
-                Approve
-              </Button>
-            ) : (
-              <div className="flex">
-                <Button
-                  fullWidth
-                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                  onClick={
-                    isOldSyrup
-                      ? async () => {
-                          setPendingTx(true)
-                          await onUnstake('0')
-                          setPendingTx(false)
-                        }
-                      : onPresentWithdraw
-                  }
-                  variant="secondary"
-                >
-                  <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
-                </Button>
-                {!isOldSyrup && (
-                  <Button
-                    fullWidth
-                    disabled={isFinished && sousId !== 0}
-                    onClick={onPresentDeposit}
-                    variant="secondary"
-                    className="ml-2"
-                  >
-                    <AddIcon color="primary" />
-                  </Button>
-                )}
+              <div className="flex flex-column align-center mb-5">
+                <p className="mb-2">{tokenName} Staked</p>
+                <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
+                <p className="mt-2 text-bold">{tokenName}</p>
               </div>
-            ))}
-        </div>
+
+              <div className="flex flex-column align-stretch justify-end">
+                <Link href="https://youngexchange.definix.com/#/swap" target="_blank" className="mx-auto mb-4">
+                  Buy {tokenName}
+                </Link>
+              </div>
+            </div>
+            <div className="mx-3 mt-6 mb-4">
+              {!account && <UnlockButton fullWidth />}
+              {account &&
+                (needsApproval && !isOldSyrup ? (
+                  <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
+                    Approve
+                  </Button>
+                ) : (
+                  <div className="flex">
+                    {!readyToStake ? (
+                      <Button
+                        onClick={() => {
+                          setReadyToStake(true)
+                        }}
+                        fullWidth
+                      >
+                        Stake
+                      </Button>
+                    ) : (
+                      <>
+                        <Button
+                          fullWidth
+                          disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                          onClick={
+                            isOldSyrup
+                              ? async () => {
+                                  setPendingTx(true)
+                                  await onUnstake('0')
+                                  setPendingTx(false)
+                                }
+                              : onPresentWithdraw
+                          }
+                          variant="secondary"
+                        >
+                          <MinusIcon
+                            color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'}
+                          />
+                        </Button>
+                        {!isOldSyrup && (
+                          <Button
+                            fullWidth
+                            disabled={isFinished && sousId !== 0}
+                            onClick={onPresentDeposit}
+                            variant="secondary"
+                            className="ml-2"
+                          >
+                            <AddIcon color="primary" />
+                          </Button>
+                        )}
+                      </>
+                    )}
+                  </div>
+                ))}
+            </div>
+          </HalfBox>
+
+          <HalfBox>
+            <div className="compare-box pa-5">
+              <CustomTitle>
+                <Heading as="h2" className="mr-3">
+                  My Rewards
+                </Heading>
+                <Image src="/images/coins/FINIX.png" width={40} height={40} />
+              </CustomTitle>
+
+              <div className="flex flex-column align-center mb-5">
+                <p className="mb-2">FINIX Earned</p>
+                <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
+                <p className="mt-2 text-bold">FINIX</p>
+              </div>
+
+              <div className="flex flex-column align-stretch justify-end">
+                <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
+                  = {numeral(finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)).format('0,0.0000')} $
+                </p>
+              </div>
+            </div>
+            <div className="mx-3 mt-6 mb-4">
+              <Button
+                fullWidth
+                disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+                onClick={async () => {
+                  setPendingTx(true)
+                  await onReward()
+                  setPendingTx(false)
+                }}
+              >
+                {pendingTx ? 'Collecting' : 'Claim Rewards'}
+              </Button>
+            </div>
+          </HalfBox>
+        </Flex>
       </BorderTopBox>
 
       <img src={colorStroke} alt="" className="color-stroke" />
@@ -286,18 +335,6 @@ const CustomTitle = styled.div`
   &.bg-gray {
     background: ${({ theme }) => theme.colors.backgroundBox};
   }
-`
-
-const PoolFinishedSash = styled.div`
-  background-image: url('/images/pool-finished-sash.svg');
-  background-position: top right;
-  background-repeat: not-repeat;
-  height: 135px;
-  position: absolute;
-  right: -24px;
-  top: -24px;
-  width: 135px;
-  z-index: 1;
 `
 
 const StyledCardActions = styled.div`
@@ -340,7 +377,8 @@ const StyledDetails = styled.div`
   }
 
   .col-6 > div {
-    line-height: 0;
+    line-height: 1;
+    font-size: initial;
   }
 `
 
@@ -354,20 +392,23 @@ const Flex = styled(MaxWidth)`
   display: flex;
   flex-wrap: wrap;
   .compare-box {
-    width: 100%;
+    width: calc(100% - 32px);
     margin: 16px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    .compare-box {
-      width: calc(50% - 32px);
-    }
+    height: 290px;
   }
 `
 
 const BorderTopBox = styled.div`
   padding: 16px;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
+`
+
+const HalfBox = styled.div`
+  width: 100%;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 50%;
+  }
 `
 
 const StakePeriod = styled.div`

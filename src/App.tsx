@@ -1,7 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
-import { Route, Router, Switch } from 'react-router-dom'
+import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { ResetCSS } from 'uikit-dev'
 import Menu from './components/Menu'
@@ -10,6 +10,7 @@ import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
+// import WaitingPage from 'uikit-dev/components/WaitingPage'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
@@ -56,7 +57,7 @@ const App: React.FC = () => {
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
-              <Pools />
+              <Redirect to="/dashboard" />
             </Route>
             <Route path="/dashboard">
               <Home />
@@ -67,6 +68,9 @@ const App: React.FC = () => {
             <Route path="/farm">
               <Farms />
             </Route>
+            {/* <Route path="/xxx">
+              <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
+            </Route> */}
 
             {/* <Route path="/lottery">
               <Lottery />

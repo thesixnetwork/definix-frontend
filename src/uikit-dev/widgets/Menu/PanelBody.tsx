@@ -41,6 +41,12 @@ const BorderBox = styled.div`
   [role='button'] {
     padding: 0 1.75rem;
   }
+
+  .connect-btn {
+    background: transparent;
+    overflow: hidden;
+    width: 190px;
+  }
 `
 
 const PanelBody: React.FC<Props> = (props) => {
@@ -101,7 +107,7 @@ const PanelBody: React.FC<Props> = (props) => {
       <BorderBox>
         <Heading fontSize="14px">DEX</Heading>
         {links.map((menu) => {
-          if (menu.href === '/dashboard') return <></>
+          if (menu.href && menu.href.includes('dashboard')) return <></>
           return <MenuItem menu={menu} key={menu.href} />
         })}
       </BorderBox>

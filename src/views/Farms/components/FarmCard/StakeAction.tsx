@@ -25,13 +25,14 @@ const IconButtonWrapper = styled.div`
 `
 
 const StyledDisplayBalance = styled.div`
-  width: 50%;
+  width: 115px;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.default};
   display: flex;
   align-items: center;
   justify-content: center;
   margin-right: 1rem;
+  flex-shrink: 0;
 `
 
 const StakeAction: React.FC<FarmCardActionsProps> = ({
@@ -57,17 +58,15 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   const renderStakingButtons = () => {
     return rawStakedBalance === 0 ? (
-      <Button className="flex-shrink" onClick={onPresentDeposit}>
-        {TranslateString(999, 'Stake LP')}
-      </Button>
+      <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
     ) : (
-      <IconButtonWrapper className="flex-shrink">
-        <IconButton variant="secondary" onClick={onPresentWithdraw} mr="6px">
+      <IconButtonWrapper>
+        <Button variant="secondary" onClick={onPresentWithdraw} mr="6px">
           <MinusIcon color="primary" />
-        </IconButton>
-        <IconButton variant="secondary" onClick={onPresentDeposit}>
+        </Button>
+        <Button variant="secondary" onClick={onPresentDeposit}>
           <AddIcon color="primary" />
-        </IconButton>
+        </Button>
       </IconButtonWrapper>
     )
   }

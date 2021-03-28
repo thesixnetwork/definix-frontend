@@ -57,7 +57,7 @@ import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 const Cards = styled(BaseLayout)`
   align-items: stretch;
   justify-content: stretch;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
   & > div {
     grid-column: span 6;
@@ -81,8 +81,8 @@ const Home: React.FC = () => {
   // const TranslateString = useI18n()
 
   return (
-    <Page>
-      <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
+    <Page style={{ maxWidth: '1280px' }}>
+      <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
         Dashboard
       </Heading>
 

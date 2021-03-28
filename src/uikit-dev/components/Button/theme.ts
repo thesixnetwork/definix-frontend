@@ -13,16 +13,18 @@ export const light: ButtonTheme = {
     boxShadow: 'inset 0px -1px 0px rgba(14, 14, 44, 0.4)',
     boxShadowActive: 'inset 0px -1px 0px rgba(14, 14, 44, 0.4)',
     color: '#FFFFFF',
+    colorHover: '#FFFFFF',
   },
   [SECONDARY]: {
-    background: 'transparent',
-    backgroundActive: 'transparent',
-    backgroundHover: 'transparent',
+    background: lightColors.white,
+    backgroundActive: lightColors.white,
+    backgroundHover: lightColors.primary,
     border: `1px solid ${lightColors.primary}`,
-    borderColorHover: lightColors.primaryBright,
+    borderColorHover: lightColors.primary,
     boxShadow: 'none',
     boxShadowActive: 'none',
     color: lightColors.primary,
+    colorHover: lightColors.white,
   },
   [TERTIARY]: {
     background: lightColors.tertiary,
@@ -33,6 +35,7 @@ export const light: ButtonTheme = {
     boxShadow: 'none',
     boxShadowActive: 'none',
     color: lightColors.primary,
+    colorHover: lightColors.primary,
   },
   [TEXT]: {
     background: 'transparent',
@@ -43,6 +46,7 @@ export const light: ButtonTheme = {
     boxShadow: 'none',
     boxShadowActive: 'none',
     color: lightColors.primary,
+    colorHover: lightColors.primary,
   },
   [DANGER]: {
     background: lightColors.failure,
@@ -53,6 +57,7 @@ export const light: ButtonTheme = {
     boxShadow: 'none',
     boxShadowActive: 'none',
     color: '#FFFFFF',
+    colorHover: '#FFFFFF',
   },
   [SUBTLE]: {
     background: lightColors.textSubtle,
@@ -63,6 +68,7 @@ export const light: ButtonTheme = {
     boxShadow: 'none',
     boxShadowActive: 'none',
     color: '#FFFFFF',
+    colorHover: '#FFFFFF',
   },
   [SUCCESS]: {
     background: lightColors.success,
@@ -73,6 +79,7 @@ export const light: ButtonTheme = {
     boxShadow: 'none',
     boxShadowActive: 'none',
     color: '#FFFFFF',
+    colorHover: '#FFFFFF',
   },
 }
 

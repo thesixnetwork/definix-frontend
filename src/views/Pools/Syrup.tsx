@@ -14,8 +14,8 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PoolCardGenesis from './components/PoolCardGenesis'
 
-// import PoolCard from './components/PoolCard'
 // import { Heading } from 'uikit-dev'
+// import PoolCard from './components/PoolCard'
 // import PoolTabButtons from './components/PoolTabButtons'
 
 const Farm: React.FC = () => {
@@ -28,6 +28,7 @@ const Farm: React.FC = () => {
   const ethPriceBnb = usePriceEthBnb()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
+  const [liveOnly, setLiveOnly] = useState(true)
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -75,15 +76,34 @@ const Farm: React.FC = () => {
     (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
 
+  const filterStackedOnlyPools = (poolsForFilter) =>
+    poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
+
   return (
     <Page>
-      {/* <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
+      {/* <Heading as="h1" fontSize="32px !important" className="mt-2 mb-4" textAlign="center">
         Pool
       </Heading>
 
-      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} /> */}
+      <PoolTabButtons
+        poolsCount={pools.length}
+        stackedOnly={stackedOnly}
+        setStackedOnly={setStackedOnly}
+        liveOnly={liveOnly}
+        setLiveOnly={setLiveOnly}
+      /> */}
 
       <div>
+        {/* <Route exact path={`${path}`}>
+          {liveOnly
+            ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
+                <PoolCard key={pool.sousId} pool={pool} />
+              ))
+            : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
+                'sortOrder',
+              ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
+        </Route> */}
+
         <Route exact path={`${path}`}>
           <>
             {stackedOnly
@@ -91,14 +111,14 @@ const Farm: React.FC = () => {
                   <PoolCardGenesis key={pool.sousId} pool={pool} />
                 ))
               : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCardGenesis key={pool.sousId} pool={pool} />)}
-            {/* <Coming /> */}
           </>
         </Route>
-        <Route path={`${path}/history`}>
+
+        {/* <Route path={`${path}/history`}>
           {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-            <PoolCardGenesis key={pool.sousId} pool={pool} />
+            <PoolCard key={pool.sousId} pool={pool} />
           ))}
-        </Route>
+        </Route> */}
       </div>
     </Page>
   )

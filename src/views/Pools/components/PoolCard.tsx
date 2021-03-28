@@ -19,6 +19,7 @@ import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
+import PoolFinishedSash from './PoolFinishedSash'
 import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
@@ -73,6 +74,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
+  const [readyToStake, setReadyToStake] = useState(false)
 
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
   const [onPresentDeposit] = useModal(
@@ -105,7 +107,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   }, [onApprove, setRequestedApproval])
 
   return (
-    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex">
+    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-wrap">
       <div className="panel">
         {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
@@ -245,7 +247,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         /> */}
       </div>
 
-      <div className="panel compare-box no-border pa-5 pt-0 pr-3">
+      <div className="panel compare-box pa-5 pt-0 pr-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Funds
@@ -256,11 +258,11 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <div className="flex flex-column align-center">
           <p className="mb-2">{tokenName} Staked</p>
           <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
-          <p className="mt-2">{tokenName}</p>
+          <p className="mt-2 text-bold">{tokenName}</p>
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
-          <Link href="/" target="_blank" className="mx-auto mb-4">
+          <Link href="https://youngexchange.definix.com/#/swap" target="_blank" className="mx-auto mb-4">
             Buy {tokenName}
           </Link>
           {!account && <UnlockButton fullWidth />}
@@ -271,39 +273,52 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               </Button>
             ) : (
               <div className="flex">
-                <Button
-                  fullWidth
-                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                  onClick={
-                    isOldSyrup
-                      ? async () => {
-                          setPendingTx(true)
-                          await onUnstake('0')
-                          setPendingTx(false)
-                        }
-                      : onPresentWithdraw
-                  }
-                  variant="secondary"
-                >
-                  <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
-                </Button>
-                {!isOldSyrup && (
+                {!readyToStake ? (
                   <Button
+                    onClick={() => {
+                      setReadyToStake(true)
+                    }}
                     fullWidth
-                    disabled={isFinished && sousId !== 0}
-                    onClick={onPresentDeposit}
-                    variant="secondary"
-                    className="ml-2"
                   >
-                    <AddIcon color="primary" />
+                    Stake
                   </Button>
+                ) : (
+                  <>
+                    <Button
+                      fullWidth
+                      disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                      onClick={
+                        isOldSyrup
+                          ? async () => {
+                              setPendingTx(true)
+                              await onUnstake('0')
+                              setPendingTx(false)
+                            }
+                          : onPresentWithdraw
+                      }
+                      variant="secondary"
+                    >
+                      <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
+                    </Button>
+                    {!isOldSyrup && (
+                      <Button
+                        fullWidth
+                        disabled={isFinished && sousId !== 0}
+                        onClick={onPresentDeposit}
+                        variant="secondary"
+                        className="ml-2"
+                      >
+                        <AddIcon color="primary" />
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             ))}
         </div>
       </div>
 
-      <div className="panel compare-box no-border pa-5 pt-0 pl-3">
+      <div className="panel compare-box pa-5 pt-0 pl-3">
         <CustomTitle>
           <Heading as="h2" className="mr-3">
             My Rewards
@@ -314,7 +329,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <div className="flex flex-column align-center">
           <p className="mb-2">FINIX Earned</p>
           <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-          <p className="mt-2">FINIX</p>
+          <p className="mt-2 text-bold">FINIX</p>
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
@@ -351,17 +366,6 @@ const CustomTitle = styled.div`
   &.bg-gray {
     background: ${({ theme }) => theme.colors.backgroundBox};
   }
-`
-
-const PoolFinishedSash = styled.div`
-  background-image: url('/images/pool-finished-sash.svg');
-  background-position: top right;
-  background-repeat: not-repeat;
-  height: 135px;
-  position: absolute;
-  right: -24px;
-  top: -24px;
-  width: 135px;
 `
 
 const StyledCardActions = styled.div`
@@ -404,7 +408,8 @@ const StyledDetails = styled.div`
   }
 
   .col-6 > div {
-    line-height: 0;
+    line-height: 1;
+    font-size: initial;
   }
 `
 
