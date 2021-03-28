@@ -43,10 +43,10 @@ const Farm: React.FC = () => {
     return tokenPriceBN
   }
 
-  const poolsWithApy = pools.map(pool => {
+  const poolsWithApy = pools.map((pool) => {
     const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-    const rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
-    const stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
+    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+    const stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
@@ -73,13 +73,13 @@ const Farm: React.FC = () => {
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithApy, pool => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
   const stackedOnlyPools = openPools.filter(
-    pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
+    (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
 
-  const filterStackedOnlyPools = poolsForFilter =>
-    poolsForFilter.filter(pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
+  const filterStackedOnlyPools = (poolsForFilter) =>
+    poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
   return (
     <Page>
@@ -99,7 +99,7 @@ const Farm: React.FC = () => {
         <div>
           <Route exact path={`${path}`}>
             <>
-              {poolsWithApy.map(pool => (
+              {poolsWithApy.map((pool) => (
                 <PoolCardGenesis key={pool.sousId} pool={pool} />
               ))}
               {/* <Coming /> */}
@@ -110,15 +110,15 @@ const Farm: React.FC = () => {
         <div>
           <Route exact path={`${path}`}>
             {liveOnly
-              ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(pool => (
+              ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
                   <PoolCard key={pool.sousId} pool={pool} />
                 ))
               : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
                   'sortOrder',
-                ]).map(pool => <PoolCard key={pool.sousId} pool={pool} />)}
+                ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
           </Route>
           <Route path={`${path}/history`}>
-            {orderBy(finishedPools, ['sortOrder']).map(pool => (
+            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
               <PoolCard key={pool.sousId} pool={pool} />
             ))}
           </Route>
