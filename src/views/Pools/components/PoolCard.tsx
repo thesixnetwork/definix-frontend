@@ -74,6 +74,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
+  const [readyToStake, setReadyToStake] = useState(false)
 
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
   const [onPresentDeposit] = useModal(
@@ -272,32 +273,45 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               </Button>
             ) : (
               <div className="flex">
-                <Button
-                  fullWidth
-                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                  onClick={
-                    isOldSyrup
-                      ? async () => {
-                          setPendingTx(true)
-                          await onUnstake('0')
-                          setPendingTx(false)
-                        }
-                      : onPresentWithdraw
-                  }
-                  variant="secondary"
-                >
-                  <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
-                </Button>
-                {!isOldSyrup && (
+                {!readyToStake ? (
                   <Button
+                    onClick={() => {
+                      setReadyToStake(true)
+                    }}
                     fullWidth
-                    disabled={isFinished && sousId !== 0}
-                    onClick={onPresentDeposit}
-                    variant="secondary"
-                    className="ml-2"
                   >
-                    <AddIcon color="primary" />
+                    Stake
                   </Button>
+                ) : (
+                  <>
+                    <Button
+                      fullWidth
+                      disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                      onClick={
+                        isOldSyrup
+                          ? async () => {
+                              setPendingTx(true)
+                              await onUnstake('0')
+                              setPendingTx(false)
+                            }
+                          : onPresentWithdraw
+                      }
+                      variant="secondary"
+                    >
+                      <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
+                    </Button>
+                    {!isOldSyrup && (
+                      <Button
+                        fullWidth
+                        disabled={isFinished && sousId !== 0}
+                        onClick={onPresentDeposit}
+                        variant="secondary"
+                        className="ml-2"
+                      >
+                        <AddIcon color="primary" />
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             ))}

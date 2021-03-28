@@ -1,7 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
-import Flip from 'components/Flip'
 import UnlockButton from 'components/UnlockButton'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useSousApprove } from 'hooks/useApprove'
@@ -19,6 +18,7 @@ import styled from 'styled-components'
 import { AddIcon, ArrowBackIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardStake from 'views/Home/components/CardStake'
+import Flip from '../../../uikit-dev/components/Flip'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
@@ -106,6 +106,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
+  const [readyToStake, setReadyToStake] = useState(false)
 
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
   const [onPresentDeposit] = useModal(
@@ -234,32 +235,47 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                   </Button>
                 ) : (
                   <div className="flex">
-                    <Button
-                      fullWidth
-                      disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                      onClick={
-                        isOldSyrup
-                          ? async () => {
-                              setPendingTx(true)
-                              await onUnstake('0')
-                              setPendingTx(false)
-                            }
-                          : onPresentWithdraw
-                      }
-                      variant="secondary"
-                    >
-                      <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
-                    </Button>
-                    {!isOldSyrup && (
+                    {!readyToStake ? (
                       <Button
+                        onClick={() => {
+                          setReadyToStake(true)
+                        }}
                         fullWidth
-                        disabled={isFinished && sousId !== 0}
-                        onClick={onPresentDeposit}
-                        variant="secondary"
-                        className="ml-2"
                       >
-                        <AddIcon color="primary" />
+                        Stake
                       </Button>
+                    ) : (
+                      <>
+                        <Button
+                          fullWidth
+                          disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                          onClick={
+                            isOldSyrup
+                              ? async () => {
+                                  setPendingTx(true)
+                                  await onUnstake('0')
+                                  setPendingTx(false)
+                                }
+                              : onPresentWithdraw
+                          }
+                          variant="secondary"
+                        >
+                          <MinusIcon
+                            color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'}
+                          />
+                        </Button>
+                        {!isOldSyrup && (
+                          <Button
+                            fullWidth
+                            disabled={isFinished && sousId !== 0}
+                            onClick={onPresentDeposit}
+                            variant="secondary"
+                            className="ml-2"
+                          >
+                            <AddIcon color="primary" />
+                          </Button>
+                        )}
+                      </>
                     )}
                   </div>
                 ))}
@@ -378,6 +394,7 @@ const Flex = styled(MaxWidth)`
   .compare-box {
     width: calc(100% - 32px);
     margin: 16px;
+    height: 290px;
   }
 `
 
