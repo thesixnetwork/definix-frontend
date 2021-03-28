@@ -94,7 +94,7 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, masterChefAddress })
 }
 
 // Thunks
-export const fetchFinixPrice = () => async dispatch => {
+export const fetchFinixPrice = () => async (dispatch) => {
   const fetchPromise = []
 
   fetchPromise.push(
