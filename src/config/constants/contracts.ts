@@ -40,8 +40,8 @@ export default {
     56: '',
   },
   pancakeBnbBusdLP: {
-    97: '0x2f7682b64b88149ba3250aee32db712964de5fa9',
-    56: '0x1b96b92314c44b159149f7e0303511fb2fc4774f',
+    97: '0xe4C71e54168a08be9885649d0Fb91d488D9828Ca',
+    56: '',
   },
   busd: {
     56: '',

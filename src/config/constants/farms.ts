@@ -29,8 +29,8 @@ const farms: FarmConfig[] = [
       97: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
       56: '',
     },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
   },
   {
     pid: 2,
@@ -74,8 +74,8 @@ const farms: FarmConfig[] = [
       97: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
       56: '',
     },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
+    quoteTokenSymbol: QuoteToken.BUSD,
+    quoteTokenAdresses: contracts.busd,
   },
   // {
   //   pid: 1,

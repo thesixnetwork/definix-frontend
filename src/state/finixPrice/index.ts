@@ -18,14 +18,38 @@ import {
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
 
-const initialState: FinixPriceState = { price: 0 }
+const initialState: FinixPriceState = {
+  price: 0,
+  totalFinixDefinixFinixSixPair: 0,
+  totalSixDefinixFinixSixPair: 0,
+  totalFinixDefinixFinixBusdPair: 0,
+  totalBusdDefinixFinixBusdPair: 0,
+  totalFinixDefinixFinixBnbPair: 0,
+  totalBnbDefinixFinixBnbPair: 0,
+  totalSixDefinixSixBusdPair: 0,
+  totalBnbDefinixSixBusdPair: 0,
+  totalBnbInPancakeBnbBusdPair: 0,
+  totalBusdInPancakeBnbBusdPair: 0,
+}
 
 export const finixPriceSlice = createSlice({
   name: 'FinixPrice',
   initialState,
   reducers: {
     setFinixPrice: (state, action) => {
-      const { price } = action.payload
+      const {
+        price,
+        totalFinixDefinixFinixSixPair,
+        totalSixDefinixFinixSixPair,
+        totalFinixDefinixFinixBusdPair,
+        totalBusdDefinixFinixBusdPair,
+        totalFinixDefinixFinixBnbPair,
+        totalBnbDefinixFinixBnbPair,
+        totalSixDefinixSixBusdPair,
+        totalBnbDefinixSixBusdPair,
+        totalBnbInPancakeBnbBusdPair,
+        totalBusdInPancakeBnbBusdPair,
+      } = action.payload
       state.price = price
     },
   },
@@ -70,7 +94,7 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, masterChefAddress })
 }
 
 // Thunks
-export const fetchFinixPrice = () => async (dispatch) => {
+export const fetchFinixPrice = () => async dispatch => {
   const fetchPromise = []
 
   fetchPromise.push(
@@ -148,7 +172,48 @@ export const fetchFinixPrice = () => async (dispatch) => {
       finixBnbPrice * totalFinixDefinixFinixBnbPair +
       finixSixPrice * totalFinixDefinixFinixSixPair) /
     (totalFinixDefinixFinixBusdPair + totalFinixDefinixFinixBnbPair + totalFinixDefinixFinixSixPair)
-  dispatch(setFinixPrice({ price: averageFinixPrice }))
+
+  // console.log('FINIX-SIX LP Address : ', getFinixSixLPAddress())
+  // console.log('FINIX Address : ', getFinixAddress())
+  // console.log('Total FINIX in FINIX-SIX pair : ', totalFinixDefinixFinixSixPair)
+  // console.log('SIX Address : ', getSixAddress())
+  // console.log('Total SIX in FINIX-SIX pair : ', totalSixDefinixFinixSixPair)
+  // console.log('FINIX-BUSD LP Address : ', getFinixBusdLPAddress())
+  // console.log('FINIX Address : ', getFinixAddress())
+  // console.log('Total FINIX in FINIX-BUSD pair : ', totalFinixDefinixFinixBusdPair)
+  // console.log('BUSD Address : ', getBusdAddress())
+  // console.log('Total BUSD in FINIX-BUSD pair : ', totalBusdDefinixFinixBusdPair)
+  // console.log('FINIX-WBNB LP Address : ', getFinixBnbLPAddress())
+  // console.log('FINIX Address : ', getFinixAddress())
+  // console.log('Total FINIX in FINIX-WBNB pair : ', totalFinixDefinixFinixBnbPair)
+  // console.log('WBNB Address : ', getWbnbAddress())
+  // console.log('Total WBNB in FINIX-WBNB pair : ', totalBnbDefinixFinixBnbPair)
+  // console.log('SIX-BUSD LP Address : ', getSixBusdLPAddress())
+  // console.log('SIX Address : ', getSixAddress())
+  // console.log('Total SIX in SIX-BUSD pair : ', totalSixDefinixSixBusdPair)
+  // console.log('BUSD Address : ', getBusdAddress())
+  // console.log('Total BUSD in SIX-BUSD pair : ', totalBnbDefinixSixBusdPair)
+  // console.log('Pancake BNB-BUSD LP Address : ', getPancakeBnbBusdLPAddress())
+  // console.log('WBNB Address : ', getWbnbAddress())
+  // console.log('Total WBNB in Pancake BNB-BUSD pair : ', totalBnbInPancakeBnbBusdPair)
+  // console.log('BUSD Address : ', getBusdAddress())
+  // console.log('Total BUSD in Pancake BNB-BUSD pair : ', totalBusdInPancakeBnbBusdPair)
+
+  dispatch(
+    setFinixPrice({
+      price: averageFinixPrice,
+      totalFinixDefinixFinixSixPair,
+      totalSixDefinixFinixSixPair,
+      totalFinixDefinixFinixBusdPair,
+      totalBusdDefinixFinixBusdPair,
+      totalFinixDefinixFinixBnbPair,
+      totalBnbDefinixFinixBnbPair,
+      totalSixDefinixSixBusdPair,
+      totalBnbDefinixSixBusdPair,
+      totalBnbInPancakeBnbBusdPair,
+      totalBusdInPancakeBnbBusdPair,
+    }),
+  )
 }
 
 export default finixPriceSlice.reducer

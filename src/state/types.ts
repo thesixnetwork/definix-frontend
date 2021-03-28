@@ -68,6 +68,16 @@ export interface PoolsState {
 
 export interface FinixPriceState {
   price: number
+  totalFinixDefinixFinixSixPair: number
+  totalSixDefinixFinixSixPair: number
+  totalFinixDefinixFinixBusdPair: number
+  totalBusdDefinixFinixBusdPair: number
+  totalFinixDefinixFinixBnbPair: number
+  totalBnbDefinixFinixBnbPair: number
+  totalSixDefinixSixBusdPair: number
+  totalBnbDefinixSixBusdPair: number
+  totalBnbInPancakeBnbBusdPair: number
+  totalBusdInPancakeBnbBusdPair: number
 }
 
 export interface ProfileState {
