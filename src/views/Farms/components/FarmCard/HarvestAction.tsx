@@ -12,13 +12,15 @@ interface FarmCardActionsProps {
 }
 
 const StyledHarvestButton = styled(Button)`
+  width: 100%;
   &:not(:disabled) {
     background: ${({ theme }) => theme.colors.harvest};
   }
 `
 
 const StyledDisplayBalance = styled.div`
-  width: 50%;
+  width: 115px;
+  flex-shrink: 0;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.default};
   display: flex;

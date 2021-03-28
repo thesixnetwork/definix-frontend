@@ -63,7 +63,7 @@ const StyledErrorMessage = styled(Text)`
 
   a {
     background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.white} !important;
     padding: 0.15rem 1rem;
     border-radius: 32px;
   }
@@ -104,12 +104,12 @@ const ModalInput: React.FC<ModalInputProps> = ({
         <StyledErrorMessage>
           <div className="flex align-center">
             <img src={exclamation} alt="" className="mr-2" />
-            <Text fontWeight="bold">No tokens to stake</Text>
+            <Text>No tokens to stake</Text>
           </div>
 
-          <Link fontSize="14px" bold={false} href={addLiquidityUrl} external color="failure">
+          {/* <Link fontSize="14px" bold={false} href={addLiquidityUrl}>
             {TranslateString(999, 'Get')} {symbol}
-          </Link>
+          </Link> */}
         </StyledErrorMessage>
       )}
     </div>

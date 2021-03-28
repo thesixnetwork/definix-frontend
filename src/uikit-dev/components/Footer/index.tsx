@@ -20,33 +20,37 @@ const FooterStyled = styled.footer`
   background: ${({ theme }) => theme.colors.white};
   z-index: 10;
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    height: 56px;
-  }
-
   .container {
     height: 100%;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 24px;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
   }
 
-  p {
-    font-size: 0.75rem;
+  .g1 {
+    display: flex;
+  }
+
+  .g2 {
+    text-align: center;
+    margin-right: 1rem;
   }
 
   .logo {
-    height: 16px;
-    margin: 0.5rem 0;
+    height: 14px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    font-size: 6px;
   }
 
   .six-logo {
-    width: 120px;
     display: block;
-
+    width: 100px;
     img {
       display: block;
     }
@@ -55,7 +59,6 @@ const FooterStyled = styled.footer`
   .social {
     display: flex;
     margin-top: 1rem;
-    margin: 0.5rem 0;
 
     a {
       cursor: pointer;
@@ -68,9 +71,35 @@ const FooterStyled = styled.footer`
     }
   }
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     .container {
       justify-content: space-between;
+      padding: 1rem 24px;
+    }
+
+    .g2 {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      margin: 0 1rem 0 0;
+    }
+
+    p {
+      font-size: 14px;
+    }
+
+    .social {
+      margin: 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    height: 60px;
+
+    .logo {
+      height: 20px;
     }
   }
 `
@@ -79,9 +108,12 @@ function Footer() {
   return (
     <FooterStyled>
       <div className="container">
-        <div className="flex align-center flex-wrap justify-center">
-          <img src={definixBlackLogo} alt="" className="logo" />
-          <p className="py-2 px-4">Advance your crypto assets</p>
+        <div className="g1">
+          <div className="g2">
+            <img src={definixBlackLogo} alt="" className="logo" />
+            <p>Advance your crypto assets</p>
+          </div>
+
           <a
             href="https://coinmarketcap.com/currencies/six/markets/"
             target="_blank"

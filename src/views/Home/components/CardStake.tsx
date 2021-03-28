@@ -25,24 +25,14 @@ const StyledCardStake = styled(Card)`
     margin-left: 0.5rem;
     width: 16px;
   }
-
-  a {
-    background: ${({ theme }) => theme.colors.white};
-    font-size: 1rem;
-  }
-
-  h2 {
-    font-size: 14px !important;
-  }
-  h3,
-  p {
-    font-size: 10px !important;
-  }
   h3 {
     margin-bottom: 0.5rem;
   }
   p {
     margin-top: 0.5rem;
+  }
+  > div {
+    padding: 0;
   }
 
   ${({ large }) =>
@@ -51,9 +41,11 @@ const StyledCardStake = styled(Card)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 1rem;
   
     > div { 
-      display: flex; flex-direction: column; align-items: center; padding: 0 24px 24px 24px; width: 100%;
+      display: flex; flex-direction: column; align-items: center; width: 100%;
 
       > div { 
         width: 100%; justify-content: center;
@@ -61,65 +53,80 @@ const StyledCardStake = styled(Card)`
     }
   
     .logo {
-      width: 35%;
+      width: 80%;
+    }
+
+    h2 {
+      font-size: 40px !important;
+    }
+    h3,
+    p {
+      font-size: 14px !important;
     }
   `
       : `
   align-items: center;
   justify-content: center;
 
-  > div {
-    padding: 16px;
+  .logo {
+    width: 80px; margin-right: 1rem;
   }
 
-  .logo {
-    width: 80px;
+  h2 {
+    font-size: 14px !important;
+  }
+  h3,
+  p {
+    font-size: 8px !important;
   }
 `}
 
   ${({ theme }) => theme.mediaQueries.sm} {
     h2 {
-      font-size: 24px !important;
+      font-size: 48px !important;
     }
     h3,
-    p {
-      font-size: 16px !important;
+    p,
+    a {
+      font-size: 18px !important;
     }
-
-    ${({ large }) =>
-      !large
-        ? `.logo {
-        width: 160px;
-      }
-    `
-        : ``}
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    h2 {
-      font-size: 40px !important;
-
-      & + div {
-        width: 32px !important;
-        height: 32px !important;
-        max-width: initial !important;
-        max-height: initial !important;
-        margin-right: 2rem;
-      }
-    }
-    h3,
-    p {
-      font-size: 16px !important;
+    a {
+      min-width: 200px;
     }
 
     ${({ large }) =>
       large
         ? `
-      flex-direction: row;
+        .logo {
+          width: 50%;
+        }
+        
+        `
+        : `.logo {
+          width: 160px;
+        }
+      `}
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    h2 {
+      & + div {
+        width: 32px !important;
+        height: 32px !important;
+        max-width: initial !important;
+        max-height: initial !important;
+      }
+    }
+
+    ${({ large }) =>
+      large
+        ? `
+      flex-direction: row; padding: 1rem 4rem;
+
+      .logo { margin-right: 4rem; width: 35%; } 
 
     > div {
       align-items: flex-start;
-      padding: 24px 24px 24px 0;
 
       > div {
         justify-content: flex-start;
@@ -129,11 +136,25 @@ const StyledCardStake = styled(Card)`
         }
       }
     }`
-        : `
-      .logo {
-        margin-right: 1rem;
-      }
-    `}
+        : ``}
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    ${({ large }) =>
+      large
+        ? `
+        justify-content: center;
+  
+          .logo {
+            width: 20%;
+          }
+          > div { width: auto; }
+
+          `
+        : `.logo {
+          width: 160px;
+        }
+      `}
   }
 `
 
@@ -156,10 +177,10 @@ const Content = ({ large }) => {
           </div>
         </div>
 
-        <p>Only 10,000,000 FINIX and Limited for 72 hours</p>
+        <p>Only 1,555,200 FINIX and Limited for 72 hours</p>
 
         {large && (
-          <Button as="a" href="/pool" variant="secondary" className="mt-5">
+          <Button as="a" href="/pool" variant="secondary" className="mt-5 mb-4">
             Go to stake
           </Button>
         )}

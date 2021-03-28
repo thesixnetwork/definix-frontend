@@ -16,8 +16,8 @@ import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolCard from './components/PoolCard'
 import { IS_GENESIS } from '../../config'
 
-// import PoolCard from './components/PoolCard'
 // import { Heading } from 'uikit-dev'
+// import PoolCard from './components/PoolCard'
 // import PoolTabButtons from './components/PoolTabButtons'
 
 const Farm: React.FC = () => {
@@ -30,6 +30,7 @@ const Farm: React.FC = () => {
   const ethPriceBnb = usePriceEthBnb()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
+  const [liveOnly, setLiveOnly] = useState(true)
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -42,10 +43,10 @@ const Farm: React.FC = () => {
     return tokenPriceBN
   }
 
-  const poolsWithApy = pools.map((pool) => {
+  const poolsWithApy = pools.map(pool => {
     const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
-    const stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
+    const rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
+    const stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
@@ -72,24 +73,33 @@ const Farm: React.FC = () => {
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithApy, pool => pool.isFinished)
   const stackedOnlyPools = openPools.filter(
-    (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
+    pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
+
+  const filterStackedOnlyPools = poolsForFilter =>
+    poolsForFilter.filter(pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
   return (
     <Page>
-      {/* <Heading as="h1" fontSize="32px !important" className="my-6" textAlign="center">
+      {/* <Heading as="h1" fontSize="32px !important" className="mt-2 mb-4" textAlign="center">
         Pool
       </Heading>
 
-      <PoolTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} /> */}
+      <PoolTabButtons
+        poolsCount={pools.length}
+        stackedOnly={stackedOnly}
+        setStackedOnly={setStackedOnly}
+        liveOnly={liveOnly}
+        setLiveOnly={setLiveOnly}
+      /> */}
 
       {IS_GENESIS ? (
         <div>
           <Route exact path={`${path}`}>
             <>
-              {poolsWithApy.map((pool) => (
+              {poolsWithApy.map(pool => (
                 <PoolCardGenesis key={pool.sousId} pool={pool} />
               ))}
               {/* <Coming /> */}
@@ -99,15 +109,16 @@ const Farm: React.FC = () => {
       ) : (
         <div>
           <Route exact path={`${path}`}>
-            <>
-              {stackedOnly
-                ? orderBy(stackedOnlyPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)
-                : orderBy(openPools, ['sortOrder']).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
-              {/* <Coming /> */}
-            </>
+            {liveOnly
+              ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(pool => (
+                  <PoolCard key={pool.sousId} pool={pool} />
+                ))
+              : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
+                  'sortOrder',
+                ]).map(pool => <PoolCard key={pool.sousId} pool={pool} />)}
           </Route>
           <Route path={`${path}/history`}>
-            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+            {orderBy(finishedPools, ['sortOrder']).map(pool => (
               <PoolCard key={pool.sousId} pool={pool} />
             ))}
           </Route>

@@ -24,11 +24,16 @@ const Wrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 100vh;
   max-width: 1920px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.2);
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    min-height: calc(100vh - 48px);
+  }
 
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     -webkit-backdrop-filter: blur(16px);
@@ -58,11 +63,10 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
 const BodyWrapper = styled.div`
   position: relative;
   display: flex;
+  flex-grow: 1;
   ${({ theme }) => theme.mediaQueries.md} {
-    height: calc(100% - 120px);
+    min-height: calc(100% - 124px);
   }
-
-  height: 100%;
 `
 
 const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
@@ -93,6 +97,7 @@ const Price = styled.div`
   display: flex;
   align-items: center;
   margin-right: 1rem;
+  font-size: 0.5rem;
 
   img {
     width: 20px;
@@ -101,7 +106,13 @@ const Price = styled.div`
 
   p {
     color: ${({ theme }) => theme.colors.text};
-    font-size: 14px;
+    font-size: 12px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.nav} {
+    p {
+      font-size: 14px;
+    }
   }
 `
 

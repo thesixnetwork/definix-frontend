@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Link, LinkExternal, Text } from 'uikit-dev'
+import { Flex, Link, LinkExternal, OpenNewIcon, Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -54,6 +54,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       <Flex justifyContent="flex-start">
         <Link external href={bscScanAddress} bold={false}>
           {TranslateString(356, 'View on BscScan')}
+          <OpenNewIcon color="primary" className="ml-2" />
         </Link>
       </Flex>
     </Wrapper>

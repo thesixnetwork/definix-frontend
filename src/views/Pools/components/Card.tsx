@@ -10,13 +10,28 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   padding-bottom: 4px;
 
   .panel {
-    &:nth-child(01) {
-      width: 45%;
-      border-right: 1px solid ${({ theme }) => theme.colors.border};
+    width: 100%;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border} !important;
+
+    &:last-child {
+      border: none;
     }
-    &:nth-child(02),
-    &:nth-child(03) {
-      width: 27.5%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    .panel {
+      border: none !important;
+
+      &:nth-child(01) {
+        width: 45%;
+        border-right: 1px solid ${({ theme }) => theme.colors.border} !important;
+      }
+      &:nth-child(02),
+      &:nth-child(03) {
+        width: 27.5%;
+      }
     }
   }
 
@@ -26,10 +41,6 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
-    &.no-border {
-      border: none;
-    }
   }
 
   .color-stroke {
