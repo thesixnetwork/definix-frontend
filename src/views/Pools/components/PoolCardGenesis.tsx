@@ -92,10 +92,10 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const totalBarWidthPercentage = `${(percentage || 0) > 100 ? 100 : percentage || 0}%`
   useEffect(() => {
     if (currentBlockNumber !== 0 && beforeStart && !beforeStartDate) {
-      setBeforeStartDate(new Date(new Date().getTime() + (beforeStart * 3 * 1000)))
+      setBeforeStartDate(new Date(new Date().getTime() + beforeStart * 3 * 1000))
     }
     if (currentBlockNumber !== 0 && endStart && !endBlockDate) {
-      setEndBlockDate(new Date(new Date().getTime() + (endStart * 3 * 1000)))
+      setEndBlockDate(new Date(new Date().getTime() + endStart * 3 * 1000))
     }
   }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
   // Pools using native BNB behave differently than pools using a token
