@@ -11,7 +11,7 @@ import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import numeral from 'numeral'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
@@ -70,6 +70,8 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     stakingLimit,
     rewardPerBlock,
   } = pool
+  const [beforeStartDate, setBeforeStartDate] = useState(new Date())
+  const [endBlockDate, setEndBlockDate] = useState(new Date())
   const finixPrice = usePriceFinixUsd()
   const block = useBlock()
   const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
@@ -84,8 +86,18 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const totalTimeInSecond = secondsToDhms(totalDiffBlockCeil * 3, true)
   const remainTime = secondsToDhms((totalDiffBlock - currentDiffBlock) * 3)
   const beforeStart = startBlockNumber - currentBlockNumber
+  const endStart = endBlockNumber - currentBlockNumber
   const beforeStartTime = secondsToDhms(beforeStart * 3)
+  const beforeStartTimeDate = secondsToDhms(beforeStart * 3)
   const totalBarWidthPercentage = `${(percentage || 0) > 100 ? 100 : percentage || 0}%`
+  useEffect(() => {
+    if (currentBlockNumber !== 0 && beforeStart && !beforeStartDate) {
+      setBeforeStartDate(new Date(new Date().getTime() + (beforeStart * 3 * 1000)))
+    }
+    if (currentBlockNumber !== 0 && endStart && !endBlockDate) {
+      setEndBlockDate(new Date(new Date().getTime() + (endStart * 3 * 1000)))
+    }
+  }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
@@ -157,7 +169,14 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     currentDate.getMonth() === 11 && currentDate.getDate() > 23
       ? currentDate.getFullYear() + 1
       : currentDate.getFullYear()
-
+  let dateToFlip
+  if (currentBlockNumber !== 0) {
+    if (currentBlockNumber < startBlockNumber) {
+      dateToFlip = new Date(new Date().getTime() + 10000)
+    } else {
+      dateToFlip = endBlockDate
+    }
+  }
   return (
     <Card
       isActive={isCardActive}
@@ -198,7 +217,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               <span className="col-6">{totalTimeInSecond}</span>
             </StyledDetails>
 
-            <Flip date="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
+            <Flip date={dateToFlip} />
             {/* <StakePeriod>
               <div className="track">
                 <div className="progress" style={{ width: totalBarWidthPercentage }} />
