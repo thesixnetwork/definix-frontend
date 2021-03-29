@@ -70,8 +70,8 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     stakingLimit,
     rewardPerBlock,
   } = pool
-  const [beforeStartDate, setBeforeStartDate] = useState(new Date())
-  const [endBlockDate, setEndBlockDate] = useState(new Date())
+  const [beforeStartDate, setBeforeStartDate] = useState(0)
+  const [endBlockDate, setEndBlockDate] = useState(0)
   const finixPrice = usePriceFinixUsd()
   const block = useBlock()
   const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
@@ -90,12 +90,33 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const beforeStartTime = secondsToDhms(beforeStart * 3)
   const beforeStartTimeDate = secondsToDhms(beforeStart * 3)
   const totalBarWidthPercentage = `${(percentage || 0) > 100 ? 100 : percentage || 0}%`
+  const alreadyRewarded = currentDiffBlock * (rewardPerBlock / 10 ** 18)
+  let totalStakedInt
+  switch (typeof totalStaked) {
+    case 'undefined':
+      totalStakedInt = 0
+      break
+    case 'string':
+      totalStakedInt = (parseFloat(totalStaked) || 0) / 10 ** tokenDecimals
+      break
+    default:
+      totalStakedInt = totalStaked.times(new BigNumber(10).pow(tokenDecimals)).toNumber()
+      break
+  }
+  // eslint-disable-next-line
+  let sixPerFinix =
+    totalStakedInt /
+      (((endBlockNumber - currentBlockNumber) / (endBlockNumber - startBlockNumber)) *
+        ((endBlockNumber - startBlockNumber) * (rewardPerBlock / 10 ** 18))) || 0
+  if (sixPerFinix < 0) {
+    sixPerFinix = 0
+  }
   useEffect(() => {
     if (currentBlockNumber !== 0 && beforeStart && !beforeStartDate) {
-      setBeforeStartDate(new Date(new Date().getTime() + beforeStart * 3 * 1000))
+      setBeforeStartDate(new Date().getTime() + beforeStart * 3 * 1000)
     }
     if (currentBlockNumber !== 0 && endStart && !endBlockDate) {
-      setEndBlockDate(new Date(new Date().getTime() + endStart * 3 * 1000))
+      setEndBlockDate(new Date().getTime() + endStart * 3 * 1000)
     }
   }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
   // Pools using native BNB behave differently than pools using a token
@@ -169,14 +190,20 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     currentDate.getMonth() === 11 && currentDate.getDate() > 23
       ? currentDate.getFullYear() + 1
       : currentDate.getFullYear()
-  let dateToFlip
+  let dateToFlip = new Date().getTime()
   if (currentBlockNumber !== 0) {
     if (currentBlockNumber < startBlockNumber) {
-      dateToFlip = new Date(new Date().getTime() + 10000)
+      dateToFlip = new Date().getTime()
     } else {
       dateToFlip = endBlockDate
     }
   }
+  let totalRewardedDisplay = alreadyRewarded > totalReward ? totalReward : alreadyRewarded
+
+  if (totalRewardedDisplay < 0) {
+    totalRewardedDisplay = 0
+  }
+  totalRewardedDisplay = totalReward - totalRewardedDisplay
   return (
     <Card
       isActive={isCardActive}
@@ -197,7 +224,9 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           <div className="mx-3 my-1">
             <StyledDetails>
               <p className="pr-4 col-6">Reward Ratio</p>
-              <span className="col-6">1 FINIX ≈ X SIX</span>
+              <span className="col-6">
+                1 FINIX ≈ {sixPerFinix === 0 ? '∞' : numeral(sixPerFinix).format('0,0.0000')} SIX
+              </span>
               {/* <div className="col-6">
                 <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
               </div> */}
@@ -207,7 +236,9 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               {currentBlockNumber === 0 ? (
                 <span className="col-6">Loading</span>
               ) : (
-                <div className="col-6">
+                <div className="col-6" style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+                  <Balance isDisabled={isFinished} value={totalRewardedDisplay} decimals={2} unit=" FINIX" />
+                  <span style={{width: '20px', textAlign: 'center'}}>{" / "}</span>
                   <Balance isDisabled={isFinished} value={totalReward} decimals={2} unit=" FINIX" />
                 </div>
               )}
@@ -276,13 +307,8 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                   </Button>
                 ) : (
                   <div className="flex">
-                    {!readyToStake ? (
-                      <Button
-                        onClick={() => {
-                          setReadyToStake(true)
-                        }}
-                        fullWidth
-                      >
+                    {stakedBalance.toNumber() === 0 ? (
+                      <Button disabled={isFinished && sousId !== 0} onClick={onPresentDeposit} fullWidth>
                         Stake
                       </Button>
                     ) : (
@@ -394,8 +420,8 @@ const BalanceAndCompound = styled.div`
 `
 
 const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
+  height: ${props => props.theme.spacing[4]}px;
+  width: ${props => props.theme.spacing[4]}px;
 `
 
 const StyledDetails = styled.div`

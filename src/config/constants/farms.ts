@@ -6,12 +6,12 @@ const farms: FarmConfig[] = [
     pid: 0,
     lpSymbol: 'FINIX',
     lpAddresses: {
-      97: '0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e',
+      97: '0x2ee2CEa14F245b0Bdb32EE3E4251fA50B6fc811b',
       56: '',
     },
     tokenSymbol: 'FINIX',
     tokenAddresses: {
-      97: '0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e',
+      97: '0x2ee2CEa14F245b0Bdb32EE3E4251fA50B6fc811b',
       56: '',
     },
     quoteTokenSymbol: QuoteToken.SIX,
@@ -21,7 +21,7 @@ const farms: FarmConfig[] = [
     pid: 1,
     lpSymbol: 'FINIX-SIX LP',
     lpAddresses: {
-      97: '0xa55fd967144C32Cb88f6dD1171C93e1Ab2903F07',
+      97: '0xa19C0D9cEE4b81C06EE0ca3e8Da92D30F8A4eFD3',
       56: '',
     },
     tokenSymbol: 'SIX',
@@ -36,7 +36,7 @@ const farms: FarmConfig[] = [
     pid: 2,
     lpSymbol: 'FINIX-BUSD LP',
     lpAddresses: {
-      97: '0xA5fCeF021ee4F04a2264aDd84BbDF2A61Ba50D03',
+      97: '0xF68e6a099D891e4A127C2E661bCd3307ed7c6cbB',
       56: '',
     },
     tokenSymbol: 'BUSD',
@@ -51,12 +51,12 @@ const farms: FarmConfig[] = [
     pid: 3,
     lpSymbol: 'FINIX-BNB LP',
     lpAddresses: {
-      97: '0xFF9864128FFBa4D8467A8AF2018299F42714394d',
+      97: '0x04Bd3CF36fa5b24A9BA518127b8c83be21270c35',
       56: '',
     },
     tokenSymbol: 'FINIX',
     tokenAddresses: {
-      97: '0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e',
+      97: '0x2ee2CEa14F245b0Bdb32EE3E4251fA50B6fc811b',
       56: '',
     },
     quoteTokenSymbol: QuoteToken.FINIX,
@@ -66,7 +66,7 @@ const farms: FarmConfig[] = [
     pid: 4,
     lpSymbol: 'SIX-BUSD LP',
     lpAddresses: {
-      97: '0xb72B3794489A408aa68E847b1407496316b24F89',
+      97: '0xa8f6F143427546E414B41D7Bd57365df914f002c',
       56: '',
     },
     tokenSymbol: 'SIX',
