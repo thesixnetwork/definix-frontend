@@ -1,51 +1,51 @@
 export default {
   cake: {
-    97: '0x2ee2CEa14F245b0Bdb32EE3E4251fA50B6fc811b',
-    56: '',
+    97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
   },
   pancakeMasterChef: {
-    97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-    56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
+    97: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
+    56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
   masterChef: {
-    97: '0x678F6e18DC51dE5061afE422C87101C75276c30E',
-    56: '',
+    97: process.env.REACT_APP_MASTER_CHEF_TESTNET,
+    56: process.env.REACT_APP_MASTER_CHEF_MAINNET,
   },
   wbnb: {
-    97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
-    56: '',
-  },
-  six: {
-    97: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
-    56: '',
-  },
-  finix: {
-    97: '0x2ee2CEa14F245b0Bdb32EE3E4251fA50B6fc811b',
-    56: '',
-  },
-  finixSixLP: {
-    97: '0xa19C0D9cEE4b81C06EE0ca3e8Da92D30F8A4eFD3',
-    56: '',
-  },
-  finixBusdLP: {
-    97: '0xF68e6a099D891e4A127C2E661bCd3307ed7c6cbB',
-    56: '',
-  },
-  finixBnbLP: {
-    97: '0x04Bd3CF36fa5b24A9BA518127b8c83be21270c35',
-    56: '',
-  },
-  sixBusdLP: {
-    97: '0xa8f6F143427546E414B41D7Bd57365df914f002c',
-    56: '',
-  },
-  pancakeBnbBusdLP: {
-    97: '0xe4C71e54168a08be9885649d0Fb91d488D9828Ca',
-    56: '',
+    97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
   },
   busd: {
-    56: '',
-    97: '0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee',
+    97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+  },
+  six: {
+    97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+  },
+  finix: {
+    97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+  },
+  finixSixLP: {
+    97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
+    56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
+  },
+  finixBusdLP: {
+    97: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
+    56: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
+  },
+  finixBnbLP: {
+    97: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
+    56: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
+  },
+  sixBusdLP: {
+    97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
+    56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
+  },
+  pancakeBnbBusdLP: {
+    97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
+    56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
   },
   // configured =====================================================
   syrup: {

@@ -84,7 +84,7 @@ export const usePoolFromPid = (sousId): Pool => {
 
 export const usePriceBnbBusd = (): BigNumber => {
   // const pid = 5 // BUSD-BNB LP
-  const pid = 5 // BUSD-SIX LP
+  const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID, 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
@@ -92,7 +92,7 @@ export const usePriceBnbBusd = (): BigNumber => {
 
 export const usePriceSixBusd = (): BigNumber => {
   // const pid = 5 // BUSD-BNB LP
-  const pid = 4 // BUSD-SIX LP
+  const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID, 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
@@ -100,7 +100,7 @@ export const usePriceSixBusd = (): BigNumber => {
 
 export const usePriceCakeBusd = (): BigNumber => {
   // const pid = 1 // CAKE-BNB LP
-  const pid = 3 // FINIX-BNB LP
+  const pid = parseInt(process.env.REACT_APP_FINIX_BNB_PID, 10) // FINIX-BNB LP
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
@@ -109,7 +109,7 @@ export const usePriceCakeBusd = (): BigNumber => {
 
 export const usePriceFinixBusd = (): BigNumber => {
   // const pid = 1 // CAKE-BNB LP
-  const pid = 2 // FINIX-BUSD LP
+  const pid = parseInt(process.env.REACT_APP_FINIX_BUSD_PID, 10) // FINIX-BUSD LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
