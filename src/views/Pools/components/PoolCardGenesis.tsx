@@ -182,7 +182,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
       isActive={isCardActive}
       isFinished={isFinished && sousId !== 0}
       className="flex flex-column align-stretch mx-auto"
-      style={{ maxWidth: '1280px' }}
+      style={{ maxWidth: '1000px' }}
     >
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
@@ -247,22 +247,26 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
       <BorderTopBox>
         <Flex>
           <HalfBox>
-            <div className="compare-box pa-5">
+            <div className="compare-box pa-6">
               <CustomTitle>
                 <Heading as="h2" className="mr-3">
                   My Funds
                 </Heading>
-                <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
               </CustomTitle>
 
-              <div className="flex flex-column align-center mb-5">
-                <p className="mb-2">{tokenName} Staked</p>
+              <div className="flex flex-column align-center mb-7">
+                <div className="flex align-center mb-1">
+                  <Coin>
+                    <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
+                  </Coin>
+                  <p>Staked</p>
+                </div>
                 <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
                 <p className="mt-2 text-bold">{tokenName}</p>
               </div>
 
               <div className="flex flex-column align-stretch justify-end">
-                <Link href="https://youngexchange.definix.com/#/swap" target="_blank" className="mx-auto mb-4">
+                <Link href="https://youngexchange.definix.com/#/swap" target="_blank" className="mx-auto">
                   Buy {tokenName}
                 </Link>
               </div>
@@ -300,6 +304,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                               : onPresentWithdraw
                           }
                           variant="secondary"
+                          className="btn-secondary-disable"
                         >
                           <MinusIcon
                             color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'}
@@ -311,7 +316,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                             disabled={isFinished && sousId !== 0}
                             onClick={onPresentDeposit}
                             variant="secondary"
-                            className="ml-2"
+                            className="ml-2 btn-secondary-disable"
                           >
                             <AddIcon color="primary" />
                           </Button>
@@ -324,22 +329,26 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           </HalfBox>
 
           <HalfBox>
-            <div className="compare-box pa-5">
+            <div className="compare-box pa-6">
               <CustomTitle>
                 <Heading as="h2" className="mr-3">
                   My Rewards
                 </Heading>
-                <Image src="/images/coins/FINIX.png" width={40} height={40} />
               </CustomTitle>
 
-              <div className="flex flex-column align-center mb-5">
-                <p className="mb-2">FINIX Earned</p>
+              <div className="flex flex-column align-center mb-7">
+                <div className="flex align-center mb-1">
+                  <Coin>
+                    <Image src="/images/coins/FINIX.png" width={40} height={40} />
+                  </Coin>
+                  <p>Earned</p>
+                </div>
                 <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
                 <p className="mt-2 text-bold">FINIX</p>
               </div>
 
               <div className="flex flex-column align-stretch justify-end">
-                <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
+                <p className="mx-auto" style={{ lineHeight: '24px' }}>
                   = {numeral(finixPrice.toNumber() * getBalanceNumber(earnings, tokenDecimals)).format('0,0.0000')} $
                 </p>
               </div>
@@ -367,11 +376,10 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
 }
 
 const CustomTitle = styled.div`
-  height: 80px;
-  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 2rem;
 
   &.bg-gray {
     background: ${({ theme }) => theme.colors.backgroundBox};
@@ -396,6 +404,12 @@ const BalanceAndCompound = styled.div`
 const StyledActionSpacer = styled.div`
   height: ${(props) => props.theme.spacing[4]}px;
   width: ${(props) => props.theme.spacing[4]}px;
+`
+
+const Coin = styled.div`
+  margin-right: 12px;
+  flex-shrink: 0;
+  width: 40px;
 `
 
 const StyledDetails = styled.div`
@@ -435,7 +449,7 @@ const Flex = styled(MaxWidth)`
   .compare-box {
     width: calc(100% - 32px);
     margin: 16px;
-    height: 290px;
+    height: 300px;
   }
 `
 

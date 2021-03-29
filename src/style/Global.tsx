@@ -31,6 +31,14 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .btn-secondary-disable:disabled {
+    background: ${({ theme }) => theme.colors.white};
+    border-color: ${({ theme }) => theme.colors.backgroundDisabled};
+    color: ${({ theme }) => theme.colors.backgroundDisabled};
+
+    svg { fill: ${({ theme }) => theme.colors.backgroundDisabled}; }
+  }
+
   .text-bold { font-weight: bold; color: ${({ theme }) => theme.colors.text}; }
 
   .flex {

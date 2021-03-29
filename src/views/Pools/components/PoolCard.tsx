@@ -297,6 +297,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                           : onPresentWithdraw
                       }
                       variant="secondary"
+                      className="btn-secondary-disable"
                     >
                       <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
                     </Button>
@@ -306,7 +307,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                         disabled={isFinished && sousId !== 0}
                         onClick={onPresentDeposit}
                         variant="secondary"
-                        className="ml-2"
+                        className="ml-2 btn-secondary-disable"
                       >
                         <AddIcon color="primary" />
                       </Button>

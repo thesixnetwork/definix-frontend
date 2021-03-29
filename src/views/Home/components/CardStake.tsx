@@ -180,7 +180,7 @@ const Content = ({ large }) => {
         <p>Only 1,555,200 FINIX and Limited for 72 hours</p>
 
         {large && (
-          <Button as="a" href="/pool" variant="secondary" className="mt-5 mb-4">
+          <Button as="a" href="/pool" variant="secondary" className="mt-5 btn-secondary-disable">
             Go to stake
           </Button>
         )}

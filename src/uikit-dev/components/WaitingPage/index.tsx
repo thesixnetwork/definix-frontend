@@ -1,4 +1,3 @@
-import Page from 'components/layout/Page'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { Heading } from 'uikit-dev'
@@ -6,7 +5,7 @@ import Flip from '../Flip'
 
 const WaitingPage = ({ pageName, openDate }) => {
   return (
-    <Page style={{ maxWidth: '1280px' }}>
+    <div style={{ maxWidth: '1000px' }} className="pa-6">
       <Heading as="h1" fontSize="32px !important" className="mb-9 mt-6" textAlign="center">
         {pageName}
       </Heading>
@@ -16,7 +15,7 @@ const WaitingPage = ({ pageName, openDate }) => {
       </Heading>
 
       <Flip date={openDate} />
-    </Page>
+    </div>
   )
 }
 
