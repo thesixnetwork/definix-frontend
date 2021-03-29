@@ -42,10 +42,11 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         symbol={tokenName}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss}>
+        <Button variant="secondary" onClick={onDismiss} fullWidth>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
+          fullWidth
           disabled={pendingTx}
           onClick={async () => {
             setPendingTx(true)
@@ -57,11 +58,9 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
           {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
-      <div className="flex justify-center mb-2">
-        <LinkExternal href="https://youngexchange.definix.com/#/swap" style={{ alignSelf: 'center' }}>
-          Buy {tokenName}
-        </LinkExternal>
-      </div>
+      <LinkExternal href="https://youngexchange.definix.com/#/swap" className="mx-auto">
+        Buy {tokenName}
+      </LinkExternal>
     </Modal>
   )
 }

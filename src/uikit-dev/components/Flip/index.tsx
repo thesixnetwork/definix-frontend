@@ -30,7 +30,8 @@ const FlipStyled = styled.div`
     font-weight: 100;
     font-size: 24px;
     position: relative;
-    width: 45px;
+    width: 48px;
+    text-align: center;
 
     &:before {
       content: '';
@@ -63,7 +64,7 @@ const FlipStyled = styled.div`
       padding: 1rem;
       margin-bottom: 1rem;
       font-size: 64px;
-      width: 110px;
+      width: 116px;
     }
 
     span {

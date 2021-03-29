@@ -27,7 +27,7 @@ const StyledModalActions = styled.div`
 `
 
 const StyledModalAction = styled.div`
-  // flex: 1;
+  flex: 1;
 `
 
 export default ModalActions

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 const FlexLayout = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   margin-left: -12px;
   margin-right: -12px;
   & > * {

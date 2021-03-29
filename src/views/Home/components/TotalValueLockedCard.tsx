@@ -15,7 +15,7 @@ const StyledTotalValueLockedCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.white};
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    padding-left: 200px;
+    padding-left: 160px;
   }
 `
 
@@ -26,7 +26,7 @@ const TotalValueLockedCard = () => {
 
   return (
     <StyledTotalValueLockedCard isRainbow>
-      <CardBody className="flex flex-column align-center pa-6">
+      <CardBody className="flex flex-column align-center pa-6 mx-auto">
         <Heading mb="16px">{TranslateString(762, 'Total Value Locked (TVL)')}</Heading>
         {data ? (
           <>

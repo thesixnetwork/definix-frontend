@@ -42,10 +42,11 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         symbol={tokenName}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss}>
+        <Button variant="secondary" onClick={onDismiss} fullWidth>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
+          fullWidth
           disabled={pendingTx}
           onClick={async () => {
             setPendingTx(true)

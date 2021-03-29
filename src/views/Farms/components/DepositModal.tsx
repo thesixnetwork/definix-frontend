@@ -45,7 +45,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         inputTitle={TranslateString(1070, 'Stake')}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss}>
+        <Button variant="secondary" onClick={onDismiss} fullWidth>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
@@ -56,11 +56,12 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
             setPendingTx(false)
             onDismiss()
           }}
+          fullWidth
         >
           {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
-      <LinkExternal href={addLiquidityUrl} style={{ alignSelf: 'center' }}>
+      <LinkExternal href={addLiquidityUrl} className="mx-auto">
         {TranslateString(999, 'Get')} {tokenName}
       </LinkExternal>
     </Modal>
