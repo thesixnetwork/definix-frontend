@@ -9,8 +9,8 @@ import {
   getLotteryAddress,
   getLotteryTicketAddress,
   getBunnyFactoryAddress,
-  getPancakeProfileAddress,
-  getPancakeRabbitsAddress,
+  getDefinixProfileAddress,
+  getDefinixRabbitsAddress,
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
 } from 'utils/addressHelpers'
@@ -63,14 +63,14 @@ export const useBunnyFactory = () => {
   return useContract(bunnyFactoryAbi, getBunnyFactoryAddress())
 }
 
-export const usePancakeRabbits = () => {
+export const useDefinixRabbits = () => {
   const definixRabbitsAbi = (definixRabbits as unknown) as AbiItem
-  return useContract(definixRabbitsAbi, getPancakeRabbitsAddress())
+  return useContract(definixRabbitsAbi, getDefinixRabbitsAddress())
 }
 
 export const useProfile = () => {
   const profileABIAbi = (profile as unknown) as AbiItem
-  return useContract(profileABIAbi, getPancakeProfileAddress())
+  return useContract(profileABIAbi, getDefinixProfileAddress())
 }
 
 export const useLottery = () => {

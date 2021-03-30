@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import {
-  getPancakeMasterChefAddress,
+  getDefinixMasterChefAddress,
   getMasterChefAddress,
   getWbnbAddress,
   getSixAddress,
@@ -13,7 +13,7 @@ import {
   getFinixBusdLPAddress,
   getFinixBnbLPAddress,
   getSixBusdLPAddress,
-  getPancakeBnbBusdLPAddress,
+  getDefinixBnbBusdLPAddress,
 } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
@@ -28,8 +28,8 @@ const initialState: FinixPriceState = {
   totalBnbDefinixFinixBnbPair: 0,
   totalSixDefinixSixBusdPair: 0,
   totalBnbDefinixSixBusdPair: 0,
-  totalBnbInPancakeBnbBusdPair: 0,
-  totalBusdInPancakeBnbBusdPair: 0,
+  totalBnbInDefinixBnbBusdPair: 0,
+  totalBusdInDefinixBnbBusdPair: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -47,8 +47,8 @@ export const finixPriceSlice = createSlice({
         totalBnbDefinixFinixBnbPair,
         totalSixDefinixSixBusdPair,
         totalBnbDefinixSixBusdPair,
-        totalBnbInPancakeBnbBusdPair,
-        totalBusdInPancakeBnbBusdPair,
+        totalBnbInDefinixBnbBusdPair,
+        totalBusdInDefinixBnbBusdPair,
       } = action.payload
       state.price = price
     },
@@ -131,10 +131,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getPancakeBnbBusdLPAddress(),
+      lpAddress: getDefinixBnbBusdLPAddress(),
       pair1: getWbnbAddress(),
       pair2: getBusdAddress(),
-      masterChefAddress: getPancakeMasterChefAddress(),
+      masterChefAddress: getDefinixMasterChefAddress(),
     }),
   )
   // FINIX-SIX
@@ -143,7 +143,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
     [totalFinixDefinixFinixBusdPair, totalBusdDefinixFinixBusdPair],
     [totalFinixDefinixFinixBnbPair, totalBnbDefinixFinixBnbPair],
     [totalSixDefinixSixBusdPair, totalBnbDefinixSixBusdPair],
-    [totalBnbInPancakeBnbBusdPair, totalBusdInPancakeBnbBusdPair],
+    [totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair],
   ] = await Promise.all(fetchPromise)
   // const totalFinixDefinixFinixSixPair = 10000000.0
   // const totalSixDefinixFinixSixPair = 12820512.82
@@ -161,9 +161,9 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // const totalBnbDefinixSixBusdPair = 500000.0
   const sixBusdRatio = totalBnbDefinixSixBusdPair / totalSixDefinixSixBusdPair || 0
   // PANCAKE BNB-BUSD
-  // const totalBnbInPancakeBnbBusdPair = 557985
-  // const totalBusdInPancakeBnbBusdPair = 152220163
-  const definixBnbBusdRatio = totalBusdInPancakeBnbBusdPair / totalBnbInPancakeBnbBusdPair || 0
+  // const totalBnbInDefinixBnbBusdPair = 557985
+  // const totalBusdInDefinixBnbBusdPair = 152220163
+  const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
   // Price cal
   const finixSixPrice = finixSixRatio * sixBusdRatio
   const finixBnbPrice = finixBnbRatio * definixBnbBusdRatio
@@ -193,11 +193,11 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // console.log('Total SIX in SIX-BUSD pair : ', totalSixDefinixSixBusdPair)
   // console.log('BUSD Address : ', getBusdAddress())
   // console.log('Total BUSD in SIX-BUSD pair : ', totalBnbDefinixSixBusdPair)
-  // console.log('Pancake BNB-BUSD LP Address : ', getPancakeBnbBusdLPAddress())
+  // console.log('Definix BNB-BUSD LP Address : ', getDefinixBnbBusdLPAddress())
   // console.log('WBNB Address : ', getWbnbAddress())
-  // console.log('Total WBNB in Pancake BNB-BUSD pair : ', totalBnbInPancakeBnbBusdPair)
+  // console.log('Total WBNB in Definix BNB-BUSD pair : ', totalBnbInDefinixBnbBusdPair)
   // console.log('BUSD Address : ', getBusdAddress())
-  // console.log('Total BUSD in Pancake BNB-BUSD pair : ', totalBusdInPancakeBnbBusdPair)
+  // console.log('Total BUSD in Definix BNB-BUSD pair : ', totalBusdInDefinixBnbBusdPair)
 
   dispatch(
     setFinixPrice({
@@ -210,8 +210,8 @@ export const fetchFinixPrice = () => async (dispatch) => {
       totalBnbDefinixFinixBnbPair,
       totalSixDefinixSixBusdPair,
       totalBnbDefinixSixBusdPair,
-      totalBnbInPancakeBnbBusdPair,
-      totalBusdInPancakeBnbBusdPair,
+      totalBnbInDefinixBnbBusdPair,
+      totalBusdInDefinixBnbBusdPair,
     }),
   )
 }

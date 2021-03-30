@@ -1,4 +1,4 @@
-import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addressHelpers'
+import { getDefinixProfileAddress, getDefinixRabbitsAddress } from 'utils/addressHelpers'
 import definixProfileAbi from 'config/abi/definixProfile.json'
 import definixRabbitsAbi from 'config/abi/definixRabbits.json'
 import { Nft } from 'config/constants/types'
@@ -8,8 +8,8 @@ import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'
 import { transformProfileResponse } from './helpers'
 
-const profileContract = getContract(definixProfileAbi, getPancakeProfileAddress())
-const rabbitContract = getContract(definixRabbitsAbi, getPancakeRabbitsAddress())
+const profileContract = getContract(definixProfileAbi, getDefinixProfileAddress())
+const rabbitContract = getContract(definixRabbitsAbi, getDefinixRabbitsAddress())
 const profileApi = process.env.REACT_APP_API_PROFILE
 
 export interface GetProfileResponse {

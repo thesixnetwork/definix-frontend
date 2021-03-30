@@ -3,7 +3,7 @@ import { Modal, Flex, Text } from 'uikit-dev'
 import { useDispatch } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
-import { useCake, usePancakeRabbits, useProfile } from 'hooks/useContract'
+import { useCake, useDefinixRabbits, useProfile } from 'hooks/useContract'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { fetchProfile } from 'state/profile'
 import { useToast } from 'state/hooks'
@@ -30,7 +30,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
 }) => {
   const TranslateString = useI18n()
   const profileContract = useProfile()
-  const definixRabbitsContract = usePancakeRabbits()
+  const definixRabbitsContract = useDefinixRabbits()
   const dispatch = useDispatch()
   const { toastSuccess } = useToast()
   const cakeContract = useCake()

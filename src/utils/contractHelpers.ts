@@ -1,6 +1,6 @@
 import {
-  getPancakeProfileAddress,
-  getPancakeRabbitsAddress,
+  getDefinixProfileAddress,
+  getDefinixRabbitsAddress,
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
 } from 'utils/addressHelpers'
@@ -11,11 +11,11 @@ import bunnyFactoryAbi from 'config/abi/bunnyFactory.json'
 import bunnySpecialAbi from 'config/abi/bunnySpecial.json'
 
 export const getProfileContract = () => {
-  return getContract(profileABI, getPancakeProfileAddress())
+  return getContract(profileABI, getDefinixProfileAddress())
 }
 
-export const getPancakeRabbitContract = () => {
-  return getContract(definixRabbitsAbi, getPancakeRabbitsAddress())
+export const getDefinixRabbitContract = () => {
+  return getContract(definixRabbitsAbi, getDefinixRabbitsAddress())
 }
 
 export const getBunnyFactoryContract = () => {

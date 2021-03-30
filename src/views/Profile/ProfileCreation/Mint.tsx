@@ -65,7 +65,7 @@ const Mint: React.FC = () => {
       <Text as="p">{TranslateString(786, 'Every profile starts by making a “starter” collectible (NFT).')}</Text>
       <Text as="p">{TranslateString(788, 'This starter will also become your first profile picture.')}</Text>
       <Text as="p" mb="24px">
-        {TranslateString(790, 'You can change your profile pic later if you get another approved Pancake Collectible.')}
+        {TranslateString(790, 'You can change your profile pic later if you get another approved Definix Collectible.')}
       </Text>
       <Card mb="24px">
         <CardBody>

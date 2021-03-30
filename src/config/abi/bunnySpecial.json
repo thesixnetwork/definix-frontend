@@ -12,7 +12,7 @@
         "type": "address"
       },
       {
-        "internalType": "contract IPancakeProfile",
+        "internalType": "contract IDefinixProfile",
         "name": "_definixProfile",
         "type": "address"
       },
@@ -373,7 +373,7 @@
     "name": "definixProfile",
     "outputs": [
       {
-        "internalType": "contract IPancakeProfile",
+        "internalType": "contract IDefinixProfile",
         "name": "",
         "type": "address"
       }

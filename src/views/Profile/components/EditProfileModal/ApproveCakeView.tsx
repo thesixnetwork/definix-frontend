@@ -4,7 +4,7 @@ import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from 'uikit-dev
 import useI18n from 'hooks/useI18n'
 import { useCake } from 'hooks/useContract'
 import { useProfile, useToast } from 'state/hooks'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { getDefinixProfileAddress } from 'utils/addressHelpers'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useGetProfileCosts from '../../hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
@@ -25,7 +25,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
 
   const handleApprove = () => {
     cakeContract.methods
-      .approve(getPancakeProfileAddress(), cost.times(2).toJSON())
+      .approve(getDefinixProfileAddress(), cost.times(2).toJSON())
       .send({ from: account })
       .on('sending', () => {
         setIsApproving(true)

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Heading, Card, CardBody, CardFooter, Text, PancakeRoundIcon, Flex, Skeleton } from 'uikit-dev'
+import { Heading, Card, CardBody, CardFooter, Text, DefinixRoundIcon, Flex, Skeleton } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import { useTotalRewards } from 'hooks/useTickets'
@@ -74,7 +74,7 @@ const TotalPrizesCard = () => {
         <CardHeading>
           <Left>
             <IconWrapper>
-              <PancakeRoundIcon />
+              <DefinixRoundIcon />
             </IconWrapper>
             <PrizeCountWrapper>
               <Text fontSize="14px" color="textSubtle">

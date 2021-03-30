@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Button, Flex, Text, InjectedModalProps } from 'uikit-dev'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import { getDefinixProfileAddress } from 'utils/addressHelpers'
 import { useCake } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import { useProfile } from 'state/hooks'
@@ -46,7 +46,7 @@ const StartPage: React.FC<StartPageProps> = ({ goToApprove, goToChange, goToRemo
    */
   useEffect(() => {
     const checkApprovalStatus = async () => {
-      const response = await cakeContract.methods.allowance(account, getPancakeProfileAddress()).call()
+      const response = await cakeContract.methods.allowance(account, getDefinixProfileAddress()).call()
       const currentAllowance = new BigNumber(response)
       setNeedsApproval(currentAllowance.lt(cost))
     }

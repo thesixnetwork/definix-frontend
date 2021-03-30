@@ -76,8 +76,8 @@ export interface FinixPriceState {
   totalBnbDefinixFinixBnbPair: number
   totalSixDefinixSixBusdPair: number
   totalBnbDefinixSixBusdPair: number
-  totalBnbInPancakeBnbBusdPair: number
-  totalBusdInPancakeBnbBusdPair: number
+  totalBnbInDefinixBnbBusdPair: number
+  totalBusdInDefinixBnbBusdPair: number
 }
 
 export interface ProfileState {
