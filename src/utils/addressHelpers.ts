@@ -25,9 +25,6 @@ export const getWbnbAddress = () => {
 export const getSixAddress = () => {
   return getAddress(addresses.six)
 }
-export const getFinixAddress = () => {
-  return getAddress(addresses.finix)
-}
 export const getBusdAddress = () => {
   return getAddress(addresses.busd)
 }

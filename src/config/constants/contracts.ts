@@ -1,11 +1,7 @@
 export default {
-  finix: {
-    97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
-  },
   definixMasterChef: {
-    97: process.env.REACT_APP_PANFINIX_MASTER_CHEF_TESTNET,
-    56: process.env.REACT_APP_PANFINIX_MASTER_CHEF_MAINNET,
+    97: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
+    56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
   masterChef: {
     97: process.env.REACT_APP_MASTER_CHEF_TESTNET,
@@ -44,8 +40,8 @@ export default {
     56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
   },
   definixBnbBusdLP: {
-    97: process.env.REACT_APP_PANFINIX_BNB_BUSD_LP_TESTNET,
-    56: process.env.REACT_APP_PANFINIX_BNB_BUSD_LP_MAINNET,
+    97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
+    56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
   },
   // configured =====================================================
   syrup: {

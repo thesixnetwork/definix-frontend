@@ -160,7 +160,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // const totalSixDefinixSixBusdPair = 12820512.82
   // const totalBnbDefinixSixBusdPair = 500000.0
   const sixBusdRatio = totalBnbDefinixSixBusdPair / totalSixDefinixSixBusdPair || 0
-  // PANFINIX BNB-BUSD
+  // PANCAKE BNB-BUSD
   // const totalBnbInDefinixBnbBusdPair = 557985
   // const totalBusdInDefinixBnbBusdPair = 152220163
   const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
