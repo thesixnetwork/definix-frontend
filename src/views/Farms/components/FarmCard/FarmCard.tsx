@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { communityFarms } from 'config/constants'
@@ -117,7 +118,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const earnLabel = farm.dual ? farm.dual.earnLabel : 'FINIX'
-  const farmAPY = farm.apy && farm.apy.times(new BigNumber(100)).toNumber().toLocaleString('en-US').slice(0, -1)
+  const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format("0,0")
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })

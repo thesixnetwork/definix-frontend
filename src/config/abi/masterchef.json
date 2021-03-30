@@ -18,7 +18,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_cakePerBlock",
+        "name": "_finixPerBlock",
         "type": "uint256"
       },
       {
@@ -175,7 +175,7 @@
   },
   {
     "inputs": [],
-    "name": "cakePerBlock",
+    "name": "finixPerBlock",
     "outputs": [
       {
         "internalType": "uint256",
