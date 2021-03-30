@@ -61,7 +61,6 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
-  finixPrice?: BigNumber
   bnbPrice?: BigNumber
   ethPrice?: BigNumber
   sixPrice?: BigNumber
@@ -74,7 +73,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
   farm,
   removed,
   sixPrice,
-  finixPrice,
   finixPrice,
   bnbPrice,
   ethPrice,
@@ -110,7 +108,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       return finixPrice.times(farm.lpTotalInQuoteToken)
     }
     return farm.lpTotalInQuoteToken
-  }, [sixPrice, finixPrice, bnbPrice, finixPrice, ethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
+  }, [sixPrice, bnbPrice, finixPrice, ethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
 
   const totalValueFormated = totalValue
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`

@@ -100,15 +100,6 @@ export const usePriceSixBusd = (): BigNumber => {
 
 export const usePriceFinixBusd = (): BigNumber => {
   // const pid = 1 // FINIX-BNB LP
-  const pid = parseInt(process.env.REACT_APP_FINIX_BNB_PID, 10) // FINIX-BNB LP
-  const bnbPriceUSD = usePriceBnbBusd()
-  const farm = useFarmFromPid(pid)
-  if (!farm) return ZERO
-  return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
-}
-
-export const usePriceFinixBusd = (): BigNumber => {
-  // const pid = 1 // FINIX-BNB LP
   const pid = parseInt(process.env.REACT_APP_FINIX_BUSD_PID, 10) // FINIX-BUSD LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO

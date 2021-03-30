@@ -25,7 +25,6 @@ import FarmTabButtons from './components/FarmTabButtons'
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
-  const finixPrice = usePriceFinixBusd()
   const bnbPrice = usePriceBnbBusd()
   const sixPrice = usePriceSixBusd()
   const finixPrice = usePriceFinixUsd()
