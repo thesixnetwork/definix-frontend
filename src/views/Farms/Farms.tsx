@@ -57,7 +57,9 @@ const Farms: React.FC = () => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
-        const totalRewardPerBlock = new BigNumber(farm.finixPerBlock).times(farm.BONUS_MULTIPLIER).div(new BigNumber(10).pow(18))
+        const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
+          .times(farm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
         const cakeRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
         const cakeRewardPerYear = cakeRewardPerBlock.times(BLOCKS_PER_YEAR)
 

@@ -110,7 +110,7 @@ const fetchFarms = async () => {
         poolWeight: poolWeight.toJSON(),
         multiplier: `${allocPoint.div(100).toString()}X`,
         finixPerBlock: new BigNumber(finixPerBlock).toJSON(),
-        BONUS_MULTIPLIER: new BigNumber(BONUS_MULTIPLIER).toJSON()
+        BONUS_MULTIPLIER: new BigNumber(BONUS_MULTIPLIER).toJSON(),
       }
     }),
   )
