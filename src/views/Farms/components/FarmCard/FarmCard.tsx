@@ -104,9 +104,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (farm.quoteTokenSymbol === QuoteToken.SIX) {
       return sixPrice.times(farm.lpTotalInQuoteToken)
     }
-    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-      return finixPrice.times(farm.lpTotalInQuoteToken)
-    }
     return farm.lpTotalInQuoteToken
   }, [sixPrice, bnbPrice, finixPrice, ethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
 

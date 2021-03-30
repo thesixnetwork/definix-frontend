@@ -94,7 +94,6 @@ const Farms: React.FC = () => {
           farm={farm}
           removed={removed}
           bnbPrice={bnbPrice}
-          finixPrice={finixPrice}
           ethPrice={ethPriceUsd}
           sixPrice={sixPrice}
           finixPrice={finixPrice}
@@ -103,7 +102,7 @@ const Farms: React.FC = () => {
         />
       ))
     },
-    [finixPrice, sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account],
+    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account],
   )
 
   return (
