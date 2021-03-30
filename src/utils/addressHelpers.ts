@@ -10,11 +10,11 @@ export const getAddress = (address: Address): string => {
 export const getFinixAddress = () => {
   return getAddress(addresses.finix)
 }
-export const getDefinixMasterChefAddress = () => {
-  return getAddress(addresses.definixMasterChef)
+export const getDefinixHerodotusAddress = () => {
+  return getAddress(addresses.definixHerodotus)
 }
-export const getMasterChefAddress = () => {
-  return getAddress(addresses.masterChef)
+export const getHerodotusAddress = () => {
+  return getAddress(addresses.herodotus)
 }
 export const getMulticallAddress = () => {
   return getAddress(addresses.mulltiCall)

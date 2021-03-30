@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import multicall from 'utils/multicall'
-import { getMasterChefAddress } from 'utils/addressHelpers'
-import masterChefABI from 'config/abi/masterchef.json'
+import { getHerodotusAddress } from 'utils/addressHelpers'
+import herodotusABI from 'config/abi/herodotus.json'
 import { farmsConfig } from 'config/constants'
 import { FarmConfig } from 'config/constants/types'
 import useRefresh from './useRefresh'
@@ -20,12 +20,12 @@ const useFarmsWithBalance = () => {
   useEffect(() => {
     const fetchBalances = async () => {
       const calls = farmsConfig.map((farm) => ({
-        address: getMasterChefAddress(),
+        address: getHerodotusAddress(),
         name: 'pendingFinix',
         params: [farm.pid, account],
       }))
 
-      const rawResults = await multicall(masterChefABI, calls)
+      const rawResults = await multicall(herodotusABI, calls)
       const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
 
       setFarmsWithBalances(results)

@@ -12,11 +12,11 @@ export const getContract = (provider: ProviderType, address: string) => {
 
 export const getAllowance = async (
   lpContract: Contract,
-  masterChefContract: Contract,
+  herodotusContract: Contract,
   account: string,
 ): Promise<string> => {
   try {
-    const allowance: string = await lpContract.methods.allowance(account, masterChefContract.options.address).call()
+    const allowance: string = await lpContract.methods.allowance(account, herodotusContract.options.address).call()
     return allowance
   } catch (e) {
     return '0'

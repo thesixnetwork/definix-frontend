@@ -3,8 +3,8 @@ import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import {
-  getDefinixMasterChefAddress,
-  getMasterChefAddress,
+  getDefinixHerodotusAddress,
+  getHerodotusAddress,
   getWbnbAddress,
   getSixAddress,
   getFinixAddress,
@@ -58,7 +58,7 @@ export const finixPriceSlice = createSlice({
 // Actions
 export const { setFinixPrice } = finixPriceSlice.actions
 
-const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, masterChefAddress }) => {
+const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
   let pair2Amount = 0
   try {
@@ -102,7 +102,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getFinixSixLPAddress(),
       pair1: getFinixAddress(),
       pair2: getSixAddress(),
-      masterChefAddress: getMasterChefAddress(),
+      herodotusAddress: getHerodotusAddress(),
     }),
   )
   fetchPromise.push(
@@ -110,7 +110,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getFinixBusdLPAddress(),
       pair1: getFinixAddress(),
       pair2: getBusdAddress(),
-      masterChefAddress: getMasterChefAddress(),
+      herodotusAddress: getHerodotusAddress(),
     }),
   )
   fetchPromise.push(
@@ -118,7 +118,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getFinixBnbLPAddress(),
       pair1: getFinixAddress(),
       pair2: getWbnbAddress(),
-      masterChefAddress: getMasterChefAddress(),
+      herodotusAddress: getHerodotusAddress(),
     }),
   )
   fetchPromise.push(
@@ -126,7 +126,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getSixBusdLPAddress(),
       pair1: getSixAddress(),
       pair2: getBusdAddress(),
-      masterChefAddress: getMasterChefAddress(),
+      herodotusAddress: getHerodotusAddress(),
     }),
   )
   fetchPromise.push(
@@ -134,7 +134,7 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getDefinixBnbBusdLPAddress(),
       pair1: getWbnbAddress(),
       pair2: getBusdAddress(),
-      masterChefAddress: getDefinixMasterChefAddress(),
+      herodotusAddress: getDefinixHerodotusAddress(),
     }),
   )
   // FINIX-SIX

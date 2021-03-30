@@ -1,11 +1,11 @@
 export default {
-  definixMasterChef: {
+  definixHerodotus: {
     97: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
     56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
-  masterChef: {
-    97: process.env.REACT_APP_MASTER_CHEF_TESTNET,
-    56: process.env.REACT_APP_MASTER_CHEF_MAINNET,
+  herodotus: {
+    97: process.env.REACT_APP_HERODOTUS_TESTNET,
+    56: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
   wbnb: {
     97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,

@@ -4,7 +4,7 @@ import { ContractOptions } from 'web3-eth-contract'
 import useWeb3 from 'hooks/useWeb3'
 import {
   getAddress,
-  getMasterChefAddress,
+  getHerodotusAddress,
   getFinixAddress,
   getLotteryAddress,
   getLotteryTicketAddress,
@@ -22,7 +22,7 @@ import bunnyFactory from 'config/abi/bunnyFactory.json'
 import definixRabbits from 'config/abi/definixRabbits.json'
 import lottery from 'config/abi/lottery.json'
 import lotteryTicket from 'config/abi/lotteryNft.json'
-import masterChef from 'config/abi/masterchef.json'
+import herodotus from 'config/abi/herodotus.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/definixProfile.json'
@@ -83,9 +83,9 @@ export const useLotteryTicket = () => {
   return useContract(abi, getLotteryTicketAddress())
 }
 
-export const useMasterchef = () => {
-  const abi = (masterChef as unknown) as AbiItem
-  return useContract(abi, getMasterChefAddress())
+export const useHerodotus = () => {
+  const abi = (herodotus as unknown) as AbiItem
+  return useContract(abi, getHerodotusAddress())
 }
 
 export const useSousChef = (id) => {
