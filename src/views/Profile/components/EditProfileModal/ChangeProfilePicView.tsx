@@ -21,7 +21,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
   const dispatch = useDispatch()
   const { profile } = useProfile()
-  const pancakeRabbitsContract = usePancakeRabbits()
+  const definixRabbitsContract = usePancakeRabbits()
   const profileContract = useProfileContract()
   const { account } = useWallet()
   const { toastSuccess } = useToast()
@@ -34,7 +34,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     handleConfirm,
   } = useApproveConfirmTransaction({
     onApprove: () => {
-      return pancakeRabbitsContract.methods.approve(getPancakeProfileAddress(), tokenId).send({ from: account })
+      return definixRabbitsContract.methods.approve(getPancakeProfileAddress(), tokenId).send({ from: account })
     },
     onConfirm: () => {
       if (!profile.isActive) {

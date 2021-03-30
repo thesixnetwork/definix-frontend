@@ -17,7 +17,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const { profile } = useProfile()
   const { numberCakeToReactivate } = useGetProfileCosts()
   const TranslateString = useI18n()
-  const pancakeProfileContract = useProfileContract()
+  const definixProfileContract = useProfileContract()
   const { account } = useWallet()
   const { toastSuccess, toastError } = useToast()
   const dispatch = useDispatch()
@@ -25,7 +25,7 @@ const PauseProfilePage: React.FC<PauseProfilePageProps> = ({ onDismiss }) => {
   const handleChange = () => setIsAcknowledged(!isAcknowledged)
 
   const handleDeactivateProfile = () => {
-    pancakeProfileContract.methods
+    definixProfileContract.methods
       .pauseProfile()
       .send({ from: account })
       .on('sending', () => {

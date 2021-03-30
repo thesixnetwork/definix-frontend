@@ -11,7 +11,7 @@ export const getCakeAddress = () => {
   return getAddress(addresses.cake)
 }
 export const getPancakeMasterChefAddress = () => {
-  return getAddress(addresses.pancakeMasterChef)
+  return getAddress(addresses.definixMasterChef)
 }
 export const getMasterChefAddress = () => {
   return getAddress(addresses.masterChef)
@@ -44,7 +44,7 @@ export const getSixBusdLPAddress = () => {
   return getAddress(addresses.sixBusdLP)
 }
 export const getPancakeBnbBusdLPAddress = () => {
-  return getAddress(addresses.pancakeBnbBusdLP)
+  return getAddress(addresses.definixBnbBusdLP)
 }
 export const getLotteryAddress = () => {
   return getAddress(addresses.lottery)
@@ -53,10 +53,10 @@ export const getLotteryTicketAddress = () => {
   return getAddress(addresses.lotteryNFT)
 }
 export const getPancakeProfileAddress = () => {
-  return getAddress(addresses.pancakeProfile)
+  return getAddress(addresses.definixProfile)
 }
 export const getPancakeRabbitsAddress = () => {
-  return getAddress(addresses.pancakeRabbits)
+  return getAddress(addresses.definixRabbits)
 }
 export const getBunnyFactoryAddress = () => {
   return getAddress(addresses.bunnyFactory)

@@ -62,7 +62,7 @@ const config: MenuEntry[] = [
 //   {
 //     label: 'Home',
 //     icon: 'HomeIcon',
-//     href: 'https://pancakeswap.finance/',
+//     href: 'https://definixswap.finance/',
 //   },
 //   {
 //     label: 'Trade',
@@ -82,22 +82,22 @@ const config: MenuEntry[] = [
 //   {
 //     label: 'Farms',
 //     icon: 'FarmIcon',
-//     href: 'https://pancakeswap.finance/farms',
+//     href: 'https://definixswap.finance/farms',
 //   },
 //   {
 //     label: 'Pools',
 //     icon: 'PoolIcon',
-//     href: 'https://pancakeswap.finance/syrup',
+//     href: 'https://definixswap.finance/syrup',
 //   },
 //   {
 //     label: 'Lottery',
 //     icon: 'TicketIcon',
-//     href: 'https://pancakeswap.finance/lottery',
+//     href: 'https://definixswap.finance/lottery',
 //   },
 //   {
 //     label: 'NFT',
 //     icon: 'NftIcon',
-//     href: 'https://pancakeswap.finance/nft',
+//     href: 'https://definixswap.finance/nft',
 //   },
 //   {
 //     label: 'Teams & Profile',
@@ -105,11 +105,11 @@ const config: MenuEntry[] = [
 //     items: [
 //       {
 //         label: 'Leaderboard',
-//         href: 'https://pancakeswap.finance/teams',
+//         href: 'https://definixswap.finance/teams',
 //       },
 //       {
 //         label: 'Your Profile',
-//         href: 'https://pancakeswap.finance/profile',
+//         href: 'https://definixswap.finance/profile',
 //       },
 //     ],
 //   },
@@ -119,26 +119,26 @@ const config: MenuEntry[] = [
 //     items: [
 //       {
 //         label: 'Overview',
-//         href: 'https://pancakeswap.info',
+//         href: 'https://definixswap.info',
 //       },
 //       {
 //         label: 'Tokens',
-//         href: 'https://pancakeswap.info/tokens',
+//         href: 'https://definixswap.info/tokens',
 //       },
 //       {
 //         label: 'Pairs',
-//         href: 'https://pancakeswap.info/pairs',
+//         href: 'https://definixswap.info/pairs',
 //       },
 //       {
 //         label: 'Accounts',
-//         href: 'https://pancakeswap.info/accounts',
+//         href: 'https://definixswap.info/accounts',
 //       },
 //     ],
 //   },
 //   {
 //     label: 'IFO',
 //     icon: 'IfoIcon',
-//     href: 'https://pancakeswap.finance/ifo',
+//     href: 'https://definixswap.finance/ifo',
 //   },
 //   {
 //     label: 'More',
@@ -146,19 +146,19 @@ const config: MenuEntry[] = [
 //     items: [
 //       {
 //         label: 'Voting',
-//         href: 'https://voting.pancakeswap.finance',
+//         href: 'https://voting.definixswap.finance',
 //       },
 //       {
 //         label: 'Github',
-//         href: 'https://github.com/pancakeswap',
+//         href: 'https://github.com/definixswap',
 //       },
 //       {
 //         label: 'Docs',
-//         href: 'https://docs.pancakeswap.finance',
+//         href: 'https://docs.definixswap.finance',
 //       },
 //       {
 //         label: 'Blog',
-//         href: 'https://pancakeswap.medium.com',
+//         href: 'https://definixswap.medium.com',
 //       },
 //     ],
 //   },

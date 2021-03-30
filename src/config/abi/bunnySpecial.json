@@ -13,7 +13,7 @@
       },
       {
         "internalType": "contract IPancakeProfile",
-        "name": "_pancakeProfile",
+        "name": "_definixProfile",
         "type": "address"
       },
       {
@@ -370,7 +370,7 @@
   },
   {
     "inputs": [],
-    "name": "pancakeProfile",
+    "name": "definixProfile",
     "outputs": [
       {
         "internalType": "contract IPancakeProfile",

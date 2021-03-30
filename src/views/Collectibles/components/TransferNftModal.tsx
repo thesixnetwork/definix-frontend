@@ -43,7 +43,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   const [error, setError] = useState(null)
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const pancakeRabbitsContract = usePancakeRabbits()
+  const definixRabbitsContract = usePancakeRabbits()
   const { toastSuccess } = useToast()
 
   const handleConfirm = async () => {
@@ -53,7 +53,7 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
       if (!isValidAddress) {
         setError(TranslateString(999, 'Please enter a valid wallet address'))
       } else {
-        await pancakeRabbitsContract.methods
+        await definixRabbitsContract.methods
           .transferFrom(account, value, tokenIds[0])
           .send({ from: account })
           .on('sending', () => {

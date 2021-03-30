@@ -3,7 +3,7 @@ export default {
     97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
     56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
   },
-  pancakeMasterChef: {
+  definixMasterChef: {
     97: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
     56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
@@ -43,7 +43,7 @@ export default {
     97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
     56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
   },
-  pancakeBnbBusdLP: {
+  definixBnbBusdLP: {
     97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
     56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
   },
@@ -72,11 +72,11 @@ export default {
     56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
     97: '',
   },
-  pancakeProfile: {
+  definixProfile: {
     56: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a',
     97: '0x4B683C7E13B6d5D7fd1FeA9530F451954c1A7c8A',
   },
-  pancakeRabbits: {
+  definixRabbits: {
     56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
     97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
   },

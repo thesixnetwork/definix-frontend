@@ -19,13 +19,13 @@ import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
 import bunnyFactory from 'config/abi/bunnyFactory.json'
-import pancakeRabbits from 'config/abi/pancakeRabbits.json'
+import definixRabbits from 'config/abi/definixRabbits.json'
 import lottery from 'config/abi/lottery.json'
 import lotteryTicket from 'config/abi/lotteryNft.json'
 import masterChef from 'config/abi/masterchef.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
-import profile from 'config/abi/pancakeProfile.json'
+import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 
@@ -64,8 +64,8 @@ export const useBunnyFactory = () => {
 }
 
 export const usePancakeRabbits = () => {
-  const pancakeRabbitsAbi = (pancakeRabbits as unknown) as AbiItem
-  return useContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
+  const definixRabbitsAbi = (definixRabbits as unknown) as AbiItem
+  return useContract(definixRabbitsAbi, getPancakeRabbitsAddress())
 }
 
 export const useProfile = () => {

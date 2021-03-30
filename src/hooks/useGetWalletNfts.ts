@@ -3,7 +3,7 @@ import { useEffect, useReducer } from 'react'
 import { getPancakeRabbitContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
 
-const pancakeRabbitsContract = getPancakeRabbitContract()
+const definixRabbitsContract = getPancakeRabbitContract()
 
 export type NftMap = {
   [key: number]: {
@@ -57,14 +57,14 @@ const useGetWalletNfts = () => {
   useEffect(() => {
     const fetchNfts = async () => {
       try {
-        const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
+        const balanceOf = await definixRabbitsContract.methods.balanceOf(account).call()
 
         if (balanceOf > 0) {
           let nfts: NftMap = {}
 
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
-              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract.methods
+              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = definixRabbitsContract.methods
               const tokenId = await tokenOfOwnerByIndex(account, index).call()
               const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId).call, tokenURI(tokenId).call])
 

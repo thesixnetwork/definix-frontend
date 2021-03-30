@@ -27,14 +27,14 @@ const ProfilePicture: React.FC = () => {
   const { tokenId, actions } = useContext(ProfileCreationContext)
   const TranslateString = useI18n()
   const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
-  const pancakeRabbitsContract = usePancakeRabbits()
+  const definixRabbitsContract = usePancakeRabbits()
   const { account } = useWallet()
   const { toastError } = useToast()
   const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
 
   const handleApprove = () => {
-    pancakeRabbitsContract.methods
+    definixRabbitsContract.methods
       .approve(getPancakeProfileAddress(), tokenId)
       .send({ from: account })
       .on('sending', () => {

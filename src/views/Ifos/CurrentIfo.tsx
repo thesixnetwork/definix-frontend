@@ -52,10 +52,10 @@ const Ifo = () => {
             <li>{TranslateString(598, 'Get CAKE-BNB LP tokens by adding CAKE and BNB liquidity')}</li>
           </List>
           <Flex mb="16px">
-            <LinkExternal href="https://exchange.pancakeswap.finance/#/swap" mr="16px">
+            <LinkExternal href="https://exchange.definixswap.finance/#/swap" mr="16px">
               {TranslateString(1060, 'Buy CAKE')}
             </LinkExternal>
-            <LinkExternal href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
+            <LinkExternal href="https://exchange.definixswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82">
               {TranslateString(1062, 'Get LP tokens')}
             </LinkExternal>
           </Flex>
@@ -72,7 +72,7 @@ const Ifo = () => {
             <Button
               as="a"
               variant="secondary"
-              href="https://docs.pancakeswap.finance/core-products/ifo-initial-farm-offering"
+              href="https://docs.definixswap.finance/core-products/ifo-initial-farm-offering"
             >
               {TranslateString(610, 'Read more')}
             </Button>

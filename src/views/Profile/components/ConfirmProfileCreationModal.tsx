@@ -30,7 +30,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
 }) => {
   const TranslateString = useI18n()
   const profileContract = useProfile()
-  const pancakeRabbitsContract = usePancakeRabbits()
+  const definixRabbitsContract = usePancakeRabbits()
   const dispatch = useDispatch()
   const { toastSuccess } = useToast()
   const cakeContract = useCake()
@@ -57,7 +57,7 @@ const ConfirmProfileCreationModal: React.FC<Props> = ({
     },
     onConfirm: () => {
       return profileContract.methods
-        .createProfile(teamId, pancakeRabbitsContract.options.address, tokenId)
+        .createProfile(teamId, definixRabbitsContract.options.address, tokenId)
         .send({ from: account })
     },
     onSuccess: async () => {
