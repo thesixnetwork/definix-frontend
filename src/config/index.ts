@@ -6,10 +6,10 @@ BigNumber.config({
 })
 
 export const IS_GENESIS = true
-export const CAKE_PER_BLOCK = new BigNumber(1.08)
+export const FINIX_PER_BLOCK = new BigNumber(1.08)
 export const BLOCKS_PER_YEAR = new BigNumber(10512000)
 export const BSC_BLOCK_TIME = 3
-export const CAKE_POOL_PID = 7
+export const FINIX_POOL_PID = 7
 export const BASE_EXCHANGE_URL = 'https://youngexchange.definix.com'
 export const BASE_ADD_LIQUIDITY_URL = `${BASE_EXCHANGE_URL}/#/add`
 export const BASE_LIQUIDITY_POOL_URL = `${BASE_EXCHANGE_URL}/#/pool`

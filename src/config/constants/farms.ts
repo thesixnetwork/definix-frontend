@@ -79,12 +79,12 @@ const farms: FarmConfig[] = [
   },
   // {
   //   pid: 1,
-  //   lpSymbol: 'CAKE-BNB LP',
+  //   lpSymbol: 'FINIX-BNB LP',
   //   lpAddresses: {
   //     97: '0xe70b7523f4bffa1f2e88d2ba709afd026030f412',
   //     56: '0xA527a61703D82139F8a06Bc30097cC9CAA2df5A6',
   //   },
-  //   tokenSymbol: 'CAKE',
+  //   tokenSymbol: 'FINIX',
   //   tokenAddresses: {
   //     97: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
   //     56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
@@ -1125,7 +1125,7 @@ const farms: FarmConfig[] = [
   // },
   // {
   //   pid: 34,
-  //   lpSymbol: 'STAX-CAKE LP',
+  //   lpSymbol: 'STAX-FINIX LP',
   //   lpAddresses: {
   //     97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
   //     56: '0x7cd05f8b960ba071fdf69c750c0e5a57c8366500',
@@ -1135,13 +1135,13 @@ const farms: FarmConfig[] = [
   //     97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
   //     56: '0x0Da6Ed8B13214Ff28e9Ca979Dd37439e8a88F6c4',
   //   },
-  //   quoteTokenSymbol: QuoteToken.CAKE,
-  //   quoteTokenAdresses: contracts.cake,
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
   //   isCommunity: true,
   // },
   // {
   //   pid: 35,
-  //   lpSymbol: 'NAR-CAKE LP',
+  //   lpSymbol: 'NAR-FINIX LP',
   //   lpAddresses: {
   //     97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
   //     56: '0x745c4fd226e169d6da959283275a8e0ecdd7f312',
@@ -1151,13 +1151,13 @@ const farms: FarmConfig[] = [
   //     97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
   //     56: '0xa1303e6199b319a891b79685f0537d289af1fc83',
   //   },
-  //   quoteTokenSymbol: QuoteToken.CAKE,
-  //   quoteTokenAdresses: contracts.cake,
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
   //   isCommunity: true,
   // },
   // {
   //   pid: 36,
-  //   lpSymbol: 'NYA-CAKE LP',
+  //   lpSymbol: 'NYA-FINIX LP',
   //   lpAddresses: {
   //     97: '0xE66790075ad839978fEBa15D4d8bB2b415556a1D',
   //     56: '0x2730bf486d658838464a4ef077880998d944252d',
@@ -1167,13 +1167,13 @@ const farms: FarmConfig[] = [
   //     97: '0xE02dF9e3e622DeBdD69fb838bB799E3F168902c5',
   //     56: '0xbfa0841f7a90c4ce6643f651756ee340991f99d5',
   //   },
-  //   quoteTokenSymbol: QuoteToken.CAKE,
-  //   quoteTokenAdresses: contracts.cake,
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
   //   isCommunity: true,
   // },
   // {
   //   pid: 38,
-  //   lpSymbol: 'bROOBEE-CAKE LP',
+  //   lpSymbol: 'bROOBEE-FINIX LP',
   //   lpAddresses: {
   //     97: '',
   //     56: '0x970858016C963b780E06f7DCfdEf8e809919BcE8',
@@ -1183,8 +1183,8 @@ const farms: FarmConfig[] = [
   //     97: '',
   //     56: '0xe64f5cb844946c1f102bd25bbd87a5ab4ae89fbe',
   //   },
-  //   quoteTokenSymbol: QuoteToken.CAKE,
-  //   quoteTokenAdresses: contracts.cake,
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
   //   isCommunity: true,
   // },
   // {

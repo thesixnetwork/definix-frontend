@@ -4,11 +4,11 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getFinixAddress } from 'utils/addressHelpers'
 import CardValue from './CardValue'
 import stats from '../../../assets/images/stats.png'
 
-const StyledCakeStats = styled(Card)`
+const StyledFinixStats = styled(Card)`
   margin-left: auto;
   margin-right: auto;
   background: url(${stats});
@@ -33,19 +33,19 @@ const Row = styled.div`
   }
 `
 
-const CakeStats = () => {
+const FinixStats = () => {
   const TranslateString = useI18n()
   const totalSupply = useTotalSupply()
-  const burnedBalance = getBalanceNumber(useBurnedBalance(getCakeAddress()))
-  const cakeSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
+  const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
 
   return (
-    <StyledCakeStats isRainbow>
+    <StyledFinixStats isRainbow>
       <CardBody className="pa-6">
         <Heading mb="20px">FINIX Stats</Heading>
         <Row>
           <Text small>{TranslateString(536, 'Total FINIX Supply')}</Text>
-          {cakeSupply && <CardValue fontSize="18px" fontWeight="bold" value={cakeSupply} />}
+          {finixSupply && <CardValue fontSize="18px" fontWeight="bold" value={finixSupply} />}
         </Row>
         <Row>
           <Text small>{TranslateString(538, 'Total FINIX Burned')}</Text>
@@ -56,8 +56,8 @@ const CakeStats = () => {
           <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={25} />
         </Row>
       </CardBody>
-    </StyledCakeStats>
+    </StyledFinixStats>
   )
 }
 
-export default CakeStats
+export default FinixStats

@@ -2,29 +2,29 @@ import React, { useState } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
-import { useCake } from 'hooks/useContract'
+import { useFinix } from 'hooks/useContract'
 import { useProfile, useToast } from 'state/hooks'
 import { getDefinixProfileAddress } from 'utils/addressHelpers'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useGetProfileCosts from '../../hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
 
-interface ApproveCakePageProps extends InjectedModalProps {
+interface ApproveFinixPageProps extends InjectedModalProps {
   goToChange: UseEditProfileResponse['goToChange']
 }
 
-const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss }) => {
+const ApproveFinixPage: React.FC<ApproveFinixPageProps> = ({ goToChange, onDismiss }) => {
   const [isApproving, setIsApproving] = useState(false)
   const { profile } = useProfile()
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const { numberCakeToUpdate, numberCakeToReactivate } = useGetProfileCosts()
-  const cakeContract = useCake()
+  const { numberFinixToUpdate, numberFinixToReactivate } = useGetProfileCosts()
+  const finixContract = useFinix()
   const { toastError } = useToast()
-  const cost = profile.isActive ? numberCakeToUpdate : numberCakeToReactivate
+  const cost = profile.isActive ? numberFinixToUpdate : numberFinixToReactivate
 
   const handleApprove = () => {
-    cakeContract.methods
+    finixContract.methods
       .approve(getDefinixProfileAddress(), cost.times(2).toJSON())
       .send({ from: account })
       .on('sending', () => {
@@ -49,7 +49,7 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
         <Text>
           {profile.isActive ? TranslateString(999, 'Cost to update:') : TranslateString(999, 'Cost to reactivate:')}
         </Text>
-        <Text>{TranslateString(999, `${getFullDisplayBalance(cost)} CAKE`)}</Text>
+        <Text>{TranslateString(999, `${getFullDisplayBalance(cost)} FINIX`)}</Text>
       </Flex>
       <Button
         disabled={isApproving}
@@ -68,4 +68,4 @@ const ApproveCakePage: React.FC<ApproveCakePageProps> = ({ goToChange, onDismiss
   )
 }
 
-export default ApproveCakePage
+export default ApproveFinixPage

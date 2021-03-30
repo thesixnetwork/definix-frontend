@@ -1,13 +1,13 @@
 import BigNumber from 'bignumber.js'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getFinixAddress } from 'utils/addressHelpers'
 import useTokenBalance from './useTokenBalance'
 
 /**
- * A hook to check if a wallet's CAKE balance is at least the amount passed in
+ * A hook to check if a wallet's FINIX balance is at least the amount passed in
  */
-const useHasCakeBalance = (minimumBalance: BigNumber) => {
-  const cakeBalance = useTokenBalance(getCakeAddress())
-  return cakeBalance.gte(minimumBalance)
+const useHasFinixBalance = (minimumBalance: BigNumber) => {
+  const finixBalance = useTokenBalance(getFinixAddress())
+  return finixBalance.gte(minimumBalance)
 }
 
-export default useHasCakeBalance
+export default useHasFinixBalance

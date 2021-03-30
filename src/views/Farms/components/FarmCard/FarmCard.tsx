@@ -61,7 +61,7 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
-  cakePrice?: BigNumber
+  finixPrice?: BigNumber
   bnbPrice?: BigNumber
   ethPrice?: BigNumber
   sixPrice?: BigNumber
@@ -75,7 +75,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   removed,
   sixPrice,
   finixPrice,
-  cakePrice,
+  finixPrice,
   bnbPrice,
   ethPrice,
   ethereum,
@@ -86,8 +86,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-  // We assume the token name is coin pair + lp e.g. CAKE-BNB LP, LINK-BNB LP,
-  // NAR-CAKE LP. The images should be cake-bnb.svg, link-bnb.svg, nar-cake.svg
+  // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
+  // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
 
   const totalValue: BigNumber = useMemo(() => {
@@ -97,8 +97,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (farm.quoteTokenSymbol === QuoteToken.BNB) {
       return bnbPrice.times(farm.lpTotalInQuoteToken)
     }
-    if (farm.quoteTokenSymbol === QuoteToken.CAKE) {
-      return cakePrice.times(farm.lpTotalInQuoteToken)
+    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+      return finixPrice.times(farm.lpTotalInQuoteToken)
     }
     if (farm.quoteTokenSymbol === QuoteToken.ETH) {
       return ethPrice.times(farm.lpTotalInQuoteToken)
@@ -110,7 +110,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       return finixPrice.times(farm.lpTotalInQuoteToken)
     }
     return farm.lpTotalInQuoteToken
-  }, [sixPrice, finixPrice, bnbPrice, cakePrice, ethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
+  }, [sixPrice, finixPrice, bnbPrice, finixPrice, ethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
 
   const totalValueFormated = totalValue
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
@@ -126,7 +126,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   return (
     <FCard>
-      {/* {farm.tokenSymbol === 'CAKE' && <StyledCardAccent />} */}
+      {/* {farm.tokenSymbol === 'FINIX' && <StyledCardAccent />} */}
       <CardHeading
         lpLabel={lpLabel}
         multiplier={farm.multiplier}
@@ -141,7 +141,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apy ? (
                 <>
-                  {/* <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} cakePrice={cakePrice} apy={farm.apy} /> */}
+                  {/* <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} /> */}
                   {farmAPY}%
                 </>
               ) : (

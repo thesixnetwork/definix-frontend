@@ -21,7 +21,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useToast } from 'state/hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
-import useHasCakeBalance from 'hooks/useHasCakeBalance'
+import useHasFinixBalance from 'hooks/useHasFinixBalance'
 import debounce from 'lodash/debounce'
 import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
@@ -34,7 +34,7 @@ enum ExistingUserState {
 }
 
 const profileApiUrl = process.env.REACT_APP_API_PROFILE
-const minimumCakeToRegister = new BigNumber(REGISTER_COST).multipliedBy(new BigNumber(10).pow(18))
+const minimumFinixToRegister = new BigNumber(REGISTER_COST).multipliedBy(new BigNumber(10).pow(18))
 
 const InputWrap = styled.div`
   position: relative;
@@ -58,7 +58,7 @@ const Indicator = styled(Flex)`
 
 const UserName: React.FC = () => {
   const [isAcknowledged, setIsAcknoledged] = useState(false)
-  const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const { teamId, tokenId, userName, actions, minimumFinixRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
   const { account, ethereum } = useWallet()
   const { toastError } = useToast()
@@ -67,14 +67,14 @@ const UserName: React.FC = () => {
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeToRegister)
+  const hasMinimumFinixRequired = useHasFinixBalance(minimumFinixToRegister)
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
       tokenId={tokenId}
       account={account}
       teamId={teamId}
-      minimumCakeRequired={minimumCakeRequired}
+      minimumFinixRequired={minimumFinixRequired}
       allowance={allowance}
     />,
     false,
@@ -241,9 +241,9 @@ const UserName: React.FC = () => {
       <Button onClick={onPresentConfirmProfileCreation} disabled={!isValid || !isUserCreated}>
         {TranslateString(842, 'Complete Profile')}
       </Button>
-      {!hasMinimumCakeRequired && (
+      {!hasMinimumFinixRequired && (
         <Text color="failure" mt="16px">
-          {TranslateString(1098, `A minimum of ${REGISTER_COST} CAKE is required`, { num: REGISTER_COST })}
+          {TranslateString(1098, `A minimum of ${REGISTER_COST} FINIX is required`, { num: REGISTER_COST })}
         </Text>
       )}
     </>

@@ -3,7 +3,7 @@ import Page from 'components/layout/Page'
 import React from 'react'
 import styled from 'styled-components'
 import { BaseLayout, Heading, Text } from 'uikit-dev'
-import CakeStats from 'views/Home/components/CakeStats'
+import FinixStats from 'views/Home/components/FinixStats'
 import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
@@ -98,7 +98,7 @@ const Home: React.FC = () => {
         </CTACards> */}
         <Cards>
           <TotalValueLockedCard />
-          <CakeStats />
+          <FinixStats />
         </Cards>
         <CardStake large />
         <div className="flex align-center justify-center mt-6">

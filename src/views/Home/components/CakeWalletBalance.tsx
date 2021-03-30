@@ -3,17 +3,17 @@ import { Text } from 'uikit-dev'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceCakeBusd } from 'state/hooks'
+import { usePriceFinixBusd } from 'state/hooks'
 import { BigNumber } from 'bignumber.js'
 import CardValue from './CardValue'
 import CardBusdValue from './CardBusdValue'
 
-const CakeWalletBalance = () => {
+const FinixWalletBalance = () => {
   const TranslateString = useI18n()
-  const cakeBalance = useTokenBalance(getCakeAddress())
-  const busdBalance = new BigNumber(getBalanceNumber(cakeBalance)).multipliedBy(usePriceCakeBusd()).toNumber()
+  const finixBalance = useTokenBalance(getFinixAddress())
+  const busdBalance = new BigNumber(getBalanceNumber(finixBalance)).multipliedBy(usePriceFinixBusd()).toNumber()
   const { account } = useWallet()
 
   if (!account) {
@@ -26,10 +26,10 @@ const CakeWalletBalance = () => {
 
   return (
     <>
-      <CardValue value={getBalanceNumber(cakeBalance)} decimals={4} fontSize="24px" lineHeight="36px" />
+      <CardValue value={getBalanceNumber(finixBalance)} decimals={4} fontSize="24px" lineHeight="36px" />
       <CardBusdValue value={busdBalance} />
     </>
   )
 }
 
-export default CakeWalletBalance
+export default FinixWalletBalance
