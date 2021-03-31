@@ -236,9 +236,11 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               {currentBlockNumber === 0 ? (
                 <span className="col-6">Loading</span>
               ) : (
-                <div className="col-6" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <div className="col-6 flex align-baseline justify-end">
                   <Balance isDisabled={isFinished} value={totalRewardedDisplay} decimals={2} unit=" FINIX" />
-                  <span style={{ width: '20px', textAlign: 'center' }}>{' / '}</span>
+                  <span className="flex-shrink" style={{ width: '20px', textAlign: 'center' }}>
+                    /
+                  </span>
                   <Balance isDisabled={isFinished} value={totalReward} decimals={2} unit=" FINIX" />
                 </div>
               )}
