@@ -262,7 +262,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
-          <Link href="https://youngexchange.definix.com/#/swap" target="_blank" className="mx-auto mb-4">
+          <Link href="https://exchange.definix.com/#/swap" target="_blank" className="mx-auto mb-4">
             Buy {tokenName}
           </Link>
           {!account && <UnlockButton fullWidth />}

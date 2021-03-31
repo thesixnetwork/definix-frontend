@@ -297,7 +297,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               </div>
 
               <div className="flex flex-column align-stretch justify-end">
-                <Link href="https://youngexchange.definix.com/#/swap" target="_blank" className="mx-auto">
+                <Link href="https://exchange.definix.com/#/swap" target="_blank" className="mx-auto">
                   Buy {tokenName}
                 </Link>
               </div>

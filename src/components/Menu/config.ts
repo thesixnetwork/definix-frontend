@@ -27,13 +27,13 @@ const config: MenuEntry[] = [
     label: 'Swap',
     icon: swapClick,
     iconActive: swap,
-    href: 'https://youngexchange.definix.com/#/swap',
+    href: 'https://exchange.definix.com/#/swap',
   },
   {
     label: 'Liquidity',
     icon: liquidityClick,
     iconActive: liquidity,
-    href: 'https://youngexchange.definix.com/#/liquidity',
+    href: 'https://exchange.definix.com/#/liquidity',
   },
   {
     label: 'Farm',
