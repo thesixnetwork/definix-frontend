@@ -160,10 +160,10 @@ const TimerWrapper = ({ isPhrase1, date, children }) => {
         tabIndex={0}
         role="button"
         style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault()
         }}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           e.preventDefault()
         }}
       >

@@ -56,10 +56,10 @@ const Farms: React.FC = () => {
     }
   }, [currentTime, phrase2TimeStamp])
 
-  const activeFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const stackedOnlyFarms = activeFarms.filter(
-    farm => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
@@ -67,7 +67,7 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map(farm => {
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
@@ -103,7 +103,7 @@ const Farms: React.FC = () => {
 
         return { ...farm, apy }
       })
-      return farmsToDisplayWithAPY.map(farm => (
+      return farmsToDisplayWithAPY.map((farm) => (
         <FarmCard
           key={farm.pid}
           farm={farm}
@@ -162,10 +162,10 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
         tabIndex={0}
         role="button"
         style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault()
         }}
-        onKeyDown={e => {
+        onKeyDown={(e) => {
           e.preventDefault()
         }}
       >
