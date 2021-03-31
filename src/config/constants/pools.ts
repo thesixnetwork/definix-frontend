@@ -5,10 +5,13 @@ const pools: PoolConfig[] = [
     sousId: 1,
     tokenName: 'SIX',
     stakingTokenName: QuoteToken.SIX,
-    stakingTokenAddress: '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
+    stakingTokenAddress:
+      process.env.REACT_APP_CHAIN_ID === '97'
+        ? process.env.REACT_APP_SIX_ADDRESS_TESTNET
+        : process.env.REACT_APP_SIX_ADDRESS_MAINNET,
     contractAddress: {
-      97: '0xaE3624565C609377AE59E6A05A5f80FB93d580AD',
-      56: '',
+      97: process.env.REACT_APP_GENESIS_CONTRACT_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_GENESIS_CONTRACT_ADDRESS_MAINNET,
     },
     poolCategory: PoolCategory.CORE,
     projectLink: 'https://definix.com/',
