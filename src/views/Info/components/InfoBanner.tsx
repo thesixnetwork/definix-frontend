@@ -86,7 +86,7 @@ const InfoBanner = ({ showBtn = false, className = '' }) => {
     <StyledBanner className={className}>
       <div>
         <Heading as="h3">The Decentralized Multi-chain</Heading>
-        <Heading color="primary">Fund Management Protocal</Heading>
+        <Heading color="primary">Fund Management Protocol</Heading>
         {showBtn && (
           <Button as="a" href="/info" variant="secondary" className="btn-secondary-disable">
             Read more
