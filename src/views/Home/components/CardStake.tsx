@@ -166,7 +166,7 @@ const Content = ({ large }) => {
         <Heading as="h3">First Come, First Served</Heading>
 
         <div className="flex flex-wrap">
-          <div className="flex align-center mr-3">
+          <div className="flex align-center mr-2">
             <Heading>Stake SIX</Heading>
             <Image src="/images/coins/SIX.png" width={16} height={16} />
           </div>

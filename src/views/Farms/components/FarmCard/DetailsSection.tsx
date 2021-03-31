@@ -21,6 +21,7 @@ const StyledLinkExternal = styled(LinkExternal)`
   color: ${({ theme }) => theme.colors.text};
   display: flex;
   align-items: center;
+  justify-content: flex-end;
 
   svg {
     padding-left: 4px;
@@ -41,22 +42,24 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Wrapper>
-      <Flex justifyContent="space-between" flexWrap="wrap" className="mb-2">
+      <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-2">
         <Text>{TranslateString(316, 'Deposit')}:</Text>
         <StyledLinkExternal className="flex-shrink" href={addLiquidityUrl}>
           {lpLabel}
         </StyledLinkExternal>
       </Flex>
       {!removed && (
-        <Flex justifyContent="space-between" className="mb-2">
+        <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-2">
           <Text>{TranslateString(23, 'Total Liquidity')}:</Text>
-          <Text>{totalValueFormated}</Text>
+          <Text className="flex-shrink">{totalValueFormated}</Text>
         </Flex>
       )}
-      <Link external href={bscScanAddress} bold={false}>
-        {TranslateString(356, 'View on BscScan')}
-        <OpenNewIcon color="primary" className="ml-2" />
-      </Link>
+      <Flex justifyContent="flex-start" className="flex">
+        <Link external href={bscScanAddress} bold={false} className="flex-shrink">
+          {TranslateString(356, 'View on BscScan')}
+          <OpenNewIcon color="primary" className="ml-2" />
+        </Link>
+      </Flex>
     </Wrapper>
   )
 }
