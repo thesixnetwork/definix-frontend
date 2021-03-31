@@ -136,7 +136,18 @@ export const usePriceTVL = (): BigNumber => {
   const wbnbBusdPrice = new BigNumber(wbnbBusdQuote)
   const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
   const busdUsdtPrice = new BigNumber(busdUsdtQuote)
-  return BigNumber.sum.apply(null, [sixFinixPrice, sixBusdPrice, sixUsdtPrice, sixWbnbPrice, finixBusdPrice, finixUsdtPrice, finixWbnbPrice, wbnbBusdPrice, wbnbUsdtPrice, busdUsdtPrice])
+  return BigNumber.sum.apply(null, [
+    sixFinixPrice,
+    sixBusdPrice,
+    sixUsdtPrice,
+    sixWbnbPrice,
+    finixBusdPrice,
+    finixUsdtPrice,
+    finixWbnbPrice,
+    wbnbBusdPrice,
+    wbnbUsdtPrice,
+    busdUsdtPrice,
+  ])
 }
 
 export const usePriceEthBusd = (): BigNumber => {

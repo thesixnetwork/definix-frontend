@@ -136,7 +136,8 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
     lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
       .div(new BigNumber(10).pow(18))
       .times(new BigNumber(2))
-      .times(lpTokenRatio).toNumber()
+      .times(lpTokenRatio)
+      .toNumber()
   } catch (error) {
     console.log(error)
   }
@@ -144,7 +145,7 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
 }
 
 // Thunks
-export const fetchFinixPrice = () => async dispatch => {
+export const fetchFinixPrice = () => async (dispatch) => {
   const fetchPromise = []
 
   fetchPromise.push(
@@ -267,7 +268,7 @@ export const fetchFinixPrice = () => async dispatch => {
 }
 
 // Thunks
-export const fetchQuote = () => async dispatch => {
+export const fetchQuote = () => async (dispatch) => {
   const finixAddress = getFinixAddress()
   const sixAddress = getSixAddress()
   const busdAddress = getBusdAddress()
