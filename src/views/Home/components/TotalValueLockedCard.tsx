@@ -28,7 +28,11 @@ const TotalValueLockedCard = () => {
     <StyledTotalValueLockedCard isRainbow>
       <CardBody className="flex flex-column align-center pa-6 mx-auto">
         <Heading mb="16px">{TranslateString(762, 'Total Value Locked (TVL)')}</Heading>
-        {data ? (
+        <Heading fontSize="28px !important" mb="12px">
+          No data
+        </Heading>
+        <Text small>(Across all LPs and Pools)</Text>
+        {/* data ? (
           <>
             <Heading fontSize="28px !important" mb="12px">
               No data
@@ -39,7 +43,7 @@ const TotalValueLockedCard = () => {
           <>
             <Skeleton height={66} />
           </>
-        )}
+        ) */}
       </CardBody>
     </StyledTotalValueLockedCard>
   )
