@@ -210,7 +210,7 @@ const Menu: React.FC<NavProps> = ({
               <strong>${numeral(price).format('0,0.0000')}</strong>
             </p>
           </Price>
-          <Dropdown
+          {/* <Dropdown
             position="bottom-right"
             target={
               <Button
@@ -220,7 +220,6 @@ const Menu: React.FC<NavProps> = ({
                 endIcon={<ChevronDownIcon className="ml-1" />}
                 style={{ borderRadius: '6px', padding: '0 8px 0 12px', boxShadow: '0 1px 2px rgba(0,0,0,0.16)' }}
               >
-                {/* <Text color="textSubtle">{getLanguageName(currentLang)}</Text> */}
               </Button>
             }
           >
@@ -235,7 +234,7 @@ const Menu: React.FC<NavProps> = ({
                 {lang.language}
               </MenuButton>
             ))}
-          </Dropdown>
+          </Dropdown> */}
           {/* {profile && <Avatar profile={profile} />} */}
         </Flex>
       </StyledNav>

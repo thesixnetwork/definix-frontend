@@ -7,7 +7,7 @@ import useBlock from 'hooks/useBlock'
 import useI18n from 'hooks/useI18n'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks'
 import styled from 'styled-components'
@@ -15,6 +15,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolCard from './components/PoolCard'
 import { IS_GENESIS } from '../../config'
+import Flip from '../../uikit-dev/components/Flip'
 
 // import { Heading } from 'uikit-dev'
 // import PoolCard from './components/PoolCard'
@@ -31,6 +32,20 @@ const Farm: React.FC = () => {
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
+  const [isPhrase1, setIsPhrase1] = useState(false)
+  const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
+  const currentTime = new Date().getTime()
+  useEffect(() => {
+    if (currentTime < phrase1TimeStamp) {
+      setTimeout(() => {
+        setIsPhrase1(true)
+      }, phrase1TimeStamp - currentTime)
+    } else {
+      setIsPhrase1(true)
+    }
+  }, [currentTime, phrase1TimeStamp])
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -94,37 +109,67 @@ const Farm: React.FC = () => {
         liveOnly={liveOnly}
         setLiveOnly={setLiveOnly}
       /> */}
-
-      {IS_GENESIS ? (
-        <div>
-          <Route exact path={`${path}`}>
-            <>
-              {poolsWithApy.map((pool) => (
-                <PoolCardGenesis key={pool.sousId} pool={pool} />
+      <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+        {IS_GENESIS ? (
+          <div>
+            <Route exact path={`${path}`}>
+              <>
+                {poolsWithApy.map((pool) => (
+                  <PoolCardGenesis key={pool.sousId} pool={pool} />
+                ))}
+                {/* <Coming /> */}
+              </>
+            </Route>
+          </div>
+        ) : (
+          <div>
+            <Route exact path={`${path}`}>
+              {liveOnly
+                ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
+                    <PoolCard key={pool.sousId} pool={pool} />
+                  ))
+                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
+                    'sortOrder',
+                  ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
+            </Route>
+            <Route path={`${path}/history`}>
+              {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                <PoolCard key={pool.sousId} pool={pool} />
               ))}
-              {/* <Coming /> */}
-            </>
-          </Route>
-        </div>
-      ) : (
-        <div>
-          <Route exact path={`${path}`}>
-            {liveOnly
-              ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
-                  <PoolCard key={pool.sousId} pool={pool} />
-                ))
-              : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
-                  'sortOrder',
-                ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
-          </Route>
-          <Route path={`${path}/history`}>
-            {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-              <PoolCard key={pool.sousId} pool={pool} />
-            ))}
-          </Route>
-        </div>
-      )}
+            </Route>
+          </div>
+        )}
+      </TimerWrapper>
     </Page>
+  )
+}
+
+const TimerWrapper = ({ isPhrase1, date, children }) => {
+  return isPhrase1 ? (
+    children
+  ) : (
+    <>
+      <div>
+        <br />
+        <Flip date={date} />
+        <br />
+        <br />
+        <br />
+      </div>
+      <div
+        tabIndex={0}
+        role="button"
+        style={{ opacity: 0.4, pointerEvents: 'none' }}
+        onClick={e => {
+          e.preventDefault()
+        }}
+        onKeyDown={e => {
+          e.preventDefault()
+        }}
+      >
+        {children}
+      </div>
+    </>
   )
 }
 

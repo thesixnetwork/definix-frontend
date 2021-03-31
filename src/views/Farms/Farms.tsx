@@ -19,6 +19,7 @@ import {
 } from 'state/hooks'
 import { Heading } from 'uikit-dev'
 import { provider } from 'web3-core'
+import Flip from '../../uikit-dev/components/Flip'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
 
@@ -40,11 +41,25 @@ const Farms: React.FC = () => {
   }, [account, dispatch, fastRefresh])
 
   const [stackedOnly, setStackedOnly] = useState(false)
+  const [isPhrase2, setIsPhrase2] = useState(false)
+  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
+  const currentTime = new Date().getTime()
+  useEffect(() => {
+    if (currentTime < phrase2TimeStamp) {
+      setTimeout(() => {
+        setIsPhrase2(true)
+      }, phrase2TimeStamp - currentTime)
+    } else {
+      setIsPhrase2(true)
+    }
+  }, [currentTime, phrase2TimeStamp])
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP.filter(farm => farm.pid !== 0 && farm.multiplier === '0X')
   const stackedOnlyFarms = activeFarms.filter(
-    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+    farm => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
@@ -52,7 +67,7 @@ const Farms: React.FC = () => {
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map(farm => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
@@ -88,7 +103,7 @@ const Farms: React.FC = () => {
 
         return { ...farm, apy }
       })
-      return farmsToDisplayWithAPY.map((farm) => (
+      return farmsToDisplayWithAPY.map(farm => (
         <FarmCard
           key={farm.pid}
           farm={farm}
@@ -110,19 +125,53 @@ const Farms: React.FC = () => {
       <Heading as="h1" fontSize="32px !important" className="mt-2 mb-4" textAlign="center">
         Farm
       </Heading>
-      <FarmTabButtons activeFarmsCount={activeFarms.length} stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
-      <div>
-        <FlexLayout>
-          <Route exact path={`${path}`}>
-            {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
-          </Route>
-          <Route exact path={`${path}/history`}>
-            {farmsList(inactiveFarms, true)}
-          </Route>
-        </FlexLayout>
-      </div>
+      <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
+        <FarmTabButtons
+          activeFarmsCount={activeFarms.length}
+          stackedOnly={stackedOnly}
+          setStackedOnly={setStackedOnly}
+        />
+        <div>
+          <FlexLayout>
+            <Route exact path={`${path}`}>
+              {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+            </Route>
+            <Route exact path={`${path}/history`}>
+              {farmsList(inactiveFarms, true)}
+            </Route>
+          </FlexLayout>
+        </div>
+      </TimerWrapper>
     </Page>
   )
 }
 
+const TimerWrapper = ({ isPhrase2, date, children }) => {
+  return isPhrase2 ? (
+    children
+  ) : (
+    <>
+      <div>
+        <br />
+        <Flip date={date} />
+        <br />
+        <br />
+        <br />
+      </div>
+      <div
+        tabIndex={0}
+        role="button"
+        style={{ opacity: 0.4, pointerEvents: 'none' }}
+        onClick={e => {
+          e.preventDefault()
+        }}
+        onKeyDown={e => {
+          e.preventDefault()
+        }}
+      >
+        {children}
+      </div>
+    </>
+  )
+}
 export default Farms

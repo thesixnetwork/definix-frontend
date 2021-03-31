@@ -77,6 +77,21 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
   },
+  {
+    pid: 5,
+    lpSymbol: 'USDT-BUSD LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_USDT_BUSD_LP_TESTNET,
+      56: process.env.REACT_APP_USDT_BUSD_LP_MAINNET,
+    },
+    tokenSymbol: 'USDT',
+    tokenAddresses: {
+      97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.BUSD,
+    quoteTokenAdresses: contracts.busd,
+  },
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',
