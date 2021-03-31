@@ -15,6 +15,10 @@ export default {
     97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
     56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
   },
+  usdt: {
+    97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+  },
   six: {
     97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
     56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,

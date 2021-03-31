@@ -28,6 +28,9 @@ export const getSixAddress = () => {
 export const getBusdAddress = () => {
   return getAddress(addresses.busd)
 }
+export const getUsdtAddress = () => {
+  return getAddress(addresses.usdt)
+}
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }

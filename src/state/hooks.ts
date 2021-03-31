@@ -11,6 +11,7 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
+  fetchQuote,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
@@ -29,6 +30,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync())
     dispatch(fetchFinixPrice())
+    dispatch(fetchQuote())
   }, [dispatch, slowRefresh])
 }
 
@@ -109,6 +111,32 @@ export const usePriceFinixBusd = (): BigNumber => {
 export const usePriceFinixUsd = (): BigNumber => {
   const finixPrice = useSelector((state: State) => state.finixPrice.price)
   return new BigNumber(finixPrice)
+}
+
+export const usePriceTVL = (): BigNumber => {
+  const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
+  const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
+  const sixUsdtQuote = useSelector((state: State) => state.finixPrice.sixUsdtQuote)
+  const sixWbnbQuote = useSelector((state: State) => state.finixPrice.sixWbnbQuote)
+  const finixBusdQuote = useSelector((state: State) => state.finixPrice.finixBusdQuote)
+  const finixUsdtQuote = useSelector((state: State) => state.finixPrice.finixUsdtQuote)
+  const finixWbnbQuote = useSelector((state: State) => state.finixPrice.finixWbnbQuote)
+  const wbnbBusdQuote = useSelector((state: State) => state.finixPrice.wbnbBusdQuote)
+  const wbnbUsdtQuote = useSelector((state: State) => state.finixPrice.wbnbUsdtQuote)
+  const busdUsdtQuote = useSelector((state: State) => state.finixPrice.busdUsdtQuote)
+  const finixUsdPrice = usePriceFinixUsd()
+
+  const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
+  const sixBusdPrice = new BigNumber(sixBusdQuote)
+  const sixUsdtPrice = new BigNumber(sixUsdtQuote)
+  const sixWbnbPrice = new BigNumber(sixWbnbQuote).times(finixUsdPrice)
+  const finixBusdPrice = new BigNumber(finixBusdQuote)
+  const finixUsdtPrice = new BigNumber(finixUsdtQuote)
+  const finixWbnbPrice = new BigNumber(finixWbnbQuote).times(finixUsdPrice)
+  const wbnbBusdPrice = new BigNumber(wbnbBusdQuote)
+  const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
+  const busdUsdtPrice = new BigNumber(busdUsdtQuote)
+  return BigNumber.sum.apply(null, [sixFinixPrice, sixBusdPrice, sixUsdtPrice, sixWbnbPrice, finixBusdPrice, finixUsdtPrice, finixWbnbPrice, wbnbBusdPrice, wbnbUsdtPrice, busdUsdtPrice])
 }
 
 export const usePriceEthBusd = (): BigNumber => {

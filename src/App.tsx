@@ -36,20 +36,20 @@ BigNumber.config({
 const App: React.FC = () => {
   const { account, connect } = useWallet()
 
-  const [isPhrase1, setIsPhrase1] = useState(false)
-  const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
-    : new Date().getTime()
-  const currentTime = new Date().getTime()
-  useEffect(() => {
-    if (currentTime < phrase1TimeStamp) {
-      setTimeout(() => {
-        setIsPhrase1(true)
-      }, phrase1TimeStamp - currentTime)
-    } else {
-      setIsPhrase1(true)
-    }
-  }, [currentTime, phrase1TimeStamp])
+  // const [isPhrase1, setIsPhrase1] = useState(false)
+  // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
+  //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
+  //   : new Date().getTime()
+  // const currentTime = new Date().getTime()
+  // useEffect(() => {
+  //   if (currentTime < phrase1TimeStamp) {
+  //     setTimeout(() => {
+  //       setIsPhrase1(true)
+  //     }, phrase1TimeStamp - currentTime)
+  //   } else {
+  //     setIsPhrase1(true)
+  //   }
+  // }, [currentTime, phrase1TimeStamp])
 
   // Monkey patch warn() because of web3 flood
   // To be removed when web3 1.3.5 is released
@@ -129,43 +129,45 @@ const App: React.FC = () => {
       </Menu>
       <ToastListener />
       <GlobalCheckBullHiccupClaimStatus />
-      {!isPhrase1 && <div
-        style={{
-          position: 'fixed',
-          zIndex: 1,
-          left: 0,
-          top: 0,
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          backgroundColor: 'rgba(0,0,0,0.4)',
-        }}
-        tabIndex={0}
-        role="button"
-        onClick={e => {
-          e.preventDefault()
-        }}
-        onKeyDown={e => {
-          e.preventDefault()
-        }}
-      >
+      {/* !isPhrase1 && (
         <div
           style={{
-            overflow: 'auto',
-            outline: 0,
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            position: 'absolute',
-            width: '90%',
-            maxHeight: '80%',
-            backgroundColor: 'white',
-            borderRadius: '8px',
+            position: 'fixed',
+            zIndex: 1,
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            backgroundColor: 'rgba(0,0,0,0.4)',
+          }}
+          tabIndex={0}
+          role="button"
+          onClick={(e) => {
+            e.preventDefault()
+          }}
+          onKeyDown={(e) => {
+            e.preventDefault()
           }}
         >
-          <DateModal date={phrase1TimeStamp} />
+          <div
+            style={{
+              overflow: 'auto',
+              outline: 0,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              position: 'absolute',
+              width: '90%',
+              maxHeight: '80%',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+            }}
+          >
+            <DateModal date={phrase1TimeStamp} />
+          </div>
         </div>
-      </div>}
+      ) */}
     </Router>
   )
 }
