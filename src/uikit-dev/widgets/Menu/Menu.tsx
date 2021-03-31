@@ -228,7 +228,6 @@ const Menu: React.FC<NavProps> = ({
                 key={lang.code}
                 fullWidth
                 onClick={() => setLang(lang)}
-                // Safari fix
                 style={{ minHeight: '32px', height: 'auto' }}
               >
                 {lang.language}

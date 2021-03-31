@@ -6,6 +6,7 @@ import { BaseLayout, Heading, Text } from 'uikit-dev'
 import FinixStats from 'views/Home/components/FinixStats'
 import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
+import InfoBanner from 'views/Info/components/InfoBanner'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 // import LotteryCard from 'views/Home/components/LotteryCard'
 // import EarnAPYCard from 'views/Home/components/EarnAPYCard'
@@ -96,15 +97,16 @@ const Home: React.FC = () => {
           <EarnAssetCard />
           <WinCard />
         </CTACards> */}
+        <InfoBanner className="mb-5" />
         <Cards>
           <TotalValueLockedCard />
           <FinixStats />
         </Cards>
         <CardStake large />
-        <div className="flex align-center justify-center mt-6">
+        {/* <div className="flex align-center justify-center mt-6">
           <Text small>Audited by</Text>
           <img src={certik} width="120" alt="" />
-        </div>
+        </div> */}
       </div>
     </Page>
   )
