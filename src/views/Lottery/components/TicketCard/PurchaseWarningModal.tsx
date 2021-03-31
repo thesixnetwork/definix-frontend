@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Modal } from '@pancakeswap-libs/uikit'
+import { Button, Modal } from 'uikit-dev'
 import ModalActions from 'components/ModalActions'
 import styled from 'styled-components'
 import useI18n from 'hooks/useI18n'
@@ -8,11 +8,11 @@ const WarningModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss }) => {
   const TranslateString = useI18n()
 
   return (
-    <Modal title={TranslateString(466, 'Warning')} onDismiss={onDismiss}>
+    <Modal title={TranslateString(466, 'Warning')} onDismiss={onDismiss} isRainbow>
       <TicketsList>
         {TranslateString(468, 'Lottery ticket purchases are final.')}
         <br />
-        {TranslateString(470, 'Your CAKE will not be returned to you after you spend it to buy tickets.')}
+        {TranslateString(470, 'Your FINIX will not be returned to you after you spend it to buy tickets.')}
         <br />
         {TranslateString(472, 'Tickets are only valid for one lottery draw, and will be burned after the draw.')}
         <br />

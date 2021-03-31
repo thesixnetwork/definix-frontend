@@ -1,4 +1,4 @@
-import { Toast } from '@pancakeswap-libs/uikit'
+import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
 import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 
@@ -30,6 +30,7 @@ export interface Pool extends PoolConfig {
   totalStaked?: BigNumber
   startBlock?: number
   endBlock?: number
+  rewardPerBlock?: number
   userData?: {
     allowance: BigNumber
     stakingTokenBalance: BigNumber
@@ -63,6 +64,20 @@ export interface FarmsState {
 
 export interface PoolsState {
   data: Pool[]
+}
+
+export interface FinixPriceState {
+  price: number
+  sixFinixQuote: number
+  sixBusdQuote: number
+  sixUsdtQuote: number
+  sixWbnbQuote: number
+  finixBusdQuote: number
+  finixUsdtQuote: number
+  finixWbnbQuote: number
+  wbnbBusdQuote: number
+  wbnbUsdtQuote: number
+  busdUsdtQuote: number
 }
 
 export interface ProfileState {
@@ -107,6 +122,7 @@ export interface AchievementState {
 // Global state
 
 export interface State {
+  finixPrice: FinixPriceState
   farms: FarmsState
   toasts: ToastsState
   pools: PoolsState

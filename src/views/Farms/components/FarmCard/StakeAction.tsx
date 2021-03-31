@@ -1,10 +1,10 @@
-import React from 'react'
-import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Button, Flex, Heading, IconButton, AddIcon, MinusIcon, useModal } from '@pancakeswap-libs/uikit'
 import useI18n from 'hooks/useI18n'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
+import React from 'react'
+import styled from 'styled-components'
+import { AddIcon, Button, Heading, IconButton, MinusIcon, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
@@ -22,6 +22,17 @@ const IconButtonWrapper = styled.div`
   svg {
     width: 20px;
   }
+`
+
+const StyledDisplayBalance = styled.div`
+  width: 115px;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.radii.default};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1rem;
+  flex-shrink: 0;
 `
 
 const StakeAction: React.FC<FarmCardActionsProps> = ({
@@ -47,24 +58,28 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   const renderStakingButtons = () => {
     return rawStakedBalance === 0 ? (
-      <Button onClick={onPresentDeposit}>{TranslateString(999, 'Stake LP')}</Button>
+      <Button onClick={onPresentDeposit} fullWidth>
+        {TranslateString(999, 'Stake LP')}
+      </Button>
     ) : (
       <IconButtonWrapper>
-        <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
+        <Button variant="secondary" onClick={onPresentWithdraw} mr="6px" className="btn-secondary-disable">
           <MinusIcon color="primary" />
-        </IconButton>
-        <IconButton variant="tertiary" onClick={onPresentDeposit}>
+        </Button>
+        <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable">
           <AddIcon color="primary" />
-        </IconButton>
+        </Button>
       </IconButtonWrapper>
     )
   }
 
   return (
-    <Flex justifyContent="space-between" alignItems="center">
-      <Heading color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+    <div className="flex justify-space-between align-strench">
+      <StyledDisplayBalance>
+        <Heading color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+      </StyledDisplayBalance>
       {renderStakingButtons()}
-    </Flex>
+    </div>
   )
 }
 

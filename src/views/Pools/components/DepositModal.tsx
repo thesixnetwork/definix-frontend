@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal } from '@pancakeswap-libs/uikit'
 import ModalActions from 'components/ModalActions'
-import TokenInput from '../../../components/TokenInput'
+import ModalInput from 'components/ModalInput'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Button, LinkExternal, Modal } from 'uikit-dev'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import useI18n from '../../../hooks/useI18n'
-import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
 interface DepositModalProps {
   max: BigNumber
@@ -33,8 +33,8 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={`${TranslateString(316, 'Deposit')} ${tokenName} Tokens`} onDismiss={onDismiss}>
-      <TokenInput
+    <Modal title={`${TranslateString(316, 'Stake')} ${tokenName}`} onDismiss={onDismiss} isRainbow>
+      <ModalInput
         value={val}
         onSelectMax={handleSelectMax}
         onChange={handleChange}
@@ -42,7 +42,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
         symbol={tokenName}
       />
       <ModalActions>
-        <Button fullWidth variant="secondary" onClick={onDismiss}>
+        <Button variant="secondary" onClick={onDismiss} fullWidth>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
@@ -58,6 +58,9 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
           {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
+      <LinkExternal href="https://youngexchange.definix.com/#/swap" className="mx-auto">
+        Buy {tokenName}
+      </LinkExternal>
     </Modal>
   )
 }

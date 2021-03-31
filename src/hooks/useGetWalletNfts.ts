@@ -1,9 +1,9 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useEffect, useReducer } from 'react'
-import { getPancakeRabbitContract } from 'utils/contractHelpers'
+import { getDefinixRabbitContract } from 'utils/contractHelpers'
 import makeBatchRequest from 'utils/makeBatchRequest'
 
-const pancakeRabbitsContract = getPancakeRabbitContract()
+const definixRabbitsContract = getDefinixRabbitContract()
 
 export type NftMap = {
   [key: number]: {
@@ -12,16 +12,18 @@ export type NftMap = {
   }
 }
 
-type Action = { type: 'set_nfts'; data: NftMap } | { type: 'reset' }
+type Action = { type: 'set_nfts'; data: NftMap } | { type: 'reset' } | { type: 'refresh'; timestamp: number }
 
 type State = {
   isLoading: boolean
   nfts: NftMap
+  lastUpdated: number
 }
 
 const initialState: State = {
   isLoading: true,
   nfts: {},
+  lastUpdated: Date.now(),
 }
 
 const reducer = (state: State, action: Action) => {
@@ -31,6 +33,11 @@ const reducer = (state: State, action: Action) => {
         ...initialState,
         isLoading: false,
         nfts: action.data,
+      }
+    case 'refresh':
+      return {
+        ...initialState,
+        lastUpdated: action.timestamp,
       }
     case 'reset':
       return {
@@ -45,18 +52,19 @@ const reducer = (state: State, action: Action) => {
 const useGetWalletNfts = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const { account } = useWallet()
+  const { lastUpdated } = state
 
   useEffect(() => {
     const fetchNfts = async () => {
       try {
-        const balanceOf = await pancakeRabbitsContract.methods.balanceOf(account).call()
+        const balanceOf = await definixRabbitsContract.methods.balanceOf(account).call()
 
         if (balanceOf > 0) {
           let nfts: NftMap = {}
 
           const getTokenIdAndBunnyId = async (index: number) => {
             try {
-              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = pancakeRabbitsContract.methods
+              const { tokenOfOwnerByIndex, getBunnyId, tokenURI } = definixRabbitsContract.methods
               const tokenId = await tokenOfOwnerByIndex(account, index).call()
               const [bunnyId, tokenUri] = await makeBatchRequest([getBunnyId(tokenId).call, tokenURI(tokenId).call])
 
@@ -103,9 +111,11 @@ const useGetWalletNfts = () => {
     if (account) {
       fetchNfts()
     }
-  }, [account, dispatch])
+  }, [account, lastUpdated, dispatch])
 
-  return state
+  const refresh = () => dispatch({ type: 'refresh', timestamp: Date.now() })
+
+  return { ...state, refresh }
 }
 
 export default useGetWalletNfts

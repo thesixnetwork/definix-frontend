@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useCountUp } from 'react-countup'
-import { Text } from '@pancakeswap-libs/uikit'
+import { Text } from 'uikit-dev'
 
 export interface CardValueProps {
   value: number
@@ -10,6 +10,7 @@ export interface CardValueProps {
   prefix?: string
   bold?: boolean
   color?: string
+  fontWeight?: string
 }
 
 const CardValue: React.FC<CardValueProps> = ({
@@ -19,6 +20,7 @@ const CardValue: React.FC<CardValueProps> = ({
   lineHeight = '1',
   prefix = '',
   bold = true,
+  fontWeight = 'bold',
   color = 'text',
 }) => {
   const { countUp, update } = useCountUp({
@@ -38,7 +40,7 @@ const CardValue: React.FC<CardValueProps> = ({
   }, [value, updateValue])
 
   return (
-    <Text bold={bold} fontSize={fontSize} style={{ lineHeight }} color={color}>
+    <Text fontWeight={fontWeight} bold={bold} fontSize={fontSize} style={{ lineHeight }} color={color}>
       {prefix}
       {countUp}
     </Text>

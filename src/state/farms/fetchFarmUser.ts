@@ -1,16 +1,16 @@
 import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
-import masterchefABI from 'config/abi/masterchef.json'
+import herodotusABI from 'config/abi/herodotus.json'
 import multicall from 'utils/multicall'
 import farmsConfig from 'config/constants/farms'
-import { getAddress, getMasterChefAddress } from 'utils/addressHelpers'
+import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 
 export const fetchFarmUserAllowances = async (account: string) => {
-  const masterChefAdress = getMasterChefAddress()
+  const herodotusAdress = getHerodotusAddress()
 
   const calls = farmsConfig.map((farm) => {
     const lpContractAddress = getAddress(farm.lpAddresses)
-    return { address: lpContractAddress, name: 'allowance', params: [account, masterChefAdress] }
+    return { address: lpContractAddress, name: 'allowance', params: [account, herodotusAdress] }
   })
 
   const rawLpAllowances = await multicall(erc20ABI, calls)
@@ -38,17 +38,17 @@ export const fetchFarmUserTokenBalances = async (account: string) => {
 }
 
 export const fetchFarmUserStakedBalances = async (account: string) => {
-  const masterChefAdress = getMasterChefAddress()
+  const herodotusAdress = getHerodotusAddress()
 
   const calls = farmsConfig.map((farm) => {
     return {
-      address: masterChefAdress,
+      address: herodotusAdress,
       name: 'userInfo',
       params: [farm.pid, account],
     }
   })
 
-  const rawStakedBalances = await multicall(masterchefABI, calls)
+  const rawStakedBalances = await multicall(herodotusABI, calls)
   const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0]._hex).toJSON()
   })
@@ -56,17 +56,17 @@ export const fetchFarmUserStakedBalances = async (account: string) => {
 }
 
 export const fetchFarmUserEarnings = async (account: string) => {
-  const masterChefAdress = getMasterChefAddress()
+  const herodotusAdress = getHerodotusAddress()
 
   const calls = farmsConfig.map((farm) => {
     return {
-      address: masterChefAdress,
-      name: 'pendingCake',
+      address: herodotusAdress,
+      name: 'pendingFinix',
       params: [farm.pid, account],
     }
   })
 
-  const rawEarnings = await multicall(masterchefABI, calls)
+  const rawEarnings = await multicall(herodotusABI, calls)
   const parsedEarnings = rawEarnings.map((earnings) => {
     return new BigNumber(earnings).toJSON()
   })

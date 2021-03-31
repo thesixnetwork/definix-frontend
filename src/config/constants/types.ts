@@ -13,7 +13,7 @@ export interface Ifo {
   launchTime: string
   saleAmount: string
   raiseAmount: string
-  cakeToBurn: string
+  finixToBurn: string
   projectSiteUrl: string
   currency: string
   currencyAddress: string
@@ -24,13 +24,15 @@ export interface Ifo {
 
 export enum QuoteToken {
   'BNB' = 'BNB',
-  'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
   'BUSD' = 'BUSD',
   'TWT' = 'TWT',
   'UST' = 'UST',
   'ETH' = 'ETH',
   'COMP' = 'COMP',
+  'SUSHI' = 'SUSHI',
+  'SIX' = 'SIX',
+  'FINIX' = 'FINIX',
 }
 
 export enum PoolCategory {
@@ -86,8 +88,13 @@ export type Images = {
 }
 
 export type NftImages = {
-  blur: string
+  blur?: string
 } & Images
+
+export type NftVideo = {
+  webm: string
+  mp4: string
+}
 
 export type Nft = {
   name: string
@@ -95,6 +102,7 @@ export type Nft = {
   images: NftImages
   sortOrder: number
   bunnyId: number
+  video?: NftVideo
 }
 
 export type TeamImages = {

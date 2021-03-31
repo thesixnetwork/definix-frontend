@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import {
   Card,
   CardBody,
@@ -14,16 +15,17 @@ import {
   useModal,
   Skeleton,
   Checkbox,
-} from '@pancakeswap-libs/uikit'
+} from 'uikit-dev'
 import { parseISO, formatDistance } from 'date-fns'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useToast } from 'state/hooks'
 import useWeb3 from 'hooks/useWeb3'
 import useI18n from 'hooks/useI18n'
-import useHasCakeBalance from 'hooks/useHasCakeBalance'
+import useHasFinixBalance from 'hooks/useHasFinixBalance'
 import debounce from 'lodash/debounce'
-import useProfileCreation from './contexts/hook'
 import ConfirmProfileCreationModal from '../components/ConfirmProfileCreationModal'
+import useProfileCreation from './contexts/hook'
+import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
 
 enum ExistingUserState {
   IDLE = 'idle', // initial state
@@ -31,10 +33,8 @@ enum ExistingUserState {
   NEW = 'new', // username has not been created
 }
 
-const MIN_LENGTH = 3
-const MAX_LENGTH = 15
 const profileApiUrl = process.env.REACT_APP_API_PROFILE
-const minimumCakeBalance = 1
+const minimumFinixToRegister = new BigNumber(REGISTER_COST).multipliedBy(new BigNumber(10).pow(18))
 
 const InputWrap = styled.div`
   position: relative;
@@ -58,7 +58,7 @@ const Indicator = styled(Flex)`
 
 const UserName: React.FC = () => {
   const [isAcknowledged, setIsAcknoledged] = useState(false)
-  const { teamId, tokenId, userName, actions, minimumCakeRequired, allowance } = useProfileCreation()
+  const { teamId, tokenId, userName, actions, minimumFinixRequired, allowance } = useProfileCreation()
   const TranslateString = useI18n()
   const { account, ethereum } = useWallet()
   const { toastError } = useToast()
@@ -67,14 +67,14 @@ const UserName: React.FC = () => {
   const [isValid, setIsValid] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState('')
-  const hasMinimumCakeRequired = useHasCakeBalance(minimumCakeBalance)
+  const hasMinimumFinixRequired = useHasFinixBalance(minimumFinixToRegister)
   const [onPresentConfirmProfileCreation] = useModal(
     <ConfirmProfileCreationModal
       userName={userName}
       tokenId={tokenId}
       account={account}
       teamId={teamId}
-      minimumCakeRequired={minimumCakeRequired}
+      minimumFinixRequired={minimumFinixRequired}
       allowance={allowance}
     />,
     false,
@@ -201,8 +201,8 @@ const UserName: React.FC = () => {
                 onChange={handleChange}
                 isWarning={userName && !isValid}
                 isSuccess={userName && isValid}
-                minLength={MIN_LENGTH}
-                maxLength={MAX_LENGTH}
+                minLength={USERNAME_MIN_LENGTH}
+                maxLength={USERNAME_MAX_LENGTH}
                 disabled={isUserCreated}
                 placeholder={TranslateString(1094, 'Enter your name...')}
                 value={userName}
@@ -241,9 +241,9 @@ const UserName: React.FC = () => {
       <Button onClick={onPresentConfirmProfileCreation} disabled={!isValid || !isUserCreated}>
         {TranslateString(842, 'Complete Profile')}
       </Button>
-      {!hasMinimumCakeRequired && (
+      {!hasMinimumFinixRequired && (
         <Text color="failure" mt="16px">
-          {TranslateString(1098, `A minimum of ${minimumCakeBalance} CAKE is required`)}
+          {TranslateString(1098, `A minimum of ${REGISTER_COST} FINIX is required`, { num: REGISTER_COST })}
         </Text>
       )}
     </>

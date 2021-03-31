@@ -2,14 +2,21 @@ import styled from 'styled-components'
 
 const FlexLayout = styled.div`
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
+  justify-content: center;
+  margin-left: -12px;
+  margin-right: -12px;
   & > * {
     min-width: 280px;
-    max-width: 31.5%;
-    width: 100%;
-    margin: 0 8px;
-    margin-bottom: 32px;
+    width: calc(33.333% - 24px);
+    flex-grow: 1;
+    flex-shrink: 0;
+    margin: 0 12px;
+    margin-bottom: 48px;
+
+    ${({ theme }) => theme.mediaQueries.md} {
+      max-width: calc(33.333% - 24px);
+    }
   }
 `
 

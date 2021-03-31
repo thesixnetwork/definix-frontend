@@ -1,23 +1,60 @@
 export default {
-  cake: {
-    97: '0xa35062141Fa33BCA92Ce69FeD37D0E8908868AAe',
-    56: '0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82',
+  definixHerodotus: {
+    97: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
+    56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
+  herodotus: {
+    97: process.env.REACT_APP_HERODOTUS_TESTNET,
+    56: process.env.REACT_APP_HERODOTUS_MAINNET,
+  },
+  wbnb: {
+    97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
+  },
+  busd: {
+    97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+  },
+  usdt: {
+    97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+  },
+  six: {
+    97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+  },
+  finix: {
+    97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+  },
+  finixSixLP: {
+    97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
+    56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
+  },
+  finixBusdLP: {
+    97: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
+    56: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
+  },
+  finixBnbLP: {
+    97: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
+    56: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
+  },
+  sixBusdLP: {
+    97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
+    56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
+  },
+  definixBnbBusdLP: {
+    97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
+    56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
+  },
+  // configured =====================================================
   syrup: {
     97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
     56: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
   },
-  masterChef: {
-    97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
-    56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
-  },
   sousChef: {
     97: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',
     56: '0x6ab8463a4185b80905e05a9ff80a2d6b714b9e95',
-  },
-  wbnb: {
-    97: '0xae13d989dac2f0debff460ac112a837c89baa7cd',
-    56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
   },
   lottery: {
     97: '0x99c2EcD51d52c036B00130d882Bc65f20Fdecf9f',
@@ -31,19 +68,15 @@ export default {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
     97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412',
   },
-  busd: {
-    56: '0xe9e7cea3dedca5984780bafc599bd69add087d56',
-    97: '',
-  },
   ust: {
     56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
     97: '',
   },
-  pancakeProfile: {
+  definixProfile: {
     56: '0xDf4dBf6536201370F95e06A0F8a7a70fE40E388a',
     97: '0x4B683C7E13B6d5D7fd1FeA9530F451954c1A7c8A',
   },
-  pancakeRabbits: {
+  definixRabbits: {
     56: '0xDf7952B35f24aCF7fC0487D01c8d5690a60DBa07',
     97: '0x60935F36e4631F73f0f407e68642144e07aC7f5E',
   },
@@ -62,5 +95,9 @@ export default {
   pointCenterIfo: {
     56: '0x3C6919b132462C1FEc572c6300E83191f4F0012a',
     97: '0xd2Ac1B1728Bb1C11ae02AB6e75B76Ae41A2997e3',
+  },
+  bunnySpecial: {
+    56: '0xFee8A195570a18461146F401d6033f5ab3380849',
+    97: '0x7b7b1583De1DeB32Ce6605F6deEbF24A0671c17C',
   },
 }

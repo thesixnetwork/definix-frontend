@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heading, Text, Flex, ChevronRightIcon } from '@pancakeswap-libs/uikit'
+import { Heading, Text, Flex, ChevronRightIcon } from 'uikit-dev'
 import { Link } from 'react-router-dom'
 import useI18n from 'hooks/useI18n'
 import nfts from 'config/constants/nfts'
@@ -37,18 +37,18 @@ const Collectibles = () => {
   return (
     <>
       <Heading as="h4" size="md" mb="8px">
-        {TranslateString(999, 'Pancake Collectibles')}
+        {TranslateString(999, 'Definix Collectibles')}
       </Heading>
       <Text as="p">
         {TranslateString(
           999,
-          'Pancake Collectibles are special ERC-721 NFTs that can be used on the PancakeSwap platform.',
+          'Definix Collectibles are special ERC-721 NFTs that can be used on the DefinixSwap platform.',
         )}
       </Text>
       <Text as="p">
         {TranslateString(
           999,
-          "NFTs in this user's wallet that aren't approved Pancake Collectibles won't be shown here.",
+          "NFTs in this user's wallet that aren't approved Definix Collectibles won't be shown here.",
         )}
       </Text>
       {nftsInWallet.length > 0 && (
@@ -66,7 +66,7 @@ const Collectibles = () => {
         </Flex>
       )}
       <Flex alignItems="center" justifyContent="flex-end">
-        <Link to="/nft">{TranslateString(999, 'See all approved Pancake Collectibles')}</Link>
+        <Link to="/collectibles">{TranslateString(999, 'See all approved Definix Collectibles')}</Link>
         <ChevronRightIcon />
       </Flex>
     </>

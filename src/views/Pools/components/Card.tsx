@@ -2,16 +2,55 @@ import styled from 'styled-components'
 
 const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   background: ${(props) => props.theme.card.background};
-  box-shadow: 0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05);
-  border-radius: 32px;
-  display: flex;
-  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'secondary']};
-  box-shadow: ${({ isActive }) =>
-    isActive
-      ? '0px 0px 0px 1px #0098A1, 0px 0px 4px 8px rgba(31, 199, 212, 0.4);'
-      : '0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)'};
-  flex-direction: column;
+  box-shadow: ${({ theme }) => theme.shadows.elevation2};
+  border-radius: ${({ theme }) => theme.radii.default};
+  // color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'secondary']};
   position: relative;
+  margin-bottom: 16px;
+  padding-bottom: 4px;
+
+  .panel {
+    width: 100%;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.border} !important;
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    .panel {
+      border: none !important;
+
+      &:nth-child(01) {
+        width: 45%;
+        border-right: 1px solid ${({ theme }) => theme.colors.border} !important;
+      }
+      &:nth-child(02),
+      &:nth-child(03) {
+        width: 27.5%;
+      }
+    }
+  }
+
+  .compare-box {
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    border-radius: ${({ theme }) => theme.radii.default};
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .color-stroke {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    height: 4px;
+    width: 100%;
+  }
 `
 
 export default Card

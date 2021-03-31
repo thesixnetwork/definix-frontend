@@ -103,7 +103,7 @@
   },
   {
     "inputs": [],
-    "name": "cake",
+    "name": "finix",
     "outputs": [{ "internalType": "contract IERC20", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
@@ -190,7 +190,7 @@
   },
   {
     "inputs": [
-      { "internalType": "contract IERC20", "name": "_cake", "type": "address" },
+      { "internalType": "contract IERC20", "name": "_finix", "type": "address" },
       { "internalType": "contract LotteryNFT", "name": "_lottery", "type": "address" },
       { "internalType": "uint256", "name": "_minPrice", "type": "uint256" },
       { "internalType": "uint8", "name": "_maxNumber", "type": "uint8" },

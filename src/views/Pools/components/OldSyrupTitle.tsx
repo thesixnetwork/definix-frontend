@@ -7,14 +7,14 @@ interface Props {
 }
 
 const Title = styled.div`
-  color: #ed4b9e;
+  color: #d42837;
   font-size: 24px;
   font-weight: 600;
   text-transform: uppercase;
 `
 
 const ActionLink = styled.a`
-  color: #ed4b9e;
+  color: #d42837;
   font-size: 14px;
 `
 
@@ -24,7 +24,7 @@ const OldSyrupTitle: React.FC<Props> = ({ hasBalance = false }) => {
       <div>
         <Title>Action Required</Title>
         <ActionLink
-          href=" https://pancakeswap.medium.com/urgent-action-required-changes-to-syrup-pools-70b98d7b2541"
+          href=" https://definixswap.medium.com/urgent-action-required-changes-to-syrup-pools-70b98d7b2541"
           target="_blank"
         >
           What do I need to do?

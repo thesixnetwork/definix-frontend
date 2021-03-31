@@ -1,47 +1,76 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useRouteMatch, Link } from 'react-router-dom'
-import { ButtonMenu, ButtonMenuItem, Text, Toggle } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
-
-const FarmTabButtons = ({ stackedOnly, setStackedOnly }) => {
-  const { url, isExact } = useRouteMatch()
-  const TranslateString = useI18n()
-
-  return (
-    <Wrapper>
-      <ToggleWrapper>
-        <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
-        <Text> {TranslateString(1116, 'Staked only')}</Text>
-      </ToggleWrapper>
-      <ButtonMenu activeIndex={isExact ? 0 : 1} size="sm" variant="subtle">
-        <ButtonMenuItem as={Link} to={`${url}`}>
-          {TranslateString(698, 'Active')}
-        </ButtonMenuItem>
-        <ButtonMenuItem as={Link} to={`${url}/history`}>
-          {TranslateString(700, 'Inactive')}
-        </ButtonMenuItem>
-      </ButtonMenu>
-    </Wrapper>
-  )
-}
-
-export default FarmTabButtons
+import { Button, Heading } from 'uikit-dev'
 
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: space-between;
+
+    .flex {
+      margin: 0 !important;
+    }
+  } ;
 `
 
-const ToggleWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 32px;
+const StyledButton = styled(Button)`
+  border-radius: ${({ theme }) => theme.radii.default};
+  min-width: 120px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
 
-  ${Text} {
-    margin-left: 8px;
+  &:not(.active) {
+    background: #f7f7f7;
+    border-color: transparent;
+    color: initial;
+    font-weight: normal;
+
+    &:hover {
+      font-weight: 600;
+    }
   }
 `
+
+const FarmTabButtons = ({ stackedOnly, setStackedOnly, activeFarmsCount }) => {
+  // const { url, isExact } = useRouteMatch()
+  // const TranslateString = useI18n()
+
+  return (
+    <Wrapper className="mb-6">
+      <Heading as="h2" fontSize="20px !important" textAlign="center">
+        All active farms
+        <span className="ml-2" style={{ fontSize: '16px' }}>
+          ({activeFarmsCount})
+        </span>
+      </Heading>
+      <div className="flex mt-3">
+        <StyledButton
+          size="sm"
+          onClick={() => {
+            setStackedOnly(false)
+          }}
+          variant="secondary"
+          className={`mr-2 ${!stackedOnly ? 'active' : ''}`}
+        >
+          All
+        </StyledButton>
+        <StyledButton
+          size="sm"
+          onClick={() => {
+            setStackedOnly(true)
+          }}
+          variant="secondary"
+          className={stackedOnly ? 'active' : ''}
+        >
+          Staked
+        </StyledButton>
+      </div>
+    </Wrapper>
+  )
+}
+
+export default FarmTabButtons

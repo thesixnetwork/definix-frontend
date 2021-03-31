@@ -1,15 +1,15 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 
-export const approve = async (lpContract, masterChefContract, account) => {
+export const approve = async (lpContract, herodotusContract, account) => {
   return lpContract.methods
-    .approve(masterChefContract.options.address, ethers.constants.MaxUint256)
+    .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
     .send({ from: account })
 }
 
-export const stake = async (masterChefContract, pid, amount, account) => {
+export const stake = async (herodotusContract, pid, amount, account) => {
   if (pid === 0) {
-    return masterChefContract.methods
+    return herodotusContract.methods
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 200000 })
       .on('transactionHash', (tx) => {
@@ -17,7 +17,7 @@ export const stake = async (masterChefContract, pid, amount, account) => {
       })
   }
 
-  return masterChefContract.methods
+  return herodotusContract.methods
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -43,9 +43,9 @@ export const sousStakeBnb = async (sousChefContract, amount, account) => {
     })
 }
 
-export const unstake = async (masterChefContract, pid, amount, account) => {
+export const unstake = async (herodotusContract, pid, amount, account) => {
   if (pid === 0) {
-    return masterChefContract.methods
+    return herodotusContract.methods
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 200000 })
       .on('transactionHash', (tx) => {
@@ -53,7 +53,7 @@ export const unstake = async (masterChefContract, pid, amount, account) => {
       })
   }
 
-  return masterChefContract.methods
+  return herodotusContract.methods
     .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {
@@ -97,9 +97,9 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
     })
 }
 
-export const harvest = async (masterChefContract, pid, account) => {
+export const harvest = async (herodotusContract, pid, account) => {
   if (pid === 0) {
-    return masterChefContract.methods
+    return herodotusContract.methods
       .leaveStaking('0')
       .send({ from: account, gas: 200000 })
       .on('transactionHash', (tx) => {
@@ -107,7 +107,7 @@ export const harvest = async (masterChefContract, pid, account) => {
       })
   }
 
-  return masterChefContract.methods
+  return herodotusContract.methods
     .deposit(pid, '0')
     .send({ from: account, gas: 200000 })
     .on('transactionHash', (tx) => {

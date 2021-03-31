@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import { Modal, Button, Flex, LinkExternal } from '@pancakeswap-libs/uikit'
+import { Modal, Button, Flex, LinkExternal } from 'uikit-dev'
 import BalanceInput from 'components/Input/BalanceInput'
 import useTokenBalance from 'hooks/useTokenBalance'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -20,7 +20,7 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
   const balance = getFullDisplayBalance(useTokenBalance(currencyAddress))
 
   return (
-    <Modal title={`Contribute ${currency}`} onDismiss={onDismiss}>
+    <Modal title={`Contribute ${currency}`} onDismiss={onDismiss} isRainbow>
       <BalanceInput
         value={value}
         onChange={(e) => setValue(e.currentTarget.value)}
@@ -48,8 +48,8 @@ const ContributeModal: React.FC<Props> = ({ currency, contract, currencyAddress,
         </Button>
       </Flex>
       <LinkExternal
-        href="https://exchange.pancakeswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
-        style={{ margin: 'auto' }}
+        href="https://exchange.definixswap.finance/#/add/ETH/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82"
+        className="mx-auto"
       >
         {`Get ${currency}`}
       </LinkExternal>

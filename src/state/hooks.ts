@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { Toast, toastTypes } from '@pancakeswap-libs/uikit'
+import { Toast, toastTypes } from 'uikit-dev'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
@@ -10,6 +10,8 @@ import {
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
+  fetchFinixPrice,
+  fetchQuote,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
@@ -27,6 +29,8 @@ export const useFetchPublicData = () => {
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync())
+    dispatch(fetchFinixPrice())
+    dispatch(fetchQuote())
   }, [dispatch, slowRefresh])
 }
 
@@ -81,22 +85,77 @@ export const usePoolFromPid = (sousId): Pool => {
 // Prices
 
 export const usePriceBnbBusd = (): BigNumber => {
-  const pid = 2 // BUSD-BNB LP
+  // const pid = 5 // BUSD-BNB LP
+  const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID, 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
+  if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
 }
 
-export const usePriceCakeBusd = (): BigNumber => {
-  const pid = 1 // CAKE-BNB LP
-  const bnbPriceUSD = usePriceBnbBusd()
+export const usePriceSixBusd = (): BigNumber => {
+  // const pid = 5 // BUSD-BNB LP
+  const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID, 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
-  return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
+  if (!farm) return ZERO
+  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
+}
+
+export const usePriceFinixBusd = (): BigNumber => {
+  // const pid = 1 // FINIX-BNB LP
+  const pid = parseInt(process.env.REACT_APP_FINIX_BUSD_PID, 10) // FINIX-BUSD LP
+  const farm = useFarmFromPid(pid)
+  if (!farm) return ZERO
+  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
+}
+
+export const usePriceFinixUsd = (): BigNumber => {
+  const finixPrice = useSelector((state: State) => state.finixPrice.price)
+  return new BigNumber(finixPrice)
+}
+
+export const usePriceTVL = (): BigNumber => {
+  const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
+  const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
+  const sixUsdtQuote = useSelector((state: State) => state.finixPrice.sixUsdtQuote)
+  const sixWbnbQuote = useSelector((state: State) => state.finixPrice.sixWbnbQuote)
+  const finixBusdQuote = useSelector((state: State) => state.finixPrice.finixBusdQuote)
+  const finixUsdtQuote = useSelector((state: State) => state.finixPrice.finixUsdtQuote)
+  const finixWbnbQuote = useSelector((state: State) => state.finixPrice.finixWbnbQuote)
+  const wbnbBusdQuote = useSelector((state: State) => state.finixPrice.wbnbBusdQuote)
+  const wbnbUsdtQuote = useSelector((state: State) => state.finixPrice.wbnbUsdtQuote)
+  const busdUsdtQuote = useSelector((state: State) => state.finixPrice.busdUsdtQuote)
+  const finixUsdPrice = usePriceFinixUsd()
+
+  const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
+  const sixBusdPrice = new BigNumber(sixBusdQuote)
+  const sixUsdtPrice = new BigNumber(sixUsdtQuote)
+  const sixWbnbPrice = new BigNumber(sixWbnbQuote).times(finixUsdPrice)
+  const finixBusdPrice = new BigNumber(finixBusdQuote)
+  const finixUsdtPrice = new BigNumber(finixUsdtQuote)
+  const finixWbnbPrice = new BigNumber(finixWbnbQuote).times(finixUsdPrice)
+  const wbnbBusdPrice = new BigNumber(wbnbBusdQuote)
+  const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
+  const busdUsdtPrice = new BigNumber(busdUsdtQuote)
+  return BigNumber.sum.apply(null, [
+    sixFinixPrice,
+    sixBusdPrice,
+    sixUsdtPrice,
+    sixWbnbPrice,
+    finixBusdPrice,
+    finixUsdtPrice,
+    finixWbnbPrice,
+    wbnbBusdPrice,
+    wbnbUsdtPrice,
+    busdUsdtPrice,
+  ])
 }
 
 export const usePriceEthBusd = (): BigNumber => {
-  const pid = 14 // ETH-BNB LP
+  // const pid = 6 // ETH-BNB LP
+  const pid = 10 // ETH-BNB LP
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
+  if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? bnbPriceUSD.times(farm.tokenPriceVsQuote) : ZERO
 }
 

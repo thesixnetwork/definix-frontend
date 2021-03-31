@@ -1,5 +1,5 @@
 import React from 'react'
-import { NoProfileAvatarIcon } from '@pancakeswap-libs/uikit'
+import { NoProfileAvatarIcon } from 'uikit-dev'
 import { Profile } from 'state/types'
 import styled from 'styled-components'
 

@@ -1,17 +1,17 @@
-import React, { useMemo, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
-import { provider } from 'web3-core'
-import { getContract } from 'utils/erc20'
-import { getAddress } from 'utils/addressHelpers'
-import { Button, Flex, Text } from '@pancakeswap-libs/uikit'
-import { Farm } from 'state/types'
-import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
-import useI18n from 'hooks/useI18n'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
-import StakeAction from './StakeAction'
+import useI18n from 'hooks/useI18n'
+import React, { useCallback, useMemo, useState } from 'react'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
+import { Farm } from 'state/types'
+import styled from 'styled-components'
+import { Button, Text } from 'uikit-dev'
+import { getAddress } from 'utils/addressHelpers'
+import { getContract } from 'utils/erc20'
+import { provider } from 'web3-core'
 import HarvestAction from './HarvestAction'
+import StakeAction from './StakeAction'
 
 const Action = styled.div`
   padding-top: 16px;
@@ -62,7 +62,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, 
         addLiquidityUrl={addLiquidityUrl}
       />
     ) : (
-      <Button mt="8px" fullWidth disabled={requestedApproval} onClick={handleApprove}>
+      <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
         {TranslateString(758, 'Approve Contract')}
       </Button>
     )
@@ -70,25 +70,11 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, 
 
   return (
     <Action>
-      <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
-          {/* TODO: Is there a way to get a dynamic value here from useFarmFromSymbol? */}
-          CAKE
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {TranslateString(1072, 'Earned')}
-        </Text>
-      </Flex>
+      <Text textAlign="left" className="mb-3">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
+      <div className="mb-5">{!account ? <UnlockButton fullWidth /> : renderApprovalOrStakeButton()}</div>
+
+      <Text textAlign="left" className="mb-3">{`FINIX ${TranslateString(1072, 'Earned')}`}</Text>
       <HarvestAction earnings={earnings} pid={pid} />
-      <Flex>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="3px">
-          {lpName}
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {TranslateString(1074, 'Staked')}
-        </Text>
-      </Flex>
-      {!account ? <UnlockButton mt="8px" fullWidth /> : renderApprovalOrStakeButton()}
     </Action>
   )
 }

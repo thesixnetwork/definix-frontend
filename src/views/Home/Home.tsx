@@ -1,41 +1,64 @@
+import certik from 'assets/images/certik.png'
+import Page from 'components/layout/Page'
 import React from 'react'
 import styled from 'styled-components'
-import { Heading, Text, BaseLayout } from '@pancakeswap-libs/uikit'
-import useI18n from 'hooks/useI18n'
-import Page from 'components/layout/Page'
-import FarmStakingCard from 'views/Home/components/FarmStakingCard'
-import LotteryCard from 'views/Home/components/LotteryCard'
-import CakeStats from 'views/Home/components/CakeStats'
+import { BaseLayout, Heading, Text } from 'uikit-dev'
+import FinixStats from 'views/Home/components/FinixStats'
+import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
-import EarnAPYCard from 'views/Home/components/EarnAPYCard'
-import EarnAssetCard from 'views/Home/components/EarnAssetCard'
-import WinCard from 'views/Home/components/WinCard'
+import InfoBanner from 'views/Info/components/InfoBanner'
+// import FarmStakingCard from 'views/Home/components/FarmStakingCard'
+// import LotteryCard from 'views/Home/components/LotteryCard'
+// import EarnAPYCard from 'views/Home/components/EarnAPYCard'
+// import EarnAssetCard from 'views/Home/components/EarnAssetCard'
+// import WinCard from 'views/Home/components/WinCard'
 
-const Hero = styled.div`
-  align-items: center;
-  background-image: url('/images/pan-bg-mobile.svg');
-  background-repeat: no-repeat;
-  background-position: top center;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin: auto;
-  margin-bottom: 32px;
-  padding-top: 116px;
-  text-align: center;
+// const Hero = styled.div`
+//   align-items: center;
+//   background-image: url('/images/pan-bg-mobile.svg');
+//   background-repeat: no-repeat;
+//   background-position: top center;
+//   display: flex;
+//   justify-content: center;
+//   flex-direction: column;
+//   margin: auto;
+//   margin-bottom: 32px;
+//   padding-top: 116px;
+//   text-align: center;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
-    background-position: left center, right center;
-    height: 165px;
-    padding-top: 0;
-  }
-`
+//   ${({ theme }) => theme.mediaQueries.lg} {
+//     background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
+//     background-position: left center, right center;
+//     height: 165px;
+//     padding-top: 0;
+//   }
+// `
+
+// const CTACards = styled(BaseLayout)`
+//   align-items: start;
+//   margin-bottom: 32px;
+
+//   & > div {
+//     grid-column: span 6;
+//   }
+
+//   ${({ theme }) => theme.mediaQueries.sm} {
+//     & > div {
+//       grid-column: span 8;
+//     }
+//   }
+
+//   ${({ theme }) => theme.mediaQueries.lg} {
+//     & > div {
+//       grid-column: span 4;
+//     }
+//   }
+// `
 
 const Cards = styled(BaseLayout)`
   align-items: stretch;
   justify-content: stretch;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 
   & > div {
     grid-column: span 6;
@@ -44,7 +67,7 @@ const Cards = styled(BaseLayout)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     & > div {
-      grid-column: span 8;
+      grid-column: span 12;
     }
   }
 
@@ -55,40 +78,17 @@ const Cards = styled(BaseLayout)`
   }
 `
 
-const CTACards = styled(BaseLayout)`
-  align-items: start;
-  margin-bottom: 32px;
-
-  & > div {
-    grid-column: span 6;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 8;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 4;
-    }
-  }
-`
-
 const Home: React.FC = () => {
-  const TranslateString = useI18n()
+  // const TranslateString = useI18n()
 
   return (
-    <Page>
-      <Hero>
-        <Heading as="h1" size="xl" mb="24px" color="secondary">
-          {TranslateString(576, 'PancakeSwap')}
-        </Heading>
-        <Text>{TranslateString(578, 'The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
-      </Hero>
+    <Page style={{ maxWidth: '1280px' }}>
+      <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
+        Dashboard
+      </Heading>
+
       <div>
-        <Cards>
+        {/* <Cards>
           <FarmStakingCard />
           <LotteryCard />
         </Cards>
@@ -96,11 +96,17 @@ const Home: React.FC = () => {
           <EarnAPYCard />
           <EarnAssetCard />
           <WinCard />
-        </CTACards>
+        </CTACards> */}
+        <InfoBanner className="mb-5" />
         <Cards>
-          <CakeStats />
           <TotalValueLockedCard />
+          <FinixStats />
         </Cards>
+        <CardStake large />
+        {/* <div className="flex align-center justify-center mt-6">
+          <Text small>Audited by</Text>
+          <img src={certik} width="120" alt="" />
+        </div> */}
       </div>
     </Page>
   )

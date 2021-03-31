@@ -1,15 +1,15 @@
 import React from 'react'
-import { Button, Flex, Heading, useModal, Won } from '@pancakeswap-libs/uikit'
+import { Button, Flex, Heading, useModal, Won } from 'uikit-dev'
 import { useProfile } from 'state/hooks'
 import useI18n from 'hooks/useI18n'
-import ClaimNftAndCakeModal, { useCanClaim } from './ClaimGiftModal'
+import ClaimNftAndFinixModal, { useCanClaim } from './ClaimGiftModal'
 import HeaderWrapper from './HeaderWrapper'
 import EditProfileModal from './EditProfileModal'
 
 const ProfileHeader = () => {
   const TranslateString = useI18n()
   const { canClaim, checkClaimStatus } = useCanClaim()
-  const [onPresentClaimGiftModal] = useModal(<ClaimNftAndCakeModal onSuccess={checkClaimStatus} />)
+  const [onPresentClaimGiftModal] = useModal(<ClaimNftAndFinixModal onSuccess={checkClaimStatus} />)
   const [onEditProfileModal] = useModal(<EditProfileModal />, false)
   const { hasProfile } = useProfile()
 

@@ -6,9 +6,9 @@ import { useToast } from 'state/hooks'
 
 const useGetProfileCosts = () => {
   const [costs, setCosts] = useState({
-    numberCakeToReactivate: new BigNumber(0),
-    numberCakeToRegister: new BigNumber(0),
-    numberCakeToUpdate: new BigNumber(0),
+    numberFinixToReactivate: new BigNumber(0),
+    numberFinixToRegister: new BigNumber(0),
+    numberFinixToUpdate: new BigNumber(0),
   })
   const { toastError } = useToast()
 
@@ -16,19 +16,19 @@ const useGetProfileCosts = () => {
     const fetchCosts = async () => {
       try {
         const profileContract = getProfileContract()
-        const [numberCakeToReactivate, numberCakeToRegister, numberCakeToUpdate] = await makeBatchRequest([
-          profileContract.methods.numberCakeToReactivate().call,
-          profileContract.methods.numberCakeToRegister().call,
-          profileContract.methods.numberCakeToUpdate().call,
+        const [numberFinixToReactivate, numberFinixToRegister, numberFinixToUpdate] = await makeBatchRequest([
+          profileContract.methods.numberFinixToReactivate().call,
+          profileContract.methods.numberFinixToRegister().call,
+          profileContract.methods.numberFinixToUpdate().call,
         ])
 
         setCosts({
-          numberCakeToReactivate: new BigNumber(numberCakeToReactivate as string),
-          numberCakeToRegister: new BigNumber(numberCakeToRegister as string),
-          numberCakeToUpdate: new BigNumber(numberCakeToUpdate as string),
+          numberFinixToReactivate: new BigNumber(numberFinixToReactivate as string),
+          numberFinixToRegister: new BigNumber(numberFinixToRegister as string),
+          numberFinixToUpdate: new BigNumber(numberFinixToUpdate as string),
         })
       } catch (error) {
-        toastError('Error', 'Could not retrieve CAKE costs for profile')
+        toastError('Error', 'Could not retrieve FINIX costs for profile')
       }
     }
 

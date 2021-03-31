@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal } from '@pancakeswap-libs/uikit'
 import ModalActions from 'components/ModalActions'
-import TokenInput from '../../../components/TokenInput'
+import ModalInput from 'components/ModalInput'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Button, Modal } from 'uikit-dev'
 import useI18n from '../../../hooks/useI18n'
 import { getFullDisplayBalance } from '../../../utils/formatBalance'
 
@@ -33,8 +33,8 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={`Withdraw ${tokenName}`} onDismiss={onDismiss}>
-      <TokenInput
+    <Modal title={`Withdraw ${tokenName}`} onDismiss={onDismiss} isRainbow>
+      <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         value={val}
@@ -42,10 +42,11 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         symbol={tokenName}
       />
       <ModalActions>
-        <Button variant="secondary" onClick={onDismiss}>
+        <Button variant="secondary" onClick={onDismiss} fullWidth>
           {TranslateString(462, 'Cancel')}
         </Button>
         <Button
+          fullWidth
           disabled={pendingTx}
           onClick={async () => {
             setPendingTx(true)

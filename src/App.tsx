@@ -1,26 +1,31 @@
-import React, { useEffect, Suspense, lazy } from 'react'
-import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { ResetCSS } from '@pancakeswap-libs/uikit'
 import BigNumber from 'bignumber.js'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
+import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import GlobalStyle from './style/Global'
+import { ResetCSS, Modal } from 'uikit-dev'
 import Menu from './components/Menu'
-import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
-import Pools from './views/Pools'
+import ToastListener from './components/ToastListener'
+import history from './routerHistory'
+import GlobalStyle from './style/Global'
+import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
+import Flip from './uikit-dev/components/Flip'
+// import Info from 'views/Info/Info'
+// import WaitingPage from 'uikit-dev/components/WaitingPage'
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
+const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
-const Lottery = lazy(() => import('./views/Lottery'))
-const Ifos = lazy(() => import('./views/Ifos'))
 const NotFound = lazy(() => import('./views/NotFound'))
-const Nft = lazy(() => import('./views/Nft'))
-const Teams = lazy(() => import('./views/Teams'))
-const Team = lazy(() => import('./views/Teams/Team'))
-const Profile = lazy(() => import('./views/Profile'))
+// const Lottery = lazy(() => import('./views/Lottery'))
+// const Ifos = lazy(() => import('./views/Ifos'))
+// const Collectibles = lazy(() => import('./views/Collectibles'))
+// const Teams = lazy(() => import('./views/Teams'))
+// const Team = lazy(() => import('./views/Teams/Team'))
+// const Profile = lazy(() => import('./views/Profile'))
 
 // This config is required for number formating
 BigNumber.config({
@@ -30,6 +35,21 @@ BigNumber.config({
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
+
+  // const [isPhrase1, setIsPhrase1] = useState(false)
+  // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
+  //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
+  //   : new Date().getTime()
+  // const currentTime = new Date().getTime()
+  // useEffect(() => {
+  //   if (currentTime < phrase1TimeStamp) {
+  //     setTimeout(() => {
+  //       setIsPhrase1(true)
+  //     }, phrase1TimeStamp - currentTime)
+  //   } else {
+  //     setIsPhrase1(true)
+  //   }
+  // }, [currentTime, phrase1TimeStamp])
 
   // Monkey patch warn() because of web3 flood
   // To be removed when web3 1.3.5 is released
@@ -47,29 +67,39 @@ const App: React.FC = () => {
   useFetchProfile()
 
   return (
-    <Router>
+    <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
       <Menu>
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
+              <Redirect to="/dashboard" />
+            </Route>
+            <Route path="/dashboard">
               <Home />
             </Route>
-            <Route path="/farms">
-              <Farms />
-            </Route>
-            <Route path="/pools">
+            <Route path="/pool">
               <Pools />
             </Route>
-            <Route path="/lottery">
+            <Route path="/farm">
+              <Farms />
+            </Route>
+            {/* <Route path="/info">
+              <Info />
+            </Route> */}
+            {/* <Route path="/xxx">
+              <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
+            </Route> */}
+
+            {/* <Route path="/lottery">
               <Lottery />
             </Route>
             <Route path="/ifo">
               <Ifos />
             </Route>
-            <Route path="/nft">
-              <Nft />
+            <Route path="/collectibles">
+              <Collectibles />
             </Route>
             <Route exact path="/teams">
               <Teams />
@@ -79,21 +109,76 @@ const App: React.FC = () => {
             </Route>
             <Route path="/profile">
               <Profile />
-            </Route>
+            </Route> */}
+
             {/* Redirect */}
-            <Route path="/staking">
+            {/* <Route path="/staking">
               <Redirect to="/pools" />
             </Route>
             <Route path="/syrup">
               <Redirect to="/pools" />
             </Route>
+            <Route path="/nft">
+              <Redirect to="/collectibles" />
+            </Route> */}
+
             {/* 404 */}
             <Route component={NotFound} />
           </Switch>
         </Suspense>
       </Menu>
       <ToastListener />
+      <GlobalCheckBullHiccupClaimStatus />
+      {/* !isPhrase1 && (
+        <div
+          style={{
+            position: 'fixed',
+            zIndex: 1,
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%',
+            pointerEvents: 'none',
+            backgroundColor: 'rgba(0,0,0,0.4)',
+          }}
+          tabIndex={0}
+          role="button"
+          onClick={(e) => {
+            e.preventDefault()
+          }}
+          onKeyDown={(e) => {
+            e.preventDefault()
+          }}
+        >
+          <div
+            style={{
+              overflow: 'auto',
+              outline: 0,
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              position: 'absolute',
+              width: '90%',
+              maxHeight: '80%',
+              backgroundColor: 'white',
+              borderRadius: '8px',
+            }}
+          >
+            <DateModal date={phrase1TimeStamp} />
+          </div>
+        </div>
+      ) */}
     </Router>
+  )
+}
+
+const DateModal = ({ date }) => {
+  return (
+    <Modal title="" hideCloseButton isRainbow>
+      <div>
+        <Flip date={date} />
+      </div>
+    </Modal>
   )
 }
 
