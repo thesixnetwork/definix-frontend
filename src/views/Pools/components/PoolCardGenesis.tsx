@@ -315,11 +315,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                 ) : (
                   <div className="flex">
                     {stakedBalance.toNumber() === 0 ? (
-                      <Button
-                        disabled={(isFinished && sousId !== 0)}
-                        onClick={onPresentDeposit}
-                        fullWidth
-                      >
+                      <Button disabled={isFinished && sousId !== 0} onClick={onPresentDeposit} fullWidth>
                         Stake
                       </Button>
                     ) : (
@@ -346,7 +342,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                         {!isOldSyrup && (
                           <Button
                             fullWidth
-                            disabled={(isFinished && sousId !== 0)}
+                            disabled={isFinished && sousId !== 0}
                             onClick={onPresentDeposit}
                             variant="secondary"
                             className="ml-2 btn-secondary-disable"

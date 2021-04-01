@@ -153,7 +153,9 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
 
 // Thunks
 export const fetchSixPrice = () => async (dispatch) => {
-  const response = await axios.get('https://s3-ap-southeast-1.amazonaws.com/database-s3public-g8ignhbbbk6e/prices/Current.json')
+  const response = await axios.get(
+    'https://s3-ap-southeast-1.amazonaws.com/database-s3public-g8ignhbbbk6e/prices/Current.json',
+  )
   const usdPrice = _.get(response, 'data.assets.six.usd')
   dispatch(
     setSixPrice({
