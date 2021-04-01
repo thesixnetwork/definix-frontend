@@ -314,11 +314,13 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                 <p className="mt-2 text-bold">{tokenName}</p>
               </div>
 
-              {false && <div className="flex flex-column align-stretch justify-end">
-                <Link href="https://exchange.definix.com/#/swap" target="_blank" className="mx-auto">
-                  Buy {tokenName}
-                </Link>
-              </div>}
+              {false && (
+                <div className="flex flex-column align-stretch justify-end">
+                  <Link href="https://exchange.definix.com/#/swap" target="_blank" className="mx-auto">
+                    Buy {tokenName}
+                  </Link>
+                </div>
+              )}
             </div>
             <div className="mx-3 mt-6 mb-4">
               {!account && <UnlockButton fullWidth />}
