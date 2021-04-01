@@ -113,7 +113,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     if (currentTime < phrase1TimeStamp) {
       setTimeout(() => {
         setIsPhrase1(true)
-      }, (phrase1TimeStamp - currentTime) - 120000)
+      }, phrase1TimeStamp - currentTime - 120000)
     } else {
       setIsPhrase1(true)
     }
@@ -330,7 +330,11 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                 ) : (
                   <div className="flex">
                     {stakedBalance.toNumber() === 0 ? (
-                      <Button disabled={!isPhrase1 || (isFinished && sousId !== 0)} onClick={onPresentDeposit} fullWidth>
+                      <Button
+                        disabled={!isPhrase1 || (isFinished && sousId !== 0)}
+                        onClick={onPresentDeposit}
+                        fullWidth
+                      >
                         Stake
                       </Button>
                     ) : (
@@ -357,7 +361,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                         {!isOldSyrup && (
                           <Button
                             fullWidth
-                            disabled={!isPhrase1 || isFinished && sousId !== 0}
+                            disabled={!isPhrase1 || (isFinished && sousId !== 0)}
                             onClick={onPresentDeposit}
                             variant="secondary"
                             className="ml-2 btn-secondary-disable"
