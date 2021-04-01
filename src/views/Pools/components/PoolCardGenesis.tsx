@@ -219,8 +219,12 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
         <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
           <ArrowBackIcon />
         </IconButton>
-        <Link href="https://bridge.definix.com/" target="_blank" className="ma-3 flex justify-space-between align-center">
-          <img src={bridge} alt="bridge" width="24" className="mr-1" style={{width: "24px", height: "24px"}} />
+        <Link
+          href="https://bridge.definix.com/"
+          target="_blank"
+          className="ma-3 flex justify-space-between align-center"
+        >
+          <img src={bridge} alt="bridge" width="24" className="mr-1" style={{ width: '24px', height: '24px' }} />
           Bridge
         </Link>
       </div>
