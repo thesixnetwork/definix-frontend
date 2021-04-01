@@ -207,7 +207,7 @@ const Menu: React.FC<NavProps> = ({
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
-              <strong>${price <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
+              <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
             </p>
           </Price>
           {/* <Dropdown

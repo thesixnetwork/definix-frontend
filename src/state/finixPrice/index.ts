@@ -363,8 +363,6 @@ export const fetchQuote = () => async (dispatch) => {
     busdUsdtQuote,
   ] = await Promise.all(fetchPromise)
 
-  // eslint-disable-next-line
-  debugger
   dispatch(
     setQuote({
       sixFinixQuote,

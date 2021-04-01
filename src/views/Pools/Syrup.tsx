@@ -156,19 +156,7 @@ const TimerWrapper = ({ isPhrase1, date, children }) => {
         <br />
         <br />
       </div>
-      <div
-        tabIndex={0}
-        role="button"
-        style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={(e) => {
-          e.preventDefault()
-        }}
-        onKeyDown={(e) => {
-          e.preventDefault()
-        }}
-      >
-        {children}
-      </div>
+      {children}
     </>
   )
 }

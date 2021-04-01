@@ -72,6 +72,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   } = pool
   const [beforeStartDate, setBeforeStartDate] = useState(0)
   const [endBlockDate, setEndBlockDate] = useState(0)
+  const [isPhrase1, setIsPhrase1] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const block = useBlock()
   const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
@@ -103,6 +104,21 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
       totalStakedInt = totalStaked.times(new BigNumber(10).pow(tokenDecimals)).toNumber()
       break
   }
+
+  const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
+  const currentTime = new Date().getTime()
+  useEffect(() => {
+    if (currentTime < phrase1TimeStamp) {
+      setTimeout(() => {
+        setIsPhrase1(true)
+      }, (phrase1TimeStamp - currentTime) - 120000)
+    } else {
+      setIsPhrase1(true)
+    }
+  }, [currentTime, phrase1TimeStamp])
+
   // eslint-disable-next-line
   let sixPerFinix =
     totalStakedInt /
@@ -308,20 +324,20 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               {!account && <UnlockButton fullWidth />}
               {account &&
                 (needsApproval && !isOldSyrup ? (
-                  <Button disabled={isFinished || requestedApproval} onClick={handleApprove} fullWidth>
+                  <Button disabled={!isPhrase1 || isFinished || requestedApproval} onClick={handleApprove} fullWidth>
                     Approve
                   </Button>
                 ) : (
                   <div className="flex">
                     {stakedBalance.toNumber() === 0 ? (
-                      <Button disabled={isFinished && sousId !== 0} onClick={onPresentDeposit} fullWidth>
+                      <Button disabled={!isPhrase1 || (isFinished && sousId !== 0)} onClick={onPresentDeposit} fullWidth>
                         Stake
                       </Button>
                     ) : (
                       <>
                         <Button
                           fullWidth
-                          disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                          disabled={!isPhrase1 || stakedBalance.eq(new BigNumber(0)) || pendingTx}
                           onClick={
                             isOldSyrup
                               ? async () => {
@@ -341,7 +357,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                         {!isOldSyrup && (
                           <Button
                             fullWidth
-                            disabled={isFinished && sousId !== 0}
+                            disabled={!isPhrase1 || isFinished && sousId !== 0}
                             onClick={onPresentDeposit}
                             variant="secondary"
                             className="ml-2 btn-secondary-disable"
@@ -384,7 +400,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
             <div className="mx-3 mt-6 mb-4">
               <Button
                 fullWidth
-                disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+                disabled={!isPhrase1 || !account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
                 onClick={async () => {
                   setPendingTx(true)
                   await onReward()
