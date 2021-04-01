@@ -1,7 +1,7 @@
 import throttle from 'lodash/throttle'
+import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import numeral from 'numeral'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
@@ -11,6 +11,7 @@ import { SvgProps } from '../../components/Svg'
 import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
 import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
+import FinixCoin from '../../images/finix-coin.png'
 import th from '../../images/th.png'
 import { MENU_HEIGHT, SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
 import * as IconModule from './icons'
@@ -18,7 +19,6 @@ import Logo from './Logo'
 import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
-import FinixCoin from '../../images/finix-coin.png'
 
 const Wrapper = styled.div`
   position: relative;
@@ -196,12 +196,42 @@ const Menu: React.FC<NavProps> = ({
   return (
     <Wrapper>
       <StyledNav showMenu={showMenu}>
-        <Logo
-          isPushed={isPushed}
-          togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
-          isDark={isDark}
-          href={homeLink?.href ?? '/'}
-        />
+        <Flex alignItems="center">
+          <Logo
+            isPushed={isPushed}
+            togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
+            isDark={isDark}
+            href={homeLink?.href ?? '/'}
+          />
+          {!isMobile && (
+            <Dropdown
+              position="bottom-right"
+              target={
+                <Button
+                  variant="text"
+                  size="sm"
+                  endIcon={<ChevronDownIcon className="ml-1" />}
+                  className="ml-4 color-text"
+                >
+                  Binance Smart Chain
+                </Button>
+              }
+            >
+              <MenuButton variant="text" fullWidth className="color-primary mb-2">
+                Binance Smart Chain
+              </MenuButton>
+              <MenuButton
+                variant="text"
+                fullWidth
+                disabled
+                className="color-disable"
+                style={{ background: 'transparent' }}
+              >
+                Klaytn
+              </MenuButton>
+            </Dropdown>
+          )}
+        </Flex>
         <Flex alignItems="center">
           <Price>
             <img src={FinixCoin} alt="" />

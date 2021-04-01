@@ -83,7 +83,7 @@ const PanelBody: React.FC<Props> = (props) => {
     // }
 
     const calloutClass = menu.calloutClass ? menu.calloutClass : undefined
-    const isActive = location.pathname.includes(menu.href)
+    const isActive = location.pathname.includes(menu.href) && !menu.notHighlight
 
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
@@ -102,18 +102,29 @@ const PanelBody: React.FC<Props> = (props) => {
           Wallet
         </Heading>
         <UserBlock account={account} login={login} logout={logout} />
-        <MenuItem menu={links[0]} />
+
+        {links
+          .filter((link) => link.group === 'wallet')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
       </BorderBox>
       <BorderBox>
         <Heading fontSize="14px">DEX</Heading>
-        {links.map((menu) => {
-          if (menu.href && menu.href.includes('dashboard')) return <></>
-          return <MenuItem menu={menu} key={menu.href} />
-        })}
+        {links
+          .filter((link) => link.group === 'dex')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
       </BorderBox>
-      {/* <BorderBox>
+      <BorderBox>
         <Heading fontSize="14px">Invest</Heading>
-      </BorderBox> */}
+        {links
+          .filter((link) => link.group === 'invest')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
+      </BorderBox>
     </Container>
   )
 }

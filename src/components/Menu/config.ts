@@ -9,6 +9,12 @@ import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
 import swap from 'uikit-dev/images/Menu-Icon/swap.png'
 import dashboardClick from 'uikit-dev/images/Menu-Icon/dashboard-click.png'
 import dashboard from 'uikit-dev/images/Menu-Icon/dashboard.png'
+import portfolioClick from 'uikit-dev/images/Menu-Icon/portfolio-click.png'
+import portfolio from 'uikit-dev/images/Menu-Icon/portfolio.png'
+import watchlistClick from 'uikit-dev/images/Menu-Icon/watchlist-click.png'
+import watchlist from 'uikit-dev/images/Menu-Icon/watchlist.png'
+import exploreClick from 'uikit-dev/images/Menu-Icon/explore-click.png'
+import explore from 'uikit-dev/images/Menu-Icon/explore.png'
 
 const config: MenuEntry[] = [
   {
@@ -16,46 +22,65 @@ const config: MenuEntry[] = [
     icon: dashboardClick,
     iconActive: dashboard,
     href: '/dashboard',
+    group: 'wallet',
+    notHighlight: false,
   },
   {
     label: 'Pool',
     icon: poolClick,
     iconActive: pool,
     href: '/pool',
+    group: 'dex',
+    notHighlight: false,
   },
   {
     label: 'Swap',
     icon: swapClick,
     iconActive: swap,
     href: 'https://exchange.definix.com/#/swap',
+    group: 'dex',
+    notHighlight: false,
   },
   {
     label: 'Liquidity',
     icon: liquidityClick,
     iconActive: liquidity,
     href: 'https://exchange.definix.com/#/liquidity',
+    group: 'dex',
+    notHighlight: false,
   },
   {
     label: 'Farm',
     icon: farmClick,
     iconActive: farm,
     href: '/farm',
+    group: 'dex',
+    notHighlight: false,
   },
-  // {
-  //   label: 'Investment',
-  //   icon: 'TradeIcon',
-  //   initialOpenState: false,
-  //   items: [
-  //     {
-  //       label: 'Exchange',
-  //       href: '/swap',
-  //     },
-  //     {
-  //       label: 'Liquidity',
-  //       href: '/pool',
-  //     },
-  //   ],
-  // },
+  {
+    label: 'Portfolio',
+    icon: portfolioClick,
+    iconActive: portfolio,
+    href: '/info',
+    group: 'invest',
+    notHighlight: true,
+  },
+  {
+    label: 'Watchlist',
+    icon: watchlistClick,
+    iconActive: watchlist,
+    href: '/info',
+    group: 'invest',
+    notHighlight: true,
+  },
+  {
+    label: 'Explore',
+    icon: exploreClick,
+    iconActive: explore,
+    href: '/info',
+    group: 'invest',
+    notHighlight: true,
+  },
 ]
 
 // const config: MenuEntry[] = [

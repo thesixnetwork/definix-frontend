@@ -236,7 +236,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
               {currentBlockNumber === 0 ? (
                 <span className="col-6">Loading</span>
               ) : (
-                <div className="col-6 flex align-baseline justify-end">
+                <div className="col-6 flex align-baseline justify-end flex-wrap" style={{ wordBreak: 'break-word' }}>
                   <Balance isDisabled={isFinished} value={totalRewardedDisplay} decimals={2} unit=" FINIX" />
                   <span className="flex-shrink" style={{ width: '20px', textAlign: 'center' }}>
                     /
@@ -445,6 +445,7 @@ const StyledDetails = styled.div`
   align-items: baseline;
   justify-content: space-between;
   padding: 12px 0;
+  flex-wrap: wrap;
 
   p,
   span {

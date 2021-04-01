@@ -40,6 +40,9 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .text-bold { font-weight: bold; color: ${({ theme }) => theme.colors.text}; }
+  .color-primary { color: ${({ theme }) => theme.colors.primary} !important; }
+  .color-text { color: ${({ theme }) => theme.colors.text} !important; }
+  .color-disable { color: ${({ theme }) => theme.colors.textDisabled} !important; }
 
   .flex {
     display: flex !important;

@@ -97,7 +97,7 @@ const Home: React.FC = () => {
           <EarnAssetCard />
           <WinCard />
         </CTACards> */}
-        <InfoBanner className="mb-5" />
+        <InfoBanner className="mb-5" showBtn />
         <Cards>
           <TotalValueLockedCard />
           <FinixStats />

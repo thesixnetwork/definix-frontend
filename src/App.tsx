@@ -1,17 +1,17 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import React, { lazy, Suspense, useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect } from 'react'
 import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import { ResetCSS, Modal } from 'uikit-dev'
+import { Modal, ResetCSS } from 'uikit-dev'
+import Info from 'views/Info/Info'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
-import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 import Flip from './uikit-dev/components/Flip'
-// import Info from 'views/Info/Info'
+import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
 // Route-based code splitting
@@ -85,9 +85,9 @@ const App: React.FC = () => {
             <Route path="/farm">
               <Farms />
             </Route>
-            {/* <Route path="/info">
+            <Route path="/info">
               <Info />
-            </Route> */}
+            </Route>
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
             </Route> */}
