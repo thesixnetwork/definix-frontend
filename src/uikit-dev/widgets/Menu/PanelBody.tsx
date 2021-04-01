@@ -125,6 +125,14 @@ const PanelBody: React.FC<Props> = (props) => {
             <MenuItem menu={link} />
           ))}
       </BorderBox>
+      <BorderBox>
+        <Heading fontSize="14px">Tool</Heading>
+        {links
+          .filter((link) => link.group === 'tool')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
+      </BorderBox>
     </Container>
   )
 }

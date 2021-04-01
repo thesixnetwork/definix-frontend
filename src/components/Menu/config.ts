@@ -5,6 +5,8 @@ import liquidityClick from 'uikit-dev/images/Menu-Icon/liquidity-click.png'
 import liquidity from 'uikit-dev/images/Menu-Icon/liquidity.png'
 import poolClick from 'uikit-dev/images/Menu-Icon/pool-click.png'
 import pool from 'uikit-dev/images/Menu-Icon/pool.png'
+import bridgeClick from 'uikit-dev/images/Menu-Icon/bridge-click.png'
+import bridge from 'uikit-dev/images/Menu-Icon/bridge.png'
 import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
 import swap from 'uikit-dev/images/Menu-Icon/swap.png'
 import dashboardClick from 'uikit-dev/images/Menu-Icon/dashboard-click.png'
@@ -79,6 +81,14 @@ const config: MenuEntry[] = [
     iconActive: explore,
     href: '/info',
     group: 'invest',
+    notHighlight: true,
+  },
+  {
+    label: 'Bridge',
+    icon: bridgeClick,
+    iconActive: bridge,
+    href: 'https://bridge.six.network',
+    group: 'tool',
     notHighlight: true,
   },
 ]

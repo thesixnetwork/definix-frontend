@@ -25,6 +25,7 @@ import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
 import PoolFinishedSash from './PoolFinishedSash'
 import WithdrawModal from './WithdrawModal'
+import bridge from '../../../uikit-dev/images/Menu-Icon/bridge.png'
 
 interface PoolWithApy extends Pool {
   apy: BigNumber
@@ -214,9 +215,15 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     >
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
 
-      <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
-        <ArrowBackIcon />
-      </IconButton>
+      <div className="flex justify-space-between">
+        <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
+          <ArrowBackIcon />
+        </IconButton>
+        <Link href="https://bridge.definix.com/" target="_blank" className="ma-3 flex justify-space-between align-center">
+          <img src={bridge} alt="bridge" width="24" className="mr-1" style={{width: "24px", height: "24px"}} />
+          Bridge
+        </Link>
+      </div>
 
       <CardStake />
 
