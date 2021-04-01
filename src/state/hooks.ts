@@ -11,6 +11,7 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
+  fetchSixPrice,
   fetchQuote,
   push as pushToast,
   remove as removeToast,
@@ -30,6 +31,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchFarmsPublicDataAsync())
     dispatch(fetchPoolsPublicDataAsync())
     dispatch(fetchFinixPrice())
+    dispatch(fetchSixPrice())
     dispatch(fetchQuote())
   }, [dispatch, slowRefresh])
 }
@@ -113,9 +115,15 @@ export const usePriceFinixUsd = (): BigNumber => {
   return new BigNumber(finixPrice)
 }
 
+export const usePriceSixUsd = (): BigNumber => {
+  const sixPrice = useSelector((state: State) => state.finixPrice.sixPrice)
+  return new BigNumber(sixPrice)
+}
+
 export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
+  const sixUsd = usePriceSixUsd()
   const selectedPools = pools.find((pool) => pool.sousId === 1)
   const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
   const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
@@ -145,7 +153,7 @@ export const usePriceTVL = (): BigNumber => {
         totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
         break
     }
-    return totalStaked
+    return totalStaked.times(sixUsd)
     // eslint-disable-next-line
   } else {
     const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)

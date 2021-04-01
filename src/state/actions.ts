@@ -8,6 +8,6 @@ export {
   updateUserPendingReward,
   updateUserStakedBalance,
 } from './pools'
-export { fetchFinixPrice, fetchQuote } from './finixPrice'
+export { fetchSixPrice, fetchFinixPrice, fetchQuote } from './finixPrice'
 export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
 export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'
