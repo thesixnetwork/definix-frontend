@@ -114,9 +114,9 @@ export const usePriceFinixUsd = (): BigNumber => {
 }
 
 export const usePriceTVL = (): BigNumber => {
- const { account } = useWallet()
+  const { account } = useWallet()
   const pools = usePools(account)
-  const selectedPools = pools.find(pool => pool.sousId === 1)
+  const selectedPools = pools.find((pool) => pool.sousId === 1)
   const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
   const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
   const sixUsdtQuote = useSelector((state: State) => state.finixPrice.sixUsdtQuote)
@@ -128,10 +128,10 @@ export const usePriceTVL = (): BigNumber => {
   const wbnbUsdtQuote = useSelector((state: State) => state.finixPrice.wbnbUsdtQuote)
   const busdUsdtQuote = useSelector((state: State) => state.finixPrice.busdUsdtQuote)
   const finixUsdPrice = usePriceFinixUsd()
-    const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-      ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-      : new Date().getTime()
-    const currentTime = new Date().getTime()
+  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
+  const currentTime = new Date().getTime()
   if (currentTime < phrase2TimeStamp) {
     let totalStaked = new BigNumber(0)
     switch (typeof selectedPools.totalStaked) {
@@ -148,8 +148,6 @@ export const usePriceTVL = (): BigNumber => {
     return totalStaked
     // eslint-disable-next-line
   } else {
-
-
     const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
     const sixBusdPrice = new BigNumber(sixBusdQuote)
     const sixUsdtPrice = new BigNumber(sixUsdtQuote)
@@ -173,7 +171,6 @@ export const usePriceTVL = (): BigNumber => {
       busdUsdtPrice,
     ])
   }
-
 }
 
 export const usePriceEthBusd = (): BigNumber => {
