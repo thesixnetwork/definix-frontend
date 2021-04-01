@@ -26,8 +26,8 @@ const MaxWidth = styled.div`
     padding: 48px 0;
   }
 
-  .infp {
-    margin-vottom: 2rem;
+  .info {
+    margin-bottom: 2rem;
   }
 
   .color-stroke {
@@ -43,13 +43,15 @@ const Flex = styled.div`
   img {
     display: block;
     margin: 0 auto 2rem auto;
+    width: 70%;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
 
     img {
-      height: 280px;
+      width: auto;
+      height: 200px;
     }
   }
 
