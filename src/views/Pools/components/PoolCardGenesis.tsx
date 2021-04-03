@@ -220,7 +220,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           <ArrowBackIcon />
         </IconButton>
         <Link
-          href="https://bridge.definix.com/"
+          href="https://bridge.six.network/"
           target="_blank"
           className="ma-3 flex justify-space-between align-center"
         >
@@ -237,7 +237,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
             <StyledDetails>
               <p className="pr-4 col-6">Reward Ratio</p>
               <span className="col-6">
-                1 FINIX ≈ {sixPerFinix === 0 ? '∞' : numeral(sixPerFinix).format('0,0.0000')} SIX
+                1 FINIX : {sixPerFinix === 0 ? '∞' : numeral(sixPerFinix).format('0,0.0000')} SIX
               </span>
               {/* <div className="col-6">
                 <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
