@@ -122,7 +122,7 @@ const Farms: React.FC = () => {
         Farm
       </Heading>
 
-      <Card>
+      <Card className="mb-6">
         <WhatIsFarm>
           <MaxWidth>
             <img src={man} alt="" />
@@ -173,23 +173,19 @@ const Farms: React.FC = () => {
         </MaxWidth>
       </Card>
 
-      <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-        <FarmTabButtons
-          activeFarmsCount={activeFarms.length}
-          stackedOnly={stackedOnly}
-          setStackedOnly={setStackedOnly}
-        />
-        <div>
-          <FlexLayout>
-            <Route exact path={`${path}`}>
-              {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
-            </Route>
-            <Route exact path={`${path}/history`}>
-              {farmsList(inactiveFarms, true)}
-            </Route>
-          </FlexLayout>
-        </div>
-      </TimerWrapper>
+      {/* <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}> */}
+      <FarmTabButtons activeFarmsCount={activeFarms.length} stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+      <div>
+        <FlexLayout>
+          <Route exact path={`${path}`}>
+            {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+          </Route>
+          <Route exact path={`${path}/history`}>
+            {farmsList(inactiveFarms, true)}
+          </Route>
+        </FlexLayout>
+      </div>
+      {/* </TimerWrapper> */}
     </Page>
   )
 }
