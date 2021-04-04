@@ -11,9 +11,11 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixBusd } from 'state/hooks'
 import styled from 'styled-components'
-import { Card, Heading, Text } from 'uikit-dev'
-import man from 'uikit-dev/images/for-Farm-Elements/1558.png'
+import { Card, Heading, Text, Button } from 'uikit-dev'
+// import man from 'uikit-dev/images/for-Farm-Elements/1558.png'
+import man02 from 'uikit-dev/images/FINIX-Love-You/1557.png'
 import bg from 'uikit-dev/images/for-Farm-Elements/bg.jpg'
+import bgBlue from 'uikit-dev/images/FINIX-Love-You/bg.png'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
@@ -122,7 +124,27 @@ const Farms: React.FC = () => {
         Farm
       </Heading>
 
-      <Card className="mb-6">
+      <CardSorry className="mb-6">
+        <MaxWidth>
+          <img src={man02} alt="" />
+
+          <div>
+            <Heading as="h3" fontSize="24px !important" color="#FFF" className="mb-2">
+              Sorry for an inconvenience
+            </Heading>
+            <Heading as="h3" fontSize="24px !important" color="#FFD157" className="mb-2">
+              Our farm will be available in <Flip small date="Tue Apr 06 2021 20:09:41 GMT+0700" />
+            </Heading>
+            <p>You can stake your LP for SIX at this moment</p>
+          </div>
+
+          <Button as="a" href="/pool" variant="secondary" className="btn-secondary-disable">
+            Go to stake
+          </Button>
+        </MaxWidth>
+      </CardSorry>
+
+      {/* <Card className="mb-6">
         <WhatIsFarm>
           <MaxWidth>
             <img src={man} alt="" />
@@ -171,7 +193,7 @@ const Farms: React.FC = () => {
             you want.
           </Text>
         </MaxWidth>
-      </Card>
+      </Card> */}
 
       <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
         <FarmTabButtons
@@ -194,8 +216,72 @@ const Farms: React.FC = () => {
   )
 }
 
+const CardSorry = styled(Card)`
+  padding: 24px;
+  width: 100%;
+  background: url(${bgBlue});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > div {
+      text-align: center;
+    }
+  }
+
+  img {
+    width: 160px;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    line-height: 1.5;
+  }
+
+  a {
+    flex-shrink: 0;
+    margin-top: 1rem;
+  }
+
+  strong {
+    padding: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    justify-content: space-between;
+
+    > div {
+      flex-direction: row;
+
+      > div {
+        text-align: left;
+      }
+    }
+
+    img {
+      margin: 0;
+    }
+
+    a {
+      margin: 0 0 0 1rem;
+    }
+
+    strong {
+      padding: 0;
+    }
+  }
+`
+
 const MaxWidth = styled.div`
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
   width: 100%;
 `
