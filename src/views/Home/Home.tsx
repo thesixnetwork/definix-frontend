@@ -1,12 +1,11 @@
-import certik from 'assets/images/certik.png'
 import Page from 'components/layout/Page'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { BaseLayout, Heading, Text } from 'uikit-dev'
+import { BaseLayout, Heading } from 'uikit-dev'
 import FinixStats from 'views/Home/components/FinixStats'
-import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import InfoBanner from 'views/Info/components/InfoBanner'
+import Flip from '../../uikit-dev/components/Flip'
 import CardUpcomingFarms from './components/CardUpcomingFarms'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 // import LotteryCard from 'views/Home/components/LotteryCard'
@@ -78,7 +77,6 @@ const Cards = styled(BaseLayout)`
     }
   }
 `
-
 const CountDownFarm = styled.div`
   background: ${({ theme }) => theme.colors.primary};
   padding: 20px 24px;
@@ -86,7 +84,6 @@ const CountDownFarm = styled.div`
   text-align: center;
   font-weight: 600;
   font-size: 18px;
-
   strong {
     margin-left: 4px;
     color: #ffd157;
