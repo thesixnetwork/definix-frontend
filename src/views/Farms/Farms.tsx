@@ -133,7 +133,7 @@ const Farms: React.FC = () => {
               Sorry for an inconvenience
             </Heading>
             <Heading as="h3" fontSize="24px !important" color="#FFD157" className="mb-2">
-              Our farm will be available in <Flip small date="Tue Apr 06 2021 20:09:41 GMT+0700" />
+              Our farm will be available in <Flip small date="Tue Apr 06 2021 21:51:25 GMT+0700" />
             </Heading>
             <p>You can stake your LP for SIX at this moment</p>
           </div>
