@@ -92,7 +92,7 @@ const pools: PoolConfig[] = [
   {
     sousId: 6,
     tokenName: 'USDT-BUSD',
-    stakingTokenName: QuoteToken.SIXFINIX,
+    stakingTokenName: QuoteToken.USDTBUSD,
     stakingTokenAddress: '0xC01cF935e122931B688656d5a7bB3f9ab28C83D3',
     contractAddress: {
       97: '0x1b4AEc66ef4f942dA16845D22cE2656D759D0A15',
