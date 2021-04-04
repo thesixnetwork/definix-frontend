@@ -1,12 +1,11 @@
-import certik from 'assets/images/certik.png'
 import Page from 'components/layout/Page'
 import React from 'react'
 import styled from 'styled-components'
-import { BaseLayout, Heading, Text } from 'uikit-dev'
+import { BaseLayout, Heading } from 'uikit-dev'
 import FinixStats from 'views/Home/components/FinixStats'
-import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import InfoBanner from 'views/Info/components/InfoBanner'
+import Flip from '../../uikit-dev/components/Flip'
 import CardUpcomingFarms from './components/CardUpcomingFarms'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 // import LotteryCard from 'views/Home/components/LotteryCard'
@@ -101,14 +100,16 @@ const MaxWidth = styled.div`
 `
 
 const Home: React.FC = () => {
-  // const TranslateString = useI18n()
+  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
 
   return (
     <>
       <CountDownFarm>
         <MaxWidth>
           <p>
-            Definix Farms will be available in <strong>00:00:00</strong>
+            Definix Farms will be available in <Flip date={phrase2TimeStamp} small />
           </p>
         </MaxWidth>
       </CountDownFarm>
