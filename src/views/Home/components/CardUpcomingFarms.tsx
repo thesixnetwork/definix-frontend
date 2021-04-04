@@ -54,8 +54,15 @@ const CardStyled = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    .el {
+      width: calc(25% - 1rem);
+    }
   }
+
   ${({ theme }) => theme.mediaQueries.md} {
+    .el {
+      width: auto;
+    }
   } ;
 `
 
