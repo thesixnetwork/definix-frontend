@@ -133,7 +133,7 @@ const Farms: React.FC = () => {
               Sorry for an inconvenience
             </Heading>
             <Heading as="h3" fontSize="24px !important" color="#FFD157" className="mb-2">
-              Our farm will be available soon
+              Our farm will be available in <Flip small date="Tue Apr 06 2021 20:09:41 GMT+0700" />
             </Heading>
             <p>You can stake your LP for SIX at this moment</p>
           </div>
@@ -251,6 +251,10 @@ const CardSorry = styled(Card)`
     margin-top: 1rem;
   }
 
+  strong {
+    padding: 8px;
+  }
+
   ${({ theme }) => theme.mediaQueries.sm} {
     justify-content: space-between;
 
@@ -267,13 +271,17 @@ const CardSorry = styled(Card)`
     }
 
     a {
-      margin-left: 2rem;
+      margin: 0 0 0 1rem;
+    }
+
+    strong {
+      padding: 0;
     }
   }
 `
 
 const MaxWidth = styled.div`
-  max-width: 800px;
+  max-width: 960px;
   margin: 0 auto;
   width: 100%;
 `
