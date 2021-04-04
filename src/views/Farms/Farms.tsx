@@ -130,7 +130,7 @@ const Farms: React.FC = () => {
 
           <div>
             <Heading as="h3" fontSize="24px !important" color="#FFF" className="mb-2">
-            For maximum yield farming return and best experience, we are upgrading our farm.
+              For maximum yield farming return and best experience, we are upgrading our farm.
             </Heading>
             <Heading as="h3" fontSize="24px !important" color="#FFD157" className="mb-2">
               Our farm will be available in <Flip small date="Tue Apr 06 2021 23:32:09 GMT+0700" />
