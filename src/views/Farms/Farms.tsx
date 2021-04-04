@@ -252,7 +252,6 @@ const CardSorry = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    background-position: center 40%;
     justify-content: space-between;
 
     > div {

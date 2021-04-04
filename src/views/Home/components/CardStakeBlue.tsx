@@ -13,6 +13,7 @@ const StyledCardStakeBlue = styled(Card)`
   background: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   background-color: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.white};
   flex-direction: column;
