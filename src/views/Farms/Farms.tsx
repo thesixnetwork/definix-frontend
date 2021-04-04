@@ -222,7 +222,7 @@ const CardSorry = styled(Card)`
   background: url(${bgBlue});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: 25% center;
+  background-position: center;
   background-color: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.white};
 
