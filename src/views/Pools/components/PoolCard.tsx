@@ -380,9 +380,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
-          <Link href="https://exchange.definix.com/#/swap" target="_blank" className="mx-auto mb-4">
-            Buy {tokenName}
-          </Link>
           {!account && <UnlockButton fullWidth />}
           {account &&
             (needsApproval && !isOldSyrup ? (
@@ -452,9 +449,6 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
-          <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
-            = 0.00000 $
-          </p>
           <Button
             fullWidth
             disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
