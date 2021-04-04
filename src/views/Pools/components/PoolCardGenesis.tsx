@@ -11,21 +11,23 @@ import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import numeral from 'numeral'
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
 import { AddIcon, ArrowBackIcon, Button, Heading, IconButton, Image, Link, MinusIcon, useModal } from 'uikit-dev'
+import bg from 'uikit-dev/images/for-Farm-Elements/bg.jpg'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardStake from 'views/Home/components/CardStake'
 import Flip from '../../../uikit-dev/components/Flip'
-import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
+import man from '../../../uikit-dev/images/for-Farm-Elements/1555.png'
+import bridge from '../../../uikit-dev/images/Menu-Icon/bridge.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
 import PoolFinishedSash from './PoolFinishedSash'
 import WithdrawModal from './WithdrawModal'
-import bridge from '../../../uikit-dev/images/Menu-Icon/bridge.png'
+// import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 
 interface PoolWithApy extends Pool {
   apy: BigNumber
@@ -211,10 +213,9 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
       isActive={isCardActive}
       isFinished={isFinished && sousId !== 0}
       className="flex flex-column align-stretch mx-auto"
-      style={{ maxWidth: '1000px' }}
+      style={{ maxWidth: '1000px', padding: '0' }}
     >
       {isFinished && sousId !== 0 && <PoolFinishedSash />}
-
       <div className="flex justify-space-between">
         <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
           <ArrowBackIcon />
@@ -228,9 +229,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           Bridge
         </Link>
       </div>
-
       <CardStake />
-
       <div className="pa-3">
         <MaxWidth>
           <div className="mx-3 my-1">
@@ -288,7 +287,6 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           </div>
         </MaxWidth>
       </div>
-
       <BorderTopBox>
         <Flex>
           <HalfBox>
@@ -409,11 +407,89 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
           </HalfBox>
         </Flex>
       </BorderTopBox>
+      <NextStep>
+        <MaxWidth>
+          <img src={man} alt="" />
 
-      <img src={colorStroke} alt="" className="color-stroke" />
+          <div>
+            <Heading as="h2" fontSize="28px !important" color="#FFF" className="mb-2">
+              Next Step
+            </Heading>
+            <div className="flex">
+              <p>
+                After you claim your rewards, <strong>you can start farming to earn much more FINIX.</strong> Let’s farm
+                now!
+              </p>
+              <Button as="a" href="/farm" variant="secondary" className="btn-secondary-disable">
+                Go to farm
+              </Button>
+            </div>
+          </div>
+        </MaxWidth>
+      </NextStep>
+      {/* <img src={colorStroke} alt="" className="color-stroke" /> */}
     </Card>
   )
 }
+
+const NextStep = styled.div`
+  padding: 24px;
+  width: 100%;
+  background: url(${bg});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 25% center;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
+  border-bottom-left-radius: ${({ theme }) => theme.radii.default};
+  border-bottom-right-radius: ${({ theme }) => theme.radii.default};
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .flex {
+      flex-direction: column;
+    }
+  }
+
+  img {
+    width: 160px;
+  }
+
+  p {
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    flex-shrink: 0;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    background-position: center 40%;
+
+    > div {
+      flex-direction: row;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    > div .flex {
+      flex-direction: row;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    a {
+      margin-left: 2rem;
+    }
+  } ;
+`
 
 const CustomTitle = styled.div`
   display: flex;

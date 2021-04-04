@@ -1,12 +1,12 @@
-import certik from 'assets/images/certik.png'
 import Page from 'components/layout/Page'
 import React from 'react'
 import styled from 'styled-components'
-import { BaseLayout, Heading, Text } from 'uikit-dev'
+import { BaseLayout, Heading } from 'uikit-dev'
 import FinixStats from 'views/Home/components/FinixStats'
-import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import InfoBanner from 'views/Info/components/InfoBanner'
+import Flip from '../../uikit-dev/components/Flip'
+import CardUpcomingFarms from './components/CardUpcomingFarms'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 // import LotteryCard from 'views/Home/components/LotteryCard'
 // import EarnAPYCard from 'views/Home/components/EarnAPYCard'
@@ -78,36 +78,43 @@ const Cards = styled(BaseLayout)`
   }
 `
 
+const MaxWidth = styled.div`
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+`
+
 const Home: React.FC = () => {
-  // const TranslateString = useI18n()
-
   return (
-    <Page style={{ maxWidth: '1280px' }}>
-      <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
-        Dashboard
-      </Heading>
+    <Page>
+      <MaxWidth>
+        <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
+          Dashboard
+        </Heading>
 
-      <div>
-        {/* <Cards>
-          <FarmStakingCard />
-          <LotteryCard />
-        </Cards>
-        <CTACards>
-          <EarnAPYCard />
-          <EarnAssetCard />
-          <WinCard />
-        </CTACards> */}
-        <InfoBanner className="mb-5" showBtn />
-        <Cards>
-          <TotalValueLockedCard />
-          <FinixStats />
-        </Cards>
-        <CardStake large />
-        {/* <div className="flex align-center justify-center mt-6">
-          <Text small>Audited by</Text>
-          <img src={certik} width="120" alt="" />
-        </div> */}
-      </div>
+        <div>
+          {/* <Cards>
+        <FarmStakingCard />
+        <LotteryCard />
+      </Cards>
+      <CTACards>
+        <EarnAPYCard />
+        <EarnAssetCard />
+        <WinCard />
+      </CTACards> */}
+          <InfoBanner className="mb-5" showBtn />
+          <Cards>
+            <TotalValueLockedCard />
+            <FinixStats />
+          </Cards>
+          <CardUpcomingFarms />
+          {/* <CardStake large /> */}
+          {/* <div className="flex align-center justify-center mt-6">
+        <Text small>Audited by</Text>
+        <img src={certik} width="120" alt="" />
+      </div> */}
+        </div>
+      </MaxWidth>
     </Page>
   )
 }
