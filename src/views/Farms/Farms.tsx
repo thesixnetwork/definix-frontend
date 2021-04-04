@@ -122,7 +122,7 @@ const Farms: React.FC = () => {
         Farm
       </Heading>
 
-      <Card>
+      <Card className="mb-6">
         <WhatIsFarm>
           <MaxWidth>
             <img src={man} alt="" />
