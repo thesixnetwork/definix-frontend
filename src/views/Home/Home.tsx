@@ -177,18 +177,18 @@ const Home: React.FC = () => {
 
   return (
     <>
-    {currentTime < phrase2TimeStamp &&
-      (<CountDownFarm>
-        <MaxWidth>
-          <p>
-            Definix Farms will be available in{' '}
-            <strong>
-              {addLeadingZeros(timer.hours)}:{addLeadingZeros(timer.min)}:{addLeadingZeros(timer.sec)}
-            </strong>
-          </p>
-        </MaxWidth>
-      </CountDownFarm>)
-    }
+      {currentTime < phrase2TimeStamp && (
+        <CountDownFarm>
+          <MaxWidth>
+            <p>
+              Definix Farms will be available in{' '}
+              <strong>
+                {addLeadingZeros(timer.hours)}:{addLeadingZeros(timer.min)}:{addLeadingZeros(timer.sec)}
+              </strong>
+            </p>
+          </MaxWidth>
+        </CountDownFarm>
+      )}
       <Page>
         <MaxWidth>
           <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
