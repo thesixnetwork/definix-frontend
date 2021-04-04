@@ -66,7 +66,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     isFinished,
     userData,
     stakingLimit,
-    rewardPerBlock
+    rewardPerBlock,
   } = pool
   const [beforeStartDate, setBeforeStartDate] = useState(0)
   const [endBlockDate, setEndBlockDate] = useState(0)
@@ -215,8 +215,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </CustomTitle>
 
         <div className="flex flex-column align-center pa-5">
-          <p className="mb-3">Stake {tokenName} to earn {sousId === 1 ? "FINIX" : "SIX"}</p>
-          <Image src={sousId === 1 ? "/images/coins/FINIX.png" : "/images/coins/SIX.png"} width={96} height={96} />
+          <p className="mb-3">
+            Stake {tokenName} to earn {sousId === 1 ? 'FINIX' : 'SIX'}
+          </p>
+          <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={96} height={96} />
         </div>
 
         <div className="pa-5 pt-0">
@@ -227,18 +229,28 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
             </div>
           </StyledDetails> */}
           <StyledDetails>
-            <p className="pr-4 col-6">Total {sousId === 1 ? "FINIX" : "SIX"} Rewards</p>
-              {currentBlockNumber === 0 ? (
-                <span className="col-6">Loading</span>
-              ) : (
-                <div className="col-6 flex align-baseline justify-end flex-wrap" style={{ wordBreak: 'break-word' }}>
-                  <Balance isDisabled={isFinished} value={totalRewardedDisplay} decimals={2} unit={sousId === 1 ? " FINIX" : " SIX"} />
-                  <span className="flex-shrink" style={{ width: '20px', textAlign: 'center' }}>
-                    /
-                  </span>
-                  <Balance isDisabled={isFinished} value={totalReward} decimals={2} unit={sousId === 1 ? " FINIX" : " SIX"} />
-                </div>
-              )}
+            <p className="pr-4 col-6">Total {sousId === 1 ? 'FINIX' : 'SIX'} Rewards</p>
+            {currentBlockNumber === 0 ? (
+              <span className="col-6">Loading</span>
+            ) : (
+              <div className="col-6 flex align-baseline justify-end flex-wrap" style={{ wordBreak: 'break-word' }}>
+                <Balance
+                  isDisabled={isFinished}
+                  value={totalRewardedDisplay}
+                  decimals={2}
+                  unit={sousId === 1 ? ' FINIX' : ' SIX'}
+                />
+                <span className="flex-shrink" style={{ width: '20px', textAlign: 'center' }}>
+                  /
+                </span>
+                <Balance
+                  isDisabled={isFinished}
+                  value={totalReward}
+                  decimals={2}
+                  unit={sousId === 1 ? ' FINIX' : ' SIX'}
+                />
+              </div>
+            )}
           </StyledDetails>
           <StyledDetails>
             <p className="pr-4 col-6">Stake period</p>
@@ -430,13 +442,13 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           <Heading as="h2" className="mr-3">
             My Rewards
           </Heading>
-          <Image src={sousId === 1 ? "/images/coins/FINIX.png" : "/images/coins/SIX.png"} width={40} height={40} />
+          <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={40} height={40} />
         </CustomTitle>
 
         <div className="flex flex-column align-center">
-          <p className="mb-2">{sousId === 1 ? "FINIX" : "SIX"} Earned</p>
+          <p className="mb-2">{sousId === 1 ? 'FINIX' : 'SIX'} Earned</p>
           <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-          <p className="mt-2 text-bold">{sousId === 1 ? "FINIX" : "SIX"}</p>
+          <p className="mt-2 text-bold">{sousId === 1 ? 'FINIX' : 'SIX'}</p>
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
