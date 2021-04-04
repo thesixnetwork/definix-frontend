@@ -7,6 +7,7 @@ import FinixStats from 'views/Home/components/FinixStats'
 import CardStake from 'views/Home/components/CardStake'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import InfoBanner from 'views/Info/components/InfoBanner'
+import CardUpcomingFarms from './components/CardUpcomingFarms'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 // import LotteryCard from 'views/Home/components/LotteryCard'
 // import EarnAPYCard from 'views/Home/components/EarnAPYCard'
@@ -78,17 +79,47 @@ const Cards = styled(BaseLayout)`
   }
 `
 
+const CountDownFarm = styled.div`
+  background: ${({ theme }) => theme.colors.primary};
+  padding: 20px 24px;
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+
+  strong {
+    margin-left: 4px;
+    color: #ffd157;
+    font-size: 24px;
+  }
+`
+
+const MaxWidth = styled.div`
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+`
+
 const Home: React.FC = () => {
   // const TranslateString = useI18n()
 
   return (
-    <Page style={{ maxWidth: '1280px' }}>
-      <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
-        Dashboard
-      </Heading>
+    <>
+      <CountDownFarm>
+        <MaxWidth>
+          <p>
+            Definix Farms will be available in <strong>00:00:00</strong>
+          </p>
+        </MaxWidth>
+      </CountDownFarm>
+      <Page>
+        <MaxWidth>
+          <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
+            Dashboard
+          </Heading>
 
-      <div>
-        {/* <Cards>
+          <div>
+            {/* <Cards>
           <FarmStakingCard />
           <LotteryCard />
         </Cards>
@@ -97,18 +128,21 @@ const Home: React.FC = () => {
           <EarnAssetCard />
           <WinCard />
         </CTACards> */}
-        <InfoBanner className="mb-5" showBtn />
-        <Cards>
-          <TotalValueLockedCard />
-          <FinixStats />
-        </Cards>
-        <CardStake large />
-        {/* <div className="flex align-center justify-center mt-6">
+            <InfoBanner className="mb-5" showBtn />
+            <Cards>
+              <TotalValueLockedCard />
+              <FinixStats />
+            </Cards>
+            <CardUpcomingFarms />
+            {/* <CardStake large /> */}
+            {/* <div className="flex align-center justify-center mt-6">
           <Text small>Audited by</Text>
           <img src={certik} width="120" alt="" />
         </div> */}
-      </div>
-    </Page>
+          </div>
+        </MaxWidth>
+      </Page>
+    </>
   )
 }
 
