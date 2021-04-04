@@ -130,12 +130,12 @@ const Farms: React.FC = () => {
 
           <div>
             <Heading as="h3" fontSize="24px !important" color="#FFF" className="mb-2">
-              Sorry for an inconvenience
+            For maximum yield farming return and best experience, we are upgrading our farm.
             </Heading>
             <Heading as="h3" fontSize="24px !important" color="#FFD157" className="mb-2">
-              Our farm will be available in <Flip small date="Tue Apr 06 2021 21:51:25 GMT+0700" />
+              Our farm will be available in <Flip small date="Tue Apr 06 2021 23:32:09 GMT+0700" />
             </Heading>
-            <p>You can stake your LP for SIX at this moment</p>
+            <p>You can stake your LP and get six now</p>
           </div>
 
           <Button as="a" href="/pool" variant="secondary" className="btn-secondary-disable">
