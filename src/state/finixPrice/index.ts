@@ -139,7 +139,8 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
 
     const [quoteTokenBlanceLP, lpTokenBalanceMC, lpTotalSupply] = await multicall(erc20, calls)
 
-    const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    // const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    const lpTokenRatio = 1
     lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
       .div(new BigNumber(10).pow(18))
       .times(new BigNumber(2))
