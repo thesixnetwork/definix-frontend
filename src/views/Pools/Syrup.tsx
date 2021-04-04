@@ -8,6 +8,7 @@ import useI18n from 'hooks/useI18n'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import React, { useState, useEffect } from 'react'
+import { Heading } from 'uikit-dev'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks'
 import styled from 'styled-components'
@@ -17,9 +18,7 @@ import PoolCard from './components/PoolCard'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 
-// import { Heading } from 'uikit-dev'
-// import PoolCard from './components/PoolCard'
-// import PoolTabButtons from './components/PoolTabButtons'
+import PoolTabButtons from './components/PoolTabButtons'
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -98,7 +97,7 @@ const Farm: React.FC = () => {
 
   return (
     <Page>
-      {/* <Heading as="h1" fontSize="32px !important" className="mt-2 mb-4" textAlign="center">
+      <Heading as="h1" fontSize="32px !important" className="mt-2 mb-4" textAlign="center">
         Pool
       </Heading>
 
@@ -108,7 +107,7 @@ const Farm: React.FC = () => {
         setStackedOnly={setStackedOnly}
         liveOnly={liveOnly}
         setLiveOnly={setLiveOnly}
-      /> */}
+      />
       <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
         {IS_GENESIS ? (
           <div>

@@ -33,6 +33,7 @@ export enum QuoteToken {
   'SUSHI' = 'SUSHI',
   'SIX' = 'SIX',
   'FINIX' = 'FINIX',
+  'SIXFINIX' = 'FINIX-SIX',
 }
 
 export enum PoolCategory {
