@@ -78,21 +78,6 @@ const Cards = styled(BaseLayout)`
   }
 `
 
-const CountDownFarm = styled.div`
-  background: ${({ theme }) => theme.colors.primary};
-  padding: 20px 24px;
-  color: ${({ theme }) => theme.colors.white};
-  text-align: center;
-  font-weight: 600;
-  font-size: 18px;
-
-  strong {
-    margin-left: 4px;
-    color: #ffd157;
-    font-size: 24px;
-  }
-`
-
 const MaxWidth = styled.div`
   max-width: 1280px;
   margin-left: auto;
@@ -100,50 +85,37 @@ const MaxWidth = styled.div`
 `
 
 const Home: React.FC = () => {
-  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-    : new Date().getTime()
-
   return (
-    <>
-      <CountDownFarm>
-        <MaxWidth>
-          <p>
-            Definix Farms will be available in <Flip date={phrase2TimeStamp} small />
-          </p>
-        </MaxWidth>
-      </CountDownFarm>
-      <Page>
-        <MaxWidth>
-          <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
-            Dashboard
-          </Heading>
+    <Page>
+      <MaxWidth>
+        <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
+          Dashboard
+        </Heading>
 
-          <div>
-            {/* <Cards>
-          <FarmStakingCard />
-          <LotteryCard />
-        </Cards>
-        <CTACards>
-          <EarnAPYCard />
-          <EarnAssetCard />
-          <WinCard />
-        </CTACards> */}
-            <InfoBanner className="mb-5" showBtn />
-            <Cards>
-              <TotalValueLockedCard />
-              <FinixStats />
-            </Cards>
-            <CardUpcomingFarms />
-            {/* <CardStake large /> */}
-            {/* <div className="flex align-center justify-center mt-6">
-          <Text small>Audited by</Text>
-          <img src={certik} width="120" alt="" />
-        </div> */}
-          </div>
-        </MaxWidth>
-      </Page>
-    </>
+        <div>
+          {/* <Cards>
+        <FarmStakingCard />
+        <LotteryCard />
+      </Cards>
+      <CTACards>
+        <EarnAPYCard />
+        <EarnAssetCard />
+        <WinCard />
+      </CTACards> */}
+          <InfoBanner className="mb-5" showBtn />
+          <Cards>
+            <TotalValueLockedCard />
+            <FinixStats />
+          </Cards>
+          <CardUpcomingFarms />
+          {/* <CardStake large /> */}
+          {/* <div className="flex align-center justify-center mt-6">
+        <Text small>Audited by</Text>
+        <img src={certik} width="120" alt="" />
+      </div> */}
+        </div>
+      </MaxWidth>
+    </Page>
   )
 }
 

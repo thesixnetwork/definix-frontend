@@ -438,7 +438,7 @@ const NextStep = styled.div`
   background: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center 40%;
+  background-position: 25% center;
   background-color: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.white};
   border-bottom-left-radius: ${({ theme }) => theme.radii.default};
@@ -469,6 +469,8 @@ const NextStep = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    background-position: center 40%;
+
     > div {
       flex-direction: row;
     }
