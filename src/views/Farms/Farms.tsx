@@ -231,6 +231,10 @@ const CardSorry = styled(Card)`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    > div {
+      text-align: center;
+    }
   }
 
   img {
@@ -244,18 +248,27 @@ const CardSorry = styled(Card)`
 
   a {
     flex-shrink: 0;
-    margin-left: 2rem;
+    margin-top: 1rem;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     background-position: center 40%;
+    justify-content: space-between;
 
     > div {
       flex-direction: row;
+
+      > div {
+        text-align: left;
+      }
     }
 
     img {
       margin: 0;
+    }
+
+    a {
+      margin-left: 2rem;
     }
   }
 `

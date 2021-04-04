@@ -28,7 +28,7 @@ const StyledCardStakeBlue = styled(Card)`
   }
 
   h2 {
-    font-size: 40px !important;
+    font-size: 32px !important;
   }
 
   h2 + div {
@@ -44,7 +44,7 @@ const StyledCardStakeBlue = styled(Card)`
   }
 
   .logo {
-    width: 80%;
+    width: 50%;
   }
 
   > div {
@@ -126,7 +126,7 @@ const CardStakeBlue = () => {
     <StyledCardStakeBlue>
       <img src={coin} alt="" className="logo" />
       <CardBody>
-        <div className="flex">
+        <div className="flex flex-wrap">
           <Heading as="h3" color="#FFD157" className="mr-2">
             FINIX Love You
           </Heading>
