@@ -156,6 +156,18 @@ export const usePriceTVL = (): BigNumber => {
     return totalStaked.times(sixUsd)
     // eslint-disable-next-line
   } else {
+    let totalStaked = new BigNumber(0)
+    switch (typeof selectedPools.totalStaked) {
+      case 'undefined':
+        totalStaked = new BigNumber(0)
+        break
+      case 'string':
+        totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
+        break
+      default:
+        totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
+        break
+    }
     const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
     const sixBusdPrice = new BigNumber(sixBusdQuote)
     const sixUsdtPrice = new BigNumber(sixUsdtQuote)
@@ -177,6 +189,7 @@ export const usePriceTVL = (): BigNumber => {
       wbnbBusdPrice,
       wbnbUsdtPrice,
       busdUsdtPrice,
+      totalStaked.times(sixUsd).toNumber(),
     ])
   }
 }
