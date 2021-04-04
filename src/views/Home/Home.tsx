@@ -1,5 +1,5 @@
 import Page from 'components/layout/Page'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BaseLayout, Heading } from 'uikit-dev'
 import FinixStats from 'views/Home/components/FinixStats'
@@ -77,6 +77,19 @@ const Cards = styled(BaseLayout)`
     }
   }
 `
+const CountDownFarm = styled.div`
+  background: ${({ theme }) => theme.colors.primary};
+  padding: 20px 24px;
+  color: ${({ theme }) => theme.colors.white};
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  strong {
+    margin-left: 4px;
+    color: #ffd157;
+    font-size: 24px;
+  }
+`
 
 const MaxWidth = styled.div`
   max-width: 1280px;
@@ -85,37 +98,125 @@ const MaxWidth = styled.div`
 `
 
 const Home: React.FC = () => {
-  return (
-    <Page>
-      <MaxWidth>
-        <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
-          Dashboard
-        </Heading>
+  // const TranslateString = useI18n()
+  const currentTime = new Date().getTime()
+  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
 
-        <div>
-          {/* <Cards>
-        <FarmStakingCard />
-        <LotteryCard />
-      </Cards>
-      <CTACards>
-        <EarnAPYCard />
-        <EarnAssetCard />
-        <WinCard />
-      </CTACards> */}
-          <InfoBanner className="mb-5" showBtn />
-          <Cards>
-            <TotalValueLockedCard />
-            <FinixStats />
-          </Cards>
-          <CardUpcomingFarms />
-          {/* <CardStake large /> */}
-          {/* <div className="flex align-center justify-center mt-6">
-        <Text small>Audited by</Text>
-        <img src={certik} width="120" alt="" />
-      </div> */}
-        </div>
-      </MaxWidth>
-    </Page>
+  const [timer, setTime] = useState({
+    days: 0,
+    hours: 0,
+    min: 0,
+    sec: 0,
+  })
+
+  const calculateCountdown = (endDate) => {
+    let diff = (new Date(endDate).getTime() - new Date().getTime()) / 1000
+
+    // clear countdown when date is reached
+    if (diff <= 0) return false
+
+    const timeLeft = {
+      years: 0,
+      days: 0,
+      hours: 0,
+      min: 0,
+      sec: 0,
+      millisec: 0,
+    }
+
+    // calculate time difference between now and expected date
+    if (diff >= 365.25 * 86400) {
+      // 365.25 * 24 * 60 * 60
+      timeLeft.years = Math.floor(diff / (365.25 * 86400))
+      diff -= timeLeft.years * 365.25 * 86400
+    }
+    if (diff >= 86400) {
+      // 24 * 60 * 60
+      timeLeft.days = Math.floor(diff / 86400)
+      diff -= timeLeft.days * 86400
+    }
+    if (diff >= 3600) {
+      // 60 * 60
+      timeLeft.hours = Math.floor(diff / 3600)
+      diff -= timeLeft.hours * 3600
+    }
+    if (diff >= 60) {
+      timeLeft.min = Math.floor(diff / 60)
+      diff -= timeLeft.min * 60
+    }
+    timeLeft.sec = Math.floor(diff)
+
+    return timeLeft
+  }
+
+  const addLeadingZeros = (value) => {
+    let val = String(value)
+    while (val.length < 2) {
+      val = `0${val}`
+    }
+    return val
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const d = calculateCountdown(phrase2TimeStamp)
+
+      if (d) {
+        setTime(d)
+      } else {
+        clearInterval(interval)
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [phrase2TimeStamp])
+
+  return (
+    <>
+      {currentTime < phrase2TimeStamp && (
+        <CountDownFarm>
+          <MaxWidth>
+            <p>
+              Definix Farms will be available in{' '}
+              <strong>
+                {addLeadingZeros(timer.hours)}:{addLeadingZeros(timer.min)}:{addLeadingZeros(timer.sec)}
+              </strong>
+            </p>
+          </MaxWidth>
+        </CountDownFarm>
+      )}
+      <Page>
+        <MaxWidth>
+          <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
+            Dashboard
+          </Heading>
+
+          <div>
+            {/* <Cards>
+          <FarmStakingCard />
+          <LotteryCard />
+        </Cards>
+        <CTACards>
+          <EarnAPYCard />
+          <EarnAssetCard />
+          <WinCard />
+        </CTACards> */}
+            <InfoBanner className="mb-5" showBtn />
+            <Cards>
+              <TotalValueLockedCard />
+              <FinixStats />
+            </Cards>
+            <CardUpcomingFarms />
+            {/* <CardStake large /> */}
+            {/* <div className="flex align-center justify-center mt-6">
+          <Text small>Audited by</Text>
+          <img src={certik} width="120" alt="" />
+        </div> */}
+          </div>
+        </MaxWidth>
+      </Page>
+    </>
   )
 }
 
