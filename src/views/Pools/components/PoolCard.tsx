@@ -27,6 +27,7 @@ import WithdrawModal from './WithdrawModal'
 interface PoolWithApy extends Pool {
   apy: BigNumber
   rewardPerBlock?: number
+  estimatePrice: BigNumber
 }
 
 interface HarvestProps {
@@ -67,6 +68,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     userData,
     stakingLimit,
     rewardPerBlock,
+    estimatePrice,
   } = pool
   const [beforeStartDate, setBeforeStartDate] = useState(0)
   const [endBlockDate, setEndBlockDate] = useState(0)
@@ -266,7 +268,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               <p className="text-bold text-right">
                 {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
               </p>
-              <p className="ml-1 text-right">= 0.00000 $</p>
+              <p className="ml-1 text-right">= {numeral(estimatePrice.toNumber()).format('0,0.0000')} $</p>
             </div>
           </StyledDetails>
         </div>
