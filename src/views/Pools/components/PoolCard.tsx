@@ -10,24 +10,43 @@ import { useSousHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
-import React, { useCallback, useState } from 'react'
+import numeral from 'numeral'
+import React, { useCallback, useEffect, useState } from 'react'
+import { usePriceFinixUsd } from 'state/hooks'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, Image, Link, MinusIcon, useModal } from 'uikit-dev'
+import { AddIcon, Button, Heading, Image, MinusIcon, Text, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
-import PoolFinishedSash from './PoolFinishedSash'
+import PoolSash from './PoolSash'
 import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
   apy: BigNumber
+  rewardPerBlock?: number
+  estimatePrice: BigNumber
 }
 
 interface HarvestProps {
   pool: PoolWithApy
+}
+
+function secondsToDhms(i, onlyHour = false) {
+  const seconds = Number(i)
+  const d = Math.floor(seconds / (3600 * 24))
+  const h = Math.floor((seconds % (3600 * 24)) / 3600)
+  const m = Math.floor((seconds % 3600) / 60)
+  const s = Math.floor(seconds % 60)
+
+  const dDisplay = d > 0 ? d + (d === 1 ? ' day, ' : ' days, ') : ''
+  const hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : ''
+  if (onlyHour) return (dDisplay + hDisplay).replace(/,\s*$/, '')
+  const mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : ''
+  const sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : ''
+  return (dDisplay + hDisplay + mDisplay + sDisplay).replace(/,\s*$/, '')
 }
 
 const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
@@ -48,13 +67,64 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     isFinished,
     userData,
     stakingLimit,
+    rewardPerBlock,
+    estimatePrice,
   } = pool
+  const [beforeStartDate, setBeforeStartDate] = useState(0)
+  const [endBlockDate, setEndBlockDate] = useState(0)
+  const finixPrice = usePriceFinixUsd()
+  const block = useBlock()
+  const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
+  const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)
+  const currentBlockNumber = typeof block === 'number' ? block : parseInt(block, 10)
+  const totalDiffBlock = endBlockNumber - startBlockNumber
+  const totalDiffBlockCeil =
+    totalDiffBlock % 1200 > 1100 ? totalDiffBlock + (1200 - (totalDiffBlock % 1200)) : totalDiffBlock
+  const totalReward = totalDiffBlockCeil * (rewardPerBlock / 10 ** 18)
+  const currentDiffBlock = currentBlockNumber - startBlockNumber
+  const percentage = currentDiffBlock / (totalDiffBlock / 100)
+  const totalTimeInSecond = secondsToDhms(totalDiffBlockCeil * 3, true)
+  const remainTime = secondsToDhms((totalDiffBlock - currentDiffBlock) * 3)
+  const beforeStart = startBlockNumber - currentBlockNumber
+  const endStart = endBlockNumber - currentBlockNumber
+  const beforeStartTime = secondsToDhms(beforeStart * 3)
+  const beforeStartTimeDate = secondsToDhms(beforeStart * 3)
+  const totalBarWidthPercentage = `${(percentage || 0) > 100 ? 100 : percentage || 0}%`
+  const alreadyRewarded = currentDiffBlock * (rewardPerBlock / 10 ** 18)
+  let totalStakedInt
+  switch (typeof totalStaked) {
+    case 'undefined':
+      totalStakedInt = 0
+      break
+    case 'string':
+      totalStakedInt = (parseFloat(totalStaked) || 0) / 10 ** tokenDecimals
+      break
+    default:
+      totalStakedInt = totalStaked.times(new BigNumber(10).pow(tokenDecimals)).toNumber()
+      break
+  }
+
+  // eslint-disable-next-line
+  let sixPerFinix =
+    totalStakedInt /
+      (((endBlockNumber - currentBlockNumber) / (endBlockNumber - startBlockNumber)) *
+        ((endBlockNumber - startBlockNumber) * (rewardPerBlock / 10 ** 18))) || 0
+  if (sixPerFinix < 0) {
+    sixPerFinix = 0
+  }
+  useEffect(() => {
+    if (currentBlockNumber !== 0 && beforeStart && !beforeStartDate) {
+      setBeforeStartDate(new Date().getTime() + beforeStart * 3 * 1000)
+    }
+    if (currentBlockNumber !== 0 && endStart && !endBlockDate) {
+      setEndBlockDate(new Date().getTime() + endStart * 3 * 1000)
+    }
+  }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWallet()
-  const block = useBlock()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
   const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
@@ -105,22 +175,53 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
       console.error(e)
     }
   }, [onApprove, setRequestedApproval])
+  let timeData = <p>Loading</p>
+  if (currentBlockNumber !== 0) {
+    if (currentBlockNumber < startBlockNumber) {
+      timeData = <p>Starting in {beforeStartTime}</p>
+    } else if (isFinished) {
+      timeData = <p>Finished.</p>
+    } else {
+      timeData = <p>{remainTime} until end.</p>
+    }
+  }
+  const currentDate = new Date()
+  const year =
+    currentDate.getMonth() === 11 && currentDate.getDate() > 23
+      ? currentDate.getFullYear() + 1
+      : currentDate.getFullYear()
+  let dateToFlip = new Date().getTime()
+  if (currentBlockNumber !== 0) {
+    if (currentBlockNumber < startBlockNumber) {
+      dateToFlip = new Date().getTime()
+    } else {
+      dateToFlip = endBlockDate
+    }
+  }
+  let totalRewardedDisplay = alreadyRewarded > totalReward ? totalReward : alreadyRewarded
 
+  if (totalRewardedDisplay < 0) {
+    totalRewardedDisplay = 0
+  }
+  totalRewardedDisplay = totalReward - totalRewardedDisplay
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-wrap">
       <div className="panel">
-        {isFinished && sousId !== 0 && <PoolFinishedSash />}
+        {tokenName === 'FINIX-SIX' && !isFinished && <PoolSash type="special" />}
+        {isFinished && sousId !== 0 && <PoolSash type="finish" />}
 
         <CustomTitle className="bg-gray">
           <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} />
-          <Heading as="h2" fontSize="20px !important" className="ml-3">
+          <Heading as="h2" fontSize="20px !important" className="ml-3" color="inherit">
             {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
           </Heading>
         </CustomTitle>
 
         <div className="flex flex-column align-center pa-5">
-          <p className="mb-3">Stake {tokenName} to earn FINIX</p>
-          <Image src="/images/coins/FINIX.png" width={96} height={96} />
+          <p className="mb-3">
+            Stake {tokenName} to earn {sousId === 1 ? 'FINIX' : 'SIX'}
+          </p>
+          <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={96} height={96} />
         </div>
 
         <div className="pa-5 pt-0">
@@ -131,18 +232,44 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
             </div>
           </StyledDetails>
           <StyledDetails>
-            <p className="pr-4 col-6">Total FINIX Rewards</p>
-            <span className="col-6">2,000,000 FINIX</span>
+            <p className="pr-4 col-6">Total {sousId === 1 ? 'FINIX' : 'SIX'} Rewards:</p>
+            {currentBlockNumber === 0 ? (
+              <span className="col-6">Loading</span>
+            ) : (
+              <div className="col-6 flex align-baseline justify-end flex-wrap" style={{ wordBreak: 'break-word' }}>
+                <Balance
+                  isDisabled={isFinished}
+                  value={totalRewardedDisplay}
+                  decimals={2}
+                  unit={sousId === 1 ? ' FINIX' : ' SIX'}
+                  color="inherit"
+                />
+                <span className="flex-shrink ml-2" style={{ width: 'auto' }}>
+                  /
+                </span>
+                <Balance
+                  isDisabled={isFinished}
+                  value={totalReward}
+                  decimals={2}
+                  unit={sousId === 1 ? ' FINIX' : ' SIX'}
+                  color="inherit"
+                  className="ml-2"
+                />
+              </div>
+            )}
           </StyledDetails>
           <StyledDetails>
-            <p className="pr-4 col-6">Today’s FINIX Rewards</p>
-            <span className="col-6">0.000000000 FINIX</span>
+            <p className="pr-4 col-6">Stake period:</p>
+            <span className="col-6">{totalTimeInSecond}</span>
           </StyledDetails>
           <StyledDetails>
             <p className="pr-4 col-6">Total {tokenName} Staked:</p>
-            <span className="col-6">
-              {getBalanceNumber(totalStaked)} {tokenName}
-            </span>
+            <div className="col-6">
+              <p className="text-bold text-right">
+                {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
+              </p>
+              <p className="ml-1 text-right">= {numeral(estimatePrice.toNumber()).format('0,0.0000')} $</p>
+            </div>
           </StyledDetails>
         </div>
 
@@ -247,9 +374,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         /> */}
       </div>
 
-      <div className="panel compare-box pa-5 pt-0 pr-3">
+      <div className="panel compare-box pa-6 pt-0">
         <CustomTitle>
-          <Heading as="h2" className="mr-3">
+          <Heading as="h2" className="mr-2" color="inherit">
             My Funds
           </Heading>
           <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
@@ -258,13 +385,12 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <div className="flex flex-column align-center">
           <p className="mb-2">{tokenName} Staked</p>
           <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
-          <p className="mt-2 text-bold">{tokenName}</p>
+          <Text className="mt-1" fontSize="16px" fontWeight="bold" color="inherit">
+            {tokenName}
+          </Text>
         </div>
 
-        <div className="flex flex-column align-stretch justify-end">
-          <Link href="https://youngexchange.definix.com/#/swap" target="_blank" className="mx-auto mb-4">
-            Buy {tokenName}
-          </Link>
+        <div className="flex flex-column align-stretch justify-end mt-6">
           {!account && <UnlockButton fullWidth />}
           {account &&
             (needsApproval && !isOldSyrup ? (
@@ -273,7 +399,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               </Button>
             ) : (
               <div className="flex">
-                {!readyToStake ? (
+                {!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished ? (
                   <Button
                     onClick={() => {
                       setReadyToStake(true)
@@ -301,7 +427,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                     >
                       <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
                     </Button>
-                    {!isOldSyrup && (
+                    {!isOldSyrup && !isFinished && (
                       <Button
                         fullWidth
                         disabled={isFinished && sousId !== 0}
@@ -319,24 +445,23 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
       </div>
 
-      <div className="panel compare-box pa-5 pt-0 pl-3">
+      <div className="panel compare-box pa-6 pt-0">
         <CustomTitle>
-          <Heading as="h2" className="mr-3">
+          <Heading as="h2" className="mr-2" color="inherit">
             My Rewards
           </Heading>
-          <Image src="/images/coins/FINIX.png" width={40} height={40} />
+          <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={40} height={40} />
         </CustomTitle>
 
         <div className="flex flex-column align-center">
-          <p className="mb-2">FINIX Earned</p>
+          <p className="mb-2">{sousId === 1 ? 'FINIX' : 'SIX'} Earned</p>
           <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-          <p className="mt-2 text-bold">FINIX</p>
+          <Text className="mt-1" fontSize="16px" fontWeight="bold" color="inherit">
+            {sousId === 1 ? 'FINIX' : 'SIX'}
+          </Text>
         </div>
 
-        <div className="flex flex-column align-stretch justify-end">
-          <p className="mx-auto mb-4" style={{ lineHeight: '24px' }}>
-            = 0.00000 $
-          </p>
+        <div className="flex flex-column align-stretch justify-end mt-6">
           <Button
             fullWidth
             disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
@@ -394,22 +519,26 @@ const StyledDetails = styled.div`
   align-items: baseline;
   justify-content: space-between;
   padding: 12px 0;
+  line-height: 1.5;
 
   p,
   span {
-    width: 50%;
     font-size: 14px;
   }
-  p {
+
+  > p,
+  > span {
+    width: 50%;
+  }
+  > p {
     padding-right: 0.5rem;
   }
-  span {
+  > span {
     text-align: right;
     font-weight: bold;
   }
 
   .col-6 > div {
-    line-height: 1;
     font-size: initial;
   }
 `

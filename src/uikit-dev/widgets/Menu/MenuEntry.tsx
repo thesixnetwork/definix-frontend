@@ -39,19 +39,6 @@ const MenuEntry = styled.div<Props>`
     align-items: center;
     width: 100%;
     height: 100%;
-
-    &.active {
-      color: ${({ theme }) => theme.colors.primary};
-
-      svg {
-        &,
-        path,
-        text,
-        g {
-          fill: ${({ theme }) => theme.colors.primary};
-        }
-      }
-    }
   }
 
   svg {

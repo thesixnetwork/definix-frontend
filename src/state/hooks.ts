@@ -7,10 +7,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import {
+  fetchFarmUnlockDate,
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
+  fetchSixPrice,
   fetchQuote,
   push as pushToast,
   remove as removeToast,
@@ -28,13 +30,20 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
+    dispatch(fetchFarmUnlockDate())
     dispatch(fetchPoolsPublicDataAsync())
     dispatch(fetchFinixPrice())
+    dispatch(fetchSixPrice())
     dispatch(fetchQuote())
   }, [dispatch, slowRefresh])
 }
 
 // Farms
+
+export const useFarmUnlockDate = (): Date => {
+  const unlockDate = useSelector((state: State) => state.farms.farmUnlockAt)
+  return unlockDate
+}
 
 export const useFarms = (): Farm[] => {
   const farms = useSelector((state: State) => state.farms.data)
@@ -113,7 +122,16 @@ export const usePriceFinixUsd = (): BigNumber => {
   return new BigNumber(finixPrice)
 }
 
+export const usePriceSixUsd = (): BigNumber => {
+  const sixPrice = useSelector((state: State) => state.finixPrice.sixPrice)
+  return new BigNumber(sixPrice)
+}
+
 export const usePriceTVL = (): BigNumber => {
+  const { account } = useWallet()
+  const pools = usePools(account)
+  const sixUsd = usePriceSixUsd()
+  const selectedPools = pools.find((pool) => pool.sousId === 1)
   const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
   const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
   const sixUsdtQuote = useSelector((state: State) => state.finixPrice.sixUsdtQuote)
@@ -125,29 +143,62 @@ export const usePriceTVL = (): BigNumber => {
   const wbnbUsdtQuote = useSelector((state: State) => state.finixPrice.wbnbUsdtQuote)
   const busdUsdtQuote = useSelector((state: State) => state.finixPrice.busdUsdtQuote)
   const finixUsdPrice = usePriceFinixUsd()
-
-  const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
-  const sixBusdPrice = new BigNumber(sixBusdQuote)
-  const sixUsdtPrice = new BigNumber(sixUsdtQuote)
-  const sixWbnbPrice = new BigNumber(sixWbnbQuote).times(finixUsdPrice)
-  const finixBusdPrice = new BigNumber(finixBusdQuote)
-  const finixUsdtPrice = new BigNumber(finixUsdtQuote)
-  const finixWbnbPrice = new BigNumber(finixWbnbQuote).times(finixUsdPrice)
-  const wbnbBusdPrice = new BigNumber(wbnbBusdQuote)
-  const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
-  const busdUsdtPrice = new BigNumber(busdUsdtQuote)
-  return BigNumber.sum.apply(null, [
-    sixFinixPrice,
-    sixBusdPrice,
-    sixUsdtPrice,
-    sixWbnbPrice,
-    finixBusdPrice,
-    finixUsdtPrice,
-    finixWbnbPrice,
-    wbnbBusdPrice,
-    wbnbUsdtPrice,
-    busdUsdtPrice,
-  ])
+  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
+  const currentTime = new Date().getTime()
+  if (currentTime < phrase2TimeStamp) {
+    let totalStaked = new BigNumber(0)
+    switch (typeof selectedPools.totalStaked) {
+      case 'undefined':
+        totalStaked = new BigNumber(0)
+        break
+      case 'string':
+        totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
+        break
+      default:
+        totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
+        break
+    }
+    return totalStaked.times(sixUsd)
+    // eslint-disable-next-line
+  } else {
+    let totalStaked = new BigNumber(0)
+    switch (typeof selectedPools.totalStaked) {
+      case 'undefined':
+        totalStaked = new BigNumber(0)
+        break
+      case 'string':
+        totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
+        break
+      default:
+        totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
+        break
+    }
+    const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
+    const sixBusdPrice = new BigNumber(sixBusdQuote)
+    const sixUsdtPrice = new BigNumber(sixUsdtQuote)
+    const sixWbnbPrice = new BigNumber(sixWbnbQuote).times(finixUsdPrice)
+    const finixBusdPrice = new BigNumber(finixBusdQuote)
+    const finixUsdtPrice = new BigNumber(finixUsdtQuote)
+    const finixWbnbPrice = new BigNumber(finixWbnbQuote).times(finixUsdPrice)
+    const wbnbBusdPrice = new BigNumber(wbnbBusdQuote)
+    const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
+    const busdUsdtPrice = new BigNumber(busdUsdtQuote)
+    return BigNumber.sum.apply(null, [
+      sixFinixPrice,
+      sixBusdPrice,
+      sixUsdtPrice,
+      sixWbnbPrice,
+      finixBusdPrice,
+      finixUsdtPrice,
+      finixWbnbPrice,
+      wbnbBusdPrice,
+      wbnbUsdtPrice,
+      busdUsdtPrice,
+      totalStaked.times(sixUsd).toNumber(),
+    ])
+  }
 }
 
 export const usePriceEthBusd = (): BigNumber => {

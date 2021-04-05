@@ -33,6 +33,11 @@ export enum QuoteToken {
   'SUSHI' = 'SUSHI',
   'SIX' = 'SIX',
   'FINIX' = 'FINIX',
+  'SIXFINIX' = 'FINIX-SIX',
+  'FINIXBUSD' = 'FINIX-BUSD',
+  'FINIXBNB' = 'FINIX-BNB',
+  'SIXBUSD' = 'SIX-BUSD',
+  'USDTBUSD' = 'USDT-BUSD',
 }
 
 export enum PoolCategory {

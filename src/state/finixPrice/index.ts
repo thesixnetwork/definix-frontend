@@ -3,6 +3,8 @@ import BigNumber from 'bignumber.js'
 import { Token, Pair, ChainId } from 'definixswap-sdk'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
+import _ from 'lodash'
+import axios from 'axios'
 import {
   getDefinixHerodotusAddress,
   getHerodotusAddress,
@@ -22,6 +24,7 @@ import { FinixPriceState } from '../types'
 
 const initialState: FinixPriceState = {
   price: 0,
+  sixPrice: 0,
   sixFinixQuote: 0,
   sixBusdQuote: 0,
   sixUsdtQuote: 0,
@@ -38,6 +41,10 @@ export const finixPriceSlice = createSlice({
   name: 'FinixPrice',
   initialState,
   reducers: {
+    setSixPrice: (state, action) => {
+      const { sixPrice } = action.payload
+      state.sixPrice = sixPrice
+    },
     setFinixPrice: (state, action) => {
       const { price } = action.payload
       state.price = price
@@ -70,7 +77,7 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setFinixPrice, setQuote } = finixPriceSlice.actions
+export const { setSixPrice, setFinixPrice, setQuote } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
@@ -132,7 +139,8 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
 
     const [quoteTokenBlanceLP, lpTokenBalanceMC, lpTotalSupply] = await multicall(erc20, calls)
 
-    const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    // const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    const lpTokenRatio = 1
     lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
       .div(new BigNumber(10).pow(18))
       .times(new BigNumber(2))
@@ -145,6 +153,18 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
 }
 
 // Thunks
+export const fetchSixPrice = () => async (dispatch) => {
+  const response = await axios.get(
+    'https://s3-ap-southeast-1.amazonaws.com/database-s3public-g8ignhbbbk6e/prices/Current.json',
+  )
+  const usdPrice = _.get(response, 'data.assets.six.usd')
+  dispatch(
+    setSixPrice({
+      sixPrice: usdPrice,
+    }),
+  )
+}
+
 export const fetchFinixPrice = () => async (dispatch) => {
   const fetchPromise = []
 
@@ -363,8 +383,6 @@ export const fetchQuote = () => async (dispatch) => {
     busdUsdtQuote,
   ] = await Promise.all(fetchPromise)
 
-  // eslint-disable-next-line
-  debugger
   dispatch(
     setQuote({
       sixFinixQuote,
