@@ -50,7 +50,7 @@ export const fetchFarmsPublicDataAsync = () => async (dispatch) => {
 export const fetchFarmUnlockDate = () => async (dispatch) => {
   const response = await axios.get('https://api.bscscan.com/api?module=block&action=getblockcountdown&blockno=6332827')
   const timeInsecToUnlock = parseInt(_.get(response, 'data.result.EstimateTimeInSec'), 10) || 0
-  const unlockDate = new Date(new Date().getTime() + (timeInsecToUnlock * 1000))
+  const unlockDate = new Date(new Date().getTime() + timeInsecToUnlock * 1000)
   dispatch(setFarmUnlockAt({ farmUnlockAt: unlockDate }))
 }
 export const fetchFarmUserDataAsync = (account) => async (dispatch) => {

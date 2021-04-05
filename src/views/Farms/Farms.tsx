@@ -9,7 +9,14 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import { useFarmUnlockDate, useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixBusd } from 'state/hooks'
+import {
+  useFarmUnlockDate,
+  useFarms,
+  usePriceBnbBusd,
+  usePriceEthBusd,
+  usePriceFinixUsd,
+  usePriceSixBusd,
+} from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text, Button } from 'uikit-dev'
 // import man from 'uikit-dev/images/for-Farm-Elements/1558.png'
@@ -134,7 +141,8 @@ const Farms: React.FC = () => {
               For maximum yield farming return and best experience, we are upgrading our farm.
             </Heading>
             <Heading as="h3" fontSize="24px !important" color="#FFD157" className="mb-2">
-              Our farm will be available in <Flip small date={farmUnlockAt instanceof Date ? farmUnlockAt.getTime() : farmUnlockAt} />
+              Our farm will be available in{' '}
+              <Flip small date={farmUnlockAt instanceof Date ? farmUnlockAt.getTime() : farmUnlockAt} />
             </Heading>
             <p>You can stake your LP and get six now</p>
           </div>
