@@ -24,7 +24,7 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
     }
   }
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     .panel {
       border: none !important;
 
@@ -35,6 +35,13 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
       &:nth-child(02),
       &:nth-child(03) {
         width: 27.5%;
+      }
+
+      &:nth-child(02) {
+        padding-right: 1rem !important;
+      }
+      &:nth-child(03) {
+        padding-left: 1rem !important;
       }
     }
   }

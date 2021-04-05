@@ -372,9 +372,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         /> */}
       </div>
 
-      <div className="panel compare-box pa-5 pt-0 pr-3">
+      <div className="panel compare-box pa-6 pt-0">
         <CustomTitle>
-          <Heading as="h2" className="mr-3" color="inherit">
+          <Heading as="h2" className="mr-2" color="inherit">
             My Funds
           </Heading>
           <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
@@ -388,7 +388,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           </Text>
         </div>
 
-        <div className="flex flex-column align-stretch justify-end">
+        <div className="flex flex-column align-stretch justify-end mt-6">
           {!account && <UnlockButton fullWidth />}
           {account &&
             (needsApproval && !isOldSyrup ? (
@@ -443,9 +443,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
       </div>
 
-      <div className="panel compare-box pa-5 pt-0 pl-3">
+      <div className="panel compare-box pa-6 pt-0">
         <CustomTitle>
-          <Heading as="h2" className="mr-3" color="inherit">
+          <Heading as="h2" className="mr-2" color="inherit">
             My Rewards
           </Heading>
           <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={40} height={40} />
@@ -459,7 +459,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           </Text>
         </div>
 
-        <div className="flex flex-column align-stretch justify-end">
+        <div className="flex flex-column align-stretch justify-end mt-6">
           <Button
             fullWidth
             disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
