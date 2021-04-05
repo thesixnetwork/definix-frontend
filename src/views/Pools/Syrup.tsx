@@ -111,16 +111,16 @@ const Farm: React.FC = () => {
     const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(pool.totalStaked))
     let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
     const totalLP = new BigNumber(stakingTokenFarm.lpTotalSupply).div(new BigNumber(10).pow(18))
-          let highestToken
-          if (stakingTokenFarm.tokenSymbol === QuoteToken.SIX) {
-            highestToken = stakingTokenFarm.tokenAmount
-          } else if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
-            highestToken = stakingTokenFarm.quoteTokenAmount
-          } else if (stakingTokenFarm.tokenAmount > stakingTokenFarm.quoteTokenAmount) {
-             highestToken = stakingTokenFarm.tokenAmount
-          } else {
-             highestToken = stakingTokenFarm.quoteTokenAmount
-          }
+    let highestToken
+    if (stakingTokenFarm.tokenSymbol === QuoteToken.SIX) {
+      highestToken = stakingTokenFarm.tokenAmount
+    } else if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
+      highestToken = stakingTokenFarm.quoteTokenAmount
+    } else if (stakingTokenFarm.tokenAmount > stakingTokenFarm.quoteTokenAmount) {
+      highestToken = stakingTokenFarm.tokenAmount
+    } else {
+      highestToken = stakingTokenFarm.quoteTokenAmount
+    }
     const tokenPerLp = new BigNumber(totalLP).div(new BigNumber(highestToken))
     const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(sixPriceUSD))
     const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
@@ -144,24 +144,29 @@ const Farm: React.FC = () => {
         const totalReward = totalDiffBlockCeil * (rewardPerBlock / 10 ** 18)
         const alreadyRewarded = currentDiffBlock * (rewardPerBlock / 10 ** 18)
         const remainReward = totalReward - alreadyRewarded
-        
+
         const B33 = remainReward
         const B34 = sixPriceUSD
 
         const E33 = stakingTokenFarm.lpTotalSupply
         const E34 = totalStaked
         const E35 = highestToken
-         
+
         const F34 = new BigNumber(E34).div(new BigNumber(E33))
         const F35 = new BigNumber(E35).times(F34)
-        
+
         const B35 = F35.times(new BigNumber(B34)).times(2)
-        const B38 = 365*24*60*60
-        
-        apy = new BigNumber(B33).times(new BigNumber(B34)).div(B35).times(new BigNumber(B38)).div(new BigNumber(remainTimeSec)).times(100)
+        const B38 = 365 * 24 * 60 * 60
+
+        apy = new BigNumber(B33)
+          .times(new BigNumber(B34))
+          .div(B35)
+          .times(new BigNumber(B38))
+          .div(new BigNumber(remainTimeSec))
+          .times(100)
 
         break
-        }
+      }
       default:
         break
     }
