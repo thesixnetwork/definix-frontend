@@ -63,6 +63,7 @@ export interface ToastsState {
 
 export interface FarmsState {
   data: Farm[]
+  farmUnlockAt?: Date
 }
 
 export interface PoolsState {

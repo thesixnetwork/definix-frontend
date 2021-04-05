@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import {
+  fetchFarmUnlockDate,
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -29,6 +30,7 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
+    dispatch(fetchFarmUnlockDate())
     dispatch(fetchPoolsPublicDataAsync())
     dispatch(fetchFinixPrice())
     dispatch(fetchSixPrice())
@@ -37,6 +39,11 @@ export const useFetchPublicData = () => {
 }
 
 // Farms
+
+export const useFarmUnlockDate = (): Date => {
+  const unlockDate = useSelector((state: State) => state.farms.farmUnlockAt)
+  return unlockDate
+}
 
 export const useFarms = (): Farm[] => {
   const farms = useSelector((state: State) => state.farms.data)
