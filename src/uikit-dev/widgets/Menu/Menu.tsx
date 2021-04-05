@@ -216,6 +216,7 @@ const Menu: React.FC<NavProps> = ({
                   startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
                   endIcon={<ChevronDownIcon className="ml-1" />}
                   className="ml-4 color-text"
+                  style={{ marginTop: '4px' }}
                 >
                   <Text fontSize="12px" fontWeight="500">
                     Binance Smart Chain
