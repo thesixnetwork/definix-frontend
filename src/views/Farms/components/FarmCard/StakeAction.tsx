@@ -5,6 +5,7 @@ import useUnstake from 'hooks/useUnstake'
 import React from 'react'
 import styled from 'styled-components'
 import { AddIcon, Button, Heading, IconButton, MinusIcon, useModal } from 'uikit-dev'
+import { useFarmUnlockDate } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
@@ -42,6 +43,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
   pid,
   addLiquidityUrl,
 }) => {
+  const farmUnlockDate = useFarmUnlockDate()
   const TranslateString = useI18n()
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
@@ -58,7 +60,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   const renderStakingButtons = () => {
     return rawStakedBalance === 0 ? (
-      <Button onClick={onPresentDeposit} fullWidth>
+      <Button disabled={(farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime())} onClick={onPresentDeposit} fullWidth>
         {TranslateString(999, 'Stake LP')}
       </Button>
     ) : (
@@ -66,9 +68,9 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
         <Button variant="secondary" onClick={onPresentWithdraw} mr="6px" className="btn-secondary-disable">
           <MinusIcon color="primary" />
         </Button>
-        <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable">
+        {(typeof farmUnlockDate === 'undefined' || (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable">
           <AddIcon color="primary" />
-        </Button>
+        </Button>}
       </IconButtonWrapper>
     )
   }
