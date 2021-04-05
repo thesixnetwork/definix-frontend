@@ -4,10 +4,14 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   background: ${(props) => props.theme.card.background};
   box-shadow: ${({ theme }) => theme.shadows.elevation2};
   border-radius: ${({ theme }) => theme.radii.default};
-  // color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'secondary']};
+  color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'text']};
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   padding-bottom: 4px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   .panel {
     width: 100%;

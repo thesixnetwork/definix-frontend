@@ -15,13 +15,13 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import { Pool } from 'state/types'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, Image, Link, MinusIcon, useModal } from 'uikit-dev'
+import { AddIcon, Button, Heading, Image, MinusIcon, Text, useModal } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
-import PoolFinishedSash from './PoolFinishedSash'
+import PoolSash from './PoolSash'
 import WithdrawModal from './WithdrawModal'
 
 interface PoolWithApy extends Pool {
@@ -205,11 +205,12 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   return (
     <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-wrap">
       <div className="panel">
-        {isFinished && sousId !== 0 && <PoolFinishedSash />}
+        {tokenName === 'FINIX-SIX' && !isFinished && <PoolSash type="special" />}
+        {isFinished && sousId !== 0 && <PoolSash type="finish" />}
 
         <CustomTitle className="bg-gray">
           <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} />
-          <Heading as="h2" fontSize="20px !important" className="ml-3">
+          <Heading as="h2" fontSize="20px !important" className="ml-3" color="inherit">
             {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
           </Heading>
         </CustomTitle>
@@ -222,14 +223,14 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
 
         <div className="pa-5 pt-0">
-          {/* <StyledDetails>
+          <StyledDetails>
             <p className="pr-4 col-6">APR:</p>
             <div className="col-6">
               <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
             </div>
-          </StyledDetails> */}
+          </StyledDetails>
           <StyledDetails>
-            <p className="pr-4 col-6">Total {sousId === 1 ? 'FINIX' : 'SIX'} Rewards</p>
+            <p className="pr-4 col-6">Total {sousId === 1 ? 'FINIX' : 'SIX'} Rewards:</p>
             {currentBlockNumber === 0 ? (
               <span className="col-6">Loading</span>
             ) : (
@@ -239,8 +240,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                   value={totalRewardedDisplay}
                   decimals={2}
                   unit={sousId === 1 ? ' FINIX' : ' SIX'}
+                  color="inherit"
                 />
-                <span className="flex-shrink" style={{ width: '20px', textAlign: 'center' }}>
+                <span className="flex-shrink ml-2" style={{ width: 'auto' }}>
                   /
                 </span>
                 <Balance
@@ -248,19 +250,24 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                   value={totalReward}
                   decimals={2}
                   unit={sousId === 1 ? ' FINIX' : ' SIX'}
+                  color="inherit"
+                  className="ml-2"
                 />
               </div>
             )}
           </StyledDetails>
           <StyledDetails>
-            <p className="pr-4 col-6">Stake period</p>
+            <p className="pr-4 col-6">Stake period:</p>
             <span className="col-6">{totalTimeInSecond}</span>
           </StyledDetails>
           <StyledDetails>
             <p className="pr-4 col-6">Total {tokenName} Staked:</p>
-            <span className="col-6">
-              {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
-            </span>
+            <div className="col-6">
+              <p className="text-bold">
+                {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
+              </p>
+              <p className="ml-1 text-right">= 0.00000 $</p>
+            </div>
           </StyledDetails>
         </div>
 
@@ -367,7 +374,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
 
       <div className="panel compare-box pa-5 pt-0 pr-3">
         <CustomTitle>
-          <Heading as="h2" className="mr-3">
+          <Heading as="h2" className="mr-3" color="inherit">
             My Funds
           </Heading>
           <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
@@ -376,7 +383,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <div className="flex flex-column align-center">
           <p className="mb-2">{tokenName} Staked</p>
           <Balance isDisabled={isFinished} value={getBalanceNumber(stakedBalance)} />
-          <p className="mt-2 text-bold">{tokenName}</p>
+          <Text className="mt-1" fontSize="16px" fontWeight="bold" color="inherit">
+            {tokenName}
+          </Text>
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
@@ -436,7 +445,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
 
       <div className="panel compare-box pa-5 pt-0 pl-3">
         <CustomTitle>
-          <Heading as="h2" className="mr-3">
+          <Heading as="h2" className="mr-3" color="inherit">
             My Rewards
           </Heading>
           <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={40} height={40} />
@@ -445,7 +454,9 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         <div className="flex flex-column align-center">
           <p className="mb-2">{sousId === 1 ? 'FINIX' : 'SIX'} Earned</p>
           <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
-          <p className="mt-2 text-bold">{sousId === 1 ? 'FINIX' : 'SIX'}</p>
+          <Text className="mt-1" fontSize="16px" fontWeight="bold" color="inherit">
+            {sousId === 1 ? 'FINIX' : 'SIX'}
+          </Text>
         </div>
 
         <div className="flex flex-column align-stretch justify-end">
@@ -506,22 +517,26 @@ const StyledDetails = styled.div`
   align-items: baseline;
   justify-content: space-between;
   padding: 12px 0;
+  line-height: 1.5;
 
   p,
   span {
-    width: 50%;
     font-size: 14px;
   }
-  p {
+
+  > p,
+  > span {
+    width: 50%;
+  }
+  > p {
     padding-right: 0.5rem;
   }
-  span {
+  > span {
     text-align: right;
     font-weight: bold;
   }
 
   .col-6 > div {
-    line-height: 1;
     font-size: initial;
   }
 `

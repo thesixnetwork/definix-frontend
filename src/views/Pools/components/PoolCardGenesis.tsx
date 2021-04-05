@@ -25,7 +25,7 @@ import bridge from '../../../uikit-dev/images/Menu-Icon/bridge.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
-import PoolFinishedSash from './PoolFinishedSash'
+import PoolSash from './PoolSash'
 import WithdrawModal from './WithdrawModal'
 // import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 
@@ -215,7 +215,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
       className="flex flex-column align-stretch mx-auto"
       style={{ maxWidth: '1000px', padding: '0' }}
     >
-      {isFinished && sousId !== 0 && <PoolFinishedSash />}
+      {isFinished && sousId !== 0 && <PoolSash type="finish" />}
       <div className="flex justify-space-between">
         <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
           <ArrowBackIcon />
