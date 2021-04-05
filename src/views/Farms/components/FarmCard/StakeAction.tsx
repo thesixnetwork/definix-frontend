@@ -60,7 +60,11 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
 
   const renderStakingButtons = () => {
     return rawStakedBalance === 0 ? (
-      <Button disabled={(farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime())} onClick={onPresentDeposit} fullWidth>
+      <Button
+        disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
+        onClick={onPresentDeposit}
+        fullWidth
+      >
         {TranslateString(999, 'Stake LP')}
       </Button>
     ) : (
@@ -68,9 +72,12 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
         <Button variant="secondary" onClick={onPresentWithdraw} mr="6px" className="btn-secondary-disable">
           <MinusIcon color="primary" />
         </Button>
-        {(typeof farmUnlockDate === 'undefined' || (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable">
-          <AddIcon color="primary" />
-        </Button>}
+        {(typeof farmUnlockDate === 'undefined' ||
+          (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
+          <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable">
+            <AddIcon color="primary" />
+          </Button>
+        )}
       </IconButtonWrapper>
     )
   }
