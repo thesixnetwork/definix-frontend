@@ -131,8 +131,8 @@ const Farm: React.FC = () => {
                     'sortOrder',
                   ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />) */}
               {orderBy(stackedOnly ? filterStackedOnlyPools(poolsWithApy) : poolsWithApy, ['sortOrder']).map((pool) => (
-                  <PoolCard key={pool.sousId} pool={pool} />
-                  )) }
+                <PoolCard key={pool.sousId} pool={pool} />
+              ))}
             </Route>
             <Route path={`${path}/history`}>
               {orderBy(finishedPools, ['sortOrder']).map((pool) => (
