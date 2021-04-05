@@ -397,7 +397,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               </Button>
             ) : (
               <div className="flex">
-                {!readyToStake ? (
+                {!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished ? (
                   <Button
                     onClick={() => {
                       setReadyToStake(true)
@@ -425,7 +425,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                     >
                       <MinusIcon color={stakedBalance.eq(new BigNumber(0)) || pendingTx ? 'textDisabled' : 'primary'} />
                     </Button>
-                    {!isOldSyrup && (
+                    {!isOldSyrup && !isFinished && (
                       <Button
                         fullWidth
                         disabled={isFinished && sousId !== 0}
