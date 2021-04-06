@@ -58,7 +58,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
         </StyledHarvestButton>
       </Flex>
       <Text fontSize="12px" textAlign="left" className="mt-4">
-        = ${numeral(rawEarningsBalance * finixUsd.toNumber())}
+        = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
       </Text>
     </>
   )
