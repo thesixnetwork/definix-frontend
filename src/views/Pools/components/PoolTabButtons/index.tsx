@@ -81,12 +81,14 @@ export default PoolTabButtons
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-bottom: 2rem;
   flex-wrap: wrap;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
     justify-content: space-between;
 
     .flex {

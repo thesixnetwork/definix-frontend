@@ -4,12 +4,14 @@ import { Button, Heading } from 'uikit-dev'
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
   flex-wrap: wrap;
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
     justify-content: space-between;
 
     .flex {

@@ -5,8 +5,8 @@ import { BaseLayout, Heading } from 'uikit-dev'
 import FinixStats from 'views/Home/components/FinixStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import InfoBanner from 'views/Info/components/InfoBanner'
-import Flip from '../../uikit-dev/components/Flip'
-import CardStakeBlue from './components/CardStakeBlue'
+// import Flip from '../../uikit-dev/components/Flip'
+// import CardStakeBlue from './components/CardStakeBlue'
 import CardUpcomingFarms from './components/CardUpcomingFarms'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 // import LotteryCard from 'views/Home/components/LotteryCard'
@@ -208,8 +208,8 @@ const Home: React.FC = () => {
               <TotalValueLockedCard />
               <FinixStats />
             </Cards>
-            {/* <CardUpcomingFarms /> */}
-            <CardStakeBlue />
+            <CardUpcomingFarms />
+            {/* <CardStakeBlue /> */}
             {/* <div className="flex align-center justify-center mt-6">
           <Text small>Audited by</Text>
           <img src={certik} width="120" alt="" />
