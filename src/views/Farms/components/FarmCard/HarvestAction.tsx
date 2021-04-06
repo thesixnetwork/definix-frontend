@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import { Button, Flex, Heading, Text } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import { useHarvest } from 'hooks/useHarvest'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 
 interface FarmCardActionsProps {
@@ -32,6 +34,7 @@ const StyledDisplayBalance = styled.div`
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
   const TranslateString = useI18n()
   const [pendingTx, setPendingTx] = useState(false)
+  const finixUsd = usePriceFinixUsd()
   const { onReward } = useHarvest(pid)
 
   const rawEarningsBalance = getBalanceNumber(earnings)
@@ -55,7 +58,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
         </StyledHarvestButton>
       </Flex>
       <Text fontSize="12px" textAlign="left" className="mt-4">
-        = $0.00000
+        = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
       </Text>
     </>
   )
