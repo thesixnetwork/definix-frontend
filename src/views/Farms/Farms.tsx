@@ -19,8 +19,8 @@ import {
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text, Button } from 'uikit-dev'
-// import man from 'uikit-dev/images/for-Farm-Elements/1558.png'
-import man02 from 'uikit-dev/images/FINIX-Love-You/1557.png'
+import man from 'uikit-dev/images/for-Farm-Elements/1558.png'
+// import man02 from 'uikit-dev/images/FINIX-Love-You/1557.png'
 import bg from 'uikit-dev/images/for-Farm-Elements/bg.jpg'
 import bgBlue from 'uikit-dev/images/FINIX-Love-You/bg.png'
 import { provider } from 'web3-core'
@@ -132,7 +132,7 @@ const Farms: React.FC = () => {
         Farm
       </Heading>
 
-      <CardSorry className="mb-6">
+      {/* <CardSorry className="mb-6">
         <MaxWidth>
           <img src={man02} alt="" />
 
@@ -151,9 +151,9 @@ const Farms: React.FC = () => {
             Go to stake
           </Button>
         </MaxWidth>
-      </CardSorry>
+      </CardSorry> */}
 
-      {/* <Card className="mb-6">
+      <Card className="mb-6">
         <WhatIsFarm>
           <MaxWidth>
             <img src={man} alt="" />
@@ -202,7 +202,7 @@ const Farms: React.FC = () => {
             you want.
           </Text>
         </MaxWidth>
-      </Card> */}
+      </Card>
 
       <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
         <FarmTabButtons
