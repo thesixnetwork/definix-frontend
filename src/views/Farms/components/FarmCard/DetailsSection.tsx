@@ -22,6 +22,7 @@ const StyledLinkExternal = styled(LinkExternal)`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  width: 60%;
 
   svg {
     padding-left: 4px;
@@ -55,7 +56,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         </Flex>
       )}
       <Flex justifyContent="flex-start" className="flex">
-        <Link external href={bscScanAddress} bold={false} className="flex-shrink">
+        <Link external href={bscScanAddress} bold={false} className="flex-shrink" style={{ width: '100%' }}>
           {TranslateString(356, 'View on BscScan')}
           <OpenNewIcon color="primary" className="ml-2" />
         </Link>
