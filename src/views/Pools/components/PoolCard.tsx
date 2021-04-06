@@ -260,7 +260,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           </StyledDetails>
           <StyledDetails>
             <p className="pr-4 col-6">Stake period:</p>
-            <span className="col-6">{totalTimeInSecond}</span>
+            <p className="col-6 text-bold text-right pa-0">{totalTimeInSecond}</p>
           </StyledDetails>
           <StyledDetails>
             <p className="pr-4 col-6">Total {tokenName} Staked:</p>
@@ -268,7 +268,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               <p className="text-bold text-right">
                 {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
               </p>
-              <p className="ml-1 text-right">= {numeral(estimatePrice.toNumber()).format('0,0.0000')} $</p>
+              <p className="ml-1 text-right">= ${numeral(estimatePrice.toNumber()).format('0,0.0000')}</p>
             </div>
           </StyledDetails>
         </div>

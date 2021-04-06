@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { Button, Flex, Heading } from 'uikit-dev'
+import { Button, Flex, Heading, Text } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import { useHarvest } from 'hooks/useHarvest'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -38,21 +38,26 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
   const displayBalance = rawEarningsBalance.toLocaleString()
 
   return (
-    <Flex justifyContent="space-between" alignItems="stretch">
-      <StyledDisplayBalance>
-        <Heading color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
-      </StyledDisplayBalance>
-      <StyledHarvestButton
-        disabled={rawEarningsBalance === 0 || pendingTx}
-        onClick={async () => {
-          setPendingTx(true)
-          await onReward()
-          setPendingTx(false)
-        }}
-      >
-        {TranslateString(562, 'Harvest')}
-      </StyledHarvestButton>
-    </Flex>
+    <>
+      <Flex justifyContent="space-between" alignItems="stretch">
+        <StyledDisplayBalance>
+          <Heading color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
+        </StyledDisplayBalance>
+        <StyledHarvestButton
+          disabled={rawEarningsBalance === 0 || pendingTx}
+          onClick={async () => {
+            setPendingTx(true)
+            await onReward()
+            setPendingTx(false)
+          }}
+        >
+          {TranslateString(562, 'Harvest')}
+        </StyledHarvestButton>
+      </Flex>
+      <Text fontSize="12px" textAlign="left" className="mt-4">
+        = $0.00000
+      </Text>
+    </>
   )
 }
 
