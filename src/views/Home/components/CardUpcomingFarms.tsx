@@ -136,7 +136,7 @@ const CardUpcomingFarms: React.FC = () => {
     },
     {
       img: el08,
-      name: 'FINIX-BUSD LP',
+      name: 'FINIX-BNB LP',
       apr: pid3Farm.apy ? numeral(pid3Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
       pid: 3,
     },
@@ -157,7 +157,7 @@ const CardUpcomingFarms: React.FC = () => {
   return (
     <CardStyled>
       <Heading as="h2" fontSize="28px !important" textAlign="center" color="#FFF" className="mb-2">
-        Upcoming Farms
+        Active Farms
       </Heading>
       <div className="flex flex-wrap mb-4">
         {data.map((d) => {
