@@ -26,7 +26,7 @@ const PoolTabButtons = ({ poolsCount, stackedOnly, setStackedOnly, liveOnly, set
 
   return (
     <Wrapper>
-      <Heading as="h2" fontSize="20px !important" className="mb-6 mt-4" textAlign="center">
+      <Heading as="h2" fontSize="20px !important" textAlign="center">
         All pools
         <span className="ml-2" style={{ fontSize: '16px' }}>
           ({poolsCount})
@@ -46,11 +46,11 @@ const PoolTabButtons = ({ poolsCount, stackedOnly, setStackedOnly, liveOnly, set
         </ButtonMenuItem>
       </ButtonMenu> */}
 
-      <div className="flex">
-        <ToggleWrapper>
+      <div className="flex mt-3">
+        {/* <ToggleWrapper>
           <Toggle checked={liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
           <Text> {TranslateString(999, 'Live')}</Text>
-        </ToggleWrapper>
+        </ToggleWrapper> */}
 
         <StyledButton
           size="sm"
@@ -81,10 +81,20 @@ export default PoolTabButtons
 
 const Wrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    flex-direction: row;
+    justify-content: space-between;
+
+    .flex {
+      margin: 0 !important;
+    }
+  } ;
 `
 
 const ToggleWrapper = styled.div`

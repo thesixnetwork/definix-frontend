@@ -37,11 +37,11 @@ const CardStyled = styled(Card)`
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin: 0 0.5rem;
+    margin: 1rem;
+    text-align: center;
 
-    width: calc(50% - 1rem);
+    width: calc(50% - 2rem);
 
     img {
       width: 120px;
@@ -62,7 +62,7 @@ const CardStyled = styled(Card)`
     background-position: center 40%;
 
     .el {
-      width: calc(25% - 1rem);
+      width: calc(25% - 2rem);
     }
   }
 
@@ -136,7 +136,7 @@ const CardUpcomingFarms: React.FC = () => {
     },
     {
       img: el08,
-      name: 'FINIX-BUSD LP',
+      name: 'FINIX-BNB LP',
       apr: pid3Farm.apy ? numeral(pid3Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
       pid: 3,
     },
@@ -156,10 +156,10 @@ const CardUpcomingFarms: React.FC = () => {
 
   return (
     <CardStyled>
-      <Heading as="h2" fontSize="28px !important" textAlign="center" color="#FFF" className="mb-4">
-        Upcoming Farms
+      <Heading as="h2" fontSize="28px !important" textAlign="center" color="#FFF" className="mb-2">
+        Active Farms
       </Heading>
-      <div className="flex flex-wrap mb-6">
+      <div className="flex flex-wrap mb-4">
         {data.map((d) => {
           // eslint-disable-next-line
           d.apr = d.apr === undefined || d.apr === 'undefined' ? 'N/A' : d.apr

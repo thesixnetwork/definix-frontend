@@ -20,6 +20,7 @@ export interface Farm extends FarmConfig {
   poolWeight?: BigNumber
   finixPerBlock?: BigNumber
   BONUS_MULTIPLIER?: BigNumber
+  lpTotalSupply?: BigNumber
   apy?: BigNumber
   userData?: {
     allowance: BigNumber
@@ -63,6 +64,7 @@ export interface ToastsState {
 
 export interface FarmsState {
   data: Farm[]
+  farmUnlockAt?: Date
 }
 
 export interface PoolsState {

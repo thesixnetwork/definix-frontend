@@ -30,13 +30,14 @@ const useTokenBalance = (tokenAddress: string) => {
 
 export const useTotalSupply = () => {
   const { slowRefresh } = useRefresh()
+  const finixBurned = useBurnedBalance(getFinixAddress())
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
   useEffect(() => {
     async function fetchTotalSupply() {
       const finixContract = getContract(finixABI, getFinixAddress())
       const supply = await finixContract.methods.totalSupply().call()
-      setTotalSupply(new BigNumber(supply))
+      setTotalSupply(new BigNumber(supply).minus(finixBurned))
     }
 
     fetchTotalSupply()

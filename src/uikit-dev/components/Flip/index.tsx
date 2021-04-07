@@ -73,11 +73,7 @@ const FlipStyled = styled.div`
   }
 `
 
-const FlipSmallStyled = styled.strong`
-  width: 180px;
-`
-
-const Flip = ({ date, small = false }) => {
+const Flip = ({ date, small = false, color = '#ffffff' }) => {
   const [timer, setTime] = useState({
     days: 0,
     hours: 0,
@@ -148,7 +144,7 @@ const Flip = ({ date, small = false }) => {
 
   if (small) {
     return (
-      <FlipSmallStyled>
+      <strong style={{ color, display: 'inline-block', width: '200px' }}>
         {`
     ${addLeadingZeros(timer.days)} :
 
@@ -158,7 +154,7 @@ const Flip = ({ date, small = false }) => {
 
     ${addLeadingZeros(timer.sec)}
     `}
-      </FlipSmallStyled>
+      </strong>
     )
   }
 
