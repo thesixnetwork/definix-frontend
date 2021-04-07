@@ -41,7 +41,7 @@ export const useTotalSupply = () => {
     }
 
     fetchTotalSupply()
-  }, [slowRefresh])
+  }, [slowRefresh, finixBurned])
 
   return totalSupply
 }
