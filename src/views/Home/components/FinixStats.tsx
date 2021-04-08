@@ -57,7 +57,7 @@ const FinixStats = () => {
         </Row>
         <Row>
           <Text small>{TranslateString(540, 'New FINIX/block')}</Text>
-          <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={25} />
+          <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={12} />
         </Row>
       </CardBody>
     </StyledFinixStats>
