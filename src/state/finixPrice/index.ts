@@ -348,7 +348,7 @@ export const fetchQuote = () => async (dispatch) => {
   fetchPromise.push(
     getTotalQuote({
       lpAddress: Pair.getAddress(FINIX, WBNB),
-      qouteToken: wbnbAddress,
+      qouteToken: finixAddress,
     }),
   )
   fetchPromise.push(
