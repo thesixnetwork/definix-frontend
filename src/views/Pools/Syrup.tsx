@@ -31,7 +31,7 @@ const Farm: React.FC = () => {
   const ethPriceBnb = usePriceEthBnb()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [liveOnly, setLiveOnly] = useState(true)
+  const [liveOnly, setLiveOnly] = useState(false)
   const [isPhrase1, setIsPhrase1] = useState(false)
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -214,16 +214,13 @@ const Farm: React.FC = () => {
         ) : (
           <div>
             <Route exact path={`${path}`}>
-              {/* liveOnly
+              {liveOnly
                 ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
                     <PoolCard key={pool.sousId} pool={pool} />
                   ))
-                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
+                : orderBy(stackedOnly ? filterStackedOnlyPools(poolsWithApy) : poolsWithApy, [
                     'sortOrder',
-                  ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />) */}
-              {orderBy(stackedOnly ? filterStackedOnlyPools(poolsWithApy) : poolsWithApy, ['sortOrder']).map((pool) => (
-                <PoolCard key={pool.sousId} pool={pool} />
-              ))}
+                  ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
             </Route>
             <Route path={`${path}/history`}>
               {orderBy(finishedPools, ['sortOrder']).map((pool) => (
