@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
-import cakeABI from 'config/abi/cake.json'
+import finixABI from 'config/abi/finix.json'
 import { getContract } from 'utils/web3'
 import { getTokenBalance } from 'utils/erc20'
-import { getCakeAddress } from 'utils/addressHelpers'
+import { getFinixAddress } from 'utils/addressHelpers'
 import useWeb3 from './useWeb3'
 import useRefresh from './useRefresh'
 
@@ -30,17 +30,18 @@ const useTokenBalance = (tokenAddress: string) => {
 
 export const useTotalSupply = () => {
   const { slowRefresh } = useRefresh()
+  const finixBurned = useBurnedBalance(getFinixAddress())
   const [totalSupply, setTotalSupply] = useState<BigNumber>()
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const cakeContract = getContract(cakeABI, getCakeAddress())
-      const supply = await cakeContract.methods.totalSupply().call()
-      setTotalSupply(new BigNumber(supply))
+      const finixContract = getContract(finixABI, getFinixAddress())
+      const supply = await finixContract.methods.totalSupply().call()
+      setTotalSupply(new BigNumber(supply).minus(finixBurned))
     }
 
     fetchTotalSupply()
-  }, [slowRefresh])
+  }, [slowRefresh, finixBurned])
 
   return totalSupply
 }

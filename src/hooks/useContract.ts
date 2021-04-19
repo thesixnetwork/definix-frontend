@@ -4,13 +4,13 @@ import { ContractOptions } from 'web3-eth-contract'
 import useWeb3 from 'hooks/useWeb3'
 import {
   getAddress,
-  getMasterChefAddress,
-  getCakeAddress,
+  getHerodotusAddress,
+  getFinixAddress,
   getLotteryAddress,
   getLotteryTicketAddress,
   getBunnyFactoryAddress,
-  getPancakeProfileAddress,
-  getPancakeRabbitsAddress,
+  getDefinixProfileAddress,
+  getDefinixRabbitsAddress,
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
 } from 'utils/addressHelpers'
@@ -19,13 +19,13 @@ import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
 import bunnyFactory from 'config/abi/bunnyFactory.json'
-import pancakeRabbits from 'config/abi/pancakeRabbits.json'
+import definixRabbits from 'config/abi/definixRabbits.json'
 import lottery from 'config/abi/lottery.json'
 import lotteryTicket from 'config/abi/lotteryNft.json'
-import masterChef from 'config/abi/masterchef.json'
+import herodotus from 'config/abi/herodotus.json'
 import sousChef from 'config/abi/sousChef.json'
 import sousChefBnb from 'config/abi/sousChefBnb.json'
-import profile from 'config/abi/pancakeProfile.json'
+import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 
@@ -54,8 +54,8 @@ export const useERC20 = (address: string) => {
   return useContract(erc20Abi, address)
 }
 
-export const useCake = () => {
-  return useERC20(getCakeAddress())
+export const useFinix = () => {
+  return useERC20(getFinixAddress())
 }
 
 export const useBunnyFactory = () => {
@@ -63,14 +63,14 @@ export const useBunnyFactory = () => {
   return useContract(bunnyFactoryAbi, getBunnyFactoryAddress())
 }
 
-export const usePancakeRabbits = () => {
-  const pancakeRabbitsAbi = (pancakeRabbits as unknown) as AbiItem
-  return useContract(pancakeRabbitsAbi, getPancakeRabbitsAddress())
+export const useDefinixRabbits = () => {
+  const definixRabbitsAbi = (definixRabbits as unknown) as AbiItem
+  return useContract(definixRabbitsAbi, getDefinixRabbitsAddress())
 }
 
 export const useProfile = () => {
   const profileABIAbi = (profile as unknown) as AbiItem
-  return useContract(profileABIAbi, getPancakeProfileAddress())
+  return useContract(profileABIAbi, getDefinixProfileAddress())
 }
 
 export const useLottery = () => {
@@ -83,9 +83,9 @@ export const useLotteryTicket = () => {
   return useContract(abi, getLotteryTicketAddress())
 }
 
-export const useMasterchef = () => {
-  const abi = (masterChef as unknown) as AbiItem
-  return useContract(abi, getMasterChefAddress())
+export const useHerodotus = () => {
+  const abi = (herodotus as unknown) as AbiItem
+  return useContract(abi, getHerodotusAddress())
 }
 
 export const useSousChef = (id) => {

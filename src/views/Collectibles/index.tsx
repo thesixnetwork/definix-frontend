@@ -18,7 +18,7 @@ const Collectibles = () => {
     <Page>
       <StyledHero>
         <Heading as="h1" size="xxl" color="secondary">
-          {TranslateString(999, 'Pancake Collectibles')}
+          {TranslateString(999, 'Definix Collectibles')}
         </Heading>
       </StyledHero>
       <NftList />

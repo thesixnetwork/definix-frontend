@@ -10,11 +10,11 @@ export const links = [
     items: [
       {
         label: 'Exchange',
-        href: 'https://exchange.pancakeswap.finance',
+        href: 'https://exchange.definixswap.finance',
       },
       {
         label: 'Liquidity',
-        href: 'https://exchange.pancakeswap.finance/#/pool',
+        href: 'https://exchange.definixswap.finance/#/pool',
       },
     ],
   },
@@ -59,19 +59,19 @@ export const links = [
     items: [
       {
         label: 'Overview',
-        href: 'https://pancakeswap.info',
+        href: 'https://definixswap.info',
       },
       {
         label: 'Tokens',
-        href: 'https://pancakeswap.info/tokens',
+        href: 'https://definixswap.info/tokens',
       },
       {
         label: 'Pairs',
-        href: 'https://pancakeswap.info/pairs',
+        href: 'https://definixswap.info/pairs',
       },
       {
         label: 'Accounts',
-        href: 'https://pancakeswap.info/accounts',
+        href: 'https://definixswap.info/accounts',
       },
     ],
   },
@@ -95,19 +95,19 @@ export const links = [
     items: [
       {
         label: 'Voting',
-        href: 'https://voting.pancakeswap.finance',
+        href: 'https://voting.definixswap.finance',
       },
       {
         label: 'Github',
-        href: 'https://github.com/pancakeswap',
+        href: 'https://github.com/definixswap',
       },
       {
         label: 'Docs',
-        href: 'https://docs.pancakeswap.finance',
+        href: 'https://docs.definixswap.finance',
       },
       {
         label: 'Blog',
-        href: 'https://pancakeswap.medium.com',
+        href: 'https://definixswap.medium.com',
       },
     ],
   },
@@ -120,62 +120,62 @@ export const socials = [
     items: [
       {
         label: 'English',
-        href: 'https://t.me/pancakeswap',
+        href: 'https://t.me/definixswap',
       },
       {
         label: 'Bahasa Indonesia',
-        href: 'https://t.me/PancakeSwapIndonesia',
+        href: 'https://t.me/DefinixSwapIndonesia',
       },
       {
         label: '中文',
-        href: 'https://t.me/PancakeSwap_CN',
+        href: 'https://t.me/DefinixSwap_CN',
       },
       {
         label: 'Tiếng Việt',
-        href: 'https://t.me/PancakeSwapVN',
+        href: 'https://t.me/DefinixSwapVN',
       },
       {
         label: 'Italiano',
-        href: 'https://t.me/pancakeswap_ita',
+        href: 'https://t.me/definixswap_ita',
       },
       {
         label: 'русский',
-        href: 'https://t.me/pancakeswap_ru',
+        href: 'https://t.me/definixswap_ru',
       },
       {
         label: 'Türkiye',
-        href: 'https://t.me/pancakeswapturkiye',
+        href: 'https://t.me/definixswapturkiye',
       },
       {
         label: 'Português',
-        href: 'https://t.me/PancakeSwapPortuguese',
+        href: 'https://t.me/DefinixSwapPortuguese',
       },
       {
         label: 'Español',
-        href: 'https://t.me/PancakeswapEs',
+        href: 'https://t.me/DefinixswapEs',
       },
       {
         label: '日本語',
-        href: 'https://t.me/pancakeswapjp',
+        href: 'https://t.me/definixswapjp',
       },
       {
         label: 'Français',
-        href: 'https://t.me/pancakeswapfr',
+        href: 'https://t.me/definixswapfr',
       },
       {
         label: 'Announcements',
-        href: 'https://t.me/PancakeSwapAnn',
+        href: 'https://t.me/DefinixSwapAnn',
       },
       {
         label: 'Whale Alert',
-        href: 'https://t.me/PancakeSwapWhales',
+        href: 'https://t.me/DefinixSwapWhales',
       },
     ],
   },
   {
     label: 'Twitter',
     icon: 'TwitterIcon',
-    href: 'https://twitter.com/pancakeswap',
+    href: 'https://twitter.com/definixswap',
   },
 ]
 

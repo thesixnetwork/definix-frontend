@@ -37,12 +37,14 @@ export interface MenuEntry {
   href?: string
   calloutClass?: string
   initialOpenState?: boolean
+  group?: string
+  notHighlight?: boolean
 }
 
 export interface PanelProps {
   isDark: boolean
   toggleTheme: (isDark: boolean) => void
-  cakePriceUsd?: number
+  finixPriceUsd?: number
   currentLang: string
   langs: LangType[]
   setLang: (lang: LangType) => void

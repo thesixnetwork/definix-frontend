@@ -5,10 +5,18 @@ import liquidityClick from 'uikit-dev/images/Menu-Icon/liquidity-click.png'
 import liquidity from 'uikit-dev/images/Menu-Icon/liquidity.png'
 import poolClick from 'uikit-dev/images/Menu-Icon/pool-click.png'
 import pool from 'uikit-dev/images/Menu-Icon/pool.png'
+import bridgeClick from 'uikit-dev/images/Menu-Icon/bridge-click.png'
+import bridge from 'uikit-dev/images/Menu-Icon/bridge.png'
 import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
 import swap from 'uikit-dev/images/Menu-Icon/swap.png'
 import dashboardClick from 'uikit-dev/images/Menu-Icon/dashboard-click.png'
 import dashboard from 'uikit-dev/images/Menu-Icon/dashboard.png'
+import portfolioClick from 'uikit-dev/images/Menu-Icon/portfolio-click.png'
+import portfolio from 'uikit-dev/images/Menu-Icon/portfolio.png'
+import watchlistClick from 'uikit-dev/images/Menu-Icon/watchlist-click.png'
+import watchlist from 'uikit-dev/images/Menu-Icon/watchlist.png'
+import exploreClick from 'uikit-dev/images/Menu-Icon/explore-click.png'
+import explore from 'uikit-dev/images/Menu-Icon/explore.png'
 
 const config: MenuEntry[] = [
   {
@@ -16,53 +24,80 @@ const config: MenuEntry[] = [
     icon: dashboardClick,
     iconActive: dashboard,
     href: '/dashboard',
-  },
-  {
-    label: 'Pool',
-    icon: poolClick,
-    iconActive: pool,
-    href: '/pool',
+    group: 'wallet',
+    notHighlight: false,
   },
   {
     label: 'Swap',
     icon: swapClick,
     iconActive: swap,
-    href: 'https://youngexchange.definix.com/#/swap',
+    href: 'https://exchange.definix.com/#/swap',
+    group: 'dex',
+    notHighlight: false,
   },
   {
     label: 'Liquidity',
     icon: liquidityClick,
     iconActive: liquidity,
-    href: 'https://youngexchange.definix.com/#/liquidity',
+    href: 'https://exchange.definix.com/#/liquidity',
+    group: 'dex',
+    notHighlight: false,
   },
   {
     label: 'Farm',
     icon: farmClick,
     iconActive: farm,
     href: '/farm',
+    group: 'dex',
+    notHighlight: false,
   },
-  // {
-  //   label: 'Investment',
-  //   icon: 'TradeIcon',
-  //   initialOpenState: false,
-  //   items: [
-  //     {
-  //       label: 'Exchange',
-  //       href: '/swap',
-  //     },
-  //     {
-  //       label: 'Liquidity',
-  //       href: '/pool',
-  //     },
-  //   ],
-  // },
+  {
+    label: 'Pool',
+    icon: poolClick,
+    iconActive: pool,
+    href: '/pool',
+    group: 'dex',
+    notHighlight: false,
+  },
+  {
+    label: 'Portfolio',
+    icon: portfolioClick,
+    iconActive: portfolio,
+    href: '/info',
+    group: 'invest',
+    notHighlight: true,
+  },
+  {
+    label: 'Watchlist',
+    icon: watchlistClick,
+    iconActive: watchlist,
+    href: '/info',
+    group: 'invest',
+    notHighlight: true,
+  },
+  {
+    label: 'Explore',
+    icon: exploreClick,
+    iconActive: explore,
+    href: '/info',
+    group: 'invest',
+    notHighlight: true,
+  },
+  {
+    label: 'Bridge',
+    icon: bridgeClick,
+    iconActive: bridge,
+    href: 'https://bridge.six.network',
+    group: 'tool',
+    notHighlight: true,
+  },
 ]
 
 // const config: MenuEntry[] = [
 //   {
 //     label: 'Home',
 //     icon: 'HomeIcon',
-//     href: 'https://pancakeswap.finance/',
+//     href: 'https://definixswap.finance/',
 //   },
 //   {
 //     label: 'Trade',
@@ -82,22 +117,22 @@ const config: MenuEntry[] = [
 //   {
 //     label: 'Farms',
 //     icon: 'FarmIcon',
-//     href: 'https://pancakeswap.finance/farms',
+//     href: 'https://definixswap.finance/farms',
 //   },
 //   {
 //     label: 'Pools',
 //     icon: 'PoolIcon',
-//     href: 'https://pancakeswap.finance/syrup',
+//     href: 'https://definixswap.finance/syrup',
 //   },
 //   {
 //     label: 'Lottery',
 //     icon: 'TicketIcon',
-//     href: 'https://pancakeswap.finance/lottery',
+//     href: 'https://definixswap.finance/lottery',
 //   },
 //   {
 //     label: 'NFT',
 //     icon: 'NftIcon',
-//     href: 'https://pancakeswap.finance/nft',
+//     href: 'https://definixswap.finance/nft',
 //   },
 //   {
 //     label: 'Teams & Profile',
@@ -105,11 +140,11 @@ const config: MenuEntry[] = [
 //     items: [
 //       {
 //         label: 'Leaderboard',
-//         href: 'https://pancakeswap.finance/teams',
+//         href: 'https://definixswap.finance/teams',
 //       },
 //       {
 //         label: 'Your Profile',
-//         href: 'https://pancakeswap.finance/profile',
+//         href: 'https://definixswap.finance/profile',
 //       },
 //     ],
 //   },
@@ -119,26 +154,26 @@ const config: MenuEntry[] = [
 //     items: [
 //       {
 //         label: 'Overview',
-//         href: 'https://pancakeswap.info',
+//         href: 'https://definixswap.info',
 //       },
 //       {
 //         label: 'Tokens',
-//         href: 'https://pancakeswap.info/tokens',
+//         href: 'https://definixswap.info/tokens',
 //       },
 //       {
 //         label: 'Pairs',
-//         href: 'https://pancakeswap.info/pairs',
+//         href: 'https://definixswap.info/pairs',
 //       },
 //       {
 //         label: 'Accounts',
-//         href: 'https://pancakeswap.info/accounts',
+//         href: 'https://definixswap.info/accounts',
 //       },
 //     ],
 //   },
 //   {
 //     label: 'IFO',
 //     icon: 'IfoIcon',
-//     href: 'https://pancakeswap.finance/ifo',
+//     href: 'https://definixswap.finance/ifo',
 //   },
 //   {
 //     label: 'More',
@@ -146,19 +181,19 @@ const config: MenuEntry[] = [
 //     items: [
 //       {
 //         label: 'Voting',
-//         href: 'https://voting.pancakeswap.finance',
+//         href: 'https://voting.definixswap.finance',
 //       },
 //       {
 //         label: 'Github',
-//         href: 'https://github.com/pancakeswap',
+//         href: 'https://github.com/definixswap',
 //       },
 //       {
 //         label: 'Docs',
-//         href: 'https://docs.pancakeswap.finance',
+//         href: 'https://docs.definixswap.finance',
 //       },
 //       {
 //         label: 'Blog',
-//         href: 'https://pancakeswap.medium.com',
+//         href: 'https://definixswap.medium.com',
 //       },
 //     ],
 //   },

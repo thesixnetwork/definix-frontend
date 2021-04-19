@@ -3,17 +3,17 @@
     "inputs": [
       {
         "internalType": "contract IBEP20",
-        "name": "_cakeToken",
+        "name": "_finixToken",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "_pancakeProfileAddress",
+        "name": "_definixProfileAddress",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "_numberCake",
+        "name": "_numberFinix",
         "type": "uint256"
       },
       {
@@ -46,7 +46,7 @@
   },
   {
     "inputs": [],
-    "name": "cakeToken",
+    "name": "finixToken",
     "outputs": [
       {
         "internalType": "contract IBEP20",
@@ -91,7 +91,7 @@
   },
   {
     "inputs": [],
-    "name": "getCakeBack",
+    "name": "getFinixBack",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -117,7 +117,7 @@
   },
   {
     "inputs": [],
-    "name": "numberCake",
+    "name": "numberFinix",
     "outputs": [
       {
         "internalType": "uint256",

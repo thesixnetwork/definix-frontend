@@ -13,7 +13,7 @@ export interface Ifo {
   launchTime: string
   saleAmount: string
   raiseAmount: string
-  cakeToBurn: string
+  finixToBurn: string
   projectSiteUrl: string
   currency: string
   currencyAddress: string
@@ -24,7 +24,6 @@ export interface Ifo {
 
 export enum QuoteToken {
   'BNB' = 'BNB',
-  'CAKE' = 'CAKE',
   'SYRUP' = 'SYRUP',
   'BUSD' = 'BUSD',
   'TWT' = 'TWT',
@@ -34,6 +33,11 @@ export enum QuoteToken {
   'SUSHI' = 'SUSHI',
   'SIX' = 'SIX',
   'FINIX' = 'FINIX',
+  'SIXFINIX' = 'FINIX-SIX',
+  'FINIXBUSD' = 'FINIX-BUSD',
+  'FINIXBNB' = 'FINIX-BNB',
+  'SIXBUSD' = 'SIX-BUSD',
+  'USDTBUSD' = 'USDT-BUSD',
 }
 
 export enum PoolCategory {

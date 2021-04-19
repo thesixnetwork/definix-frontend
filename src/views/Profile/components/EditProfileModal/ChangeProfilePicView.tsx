@@ -8,8 +8,8 @@ import useI18n from 'hooks/useI18n'
 import { fetchProfile } from 'state/profile'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { usePancakeRabbits, useProfile as useProfileContract } from 'hooks/useContract'
-import { getPancakeProfileAddress, getPancakeRabbitsAddress } from 'utils/addressHelpers'
+import { useDefinixRabbits, useProfile as useProfileContract } from 'hooks/useContract'
+import { getDefinixProfileAddress, getDefinixRabbitsAddress } from 'utils/addressHelpers'
 import SelectionCard from '../SelectionCard'
 import ApproveConfirmButtons from '../ApproveConfirmButtons'
 
@@ -21,7 +21,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const { isLoading, nfts: nftsInWallet } = useGetWalletNfts()
   const dispatch = useDispatch()
   const { profile } = useProfile()
-  const pancakeRabbitsContract = usePancakeRabbits()
+  const definixRabbitsContract = useDefinixRabbits()
   const profileContract = useProfileContract()
   const { account } = useWallet()
   const { toastSuccess } = useToast()
@@ -34,14 +34,14 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
     handleConfirm,
   } = useApproveConfirmTransaction({
     onApprove: () => {
-      return pancakeRabbitsContract.methods.approve(getPancakeProfileAddress(), tokenId).send({ from: account })
+      return definixRabbitsContract.methods.approve(getDefinixProfileAddress(), tokenId).send({ from: account })
     },
     onConfirm: () => {
       if (!profile.isActive) {
-        return profileContract.methods.reactivateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+        return profileContract.methods.reactivateProfile(getDefinixRabbitsAddress(), tokenId).send({ from: account })
       }
 
-      return profileContract.methods.updateProfile(getPancakeRabbitsAddress(), tokenId).send({ from: account })
+      return profileContract.methods.updateProfile(getDefinixRabbitsAddress(), tokenId).send({ from: account })
     },
     onSuccess: async () => {
       // Re-fetch profile
@@ -86,7 +86,7 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
             {TranslateString(999, 'Sorry! You don’t have any eligible Collectibles in your wallet to use!')}
           </Text>
           <Text as="p" color="textSubtle" mb="24px">
-            {TranslateString(999, 'Make sure you have a Pancake Collectible in your wallet and try again!')}
+            {TranslateString(999, 'Make sure you have a Definix Collectible in your wallet and try again!')}
           </Text>
         </>
       )}

@@ -6,7 +6,7 @@ import Dropdown from '../../components/Dropdown/Dropdown'
 import Flex from '../../components/Box/Flex'
 import Link from '../../components/Link/Link'
 import Skeleton from '../../components/Skeleton/Skeleton'
-import { CogIcon, PancakeRoundIcon, SvgProps } from '../../components/Svg'
+import { CogIcon, DefinixRoundIcon, SvgProps } from '../../components/Svg'
 import Text from '../../components/Text/Text'
 import { MENU_ENTRY_HEIGHT, socials } from './config'
 import * as IconModule from './icons'
@@ -59,7 +59,7 @@ const PanelFooter: React.FC<Props> = ({
   pushNav,
   toggleTheme,
   isDark,
-  cakePriceUsd,
+  finixPriceUsd,
   currentLang,
   langs,
   setLang,
@@ -77,10 +77,10 @@ const PanelFooter: React.FC<Props> = ({
   return (
     <Container>
       <SocialEntry>
-        {cakePriceUsd ? (
-          <PriceLink href="https://pancakeswap.info/token/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82" target="_blank">
-            <PancakeRoundIcon width="24px" mr="8px" />
-            <Text color="textSubtle" bold>{`$${cakePriceUsd.toFixed(3)}`}</Text>
+        {finixPriceUsd ? (
+          <PriceLink href="https://definixswap.info/token/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82" target="_blank">
+            <DefinixRoundIcon width="24px" mr="8px" />
+            <Text color="textSubtle" bold>{`$${finixPriceUsd.toFixed(3)}`}</Text>
           </PriceLink>
         ) : (
           <Skeleton width={80} height={24} />

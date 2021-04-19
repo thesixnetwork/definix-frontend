@@ -1,8 +1,9 @@
 import throttle from 'lodash/throttle'
+import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import numeral from 'numeral'
 import Button from '../../components/Button/Button'
+import Text from '../../components/Text/Text'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
@@ -11,6 +12,9 @@ import { SvgProps } from '../../components/Svg'
 import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
 import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
+import FinixCoin from '../../images/finix-coin.png'
+import bsc from '../../images/Logo-BinanceSmartChain.png'
+import klaytn from '../../images/Logo-Klaytn.png'
 import th from '../../images/th.png'
 import { MENU_HEIGHT, SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
 import * as IconModule from './icons'
@@ -18,7 +22,6 @@ import Logo from './Logo'
 import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
-import FinixCoin from '../../images/finix-coin.png'
 
 const Wrapper = styled.div`
   position: relative;
@@ -130,7 +133,7 @@ const Menu: React.FC<NavProps> = ({
   langs,
   setLang,
   currentLang,
-  cakePriceUsd,
+  finixPriceUsd,
   links,
   children,
   price,
@@ -196,18 +199,56 @@ const Menu: React.FC<NavProps> = ({
   return (
     <Wrapper>
       <StyledNav showMenu={showMenu}>
-        <Logo
-          isPushed={isPushed}
-          togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
-          isDark={isDark}
-          href={homeLink?.href ?? '/'}
-        />
+        <Flex alignItems="center">
+          <Logo
+            isPushed={isPushed}
+            togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
+            isDark={isDark}
+            href={homeLink?.href ?? '/'}
+          />
+          {!isMobile && (
+            <Dropdown
+              position="bottom"
+              target={
+                <Button
+                  variant="text"
+                  size="sm"
+                  startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
+                  endIcon={<ChevronDownIcon className="ml-1" />}
+                  className="ml-4 color-text"
+                  style={{ marginTop: '4px' }}
+                >
+                  <Text fontSize="12px" fontWeight="500">
+                    Binance Smart Chain
+                  </Text>
+                </Button>
+              }
+            >
+              <MenuButton
+                variant="text"
+                startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
+                className="color-primary mb-2"
+              >
+                Binance Smart Chain
+              </MenuButton>
+              <MenuButton
+                variant="text"
+                startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
+                disabled
+                className="color-disable"
+                style={{ background: 'transparent' }}
+              >
+                Klaytn
+              </MenuButton>
+            </Dropdown>
+          )}
+        </Flex>
         <Flex alignItems="center">
           <Price>
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
-              <strong>${numeral(price).format('0,0.0000')}</strong>
+              <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
             </p>
           </Price>
           {/* <Dropdown
@@ -247,7 +288,7 @@ const Menu: React.FC<NavProps> = ({
           langs={langs}
           setLang={setLang}
           currentLang={currentLang}
-          cakePriceUsd={cakePriceUsd}
+          finixPriceUsd={finixPriceUsd}
           pushNav={setIsPushed}
           links={links}
           account={account}

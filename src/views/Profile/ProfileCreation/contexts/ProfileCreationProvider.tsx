@@ -14,7 +14,7 @@ const initialState: State = {
   teamId: null,
   tokenId: null,
   userName: '',
-  minimumCakeRequired: new BigNumber(totalCost).multipliedBy(new BigNumber(10).pow(18)),
+  minimumFinixRequired: new BigNumber(totalCost).multipliedBy(new BigNumber(10).pow(18)),
   allowance: new BigNumber(allowance).multipliedBy(new BigNumber(10).pow(18)),
 }
 

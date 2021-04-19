@@ -2,8 +2,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract CakeToken",
-        "name": "_cake",
+        "internalType": "contract FinixToken",
+        "name": "_finix",
         "type": "address"
       },
       {
@@ -162,10 +162,10 @@
   },
   {
     "inputs": [],
-    "name": "cake",
+    "name": "finix",
     "outputs": [
       {
-        "internalType": "contract CakeToken",
+        "internalType": "contract FinixToken",
         "name": "",
         "type": "address"
       }
@@ -390,7 +390,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "accCakePerShare",
+        "name": "accFinixPerShare",
         "type": "uint256"
       }
     ],

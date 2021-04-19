@@ -58,7 +58,7 @@ const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, 
           {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
         </Button>
       </ModalActions>
-      <LinkExternal href="https://youngexchange.definix.com/#/swap" className="mx-auto">
+      <LinkExternal href="https://exchange.definix.com/#/swap" className="mx-auto">
         Buy {tokenName}
       </LinkExternal>
     </Modal>

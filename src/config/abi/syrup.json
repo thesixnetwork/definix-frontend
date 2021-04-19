@@ -2,8 +2,8 @@
   {
     "inputs": [
       {
-        "internalType": "contract CakeToken",
-        "name": "_cake",
+        "internalType": "contract FinixToken",
+        "name": "_finix",
         "type": "address"
       }
     ],
@@ -242,10 +242,10 @@
   },
   {
     "inputs": [],
-    "name": "cake",
+    "name": "finix",
     "outputs": [
       {
-        "internalType": "contract CakeToken",
+        "internalType": "contract FinixToken",
         "name": "",
         "type": "address"
       }
@@ -590,7 +590,7 @@
         "type": "uint256"
       }
     ],
-    "name": "safeCakeTransfer",
+    "name": "safeFinixTransfer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
