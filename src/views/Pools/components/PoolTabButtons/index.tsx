@@ -47,10 +47,10 @@ const PoolTabButtons = ({ poolsCount, stackedOnly, setStackedOnly, liveOnly, set
       </ButtonMenu> */}
 
       <div className="flex mt-3">
-        {/* <ToggleWrapper>
+        <ToggleWrapper>
           <Toggle checked={liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
           <Text> {TranslateString(999, 'Live')}</Text>
-        </ToggleWrapper> */}
+        </ToggleWrapper>
 
         <StyledButton
           size="sm"

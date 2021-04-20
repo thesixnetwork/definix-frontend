@@ -131,7 +131,11 @@ export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
   const sixUsd = usePriceSixUsd()
-  const selectedPools = pools.find((pool) => pool.sousId === 1)
+  const selectedPools = pools.find((pool) => pool.sousId === 1) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
+  const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
+    totalStaked: new BigNumber(0),
+    tokenDecimals: 18,
+  }
   const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
   const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
   const sixUsdtQuote = useSelector((state: State) => state.finixPrice.sixUsdtQuote)
@@ -175,6 +179,20 @@ export const usePriceTVL = (): BigNumber => {
         totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
         break
     }
+    let totalStakedFinixFinix = new BigNumber(0)
+    switch (typeof selectedPoolsFinixFinix.totalStaked) {
+      case 'undefined':
+        totalStakedFinixFinix = new BigNumber(0)
+        break
+      case 'string':
+        totalStakedFinixFinix = new BigNumber(
+          (parseFloat(selectedPoolsFinixFinix.totalStaked) || 0) / 10 ** selectedPoolsFinixFinix.tokenDecimals,
+        )
+        break
+      default:
+        totalStakedFinixFinix = selectedPoolsFinixFinix.totalStaked.times(new BigNumber(10).pow(18))
+        break
+    }
     const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
     const sixBusdPrice = new BigNumber(sixBusdQuote)
     const sixUsdtPrice = new BigNumber(sixUsdtQuote)
@@ -197,6 +215,7 @@ export const usePriceTVL = (): BigNumber => {
       wbnbUsdtPrice,
       busdUsdtPrice,
       totalStaked.times(sixUsd).toNumber(),
+      totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
     ])
   }
 }
