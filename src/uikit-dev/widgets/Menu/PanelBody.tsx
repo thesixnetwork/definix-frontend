@@ -89,7 +89,7 @@ const PanelBody: React.FC<Props> = (props) => {
 
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
-        <MenuLink href={menu.href} onClick={handleClick}>
+        <MenuLink href={menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
           <img src={isActive ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
           <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
         </MenuLink>
@@ -144,12 +144,20 @@ const PanelBody: React.FC<Props> = (props) => {
             target="_blank"
             rel="noreferrer"
           >
-            <img src={certik} width="90" alt="" />
+            <img src={certik} width="80" alt="" />
           </a>
           <a href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate" target="_blank" rel="noreferrer">
-            <img src={techRate} width="80" alt="" />
+            <img src={techRate} width="70" alt="" />
           </a>
         </div>
+      </BorderBox>
+      <BorderBox>
+        <Heading fontSize="14px">Contact</Heading>
+        {links
+          .filter((link) => link.group === 'contact')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
       </BorderBox>
     </Container>
   )
