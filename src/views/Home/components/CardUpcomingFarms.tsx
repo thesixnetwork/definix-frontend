@@ -8,6 +8,7 @@ import el07 from 'uikit-dev/images/for-Farm-Elements/07.png'
 import el08 from 'uikit-dev/images/for-Farm-Elements/08.png'
 import el09 from 'uikit-dev/images/for-Farm-Elements/09.png'
 import el10 from 'uikit-dev/images/for-Farm-Elements/10.png'
+import el12 from 'uikit-dev/images/for-Farm-Elements/12.png'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixBusd } from 'state/hooks'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
@@ -121,6 +122,7 @@ const CardUpcomingFarms: React.FC = () => {
   const pid3Farm = farms.find((fa) => fa.pid === 3)
   const pid4Farm = farms.find((fa) => fa.pid === 4)
   const pid5Farm = farms.find((fa) => fa.pid === 5)
+  // const pid6Farm = farms.find((fa) => fa.pid === 6)
   const data = [
     {
       img: el06,
@@ -152,6 +154,12 @@ const CardUpcomingFarms: React.FC = () => {
       apr: pid5Farm.apy ? numeral(pid5Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
       pid: 5,
     },
+    // {
+    //   img: el12,
+    //   name: 'SIX-BNB LP',
+    //   apr: pid6Farm.apy ? numeral(pid6Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+    //   pid: 6,
+    // },
   ]
 
   return (
