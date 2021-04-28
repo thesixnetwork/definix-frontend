@@ -2,6 +2,8 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import Heading from '../../components/Heading/Heading'
+import certik from '../../images/Audit/AW-42.png'
+import techRate from '../../images/Audit/AW-43.png'
 import { Login } from '../WalletModal/types'
 import { LinkLabel, MenuEntry } from './MenuEntry'
 import MenuLink from './MenuLink'
@@ -87,7 +89,7 @@ const PanelBody: React.FC<Props> = (props) => {
 
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
-        <MenuLink href={menu.href} onClick={handleClick}>
+        <MenuLink href={menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
           <img src={isActive ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
           <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
         </MenuLink>
@@ -129,6 +131,30 @@ const PanelBody: React.FC<Props> = (props) => {
         <Heading fontSize="14px">Tool</Heading>
         {links
           .filter((link) => link.group === 'tool')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
+      </BorderBox>
+      <BorderBox>
+        <Heading fontSize="14px">Certified by</Heading>
+        <div className="flex flex-wrap align-center px-4 pt-2">
+          <a
+            className="mr-3"
+            href="https://github.com/thesixnetwork/definix-audit/tree/main/Certik"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img src={certik} width="80" alt="" />
+          </a>
+          <a href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate" target="_blank" rel="noreferrer">
+            <img src={techRate} width="70" alt="" />
+          </a>
+        </div>
+      </BorderBox>
+      <BorderBox>
+        <Heading fontSize="14px">Contact</Heading>
+        {links
+          .filter((link) => link.group === 'contact')
           .map((link) => (
             <MenuItem menu={link} />
           ))}

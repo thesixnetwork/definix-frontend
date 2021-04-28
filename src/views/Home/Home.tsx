@@ -2,6 +2,8 @@ import Page from 'components/layout/Page'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { BaseLayout, Heading } from 'uikit-dev'
+import certik from 'uikit-dev/images/Audit/AW-42.png'
+import techRate from 'uikit-dev/images/Audit/AW-43.png'
 import FinixStats from 'views/Home/components/FinixStats'
 import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
 import InfoBanner from 'views/Info/components/InfoBanner'
@@ -210,10 +212,24 @@ const Home: React.FC = () => {
             </Cards>
             <CardUpcomingFarms />
             {/* <CardStakeBlue /> */}
-            {/* <div className="flex align-center justify-center mt-6">
-          <Text small>Audited by</Text>
-          <img src={certik} width="120" alt="" />
-        </div> */}
+            <div className="flex align-center justify-center mt-6">
+              <p className="mr-3">Certified by</p>
+              <a
+                className="mr-3"
+                href="https://github.com/thesixnetwork/definix-audit/tree/main/Certik"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={certik} width="120" alt="" />
+              </a>
+              <a
+                href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img src={techRate} width="100" alt="" />
+              </a>
+            </div>
           </div>
         </MaxWidth>
       </Page>

@@ -17,6 +17,8 @@ import watchlistClick from 'uikit-dev/images/Menu-Icon/watchlist-click.png'
 import watchlist from 'uikit-dev/images/Menu-Icon/watchlist.png'
 import exploreClick from 'uikit-dev/images/Menu-Icon/explore-click.png'
 import explore from 'uikit-dev/images/Menu-Icon/explore.png'
+import partnerClick from 'uikit-dev/images/Menu-Icon/partnership-click.png'
+import partner from 'uikit-dev/images/Menu-Icon/partnership.png'
 
 const config: MenuEntry[] = [
   {
@@ -26,6 +28,7 @@ const config: MenuEntry[] = [
     href: '/dashboard',
     group: 'wallet',
     notHighlight: false,
+    newTab: false,
   },
   {
     label: 'Swap',
@@ -34,6 +37,7 @@ const config: MenuEntry[] = [
     href: 'https://d366hs9omsigpt.cloudfront.net/#/swap',
     group: 'dex',
     notHighlight: false,
+    newTab: false,
   },
   {
     label: 'Liquidity',
@@ -42,6 +46,7 @@ const config: MenuEntry[] = [
     href: 'https://d366hs9omsigpt.cloudfront.net/#/liquidity',
     group: 'dex',
     notHighlight: false,
+    newTab: false,
   },
   {
     label: 'Farm',
@@ -50,6 +55,7 @@ const config: MenuEntry[] = [
     href: '/farm',
     group: 'dex',
     notHighlight: false,
+    newTab: false,
   },
   {
     label: 'Pool',
@@ -58,6 +64,7 @@ const config: MenuEntry[] = [
     href: '/pool',
     group: 'dex',
     notHighlight: false,
+    newTab: false,
   },
   {
     label: 'Portfolio',
@@ -66,6 +73,7 @@ const config: MenuEntry[] = [
     href: '/info',
     group: 'invest',
     notHighlight: true,
+    newTab: false,
   },
   {
     label: 'Watchlist',
@@ -74,6 +82,7 @@ const config: MenuEntry[] = [
     href: '/info',
     group: 'invest',
     notHighlight: true,
+    newTab: false,
   },
   {
     label: 'Explore',
@@ -82,6 +91,7 @@ const config: MenuEntry[] = [
     href: '/info',
     group: 'invest',
     notHighlight: true,
+    newTab: false,
   },
   {
     label: 'Bridge',
@@ -90,6 +100,16 @@ const config: MenuEntry[] = [
     href: 'https://bridge.six.network',
     group: 'tool',
     notHighlight: true,
+    newTab: false,
+  },
+  {
+    label: 'Partnership',
+    icon: partnerClick,
+    iconActive: partner,
+    href: 'https://docs.google.com/forms/d/e/1FAIpQLSfKMRNlTsTCk__s4v_qnwE3Uw4-kro8XRMPVQTS5OE6zX2Uqg/viewform',
+    group: 'contact',
+    notHighlight: true,
+    newTab: true,
   },
 ]
 

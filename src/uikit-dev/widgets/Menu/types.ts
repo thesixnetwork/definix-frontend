@@ -39,6 +39,7 @@ export interface MenuEntry {
   initialOpenState?: boolean
   group?: string
   notHighlight?: boolean
+  newTab?: boolean
 }
 
 export interface PanelProps {
