@@ -2,19 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- GTAG -->
-    <script>
-      ;(function (w, d, s, l, i) {
-        w[l] = w[l] || []
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != 'dataLayer' ? '&l=' + l : ''
-        j.async = true
-        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
-        f.parentNode.insertBefore(j, f)
-      })(window, document, 'script', 'dataLayer', '%REACT_APP_GTAG%')
-    </script>
     <!-- Links -->
     <link rel="preconnect" href="%REACT_APP_NODE_1%" />
     <link rel="preconnect" href="%REACT_APP_NODE_2%" />
@@ -44,15 +31,6 @@
     <meta property="og:image" content="/share.jpg" />
   </head>
   <body>
-    <!-- GTAG (noscript) -->
-    <noscript>
-      <iframe
-        src="https://www.googletagmanager.com/ns.html?id=%REACT_APP_GTAG%"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe>
-    </noscript>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
   </body>
