@@ -59,7 +59,9 @@ const GlobalStyle = createGlobalStyle`
     .flex-shrink { flex-shrink: 0; }
     .col-12 { width: 100%; }
     .col-9 { width: 75%; }
+    .col-7 { width: 60%; }
     .col-6 { width: 50%; }
+    .col-5 { width: 40%; }
     .col-4 { width: 33.333%; }
     .col-3 { width: 25%; }
   }

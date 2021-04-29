@@ -83,9 +83,6 @@ const App: React.FC = () => {
         <Suspense fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
-              <Redirect to="/dashboard" />
-            </Route>
-            <Route path="/dashboard">
               <Home />
             </Route>
             <Route path="/pool">

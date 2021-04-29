@@ -1,85 +1,11 @@
-import Page from 'components/layout/Page'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { BaseLayout, Heading } from 'uikit-dev'
-import certik from 'uikit-dev/images/Audit/AW-42.png'
-import techRate from 'uikit-dev/images/Audit/AW-43.png'
-import FinixStats from 'views/Home/components/FinixStats'
-import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
-import InfoBanner from 'views/Info/components/InfoBanner'
-// import Flip from '../../uikit-dev/components/Flip'
-// import CardStakeBlue from './components/CardStakeBlue'
-import CardUpcomingFarms from './components/CardUpcomingFarms'
-// import FarmStakingCard from 'views/Home/components/FarmStakingCard'
-// import LotteryCard from 'views/Home/components/LotteryCard'
-// import EarnAPYCard from 'views/Home/components/EarnAPYCard'
-// import EarnAssetCard from 'views/Home/components/EarnAssetCard'
-// import WinCard from 'views/Home/components/WinCard'
+import { Heading, Text } from 'uikit-dev'
+import CardAudit from './components/CardAudit'
+import CardTVL from './components/CardTVL'
+import CardTweet from './components/CardTweet'
+import MainBanner from './components/MainBanner'
 
-// const Hero = styled.div`
-//   align-items: center;
-//   background-image: url('/images/pan-bg-mobile.svg');
-//   background-repeat: no-repeat;
-//   background-position: top center;
-//   display: flex;
-//   justify-content: center;
-//   flex-direction: column;
-//   margin: auto;
-//   margin-bottom: 32px;
-//   padding-top: 116px;
-//   text-align: center;
-
-//   ${({ theme }) => theme.mediaQueries.lg} {
-//     background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
-//     background-position: left center, right center;
-//     height: 165px;
-//     padding-top: 0;
-//   }
-// `
-
-// const CTACards = styled(BaseLayout)`
-//   align-items: start;
-//   margin-bottom: 32px;
-
-//   & > div {
-//     grid-column: span 6;
-//   }
-
-//   ${({ theme }) => theme.mediaQueries.sm} {
-//     & > div {
-//       grid-column: span 8;
-//     }
-//   }
-
-//   ${({ theme }) => theme.mediaQueries.lg} {
-//     & > div {
-//       grid-column: span 4;
-//     }
-//   }
-// `
-
-const Cards = styled(BaseLayout)`
-  align-items: stretch;
-  justify-content: stretch;
-  margin-bottom: 24px;
-
-  & > div {
-    grid-column: span 6;
-    width: 100%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 12;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 6;
-    }
-  }
-`
 const CountDownFarm = styled.div`
   background: ${({ theme }) => theme.colors.primary};
   padding: 20px 24px;
@@ -189,48 +115,38 @@ const Home: React.FC = () => {
           </MaxWidth>
         </CountDownFarm>
       )}
-      <Page>
+      <div>
         <MaxWidth>
-          <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
-            Dashboard
-          </Heading>
+          <div className="flex">
+            <div className="col-7 pa-6">
+              <div className="mb-5">
+                <Heading as="h1" fontSize="32px !important" className="mb-1">
+                  Home
+                </Heading>
+                <Text>Put your helmet on!! We are going to the MOON!!</Text>
+              </div>
 
-          <div>
-            {/* <Cards>
-          <FarmStakingCard />
-          <LotteryCard />
-        </Cards>
-        <CTACards>
-          <EarnAPYCard />
-          <EarnAssetCard />
-          <WinCard />
-        </CTACards> */}
-            <InfoBanner className="mb-5" showBtn />
-            <Cards>
-              <TotalValueLockedCard />
-              <FinixStats />
-            </Cards>
-            <CardUpcomingFarms />
-            {/* <CardStakeBlue /> */}
+              <MainBanner showBtn className="mb-5" />
 
-            <div className="flex flex-wrap align-center justify-center mt-6">
-              <p className="ma-1">Certified by</p>
-              <div className="flex align-center ma-1">
-                <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
-                  <img src={certik} width="120" alt="" />
-                </a>
-                <a
-                  href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <img src={techRate} width="100" alt="" />
-                </a>
+              <div className="flex align-strench">
+                <div className="col-6 mr-2">
+                  <CardTVL className="mb-5" />
+                  <CardAudit />
+                </div>
+                <div className="col-6 ml-3">
+                  <CardTweet />
+                </div>
+              </div>
+            </div>
+
+            <div className="col-5 pa-6">
+              <div className="flex">
+                <Heading as="h3">My farms & pools</Heading>
               </div>
             </div>
           </div>
         </MaxWidth>
-      </Page>
+      </div>
     </>
   )
 }

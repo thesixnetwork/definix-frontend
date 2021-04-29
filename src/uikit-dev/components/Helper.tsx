@@ -40,19 +40,19 @@ const PopoverStyled = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    bottom: auto;
+    bottom: calc(100% + 16px);
     left: auto;
-    top: 50%;
-    transform: translate(0, -50%);
-    right: calc(100% + 16px);
+    top: auto;
+    transform: translate(-50%, 0);
+    left: 50%;
 
     &:before {
       border-color: transparent;
-      border-left-color: ${({ theme }) => theme.colors.white};
-      bottom: auto;
-      left: auto;
-      top: calc(50% - 8px);
-      right: -16px;
+      border-top-color: ${({ theme }) => theme.colors.white};
+      bottom: -16px;
+      top: auto;
+      left: calc(50% - 8px);
+      right: auto;
     }
   }
 `
@@ -61,7 +61,6 @@ const Helper = ({ text, className = '' }) => {
   return (
     <HelperStyled className={className}>
       <HelpCircle width={16} height={16} color="#0973B9" />
-
       <PopoverStyled>{text}</PopoverStyled>
     </HelperStyled>
   )
