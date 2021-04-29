@@ -6,18 +6,16 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import definixBlackLogo from '../../images/Definix-advance-crypto-assets.png'
-import poweredbySIX from '../../images/Footer-Icon/Powered-by-SIX.png'
 import facebookNormal from '../../images/Footer-Icon/without-text/Facebook-Normal.png'
 import githubNormal from '../../images/Footer-Icon/without-text/Github-Normal.png'
 import kakaoNormal from '../../images/Footer-Icon/without-text/Kakao-Normal.png'
 import redditNormal from '../../images/Footer-Icon/without-text/Reddit-Normal.png'
 import telegramNormal from '../../images/Footer-Icon/without-text/Telegram-Normal.png'
 import twitterNormal from '../../images/Footer-Icon/without-text/Twitter-Normal.png'
+import six from '../../images/six-logo.png'
 
 const FooterStyled = styled.footer`
   flex-shrink: 0;
-  background: ${({ theme }) => theme.colors.white};
   z-index: 10;
 
   .container {
@@ -32,25 +30,20 @@ const FooterStyled = styled.footer`
 
   .g1 {
     display: flex;
-  }
+    align-items: center;
 
-  .g2 {
-    text-align: center;
-    margin-right: 1rem;
-  }
-
-  .logo {
-    height: 14px;
-    margin-bottom: 4px;
+    img {
+      height: 28px;
+    }
   }
 
   p {
-    font-size: 6px;
+    font-size: 12px;
   }
 
   .six-logo {
     display: block;
-    width: 100px;
+
     img {
       display: block;
     }
@@ -106,18 +99,14 @@ function Footer() {
     <FooterStyled>
       <div className="container">
         <div className="g1">
-          <div className="g2">
-            <img src={definixBlackLogo} alt="" className="logo" />
-            <p>Advance your crypto assets</p>
-          </div>
-
+          <p className="mr-2">Powered by</p>
           <a
             href="https://coinmarketcap.com/currencies/six/markets/"
             target="_blank"
             rel="noreferrer"
             className="six-logo"
           >
-            <img src={poweredbySIX} alt="" />
+            <img src={six} alt="" />
           </a>
         </div>
 

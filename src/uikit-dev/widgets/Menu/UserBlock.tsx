@@ -20,7 +20,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   // const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
 
   return (
-    <div className="mx-5 mb-4">
+    <div>
       {account ? (
         <Dropdown
           isFullWidth
