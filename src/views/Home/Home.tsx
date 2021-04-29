@@ -212,23 +212,21 @@ const Home: React.FC = () => {
             </Cards>
             <CardUpcomingFarms />
             {/* <CardStakeBlue /> */}
-            <div className="flex align-center justify-center mt-6">
-              <p className="mr-3">Certified by</p>
-              <a
-                className="mr-3"
-                href="https://github.com/thesixnetwork/definix-audit/tree/main/Certik"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img src={certik} width="120" alt="" />
-              </a>
-              <a
-                href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img src={techRate} width="100" alt="" />
-              </a>
+
+            <div className="flex flex-wrap align-center justify-center mt-6">
+              <p className="ma-1">Certified by</p>
+              <div className="flex align-center ma-1">
+                <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
+                  <img src={certik} width="120" alt="" />
+                </a>
+                <a
+                  href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <img src={techRate} width="100" alt="" />
+                </a>
+              </div>
             </div>
           </div>
         </MaxWidth>
