@@ -16,14 +16,14 @@ import Flip from './uikit-dev/components/Flip'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
-ReactGA.initialize('G-L997LXLF8F');
+ReactGA.initialize('G-L997LXLF8F')
 
 const tagManagerArgs = {
   gtmId: 'GTM-WVFPW42',
-};
-TagManager.initialize(tagManagerArgs);
+}
+TagManager.initialize(tagManagerArgs)
 // ReactGA.initialize(process.env.REACT_APP_GANALYTIC)
-// 
+//
 // const tagManagerArgs = {
 //   gtmId: process.env.REACT_APP_GTAG,
 // }
