@@ -1,28 +1,18 @@
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
   body {
-    background-color: #EBEBEB;
-    font-family: 'Montserrat',sans-serif;
+    background-color: ${({ theme }) => theme.colors.backgroundGray};
+    font-family: 'Prompt',sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #404041;
     font-weight: 500;
 
-    &:before {
-      content: "";
-      background-image: url('/images/abstract.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 140%;
-      height: 100vh;
-      position: fixed; top: 0; left: 0; width: 100vw;
-    }
-
     ${({ theme }) => theme.mediaQueries.md} {
-      padding: 24px 64px !important;
+      padding: 24px 48px 0 48px !important;
     }
 
     img {

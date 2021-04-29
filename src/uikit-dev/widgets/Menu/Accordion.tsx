@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ArrowDropDownIcon, ArrowDropUpIcon } from '../../components/Svg'
+import { ChevronUpIcon, ChevronDownIcon } from '../../components/Svg'
 import { MENU_ENTRY_HEIGHT } from './config'
 import { LinkLabel, MenuEntry } from './MenuEntry'
 import { PushedProps } from './types'
@@ -55,7 +55,7 @@ const Accordion: React.FC<Props> = ({
       <MenuEntry onClick={handleClick} className={className}>
         {icon}
         <LinkLabel isPushed={isPushed}>{label}</LinkLabel>
-        {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+        {isOpen ? <ChevronDownIcon className="ml-1" /> : <ChevronUpIcon className="ml-1" />}
       </MenuEntry>
       <AccordionContent
         isOpen={isOpen}

@@ -3,13 +3,13 @@ import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import Button from '../../components/Button/Button'
-import Text from '../../components/Text/Text'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
 import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
+import Text from '../../components/Text/Text'
 import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
@@ -18,10 +18,10 @@ import klaytn from '../../images/Logo-Klaytn.png'
 import th from '../../images/th.png'
 import { MENU_HEIGHT, SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
 import * as IconModule from './icons'
-import Logo from './Logo'
 import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
+import UserBlock from './UserBlock'
 
 const Wrapper = styled.div`
   position: relative;
@@ -32,19 +32,9 @@ const Wrapper = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.2);
 
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100vh - 48px);
-  }
-
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-  }
-
-  @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-    background: rgba(255, 255, 255, 0.7);
   }
 `
 
@@ -58,15 +48,18 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   width: 100%;
   z-index: 20;
   height: ${MENU_HEIGHT}px;
-  background-color: ${({ theme }) => theme.nav.background};
-  // border-bottom: solid 1px ${({ theme }) => theme.colors.border};
   transform: translate3d(0, 0, 0);
+  background: #f0f0f0;
 `
 
 const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   flex-grow: 1;
+  background: ${({ theme }) => theme.colors.white};
+  border-radius: ${({ theme }) => theme.radii.medium};
+  box-shadow: ${({ theme }) => theme.shadows.elevation3};
+
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 124px);
   }
@@ -74,17 +67,37 @@ const BodyWrapper = styled.div`
 
 const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   flex-grow: 1;
-  // margin-top: ${({ showMenu }) => (showMenu ? `${MENU_HEIGHT}px` : 0)};
   transition: margin-top 0.2s;
   transform: translate3d(0, 0, 0);
   max-width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  background: ${({ theme }) => theme.colors.white};
+  padding: 12px;
+  border-top-right-radius: ${({ theme }) => theme.radii.medium};
+  border-bottom-right-radius: ${({ theme }) => theme.radii.medium};
+`
 
-  // ${({ theme }) => theme.mediaQueries.nav} {
-  //   margin-left: ${({ isPushed }) => `${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px`};
-  //   max-width: ${({ isPushed }) => `calc(100% - ${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px)`};
-  // }
+const InnerBg = styled.div`
+  position: relative;
+  background: ${({ theme }) => theme.colors.backgroundGray};
+  overflow: hidden;
+  border-top-right-radius: ${({ theme }) => theme.radii.medium};
+  border-bottom-right-radius: ${({ theme }) => theme.radii.medium};
+  border-top-left-radius: ${({ theme }) => theme.radii.large};
+  border-bottom-left-radius: ${({ theme }) => theme.radii.large};
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: ${({ theme }) => theme.shadows.inset2};
+    pointer-events: none;
+    z-index: 1;
+  }
 `
 
 const MobileOnlyOverlay = styled(Overlay)`
@@ -198,60 +211,71 @@ const Menu: React.FC<NavProps> = ({
 
   return (
     <Wrapper>
-      <StyledNav showMenu={showMenu}>
-        <Flex alignItems="center">
-          <Logo
-            isPushed={isPushed}
-            togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
-            isDark={isDark}
-            href={homeLink?.href ?? '/'}
-          />
-          {!isMobile && (
-            <Dropdown
-              position="bottom"
-              target={
-                <Button
-                  variant="text"
-                  size="sm"
-                  startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
-                  endIcon={<ChevronDownIcon className="ml-1" />}
-                  className="ml-4 color-text"
-                  style={{ marginTop: '4px' }}
+      <BodyWrapper>
+        <Panel
+          isPushed={isPushed}
+          isMobile={isMobile}
+          showMenu={showMenu}
+          isDark={isDark}
+          toggleTheme={toggleTheme}
+          langs={langs}
+          setLang={setLang}
+          currentLang={currentLang}
+          finixPriceUsd={finixPriceUsd}
+          pushNav={setIsPushed}
+          links={links}
+          account={account}
+          login={login}
+          logout={logout}
+        />
+        <Inner isPushed={isPushed} showMenu={showMenu}>
+          <InnerBg>
+            <StyledNav showMenu={showMenu}>
+              {!isMobile && (
+                <Dropdown
+                  position="bottom"
+                  target={
+                    <Button
+                      variant="text"
+                      size="sm"
+                      startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
+                      endIcon={<ChevronDownIcon className="ml-1" />}
+                      className="color-text"
+                    >
+                      <Text fontSize="12px" fontWeight="500">
+                        Binance Smart Chain
+                      </Text>
+                    </Button>
+                  }
                 >
-                  <Text fontSize="12px" fontWeight="500">
+                  <MenuButton
+                    variant="text"
+                    startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
+                    className="color-primary mb-2"
+                  >
                     Binance Smart Chain
-                  </Text>
-                </Button>
-              }
-            >
-              <MenuButton
-                variant="text"
-                startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
-                className="color-primary mb-2"
-              >
-                Binance Smart Chain
-              </MenuButton>
-              <MenuButton
-                variant="text"
-                startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
-                disabled
-                className="color-disable"
-                style={{ background: 'transparent' }}
-              >
-                Klaytn
-              </MenuButton>
-            </Dropdown>
-          )}
-        </Flex>
-        <Flex alignItems="center">
-          <Price>
-            <img src={FinixCoin} alt="" />
-            <p>
-              <span>FINIX : </span>
-              <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
-            </p>
-          </Price>
-          {/* <Dropdown
+                  </MenuButton>
+                  <MenuButton
+                    variant="text"
+                    startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
+                    disabled
+                    className="color-disable"
+                    style={{ background: 'transparent' }}
+                  >
+                    Klaytn
+                  </MenuButton>
+                </Dropdown>
+              )}
+              <Flex alignItems="center">
+                <Price>
+                  <img src={FinixCoin} alt="" />
+                  <p>
+                    <span>FINIX : </span>
+                    <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
+                  </p>
+                </Price>
+                <UserBlock account={account} login={login} logout={logout} />
+                {/* <Dropdown
             position="bottom-right"
             target={
               <Button
@@ -275,28 +299,11 @@ const Menu: React.FC<NavProps> = ({
               </MenuButton>
             ))}
           </Dropdown> */}
-          {/* {profile && <Avatar profile={profile} />} */}
-        </Flex>
-      </StyledNav>
-      <BodyWrapper>
-        <Panel
-          isPushed={isPushed}
-          isMobile={isMobile}
-          showMenu={showMenu}
-          isDark={isDark}
-          toggleTheme={toggleTheme}
-          langs={langs}
-          setLang={setLang}
-          currentLang={currentLang}
-          finixPriceUsd={finixPriceUsd}
-          pushNav={setIsPushed}
-          links={links}
-          account={account}
-          login={login}
-          logout={logout}
-        />
-        <Inner isPushed={isPushed} showMenu={showMenu}>
-          {children}
+                {/* {profile && <Avatar profile={profile} />} */}
+              </Flex>
+            </StyledNav>
+            {children}
+          </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
       </BodyWrapper>
