@@ -1,7 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import ReactGA from 'react-ga';
-import TagManager from 'react-gtm-module';
+import ReactGA from 'react-ga'
+import TagManager from 'react-gtm-module'
 import React, { lazy, Suspense, useEffect } from 'react'
 import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
@@ -16,12 +16,12 @@ import Flip from './uikit-dev/components/Flip'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
-ReactGA.initialize(process.env.REACT_APP_GANALYTIC);
+ReactGA.initialize(process.env.REACT_APP_GANALYTIC)
 
 const tagManagerArgs = {
   gtmId: process.env.REACT_APP_GTAG,
-};
-TagManager.initialize(tagManagerArgs);
+}
+TagManager.initialize(tagManagerArgs)
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
