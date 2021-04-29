@@ -16,12 +16,18 @@ import Flip from './uikit-dev/components/Flip'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
-ReactGA.initialize(process.env.REACT_APP_GANALYTIC)
+ReactGA.initialize('G-L997LXLF8F');
 
 const tagManagerArgs = {
-  gtmId: process.env.REACT_APP_GTAG,
-}
-TagManager.initialize(tagManagerArgs)
+  gtmId: 'GTM-WVFPW42',
+};
+TagManager.initialize(tagManagerArgs);
+// ReactGA.initialize(process.env.REACT_APP_GANALYTIC)
+// 
+// const tagManagerArgs = {
+//   gtmId: process.env.REACT_APP_GTAG,
+// }
+// TagManager.initialize(tagManagerArgs)
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page'
