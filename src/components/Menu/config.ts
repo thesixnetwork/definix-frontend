@@ -9,12 +9,16 @@ import liquidityClick from 'uikit-dev/images/Menu-Icon/liquidity-click.png'
 import liquidity from 'uikit-dev/images/Menu-Icon/liquidity.png'
 import partnerClick from 'uikit-dev/images/Menu-Icon/partnership-click.png'
 import partner from 'uikit-dev/images/Menu-Icon/partnership.png'
+import portfolioClick from 'uikit-dev/images/Menu-Icon/portfolio-click.png'
+import portfolio from 'uikit-dev/images/Menu-Icon/portfolio.png'
 import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
 import swap from 'uikit-dev/images/Menu-Icon/swap.png'
+import exploreClick from 'uikit-dev/images/Menu-Icon/explore-click.png'
+import explore from 'uikit-dev/images/Menu-Icon/explore.png'
 
 const config: MenuEntry[] = [
   {
-    label: 'HOME',
+    label: 'Home',
     icon: dashboardClick,
     iconActive: dashboard,
     href: '/dashboard',
@@ -61,9 +65,9 @@ const config: MenuEntry[] = [
   },
   {
     label: 'Mutual Fund',
-    icon: farmClick,
-    iconActive: farm,
-    href: '/farm',
+    icon: portfolioClick,
+    iconActive: portfolio,
+    href: '/info',
     notHighlight: false,
     newTab: false,
     items: [
@@ -96,23 +100,23 @@ const config: MenuEntry[] = [
     newTab: false,
   },
   {
-    label: 'Bridge',
-    icon: bridgeClick,
-    iconActive: bridge,
-    href: 'https://bridge.six.network',
-    notHighlight: true,
-    newTab: false,
-  },
-  {
     label: 'Tutorial',
-    icon: bridgeClick,
-    iconActive: bridge,
-    href: 'https://bridge.six.network',
+    icon: exploreClick,
+    iconActive: explore,
+    href: '/',
     notHighlight: true,
     newTab: false,
   },
   {
     label: 'Blogs',
+    icon: exploreClick,
+    iconActive: explore,
+    href: '/',
+    notHighlight: true,
+    newTab: true,
+  },
+  {
+    label: 'Partnership',
     icon: partnerClick,
     iconActive: partner,
     href: 'https://docs.google.com/forms/d/e/1FAIpQLSfKMRNlTsTCk__s4v_qnwE3Uw4-kro8XRMPVQTS5OE6zX2Uqg/viewform',

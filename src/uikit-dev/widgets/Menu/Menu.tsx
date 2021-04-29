@@ -73,7 +73,7 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   overflow-y: auto;
   overflow-x: hidden;
   background: ${({ theme }) => theme.colors.white};
-  padding: 12px;
+  padding: 12px 12px 12px 0;
   border-top-right-radius: ${({ theme }) => theme.radii.medium};
   border-bottom-right-radius: ${({ theme }) => theme.radii.medium};
 `

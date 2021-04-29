@@ -56,7 +56,6 @@ export type Colors = {
   text: string
   textDisabled: string
   textSubtle: string
-  borderColor: string
   card: string
   border: string
   white: string

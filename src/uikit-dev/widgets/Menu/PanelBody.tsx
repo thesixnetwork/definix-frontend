@@ -21,35 +21,11 @@ const Container = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
-`
-
-const BorderBox = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.white};
-  padding: 1.5rem 0;
-
-  &:last-child {
-    border: none;
-  }
-
-  > h2 {
-    font-size: 12px !important;
-    padding: 0 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  [role='button'] {
-    padding: 0 1.75rem;
-  }
-
-  .connect-btn {
-    background: transparent;
-    overflow: hidden;
-    width: 190px;
-  }
+  padding: 12px;
 `
 
 const StyledLogo = styled(Link)`
-  padding: 24px;
+  padding: 20px 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,8 +73,14 @@ const PanelBody: React.FC<Props> = (props) => {
                 key={item.label}
                 isActive={item.href === location.pathname && !item.notHighlight}
                 className={calloutClass}
+                style={{ border: 'none' }}
               >
-                <MenuLink href={item.href} onClick={handleClick} target={item.newTab ? '_blank' : ''}>
+                <MenuLink
+                  href={item.href}
+                  onClick={handleClick}
+                  target={item.newTab ? '_blank' : ''}
+                  style={{ paddingLeft: '40px' }}
+                >
                   <LinkLabel isPushed={isPushed}>{item.label}</LinkLabel>
                 </MenuLink>
               </MenuEntry>

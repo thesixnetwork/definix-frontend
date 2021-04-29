@@ -15,7 +15,7 @@ const ButtonWrapper = styled.div`
   align-items: center;
   border: solid 1px;
   border-radius: ${({ theme }) => theme.radii.default};
-  border-color: ${({ theme }) => theme.colors.borderColor};
+  border-color: ${({ theme }) => theme.colors.border};
   padding-left: 16px;
 `
 
