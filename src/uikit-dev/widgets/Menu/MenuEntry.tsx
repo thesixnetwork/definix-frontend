@@ -31,7 +31,7 @@ const MenuEntry = styled.div<Props>`
   padding: ${({ secondary }) => (secondary ? '0 32px' : '0 16px')};
   font-size: 14px;
   background-color: ${({ secondary, theme }) => (secondary ? theme.colors.background : 'transparent')};
-  color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : theme.colors.textSubtle)};
+  color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : theme.colors.text)};
   font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 

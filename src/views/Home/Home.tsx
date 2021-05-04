@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Heading, Text } from 'uikit-dev'
+import { Heading, Link, Text } from 'uikit-dev'
 import CardAudit from './components/CardAudit'
+import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
 import MainBanner from './components/MainBanner'
@@ -118,7 +119,7 @@ const Home: React.FC = () => {
       <div>
         <MaxWidth>
           <div className="flex">
-            <div className="col-7 pa-6">
+            <div className="col-7 pa-6 pr-3">
               <div className="mb-5">
                 <Heading as="h1" fontSize="32px !important" className="mb-1">
                   Home
@@ -128,7 +129,7 @@ const Home: React.FC = () => {
 
               <MainBanner showBtn className="mb-5" />
 
-              <div className="flex align-strench">
+              <div className="flex align-stretch">
                 <div className="col-6 mr-2">
                   <CardTVL className="mb-5" />
                   <CardAudit />
@@ -139,10 +140,17 @@ const Home: React.FC = () => {
               </div>
             </div>
 
-            <div className="col-5 pa-6">
-              <div className="flex">
-                <Heading as="h3">My farms & pools</Heading>
+            <div className="col-5 pa-6 pl-3 flex flex-column">
+              <div className="flex justify-space-between align-baseline mb-3">
+                <Heading className="flex-shrink" fontSize="18px !important">
+                  My farms & pools
+                </Heading>
+                <Link external href="/" bold className="flex-shrink">
+                  Transaction history
+                </Link>
               </div>
+
+              <CardMyFarmsAndPools />
             </div>
           </div>
         </MaxWidth>

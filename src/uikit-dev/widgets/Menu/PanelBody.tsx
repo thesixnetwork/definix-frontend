@@ -106,7 +106,7 @@ const PanelBody: React.FC<Props> = (props) => {
       </StyledLogo>
 
       {links.map((link) => (
-        <MenuItem menu={link} />
+        <MenuItem menu={link} key={link.label} />
       ))}
 
       {/* <BorderBox>

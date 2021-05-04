@@ -32,7 +32,7 @@ export const lightColors: Colors = {
   gradients: {
     bubblegum: 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)',
   },
-  border: '#D8D8D8',
+  border: '#ECECEC',
   white: '#FFFFFF',
   placeholder: '#CCCCCC',
   harvest: '#24B181',
