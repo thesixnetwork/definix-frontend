@@ -219,49 +219,59 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
 
         <div className="flex flex-column align-center pa-5">
           <p className="mb-3">
-            Stake {tokenName} to earn {sousId === 1 ? 'FINIX' : 'SIX'}
+            Stake {tokenName} to earn {sousId === 1 || sousId === 0 ? 'FINIX' : 'SIX'}
           </p>
-          <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={96} height={96} />
+          <Image
+            src={sousId === 1 || sousId === 0 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'}
+            width={96}
+            height={96}
+          />
         </div>
 
         <div className="pa-5 pt-0">
-          {/* <StyledDetails>
-            <p className="pr-4 col-6">APR:</p>
-            <div className="col-6">
-              <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
-            </div>
-          </StyledDetails> */}
-          <StyledDetails>
-            <p className="pr-4 col-6">Total {sousId === 1 ? 'FINIX' : 'SIX'} Rewards:</p>
-            {currentBlockNumber === 0 ? (
-              <span className="col-6">Loading</span>
-            ) : (
-              <div className="col-6 flex align-baseline justify-end flex-wrap" style={{ wordBreak: 'break-word' }}>
-                <Balance
-                  isDisabled={isFinished}
-                  value={totalRewardedDisplay}
-                  decimals={2}
-                  unit={sousId === 1 ? ' FINIX' : ' SIX'}
-                  color="inherit"
-                />
-                <span className="flex-shrink ml-2" style={{ width: 'auto' }}>
-                  /
-                </span>
-                <Balance
-                  isDisabled={isFinished}
-                  value={totalReward}
-                  decimals={2}
-                  unit={sousId === 1 ? ' FINIX' : ' SIX'}
-                  color="inherit"
-                  className="ml-2"
-                />
+          {sousId === 0 && (
+            <StyledDetails>
+              <p className="pr-4 col-6">APR:</p>
+              <div className="col-6">
+                <Balance isDisabled={isFinished} value={apy?.toNumber()} decimals={2} unit="%" />
               </div>
-            )}
-          </StyledDetails>
-          <StyledDetails>
-            <p className="pr-4 col-6">Stake period:</p>
-            <p className="col-6 text-bold text-right pa-0">{totalTimeInSecond}</p>
-          </StyledDetails>
+            </StyledDetails>
+          )}
+          {sousId !== 0 && (
+            <StyledDetails>
+              <p className="pr-4 col-6">Total {sousId === 1 || sousId === 0 ? 'FINIX' : 'SIX'} Rewards:</p>
+              {currentBlockNumber === 0 ? (
+                <span className="col-6">Loading</span>
+              ) : (
+                <div className="col-6 flex align-baseline justify-end flex-wrap" style={{ wordBreak: 'break-word' }}>
+                  <Balance
+                    isDisabled={isFinished}
+                    value={totalRewardedDisplay}
+                    decimals={2}
+                    unit={sousId === 1 || sousId === 0 ? ' FINIX' : ' SIX'}
+                    color="inherit"
+                  />
+                  <span className="flex-shrink ml-2" style={{ width: 'auto' }}>
+                    /
+                  </span>
+                  <Balance
+                    isDisabled={isFinished}
+                    value={totalReward}
+                    decimals={2}
+                    unit={sousId === 1 || sousId === 0 ? ' FINIX' : ' SIX'}
+                    color="inherit"
+                    className="ml-2"
+                  />
+                </div>
+              )}
+            </StyledDetails>
+          )}
+          {sousId !== 0 && (
+            <StyledDetails>
+              <p className="pr-4 col-6">Stake period:</p>
+              <p className="col-6 text-bold text-right pa-0">{totalTimeInSecond}</p>
+            </StyledDetails>
+          )}
           <StyledDetails>
             <p className="pr-4 col-6">Total {tokenName} Staked:</p>
             <div className="col-6">
@@ -450,14 +460,18 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           <Heading as="h2" className="mr-2" color="inherit">
             My Rewards
           </Heading>
-          <Image src={sousId === 1 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'} width={40} height={40} />
+          <Image
+            src={sousId === 1 || sousId === 0 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'}
+            width={40}
+            height={40}
+          />
         </CustomTitle>
 
         <div className="flex flex-column align-center">
-          <p className="mb-2">{sousId === 1 ? 'FINIX' : 'SIX'} Earned</p>
+          <p className="mb-2">{sousId === 1 || sousId === 0 ? 'FINIX' : 'SIX'} Earned</p>
           <Balance value={getBalanceNumber(earnings, tokenDecimals)} isDisabled={isFinished} />
           <Text className="mt-1" fontSize="16px" fontWeight="bold" color="inherit">
-            {sousId === 1 ? 'FINIX' : 'SIX'}
+            {sousId === 1 || sousId === 0 ? 'FINIX' : 'SIX'}
           </Text>
         </div>
 

@@ -138,12 +138,7 @@ const PanelBody: React.FC<Props> = (props) => {
       <BorderBox>
         <Heading fontSize="14px">Certified by</Heading>
         <div className="flex flex-wrap align-center px-4 pt-2">
-          <a
-            className="mr-3"
-            href="https://github.com/thesixnetwork/definix-audit/tree/main/Certik"
-            target="_blank"
-            rel="noreferrer"
-          >
+          <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
             <img src={certik} width="80" alt="" />
           </a>
           <a href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate" target="_blank" rel="noreferrer">

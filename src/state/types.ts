@@ -74,6 +74,7 @@ export interface PoolsState {
 export interface FinixPriceState {
   price: number
   sixPrice: number
+  pancakeBnbPrice: number
   sixFinixQuote: number
   sixBusdQuote: number
   sixUsdtQuote: number
