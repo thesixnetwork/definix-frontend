@@ -1,8 +1,10 @@
 import React from 'react'
+import { useSmartChain } from 'state/hooks'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import Heading from '../../components/Heading/Heading'
 import LinkExternal from '../../components/Link/LinkExternal'
+import { useWalletKlaytnModal } from '../WalletKlaytnModal'
 import { useWalletModal } from '../WalletModal'
 import { localStorageKey } from '../WalletModal/config'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
@@ -15,7 +17,9 @@ interface Props {
 }
 
 const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
+  const smartChain = useSmartChain()
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
+  const { onPresentConnectKlaytnModal } = useWalletKlaytnModal(logout, account)
   const accountEllipsis = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
   // const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
 
@@ -78,7 +82,8 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
           variant="secondary"
           className="connect-btn"
           onClick={() => {
-            onPresentConnectModal()
+            if (smartChain.value === 'bsc') onPresentConnectModal()
+            else if (smartChain.value === 'klaytn') onPresentConnectKlaytnModal()
           }}
         >
           Connect wallet

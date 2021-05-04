@@ -18,10 +18,11 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState } from './types'
+import { State, Farm, Pool, ProfileState, TeamsState, AchievementState, SmartChainState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
+import { setCurrentSmartChain, setSmartChain } from './smartchain'
 
 const ZERO = new BigNumber(0)
 
@@ -300,4 +301,18 @@ export const useFetchAchievements = () => {
 export const useAchievements = () => {
   const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
   return achievements
+}
+
+// SmartChain
+
+export const useSmartChain = () => {
+  const dispatch = useDispatch()
+
+  const { name }: SmartChainState = useSelector((state: State) => state.smartchain)
+
+  const set = (value: string) => {
+    const sc: SmartChainState = { name: value }
+    dispatch(setCurrentSmartChain(sc))
+  }
+  return { value: name, set }
 }

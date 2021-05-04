@@ -6,6 +6,7 @@ import poolsReducer from './pools'
 import profileReducer from './profile'
 import teamsReducer from './teams'
 import achievementsReducer from './achievements'
+import smartchainReducer from './smartchain'
 
 export default configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -17,5 +18,6 @@ export default configureStore({
     profile: profileReducer,
     teams: teamsReducer,
     achievements: achievementsReducer,
+    smartchain: smartchainReducer,
   },
 })

@@ -125,6 +125,10 @@ export interface AchievementState {
   data: Achievement[]
 }
 
+export interface SmartChainState {
+  name: string
+}
+
 // Global state
 
 export interface State {
@@ -135,4 +139,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
+  smartchain: SmartChainState
 }
