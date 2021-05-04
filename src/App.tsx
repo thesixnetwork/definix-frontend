@@ -1,12 +1,13 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
+import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
-import React, { lazy, Suspense, useEffect } from 'react'
 import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { Modal, ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
+import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
@@ -93,6 +94,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/dashboard">
               <Home />
+            </Route>
+            <Route path="/trading-challenge">
+              <TradingChallenge />
             </Route>
             <Route path="/pool">
               <Pools />
