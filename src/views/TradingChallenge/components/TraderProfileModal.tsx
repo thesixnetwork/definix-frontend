@@ -3,10 +3,12 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import styled from 'styled-components'
-import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text } from 'uikit-dev'
+import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal } from 'uikit-dev'
 import avatar01 from 'uikit-dev/images/fund-manager/twitter-profile/01.png'
 import avatar02 from 'uikit-dev/images/fund-manager/twitter-profile/02.png'
 import avatar03 from 'uikit-dev/images/fund-manager/twitter-profile/03.png'
+import SuccessModal from './SuccessModal'
+// import FailureModal from './FailureModal'
 
 const Img = styled.img`
   width: 120px !important;
@@ -14,6 +16,13 @@ const Img = styled.img`
 
 const TraderProfileModal = ({ onDismiss = () => null }) => {
   const [currentSlide, setCurrentSlide] = useState(1)
+  const [onPresentSuccessModal] = useModal(
+    <SuccessModal
+      title="Registration Success"
+      detail="Congratulations, your address has been successfully registered."
+    />,
+  )
+  // const [onPresentFailureModal] = useModal(<FailureModal title="" detail="" />)
 
   const settings = {
     infinite: true,
@@ -30,6 +39,10 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
       setCurrentSlide(1)
     }
   }, [])
+
+  const submit = () => {
+    onPresentSuccessModal()
+  }
 
   return (
     <Modal title="Fill information and choose profile picture" onDismiss={onDismiss} isRainbow>
@@ -52,7 +65,7 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
 
         <Text className="mb-4">กรุณากรอกชื่อบัญชี Twitter สำหรับท่านที่ Trade ติดอันดับเราจะมีสิทธิพิเศษให้</Text>
 
-        <Button fullWidth variant="primary">
+        <Button fullWidth variant="primary" onClick={submit}>
           Done!
         </Button>
       </div>
