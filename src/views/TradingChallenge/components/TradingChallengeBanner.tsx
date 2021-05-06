@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card } from 'uikit-dev'
-import bannerLarge from 'uikit-dev/images/fund-manager/banner-large.png'
-import banner from 'uikit-dev/images/fund-manager/banner.png'
+import bannerLarge from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-01.jpg'
+import banner from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-02.jpg'
 
-const BannerStyle = styled.div<{ large: boolean }>`
+const BannerStyle = styled.div`
   position: relative;
 
   img {
@@ -16,14 +16,15 @@ const BannerStyle = styled.div<{ large: boolean }>`
   button {
     width: 142px;
     position: absolute;
-    bottom: ${({ large }) => (large ? '56px' : '48px')};
-    right: 96px;
+    bottom: 48px;
+    left: 50%;
+    transform: translate(-50%, 0);
   }
 `
 
-const TradingChallengeBanner = ({ large = false, children }) => {
+const TradingChallengeBanner = ({ large = false, children = null }) => {
   const Banner = () => (
-    <BannerStyle large={large}>
+    <BannerStyle>
       <img src={large ? bannerLarge : banner} alt="" />
       {children}
     </BannerStyle>

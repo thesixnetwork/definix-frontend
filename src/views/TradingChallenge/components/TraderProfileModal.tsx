@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
@@ -24,6 +24,12 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
     prevArrow: <ChevronLeftIcon />,
     nextArrow: <ChevronRightIcon />,
   }
+
+  useEffect(() => {
+    return () => {
+      setCurrentSlide(1)
+    }
+  }, [])
 
   return (
     <Modal title="Fill information and choose profile picture" onDismiss={onDismiss} isRainbow>

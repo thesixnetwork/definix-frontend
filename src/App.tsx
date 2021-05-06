@@ -7,6 +7,7 @@ import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { Modal, ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
+import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
@@ -97,6 +98,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/trading-challenge">
               <TradingChallenge />
+            </Route>
+            <Route path="/leaderboard">
+              <Leaderboard />
             </Route>
             <Route path="/pool">
               <Pools />

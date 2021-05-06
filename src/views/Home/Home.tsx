@@ -1,5 +1,6 @@
 import Page from 'components/layout/Page'
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { BaseLayout, Button, Heading } from 'uikit-dev'
 import certik from 'uikit-dev/images/Audit/AW-42.png'
@@ -154,7 +155,7 @@ const Home: React.FC = () => {
           </Cards>
 
           <TradingChallengeBanner>
-            <Button as="a" href="/trading-challenge" variant="success" className="btn-secondary-disable">
+            <Button as={Link} to="/trading-challenge" variant="success" className="btn-secondary-disable">
               More details
             </Button>
           </TradingChallengeBanner>
