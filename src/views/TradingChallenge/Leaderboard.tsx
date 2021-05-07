@@ -86,7 +86,7 @@ const Leaderboard = () => {
   return (
     <Page>
       <MaxWidth>
-        <div className="flex justify-space-between align-center mb-6 mt-2">
+        <div className={`flex align-center mb-6 mt-2 ${isSm ? 'justify-center' : 'justify-space-between'}`}>
           <Heading as="h1" fontSize="32px !important">
             {!isShowDisqualified ? 'Leaderboard' : 'Disqualified List'}
           </Heading>
