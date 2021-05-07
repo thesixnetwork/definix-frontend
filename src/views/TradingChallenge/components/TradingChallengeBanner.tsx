@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card } from 'uikit-dev'
+import { Card, useMatchBreakpoints } from 'uikit-dev'
 import bannerLarge from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-01.jpg'
 import banner from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-02.jpg'
+import bannerMobile from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-19.jpg'
 
 const BannerStyle = styled.div`
   position: relative;
@@ -23,9 +24,12 @@ const BannerStyle = styled.div`
 `
 
 const TradingChallengeBanner = ({ large = false, children = null }) => {
+  const { isSm } = useMatchBreakpoints()
+
   const Banner = () => (
     <BannerStyle>
-      <img src={large ? bannerLarge : banner} alt="" />
+      {/* eslint-disable-next-line no-nested-ternary */}
+      <img src={isSm ? bannerMobile : large ? bannerLarge : banner} alt="" />
       {children}
     </BannerStyle>
   )

@@ -62,7 +62,7 @@ const Row = styled.div`
 `
 
 const LeaderCard = ({ rank, name, avatar, address, value, pl, className = '' }) => {
-  const addressEllipsis = address ? `${address.substring(0, 8)}...${address.substring(address.length - 8)}` : null
+  const addressEllipsis = address ? `${address.substring(0, 4)}...${address.substring(address.length - 4)}` : null
 
   return (
     <div className={className} style={{ padding: '8px' }}>
@@ -74,7 +74,7 @@ const LeaderCard = ({ rank, name, avatar, address, value, pl, className = '' }) 
         <div className="flex flex-column align-center pa-4">
           <Avatar src={avatar} alt="" className="mb-2" />
 
-          <Text bold fontSize="16px">
+          <Text bold fontSize="16px" className="mb-1">
             {name}
           </Text>
           <div className="flex align-center">

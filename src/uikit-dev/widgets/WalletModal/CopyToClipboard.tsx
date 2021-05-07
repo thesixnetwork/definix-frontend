@@ -6,6 +6,7 @@ import Text from '../../components/Text/Text'
 interface Props {
   toCopy: string
   noPadding?: boolean
+  noText?: boolean
 }
 
 const StyleButton = styled(Text).attrs({ role: 'button' })<{ noPadding: boolean }>`
@@ -31,7 +32,7 @@ const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
   font-size: 12px;
 `
 
-const CopyToClipboard: React.FC<Props> = ({ toCopy, children, noPadding = false, ...props }) => {
+const CopyToClipboard: React.FC<Props> = ({ toCopy, children, noPadding = false, noText = false, ...props }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
 
   return (
@@ -50,7 +51,7 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, children, noPadding = false,
       noPadding={noPadding}
       {...props}
     >
-      <CopyIcon width="20px" color="primary" mr="8px" />
+      <CopyIcon width="20px" color="primary" mr={noText ? '' : '8px'} />
       {children}
       <Tooltip isTooltipDisplayed={isTooltipDisplayed}>Copied</Tooltip>
     </StyleButton>
