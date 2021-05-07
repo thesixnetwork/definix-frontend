@@ -42,6 +42,8 @@ const Rank = styled.img`
 
 const Avatar = styled.img`
   width: 80px;
+  border-radius: ${({ theme }) => theme.radii.circle};
+  border: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const Summary = styled.div`

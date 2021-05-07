@@ -2,7 +2,7 @@ import Page from 'components/layout/Page'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Heading, useMatchBreakpoints } from 'uikit-dev'
-import avatar01 from 'uikit-dev/images/fund-manager/twitter-profile/01.png'
+import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1558.png'
 import LeaderCard from './components/LeaderCard'
 import LeaderTable from './components/LeaderTable'
 
