@@ -25,6 +25,7 @@ import { FinixPriceState } from '../types'
 const initialState: FinixPriceState = {
   price: 0,
   sixPrice: 0,
+  pancakeBnbPrice: 0,
   sixFinixQuote: 0,
   sixBusdQuote: 0,
   sixUsdtQuote: 0,
@@ -48,6 +49,10 @@ export const finixPriceSlice = createSlice({
     setFinixPrice: (state, action) => {
       const { price } = action.payload
       state.price = price
+    },
+    setPancakeBnbPrice: (state, action) => {
+      const { price } = action.payload
+      state.pancakeBnbPrice = price
     },
     setQuote: (state, action) => {
       const {
@@ -77,7 +82,7 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setSixPrice, setFinixPrice, setQuote } = finixPriceSlice.actions
+export const { setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
@@ -161,6 +166,26 @@ export const fetchSixPrice = () => async (dispatch) => {
   dispatch(
     setSixPrice({
       sixPrice: usdPrice,
+    }),
+  )
+}
+
+export const fetchPancakeBnbPrice = () => async (dispatch) => {
+  const fetchPromise = []
+
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getDefinixBnbBusdLPAddress(),
+      pair1: getWbnbAddress(),
+      pair2: getBusdAddress(),
+      herodotusAddress: getDefinixHerodotusAddress(),
+    }),
+  )
+  const [[totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]] = await Promise.all(fetchPromise)
+  const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
+  dispatch(
+    setPancakeBnbPrice({
+      price: definixBnbBusdRatio,
     }),
   )
 }

@@ -1,9 +1,9 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Card, CardBody, Heading, Skeleton, Text } from 'uikit-dev'
-import useI18n from 'hooks/useI18n'
 import { useGetStats } from 'hooks/api'
+import useI18n from 'hooks/useI18n'
+import React from 'react'
 import { usePriceTVL } from 'state/hooks'
+import styled from 'styled-components'
+import { Card, CardBody, Heading, Text } from 'uikit-dev'
 import total from '../../../assets/images/total-value.png'
 
 const StyledTotalValueLockedCard = styled(Card)`

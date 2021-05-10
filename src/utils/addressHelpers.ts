@@ -16,6 +16,9 @@ export const getDefinixHerodotusAddress = () => {
 export const getHerodotusAddress = () => {
   return getAddress(addresses.herodotus)
 }
+export const getDefinixTrade = () => {
+  return getAddress(addresses.definixTrade)
+}
 export const getMulticallAddress = () => {
   return getAddress(addresses.mulltiCall)
 }
@@ -45,6 +48,9 @@ export const getSixBusdLPAddress = () => {
 }
 export const getDefinixBnbBusdLPAddress = () => {
   return getAddress(addresses.definixBnbBusdLP)
+}
+export const getTradingCompetRegisAddress = () => {
+  return getAddress(addresses.tradingCompetRegis)
 }
 export const getLotteryAddress = () => {
   return getAddress(addresses.lottery)

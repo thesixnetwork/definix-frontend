@@ -8,7 +8,8 @@ import el07 from 'uikit-dev/images/for-Farm-Elements/07.png'
 import el08 from 'uikit-dev/images/for-Farm-Elements/08.png'
 import el09 from 'uikit-dev/images/for-Farm-Elements/09.png'
 import el10 from 'uikit-dev/images/for-Farm-Elements/10.png'
-import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixBusd } from 'state/hooks'
+import el12 from 'uikit-dev/images/for-Farm-Elements/12.png'
+import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import numeral from 'numeral'
@@ -76,7 +77,7 @@ const CardStyled = styled(Card)`
 const CardUpcomingFarms: React.FC = () => {
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
-  const sixPrice = usePriceSixBusd()
+  const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceEthBusd()
   const farmToDisplay = farmsLP.filter((farm) => farm.pid !== 0)
@@ -101,6 +102,8 @@ const CardUpcomingFarms: React.FC = () => {
       apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
     } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
       apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
+    } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+      apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
     } else if (farm.dual) {
       const finixApy =
         farm && finixPriceVsBNB.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
@@ -121,6 +124,7 @@ const CardUpcomingFarms: React.FC = () => {
   const pid3Farm = farms.find((fa) => fa.pid === 3)
   const pid4Farm = farms.find((fa) => fa.pid === 4)
   const pid5Farm = farms.find((fa) => fa.pid === 5)
+  const pid6Farm = farms.find((fa) => fa.pid === 6)
   const data = [
     {
       img: el06,
@@ -151,6 +155,12 @@ const CardUpcomingFarms: React.FC = () => {
       name: 'USDT-BUSD LP',
       apr: pid5Farm.apy ? numeral(pid5Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
       pid: 5,
+    },
+    {
+      img: el12,
+      name: 'SIX-BNB LP',
+      apr: pid6Farm.apy ? numeral(pid6Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+      pid: 6,
     },
   ]
 

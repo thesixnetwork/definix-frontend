@@ -74,6 +74,7 @@ export interface PoolsState {
 export interface FinixPriceState {
   price: number
   sixPrice: number
+  pancakeBnbPrice: number
   sixFinixQuote: number
   sixBusdQuote: number
   sixUsdtQuote: number
@@ -86,6 +87,12 @@ export interface FinixPriceState {
   busdUsdtQuote: number
 }
 
+export interface FinixRegisterState {
+  isInitialized: boolean
+  isLoading: boolean
+  hasRegistered: boolean
+  data: Profile
+}
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
@@ -129,6 +136,7 @@ export interface AchievementState {
 
 export interface State {
   finixPrice: FinixPriceState
+  finixRegister: FinixRegisterState
   farms: FarmsState
   toasts: ToastsState
   pools: PoolsState

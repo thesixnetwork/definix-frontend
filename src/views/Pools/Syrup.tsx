@@ -31,7 +31,7 @@ const Farm: React.FC = () => {
   const ethPriceBnb = usePriceEthBnb()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [liveOnly, setLiveOnly] = useState(false)
+  const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -63,6 +63,9 @@ const Farm: React.FC = () => {
     let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
     let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
+      case 0:
+        stakingTokenFarm = farms.find((s) => s.pid === 0)
+        break
       case 2:
         stakingTokenFarm = farms.find((s) => s.pid === 1)
         break
@@ -82,6 +85,7 @@ const Farm: React.FC = () => {
         break
     }
     switch (pool.sousId) {
+      case 0:
       case 2:
       case 3:
       case 4:
@@ -126,6 +130,16 @@ const Farm: React.FC = () => {
     const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
 
     switch (pool.sousId) {
+      case 0: {
+        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
+          .times(stakingTokenFarm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
+        apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+        break
+      }
       case 2:
       case 3:
       case 4:
@@ -218,7 +232,7 @@ const Farm: React.FC = () => {
                 ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
                     <PoolCard key={pool.sousId} pool={pool} />
                   ))
-                : orderBy(stackedOnly ? filterStackedOnlyPools(poolsWithApy) : poolsWithApy, [
+                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
                     'sortOrder',
                   ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
             </Route>
