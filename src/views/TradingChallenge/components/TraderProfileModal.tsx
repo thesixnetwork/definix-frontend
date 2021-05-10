@@ -61,26 +61,26 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
 
     if (response.data.success === true) {
       // await fetchTradeCompetRegis()
-      console.log("currentSlide = ", currentSlide)
-      console.log("name = ", name)
-      console.log("telegramID = ", telegramID)
+      console.log('currentSlide = ', currentSlide)
+      console.log('name = ', name)
+      console.log('telegramID = ', telegramID)
       await tradingCompetRegisContract.methods
         .register(`${currentSlide}`, `${name}`, `${telegramID}`)
-        .estimateGas({ "from": account })
+        .estimateGas({ from: account })
         .then(function (gas) {
-          console.log("gas = ", gas)
+          console.log('gas = ', gas)
           tradingCompetRegisContract.methods
-          .register(`${currentSlide}`, `${name}`, `${telegramID}`)
-          .send({ "from": account, "gas": gas })
-          .on('receipt', function (receipt) {
-            console.log('receipt = ', receipt)
-            onPresentSuccessModal()
-          })
-          .on('error', function (error, receipt) {
-            console.log('error = ', error)
-            console.log('receipt on error = ', receipt)
-            onPresentFailureModal()
-          })
+            .register(`${currentSlide}`, `${name}`, `${telegramID}`)
+            .send({ from: account, gas: gas })
+            .on('receipt', function (receipt) {
+              console.log('receipt = ', receipt)
+              onPresentSuccessModal()
+            })
+            .on('error', function (error, receipt) {
+              console.log('error = ', error)
+              console.log('receipt on error = ', receipt)
+              onPresentFailureModal()
+            })
         })
     } else {
       console.log('response false')
