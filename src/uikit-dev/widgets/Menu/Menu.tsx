@@ -2,21 +2,24 @@ import throttle from 'lodash/throttle'
 import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
+import Link from '../../components/Link/Link'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
 import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
 import Text from '../../components/Text/Text'
 import { useMatchBreakpoints } from '../../hooks'
+import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
 import bsc from '../../images/Logo-BinanceSmartChain.png'
 import klaytn from '../../images/Logo-Klaytn.png'
 import th from '../../images/th.png'
-import { MENU_HEIGHT, SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
+import { MENU_HEIGHT } from './config'
 import * as IconModule from './icons'
 import MenuButton from './MenuButton'
 import Panel from './Panel'
@@ -46,10 +49,27 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   align-items: center;
   padding: 0 24px;
   width: 100%;
+  position: relative;
   z-index: 20;
   height: ${MENU_HEIGHT}px;
   transform: translate3d(0, 0, 0);
-  background: #f0f0f0;
+  background: ${({ theme }) => theme.colors.white};
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #f90;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: url(${colorGradient});
+    background-size: cover;
+  }
+
+  .network {
+    box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  }
 `
 
 const BodyWrapper = styled.div`
@@ -57,8 +77,6 @@ const BodyWrapper = styled.div`
   display: flex;
   flex-grow: 1;
   background: ${({ theme }) => theme.colors.white};
-  border-radius: ${({ theme }) => theme.radii.medium};
-  box-shadow: ${({ theme }) => theme.shadows.elevation3};
 
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 124px);
@@ -73,31 +91,15 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   overflow-y: auto;
   overflow-x: hidden;
   background: ${({ theme }) => theme.colors.white};
-  padding: 12px 12px 12px 0;
-  border-top-right-radius: ${({ theme }) => theme.radii.medium};
-  border-bottom-right-radius: ${({ theme }) => theme.radii.medium};
+  padding-top: 12px;
 `
 
 const InnerBg = styled.div`
   position: relative;
-  background: ${({ theme }) => theme.colors.backgroundGray};
+  background: ${({ theme }) => theme.colors.backgroundRadial};
   overflow: hidden;
-  border-top-right-radius: ${({ theme }) => theme.radii.medium};
-  border-bottom-right-radius: ${({ theme }) => theme.radii.medium};
   border-top-left-radius: ${({ theme }) => theme.radii.large};
   border-bottom-left-radius: ${({ theme }) => theme.radii.large};
-
-  &:before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    box-shadow: ${({ theme }) => theme.shadows.inset2};
-    pointer-events: none;
-    z-index: 1;
-  }
 `
 
 const MobileOnlyOverlay = styled(Overlay)`
@@ -106,6 +108,23 @@ const MobileOnlyOverlay = styled(Overlay)`
 
   ${({ theme }) => theme.mediaQueries.nav} {
     display: none;
+  }
+`
+
+const StyledLogo = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -6px 24px 0 0;
+
+  img {
+    height: 14px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.nav} {
+    img {
+      height: 24px;
+    }
   }
 `
 
@@ -211,71 +230,60 @@ const Menu: React.FC<NavProps> = ({
 
   return (
     <Wrapper>
-      <BodyWrapper>
-        <Panel
-          isPushed={isPushed}
-          isMobile={isMobile}
-          showMenu={showMenu}
-          isDark={isDark}
-          toggleTheme={toggleTheme}
-          langs={langs}
-          setLang={setLang}
-          currentLang={currentLang}
-          finixPriceUsd={finixPriceUsd}
-          pushNav={setIsPushed}
-          links={links}
-          account={account}
-          login={login}
-          logout={logout}
-        />
-        <Inner isPushed={isPushed} showMenu={showMenu}>
-          <InnerBg>
-            <StyledNav showMenu={showMenu}>
-              {!isMobile && (
-                <Dropdown
-                  position="bottom"
-                  target={
-                    <Button
-                      variant="text"
-                      size="sm"
-                      startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
-                      endIcon={<ChevronDownIcon className="ml-1" />}
-                      className="color-text"
-                    >
-                      <Text fontSize="12px" fontWeight="500">
-                        Binance Smart Chain
-                      </Text>
-                    </Button>
-                  }
+      <StyledNav showMenu={showMenu}>
+        <Flex alignItems="center">
+          <StyledLogo as="a" href="/" aria-label="Definix home page">
+            <img src={logoDesktop} alt="" />
+          </StyledLogo>
+
+          {!isMobile && (
+            <Dropdown
+              position="bottom"
+              target={
+                <Button
+                  variant="text"
+                  size="sm"
+                  startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
+                  endIcon={<ChevronDownIcon className="ml-1" />}
+                  color="text"
+                  className="network"
                 >
-                  <MenuButton
-                    variant="text"
-                    startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
-                    className="color-primary mb-2"
-                  >
+                  <Text fontSize="12px" fontWeight="500">
                     Binance Smart Chain
-                  </MenuButton>
-                  <MenuButton
-                    variant="text"
-                    startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
-                    disabled
-                    className="color-disable"
-                    style={{ background: 'transparent' }}
-                  >
-                    Klaytn
-                  </MenuButton>
-                </Dropdown>
-              )}
-              <Flex alignItems="center">
-                <Price>
-                  <img src={FinixCoin} alt="" />
-                  <p>
-                    <span>FINIX : </span>
-                    <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
-                  </p>
-                </Price>
-                <UserBlock account={account} login={login} logout={logout} />
-                {/* <Dropdown
+                  </Text>
+                </Button>
+              }
+            >
+              <MenuButton
+                variant="text"
+                startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
+                className="color-primary mb-2"
+              >
+                Binance Smart Chain
+              </MenuButton>
+              <MenuButton
+                variant="text"
+                startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
+                disabled
+                className="color-disable"
+                style={{ background: 'transparent' }}
+              >
+                Klaytn
+              </MenuButton>
+            </Dropdown>
+          )}
+        </Flex>
+
+        <Flex alignItems="center">
+          <Price>
+            <img src={FinixCoin} alt="" />
+            <p>
+              <span>FINIX : </span>
+              <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
+            </p>
+          </Price>
+          <UserBlock account={account} login={login} logout={logout} />
+          {/* <Dropdown
             position="bottom-right"
             target={
               <Button
@@ -299,11 +307,28 @@ const Menu: React.FC<NavProps> = ({
               </MenuButton>
             ))}
           </Dropdown> */}
-                {/* {profile && <Avatar profile={profile} />} */}
-              </Flex>
-            </StyledNav>
-            {children}
-          </InnerBg>
+          {/* {profile && <Avatar profile={profile} />} */}
+        </Flex>
+      </StyledNav>
+      <BodyWrapper>
+        <Panel
+          isPushed={isPushed}
+          isMobile={isMobile}
+          showMenu={showMenu}
+          isDark={isDark}
+          toggleTheme={toggleTheme}
+          langs={langs}
+          setLang={setLang}
+          currentLang={currentLang}
+          finixPriceUsd={finixPriceUsd}
+          pushNav={setIsPushed}
+          links={links}
+          account={account}
+          login={login}
+          logout={logout}
+        />
+        <Inner isPushed={isPushed} showMenu={showMenu}>
+          <InnerBg>{children}</InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
       </BodyWrapper>

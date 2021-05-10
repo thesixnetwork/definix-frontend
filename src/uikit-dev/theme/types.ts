@@ -53,6 +53,7 @@ export type Colors = {
   backgroundDisabled: string
   backgroundBox: string
   backgroundGray: string
+  backgroundRadial: string
   text: string
   textDisabled: string
   textSubtle: string

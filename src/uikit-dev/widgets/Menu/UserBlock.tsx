@@ -40,7 +40,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
             </Button>
           }
         >
-          <div className="pb-2">
+          <div className="pb-2" style={{ zIndex: 999 }}>
             <Heading fontSize="14px !important" className="mb-3 pa-0 pt-2">
               {accountEllipsis}
             </Heading>

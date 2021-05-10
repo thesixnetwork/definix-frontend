@@ -1,7 +1,6 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
 import { Login } from '../WalletModal/types'
 import Accordion from './Accordion'
 import { LinkLabel, MenuEntry } from './MenuEntry'
@@ -24,23 +23,6 @@ const Container = styled.div`
   padding: 12px;
 `
 
-const StyledLogo = styled(Link)`
-  padding: 20px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  img {
-    height: 14px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.nav} {
-    img {
-      height: 24px;
-    }
-  }
-`
-
 const PanelBody: React.FC<Props> = (props) => {
   const location = useLocation()
 
@@ -51,7 +33,7 @@ const PanelBody: React.FC<Props> = (props) => {
 
   const MenuItem = ({ menu }) => {
     const calloutClass = menu.calloutClass ? menu.calloutClass : undefined
-    const isActive = location.pathname.includes(menu.href) && !menu.notHighlight
+    const isActive = location.pathname === menu.href && !menu.notHighlight
 
     if (menu.items) {
       const itemsMatchIndex = menu.items.findIndex((item) => item.href === location.pathname)
@@ -101,10 +83,6 @@ const PanelBody: React.FC<Props> = (props) => {
 
   return (
     <Container>
-      <StyledLogo as="a" href="/" aria-label="Definix home page">
-        <img src={logoDesktop} alt="" />
-      </StyledLogo>
-
       {links.map((link) => (
         <MenuItem menu={link} key={link.label} />
       ))}

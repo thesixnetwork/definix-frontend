@@ -6,18 +6,19 @@
 
 import React from 'react'
 import styled from 'styled-components'
+import six from '../../images/Footer-Icon/Powered-by-SIX.png'
 import facebookNormal from '../../images/Footer-Icon/without-text/Facebook-Normal.png'
 import githubNormal from '../../images/Footer-Icon/without-text/Github-Normal.png'
+import certik from '../../images/Audit/AW-42.png'
 import kakaoNormal from '../../images/Footer-Icon/without-text/Kakao-Normal.png'
 import redditNormal from '../../images/Footer-Icon/without-text/Reddit-Normal.png'
 import telegramNormal from '../../images/Footer-Icon/without-text/Telegram-Normal.png'
 import twitterNormal from '../../images/Footer-Icon/without-text/Twitter-Normal.png'
-import six from '../../images/six-logo.png'
 
 const FooterStyled = styled.footer`
   flex-shrink: 0;
   z-index: 10;
-
+  background: ${({ theme }) => theme.colors.white};
   .container {
     height: 100%;
     margin: 0 auto;
@@ -32,19 +33,13 @@ const FooterStyled = styled.footer`
     display: flex;
     align-items: center;
 
-    img {
-      height: 28px;
+    a {
+      display: block;
+      margin-right: 16px;
     }
-  }
-
-  p {
-    font-size: 12px;
-  }
-
-  .six-logo {
-    display: block;
 
     img {
+      height: 32px;
       display: block;
     }
   }
@@ -99,7 +94,6 @@ function Footer() {
     <FooterStyled>
       <div className="container">
         <div className="g1">
-          <p className="mr-2">Powered by</p>
           <a
             href="https://coinmarketcap.com/currencies/six/markets/"
             target="_blank"
@@ -107,6 +101,9 @@ function Footer() {
             className="six-logo"
           >
             <img src={six} alt="" />
+          </a>
+          <a href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
+            <img src={certik} alt="" />
           </a>
         </div>
 

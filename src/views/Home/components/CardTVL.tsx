@@ -6,14 +6,14 @@ import { usePriceTVL } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
+import space from 'uikit-dev/images/for-ui-v2/space.png'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
-import total from '../../../assets/images/total-value.png'
 import CardValue from './CardValue'
 
 const Total = styled.div`
-  // background: url(${total});
-  // background-size: contain;
+  // background: url(${space});
+  // background-size: cover;
   // background-repeat: no-repeat;
   background-color: ${({ theme }) => theme.colors.primary};
   color: ${({ theme }) => theme.colors.white};
@@ -64,17 +64,17 @@ const CardTVL = ({ className = '' }) => {
       <Stat>
         <Row>
           <div className="flex align-center">
-            <Text>{TranslateString(536, 'Total FINIX Supply')}</Text>
+            <Text color="textSubtle">{TranslateString(536, 'Total FINIX Supply')}</Text>
             <Helper text="Does not include burned" className="ml-2" />
           </div>
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
         </Row>
         <Row>
-          <Text>{TranslateString(538, 'Total FINIX Burned')}</Text>
+          <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text>{TranslateString(540, 'New FINIX / block')}</Text>
+          <Text color="textSubtle">{TranslateString(540, 'New FINIX / block')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={3} />
         </Row>
       </Stat>

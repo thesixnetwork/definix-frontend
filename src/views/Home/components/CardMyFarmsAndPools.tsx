@@ -162,8 +162,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       tooltips: {
         enabled: false,
       },
+      layout: {
+        padding: 24,
+      },
       rotation: 2,
-      radius: 1,
+      cutoutPercentage: 90,
     },
   }
 
@@ -171,16 +174,16 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     <Container className={className}>
       <NetWorth>
         <div className="col-5 flex" style={{ position: 'relative' }}>
-          <Doughnut data={chart.data} options={chart.options} height={150} />
+          <Doughnut data={chart.data} options={chart.options} height={150} width={150} />
         </div>
         <div className="col-7 pa-3 pl-0">
-          <Text>Net Worth</Text>
+          <Text color="textSubtle">Net Worth</Text>
           <Heading fontSize="24px !important">$82.117.20</Heading>
 
           <div className="mt-2">
             {data.map((d) => (
               <Legend>
-                <Text fontSize="12px">
+                <Text fontSize="12px" color="textSubtle">
                   <span className="dot" style={{ background: d.color }} />
                   {d.name}
                 </Text>
@@ -198,18 +201,26 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         <div className="harvest">
           <div className="flex justify-center">
             <StatAll>
-              <Text textAlign="center">From all farms</Text>
+              <Text textAlign="center" color="textSubtle">
+                From all farms
+              </Text>
               <Heading fontSize="24px !important" textAlign="center">
                 58.1
               </Heading>
-              <Text textAlign="center">est ~ $698.9</Text>
+              <Text textAlign="center" color="textSubtle">
+                est ~ $698.9
+              </Text>
             </StatAll>
             <StatAll>
-              <Text textAlign="center">From all pools</Text>
+              <Text textAlign="center" color="textSubtle">
+                From all pools
+              </Text>
               <Heading fontSize="24px !important" textAlign="center">
                 0.0
               </Heading>
-              <Text textAlign="center">est ~ $0</Text>
+              <Text textAlign="center" color="textSubtle">
+                est ~ $0
+              </Text>
             </StatAll>
           </div>
           <Button as="a" href="#" size="sm" variant="secondary" className="btn-secondary-disable mt-3">
@@ -232,23 +243,31 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               </Coins>
               <Summary>
                 <div>
-                  <Text fontSize="12px">APR</Text>
+                  <Text fontSize="12px" color="textSubtle">
+                    APR
+                  </Text>
                   <Text bold color="success">
                     {d.apr}
                   </Text>
                 </div>
                 <div>
-                  <Text fontSize="12px">LP Staked</Text>
+                  <Text fontSize="12px" color="textSubtle">
+                    LP Staked
+                  </Text>
                   <Text bold>{d.lpStaked}</Text>
                 </div>
                 <div>
-                  <Text fontSize="12px">Multiplier</Text>
+                  <Text fontSize="12px" color="textSubtle">
+                    Multiplier
+                  </Text>
                   <Text bold color="warning">
                     {d.multiplier}
                   </Text>
                 </div>
                 <div>
-                  <Text fontSize="12px">FINIX Earned</Text>
+                  <Text fontSize="12px" color="textSubtle">
+                    FINIX Earned
+                  </Text>
                   <Text bold>{d.finixEarned}</Text>
                 </div>
               </Summary>

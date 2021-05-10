@@ -11,10 +11,6 @@ const GlobalStyle = createGlobalStyle`
     color: #404041;
     font-weight: 500;
 
-    ${({ theme }) => theme.mediaQueries.md} {
-      padding: 24px 48px 0 48px !important;
-    }
-
     img {
       height: auto;
       max-width: 100%;
