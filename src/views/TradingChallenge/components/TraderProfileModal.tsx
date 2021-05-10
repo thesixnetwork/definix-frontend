@@ -2,9 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
-// import { AbiItem } from 'web3-utils'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import useWeb3 from 'hooks/useWeb3'
+
+// import { getWeb3 } from 'utils/web3'
+
+// import registerAbi from 'config/abi/definixTradeCompetition.json'
+// import { getTradingCompetRegisAddress } from 'utils/addressHelpers'
+import { getTradeCompetRegisContract } from 'utils/contractHelpers'
+
 import styled from 'styled-components'
 import axios from 'axios'
 import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal } from 'uikit-dev'
@@ -14,9 +19,7 @@ import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
 import SuccessModal from './SuccessModal'
 import FailureModal from './FailureModal'
 
-// import RegisterABI from '../../../config/abi/definixTradeCompetition.json'
-// import { getDefinixTrade } from '../../../utils/addressHelpers'
-
+const tradeCompetRegisContract = getTradeCompetRegisContract()
 const Avatar = styled.img`
   width: 120px !important;
   border-radius: ${({ theme }) => theme.radii.circle};
@@ -24,14 +27,23 @@ const Avatar = styled.img`
 `
 
 const TraderProfileModal = ({ onDismiss = () => null }) => {
-  const web3 = useWeb3()
-  console.log('web3 =', web3)
-  // const definixTrade = new web3.eth.Contract((RegisterABI as unknown) as AbiItem, getDefinixTrade())
-  // console.log('definixTrade =', definixTrade)
   const { account } = useWallet()
-  console.log('account =', account)
 
-  const [currentSlide, setCurrentSlide] = useState(1)
+  const [currentSlide, setCurrentSlide] = useState('1')
+  console.log('currentSlide =', currentSlide)
+  const [name, setName] = useState('')
+  const [telegramID, setTelegramID] = useState('')
+
+  const handleChangeName = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const { value: inputName } = evt.target
+    setName(inputName)
+  }
+
+  const handleChangeTelegram = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const { value: inputTelegram } = evt.target
+    setTelegramID(inputTelegram)
+  }
+
   const [onPresentSuccessModal] = useModal(
     <SuccessModal
       title="Registration Success"
@@ -44,18 +56,36 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
 
   const fetchRegister = async () => {
     const body = {
-      // walletAddr: account,
-      walletAddr: '0x7a7A5a077f0BE57121Bd16945E1BBBA60aBdbDD8',
+      walletAddr: account,
     }
     console.log('body =', body)
     const response = await axios.post('https://api.young.definix.com/v1.0/trading-compet-validate', body)
     console.log('response =', response)
 
     if (response.data.success === true) {
-      onPresentSuccessModal()
+      fetchTradeCompetRegis()
     } else {
-      onPresentFailureModal()
+      console.log('response false')
     }
+  }
+
+  const fetchTradeCompetRegis = async () => {
+    console.log('account =', account)
+    // if (account !== undefined || account !== null || account !== null) {
+    const tradingCompetRegis = await tradeCompetRegisContract.methods
+      .register(currentSlide, name, telegramID)
+      .send({ from: account, gas: 2000000 })
+      .on('receipt', function (receipt) {
+        console.log('receipt = ', receipt)
+        onPresentSuccessModal()
+      })
+      .on('error', function (error, receipt) {
+        console.log('error = ', error)
+        console.log('receipt on error = ', receipt)
+        onPresentFailureModal()
+      })
+    console.log('tradingCompetRegis = ', tradingCompetRegis)
+    // }
   }
 
   const settings = {
@@ -70,7 +100,7 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
 
   useEffect(() => {
     return () => {
-      setCurrentSlide(1)
+      setCurrentSlide('1')
     }
   }, [])
 
@@ -85,6 +115,7 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
         <Slider
           {...settings}
           afterChange={(idx) => {
+            console.log('idx = ', idx)
             setCurrentSlide(idx)
           }}
         >
@@ -94,11 +125,13 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
         </Slider>
 
         <div className="my-4">
-          <Input placeholder="Your name" className="mb-3" />
-          <Input placeholder="Your Twitter account (optional)" />
+          <Input placeholder="Your name" className="mb-3" value={name} onChange={handleChangeName} />
+          <Input placeholder="Your Telegram account (optional)" value={telegramID} onChange={handleChangeTelegram} />
         </div>
 
-        <Text className="mb-4">กรุณากรอกชื่อบัญชี Twitter สำหรับท่านที่ Trade ติดอันดับเราจะมีสิทธิพิเศษให้</Text>
+        <Text className="mb-4">
+          กรุณากรอก Username ของ Telegram (สำหรับท่านที่ Trade ติดอันดับเราจะมีสิทธิพิเศษให้)
+        </Text>
 
         <Button fullWidth variant="primary" onClick={submit}>
           Done!

@@ -3,10 +3,6 @@ export default {
     97: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
     56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
-  definixTrade: {
-    97: process.env.REACT_APP_DEFINIX_TRADE_COMPETITION,
-    56: process.env.REACT_APP_DEFINIX_TRADE_COMPETITION,
-  },
   herodotus: {
     97: process.env.REACT_APP_HERODOTUS_TESTNET,
     56: process.env.REACT_APP_HERODOTUS_MAINNET,

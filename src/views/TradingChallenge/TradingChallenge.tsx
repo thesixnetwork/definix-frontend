@@ -147,20 +147,29 @@ const TradingChallenge = () => {
               14 May 2021, 8:00 A.M. - 23 May 2021, 8:00 A.M. (GMT+0)
             </Text>
 
-            <Button
-              fullWidth
-              variant="success"
-              onClick={() => {
-                if (!account) {
+            {!account ? (
+              <Button
+                fullWidth
+                variant="primary"
+                onClick={() => {
                   onPresentConnectModal()
-                } else {
+                }}
+                // disabled={isTradingEnd}
+              >
+                Connect Wallet
+              </Button>
+            ) : (
+              <Button
+                fullWidth
+                variant="success"
+                onClick={() => {
                   onPresentTraderProfileModal()
-                }
-              }}
-              disabled={isTradingEnd}
-            >
-              {isTradingEnd ? 'Registration is now closed' : 'Register'}
-            </Button>
+                }}
+                disabled={isTradingEnd}
+              >
+                {isTradingEnd ? 'Registration is now closed' : 'Register'}
+              </Button>
+            )}
           </Detail>
         </Card>
       </MaxWidth>

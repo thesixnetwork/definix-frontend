@@ -4,7 +4,7 @@
 // import erc20 from 'config/abi/erc20.json'
 // import multicall from 'utils/multicall'
 
-import { getDefinixTrade } from 'utils/addressHelpers'
+// import { getDefinixTrade } from 'utils/addressHelpers'
 import { getWeb3 } from 'utils/web3'
 import { AbiItem } from 'web3-utils'
 
