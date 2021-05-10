@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick'
+import _ from 'lodash'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
@@ -26,11 +27,11 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
   const { account } = useWallet()
   const tradingCompetRegisContract = useTradingCompetRegisContract()
 
-  const [currentSlide, setCurrentSlide] = useState('1')
-  console.log('currentSlide =', currentSlide)
+  const [currentSlide, setCurrentSlide] = useState(1)
   const [name, setName] = useState('')
   const [telegramID, setTelegramID] = useState('')
 
+  // const [msgErrorAPI, setMsgErrorAPI] = useState('')
   const handleChangeName = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputName } = evt.target
     setName(inputName)
@@ -48,6 +49,9 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
     />,
   )
   const [onPresentFailureModal] = useModal(
+    <FailureModal title="Registration False" detail="Error call smart contract." />,
+  )
+  const [onPresentFailureAPIModal] = useModal(
     <FailureModal title="Registration False" detail="Your account does not pass trading rules requirement." />,
   )
 
@@ -67,11 +71,11 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
       await tradingCompetRegisContract.methods
         .register(`${currentSlide}`, `${name}`, `${telegramID}`)
         .estimateGas({ from: account })
-        .then(function (gas) {
-          console.log('gas = ', gas)
+        .then(function (gasFee) {
+          console.log('gas = ', gasFee)
           tradingCompetRegisContract.methods
             .register(`${currentSlide}`, `${name}`, `${telegramID}`)
-            .send({ from: account, gas: gas })
+            .send({ from: account, gas: gasFee })
             .on('receipt', function (receipt) {
               console.log('receipt = ', receipt)
               onPresentSuccessModal()
@@ -83,27 +87,11 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
             })
         })
     } else {
-      console.log('response false')
+      // const msgError = _.get(response.data, 'message', '')
+      // setMsgErrorAPI(msgError)
+      onPresentFailureAPIModal()
     }
   }
-
-  // const fetchTradeCompetRegis = async () => {
-  //   console.log('account =', account)
-  //   // if (account !== undefined || account !== null || account !== null) {
-  //   await tradeCompetRegisContract.methods
-  //     .register(currentSlide, name, telegramID)
-  //     .send({ from: account, gas: 2000000 })
-  //     .on('receipt', function (receipt) {
-  //       console.log('receipt = ', receipt)
-  //       onPresentSuccessModal()
-  //     })
-  //     .on('error', function (error, receipt) {
-  //       console.log('error = ', error)
-  //       console.log('receipt on error = ', receipt)
-  //       onPresentFailureModal()
-  //     })
-  //   // }
-  // }
 
   const settings = {
     infinite: true,
@@ -117,14 +105,9 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
 
   useEffect(() => {
     return () => {
-      setCurrentSlide('1')
+      setCurrentSlide(1)
     }
   }, [])
-
-  const submit = () => {
-    fetchRegister()
-    // onPresentSuccessModal()
-  }
 
   return (
     <Modal title="Fill information and choose profile picture" onDismiss={onDismiss} isRainbow>
@@ -132,7 +115,6 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
         <Slider
           {...settings}
           afterChange={(idx) => {
-            console.log('idx = ', idx)
             setCurrentSlide(idx)
           }}
         >
@@ -143,14 +125,14 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
 
         <div className="my-4">
           <Input placeholder="Your name" className="mb-3" value={name} onChange={handleChangeName} />
-          <Input placeholder="Your Telegram account (optional)" value={telegramID} onChange={handleChangeTelegram} />
+          <Input placeholder="Your telegram account (optional)" value={telegramID} onChange={handleChangeTelegram} />
         </div>
 
         <Text className="mb-4">
           กรุณากรอก Username ของ Telegram (สำหรับท่านที่ Trade ติดอันดับเราจะมีสิทธิพิเศษให้)
         </Text>
 
-        <Button fullWidth variant="primary" onClick={submit}>
+        <Button fullWidth variant="primary" onClick={fetchRegister}>
           Done!
         </Button>
       </div>
