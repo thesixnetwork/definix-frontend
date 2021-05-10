@@ -4,11 +4,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 
-// import { getWeb3 } from 'utils/web3'
-
-// import registerAbi from 'config/abi/definixTradeCompetition.json'
-// import { getTradingCompetRegisAddress } from 'utils/addressHelpers'
-import { getTradeCompetRegisContract } from 'utils/contractHelpers'
+import { useTradingCompetRegisContract } from 'hooks/useContract'
 
 import styled from 'styled-components'
 import axios from 'axios'
@@ -19,7 +15,7 @@ import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
 import SuccessModal from './SuccessModal'
 import FailureModal from './FailureModal'
 
-const tradeCompetRegisContract = getTradeCompetRegisContract()
+// const tradeCompetRegisContract = getTradeCompetRegisContract()
 const Avatar = styled.img`
   width: 120px !important;
   border-radius: ${({ theme }) => theme.radii.circle};
@@ -28,6 +24,7 @@ const Avatar = styled.img`
 
 const TraderProfileModal = ({ onDismiss = () => null }) => {
   const { account } = useWallet()
+  const tradingCompetRegisContract = useTradingCompetRegisContract()
 
   const [currentSlide, setCurrentSlide] = useState('1')
   console.log('currentSlide =', currentSlide)
@@ -64,26 +61,26 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
 
     if (response.data.success === true) {
       // await fetchTradeCompetRegis()
-      console.log('currentSlide = ', currentSlide)
-      console.log('name = ', name)
-      console.log('telegramID = ', telegramID)
-      await tradeCompetRegisContract.methods
-        .register(currentSlide, name, telegramID)
-        .estimateGas({ from: account })
+      console.log("currentSlide = ", currentSlide)
+      console.log("name = ", name)
+      console.log("telegramID = ", telegramID)
+      await tradingCompetRegisContract.methods
+        .register(`${currentSlide}`, `${name}`, `${telegramID}`)
+        .estimateGas({ "from": account })
         .then(function (gas) {
-          console.log('gas = ', gas)
-          tradeCompetRegisContract.methods
-            .register(currentSlide, name, telegramID)
-            .send({ from: account, gas: gas })
-            .on('receipt', function (receipt) {
-              console.log('receipt = ', receipt)
-              onPresentSuccessModal()
-            })
-            .on('error', function (error, receipt) {
-              console.log('error = ', error)
-              console.log('receipt on error = ', receipt)
-              onPresentFailureModal()
-            })
+          console.log("gas = ", gas)
+          tradingCompetRegisContract.methods
+          .register(`${currentSlide}`, `${name}`, `${telegramID}`)
+          .send({ "from": account, "gas": gas })
+          .on('receipt', function (receipt) {
+            console.log('receipt = ', receipt)
+            onPresentSuccessModal()
+          })
+          .on('error', function (error, receipt) {
+            console.log('error = ', error)
+            console.log('receipt on error = ', receipt)
+            onPresentFailureModal()
+          })
         })
     } else {
       console.log('response false')
