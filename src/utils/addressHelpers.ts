@@ -16,6 +16,9 @@ export const getDefinixHerodotusAddress = () => {
 export const getHerodotusAddress = () => {
   return getAddress(addresses.herodotus)
 }
+export const getDefinixTrade = () => {
+  return getAddress(addresses.definixTrade)
+}
 export const getMulticallAddress = () => {
   return getAddress(addresses.mulltiCall)
 }
