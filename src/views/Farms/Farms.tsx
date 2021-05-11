@@ -15,7 +15,7 @@ import {
   usePriceBnbBusd,
   usePriceEthBusd,
   usePriceFinixUsd,
-  usePriceSixBusd,
+  usePriceSixUsd,
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text, Button } from 'uikit-dev'
@@ -33,7 +33,7 @@ const Farms: React.FC = () => {
   const farmUnlockAt = useFarmUnlockDate()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
-  const sixPrice = usePriceSixBusd()
+  const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const ethPriceUsd = usePriceEthBusd()
@@ -92,8 +92,8 @@ const Farms: React.FC = () => {
           apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-          apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+          apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
           const finixApy =
             farm && finixPriceVsBNB.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
