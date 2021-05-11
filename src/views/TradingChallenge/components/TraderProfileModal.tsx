@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Slider from 'react-slick'
 import _ from 'lodash'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-
 import { useTradingCompetRegisContract } from 'hooks/useContract'
 
 import styled from 'styled-components'

@@ -105,44 +105,12 @@
   },
   {
     "inputs": [],
-    "name": "getTraderList",
+    "name": "onRegister",
     "outputs": [
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "traderAddr",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "registerBlockTimestamp",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "balanceOnRegister",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "avatarName",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "displayName",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "telegramID",
-            "type": "string"
-          }
-        ],
-        "internalType": "struct DefinixTradeCompetition.Trader[]",
+        "internalType": "bool",
         "name": "",
-        "type": "tuple[]"
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -213,6 +181,19 @@
     "name": "setRegistrationPeriod",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "sizeOfTrader",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

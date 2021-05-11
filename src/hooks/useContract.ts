@@ -29,7 +29,7 @@ import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
-import tradeCompetRegisAbi from 'config/abi/definixTradeCompetition.json'
+import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
