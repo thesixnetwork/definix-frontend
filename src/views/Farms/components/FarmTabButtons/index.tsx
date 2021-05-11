@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Heading } from 'uikit-dev'
+import { Button, CardViewIcon, ListViewIcon } from 'uikit-dev'
 
 const Wrapper = styled.div`
   display: flex;
@@ -20,56 +20,48 @@ const Wrapper = styled.div`
   } ;
 `
 
-const StyledButton = styled(Button)`
-  border-radius: ${({ theme }) => theme.radii.default};
-  min-width: 120px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
-
-  &:not(.active) {
-    background: #f7f7f7;
-    border-color: transparent;
-    color: initial;
-    font-weight: normal;
-
-    &:hover {
-      font-weight: 600;
-    }
-  }
-`
-
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, activeFarmsCount }) => {
-  // const { url, isExact } = useRouteMatch()
-  // const TranslateString = useI18n()
-
+const FarmTabButtons = ({ stackedOnly, setStackedOnly, cardView, setCardView }) => {
   return (
     <Wrapper className="mb-6">
-      <Heading as="h2" fontSize="20px !important" textAlign="center">
-        All active farms
-        <span className="ml-2" style={{ fontSize: '16px' }}>
-          ({activeFarmsCount})
-        </span>
-      </Heading>
       <div className="flex mt-3">
-        <StyledButton
-          size="sm"
+        <Button
+          onClick={() => {
+            setCardView(true)
+          }}
+          variant={cardView ? 'primary' : 'secondary'}
+          startIcon={<CardViewIcon color={cardView ? 'white' : 'primary'} />}
+          className="mr-2"
+        >
+          Card View
+        </Button>
+        <Button
+          onClick={() => {
+            setCardView(false)
+          }}
+          startIcon={<ListViewIcon color={!cardView ? 'white' : 'primary'} />}
+          variant={!cardView ? 'primary' : 'secondary'}
+        >
+          List View
+        </Button>
+      </div>
+      <div className="flex mt-3">
+        <Button
           onClick={() => {
             setStackedOnly(false)
           }}
-          variant="secondary"
-          className={`mr-2 ${!stackedOnly ? 'active' : ''}`}
+          variant={!stackedOnly ? 'primary' : 'secondary'}
+          className="mr-2"
         >
-          All
-        </StyledButton>
-        <StyledButton
-          size="sm"
+          All Farm
+        </Button>
+        <Button
           onClick={() => {
             setStackedOnly(true)
           }}
-          variant="secondary"
-          className={stackedOnly ? 'active' : ''}
+          variant={stackedOnly ? 'primary' : 'secondary'}
         >
           Staked
-        </StyledButton>
+        </Button>
       </div>
     </Wrapper>
   )
