@@ -5,10 +5,10 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useTradingCompetRegisContract } from 'hooks/useContract'
-
-import styled from 'styled-components'
+import loadingIcon from 'uikit-dev/images/loading-icon.png'
+import styled, { keyframes } from 'styled-components'
 import axios from 'axios'
-import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal } from 'uikit-dev'
+import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal, Spinner } from 'uikit-dev'
 import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1558.png'
 import avatar02 from 'uikit-dev/images/for-trading-challenge/IMG_1560.png'
 import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
@@ -22,15 +22,16 @@ const Avatar = styled.img`
   border: 1px solid ${({ theme }) => theme.colors.border};
 `
 
-const TraderProfileModal = ({ onDismiss = () => null }) => {
+const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
   const { account } = useWallet()
   const tradingCompetRegisContract = useTradingCompetRegisContract()
 
   const [currentSlide, setCurrentSlide] = useState(1)
   const [name, setName] = useState('')
   const [telegramID, setTelegramID] = useState('')
+  const [loadingAPI, setLoadingAPI] = React.useState(true)
+  const [loadingContract, setLoadingContract] = React.useState(true)
 
-  // const [msgErrorAPI, setMsgErrorAPI] = useState('')
   const handleChangeName = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { value: inputName } = evt.target
     setName(inputName)
@@ -45,6 +46,7 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
     <SuccessModal
       title="Registration Success"
       detail="Congratulations, your address has been successfully registered."
+      onSuccessRefresh={onSuccessRefresh}
     />,
   )
   const [onPresentFailureModal] = useModal(
@@ -55,23 +57,20 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
   )
 
   const fetchRegister = async () => {
+    setLoadingAPI(false)
     const body = {
       walletAddr: account,
     }
-    console.log('body =', body)
-    const response = await axios.post('https://api.young.definix.com/v1.0/trading-compet-validate', body)
-    console.log('response =', response)
+    const tradingCompetRegisAPI = process.env.REACT_APP_API_ENV_DEVELOPMENT_TRADE_COMPET_VALIDATE
+    const response = await axios.post(`${tradingCompetRegisAPI}`, body)
 
     if (response.data.success === true) {
-      // await fetchTradeCompetRegis()
-      console.log('currentSlide = ', currentSlide)
-      console.log('name = ', name)
-      console.log('telegramID = ', telegramID)
+      setLoadingAPI(true)
       await tradingCompetRegisContract.methods
         .register(`${currentSlide}`, `${name}`, `${telegramID}`)
         .estimateGas({ from: account })
         .then(function (gasFee) {
-          console.log('gas = ', gasFee)
+          setLoadingContract(false)
           tradingCompetRegisContract.methods
             .register(`${currentSlide}`, `${name}`, `${telegramID}`)
             .send({ from: account, gas: gasFee })
@@ -86,8 +85,7 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
             })
         })
     } else {
-      // const msgError = _.get(response.data, 'message', '')
-      // setMsgErrorAPI(msgError)
+      setLoadingAPI(true)
       onPresentFailureAPIModal()
     }
   }
@@ -131,12 +129,46 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
           กรุณากรอก Username ของ Telegram (สำหรับท่านที่ Trade ติดอันดับเราจะมีสิทธิพิเศษให้)
         </Text>
 
-        <Button fullWidth variant="primary" onClick={fetchRegister}>
-          Done!
-        </Button>
+        {loadingAPI && loadingContract ? (
+          <Button fullWidth variant="primary" onClick={fetchRegister}>
+            Done!
+          </Button>
+        ) : (
+          <></>
+        )}
+        {!loadingAPI ? (
+          <Button fullWidth variant="primary">
+            <FloatingLogo src={loadingIcon} alt="" width="25" height="25" className="mr-2" />
+            Loading...
+          </Button>
+        ) : (
+          <></>
+        )}
+        {!loadingContract ? (
+          <Button fullWidth variant="primary">
+            <FloatingLogo src={loadingIcon} alt="" width="25" height="25" className="mr-2" />
+            Waiting Confirmation
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
     </Modal>
   )
 }
+const float = keyframes`
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+`
 
+const FloatingLogo = styled.img`
+  animation: ${float} 1s ease-in-out infinite;
+`
 export default TraderProfileModal

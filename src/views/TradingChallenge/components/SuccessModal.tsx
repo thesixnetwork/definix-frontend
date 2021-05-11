@@ -12,7 +12,7 @@ const Icon = styled.div`
   border-radius: ${({ theme }) => theme.radii.circle};
 `
 
-const SuccessModal = ({ title = '', detail = '', onDismiss = () => null }) => {
+const SuccessModal = ({ title = '', detail = '', onDismiss = () => null, onSuccessRefresh }) => {
   return (
     <Modal title="" onDismiss={onDismiss} isRainbow bodyPadding="32px 24px 24px 24px" hideCloseButton>
       <div style={{ width: '400px', maxWidth: '100%' }}>
@@ -26,7 +26,14 @@ const SuccessModal = ({ title = '', detail = '', onDismiss = () => null }) => {
           <Text textAlign="center">{detail}</Text>
         </div>
 
-        <Button fullWidth variant="primary" onClick={onDismiss}>
+        <Button
+          fullWidth
+          variant="primary"
+          onClick={() => {
+            onSuccessRefresh()
+            onDismiss()
+          }}
+        >
           OK!
         </Button>
       </div>
