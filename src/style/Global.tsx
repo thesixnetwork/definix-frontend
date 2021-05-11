@@ -39,10 +39,31 @@ const GlobalStyle = createGlobalStyle`
     svg { fill: ${({ theme }) => theme.colors.backgroundDisabled}; }
   }
 
-  .text-bold { font-weight: bold; color: ${({ theme }) => theme.colors.text}; }
+  .text-bold { font-weight: 600; color: ${({ theme }) => theme.colors.text}; }
+  .text-right { text-align: right; }
+  .text-left { text-align: left; }
   .color-primary { color: ${({ theme }) => theme.colors.primary} !important; }
   .color-text { color: ${({ theme }) => theme.colors.text} !important; }
   .color-disable { color: ${({ theme }) => theme.colors.textDisabled} !important; }
+
+  .slick-slider {
+    display: flex; flex-direction: column; align-items: stretch; height: 100%;
+
+    * { outline: none; }
+
+    .slick-list { 
+      flex-grow: 1;
+
+      .slick-track, .slick-slide > div { height: 100%; border: none; outline: none; }
+      .slick-slide > div { padding: 16px; display: flex; justify-content: center; align-items: center; }
+      .slick-slide:not(.slick-center) { opacity: 0.5; }
+      .slick-slide.slick-center { transform: scale(1.2); }
+    }
+
+    .slick-prev, .slick-next { z-index: 1; }
+    .slick-prev { left: 0; }
+    .slick-next { right: 0; }
+  }
 
   .flex {
     display: flex !important;

@@ -1,12 +1,13 @@
-import React from 'react'
-import { Card, CardBody, Heading, Text } from 'uikit-dev'
-import styled from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { useTotalSupply, useBurnedBalance } from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
+import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance'
+import React from 'react'
+import styled from 'styled-components'
+import { Card, CardBody, Heading, Text } from 'uikit-dev'
+import Helper from 'uikit-dev/components/Helper'
 import { getFinixAddress } from 'utils/addressHelpers'
-import CardValue from './CardValue'
+import { getBalanceNumber } from 'utils/formatBalance'
 import stats from '../../../assets/images/stats.png'
+import CardValue from './CardValue'
 
 const StyledFinixStats = styled(Card)`
   margin-left: auto;
@@ -44,7 +45,10 @@ const FinixStats = () => {
       <CardBody className="pa-6">
         <Heading mb="20px">FINIX Stats</Heading>
         <Row>
-          <Text small>{TranslateString(536, 'Total FINIX Supply')}</Text>
+          <Row className="mb-0">
+            <Text small>{TranslateString(536, 'Total FINIX Supply')}</Text>
+            <Helper text="Does not include burned" className="ml-2" />
+          </Row>
           {finixSupply && <CardValue fontSize="18px" fontWeight="bold" value={finixSupply} />}
         </Row>
         <Row>
@@ -53,7 +57,7 @@ const FinixStats = () => {
         </Row>
         <Row>
           <Text small>{TranslateString(540, 'New FINIX/block')}</Text>
-          <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={25} />
+          <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={3} />
         </Row>
       </CardBody>
     </StyledFinixStats>

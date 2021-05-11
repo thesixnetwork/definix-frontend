@@ -25,6 +25,7 @@ import { FinixPriceState } from '../types'
 const initialState: FinixPriceState = {
   price: 0,
   sixPrice: 0,
+  pancakeBnbPrice: 0,
   sixFinixQuote: 0,
   sixBusdQuote: 0,
   sixUsdtQuote: 0,
@@ -48,6 +49,10 @@ export const finixPriceSlice = createSlice({
     setFinixPrice: (state, action) => {
       const { price } = action.payload
       state.price = price
+    },
+    setPancakeBnbPrice: (state, action) => {
+      const { price } = action.payload
+      state.pancakeBnbPrice = price
     },
     setQuote: (state, action) => {
       const {
@@ -77,7 +82,7 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setSixPrice, setFinixPrice, setQuote } = finixPriceSlice.actions
+export const { setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
@@ -139,7 +144,8 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
 
     const [quoteTokenBlanceLP, lpTokenBalanceMC, lpTotalSupply] = await multicall(erc20, calls)
 
-    const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    // const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    const lpTokenRatio = 1
     lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
       .div(new BigNumber(10).pow(18))
       .times(new BigNumber(2))
@@ -160,6 +166,26 @@ export const fetchSixPrice = () => async (dispatch) => {
   dispatch(
     setSixPrice({
       sixPrice: usdPrice,
+    }),
+  )
+}
+
+export const fetchPancakeBnbPrice = () => async (dispatch) => {
+  const fetchPromise = []
+
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getDefinixBnbBusdLPAddress(),
+      pair1: getWbnbAddress(),
+      pair2: getBusdAddress(),
+      herodotusAddress: getDefinixHerodotusAddress(),
+    }),
+  )
+  const [[totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]] = await Promise.all(fetchPromise)
+  const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
+  dispatch(
+    setPancakeBnbPrice({
+      price: definixBnbBusdRatio,
     }),
   )
 }
@@ -347,7 +373,7 @@ export const fetchQuote = () => async (dispatch) => {
   fetchPromise.push(
     getTotalQuote({
       lpAddress: Pair.getAddress(FINIX, WBNB),
-      qouteToken: wbnbAddress,
+      qouteToken: finixAddress,
     }),
   )
   fetchPromise.push(

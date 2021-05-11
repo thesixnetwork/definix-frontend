@@ -7,10 +7,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import {
+  fetchFarmUnlockDate,
   fetchFarmsPublicDataAsync,
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
+  fetchPancakeBnbPrice,
   fetchSixPrice,
   fetchQuote,
   push as pushToast,
@@ -29,14 +31,21 @@ export const useFetchPublicData = () => {
   const { slowRefresh } = useRefresh()
   useEffect(() => {
     dispatch(fetchFarmsPublicDataAsync())
+    dispatch(fetchFarmUnlockDate())
     dispatch(fetchPoolsPublicDataAsync())
     dispatch(fetchFinixPrice())
     dispatch(fetchSixPrice())
+    dispatch(fetchPancakeBnbPrice())
     dispatch(fetchQuote())
   }, [dispatch, slowRefresh])
 }
 
 // Farms
+
+export const useFarmUnlockDate = (): Date => {
+  const unlockDate = useSelector((state: State) => state.farms.farmUnlockAt)
+  return unlockDate
+}
 
 export const useFarms = (): Farm[] => {
   const farms = useSelector((state: State) => state.farms.data)
@@ -110,6 +119,11 @@ export const usePriceFinixBusd = (): BigNumber => {
   return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
 }
 
+export const usePricePancakeBnbUsd = (): BigNumber => {
+  const pancakeBnbPrice = useSelector((state: State) => state.finixPrice.pancakeBnbPrice)
+  return new BigNumber(pancakeBnbPrice)
+}
+
 export const usePriceFinixUsd = (): BigNumber => {
   const finixPrice = useSelector((state: State) => state.finixPrice.price)
   return new BigNumber(finixPrice)
@@ -124,7 +138,12 @@ export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
   const sixUsd = usePriceSixUsd()
-  const selectedPools = pools.find((pool) => pool.sousId === 1)
+  const pancakeBnbPrice = usePricePancakeBnbUsd()
+  const selectedPools = pools.find((pool) => pool.sousId === 1) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
+  const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
+    totalStaked: new BigNumber(0),
+    tokenDecimals: 18,
+  }
   const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
   const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
   const sixUsdtQuote = useSelector((state: State) => state.finixPrice.sixUsdtQuote)
@@ -156,10 +175,36 @@ export const usePriceTVL = (): BigNumber => {
     return totalStaked.times(sixUsd)
     // eslint-disable-next-line
   } else {
+    let totalStaked = new BigNumber(0)
+    switch (typeof selectedPools.totalStaked) {
+      case 'undefined':
+        totalStaked = new BigNumber(0)
+        break
+      case 'string':
+        totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
+        break
+      default:
+        totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
+        break
+    }
+    let totalStakedFinixFinix = new BigNumber(0)
+    switch (typeof selectedPoolsFinixFinix.totalStaked) {
+      case 'undefined':
+        totalStakedFinixFinix = new BigNumber(0)
+        break
+      case 'string':
+        totalStakedFinixFinix = new BigNumber(
+          (parseFloat(selectedPoolsFinixFinix.totalStaked) || 0) / 10 ** selectedPoolsFinixFinix.tokenDecimals,
+        )
+        break
+      default:
+        totalStakedFinixFinix = selectedPoolsFinixFinix.totalStaked.times(new BigNumber(10).pow(18))
+        break
+    }
     const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
     const sixBusdPrice = new BigNumber(sixBusdQuote)
     const sixUsdtPrice = new BigNumber(sixUsdtQuote)
-    const sixWbnbPrice = new BigNumber(sixWbnbQuote).times(finixUsdPrice)
+    const sixWbnbPrice = new BigNumber(sixWbnbQuote).times(pancakeBnbPrice)
     const finixBusdPrice = new BigNumber(finixBusdQuote)
     const finixUsdtPrice = new BigNumber(finixUsdtQuote)
     const finixWbnbPrice = new BigNumber(finixWbnbQuote).times(finixUsdPrice)
@@ -177,6 +222,8 @@ export const usePriceTVL = (): BigNumber => {
       wbnbBusdPrice,
       wbnbUsdtPrice,
       busdUsdtPrice,
+      totalStaked.times(sixUsd).toNumber(),
+      totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
     ])
   }
 }

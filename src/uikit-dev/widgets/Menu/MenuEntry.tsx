@@ -34,6 +34,13 @@ const MenuEntry = styled.div<Props>`
   color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : theme.colors.textSubtle)};
   font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')};
 
+  &.new {
+    img {
+      width: 40px;
+      margin: 0 12px 0 -8px !important;
+    }
+  }
+
   a {
     display: flex;
     align-items: center;

@@ -15,7 +15,7 @@ interface Props extends InjectedProps {
   isRainbow?: boolean
 }
 
-const StyledModal = styled.div`
+const StyledModal = styled.div<{ isRainbow: boolean }>`
   background: ${({ theme }) => theme.modal.background};
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border-radius: ${({ theme }) => theme.radii.default};
@@ -28,6 +28,7 @@ const StyledModal = styled.div`
     max-width: 100%;
   }
   position: relative;
+  padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
 
   .color-stroke {
     position: absolute;
@@ -60,7 +61,7 @@ const Modal: React.FC<Props> = ({
   bodyPadding = '24px',
   isRainbow = true,
 }) => (
-  <StyledModal>
+  <StyledModal isRainbow={isRainbow}>
     <ModalHeader>
       <ModalTitle>
         {onBack && (

@@ -13,6 +13,7 @@ import {
   getDefinixRabbitsAddress,
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
+  getTradingCompetRegisAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -28,6 +29,7 @@ import sousChefBnb from 'config/abi/sousChefBnb.json'
 import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
+import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -86,6 +88,11 @@ export const useLotteryTicket = () => {
 export const useHerodotus = () => {
   const abi = (herodotus as unknown) as AbiItem
   return useContract(abi, getHerodotusAddress())
+}
+
+export const useTradingCompetRegisContract = () => {
+  const abi = (tradeCompetRegisAbi as unknown) as AbiItem
+  return useContract(abi, getTradingCompetRegisAddress())
 }
 
 export const useSousChef = (id) => {

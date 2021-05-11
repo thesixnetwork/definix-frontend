@@ -1,4 +1,4 @@
-export { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from './farms'
+export { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchFarmUnlockDate } from './farms'
 export { clear, remove, push } from './toasts'
 export {
   fetchPoolsPublicDataAsync,
@@ -8,6 +8,6 @@ export {
   updateUserPendingReward,
   updateUserStakedBalance,
 } from './pools'
-export { fetchSixPrice, fetchFinixPrice, fetchQuote } from './finixPrice'
+export { fetchPancakeBnbPrice, fetchSixPrice, fetchFinixPrice, fetchQuote } from './finixPrice'
 export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
 export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'

@@ -87,7 +87,8 @@ const FooterStyled = styled.footer`
     }
 
     p {
-      font-size: 14px;
+      font-size: 12px;
+      margin-top: 4px;
     }
 
     .social {
@@ -97,10 +98,6 @@ const FooterStyled = styled.footer`
 
   ${({ theme }) => theme.mediaQueries.md} {
     height: 60px;
-
-    .logo {
-      height: 20px;
-    }
   }
 `
 

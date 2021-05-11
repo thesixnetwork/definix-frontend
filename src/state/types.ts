@@ -18,6 +18,10 @@ export interface Farm extends FarmConfig {
   lpTotalInQuoteToken?: BigNumber
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
+  finixPerBlock?: BigNumber
+  BONUS_MULTIPLIER?: BigNumber
+  lpTotalSupply?: BigNumber
+  apy?: BigNumber
   userData?: {
     allowance: BigNumber
     tokenBalance: BigNumber
@@ -60,6 +64,7 @@ export interface ToastsState {
 
 export interface FarmsState {
   data: Farm[]
+  farmUnlockAt?: Date
 }
 
 export interface PoolsState {
@@ -69,6 +74,7 @@ export interface PoolsState {
 export interface FinixPriceState {
   price: number
   sixPrice: number
+  pancakeBnbPrice: number
   sixFinixQuote: number
   sixBusdQuote: number
   sixUsdtQuote: number
@@ -80,7 +86,6 @@ export interface FinixPriceState {
   wbnbUsdtQuote: number
   busdUsdtQuote: number
 }
-
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean

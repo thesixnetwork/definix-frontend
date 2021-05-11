@@ -149,7 +149,7 @@ const Info: React.FC = () => {
             <Text fontSize="16px">
               <strong>Definix</strong> is the decentralized multi-chain fund management platform that allows everybody
               to trade with the high level of transparency. With the technology of blockchain, Definix makes crypto
-              investment become on of the most simple things for everyone.
+              investment become one of the most simple things for everyone.
             </Text>
           </section>
 
