@@ -91,7 +91,7 @@ export const useHerodotus = () => {
 }
 
 export const useTradingCompetRegisContract = () => {
-  const abi = (tradeCompetRegisAbi as unknown) as AbiItem
+  const abi = tradeCompetRegisAbi as unknown as AbiItem
   return useContract(abi, getTradingCompetRegisAddress())
 }
 
