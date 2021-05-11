@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react'
 import { HelpCircle } from 'react-feather'
 import styled from 'styled-components'
@@ -11,13 +12,18 @@ const HelperStyled = styled.div`
   }
 `
 
-const PopoverStyled = styled.div`
+const PopoverStyled = styled.div<{ position: string }>`
   transition: 0.2s;
-  width: 180px;
+  width: max-content;
+  max-width: 180px;
   position: absolute;
-  bottom: calc(100% + 16px);
-  left: 50%;
-  transform: translateX(-50%);
+  top: ${({ position }) => (position === 'top' ? 'auto' : position === 'bottom' ? 'calc(100% + 8px)' : '50%')};
+  left: ${({ position }) => (position === 'left' ? 'auto' : position === 'right' ? 'calc(100% + 8px)' : '50%')};
+  bottom: ${({ position }) => (position === 'top' ? 'calc(100% + 8px)' : 'auto')};
+  right: ${({ position }) => (position === 'left' ? 'calc(100% + 8px)' : 'auto')};
+  transform: ${({ position }) =>
+    position === 'top' || position === 'bottom' ? 'translate(-50%, 0)' : 'translate(0, -50%)'};
+  z-index: 1;
   font-size: 12px;
   padding: 12px;
   line-height: 1.5;
@@ -33,36 +39,22 @@ const PopoverStyled = styled.div`
     width: 0;
     height: 0;
     border: 8px solid transparent;
-    border-top-color: ${({ theme }) => theme.colors.white};
     position: absolute;
-    left: calc(50% - 8px);
-    bottom: -16px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    bottom: auto;
-    left: auto;
-    top: 50%;
-    transform: translate(0, -50%);
-    right: calc(100% + 16px);
-
-    &:before {
-      border-color: transparent;
-      border-left-color: ${({ theme }) => theme.colors.white};
-      bottom: auto;
-      left: auto;
-      top: calc(50% - 8px);
-      right: -16px;
-    }
+    border-top-color: ${({ position, theme }) => (position === 'top' ? theme.colors.white : 'transparent')};
+    border-right-color: ${({ position, theme }) => (position === 'right' ? theme.colors.white : 'transparent')};
+    border-bottom-color: ${({ position, theme }) => (position === 'bottom' ? theme.colors.white : 'transparent')};
+    border-left-color: ${({ position, theme }) => (position === 'left' ? theme.colors.white : 'transparent')};
+    top: ${({ position }) => (position === 'top' ? '100%' : position === 'bottom' ? '-16px' : 'calc(50% - 8px)')};
+    left: ${({ position }) => (position === 'left' ? '100%' : position === 'right' ? '-16px' : 'calc(50% - 8px)')};
   }
 `
 
-const Helper = ({ text, className = '' }) => {
+const Helper = ({ text, className = '', position = 'left' }) => {
   return (
     <HelperStyled className={className}>
       <HelpCircle width={16} height={16} color="#0973B9" />
 
-      <PopoverStyled>{text}</PopoverStyled>
+      <PopoverStyled position={position}>{text}</PopoverStyled>
     </HelperStyled>
   )
 }

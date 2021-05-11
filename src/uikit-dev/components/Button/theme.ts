@@ -16,7 +16,7 @@ export const light: ButtonTheme = {
     colorHover: '#FFFFFF',
   },
   [SECONDARY]: {
-    background: lightColors.white,
+    background: 'transparent',
     backgroundActive: lightColors.white,
     backgroundHover: lightColors.primary,
     border: `1px solid ${lightColors.primary}`,
