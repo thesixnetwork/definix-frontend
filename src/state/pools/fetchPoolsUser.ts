@@ -15,7 +15,7 @@ const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.
 const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.BNB)
 const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
 const web3 = getWeb3()
-const herodotusContract = new web3.eth.Contract((herodotusABI as unknown) as AbiItem, getHerodotusAddress())
+const herodotusContract = new web3.eth.Contract(herodotusABI as unknown as AbiItem, getHerodotusAddress())
 
 export const fetchPoolsAllowance = async (account) => {
   const calls = nonBnbPools.map((p) => ({

@@ -232,9 +232,9 @@ const Farm: React.FC = () => {
                 ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
                     <PoolCard key={pool.sousId} pool={pool} />
                   ))
-                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
-                    'sortOrder',
-                  ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} />)}
+                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                    (pool) => <PoolCard key={pool.sousId} pool={pool} />,
+                  )}
             </Route>
             <Route path={`${path}/history`}>
               {orderBy(finishedPools, ['sortOrder']).map((pool) => (
