@@ -114,13 +114,13 @@ const farms: FarmConfig[] = [
       97: process.env.REACT_APP_BNB_BUSD_LP_TESTNET,
       56: process.env.REACT_APP_BNB_BUSD_LP_MAINNET,
     },
-    tokenSymbol: 'BUSD',
+    tokenSymbol: 'BNB',
     tokenAddresses: {
-      97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+      97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
     },
-    quoteTokenSymbol: QuoteToken.BNB,
-    quoteTokenAdresses: contracts.wbnb,
+    quoteTokenSymbol: QuoteToken.BUSD,
+    quoteTokenAdresses: contracts.busd,
   },
   // {
   //   pid: 1,
