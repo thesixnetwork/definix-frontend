@@ -167,7 +167,7 @@ const CardUpcomingFarms: React.FC = () => {
     {
       img: el13,
       name: 'BNB-BUSD LP',
-      apr: pid6Farm.apy ? numeral(pid7Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+      apr: pid7Farm.apy ? numeral(pid7Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
       pid: 7,
     },
   ]
