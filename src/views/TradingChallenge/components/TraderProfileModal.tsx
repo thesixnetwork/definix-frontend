@@ -76,7 +76,7 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
         </Text>
 
         <Button fullWidth variant="primary" onClick={submit}>
-          Done!
+          Done
         </Button>
       </div>
     </Modal>
