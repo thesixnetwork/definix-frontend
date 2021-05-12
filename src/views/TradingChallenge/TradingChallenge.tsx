@@ -4,7 +4,9 @@ import _ from 'lodash'
 import Page from 'components/layout/Page'
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, Card, Heading, Text, useModal, Modal } from 'uikit-dev'
+import { Button, Card, Heading, Text, useMatchBreakpoints, useModal } from 'uikit-dev'
+import routeLarge from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-25.png'
+import route from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-26.png'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import TraderProfileModal from './components/TraderProfileModal'
 import TradingChallengeBanner from './components/TradingChallengeBanner'
@@ -44,6 +46,8 @@ const TradingChallenge = () => {
   const { connect, account } = useWallet()
   const [isTradingEnd, setIsTradingEnd] = useState(false)
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
+  const { isSm } = useMatchBreakpoints()
+
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
 
   const handleModalSuccess = async () => {
@@ -115,16 +119,23 @@ const TradingChallenge = () => {
             </Heading>
             <div className="mb-6">
               <Text lineHeight="2">
-                1. The participants must create a new account with 1 $BNB deposit before the beginning of the
-                competition.
+                1. The participants must create a new decentralized wallet (not in use before) and deposit 1 BNB net
+                cost before registering with the platform.
               </Text>
               <Text lineHeight="2">
                 2. The participants are only allowed to swap/farm on specified symbols and exchanges, Pancakeswap and
-                Definix swap only. Please see the qualified symbols and exchange on the following list (Refer pic
-                1.1–1.2).
+                Definix swap only. Please see the qualified symbols and exchanges on the following list.
               </Text>
+              <img
+                src={isSm ? route : routeLarge}
+                alt=""
+                className="my-5 mx-auto"
+                style={{ display: 'block', width: '100%', maxWidth: '800px' }}
+              />
               <Text lineHeight="2">
-                3. Minimum 5 days of trading (farming is not included) activities are mandatory for qualification.
+                3. A minimum of 5 days of trading activities is mandatory for qualification. Staying in the farm with no
+                movement will not be account for trading. (Must be active 5 out of 10 days; in/out farm(s) during the
+                period).
               </Text>
               <Text lineHeight="2">
                 4. Deposit or withdrawal of fund or swap/farm in unspecified symbols of the competition account will not
@@ -141,14 +152,12 @@ const TradingChallenge = () => {
             </Heading>
             <div className="mb-6">
               <Text lineHeight="2">
-                <Dot />
-                The participants are allowed to use their initial deposited of 1 $BNB as an initial asset inorder to
-                perform these actions:{' '}
+                The participants are allowed to use 1 BNB as an initial asset in order to perform these actions:
               </Text>
               <Text lineHeight="2">
                 <Dot />
-                Trading (swap) : exchange the token other coins based on their strategy on the permitted pool and
-                decentralized exchange.{' '}
+                Trading (swap): Exchange the token for other coins based on their strategy on the permitted pool and
+                decentralized exchange.
               </Text>
               <Text lineHeight="2">
                 <Dot />
@@ -156,18 +165,21 @@ const TradingChallenge = () => {
                 is not listed in the rule, the participant will be disqualified
               </Text>
               <Text lineHeight="2" className="ml-6">
-                - Single sided pool - stake the asset in the permitted pool to earn more asset given by permitted
-                protocol
+                - Single-sided pool: Stake the asset in the permitted pool to earn more asset given by permitted
+                protocol.
               </Text>
               <Text lineHeight="2" className="ml-6">
-                - Farm - stake LP token to the only permitted farm to earn a reward.
+                - Farm: Stake LP token to the only permitted farm to earn a reward.
               </Text>
               <Text lineHeight="2">
                 <Dot />
-                Gas Fee: Please manage your gas well. We do not allow the participants to add any assets from external
-                sources, which means the participants can only earn more gas fee from the two actions above. Please note
-                that if the participants added more resources in their trading account. The participants’ accounts will
-                be automatically disqualified from the tournament.
+                Gas Fee: Please manage your gas well. We do not allow the participants to top-up any assets from
+                external sources, which means the participants can only earn more gas fees from the two actions above.
+              </Text>
+              <Text lineHeight="2">
+                <b className="mr-2">**NOTE**</b>
+                Topping up more resources to the trading account will automatically result in disqualification and
+                banned from this tournament.
               </Text>
             </div>
 
@@ -177,15 +189,15 @@ const TradingChallenge = () => {
             <div className="mb-6">
               <Text lineHeight="2">
                 <Dot />
-                1st price 1000 $FINIX
+                1st Winning Price 1000 $FINIX
               </Text>
               <Text lineHeight="2">
                 <Dot />
-                2nd price 500 $FINIX
+                2nd Winning Price 500 $FINIX
               </Text>
               <Text lineHeight="2">
                 <Dot />
-                3rd price 300 $FINIX
+                3rd Winning Price 300 $FINIX
               </Text>
               <Text lineHeight="2">
                 <Dot />
@@ -195,7 +207,7 @@ const TradingChallenge = () => {
               <Text lineHeight="2">
                 <Dot />
                 The Elite Community will be the conference point of every trader to share their knowledge, experience,
-                and perspective on how to be a better version of a trader that they already are.{' '}
+                and perspective on how to be a better version of a trader that they already are.
               </Text>
             </div>
 

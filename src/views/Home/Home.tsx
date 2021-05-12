@@ -2,7 +2,7 @@ import Page from 'components/layout/Page'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { BaseLayout, Button, Heading } from 'uikit-dev'
+import { BaseLayout, Button, Heading, useMatchBreakpoints } from 'uikit-dev'
 import certik from 'uikit-dev/images/Audit/AW-42.png'
 import techRate from 'uikit-dev/images/Audit/AW-43.png'
 import InfoBanner from 'views/Info/components/InfoBanner'
@@ -58,6 +58,8 @@ const Home: React.FC = () => {
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
+
+  const { isSm } = useMatchBreakpoints()
 
   const [timer, setTime] = useState({
     days: 0,
@@ -155,7 +157,13 @@ const Home: React.FC = () => {
           </Cards>
 
           <TradingChallengeBanner>
-            <Button as={Link} to="/trading-challenge" variant="success" className="btn-secondary-disable">
+            <Button
+              as={Link}
+              size={isSm ? 'sm' : 'md'}
+              to="/trading-challenge"
+              variant="success"
+              className="btn-secondary-disable"
+            >
               More details
             </Button>
           </TradingChallengeBanner>
