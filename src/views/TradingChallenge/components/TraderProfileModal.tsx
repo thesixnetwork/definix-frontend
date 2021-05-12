@@ -61,7 +61,7 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
     const body = {
       walletAddr: account,
     }
-    const tradingCompetRegisAPI = process.env.REACT_APP_API_ENV_DEVELOPMENT_TRADE_COMPET_VALIDATE
+    const tradingCompetRegisAPI = process.env.REACT_APP_API_TRADE_COMPET_VALIDATE
     const response = await axios.post(`${tradingCompetRegisAPI}`, body)
 
     if (response.data.success === true) {
