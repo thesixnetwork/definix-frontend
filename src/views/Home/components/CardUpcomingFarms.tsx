@@ -46,7 +46,7 @@ const CardStyled = styled(Card)`
     width: calc(50% - 2rem);
 
     img {
-      width: 120px;
+      width: 100px;
       margin-bottom: 0.5rem;
     }
 
