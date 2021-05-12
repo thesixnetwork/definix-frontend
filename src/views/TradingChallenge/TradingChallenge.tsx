@@ -113,11 +113,7 @@ const TradingChallenge = () => {
       <MaxWidth>
         <Card isRainbow>
           <TradingChallengeBanner large />
-          {isRegisterSuccess ? (
-              <>{!isTrade && <DateModal date={tradeTimeStamp} />}</>
-            ) : (
-              <></>
-              )}
+          {isRegisterSuccess ? <>{!isTrade && <DateModal date={tradeTimeStamp} />}</> : <></>}
           <Detail>
             <Heading as="h3" className="mb-3">
               Trading Rules:
