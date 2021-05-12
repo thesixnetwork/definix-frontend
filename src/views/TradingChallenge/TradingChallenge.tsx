@@ -55,6 +55,13 @@ const TradingChallenge = () => {
                 1. The participants must create a new decentralized wallet (not in use before) and deposit 1 BNB net
                 cost before registering with the platform.
               </Text>
+              <Text lineHeight="2" className="ml-6">
+                - One participant is allowed to have more than one decentralized wallet registered for the trading
+                tournament. Each account must deposit a net cost of 1 BNB initial for participating.
+              </Text>
+              <Text lineHeight="2" className="ml-6">
+                - The final results after the trading period ended will be calculated
+              </Text>
               <Text lineHeight="2">
                 2. The participants are only allowed to swap/farm on specified symbols and exchanges, Pancakeswap and
                 Definix swap only. Please see the qualified symbols and exchanges on the following list.
