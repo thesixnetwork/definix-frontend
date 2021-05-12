@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import axios from 'axios'
+import { useTradingCompetRegisContract } from 'hooks/useContract'
+import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick'
-import _ from 'lodash'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { useTradingCompetRegisContract } from 'hooks/useContract'
-import loadingIcon from 'uikit-dev/images/loading-icon.png'
 import styled, { keyframes } from 'styled-components'
-import axios from 'axios'
-import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal, Spinner } from 'uikit-dev'
+import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal } from 'uikit-dev'
 import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1558.png'
 import avatar02 from 'uikit-dev/images/for-trading-challenge/IMG_1560.png'
 import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
-import SuccessModal from './SuccessModal'
+import loadingIcon from 'uikit-dev/images/loading-icon.png'
 import FailureModal from './FailureModal'
+import SuccessModal from './SuccessModal'
 
 // const tradeCompetRegisContract = getTradeCompetRegisContract()
 const Avatar = styled.img`
@@ -50,7 +49,10 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
     />,
   )
   const [onPresentFailureModal] = useModal(
-    <FailureModal title="Registration False" detail="Error call smart contract." />,
+    <FailureModal
+      title="Registration Reject"
+      detail="Your account cannot be processed and is rejected. You can register again. Click OK! to continue."
+    />,
   )
   const [onPresentFailureAPIModal] = useModal(
     <FailureModal title="Registration False" detail="Your account does not pass trading rules requirement." />,
@@ -125,8 +127,9 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
           <Input placeholder="Your telegram account (optional)" value={telegramID} onChange={handleChangeTelegram} />
         </div>
 
-        <Text className="mb-4">
-          กรุณากรอก Username ของ Telegram (สำหรับท่านที่ Trade ติดอันดับเราจะมีสิทธิพิเศษให้)
+        <Text className="mb-4" fontSize="12px">
+          Please fill in your personal Telegram @username. (The selected members will be in the Elite Community via
+          invitation only)
         </Text>
 
         {loadingAPI && loadingContract ? (
