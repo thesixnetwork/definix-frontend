@@ -37,7 +37,7 @@ const Dot = styled.span`
 `
 const Title = styled.div`
   color: #404041;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   text-align: center;
 `
@@ -99,7 +99,7 @@ const TradingChallenge = () => {
 
   const DateModal = ({ date }) => {
     return (
-      <div>
+      <div className="mt-7">
         <Title className="text-bold text-center">
           Your wallet has been registered for the tournament. The tournament will be open in
         </Title>
@@ -113,6 +113,7 @@ const TradingChallenge = () => {
       <MaxWidth>
         <Card isRainbow>
           <TradingChallengeBanner large />
+          {isRegisterSuccess ? <>{!isTrade && <DateModal date={tradeTimeStamp} />}</> : <></>}
           <Detail>
             <Heading as="h3" className="mb-3">
               Trading Rules:
@@ -121,6 +122,13 @@ const TradingChallenge = () => {
               <Text lineHeight="2">
                 1. The participants must create a new decentralized wallet (not in use before) and deposit 1 BNB net
                 cost before registering with the platform.
+              </Text>
+              <Text lineHeight="2" className="ml-6">
+                - One participant is allowed to have more than one decentralized wallet registered for the trading
+                tournament. Each account must deposit a net cost of 1 BNB initial for participating.
+              </Text>
+              <Text lineHeight="2" className="ml-6">
+                - The final results after the trading period ended will be calculated
               </Text>
               <Text lineHeight="2">
                 2. The participants are only allowed to swap/farm on specified symbols and exchanges, Pancakeswap and
@@ -225,7 +233,7 @@ const TradingChallenge = () => {
               14 May 2021, 8:00 A.M. - 23 May 2021, 8:00 A.M. (GMT+0)
             </Text>
             {isRegisterSuccess ? (
-              <>{!isTrade && <DateModal date={tradeTimeStamp} />}</>
+              <></>
             ) : (
               <>
                 {!account ? (
