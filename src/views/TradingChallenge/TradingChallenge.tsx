@@ -37,7 +37,7 @@ const Dot = styled.span`
 `
 const Title = styled.div`
   color: #404041;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   text-align: center;
 `
@@ -99,7 +99,7 @@ const TradingChallenge = () => {
 
   const DateModal = ({ date }) => {
     return (
-      <div>
+      <div className="mt-7">
         <Title className="text-bold text-center">
           Your wallet has been registered for the tournament. The tournament will be open in
         </Title>
