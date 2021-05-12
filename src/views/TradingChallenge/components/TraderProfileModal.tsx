@@ -7,8 +7,8 @@ import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal
 import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1558.png'
 import avatar02 from 'uikit-dev/images/for-trading-challenge/IMG_1560.png'
 import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
+import FailureModal from './FailureModal'
 import SuccessModal from './SuccessModal'
-// import FailureModal from './FailureModal'
 
 const Avatar = styled.img`
   width: 120px !important;
@@ -24,7 +24,12 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
       detail="Congratulations, your address has been successfully registered."
     />,
   )
-  // const [onPresentFailureModal] = useModal(<FailureModal title="" detail="" />)
+  const [onPresentFailureModal] = useModal(
+    <FailureModal
+      title="Registration Reject"
+      detail="Your account cannot be processed and is rejected. You can register again. Click OK! to continue."
+    />,
+  )
 
   const settings = {
     infinite: true,
@@ -65,7 +70,10 @@ const TraderProfileModal = ({ onDismiss = () => null }) => {
           <Input placeholder="Your Twitter account (optional)" />
         </div>
 
-        <Text className="mb-4">กรุณากรอกชื่อบัญชี Twitter สำหรับท่านที่ Trade ติดอันดับเราจะมีสิทธิพิเศษให้</Text>
+        <Text className="mb-4" fontSize="12px">
+          Please fill in your personal Telegram @username. (The selected members will be in the Elite Community via
+          invitation only)
+        </Text>
 
         <Button fullWidth variant="primary" onClick={submit}>
           Done!
