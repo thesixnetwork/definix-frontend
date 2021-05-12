@@ -134,7 +134,7 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
 
         {loadingAPI && loadingContract ? (
           <Button fullWidth variant="primary" onClick={fetchRegister}>
-            Done!
+            Done
           </Button>
         ) : (
           <></>
@@ -150,7 +150,7 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
         {!loadingContract ? (
           <Button fullWidth variant="primary">
             <FloatingLogo src={loadingIcon} alt="" width="25" height="25" className="mr-2" />
-            Waiting Confirmation
+            Waiting confirmation
           </Button>
         ) : (
           <></>
