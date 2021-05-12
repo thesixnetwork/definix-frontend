@@ -56,8 +56,9 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
     />,
   )
   const [onPresentFailureAPIModal] = useModal(
-    <FailureModal title="Registration False" detail="Your account does not pass trading rules requirement." />,
+    <FailureModal title="Register Fail" detail="Your account does not pass trading rules requirement." />,
   )
+  const [test, setTest] = React.useState(true)
 
   const fetchRegister = async () => {
     setLoadingAPI(false)

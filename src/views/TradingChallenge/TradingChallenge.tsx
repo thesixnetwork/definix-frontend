@@ -100,9 +100,7 @@ const TradingChallenge = () => {
   const DateModal = ({ date }) => {
     return (
       <div className="mt-7">
-        <Title className="text-bold text-center">
-          Your wallet has been registered for the tournament. The tournament will be open in
-        </Title>
+        <Title>Your wallet has been registered for the tournament. The tournament will be open in</Title>
         <Flip date={date} />
       </div>
     )
