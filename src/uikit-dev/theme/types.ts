@@ -44,6 +44,7 @@ export type Colors = {
   secondary: string
   tertiary: string
   success: string
+  successAlpha: string
   failure: string
   warning: string
   contrast: string

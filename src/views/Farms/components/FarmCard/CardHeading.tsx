@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Image } from 'uikit-dev'
-import ribbin from '../../../../uikit-dev/images/ribbin.png'
+import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 
 export interface ExpandableSectionProps {
   lpLabel?: string
@@ -19,10 +19,10 @@ const Wrapper = styled(Flex)`
 
 const MultiplierTag = styled.div`
   position: absolute;
-  top: -19px;
-  left: 0;
-  width: 80px;
-  height: 51px;
+  top: -3px;
+  left: 16px;
+  width: 52px;
+  height: 36px;
   background: url(${ribbin});
   background-size: contain;
   background-repeat: no-repeat;
@@ -30,9 +30,9 @@ const MultiplierTag = styled.div`
   p {
     color: ${({ theme }) => theme.colors.white};
     font-weight: bold;
-    width: 64px;
+    font-size: 14px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 `
 
@@ -40,9 +40,8 @@ const StyledFarmImages = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  background: ${({ theme }) => theme.colors.backgroundBox};
   padding: 12px 12px 8px 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 
   > * {
     flex-shrink: 0;
@@ -74,11 +73,11 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       </MultiplierTag>
 
       <StyledFarmImages>
-        <Image src={`/images/coins/${firstCoin}.png`} alt={tokenSymbol} width={48} height={48} />
-        <Image src={`/images/coins/${secondCoin}.png`} alt={tokenSymbol} width={48} height={48} />
+        <Image src={`/images/coins/${firstCoin}.png`} alt={tokenSymbol} width={56} height={56} />
+        <Image src={`/images/coins/${secondCoin}.png`} alt={tokenSymbol} width={56} height={56} />
       </StyledFarmImages>
 
-      <Heading>{lpLabel}</Heading>
+      <Heading fontSize="20px !important">{lpLabel}</Heading>
       {/* <Flex justifyContent="center">
         {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
         <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>

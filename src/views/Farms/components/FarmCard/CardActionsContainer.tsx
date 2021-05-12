@@ -10,12 +10,17 @@ import { Button, Text } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
 import { provider } from 'web3-core'
+import miniLogo from 'uikit-dev/images/finix-coin.png'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 
-const Action = styled.div`
-  padding-top: 16px;
+const MiniLogo = styled.img`
+  width: 20px;
+  height: auto;
+  margin-right: 8px;
+  display: inline-block;
 `
+
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
 }
@@ -62,20 +67,23 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, ethereum, account, 
         addLiquidityUrl={addLiquidityUrl}
       />
     ) : (
-      <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
+      <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
         {TranslateString(758, 'Approve Contract')}
       </Button>
     )
   }
 
   return (
-    <Action>
-      <Text textAlign="left" className="mb-3">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
-      <div className="mb-5">{!account ? <UnlockButton fullWidth /> : renderApprovalOrStakeButton()}</div>
+    <div className="pa-5">
+      <Text textAlign="left" className="mb-2" color="textSubtle">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
+      <div className="mb-5">{!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}</div>
 
-      <Text textAlign="left" className="mb-3">{`FINIX ${TranslateString(1072, 'Earned')}`}</Text>
+      <Text textAlign="left" className="mb-1 flex align-center" color="textSubtle">
+        <MiniLogo src={miniLogo} alt="" />
+        {`FINIX ${TranslateString(1072, 'Earned')}`}
+      </Text>
       <HarvestAction earnings={earnings} pid={pid} />
-    </Action>
+    </div>
   )
 }
 

@@ -14,10 +14,7 @@ interface FarmCardActionsProps {
 }
 
 const StyledHarvestButton = styled(Button)`
-  width: 100%;
-  &:not(:disabled) {
-    background: ${({ theme }) => theme.colors.harvest};
-  }
+  border-radius: ${({ theme }) => theme.radii.small};
 `
 
 const StyledDisplayBalance = styled.div`
@@ -42,12 +39,16 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
 
   return (
     <>
-      <Flex justifyContent="space-between" alignItems="stretch">
-        <StyledDisplayBalance>
-          <Heading color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
-        </StyledDisplayBalance>
-        <StyledHarvestButton
+      <div className="flex align-center justify-space-between">
+        <Heading fontSize="20px !important" color={rawEarningsBalance === 0 ? 'text' : 'text'}>
+          {displayBalance}
+        </Heading>
+
+        <Button
+          fullWidth
           disabled={rawEarningsBalance === 0 || pendingTx}
+          className="col-6"
+          radii="small"
           onClick={async () => {
             setPendingTx(true)
             await onReward()
@@ -55,9 +56,10 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
           }}
         >
           {TranslateString(562, 'Harvest')}
-        </StyledHarvestButton>
-      </Flex>
-      <Text fontSize="12px" textAlign="left" className="mt-4">
+        </Button>
+      </div>
+
+      <Text color="textSubtle" textAlign="left" className="mt-1">
         = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
       </Text>
     </>

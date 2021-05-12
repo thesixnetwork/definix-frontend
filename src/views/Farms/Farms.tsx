@@ -18,6 +18,10 @@ import Flip from '../../uikit-dev/components/Flip'
 import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
 
+const HelpButton = styled(Button)`
+  padding: 0 8px;
+`
+
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
@@ -128,17 +132,17 @@ const Farms: React.FC = () => {
 
   return (
     <Page>
-      <div className="flex align-center mt-2 mb-2">
+      <div className="flex align-center mt-2 mb-4">
         <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
           Farm
         </Heading>
-        <Button size="sm" variant="secondary" startIcon={<HelpCircle className="mr-2" />}>
+        <HelpButton size="sm" variant="secondary" startIcon={<HelpCircle className="mr-2" />}>
           Help
-        </Button>
+        </HelpButton>
       </div>
-      <Text className="mb-5">
-        Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. The amount
-        of returns will be calculated by the annual percentage rate (APR).
+      <Text className="mb-5 col-8">
+        Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. <br /> The
+        amount of returns will be calculated by the annual percentage rate (APR).
       </Text>
 
       <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>

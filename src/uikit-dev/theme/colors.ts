@@ -6,7 +6,8 @@ export const baseColors = {
   primaryBright: '#59a1ec',
   primaryDark: '#004889',
   secondary: '#0973B9',
-  success: '#6DC7A2',
+  success: '#2A9D8F',
+  successAlpha: '#EAF5F4',
   warning: '#E5B339',
 }
 
@@ -28,7 +29,7 @@ export const lightColors: Colors = {
   tertiary: '#EFF4F5',
   text: '#222331',
   textDisabled: '#D7D7D7',
-  textSubtle: '#737375',
+  textSubtle: '#8C90A5',
   card: '#FFFFFF',
   gradients: {
     bubblegum: 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)',

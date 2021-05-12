@@ -11,8 +11,7 @@ import styled from 'styled-components'
 import { Flex, Skeleton, Text } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { provider } from 'web3-core'
-import miniLogo from '../../../../uikit-dev/images/finix-coin.png'
-import colorStroke from '../../../../uikit-dev/images/Color-stroke.png'
+import colorStroke from 'uikit-dev/images/Color-stroke.png'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
@@ -20,12 +19,6 @@ import DetailsSection from './DetailsSection'
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
 }
-
-const MiniLogo = styled.img`
-  width: 16px;
-  height: auto;
-  margin-right: 6px;
-`
 
 const ExpandableRainbow = styled.div`
   position: relative;
@@ -56,6 +49,15 @@ const FCard = styled.div`
 const ExpandingWrapper = styled.div<{ expanded: boolean }>`
   height: ${(props) => (props.expanded ? '100%' : '0px')};
   overflow: hidden;
+`
+
+const Apr = styled(Text)`
+  padding: 4px 8px;
+  background: ${({ theme }) => theme.colors.successAlpha};
+  font-size: 12px;
+  border-radius: ${({ theme }) => theme.radii.small};
+  display: flex;
+  align-items: center;
 `
 
 interface FarmCardProps {
@@ -129,11 +131,12 @@ const FarmCard: React.FC<FarmCardProps> = ({
         farmImage={farmImage}
         tokenSymbol={farm.tokenSymbol}
       />
-      <div className="pa-5">
+
+      <div className="flex align-center justify-center mt-3">
         {!removed && (
-          <Flex justifyContent="space-between" alignItems="center" className="mb-2">
-            <Text>{TranslateString(736, 'APR')}:</Text>
-            <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+          <Apr className="mb-2" color="success" bold>
+            {TranslateString(736, 'APR')}
+            <div className="ml-1">
               {farm.apy ? (
                 <>
                   {/* <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} /> */}
@@ -142,18 +145,12 @@ const FarmCard: React.FC<FarmCardProps> = ({
               ) : (
                 <Skeleton height={24} width={80} />
               )}
-            </Text>
-          </Flex>
+            </div>
+          </Apr>
         )}
-        <Flex justifyContent="space-between" className="mb-2">
-          <Text>{TranslateString(318, 'Earn')}:</Text>
-          <Flex alignItems="center">
-            <MiniLogo src={miniLogo} alt="" />
-            <Text bold>{earnLabel}</Text>
-          </Flex>
-        </Flex>
-        <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
       </div>
+
+      <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
 
       <ExpandableRainbow>
         <img src={colorStroke} alt="" className="color-stroke" />

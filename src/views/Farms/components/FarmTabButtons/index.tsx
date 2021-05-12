@@ -23,8 +23,9 @@ const Wrapper = styled.div`
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, cardView, setCardView }) => {
   return (
     <Wrapper className="mb-6">
-      <div className="flex mt-3">
+      <div className="flex">
         <Button
+          size="sm"
           onClick={() => {
             setCardView(true)
           }}
@@ -35,6 +36,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, cardView, setCardView }) 
           Card View
         </Button>
         <Button
+          size="sm"
           onClick={() => {
             setCardView(false)
           }}
@@ -44,8 +46,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, cardView, setCardView }) 
           List View
         </Button>
       </div>
-      <div className="flex mt-3">
+      <div className="flex mt-2">
         <Button
+          size="sm"
           onClick={() => {
             setStackedOnly(false)
           }}
@@ -55,6 +58,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, cardView, setCardView }) 
           All Farm
         </Button>
         <Button
+          size="sm"
           onClick={() => {
             setStackedOnly(true)
           }}

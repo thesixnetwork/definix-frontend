@@ -64,6 +64,7 @@ const StakeAction: React.FC<FarmCardActionsProps> = ({
         disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
         onClick={onPresentDeposit}
         fullWidth
+        radii="small"
       >
         {TranslateString(999, 'Stake LP')}
       </Button>
