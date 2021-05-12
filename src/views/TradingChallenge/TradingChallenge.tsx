@@ -113,6 +113,11 @@ const TradingChallenge = () => {
       <MaxWidth>
         <Card isRainbow>
           <TradingChallengeBanner large />
+          {isRegisterSuccess ? (
+              <>{!isTrade && <DateModal date={tradeTimeStamp} />}</>
+            ) : (
+              <></>
+              )}
           <Detail>
             <Heading as="h3" className="mb-3">
               Trading Rules:
@@ -232,7 +237,7 @@ const TradingChallenge = () => {
               14 May 2021, 8:00 A.M. - 23 May 2021, 8:00 A.M. (GMT+0)
             </Text>
             {isRegisterSuccess ? (
-              <>{!isTrade && <DateModal date={tradeTimeStamp} />}</>
+              <></>
             ) : (
               <>
                 {!account ? (
