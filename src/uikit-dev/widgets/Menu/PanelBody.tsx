@@ -120,6 +120,14 @@ const PanelBody: React.FC<Props> = (props) => {
           ))}
       </BorderBox>
       <BorderBox>
+        <Heading fontSize="14px">Trading Competition</Heading>
+        {links
+          .filter((link) => link.group === 'trading')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
+      </BorderBox>
+      <BorderBox>
         <Heading fontSize="14px">Invest</Heading>
         {links
           .filter((link) => link.group === 'invest')
