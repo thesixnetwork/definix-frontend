@@ -159,8 +159,8 @@ const Menu: React.FC<NavProps> = ({
 
     return <LanguageIcon color="textSubtle" width="24px" />
   }
-  const endRegisterTimestamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+  const endRegisterTimestamp = process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
 
   // const getLanguageName = (lang) => {
