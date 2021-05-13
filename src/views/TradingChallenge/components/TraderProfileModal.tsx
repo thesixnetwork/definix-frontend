@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import axios from 'axios'
+import { useTradingCompetRegisContract } from 'hooks/useContract'
+import React, { useEffect, useState } from 'react'
 import Slider from 'react-slick'
-import _ from 'lodash'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { useTradingCompetRegisContract } from 'hooks/useContract'
-import loadingIcon from 'uikit-dev/images/loading-icon.png'
 import styled, { keyframes } from 'styled-components'
-import axios from 'axios'
-import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal, Spinner } from 'uikit-dev'
+import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal } from 'uikit-dev'
 import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1558.png'
 import avatar02 from 'uikit-dev/images/for-trading-challenge/IMG_1560.png'
 import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
+import loadingIcon from 'uikit-dev/images/loading-icon.png'
 import FailureModal from './FailureModal'
 import SuccessModal from './SuccessModal'
 
@@ -56,7 +55,7 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
     />,
   )
   const [onPresentFailureAPIModal] = useModal(
-    <FailureModal title="Registration False" detail="Your account does not pass trading rules requirement." />,
+    <FailureModal title="Register Fail" detail="Your account does not pass trading rules requirement." />,
   )
 
   const fetchRegister = async () => {

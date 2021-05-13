@@ -1,16 +1,16 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import Page from 'components/layout/Page'
 import { useTradingCompetRegisContract } from 'hooks/useContract'
 import _ from 'lodash'
-import Page from 'components/layout/Page'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Card, Heading, Text, useMatchBreakpoints, useModal } from 'uikit-dev'
 import routeLarge from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-25.png'
 import route from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-26.png'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
+import Flip from '../../uikit-dev/components/Flip'
 import TraderProfileModal from './components/TraderProfileModal'
 import TradingChallengeBanner from './components/TradingChallengeBanner'
-import Flip from '../../uikit-dev/components/Flip'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
