@@ -47,7 +47,7 @@
     "canvas-confetti": "^1.3.3",
     "chart.js": "^2.9.4",
     "date-fns": "^2.17.0",
-    "definixswap-sdk": "0.0.11",
+    "definixswap-sdk": "0.0.12",
     "definixswap-uikit": "^0.0.2",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",

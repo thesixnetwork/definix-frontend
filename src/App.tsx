@@ -6,6 +6,7 @@ import TagManager from 'react-gtm-module'
 import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { Modal, ResetCSS } from 'uikit-dev'
+import { Pair } from 'definixswap-sdk'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
@@ -18,10 +19,13 @@ import Flip from './uikit-dev/components/Flip'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
-ReactGA.initialize('G-L997LXLF8F')
+Pair.factoryAddress = process.env.REACT_APP_FACTORY_ADDRESS
+Pair.initCodeHash = process.env.REACT_APP_INIT_CODE_HASH
+
+ReactGA.initialize(process.env.REACT_APP_GANALYTIC)
 
 const tagManagerArgs = {
-  gtmId: 'GTM-WVFPW42',
+  gtmId: process.env.REACT_APP_GTAG,
 }
 TagManager.initialize(tagManagerArgs)
 // ReactGA.initialize(process.env.REACT_APP_GANALYTIC)
