@@ -1,32 +1,16 @@
-import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
-import { Button, Flex, Heading, Text } from 'uikit-dev'
-import useI18n from 'hooks/useI18n'
 import { useHarvest } from 'hooks/useHarvest'
-import { getBalanceNumber } from 'utils/formatBalance'
+import useI18n from 'hooks/useI18n'
+import numeral from 'numeral'
+import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
-import styled from 'styled-components'
+import { Button, Heading, Text } from 'uikit-dev'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
   pid?: number
 }
-
-const StyledHarvestButton = styled(Button)`
-  border-radius: ${({ theme }) => theme.radii.small};
-`
-
-const StyledDisplayBalance = styled.div`
-  width: 115px;
-  flex-shrink: 0;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.default};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1rem;
-`
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
   const TranslateString = useI18n()
@@ -40,7 +24,12 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
   return (
     <>
       <div className="flex align-center justify-space-between">
-        <Heading fontSize="20px !important" color={rawEarningsBalance === 0 ? 'text' : 'text'}>
+        <Heading
+          fontSize="24px !important"
+          color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
+          className="col-6 pr-3"
+          textAlign="left"
+        >
           {displayBalance}
         </Heading>
 

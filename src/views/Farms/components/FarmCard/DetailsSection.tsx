@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Link, LinkExternal, OpenNewIcon, Text } from 'uikit-dev'
+import { ChevronRightIcon, Flex, Link, Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -12,53 +12,42 @@ export interface ExpandableSectionProps {
 }
 
 const Wrapper = styled.div`
-  padding: 0 1.5rem 1.5rem 1.5rem;
-`
-
-const StyledLinkExternal = styled(LinkExternal)`
-  text-decoration: none;
-  font-weight: normal;
-  color: ${({ theme }) => theme.colors.text};
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 60%;
-
-  svg {
-    padding-left: 4px;
-    height: 18px;
-    width: auto;
-    fill: ${({ theme }) => theme.colors.primary};
-  }
+  padding: 16px;
+  background: #fafcff;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom-left-radius: ${({ theme }) => theme.radii.card};
+  border-bottom-right-radius: ${({ theme }) => theme.radii.card};
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
   bscScanAddress,
   removed,
   totalValueFormated,
-  lpLabel,
-  addLiquidityUrl,
+  // lpLabel,
+  // addLiquidityUrl,
 }) => {
   const TranslateString = useI18n()
 
   return (
     <Wrapper>
-      <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-2">
+      {/* <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-2">
         <Text>{TranslateString(316, 'Deposit')}:</Text>
         <StyledLinkExternal className="flex-shrink" href={addLiquidityUrl}>
           {lpLabel}
         </StyledLinkExternal>
-      </Flex>
+      </Flex> */}
       {!removed && (
-        <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-2">
-          <Text>{TranslateString(23, 'Total Liquidity')}:</Text>
-          <Text className="flex-shrink">{totalValueFormated}</Text>
+        <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-1">
+          <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}:</Text>
+          <Text bold className="flex-shrink">
+            {totalValueFormated}
+          </Text>
         </Flex>
       )}
-      <Flex justifyContent="flex-start" className="flex">
-        <Link external href={bscScanAddress} bold={false} className="flex-shrink" style={{ width: '100%' }}>
+      <Flex justifyContent="flex-end" className="flex">
+        <Link external href={bscScanAddress} bold={false} className="flex-shrink" color="textSubtle" fontSize="12px">
           {TranslateString(356, 'View on BscScan')}
-          <OpenNewIcon color="primary" className="ml-2" />
+          <ChevronRightIcon color="textSubtle" />
         </Link>
       </Flex>
     </Wrapper>

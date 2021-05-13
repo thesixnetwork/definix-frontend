@@ -77,7 +77,9 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         <Image src={`/images/coins/${secondCoin}.png`} alt={tokenSymbol} width={56} height={56} />
       </StyledFarmImages>
 
-      <Heading fontSize="20px !important">{lpLabel}</Heading>
+      <Heading fontSize="24px !important" fontWeight="500 !important">
+        {lpLabel}
+      </Heading>
       {/* <Flex justifyContent="center">
         {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
         <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>

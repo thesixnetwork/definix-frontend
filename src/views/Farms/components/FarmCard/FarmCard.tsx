@@ -1,17 +1,16 @@
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
-import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { communityFarms } from 'config/constants'
 import { QuoteToken } from 'config/constants/types'
 import useI18n from 'hooks/useI18n'
-import React, { useMemo, useState } from 'react'
+import numeral from 'numeral'
+import React, { useMemo } from 'react'
 import { Farm } from 'state/types'
 import styled from 'styled-components'
-import { Flex, Skeleton, Text } from 'uikit-dev'
+import { Skeleton, Text } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { provider } from 'web3-core'
-import colorStroke from 'uikit-dev/images/Color-stroke.png'
+import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
@@ -19,20 +18,6 @@ import DetailsSection from './DetailsSection'
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
 }
-
-const ExpandableRainbow = styled.div`
-  position: relative;
-  padding-top: 4px;
-
-  .color-stroke {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%);
-    height: 4px;
-    width: 100%;
-  }
-`
 
 const FCard = styled.div`
   align-self: baseline;
@@ -45,12 +30,6 @@ const FCard = styled.div`
   position: relative;
   text-align: center;
 `
-
-const ExpandingWrapper = styled.div<{ expanded: boolean }>`
-  height: ${(props) => (props.expanded ? '100%' : '0px')};
-  overflow: hidden;
-`
-
 const Apr = styled(Text)`
   padding: 4px 8px;
   background: ${({ theme }) => theme.colors.successAlpha};
@@ -83,8 +62,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
 }) => {
   const TranslateString = useI18n()
 
-  const [showExpandableSection, setShowExpandableSection] = useState(false)
-
   const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
@@ -114,8 +91,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
     : '-'
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
-  const earnLabel = farm.dual ? farm.dual.earnLabel : 'FINIX'
   const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
+  // const earnLabel = farm.dual ? farm.dual.earnLabel : 'FINIX'
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
@@ -132,42 +109,25 @@ const FarmCard: React.FC<FarmCardProps> = ({
         tokenSymbol={farm.tokenSymbol}
       />
 
-      <div className="flex align-center justify-center mt-3">
-        {!removed && (
-          <Apr className="mb-2" color="success" bold>
+      {!removed && (
+        <div className="flex align-center justify-center mt-2 mb-2">
+          <Apr color="success" bold>
             {TranslateString(736, 'APR')}
-            <div className="ml-1">
-              {farm.apy ? (
-                <>
-                  {/* <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} /> */}
-                  {farmAPY}%
-                </>
-              ) : (
-                <Skeleton height={24} width={80} />
-              )}
-            </div>
+            <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
-        )}
-      </div>
+          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+        </div>
+      )}
 
       <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
 
-      <ExpandableRainbow>
-        <img src={colorStroke} alt="" className="color-stroke" />
-        <ExpandableSectionButton
-          onClick={() => setShowExpandableSection(!showExpandableSection)}
-          expanded={showExpandableSection}
-        />
-        <ExpandingWrapper expanded={showExpandableSection}>
-          <DetailsSection
-            removed={removed}
-            bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-            totalValueFormated={totalValueFormated}
-            lpLabel={lpLabel}
-            addLiquidityUrl={addLiquidityUrl}
-          />
-        </ExpandingWrapper>
-      </ExpandableRainbow>
+      <DetailsSection
+        removed={removed}
+        bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+        totalValueFormated={totalValueFormated}
+        lpLabel={lpLabel}
+        addLiquidityUrl={addLiquidityUrl}
+      />
     </FCard>
   )
 }
