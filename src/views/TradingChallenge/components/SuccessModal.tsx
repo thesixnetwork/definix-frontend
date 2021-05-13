@@ -30,7 +30,7 @@ const SuccessModal = ({ title = '', detail = '', onDismiss = () => null, onSucce
           fullWidth
           variant="primary"
           onClick={() => {
-            onSuccessRefresh()
+            onSuccessRefresh(window.scrollTo(0, 400))
             onDismiss()
           }}
         >
