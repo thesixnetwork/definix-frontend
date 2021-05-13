@@ -2,14 +2,16 @@ import throttle from 'lodash/throttle'
 import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import CountDownBanner from 'uikit-dev/components/CountDownBanner'
+import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
 import Button from '../../components/Button/Button'
-import Text from '../../components/Text/Text'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
 import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
+import Text from '../../components/Text/Text'
 import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
@@ -157,6 +159,9 @@ const Menu: React.FC<NavProps> = ({
 
     return <LanguageIcon color="textSubtle" width="24px" />
   }
+  const endRegisterTimestamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
 
   // const getLanguageName = (lang) => {
   //   return langs.find((l) => {
@@ -296,6 +301,18 @@ const Menu: React.FC<NavProps> = ({
           logout={logout}
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
+          <CountDownBanner
+            logo={logoTrade}
+            title="Definix Trading Tournament"
+            detail="Registration Period end in"
+            endTime={endRegisterTimestamp}
+            button={
+              <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
+                Register now
+              </Button>
+            }
+          />
+
           {children}
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
