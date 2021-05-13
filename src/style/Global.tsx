@@ -46,7 +46,7 @@ const GlobalStyle = createGlobalStyle`
   .color-text { color: ${({ theme }) => theme.colors.text} !important; }
   .color-disable { color: ${({ theme }) => theme.colors.textDisabled} !important; }
 
-  .slick-slider {
+  .slider-profile .slick-slider {
     display: flex; flex-direction: column; align-items: stretch; height: 100%;
 
     * { outline: none; }
@@ -63,6 +63,38 @@ const GlobalStyle = createGlobalStyle`
     .slick-prev, .slick-next { z-index: 1; }
     .slick-prev { left: 0; }
     .slick-next { right: 0; }
+  }
+
+  .slick-dots {
+    height: 48px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    bottom: 0;
+
+    li { 
+      margin: 0; width: auto; height: auto; padding: 0 4px;
+
+      button {
+        margin: 0; width: auto; height: auto; display: block; padding: 4px;
+
+        &:before {
+          content: '';
+          width: 8px;
+          height: 8px;
+          background: ${({ theme }) => theme.colors.text};
+          border-radius: ${({ theme }) => theme.radii.circle};
+        }
+      }
+
+      &.slick-active {
+        button {
+          width: 20px;
+
+          &:before { width: 20px; border-radius: ${({ theme }) => theme.radii.small}; }
+        }
+      }
+    }
   }
 
   .flex {
