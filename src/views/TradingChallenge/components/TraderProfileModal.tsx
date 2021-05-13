@@ -55,7 +55,7 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
     />,
   )
   const [onPresentFailureAPIModal] = useModal(
-    <FailureModal title="Registration False" detail="Your account does not pass trading rules requirement." />,
+    <FailureModal title="Register Fail" detail="Your account does not pass trading rules requirement." />,
   )
 
   const fetchRegister = async () => {
@@ -63,7 +63,7 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
     const body = {
       walletAddr: account,
     }
-    const tradingCompetRegisAPI = process.env.REACT_APP_API_ENV_DEVELOPMENT_TRADE_COMPET_VALIDATE
+    const tradingCompetRegisAPI = process.env.REACT_APP_API_TRADE_COMPET_VALIDATE
     const response = await axios.post(`${tradingCompetRegisAPI}`, body)
 
     if (response.data.success === true) {

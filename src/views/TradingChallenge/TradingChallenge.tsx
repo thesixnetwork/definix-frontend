@@ -37,7 +37,7 @@ const Dot = styled.span`
 `
 const Title = styled.div`
   color: #404041;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 700;
   text-align: center;
 `
@@ -99,10 +99,8 @@ const TradingChallenge = () => {
 
   const DateModal = ({ date }) => {
     return (
-      <div>
-        <Title className="text-bold text-center">
-          Your wallet has been registered for the tournament. The tournament will be open in
-        </Title>
+      <div className="mt-7">
+        <Title>Your wallet has been registered for the tournament. The tournament will be open in</Title>
         <Flip date={date} />
       </div>
     )
@@ -113,6 +111,7 @@ const TradingChallenge = () => {
       <MaxWidth>
         <Card isRainbow>
           <TradingChallengeBanner large />
+          {isRegisterSuccess ? <>{!isTrade && <DateModal date={tradeTimeStamp} />}</> : <></>}
           <Detail>
             <Heading as="h3" className="mb-3">
               Trading Rules:
@@ -232,7 +231,7 @@ const TradingChallenge = () => {
               14 May 2021, 8:00 A.M. - 23 May 2021, 8:00 A.M. (GMT+0)
             </Text>
             {isRegisterSuccess ? (
-              <>{!isTrade && <DateModal date={tradeTimeStamp} />}</>
+              <></>
             ) : (
               <>
                 {!account ? (
