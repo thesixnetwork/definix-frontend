@@ -27,7 +27,7 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-const CountDownBanner = ({ logo = null, title = '', detail = '', endTime, button = null }) => {
+const CountDownBanner = ({ logo = undefined, title = '', detail = '', endTime, button = undefined }) => {
   const currentTime = new Date().getTime()
   const [timer, setTime] = useState({
     days: 0,
