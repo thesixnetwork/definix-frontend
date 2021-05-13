@@ -42,6 +42,17 @@ const Title = styled.div`
   text-align: center;
 `
 
+const DateModal = ({ date }) => {
+  return (
+    <div className="mt-7">
+      <Title className="text-bold text-center">
+        Your wallet has been registered for the tournament. The tournament will be open in
+      </Title>
+      <Flip date={date} />
+    </div>
+  )
+}
+
 const TradingChallenge = () => {
   const { connect, account } = useWallet()
   const [isTradingEnd, setIsTradingEnd] = useState(false)
@@ -96,17 +107,6 @@ const TradingChallenge = () => {
       setIsTrade(true)
     }
   }, [currentTime, tradeTimeStamp])
-
-  const DateModal = ({ date }) => {
-    return (
-      <div className="mt-7">
-        <Title className="text-bold text-center">
-          Your wallet has been registered for the tournament. The tournament will be open in
-        </Title>
-        <Flip date={date} />
-      </div>
-    )
-  }
 
   return (
     <Page>
