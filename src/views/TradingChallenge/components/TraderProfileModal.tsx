@@ -112,16 +112,18 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
   return (
     <Modal title="Fill information and choose profile picture" onDismiss={onDismiss} isRainbow>
       <div style={{ width: '480px', maxWidth: '100%' }}>
-        <Slider
-          {...settings}
-          afterChange={(idx) => {
-            setCurrentSlide(idx)
-          }}
-        >
-          <Avatar src={avatar01} alt="" />
-          <Avatar src={avatar02} alt="" />
-          <Avatar src={avatar03} alt="" />
-        </Slider>
+        <div className="slider-profile">
+          <Slider
+            {...settings}
+            afterChange={(idx) => {
+              setCurrentSlide(idx)
+            }}
+          >
+            <Avatar src={avatar01} alt="" />
+            <Avatar src={avatar02} alt="" />
+            <Avatar src={avatar03} alt="" />
+          </Slider>
+        </div>
 
         <div className="my-4">
           <Input placeholder="Your name" className="mb-3" value={name} onChange={handleChangeName} />

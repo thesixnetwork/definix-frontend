@@ -1,12 +1,16 @@
 import Page from 'components/layout/Page'
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick-theme.css'
+import 'slick-carousel/slick/slick.css'
 import styled from 'styled-components'
 import { BaseLayout, Button, Heading, useMatchBreakpoints } from 'uikit-dev'
 import certik from 'uikit-dev/images/Audit/AW-42.png'
 import techRate from 'uikit-dev/images/Audit/AW-43.png'
 import InfoBanner from 'views/Info/components/InfoBanner'
 import TradingChallengeBanner from 'views/TradingChallenge/components/TradingChallengeBanner'
+import CardUpcomingFarms from './components/CardUpcomingFarms'
 import FinixStats from './components/FinixStats'
 import TotalValueLockedCard from './components/TotalValueLockedCard'
 
@@ -116,6 +120,15 @@ const Home: React.FC = () => {
     return val
   }
 
+  const settings = {
+    infinite: true,
+    lazyLoad: true,
+    dots: true,
+    arrows: false,
+    adaptiveHeight: true,
+    className: 'pb-7',
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
       const d = calculateCountdown(phrase2TimeStamp)
@@ -156,19 +169,22 @@ const Home: React.FC = () => {
             <FinixStats />
           </Cards>
 
-          <TradingChallengeBanner>
-            <Button
-              as={Link}
-              size={isSm ? 'sm' : 'md'}
-              to="/trading-challenge"
-              variant="success"
-              className="btn-secondary-disable"
-            >
-              More details
-            </Button>
-          </TradingChallengeBanner>
+          <Slider {...settings}>
+            <TradingChallengeBanner>
+              <Button
+                as={Link}
+                size={isSm ? 'sm' : 'md'}
+                to="/trading-challenge"
+                variant="success"
+                className="btn-secondary-disable"
+              >
+                More details
+              </Button>
+            </TradingChallengeBanner>
+            <CardUpcomingFarms />
+          </Slider>
 
-          <div className="flex flex-wrap align-center justify-center mt-6">
+          <div className="flex flex-wrap align-center justify-center mt-2">
             <p className="ma-1">Certified by</p>
             <div className="flex align-center ma-1">
               <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
