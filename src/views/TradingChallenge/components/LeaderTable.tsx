@@ -1,6 +1,8 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import React from 'react'
-import styled from 'styled-components'
+import React, { useEffect } from 'react'
+import styled, { keyframes } from 'styled-components'
+import axios from 'axios'
+import _ from 'lodash'
 import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
 import badge1 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-10.png'
@@ -41,7 +43,8 @@ const TBody = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    max-height: 511px;
+    // max-height: 511px;
+    max-height: 660px;
   }
 `
 
@@ -154,7 +157,7 @@ const LeaderTable = ({ className = '', items }) => {
                         ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
                         : null}
                     </Text>
-                    <CopyToClipboard noPadding noText toCopy={item.address} />
+                    {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
                   </Row>
                 </Row>
 
@@ -202,9 +205,10 @@ const LeaderTable = ({ className = '', items }) => {
         </TD>
       </TR>
       <TBody>
-        {items.map((item) => (
+        {items.map((item, idx) => (
           <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
             <TD>
+              {/* <Text bold>{idx + 1}</Text> */}
               <Text bold>{item.rank || '-'}</Text>
             </TD>
 
@@ -221,7 +225,7 @@ const LeaderTable = ({ className = '', items }) => {
                   ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
                   : null}
               </Text>
-              <CopyToClipboard noPadding noText toCopy={item.address} />
+              {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
             </TD>
 
             <TD>
