@@ -35,7 +35,10 @@ const config: MenuEntry[] = [
     label: 'Swap',
     icon: swapClick,
     iconActive: swap,
-    href: 'https://exchange.definix.com/#/swap',
+    href:
+      process.env.REACT_APP_NETWORK === 'testnet'
+        ? 'https://youngexchange.definix.com/#/swap'
+        : 'https://exchange.definix.com/#/swap',
     group: 'dex',
     notHighlight: false,
     newTab: false,
@@ -44,7 +47,10 @@ const config: MenuEntry[] = [
     label: 'Liquidity',
     icon: liquidityClick,
     iconActive: liquidity,
-    href: 'https://exchange.definix.com/#/liquidity',
+    href:
+      process.env.REACT_APP_NETWORK === 'testnet'
+        ? 'https://youngexchange.definix.com/#/liquidity'
+        : 'https://exchange.definix.com/#/liquidity',
     group: 'dex',
     notHighlight: false,
     newTab: false,

@@ -76,6 +76,7 @@
     "@testing-library/react": "^11.2.5",
     "@types/jest": "^26.0.19",
     "@types/react-redux": "^7.1.16",
+    "dotenv-cli": "^4.0.0",
     "eslint": "^7.20.0",
     "husky": "4.3.5",
     "prettier": "^2.1.2",
