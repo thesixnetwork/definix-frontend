@@ -189,7 +189,11 @@ const LeaderTable = ({ className = '', items }) => {
                           position="bottom"
                         />
                       </Row>
-                      <Text bold fontSize="16px" color="success">{`${item.pl}%`}</Text>
+                      {item.pl >= 0 ? (
+                        <Text bold color="success">{`${item.pl}%`}</Text>
+                      ) : (
+                        <Text bold color="failure">{`${item.pl}%`}</Text>
+                      )}
                     </Row>
                   </TD>
                 </TR>
