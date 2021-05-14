@@ -1,21 +1,24 @@
+import BigNumber from 'bignumber.js'
+import useI18n from 'hooks/useI18n'
+import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Image } from 'uikit-dev'
+import { Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
+import ApyButton from './ApyButton'
+// import { communityFarms } from 'config/constants'
 
 export interface ExpandableSectionProps {
+  farm: any
   lpLabel?: string
   multiplier?: string
-  isCommunityFarm?: boolean
-  farmImage?: string
   tokenSymbol?: string
+  removed?: boolean
+  addLiquidityUrl?: string
+  finixPrice?: BigNumber
+  className?: string
+  isHorizontal?: boolean
 }
-
-const Wrapper = styled(Flex)`
-  svg {
-    margin-right: 0.25rem;
-  }
-`
 
 const MultiplierTag = styled.div`
   position: absolute;
@@ -40,8 +43,7 @@ const StyledFarmImages = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  padding: 12px 12px 8px 12px;
-  margin-bottom: 1rem;
+  margin-bottom: 20px;
 
   > * {
     flex-shrink: 0;
@@ -56,35 +58,68 @@ const StyledFarmImages = styled.div`
   }
 `
 
+const Apr = styled(Text)`
+  padding: 4px 8px;
+  background: ${({ theme }) => theme.colors.successAlpha};
+  font-size: 12px;
+  border-radius: ${({ theme }) => theme.radii.small};
+  display: flex;
+  align-items: center;
+`
+
 const CardHeading: React.FC<ExpandableSectionProps> = ({
+  farm,
   lpLabel,
   multiplier,
-  // isCommunityFarm,
-  farmImage,
   tokenSymbol,
+  removed,
+  addLiquidityUrl,
+  finixPrice,
+  className = '',
+  isHorizontal = false,
 }) => {
+  // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
+  // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
+  const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
   const firstCoin = farmImage.split('-')[0].toLocaleLowerCase()
   const secondCoin = farmImage.split('-')[1].toLocaleLowerCase()
+  const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
+  // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
+
+  const TranslateString = useI18n()
+
+  const imgSize = isHorizontal ? 48 : 56
 
   return (
-    <Wrapper className="pt-5" flexDirection="column" alignItems="center" style={{ position: 'relative' }}>
+    <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <MultiplierTag>
         <p>{multiplier}</p>
       </MultiplierTag>
 
       <StyledFarmImages>
-        <Image src={`/images/coins/${firstCoin}.png`} alt={tokenSymbol} width={56} height={56} />
-        <Image src={`/images/coins/${secondCoin}.png`} alt={tokenSymbol} width={56} height={56} />
+        <Image src={`/images/coins/${firstCoin}.png`} alt={tokenSymbol} width={imgSize} height={imgSize} />
+        <Image src={`/images/coins/${secondCoin}.png`} alt={tokenSymbol} width={imgSize} height={imgSize} />
       </StyledFarmImages>
 
-      <Heading fontSize="24px !important" fontWeight="500 !important">
+      <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
         {lpLabel}
       </Heading>
+
+      {!removed && (
+        <div className="flex align-center justify-center mt-2">
+          <Apr color="success" bold>
+            {TranslateString(736, 'APR')}
+            <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
+          </Apr>
+          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+        </div>
+      )}
+
       {/* <Flex justifyContent="center">
         {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
         <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
       </Flex> */}
-    </Wrapper>
+    </Flex>
   )
 }
 

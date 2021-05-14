@@ -1,54 +1,35 @@
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { communityFarms } from 'config/constants'
 import { QuoteToken } from 'config/constants/types'
-import useI18n from 'hooks/useI18n'
-import numeral from 'numeral'
 import React, { useMemo } from 'react'
-import { Farm } from 'state/types'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Skeleton, Text } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { provider } from 'web3-core'
-import ApyButton from './ApyButton'
-import CardActionsContainer from './CardActionsContainer'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
+import HarvestAction from './HarvestAction'
+import StakeAction from './StakeAction'
+import { FarmCardProps } from './types'
 
-export interface FarmWithStakedValue extends Farm {
-  apy?: BigNumber
-}
-
-const FCard = styled.div`
-  align-self: baseline;
+const VerticalStyle = styled.div`
   background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
   display: flex;
+  position: relative;
+  align-self: baseline;
   flex-direction: column;
   justify-content: space-around;
-  position: relative;
   text-align: center;
 `
-const Apr = styled(Text)`
-  padding: 4px 8px;
-  background: ${({ theme }) => theme.colors.successAlpha};
-  font-size: 12px;
-  border-radius: ${({ theme }) => theme.radii.small};
-  display: flex;
-  align-items: center;
-`
 
-interface FarmCardProps {
-  farm: FarmWithStakedValue
-  removed: boolean
-  bnbPrice?: BigNumber
-  ethPrice?: BigNumber
-  sixPrice?: BigNumber
-  finixPrice?: BigNumber
-  ethereum?: provider
-  account?: string
-}
+const HorizontalStyle = styled.div`
+  background: ${(props) => props.theme.card.background};
+  border-radius: ${({ theme }) => theme.radii.default};
+  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  display: flex;
+  position: relative;
+`
 
 const FarmCard: React.FC<FarmCardProps> = ({
   farm,
@@ -59,14 +40,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   ethPrice,
   ethereum,
   account,
+  isHorizontal = false,
 }) => {
-  const TranslateString = useI18n()
-
-  const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-  // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
-  // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
-  const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
-
   const totalValue: BigNumber = useMemo(() => {
     if (!farm.lpTotalInQuoteToken) {
       return null
@@ -91,44 +66,75 @@ const FarmCard: React.FC<FarmCardProps> = ({
     : '-'
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
-  const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
-  // const earnLabel = farm.dual ? farm.dual.earnLabel : 'FINIX'
+  const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  const { earnings } = useFarmUser(pid)
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
-  return (
-    <FCard>
-      {/* {farm.tokenSymbol === 'FINIX' && <StyledCardAccent />} */}
-      <CardHeading
-        lpLabel={lpLabel}
-        multiplier={farm.multiplier}
-        isCommunityFarm={isCommunityFarm}
-        farmImage={farmImage}
-        tokenSymbol={farm.tokenSymbol}
-      />
+  const renderCardHeading = (className?: string) => (
+    <CardHeading
+      farm={farm}
+      lpLabel={lpLabel}
+      multiplier={farm.multiplier}
+      tokenSymbol={farm.tokenSymbol}
+      removed={removed}
+      addLiquidityUrl={addLiquidityUrl}
+      finixPrice={finixPrice}
+      isHorizontal={isHorizontal}
+      className={className}
+    />
+  )
 
-      {!removed && (
-        <div className="flex align-center justify-center mt-2 mb-2">
-          <Apr color="success" bold>
-            {TranslateString(736, 'APR')}
-            <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
-          </Apr>
-          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+  const renderStakeAction = (className?: string) => (
+    <StakeAction
+      farm={farm}
+      ethereum={ethereum}
+      account={account}
+      addLiquidityUrl={addLiquidityUrl}
+      className={className}
+    />
+  )
+
+  const renderHarvestAction = (className?: string) => (
+    <HarvestAction earnings={earnings} pid={pid} className={className} />
+  )
+
+  const renderDetailsSection = (className?: string) => (
+    <DetailsSection
+      removed={removed}
+      bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+      totalValueFormated={totalValueFormated}
+      lpLabel={lpLabel}
+      addLiquidityUrl={addLiquidityUrl}
+      isHorizontal={isHorizontal}
+      className={className}
+    />
+  )
+
+  if (isHorizontal) {
+    return (
+      <HorizontalStyle className="flex align-stretch pa-5 mb-4">
+        {renderCardHeading('col-3 pos-static')}
+
+        <div className="col-5 bd-x flex flex-column justify-space-between px-5">
+          {renderStakeAction('pb-5')}
+          {renderDetailsSection()}
         </div>
-      )}
 
-      <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
+        {renderHarvestAction('col-4 pl-5 flex-grow')}
+      </HorizontalStyle>
+    )
+  }
 
-      <DetailsSection
-        removed={removed}
-        bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-        totalValueFormated={totalValueFormated}
-        lpLabel={lpLabel}
-        addLiquidityUrl={addLiquidityUrl}
-      />
-    </FCard>
+  return (
+    <VerticalStyle className="mb-7">
+      {renderCardHeading('pt-6')}
+      {renderStakeAction('pa-5')}
+      {renderHarvestAction('pa-5')}
+      {renderDetailsSection('px-5 py-3')}
+    </VerticalStyle>
   )
 }
 

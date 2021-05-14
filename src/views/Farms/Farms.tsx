@@ -1,6 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import FlexLayout from 'components/layout/Flex'
+import FlexLayout from 'components/layout/FlexLayout'
 import Page from 'components/layout/Page'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
@@ -15,7 +15,8 @@ import styled from 'styled-components'
 import { Button, Heading, Text } from 'uikit-dev'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
-import FarmCard, { FarmWithStakedValue } from './components/FarmCard/FarmCard'
+import FarmCard from './components/FarmCard/FarmCard'
+import { FarmWithStakedValue } from './components/FarmCard/types'
 import FarmTabButtons from './components/FarmTabButtons'
 
 const HelpButton = styled(Button)`
@@ -34,7 +35,7 @@ const Farms: React.FC = () => {
   const { fastRefresh } = useRefresh()
 
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [cardView, setCardView] = useState(true)
+  const [listView, setListView] = useState(false)
   const [isPhrase2, setIsPhrase2] = useState(false)
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
@@ -89,6 +90,7 @@ const Farms: React.FC = () => {
 
         return { ...farm, apy }
       })
+
       return farmsToDisplayWithAPY.map((farm) => (
         <FarmCard
           key={farm.pid}
@@ -100,10 +102,11 @@ const Farms: React.FC = () => {
           finixPrice={finixPrice}
           ethereum={ethereum}
           account={account}
+          isHorizontal={listView}
         />
       ))
     },
-    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account],
+    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account, listView],
   )
 
   useEffect(() => {
@@ -125,7 +128,7 @@ const Farms: React.FC = () => {
   useEffect(() => {
     return () => {
       setStackedOnly(false)
-      setCardView(true)
+      setListView(false)
       setIsPhrase2(false)
     }
   }, [])
@@ -149,11 +152,11 @@ const Farms: React.FC = () => {
         <FarmTabButtons
           stackedOnly={stackedOnly}
           setStackedOnly={setStackedOnly}
-          cardView={cardView}
-          setCardView={setCardView}
+          listView={listView}
+          setListView={setListView}
         />
 
-        <FlexLayout>
+        <FlexLayout cols={listView ? 1 : 3}>
           <Route exact path={`${path}`}>
             {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
           </Route>

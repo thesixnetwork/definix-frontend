@@ -28,9 +28,13 @@ const GlobalStyle = createGlobalStyle`
   .text-bold { font-weight: 600; color: ${({ theme }) => theme.colors.text}; }
   .text-right { text-align: right; }
   .text-left { text-align: left; }
+
   .color-primary { color: ${({ theme }) => theme.colors.primary} !important; }
   .color-text { color: ${({ theme }) => theme.colors.text} !important; }
   .color-disable { color: ${({ theme }) => theme.colors.textDisabled} !important; }
+
+  .pos-relative { position: relative; }
+  .pos-static { position: static; }
 
   .flex {
     display: flex !important;
@@ -61,6 +65,16 @@ const GlobalStyle = createGlobalStyle`
     .col-4 { width: 33.333%; }
     .col-3 { width: 25%; }
   }
+
+  .bd { border: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-t { border-top: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-r { border-right: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-b { border-bottom: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-l { border-left: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-x { border-right: 1px solid ${({ theme }) => theme.colors.border}; border-left: 1px solid ${({ theme }) =>
+  theme.colors.border}; }
+  .bd-y { border-top: 1px solid ${({ theme }) => theme.colors.border}; border-bottom: 1px solid ${({ theme }) =>
+  theme.colors.border}; }
 
   .ma-0 {
     margin: 0 !important;

@@ -20,17 +20,17 @@ const Wrapper = styled.div`
   } ;
 `
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, cardView, setCardView }) => {
+const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
   return (
     <Wrapper className="mb-6">
       <div className="flex">
         <Button
           size="sm"
           onClick={() => {
-            setCardView(true)
+            setListView(false)
           }}
-          variant={cardView ? 'primary' : 'secondary'}
-          startIcon={<CardViewIcon color={cardView ? 'white' : 'primary'} />}
+          variant={!listView ? 'primary' : 'secondary'}
+          startIcon={<CardViewIcon color={!listView ? 'white' : 'primary'} />}
           className="mr-2"
         >
           Card View
@@ -38,10 +38,10 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, cardView, setCardView }) 
         <Button
           size="sm"
           onClick={() => {
-            setCardView(false)
+            setListView(true)
           }}
-          startIcon={<ListViewIcon color={!cardView ? 'white' : 'primary'} />}
-          variant={!cardView ? 'primary' : 'secondary'}
+          startIcon={<ListViewIcon color={listView ? 'white' : 'primary'} />}
+          variant={listView ? 'primary' : 'secondary'}
         >
           List View
         </Button>

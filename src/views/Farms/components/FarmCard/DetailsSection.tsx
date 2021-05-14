@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronRightIcon, Flex, Link, Text } from 'uikit-dev'
+import { ChevronRightIcon, Link, Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -9,47 +9,68 @@ export interface ExpandableSectionProps {
   totalValueFormated?: string
   lpLabel?: string
   addLiquidityUrl?: string
+  isHorizontal?: boolean
+  className?: string
 }
 
-const Wrapper = styled.div`
-  padding: 16px;
-  background: #fafcff;
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
-  border-bottom-left-radius: ${({ theme }) => theme.radii.card};
-  border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+const Wrapper = styled.div<{ isHorizontal?: boolean }>`
+  background: ${({ isHorizontal }) => (!isHorizontal ? '#fafcff' : 'transparent')};
+  border-top: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
+  border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
+  border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
   bscScanAddress,
   removed,
   totalValueFormated,
+  isHorizontal = false,
+  className = '',
   // lpLabel,
   // addLiquidityUrl,
 }) => {
   const TranslateString = useI18n()
 
+  const LinkView = ({ linkClassName = '' }) => (
+    <Link
+      external
+      href={bscScanAddress}
+      bold={false}
+      className={`flex-shrink ${linkClassName}`}
+      color="textSubtle"
+      fontSize="12px"
+    >
+      {TranslateString(356, 'View on BscScan')}
+      <ChevronRightIcon color="textSubtle" />
+    </Link>
+  )
+
   return (
-    <Wrapper>
-      {/* <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-2">
+    <Wrapper isHorizontal={isHorizontal} className={className}>
+      {/* <div className="flex align-baseline flex-wrap justify-space-between mb-1">
         <Text>{TranslateString(316, 'Deposit')}:</Text>
         <StyledLinkExternal className="flex-shrink" href={addLiquidityUrl}>
           {lpLabel}
         </StyledLinkExternal>
-      </Flex> */}
+      </div> */}
       {!removed && (
-        <Flex justifyContent="space-between" flexWrap="wrap" className="flex mb-1">
-          <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}:</Text>
-          <Text bold className="flex-shrink">
-            {totalValueFormated}
-          </Text>
-        </Flex>
+        <div className="flex align-baseline flex-wrap justify-space-between">
+          <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
+
+          <div className="flex align-baseline">
+            <Text bold className="flex-shrink">
+              {totalValueFormated}
+            </Text>
+            {isHorizontal && <LinkView linkClassName="ml-2" />}
+          </div>
+        </div>
       )}
-      <Flex justifyContent="flex-end" className="flex">
-        <Link external href={bscScanAddress} bold={false} className="flex-shrink" color="textSubtle" fontSize="12px">
-          {TranslateString(356, 'View on BscScan')}
-          <ChevronRightIcon color="textSubtle" />
-        </Link>
-      </Flex>
+
+      {!isHorizontal && (
+        <div className="flex justify-end mt-1">
+          <LinkView />
+        </div>
+      )}
     </Wrapper>
   )
 }
