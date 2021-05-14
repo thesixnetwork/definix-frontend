@@ -255,7 +255,7 @@ const TradingChallenge = () => {
                     }}
                     disabled={isTrade}
                   >
-                    {isTrade ? "Register is now closed" : "Register"}
+                    {isTrade ? 'Register is now closed' : 'Register'}
                     {/* {isTradingEnd ? 'Registration successfully' : 'Register'} */}
                   </Button>
                 )}
