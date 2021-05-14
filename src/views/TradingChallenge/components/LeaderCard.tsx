@@ -90,7 +90,7 @@ const LeaderCard = ({ rank, name, avatar, address, value, pl, className = '' }) 
             <Row className="mb-0">
               <Text small>Value</Text>
               <Helper
-                text="The current trading volume in each consecutive trading period in the amount for a port."
+                text="The current trading volume in each consecutive trading period in the total amount for each port."
                 className="ml-2"
                 position="bottom"
               />

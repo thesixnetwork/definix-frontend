@@ -157,7 +157,6 @@ const LeaderTable = ({ className = '', items }) => {
                         ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
                         : null}
                     </Text>
-                    {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
                   </Row>
                 </Row>
 
@@ -165,7 +164,7 @@ const LeaderTable = ({ className = '', items }) => {
                   <Row className="mb-0">
                     <Text fontSize="12px">Value</Text>
                     <Helper
-                      text="The current trading volume in each consecutive trading period in the amount for a port."
+                      text="The current trading volume in each consecutive trading period in the total amount for each port."
                       className="ml-2"
                       position="bottom"
                     />
@@ -206,7 +205,7 @@ const LeaderTable = ({ className = '', items }) => {
         <TD>
           <Text>Value</Text>
           <Helper
-            text="The current trading volume in each consecutive trading period in the amount for a port."
+            text="The current trading volume in each consecutive trading period in the total amount for each port."
             className="ml-2"
             position="bottom"
           />
@@ -224,7 +223,6 @@ const LeaderTable = ({ className = '', items }) => {
         {items.map((item, idx) => (
           <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
             <TD>
-              {/* <Text bold>{idx + 1}</Text> */}
               <Text bold>{item.rank || '-'}</Text>
             </TD>
 
@@ -241,7 +239,6 @@ const LeaderTable = ({ className = '', items }) => {
                   ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
                   : null}
               </Text>
-              {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
             </TD>
 
             <TD>

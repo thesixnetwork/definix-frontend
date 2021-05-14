@@ -62,14 +62,14 @@ const Leaderboard = () => {
         const fetchedData = []
         arrData.map((data, idx) =>
           fetchedData.push({
-            id: data._id,
+            // id: data._id,
             address: data.address,
             avatar:
               (data.avatar_name === '0' && avatar00) ||
               (data.avatar_name === '1' && avatar01) ||
               (data.avatar_name === '2' && avatar02),
             name: data.display_name,
-            value: data.balance,
+            value: parseFloat(data.balance).toFixed(2),
             pl: data.pnl,
             telegramID: data.telegram_id,
             rank: parseInt(`${idx + 1}`),
