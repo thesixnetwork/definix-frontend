@@ -1,14 +1,12 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import React, { useEffect } from 'react'
-import styled, { keyframes } from 'styled-components'
-import axios from 'axios'
+import React from 'react'
+import styled from 'styled-components'
 import _ from 'lodash'
 import { Skeleton, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
 import badge1 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-10.png'
 import badge2 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-11.png'
 import badge3 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-12.png'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 
 const Rank = styled.img`
   width: 24px;
@@ -219,7 +217,7 @@ const LeaderTable = ({ className = '', items }) => {
           <Helper
             text="The current trading volume in each consecutive trading period in the total amount for each port."
             className="ml-2"
-            position="bottom"
+            position="left"
           />
         </TD>
         <TD>
