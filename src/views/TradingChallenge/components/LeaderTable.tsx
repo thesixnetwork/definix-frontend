@@ -116,7 +116,7 @@ const TD = styled.div<{ rank?: number }>`
     }
     &:nth-child(05) {
       width: 20%;
-      justify-content: center;
+      justify-content: flex-end;
     }
   }
 `

@@ -89,14 +89,22 @@ const LeaderCard = ({ rank, name, avatar, address, value, pl, className = '' }) 
           <Row>
             <Row className="mb-0">
               <Text small>Value</Text>
-              <Helper text="" className="ml-2" position="top" />
+              <Helper
+                text="The current trading volume in each consecutive trading period in the amount for a port."
+                className="ml-2"
+                position="bottom"
+              />
             </Row>
             <CardValue fontSize="14px" fontWeight="bold" decimals={2} value={value} prefix="$" />
           </Row>
           <Row>
             <Row className="mb-0">
               <Text small>P/L (%)</Text>
-              <Helper text="" className="ml-2" position="top" />
+              <Helper
+                text="The average profit/loss ratio for an active portfolios primarily motive is to maximize trading gains (in percentage division)."
+                className="ml-2"
+                position="bottom"
+              />
             </Row>
             <CardValue fontSize="14px" fontWeight="bold" color="success" decimals={2} value={pl} suffix="%" />
           </Row>
