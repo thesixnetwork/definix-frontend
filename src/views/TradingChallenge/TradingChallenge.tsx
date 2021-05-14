@@ -253,9 +253,9 @@ const TradingChallenge = () => {
                     onClick={() => {
                       onPresentTraderProfileModal()
                     }}
-                    disabled={isTradingEnd}
+                    disabled={isTrade}
                   >
-                    Register
+                    {isTrade ? 'Register is now closed' : 'Register'}
                     {/* {isTradingEnd ? 'Registration successfully' : 'Register'} */}
                   </Button>
                 )}
