@@ -44,7 +44,7 @@ const TBody = styled.div`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     // max-height: 511px;
-    max-height: 660px;
+    max-height: 1000px;
   }
 `
 
@@ -164,14 +164,22 @@ const LeaderTable = ({ className = '', items }) => {
                 <Row>
                   <Row className="mb-0">
                     <Text fontSize="12px">Value</Text>
-                    <Helper text="" className="ml-2" position="top" />
+                    <Helper
+                      text="The current trading volume in each consecutive trading period in the amount for a port."
+                      className="ml-2"
+                      position="bottom"
+                    />
                   </Row>
                   <Text bold fontSize="16px">{`$${item.value}`}</Text>
                 </Row>
                 <Row>
                   <Row className="mb-0">
                     <Text fontSize="12px">P/L (%)</Text>
-                    <Helper text="" className="ml-2" position="top" />
+                    <Helper
+                      text="The average profit/loss ratio for an active portfolios primarily motive is to maximize trading gains (in percentage division)."
+                      className="ml-2"
+                      position="bottom"
+                    />
                   </Row>
                   <Text bold fontSize="16px" color="success">{`${item.pl}%`}</Text>
                 </Row>
@@ -187,7 +195,7 @@ const LeaderTable = ({ className = '', items }) => {
     <Table className={className} isRainbow>
       <TR>
         <TD>
-          <Text>No.</Text>
+          <Text>Rank</Text>
         </TD>
         <TD>
           <Text>Name</Text>
@@ -197,11 +205,19 @@ const LeaderTable = ({ className = '', items }) => {
         </TD>
         <TD>
           <Text>Value</Text>
-          <Helper text="" className="ml-2" position="top" />
+          <Helper
+            text="The current trading volume in each consecutive trading period in the amount for a port."
+            className="ml-2"
+            position="bottom"
+          />
         </TD>
         <TD>
           <Text>P/L (%)</Text>
-          <Helper text="" className="ml-2" position="top" />
+          <Helper
+            text="The average profit/loss ratio for an active portfolios primarily motive is to maximize trading gains (in percentage division)."
+            className="ml-2"
+            position="bottom"
+          />
         </TD>
       </TR>
       <TBody>
