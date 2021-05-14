@@ -26,7 +26,7 @@ const mockDisqualified = Array.from({ length: 5 }, (x, idx) => ({
   pl: 5.21,
 }))
 
-const fetchLeaders = [ ]
+const fetchLeaders = []
 
 // fetchLeaders.push({
 //   id: `isMe`,
@@ -115,8 +115,8 @@ const Leaderboard = () => {
     )
   }
 
-  const sortedFetchedLeader = _.sortBy(fetchLeaders, data => data.rank)
-  const topThree = sortedFetchedLeader.splice(0,3)
+  const sortedFetchedLeader = _.sortBy(fetchLeaders, (data) => data.rank)
+  const topThree = sortedFetchedLeader.splice(0, 3)
   return (
     <Page>
       <MaxWidth>
