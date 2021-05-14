@@ -8,7 +8,7 @@ import { Button, Heading, useMatchBreakpoints } from 'uikit-dev'
 import avatar00 from 'uikit-dev/images/for-trading-challenge/IMG_1558.png'
 import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1560.png'
 import avatar02 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
-// import LeaderCard from './components/LeaderCard'
+import LeaderCard from './components/LeaderCard'
 import LeaderTable from './components/LeaderTable'
 
 const MaxWidth = styled.div`
@@ -26,18 +26,7 @@ const mockDisqualified = Array.from({ length: 5 }, (x, idx) => ({
   pl: 5.21,
 }))
 
-const fetchLeaders = [
-  {
-    id: '001',
-    address: '0x4fxxxxxx4c7d',
-    avatar: avatar02,
-    name: 'xxx',
-    value: '0',
-    pl: '0',
-    telegramID: 'ssss',
-    rank: '1',
-  },
-]
+const fetchLeaders = [ ]
 
 // fetchLeaders.push({
 //   id: `isMe`,
@@ -83,7 +72,7 @@ const Leaderboard = () => {
             value: data.balance,
             pl: data.pnl,
             telegramID: data.telegram_id,
-            rank: `${idx + 1}`,
+            rank: parseInt(`${idx + 1}`),
           }),
         )
         // console.log('fetchLeaders !!!!!', fetchLeaders.slice(1))
@@ -126,6 +115,8 @@ const Leaderboard = () => {
     )
   }
 
+  const sortedFetchedLeader = _.sortBy(fetchLeaders, data => data.rank)
+  const topThree = sortedFetchedLeader.splice(0,3)
   return (
     <Page>
       <MaxWidth>
@@ -137,13 +128,13 @@ const Leaderboard = () => {
           {/* {!isSm && <FilterButton />} */}
         </div>
 
-        {/* {!isShowDisqualified && !isSm && mockTop3.length > 0 && (
+        {!isShowDisqualified && !isSm && topThree.length > 0 && (
           <div className="flex flex-wrap" style={{ margin: '0 -8px' }}>
-            {mockTop3.slice(0, 3).map((d, idx) => (
+            {topThree.map((d, idx) => (
               <LeaderCard {...d} rank={idx + 1} className={isSm ? 'col-12' : 'col-4'} />
             ))}
           </div>
-        )} */}
+        )}
 
         {!loadingAPI ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
@@ -154,7 +145,7 @@ const Leaderboard = () => {
           <LeaderTable
             // eslint-disable-next-line no-nested-ternary
             // items={!isShowDisqualified ? (isSm ? fetchLeaders : mockExcTop3) : mockDisqualified}
-            items={fetchLeaders.slice(1)}
+            items={!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader]}
             className="mt-2"
           />
         )}

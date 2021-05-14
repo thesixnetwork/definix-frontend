@@ -195,7 +195,7 @@ const LeaderTable = ({ className = '', items }) => {
     <Table className={className} isRainbow>
       <TR>
         <TD>
-          <Text>Rnak</Text>
+          <Text>Rank</Text>
         </TD>
         <TD>
           <Text>Name</Text>
