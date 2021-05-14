@@ -26,8 +26,6 @@ const mockDisqualified = Array.from({ length: 5 }, (x, idx) => ({
   pl: 5.21,
 }))
 
-const fetchLeaders = []
-
 // fetchLeaders.push({
 //   id: `isMe`,
 //   address: '0x4fxxxxxx4c7d',
@@ -51,6 +49,7 @@ const Leaderboard = () => {
   const { isSm } = useMatchBreakpoints()
   const [isShowDisqualified, setIsShowDisqualified] = useState(false)
   const [loadingAPI, setLoadingAPI] = React.useState(true)
+  const [fetchLeaders, setFetchLeaders] = React.useState([])
 
   useEffect(() => {
     async function fetchLeaderBoard() {
@@ -60,8 +59,9 @@ const Leaderboard = () => {
       if (response.data.success) {
         setLoadingAPI(true)
         const arrData = _.get(response.data, 'data')
+        const fetchedData = []
         arrData.map((data, idx) =>
-          fetchLeaders.push({
+          fetchedData.push({
             id: data._id,
             address: data.address,
             avatar:
@@ -75,6 +75,7 @@ const Leaderboard = () => {
             rank: parseInt(`${idx + 1}`),
           }),
         )
+        setFetchLeaders(fetchedData)
         // console.log('fetchLeaders !!!!!', fetchLeaders.slice(1))
       } else {
         setLoadingAPI(true)

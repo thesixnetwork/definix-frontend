@@ -81,7 +81,7 @@ const LeaderCard = ({ rank, name, avatar, address, value, pl, className = '' }) 
           </Text>
           <div className="flex align-center">
             <Text className="mr-2">{addressEllipsis}</Text>
-            <CopyToClipboard noPadding toCopy={address} />
+            {/* <CopyToClipboard noPadding toCopy={address} /> */}
           </div>
         </div>
 
