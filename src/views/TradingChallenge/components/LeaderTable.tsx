@@ -134,12 +134,12 @@ const LeaderTable = ({ className = '', items }) => {
       <Table className={className} isRainbow>
         <TBody>
           {items.length === 0
-            ? Array.from(Array(100).keys()).map(item => (
+            ? Array.from(Array(100).keys()).map((item) => (
                 <TRLoading key={item}>
                   <Skeleton height={23} width="100%" />
                 </TRLoading>
               ))
-            : items.map(item => (
+            : items.map((item) => (
                 <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
                   <TD rank={item.rank}>
                     {item.rank === 1 && <Rank src={badge1} alt="" />}
@@ -232,7 +232,7 @@ const LeaderTable = ({ className = '', items }) => {
       </TR>
       <TBody>
         {items.length === 0
-          ? Array.from(Array(100).keys()).map(item => (
+          ? Array.from(Array(100).keys()).map((item) => (
               <TRLoading key={item}>
                 <Skeleton height={23} width="100%" />
               </TRLoading>
