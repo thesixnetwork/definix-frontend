@@ -1,7 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import React from 'react'
 import styled from 'styled-components'
-import _ from 'lodash'
 import { Skeleton, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
 import badge1 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-10.png'
@@ -236,7 +235,7 @@ const LeaderTable = ({ className = '', items }) => {
                 <Skeleton height={23} width="100%" />
               </TRLoading>
             ))
-          : items.map((item, idx) => (
+          : items.map((item) => (
               <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
                 <TD>
                   <Text bold>{item.rank || '-'}</Text>
@@ -260,8 +259,13 @@ const LeaderTable = ({ className = '', items }) => {
                 <TD>
                   <Text bold>{`$${item.value}`}</Text>
                 </TD>
+
                 <TD>
-                  <Text bold color="success">{`${item.pl}%`}</Text>
+                  {item.pl >= 0 ? (
+                    <Text bold color="success">{`${item.pl}%`}</Text>
+                  ) : (
+                    <Text bold color="failure">{`${item.pl}%`}</Text>
+                  )}
                 </TD>
               </TR>
             ))}
