@@ -136,12 +136,12 @@ const LeaderTable = ({ className = '', items }) => {
       <Table className={className} isRainbow>
         <TBody>
           {items.length === 0
-            ? Array.from(Array(100).keys()).map((item) => (
+            ? Array.from(Array(100).keys()).map(item => (
                 <TRLoading key={item}>
                   <Skeleton height={23} width="100%" />
                 </TRLoading>
               ))
-            : items.map((item) => (
+            : items.map(item => (
                 <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
                   <TD rank={item.rank}>
                     {item.rank === 1 && <Rank src={badge1} alt="" />}
@@ -169,7 +169,6 @@ const LeaderTable = ({ className = '', items }) => {
                             ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
                             : null}
                         </Text>
-                        {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
                       </Row>
                     </Row>
 
@@ -177,7 +176,7 @@ const LeaderTable = ({ className = '', items }) => {
                       <Row className="mb-0">
                         <Text fontSize="12px">Value</Text>
                         <Helper
-                          text="The current trading volume in each consecutive trading period in the amount for a port."
+                          text="The current trading volume in each consecutive trading period in the total amount for each port."
                           className="ml-2"
                           position="bottom"
                         />
@@ -218,7 +217,7 @@ const LeaderTable = ({ className = '', items }) => {
         <TD>
           <Text>Value</Text>
           <Helper
-            text="The current trading volume in each consecutive trading period in the amount for a port."
+            text="The current trading volume in each consecutive trading period in the total amount for each port."
             className="ml-2"
             position="bottom"
           />
@@ -234,7 +233,7 @@ const LeaderTable = ({ className = '', items }) => {
       </TR>
       <TBody>
         {items.length === 0
-          ? Array.from(Array(100).keys()).map((item) => (
+          ? Array.from(Array(100).keys()).map(item => (
               <TRLoading key={item}>
                 <Skeleton height={23} width="100%" />
               </TRLoading>
@@ -242,7 +241,6 @@ const LeaderTable = ({ className = '', items }) => {
           : items.map((item, idx) => (
               <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
                 <TD>
-                  {/* <Text bold>{idx + 1}</Text> */}
                   <Text bold>{item.rank || '-'}</Text>
                 </TD>
 
@@ -259,7 +257,6 @@ const LeaderTable = ({ className = '', items }) => {
                       ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
                       : null}
                   </Text>
-                  {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
                 </TD>
 
                 <TD>
