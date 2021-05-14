@@ -1,5 +1,5 @@
 import Page from 'components/layout/Page'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled, { keyframes } from 'styled-components'
 import loadingIcon from 'uikit-dev/images/loading-icon.png'
 import axios from 'axios'
@@ -17,14 +17,14 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-const mockDisqualified = Array.from({ length: 5 }, (x, idx) => ({
-  id: `${idx}dis`,
-  name: 'Name',
-  address: '0x4fxxxxxx4c7d',
-  avatar: avatar01,
-  value: 670.7633,
-  pl: 5.21,
-}))
+// const mockDisqualified = Array.from({ length: 5 }, (x, idx) => ({
+//   id: `${idx}dis`,
+//   name: 'Name',
+//   address: '0x4fxxxxxx4c7d',
+//   avatar: avatar01,
+//   value: 670.7633,
+//   pl: 5.21,
+// }))
 
 // fetchLeaders.push({
 //   id: `isMe`,
@@ -76,7 +76,6 @@ const Leaderboard = () => {
           }),
         )
         setFetchLeaders(fetchedData)
-        // console.log('fetchLeaders !!!!!', fetchLeaders.slice(1))
       } else {
         setLoadingAPI(true)
       }

@@ -5,7 +5,6 @@ import Helper from 'uikit-dev/components/Helper'
 import badge1 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-10.png'
 import badge2 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-11.png'
 import badge3 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-12.png'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import CardValue from 'views/Home/components/CardValue'
 
 const StyleCard = styled(Card)<{ rank: number }>`
@@ -81,7 +80,6 @@ const LeaderCard = ({ rank, name, avatar, address, value, pl, className = '' }) 
           </Text>
           <div className="flex align-center">
             <Text className="mr-2">{addressEllipsis}</Text>
-            {/* <CopyToClipboard noPadding toCopy={address} /> */}
           </div>
         </div>
 
