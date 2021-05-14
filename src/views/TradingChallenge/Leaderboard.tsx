@@ -62,7 +62,7 @@ const Leaderboard = () => {
         const fetchedData = []
         arrData.map((data, idx) =>
           fetchedData.push({
-            id: data._id,
+            // id: data._id,
             address: data.address,
             avatar:
               (data.avatar_name === '0' && avatar00) ||
