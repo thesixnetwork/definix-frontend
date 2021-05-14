@@ -32,7 +32,9 @@ const Row = styled.div`
   }
 `
 
-const Table = styled(Card)``
+const Table = styled(Card)`
+  overflow: visible;
+`
 
 const TBody = styled.div`
   overflow: auto;
@@ -226,7 +228,7 @@ const LeaderTable = ({ className = '', items }) => {
           <Helper
             text="The average profit/loss ratio for an active portfolios primarily motive is to maximize trading gains (in percentage division)."
             className="ml-2"
-            position="bottom"
+            position="left"
           />
         </TD>
       </TR>
