@@ -13,6 +13,8 @@ export type Spacing = number[]
 
 export type Radii = {
   small: string
+  medium: string
+  large: string
   default: string
   card: string
   circle: string
@@ -25,8 +27,10 @@ export type Shadows = {
   warning: string
   focus: string
   inset: string
+  inset2: string
   elevation1: string
   elevation2: string
+  elevation3: string
 }
 
 export type Gradients = {
@@ -40,6 +44,7 @@ export type Colors = {
   secondary: string
   tertiary: string
   success: string
+  successAlpha: string
   failure: string
   warning: string
   contrast: string
@@ -48,10 +53,11 @@ export type Colors = {
   background: string
   backgroundDisabled: string
   backgroundBox: string
+  backgroundGray: string
+  backgroundRadial: string
   text: string
   textDisabled: string
   textSubtle: string
-  borderColor: string
   card: string
   border: string
   white: string

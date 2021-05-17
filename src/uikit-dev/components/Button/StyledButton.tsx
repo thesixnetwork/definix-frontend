@@ -48,7 +48,7 @@ const StyledButton = styled.button<ButtonProps>`
   align-items: center;
   background-color: ${getButtonVariantProp('background')};
   border: ${getButtonVariantProp('border')};
-  border-radius: 40px;
+  border-radius: ${({ radii, theme }) => (radii ? theme.radii[radii] : '40px')};
   // box-shadow: ${getButtonVariantProp('boxShadow')};
   color: ${getButtonVariantProp('color')};
   cursor: pointer;
@@ -63,7 +63,7 @@ const StyledButton = styled.button<ButtonProps>`
   letter-spacing: 0.03em;
   justify-content: center;
   outline: 0;
-  padding: ${({ size }) => (size === 'sm' ? '0 16px' : '0 24px')};
+  padding: ${({ size }) => (size === 'sm' ? '0 20px' : '0 24px')};
   transition: background-color 0.1s;
   opacity: ${({ isLoading }) => (isLoading ? 0.5 : 1)};
 

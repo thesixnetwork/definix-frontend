@@ -33,6 +33,7 @@ export type ButtonProps = {
   external?: boolean
   isLoading?: boolean
   disabled?: boolean
+  radii?: string
 } & ButtonTypes &
   SpaceProps
 
