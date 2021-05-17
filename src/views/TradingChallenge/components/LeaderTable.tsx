@@ -240,10 +240,11 @@ const LeaderTable = ({ className = '', items }) => {
                 <Skeleton height={23} width="100%" />
               </TRLoading>
             ))
-          : items.map((item) => (
+          : items.map((item, idx) => (
               <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
                 <TD>
-                  <Text bold>{item.rank || '-'}</Text>
+                  {(!item.rank || item.rank > 3) && <Text bold>{item.rank || idx + 1}</Text>}
+                  {/* <Text bold>{item.rank || '-'}</Text> */}
                 </TD>
 
                 <TD>
