@@ -1,28 +1,26 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
+import FlexLayout from 'components/layout/FlexLayout'
 import Page from 'components/layout/Page'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
-import useI18n from 'hooks/useI18n'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import React, { useState, useEffect } from 'react'
-import { Heading } from 'uikit-dev'
+import React, { useEffect, useState } from 'react'
+import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceSixUsd, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks'
-import styled from 'styled-components'
+import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
+import { Button, Heading, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
-import PoolCardGenesis from './components/PoolCardGenesis'
-import PoolCard from './components/PoolCard'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
-
+import PoolCard from './components/PoolCard/PoolCard'
+import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
-  const TranslateString = useI18n()
   const { account } = useWallet()
   const farms = useFarms()
   const pools = usePools(account)
@@ -33,19 +31,12 @@ const Farm: React.FC = () => {
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
+  const [listView, setListView] = useState(false)
+
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
   const currentTime = new Date().getTime()
-  useEffect(() => {
-    if (currentTime < phrase1TimeStamp) {
-      setTimeout(() => {
-        setIsPhrase1(true)
-      }, phrase1TimeStamp - currentTime)
-    } else {
-      setIsPhrase1(true)
-    }
-  }, [currentTime, phrase1TimeStamp])
 
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
@@ -193,26 +184,50 @@ const Farm: React.FC = () => {
   })
 
   const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
-  const stackedOnlyPools = openPools.filter(
-    (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
-  )
 
   const filterStackedOnlyPools = (poolsForFilter) =>
     poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
+  useEffect(() => {
+    if (currentTime < phrase1TimeStamp) {
+      setTimeout(() => {
+        setIsPhrase1(true)
+      }, phrase1TimeStamp - currentTime)
+    } else {
+      setIsPhrase1(true)
+    }
+  }, [currentTime, phrase1TimeStamp])
+
+  useEffect(() => {
+    return () => {
+      setListView(false)
+    }
+  }, [])
+
   return (
     <Page>
-      <Heading as="h1" fontSize="32px !important" className="mt-2 mb-6" textAlign="center">
-        Pool
-      </Heading>
+      <div className="flex align-center mt-2 mb-4">
+        <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+          Pool
+        </Heading>
+        <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+          Help
+        </Button>
+      </div>
+      <Text className="mb-5 col-8">
+        Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX. <br />
+        The amount of returns will be calculated by the annual percentage rate (APR).
+      </Text>
 
       <PoolTabButtons
-        poolsCount={pools.length}
         stackedOnly={stackedOnly}
         setStackedOnly={setStackedOnly}
         liveOnly={liveOnly}
         setLiveOnly={setLiveOnly}
+        listView={listView}
+        setListView={setListView}
       />
+
       <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
         {IS_GENESIS ? (
           <div>
@@ -226,22 +241,22 @@ const Farm: React.FC = () => {
             </Route>
           </div>
         ) : (
-          <div>
+          <FlexLayout cols={listView ? 1 : 3}>
             <Route exact path={`${path}`}>
               {liveOnly
                 ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
-                    <PoolCard key={pool.sousId} pool={pool} />
+                    <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                   ))
                 : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                    (pool) => <PoolCard key={pool.sousId} pool={pool} />,
+                    (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                   )}
             </Route>
             <Route path={`${path}/history`}>
               {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                <PoolCard key={pool.sousId} pool={pool} />
+                <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
               ))}
             </Route>
-          </div>
+          </FlexLayout>
         )}
       </TimerWrapper>
     </Page>
@@ -264,35 +279,5 @@ const TimerWrapper = ({ isPhrase1, date, children }) => {
     </>
   )
 }
-
-const Hero = styled.div`
-  align-items: center;
-  color: ${({ theme }) => theme.colors.primary};
-  display: grid;
-  grid-gap: 32px;
-  grid-template-columns: 1fr;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 250px;
-  padding: 48px 0;
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    font-size: 16px;
-    li {
-      margin-bottom: 4px;
-    }
-  }
-  img {
-    height: auto;
-    max-width: 100%;
-  }
-  @media (min-width: 576px) {
-    grid-template-columns: 1fr 1fr;
-    margin: 0;
-    max-width: none;
-  }
-`
 
 export default Farm
