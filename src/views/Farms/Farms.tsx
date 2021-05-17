@@ -19,10 +19,6 @@ import FarmCard from './components/FarmCard/FarmCard'
 import { FarmWithStakedValue } from './components/FarmCard/types'
 import FarmTabButtons from './components/FarmTabButtons'
 
-const HelpButton = styled(Button)`
-  padding: 0 8px;
-`
-
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
@@ -139,9 +135,9 @@ const Farms: React.FC = () => {
         <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
           Farm
         </Heading>
-        <HelpButton size="sm" variant="secondary" startIcon={<HelpCircle className="mr-2" />}>
+        <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
           Help
-        </HelpButton>
+        </Button>
       </div>
       <Text className="mb-5 col-8">
         Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. <br /> The

@@ -35,10 +35,6 @@ const Wrapper = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    min-height: calc(100vh - 48px);
-  }
 `
 
 const StyledNav = styled.nav<{ showMenu: boolean }>`
