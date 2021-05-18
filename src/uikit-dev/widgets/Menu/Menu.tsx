@@ -340,7 +340,7 @@ const Menu: React.FC<NavProps> = ({
             }
           />
 
-          {currentTime === endStatedTradingTime ? (
+          {currentTime > endStatedTradingTime ? (
             <CountDownBanner
               logo={logoTrade}
               title="The 1st Definix Trading Tournament"
