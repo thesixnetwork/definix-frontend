@@ -2,7 +2,10 @@ import throttle from 'lodash/throttle'
 import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import axios from 'axios'
+import _ from 'lodash'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
+import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
 import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import Button from '../../components/Button/Button'
@@ -168,14 +171,13 @@ const Menu: React.FC<NavProps> = ({
   links,
   children,
   price,
-  // profile,
 }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = isXl === false
   const [isPushed, setIsPushed] = useState(!isMobile)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
-  const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
+  const Icons = (IconModule as unknown) as { [key: string]: React.FC<SvgProps> }
   const { LanguageIcon } = Icons
   const IconFlag = () => {
     if (currentLang === 'en') {
@@ -190,6 +192,17 @@ const Menu: React.FC<NavProps> = ({
   }
   const endRegisterTimestamp = process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP
     ? parseInt(process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
+
+  // started - ended countdown
+  const currentTime = new Date().getTime()
+
+  const endStatedTradingTime = process.env.REACT_APP_START_END_TRADE_COMPETITION_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_START_END_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
+    : new Date().getTime()
+
+  const endTradingTimestamp = process.env.REACT_APP_END_TRADE_COMPETITION_TIMESTAMP
+    ? parseInt(process.env.REACT_APP_END_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
 
   // const getLanguageName = (lang) => {
@@ -229,6 +242,20 @@ const Menu: React.FC<NavProps> = ({
 
   // Find the home link if provided
   const homeLink = links.find((link) => link.label === 'Home')
+
+  // API TRADING COMPET
+  const [valuePnl, setValuePnl] = React.useState(0)
+  useEffect(() => {
+    async function fetchLeaderBoard() {
+      const leaderBoardAPI = process.env.REACT_APP_API_LEADER_BOARD
+      const response = await axios.get(`${leaderBoardAPI}`)
+      if (response.data.success) {
+        const pnl = _.get(response.data, 'data.0.pnl')
+        setValuePnl(pnl.toFixed(2))
+      }
+    }
+    fetchLeaderBoard()
+  }, [valuePnl])
 
   return (
     <Wrapper>
@@ -330,20 +357,48 @@ const Menu: React.FC<NavProps> = ({
           logout={logout}
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
-          <InnerBg>
+          <CountDownBanner
+            logo={logoTrade}
+            title="Definix Trading Tournament"
+            detail="Registration Period end in"
+            endTime={endRegisterTimestamp}
+            button={
+              <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
+                Register now
+              </Button>
+            }
+          />
+
+          {currentTime > endStatedTradingTime ? (
             <CountDownBanner
               logo={logoTrade}
-              title="Definix Trading Tournament"
-              detail="Registration Period end in"
-              endTime={endRegisterTimestamp}
+              title="The 1st Definix Trading Tournament"
+              detail="will end in"
+              topTitle="Top trader gain profit"
+              topValue={`${valuePnl}%`}
+              endTime={endTradingTimestamp}
               button={
-                <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
-                  Register now
+                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                  See more
                 </Button>
               }
             />
-            {children}
-          </InnerBg>
+          ) : (
+            <StartTimeBanner
+              logo={logoTrade}
+              title="The 1st Definix Trading Tournament"
+              detail="has started"
+              topTitle="Top trader gain profit"
+              topValue={`${valuePnl}%`}
+              endTime={endStatedTradingTime}
+              button={
+                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                  See more
+                </Button>
+              }
+            />
+          )}
+          {children}
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
       </BodyWrapper>

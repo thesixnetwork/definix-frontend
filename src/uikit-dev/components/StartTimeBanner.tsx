@@ -27,7 +27,7 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-const CountDownBanner = ({
+const StartTimeBanner = ({
   logo = undefined,
   title = '',
   detail = '',
@@ -44,8 +44,14 @@ const CountDownBanner = ({
     sec: 0,
   })
 
-  const calculateCountdown = (endDate) => {
-    let diff = (new Date(endDate).getTime() - new Date().getTime()) / 1000
+  const calculateCountdown = () => {
+    const startDateTime = new Date(2021, 4, 14, 15, 0, 0, 0)
+    const startStamp = startDateTime.getTime()
+
+    const newDate = new Date()
+    const newStamp = newDate.getTime()
+
+    let diff = Math.round((newStamp - startStamp) / 1000)
 
     // clear countdown when date is reached
     if (diff <= 0) return false
@@ -59,26 +65,12 @@ const CountDownBanner = ({
       millisec: 0,
     }
 
-    // calculate time difference between now and expected date
-    if (diff >= 365.25 * 86400) {
-      // 365.25 * 24 * 60 * 60
-      timeLeft.years = Math.floor(diff / (365.25 * 86400))
-      diff -= timeLeft.years * 365.25 * 86400
-    }
-    if (diff >= 86400) {
-      // 24 * 60 * 60
-      timeLeft.days = Math.floor(diff / 86400)
-      diff -= timeLeft.days * 86400
-    }
-    if (diff >= 3600) {
-      // 60 * 60
-      timeLeft.hours = Math.floor(diff / 3600)
-      diff -= timeLeft.hours * 3600
-    }
-    if (diff >= 60) {
-      timeLeft.min = Math.floor(diff / 60)
-      diff -= timeLeft.min * 60
-    }
+    timeLeft.days = Math.floor(diff / 86400)
+    diff -= timeLeft.days * 86400
+    timeLeft.hours = Math.floor(diff / 3600)
+    diff -= timeLeft.hours * 3600
+    timeLeft.min = Math.floor(diff / 60)
+    diff -= timeLeft.min * 60
     timeLeft.sec = Math.floor(diff)
 
     return timeLeft
@@ -94,8 +86,7 @@ const CountDownBanner = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const d = calculateCountdown(endTime)
-
+      const d = calculateCountdown()
       if (d) {
         setTime(d)
       } else {
@@ -103,20 +94,20 @@ const CountDownBanner = ({
       }
     }, 1000)
     return () => clearInterval(interval)
-  }, [endTime])
+  }, [])
 
   return currentTime < endTime ? (
     <Banner>
       <MaxWidth className="flex align-center justify-center flex-wrap">
         {logo && <img src={logo} alt="" />}
 
-        <Text color="white" className="mr-2" textAlign="center">
+        <Text color="white" textAlign="center">
           {title && <strong className="mr-1">{title}</strong>}
           {detail}
         </Text>
 
         {endTime && (
-          <Text bold color="#ffd157" fontSize="24px" className="mr-2" textAlign="center">
+          <Text bold color="#ffd157" fontSize="24px" textAlign="center">
             {`${addLeadingZeros(timer.days)}:${addLeadingZeros(timer.hours)}:${addLeadingZeros(
               timer.min,
             )}:${addLeadingZeros(timer.sec)}`}
@@ -124,7 +115,7 @@ const CountDownBanner = ({
         )}
         <>
           <Text color="white" textAlign="center">
-            <strong className="mr-1">{topTitle}</strong>
+            <strong>{topTitle}</strong>
           </Text>
           <Text bold color="#ffd157" fontSize="24px" className="mr-2">
             {topValue}
@@ -138,4 +129,4 @@ const CountDownBanner = ({
   )
 }
 
-export default CountDownBanner
+export default StartTimeBanner

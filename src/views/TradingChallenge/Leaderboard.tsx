@@ -17,39 +17,13 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-// const mockDisqualified = Array.from({ length: 5 }, (x, idx) => ({
-//   id: `${idx}dis`,
-//   name: 'Name',
-//   address: '0x4fxxxxxx4c7d',
-//   avatar: avatar01,
-//   value: 670.7633,
-//   pl: 5.21,
-// }))
-
-// fetchLeaders.push({
-//   id: `isMe`,
-//   address: '0x4fxxxxxx4c7d',
-//   avatar: avatar01,
-//   name: 'xxx',
-//   value: '0',
-//   pl: '0',
-//   telegramID: 'ssss',
-//   rank: 60,
-// })
-
-// const mockTop3 = fetchLeaders.filter(
-//   (leader) => leader.rank && (leader.rank === 1 || leader.rank === 2 || leader.rank === 3),
-// )
-// const mockExcTop3 = fetchLeaders.filter(
-//   (leader) => leader.rank,
-//   (leader) => leader.rank && leader.rank !== 1 && leader.rank !== 2 && leader.rank !== 3,
-// )
-
 const Leaderboard = () => {
   const { isSm } = useMatchBreakpoints()
   const [isShowDisqualified, setIsShowDisqualified] = useState(false)
   const [loadingAPI, setLoadingAPI] = React.useState(true)
   const [fetchLeaders, setFetchLeaders] = React.useState([])
+  const [fetchViolate, setFetchViolate] = React.useState([])
+  const [value, setValue] = React.useState([])
 
   useEffect(() => {
     async function fetchLeaderBoard() {
@@ -59,10 +33,10 @@ const Leaderboard = () => {
       if (response.data.success) {
         setLoadingAPI(true)
         const arrData = _.get(response.data, 'data')
+        const balance = _.get(response.data, 'data.0.balance')
         const fetchedData = []
         arrData.map((data, idx) =>
           fetchedData.push({
-            // id: data._id,
             address: data.address,
             avatar:
               (data.avatar_name === '0' && avatar00) ||
@@ -75,6 +49,7 @@ const Leaderboard = () => {
             rank: parseInt(`${idx + 1}`),
           }),
         )
+        setValue(balance.toFixed(2))
         setFetchLeaders(fetchedData)
       } else {
         setLoadingAPI(true)
@@ -82,6 +57,35 @@ const Leaderboard = () => {
     }
     fetchLeaderBoard()
   }, [])
+
+  const fetchDisquilified = async () => {
+    setLoadingAPI(false)
+    setIsShowDisqualified(true)
+    const violatedAPI = process.env.REACT_APP_API_TRADING_VIOLATE_ADDRESS
+    const response = await axios.get(`${violatedAPI}`)
+    if (response.data.success) {
+      setLoadingAPI(true)
+      const arrDataViolate = _.get(response.data, 'data')
+      const fetchedDataViolate = []
+      arrDataViolate.map((data) =>
+        fetchedDataViolate.push({
+          address: data.address,
+          avatar:
+            (data.avatar_name === '0' && avatar00) ||
+            (data.avatar_name === '1' && avatar01) ||
+            (data.avatar_name === '2' && avatar02),
+          name: data.display_name,
+          value: parseFloat(data.balance).toFixed(2),
+          pl: data.pnl,
+          telegramID: data.telegram_id,
+          // rank: parseInt(`${idx + 1}`),
+        }),
+      )
+      setFetchViolate(fetchedDataViolate)
+    } else {
+      setLoadingAPI(true)
+    }
+  }
 
   useEffect(() => {
     return () => {
@@ -95,7 +99,7 @@ const Leaderboard = () => {
         <Button
           variant="secondary"
           onClick={() => {
-            setIsShowDisqualified(true)
+            fetchDisquilified()
           }}
         >
           Disqualified List
@@ -117,46 +121,51 @@ const Leaderboard = () => {
 
   const sortedFetchedLeader = _.sortBy(fetchLeaders, (data) => data.rank)
   const topThree = sortedFetchedLeader.splice(0, 3)
+
   return (
-    <Page>
-      <MaxWidth>
-        <div className={`flex align-center mb-6 mt-2 ${isSm ? 'justify-center' : 'justify-space-between'}`}>
-          <Heading as="h1" fontSize="32px !important">
-            {!isShowDisqualified ? 'Leaderboard' : 'Disqualified List'}
-          </Heading>
-
-          {/* {!isSm && <FilterButton />} */}
-        </div>
-
-        {!isShowDisqualified && !isSm && topThree.length > 0 && (
-          <div className="flex flex-wrap" style={{ margin: '0 -8px' }}>
-            {topThree.map((d, idx) => (
-              <LeaderCard {...d} rank={idx + 1} className={isSm ? 'col-12' : 'col-4'} />
-            ))}
+    <>
+      <Page>
+        <MaxWidth>
+          <div className={`flex align-center mb-6 mt-2 ${isSm ? 'justify-center' : 'justify-space-between'}`}>
+            <Heading as="h1" fontSize="32px !important">
+              {!isShowDisqualified ? 'Leaderboard' : 'Disqualified List'}
+            </Heading>
+            {!isSm && <FilterButton />}
           </div>
-        )}
 
-        {!loadingAPI ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-            <FloatingLogo src={loadingIcon} alt="" width="25" height="25" className="mr-2" />
-            Loading...
-          </div>
-        ) : (
-          <LeaderTable
-            // eslint-disable-next-line no-nested-ternary
-            // items={!isShowDisqualified ? (isSm ? fetchLeaders : mockExcTop3) : mockDisqualified}
-            items={!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader]}
-            className="mt-2"
-          />
-        )}
+          {!isShowDisqualified && !isSm && topThree.length > 0 && (
+            <div className="flex flex-wrap" style={{ margin: '0 -8px' }}>
+              {topThree.map((d, idx) => (
+                <LeaderCard {...d} rank={idx + 1} className={isSm ? 'col-12' : 'col-4'} />
+              ))}
+            </div>
+          )}
 
-        {isSm && (
-          <div className="flex justify-center mt-5">
-            <FilterButton />
-          </div>
-        )}
-      </MaxWidth>
-    </Page>
+          {!loadingAPI ? (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
+              <FloatingLogo src={loadingIcon} alt="" width="25" height="25" className="mr-2" />
+              Loading...
+            </div>
+          ) : (
+            <LeaderTable
+              // eslint-disable-next-line no-nested-ternary
+              // items={!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader]}
+              items={
+                (isShowDisqualified && fetchViolate) ||
+                (!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader])
+              }
+              className="mt-2"
+            />
+          )}
+
+          {isSm && (
+            <div className="flex justify-center mt-5">
+              <FilterButton />
+            </div>
+          )}
+        </MaxWidth>
+      </Page>
+    </>
   )
 }
 
