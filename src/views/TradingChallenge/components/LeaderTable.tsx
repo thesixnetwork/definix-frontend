@@ -138,13 +138,14 @@ const LeaderTable = ({ className = '', items }) => {
                   <Skeleton height={23} width="100%" />
                 </TRLoading>
               ))
-            : items.map((item) => (
+            : items.map((item, idx) => (
                 <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
                   <TD rank={item.rank}>
                     {item.rank === 1 && <Rank src={badge1} alt="" />}
                     {item.rank === 2 && <Rank src={badge2} alt="" />}
                     {item.rank === 3 && <Rank src={badge3} alt="" />}
-                    {(!item.rank || item.rank > 3) && <Text bold>{item.rank || '-'}</Text>}
+                    {(!item.rank || item.rank > 3) && <Text bold>{item.rank || idx + 1}</Text>}
+                    {/* {(!item.rank || item.rank > 3) && <Text bold>{item.rank || '-'}</Text>} */}
                   </TD>
 
                   <TD>
