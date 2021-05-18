@@ -1,10 +1,15 @@
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
+import useStake from 'hooks/useStake'
+import useUnstake from 'hooks/useUnstake'
 import React, { useMemo } from 'react'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
+import { useModal } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import DepositModal from '../DepositModal'
+import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
@@ -67,23 +72,22 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
-  const { earnings } = useFarmUser(pid)
+  const { earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
-  const renderCardHeading = (className?: string) => (
+  const renderCardHeading = (className?: string, inlineMultiplier?: boolean) => (
     <CardHeading
       farm={farm}
       lpLabel={lpLabel}
-      multiplier={farm.multiplier}
-      tokenSymbol={farm.tokenSymbol}
       removed={removed}
       addLiquidityUrl={addLiquidityUrl}
       finixPrice={finixPrice}
       isHorizontal={isHorizontal}
       className={className}
+      inlineMultiplier={inlineMultiplier || false}
     />
   )
 
@@ -94,6 +98,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
       account={account}
       addLiquidityUrl={addLiquidityUrl}
       className={className}
+      onPresentDeposit={onPresentDeposit}
+      onPresentWithdraw={onPresentWithdraw}
     />
   )
 
@@ -111,6 +117,28 @@ const FarmCard: React.FC<FarmCardProps> = ({
       isHorizontal={isHorizontal}
       className={className}
     />
+  )
+
+  const { onStake } = useStake(pid)
+  const { onUnstake } = useUnstake(pid)
+
+  const [onPresentDeposit] = useModal(
+    <DepositModal
+      max={tokenBalance}
+      onConfirm={onStake}
+      tokenName={lpLabel}
+      addLiquidityUrl={addLiquidityUrl}
+      renderCardHeading={renderCardHeading}
+    />,
+  )
+
+  const [onPresentWithdraw] = useModal(
+    <WithdrawModal
+      max={stakedBalance}
+      onConfirm={onUnstake}
+      tokenName={lpLabel}
+      renderCardHeading={renderCardHeading}
+    />,
   )
 
   if (isHorizontal) {

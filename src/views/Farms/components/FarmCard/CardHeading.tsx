@@ -6,10 +6,11 @@ import styled from 'styled-components'
 import { Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 import ApyButton from './ApyButton'
+import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
 
 export interface ExpandableSectionProps {
-  farm: any
+  farm: FarmWithStakedValue
   lpLabel?: string
   multiplier?: string
   tokenSymbol?: string
@@ -18,6 +19,7 @@ export interface ExpandableSectionProps {
   finixPrice?: BigNumber
   className?: string
   isHorizontal?: boolean
+  inlineMultiplier?: boolean
 }
 
 const MultiplierTag = styled.div`
@@ -36,6 +38,22 @@ const MultiplierTag = styled.div`
     font-size: 14px;
     text-align: center;
     margin-top: 10px;
+  }
+`
+
+const InlineMultiplierTag = styled.div`
+  background: linear-gradient(#f3d36c, #e27d3a);
+
+  border-radius: ${({ theme }) => theme.radii.small};
+  margin-left: 4px;
+
+  p {
+    padding: 0 8px;
+    line-height: 26px;
+    color: ${({ theme }) => theme.colors.white};
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
   }
 `
 
@@ -70,13 +88,12 @@ const Apr = styled(Text)`
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   farm,
   lpLabel,
-  multiplier,
-  tokenSymbol,
   removed,
   addLiquidityUrl,
   finixPrice,
   className = '',
   isHorizontal = false,
+  inlineMultiplier = false,
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
@@ -92,13 +109,15 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
-      <MultiplierTag>
-        <p>{multiplier}</p>
-      </MultiplierTag>
+      {!inlineMultiplier && (
+        <MultiplierTag>
+          <p>{farm.multiplier}</p>
+        </MultiplierTag>
+      )}
 
       <StyledFarmImages>
-        <Image src={`/images/coins/${firstCoin}.png`} alt={tokenSymbol} width={imgSize} height={imgSize} />
-        <Image src={`/images/coins/${secondCoin}.png`} alt={tokenSymbol} width={imgSize} height={imgSize} />
+        <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+        <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
       </StyledFarmImages>
 
       <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
@@ -112,6 +131,12 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+
+          {inlineMultiplier && (
+            <InlineMultiplierTag>
+              <p>{farm.multiplier}</p>
+            </InlineMultiplierTag>
+          )}
         </div>
       )}
 

@@ -1,24 +1,15 @@
-import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
-import useStake from 'hooks/useStake'
-import useUnstake from 'hooks/useUnstake'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useFarmFromSymbol, useFarmUnlockDate, useFarmUser } from 'state/hooks'
-import { Farm } from 'state/types'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, MinusIcon, Text, useModal } from 'uikit-dev'
+import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
-import DepositModal from '../DepositModal'
-import WithdrawModal from '../WithdrawModal'
-
-export interface FarmWithStakedValue extends Farm {
-  apy?: BigNumber
-}
+import { FarmWithStakedValue } from './types'
 
 interface FarmStakeActionProps {
   farm: FarmWithStakedValue
@@ -26,6 +17,8 @@ interface FarmStakeActionProps {
   account?: string
   addLiquidityUrl?: string
   className?: string
+  onPresentDeposit?: any
+  onPresentWithdraw?: any
 }
 
 const IconButtonWrapper = styled.div`
@@ -36,19 +29,24 @@ const IconButtonWrapper = styled.div`
   }
 `
 
-const StakeAction: React.FC<FarmStakeActionProps> = ({ farm, ethereum, account, addLiquidityUrl, className = '' }) => {
+const StakeAction: React.FC<FarmStakeActionProps> = ({
+  farm,
+  ethereum,
+  account,
+  className = '',
+  onPresentDeposit,
+  onPresentWithdraw,
+}) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
 
   const TranslateString = useI18n()
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
-  const { allowance, tokenBalance, stakedBalance } = useFarmUser(pid)
+  const { allowance, stakedBalance } = useFarmUser(pid)
   const lpAddress = getAddress(lpAddresses)
   const lpName = farm.lpSymbol.toUpperCase()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const farmUnlockDate = useFarmUnlockDate()
-  const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
 
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()
@@ -58,11 +56,6 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({ farm, ethereum, account, 
   }, [ethereum, lpAddress])
 
   const { onApprove } = useApprove(lpContract)
-
-  const [onPresentDeposit] = useModal(
-    <DepositModal max={tokenBalance} onConfirm={onStake} tokenName={lpName} addLiquidityUrl={addLiquidityUrl} />,
-  )
-  const [onPresentWithdraw] = useModal(<WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={lpName} />)
 
   const handleApprove = useCallback(async () => {
     try {
