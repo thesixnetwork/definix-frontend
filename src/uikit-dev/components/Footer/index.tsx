@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import definixBlackLogo from '../../images/Definix-advance-crypto-assets.png'
 import poweredbySIX from '../../images/Footer-Icon/Powered-by-SIX.png'
 import facebookNormal from '../../images/Footer-Icon/without-text/Facebook-Normal.png'
+import gitbookNormal from '../../images/Footer-Icon/without-text/Gitbook-Normal.png'
 import githubNormal from '../../images/Footer-Icon/without-text/Github-Normal.png'
 import kakaoNormal from '../../images/Footer-Icon/without-text/Kakao-Normal.png'
 import redditNormal from '../../images/Footer-Icon/without-text/Reddit-Normal.png'
@@ -102,6 +103,37 @@ const FooterStyled = styled.footer`
 `
 
 function Footer() {
+  const socials = [
+    {
+      url: 'https://www.facebook.com/thesixnetwork',
+      img: facebookNormal,
+    },
+    {
+      url: 'https://twitter.com/DefinixOfficial',
+      img: twitterNormal,
+    },
+    {
+      url: 'https://t.me/SIXNetwork',
+      img: telegramNormal,
+    },
+    {
+      url: 'https://open.kakao.com/o/gQNRT5K',
+      img: kakaoNormal,
+    },
+    {
+      url: 'https://app.gitbook.com/@sixnetwork/s/definix',
+      img: gitbookNormal,
+    },
+    {
+      url: 'https://github.com/thesixnetwork',
+      img: githubNormal,
+    },
+    {
+      url: 'https://www.reddit.com/r/sixnetwork',
+      img: redditNormal,
+    },
+  ]
+
   return (
     <FooterStyled>
       <div className="container">
@@ -122,24 +154,11 @@ function Footer() {
         </div>
 
         <div className="social">
-          <a href="https://www.facebook.com/thesixnetwork" target="_blank" rel="noreferrer">
-            <img src={facebookNormal} alt="" />
-          </a>
-          <a href="https://twitter.com/DefinixOfficial" target="_blank" rel="noreferrer">
-            <img src={twitterNormal} alt="" />
-          </a>
-          <a href="https://t.me/SIXNetwork" target="_blank" rel="noreferrer">
-            <img src={telegramNormal} alt="" />
-          </a>
-          <a href="https://open.kakao.com/o/gQNRT5K" target="_blank" rel="noreferrer">
-            <img src={kakaoNormal} alt="" />
-          </a>
-          <a href="https://github.com/thesixnetwork" target="_blank" rel="noreferrer">
-            <img src={githubNormal} alt="" />
-          </a>
-          <a href="https://www.reddit.com/r/sixnetwork/" target="_blank" rel="noreferrer">
-            <img src={redditNormal} alt="" />
-          </a>
+          {socials.map((s) => (
+            <a href={s.url} target="_blank" rel="noreferrer" key={s.url}>
+              <img src={s.img} alt="" />
+            </a>
+          ))}
         </div>
       </div>
     </FooterStyled>
