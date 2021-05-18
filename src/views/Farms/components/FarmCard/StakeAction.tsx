@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
@@ -79,7 +80,12 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       </Button>
     ) : (
       <IconButtonWrapper>
-        <Button variant="secondary" onClick={onPresentWithdraw} className="btn-secondary-disable col-6 mr-1">
+        <Button
+          variant="secondary"
+          disabled={stakedBalance.eq(new BigNumber(0))}
+          onClick={onPresentWithdraw}
+          className="btn-secondary-disable col-6 mr-1"
+        >
           <MinusIcon color="primary" />
         </Button>
         {(typeof farmUnlockDate === 'undefined' ||

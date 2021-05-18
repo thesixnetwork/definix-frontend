@@ -1,8 +1,13 @@
 import BigNumber from 'bignumber.js'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
+import { useSousStake } from 'hooks/useStake'
+import { useSousUnstake } from 'hooks/useUnstake'
 import React from 'react'
 import styled from 'styled-components'
+import { useModal } from 'uikit-dev'
+import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
+import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
@@ -80,17 +85,15 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const renderStakeAction = (className?: string) => (
     <StakeAction
       sousId={sousId}
-      isBnbPool={isBnbPool}
       isOldSyrup={isOldSyrup}
       tokenName={tokenName}
-      stakingTokenName={stakingTokenName}
       stakingTokenAddress={stakingTokenAddress}
-      stakingTokenBalance={stakingTokenBalance}
       stakedBalance={stakedBalance}
-      convertedLimit={convertedLimit}
       needsApproval={needsApproval}
       isFinished={isFinished}
-      stakingLimit={stakingLimit}
+      onUnstake={onUnstake}
+      onPresentDeposit={onPresentDeposit}
+      onPresentWithdraw={onPresentWithdraw}
       className={className}
     />
   )
@@ -117,6 +120,26 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     />
   )
 
+  const { onStake } = useSousStake(sousId, isBnbPool)
+  const { onUnstake } = useSousUnstake(sousId)
+
+  const [onPresentDeposit] = useModal(
+    <DepositModal
+      max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
+      onConfirm={onStake}
+      tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
+      renderCardHeading={renderCardHeading}
+    />,
+  )
+  const [onPresentWithdraw] = useModal(
+    <WithdrawModal
+      max={stakedBalance}
+      onConfirm={onUnstake}
+      tokenName={stakingTokenName}
+      renderCardHeading={renderCardHeading}
+    />,
+  )
+
   if (isHorizontal) {
     return (
       <HorizontalStyle className="flex align-stretch pa-5 mb-4">
@@ -136,7 +159,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   return (
     <VerticalStyle className="mb-7">
       {renderSash()}
-      {renderCardHeading('pt-6')}
+      {renderCardHeading('pt-7')}
       {renderStakeAction('pa-5')}
       {renderHarvestAction('pa-5')}
       {renderDetailsSection('px-5 py-3')}

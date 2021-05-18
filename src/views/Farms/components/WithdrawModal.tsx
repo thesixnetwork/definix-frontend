@@ -44,7 +44,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
       onBack={onDismiss}
       onDismiss={onDismiss}
       isRainbow={false}
-      bodyPadding="16px 32px 32px 32px"
+      bodyPadding="0 32px 32px 32px"
       hideCloseButton
     >
       {renderCardHeading('mb-5', true)}

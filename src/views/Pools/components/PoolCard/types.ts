@@ -22,18 +22,16 @@ export interface CardHeadingProps {
 
 export interface StakeActionProps {
   sousId?: number
-  isBnbPool?: boolean
   isOldSyrup?: boolean
   tokenName?: string
-  stakingTokenName?: string
   stakingTokenAddress?: string
-  stakingTokenBalance?: BigNumber
   stakedBalance?: BigNumber
-  convertedLimit?: BigNumber
   needsApproval?: boolean
   isFinished?: boolean
-  stakingLimit?: number
   className?: string
+  onUnstake?: any
+  onPresentDeposit?: any
+  onPresentWithdraw?: any
 }
 
 export interface HarvestActionProps {

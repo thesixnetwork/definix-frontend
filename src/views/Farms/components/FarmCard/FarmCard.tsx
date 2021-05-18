@@ -96,7 +96,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
       farm={farm}
       ethereum={ethereum}
       account={account}
-      addLiquidityUrl={addLiquidityUrl}
       className={className}
       onPresentDeposit={onPresentDeposit}
       onPresentWithdraw={onPresentWithdraw}
@@ -158,7 +157,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   return (
     <VerticalStyle className="mb-7">
-      {renderCardHeading('pt-6')}
+      {renderCardHeading('pt-7')}
       {renderStakeAction('pa-5')}
       {renderHarvestAction('pa-5')}
       {renderDetailsSection('px-5 py-3')}
