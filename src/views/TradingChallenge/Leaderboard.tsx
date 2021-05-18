@@ -23,6 +23,7 @@ const Leaderboard = () => {
   const [loadingAPI, setLoadingAPI] = React.useState(true)
   const [fetchLeaders, setFetchLeaders] = React.useState([])
   const [fetchViolate, setFetchViolate] = React.useState([])
+  const [value, setValue] = React.useState([])
 
   useEffect(() => {
     async function fetchLeaderBoard() {
@@ -32,6 +33,7 @@ const Leaderboard = () => {
       if (response.data.success) {
         setLoadingAPI(true)
         const arrData = _.get(response.data, 'data')
+        const balance = _.get(response.data, 'data.0.balance')
         const fetchedData = []
         arrData.map((data, idx) =>
           fetchedData.push({
@@ -47,6 +49,7 @@ const Leaderboard = () => {
             rank: parseInt(`${idx + 1}`),
           }),
         )
+        setValue(balance.toFixed(2))
         setFetchLeaders(fetchedData)
       } else {
         setLoadingAPI(true)
@@ -118,48 +121,51 @@ const Leaderboard = () => {
 
   const sortedFetchedLeader = _.sortBy(fetchLeaders, (data) => data.rank)
   const topThree = sortedFetchedLeader.splice(0, 3)
+
   return (
-    <Page>
-      <MaxWidth>
-        <div className={`flex align-center mb-6 mt-2 ${isSm ? 'justify-center' : 'justify-space-between'}`}>
-          <Heading as="h1" fontSize="32px !important">
-            {!isShowDisqualified ? 'Leaderboard' : 'Disqualified List'}
-          </Heading>
-          {!isSm && <FilterButton />}
-        </div>
-
-        {!isShowDisqualified && !isSm && topThree.length > 0 && (
-          <div className="flex flex-wrap" style={{ margin: '0 -8px' }}>
-            {topThree.map((d, idx) => (
-              <LeaderCard {...d} rank={idx + 1} className={isSm ? 'col-12' : 'col-4'} />
-            ))}
+    <>
+      <Page>
+        <MaxWidth>
+          <div className={`flex align-center mb-6 mt-2 ${isSm ? 'justify-center' : 'justify-space-between'}`}>
+            <Heading as="h1" fontSize="32px !important">
+              {!isShowDisqualified ? 'Leaderboard' : 'Disqualified List'}
+            </Heading>
+            {!isSm && <FilterButton />}
           </div>
-        )}
 
-        {!loadingAPI ? (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
-            <FloatingLogo src={loadingIcon} alt="" width="25" height="25" className="mr-2" />
-            Loading...
-          </div>
-        ) : (
-          <LeaderTable
-            // eslint-disable-next-line no-nested-ternary
-            // items={!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader]}
-            items={
-              (isShowDisqualified && fetchViolate) ||
-              (!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader])
-            }
-            className="mt-2"
-          />
-        )}
+          {!isShowDisqualified && !isSm && topThree.length > 0 && (
+            <div className="flex flex-wrap" style={{ margin: '0 -8px' }}>
+              {topThree.map((d, idx) => (
+                <LeaderCard {...d} rank={idx + 1} className={isSm ? 'col-12' : 'col-4'} />
+              ))}
+            </div>
+          )}
 
-        {isSm && (
-          <div className="flex justify-center mt-5">
-            <FilterButton />
-          </div>
-        )}
-      </MaxWidth>
-    </Page>
+          {!loadingAPI ? (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '100px' }}>
+              <FloatingLogo src={loadingIcon} alt="" width="25" height="25" className="mr-2" />
+              Loading...
+            </div>
+          ) : (
+            <LeaderTable
+              // eslint-disable-next-line no-nested-ternary
+              // items={!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader]}
+              items={
+                (isShowDisqualified && fetchViolate) ||
+                (!isSm ? sortedFetchedLeader : [...topThree, ...sortedFetchedLeader])
+              }
+              className="mt-2"
+            />
+          )}
+
+          {isSm && (
+            <div className="flex justify-center mt-5">
+              <FilterButton />
+            </div>
+          )}
+        </MaxWidth>
+      </Page>
+    </>
   )
 }
 
