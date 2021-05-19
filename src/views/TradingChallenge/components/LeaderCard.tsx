@@ -104,7 +104,11 @@ const LeaderCard = ({ rank, name, avatar, address, value, pl, className = '' }) 
                 position="bottom"
               />
             </Row>
-            <CardValue fontSize="14px" fontWeight="bold" color="success" decimals={2} value={pl} suffix="%" />
+            {pl >= 0 ? (
+              <CardValue fontSize="14px" fontWeight="bold" color="success" decimals={2} value={pl} suffix="%" />
+            ) : (
+              <CardValue fontSize="14px" fontWeight="bold" color="failure" decimals={2} value={pl} suffix="%" />
+            )}
           </Row>
         </Summary>
       </StyleCard>
