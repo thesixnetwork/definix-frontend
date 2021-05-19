@@ -3,11 +3,11 @@ import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
-import React, { useMemo } from 'react'
+import React, { useCallback, useContext, useMemo } from 'react'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { useModal } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import FarmContext from '../../FarmContext'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
@@ -47,6 +47,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   account,
   isHorizontal = false,
 }) => {
+  const { onPresent } = useContext(FarmContext)
+
   const totalValue: BigNumber = useMemo(() => {
     if (!farm.lpTotalInQuoteToken) {
       return null
@@ -78,66 +80,80 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
-  const renderCardHeading = (className?: string, inlineMultiplier?: boolean) => (
-    <CardHeading
-      farm={farm}
-      lpLabel={lpLabel}
-      removed={removed}
-      addLiquidityUrl={addLiquidityUrl}
-      finixPrice={finixPrice}
-      isHorizontal={isHorizontal}
-      className={className}
-      inlineMultiplier={inlineMultiplier || false}
-    />
-  )
-
-  const renderStakeAction = (className?: string) => (
-    <StakeAction
-      farm={farm}
-      ethereum={ethereum}
-      account={account}
-      className={className}
-      onPresentDeposit={onPresentDeposit}
-      onPresentWithdraw={onPresentWithdraw}
-    />
-  )
-
-  const renderHarvestAction = (className?: string) => (
-    <HarvestAction earnings={earnings} pid={pid} className={className} />
-  )
-
-  const renderDetailsSection = (className?: string) => (
-    <DetailsSection
-      removed={removed}
-      bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-      totalValueFormated={totalValueFormated}
-      lpLabel={lpLabel}
-      addLiquidityUrl={addLiquidityUrl}
-      isHorizontal={isHorizontal}
-      className={className}
-    />
-  )
-
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 
-  const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={tokenBalance}
-      onConfirm={onStake}
-      tokenName={lpLabel}
-      addLiquidityUrl={addLiquidityUrl}
-      renderCardHeading={renderCardHeading}
-    />,
+  const renderCardHeading = useCallback(
+    (className?: string, inlineMultiplier?: boolean) => (
+      <CardHeading
+        farm={farm}
+        lpLabel={lpLabel}
+        removed={removed}
+        addLiquidityUrl={addLiquidityUrl}
+        finixPrice={finixPrice}
+        isHorizontal={isHorizontal}
+        className={className}
+        inlineMultiplier={inlineMultiplier || false}
+      />
+    ),
+    [addLiquidityUrl, farm, finixPrice, isHorizontal, lpLabel, removed],
   )
 
-  const [onPresentWithdraw] = useModal(
-    <WithdrawModal
-      max={stakedBalance}
-      onConfirm={onUnstake}
-      tokenName={lpLabel}
-      renderCardHeading={renderCardHeading}
-    />,
+  const renderDepositModal = useCallback(() => {
+    onPresent(
+      <DepositModal
+        max={tokenBalance}
+        onConfirm={onStake}
+        tokenName={lpLabel}
+        addLiquidityUrl={addLiquidityUrl}
+        renderCardHeading={renderCardHeading}
+      />,
+    )
+  }, [addLiquidityUrl, lpLabel, onPresent, onStake, renderCardHeading, tokenBalance])
+
+  const renderWithdrawModal = useCallback(() => {
+    onPresent(
+      <WithdrawModal
+        max={stakedBalance}
+        onConfirm={onUnstake}
+        tokenName={lpLabel}
+        renderCardHeading={renderCardHeading}
+      />,
+    )
+  }, [lpLabel, onPresent, onUnstake, renderCardHeading, stakedBalance])
+
+  const renderStakeAction = useCallback(
+    (className?: string) => (
+      <StakeAction
+        farm={farm}
+        ethereum={ethereum}
+        account={account}
+        className={className}
+        onPresentDeposit={renderDepositModal}
+        onPresentWithdraw={renderWithdrawModal}
+      />
+    ),
+    [account, ethereum, farm, renderDepositModal, renderWithdrawModal],
+  )
+
+  const renderHarvestAction = useCallback(
+    (className?: string) => <HarvestAction earnings={earnings} pid={pid} className={className} />,
+    [earnings, pid],
+  )
+
+  const renderDetailsSection = useCallback(
+    (className?: string) => (
+      <DetailsSection
+        removed={removed}
+        bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+        totalValueFormated={totalValueFormated}
+        lpLabel={lpLabel}
+        addLiquidityUrl={addLiquidityUrl}
+        isHorizontal={isHorizontal}
+        className={className}
+      />
+    ),
+    [addLiquidityUrl, farm.lpAddresses, isHorizontal, lpLabel, removed, totalValueFormated],
   )
 
   if (isHorizontal) {
