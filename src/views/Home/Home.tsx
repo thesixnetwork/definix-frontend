@@ -4,71 +4,15 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, ChevronRightIcon, Heading, Text } from 'uikit-dev'
+import { Heading, Text } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import bg from 'uikit-dev/images/for-ui-v2/bg.png'
+import { LeftPanel, MaxWidthLeft, MaxWidthRight, RightPanel, ShowHideButton } from 'uikit-dev/components/TwoPanelLayout'
 import CardAudit from './components/CardAudit'
 import CardComingSoon from './components/CardComingSoon'
 import CardGetStarted from './components/CardGetStarted'
 import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
-
-const MaxWidth = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-`
-
-const MaxWidthLeft = styled(MaxWidth)`
-  max-width: 1000px;
-`
-
-const MaxWidthRight = styled(MaxWidth)`
-  max-width: 400px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-`
-
-const LeftPanel = styled.div<{ isShowRightPanel: boolean }>`
-  width: ${({ isShowRightPanel }) => (isShowRightPanel ? 'calc(100% - 480px)' : '100%')};
-  padding: 32px;
-  background: url(${bg});
-  background-size: cover;
-  background-repeat: no-repeat;
-  transition: 0.2s;
-`
-
-const RightPanel = styled.div<{ isShowRightPanel: boolean }>`
-  width: ${({ isShowRightPanel }) => (isShowRightPanel ? '480px' : '0')};
-  padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '40px 32px 32px 32px' : '40px 0 32px 0')};
-  position: relative;
-  transition: 0.2s;
-  transform: ${({ isShowRightPanel }) => (isShowRightPanel ? 'translateX(0)' : 'translateX(100%)')};
-  background: ${({ theme }) => theme.colors.backgroundRadial};
-
-  > button {
-    position: absolute;
-    top: 24px;
-    right: 100%;
-    background: ${({ theme }) => theme.colors.white};
-    border-radius: 0;
-    border-top-left-radius: ${({ theme }) => theme.radii.medium};
-    border-bottom-left-radius: ${({ theme }) => theme.radii.medium};
-    flex-direction: column;
-    align-items: center;
-    padding: 12px 16px;
-    height: auto;
-    color: ${({ theme }) => theme.colors.textSubtle};
-    box-shadow: ${({ theme }) => theme.shadows.elevation1};
-
-    svg {
-      margin: 0 0 8px 0;
-    }
-  }
-`
 
 const Caption = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
@@ -124,15 +68,13 @@ const Home: React.FC = () => {
           </LeftPanel>
 
           <RightPanel isShowRightPanel={isShowRightPanel}>
-            <Button
-              startIcon={<ChevronRightIcon />}
-              variant="tertiary"
-              onClick={() => {
+            <ShowHideButton
+              isShow={isShowRightPanel}
+              action={() => {
                 setIsShowRightPanel(!isShowRightPanel)
               }}
-            >
-              Hide
-            </Button>
+            />
+
             {isShowRightPanel && (
               <MaxWidthRight>
                 {account && !hasProfile ? (

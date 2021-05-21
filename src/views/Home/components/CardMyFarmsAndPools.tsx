@@ -182,7 +182,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
           <div className="mt-2">
             {data.map((d) => (
-              <Legend>
+              <Legend key={`legend${d.name}`}>
                 <Text fontSize="12px" color="textSubtle">
                   <span className="dot" style={{ background: d.color }} />
                   {d.name}
