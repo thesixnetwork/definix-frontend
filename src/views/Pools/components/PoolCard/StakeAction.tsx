@@ -4,14 +4,10 @@ import UnlockButton from 'components/UnlockButton'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
-import { useSousStake } from 'hooks/useStake'
-import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, MinusIcon, Text, useModal } from 'uikit-dev'
+import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
-import DepositModal from '../DepositModal'
-import WithdrawModal from '../WithdrawModal'
 import { StakeActionProps } from './types'
 
 const IconButtonWrapper = styled.div`
@@ -24,17 +20,15 @@ const IconButtonWrapper = styled.div`
 
 const StakeAction: React.FC<StakeActionProps> = ({
   sousId,
-  isBnbPool,
   isOldSyrup,
   tokenName,
-  stakingTokenName,
   stakingTokenAddress,
-  stakingTokenBalance,
   stakedBalance,
-  convertedLimit,
   needsApproval,
   isFinished,
-  stakingLimit,
+  onUnstake,
+  onPresentDeposit,
+  onPresentWithdraw,
   className = '',
 }) => {
   const TranslateString = useI18n()
@@ -46,20 +40,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const { account } = useWallet()
   const stakingTokenContract = useERC20(stakingTokenAddress)
 
-  const { onStake } = useSousStake(sousId, isBnbPool)
-  const { onUnstake } = useSousUnstake(sousId)
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
-
-  const [onPresentDeposit] = useModal(
-    <DepositModal
-      max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
-      onConfirm={onStake}
-      tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
-    />,
-  )
-  const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={onUnstake} tokenName={stakingTokenName} />,
-  )
 
   const handleApprove = useCallback(async () => {
     try {
@@ -80,7 +61,6 @@ const StakeAction: React.FC<StakeActionProps> = ({
         <Button
           onClick={() => {
             setReadyToStake(true)
-            onPresentDeposit()
           }}
           fullWidth
           radii="small"

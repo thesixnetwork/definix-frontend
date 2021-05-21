@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import ModalActions from 'components/ModalActions'
 import ModalInput from 'components/ModalInput'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Modal } from 'uikit-dev'
@@ -11,9 +10,16 @@ interface WithdrawModalProps {
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
+  renderCardHeading?: (className?: string) => JSX.Element
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({
+  onConfirm,
+  onDismiss,
+  max,
+  tokenName = '',
+  renderCardHeading,
+}) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
@@ -33,31 +39,39 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={`Withdraw ${tokenName}`} onDismiss={onDismiss} isRainbow>
+    <Modal
+      title=""
+      onBack={onDismiss}
+      onDismiss={onDismiss}
+      isRainbow={false}
+      bodyPadding="0 32px 32px 32px"
+      hideCloseButton
+    >
+      {renderCardHeading('mb-5')}
+
       <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
         value={val}
         max={fullBalance}
         symbol={tokenName}
+        inputTitle={TranslateString(1070, 'Unstake')}
       />
-      <ModalActions>
-        <Button variant="secondary" onClick={onDismiss} fullWidth>
-          {TranslateString(462, 'Cancel')}
-        </Button>
-        <Button
-          fullWidth
-          disabled={pendingTx}
-          onClick={async () => {
-            setPendingTx(true)
-            await onConfirm(val)
-            setPendingTx(false)
-            onDismiss()
-          }}
-        >
-          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
-        </Button>
-      </ModalActions>
+
+      <Button
+        fullWidth
+        className="mt-5"
+        radii="card"
+        disabled={pendingTx}
+        onClick={async () => {
+          setPendingTx(true)
+          await onConfirm(val)
+          setPendingTx(false)
+          onDismiss()
+        }}
+      >
+        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Remove ${tokenName}`)}
+      </Button>
     </Modal>
   )
 }

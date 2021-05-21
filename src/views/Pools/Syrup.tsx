@@ -7,17 +7,36 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
+import styled from 'styled-components'
 import { Button, Heading, Text } from 'uikit-dev'
+import bg from 'uikit-dev/images/for-ui-v2/bg.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
+import PoolContext from './PoolContext'
+
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: ${({ theme }) => theme.zIndices.modal - 1};
+  background: url(${bg});
+  background-size: cover;
+  background-repeat: no-repeat;
+`
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -32,6 +51,8 @@ const Farm: React.FC = () => {
   const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
   const [listView, setListView] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [modalNode, setModalNode] = useState<React.ReactNode>()
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -188,6 +209,17 @@ const Farm: React.FC = () => {
   const filterStackedOnlyPools = (poolsForFilter) =>
     poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
+  const handlePresent = useCallback((node: React.ReactNode) => {
+    setModalNode(node)
+    setIsOpenModal(true)
+    window.scrollTo(0, 0)
+  }, [])
+
+  const handleDismiss = useCallback(() => {
+    setModalNode(undefined)
+    setIsOpenModal(false)
+  }, [])
+
   useEffect(() => {
     if (currentTime < phrase1TimeStamp) {
       setTimeout(() => {
@@ -201,65 +233,83 @@ const Farm: React.FC = () => {
   useEffect(() => {
     return () => {
       setListView(false)
+      setModalNode(undefined)
+      setIsOpenModal(false)
     }
   }, [])
 
   return (
-    <Page>
-      <div className="flex align-center mt-2 mb-4">
-        <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-          Pool
-        </Heading>
-        <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-          Help
-        </Button>
-      </div>
-      <Text className="mb-5 col-8">
-        Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX. <br />
-        The amount of returns will be calculated by the annual percentage rate (APR).
-      </Text>
+    <PoolContext.Provider
+      value={{
+        onPresent: handlePresent,
+        onDismiss: handleDismiss,
+      }}
+    >
+      <Page style={{ display: isOpenModal ? 'none' : 'block' }}>
+        <div className="flex align-center mt-2 mb-4">
+          <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+            Pool
+          </Heading>
+          <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+            Help
+          </Button>
+        </div>
+        <Text className="mb-5 col-8">
+          Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.{' '}
+          <br />
+          The amount of returns will be calculated by the annual percentage rate (APR).
+        </Text>
 
-      <PoolTabButtons
-        stackedOnly={stackedOnly}
-        setStackedOnly={setStackedOnly}
-        liveOnly={liveOnly}
-        setLiveOnly={setLiveOnly}
-        listView={listView}
-        setListView={setListView}
-      />
+        <PoolTabButtons
+          stackedOnly={stackedOnly}
+          setStackedOnly={setStackedOnly}
+          liveOnly={liveOnly}
+          setLiveOnly={setLiveOnly}
+          listView={listView}
+          setListView={setListView}
+        />
 
-      <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-        {IS_GENESIS ? (
-          <div>
-            <Route exact path={`${path}`}>
-              <>
-                {poolsWithApy.map((pool) => (
-                  <PoolCardGenesis key={pool.sousId} pool={pool} />
+        <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+          {IS_GENESIS ? (
+            <div>
+              <Route exact path={`${path}`}>
+                <>
+                  {poolsWithApy.map((pool) => (
+                    <PoolCardGenesis key={pool.sousId} pool={pool} />
+                  ))}
+                  {/* <Coming /> */}
+                </>
+              </Route>
+            </div>
+          ) : (
+            <FlexLayout cols={listView ? 1 : 3}>
+              <Route exact path={`${path}`}>
+                {liveOnly
+                  ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
+                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                    ))
+                  : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                      (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                    )}
+              </Route>
+              <Route path={`${path}/history`}>
+                {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                  <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                 ))}
-                {/* <Coming /> */}
-              </>
-            </Route>
-          </div>
-        ) : (
-          <FlexLayout cols={listView ? 1 : 3}>
-            <Route exact path={`${path}`}>
-              {liveOnly
-                ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map((pool) => (
-                    <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                  ))
-                : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                    (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                  )}
-            </Route>
-            <Route path={`${path}/history`}>
-              {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-              ))}
-            </Route>
-          </FlexLayout>
-        )}
-      </TimerWrapper>
-    </Page>
+              </Route>
+            </FlexLayout>
+          )}
+        </TimerWrapper>
+      </Page>
+
+      {isOpenModal && React.isValidElement(modalNode) && (
+        <ModalWrapper>
+          {React.cloneElement(modalNode, {
+            onDismiss: handleDismiss,
+          })}
+        </ModalWrapper>
+      )}
+    </PoolContext.Provider>
   )
 }
 

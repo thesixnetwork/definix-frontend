@@ -13,11 +13,29 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Heading, Text } from 'uikit-dev'
+import bg from 'uikit-dev/images/for-ui-v2/bg.png'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
 import { FarmWithStakedValue } from './components/FarmCard/types'
 import FarmTabButtons from './components/FarmTabButtons'
+import FarmContext from './FarmContext'
+
+const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: ${({ theme }) => theme.zIndices.modal - 1};
+  background: url(${bg});
+  background-size: cover;
+  background-repeat: no-repeat;
+`
 
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
@@ -33,6 +51,8 @@ const Farms: React.FC = () => {
   const [stackedOnly, setStackedOnly] = useState(false)
   const [listView, setListView] = useState(false)
   const [isPhrase2, setIsPhrase2] = useState(false)
+  const [isOpenModal, setIsOpenModal] = useState(false)
+  const [modalNode, setModalNode] = useState<React.ReactNode>()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -105,6 +125,17 @@ const Farms: React.FC = () => {
     [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account, listView],
   )
 
+  const handlePresent = useCallback((node: React.ReactNode) => {
+    setModalNode(node)
+    setIsOpenModal(true)
+    window.scrollTo(0, 0)
+  }, [])
+
+  const handleDismiss = useCallback(() => {
+    setModalNode(undefined)
+    setIsOpenModal(false)
+  }, [])
+
   useEffect(() => {
     if (currentTime < phrase2TimeStamp) {
       setTimeout(() => {
@@ -126,42 +157,59 @@ const Farms: React.FC = () => {
       setStackedOnly(false)
       setListView(false)
       setIsPhrase2(false)
+      setModalNode(undefined)
+      setIsOpenModal(false)
     }
   }, [])
 
   return (
-    <Page>
-      <div className="flex align-center mt-2 mb-4">
-        <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-          Farm
-        </Heading>
-        <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-          Help
-        </Button>
-      </div>
-      <Text className="mb-5 col-8">
-        Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. <br /> The
-        amount of returns will be calculated by the annual percentage rate (APR).
-      </Text>
+    <FarmContext.Provider
+      value={{
+        onPresent: handlePresent,
+        onDismiss: handleDismiss,
+      }}
+    >
+      <Page style={{ display: isOpenModal ? 'none' : 'block' }}>
+        <div className="flex align-center mt-2 mb-4">
+          <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+            Farm
+          </Heading>
+          <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+            Help
+          </Button>
+        </div>
+        <Text className="mb-5 col-8">
+          Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. <br />{' '}
+          The amount of returns will be calculated by the annual percentage rate (APR).
+        </Text>
 
-      <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-        <FarmTabButtons
-          stackedOnly={stackedOnly}
-          setStackedOnly={setStackedOnly}
-          listView={listView}
-          setListView={setListView}
-        />
+        <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
+          <FarmTabButtons
+            stackedOnly={stackedOnly}
+            setStackedOnly={setStackedOnly}
+            listView={listView}
+            setListView={setListView}
+          />
 
-        <FlexLayout cols={listView ? 1 : 3}>
-          <Route exact path={`${path}`}>
-            {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
-          </Route>
-          <Route exact path={`${path}/history`}>
-            {farmsList(inactiveFarms, true)}
-          </Route>
-        </FlexLayout>
-      </TimerWrapper>
-    </Page>
+          <FlexLayout cols={listView ? 1 : 3}>
+            <Route exact path={`${path}`}>
+              {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+            </Route>
+            <Route exact path={`${path}/history`}>
+              {farmsList(inactiveFarms, true)}
+            </Route>
+          </FlexLayout>
+        </TimerWrapper>
+      </Page>
+
+      {isOpenModal && React.isValidElement(modalNode) && (
+        <ModalWrapper>
+          {React.cloneElement(modalNode, {
+            onDismiss: handleDismiss,
+          })}
+        </ModalWrapper>
+      )}
+    </FarmContext.Provider>
   )
 }
 
@@ -193,4 +241,5 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
     </>
   )
 }
+
 export default Farms

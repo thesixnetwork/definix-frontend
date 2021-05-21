@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
@@ -68,18 +69,27 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   }, [onApprove])
 
   const renderStakingButtons = () => {
-    return rawStakedBalance === 0 ? (
-      <Button
-        disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
-        onClick={onPresentDeposit}
-        fullWidth
-        radii="small"
-      >
-        {TranslateString(999, 'Stake LP')}
-      </Button>
-    ) : (
+    if (rawStakedBalance === 0) {
+      return (
+        <Button
+          disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
+          onClick={onPresentDeposit}
+          fullWidth
+          radii="small"
+        >
+          {TranslateString(999, 'Stake LP')}
+        </Button>
+      )
+    }
+
+    return (
       <IconButtonWrapper>
-        <Button variant="secondary" onClick={onPresentWithdraw} className="btn-secondary-disable col-6 mr-1">
+        <Button
+          variant="secondary"
+          disabled={stakedBalance.eq(new BigNumber(0))}
+          onClick={onPresentWithdraw}
+          className="btn-secondary-disable col-6 mr-1"
+        >
           <MinusIcon color="primary" />
         </Button>
         {(typeof farmUnlockDate === 'undefined' ||
@@ -93,7 +103,15 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   }
 
   const renderApprovalOrStakeButton = () => {
-    return isApproved ? (
+    if (!isApproved) {
+      return (
+        <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
+          {TranslateString(758, 'Approve Contract')}
+        </Button>
+      )
+    }
+
+    return (
       <div className="flex align-center">
         <Heading
           fontSize="20px !important"
@@ -106,10 +124,6 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
         <div className="col-6">{renderStakingButtons()}</div>
       </div>
-    ) : (
-      <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
-        {TranslateString(758, 'Approve Contract')}
-      </Button>
     )
   }
 

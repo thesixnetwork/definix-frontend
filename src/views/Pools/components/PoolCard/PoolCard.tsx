@@ -1,8 +1,13 @@
 import BigNumber from 'bignumber.js'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import React from 'react'
+import { useSousStake } from 'hooks/useStake'
+import { useSousUnstake } from 'hooks/useUnstake'
+import React, { useCallback, useContext, useMemo } from 'react'
 import styled from 'styled-components'
+import PoolContext from 'views/Pools/PoolContext'
+import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
+import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
@@ -48,13 +53,21 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
 
   const allowance = new BigNumber(userData?.allowance || 0)
-  const earnings = new BigNumber(userData?.pendingReward || 0)
-  const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
-  const stakingTokenBalance = new BigNumber(userData?.stakingTokenBalance || 0)
+  const earnings = useMemo(() => new BigNumber(userData?.pendingReward || 0), [userData?.pendingReward])
+  const stakedBalance = useMemo(() => new BigNumber(userData?.stakedBalance || 0), [userData?.stakedBalance])
+  const stakingTokenBalance = useMemo(
+    () => new BigNumber(userData?.stakingTokenBalance || 0),
+    [userData?.stakingTokenBalance],
+  )
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
 
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
+
+  const { onPresent } = useContext(PoolContext)
+
+  const { onStake } = useSousStake(sousId, isBnbPool)
+  const { onUnstake } = useSousUnstake(sousId)
 
   const renderSash = () => {
     if (tokenName === 'FINIX-SIX' && !isFinished) {
@@ -67,54 +80,97 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     return null
   }
 
-  const renderCardHeading = (className?: string) => (
-    <CardHeading
-      tokenName={tokenName}
-      isOldSyrup={isOldSyrup}
-      apy={apy}
-      isHorizontal={isHorizontal}
-      className={className}
-    />
+  const renderCardHeading = useCallback(
+    (className?: string) => (
+      <CardHeading
+        tokenName={tokenName}
+        isOldSyrup={isOldSyrup}
+        apy={apy}
+        isHorizontal={isHorizontal}
+        className={className}
+      />
+    ),
+    [apy, isHorizontal, isOldSyrup, tokenName],
   )
 
-  const renderStakeAction = (className?: string) => (
-    <StakeAction
-      sousId={sousId}
-      isBnbPool={isBnbPool}
-      isOldSyrup={isOldSyrup}
-      tokenName={tokenName}
-      stakingTokenName={stakingTokenName}
-      stakingTokenAddress={stakingTokenAddress}
-      stakingTokenBalance={stakingTokenBalance}
-      stakedBalance={stakedBalance}
-      convertedLimit={convertedLimit}
-      needsApproval={needsApproval}
-      isFinished={isFinished}
-      stakingLimit={stakingLimit}
-      className={className}
-    />
+  const renderDepositModal = useCallback(() => {
+    onPresent(
+      <DepositModal
+        max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
+        onConfirm={onStake}
+        tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
+        renderCardHeading={renderCardHeading}
+      />,
+    )
+  }, [convertedLimit, onPresent, onStake, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
+
+  const renderWithdrawModal = useCallback(() => {
+    onPresent(
+      <WithdrawModal
+        max={stakedBalance}
+        onConfirm={onUnstake}
+        tokenName={stakingTokenName}
+        renderCardHeading={renderCardHeading}
+      />,
+    )
+  }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
+
+  const renderStakeAction = useCallback(
+    (className?: string) => (
+      <StakeAction
+        sousId={sousId}
+        isOldSyrup={isOldSyrup}
+        tokenName={tokenName}
+        stakingTokenAddress={stakingTokenAddress}
+        stakedBalance={stakedBalance}
+        needsApproval={needsApproval}
+        isFinished={isFinished}
+        onUnstake={onUnstake}
+        onPresentDeposit={renderDepositModal}
+        onPresentWithdraw={renderWithdrawModal}
+        className={className}
+      />
+    ),
+    [
+      isFinished,
+      isOldSyrup,
+      needsApproval,
+      onUnstake,
+      renderDepositModal,
+      renderWithdrawModal,
+      sousId,
+      stakedBalance,
+      stakingTokenAddress,
+      tokenName,
+    ],
   )
 
-  const renderHarvestAction = (className?: string) => (
-    <HarvestAction
-      sousId={sousId}
-      isBnbPool={isBnbPool}
-      earnings={earnings}
-      tokenDecimals={tokenDecimals}
-      needsApproval={needsApproval}
-      isOldSyrup={isOldSyrup}
-      className={className}
-    />
+  const renderHarvestAction = useCallback(
+    (className?: string) => (
+      <HarvestAction
+        sousId={sousId}
+        isBnbPool={isBnbPool}
+        earnings={earnings}
+        tokenDecimals={tokenDecimals}
+        needsApproval={needsApproval}
+        isOldSyrup={isOldSyrup}
+        className={className}
+      />
+    ),
+    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   )
 
-  const renderDetailsSection = (className?: string) => (
-    <DetailsSection
-      tokenName={tokenName}
-      bscScanAddress=""
-      totalStaked={totalStaked}
-      isHorizontal={isHorizontal}
-      className={className}
-    />
+  const renderDetailsSection = useCallback(
+    (className?: string) => (
+      <DetailsSection
+        tokenName={tokenName}
+        bscScanAddress=""
+        totalStaked={totalStaked}
+        isHorizontal={isHorizontal}
+        className={className}
+      />
+    ),
+    [isHorizontal, tokenName, totalStaked],
   )
 
   if (isHorizontal) {
@@ -136,7 +192,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   return (
     <VerticalStyle className="mb-7">
       {renderSash()}
-      {renderCardHeading('pt-6')}
+      {renderCardHeading('pt-7')}
       {renderStakeAction('pa-5')}
       {renderHarvestAction('pa-5')}
       {renderDetailsSection('px-5 py-3')}

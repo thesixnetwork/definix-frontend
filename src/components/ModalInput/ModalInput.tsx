@@ -18,6 +18,7 @@ const StyledTokenInput = styled.div<InputProps>`
   background: ${({ theme }) => theme.colors.backgroundBox};
   border-radius: ${({ theme }) => theme.radii.default};
   color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ isWarning, theme }) => (isWarning ? theme.colors.failure : theme.colors.backgroundBox)};
   padding: 0.5rem 1rem;
   width: 100%;
   display: flex;
