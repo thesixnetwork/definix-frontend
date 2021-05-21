@@ -19,7 +19,7 @@ export const lightColors: Colors = {
   ...baseColors,
   ...brandColors,
   background: '#FCFCFC',
-  backgroundDisabled: '#D8D6DE',
+  backgroundDisabled: '#E3E6EC',
   backgroundBox: 'rgba(186, 191, 199, 0.12)',
   backgroundGray: '#F7F6FB',
   backgroundRadial: 'radial-gradient(#FFFFFF, #e2e7f4)',
