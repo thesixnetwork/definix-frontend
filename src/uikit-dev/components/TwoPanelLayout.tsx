@@ -10,6 +10,12 @@ export const MaxWidth = styled.div`
   margin-right: auto;
 `
 
+export const TwoLayoutLayout = styled.div`
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+`
+
 export const MaxWidthLeft = styled(MaxWidth)`
   max-width: 1000px;
 `

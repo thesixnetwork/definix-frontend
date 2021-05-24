@@ -98,7 +98,7 @@ const InnerBg = styled.div`
   overflow: hidden;
   border-top-left-radius: ${({ theme }) => theme.radii.large};
   border-bottom-left-radius: ${({ theme }) => theme.radii.large};
-  min-height: 100%;
+  height: 100%;
 `
 
 const MobileOnlyOverlay = styled(Overlay)`
