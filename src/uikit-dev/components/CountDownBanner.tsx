@@ -1,3 +1,5 @@
+/* eslint-disable react/require-default-props */
+
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text } from './Text'
@@ -27,17 +29,29 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
+interface CountDownBannerProps {
+  logo?: any
+  title?: string
+  detail?: string
+  highlight?: string
+  topTitle?: string
+  topValue?: string
+  endTime?: any
+  button?: any
+  disableCountdown?: boolean
+}
+
 const CountDownBanner = ({
-  logo = undefined,
-  title = '',
-  detail = '',
-  highlight = '',
-  topTitle = '',
-  topValue = '',
+  logo,
+  title,
+  detail,
+  highlight,
+  topTitle,
+  topValue,
   endTime,
-  button = undefined,
+  button,
   disableCountdown = false,
-}) => {
+}: CountDownBannerProps) => {
   const currentTime = new Date().getTime()
   const [timer, setTime] = useState({
     days: 0,

@@ -1,3 +1,5 @@
+/* eslint-disable react/require-default-props */
+
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text } from './Text'
@@ -27,15 +29,17 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-const StartTimeBanner = ({
-  logo = undefined,
-  title = '',
-  detail = '',
-  topTitle = '',
-  topValue = '',
-  endTime,
-  button = undefined,
-}) => {
+interface StartTimeBannerProps {
+  logo?: any
+  title?: string
+  detail?: string
+  topTitle?: string
+  topValue?: string
+  endTime?: any
+  button?: any
+}
+
+const StartTimeBanner = ({ logo, title, detail, topTitle, topValue, endTime, button }: StartTimeBannerProps) => {
   const currentTime = new Date().getTime()
   const [timer, setTime] = useState({
     days: 0,
