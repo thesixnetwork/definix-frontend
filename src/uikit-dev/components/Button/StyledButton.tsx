@@ -38,11 +38,12 @@ const removePointerEvents = ({ disabled, as }: ThemedProps) => {
   return ''
 }
 
-const getButtonVariantProp =
-  (prop: keyof ButtonThemeVariant) =>
-  ({ theme, variant = variants.PRIMARY }: ThemedProps) => {
-    return theme.button[variant][prop]
-  }
+const getButtonVariantProp = (prop: keyof ButtonThemeVariant) => ({
+  theme,
+  variant = variants.PRIMARY,
+}: ThemedProps) => {
+  return theme.button[variant][prop]
+}
 
 const StyledButton = styled.button<ButtonProps>`
   align-items: center;
@@ -58,12 +59,12 @@ const StyledButton = styled.button<ButtonProps>`
   font-weight: 600;
   /* max-content instead of auto for Safari fix */
   width: ${({ fullWidth }) => (fullWidth ? '100%' : 'max-content')};
-  height: ${({ size }) => (size === 'sm' ? '32px' : '48px')};
+  height: ${({ size }) => (size === 'xs' ? '24px' : size === 'sm' ? '32px' : '48px')};
   line-height: 1;
   letter-spacing: 0.03em;
   justify-content: center;
   outline: 0;
-  padding: ${({ size }) => (size === 'sm' ? '0 20px' : '0 24px')};
+  padding: ${({ size }) => (size === 'xs' || size === 'sm' ? '0 20px' : '0 24px')};
   transition: background-color 0.1s;
   opacity: ${({ isLoading }) => (isLoading ? 0.5 : 1)};
 
