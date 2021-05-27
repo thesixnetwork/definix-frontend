@@ -10,10 +10,10 @@ export const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-export const TwoLayoutLayout = styled.div`
+export const TwoPanelLayout = styled.div`
   display: flex;
   align-items: stretch;
-  height: 100%;
+  position: relative;
 `
 
 export const MaxWidthLeft = styled(MaxWidth)`
@@ -29,19 +29,22 @@ export const MaxWidthRight = styled(MaxWidth)`
 `
 
 export const LeftPanel = styled.div<{ isShowRightPanel: boolean }>`
-  width: ${({ isShowRightPanel }) => (isShowRightPanel ? 'calc(100% - 480px)' : '100%')};
-  padding: 32px;
+  width: 100%;
+  padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '32px 512px 32px 32px' : '32px')};
   background: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
-  transition: 0.2s;
+  transition: 0.1s;
 `
 
 export const RightPanel = styled.div<{ isShowRightPanel: boolean }>`
-  width: ${({ isShowRightPanel }) => (isShowRightPanel ? '480px' : '0')};
+  width: 480px;
+  height: 100%;
   padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '40px 32px 32px 32px' : '40px 0 32px 0')};
-  position: relative;
-  transition: 0.2s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  transition: 0.1s;
   transform: ${({ isShowRightPanel }) => (isShowRightPanel ? 'translateX(0)' : 'translateX(100%)')};
   background: ${({ theme }) => theme.colors.backgroundRadial};
 
