@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import React from 'react'
 import styled from 'styled-components'
 import { Skeleton, Card, Text, useMatchBreakpoints } from 'uikit-dev'

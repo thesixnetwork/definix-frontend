@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Web3 from 'web3'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { getCaver } from 'utils/caver'
+import { useWallet } from 'klaytn-use-wallet'
 import { Button, Input, Modal, Text } from 'uikit-dev'
 import { useToast } from 'state/hooks'
 import { Nft } from 'config/constants/types'
@@ -45,10 +45,11 @@ const TransferNftModal: React.FC<TransferNftModalProps> = ({ nft, tokenIds, onSu
   const { account } = useWallet()
   const definixRabbitsContract = useDefinixRabbits()
   const { toastSuccess } = useToast()
+  const caver = getCaver()
 
   const handleConfirm = async () => {
     try {
-      const isValidAddress = Web3.utils.isAddress(value)
+      const isValidAddress = caver.utils.isAddress(value)
 
       if (!isValidAddress) {
         setError(TranslateString(999, 'Please enter a valid wallet address'))

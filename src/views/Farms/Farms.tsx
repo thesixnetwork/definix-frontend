@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/Flex'
 import Page from 'components/layout/Page'
@@ -35,7 +35,7 @@ const Farms: React.FC = () => {
   const bnbPrice = usePriceBnbBusd()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const ethPriceUsd = usePriceEthBusd()
 
   const dispatch = useDispatch()
@@ -118,12 +118,12 @@ const Farms: React.FC = () => {
           ethPrice={ethPriceUsd}
           sixPrice={sixPrice}
           finixPrice={finixPrice}
-          ethereum={ethereum}
+          klaytn={klaytn}
           account={account}
         />
       ))
     },
-    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account],
+    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, klaytn, account],
   )
 
   return (

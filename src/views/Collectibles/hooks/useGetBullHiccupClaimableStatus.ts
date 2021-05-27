@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import { getBunnySpecialContract } from 'utils/contractHelpers'
 
 export const BULL_NFT = 11

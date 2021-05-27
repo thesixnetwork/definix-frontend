@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import Page from 'components/layout/Page'
 import PageLoader from 'components/PageLoader'
 import { useFetchAchievements, useProfile } from 'state/hooks'

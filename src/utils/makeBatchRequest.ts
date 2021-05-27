@@ -1,4 +1,4 @@
-import { getWeb3 } from './web3'
+import { getCaver } from './caver'
 
 /**
  * Accepts an array of contract method calls and batches them
@@ -12,8 +12,8 @@ import { getWeb3 } from './web3'
  */
 const makeBatchRequest = (calls: any[]) => {
   try {
-    const web3 = getWeb3()
-    const batch = new web3.BatchRequest()
+    const caver = getCaver()
+    const batch = new caver.BatchRequest()
 
     const promises = calls.map((call) => {
       return new Promise((resolve, reject) => {

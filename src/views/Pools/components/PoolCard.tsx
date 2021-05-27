@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import UnlockButton from 'components/UnlockButton'
@@ -121,7 +121,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
     }
   }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
   // Pools using native BNB behave differently than pools using a token
-  const isBnbPool = poolCategory === PoolCategory.BINANCE
+  const isBnbPool = poolCategory === PoolCategory.KLAYTN
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWallet()

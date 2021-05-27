@@ -65,7 +65,7 @@ interface FarmCardProps {
   ethPrice?: BigNumber
   sixPrice?: BigNumber
   finixPrice?: BigNumber
-  ethereum?: provider
+  klaytn?: provider
   account?: string
 }
 
@@ -76,7 +76,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   finixPrice,
   bnbPrice,
   ethPrice,
-  ethereum,
+  klaytn,
   account,
 }) => {
   const TranslateString = useI18n()
@@ -152,7 +152,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             <Text bold>{earnLabel}</Text>
           </Flex>
         </Flex>
-        <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
+        <CardActionsContainer farm={farm} klaytn={klaytn} account={account} addLiquidityUrl={addLiquidityUrl} />
       </div>
 
       <ExpandableRainbow>
@@ -164,7 +164,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         <ExpandingWrapper expanded={showExpandableSection}>
           <DetailsSection
             removed={removed}
-            bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+            klaytnAddress={`${process.env.REACT_APP_KLAYTN_URL}/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
             totalValueFormated={totalValueFormated}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}

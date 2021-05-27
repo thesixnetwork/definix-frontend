@@ -1,5 +1,5 @@
 import merge from 'lodash/merge'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/caver'
 import definixProfileAbi from 'config/abi/definixProfile.json'
 import teamsList from 'config/constants/teams'
 import { getDefinixProfileAddress } from 'utils/addressHelpers'

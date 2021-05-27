@@ -43,12 +43,13 @@ export enum QuoteToken {
 export enum PoolCategory {
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
-  'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token
+  // 'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token,
+  'KLAYTN' = 'Klantn'
 }
 
 export interface Address {
-  97?: string
-  56: string
+  1001?: string
+  8217: string
 }
 
 export interface FarmConfig {

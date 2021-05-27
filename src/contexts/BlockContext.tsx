@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { getWeb3 } from 'utils/web3'
+import { getCaver } from 'utils/caver'
 
 const BlockContext = React.createContext(0)
 
@@ -8,9 +8,9 @@ const BlockContextProvider = ({ children }) => {
   const [block, setBlock] = useState(0)
 
   useEffect(() => {
-    const web3 = getWeb3()
+    const caver = getCaver()
     const interval = setInterval(async () => {
-      const blockNumber = await web3.eth.getBlockNumber()
+      const blockNumber = await caver.klay.getBlockNumber()
       if (blockNumber !== previousBlock.current) {
         previousBlock.current = blockNumber
         setBlock(blockNumber)

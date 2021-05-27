@@ -2,7 +2,7 @@ import { getDefinixProfileAddress, getDefinixRabbitsAddress } from 'utils/addres
 import definixProfileAbi from 'config/abi/definixProfile.json'
 import definixRabbitsAbi from 'config/abi/definixRabbits.json'
 import { Nft } from 'config/constants/types'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/caver'
 import { Profile } from 'state/types'
 import { getTeam } from 'state/teams/helpers'
 import nfts from 'config/constants/nfts'

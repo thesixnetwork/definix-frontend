@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import Page from 'components/layout/Page'
 import { useTradingCompetRegisContract } from 'hooks/useContract'
 import _ from 'lodash'

@@ -319,11 +319,11 @@ export const fetchQuote = () => async (dispatch) => {
   const busdAddress = getBusdAddress()
   const wbnbAddress = getWbnbAddress()
   const usdtAddress = getUsdtAddress()
-  let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
+  let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 8217)
   if (chainId === ChainId.MAINNET) {
     chainId = ChainId.MAINNET
-  } else if (chainId === ChainId.BSCTESTNET) {
-    chainId = ChainId.BSCTESTNET
+  } else if (chainId === ChainId.BAOBABTESTNET) {
+    chainId = ChainId.BAOBABTESTNET
   }
 
   const FINIX = new Token(chainId, finixAddress, 18, 'FINIX', 'FINIX')

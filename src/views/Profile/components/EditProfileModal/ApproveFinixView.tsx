@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import { AutoRenewIcon, Button, Flex, InjectedModalProps, Text } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import { useFinix } from 'hooks/useContract'

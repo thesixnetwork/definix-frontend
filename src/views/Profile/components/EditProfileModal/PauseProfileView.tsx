@@ -7,7 +7,7 @@ import { fetchProfile } from 'state/profile'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfile as useProfileContract } from 'hooks/useContract'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 
 type PauseProfilePageProps = InjectedModalProps
 

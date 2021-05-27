@@ -1,28 +1,28 @@
 import { useEffect, useReducer, useRef } from 'react'
 import { noop } from 'lodash'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import { useToast } from 'state/hooks'
 
-type Web3Payload = Record<string, unknown> | null
+type CaverPayload = Record<string, unknown> | null
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'fail'
 
 type Action =
   | { type: 'requires_approval' }
   | { type: 'approve_sending' }
-  | { type: 'approve_receipt'; payload: Web3Payload }
-  | { type: 'approve_error'; payload: Web3Payload }
+  | { type: 'approve_receipt'; payload: CaverPayload }
+  | { type: 'approve_error'; payload: CaverPayload }
   | { type: 'confirm_sending' }
-  | { type: 'confirm_receipt'; payload: Web3Payload }
-  | { type: 'confirm_error'; payload: Web3Payload }
+  | { type: 'confirm_receipt'; payload: CaverPayload }
+  | { type: 'confirm_error'; payload: CaverPayload }
 
 interface State {
   approvalState: LoadingState
-  approvalReceipt: Web3Payload
-  approvalError: Web3Payload
+  approvalReceipt: CaverPayload
+  approvalError: CaverPayload
   confirmState: LoadingState
-  confirmReceipt: Web3Payload
-  confirmError: Web3Payload
+  confirmReceipt: CaverPayload
+  confirmError: CaverPayload
 }
 
 const initialState: State = {
@@ -125,10 +125,10 @@ const useApproveConfirmTransaction = ({
         .on('sending', () => {
           dispatch({ type: 'approve_sending' })
         })
-        .on('receipt', (payload: Web3Payload) => {
+        .on('receipt', (payload: CaverPayload) => {
           dispatch({ type: 'approve_receipt', payload })
         })
-        .on('error', (error: Web3Payload) => {
+        .on('error', (error: CaverPayload) => {
           dispatch({ type: 'approve_error', payload: error })
           console.error('An error occurred approving transaction:', error)
           toastError('An error occurred approving transaction')
@@ -139,11 +139,11 @@ const useApproveConfirmTransaction = ({
         .on('sending', () => {
           dispatch({ type: 'confirm_sending' })
         })
-        .on('receipt', (payload: Web3Payload) => {
+        .on('receipt', (payload: CaverPayload) => {
           dispatch({ type: 'confirm_receipt', payload })
           onSuccess(state)
         })
-        .on('error', (error: Web3Payload) => {
+        .on('error', (error: CaverPayload) => {
           dispatch({ type: 'confirm_error', payload: error })
           console.error('An error occurred confirming transaction:', error)
           toastError('An error occurred confirming transaction')

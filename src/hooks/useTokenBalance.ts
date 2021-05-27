@@ -1,29 +1,29 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import { provider } from 'web3-core'
 import finixABI from 'config/abi/finix.json'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/caver'
 import { getTokenBalance } from 'utils/erc20'
 import { getFinixAddress } from 'utils/addressHelpers'
-import useWeb3 from './useWeb3'
+import useCaver from './useCaver'
 import useRefresh from './useRefresh'
 
 const useTokenBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await getTokenBalance(ethereum, tokenAddress, account)
+      const res = await getTokenBalance(klaytn, tokenAddress, account)
       setBalance(new BigNumber(res))
     }
 
-    if (account && ethereum) {
+    if (account && klaytn) {
       fetchBalance()
     }
-  }, [account, ethereum, tokenAddress, fastRefresh])
+  }, [account, klaytn, tokenAddress, fastRefresh])
 
   return balance
 }
@@ -49,12 +49,12 @@ export const useTotalSupply = () => {
 export const useBurnedBalance = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { slowRefresh } = useRefresh()
-  const web3 = useWeb3()
+  const caver = useCaver()
 
   useEffect(() => {
     const fetchBalance = async () => {
       const res = await getTokenBalance(
-        web3.currentProvider,
+        caver.currentProvider,
         tokenAddress,
         '0x000000000000000000000000000000000000dEaD',
       )
@@ -62,7 +62,7 @@ export const useBurnedBalance = (tokenAddress: string) => {
     }
 
     fetchBalance()
-  }, [web3, tokenAddress, slowRefresh])
+  }, [caver, tokenAddress, slowRefresh])
 
   return balance
 }

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button, LinkExternal, useModal } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import useTickets from 'hooks/useTickets'
 import UnlockButton from 'components/UnlockButton'
 import MyTicketsModal from '../TicketCard/UserTicketsModal'
@@ -51,7 +51,7 @@ const TicketCard: React.FC<{ contractLink?: string; lotteryNumber?: number }> = 
         </Button>
       </div>
       <div>
-        <ExternalLinkWrap href={contractLink}>{TranslateString(356, 'View on BscScan')}</ExternalLinkWrap>
+        <ExternalLinkWrap href={contractLink}>{TranslateString(356, 'View on Klaytnscope')}</ExternalLinkWrap>
       </div>
     </Wrapper>
   )

@@ -6,7 +6,7 @@ import erc20ABI from 'config/abi/erc20.json'
 import { QuoteToken } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
-import { getWeb3 } from 'utils/web3'
+import { getCaver} from 'utils/caver'
 import BigNumber from 'bignumber.js'
 
 // Pool 0, Finix / Finix is a different kind of contract (master chef)
@@ -14,8 +14,8 @@ import BigNumber from 'bignumber.js'
 const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.BNB)
 const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.BNB)
 const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
-const web3 = getWeb3()
-const herodotusContract = new web3.eth.Contract(herodotusABI as unknown as AbiItem, getHerodotusAddress())
+const caver = getCaver()
+const herodotusContract = new caver.klay.Contract(herodotusABI as unknown as AbiItem, getHerodotusAddress())
 
 export const fetchPoolsAllowance = async (account) => {
   const calls = nonBnbPools.map((p) => ({
@@ -45,7 +45,7 @@ export const fetchUserBalances = async (account) => {
   )
 
   // BNB pools
-  const bnbBalance = await web3.eth.getBalance(account)
+  const bnbBalance = await caver.klay.getBalance(account)
   const bnbBalances = bnbPools.reduce(
     (acc, pool) => ({ ...acc, [pool.sousId]: new BigNumber(bnbBalance).toJSON() }),
     {},

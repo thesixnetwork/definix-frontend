@@ -1,6 +1,6 @@
 import { Campaign } from 'config/constants/types'
 import { getPointCenterIfoAddress } from 'utils/addressHelpers'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/caver'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import ifosList from 'config/constants/ifo'
 import { campaignMap } from 'config/constants/campaigns'

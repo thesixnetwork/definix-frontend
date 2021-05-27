@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import {
   Card,
   CardBody,
@@ -97,7 +97,7 @@ const PublicProfile = () => {
               <Content>
                 <Username>{`@${profile.username}`}</Username>
                 <Flex alignItems="center">
-                  <AddressLink href={`https://bscscan.com/address/${account}`} color="text" external>
+                  <AddressLink href={`https://scope.klaytn.com/account/${account}`} color="text" external>
                     {account}
                   </AddressLink>
                   <OpenNewIcon ml="4px" />

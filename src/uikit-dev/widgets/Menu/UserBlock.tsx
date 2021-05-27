@@ -47,11 +47,11 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
             <LinkExternal
               isIconLeft
               small
-              href={`https://bscscan.com/address/${account}`}
+              href={`https://baobab.scope.klaytn.com/account/${account}`}
               className="mb-2"
               fontSize="13px"
             >
-              View on BscScan
+              View on Klaytnscope
             </LinkExternal>
             <CopyToClipboard noPadding toCopy={account}>
               Copy Address

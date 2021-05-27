@@ -13,10 +13,10 @@ const CommunityTag = () => (
   </Tag>
 )
 
-const BinanceTag = () => (
-  <Tag variant="binance" outline startIcon={<BinanceIcon />}>
+const KlaytnTag = () => (
+  <Tag variant="klaytn" outline startIcon={<BinanceIcon />}>
     Binance
   </Tag>
 )
 
-export { CoreTag, CommunityTag, BinanceTag }
+export { CoreTag, CommunityTag, KlaytnTag }

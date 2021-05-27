@@ -4,7 +4,7 @@ import {
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
 } from 'utils/addressHelpers'
-import { getContract } from 'utils/web3'
+import { getContract } from 'utils/caver'
 import profileABI from 'config/abi/definixProfile.json'
 import definixRabbitsAbi from 'config/abi/definixRabbits.json'
 import bunnyFactoryAbi from 'config/abi/bunnyFactory.json'

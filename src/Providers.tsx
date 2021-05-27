@@ -1,6 +1,6 @@
 import React from 'react'
 import { ModalProvider } from 'uikit-dev'
-import bsc, { UseWalletProvider } from '@binance-chain/bsc-use-wallet'
+import injected, { UseWalletProvider } from 'klaytn-use-wallet'
 import { Provider } from 'react-redux'
 import getRpcUrl from 'utils/getRpcUrl'
 import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
@@ -19,8 +19,7 @@ const Providers: React.FC = ({ children }) => {
           <UseWalletProvider
             chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
             connectors={{
-              walletconnect: { rpcUrl },
-              bsc,
+              injected,
             }}
           >
             <BlockContextProvider>

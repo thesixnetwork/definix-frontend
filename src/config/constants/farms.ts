@@ -6,13 +6,13 @@ const farms: FarmConfig[] = [
     pid: 0,
     lpSymbol: 'FINIX',
     lpAddresses: {
-      97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+      1001: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
     },
     tokenSymbol: 'FINIX',
     tokenAddresses: {
-      97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+      1001: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
     },
     quoteTokenSymbol: QuoteToken.SIX,
     quoteTokenAdresses: contracts.six,
@@ -21,107 +21,108 @@ const farms: FarmConfig[] = [
     pid: 1,
     lpSymbol: 'FINIX-SIX LP',
     lpAddresses: {
-      97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
-      56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
+      1001: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
+      8217: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
     },
     tokenSymbol: 'SIX',
     tokenAddresses: {
-      97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+      1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
     },
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
   },
-  {
-    pid: 2,
-    lpSymbol: 'FINIX-BUSD LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
-      56: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
-    },
-    tokenSymbol: 'BUSD',
-    tokenAddresses: {
-      97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
-    },
-    quoteTokenSymbol: QuoteToken.FINIX,
-    quoteTokenAdresses: contracts.finix,
-  },
-  {
-    pid: 3,
-    lpSymbol: 'FINIX-BNB LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
-      56: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
-    },
-    tokenSymbol: 'FINIX',
-    tokenAddresses: {
-      97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
-    },
-    quoteTokenSymbol: QuoteToken.FINIX,
-    quoteTokenAdresses: contracts.finix,
-  },
-  {
-    pid: 4,
-    lpSymbol: 'SIX-BUSD LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
-      56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
-    },
-    tokenSymbol: 'SIX',
-    tokenAddresses: {
-      97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-    },
-    quoteTokenSymbol: QuoteToken.BUSD,
-    quoteTokenAdresses: contracts.busd,
-  },
-  {
-    pid: 5,
-    lpSymbol: 'USDT-BUSD LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_USDT_BUSD_LP_TESTNET,
-      56: process.env.REACT_APP_USDT_BUSD_LP_MAINNET,
-    },
-    tokenSymbol: 'USDT',
-    tokenAddresses: {
-      97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
-    },
-    quoteTokenSymbol: QuoteToken.BUSD,
-    quoteTokenAdresses: contracts.busd,
-  },
-  {
-    pid: 6,
-    lpSymbol: 'SIX-BNB LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_SIX_BNB_LP_TESTNET,
-      56: process.env.REACT_APP_SIX_BNB_LP_MAINNET,
-    },
-    tokenSymbol: 'SIX',
-    tokenAddresses: {
-      97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-    },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
-  },
-  {
-    pid: 7,
-    lpSymbol: 'BNB-BUSD LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_BNB_BUSD_LP_TESTNET,
-      56: process.env.REACT_APP_BNB_BUSD_LP_MAINNET,
-    },
-    tokenSymbol: 'BNB',
-    tokenAddresses: {
-      97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
-    },
-    quoteTokenSymbol: QuoteToken.BUSD,
-    quoteTokenAdresses: contracts.busd,
-  },
+  // {
+  //   pid: 2,
+  //   lpSymbol: 'FINIX-BUSD LP',
+  //   lpAddresses: {
+  //     1001: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
+  //     8217: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
+  //   },
+  //   tokenSymbol: 'BUSD',
+  //   tokenAddresses: {
+  //     1001: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
+  //     8217: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+  //   },
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
+  // },
+  // {
+  //   pid: 3,
+  //   lpSymbol: 'FINIX-BNB LP',
+  //   lpAddresses: {
+  //     1001: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
+  //     8217: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
+  //   },
+  //   tokenSymbol: 'FINIX',
+  //   tokenAddresses: {
+  //     1001: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+  //     8217: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+  //   },
+  //   quoteTokenSymbol: QuoteToken.FINIX,
+  //   quoteTokenAdresses: contracts.finix,
+  // },
+  // {
+  //   pid: 4,
+  //   lpSymbol: 'SIX-BUSD LP',
+  //   lpAddresses: {
+  //     1001: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
+  //     8217: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
+  //   },
+  //   tokenSymbol: 'SIX',
+  //   tokenAddresses: {
+  //     1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+  //     8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+  //   },
+  //   quoteTokenSymbol: QuoteToken.BUSD,
+  //   quoteTokenAdresses: contracts.busd,
+  // },
+  // {
+  //   pid: 5,
+  //   lpSymbol: 'USDT-BUSD LP',
+  //   lpAddresses: {
+  //     1001: process.env.REACT_APP_USDT_BUSD_LP_TESTNET,
+  //     8217: process.env.REACT_APP_USDT_BUSD_LP_MAINNET,
+  //   },
+  //   tokenSymbol: 'USDT',
+  //   tokenAddresses: {
+  //     1001: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
+  //     8217: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+  //   },
+  //   quoteTokenSymbol: QuoteToken.BUSD,
+  //   quoteTokenAdresses: contracts.busd,
+  // },
+  // {
+  //   pid: 6,
+  //   lpSymbol: 'SIX-BNB LP',
+  //   lpAddresses: {
+  //     1001: process.env.REACT_APP_SIX_BNB_LP_TESTNET,
+  //     8217: process.env.REACT_APP_SIX_BNB_LP_MAINNET,
+  //   },
+  //   tokenSymbol: 'SIX',
+  //   tokenAddresses: {
+  //     1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+  //     8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+  //   },
+  //   quoteTokenSymbol: QuoteToken.SIX,
+  //   quoteTokenAdresses: contracts.six,
+  // },
+  // {
+  //   pid: 7,
+  //   lpSymbol: 'BNB-BUSD LP',
+  //   lpAddresses: {
+  //     1001: process.env.REACT_APP_BNB_BUSD_LP_TESTNET,
+  //     8217: process.env.REACT_APP_BNB_BUSD_LP_MAINNET,
+  //   },
+  //   tokenSymbol: 'BNB',
+  //   tokenAddresses: {
+  //     1001: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
+  //     8217: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
+  //   },
+  //   quoteTokenSymbol: QuoteToken.BUSD,
+  //   quoteTokenAdresses: contracts.busd,
+  // },
+  
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',

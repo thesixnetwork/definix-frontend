@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Flex, Link, LinkExternal, OpenNewIcon, Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
-  bscScanAddress?: string
+  klaytnAddress?: string
   removed?: boolean
   totalValueFormated?: string
   lpLabel?: string
@@ -33,7 +33,7 @@ const StyledLinkExternal = styled(LinkExternal)`
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
-  bscScanAddress,
+  klaytnAddress,
   removed,
   totalValueFormated,
   lpLabel,
@@ -56,8 +56,8 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         </Flex>
       )}
       <Flex justifyContent="flex-start" className="flex">
-        <Link external href={bscScanAddress} bold={false} className="flex-shrink" style={{ width: '100%' }}>
-          {TranslateString(356, 'View on BscScan')}
+        <Link external href={klaytnAddress} bold={false} className="flex-shrink" style={{ width: '100%' }}>
+          {TranslateString(356, 'View on Klaytnscope')}
           <OpenNewIcon color="primary" className="ml-2" />
         </Link>
       </Flex>

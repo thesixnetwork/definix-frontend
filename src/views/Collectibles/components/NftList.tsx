@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import orderBy from 'lodash/orderBy'
 import nfts from 'config/constants/nfts'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import { getBunnySpecialContract } from 'utils/contractHelpers'
 import useGetWalletNfts from 'hooks/useGetWalletNfts'
 import makeBatchRequest from 'utils/makeBatchRequest'
