@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Text } from 'uikit-dev/components/Text'
 import Flex from '../../components/Box/Flex'
-import { IconButton } from '../../components/Button'
+import { Button, IconButton } from '../../components/Button'
 import Heading from '../../components/Heading/Heading'
 import { ArrowBackIcon, CloseIcon } from '../../components/Svg'
 import colorStroke from '../../images/Color-stroke.png'
@@ -44,7 +45,8 @@ const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   align-items: center;
-  padding: 12px 12px 0 24px;
+  padding: 8px 8px 8px 24px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const ModalTitle = styled(Flex)`
@@ -65,21 +67,26 @@ const Modal: React.FC<Props> = ({
     <ModalHeader>
       <ModalTitle>
         {onBack && (
-          <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
-            <ArrowBackIcon color="primary" />
-          </IconButton>
+          <Button variant="text" onClick={onBack} ml="-12px" padding="0 12px" startIcon={<ArrowBackIcon />}>
+            <Text fontSize="14px" color="textSubtle">
+              Back
+            </Text>
+          </Button>
         )}
         <Heading>{title}</Heading>
       </ModalTitle>
+
       {!hideCloseButton && (
         <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
           <CloseIcon color="primary" />
         </IconButton>
       )}
     </ModalHeader>
+
     <Flex flexDirection="column" p={bodyPadding}>
       {children}
     </Flex>
+
     {isRainbow && <img className="color-stroke" alt="" src={colorStroke} />}
   </StyledModal>
 )

@@ -1,9 +1,8 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Modal } from 'uikit-dev'
-import ModalActions from 'components/ModalActions'
 import ModalInput from 'components/ModalInput'
 import useI18n from 'hooks/useI18n'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Button, Modal } from 'uikit-dev'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
 interface WithdrawModalProps {
@@ -11,9 +10,16 @@ interface WithdrawModalProps {
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
+  renderCardHeading?: (className?: string, inlineMultiplier?: boolean) => JSX.Element
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max, tokenName = '' }) => {
+const WithdrawModal: React.FC<WithdrawModalProps> = ({
+  onConfirm,
+  onDismiss,
+  max,
+  tokenName = '',
+  renderCardHeading,
+}) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
@@ -33,7 +39,16 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   }, [fullBalance, setVal])
 
   return (
-    <Modal title={TranslateString(1126, 'Unstake LP tokens')} onDismiss={onDismiss} isRainbow>
+    <Modal
+      title=""
+      onBack={onDismiss}
+      onDismiss={onDismiss}
+      isRainbow={false}
+      bodyPadding="0 32px 32px 32px"
+      hideCloseButton
+    >
+      {renderCardHeading('mb-5', true)}
+
       <ModalInput
         onSelectMax={handleSelectMax}
         onChange={handleChange}
@@ -42,23 +57,21 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
         symbol={tokenName}
         inputTitle={TranslateString(588, 'Unstake')}
       />
-      <ModalActions>
-        <Button variant="secondary" onClick={onDismiss} fullWidth>
-          {TranslateString(462, 'Cancel')}
-        </Button>
-        <Button
-          disabled={pendingTx}
-          onClick={async () => {
-            setPendingTx(true)
-            await onConfirm(val)
-            setPendingTx(false)
-            onDismiss()
-          }}
-          fullWidth
-        >
-          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
-        </Button>
-      </ModalActions>
+
+      <Button
+        disabled={pendingTx}
+        onClick={async () => {
+          setPendingTx(true)
+          await onConfirm(val)
+          setPendingTx(false)
+          onDismiss()
+        }}
+        fullWidth
+        radii="card"
+        className="mt-5"
+      >
+        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, 'Remove LP')}
+      </Button>
     </Modal>
   )
 }

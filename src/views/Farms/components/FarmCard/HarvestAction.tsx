@@ -1,53 +1,59 @@
-import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
-import { Button, Flex, Heading, Text } from 'uikit-dev'
-import useI18n from 'hooks/useI18n'
 import { useHarvest } from 'hooks/useHarvest'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceFinixUsd } from 'state/hooks'
+import useI18n from 'hooks/useI18n'
+import numeral from 'numeral'
+import React, { useState } from 'react'
+import { useFarmUser, usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
+import { Button, Heading, Text } from 'uikit-dev'
+import miniLogo from 'uikit-dev/images/finix-coin.png'
+import { getBalanceNumber } from 'utils/formatBalance'
 
 interface FarmCardActionsProps {
   earnings?: BigNumber
   pid?: number
+  className?: string
 }
 
-const StyledHarvestButton = styled(Button)`
-  width: 100%;
-  &:not(:disabled) {
-    background: ${({ theme }) => theme.colors.harvest};
-  }
+const MiniLogo = styled.img`
+  width: 20px;
+  height: auto;
+  margin-right: 8px;
+  display: inline-block;
 `
 
-const StyledDisplayBalance = styled.div`
-  width: 115px;
-  flex-shrink: 0;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.default};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 1rem;
-`
-
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
-  const TranslateString = useI18n()
+const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) => {
   const [pendingTx, setPendingTx] = useState(false)
+  const TranslateString = useI18n()
   const finixUsd = usePriceFinixUsd()
   const { onReward } = useHarvest(pid)
+  const { earnings } = useFarmUser(pid)
 
   const rawEarningsBalance = getBalanceNumber(earnings)
   const displayBalance = rawEarningsBalance.toLocaleString()
 
   return (
-    <>
-      <Flex justifyContent="space-between" alignItems="stretch">
-        <StyledDisplayBalance>
-          <Heading color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}>{displayBalance}</Heading>
-        </StyledDisplayBalance>
-        <StyledHarvestButton
+    <div className={className}>
+      <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
+        <MiniLogo src={miniLogo} alt="" />
+        {`FINIX ${TranslateString(1072, 'Earned')}`}
+      </Text>
+
+      <div className="flex align-center justify-space-between">
+        <Heading
+          fontSize="24px !important"
+          color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
+          className="col-6 pr-3"
+          textAlign="left"
+        >
+          {displayBalance}
+        </Heading>
+
+        <Button
+          fullWidth
           disabled={rawEarningsBalance === 0 || pendingTx}
+          className="col-6"
+          radii="small"
           onClick={async () => {
             setPendingTx(true)
             await onReward()
@@ -55,12 +61,13 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ earnings, pid }) => {
           }}
         >
           {TranslateString(562, 'Harvest')}
-        </StyledHarvestButton>
-      </Flex>
-      <Text fontSize="12px" textAlign="left" className="mt-4">
+        </Button>
+      </div>
+
+      <Text color="textSubtle" textAlign="left" className="mt-1">
         = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
       </Text>
-    </>
+    </div>
   )
 }
 

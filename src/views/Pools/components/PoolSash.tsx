@@ -6,8 +6,8 @@ const PoolSash = styled.div<{ type?: string }>`
   background-image: url(${({ type }) => (type === 'special' ? specialImg : finishImg)});
   background-repeat: no-repeat;
   background-size: contain;
-  height: 120px;
-  width: 120px;
+  height: 80px;
+  width: 80px;
   position: absolute;
   right: 0;
   top: 0;
