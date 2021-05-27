@@ -6,7 +6,7 @@ import erc20ABI from 'config/abi/erc20.json'
 import { QuoteToken } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
-import { getCaver} from 'utils/caver'
+import { getCaver } from 'utils/caver'
 import BigNumber from 'bignumber.js'
 
 // Pool 0, Finix / Finix is a different kind of contract (master chef)

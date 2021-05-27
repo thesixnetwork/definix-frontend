@@ -99,7 +99,7 @@ const Farm: React.FC = () => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    console.log("stakingTokenFarm = ", stakingTokenFarm)
+    console.log('stakingTokenFarm = ', stakingTokenFarm)
     const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'ETH' ? ethPriceBnb : 1
 
     // /!\ Assume that the farm quote price is BNB

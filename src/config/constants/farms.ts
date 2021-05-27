@@ -122,7 +122,7 @@ const farms: FarmConfig[] = [
   //   quoteTokenSymbol: QuoteToken.BUSD,
   //   quoteTokenAdresses: contracts.busd,
   // },
-  
+
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',

@@ -164,7 +164,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
         <ExpandingWrapper expanded={showExpandableSection}>
           <DetailsSection
             removed={removed}
-            klaytnAddress={`${process.env.REACT_APP_KLAYTN_URL}/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+            klaytnAddress={`${process.env.REACT_APP_KLAYTN_URL}/account/${
+              farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+            }`}
             totalValueFormated={totalValueFormated}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
