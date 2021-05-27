@@ -1,12 +1,13 @@
+import axios from 'axios'
+import _ from 'lodash'
 import throttle from 'lodash/throttle'
 import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
-import _ from 'lodash'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
+import definixCoin from 'uikit-dev/images/KR-Banner/AWforDefinix-03.png'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
@@ -101,7 +102,7 @@ const MobileOnlyOverlay = styled(Overlay)`
   }
 `
 
-const Price = styled.div`
+const Price = styled.a`
   display: flex;
   align-items: center;
   margin-right: 1rem;
@@ -276,7 +277,7 @@ const Menu: React.FC<NavProps> = ({
           )}
         </Flex>
         <Flex alignItems="center">
-          <Price>
+          <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
@@ -328,6 +329,24 @@ const Menu: React.FC<NavProps> = ({
           logout={logout}
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
+          <CountDownBanner
+            logo={definixCoin}
+            title="암호화폐에 대한 여러분의 경험을 얘기하고,"
+            highlight="20$를 받으세요!"
+            endTime=""
+            button={
+              <Button
+                as="a"
+                target="_blank"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSe7X2x0ODo-Be_eC28NpS28Ae0qZ8fGjT-QO6feGLLfZS7OXA/viewform"
+                size="sm"
+              >
+                Click
+              </Button>
+            }
+            disableCountdown
+          />
+
           <CountDownBanner
             logo={logoTrade}
             title="Definix Trading Tournament"

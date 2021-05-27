@@ -155,6 +155,14 @@ const PanelBody: React.FC<Props> = (props) => {
         </div>
       </BorderBox>
       <BorderBox>
+        <Heading fontSize="14px">Info</Heading>
+        {links
+          .filter((link) => link.group === 'info')
+          .map((link) => (
+            <MenuItem menu={link} />
+          ))}
+      </BorderBox>
+      <BorderBox>
         <Heading fontSize="14px">Contact</Heading>
         {links
           .filter((link) => link.group === 'contact')

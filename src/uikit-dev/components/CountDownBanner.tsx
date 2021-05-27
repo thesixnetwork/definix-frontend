@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text } from './Text'
 
@@ -31,10 +31,12 @@ const CountDownBanner = ({
   logo = undefined,
   title = '',
   detail = '',
+  highlight = '',
   topTitle = '',
   topValue = '',
   endTime,
   button = undefined,
+  disableCountdown = false,
 }) => {
   const currentTime = new Date().getTime()
   const [timer, setTime] = useState({
@@ -105,14 +107,15 @@ const CountDownBanner = ({
     return () => clearInterval(interval)
   }, [endTime])
 
-  return currentTime < endTime ? (
+  return currentTime < endTime || disableCountdown ? (
     <Banner>
       <MaxWidth className="flex align-center justify-center flex-wrap">
         {logo && <img src={logo} alt="" />}
 
         <Text color="white" className="mr-2" textAlign="center">
           {title && <strong className="mr-1">{title}</strong>}
-          {detail}
+          {detail && <span className="m-1">{detail}</span>}
+          {highlight && <strong style={{ color: '#ffd157' }}>{highlight}</strong>}
         </Text>
 
         {endTime && (
@@ -122,15 +125,20 @@ const CountDownBanner = ({
             )}:${addLeadingZeros(timer.sec)}`}
           </Text>
         )}
-        <>
-          <Text color="white" textAlign="center">
-            <strong className="mr-1">{topTitle}</strong>
+
+        {topTitle && (
+          <Text color="white" textAlign="center" bold>
+            {topTitle}
           </Text>
-          <Text bold color="#ffd157" fontSize="24px" className="mr-2">
+        )}
+
+        {topValue && (
+          <Text color="#ffd157" textAlign="center" bold fontSize="24px" className="mr-2">
             {topValue}
           </Text>
-          {button}
-        </>
+        )}
+
+        {button}
       </MaxWidth>
     </Banner>
   ) : (

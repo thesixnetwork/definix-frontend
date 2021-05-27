@@ -1,4 +1,5 @@
 import { MenuEntry } from 'uikit-dev'
+import newIcon from 'uikit-dev/images/for-trading-challenge/New-icon.png'
 import bridgeClick from 'uikit-dev/images/Menu-Icon/bridge-click.png'
 import bridge from 'uikit-dev/images/Menu-Icon/bridge.png'
 import dashboardClick from 'uikit-dev/images/Menu-Icon/dashboard-click.png'
@@ -7,6 +8,8 @@ import exploreClick from 'uikit-dev/images/Menu-Icon/explore-click.png'
 import explore from 'uikit-dev/images/Menu-Icon/explore.png'
 import farmClick from 'uikit-dev/images/Menu-Icon/farm-click.png'
 import farm from 'uikit-dev/images/Menu-Icon/farm.png'
+import gitbookClick from 'uikit-dev/images/Menu-Icon/Gitbook-click.png'
+import gitbook from 'uikit-dev/images/Menu-Icon/Gitbook.png'
 import liquidityClick from 'uikit-dev/images/Menu-Icon/liquidity-click.png'
 import liquidity from 'uikit-dev/images/Menu-Icon/liquidity.png'
 import myFundClick from 'uikit-dev/images/Menu-Icon/my-funds-click.png'
@@ -19,7 +22,6 @@ import portfolioClick from 'uikit-dev/images/Menu-Icon/portfolio-click.png'
 import portfolio from 'uikit-dev/images/Menu-Icon/portfolio.png'
 import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
 import swap from 'uikit-dev/images/Menu-Icon/swap.png'
-import newIcon from 'uikit-dev/images/for-trading-challenge/New-icon.png'
 
 const config: MenuEntry[] = [
   {
@@ -122,6 +124,15 @@ const config: MenuEntry[] = [
     group: 'tool',
     notHighlight: true,
     newTab: false,
+  },
+  {
+    label: 'Gitbook',
+    icon: gitbookClick,
+    iconActive: gitbook,
+    href: 'https://app.gitbook.com/@sixnetwork/s/definix/',
+    group: 'info',
+    notHighlight: true,
+    newTab: true,
   },
   {
     label: 'Partnership',
