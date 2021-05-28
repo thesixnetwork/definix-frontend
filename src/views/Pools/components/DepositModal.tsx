@@ -1,9 +1,17 @@
 import BigNumber from 'bignumber.js'
 import ModalInput from 'components/ModalInput'
 import React, { useCallback, useMemo, useState } from 'react'
+import Lottie from 'react-lottie'
 import { Button, Modal } from 'uikit-dev'
+import loading from 'uikit-dev/animation/farmPool.json'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import useI18n from '../../../hooks/useI18n'
+
+const options = {
+  loop: true,
+  autoplay: true,
+  animationData: loading,
+}
 
 interface DepositModalProps {
   max: BigNumber
@@ -48,7 +56,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
       hideCloseButton
       classHeader="bd-b-n"
     >
-      {renderCardHeading('mb-5')}
+      {pendingTx ? <Lottie options={options} height={164} width={164} /> : renderCardHeading('mb-5')}
 
       <ModalInput
         value={val}
