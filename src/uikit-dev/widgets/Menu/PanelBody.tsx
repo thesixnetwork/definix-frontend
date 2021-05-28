@@ -131,25 +131,6 @@ const PanelBody: React.FC<Props> = (props) => {
           ))}
       </BorderBox>
       <BorderBox>
-        <Heading fontSize="14px">Certified by</Heading>
-        <div className="flex flex-wrap align-center px-4 pt-2">
-          <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
-            <img src={certik} width="80" alt="" />
-          </a>
-          <a href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate" target="_blank" rel="noreferrer">
-            <img src={techRate} width="70" alt="" />
-          </a>
-        </div>
-      </BorderBox>
-      <BorderBox>
-        <Heading fontSize="14px">Info</Heading>
-        {links
-          .filter((link) => link.group === 'info')
-          .map((link) => (
-            <MenuItem menu={link} />
-          ))}
-      </BorderBox>
-      <BorderBox>
         <Heading fontSize="14px">Contact</Heading>
         {links
           .filter((link) => link.group === 'contact')

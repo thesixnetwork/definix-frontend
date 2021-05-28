@@ -126,6 +126,12 @@ const GlobalStyle = createGlobalStyle`
   theme.colors.border}; }
   .bd-y { border-top: 1px solid ${({ theme }) => theme.colors.border}; border-bottom: 1px solid ${({ theme }) =>
   theme.colors.border}; }
+  .bd-t-n { border-top: none; }
+  .bd-r-n { border-right: none; }
+  .bd-b-n { border-bottom: none; }
+  .bd-l-n { border-left: none; }
+  .bd-x-n { border-right: none; border-left: none; }
+  .bd-y-n { border-top: none; border-bottom: none; }
 
   .ma-0 {
     margin: 0 !important;

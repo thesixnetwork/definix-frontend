@@ -36,6 +36,7 @@ const ModalWrapper = styled.div`
   background: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
+  background-color: ${({ theme }) => theme.colors.grayBlue};
 `
 
 const Farm: React.FC = () => {

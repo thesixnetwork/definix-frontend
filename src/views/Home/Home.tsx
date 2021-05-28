@@ -6,7 +6,14 @@ import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import { LeftPanel, MaxWidthLeft, MaxWidthRight, RightPanel, ShowHideButton } from 'uikit-dev/components/TwoPanelLayout'
+import {
+  LeftPanel,
+  MaxWidthLeft,
+  MaxWidthRight,
+  RightPanel,
+  ShowHideButton,
+  TwoPanelLayout,
+} from 'uikit-dev/components/TwoPanelLayout'
 import CardAudit from './components/CardAudit'
 import CardComingSoon from './components/CardComingSoon'
 import CardGetStarted from './components/CardGetStarted'
@@ -42,62 +49,59 @@ const Home: React.FC = () => {
   return (
     <>
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
-      <div>
-        <div className="flex">
-          <LeftPanel isShowRightPanel={isShowRightPanel}>
-            <MaxWidthLeft>
-              <div className="mb-5">
-                <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                  Home
-                </Heading>
-                <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
+      <TwoPanelLayout>
+        <LeftPanel isShowRightPanel={isShowRightPanel}>
+          <MaxWidthLeft>
+            <div className="mb-5">
+              <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
+                Home
+              </Heading>
+              <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
+            </div>
+
+            <CardComingSoon showBtn className="mb-5" />
+
+            <div className="flex align-stretch">
+              <div className="col-6 mr-2">
+                <CardTVL className="mb-5" />
+                <CardAudit />
               </div>
-
-              <CardComingSoon showBtn className="mb-5" />
-
-              <div className="flex align-stretch">
-                <div className="col-6 mr-2">
-                  <CardTVL className="mb-5" />
-                  <CardAudit />
-                </div>
-                <div className="col-6 ml-3">
-                  <CardTweet />
-                </div>
+              <div className="col-6 ml-3">
+                <CardTweet />
               </div>
-            </MaxWidthLeft>
-          </LeftPanel>
+            </div>
+          </MaxWidthLeft>
+        </LeftPanel>
 
-          <RightPanel isShowRightPanel={isShowRightPanel}>
-            <ShowHideButton
-              isShow={isShowRightPanel}
-              action={() => {
-                setIsShowRightPanel(!isShowRightPanel)
-              }}
-            />
+        <RightPanel isShowRightPanel={isShowRightPanel}>
+          <ShowHideButton
+            isShow={isShowRightPanel}
+            action={() => {
+              setIsShowRightPanel(!isShowRightPanel)
+            }}
+          />
 
-            {isShowRightPanel && (
-              <MaxWidthRight>
-                {account && !hasProfile ? (
-                  <>
-                    <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
-                      MY FARMS & POOLS
-                    </Heading>
-
-                    <CardMyFarmsAndPools />
-                  </>
-                ) : (
-                  <>
-                    <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
-                      TUTORIALS
-                    </Heading>
-                    <CardGetStarted />
-                  </>
-                )}
-              </MaxWidthRight>
-            )}
-          </RightPanel>
-        </div>
-      </div>
+          {isShowRightPanel && (
+            <MaxWidthRight>
+              {account && !hasProfile ? (
+                <>
+                  <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
+                    My farms & pools
+                  </Heading>
+                  <CardMyFarmsAndPools />
+                </>
+              ) : (
+                <>
+                  <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
+                    TUTORIALS
+                  </Heading>
+                  <CardGetStarted />
+                </>
+              )}
+            </MaxWidthRight>
+          )}
+        </RightPanel>
+      </TwoPanelLayout>
     </>
   )
 }

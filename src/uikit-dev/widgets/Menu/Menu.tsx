@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
-import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import definixCoin from 'uikit-dev/images/KR-Banner/AWforDefinix-03.png'
+import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
@@ -358,66 +358,68 @@ const Menu: React.FC<NavProps> = ({
           logout={logout}
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
-          <CountDownBanner
-            logo={definixCoin}
-            title="암호화폐에 대한 여러분의 경험을 얘기하고,"
-            highlight="20$를 받으세요!"
-            endTime=""
-            button={
-              <Button
-                as="a"
-                target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe7X2x0ODo-Be_eC28NpS28Ae0qZ8fGjT-QO6feGLLfZS7OXA/viewform"
-                size="sm"
-              >
-                Click
-              </Button>
-            }
-            disableCountdown
-          />
+          <InnerBg>
+            <CountDownBanner
+              logo={definixCoin}
+              title="암호화폐에 대한 여러분의 경험을 얘기하고,"
+              highlight="20$를 받으세요!"
+              endTime=""
+              button={
+                <Button
+                  as="a"
+                  target="_blank"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSe7X2x0ODo-Be_eC28NpS28Ae0qZ8fGjT-QO6feGLLfZS7OXA/viewform"
+                  size="sm"
+                >
+                  Click
+                </Button>
+              }
+              disableCountdown
+            />
 
-          <CountDownBanner
-            logo={logoTrade}
-            title="Definix Trading Tournament"
-            detail="Registration Period end in"
-            endTime={endRegisterTimestamp}
-            button={
-              <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
-                Register now
-              </Button>
-            }
-          />
-
-          {currentTime > endStatedTradingTime ? (
             <CountDownBanner
               logo={logoTrade}
-              title="The 1st Definix Trading Tournament"
-              detail="will end in"
-              topTitle="Top trader gain profit"
-              topValue={`${valuePnl}%`}
-              endTime={endTradingTimestamp}
+              title="Definix Trading Tournament"
+              detail="Registration Period end in"
+              endTime={endRegisterTimestamp}
               button={
-                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
-                  See more
+                <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
+                  Register now
                 </Button>
               }
             />
-          ) : (
-            <StartTimeBanner
-              logo={logoTrade}
-              title="The 1st Definix Trading Tournament"
-              detail="has started"
-              topTitle="Top trader gain profit"
-              topValue={`${valuePnl}%`}
-              endTime={endStatedTradingTime}
-              button={
-                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
-                  See more
-                </Button>
-              }
-            />
-          )}
-          {children}
+
+            {currentTime > endStatedTradingTime ? (
+              <CountDownBanner
+                logo={logoTrade}
+                title="The 1st Definix Trading Tournament"
+                detail="will end in"
+                topTitle="Top trader gain profit"
+                topValue={`${valuePnl}%`}
+                endTime={endTradingTimestamp}
+                button={
+                  <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                    See more
+                  </Button>
+                }
+              />
+            ) : (
+              <StartTimeBanner
+                logo={logoTrade}
+                title="The 1st Definix Trading Tournament"
+                detail="has started"
+                topTitle="Top trader gain profit"
+                topValue={`${valuePnl}%`}
+                endTime={endStatedTradingTime}
+                button={
+                  <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                    See more
+                  </Button>
+                }
+              />
+            )}
+            {children}
+          </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
       </BodyWrapper>

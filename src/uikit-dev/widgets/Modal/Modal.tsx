@@ -14,6 +14,7 @@ interface Props extends InjectedProps {
   onBack?: () => void
   bodyPadding?: string
   isRainbow?: boolean
+  classHeader?: string
 }
 
 const StyledModal = styled.div<{ isRainbow: boolean }>`
@@ -41,11 +42,12 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   }
 `
 
-const ModalHeader = styled.div`
+const ModalHeader = styled.div<{ className?: string }>`
   display: flex;
   align-items: center;
   align-items: center;
-  padding: 12px 12px 0 24px;
+  padding: 8px 8px 8px 24px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const ModalTitle = styled(Flex)`
@@ -61,9 +63,10 @@ const Modal: React.FC<Props> = ({
   hideCloseButton = false,
   bodyPadding = '24px',
   isRainbow = true,
+  classHeader = '',
 }) => (
   <StyledModal isRainbow={isRainbow}>
-    <ModalHeader>
+    <ModalHeader className={classHeader}>
       <ModalTitle>
         {onBack && (
           <Button variant="text" onClick={onBack} ml="-12px" padding="0 12px" startIcon={<ArrowBackIcon />}>

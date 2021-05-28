@@ -33,7 +33,6 @@ import FinixHarvestPool from './FinixHarvestPool'
 
 const Container = styled(Card)`
   flex-grow: 1;
-  height: 100%;
 `
 
 const NetWorth = styled.div`
@@ -141,14 +140,16 @@ const Summary = styled.div`
 
 const List = styled.div`
   overflow: auto;
-  max-height: 400px;
+  max-height: 530px;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     max-height: 100%;
+    overflow: auto;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
     max-height: 738px;
+    overflow: auto;
   }
 `
 

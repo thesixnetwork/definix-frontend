@@ -9,7 +9,6 @@ const Tweet = styled(Card)`
 `
 
 const BorderStyle = styled(Text)`
-  // border: 1px solid #ececec;
   border-radius: 6px;
 `
 
