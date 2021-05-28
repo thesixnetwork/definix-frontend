@@ -63,6 +63,7 @@ export type Colors = {
   white: string
   placeholder: string
   harvest: string
+  grayBlue: string
 
   // Gradients
   gradients: Gradients

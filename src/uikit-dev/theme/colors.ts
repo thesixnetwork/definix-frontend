@@ -38,6 +38,7 @@ export const lightColors: Colors = {
   white: '#FFFFFF',
   placeholder: '#CCCCCC',
   harvest: '#24B181',
+  grayBlue: '#e2e7f4',
 }
 
 export const darkColors: Colors = {
@@ -65,4 +66,5 @@ export const darkColors: Colors = {
   white: '#FFFFFF',
   placeholder: '#CCCCCC',
   harvest: '#24B181',
+  grayBlue: '#e2e7f4',
 }

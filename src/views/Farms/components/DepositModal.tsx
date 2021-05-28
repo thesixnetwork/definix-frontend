@@ -48,6 +48,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
       isRainbow={false}
       bodyPadding="0 32px 32px 32px"
       hideCloseButton
+      classHeader="bd-b-n"
     >
       {renderCardHeading('mb-5', true)}
 
