@@ -29,10 +29,12 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   const TranslateString = useI18n()
 
   const [pendingTx, setPendingTx] = useState(false)
-
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
   const { onReward } = useSousHarvest(sousId, isBnbPool)
+
+  const rawEarningsBalance = getBalanceNumber(earnings)
+  const displayBalance = rawEarningsBalance.toLocaleString()
 
   return (
     <div className={className}>
@@ -48,7 +50,8 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           className="col-6 pr-3"
           textAlign="left"
         >
-          {getBalanceNumber(earnings, tokenDecimals)}
+          {/* {getBalanceNumber(earnings, tokenDecimals).toFixed(2)} */}
+          {displayBalance}
         </Heading>
 
         <Button
@@ -67,7 +70,8 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
       </div>
 
       <Text color="textSubtle" textAlign="left" className="mt-1">
-        = ${numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')}
+        = ${numeral(rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')}
+        {/* {numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')} */}
       </Text>
     </div>
   )

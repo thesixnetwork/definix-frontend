@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
-import { calculateFinixEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
+import { calculateFinixEarnedPerThousandDollarsOfPool, apyModalRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
@@ -37,13 +37,30 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   addLiquidityUrl,
 }) => {
   const TranslateString = useI18n()
-  const farmApy = apy.times(new BigNumber(100)).toNumber()
+  const poolApy = apy.times(new BigNumber(1)).toNumber()
+
   const oneThousandDollarsWorthOfFinix = 1000 / finixPrice.toNumber()
 
-  const finixEarnedPerThousand1D = calculateFinixEarnedPerThousandDollars({ numberOfDays: 1, farmApy, finixPrice })
-  const finixEarnedPerThousand7D = calculateFinixEarnedPerThousandDollars({ numberOfDays: 7, farmApy, finixPrice })
-  const finixEarnedPerThousand30D = calculateFinixEarnedPerThousandDollars({ numberOfDays: 30, farmApy, finixPrice })
-  const finixEarnedPerThousand365D = calculateFinixEarnedPerThousandDollars({ numberOfDays: 365, farmApy, finixPrice })
+  const finixEarnedPerThousand1D = calculateFinixEarnedPerThousandDollarsOfPool({
+    numberOfDays: 1,
+    poolApy,
+    finixPrice,
+  })
+  const finixEarnedPerThousand7D = calculateFinixEarnedPerThousandDollarsOfPool({
+    numberOfDays: 7,
+    poolApy,
+    finixPrice,
+  })
+  const finixEarnedPerThousand30D = calculateFinixEarnedPerThousandDollarsOfPool({
+    numberOfDays: 30,
+    poolApy,
+    finixPrice,
+  })
+  const finixEarnedPerThousand365D = calculateFinixEarnedPerThousandDollarsOfPool({
+    numberOfDays: 365,
+    poolApy,
+    finixPrice,
+  })
 
   return (
     <Modal title="ROI" onDismiss={onDismiss} isRainbow={false}>
@@ -69,7 +86,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfFinix })}%
+            {apyModalRoi({ amountEarned: finixEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfFinix })} %
           </Text>
         </GridItem>
         <GridItem>
@@ -81,7 +98,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfFinix })}%
+            {apyModalRoi({ amountEarned: finixEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfFinix })} %
           </Text>
         </GridItem>
         <GridItem>
@@ -93,7 +110,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfFinix })}%
+            {apyModalRoi({ amountEarned: finixEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfFinix })} %
           </Text>
         </GridItem>
         <GridItem>
@@ -105,7 +122,8 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand365D, amountInvested: oneThousandDollarsWorthOfFinix })}%
+            {apyModalRoi({ amountEarned: finixEarnedPerThousand365D, amountInvested: oneThousandDollarsWorthOfFinix })}{' '}
+            %
           </Text>
         </GridItem>
         <GridItem>
