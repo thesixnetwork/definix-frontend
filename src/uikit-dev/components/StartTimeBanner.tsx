@@ -1,6 +1,6 @@
 /* eslint-disable react/require-default-props */
 
-import React, { useEffect, useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Text } from './Text'
 
@@ -29,29 +29,17 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-interface CountDownBannerProps {
+interface StartTimeBannerProps {
   logo?: any
   title?: string
   detail?: string
-  highlight?: string
   topTitle?: string
   topValue?: string
   endTime?: any
   button?: any
-  disableCountdown?: boolean
 }
 
-const CountDownBanner = ({
-  logo,
-  title,
-  detail,
-  highlight,
-  topTitle,
-  topValue,
-  endTime,
-  button,
-  disableCountdown = false,
-}: CountDownBannerProps) => {
+const StartTimeBanner = ({ logo, title, detail, topTitle, topValue, endTime, button }: StartTimeBannerProps) => {
   const currentTime = new Date().getTime()
   const [timer, setTime] = useState({
     days: 0,
@@ -60,8 +48,14 @@ const CountDownBanner = ({
     sec: 0,
   })
 
-  const calculateCountdown = (endDate) => {
-    let diff = (new Date(endDate).getTime() - new Date().getTime()) / 1000
+  const calculateCountdown = () => {
+    const startDateTime = new Date(2021, 4, 14, 15, 0, 0, 0)
+    const startStamp = startDateTime.getTime()
+
+    const newDate = new Date()
+    const newStamp = newDate.getTime()
+
+    let diff = Math.round((newStamp - startStamp) / 1000)
 
     // clear countdown when date is reached
     if (diff <= 0) return false
@@ -75,26 +69,12 @@ const CountDownBanner = ({
       millisec: 0,
     }
 
-    // calculate time difference between now and expected date
-    if (diff >= 365.25 * 86400) {
-      // 365.25 * 24 * 60 * 60
-      timeLeft.years = Math.floor(diff / (365.25 * 86400))
-      diff -= timeLeft.years * 365.25 * 86400
-    }
-    if (diff >= 86400) {
-      // 24 * 60 * 60
-      timeLeft.days = Math.floor(diff / 86400)
-      diff -= timeLeft.days * 86400
-    }
-    if (diff >= 3600) {
-      // 60 * 60
-      timeLeft.hours = Math.floor(diff / 3600)
-      diff -= timeLeft.hours * 3600
-    }
-    if (diff >= 60) {
-      timeLeft.min = Math.floor(diff / 60)
-      diff -= timeLeft.min * 60
-    }
+    timeLeft.days = Math.floor(diff / 86400)
+    diff -= timeLeft.days * 86400
+    timeLeft.hours = Math.floor(diff / 3600)
+    diff -= timeLeft.hours * 3600
+    timeLeft.min = Math.floor(diff / 60)
+    diff -= timeLeft.min * 60
     timeLeft.sec = Math.floor(diff)
 
     return timeLeft
@@ -110,8 +90,7 @@ const CountDownBanner = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const d = calculateCountdown(endTime)
-
+      const d = calculateCountdown()
       if (d) {
         setTime(d)
       } else {
@@ -119,40 +98,34 @@ const CountDownBanner = ({
       }
     }, 1000)
     return () => clearInterval(interval)
-  }, [endTime])
+  }, [])
 
-  return currentTime < endTime || disableCountdown ? (
+  return currentTime < endTime ? (
     <Banner>
       <MaxWidth className="flex align-center justify-center flex-wrap">
         {logo && <img src={logo} alt="" />}
 
-        <Text color="white" className="mr-2" textAlign="center">
+        <Text color="white" textAlign="center">
           {title && <strong className="mr-1">{title}</strong>}
-          {detail && <span className="m-1">{detail}</span>}
-          {highlight && <strong style={{ color: '#ffd157' }}>{highlight}</strong>}
+          {detail}
         </Text>
 
         {endTime && (
-          <Text bold color="#ffd157" fontSize="24px" className="mr-2" textAlign="center">
+          <Text bold color="#ffd157" fontSize="24px" textAlign="center">
             {`${addLeadingZeros(timer.days)}:${addLeadingZeros(timer.hours)}:${addLeadingZeros(
               timer.min,
             )}:${addLeadingZeros(timer.sec)}`}
           </Text>
         )}
-
-        {topTitle && (
-          <Text color="white" textAlign="center" bold>
-            {topTitle}
+        <>
+          <Text color="white" textAlign="center">
+            <strong>{topTitle}</strong>
           </Text>
-        )}
-
-        {topValue && (
-          <Text color="#ffd157" textAlign="center" bold fontSize="24px" className="mr-2">
+          <Text bold color="#ffd157" fontSize="24px" className="mr-2">
             {topValue}
           </Text>
-        )}
-
-        {button}
+          {button}
+        </>
       </MaxWidth>
     </Banner>
   ) : (
@@ -160,4 +133,4 @@ const CountDownBanner = ({
   )
 }
 
-export default CountDownBanner
+export default StartTimeBanner

@@ -80,7 +80,7 @@ const Home: React.FC = () => {
                 {account && !hasProfile ? (
                   <>
                     <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
-                      My farms & pools
+                      MY FARMS & POOLS
                     </Heading>
 
                     <CardMyFarmsAndPools />

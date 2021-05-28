@@ -39,6 +39,7 @@ export interface MenuEntry {
   iconActive: any
   items?: MenuSubEntry[]
   href?: string
+  group?: string
   calloutClass?: string
   initialOpenState?: boolean
   notHighlight?: boolean
@@ -59,6 +60,7 @@ export interface NavProps extends PanelProps {
   account?: string
   login: Login
   profile?: Profile
-  price: number
+  price?: number
   logout: () => void
+  value?: number
 }
