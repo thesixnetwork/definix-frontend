@@ -148,7 +148,12 @@ const List = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    max-height: 738px;
+    max-height: 100%;
+    overflow: auto;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    max-height: 370px;
     overflow: auto;
   }
 `
