@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
-import definixCoin from 'uikit-dev/images/KR-Banner/AWforDefinix-03.png'
 import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
+import definixCoin from 'uikit-dev/images/KR-Banner/AWforDefinix-03.png'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
@@ -70,7 +70,7 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   }
 
   .network {
-    box-shadow: ${({ theme }) => theme.shadows.elevation1};
+    // box-shadow: ${({ theme }) => theme.shadows.elevation1};
   }
 `
 
@@ -103,6 +103,8 @@ const InnerBg = styled.div`
   border-top-left-radius: ${({ theme }) => theme.radii.large};
   border-bottom-left-radius: ${({ theme }) => theme.radii.large};
   height: 100%;
+  display: flex;
+  flex-direction: column;
 `
 
 const MobileOnlyOverlay = styled(Overlay)`
