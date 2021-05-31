@@ -19,32 +19,32 @@ export const getHerodotusAddress = () => {
 export const getMulticallAddress = () => {
   return getAddress(addresses.mulltiCall)
 }
-export const getWbnbAddress = () => {
-  return getAddress(addresses.wbnb)
+export const getWklayAddress = () => {
+  return getAddress(addresses.wklay)
 }
 export const getSixAddress = () => {
   return getAddress(addresses.six)
 }
-export const getBusdAddress = () => {
-  return getAddress(addresses.busd)
+export const getKdaiAddress = () => {
+  return getAddress(addresses.kdai)
 }
-export const getUsdtAddress = () => {
-  return getAddress(addresses.usdt)
+export const getKusdtAddress = () => {
+  return getAddress(addresses.kusdt)
 }
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }
-export const getFinixBusdLPAddress = () => {
-  return getAddress(addresses.finixBusdLP)
+export const getFinixKusdtLPAddress = () => {
+  return getAddress(addresses.finixKusdtLP)
 }
-export const getFinixBnbLPAddress = () => {
-  return getAddress(addresses.finixBnbLP)
+export const getFinixKlayLPAddress = () => {
+  return getAddress(addresses.finixKlayLP)
 }
-export const getSixBusdLPAddress = () => {
-  return getAddress(addresses.sixBusdLP)
+export const getSixKusdtLPAddress = () => {
+  return getAddress(addresses.sixKusdtLP)
 }
-export const getDefinixBnbBusdLPAddress = () => {
-  return getAddress(addresses.definixBnbBusdLP)
+export const getDefinixKlayKusdtLPAddress = () => {
+  return getAddress(addresses.definixKlayKusdtLP)
 }
 export const getTradingCompetRegisAddress = () => {
   return getAddress(addresses.tradingCompetRegis)

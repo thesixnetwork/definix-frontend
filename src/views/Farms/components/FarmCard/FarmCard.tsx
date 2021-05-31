@@ -61,8 +61,8 @@ const ExpandingWrapper = styled.div<{ expanded: boolean }>`
 interface FarmCardProps {
   farm: FarmWithStakedValue
   removed: boolean
-  bnbPrice?: BigNumber
-  ethPrice?: BigNumber
+  klayPrice?: BigNumber
+  kethPrice?: BigNumber
   sixPrice?: BigNumber
   finixPrice?: BigNumber
   klaytn?: provider
@@ -74,8 +74,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   removed,
   sixPrice,
   finixPrice,
-  bnbPrice,
-  ethPrice,
+  klayPrice,
+  kethPrice,
   klaytn,
   account,
 }) => {
@@ -92,20 +92,20 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (!farm.lpTotalInQuoteToken) {
       return null
     }
-    if (farm.quoteTokenSymbol === QuoteToken.BNB) {
-      return bnbPrice.times(farm.lpTotalInQuoteToken)
+    if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+      return klayPrice.times(farm.lpTotalInQuoteToken)
     }
     if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
       return finixPrice.times(farm.lpTotalInQuoteToken)
     }
-    if (farm.quoteTokenSymbol === QuoteToken.ETH) {
-      return ethPrice.times(farm.lpTotalInQuoteToken)
+    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+      return kethPrice.times(farm.lpTotalInQuoteToken)
     }
     if (farm.quoteTokenSymbol === QuoteToken.SIX) {
       return sixPrice.times(farm.lpTotalInQuoteToken)
     }
     return farm.lpTotalInQuoteToken
-  }, [sixPrice, bnbPrice, finixPrice, ethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
+  }, [sixPrice, klayPrice, finixPrice, kethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
 
   const totalValueFormated = totalValue
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`

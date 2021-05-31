@@ -23,21 +23,18 @@ export interface Ifo {
 }
 
 export enum QuoteToken {
-  'BNB' = 'BNB',
+  'KLAY' = 'KLAY',
   'SYRUP' = 'SYRUP',
-  'BUSD' = 'BUSD',
-  'TWT' = 'TWT',
-  'UST' = 'UST',
-  'ETH' = 'ETH',
-  'COMP' = 'COMP',
-  'SUSHI' = 'SUSHI',
+  'KUSDT' = 'KUSDT',
+  'KDAI' = 'KDAI',
+  'KETH' = 'KETH',
   'SIX' = 'SIX',
   'FINIX' = 'FINIX',
   'SIXFINIX' = 'FINIX-SIX',
-  'FINIXBUSD' = 'FINIX-BUSD',
-  'FINIXBNB' = 'FINIX-BNB',
-  'SIXBUSD' = 'SIX-BUSD',
-  'USDTBUSD' = 'USDT-BUSD',
+  'FINIXKUSDT' = 'FINIX-KUSDT',
+  'FINIXKLAY' = 'FINIX-KLAY',
+  'SIXKUSDT' = 'SIX-KUSDT',
+  'KDAIKUSDT' = 'KDAI-KUSDT',
 }
 
 export enum PoolCategory {

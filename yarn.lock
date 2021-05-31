@@ -7996,10 +7996,10 @@ define-property@^2.0.2:
     is-descriptor "^1.0.2"
     isobject "^3.0.1"
 
-definixswap-sdk@0.0.8-klaytn:
-  version "0.0.8-klaytn"
-  resolved "https://registry.yarnpkg.com/definixswap-sdk/-/definixswap-sdk-0.0.8-klaytn.tgz#7cd460dc466385569faa316e3236a1974a10e3cf"
-  integrity sha512-H2O2blVpwMBm6rzsPSssS/S0yk51z+GlAUj+Sm7TGKpwngYKkPvsFyCyX25ePQiVNCXOBWgbfWaKXlxN7LH6Xw==
+definixswap-sdk@0.0.9-klaytn:
+  version "0.0.9-klaytn"
+  resolved "https://registry.yarnpkg.com/definixswap-sdk/-/definixswap-sdk-0.0.9-klaytn.tgz#5cfb80fe18b5733fad65f94f0c1e00a69fbcb7be"
+  integrity sha512-QkqDU2AjgEVxokXfkbHqsygHW6aJ6j8Xr3iPcZhdPGn6qjCfPku7b1jRudWVQ36BU3W6HNeZDd1uqVt9BT9lyA==
   dependencies:
     "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
     big.js "^5.2.2"

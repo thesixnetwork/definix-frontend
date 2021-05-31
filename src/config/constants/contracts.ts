@@ -7,17 +7,17 @@ export default {
     1001: process.env.REACT_APP_HERODOTUS_TESTNET,
     8217: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
-  wbnb: {
-    1001: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
+  wklay: {
+    1001: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
   },
-  busd: {
-    1001: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+  kusdt: {
+    1001: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
   },
-  usdt: {
-    1001: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+  kdai: {
+    1001: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
   },
   six: {
     1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
@@ -31,21 +31,21 @@ export default {
     1001: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
     8217: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
   },
-  finixBusdLP: {
-    1001: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
-    8217: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
+  finixKusdtLP: {
+    1001: process.env.REACT_APP_FINIX_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_FINIX_KUSDT_LP_MAINNET,
   },
-  finixBnbLP: {
-    1001: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
-    8217: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
+  finixKlayLP: {
+    1001: process.env.REACT_APP_FINIX_KLAY_LP_TESTNET,
+    8217: process.env.REACT_APP_FINIX_KLAY_LP_MAINNET,
   },
-  sixBusdLP: {
-    1001: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
-    8217: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
+  sixKusdtLP: {
+    1001: process.env.REACT_APP_SIX_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_SIX_KUSDT_LP_MAINNET,
   },
-  definixBnbBusdLP: {
-    1001: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
-    8217: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
+  definixKlayKusdtLP: {
+    1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KLAY_KUSDT_LP_MAINNET,
   },
   tradingCompetRegis: {
     1001: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,
@@ -53,8 +53,8 @@ export default {
   },
   // configured =====================================================
   syrup: {
-    1001: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
-    8217: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
+    1001: '0x5a41ed11c262b5F0E73709d60be27C08e0291f1b',
+    8217: '0x5a41ed11c262b5F0E73709d60be27C08e0291f1b',
   },
   sousChef: {
     1001: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',

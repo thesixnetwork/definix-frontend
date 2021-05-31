@@ -11,8 +11,8 @@ import BigNumber from 'bignumber.js'
 
 // Pool 0, Finix / Finix is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
-const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.BNB)
-const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.BNB)
+const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.KLAY)
+const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.KLAY)
 const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
 const caver = getCaver()
 const herodotusContract = new caver.klay.Contract(herodotusABI as unknown as AbiItem, getHerodotusAddress())

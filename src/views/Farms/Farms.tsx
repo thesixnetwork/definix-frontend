@@ -12,8 +12,8 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import {
   useFarmUnlockDate,
   useFarms,
-  usePriceBnbBusd,
-  usePriceEthBusd,
+  usePriceKlayKusdt,
+  usePriceKethKusdt,
   usePriceFinixUsd,
   usePriceSixUsd,
 } from 'state/hooks'
@@ -32,11 +32,11 @@ const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const farmUnlockAt = useFarmUnlockDate()
   const farmsLP = useFarms()
-  const bnbPrice = usePriceBnbBusd()
+  const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
-  const ethPriceUsd = usePriceEthBusd()
+  const kethPriceUsd = usePriceKethKusdt()
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -72,7 +72,7 @@ const Farms: React.FC = () => {
   // to retrieve assets prices against USD
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
-      const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
+      const finixPriceVsKlay = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
       const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
@@ -84,19 +84,19 @@ const Farms: React.FC = () => {
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
-        let apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
-          apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
-        } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
-          apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
+          apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
+        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+          apy = finixPrice.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
           apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
           const finixApy =
-            farm && finixPriceVsBNB.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
+            farm && finixPriceVsKlay.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
           const dualApy =
             farm.tokenPriceVsQuote &&
             new BigNumber(farm.tokenPriceVsQuote)
@@ -114,8 +114,8 @@ const Farms: React.FC = () => {
           key={farm.pid}
           farm={farm}
           removed={removed}
-          bnbPrice={bnbPrice}
-          ethPrice={ethPriceUsd}
+          klayPrice={klayPrice}
+          kethPrice={kethPriceUsd}
           sixPrice={sixPrice}
           finixPrice={finixPrice}
           klaytn={klaytn}
@@ -123,7 +123,7 @@ const Farms: React.FC = () => {
         />
       ))
     },
-    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, klaytn, account],
+    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account],
   )
 
   return (

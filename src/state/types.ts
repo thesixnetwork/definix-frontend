@@ -74,17 +74,15 @@ export interface PoolsState {
 export interface FinixPriceState {
   price: number
   sixPrice: number
-  pancakeBnbPrice: number
+  klayswapKlayPrice: number
+  definixKlayPrice: number
   sixFinixQuote: number
-  sixBusdQuote: number
-  sixUsdtQuote: number
-  sixWbnbQuote: number
-  finixBusdQuote: number
-  finixUsdtQuote: number
-  finixWbnbQuote: number
-  wbnbBusdQuote: number
-  wbnbUsdtQuote: number
-  busdUsdtQuote: number
+  sixKusdtQuote: number
+  sixWklayQuote: number
+  finixKusdtQuote: number
+  finixWklayQuote: number
+  wklayKusdtQuote: number
+  kdaiKusdtQuote: number
 }
 export interface ProfileState {
   isInitialized: boolean

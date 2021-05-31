@@ -3,7 +3,7 @@ import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import numeral from 'numeral'
 import React from 'react'
-import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Card, Heading } from 'uikit-dev'
 import el06 from 'uikit-dev/images/for-Farm-Elements/06.png'
@@ -77,12 +77,12 @@ const CardStyled = styled(Card)`
 
 const CardUpcomingFarms: React.FC = () => {
   const farmsLP = useFarms()
-  const bnbPrice = usePriceBnbBusd()
+  const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
-  const ethPriceUsd = usePriceEthBusd()
+  const kethPriceUsd = usePriceKethKusdt()
   const farmToDisplay = farmsLP.filter((farm) => farm.pid !== 0)
-  const finixPriceVsBNB = finixPrice
+  const finixPriceVsKLAY = finixPrice
   const farms = farmToDisplay.map((farm) => {
     if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
       return farm
@@ -95,19 +95,19 @@ const CardUpcomingFarms: React.FC = () => {
     const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
     // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
-    let apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+    let apy = finixPriceVsKLAY.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-    if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
-      apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
-    } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
-      apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+    if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
+      apy = finixPriceVsKLAY.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
+    } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+      apy = finixPrice.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
     } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
       apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
     } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
       apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
     } else if (farm.dual) {
       const finixApy =
-        farm && finixPriceVsBNB.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
+        farm && finixPriceVsKLAY.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
       const dualApy =
         farm.tokenPriceVsQuote &&
         new BigNumber(farm.tokenPriceVsQuote)
@@ -136,40 +136,40 @@ const CardUpcomingFarms: React.FC = () => {
     },
     {
       img: el07,
-      name: 'FINIX-BUSD LP',
+      name: 'FINIX-KUSDT LP',
       apr: pid2Farm.apy ? numeral(pid2Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
       pid: 2,
     },
-    {
-      img: el08,
-      name: 'FINIX-BNB LP',
-      apr: pid3Farm.apy ? numeral(pid3Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
-      pid: 3,
-    },
-    {
-      img: el09,
-      name: 'SIX-BUSD LP',
-      apr: pid4Farm.apy ? numeral(pid4Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
-      pid: 4,
-    },
-    {
-      img: el10,
-      name: 'USDT-BUSD LP',
-      apr: pid5Farm.apy ? numeral(pid5Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
-      pid: 5,
-    },
-    {
-      img: el12,
-      name: 'SIX-BNB LP',
-      apr: pid6Farm.apy ? numeral(pid6Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
-      pid: 6,
-    },
-    {
-      img: el13,
-      name: 'BNB-BUSD LP',
-      apr: pid7Farm.apy ? numeral(pid7Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
-      pid: 7,
-    },
+    // {
+    //   img: el08,
+    //   name: 'FINIX-BNB LP',
+    //   apr: pid3Farm.apy ? numeral(pid3Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+    //   pid: 3,
+    // },
+    // {
+    //   img: el09,
+    //   name: 'SIX-BUSD LP',
+    //   apr: pid4Farm.apy ? numeral(pid4Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+    //   pid: 4,
+    // },
+    // {
+    //   img: el10,
+    //   name: 'USDT-BUSD LP',
+    //   apr: pid5Farm.apy ? numeral(pid5Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+    //   pid: 5,
+    // },
+    // {
+    //   img: el12,
+    //   name: 'SIX-BNB LP',
+    //   apr: pid6Farm.apy ? numeral(pid6Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+    //   pid: 6,
+    // },
+    // {
+    //   img: el13,
+    //   name: 'BNB-BUSD LP',
+    //   apr: pid7Farm.apy ? numeral(pid7Farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') : 'N/A',
+    //   pid: 7,
+    // },
   ]
 
   return (

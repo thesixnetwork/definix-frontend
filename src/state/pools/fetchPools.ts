@@ -1,10 +1,10 @@
 import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import finixABI from 'config/abi/finix.json'
-import wbnbABI from 'config/abi/weth.json'
+import wklayABI from 'config/abi/wklay.json'
 import { QuoteToken } from 'config/constants/types'
 import multicall from 'utils/multicall'
-import { getAddress, getWbnbAddress } from 'utils/addressHelpers'
+import { getAddress, getWklayAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 
 export const fetchPoolsBlockLimits = async () => {
@@ -46,10 +46,10 @@ export const fetchPoolsBlockLimits = async () => {
 }
 
 export const fetchPoolsTotalStatking = async () => {
-  const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.BNB)
-  const bnbPool = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.BNB)
+  const nonKlayPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.KLAY)
+  const klayPool = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.KLAY)
 
-  const callsNonBnbPools = nonBnbPools.map((poolConfig) => {
+  const callsNonKlayPools = nonKlayPools.map((poolConfig) => {
     return {
       address: poolConfig.stakingTokenAddress,
       name: 'balanceOf',
@@ -57,25 +57,25 @@ export const fetchPoolsTotalStatking = async () => {
     }
   })
 
-  const callsBnbPools = bnbPool.map((poolConfig) => {
+  const callsKlayPools = klayPool.map((poolConfig) => {
     return {
-      address: getWbnbAddress(),
+      address: getWklayAddress(),
       name: 'balanceOf',
       params: [getAddress(poolConfig.contractAddress)],
     }
   })
 
-  const nonBnbPoolsTotalStaked = await multicall(finixABI, callsNonBnbPools)
-  const bnbPoolsTotalStaked = await multicall(wbnbABI, callsBnbPools)
+  const nonKlayPoolsTotalStaked = await multicall(finixABI, callsNonKlayPools)
+  const klayPoolsTotalStaked = await multicall(wklayABI, callsKlayPools)
 
   return [
-    ...nonBnbPools.map((p, index) => ({
+    ...nonKlayPools.map((p, index) => ({
       sousId: p.sousId,
-      totalStaked: new BigNumber(nonBnbPoolsTotalStaked[index]).toJSON(),
+      totalStaked: new BigNumber(nonKlayPoolsTotalStaked[index]).toJSON(),
     })),
-    ...bnbPool.map((p, index) => ({
+    ...klayPool.map((p, index) => ({
       sousId: p.sousId,
-      totalStaked: new BigNumber(bnbPoolsTotalStaked[index]).toJSON(),
+      totalStaked: new BigNumber(klayPoolsTotalStaked[index]).toJSON(),
     })),
   ]
 }

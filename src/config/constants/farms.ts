@@ -32,21 +32,21 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
   },
-  // {
-  //   pid: 2,
-  //   lpSymbol: 'FINIX-BUSD LP',
-  //   lpAddresses: {
-  //     1001: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
-  //     8217: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
-  //   },
-  //   tokenSymbol: 'BUSD',
-  //   tokenAddresses: {
-  //     1001: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
-  //     8217: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
-  //   },
-  //   quoteTokenSymbol: QuoteToken.FINIX,
-  //   quoteTokenAdresses: contracts.finix,
-  // },
+  {
+    pid: 2,
+    lpSymbol: 'FINIX-KUSDT LP',
+    lpAddresses: {
+      1001: process.env.REACT_APP_FINIX_KUSDT_LP_TESTNET,
+      8217: process.env.REACT_APP_FINIX_KUSDT_LP_MAINNET,
+    },
+    tokenSymbol: 'KUSDT',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
+  },
   // {
   //   pid: 3,
   //   lpSymbol: 'FINIX-BNB LP',

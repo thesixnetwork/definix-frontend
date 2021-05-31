@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTotalClaim } from 'hooks/useTickets'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { usePriceFinixBusd } from 'state/hooks'
+import { usePriceFinixKusdt } from 'state/hooks'
 import { BigNumber } from 'bignumber.js'
 import styled from 'styled-components'
 import CardValue from './CardValue'
@@ -14,7 +14,7 @@ const Block = styled.div`
 const FinixWinnings = () => {
   const { claimAmount } = useTotalClaim()
   const finixAmount = getBalanceNumber(claimAmount)
-  const claimAmountBusd = new BigNumber(finixAmount).multipliedBy(usePriceFinixBusd()).toNumber()
+  const claimAmountBusd = new BigNumber(finixAmount).multipliedBy(usePriceFinixKusdt()).toNumber()
 
   return (
     <Block>

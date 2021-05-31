@@ -8,16 +8,16 @@ import axios from 'axios'
 import {
   getDefinixHerodotusAddress,
   getHerodotusAddress,
-  getWbnbAddress,
+  getWklayAddress,
   getSixAddress,
   getFinixAddress,
-  getBusdAddress,
-  getUsdtAddress,
+  getKdaiAddress,
+  getKusdtAddress,
   getFinixSixLPAddress,
-  getFinixBusdLPAddress,
-  getFinixBnbLPAddress,
-  getSixBusdLPAddress,
-  getDefinixBnbBusdLPAddress,
+  getFinixKusdtLPAddress,
+  getFinixKlayLPAddress,
+  getSixKusdtLPAddress,
+  getDefinixKlayKusdtLPAddress,
 } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
@@ -25,17 +25,15 @@ import { FinixPriceState } from '../types'
 const initialState: FinixPriceState = {
   price: 0,
   sixPrice: 0,
-  pancakeBnbPrice: 0,
+  definixKlayPrice: 0,
+  klayswapKlayPrice: 0,
   sixFinixQuote: 0,
-  sixBusdQuote: 0,
-  sixUsdtQuote: 0,
-  sixWbnbQuote: 0,
-  finixBusdQuote: 0,
-  finixUsdtQuote: 0,
-  finixWbnbQuote: 0,
-  wbnbBusdQuote: 0,
-  wbnbUsdtQuote: 0,
-  busdUsdtQuote: 0,
+  sixKusdtQuote: 0,
+  sixWklayQuote: 0,
+  finixKusdtQuote: 0,
+  finixWklayQuote: 0,
+  wklayKusdtQuote: 0,
+  kdaiKusdtQuote: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -50,39 +48,37 @@ export const finixPriceSlice = createSlice({
       const { price } = action.payload
       state.price = price
     },
-    setPancakeBnbPrice: (state, action) => {
+    setDefinixKlayPrice: (state, action) => {
       const { price } = action.payload
-      state.pancakeBnbPrice = price
+      state.definixKlayPrice = price
+    },
+    setKlayswapKlayPrice: (state, action) => {
+      const { klayPrice } = action.payload
+      state.klayswapKlayPrice = klayPrice
     },
     setQuote: (state, action) => {
       const {
         sixFinixQuote,
-        sixBusdQuote,
-        sixUsdtQuote,
-        sixWbnbQuote,
-        finixBusdQuote,
-        finixUsdtQuote,
-        finixWbnbQuote,
-        wbnbBusdQuote,
-        wbnbUsdtQuote,
-        busdUsdtQuote,
+        sixKusdtQuote,
+        sixWklayQuote,
+        finixKusdtQuote,
+        finixWklayQuote,
+        wklayKusdtQuote,
+        kdaiKusdtQuote,
       } = action.payload
       state.sixFinixQuote = sixFinixQuote
-      state.sixBusdQuote = sixBusdQuote
-      state.sixUsdtQuote = sixUsdtQuote
-      state.sixWbnbQuote = sixWbnbQuote
-      state.finixBusdQuote = finixBusdQuote
-      state.finixUsdtQuote = finixUsdtQuote
-      state.finixWbnbQuote = finixWbnbQuote
-      state.wbnbBusdQuote = wbnbBusdQuote
-      state.wbnbUsdtQuote = wbnbUsdtQuote
-      state.busdUsdtQuote = busdUsdtQuote
+      state.sixKusdtQuote = sixKusdtQuote
+      state.sixWklayQuote = sixWklayQuote
+      state.finixKusdtQuote = finixKusdtQuote
+      state.finixWklayQuote = finixWklayQuote
+      state.wklayKusdtQuote = wklayKusdtQuote
+      state.kdaiKusdtQuote = kdaiKusdtQuote
     },
   },
 })
 
 // Actions
-export const { setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice } = finixPriceSlice.actions
+export const { setSixPrice, setFinixPrice, setQuote, setDefinixKlayPrice, setKlayswapKlayPrice } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
@@ -170,22 +166,34 @@ export const fetchSixPrice = () => async (dispatch) => {
   )
 }
 
-export const fetchPancakeBnbPrice = () => async (dispatch) => {
+export const fetchKlayPriceFromKlayswap = () => async (dispatch) => {
+  const response = await axios.get(
+    'https://stat.klayswap.com/klayPrice.json',
+  )
+  const usdPrice = _.get(response, 'data.priceUsd')
+  dispatch(
+    setKlayswapKlayPrice({
+      klayPrice: usdPrice,
+    }),
+  )
+}
+
+export const fetchDefinixKlayPrice = () => async (dispatch) => {
   const fetchPromise = []
 
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getDefinixBnbBusdLPAddress(),
-      pair1: getWbnbAddress(),
-      pair2: getBusdAddress(),
+      lpAddress: getDefinixKlayKusdtLPAddress(),
+      pair1: getWklayAddress(),
+      pair2: getKusdtAddress(),
       herodotusAddress: getDefinixHerodotusAddress(),
     }),
   )
-  const [[totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]] = await Promise.all(fetchPromise)
-  const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
+  const [[totalKlayInDefinixKlayKusdtPair, totalKusdtInDefinixKlayKusdtPair]] = await Promise.all(fetchPromise)
+  const definixKlayKusdtRatio = totalKusdtInDefinixKlayKusdtPair / totalKlayInDefinixKlayKusdtPair || 0
   dispatch(
-    setPancakeBnbPrice({
-      price: definixBnbBusdRatio,
+    setDefinixKlayPrice({
+      price: definixKlayKusdtRatio,
     }),
   )
 }
@@ -203,43 +211,43 @@ export const fetchFinixPrice = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getFinixBusdLPAddress(),
+      lpAddress: getFinixKusdtLPAddress(),
       pair1: getFinixAddress(),
-      pair2: getBusdAddress(),
+      pair2: getKusdtAddress(),
       herodotusAddress: getHerodotusAddress(),
     }),
   )
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getFinixBnbLPAddress(),
+      lpAddress: getFinixKlayLPAddress(),
       pair1: getFinixAddress(),
-      pair2: getWbnbAddress(),
+      pair2: getWklayAddress(),
       herodotusAddress: getHerodotusAddress(),
     }),
   )
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getSixBusdLPAddress(),
+      lpAddress: getSixKusdtLPAddress(),
       pair1: getSixAddress(),
-      pair2: getBusdAddress(),
+      pair2: getKusdtAddress(),
       herodotusAddress: getHerodotusAddress(),
     }),
   )
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getDefinixBnbBusdLPAddress(),
-      pair1: getWbnbAddress(),
-      pair2: getBusdAddress(),
+      lpAddress: getDefinixKlayKusdtLPAddress(),
+      pair1: getWklayAddress(),
+      pair2: getKusdtAddress(),
       herodotusAddress: getDefinixHerodotusAddress(),
     }),
   )
   // FINIX-SIX
   const [
     [totalFinixDefinixFinixSixPair, totalSixDefinixFinixSixPair],
-    [totalFinixDefinixFinixBusdPair, totalBusdDefinixFinixBusdPair],
-    [totalFinixDefinixFinixBnbPair, totalBnbDefinixFinixBnbPair],
-    [totalSixDefinixSixBusdPair, totalBnbDefinixSixBusdPair],
-    [totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair],
+    [totalFinixDefinixFinixKusdtPair, totalKusdtDefinixFinixKusdtPair],
+    [totalFinixDefinixFinixKlayPair, totalKlayDefinixFinixKlayPair],
+    [totalSixDefinixSixKusdtPair, totalKusdtDefinixSixKusdtPair],
+    [totalKlayInDefinixKlayKusdtPair, totalKusdtInDefinixKlayKusdtPair],
   ] = await Promise.all(fetchPromise)
   // const totalFinixDefinixFinixSixPair = 10000000.0
   // const totalSixDefinixFinixSixPair = 12820512.82
@@ -247,27 +255,27 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // FINIX-BUSD
   // const totalFinixDefinixFinixBusdPair = 10000000.0
   // const totalBusdDefinixFinixBusdPair = 500000.0
-  const finixBusdRatio = totalBusdDefinixFinixBusdPair / totalFinixDefinixFinixBusdPair || 0
+  const finixKusdtRatio = totalKusdtDefinixFinixKusdtPair / totalFinixDefinixFinixKusdtPair || 0
   // FINIX-BNB
   // const totalFinixDefinixFinixBnbPair = 10000000.0
   // const totalBnbDefinixFinixBnbPair = 1824.82
-  const finixBnbRatio = totalBnbDefinixFinixBnbPair / totalFinixDefinixFinixBnbPair || 0
+  const finixKlayRatio = totalKlayDefinixFinixKlayPair / totalFinixDefinixFinixKlayPair || 0
   // SIX-BUSD
   // const totalSixDefinixSixBusdPair = 12820512.82
   // const totalBnbDefinixSixBusdPair = 500000.0
-  const sixBusdRatio = totalBnbDefinixSixBusdPair / totalSixDefinixSixBusdPair || 0
+  const sixKusdtRatio = totalKusdtDefinixSixKusdtPair / totalSixDefinixSixKusdtPair || 0
   // PANCAKE BNB-BUSD
   // const totalBnbInDefinixBnbBusdPair = 557985
   // const totalBusdInDefinixBnbBusdPair = 152220163
-  const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
+  const definixKlayKusdtRatio = totalKusdtInDefinixKlayKusdtPair / totalKlayInDefinixKlayKusdtPair || 0
   // Price cal
-  const finixSixPrice = finixSixRatio * sixBusdRatio
-  const finixBnbPrice = finixBnbRatio * definixBnbBusdRatio
+  const finixSixPrice = finixSixRatio * sixKusdtRatio
+  const finixKlayPrice = finixKlayRatio * definixKlayKusdtRatio
   const averageFinixPrice =
-    (finixBusdRatio * totalFinixDefinixFinixBusdPair +
-      finixBnbPrice * totalFinixDefinixFinixBnbPair +
+    (finixKusdtRatio * totalFinixDefinixFinixKusdtPair +
+      finixKlayPrice * totalFinixDefinixFinixKlayPair +
       finixSixPrice * totalFinixDefinixFinixSixPair) /
-    (totalFinixDefinixFinixBusdPair + totalFinixDefinixFinixBnbPair + totalFinixDefinixFinixSixPair)
+    (totalFinixDefinixFinixKusdtPair + totalFinixDefinixFinixKlayPair + totalFinixDefinixFinixSixPair)
 
   // console.log('FINIX-SIX LP Address : ', getFinixSixLPAddress())
   // console.log('FINIX Address : ', getFinixAddress())
@@ -300,14 +308,14 @@ export const fetchFinixPrice = () => async (dispatch) => {
       price: averageFinixPrice,
       totalFinixDefinixFinixSixPair,
       totalSixDefinixFinixSixPair,
-      totalFinixDefinixFinixBusdPair,
-      totalBusdDefinixFinixBusdPair,
-      totalFinixDefinixFinixBnbPair,
-      totalBnbDefinixFinixBnbPair,
-      totalSixDefinixSixBusdPair,
-      totalBnbDefinixSixBusdPair,
-      totalBnbInDefinixBnbBusdPair,
-      totalBusdInDefinixBnbBusdPair,
+      totalFinixDefinixFinixKusdtPair,
+      totalKusdtDefinixFinixKusdtPair,
+      totalFinixDefinixFinixKlayPair,
+      totalKlayDefinixFinixKlayPair,
+      totalSixDefinixSixKusdtPair,
+      totalKusdtDefinixSixKusdtPair,
+      totalKlayInDefinixKlayKusdtPair,
+      totalKusdtInDefinixKlayKusdtPair,
     }),
   )
 }
@@ -316,10 +324,11 @@ export const fetchFinixPrice = () => async (dispatch) => {
 export const fetchQuote = () => async (dispatch) => {
   const finixAddress = getFinixAddress()
   const sixAddress = getSixAddress()
-  const busdAddress = getBusdAddress()
-  const wbnbAddress = getWbnbAddress()
-  const usdtAddress = getUsdtAddress()
-  let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 8217)
+  const kdaiAddress = getKdaiAddress()
+  const wklayAddress = getWklayAddress()
+  const kusdtAddress = getKusdtAddress()
+
+  let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
   if (chainId === ChainId.MAINNET) {
     chainId = ChainId.MAINNET
   } else if (chainId === ChainId.BAOBABTESTNET) {
@@ -328,98 +337,74 @@ export const fetchQuote = () => async (dispatch) => {
 
   const FINIX = new Token(chainId, finixAddress, 18, 'FINIX', 'FINIX')
   const SIX = new Token(chainId, sixAddress, 18, 'SIX', 'SIX')
-  const BUSD = new Token(chainId, busdAddress, 18, 'BUSD', 'BUSD')
-  const WBNB = new Token(chainId, wbnbAddress, 18, 'WBNB', 'Wrapped BNB')
-  const USDT = new Token(chainId, usdtAddress, 18, 'USDT', 'USDT')
+  const KDAI = new Token(chainId, kdaiAddress, 18, 'KDAI', 'KDAI')
+  const WKLAY = new Token(chainId, wklayAddress, 18, 'WKLAY', 'Wrapped Klay')
+  const KUSDT = new Token(chainId, kusdtAddress, 18, 'KUSDT', 'KUSDT')
 
   const fetchPromise = []
 
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(SIX, FINIX),
+      lpAddress: Pair.getAddress(FINIX, SIX),
       qouteToken: finixAddress,
     }),
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(SIX, BUSD),
-      qouteToken: busdAddress,
+      lpAddress: Pair.getAddress(SIX, KUSDT),
+      qouteToken: kusdtAddress,
     }),
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(SIX, USDT),
-      qouteToken: usdtAddress,
+      lpAddress: Pair.getAddress(SIX, WKLAY),
+      qouteToken: wklayAddress,
     }),
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(SIX, WBNB),
-      qouteToken: wbnbAddress,
+      lpAddress: Pair.getAddress(FINIX, KUSDT),
+      qouteToken: kusdtAddress,
     }),
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(FINIX, BUSD),
-      qouteToken: busdAddress,
-    }),
-  )
-  fetchPromise.push(
-    getTotalQuote({
-      lpAddress: Pair.getAddress(FINIX, USDT),
-      qouteToken: usdtAddress,
-    }),
-  )
-  fetchPromise.push(
-    getTotalQuote({
-      lpAddress: Pair.getAddress(FINIX, WBNB),
+      lpAddress: Pair.getAddress(FINIX, WKLAY),
       qouteToken: finixAddress,
     }),
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(WBNB, BUSD),
-      qouteToken: busdAddress,
+      lpAddress: Pair.getAddress(WKLAY, KUSDT),
+      qouteToken: kusdtAddress,
     }),
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(WBNB, USDT),
-      qouteToken: usdtAddress,
-    }),
-  )
-  fetchPromise.push(
-    getTotalQuote({
-      lpAddress: Pair.getAddress(BUSD, USDT),
-      qouteToken: busdAddress,
+      lpAddress: Pair.getAddress(KDAI, KUSDT),
+      qouteToken: kusdtAddress,
     }),
   )
 
   const [
     sixFinixQuote,
-    sixBusdQuote,
-    sixUsdtQuote,
-    sixWbnbQuote,
-    finixBusdQuote,
-    finixUsdtQuote,
-    finixWbnbQuote,
-    wbnbBusdQuote,
-    wbnbUsdtQuote,
-    busdUsdtQuote,
+    sixKusdtQuote,
+    sixWklayQuote,
+    finixKusdtQuote,
+    finixWklayQuote,
+    wklayKusdtQuote,
+    kdaiKusdtQuote,
   ] = await Promise.all(fetchPromise)
 
   dispatch(
     setQuote({
       sixFinixQuote,
-      sixBusdQuote,
-      sixUsdtQuote,
-      sixWbnbQuote,
-      finixBusdQuote,
-      finixUsdtQuote,
-      finixWbnbQuote,
-      wbnbBusdQuote,
-      wbnbUsdtQuote,
-      busdUsdtQuote,
+      sixKusdtQuote,
+      sixWklayQuote,
+      finixKusdtQuote,
+      finixWklayQuote,
+      wklayKusdtQuote,
+      kdaiKusdtQuote,
     }),
   )
 }

@@ -123,15 +123,15 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
       setEndBlockDate(new Date().getTime() + endStart * 3 * 1000)
     }
   }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
-  // Pools using native BNB behave differently than pools using a token
-  const isBnbPool = poolCategory === PoolCategory.KLAYTN
+  // Pools using native KLAYTN behave differently than pools using a token
+  const isKlayPool = poolCategory === PoolCategory.KLAYTN
   const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWallet()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
-  const { onStake } = useSousStake(sousId, isBnbPool)
+  const { onStake } = useSousStake(sousId, isKlayPool)
   const { onUnstake } = useSousUnstake(sousId)
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const { onReward } = useSousHarvest(sousId, isKlayPool)
 
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
@@ -145,7 +145,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const blocksRemaining = Math.max(endBlock - block, 0)
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
+  const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isKlayPool
   const isCardActive = isFinished && accountHasStakedBalance
   const [readyToStake, setReadyToStake] = useState(false)
 

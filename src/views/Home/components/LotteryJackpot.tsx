@@ -3,7 +3,7 @@ import { Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalRewards } from 'hooks/useTickets'
 import useI18n from 'hooks/useI18n'
-import { usePriceFinixBusd } from 'state/hooks'
+import { usePriceFinixKusdt } from 'state/hooks'
 import { BigNumber } from 'bignumber.js'
 import CardBusdValue from './CardBusdValue'
 
@@ -14,7 +14,7 @@ const LotteryJackpot = () => {
   const lotteryPrizeAmoutFinix = balance.toLocaleString(undefined, {
     maximumFractionDigits: 2,
   })
-  const lotteryPrizeAmountBusd = new BigNumber(balance).multipliedBy(usePriceFinixBusd()).toNumber()
+  const lotteryPrizeAmountBusd = new BigNumber(balance).multipliedBy(usePriceFinixKusdt()).toNumber()
 
   return (
     <>

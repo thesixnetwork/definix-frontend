@@ -10,7 +10,7 @@ import partition from 'lodash/partition'
 import React, { useState, useEffect } from 'react'
 import { Heading } from 'uikit-dev'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceSixUsd, usePriceBnbBusd, usePriceEthBnb } from 'state/hooks'
+import { useFarms, usePools, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import PoolCardGenesis from './components/PoolCardGenesis'
@@ -27,8 +27,8 @@ const Farm: React.FC = () => {
   const farms = useFarms()
   const pools = usePools(account)
   const sixPriceUSD = usePriceSixUsd()
-  const bnbPriceUSD = usePriceBnbBusd()
-  const ethPriceBnb = usePriceEthBnb()
+  const klayPriceUSD = usePriceKlayKusdt()
+  const ethPriceKlay = usePriceKethKlay()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
@@ -47,15 +47,15 @@ const Farm: React.FC = () => {
     }
   }, [currentTime, phrase1TimeStamp])
 
-  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
-    const tokenPriceBN = new BigNumber(tokenPrice)
+  const priceToKlay = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
+    const tokenPriceKLAYTN = new BigNumber(tokenPrice)
     if (tokenName === 'KLAY') {
       return new BigNumber(1)
     }
-    if (tokenPrice && quoteToken === QuoteToken.BUSD) {
-      return tokenPriceBN.div(bnbPriceUSD)
+    if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
+      return tokenPriceKLAYTN.div(klayPriceUSD)
     }
-    return tokenPriceBN
+    return tokenPriceKLAYTN
   }
 
   const poolsWithApy = pools.map((pool) => {
@@ -99,21 +99,20 @@ const Farm: React.FC = () => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    console.log('stakingTokenFarm = ', stakingTokenFarm)
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'ETH' ? ethPriceBnb : 1
+    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
 
-    // /!\ Assume that the farm quote price is BNB
-    const stakingTokenPriceInBNB = isKlayPool
+    // /!\ Assume that the farm quote price is KLAY
+    const stakingTokenPriceInKLAY = isKlayPool
       ? new BigNumber(1)
       : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote).times(tempMultiplier)
-    const rewardTokenPriceInBNB = priceToBnb(
+    const rewardTokenPriceInKLAY = priceToKlay(
       pool.tokenName,
       rewardTokenFarm?.tokenPriceVsQuote,
       rewardTokenFarm?.quoteTokenSymbol,
     )
 
-    const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
-    const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(pool.totalStaked))
+    const totalRewardPricePerYear = rewardTokenPriceInKLAY.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
+    const totalStakingTokenInPool = stakingTokenPriceInKLAY.times(getBalanceNumber(pool.totalStaked))
     let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
     const totalLP = new BigNumber(stakingTokenFarm.lpTotalSupply).div(new BigNumber(10).pow(18))
     let highestToken
