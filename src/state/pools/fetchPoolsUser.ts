@@ -13,7 +13,7 @@ import BigNumber from 'bignumber.js'
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
 const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.KLAY)
 const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.KLAY)
-const nonMasterPools = poolsConfig.filter((p) => (p.sousId !== 0 && p.sousId !== 1))
+const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0 && p.sousId !== 1)
 const caver = getCaver()
 const herodotusContract = new caver.klay.Contract(herodotusABI as unknown as AbiItem, getHerodotusAddress())
 
