@@ -34,7 +34,7 @@ export const useAllHarvest = (farmPids: number[]) => {
   return { onReward: handleHarvest }
 }
 
-export const useSousHarvest = (sousId, isUsingBnb = false) => {
+export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
   const sousChefContract = useSousChef(sousId)
@@ -43,14 +43,16 @@ export const useSousHarvest = (sousId, isUsingBnb = false) => {
   const handleHarvest = useCallback(async () => {
     if (sousId === 0) {
       await harvest(herodotusContract, 0, account)
-    } else if (isUsingBnb) {
+    } else if (sousId === 1) {
+      await harvest(herodotusContract, 8, account)
+    } else if (isUsingKlay) {
       await soushHarvestBnb(sousChefContract, account)
     } else {
       await soushHarvest(sousChefContract, account)
     }
     dispatch(updateUserPendingReward(sousId, account))
     dispatch(updateUserBalance(sousId, account))
-  }, [account, dispatch, isUsingBnb, herodotusContract, sousChefContract, sousId])
+  }, [account, dispatch, isUsingKlay, herodotusContract, sousChefContract, sousId])
 
   return { onReward: handleHarvest }
 }

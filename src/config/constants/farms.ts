@@ -47,6 +47,21 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
   },
+  {
+    pid: 8,
+    lpSymbol: 'SIX',
+    lpAddresses: {
+      1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+    },
+    tokenSymbol: 'SIX',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
+  },
   // {
   //   pid: 3,
   //   lpSymbol: 'FINIX-BNB LP',

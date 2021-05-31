@@ -81,7 +81,7 @@ const CardUpcomingFarms: React.FC = () => {
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const kethPriceUsd = usePriceKethKusdt()
-  const farmToDisplay = farmsLP.filter((farm) => farm.pid !== 0)
+  const farmToDisplay = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 8)
   const finixPriceVsKLAY = finixPrice
   const farms = farmToDisplay.map((farm) => {
     if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {

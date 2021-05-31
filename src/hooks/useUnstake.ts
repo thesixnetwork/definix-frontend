@@ -41,6 +41,9 @@ export const useSousUnstake = (sousId) => {
       if (sousId === 0) {
         const txHash = await unstake(herodotusContract, 0, amount, account)
         console.info(txHash)
+      } else if (sousId === 1) {
+        const txHash = await unstake(herodotusContract, 8, amount, account)
+        console.info(txHash)
       } else if (isOldSyrup) {
         const txHash = await sousEmegencyUnstake(sousChefContract, amount, account)
         console.info(txHash)

@@ -205,10 +205,10 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
   }
   totalRewardedDisplay = totalReward - totalRewardedDisplay
   return (
-    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0} className="flex flex-wrap">
+    <Card isActive={isCardActive} isFinished={isFinished && sousId !== 0 && sousId !== 1} className="flex flex-wrap">
       <div className="panel">
         {tokenName === 'FINIX-SIX' && !isFinished && <PoolSash type="special" />}
-        {isFinished && sousId !== 0 && <PoolSash type="finish" />}
+        {isFinished && sousId !== 0 && sousId !== 1 && <PoolSash type="finish" />}
 
         <CustomTitle className="bg-gray">
           <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} />
@@ -229,7 +229,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         </div>
 
         <div className="pa-5 pt-0">
-          {sousId === 0 && (
+          {(sousId === 0 || sousId === 1) && (
             <StyledDetails>
               <p className="pr-4 col-6">APR:</p>
               <div className="col-6">
@@ -237,7 +237,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               </div>
             </StyledDetails>
           )}
-          {sousId !== 0 && (
+          {sousId !== 0 && sousId !== 1 && (
             <StyledDetails>
               <p className="pr-4 col-6">Total {sousId === 1 || sousId === 0 ? 'FINIX' : 'SIX'} Rewards:</p>
               {currentBlockNumber === 0 ? (
@@ -266,7 +266,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
               )}
             </StyledDetails>
           )}
-          {sousId !== 0 && (
+          {sousId !== 0 && sousId !== 1 && (
             <StyledDetails>
               <p className="pr-4 col-6">Stake period:</p>
               <p className="col-6 text-bold text-right pa-0">{totalTimeInSecond}</p>
@@ -440,7 +440,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
                     {!isOldSyrup && !isFinished && (
                       <Button
                         fullWidth
-                        disabled={isFinished && sousId !== 0}
+                        disabled={isFinished && sousId !== 0 && sousId !== 1}
                         onClick={onPresentDeposit}
                         variant="secondary"
                         className="ml-2 btn-secondary-disable"

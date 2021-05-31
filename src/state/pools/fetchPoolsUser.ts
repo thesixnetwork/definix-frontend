@@ -13,7 +13,7 @@ import BigNumber from 'bignumber.js'
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
 const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.KLAY)
 const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.KLAY)
-const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0)
+const nonMasterPools = poolsConfig.filter((p) => (p.sousId !== 0 && p.sousId !== 1))
 const caver = getCaver()
 const herodotusContract = new caver.klay.Contract(herodotusABI as unknown as AbiItem, getHerodotusAddress())
 
@@ -72,7 +72,10 @@ export const fetchUserStakeBalances = async (account) => {
   // Finix / Finix pool
   const { amount: masterPoolAmount } = await herodotusContract.methods.userInfo('0', account).call()
 
-  return { ...stakedBalances, 0: new BigNumber(masterPoolAmount).toJSON() }
+  // SIX / Finix pool
+  const { amount: sixPoolAmount } = await herodotusContract.methods.userInfo('8', account).call()
+
+  return { ...stakedBalances, 0: new BigNumber(masterPoolAmount).toJSON(), 1: new BigNumber(sixPoolAmount).toJSON() }
 }
 
 export const fetchUserPendingRewards = async (account) => {
@@ -93,5 +96,8 @@ export const fetchUserPendingRewards = async (account) => {
   // Finix / Finix pool
   const pendingReward = await herodotusContract.methods.pendingFinix('0', account).call()
 
-  return { ...pendingRewards, 0: new BigNumber(pendingReward).toJSON() }
+  // SIX / Finix pool
+  const sixPendingReward = await herodotusContract.methods.pendingFinix('8', account).call()
+
+  return { ...pendingRewards, 0: new BigNumber(pendingReward).toJSON(), 1: new BigNumber(sixPendingReward).toJSON() }
 }

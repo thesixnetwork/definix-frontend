@@ -143,8 +143,12 @@ export const usePriceTVL = (): BigNumber => {
   const pools = usePools(account)
   const sixUsd = usePriceSixUsd()
   // const pancakeBnbPrice = usePricePancakeBnbUsd()
-  const selectedPools = pools.find((pool) => pool.sousId === 1) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
+  const selectedPools = pools.find((pool) => pool.sousId === 6) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
   const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
+    totalStaked: new BigNumber(0),
+    tokenDecimals: 18,
+  }
+  const selectedPoolsSixFinix = pools.find((pool) => pool.sousId === 1) || {
     totalStaked: new BigNumber(0),
     tokenDecimals: 18,
   }
@@ -202,6 +206,20 @@ export const usePriceTVL = (): BigNumber => {
         totalStakedFinixFinix = selectedPoolsFinixFinix.totalStaked.times(new BigNumber(10).pow(18))
         break
     }
+    let totalStakedSixFinix = new BigNumber(0)
+    switch (typeof selectedPoolsSixFinix.totalStaked) {
+      case 'undefined':
+        totalStakedSixFinix = new BigNumber(0)
+        break
+      case 'string':
+        totalStakedSixFinix = new BigNumber(
+          (parseFloat(selectedPoolsSixFinix.totalStaked) || 0) / 10 ** selectedPoolsSixFinix.tokenDecimals,
+        )
+        break
+      default:
+        totalStakedSixFinix = selectedPoolsSixFinix.totalStaked.times(new BigNumber(10).pow(18))
+        break
+    }
     const wklayKusdtPrice = new BigNumber(wklayKusdtQuote)
     const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
     const sixKusdtPrice = new BigNumber(sixKusdtQuote)
@@ -219,6 +237,7 @@ export const usePriceTVL = (): BigNumber => {
       kdaiKusdtPrice,
       totalStaked.times(sixUsd).toNumber(),
       totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
+      totalStakedSixFinix.times(sixUsd).toNumber(),
     ])
   }
 }

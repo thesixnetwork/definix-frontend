@@ -66,6 +66,9 @@ const Farm: React.FC = () => {
       case 0:
         stakingTokenFarm = farms.find((s) => s.pid === 0)
         break
+      case 1:
+        stakingTokenFarm = farms.find((s) => s.pid === 8)
+        break
       case 2:
         stakingTokenFarm = farms.find((s) => s.pid === 1)
         break
@@ -86,6 +89,7 @@ const Farm: React.FC = () => {
     }
     switch (pool.sousId) {
       case 0:
+      case 1:
       case 2:
       case 3:
       case 4:
@@ -131,6 +135,16 @@ const Farm: React.FC = () => {
 
     switch (pool.sousId) {
       case 0: {
+        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
+          .times(stakingTokenFarm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
+        apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+        break
+      }
+      case 1: {
         const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
           .times(stakingTokenFarm.BONUS_MULTIPLIER)
           .div(new BigNumber(10).pow(18))
@@ -186,7 +200,7 @@ const Farm: React.FC = () => {
     }
     return {
       ...pool,
-      isFinished: pool.sousId === 0 ? false : pool.isFinished || block > pool.endBlock,
+      isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
       apy,
       estimatePrice,
     }
