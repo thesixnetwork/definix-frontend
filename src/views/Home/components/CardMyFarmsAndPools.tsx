@@ -46,7 +46,7 @@ const HarvestAll = styled.div`
 
   .harvest {
     padding: 16px 24px;
-    background: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.backgroundBlueGradient};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -223,7 +223,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               </Text>
             </StatAll>
           </div>
-          <Button as="a" href="#" size="sm" variant="secondary" className="btn-secondary-disable mt-3">
+          <Button as="a" href="#" size="sm" variant="tertiary" className="mt-3" style={{ background: 'white' }}>
             Harvest All
           </Button>
         </div>
