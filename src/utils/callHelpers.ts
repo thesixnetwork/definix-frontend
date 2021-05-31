@@ -201,11 +201,11 @@ export const harvest = async (herodotusContract, pid, account) => {
     .deposit(pid, '0')
     .send({ from: account, gas: 200000 })
     .then(function (tx) {
-      console.log("harvest tx = ", tx)
+      console.log('harvest tx = ', tx)
       return tx.transactionHash
     })
     .catch(function (tx) {
-      console.log("harvest error tx = ", tx)
+      console.log('harvest error tx = ', tx)
       return tx.transactionHash
     })
   // .on('transactionHash', (tx) => {

@@ -78,7 +78,8 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setSixPrice, setFinixPrice, setQuote, setDefinixKlayPrice, setKlayswapKlayPrice } = finixPriceSlice.actions
+export const { setSixPrice, setFinixPrice, setQuote, setDefinixKlayPrice, setKlayswapKlayPrice } =
+  finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
@@ -167,9 +168,7 @@ export const fetchSixPrice = () => async (dispatch) => {
 }
 
 export const fetchKlayPriceFromKlayswap = () => async (dispatch) => {
-  const response = await axios.get(
-    'https://stat.klayswap.com/klayPrice.json',
-  )
+  const response = await axios.get('https://stat.klayswap.com/klayPrice.json')
   const usdPrice = _.get(response, 'data.priceUsd')
   dispatch(
     setKlayswapKlayPrice({
