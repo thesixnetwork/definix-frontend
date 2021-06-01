@@ -1,73 +1,40 @@
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
-import ExpandableSectionButton from 'components/ExpandableSectionButton'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { communityFarms } from 'config/constants'
 import { QuoteToken } from 'config/constants/types'
-import useI18n from 'hooks/useI18n'
-import React, { useMemo, useState } from 'react'
-import { Farm } from 'state/types'
+import useStake from 'hooks/useStake'
+import useUnstake from 'hooks/useUnstake'
+import React, { useCallback, useContext, useMemo } from 'react'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Flex, Skeleton, Text } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { provider } from 'web3-core'
-import miniLogo from '../../../../uikit-dev/images/finix-coin.png'
-import colorStroke from '../../../../uikit-dev/images/Color-stroke.png'
-import CardActionsContainer from './CardActionsContainer'
+import FarmContext from '../../FarmContext'
+import DepositModal from '../DepositModal'
+import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
+import HarvestAction from './HarvestAction'
+import StakeAction from './StakeAction'
+import { FarmCardProps } from './types'
 
-export interface FarmWithStakedValue extends Farm {
-  apy?: BigNumber
-}
-
-const MiniLogo = styled.img`
-  width: 16px;
-  height: auto;
-  margin-right: 6px;
-`
-
-const ExpandableRainbow = styled.div`
-  position: relative;
-  padding-top: 4px;
-
-  .color-stroke {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%);
-    height: 4px;
-    width: 100%;
-  }
-`
-
-const FCard = styled.div`
-  align-self: baseline;
+const VerticalStyle = styled.div`
   background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
   display: flex;
+  position: relative;
+  align-self: baseline;
   flex-direction: column;
   justify-content: space-around;
-  position: relative;
   text-align: center;
 `
 
-const ExpandingWrapper = styled.div<{ expanded: boolean }>`
-  height: ${(props) => (props.expanded ? '100%' : '0px')};
-  overflow: hidden;
+const HorizontalStyle = styled.div`
+  background: ${(props) => props.theme.card.background};
+  border-radius: ${({ theme }) => theme.radii.default};
+  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  display: flex;
+  position: relative;
 `
-
-interface FarmCardProps {
-  farm: FarmWithStakedValue
-  removed: boolean
-  bnbPrice?: BigNumber
-  ethPrice?: BigNumber
-  sixPrice?: BigNumber
-  finixPrice?: BigNumber
-  ethereum?: provider
-  account?: string
-}
 
 const FarmCard: React.FC<FarmCardProps> = ({
   farm,
@@ -78,15 +45,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
   ethPrice,
   ethereum,
   account,
+  isHorizontal = false,
 }) => {
-  const TranslateString = useI18n()
-
-  const [showExpandableSection, setShowExpandableSection] = useState(false)
-
-  const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-  // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
-  // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
-  const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
+  const { onPresent } = useContext(FarmContext)
 
   const totalValue: BigNumber = useMemo(() => {
     if (!farm.lpTotalInQuoteToken) {
@@ -112,66 +73,111 @@ const FarmCard: React.FC<FarmCardProps> = ({
     : '-'
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
-  const earnLabel = farm.dual ? farm.dual.earnLabel : 'FINIX'
-  const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
+  const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  const { earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
 
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
-  return (
-    <FCard>
-      {/* {farm.tokenSymbol === 'FINIX' && <StyledCardAccent />} */}
-      <CardHeading
-        lpLabel={lpLabel}
-        multiplier={farm.multiplier}
-        isCommunityFarm={isCommunityFarm}
-        farmImage={farmImage}
-        tokenSymbol={farm.tokenSymbol}
-      />
-      <div className="pa-5">
-        {!removed && (
-          <Flex justifyContent="space-between" alignItems="center" className="mb-2">
-            <Text>{TranslateString(736, 'APR')}:</Text>
-            <Text bold style={{ display: 'flex', alignItems: 'center' }}>
-              {farm.apy ? (
-                <>
-                  {/* <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} /> */}
-                  {farmAPY}%
-                </>
-              ) : (
-                <Skeleton height={24} width={80} />
-              )}
-            </Text>
-          </Flex>
-        )}
-        <Flex justifyContent="space-between" className="mb-2">
-          <Text>{TranslateString(318, 'Earn')}:</Text>
-          <Flex alignItems="center">
-            <MiniLogo src={miniLogo} alt="" />
-            <Text bold>{earnLabel}</Text>
-          </Flex>
-        </Flex>
-        <CardActionsContainer farm={farm} ethereum={ethereum} account={account} addLiquidityUrl={addLiquidityUrl} />
-      </div>
+  const { onStake } = useStake(pid)
+  const { onUnstake } = useUnstake(pid)
 
-      <ExpandableRainbow>
-        <img src={colorStroke} alt="" className="color-stroke" />
-        <ExpandableSectionButton
-          onClick={() => setShowExpandableSection(!showExpandableSection)}
-          expanded={showExpandableSection}
-        />
-        <ExpandingWrapper expanded={showExpandableSection}>
-          <DetailsSection
-            removed={removed}
-            bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-            totalValueFormated={totalValueFormated}
-            lpLabel={lpLabel}
-            addLiquidityUrl={addLiquidityUrl}
-          />
-        </ExpandingWrapper>
-      </ExpandableRainbow>
-    </FCard>
+  const renderCardHeading = useCallback(
+    (className?: string, inlineMultiplier?: boolean) => (
+      <CardHeading
+        farm={farm}
+        lpLabel={lpLabel}
+        removed={removed}
+        addLiquidityUrl={addLiquidityUrl}
+        finixPrice={finixPrice}
+        isHorizontal={isHorizontal}
+        className={className}
+        inlineMultiplier={inlineMultiplier || false}
+      />
+    ),
+    [addLiquidityUrl, farm, finixPrice, isHorizontal, lpLabel, removed],
+  )
+
+  const renderDepositModal = useCallback(() => {
+    onPresent(
+      <DepositModal
+        max={tokenBalance}
+        onConfirm={onStake}
+        tokenName={lpLabel}
+        addLiquidityUrl={addLiquidityUrl}
+        renderCardHeading={renderCardHeading}
+      />,
+    )
+  }, [addLiquidityUrl, lpLabel, onPresent, onStake, renderCardHeading, tokenBalance])
+
+  const renderWithdrawModal = useCallback(() => {
+    onPresent(
+      <WithdrawModal
+        max={stakedBalance}
+        onConfirm={onUnstake}
+        tokenName={lpLabel}
+        renderCardHeading={renderCardHeading}
+      />,
+    )
+  }, [lpLabel, onPresent, onUnstake, renderCardHeading, stakedBalance])
+
+  const renderStakeAction = useCallback(
+    (className?: string) => (
+      <StakeAction
+        farm={farm}
+        ethereum={ethereum}
+        account={account}
+        className={className}
+        onPresentDeposit={renderDepositModal}
+        onPresentWithdraw={renderWithdrawModal}
+      />
+    ),
+    [account, ethereum, farm, renderDepositModal, renderWithdrawModal],
+  )
+
+  const renderHarvestAction = useCallback(
+    (className?: string) => <HarvestAction earnings={earnings} pid={pid} className={className} />,
+    [earnings, pid],
+  )
+
+  const renderDetailsSection = useCallback(
+    (className?: string) => (
+      <DetailsSection
+        removed={removed}
+        bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+        totalValueFormated={totalValueFormated}
+        lpLabel={lpLabel}
+        addLiquidityUrl={addLiquidityUrl}
+        isHorizontal={isHorizontal}
+        className={className}
+      />
+    ),
+    [addLiquidityUrl, farm.lpAddresses, isHorizontal, lpLabel, removed, totalValueFormated],
+  )
+
+  if (isHorizontal) {
+    return (
+      <HorizontalStyle className="flex align-stretch pa-5 mb-4">
+        {renderCardHeading('col-3 pos-static')}
+
+        <div className="col-5 bd-x flex flex-column justify-space-between px-5">
+          {renderStakeAction('pb-5')}
+          {renderDetailsSection()}
+        </div>
+
+        {renderHarvestAction('col-4 pl-5 flex-grow')}
+      </HorizontalStyle>
+    )
+  }
+
+  return (
+    <VerticalStyle className="mb-7">
+      {renderCardHeading('pt-7')}
+      {renderStakeAction('pa-5')}
+      {renderHarvestAction('pa-5')}
+      {renderDetailsSection('px-5 py-3')}
+    </VerticalStyle>
   )
 }
 

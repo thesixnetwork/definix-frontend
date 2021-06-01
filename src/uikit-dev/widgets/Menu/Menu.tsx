@@ -7,27 +7,30 @@ import styled from 'styled-components'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
+import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import definixCoin from 'uikit-dev/images/KR-Banner/AWforDefinix-03.png'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
+import Link from '../../components/Link/Link'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
 import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
 import Text from '../../components/Text/Text'
 import { useMatchBreakpoints } from '../../hooks'
+import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
 import bsc from '../../images/Logo-BinanceSmartChain.png'
 import klaytn from '../../images/Logo-Klaytn.png'
 import th from '../../images/th.png'
-import { MENU_HEIGHT, SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
+import { MENU_HEIGHT } from './config'
 import * as IconModule from './icons'
-import Logo from './Logo'
 import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
+import UserBlock from './UserBlock'
 
 const Wrapper = styled.div`
   position: relative;
@@ -38,20 +41,6 @@ const Wrapper = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.2);
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    min-height: calc(100vh - 48px);
-  }
-
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-  }
-
-  @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-    background: rgba(255, 255, 255, 0.7);
-  }
 `
 
 const StyledNav = styled.nav<{ showMenu: boolean }>`
@@ -62,17 +51,35 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   align-items: center;
   padding: 0 24px;
   width: 100%;
+  position: relative;
   z-index: 20;
   height: ${MENU_HEIGHT}px;
-  background-color: ${({ theme }) => theme.nav.background};
-  // border-bottom: solid 1px ${({ theme }) => theme.colors.border};
   transform: translate3d(0, 0, 0);
+  background: ${({ theme }) => theme.colors.white};
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #f90;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: url(${colorGradient});
+    background-size: cover;
+  }
+
+  .network {
+    // box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  }
 `
 
 const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   flex-grow: 1;
+  background: ${({ theme }) => theme.colors.white};
+
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 124px);
   }
@@ -80,17 +87,22 @@ const BodyWrapper = styled.div`
 
 const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   flex-grow: 1;
-  // margin-top: ${({ showMenu }) => (showMenu ? `${MENU_HEIGHT}px` : 0)};
   transition: margin-top 0.2s;
   transform: translate3d(0, 0, 0);
   max-width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  background: ${({ theme }) => theme.colors.white};
+  padding-top: 12px;
+`
 
-  // ${({ theme }) => theme.mediaQueries.nav} {
-  //   margin-left: ${({ isPushed }) => `${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px`};
-  //   max-width: ${({ isPushed }) => `calc(100% - ${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px)`};
-  // }
+const InnerBg = styled.div`
+  position: relative;
+  background: ${({ theme }) => theme.colors.backgroundRadial};
+  overflow: hidden;
+  border-top-left-radius: ${({ theme }) => theme.radii.large};
+  border-bottom-left-radius: ${({ theme }) => theme.radii.large};
+  height: 100%;
 `
 
 const MobileOnlyOverlay = styled(Overlay)`
@@ -99,6 +111,23 @@ const MobileOnlyOverlay = styled(Overlay)`
 
   ${({ theme }) => theme.mediaQueries.nav} {
     display: none;
+  }
+`
+
+const StyledLogo = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -6px 24px 0 0;
+
+  img {
+    height: 14px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.nav} {
+    img {
+      height: 24px;
+    }
   }
 `
 
@@ -233,12 +262,10 @@ const Menu: React.FC<NavProps> = ({
     <Wrapper>
       <StyledNav showMenu={showMenu}>
         <Flex alignItems="center">
-          <Logo
-            isPushed={isPushed}
-            togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
-            isDark={isDark}
-            href={homeLink?.href ?? '/'}
-          />
+          <StyledLogo as="a" href="/" aria-label="Definix home page">
+            <img src={logoDesktop} alt="" />
+          </StyledLogo>
+
           {!isMobile && (
             <Dropdown
               position="bottom"
@@ -248,8 +275,8 @@ const Menu: React.FC<NavProps> = ({
                   size="sm"
                   startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
                   endIcon={<ChevronDownIcon className="ml-1" />}
-                  className="ml-4 color-text"
-                  style={{ marginTop: '4px' }}
+                  color="text"
+                  className="network"
                 >
                   <Text fontSize="12px" fontWeight="500">
                     Binance Smart Chain
@@ -276,6 +303,7 @@ const Menu: React.FC<NavProps> = ({
             </Dropdown>
           )}
         </Flex>
+
         <Flex alignItems="center">
           <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
             <img src={FinixCoin} alt="" />
@@ -284,6 +312,7 @@ const Menu: React.FC<NavProps> = ({
               <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
             </p>
           </Price>
+          <UserBlock account={account} login={login} logout={logout} />
           {/* <Dropdown
             position="bottom-right"
             target={
@@ -329,66 +358,68 @@ const Menu: React.FC<NavProps> = ({
           logout={logout}
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
-          <CountDownBanner
-            logo={definixCoin}
-            title="암호화폐에 대한 여러분의 경험을 얘기하고,"
-            highlight="20$를 받으세요!"
-            endTime=""
-            button={
-              <Button
-                as="a"
-                target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe7X2x0ODo-Be_eC28NpS28Ae0qZ8fGjT-QO6feGLLfZS7OXA/viewform"
-                size="sm"
-              >
-                Click
-              </Button>
-            }
-            disableCountdown
-          />
+          <InnerBg>
+            <CountDownBanner
+              logo={definixCoin}
+              title="암호화폐에 대한 여러분의 경험을 얘기하고,"
+              highlight="20$를 받으세요!"
+              endTime=""
+              button={
+                <Button
+                  as="a"
+                  target="_blank"
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSe7X2x0ODo-Be_eC28NpS28Ae0qZ8fGjT-QO6feGLLfZS7OXA/viewform"
+                  size="sm"
+                >
+                  Click
+                </Button>
+              }
+              disableCountdown
+            />
 
-          <CountDownBanner
-            logo={logoTrade}
-            title="Definix Trading Tournament"
-            detail="Registration Period end in"
-            endTime={endRegisterTimestamp}
-            button={
-              <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
-                Register now
-              </Button>
-            }
-          />
-
-          {currentTime > endStatedTradingTime ? (
             <CountDownBanner
               logo={logoTrade}
-              title="The 1st Definix Trading Tournament"
-              detail="will end in"
-              topTitle="Top trader gain profit"
-              topValue={`${valuePnl}%`}
-              endTime={endTradingTimestamp}
+              title="Definix Trading Tournament"
+              detail="Registration Period end in"
+              endTime={endRegisterTimestamp}
               button={
-                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
-                  See more
+                <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
+                  Register now
                 </Button>
               }
             />
-          ) : (
-            <StartTimeBanner
-              logo={logoTrade}
-              title="The 1st Definix Trading Tournament"
-              detail="has started"
-              topTitle="Top trader gain profit"
-              topValue={`${valuePnl}%`}
-              endTime={endStatedTradingTime}
-              button={
-                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
-                  See more
-                </Button>
-              }
-            />
-          )}
-          {children}
+
+            {currentTime > endStatedTradingTime ? (
+              <CountDownBanner
+                logo={logoTrade}
+                title="The 1st Definix Trading Tournament"
+                detail="will end in"
+                topTitle="Top trader gain profit"
+                topValue={`${valuePnl}%`}
+                endTime={endTradingTimestamp}
+                button={
+                  <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                    See more
+                  </Button>
+                }
+              />
+            ) : (
+              <StartTimeBanner
+                logo={logoTrade}
+                title="The 1st Definix Trading Tournament"
+                detail="has started"
+                topTitle="Top trader gain profit"
+                topValue={`${valuePnl}%`}
+                endTime={endStatedTradingTime}
+                button={
+                  <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                    See more
+                  </Button>
+                }
+              />
+            )}
+            {children}
+          </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
       </BodyWrapper>
