@@ -40,6 +40,9 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const { account } = useWallet()
   const stakingTokenContract = useERC20(stakingTokenAddress)
 
+  const rawStakedBalance = getBalanceNumber(stakedBalance)
+  const displayBalance = rawStakedBalance.toLocaleString()
+
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
   const handleApprove = useCallback(async () => {
@@ -120,7 +123,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
           color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
           className="col-6 pr-3"
         >
-          {getBalanceNumber(stakedBalance)}
+          {displayBalance}
         </Heading>
 
         <div className="col-6">{renderStakingButtons()}</div>
