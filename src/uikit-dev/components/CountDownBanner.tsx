@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react'
+/* eslint-disable react/require-default-props */
+
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Text } from './Text'
 
@@ -27,7 +29,29 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-const CountDownBanner = ({ logo = undefined, title = '', detail = '', endTime, button = undefined }) => {
+interface CountDownBannerProps {
+  logo?: any
+  title?: string
+  detail?: string
+  highlight?: string
+  topTitle?: string
+  topValue?: string
+  endTime?: any
+  button?: any
+  disableCountdown?: boolean
+}
+
+const CountDownBanner = ({
+  logo,
+  title,
+  detail,
+  highlight,
+  topTitle,
+  topValue,
+  endTime,
+  button,
+  disableCountdown = false,
+}: CountDownBannerProps) => {
   const currentTime = new Date().getTime()
   const [timer, setTime] = useState({
     days: 0,
@@ -97,21 +121,37 @@ const CountDownBanner = ({ logo = undefined, title = '', detail = '', endTime, b
     return () => clearInterval(interval)
   }, [endTime])
 
-  return currentTime < endTime ? (
+  return currentTime < endTime || disableCountdown ? (
     <Banner>
       <MaxWidth className="flex align-center justify-center flex-wrap">
         {logo && <img src={logo} alt="" />}
 
         <Text color="white" className="mr-2" textAlign="center">
           {title && <strong className="mr-1">{title}</strong>}
-          {detail}
+          {detail && <span className="m-1">{detail}</span>}
+          {highlight && <strong style={{ color: '#ffd157' }}>{highlight}</strong>}
         </Text>
 
         {endTime && (
           <Text bold color="#ffd157" fontSize="24px" className="mr-2" textAlign="center">
-            {`${addLeadingZeros(timer.hours)}:${addLeadingZeros(timer.min)}:${addLeadingZeros(timer.sec)}`}
+            {`${addLeadingZeros(timer.days)}:${addLeadingZeros(timer.hours)}:${addLeadingZeros(
+              timer.min,
+            )}:${addLeadingZeros(timer.sec)}`}
           </Text>
         )}
+
+        {topTitle && (
+          <Text color="white" textAlign="center" bold>
+            {topTitle}
+          </Text>
+        )}
+
+        {topValue && (
+          <Text color="#ffd157" textAlign="center" bold fontSize="24px" className="mr-2">
+            {topValue}
+          </Text>
+        )}
+
         {button}
       </MaxWidth>
     </Banner>

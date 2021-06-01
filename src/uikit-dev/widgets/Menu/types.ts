@@ -25,8 +25,12 @@ export interface NavTheme {
 
 export interface MenuSubEntry {
   label: string
-  href: string
+  href?: string
   calloutClass?: string
+  initialOpenState?: boolean
+  group?: string
+  notHighlight?: boolean
+  newTab?: boolean
 }
 
 export interface MenuEntry {
@@ -37,7 +41,6 @@ export interface MenuEntry {
   href?: string
   calloutClass?: string
   initialOpenState?: boolean
-  group?: string
   notHighlight?: boolean
   newTab?: boolean
 }
@@ -56,6 +59,7 @@ export interface NavProps extends PanelProps {
   account?: string
   login: Login
   profile?: Profile
-  price: number
+  price?: number
   logout: () => void
+  value?: number
 }

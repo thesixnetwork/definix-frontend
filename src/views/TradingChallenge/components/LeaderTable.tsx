@@ -1,14 +1,11 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import React, { useEffect } from 'react'
-import styled, { keyframes } from 'styled-components'
-import axios from 'axios'
-import _ from 'lodash'
-import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import React from 'react'
+import styled from 'styled-components'
+import { Skeleton, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
 import badge1 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-10.png'
 import badge2 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-11.png'
 import badge3 from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-12.png'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 
 const Rank = styled.img`
   width: 24px;
@@ -32,7 +29,9 @@ const Row = styled.div`
   }
 `
 
-const Table = styled(Card)``
+const Table = styled(Card)`
+  overflow: visible;
+`
 
 const TBody = styled.div`
   overflow: auto;
@@ -65,6 +64,10 @@ const TR = styled.div`
     background: #f7f7f8;
     border-top: 1px solid ${({ theme }) => theme.colors.border};
   }
+`
+
+const TRLoading = styled(TR)`
+  padding: 14px;
 `
 
 const TD = styled.div<{ rank?: number }>`
@@ -129,63 +132,73 @@ const LeaderTable = ({ className = '', items }) => {
     return (
       <Table className={className} isRainbow>
         <TBody>
-          {items.map((item) => (
-            <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
-              <TD rank={item.rank}>
-                {item.rank === 1 && <Rank src={badge1} alt="" />}
-                {item.rank === 2 && <Rank src={badge2} alt="" />}
-                {item.rank === 3 && <Rank src={badge3} alt="" />}
-                {(!item.rank || item.rank > 3) && <Text bold>{item.rank || '-'}</Text>}
-              </TD>
+          {items.length === 0
+            ? Array.from(Array(100).keys()).map((item) => (
+                <TRLoading key={item}>
+                  <Skeleton height={23} width="100%" />
+                </TRLoading>
+              ))
+            : items.map((item, idx) => (
+                <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
+                  <TD rank={item.rank}>
+                    {item.rank === 1 && <Rank src={badge1} alt="" />}
+                    {item.rank === 2 && <Rank src={badge2} alt="" />}
+                    {item.rank === 3 && <Rank src={badge3} alt="" />}
+                    {(!item.rank || item.rank > 3) && <Text bold>{item.rank || idx + 1}</Text>}
+                    {/* {(!item.rank || item.rank > 3) && <Text bold>{item.rank || '-'}</Text>} */}
+                  </TD>
 
-              <TD>
-                <Avatar src={item.avatar} alt="" />
-              </TD>
+                  <TD>
+                    <Avatar src={item.avatar} alt="" />
+                  </TD>
 
-              <TD>
-                <Row>
-                  <Text bold ellipsis>
-                    {item.name}
-                  </Text>
-                </Row>
+                  <TD>
+                    <Row>
+                      <Text bold ellipsis>
+                        {item.name}
+                      </Text>
+                    </Row>
 
-                <Row>
-                  <Text fontSize="12px">Address</Text>
-                  <Row className="mb-0">
-                    <Text className="mr-2" bold fontSize="12px">
-                      {item.address
-                        ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
-                        : null}
-                    </Text>
-                    {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
-                  </Row>
-                </Row>
+                    <Row>
+                      <Text fontSize="12px">Address</Text>
+                      <Row className="mb-0">
+                        <Text className="mr-2" bold fontSize="12px">
+                          {item.address
+                            ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
+                            : null}
+                        </Text>
+                      </Row>
+                    </Row>
 
-                <Row>
-                  <Row className="mb-0">
-                    <Text fontSize="12px">Value</Text>
-                    <Helper
-                      text="The current trading volume in each consecutive trading period in the amount for a port."
-                      className="ml-2"
-                      position="bottom"
-                    />
-                  </Row>
-                  <Text bold fontSize="16px">{`$${item.value}`}</Text>
-                </Row>
-                <Row>
-                  <Row className="mb-0">
-                    <Text fontSize="12px">P/L (%)</Text>
-                    <Helper
-                      text="The average profit/loss ratio for an active portfolios primarily motive is to maximize trading gains (in percentage division)."
-                      className="ml-2"
-                      position="bottom"
-                    />
-                  </Row>
-                  <Text bold fontSize="16px" color="success">{`${item.pl}%`}</Text>
-                </Row>
-              </TD>
-            </TR>
-          ))}
+                    <Row>
+                      <Row className="mb-0">
+                        <Text fontSize="12px">Value</Text>
+                        <Helper
+                          text="The current trading volume in each consecutive trading period in the total amount for each port."
+                          className="ml-2"
+                          position="bottom"
+                        />
+                      </Row>
+                      <Text bold fontSize="16px">{`$${item.value}`}</Text>
+                    </Row>
+                    <Row>
+                      <Row className="mb-0">
+                        <Text fontSize="12px">P/L (%)</Text>
+                        <Helper
+                          text="The average profit/loss ratio for an active portfolios primarily motive is to maximize trading gains (in percentage division)."
+                          className="ml-2"
+                          position="bottom"
+                        />
+                      </Row>
+                      {item.pl >= 0 ? (
+                        <Text bold color="success">{`${item.pl}%`}</Text>
+                      ) : (
+                        <Text bold color="failure">{`${item.pl}%`}</Text>
+                      )}
+                    </Row>
+                  </TD>
+                </TR>
+              ))}
         </TBody>
       </Table>
     )
@@ -206,9 +219,9 @@ const LeaderTable = ({ className = '', items }) => {
         <TD>
           <Text>Value</Text>
           <Helper
-            text="The current trading volume in each consecutive trading period in the amount for a port."
+            text="The current trading volume in each consecutive trading period in the total amount for each port."
             className="ml-2"
-            position="bottom"
+            position="left"
           />
         </TD>
         <TD>
@@ -216,42 +229,52 @@ const LeaderTable = ({ className = '', items }) => {
           <Helper
             text="The average profit/loss ratio for an active portfolios primarily motive is to maximize trading gains (in percentage division)."
             className="ml-2"
-            position="bottom"
+            position="left"
           />
         </TD>
       </TR>
       <TBody>
-        {items.map((item, idx) => (
-          <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
-            <TD>
-              {/* <Text bold>{idx + 1}</Text> */}
-              <Text bold>{item.rank || '-'}</Text>
-            </TD>
+        {items.length === 0
+          ? Array.from(Array(100).keys()).map((item) => (
+              <TRLoading key={item}>
+                <Skeleton height={23} width="100%" />
+              </TRLoading>
+            ))
+          : items.map((item, idx) => (
+              <TR key={item.id} className={item.address === account || item.id === 'isMe' ? 'isMe' : ''}>
+                <TD>
+                  {(!item.rank || item.rank > 3) && <Text bold>{item.rank || idx + 1}</Text>}
+                  {/* <Text bold>{item.rank || '-'}</Text> */}
+                </TD>
 
-            <TD>
-              <Avatar src={item.avatar} alt="" className="mr-3" />
-              <Text bold ellipsis>
-                {item.name}
-              </Text>
-            </TD>
+                <TD>
+                  <Avatar src={item.avatar} alt="" className="mr-3" />
+                  <Text bold ellipsis>
+                    {item.name}
+                  </Text>
+                </TD>
 
-            <TD>
-              <Text className="mr-2">
-                {item.address
-                  ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
-                  : null}
-              </Text>
-              {/* <CopyToClipboard noPadding noText toCopy={item.address} /> */}
-            </TD>
+                <TD>
+                  <Text className="mr-2">
+                    {item.address
+                      ? `${item.address.substring(0, 4)}...${item.address.substring(item.address.length - 4)}`
+                      : null}
+                  </Text>
+                </TD>
 
-            <TD>
-              <Text bold>{`$${item.value}`}</Text>
-            </TD>
-            <TD>
-              <Text bold color="success">{`${item.pl}%`}</Text>
-            </TD>
-          </TR>
-        ))}
+                <TD>
+                  <Text bold>{`$${item.value}`}</Text>
+                </TD>
+
+                <TD>
+                  {item.pl >= 0 ? (
+                    <Text bold color="success">{`${item.pl}%`}</Text>
+                  ) : (
+                    <Text bold color="failure">{`${item.pl}%`}</Text>
+                  )}
+                </TD>
+              </TR>
+            ))}
       </TBody>
     </Table>
   )

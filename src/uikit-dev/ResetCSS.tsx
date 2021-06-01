@@ -64,7 +64,7 @@ const ResetCSS = createGlobalStyle`
     box-sizing: border-box;
   }
   * {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Prompt', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -73,7 +73,7 @@ const ResetCSS = createGlobalStyle`
   //   width: 8px;
   // }
   ::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.borderColor}; 
+    background: ${({ theme }) => theme.colors.border}; 
     border-radius: ${({ theme }) => theme.radii.default};
   }
   ::-webkit-scrollbar-track {

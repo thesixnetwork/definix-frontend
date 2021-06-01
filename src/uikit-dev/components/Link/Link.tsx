@@ -11,7 +11,7 @@ const StyledLink = styled(Text)<LinkProps>`
   &:hover {
     text-decoration: underline;
   }
-  color: ${({ theme }) => theme.colors.primary} !important;
+  color: ${({ color, theme }) => color || theme.colors.primary} !important;
 `
 
 const Link: React.FC<LinkProps> = ({ external, ...props }) => {

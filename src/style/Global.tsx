@@ -1,29 +1,15 @@
 import { createGlobalStyle } from 'styled-components'
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
   body {
-    background-color: #EBEBEB;
-    font-family: 'Montserrat',sans-serif;
+    background-color: ${({ theme }) => theme.colors.backgroundGray};
+    font-family: 'Prompt',sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #404041;
     font-weight: 500;
-
-    &:before {
-      content: "";
-      background-image: url('/images/abstract.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: 140%;
-      height: 100vh;
-      position: fixed; top: 0; left: 0; width: 100vw;
-    }
-
-    ${({ theme }) => theme.mediaQueries.md} {
-      padding: 24px 64px !important;
-    }
 
     img {
       height: auto;
@@ -42,9 +28,13 @@ const GlobalStyle = createGlobalStyle`
   .text-bold { font-weight: 600; color: ${({ theme }) => theme.colors.text}; }
   .text-right { text-align: right; }
   .text-left { text-align: left; }
+
   .color-primary { color: ${({ theme }) => theme.colors.primary} !important; }
   .color-text { color: ${({ theme }) => theme.colors.text} !important; }
   .color-disable { color: ${({ theme }) => theme.colors.textDisabled} !important; }
+
+  .pos-relative { position: relative; }
+  .pos-static { position: static; }
 
   .slider-profile .slick-slider {
     display: flex; flex-direction: column; align-items: stretch; height: 100%;
@@ -120,10 +110,28 @@ const GlobalStyle = createGlobalStyle`
     .flex-shrink { flex-shrink: 0; }
     .col-12 { width: 100%; }
     .col-9 { width: 75%; }
+    .col-7 { width: 60%; }
     .col-6 { width: 50%; }
+    .col-5 { width: 40%; }
     .col-4 { width: 33.333%; }
     .col-3 { width: 25%; }
   }
+
+  .bd { border: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-t { border-top: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-r { border-right: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-b { border-bottom: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-l { border-left: 1px solid ${({ theme }) => theme.colors.border}; }
+  .bd-x { border-right: 1px solid ${({ theme }) => theme.colors.border}; border-left: 1px solid ${({ theme }) =>
+  theme.colors.border}; }
+  .bd-y { border-top: 1px solid ${({ theme }) => theme.colors.border}; border-bottom: 1px solid ${({ theme }) =>
+  theme.colors.border}; }
+  .bd-t-n { border-top: none; }
+  .bd-r-n { border-right: none; }
+  .bd-b-n { border-bottom: none; }
+  .bd-l-n { border-left: none; }
+  .bd-x-n { border-right: none; border-left: none; }
+  .bd-y-n { border-top: none; border-bottom: none; }
 
   .ma-0 {
     margin: 0 !important;

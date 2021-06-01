@@ -173,10 +173,6 @@ const TradingChallenge = () => {
                 is not listed in the rule, the participant will be disqualified
               </Text>
               <Text lineHeight="2" className="ml-6">
-                - Single-sided pool: Stake the asset in the permitted pool to earn more asset given by permitted
-                protocol.
-              </Text>
-              <Text lineHeight="2" className="ml-6">
                 - Farm: Stake LP token to the only permitted farm to earn a reward.
               </Text>
               <Text lineHeight="2">
@@ -253,9 +249,9 @@ const TradingChallenge = () => {
                     onClick={() => {
                       onPresentTraderProfileModal()
                     }}
-                    disabled={isTradingEnd}
+                    disabled={isTrade}
                   >
-                    Register
+                    {isTrade ? 'Register is now closed' : 'Register'}
                     {/* {isTradingEnd ? 'Registration successfully' : 'Register'} */}
                   </Button>
                 )}

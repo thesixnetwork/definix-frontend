@@ -6,10 +6,11 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import definixBlackLogo from '../../images/Definix-advance-crypto-assets.png'
-import poweredbySIX from '../../images/Footer-Icon/Powered-by-SIX.png'
+import six from '../../images/Footer-Icon/Powered-by-SIX.png'
 import facebookNormal from '../../images/Footer-Icon/without-text/Facebook-Normal.png'
+import gitbookNormal from '../../images/Footer-Icon/without-text/Gitbook-Normal.png'
 import githubNormal from '../../images/Footer-Icon/without-text/Github-Normal.png'
+import certik from '../../images/Audit/AW-42.png'
 import kakaoNormal from '../../images/Footer-Icon/without-text/Kakao-Normal.png'
 import redditNormal from '../../images/Footer-Icon/without-text/Reddit-Normal.png'
 import telegramNormal from '../../images/Footer-Icon/without-text/Telegram-Normal.png'
@@ -17,9 +18,8 @@ import twitterNormal from '../../images/Footer-Icon/without-text/Twitter-Normal.
 
 const FooterStyled = styled.footer`
   flex-shrink: 0;
-  background: ${({ theme }) => theme.colors.white};
   z-index: 10;
-
+  background: ${({ theme }) => theme.colors.white};
   .container {
     height: 100%;
     margin: 0 auto;
@@ -32,26 +32,15 @@ const FooterStyled = styled.footer`
 
   .g1 {
     display: flex;
-  }
+    align-items: center;
 
-  .g2 {
-    text-align: center;
-    margin-right: 1rem;
-  }
+    a {
+      display: block;
+      margin-right: 16px;
+    }
 
-  .logo {
-    height: 14px;
-    margin-bottom: 4px;
-  }
-
-  p {
-    font-size: 6px;
-  }
-
-  .six-logo {
-    display: block;
-    width: 100px;
     img {
+      height: 32px;
       display: block;
     }
   }
@@ -102,44 +91,60 @@ const FooterStyled = styled.footer`
 `
 
 function Footer() {
+  const socials = [
+    {
+      url: 'https://www.facebook.com/thesixnetwork',
+      img: facebookNormal,
+    },
+    {
+      url: 'https://twitter.com/DefinixOfficial',
+      img: twitterNormal,
+    },
+    {
+      url: 'https://t.me/SIXNetwork',
+      img: telegramNormal,
+    },
+    {
+      url: 'https://open.kakao.com/o/gQNRT5K',
+      img: kakaoNormal,
+    },
+    {
+      url: 'https://app.gitbook.com/@sixnetwork/s/definix',
+      img: gitbookNormal,
+    },
+    {
+      url: 'https://github.com/thesixnetwork',
+      img: githubNormal,
+    },
+    {
+      url: 'https://www.reddit.com/r/sixnetwork',
+      img: redditNormal,
+    },
+  ]
+
   return (
     <FooterStyled>
       <div className="container">
         <div className="g1">
-          <div className="g2">
-            <img src={definixBlackLogo} alt="" className="logo" />
-            <p>Advance your crypto assets</p>
-          </div>
-
           <a
             href="https://coinmarketcap.com/currencies/six/markets/"
             target="_blank"
             rel="noreferrer"
             className="six-logo"
           >
-            <img src={poweredbySIX} alt="" />
+            <img src={six} alt="" />
+          </a>
+          <a href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
+            <img src={certik} alt="" />
           </a>
         </div>
 
         <div className="social">
-          <a href="https://www.facebook.com/thesixnetwork" target="_blank" rel="noreferrer">
-            <img src={facebookNormal} alt="" />
-          </a>
-          <a href="https://twitter.com/DefinixOfficial" target="_blank" rel="noreferrer">
-            <img src={twitterNormal} alt="" />
-          </a>
-          <a href="https://t.me/SIXNetwork" target="_blank" rel="noreferrer">
-            <img src={telegramNormal} alt="" />
-          </a>
-          <a href="https://open.kakao.com/o/gQNRT5K" target="_blank" rel="noreferrer">
-            <img src={kakaoNormal} alt="" />
-          </a>
-          <a href="https://github.com/thesixnetwork" target="_blank" rel="noreferrer">
-            <img src={githubNormal} alt="" />
-          </a>
-          <a href="https://www.reddit.com/r/sixnetwork/" target="_blank" rel="noreferrer">
-            <img src={redditNormal} alt="" />
-          </a>
+          {socials.map((s) => (
+            <a href={s.url} target="_blank" rel="noreferrer" key={s.url}>
+              <img src={s.img} alt="" />
+            </a>
+          ))}
         </div>
       </div>
     </FooterStyled>
