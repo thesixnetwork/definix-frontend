@@ -14,7 +14,7 @@ import { FarmWithStakedValue } from './types'
 
 interface FarmStakeActionProps {
   farm: FarmWithStakedValue
-  ethereum?: provider
+  klaytn?: provider
   account?: string
   addLiquidityUrl?: string
   className?: string
@@ -32,7 +32,7 @@ const IconButtonWrapper = styled.div`
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
   farm,
-  ethereum,
+  klaytn,
   account,
   className = '',
   onPresentDeposit,
@@ -53,8 +53,8 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const displayBalance = rawStakedBalance.toLocaleString()
 
   const lpContract = useMemo(() => {
-    return getContract(ethereum as provider, lpAddress)
-  }, [ethereum, lpAddress])
+    return getContract(klaytn as provider, lpAddress)
+  }, [klaytn, lpAddress])
 
   const { onApprove } = useApprove(lpContract)
 

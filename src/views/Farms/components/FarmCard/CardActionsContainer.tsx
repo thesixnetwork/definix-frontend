@@ -31,7 +31,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, ad
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
-  const { allowance, tokenBalance, stakedBalance, earnings } = useFarmUser(pid)
+  const { allowance, earnings } = useFarmUser(pid)
   const lpAddress = getAddress(lpAddresses)
   const lpName = farm.lpSymbol.toUpperCase()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
@@ -55,11 +55,7 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, ad
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (
       <StakeAction
-        stakedBalance={stakedBalance}
-        tokenBalance={tokenBalance}
-        tokenName={lpName}
-        pid={pid}
-        addLiquidityUrl={addLiquidityUrl}
+        farm={farm}
       />
     ) : (
       <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>

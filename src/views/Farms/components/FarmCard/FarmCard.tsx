@@ -38,12 +38,12 @@ const HorizontalStyle = styled.div`
 
 const FarmCard: React.FC<FarmCardProps> = ({
   farm,
+  klaytn,
   removed,
   sixPrice,
   finixPrice,
   klayPrice,
   kethPrice,
-  klaytn,
   account,
   isHorizontal = false,
 }) => {
@@ -126,14 +126,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
     (className?: string) => (
       <StakeAction
         farm={farm}
-        ethereum={ethereum}
+        klaytn={klaytn}
         account={account}
         className={className}
         onPresentDeposit={renderDepositModal}
         onPresentWithdraw={renderWithdrawModal}
       />
     ),
-    [account, ethereum, farm, renderDepositModal, renderWithdrawModal],
+    [account, klaytn, farm, renderDepositModal, renderWithdrawModal],
   )
 
   const renderHarvestAction = useCallback(
@@ -145,7 +145,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
     (className?: string) => (
       <DetailsSection
         removed={removed}
-        bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+        klaytnAddress={`${process.env.REACT_APP_KLAYTN_URL}/account/${
+          farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
+        }`}
         totalValueFormated={totalValueFormated}
         lpLabel={lpLabel}
         addLiquidityUrl={addLiquidityUrl}

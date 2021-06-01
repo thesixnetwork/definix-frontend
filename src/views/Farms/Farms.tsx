@@ -131,7 +131,7 @@ const Farms: React.FC = () => {
         />
       ))
     },
-    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account],
+    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView],
   )
 
   const handlePresent = useCallback((node: React.ReactNode) => {

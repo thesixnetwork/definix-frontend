@@ -49,7 +49,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     stakingLimit,
   } = pool
 
-  const isBnbPool = poolCategory === PoolCategory.BINANCE
+  const isBnbPool = poolCategory === PoolCategory.KLAYTN
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
 
   const allowance = new BigNumber(userData?.allowance || 0)

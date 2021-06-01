@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text } from 'uikit-dev'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import usePoolEarning from 'hooks/usePoolEarning'
-import { usePriceFinixBusd } from 'state/hooks'
+import { usePriceKlayKusdt } from 'state/hooks'
 import styled from 'styled-components'
 import CardValue from './CardValue'
 import CardBusdValue from './CardBusdValue'
@@ -23,7 +23,7 @@ const FinixHarvestPool = () => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
 
-  const earningsBusd = new BigNumber(earningsPoolSum).multipliedBy(usePriceFinixBusd()).toNumber()
+  const earningsBusd = new BigNumber(earningsPoolSum).multipliedBy(usePriceKlayKusdt()).toNumber()
 
   if (!account) {
     return (

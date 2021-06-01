@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useSousApprove } from 'hooks/useApprove'

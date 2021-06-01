@@ -1,4 +1,4 @@
-import Metamask from './icons/Metamask'
+import Kaikas from './icons/Kaikas'
 import MathWallet from './icons/MathWallet'
 import TokenPocket from './icons/TokenPocket'
 import TrustWallet from './icons/TrustWallet'
@@ -9,7 +9,7 @@ import { Config } from './types'
 const connectors: Config[] = [
   {
     title: 'Kaikas',
-    icon: Metamask,
+    icon: Kaikas,
     connectorId: 'injected',
   },
 ]

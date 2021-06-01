@@ -7,9 +7,9 @@ import useBlock from 'hooks/useBlock'
 import {
   useFarms,
   usePools,
-  usePriceBnbBusd,
-  usePriceEthBnb,
-  usePriceEthBusd,
+  usePriceKlayKusdt,
+  usePriceKethKusdt,
+  usePriceKethKlay,
   usePriceFinixUsd,
   usePriceSixUsd,
 } from 'state/hooks'
@@ -19,7 +19,7 @@ import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useDispatch } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import useI18n from 'hooks/useI18n'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
@@ -161,7 +161,7 @@ const List = styled.div`
 const CardMyFarmsAndPools = ({ className = '' }) => {
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
-  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
+  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
@@ -194,10 +194,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   // Farms
   const farmsLP = useFarms()
-  const bnbPrice = usePriceBnbBusd()
+  const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
-  const ethPriceUsd = usePriceEthBusd()
+  const ethPriceUsd = usePriceKethKusdt()
   const [listView, setListView] = useState(false)
   const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
@@ -220,9 +220,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
         let apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
 
-        if (farm.quoteTokenSymbol === QuoteToken.BUSD || farm.quoteTokenSymbol === QuoteToken.UST) {
-          apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
-        } else if (farm.quoteTokenSymbol === QuoteToken.ETH) {
+        if (farm.quoteTokenSymbol === QuoteToken.KUSDT) {
+          apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(klayPrice)
+        } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
           apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
@@ -249,39 +249,39 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           key={farm.pid}
           farm={farm}
           removed={removed}
-          bnbPrice={bnbPrice}
-          ethPrice={ethPriceUsd}
+          klayPrice={klayPrice}
+          kethPrice={ethPriceUsd}
           sixPrice={sixPrice}
           finixPrice={finixPrice}
-          ethereum={ethereum}
+          klaytn={klaytn}
           account={account}
           isHorizontal={listView}
         />
       ))
     },
-    [sixPrice, bnbPrice, ethPriceUsd, finixPrice, ethereum, account, listView],
+    [sixPrice, klayPrice, ethPriceUsd, finixPrice, klaytn, account, listView],
   )
 
   // Pools
   const pools = usePools(account)
   const farms = useFarms()
   const sixPriceUSD = usePriceSixUsd()
-  const bnbPriceUSD = usePriceBnbBusd()
-  const ethPriceBnb = usePriceEthBnb()
+  const klayPriceUSD = usePriceKlayKusdt()
+  const ethPriceKlay = usePriceKethKlay()
   const block = useBlock()
   const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceBN = new BigNumber(tokenPrice)
     if (tokenName === 'BNB') {
       return new BigNumber(1)
     }
-    if (tokenPrice && quoteToken === QuoteToken.BUSD) {
-      return tokenPriceBN.div(bnbPriceUSD)
+    if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
+      return tokenPriceBN.div(klayPriceUSD)
     }
     return tokenPriceBN
   }
 
   const poolsWithApy = pools.map((pool) => {
-    const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
+    const isBnbPool = pool.poolCategory === PoolCategory.KLAYTN
     let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
     let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
@@ -321,7 +321,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'ETH' ? ethPriceBnb : 1
+    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KLAY' ? ethPriceKlay : 1
 
     // /!\ Assume that the farm quote price is BNB
     const stakingTokenPriceInBNB = isBnbPool

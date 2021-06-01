@@ -34,13 +34,13 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   const LinkView = ({ linkClassName = '' }) => (
     <Link
       external
-      href={bscScanAddress}
+      href={klaytnAddress}
       bold={false}
       className={`flex-shrink ${linkClassName}`}
       color="textSubtle"
       fontSize="12px"
     >
-      {TranslateString(356, 'View on BscScan')}
+      {TranslateString(356, 'View on KlaytnScope')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )
