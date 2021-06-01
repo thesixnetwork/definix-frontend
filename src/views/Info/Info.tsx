@@ -137,7 +137,7 @@ const Info: React.FC = () => {
   return (
     <Page style={{ maxWidth: '1280px' }}>
       <Card isRainbow className="flex flex-column align-stretch mx-auto" style={{ maxWidth: '1000px' }}>
-        <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
+        <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
           <ArrowBackIcon />
         </IconButton>
 

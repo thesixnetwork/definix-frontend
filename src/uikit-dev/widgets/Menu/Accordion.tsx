@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ArrowDropDownIcon, ArrowDropUpIcon } from '../../components/Svg'
+import { ChevronUpIcon, ChevronDownIcon } from '../../components/Svg'
 import { MENU_ENTRY_HEIGHT } from './config'
 import { LinkLabel, MenuEntry } from './MenuEntry'
 import { PushedProps } from './types'
@@ -23,11 +23,7 @@ const AccordionContent = styled.div<{ isOpen: boolean; isPushed: boolean; maxHei
   max-height: ${({ isOpen, maxHeight }) => (isOpen ? `${maxHeight}px` : 0)};
   transition: max-height 0.3s ease-out;
   overflow: hidden;
-  border-color: ${({ isOpen, isPushed }) => (isOpen && isPushed ? ({ theme }) => theme.colors.border : 'transparent')};
-  border-style: solid;
-  border-width: 1px;
-  border-left: none;
-  border-right: none;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const Accordion: React.FC<Props> = ({
@@ -52,10 +48,10 @@ const Accordion: React.FC<Props> = ({
 
   return (
     <Container>
-      <MenuEntry onClick={handleClick} className={className}>
+      <MenuEntry onClick={handleClick} className={className} style={{ border: 'none' }}>
         {icon}
         <LinkLabel isPushed={isPushed}>{label}</LinkLabel>
-        {isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+        {isOpen ? <ChevronUpIcon className="ml-1" /> : <ChevronDownIcon className="ml-1" />}
       </MenuEntry>
       <AccordionContent
         isOpen={isOpen}

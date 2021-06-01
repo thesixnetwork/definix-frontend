@@ -60,10 +60,12 @@
     "react-feather": "^2.0.8",
     "react-ga": "^3.3.0",
     "react-gtm-module": "^2.0.11",
+    "react-lottie": "^1.2.3",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "react-slick": "^0.28.1",
+    "react-twitter-widgets": "^1.10.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.1.1",
     "typescript": "^4.1.5"

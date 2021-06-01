@@ -217,7 +217,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     >
       {isFinished && sousId !== 0 && sousId !== 1 && <PoolSash type="finish" />}
       <div className="flex justify-space-between">
-        <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
+        <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
           <ArrowBackIcon />
         </IconButton>
         <Link

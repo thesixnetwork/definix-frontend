@@ -20,12 +20,12 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   // const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
 
   return (
-    <div className="mx-5 mb-4">
+    <div>
       {account ? (
         <Dropdown
           isFullWidth
           position="bottom"
-          isRainbow
+          isRainbow={false}
           target={
             <Button
               size="sm"
@@ -40,7 +40,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
             </Button>
           }
         >
-          <div className="pb-2">
+          <div className="pb-2" style={{ zIndex: 999 }}>
             <Heading fontSize="14px !important" className="mb-3 pa-0 pt-2">
               {accountEllipsis}
             </Heading>

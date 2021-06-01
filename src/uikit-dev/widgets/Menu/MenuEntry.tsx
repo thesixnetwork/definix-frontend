@@ -29,10 +29,11 @@ const MenuEntry = styled.div<Props>`
   align-items: center;
   height: ${MENU_ENTRY_HEIGHT}px;
   padding: ${({ secondary }) => (secondary ? '0 32px' : '0 16px')};
-  font-size: ${({ secondary }) => (secondary ? '14px' : '16px')};
+  font-size: 14px;
   background-color: ${({ secondary, theme }) => (secondary ? theme.colors.background : 'transparent')};
-  color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : theme.colors.textSubtle)};
+  color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : theme.colors.text)};
   font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   &.new {
     img {

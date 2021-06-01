@@ -14,7 +14,7 @@ interface Props {
 }
 
 const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null }) => (
-  <Modal title="Your wallet" onDismiss={onDismiss} isRainbow>
+  <Modal title="Your wallet" onDismiss={onDismiss} isRainbow={false}>
     <Text
       fontSize="20px"
       bold

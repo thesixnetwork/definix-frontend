@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 import styled, { DefaultTheme } from 'styled-components'
 import { space } from 'styled-system'
 import { ButtonProps, ButtonThemeVariant, variants } from './types'
@@ -48,7 +50,7 @@ const StyledButton = styled.button<ButtonProps>`
   align-items: center;
   background-color: ${getButtonVariantProp('background')};
   border: ${getButtonVariantProp('border')};
-  border-radius: 40px;
+  border-radius: ${({ radii, theme }) => (radii ? theme.radii[radii] : '40px')};
   // box-shadow: ${getButtonVariantProp('boxShadow')};
   color: ${getButtonVariantProp('color')};
   cursor: pointer;
@@ -58,12 +60,12 @@ const StyledButton = styled.button<ButtonProps>`
   font-weight: 600;
   /* max-content instead of auto for Safari fix */
   width: ${({ fullWidth }) => (fullWidth ? '100%' : 'max-content')};
-  height: ${({ size }) => (size === 'sm' ? '32px' : '48px')};
+  height: ${({ size }) => (size === 'xs' ? '24px' : size === 'sm' ? '32px' : '48px')};
   line-height: 1;
   letter-spacing: 0.03em;
   justify-content: center;
   outline: 0;
-  padding: ${({ size }) => (size === 'sm' ? '0 16px' : '0 24px')};
+  padding: ${({ size }) => (size === 'xs' || size === 'sm' ? '0 20px' : '0 24px')};
   transition: background-color 0.1s;
   opacity: ${({ isLoading }) => (isLoading ? 0.5 : 1)};
 
