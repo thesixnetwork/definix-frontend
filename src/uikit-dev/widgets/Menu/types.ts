@@ -39,6 +39,7 @@ export interface MenuEntry {
   iconActive: any
   items?: MenuSubEntry[]
   href?: string
+  group?: string
   calloutClass?: string
   initialOpenState?: boolean
   notHighlight?: boolean

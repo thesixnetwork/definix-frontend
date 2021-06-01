@@ -3,7 +3,7 @@ import { Text } from 'uikit-dev'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
-import useFarmEarning from 'hooks/useFarmEarning'
+import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixBusd } from 'state/hooks'
 import styled from 'styled-components'
 import CardValue from './CardValue'
@@ -11,19 +11,19 @@ import CardBusdValue from './CardBusdValue'
 
 const Block = styled.div`
   margin-bottom: 24px;
-  
 }
 `
 
-const FinixHarvestBalance = () => {
+const FinixHarvestPool = () => {
   const TranslateString = useI18n()
   const { account } = useWallet()
-  const farmEarnings = useFarmEarning()
-  const earningsSum = farmEarnings.reduce((accum, earning) => {
+  const poolEarnings = usePoolEarning()
+
+  const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
 
-  const earningsBusd = new BigNumber(earningsSum).multipliedBy(usePriceFinixBusd()).toNumber()
+  const earningsBusd = new BigNumber(earningsPoolSum).multipliedBy(usePriceFinixBusd()).toNumber()
 
   if (!account) {
     return (
@@ -35,10 +35,10 @@ const FinixHarvestBalance = () => {
 
   return (
     <Block>
-      <CardValue value={earningsSum} lineHeight="1.5" />
+      <CardValue value={earningsPoolSum} lineHeight="1.5" />
       <CardBusdValue value={earningsBusd} />
     </Block>
   )
 }
 
-export default FinixHarvestBalance
+export default FinixHarvestPool

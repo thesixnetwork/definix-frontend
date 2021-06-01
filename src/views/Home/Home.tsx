@@ -88,7 +88,6 @@ const Home: React.FC = () => {
                   <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
                     My farms & pools
                   </Heading>
-
                   <CardMyFarmsAndPools />
                 </>
               ) : (
