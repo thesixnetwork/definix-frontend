@@ -1,9 +1,7 @@
 import Page from 'components/layout/Page'
 import React from 'react'
-import 'slick-carousel/slick/slick-theme.css'
-import 'slick-carousel/slick/slick.css'
 import styled from 'styled-components'
-import { BaseLayout, Heading, useMatchBreakpoints } from 'uikit-dev'
+import { BaseLayout, Heading } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import certik from 'uikit-dev/images/Audit/AW-42.png'
 import techRate from 'uikit-dev/images/Audit/AW-43.png'
@@ -48,16 +46,16 @@ const Home: React.FC = () => {
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
 
-  const { isSm } = useMatchBreakpoints()
+  // const { isSm } = useMatchBreakpoints()
 
-  const settings = {
-    infinite: true,
-    lazyLoad: true,
-    dots: true,
-    arrows: false,
-    adaptiveHeight: true,
-    className: 'pb-7',
-  }
+  // const settings = {
+  //   infinite: true,
+  //   lazyLoad: true,
+  //   dots: true,
+  //   arrows: false,
+  //   adaptiveHeight: true,
+  //   className: 'pb-7',
+  // }
 
   return (
     <>
