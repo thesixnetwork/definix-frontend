@@ -331,14 +331,14 @@ const Menu: React.FC<NavProps> = ({
         <Inner isPushed={isPushed} showMenu={showMenu}>
           <CountDownBanner
             logo={definixCoin}
-            title="암호화폐에 대한 여러분의 경험을 얘기하고,"
-            highlight="20$를 받으세요!"
+            title="Ceritakan tentang pengalamanmu di Crypto"
+            highlight="dan menangkan 20$"
             endTime=""
             button={
               <Button
                 as="a"
                 target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe7X2x0ODo-Be_eC28NpS28Ae0qZ8fGjT-QO6feGLLfZS7OXA/viewform"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSeD1LOcZ9bIBrPrZGy3PV-pS9gF-ijg-aj3XyMEAluj7wCbBQ/viewform"
                 size="sm"
               >
                 Click

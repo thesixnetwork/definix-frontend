@@ -1,16 +1,13 @@
 import Page from 'components/layout/Page'
 import React from 'react'
-import { Link } from 'react-router-dom'
-import Slider from 'react-slick'
 import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import styled from 'styled-components'
-import { BaseLayout, Button, Heading, useMatchBreakpoints } from 'uikit-dev'
+import { BaseLayout, Heading, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import certik from 'uikit-dev/images/Audit/AW-42.png'
 import techRate from 'uikit-dev/images/Audit/AW-43.png'
 import InfoBanner from 'views/Info/components/InfoBanner'
-import TradingChallengeBanner from 'views/TradingChallenge/components/TradingChallengeBanner'
 import CardUpcomingFarms from './components/CardUpcomingFarms'
 import FinixStats from './components/FinixStats'
 import TotalValueLockedCard from './components/TotalValueLockedCard'
@@ -78,22 +75,10 @@ const Home: React.FC = () => {
             <FinixStats />
           </Cards>
 
-          <Slider {...settings}>
-            <TradingChallengeBanner>
-              <Button
-                as={Link}
-                size={isSm ? 'sm' : 'md'}
-                to="/trading-challenge"
-                variant="success"
-                className="btn-secondary-disable"
-              >
-                More details
-              </Button>
-            </TradingChallengeBanner>
-            <CardUpcomingFarms />
-          </Slider>
+          {/* <Slider {...settings}></Slider> */}
+          <CardUpcomingFarms />
 
-          <div className="flex flex-wrap align-center justify-center mt-2">
+          <div className="flex flex-wrap align-center justify-center mt-5">
             <p className="ma-1">Certified by</p>
             <div className="flex align-center ma-1">
               <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
