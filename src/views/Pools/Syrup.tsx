@@ -80,22 +80,22 @@ const Farm: React.FC = () => {
         stakingTokenFarm = farms.find((s) => s.pid === 0)
         break
       case 1:
-        stakingTokenFarm = farms.find((s) => s.pid === 8)
-        break
-      case 2:
         stakingTokenFarm = farms.find((s) => s.pid === 1)
         break
-      case 3:
+      case 2:
         stakingTokenFarm = farms.find((s) => s.pid === 2)
         break
-      case 4:
+      case 3:
         stakingTokenFarm = farms.find((s) => s.pid === 3)
         break
-      case 5:
+      case 4:
         stakingTokenFarm = farms.find((s) => s.pid === 4)
         break
-      case 6:
+      case 5:
         stakingTokenFarm = farms.find((s) => s.pid === 5)
+        break
+      case 6:
+        stakingTokenFarm = farms.find((s) => s.pid === 6)
         break
       default:
         break

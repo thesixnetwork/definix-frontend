@@ -138,6 +138,11 @@ export const usePriceSixUsd = (): BigNumber => {
   return new BigNumber(sixPrice)
 }
 
+export const usePriceKlayUsd = (): BigNumber => {
+  const definixKlayPrice = useSelector((state: State) => state.finixPrice.definixKlayPrice)
+  return new BigNumber(definixKlayPrice)
+}
+
 export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
@@ -157,9 +162,11 @@ export const usePriceTVL = (): BigNumber => {
   const sixWklayQuote = useSelector((state: State) => state.finixPrice.sixWklayQuote)
   const finixKusdtQuote = useSelector((state: State) => state.finixPrice.finixKusdtQuote)
   const finixWklayQuote = useSelector((state: State) => state.finixPrice.finixWklayQuote)
+  const finixKspQuote = useSelector((state: State) => state.finixPrice.finixKspQuote)
   const wklayKusdtQuote = useSelector((state: State) => state.finixPrice.wklayKusdtQuote)
   const kdaiKusdtQuote = useSelector((state: State) => state.finixPrice.kdaiKusdtQuote)
   const finixUsdPrice = usePriceFinixUsd()
+  const klayUsdPrice = usePriceKlayUsd()
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
@@ -180,18 +187,18 @@ export const usePriceTVL = (): BigNumber => {
     return totalStaked.times(sixUsd)
     // eslint-disable-next-line
   } else {
-    let totalStaked = new BigNumber(0)
-    switch (typeof selectedPools.totalStaked) {
-      case 'undefined':
-        totalStaked = new BigNumber(0)
-        break
-      case 'string':
-        totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
-        break
-      default:
-        totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
-        break
-    }
+    // let totalStaked = new BigNumber(0)
+    // switch (typeof selectedPools.totalStaked) {
+    //   case 'undefined':
+    //     totalStaked = new BigNumber(0)
+    //     break
+    //   case 'string':
+    //     totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
+    //     break
+    //   default:
+    //     totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
+    //     break
+    // }
     let totalStakedFinixFinix = new BigNumber(0)
     switch (typeof selectedPoolsFinixFinix.totalStaked) {
       case 'undefined':
@@ -223,10 +230,10 @@ export const usePriceTVL = (): BigNumber => {
     const wklayKusdtPrice = new BigNumber(wklayKusdtQuote)
     const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
     const sixKusdtPrice = new BigNumber(sixKusdtQuote)
-    const sixWklayPrice = new BigNumber(sixWklayQuote).times(wklayKusdtPrice)
+    const sixWklayPrice = new BigNumber(sixWklayQuote).times(klayUsdPrice)
     const finixKusdtPrice = new BigNumber(finixKusdtQuote)
     const finixWklayPrice = new BigNumber(finixWklayQuote).times(finixUsdPrice)
-    const kdaiKusdtPrice = new BigNumber(kdaiKusdtQuote)
+    const finixKspPrice = new BigNumber(finixKspQuote).times(finixUsdPrice)
     return BigNumber.sum.apply(null, [
       sixFinixPrice,
       sixKusdtPrice,
@@ -234,8 +241,9 @@ export const usePriceTVL = (): BigNumber => {
       finixKusdtPrice,
       finixWklayPrice,
       wklayKusdtPrice,
-      kdaiKusdtPrice,
-      totalStaked.times(sixUsd).toNumber(),
+      finixKspPrice,
+      // kdaiKusdtPrice,
+      // totalStaked.times(sixUsd).toNumber(),
       totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
       totalStakedSixFinix.times(sixUsd).toNumber(),
     ])
@@ -243,7 +251,7 @@ export const usePriceTVL = (): BigNumber => {
 }
 
 export const usePriceKethKlay = (): BigNumber => {
-  const priceKlayKusdt = usePriceKlayKusdt()
+  const priceKlayKusdt = usePriceKlayUsd()
   const priceKethKusdt = usePriceKethKusdt()
   return priceKethKusdt.div(priceKlayKusdt)
 }

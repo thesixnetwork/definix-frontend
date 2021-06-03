@@ -22,6 +22,9 @@ export const getMulticallAddress = () => {
 export const getWklayAddress = () => {
   return getAddress(addresses.wklay)
 }
+export const getKspAddress = () => {
+  return getAddress(addresses.ksp)
+}
 export const getSixAddress = () => {
   return getAddress(addresses.six)
 }
@@ -40,8 +43,14 @@ export const getFinixKusdtLPAddress = () => {
 export const getFinixKlayLPAddress = () => {
   return getAddress(addresses.finixKlayLP)
 }
+export const getFinixKspLPAddress = () => {
+  return getAddress(addresses.finixKspLP)
+}
 export const getSixKusdtLPAddress = () => {
   return getAddress(addresses.sixKusdtLP)
+}
+export const getSixKlayLPAddress = () => {
+  return getAddress(addresses.sixKlayLP)
 }
 export const getDefinixKlayKusdtLPAddress = () => {
   return getAddress(addresses.definixKlayKusdtLP)

@@ -19,6 +19,21 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 1,
+    lpSymbol: 'SIX',
+    lpAddresses: {
+      1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+    },
+    tokenSymbol: 'SIX',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
+  },
+  {
+    pid: 2,
     lpSymbol: 'FINIX-SIX LP',
     lpAddresses: {
       1001: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
@@ -33,7 +48,37 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
   },
   {
-    pid: 2,
+    pid: 3,
+    lpSymbol: 'FINIX-KLAY LP',
+    lpAddresses: {
+      1001: process.env.REACT_APP_FINIX_KLAY_LP_TESTNET,
+      8217: process.env.REACT_APP_FINIX_KLAY_LP_MAINNET,
+    },
+    tokenSymbol: 'FINIX',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
+  },
+  {
+    pid: 4,
+    lpSymbol: 'FINIX-KSP LP',
+    lpAddresses: {
+      1001: process.env.REACT_APP_FINIX_KSP_LP_TESTNET,
+      8217: process.env.REACT_APP_FINIX_KSP_LP_MAINNET,
+    },
+    tokenSymbol: 'FINIX',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
+  },
+  {
+    pid: 5,
     lpSymbol: 'FINIX-KUSDT LP',
     lpAddresses: {
       1001: process.env.REACT_APP_FINIX_KUSDT_LP_TESTNET,
@@ -48,20 +93,52 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
   },
   {
-    pid: 8,
-    lpSymbol: 'SIX',
+    pid: 6,
+    lpSymbol: 'SIX-KUSDT LP',
     lpAddresses: {
-      1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-      8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+      1001: process.env.REACT_APP_SIX_KUSDT_LP_TESTNET,
+      8217: process.env.REACT_APP_SIX_KUSDT_LP_MAINNET,
     },
     tokenSymbol: 'SIX',
     tokenAddresses: {
       1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
       8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
     },
-    quoteTokenSymbol: QuoteToken.FINIX,
-    quoteTokenAdresses: contracts.finix,
+    quoteTokenSymbol: QuoteToken.KUSDT,
+    quoteTokenAdresses: contracts.kusdt,
   },
+  {
+    pid: 7,
+    lpSymbol: 'SIX-KLAY LP',
+    lpAddresses: {
+      1001: process.env.REACT_APP_SIX_KLAY_LP_TESTNET,
+      8217: process.env.REACT_APP_SIX_KLAY_LP_MAINNET,
+    },
+    tokenSymbol: 'SIX',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.SIX,
+    quoteTokenAdresses: contracts.six,
+  },
+  {
+    pid: 8,
+    lpSymbol: 'KLAY-KUSDT LP',
+    lpAddresses: {
+      1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
+      8217: process.env.REACT_APP_KLAY_KUSDT_LP_MAINNET,
+    },
+    tokenSymbol: 'KLAY',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.KUSDT,
+    quoteTokenAdresses: contracts.kusdt,
+  },
+
+
   // {
   //   pid: 3,
   //   lpSymbol: 'FINIX-BNB LP',

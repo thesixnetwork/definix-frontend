@@ -19,6 +19,10 @@ export default {
     1001: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
     8217: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
   },
+  ksp: {
+    1001: process.env.REACT_APP_KSP_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_KSP_ADDRESS_MAINNET,
+  },
   six: {
     1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
     8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
@@ -39,9 +43,17 @@ export default {
     1001: process.env.REACT_APP_FINIX_KLAY_LP_TESTNET,
     8217: process.env.REACT_APP_FINIX_KLAY_LP_MAINNET,
   },
+  finixKspLP: {
+    1001: process.env.REACT_APP_FINIX_KSP_LP_TESTNET,
+    8217: process.env.REACT_APP_FINIX_KSP_LP_MAINNET,
+  },
   sixKusdtLP: {
     1001: process.env.REACT_APP_SIX_KUSDT_LP_TESTNET,
     8217: process.env.REACT_APP_SIX_KUSDT_LP_MAINNET,
+  },
+  sixKlayLP: {
+    1001: process.env.REACT_APP_SIX_KLAY_LP_TESTNET,
+    8217: process.env.REACT_APP_SIX_KLAY_LP_MAINNET,
   },
   definixKlayKusdtLP: {
     1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
@@ -53,8 +65,8 @@ export default {
   },
   // configured =====================================================
   syrup: {
-    1001: '0x5a41ed11c262b5F0E73709d60be27C08e0291f1b',
-    8217: '0x5a41ed11c262b5F0E73709d60be27C08e0291f1b',
+    1001: '0xBB8CD7F5397118Ab4573418fd89359a3A06bCb43',
+    8217: '0xBB8CD7F5397118Ab4573418fd89359a3A06bCb43',
   },
   sousChef: {
     1001: '0xd3af5fe61dbaf8f73149bfcfa9fb653ff096029a',

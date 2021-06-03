@@ -81,6 +81,7 @@ export interface FinixPriceState {
   sixWklayQuote: number
   finixKusdtQuote: number
   finixWklayQuote: number
+  finixKspQuote: number
   wklayKusdtQuote: number
   kdaiKusdtQuote: number
 }

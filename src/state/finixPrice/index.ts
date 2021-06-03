@@ -11,12 +11,15 @@ import {
   getWklayAddress,
   getSixAddress,
   getFinixAddress,
+  getKspAddress,
   getKdaiAddress,
   getKusdtAddress,
   getFinixSixLPAddress,
   getFinixKusdtLPAddress,
   getFinixKlayLPAddress,
+  getFinixKspLPAddress,
   getSixKusdtLPAddress,
+  getSixKlayLPAddress,
   getDefinixKlayKusdtLPAddress,
 } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
@@ -32,6 +35,7 @@ const initialState: FinixPriceState = {
   sixWklayQuote: 0,
   finixKusdtQuote: 0,
   finixWklayQuote: 0,
+  finixKspQuote: 0,
   wklayKusdtQuote: 0,
   kdaiKusdtQuote: 0,
 }
@@ -63,6 +67,7 @@ export const finixPriceSlice = createSlice({
         sixWklayQuote,
         finixKusdtQuote,
         finixWklayQuote,
+        finixKspQuote,
         wklayKusdtQuote,
         kdaiKusdtQuote,
       } = action.payload
@@ -71,6 +76,7 @@ export const finixPriceSlice = createSlice({
       state.sixWklayQuote = sixWklayQuote
       state.finixKusdtQuote = finixKusdtQuote
       state.finixWklayQuote = finixWklayQuote
+      state.finixKspQuote = finixKspQuote
       state.wklayKusdtQuote = wklayKusdtQuote
       state.kdaiKusdtQuote = kdaiKusdtQuote
     },
@@ -210,14 +216,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getFinixKusdtLPAddress(),
-      pair1: getFinixAddress(),
-      pair2: getKusdtAddress(),
-      herodotusAddress: getHerodotusAddress(),
-    }),
-  )
-  fetchPromise.push(
-    getTotalBalanceLp({
       lpAddress: getFinixKlayLPAddress(),
       pair1: getFinixAddress(),
       pair2: getWklayAddress(),
@@ -226,9 +224,33 @@ export const fetchFinixPrice = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalBalanceLp({
+      lpAddress: getFinixKspLPAddress(),
+      pair1: getFinixAddress(),
+      pair2: getKspAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getFinixKusdtLPAddress(),
+      pair1: getFinixAddress(),
+      pair2: getKusdtAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
       lpAddress: getSixKusdtLPAddress(),
       pair1: getSixAddress(),
       pair2: getKusdtAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getSixKlayLPAddress(),
+      pair1: getSixAddress(),
+      pair2: getWklayAddress(),
       herodotusAddress: getHerodotusAddress(),
     }),
   )
@@ -243,9 +265,11 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // FINIX-SIX
   const [
     [totalFinixDefinixFinixSixPair, totalSixDefinixFinixSixPair],
-    [totalFinixDefinixFinixKusdtPair, totalKusdtDefinixFinixKusdtPair],
     [totalFinixDefinixFinixKlayPair, totalKlayDefinixFinixKlayPair],
+    [totalFinixDefinixFinixKspPair, totalKspDefinixFinixKspPair],
+    [totalFinixDefinixFinixKusdtPair, totalKusdtDefinixFinixKusdtPair],
     [totalSixDefinixSixKusdtPair, totalKusdtDefinixSixKusdtPair],
+    [totalSixDefinixSixKlayPair, totalKlayDefinixSixKlayPair],
     [totalKlayInDefinixKlayKusdtPair, totalKusdtInDefinixKlayKusdtPair],
   ] = await Promise.all(fetchPromise)
   // const totalFinixDefinixFinixSixPair = 10000000.0
@@ -259,10 +283,14 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // const totalFinixDefinixFinixBnbPair = 10000000.0
   // const totalBnbDefinixFinixBnbPair = 1824.82
   const finixKlayRatio = totalKlayDefinixFinixKlayPair / totalFinixDefinixFinixKlayPair || 0
+
+  const finixKspRatio = totalFinixDefinixFinixKspPair / totalKspDefinixFinixKspPair || 0
   // SIX-BUSD
   // const totalSixDefinixSixBusdPair = 12820512.82
   // const totalBnbDefinixSixBusdPair = 500000.0
   const sixKusdtRatio = totalKusdtDefinixSixKusdtPair / totalSixDefinixSixKusdtPair || 0
+
+  const sixKlayRatio = totalSixDefinixSixKlayPair / totalKlayDefinixSixKlayPair || 0
   // PANCAKE BNB-BUSD
   // const totalBnbInDefinixBnbBusdPair = 557985
   // const totalBusdInDefinixBnbBusdPair = 152220163
@@ -270,6 +298,8 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // Price cal
   const finixSixPrice = finixSixRatio * sixKusdtRatio
   const finixKlayPrice = finixKlayRatio * definixKlayKusdtRatio
+  const finixKspPrice = finixKspRatio * finixKusdtRatio
+  const sixKlayPrice = sixKlayRatio * definixKlayKusdtRatio
   const averageFinixPrice =
     (finixKusdtRatio * totalFinixDefinixFinixKusdtPair +
       finixKlayPrice * totalFinixDefinixFinixKlayPair +
@@ -311,8 +341,12 @@ export const fetchFinixPrice = () => async (dispatch) => {
       totalKusdtDefinixFinixKusdtPair,
       totalFinixDefinixFinixKlayPair,
       totalKlayDefinixFinixKlayPair,
+      totalFinixDefinixFinixKspPair,
+      totalKspDefinixFinixKspPair,
       totalSixDefinixSixKusdtPair,
       totalKusdtDefinixSixKusdtPair,
+      totalSixDefinixSixKlayPair,
+      totalKlayDefinixSixKlayPair,
       totalKlayInDefinixKlayKusdtPair,
       totalKusdtInDefinixKlayKusdtPair,
     }),
@@ -325,6 +359,7 @@ export const fetchQuote = () => async (dispatch) => {
   const sixAddress = getSixAddress()
   const kdaiAddress = getKdaiAddress()
   const wklayAddress = getWklayAddress()
+  const kspAddress = getKspAddress()
   const kusdtAddress = getKusdtAddress()
 
   let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
@@ -338,6 +373,7 @@ export const fetchQuote = () => async (dispatch) => {
   const SIX = new Token(chainId, sixAddress, 18, 'SIX', 'SIX')
   const KDAI = new Token(chainId, kdaiAddress, 18, 'KDAI', 'KDAI')
   const WKLAY = new Token(chainId, wklayAddress, 18, 'WKLAY', 'Wrapped Klay')
+  const KSP = new Token(chainId, kspAddress, 18, 'KSP', 'Klayswap Protocol')
   const KUSDT = new Token(chainId, kusdtAddress, 18, 'KUSDT', 'KUSDT')
 
   const fetchPromise = []
@@ -374,6 +410,12 @@ export const fetchQuote = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalQuote({
+      lpAddress: Pair.getAddress(FINIX, KSP),
+      qouteToken: finixAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
       lpAddress: Pair.getAddress(WKLAY, KUSDT),
       qouteToken: kusdtAddress,
     }),
@@ -391,6 +433,7 @@ export const fetchQuote = () => async (dispatch) => {
     sixWklayQuote,
     finixKusdtQuote,
     finixWklayQuote,
+    finixKspQuote,
     wklayKusdtQuote,
     kdaiKusdtQuote,
   ] = await Promise.all(fetchPromise)
@@ -402,6 +445,7 @@ export const fetchQuote = () => async (dispatch) => {
       sixWklayQuote,
       finixKusdtQuote,
       finixWklayQuote,
+      finixKspQuote,
       wklayKusdtQuote,
       kdaiKusdtQuote,
     }),
