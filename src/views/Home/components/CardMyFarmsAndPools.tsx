@@ -491,7 +491,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       totalValue = sixPrice.times(d.lpTotalInQuoteToken)
     }
     totalValue = d.lpTotalInQuoteToken
-    return totalValue
+    return totalValue instanceof BigNumber ? totalValue : new BigNumber(totalValue)
   }
   return (
     <Container className={className}>
