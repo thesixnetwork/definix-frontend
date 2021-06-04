@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import React, { useState, useCallback, useEffect } from 'react'
 import BigNumber from 'bignumber.js'
 import { Doughnut } from 'react-chartjs-2'
@@ -478,16 +479,27 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     },
   }
 
-  const mewArray = []
-  chartColors.map((colors) =>
-    stackedOnlyFarms.map((item) =>
-      mewArray.push({
-        lpSymbol: item.lpSymbol,
-        earnings: new BigNumber(item.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2),
-        color: colors,
-      }),
-    ),
-  )
+  const getFarmNetWorth = (d) => {
+    let totalValue
+    if (!d.lpTotalInQuoteToken) {
+      totalValue = new BigNumber(0)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.BNB) {
+      totalValue = bnbPrice.times(d.lpTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.FINIX) {
+      totalValue = finixPrice.times(d.lpTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.ETH) {
+      totalValue = ethPriceUsd.times(d.lpTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.SIX) {
+      totalValue = sixPrice.times(d.lpTotalInQuoteToken)
+    }
+    totalValue = d.lpTotalInQuoteToken
+    // console.log('------------------', d)
+    return totalValue
+  }
 
   return (
     <Container className={className}>
@@ -497,7 +509,25 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         </div>
         <div className="col-7 pa-3 pl-0">
           <Text color="textSubtle">Net Worth</Text>
-          <Heading fontSize="24px !important">$x,xxx</Heading>
+          <Heading fontSize="24px !important">
+            {(() => {
+              const allNetWorth = stackedOnlyFarms.map((f) => {
+                return getFarmNetWorth(f)
+              })
+              // eslint-disable-next-line
+              const totalNetWorth =
+                _.compact(allNetWorth).length > 0
+                  ? _.compact(allNetWorth).reduce((fv, sv) => {
+                      console.log('fv =', fv)
+                      return fv.plus(sv)
+                    })
+                  : new BigNumber(0)
+              return totalNetWorth && Number(totalNetWorth) !== 0
+                ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                : '-'
+            })()}
+          </Heading>
+
           <div className="mt-2 flex">
             <Dot className="col-2">
               {chartColors.map((color) => (
@@ -518,8 +548,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   <Text fontSize="12px" color="textSubtle">
                     {d.lpSymbol}
                   </Text>
-                  <Text bold style={{ paddingLeft: '80px' }}>
-                    {new BigNumber(d.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                  <Text bold style={{ paddingLeft: '50px' }}>
+                    {getFarmNetWorth(d)
+                      ? `$${Number(getFarmNetWorth(d)).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                      : '-'}
                   </Text>
                 </Legend>
               ))}
