@@ -157,6 +157,9 @@ const List = styled.div`
     overflow: auto;
   }
 `
+const Dot = styled.div`
+  margin-top: 3px;
+`
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
   // Harvest
@@ -441,7 +444,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   //   },
   // ]
 
+  // Chart
   const chartColors = ['#0973B9', '#E2B23A', '#24B181', '#8C90A5']
+
   const chart = {
     data: {
       labels: stackedOnlyFarms.map((d) => d.lpSymbol),
@@ -473,6 +478,17 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     },
   }
 
+  const mewArray = []
+  chartColors.map((colors) =>
+    stackedOnlyFarms.map((item) =>
+      mewArray.push({
+        lpSymbol: item.lpSymbol,
+        earnings: new BigNumber(item.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2),
+        color: colors,
+      }),
+    ),
+  )
+
   return (
     <Container className={className}>
       <NetWorth>
@@ -482,18 +498,32 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         <div className="col-7 pa-3 pl-0">
           <Text color="textSubtle">Net Worth</Text>
           <Heading fontSize="24px !important">$x,xxx</Heading>
-          <div className="mt-2">
-            {stackedOnlyFarms.map((d) => (
-              <Legend key={`legend${d.lpSymbol}`}>
-                <Text fontSize="12px" color="textSubtle">
-                  <span className="dot" style={{ background: '#0973B9' }} />
-                  {d.lpSymbol}
-                </Text>
-                <Text bold style={{ paddingLeft: '80px' }}>
-                  {new BigNumber(d.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
-                </Text>
-              </Legend>
-            ))}
+          <div className="mt-2 flex">
+            <Dot className="col-2">
+              {chartColors.map((color) => (
+                <Legend>
+                  <span
+                    className="dot"
+                    style={{
+                      background: color === '#8C90A5' && stackedOnlyFarms.length === 3 ? 'transparent' : color,
+                      marginBottom: '12px',
+                    }}
+                  />
+                </Legend>
+              ))}
+            </Dot>
+            <div className="col-8">
+              {stackedOnlyFarms.map((d) => (
+                <Legend key={`legend${d.lpSymbol}`}>
+                  <Text fontSize="12px" color="textSubtle">
+                    {d.lpSymbol}
+                  </Text>
+                  <Text bold style={{ paddingLeft: '80px' }}>
+                    {new BigNumber(d.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                  </Text>
+                </Legend>
+              ))}
+            </div>
           </div>
         </div>
       </NetWorth>
