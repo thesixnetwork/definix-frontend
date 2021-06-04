@@ -526,7 +526,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {d.lpSymbol}
                 </Text>
                 <Text bold style={{ paddingLeft: '80px' }}>
-                  {getFarmNetWorth(d)         
+                  {getFarmNetWorth(d)
                     ? `$${Number(getFarmNetWorth(d)).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
                     : '-'}
                 </Text>
