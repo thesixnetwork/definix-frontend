@@ -47,7 +47,7 @@
     "caver-js": "^1.6.1",
     "chart.js": "^2.9.4",
     "date-fns": "^2.17.0",
-    "definixswap-sdk": "../definixswap-sdk",
+    "definixswap-sdk": "0.0.10-klaytn",
     "definixswap-uikit": "^0.0.2",
     "klaytn-use-wallet": "^1.0.1",
     "lodash": "^4.17.20",
