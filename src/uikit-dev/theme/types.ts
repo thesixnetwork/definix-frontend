@@ -55,6 +55,7 @@ export type Colors = {
   backgroundBox: string
   backgroundGray: string
   backgroundRadial: string
+  backgroundBlueGradient: string
   text: string
   textDisabled: string
   textSubtle: string

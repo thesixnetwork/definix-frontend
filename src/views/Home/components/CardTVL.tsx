@@ -12,10 +12,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import CardValue from './CardValue'
 
 const Total = styled.div`
-  // background: url(${space});
-  // background-size: cover;
-  // background-repeat: no-repeat;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background: ${({ theme }) => theme.colors.backgroundBlueGradient};
   color: ${({ theme }) => theme.colors.white};
   padding: 32px 24px;
 
