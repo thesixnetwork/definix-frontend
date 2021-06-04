@@ -155,7 +155,7 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
       .times(lpTokenRatio)
       .toNumber()
   } catch (error) {
-    console.log(">>>>>>>>>>>>>>>>>> lpAddress = ", lpAddress, " qouteToken = ", qouteToken)
+    console.log('>>>>>>>>>>>>>>>>>> lpAddress = ', lpAddress, ' qouteToken = ', qouteToken)
     console.log(error)
   }
   return lpTotalInQuoteToken
