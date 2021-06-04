@@ -33,7 +33,7 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
       if (sousId === 0) {
         await stake(herodotusContract, 0, amount, account)
       } else if (sousId === 1) {
-        await stake(herodotusContract, 8, amount, account)
+        await stake(herodotusContract, 1, amount, account)
       } else if (isUsingBnb) {
         await sousStakeBnb(sousChefContract, amount, account)
       } else {

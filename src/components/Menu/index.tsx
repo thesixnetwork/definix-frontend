@@ -4,6 +4,7 @@ import { useWallet } from 'klaytn-use-wallet'
 import { allLanguages } from 'config/localisation/languageCodes'
 import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
+import numeral from 'numeral'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
 import config from './config'
 
@@ -25,7 +26,7 @@ const Menu = (props) => {
       langs={allLanguages}
       setLang={setSelectedLanguage}
       finixPriceUsd={finixPriceUsd.toNumber()}
-      price={finixPriceUsd.toNumber()}
+      price={finixPriceUsd.toNumber() <= 0 ? 'N/A' : numeral(finixPriceUsd.toNumber()).format('0,0.00')}
       links={config}
       profile={{
         username: profile?.username,

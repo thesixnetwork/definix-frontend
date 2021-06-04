@@ -155,6 +155,7 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
       .times(lpTokenRatio)
       .toNumber()
   } catch (error) {
+    console.log(">>>>>>>>>>>>>>>>>> lpAddress = ", lpAddress, " qouteToken = ", qouteToken)
     console.log(error)
   }
   return lpTotalInQuoteToken
@@ -420,12 +421,12 @@ export const fetchQuote = () => async (dispatch) => {
       qouteToken: kusdtAddress,
     }),
   )
-  fetchPromise.push(
-    getTotalQuote({
-      lpAddress: Pair.getAddress(KDAI, KUSDT),
-      qouteToken: kusdtAddress,
-    }),
-  )
+  // fetchPromise.push(
+  //   getTotalQuote({
+  //     lpAddress: Pair.getAddress(KDAI, KUSDT),
+  //     qouteToken: kusdtAddress,
+  //   }),
+  // )
 
   const [
     sixFinixQuote,
@@ -435,7 +436,7 @@ export const fetchQuote = () => async (dispatch) => {
     finixWklayQuote,
     finixKspQuote,
     wklayKusdtQuote,
-    kdaiKusdtQuote,
+    kdaiKusdtQuote = 0,
   ] = await Promise.all(fetchPromise)
 
   dispatch(

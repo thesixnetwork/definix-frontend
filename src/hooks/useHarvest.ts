@@ -44,7 +44,7 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
     if (sousId === 0) {
       await harvest(herodotusContract, 0, account)
     } else if (sousId === 1) {
-      await harvest(herodotusContract, 8, account)
+      await harvest(herodotusContract, 1, account)
     } else if (isUsingKlay) {
       await soushHarvestBnb(sousChefContract, account)
     } else {

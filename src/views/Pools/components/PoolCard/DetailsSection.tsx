@@ -16,7 +16,7 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
 const DetailsSection: React.FC<DetailsSectionProps> = ({
   tokenName,
   totalStaked,
-  bscScanAddress,
+  klaytnScopeAddress,
   isHorizontal = false,
   className = '',
 }) => {
@@ -25,13 +25,13 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
   const LinkView = ({ linkClassName = '' }) => (
     <Link
       external
-      href={bscScanAddress}
+      href={`https://scope.klaytn.com/account/${klaytnScopeAddress}`}
       bold={false}
       className={`flex-shrink ${linkClassName}`}
       color="textSubtle"
       fontSize="12px"
     >
-      {TranslateString(356, 'View on BscScan')}
+      {TranslateString(356, 'View on KlaytnScope')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )

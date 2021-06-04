@@ -47,7 +47,7 @@ export interface HarvestActionProps {
 export interface DetailsSectionProps {
   tokenName: string
   totalStaked: BigNumber
-  bscScanAddress: string
+  klaytnScopeAddress: string
   isHorizontal?: boolean
   className?: string
 }
