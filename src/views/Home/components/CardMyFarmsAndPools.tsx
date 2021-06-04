@@ -470,6 +470,26 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     },
   }
 
+  const getFarmNetWorth = (d) => {
+    let totalValue
+    if (!d.lpTotalInQuoteToken) {
+      totalValue = new BigNumber(0)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.BNB) {
+      totalValue = bnbPrice.times(d.lpTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.FINIX) {
+      totalValue = finixPrice.times(d.lpTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.ETH) {
+      totalValue = ethPriceUsd.times(d.lpTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.SIX) {
+      totalValue = sixPrice.times(d.lpTotalInQuoteToken)
+    }
+    totalValue = d.lpTotalInQuoteToken
+    return totalValue
+  }
   return (
     <Container className={className}>
       <NetWorth>
@@ -478,7 +498,23 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         </div>
         <div className="col-7 pa-3 pl-0">
           <Text color="textSubtle">Net Worth</Text>
-          <Heading fontSize="24px !important">$x,xxx</Heading>
+          <Heading fontSize="24px !important">
+            {(() => {
+              const allNetWorth = stackedOnlyFarms.map((f) => {
+                return getFarmNetWorth(f)
+              })
+              // eslint-disable-next-line
+              const totalNetWorth =
+                allNetWorth.length > 0
+                  ? allNetWorth.reduce((fv, sv) => {
+                      return fv.plus(sv)
+                    })
+                  : new BigNumber(0)
+              return totalNetWorth && Number(totalNetWorth) !== 0
+                ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                : '-'
+            })()}
+          </Heading>
 
           <div className="mt-2">
             {stackedOnlyFarms.map((d) => (
@@ -489,8 +525,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {d.lpSymbol}
                 </Text>
                 {/* <Text bold>{d.netWorth}</Text> */}
-                <Text bold>
-                  {new BigNumber(d.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                <Text className="ml-4" bold>
+                  {getFarmNetWorth(d)
+                    ? `$${Number(getFarmNetWorth(d)).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                    : '-'}
                 </Text>
               </Legend>
             ))}
