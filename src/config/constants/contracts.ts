@@ -47,10 +47,6 @@ export default {
     97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
     56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
   },
-  tradingCompetRegis: {
-    97: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,
-    56: process.env.REACT_APP_TRADING_COMPET_REGIS_MAINNET,
-  },
   // configured =====================================================
   syrup: {
     97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',

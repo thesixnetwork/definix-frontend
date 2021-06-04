@@ -92,36 +92,6 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
   },
-  {
-    pid: 6,
-    lpSymbol: 'SIX-BNB LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_SIX_BNB_LP_TESTNET,
-      56: process.env.REACT_APP_SIX_BNB_LP_MAINNET,
-    },
-    tokenSymbol: 'SIX',
-    tokenAddresses: {
-      97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-    },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
-  },
-  {
-    pid: 7,
-    lpSymbol: 'BNB-BUSD LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_BNB_BUSD_LP_TESTNET,
-      56: process.env.REACT_APP_BNB_BUSD_LP_MAINNET,
-    },
-    tokenSymbol: 'BNB',
-    tokenAddresses: {
-      97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
-    },
-    quoteTokenSymbol: QuoteToken.BUSD,
-    quoteTokenAdresses: contracts.busd,
-  },
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',
