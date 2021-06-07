@@ -28,7 +28,7 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   ${({ theme }) => theme.mediaQueries.xs} {
     width: auto;
     min-width: 360px;
-    max-width: 100%;
+    max-width: calc(100% - 32px);
   }
   position: relative;
   padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
