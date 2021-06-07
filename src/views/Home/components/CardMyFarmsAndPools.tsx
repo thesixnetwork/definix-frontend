@@ -12,7 +12,9 @@ import {
   usePriceEthBusd,
   usePriceFinixUsd,
   usePriceSixUsd,
+  useFarmUser,
 } from 'state/hooks'
+import { get } from 'lodash'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BLOCKS_PER_YEAR } from 'config'
 import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
@@ -474,24 +476,30 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   }
 
   const getFarmNetWorth = (d) => {
+    const stakedBalance = get(d, 'userData.stakedBalance', new BigNumber(0))
+    const stakedTotalInQuoteToken = new BigNumber(stakedBalance)
+      .div(new BigNumber(10).pow(18))
+      .times(new BigNumber(2))
+      .times(d.lpTokenRatio)
+    // const displayBalance = rawStakedBalance.toLocaleString()
     let totalValue
     if (!d.lpTotalInQuoteToken) {
       totalValue = new BigNumber(0)
     }
     if (d.quoteTokenSymbol === QuoteToken.BNB) {
-      totalValue = bnbPrice.times(d.lpTotalInQuoteToken)
+      totalValue = bnbPrice.times(stakedTotalInQuoteToken)
     }
     if (d.quoteTokenSymbol === QuoteToken.FINIX) {
-      totalValue = finixPrice.times(d.lpTotalInQuoteToken)
+      totalValue = finixPrice.times(stakedTotalInQuoteToken)
     }
     if (d.quoteTokenSymbol === QuoteToken.ETH) {
-      totalValue = ethPriceUsd.times(d.lpTotalInQuoteToken)
+      totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
     }
     if (d.quoteTokenSymbol === QuoteToken.SIX) {
-      totalValue = sixPrice.times(d.lpTotalInQuoteToken)
+      totalValue = sixPrice.times(stakedTotalInQuoteToken)
     }
-    totalValue = d.lpTotalInQuoteToken
-    return totalValue instanceof BigNumber ? totalValue : new BigNumber(totalValue)
+    totalValue = stakedTotalInQuoteToken
+    return totalValue
   }
   return (
     <Container className={className}>
