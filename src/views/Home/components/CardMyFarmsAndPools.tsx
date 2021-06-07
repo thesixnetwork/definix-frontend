@@ -12,7 +12,9 @@ import {
   usePriceKethKlay,
   usePriceFinixUsd,
   usePriceSixUsd,
+  useFarmUser,
 } from 'state/hooks'
+import { get } from 'lodash'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BLOCKS_PER_YEAR } from 'config'
 import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
@@ -441,23 +443,25 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   //   },
   // ]
 
+  const chartColors = ['#0973B9', '#E2B23A', '#24B181', '#8C90A5']
   const chart = {
     data: {
-      // labels: data.map((d) => d.name),
       labels: stackedOnlyFarms.map((d) => d.lpSymbol),
       datasets: [
         {
-          label: '# of Votes',
+          // label: '# of Votes',
           data: stackedOnlyFarms.map((d) => d.userData.earnings),
-          backgroundColor: '#55BD92',
-          // data: data.map((d) => d.percent),
-          // backgroundColor: data.map((d) => d.color),
+          backgroundColor: chartColors,
+          hoverBackgroundColor: chartColors,
         },
       ],
+      hoverOffset: 4,
+      borderWidth: 1,
     },
     options: {
       legend: {
         display: false,
+        position: 'right',
       },
       tooltips: {
         enabled: false,
@@ -467,30 +471,72 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       },
       rotation: 2,
       cutoutPercentage: 90,
+      responsive: true,
     },
   }
 
+  const getFarmNetWorth = (d) => {
+    const stakedBalance = get(d, 'userData.stakedBalance', new BigNumber(0))
+    const stakedTotalInQuoteToken = new BigNumber(stakedBalance)
+      .div(new BigNumber(10).pow(18))
+      .times(new BigNumber(2))
+      .times(d.lpTokenRatio)
+    // const displayBalance = rawStakedBalance.toLocaleString()
+    let totalValue
+    if (!d.lpTotalInQuoteToken) {
+      totalValue = new BigNumber(0)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.BNB) {
+      totalValue = bnbPrice.times(stakedTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.FINIX) {
+      totalValue = finixPrice.times(stakedTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.ETH) {
+      totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.SIX) {
+      totalValue = sixPrice.times(stakedTotalInQuoteToken)
+    }
+    totalValue = stakedTotalInQuoteToken
+    return totalValue
+  }
   return (
     <Container className={className}>
       <NetWorth>
-        <div className="col-5 flex" style={{ position: 'relative' }}>
+        <div className="col-12 flex" style={{ position: 'relative' }}>
           <Doughnut data={chart.data} options={chart.options} height={150} width={150} />
         </div>
         <div className="col-7 pa-3 pl-0">
           <Text color="textSubtle">Net Worth</Text>
-          <Heading fontSize="24px !important">$x,xxx</Heading>
-
+          <Heading fontSize="24px !important">
+            {(() => {
+              const allNetWorth = stackedOnlyFarms.map((f) => {
+                return getFarmNetWorth(f)
+              })
+              // eslint-disable-next-line
+              const totalNetWorth =
+                allNetWorth.length > 0
+                  ? allNetWorth.reduce((fv, sv) => {
+                      return fv.plus(sv)
+                    })
+                  : new BigNumber(0)
+              return totalNetWorth && Number(totalNetWorth) !== 0
+                ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                : '-'
+            })()}
+          </Heading>
           <div className="mt-2">
             {stackedOnlyFarms.map((d) => (
               <Legend key={`legend${d.lpSymbol}`}>
                 <Text fontSize="12px" color="textSubtle">
-                  {/* <span className="dot" style={{ background: d.color }} /> */}
-                  <span className="dot" style={{ background: '#55BD92' }} />
+                  <span className="dot" style={{ background: '#0973B9' }} />
                   {d.lpSymbol}
                 </Text>
-                {/* <Text bold>{d.netWorth}</Text> */}
-                <Text bold>
-                  {new BigNumber(d.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                <Text bold style={{ paddingLeft: '80px' }}>
+                  {getFarmNetWorth(d)
+                    ? `$${Number(getFarmNetWorth(d)).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                    : '-'}
                 </Text>
               </Legend>
             ))}
@@ -536,6 +582,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <UnlockButton />
           )}
+          {/* <Button as="a" href="#" size="sm" variant="tertiary" className="mt-3" style={{ background: 'white' }}>
+            Harvest All
+          </Button> */}
         </div>
       </HarvestAll>
 
