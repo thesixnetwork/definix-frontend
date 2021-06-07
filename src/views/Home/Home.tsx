@@ -4,6 +4,7 @@ import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
+import { Overlay } from 'uikit-dev/components/Overlay'
 import {
   LeftPanel,
   MaxWidthLeft,
@@ -29,7 +30,7 @@ const Caption = styled(Text)`
 
 const Home: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
-  const isMobile = isXl === false
+  const isMobileOrTablet = !isXl
 
   const { account } = useWallet()
   const { hasProfile } = useProfile()
@@ -42,10 +43,10 @@ const Home: React.FC = () => {
   const [isShowRightPanel, setIsShowRightPanel] = useState(true)
 
   useEffect(() => {
-    if (isMobile) {
+    if (isMobileOrTablet) {
       setIsShowRightPanel(false)
     }
-  }, [isMobile])
+  }, [isMobileOrTablet])
 
   useEffect(() => {
     return () => {
@@ -58,6 +59,13 @@ const Home: React.FC = () => {
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={isShowRightPanel}>
+          <Overlay
+            show={isShowRightPanel && isMobileOrTablet}
+            style={{ position: 'absolute', zIndex: 1 }}
+            onClick={() => {
+              setIsShowRightPanel(false)
+            }}
+          />
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
@@ -68,12 +76,12 @@ const Home: React.FC = () => {
 
             <CardComingSoon showBtn className="mb-5" />
 
-            <div className="flex align-stretch">
-              <div className="col-6 mr-2">
+            <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
+              <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>
                 <CardTVL className="mb-5" />
                 <CardAudit />
               </div>
-              <div className="col-6 ml-3">
+              <div className={isMobileOrTablet ? 'col-12 mt-5' : 'col-6 ml-3'}>
                 <CardTweet />
               </div>
             </div>

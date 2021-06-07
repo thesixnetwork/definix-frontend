@@ -4,12 +4,18 @@ import styled from 'styled-components'
 import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
 
 const Container = styled(Card)`
-  flex-grow: 1;
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-grow: 1;
+  }
 `
 
 const NetWorth = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
+
+  .sum {
+    flex-grow: 1;
+  }
 `
 
 const Legend = styled.div`
@@ -89,11 +95,17 @@ const Coins = styled.div`
   justify-content: space-between;
 
   img {
-    width: 50px;
+    width: 40px;
     flex-shrink: 0;
 
     &:first-child {
       margin-right: 4px;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    img {
+      width: 50px;
     }
   }
 `
@@ -176,7 +188,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         <div className="col-5 flex" style={{ position: 'relative' }}>
           <Doughnut data={chart.data} options={chart.options} height={150} width={150} />
         </div>
-        <div className="col-7 pa-3 pl-0">
+        <div className="sum col-7 pa-3 pl-0">
           <Text color="textSubtle">Net Worth</Text>
           <Heading fontSize="24px !important">$82.117.20</Heading>
 

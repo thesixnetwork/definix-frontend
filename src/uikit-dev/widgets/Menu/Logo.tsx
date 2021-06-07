@@ -56,12 +56,12 @@ const StyledTogglePanel = styled(MenuButton)`
 `
 
 const Logo: React.FC<Props> = ({ togglePush, href }) => {
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = isXl === false && isMd === false
+  const { isXl } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl
 
   return (
     <Flex alignItems="center" className="mr-4">
-      {isMobile ? (
+      {isMobileOrTablet ? (
         <StyledTogglePanel aria-label="Toggle menu" onClick={togglePush}>
           <img src={logoDesktop} alt="" />
           {/* <HamburgerIcon width="24px" color="textSubtle" /> */}

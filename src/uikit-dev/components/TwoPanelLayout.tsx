@@ -37,31 +37,8 @@ export const LeftPanel = styled.div<{ isShowRightPanel: boolean }>`
   background-repeat: no-repeat;
   transition: 0.1s;
 
-  &:before {
-    display: none;
-    content: '';
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: #000000;
-    transition: opacity 0.4s;
-    opacity: 0.5;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    &:before {
-      display: ${({ isShowRightPanel }) => (isShowRightPanel ? 'block' : 'none')};
-    }
-  }
-
   ${({ theme }) => theme.mediaQueries.md} {
     padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '32px 512px 32px 32px' : '32px')};
-
-    &:before {display: none;}
 `
 
 export const RightPanel = styled.div<{ isShowRightPanel: boolean }>`

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Login } from '../WalletModal/types'
-import { SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
+import { SIDEBAR_WIDTH_FULL } from './config'
 import PanelBody from './PanelBody'
 import { PanelProps, PushedProps } from './types'
 

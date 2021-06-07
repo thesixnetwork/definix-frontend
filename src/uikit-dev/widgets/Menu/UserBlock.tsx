@@ -20,7 +20,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
   const accountEllipsisLong = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
   const { isXl } = useMatchBreakpoints()
-  const isMobile = isXl === false
+  const isMobileOrTablet = !isXl
 
   return (
     <div>
@@ -38,7 +38,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
               //   onPresentAccountModal()
               // }}
             >
-              {isMobile ? accountEllipsis : accountEllipsisLong}
+              {isMobileOrTablet ? accountEllipsis : accountEllipsisLong}
             </Button>
           }
         >
@@ -83,7 +83,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
             onPresentConnectModal()
           }}
         >
-          {isMobile ? 'Connect' : 'Connect wallet'}
+          {isMobileOrTablet ? 'Connect' : 'Connect wallet'}
         </Button>
       )}
     </div>

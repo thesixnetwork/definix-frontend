@@ -97,7 +97,7 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   overflow-x: hidden;
   background: ${({ theme }) => theme.colors.white};
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 12px;
   }
 `
@@ -107,8 +107,10 @@ const InnerBg = styled.div`
   background: ${({ theme }) => theme.colors.backgroundRadial};
   overflow: hidden;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 
-  ${({ theme }) => theme.mediaQueries.sm} {
+  ${({ theme }) => theme.mediaQueries.md} {
     border-top-left-radius: ${({ theme }) => theme.radii.large};
     border-bottom-left-radius: ${({ theme }) => theme.radii.large};
   }
@@ -166,8 +168,8 @@ const Menu: React.FC<NavProps> = ({
   price,
 }) => {
   const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = isXl === false && isMd === false
-  const [isPushed, setIsPushed] = useState(!isMobile)
+  const isMobile = !isMd && !isXl
+  const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
   const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
@@ -305,8 +307,7 @@ const Menu: React.FC<NavProps> = ({
             <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
               <img src={FinixCoin} alt="" />
               <p>
-                {!isMobile && <span>FINIX : </span>}
-
+                <span>FINIX : </span>
                 <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
               </p>
             </Price>
@@ -417,7 +418,7 @@ const Menu: React.FC<NavProps> = ({
                 }
               />
             )}
-            {children}
+            <div style={{ width: '100%' }}>{children}</div>
           </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
