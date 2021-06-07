@@ -25,7 +25,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
         <Dropdown
           isFullWidth
           position="bottom"
-          isRainbow
+          isRainbow={false}
           target={
             <Button
               size="sm"

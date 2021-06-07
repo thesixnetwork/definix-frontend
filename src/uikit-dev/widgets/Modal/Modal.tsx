@@ -15,6 +15,7 @@ interface Props extends InjectedProps {
   bodyPadding?: string
   isRainbow?: boolean
   classHeader?: string
+  maxWidth?: string
 }
 
 const StyledModal = styled.div<{ isRainbow: boolean }>`
@@ -64,8 +65,9 @@ const Modal: React.FC<Props> = ({
   bodyPadding = '24px',
   isRainbow = true,
   classHeader = '',
+  maxWidth = '',
 }) => (
-  <StyledModal isRainbow={isRainbow}>
+  <StyledModal isRainbow={isRainbow} style={{ maxWidth }}>
     <ModalHeader className={classHeader}>
       <ModalTitle>
         {onBack && (

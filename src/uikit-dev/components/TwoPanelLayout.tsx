@@ -14,6 +14,7 @@ export const TwoPanelLayout = styled.div`
   display: flex;
   align-items: stretch;
   position: relative;
+  height: 100%;
 `
 
 export const MaxWidthLeft = styled(MaxWidth)`
