@@ -31,27 +31,55 @@ export const MaxWidthRight = styled(MaxWidth)`
 
 export const LeftPanel = styled.div<{ isShowRightPanel: boolean }>`
   width: 100%;
-  padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '32px 512px 32px 32px' : '32px')};
+  padding: 24px;
   background: url(${bg});
   background-size: cover;
   background-repeat: no-repeat;
   transition: 0.1s;
+
+  &:before {
+    display: none;
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: #000000;
+    transition: opacity 0.4s;
+    opacity: 0.5;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    &:before {
+      display: ${({ isShowRightPanel }) => (isShowRightPanel ? 'block' : 'none')};
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '32px 512px 32px 32px' : '32px')};
+
+    &:before {display: none;}
 `
 
 export const RightPanel = styled.div<{ isShowRightPanel: boolean }>`
   width: 480px;
+  max-width: 100%;
   height: 100%;
-  padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '40px 32px 32px 32px' : '40px 0 32px 0')};
+  padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '40px 24px 24px 24px' : '40px 0 24px 0')};
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 2;
   transition: 0.1s;
   transform: ${({ isShowRightPanel }) => (isShowRightPanel ? 'translateX(0)' : 'translateX(100%)')};
   background: ${({ theme }) => theme.colors.backgroundRadial};
 
   > .show-hide {
     position: absolute;
-    top: 24px;
+    top: 16px;
     right: 100%;
     background: ${({ theme }) => theme.colors.white};
     border-radius: 0;
@@ -59,13 +87,28 @@ export const RightPanel = styled.div<{ isShowRightPanel: boolean }>`
     border-bottom-left-radius: ${({ theme }) => theme.radii.medium};
     flex-direction: column;
     align-items: center;
-    padding: 12px;
+    padding: 6px 6px 10px 8px;
+    font-size: 12px;
     height: auto;
     color: ${({ theme }) => theme.colors.textSubtle};
     box-shadow: ${({ theme }) => theme.shadows.elevation1};
 
     svg {
-      margin: 0 0 8px 0;
+      margin: 0 0 2px 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    > .show-hide {
+      right: ${({ isShowRightPanel }) => (isShowRightPanel ? '0' : '100%')};
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '40px 32px 32px 32px' : '40px 0 32px 0')};
+
+    > .show-hide {
+      right: 100%;
     }
   }
 `
@@ -77,6 +120,7 @@ export const ShowHideButton = ({ isShow, action }) => {
       startIcon={isShow ? <ChevronRightIcon /> : <ChevronLeftIcon />}
       variant="tertiary"
       onClick={action}
+      size="sm"
     >
       {isShow ? 'Hide' : 'Show'}
     </Button>

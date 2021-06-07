@@ -2,7 +2,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import React, { useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text } from 'uikit-dev'
+import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import {
   LeftPanel,
@@ -28,6 +28,9 @@ const Caption = styled(Text)`
 `
 
 const Home: React.FC = () => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = isXl === false
+
   const { account } = useWallet()
   const { hasProfile } = useProfile()
   // const TranslateString = useI18n()
@@ -37,6 +40,12 @@ const Home: React.FC = () => {
     : new Date().getTime()
 
   const [isShowRightPanel, setIsShowRightPanel] = useState(true)
+
+  useEffect(() => {
+    if (isMobile) {
+      setIsShowRightPanel(false)
+    }
+  }, [isMobile])
 
   useEffect(() => {
     return () => {
