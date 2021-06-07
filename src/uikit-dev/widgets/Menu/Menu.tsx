@@ -418,7 +418,7 @@ const Menu: React.FC<NavProps> = ({
                 }
               />
             )}
-            <div style={{ width: '100%' }}>{children}</div>
+            <div style={{ width: '100%', minHeight: '100%' }}>{children}</div>
           </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />

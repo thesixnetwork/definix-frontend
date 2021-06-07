@@ -49,7 +49,7 @@ export const RightPanel = styled.div<{ isShowRightPanel: boolean }>`
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 2;
+  z-index: 7;
   transition: 0.1s;
   transform: ${({ isShowRightPanel }) => (isShowRightPanel ? 'translateX(0)' : 'translateX(100%)')};
   background: ${({ theme }) => theme.colors.backgroundRadial};
