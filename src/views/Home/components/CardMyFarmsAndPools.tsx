@@ -497,10 +497,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       totalValue = sixPrice.times(d.lpTotalInQuoteToken)
     }
     totalValue = d.lpTotalInQuoteToken
-    // console.log('------------------', d)
-    return totalValue
+
+    return totalValue instanceof BigNumber ? totalValue : new BigNumber(totalValue)
   }
 
+  const mergeArray = [...stackedOnlyFarms, ...stackedOnlyPools]
+  console.log('mergeArray = ', mergeArray)
   return (
     <Container className={className}>
       <NetWorth>
@@ -518,7 +520,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               const totalNetWorth =
                 _.compact(allNetWorth).length > 0
                   ? _.compact(allNetWorth).reduce((fv, sv) => {
-                      console.log('fv =', fv)
                       return fv.plus(sv)
                     })
                   : new BigNumber(0)
