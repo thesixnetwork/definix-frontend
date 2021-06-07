@@ -12,7 +12,7 @@ import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text } from 'uikit-dev'
+import { Button, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
 import bg from 'uikit-dev/images/for-ui-v2/bg.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -40,6 +40,8 @@ const ModalWrapper = styled.div`
 `
 
 const Farm: React.FC = () => {
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const farms = useFarms()
@@ -51,7 +53,7 @@ const Farm: React.FC = () => {
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
-  const [listView, setListView] = useState(false)
+  const [listView, setListView] = useState(!isMobile)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
 
@@ -232,8 +234,14 @@ const Farm: React.FC = () => {
   }, [currentTime, phrase1TimeStamp])
 
   useEffect(() => {
-    return () => {
+    if (isMobile) {
       setListView(false)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
+    return () => {
+      setListView(true)
       setModalNode(undefined)
       setIsOpenModal(false)
     }

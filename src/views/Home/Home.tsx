@@ -40,7 +40,7 @@ const Home: React.FC = () => {
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
 
-  const [isShowRightPanel, setIsShowRightPanel] = useState(true)
+  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
 
   useEffect(() => {
     if (isMobileOrTablet) {

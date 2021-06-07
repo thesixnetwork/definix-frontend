@@ -37,7 +37,7 @@ export const LeftPanel = styled.div<{ isShowRightPanel: boolean }>`
   background-repeat: no-repeat;
   transition: 0.1s;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     padding: ${({ isShowRightPanel }) => (isShowRightPanel ? '32px 512px 32px 32px' : '32px')};
 `
 
