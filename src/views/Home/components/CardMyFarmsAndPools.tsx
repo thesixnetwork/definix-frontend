@@ -166,8 +166,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
-  const balancesWithValue = farmsWithBalance.filter(balanceType => balanceType.balance.toNumber() > 0)
-  const { onReward } = useAllHarvest(balancesWithValue.map(farmWithBalance => farmWithBalance.pid))
+  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
+  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -201,15 +201,15 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceEthBusd()
   const [listView, setListView] = useState(false)
-  const activeFarms = farmsLP.filter(farms => farms.pid !== 0 && farms.multiplier !== '0X')
+  const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
-    farms => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
+    (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
   )
 
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map(farm => {
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
@@ -246,7 +246,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         return { ...farm, apy }
       })
 
-      return farmsToDisplayWithAPY.map(farm => (
+      return farmsToDisplayWithAPY.map((farm) => (
         <FarmCard
           key={farm.pid}
           farm={farm}
@@ -282,28 +282,28 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     return tokenPriceBN
   }
 
-  const poolsWithApy = pools.map(pool => {
+  const poolsWithApy = pools.map((pool) => {
     const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-    let rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
-    let stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
+    let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+    let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
       case 0:
-        stakingTokenFarm = farms.find(s => s.pid === 0)
+        stakingTokenFarm = farms.find((s) => s.pid === 0)
         break
       case 2:
-        stakingTokenFarm = farms.find(s => s.pid === 1)
+        stakingTokenFarm = farms.find((s) => s.pid === 1)
         break
       case 3:
-        stakingTokenFarm = farms.find(s => s.pid === 2)
+        stakingTokenFarm = farms.find((s) => s.pid === 2)
         break
       case 4:
-        stakingTokenFarm = farms.find(s => s.pid === 3)
+        stakingTokenFarm = farms.find((s) => s.pid === 3)
         break
       case 5:
-        stakingTokenFarm = farms.find(s => s.pid === 4)
+        stakingTokenFarm = farms.find((s) => s.pid === 4)
         break
       case 6:
-        stakingTokenFarm = farms.find(s => s.pid === 5)
+        stakingTokenFarm = farms.find((s) => s.pid === 5)
         break
       default:
         break
@@ -315,7 +315,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       case 4:
       case 5:
       case 6:
-        rewardTokenFarm = farms.find(f => f.tokenSymbol === 'SIX')
+        rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
         break
       default:
         break
@@ -417,7 +417,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   })
 
   const stackedOnlyPools = poolsWithApy.filter(
-    pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
+    (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
 
   // const data = [
@@ -527,7 +527,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
             })()}
           </Heading>
           <div className="mt-2">
-            {stackedOnlyFarms.map(d => (
+            {stackedOnlyFarms.map((d) => (
               <Legend key={`legend${d.lpSymbol}`}>
                 <Text fontSize="12px" color="textSubtle">
                   <span className="dot" style={{ background: '#0973B9' }} />
@@ -590,7 +590,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
       <List>
         <>
-          {stackedOnlyPools.map(d => {
+          {stackedOnlyPools.map((d) => {
             const imgs = d.tokenName.split(' ')[0].split('-')
             return (
               <FarmsAndPools href="#" key={d.tokenName}>
@@ -635,7 +635,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           })}
         </>
 
-        {farmsList(stackedOnlyFarms, false).map(d => {
+        {farmsList(stackedOnlyFarms, false).map((d) => {
           const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
           return (
             <FarmsAndPools href="#" key={d.props.farm.lpSymbol}>
