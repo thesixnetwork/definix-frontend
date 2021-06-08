@@ -172,7 +172,7 @@ const Dot = styled.div`
 `
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
@@ -471,25 +471,23 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     value: Number(getNetWorth(p)),
   }))
 
-  // const merge = [...dataFarms, ...dataFarms]
-  const merge = _.flatten([dataFarms, dataPools])
-
-  const sorted = merge.sort((a, b) => b.value - a.value)
-  console.log(' sorted =', sorted)
+  const arrayData = [...dataFarms, ...dataPools]
+  const sorted = arrayData.sort((a, b) => b.value - a.value)
+  const chartValue = sorted.map((i) => Number(i.value))
   const topThree = sorted.splice(0, 3)
 
   // OTHER
-  const other = sorted.splice(0, 7)
-  const result = other.map((i) => Number(i))
-  const sumOther = result.reduce((a, b) => a + b, 0)
+  const result = sorted.map((i) => Number(i))
+  const other = result.reduce((a, b) => a + b, 0)
 
+  // CHART
   const chartColors = ['#0973B9', '#E2B23A', '#24B181', '#8C90A5']
   const chart = {
     data: {
       labels: stackedOnlyFarms.map((d) => d.lpSymbol),
       datasets: [
         {
-          data: sorted,
+          data: chartValue,
           backgroundColor: chartColors,
           hoverBackgroundColor: chartColors,
         },
@@ -537,7 +535,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                         return fv.plus(sv)
                       })
                     : new BigNumber(0)
-
                 return totalNetWorth && Number(totalNetWorth) !== 0
                   ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
                   : '-'
@@ -545,70 +542,45 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
             </Heading>
           )}
           <div className="mt-2 flex">
-            {isLoading ? (
-              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
-            ) : (
-              <Dot className="col-2">
-                {chartColors.map((color) => (
-                  <Legend>
-                    <span
-                      className="dot"
-                      style={{
-                        background: color === '#8C90A5' && sorted.length === 3 ? 'transparent' : color,
-                        marginBottom: '11px',
-                      }}
-                    />
-                  </Legend>
-                ))}
-              </Dot>
-            )}
-            <div className="col-8">
-              {/* {merge.map((d) => (
-                <Legend key={`legend${d.lpSymbol}`}>
-                  <Text fontSize="12px" color="textSubtle">
-                    {d.lpSymbol}
-                  </Text>
+            <Dot className="col-2">
+              {chartColors.map((color) => (
+                <Legend>
+                  <span
+                    className="dot"
+                    style={{
+                      background: color === '#8C90A5' && arrayData.length === 3 ? 'transparent' : color,
+                      marginBottom: '11px',
+                    }}
+                  />
                 </Legend>
-              ))} */}
-
-              {sorted.map((d) => (
-                <Legend key={`legend${d.lpSymbol}`}>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
-                  ) : (
-                    <>
+              ))}
+            </Dot>
+            <div className="col-8">
+              {isLoading ? (
+                <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+              ) : (
+                <>
+                  {topThree.map((d) => (
+                    <Legend key={`legend${d.lpSymbol}`}>
                       <Text fontSize="12px" color="textSubtle">
                         {d.lpSymbol}
                       </Text>
                       <Text bold style={{ paddingLeft: '80px' }}>
                         {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
                       </Text>
-                    </>
-                  )}
-                </Legend>
-              ))}
+                    </Legend>
+                  ))}
+                </>
+              )}
               <Legend>
-                {isLoading ? (
-                  <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
-                ) : (
-                  <>
-                    <Text fontSize="12px" color="textSubtle">
-                      OTHER
-                    </Text>
-                    <Text bold style={{ paddingLeft: '80px' }}>
-                      {sumOther ? `$${Number(sumOther).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                    </Text>
-                  </>
-                )}
+                <Text fontSize="12px" color="textSubtle">
+                  OTHER
+                </Text>
+                <Text bold style={{ paddingLeft: '80px' }}>
+                  {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                </Text>
               </Legend>
             </div>
-            {/* <div className="col-2">
-              {topThree.map((v) => (
-                <Text bold style={{ paddingLeft: '10px', textAlign: 'right' }}>
-                  {v ? `$${Number(v).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                </Text>
-              ))}
-            </div> */}
           </div>
         </div>
       </NetWorth>
@@ -623,7 +595,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Text textAlign="center" color="textSubtle">
                 From all farms
               </Text>
-
               {isLoading ? (
                 <>
                   <Skeleton animation="pulse" variant="rect" height="26px" className="my-1" />
