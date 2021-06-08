@@ -13,6 +13,7 @@ import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
+import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
 
@@ -22,9 +23,8 @@ const VerticalStyle = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
   display: flex;
   position: relative;
-  align-self: baseline;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   text-align: center;
 `
 
@@ -141,6 +141,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [earnings, pid],
   )
 
+  const renderHarvestActionAirDrop = useCallback(
+    (className?: string, isHor?: boolean) => (
+      <HarvestActionAirDrop earnings={earnings} pid={pid} className={className} isHorizontal={isHor} />
+    ),
+    [earnings, pid],
+  )
+
   const renderDetailsSection = useCallback(
     (className?: string) => (
       <DetailsSection
@@ -158,24 +165,28 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   if (isHorizontal) {
     return (
-      <HorizontalStyle className="flex align-stretch pa-5 mb-5">
+      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
         {renderCardHeading('col-3 pos-static')}
 
-        <div className="col-5 bd-x flex flex-column justify-space-between px-5">
+        <div className="col-4 bd-x flex flex-column justify-space-between px-5">
           {renderStakeAction('pb-5')}
           {renderDetailsSection()}
         </div>
 
-        {renderHarvestAction('col-4 pl-5 flex-grow')}
+        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
+        {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', isHorizontal)}
       </HorizontalStyle>
     )
   }
 
   return (
     <VerticalStyle className="mb-7">
-      {renderCardHeading('pt-7')}
-      {renderStakeAction('pa-5')}
-      {renderHarvestAction('pa-5')}
+      <div>
+        {renderCardHeading('pt-7')}
+        {renderStakeAction('pa-5')}
+        {/* {renderHarvestAction('pa-5')} */}
+        {renderHarvestActionAirDrop('pa-5 pt-0', isHorizontal)}
+      </div>
       {renderDetailsSection('px-5 py-3')}
     </VerticalStyle>
   )

@@ -175,7 +175,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
 
   if (isHorizontal) {
     return (
-      <HorizontalStyle className="flex align-stretch pa-5 mb-4">
+      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-4">
         {renderSash()}
         {renderCardHeading('col-3 pos-static')}
 
