@@ -181,7 +181,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   return (
     <VerticalStyle className="mb-7">
-      <div>
+      <div className="flex flex-column flex-grow">
         {renderCardHeading('pt-7')}
         {renderStakeAction('pa-5')}
         {/* {renderHarvestAction('pa-5')} */}

@@ -95,6 +95,7 @@ const GlobalStyle = createGlobalStyle`
     &.flex-row { flex-direction: row; }
     &.flex-row-reverse { flex-direction: row-reverse; }
     &.flex-wrap { flex-wrap: wrap; }
+    &.flex-grow { flex-grow: 1; }
     &.justify-start { justify-content: flex-start; }
     &.justify-end { justify-content: flex-end; }
     &.justify-center { justify-content: center; }

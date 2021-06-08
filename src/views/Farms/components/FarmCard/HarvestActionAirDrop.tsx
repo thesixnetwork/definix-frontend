@@ -25,12 +25,6 @@ const MiniLogo = styled.img`
   flex-shrink: 0;
 `
 
-const CustomButton = styled(Button)`
-  text-decoration: underline;
-  background: transparent !important;
-  height: auto;
-`
-
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', isHorizontal }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
@@ -44,7 +38,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
 
   return (
-    <div className={`${className} ${isHorizontal ? 'flex flex-grow' : ''}`}>
+    <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
       <div className={isHorizontal ? 'col-8 pr-6' : ''}>
         <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
           Earned
