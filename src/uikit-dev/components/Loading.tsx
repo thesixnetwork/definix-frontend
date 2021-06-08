@@ -8,7 +8,7 @@ const options = {
   animationData: loading,
 }
 
-const Loading = () => {
-  return <Lottie options={options} height={200} width={200} />
+const Loading = ({ width = 150, height = 150 }) => {
+  return <Lottie options={options} height={height} width={width} />
 }
 export default Loading

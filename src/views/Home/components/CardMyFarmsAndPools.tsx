@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import styled from 'styled-components'
-import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
+import { Button, Card, ChevronRightIcon, Heading, Skeleton, Text } from 'uikit-dev'
+import Loading from 'uikit-dev/components/Loading'
 
 const Container = styled(Card)`
   overflow: auto;
@@ -10,6 +11,7 @@ const Container = styled(Card)`
 const NetWorth = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
+  align-items: center;
 
   .sum {
     flex-grow: 1;
@@ -19,6 +21,12 @@ const NetWorth = styled.div`
 const Legend = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin: 0;
+  }
 
   .dot {
     display: inline-block;
@@ -93,18 +101,8 @@ const Coins = styled.div`
   justify-content: space-between;
 
   img {
-    width: 40px;
+    width: 48px;
     flex-shrink: 0;
-
-    &:first-child {
-      margin-right: 4px;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    img {
-      width: 50px;
-    }
   }
 `
 
@@ -121,6 +119,8 @@ const Summary = styled.div`
 `
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
+  const [isLoading, setIsLoading] = useState(true)
+
   const data = [
     {
       name: 'FINIX-SIX LP',
@@ -184,20 +184,33 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     <Container className={className}>
       <NetWorth>
         <div className="col-5 flex" style={{ position: 'relative' }}>
-          <Doughnut data={chart.data} options={chart.options} height={150} width={150} />
+          {isLoading ? <Loading /> : <Doughnut data={chart.data} options={chart.options} height={150} width={150} />}
         </div>
         <div className="sum col-7 pa-3 pl-0">
           <Text color="textSubtle">Net Worth</Text>
-          <Heading fontSize="24px !important">$82.117.20</Heading>
+          {isLoading ? (
+            <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+          ) : (
+            <Heading fontSize="24px !important">$82.117.20</Heading>
+          )}
 
           <div className="mt-2">
             {data.map((d) => (
               <Legend key={`legend${d.name}`}>
-                <Text fontSize="12px" color="textSubtle">
-                  <span className="dot" style={{ background: d.color }} />
-                  {d.name}
-                </Text>
-                <Text bold>{d.netWorth}</Text>
+                {isLoading ? (
+                  <>
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="60%" />
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="20%" />
+                  </>
+                ) : (
+                  <>
+                    <Text fontSize="12px" color="textSubtle" className="flex align-center">
+                      <span className="dot" style={{ background: d.color }} />
+                      {d.name}
+                    </Text>
+                    <Text bold>{d.netWorth}</Text>
+                  </>
+                )}
               </Legend>
             ))}
           </div>
@@ -214,23 +227,41 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Text textAlign="center" color="textSubtle">
                 From all farms
               </Text>
-              <Heading fontSize="24px !important" textAlign="center">
-                58.1
-              </Heading>
-              <Text textAlign="center" color="textSubtle">
-                est ~ $698.9
-              </Text>
+              {isLoading ? (
+                <>
+                  <Skeleton animation="pulse" variant="rect" height="26px" className="my-1" />
+                  <Skeleton animation="pulse" variant="rect" height="21px" />
+                </>
+              ) : (
+                <>
+                  <Heading fontSize="24px !important" textAlign="center">
+                    58.1
+                  </Heading>
+                  <Text textAlign="center" color="textSubtle">
+                    est ~ $698.9
+                  </Text>
+                </>
+              )}
             </StatAll>
             <StatAll>
               <Text textAlign="center" color="textSubtle">
                 From all pools
               </Text>
-              <Heading fontSize="24px !important" textAlign="center">
-                0.0
-              </Heading>
-              <Text textAlign="center" color="textSubtle">
-                est ~ $0
-              </Text>
+              {isLoading ? (
+                <>
+                  <Skeleton animation="pulse" variant="rect" height="26px" className="my-1" />
+                  <Skeleton animation="pulse" variant="rect" height="21px" />
+                </>
+              ) : (
+                <>
+                  <Heading fontSize="24px !important" textAlign="center">
+                    0.0
+                  </Heading>
+                  <Text textAlign="center" color="textSubtle">
+                    est ~ $0
+                  </Text>
+                </>
+              )}
             </StatAll>
           </div>
           <Button as="a" href="#" size="sm" variant="tertiary" className="mt-3" style={{ background: 'white' }}>
@@ -245,40 +276,68 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           return (
             <FarmsAndPools href="#" key={d.name}>
               <Coins>
-                <div className="flex">
-                  <img src={`/images/coins/${imgs[0]}.png`} alt="" />
-                  <img src={`/images/coins/${imgs[1]}.png`} alt="" />
-                </div>
-                <Text bold>{d.name}</Text>
+                {isLoading ? (
+                  <>
+                    <div className="flex">
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                    </div>
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                  </>
+                ) : (
+                  <>
+                    <div className="flex">
+                      <img src={`/images/coins/${imgs[0]}.png`} className="mx-1" alt="" />
+                      <img src={`/images/coins/${imgs[1]}.png`} className="mx-1" alt="" />
+                    </div>
+                    <Text bold>{d.name}</Text>
+                  </>
+                )}
               </Coins>
               <Summary>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     APR
                   </Text>
-                  <Text bold color="success">
-                    {d.apr}
-                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                  ) : (
+                    <Text bold color="success">
+                      {d.apr}
+                    </Text>
+                  )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     LP Staked
                   </Text>
-                  <Text bold>{d.lpStaked}</Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{d.lpStaked}</Text>
+                  )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     Multiplier
                   </Text>
-                  <Text bold color="warning">
-                    {d.multiplier}
-                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                  ) : (
+                    <Text bold color="warning">
+                      {d.multiplier}
+                    </Text>
+                  )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     FINIX Earned
                   </Text>
-                  <Text bold>{d.finixEarned}</Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{d.finixEarned}</Text>
+                  )}
                 </div>
               </Summary>
               <div className="icon">
