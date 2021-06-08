@@ -16,6 +16,7 @@ interface Props extends InjectedProps {
   isRainbow?: boolean
   classHeader?: string
   maxWidth?: string
+  className?: string
 }
 
 const StyledModal = styled.div<{ isRainbow: boolean }>`
@@ -27,8 +28,11 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
     width: auto;
+    min-width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 360px;
-    max-width: 100%;
   }
   position: relative;
   padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
@@ -66,8 +70,9 @@ const Modal: React.FC<Props> = ({
   isRainbow = true,
   classHeader = '',
   maxWidth = '',
+  className = '',
 }) => (
-  <StyledModal isRainbow={isRainbow} style={{ maxWidth }}>
+  <StyledModal isRainbow={isRainbow} style={{ maxWidth }} className={className}>
     <ModalHeader className={classHeader}>
       <ModalTitle>
         {onBack && (

@@ -17,7 +17,8 @@ import _ from 'lodash'
 
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BLOCKS_PER_YEAR } from 'config'
-import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
+import { Button, Card, ChevronRightIcon, Heading, Skeleton, Text } from 'uikit-dev'
+import Loading from 'uikit-dev/components/Loading'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useDispatch } from 'react-redux'
 import useRefresh from 'hooks/useRefresh'
@@ -34,17 +35,28 @@ import FinixHarvestBalance from './FinixHarvestBalance'
 import FinixHarvestPool from './FinixHarvestPool'
 
 const Container = styled(Card)`
-  flex-grow: 1;
+  overflow: auto;
 `
 
 const NetWorth = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
+  align-items: center;
+
+  .sum {
+    flex-grow: 1;
+  }
 `
 
 const Legend = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+
+  &:last-child {
+    margin: 0;
+  }
 
   .dot {
     display: inline-block;
@@ -119,12 +131,8 @@ const Coins = styled.div`
   justify-content: space-between;
 
   img {
-    width: 50px;
+    width: 48px;
     flex-shrink: 0;
-
-    &:first-child {
-      margin-right: 4px;
-    }
   }
 `
 
@@ -164,6 +172,7 @@ const Dot = styled.div`
 `
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
+  const [isLoading, setIsLoading] = useState(true)
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
@@ -509,43 +518,50 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     <Container className={className}>
       <NetWorth>
         <div className="col-12 flex" style={{ position: 'relative' }}>
-          <Doughnut data={chart.data} options={chart.options} height={150} width={150} />
+          {isLoading ? <Loading /> : <Doughnut data={chart.data} options={chart.options} height={150} width={150} />}
         </div>
-        <div className="col-7 pa-3 pl-0">
+        <div className="sum col-7 pa-3 pl-0">
           <Text color="textSubtle">Net Worth</Text>
-          <Heading fontSize="24px !important">
-            {(() => {
-              const allNetWorth = stackedOnlyFarms.map((f) => {
-                return getNetWorth(f)
-              })
-              // eslint-disable-next-line
-              const totalNetWorth =
-                _.compact(allNetWorth).length > 0
-                  ? _.compact(allNetWorth).reduce((fv, sv) => {
-                      return fv.plus(sv)
-                    })
-                  : new BigNumber(0)
+          {isLoading ? (
+            <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+          ) : (
+            <Heading fontSize="24px !important">
+              {(() => {
+                const allNetWorth = stackedOnlyFarms.map((f) => {
+                  return getNetWorth(f)
+                })
+                // eslint-disable-next-line
+                const totalNetWorth =
+                  _.compact(allNetWorth).length > 0
+                    ? _.compact(allNetWorth).reduce((fv, sv) => {
+                        return fv.plus(sv)
+                      })
+                    : new BigNumber(0)
 
-              return totalNetWorth && Number(totalNetWorth) !== 0
-                ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                : '-'
-            })()}
-          </Heading>
-
+                return totalNetWorth && Number(totalNetWorth) !== 0
+                  ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                  : '-'
+              })()}
+            </Heading>
+          )}
           <div className="mt-2 flex">
-            <Dot className="col-2">
-              {chartColors.map((color) => (
-                <Legend>
-                  <span
-                    className="dot"
-                    style={{
-                      background: color === '#8C90A5' && sorted.length === 3 ? 'transparent' : color,
-                      marginBottom: '11px',
-                    }}
-                  />
-                </Legend>
-              ))}
-            </Dot>
+            {isLoading ? (
+              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+            ) : (
+              <Dot className="col-2">
+                {chartColors.map((color) => (
+                  <Legend>
+                    <span
+                      className="dot"
+                      style={{
+                        background: color === '#8C90A5' && sorted.length === 3 ? 'transparent' : color,
+                        marginBottom: '11px',
+                      }}
+                    />
+                  </Legend>
+                ))}
+              </Dot>
+            )}
             <div className="col-8">
               {/* {merge.map((d) => (
                 <Legend key={`legend${d.lpSymbol}`}>
@@ -557,21 +573,33 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
               {sorted.map((d) => (
                 <Legend key={`legend${d.lpSymbol}`}>
-                  <Text fontSize="12px" color="textSubtle">
-                    {d.lpSymbol}
-                  </Text>
-                  <Text bold style={{ paddingLeft: '80px' }}>
-                    {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+                  ) : (
+                    <>
+                      <Text fontSize="12px" color="textSubtle">
+                        {d.lpSymbol}
+                      </Text>
+                      <Text bold style={{ paddingLeft: '80px' }}>
+                        {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                      </Text>
+                    </>
+                  )}
                 </Legend>
               ))}
               <Legend>
-                <Text fontSize="12px" color="textSubtle">
-                  OTHER
-                </Text>
-                <Text bold style={{ paddingLeft: '80px' }}>
-                  {sumOther ? `$${Number(sumOther).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                </Text>
+                {isLoading ? (
+                  <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+                ) : (
+                  <>
+                    <Text fontSize="12px" color="textSubtle">
+                      OTHER
+                    </Text>
+                    <Text bold style={{ paddingLeft: '80px' }}>
+                      {sumOther ? `$${Number(sumOther).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                    </Text>
+                  </>
+                )}
               </Legend>
             </div>
             {/* <div className="col-2">
@@ -595,17 +623,36 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Text textAlign="center" color="textSubtle">
                 From all farms
               </Text>
-              <Heading fontSize="24px !important" textAlign="center">
-                <FinixHarvestBalance />
-              </Heading>
+
+              {isLoading ? (
+                <>
+                  <Skeleton animation="pulse" variant="rect" height="26px" className="my-1" />
+                  <Skeleton animation="pulse" variant="rect" height="21px" />
+                </>
+              ) : (
+                <>
+                  <Heading fontSize="24px !important" textAlign="center">
+                    <FinixHarvestBalance />
+                  </Heading>
+                </>
+              )}
             </StatAll>
             <StatAll>
               <Text textAlign="center" color="textSubtle">
                 From all pools
               </Text>
-              <Heading fontSize="24px !important" textAlign="center">
-                <FinixHarvestPool />
-              </Heading>
+              {isLoading ? (
+                <>
+                  <Skeleton animation="pulse" variant="rect" height="26px" className="my-1" />
+                  <Skeleton animation="pulse" variant="rect" height="21px" />
+                </>
+              ) : (
+                <>
+                  <Heading fontSize="24px !important" textAlign="center">
+                    <FinixHarvestPool />
+                  </Heading>
+                </>
+              )}
             </StatAll>
           </div>
           {account ? (
@@ -678,47 +725,78 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           return (
             <FarmsAndPools href="#" key={d.props.farm.lpSymbol}>
               <Coins>
-                <div className="flex">
-                  <img src={`/images/coins/${imgs[0]}.png`} alt="" />
-                  <img src={`/images/coins/${imgs[1]}.png`} alt="" />
-                </div>
-                <Text bold>{d.props.farm.lpSymbol}</Text>
+                {isLoading ? (
+                  <>
+                    <div className="flex">
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                    </div>
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                  </>
+                ) : (
+                  <>
+                    <div className="flex">
+                      <img src={`/images/coins/${imgs[0]}.png`} alt="" />
+                      <img src={`/images/coins/${imgs[1]}.png`} alt="" />
+                    </div>
+                    <Text bold>{d.props.farm.lpSymbol}</Text>
+                  </>
+                )}
               </Coins>
               <Summary>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     APR
                   </Text>
-                  <Text bold color="success">
-                    {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
-                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                  ) : (
+                    <Text bold color="success">
+                      {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
+                    </Text>
+                  )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     LP Staked
                   </Text>
-                  <Text bold>
-                    {new BigNumber(d.props.farm.userData.stakedBalance)
-                      .div(new BigNumber(10).pow(18))
-                      .toNumber()
-                      .toFixed(2)}
-                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>
+                      {new BigNumber(d.props.farm.userData.stakedBalance)
+                        .div(new BigNumber(10).pow(18))
+                        .toNumber()
+                        .toFixed(2)}
+                    </Text>
+                  )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     Multiplier
                   </Text>
-                  <Text bold color="warning">
-                    {d.props.farm.multiplier}
-                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                  ) : (
+                    <Text bold color="warning">
+                      {d.props.farm.multiplier}
+                    </Text>
+                  )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     FINIX Earned
                   </Text>
-                  <Text bold>
-                    {new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
-                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>
+                      {new BigNumber(d.props.farm.userData.earnings)
+                        .div(new BigNumber(10).pow(18))
+                        .toNumber()
+                        .toFixed(2)}
+                    </Text>
+                  )}
                 </div>
               </Summary>
               <div className="icon">

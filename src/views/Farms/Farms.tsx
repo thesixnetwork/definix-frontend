@@ -12,7 +12,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text } from 'uikit-dev'
+import { Button, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
 import bg from 'uikit-dev/images/for-ui-v2/bg.png'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
@@ -39,6 +39,8 @@ const ModalWrapper = styled.div`
 `
 
 const Farms: React.FC = () => {
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
@@ -50,7 +52,7 @@ const Farms: React.FC = () => {
   const { fastRefresh } = useRefresh()
 
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [listView, setListView] = useState(false)
+  const [listView, setListView] = useState(!isMobile)
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
@@ -154,9 +156,15 @@ const Farms: React.FC = () => {
   }, [account, dispatch, fastRefresh])
 
   useEffect(() => {
+    if (isMobile) {
+      setListView(false)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
     return () => {
       setStackedOnly(false)
-      setListView(false)
+      setListView(true)
       setIsPhrase2(false)
       setModalNode(undefined)
       setIsOpenModal(false)

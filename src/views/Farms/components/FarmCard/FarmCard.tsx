@@ -158,7 +158,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   if (isHorizontal) {
     return (
-      <HorizontalStyle className="flex align-stretch pa-5 mb-4">
+      <HorizontalStyle className="flex align-stretch pa-5 mb-5">
         {renderCardHeading('col-3 pos-static')}
 
         <div className="col-5 bd-x flex flex-column justify-space-between px-5">
