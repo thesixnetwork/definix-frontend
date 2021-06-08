@@ -541,25 +541,30 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               })()}
             </Heading>
           )}
-          <div className="mt-2 flex">
-            <Dot className="col-2">
-              {chartColors.map((color) => (
-                <Legend>
-                  <span
-                    className="dot"
-                    style={{
-                      background: color === '#8C90A5' && arrayData.length === 3 ? 'transparent' : color,
-                      marginBottom: '11px',
-                    }}
-                  />
-                </Legend>
-              ))}
-            </Dot>
-            <div className="col-8">
-              {isLoading ? (
-                <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
-              ) : (
-                <>
+          {isLoading ? (
+            <>
+              <Skeleton animation="pulse" variant="rect" height="20px" width="70%" className="mt-2" />
+              <Skeleton animation="pulse" variant="rect" height="20px" width="70%" className="mt-2" />
+              <Skeleton animation="pulse" variant="rect" height="20px" width="70%" className="mt-2" />
+              <Skeleton animation="pulse" variant="rect" height="20px" width="70%" className="mt-2" />
+            </>
+          ) : (
+            <>
+              <div className="mt-2 flex">
+                <Dot className="col-2">
+                  {chartColors.map((color) => (
+                    <Legend>
+                      <span
+                        className="dot"
+                        style={{
+                          background: color === '#8C90A5' && arrayData.length === 3 ? 'transparent' : color,
+                          marginBottom: '11px',
+                        }}
+                      />
+                    </Legend>
+                  ))}
+                </Dot>
+                <div className="col-8">
                   {topThree.map((d) => (
                     <Legend key={`legend${d.lpSymbol}`}>
                       <Text fontSize="12px" color="textSubtle">
@@ -570,18 +575,19 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       </Text>
                     </Legend>
                   ))}
-                </>
-              )}
-              <Legend>
-                <Text fontSize="12px" color="textSubtle">
-                  OTHER
-                </Text>
-                <Text bold style={{ paddingLeft: '80px' }}>
-                  {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                </Text>
-              </Legend>
-            </div>
-          </div>
+
+                  <Legend>
+                    <Text fontSize="12px" color="textSubtle">
+                      OTHER
+                    </Text>
+                    <Text bold style={{ paddingLeft: '80px' }}>
+                      {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                    </Text>
+                  </Legend>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </NetWorth>
 
