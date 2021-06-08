@@ -13,8 +13,8 @@ const MiniLogo = styled.img`
 
 const AirDropHarvestModal = ({ onDismiss = () => null }) => {
   return (
-    <Modal title="Rewards you haven't harvest yet" onDismiss={onDismiss} isRainbow={false}>
-      <div className="flex mb-4">
+    <Modal title="Rewards you haven't harvest yet" onDismiss={onDismiss} isRainbow={false} bodyPadding="16px 24px">
+      <div className="flex my-3">
         <div className="flex align-baseline flex-wrap col-8 pr-6">
           <MiniLogo src={miniLogo} alt="" className="align-self-start" />
           <Heading fontSize="24px !important" className="mr-2" textAlign="left">
@@ -31,7 +31,7 @@ const AirDropHarvestModal = ({ onDismiss = () => null }) => {
           Harvest
         </Button>
       </div>
-      <div className="flex">
+      <div className="flex my-3">
         <div className="flex align-baseline flex-wrap col-8 pr-6">
           <MiniLogo src={miniLogo} alt="" className="align-self-start" />
           <Heading fontSize="24px !important" className="mr-2" textAlign="left">

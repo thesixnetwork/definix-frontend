@@ -44,55 +44,54 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
 
   return (
-    <div className={`${className} flex flex-column justify-space-between`}>
-      <div className={isHorizontal ? 'flex flex-grow' : ''}>
-        <div className={isHorizontal ? 'col-8 pr-6' : ''}>
-          <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
-            Earned
-          </Text>
+    <div className={`${className} ${isHorizontal ? 'flex flex-grow' : ''}`}>
+      <div className={isHorizontal ? 'col-8 pr-6' : ''}>
+        <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
+          Earned
+        </Text>
 
-          <div className="flex justify-space-between align-baseline mb-2">
-            <div className="flex align-baseline">
-              <MiniLogo src={miniLogo} alt="" className="align-self-start" />
-              <Heading
-                fontSize="24px !important"
-                color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
-                className="mr-2"
-                textAlign="left"
-              >
-                300.75
-              </Heading>
-              <Text color="textSubtle" textAlign="left">
-                FINIX
-              </Text>
-            </div>
-
-            <Text color="textSubtle" textAlign="right" fontSize="12px">
-              = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
+        <div className="flex justify-space-between align-baseline mb-2">
+          <div className="flex align-baseline">
+            <MiniLogo src={miniLogo} alt="" className="align-self-start" />
+            <Heading
+              fontSize="24px !important"
+              color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
+              className="mr-2"
+              textAlign="left"
+            >
+              300.75
+            </Heading>
+            <Text color="textSubtle" textAlign="left">
+              FINIX
             </Text>
           </div>
-        </div>
-        <Button
-          fullWidth
-          disabled={rawEarningsBalance === 0 || pendingTx}
-          className={isHorizontal ? 'col-4 align-self-center' : 'mt-4'}
-          radii="small"
-          onClick={async () => {
-            setPendingTx(true)
-            await onReward()
-            setPendingTx(false)
-          }}
-        >
-          {TranslateString(562, 'Harvest')}
-        </Button>
-      </div>
 
-      <Text className="col-12 mt-4 text-left flex align-baseline" color="#EA6A00">
-        Finished Airdrop
-        <CustomButton className="px-2" onClick={onPresentAirDropHarvestModal} variant="text" size="xs">
-          Harvest
-        </CustomButton>
-      </Text>
+          <Text color="textSubtle" textAlign="right" fontSize="12px">
+            = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
+          </Text>
+        </div>
+
+        <div className="flex align-center justify-space-between">
+          <Text color="textSubtle">Claim Ended Bonus</Text>
+
+          <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
+            Claim
+          </Button>
+        </div>
+      </div>
+      <Button
+        fullWidth
+        disabled={rawEarningsBalance === 0 || pendingTx}
+        className={isHorizontal ? 'col-4 align-self-center' : 'mt-4'}
+        radii="small"
+        onClick={async () => {
+          setPendingTx(true)
+          await onReward()
+          setPendingTx(false)
+        }}
+      >
+        {TranslateString(562, 'Harvest')}
+      </Button>
     </div>
   )
 }
