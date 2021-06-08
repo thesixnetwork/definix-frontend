@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { useState, useCallback, useEffect } from 'react'
 import BigNumber from 'bignumber.js'
 import { Doughnut } from 'react-chartjs-2'
@@ -14,6 +13,8 @@ import {
   usePriceFinixUsd,
   usePriceSixUsd,
 } from 'state/hooks'
+import _ from 'lodash'
+
 import { getBalanceNumber } from 'utils/formatBalance'
 import { BLOCKS_PER_YEAR } from 'config'
 import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
@@ -422,39 +423,64 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
 
-  // const data = [
-  //   {
-  //     name: 'FINIX-BNB LP',
-  //     apr: '381%',
-  //     lpStaked: '318.77',
-  //     multiplier: '15x',
-  //     finixEarned: '49.40',
-  //     netWorth: '$31k',
-  //     percent: 10,
-  //     color: '#EFB80C',
-  //   },
-  //   {
-  //     name: 'FINIX-BUSD LP',
-  //     apr: '320%',
-  //     lpStaked: '1,120.02',
-  //     multiplier: '15x',
-  //     finixEarned: '180.15',
-  //     netWorth: '$24k',
-  //     percent: 15,
-  //     color: '#55BD92',
-  //   },
-  // ]
+  // Net Worth
+  const getNetWorth = (d) => {
+    const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+    const stakedTotalInQuoteToken = new BigNumber(stakedBalance)
+      .div(new BigNumber(10).pow(18))
+      .times(new BigNumber(2))
+      .times(d.lpTokenRatio)
+    // const displayBalance = rawStakedBalance.toLocaleString()
+    let totalValue
+    if (!d.lpTotalInQuoteToken) {
+      totalValue = new BigNumber(0)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.BNB) {
+      totalValue = bnbPrice.times(stakedTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.FINIX) {
+      totalValue = finixPrice.times(stakedTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.ETH) {
+      totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
+    }
+    if (d.quoteTokenSymbol === QuoteToken.SIX) {
+      totalValue = sixPrice.times(stakedTotalInQuoteToken)
+    }
 
-  // Chart
+    totalValue = stakedTotalInQuoteToken
+    return totalValue
+  }
+
+  const dataFarms = stackedOnlyFarms.map((f) => ({
+    lpSymbol: f.lpSymbol,
+    value: Number(getNetWorth(f)),
+  }))
+
+  const dataPools = stackedOnlyPools.map((p) => ({
+    lpSymbol: p.tokenName,
+    value: Number(getNetWorth(p)),
+  }))
+
+  // const merge = [...dataFarms, ...dataFarms]
+  const merge = _.flatten([dataFarms, dataPools])
+
+  const sorted = merge.sort((a, b) => b.value - a.value)
+  console.log(' sorted =', sorted)
+  const topThree = sorted.splice(0, 3)
+
+  // OTHER
+  const other = sorted.splice(0, 7)
+  const result = other.map((i) => Number(i))
+  const sumOther = result.reduce((a, b) => a + b, 0)
+
   const chartColors = ['#0973B9', '#E2B23A', '#24B181', '#8C90A5']
-
   const chart = {
     data: {
       labels: stackedOnlyFarms.map((d) => d.lpSymbol),
       datasets: [
         {
-          // label: '# of Votes',
-          data: stackedOnlyFarms.map((d) => d.userData.earnings),
+          data: sorted,
           backgroundColor: chartColors,
           hoverBackgroundColor: chartColors,
         },
@@ -479,30 +505,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     },
   }
 
-  const getFarmNetWorth = (d) => {
-    let totalValue
-    if (!d.lpTotalInQuoteToken) {
-      totalValue = new BigNumber(0)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.BNB) {
-      totalValue = bnbPrice.times(d.lpTotalInQuoteToken)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.FINIX) {
-      totalValue = finixPrice.times(d.lpTotalInQuoteToken)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.ETH) {
-      totalValue = ethPriceUsd.times(d.lpTotalInQuoteToken)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.SIX) {
-      totalValue = sixPrice.times(d.lpTotalInQuoteToken)
-    }
-    totalValue = d.lpTotalInQuoteToken
-
-    return totalValue instanceof BigNumber ? totalValue : new BigNumber(totalValue)
-  }
-
-  const mergeArray = [...stackedOnlyFarms, ...stackedOnlyPools]
-  console.log('mergeArray = ', mergeArray)
   return (
     <Container className={className}>
       <NetWorth>
@@ -514,7 +516,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           <Heading fontSize="24px !important">
             {(() => {
               const allNetWorth = stackedOnlyFarms.map((f) => {
-                return getFarmNetWorth(f)
+                return getNetWorth(f)
               })
               // eslint-disable-next-line
               const totalNetWorth =
@@ -523,6 +525,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       return fv.plus(sv)
                     })
                   : new BigNumber(0)
+
               return totalNetWorth && Number(totalNetWorth) !== 0
                 ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
                 : '-'
@@ -536,27 +539,48 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   <span
                     className="dot"
                     style={{
-                      background: color === '#8C90A5' && stackedOnlyFarms.length === 3 ? 'transparent' : color,
-                      marginBottom: '12px',
+                      background: color === '#8C90A5' && sorted.length === 3 ? 'transparent' : color,
+                      marginBottom: '11px',
                     }}
                   />
                 </Legend>
               ))}
             </Dot>
             <div className="col-8">
-              {stackedOnlyFarms.map((d) => (
+              {/* {merge.map((d) => (
                 <Legend key={`legend${d.lpSymbol}`}>
                   <Text fontSize="12px" color="textSubtle">
                     {d.lpSymbol}
                   </Text>
-                  <Text bold style={{ paddingLeft: '50px' }}>
-                    {getFarmNetWorth(d)
-                      ? `$${Number(getFarmNetWorth(d)).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                      : '-'}
+                </Legend>
+              ))} */}
+
+              {sorted.map((d) => (
+                <Legend key={`legend${d.lpSymbol}`}>
+                  <Text fontSize="12px" color="textSubtle">
+                    {d.lpSymbol}
+                  </Text>
+                  <Text bold style={{ paddingLeft: '80px' }}>
+                    {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
                   </Text>
                 </Legend>
               ))}
+              <Legend>
+                <Text fontSize="12px" color="textSubtle">
+                  OTHER
+                </Text>
+                <Text bold style={{ paddingLeft: '80px' }}>
+                  {sumOther ? `$${Number(sumOther).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                </Text>
+              </Legend>
             </div>
+            {/* <div className="col-2">
+              {topThree.map((v) => (
+                <Text bold style={{ paddingLeft: '10px', textAlign: 'right' }}>
+                  {v ? `$${Number(v).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                </Text>
+              ))}
+            </div> */}
           </div>
         </div>
       </NetWorth>
@@ -599,9 +623,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <UnlockButton />
           )}
-          {/* <Button as="a" href="#" size="sm" variant="tertiary" className="mt-3" style={{ background: 'white' }}>
-            Harvest All
-          </Button> */}
         </div>
       </HarvestAll>
 
