@@ -486,13 +486,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     if (!d.lpTotalInQuoteToken) {
       totalValue = new BigNumber(0)
     }
-    if (d.quoteTokenSymbol === QuoteToken.BNB) {
-      totalValue = bnbPrice.times(stakedTotalInQuoteToken)
+    if (d.quoteTokenSymbol === QuoteToken.KLAY) {
+      totalValue = klayPrice.times(stakedTotalInQuoteToken)
     }
     if (d.quoteTokenSymbol === QuoteToken.FINIX) {
       totalValue = finixPrice.times(stakedTotalInQuoteToken)
     }
-    if (d.quoteTokenSymbol === QuoteToken.ETH) {
+    if (d.quoteTokenSymbol === QuoteToken.KETH) {
       totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
     }
     if (d.quoteTokenSymbol === QuoteToken.SIX) {
