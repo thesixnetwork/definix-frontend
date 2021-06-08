@@ -69,18 +69,18 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   }, [onApprove])
 
   const renderStakingButtons = () => {
-    // if (rawStakedBalance === 0) {
-    //   return (
-    //     <Button
-    //       disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
-    //       onClick={onPresentDeposit}
-    //       fullWidth
-    //       radii="small"
-    //     >
-    //       {TranslateString(999, 'Stake LP')}
-    //     </Button>
-    //   )
-    // }
+    if (rawStakedBalance === 0) {
+      return (
+        <Button
+          disabled={farmUnlockDate instanceof Date && new Date().getTime() < farmUnlockDate.getTime()}
+          onClick={onPresentDeposit}
+          fullWidth
+          radii="small"
+        >
+          {TranslateString(999, 'Stake LP')}
+        </Button>
+      )
+    }
 
     return (
       <IconButtonWrapper>
@@ -103,13 +103,13 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   }
 
   const renderApprovalOrStakeButton = () => {
-    // if (!isApproved) {
-    //   return (
-    //     <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
-    //       {TranslateString(758, 'Approve Contract')}
-    //     </Button>
-    //   )
-    // }
+    if (!isApproved) {
+      return (
+        <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
+          {TranslateString(758, 'Approve Contract')}
+        </Button>
+      )
+    }
 
     return (
       <div className="flex align-center">
