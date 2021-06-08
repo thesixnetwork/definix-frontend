@@ -4,9 +4,7 @@ import styled from 'styled-components'
 import { Button, Card, ChevronRightIcon, Heading, Text } from 'uikit-dev'
 
 const Container = styled(Card)`
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-grow: 1;
-  }
+  overflow: auto;
 `
 
 const NetWorth = styled.div`
