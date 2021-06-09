@@ -109,10 +109,11 @@ const InnerBg = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  box-shadow: ${({ theme }) => theme.shadows.inset3};
 
   ${({ theme }) => theme.mediaQueries.md} {
-    border-top-left-radius: ${({ theme }) => theme.radii.large};
-    border-bottom-left-radius: ${({ theme }) => theme.radii.large};
+    border-top-left-radius: ${({ theme }) => theme.radii.medium};
+    border-bottom-left-radius: ${({ theme }) => theme.radii.medium};
   }
 `
 
@@ -158,7 +159,7 @@ const Menu: React.FC<NavProps> = ({
   login,
   logout,
   isDark,
-  toggleTheme,
+  setIsDark,
   langs,
   setLang,
   currentLang,
@@ -346,7 +347,7 @@ const Menu: React.FC<NavProps> = ({
           isMobile={isMobile}
           showMenu={showMenu}
           isDark={isDark}
-          toggleTheme={toggleTheme}
+          setIsDark={setIsDark}
           langs={langs}
           setLang={setLang}
           currentLang={currentLang}

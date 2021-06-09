@@ -47,7 +47,7 @@ export interface MenuEntry {
 
 export interface PanelProps {
   isDark: boolean
-  toggleTheme: (isDark: boolean) => void
+  setIsDark: (isDark: boolean) => void
   finixPriceUsd?: number
   currentLang: string
   langs: LangType[]

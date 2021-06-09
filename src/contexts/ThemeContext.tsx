@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
-import { light, dark } from 'uikit-dev'
+import { dark, light } from 'uikit-dev'
 
 const CACHE_KEY = 'IS_DARK'
 
-const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null })
+const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null, setIsDark: (theme) => null })
 
 const ThemeContextProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
@@ -20,7 +20,7 @@ const ThemeContextProvider = ({ children }) => {
   }
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDark, toggleTheme, setIsDark }}>
       <SCThemeProvider theme={isDark ? dark : light}>{children}</SCThemeProvider>
     </ThemeContext.Provider>
   )
