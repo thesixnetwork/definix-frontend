@@ -12,13 +12,11 @@ import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
-import Link from '../../components/Link/Link'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
 import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
 import Text from '../../components/Text/Text'
 import { useMatchBreakpoints } from '../../hooks'
-import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
 import bsc from '../../images/Logo-BinanceSmartChain.png'
@@ -26,6 +24,7 @@ import klaytn from '../../images/Logo-Klaytn.png'
 import th from '../../images/th.png'
 import { MENU_HEIGHT } from './config'
 import * as IconModule from './icons'
+import Logo from './Logo'
 import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
@@ -48,7 +47,7 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 16px;
   width: 100%;
   position: relative;
   z-index: 20;
@@ -71,6 +70,10 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   .network {
     // box-shadow: ${({ theme }) => theme.shadows.elevation1};
   }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 0 24px;
+  }
 `
 
 const BodyWrapper = styled.div`
@@ -92,16 +95,25 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   overflow-y: auto;
   overflow-x: hidden;
   background: ${({ theme }) => theme.colors.white};
-  padding-top: 12px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-top: 12px;
+  }
 `
 
 const InnerBg = styled.div`
   position: relative;
   background: ${({ theme }) => theme.colors.backgroundRadial};
   overflow: hidden;
-  border-top-left-radius: ${({ theme }) => theme.radii.large};
-  border-bottom-left-radius: ${({ theme }) => theme.radii.large};
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: ${({ theme }) => theme.shadows.inset3};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    border-top-left-radius: ${({ theme }) => theme.radii.medium};
+    border-bottom-left-radius: ${({ theme }) => theme.radii.medium};
+  }
 `
 
 const MobileOnlyOverlay = styled(Overlay)`
@@ -110,23 +122,6 @@ const MobileOnlyOverlay = styled(Overlay)`
 
   ${({ theme }) => theme.mediaQueries.nav} {
     display: none;
-  }
-`
-
-const StyledLogo = styled(Link)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: -6px 24px 0 0;
-
-  img {
-    height: 14px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.nav} {
-    img {
-      height: 24px;
-    }
   }
 `
 
@@ -163,7 +158,7 @@ const Menu: React.FC<NavProps> = ({
   login,
   logout,
   isDark,
-  toggleTheme,
+  setIsDark,
   langs,
   setLang,
   currentLang,
@@ -172,9 +167,9 @@ const Menu: React.FC<NavProps> = ({
   children,
   price,
 }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = isXl === false
-  const [isPushed, setIsPushed] = useState(!isMobile)
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl
+  const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
   const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
@@ -261,28 +256,33 @@ const Menu: React.FC<NavProps> = ({
     <Wrapper>
       <StyledNav showMenu={showMenu}>
         <Flex alignItems="center">
-          <StyledLogo as="a" href="/" aria-label="Definix home page">
+          <Logo
+            isPushed={isPushed}
+            togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
+            isDark={isDark}
+            href={homeLink?.href ?? '/'}
+          />
+          {/* <StyledLogo as="a" href="/" aria-label="Definix home page">
             <img src={logoDesktop} alt="" />
-          </StyledLogo>
+          </StyledLogo> */}
 
-          {!isMobile && (
-            <Dropdown
-              position="bottom"
-              target={
-                <Button
-                  variant="text"
-                  size="sm"
-                  startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
-                  endIcon={<ChevronDownIcon className="ml-1" />}
-                  color="text"
-                  className="network"
-                >
-                  <Text fontSize="12px" fontWeight="500">
+          <Dropdown
+            position="bottom"
+            target={
+              <Button
+                variant="text"
+                size="sm"
+                startIcon={<img src={klaytn} alt="" width="20px" className="mr-2" />}
+                endIcon={<ChevronDownIcon className="ml-1" />}
+                color="text"
+                className="network px-2"
+              >
+                <Text fontSize="12px" fontWeight="500">
                     Klaytn Chain
-                  </Text>
-                </Button>
-              }
-            >
+                </Text>
+              </Button>
+            }
+          >
               <MenuButton
                 href="https://klaytn.definix.com"
                 variant="text"
@@ -299,18 +299,19 @@ const Menu: React.FC<NavProps> = ({
               >
                 Binance Smart Chain
               </MenuButton>
-            </Dropdown>
-          )}
+          </Dropdown>
         </Flex>
 
         <Flex alignItems="center">
-          <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
-            <img src={FinixCoin} alt="" />
-            <p>
-              <span>FINIX : </span>
-              <strong>${price}</strong>
-            </p>
-          </Price>
+          {!isMobile && (
+            <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
+              <img src={FinixCoin} alt="" />
+              <p>
+                <span>FINIX : </span>
+                <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
+              </p>
+            </Price>
+          )}
           <UserBlock account={account} login={login} logout={logout} />
           {/* <Dropdown
             position="bottom-right"
@@ -345,7 +346,7 @@ const Menu: React.FC<NavProps> = ({
           isMobile={isMobile}
           showMenu={showMenu}
           isDark={isDark}
-          toggleTheme={toggleTheme}
+          setIsDark={setIsDark}
           langs={langs}
           setLang={setLang}
           currentLang={currentLang}
@@ -417,7 +418,7 @@ const Menu: React.FC<NavProps> = ({
                 }
               />
             )}
-            {children}
+            <div style={{ width: '100%' }}>{children}</div>
           </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />

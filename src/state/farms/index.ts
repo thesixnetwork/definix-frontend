@@ -12,7 +12,7 @@ import {
 } from './fetchFarmUser'
 import { FarmsState, Farm } from '../types'
 
-const initialState: FarmsState = { data: [...farmsConfig], farmUnlockAt: undefined }
+const initialState: FarmsState = { isFetched: false, data: [...farmsConfig], farmUnlockAt: undefined }
 
 export const farmsSlice = createSlice({
   name: 'Farms',
@@ -31,6 +31,7 @@ export const farmsSlice = createSlice({
         const { index } = userDataEl
         state.data[index] = { ...state.data[index], userData: userDataEl }
       })
+      state.isFetched = true
     },
     setFarmUnlockAt: (state, action) => {
       const { farmUnlockAt } = action.payload

@@ -64,11 +64,13 @@ export interface ToastsState {
 }
 
 export interface FarmsState {
+  isFetched: boolean
   data: Farm[]
   farmUnlockAt?: Date
 }
 
 export interface PoolsState {
+  isFetched: boolean
   data: Pool[]
 }
 

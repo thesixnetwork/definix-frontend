@@ -11,7 +11,7 @@ import config from './config'
 const Menu = (props) => {
   const { account, connect, reset } = useWallet()
   const { selectedLanguage, setSelectedLanguage } = useContext(LanguageContext)
-  const { isDark, toggleTheme } = useTheme()
+  const { isDark, setIsDark } = useTheme()
   const finixPriceUsd = usePriceFinixUsd()
   const { profile } = useProfile()
 
@@ -21,7 +21,7 @@ const Menu = (props) => {
       login={connect}
       logout={reset}
       isDark={isDark}
-      toggleTheme={toggleTheme}
+      setIsDark={setIsDark}
       currentLang={selectedLanguage && selectedLanguage.code}
       langs={allLanguages}
       setLang={setSelectedLanguage}

@@ -6,15 +6,15 @@
 
 import React from 'react'
 import styled from 'styled-components'
-import six from '../../images/Footer-Icon/Powered-by-SIX.png'
-import facebookNormal from '../../images/Footer-Icon/without-text/Facebook-Normal.png'
-import gitbookNormal from '../../images/Footer-Icon/without-text/Gitbook-Normal.png'
-import githubNormal from '../../images/Footer-Icon/without-text/Github-Normal.png'
 import certik from '../../images/Audit/AW-42.png'
-import kakaoNormal from '../../images/Footer-Icon/without-text/Kakao-Normal.png'
-import redditNormal from '../../images/Footer-Icon/without-text/Reddit-Normal.png'
-import telegramNormal from '../../images/Footer-Icon/without-text/Telegram-Normal.png'
-import twitterNormal from '../../images/Footer-Icon/without-text/Twitter-Normal.png'
+import six from '../../images/Footer-Icon/Powered-by-SIX.png'
+import facebook from '../../images/for-ui-v2/footer/facebook.png'
+import gitbook from '../../images/for-ui-v2/footer/gitbook.png'
+import github from '../../images/for-ui-v2/footer/github.png'
+import kakao from '../../images/for-ui-v2/footer/kakao.png'
+import reddit from '../../images/for-ui-v2/footer/reddit.png'
+import telegram from '../../images/for-ui-v2/footer/telegram.png'
+import twitter from '../../images/for-ui-v2/footer/twitter.png'
 
 const FooterStyled = styled.footer`
   flex-shrink: 0;
@@ -51,11 +51,18 @@ const FooterStyled = styled.footer`
 
     a {
       cursor: pointer;
-      margin: 0 4px;
+      margin: 0 8px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
     }
 
     img {
-      width: 28px;
+      height: 16px;
       display: block;
     }
   }
@@ -94,31 +101,31 @@ function Footer() {
   const socials = [
     {
       url: 'https://www.facebook.com/thesixnetwork',
-      img: facebookNormal,
+      img: facebook,
     },
     {
       url: 'https://twitter.com/DefinixOfficial',
-      img: twitterNormal,
+      img: twitter,
     },
     {
       url: 'https://t.me/SIXNetwork',
-      img: telegramNormal,
+      img: telegram,
     },
     {
       url: 'https://open.kakao.com/o/gQNRT5K',
-      img: kakaoNormal,
+      img: kakao,
     },
     {
       url: 'https://app.gitbook.com/@sixnetwork/s/definix',
-      img: gitbookNormal,
+      img: gitbook,
     },
     {
       url: 'https://github.com/thesixnetwork',
-      img: githubNormal,
+      img: github,
     },
     {
       url: 'https://www.reddit.com/r/sixnetwork',
-      img: redditNormal,
+      img: reddit,
     },
   ]
 

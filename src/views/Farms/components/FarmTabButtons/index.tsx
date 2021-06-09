@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, CardViewIcon, ListViewIcon } from 'uikit-dev'
+import { Button, CardViewIcon, ListViewIcon, useMatchBreakpoints } from 'uikit-dev'
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,31 +21,37 @@ const Wrapper = styled.div`
 `
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl
+
   return (
     <Wrapper className="mb-6">
-      <div className="flex">
-        <Button
-          size="sm"
-          onClick={() => {
-            setListView(false)
-          }}
-          variant={!listView ? 'primary' : 'secondary'}
-          startIcon={<CardViewIcon color={!listView ? 'white' : 'primary'} />}
-          className="mr-2"
-        >
-          Card View
-        </Button>
-        <Button
-          size="sm"
-          onClick={() => {
-            setListView(true)
-          }}
-          startIcon={<ListViewIcon color={listView ? 'white' : 'primary'} />}
-          variant={listView ? 'primary' : 'secondary'}
-        >
-          List View
-        </Button>
-      </div>
+      {!isMobile && (
+        <div className="flex">
+          <Button
+            size="sm"
+            onClick={() => {
+              setListView(true)
+            }}
+            startIcon={<ListViewIcon color={listView ? 'white' : 'primary'} />}
+            variant={listView ? 'primary' : 'secondary'}
+            className="mr-2"
+          >
+            List View
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => {
+              setListView(false)
+            }}
+            variant={!listView ? 'primary' : 'secondary'}
+            startIcon={<CardViewIcon color={!listView ? 'white' : 'primary'} />}
+          >
+            Card View
+          </Button>
+        </div>
+      )}
+
       <div className="flex mt-2">
         <Button
           size="sm"

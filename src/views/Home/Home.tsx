@@ -2,8 +2,9 @@ import { useWallet } from 'klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text } from 'uikit-dev'
+import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
+import { Overlay } from 'uikit-dev/components/Overlay'
 import {
   LeftPanel,
   MaxWidthLeft,
@@ -28,6 +29,9 @@ const Caption = styled(Text)`
 `
 
 const Home: React.FC = () => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl
+
   const { account } = useWallet()
   const { hasProfile } = useProfile()
   // const TranslateString = useI18n()
@@ -36,7 +40,13 @@ const Home: React.FC = () => {
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
 
-  const [isShowRightPanel, setIsShowRightPanel] = useState(true)
+  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
+
+  useEffect(() => {
+    if (isMobileOrTablet) {
+      setIsShowRightPanel(false)
+    }
+  }, [isMobileOrTablet])
 
   useEffect(() => {
     return () => {
@@ -49,6 +59,13 @@ const Home: React.FC = () => {
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={isShowRightPanel}>
+          <Overlay
+            show={isShowRightPanel && isMobileOrTablet}
+            style={{ position: 'absolute', zIndex: 1 }}
+            onClick={() => {
+              setIsShowRightPanel(false)
+            }}
+          />
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
@@ -59,12 +76,12 @@ const Home: React.FC = () => {
 
             <CardComingSoon showBtn className="mb-5" />
 
-            <div className="flex align-stretch">
-              <div className="col-6 mr-2">
+            <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
+              <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>
                 <CardTVL className="mb-5" />
                 <CardAudit />
               </div>
-              <div className="col-6 ml-3">
+              <div className={isMobileOrTablet ? 'col-12 mt-5' : 'col-6 ml-3'}>
                 <CardTweet />
               </div>
             </div>

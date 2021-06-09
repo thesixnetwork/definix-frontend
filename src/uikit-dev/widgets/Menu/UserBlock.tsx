@@ -3,6 +3,7 @@ import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import Heading from '../../components/Heading/Heading'
 import LinkExternal from '../../components/Link/LinkExternal'
+import { useMatchBreakpoints } from '../../hooks'
 import { useWalletModal } from '../WalletModal'
 import { localStorageKey } from '../WalletModal/config'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
@@ -16,15 +17,16 @@ interface Props {
 
 const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
-  const accountEllipsis = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
-  // const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
+  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
+  const accountEllipsisLong = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
+  const { isXl } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl
 
   return (
     <div>
       {account ? (
         <Dropdown
-          isFullWidth
-          position="bottom"
+          position="bottom-right"
           isRainbow={false}
           target={
             <Button
@@ -36,13 +38,13 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
               //   onPresentAccountModal()
               // }}
             >
-              {accountEllipsis}
+              {isMobileOrTablet ? accountEllipsis : accountEllipsisLong}
             </Button>
           }
         >
-          <div className="pb-2" style={{ zIndex: 999 }}>
+          <div style={{ zIndex: 999 }}>
             <Heading fontSize="14px !important" className="mb-3 pa-0 pt-2">
-              {accountEllipsis}
+              {accountEllipsisLong}
             </Heading>
             <LinkExternal
               isIconLeft
@@ -81,7 +83,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
             onPresentConnectModal()
           }}
         >
-          Connect wallet
+          {isMobileOrTablet ? 'Connect' : 'Connect wallet'}
         </Button>
       )}
     </div>

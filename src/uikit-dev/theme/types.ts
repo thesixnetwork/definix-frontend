@@ -28,6 +28,7 @@ export type Shadows = {
   focus: string
   inset: string
   inset2: string
+  inset3: string
   elevation1: string
   elevation2: string
   elevation3: string
