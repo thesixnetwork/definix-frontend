@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Login } from '../WalletModal/types'
 import { SIDEBAR_WIDTH_FULL } from './config'
 import PanelBody from './PanelBody'
-// import PanelFooter from './PanelFooter'
+import PanelFooter from './PanelFooter'
 import { PanelProps, PushedProps } from './types'
 
 interface Props extends PanelProps, PushedProps {

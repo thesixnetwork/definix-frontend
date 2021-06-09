@@ -95,6 +95,7 @@ const GlobalStyle = createGlobalStyle`
     &.flex-row { flex-direction: row; }
     &.flex-row-reverse { flex-direction: row-reverse; }
     &.flex-wrap { flex-wrap: wrap; }
+    &.flex-grow { flex-grow: 1; }
     &.justify-start { justify-content: flex-start; }
     &.justify-end { justify-content: flex-end; }
     &.justify-center { justify-content: center; }
@@ -105,11 +106,16 @@ const GlobalStyle = createGlobalStyle`
     &.align-center { align-items: center; }
     &.align-baseline { align-items: baseline; }
     &.align-stretch { align-items: stretch; }
+
+    .align-self-center { align-self: center; }
+    .align-self-start { align-self: flex-start; }
+    .align-self-end { align-self: flex-end; }
   
     .flex-grow { flex-grow: 1; }
     .flex-shrink { flex-shrink: 0; }
     .col-12 { width: 100%; }
     .col-9 { width: 75%; }
+    .col-8 { width: 66.666%; }
     .col-7 { width: 60%; }
     .col-6 { width: 50%; }
     .col-5 { width: 40%; }

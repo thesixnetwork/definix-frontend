@@ -16,10 +16,11 @@ interface FarmCardActionsProps {
 }
 
 const MiniLogo = styled.img`
-  width: 20px;
-  height: auto;
+  width: 24px;
+  height: 24px;
   margin-right: 8px;
-  display: inline-block;
+  display: block;
+  flex-shrink: 0;
 `
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) => {
@@ -33,40 +34,39 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) 
   const displayBalance = rawEarningsBalance.toLocaleString()
 
   return (
-    <div className={className}>
-      <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
-        <MiniLogo src={miniLogo} alt="" />
-        {`FINIX ${TranslateString(1072, 'Earned')}`}
-      </Text>
+    <div className={`${className} flex justify-space-between`}>
+      <div className="col-8 pr-3">
+        <Text textAlign="left" className="flex align-center" color="textSubtle">
+          <MiniLogo src={miniLogo} alt="" />
+          {`FINIX ${TranslateString(1072, 'Earned')}`}
+        </Text>
 
-      <div className="flex align-center justify-space-between">
         <Heading
           fontSize="24px !important"
           color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
-          className="col-6 pr-3"
+          className="my-3"
           textAlign="left"
         >
           {displayBalance}
         </Heading>
 
-        <Button
-          fullWidth
-          disabled={rawEarningsBalance === 0 || pendingTx}
-          className="col-6"
-          radii="small"
-          onClick={async () => {
-            setPendingTx(true)
-            await onReward()
-            setPendingTx(false)
-          }}
-        >
-          {TranslateString(562, 'Harvest')}
-        </Button>
+        <Text color="textSubtle" textAlign="left" fontSize="12px">
+          = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
+        </Text>
       </div>
-
-      <Text color="textSubtle" textAlign="left" className="mt-1">
-        = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
-      </Text>
+      <Button
+        fullWidth
+        disabled={rawEarningsBalance === 0 || pendingTx}
+        className="col-4 align-self-center"
+        radii="small"
+        onClick={async () => {
+          setPendingTx(true)
+          await onReward()
+          setPendingTx(false)
+        }}
+      >
+        {TranslateString(562, 'Harvest')}
+      </Button>
     </div>
   )
 }
