@@ -34,7 +34,7 @@ const ModalWrapper = styled.div`
   background: url(${({ theme }) => theme.colors.backgroundPolygon});
   background-size: cover;
   background-repeat: no-repeat;
-  background-color: ${({ theme }) => theme.colors.grayBlue};
+  background-color: ${({ theme }) => theme.colors.backgroundRadial};
 `
 
 const Farms: React.FC = () => {
