@@ -458,13 +458,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       if (!d.lpTotalInQuoteToken) {
         totalValue = new BigNumber(0)
       }
-      if (d.quoteTokenSymbol === QuoteToken.BNB) {
-        totalValue = bnbPrice.times(d.lpTotalInQuoteToken)
+      if (d.quoteTokenSymbol === QuoteToken.KLAY) {
+        totalValue = klayPrice.times(d.lpTotalInQuoteToken)
       }
       if (d.quoteTokenSymbol === QuoteToken.FINIX) {
         totalValue = finixPrice.times(d.lpTotalInQuoteToken)
       }
-      if (d.quoteTokenSymbol === QuoteToken.ETH) {
+      if (d.quoteTokenSymbol === QuoteToken.KETH) {
         totalValue = ethPriceUsd.times(d.lpTotalInQuoteToken)
       }
       if (d.quoteTokenSymbol === QuoteToken.SIX) {
@@ -481,13 +481,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       const stakedTotal = new BigNumber(stakedBalance).div(new BigNumber(10).pow(18))
       let totalValue
       totalValue = stakedTotal
-      if (d.stakingTokenName === QuoteToken.BNB) {
-        totalValue = bnbPrice.times(stakedTotal)
+      if (d.stakingTokenName === QuoteToken.KLAY) {
+        totalValue = klayPrice.times(stakedTotal)
       }
       if (d.stakingTokenName === QuoteToken.FINIX) {
         totalValue = finixPrice.times(stakedTotal)
       }
-      if (d.stakingTokenName === QuoteToken.ETH) {
+      if (d.stakingTokenName === QuoteToken.KETH) {
         totalValue = ethPriceUsd.times(stakedTotal)
       }
       if (d.stakingTokenName === QuoteToken.SIX) {
