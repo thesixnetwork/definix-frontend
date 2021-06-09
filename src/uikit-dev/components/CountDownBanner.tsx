@@ -135,7 +135,7 @@ const CountDownBanner = ({
         {endTime && (
           <Text bold color="#ffd157" fontSize="24px" className="mr-2" textAlign="center">
             {`${addLeadingZeros(timer.days)}:${addLeadingZeros(timer.hours)}:${addLeadingZeros(
-              timer.min
+              timer.min,
             )}:${addLeadingZeros(timer.sec)}`}
           </Text>
         )}
