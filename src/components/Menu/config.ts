@@ -1,53 +1,51 @@
 import { MenuEntry } from 'uikit-dev'
 import newIcon from 'uikit-dev/images/for-trading-challenge/New-icon.png'
+import farmBlack from 'uikit-dev/images/for-ui-v2/menu/Farm-Black.png'
+import farmWhite from 'uikit-dev/images/for-ui-v2/menu/Farm-White.png'
+import homeBlack from 'uikit-dev/images/for-ui-v2/menu/Home-Black.png'
+import homeWhite from 'uikit-dev/images/for-ui-v2/menu/Home-White.png'
+import liquidityBlack from 'uikit-dev/images/for-ui-v2/menu/Liquidity-Black.png'
+import liquidityWhite from 'uikit-dev/images/for-ui-v2/menu/Liquidity-White.png'
+import mutualBlack from 'uikit-dev/images/for-ui-v2/menu/Mutual-fund-Black.png'
+import mutualWhite from 'uikit-dev/images/for-ui-v2/menu/Mutual-fund-White.png'
+import swapBlack from 'uikit-dev/images/for-ui-v2/menu/Swap-Black.png'
+import swapWhite from 'uikit-dev/images/for-ui-v2/menu/Swap-White.png'
 import bridgeClick from 'uikit-dev/images/Menu-Icon/bridge-click.png'
 import bridge from 'uikit-dev/images/Menu-Icon/bridge.png'
-import dashboardClick from 'uikit-dev/images/Menu-Icon/dashboard-click.png'
-import dashboard from 'uikit-dev/images/Menu-Icon/dashboard.png'
-import exploreClick from 'uikit-dev/images/Menu-Icon/explore-click.png'
-import explore from 'uikit-dev/images/Menu-Icon/explore.png'
-import farmClick from 'uikit-dev/images/Menu-Icon/farm-click.png'
-import farm from 'uikit-dev/images/Menu-Icon/farm.png'
 import gitbookClick from 'uikit-dev/images/Menu-Icon/Gitbook-click.png'
 import gitbook from 'uikit-dev/images/Menu-Icon/Gitbook.png'
-import liquidityClick from 'uikit-dev/images/Menu-Icon/liquidity-click.png'
-import liquidity from 'uikit-dev/images/Menu-Icon/liquidity.png'
 import partnerClick from 'uikit-dev/images/Menu-Icon/partnership-click.png'
 import partner from 'uikit-dev/images/Menu-Icon/partnership.png'
-import portfolioClick from 'uikit-dev/images/Menu-Icon/portfolio-click.png'
-import portfolio from 'uikit-dev/images/Menu-Icon/portfolio.png'
-import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
-import swap from 'uikit-dev/images/Menu-Icon/swap.png'
 
 const config: MenuEntry[] = [
   {
     label: 'Home',
-    icon: dashboardClick,
-    iconActive: dashboard,
+    icon: homeBlack,
+    iconActive: homeWhite,
     href: '/',
     notHighlight: false,
     newTab: false,
   },
   {
     label: 'Exchange',
-    icon: swapClick,
-    iconActive: swap,
+    icon: swapBlack,
+    iconActive: swapWhite,
     href: 'https://exchange.definix.com/#/swap',
     notHighlight: false,
     newTab: false,
   },
   {
     label: 'Liquidity',
-    icon: liquidityClick,
-    iconActive: liquidity,
+    icon: liquidityBlack,
+    iconActive: liquidityWhite,
     href: 'https://exchange.definix.com/#/liquidity',
     notHighlight: false,
     newTab: false,
   },
   {
     label: 'Yield Farming',
-    icon: farmClick,
-    iconActive: farm,
+    icon: farmBlack,
+    iconActive: farmWhite,
     href: '/farm',
     notHighlight: false,
     newTab: false,
@@ -87,26 +85,26 @@ const config: MenuEntry[] = [
   },
   {
     label: 'Mutual Fund',
-    icon: portfolioClick,
-    iconActive: portfolio,
+    icon: mutualBlack,
+    iconActive: mutualWhite,
     href: '/info',
     notHighlight: false,
     newTab: false,
     items: [
       {
-        label: 'Portfolio',
+        label: 'Investors',
         href: '/info',
         notHighlight: true,
         newTab: false,
       },
       {
-        label: 'Watchlist',
+        label: 'Fund Managers',
         href: '/info',
         notHighlight: true,
         newTab: false,
       },
       {
-        label: 'Explore',
+        label: 'Network Monitor',
         href: '/info',
         notHighlight: true,
         newTab: false,
@@ -121,22 +119,22 @@ const config: MenuEntry[] = [
     notHighlight: true,
     newTab: false,
   },
-  {
-    label: 'Tutorial',
-    icon: exploreClick,
-    iconActive: explore,
-    href: '#',
-    notHighlight: true,
-    newTab: false,
-  },
-  {
-    label: 'Blogs',
-    icon: exploreClick,
-    iconActive: explore,
-    href: '#',
-    notHighlight: true,
-    newTab: true,
-  },
+  // {
+  //   label: 'Tutorial',
+  //   icon: exploreClick,
+  //   iconActive: explore,
+  //   href: '#',
+  //   notHighlight: true,
+  //   newTab: false,
+  // },
+  // {
+  //   label: 'Blogs',
+  //   icon: exploreClick,
+  //   iconActive: explore,
+  //   href: '#',
+  //   notHighlight: true,
+  //   newTab: true,
+  // },
   {
     label: 'Gitbook',
     icon: gitbookClick,

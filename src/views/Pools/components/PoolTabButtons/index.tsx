@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Button, CardViewIcon, ListViewIcon, Text, Toggle } from 'uikit-dev'
+import { Button, CardViewIcon, ListViewIcon, Text, Toggle, useMatchBreakpoints } from 'uikit-dev'
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,33 +34,36 @@ const ToggleWrapper = styled.div`
 
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, listView, setListView }) => {
   const TranslateString = useI18n()
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl
 
   return (
     <Wrapper>
-      <div className="flex">
-        <Button
-          size="sm"
-          onClick={() => {
-            setListView(false)
-          }}
-          variant={!listView ? 'primary' : 'secondary'}
-          startIcon={<CardViewIcon color={!listView ? 'white' : 'primary'} />}
-          className="mr-2"
-        >
-          Card View
-        </Button>
-        <Button
-          size="sm"
-          onClick={() => {
-            setListView(true)
-          }}
-          startIcon={<ListViewIcon color={listView ? 'white' : 'primary'} />}
-          variant={listView ? 'primary' : 'secondary'}
-        >
-          List View
-        </Button>
-      </div>
-
+      {!isMobile && (
+        <div className="flex">
+          <Button
+            size="sm"
+            onClick={() => {
+              setListView(true)
+            }}
+            startIcon={<ListViewIcon color={listView ? 'white' : 'primary'} />}
+            variant={listView ? 'primary' : 'secondary'}
+            className="mr-2"
+          >
+            List View
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => {
+              setListView(false)
+            }}
+            variant={!listView ? 'primary' : 'secondary'}
+            startIcon={<CardViewIcon color={!listView ? 'white' : 'primary'} />}
+          >
+            Card View
+          </Button>
+        </div>
+      )}
       <div className="flex mt-3">
         <ToggleWrapper>
           <Toggle checked={liveOnly} onChange={() => setLiveOnly(!liveOnly)} />

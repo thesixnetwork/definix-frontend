@@ -64,19 +64,19 @@ const PanelFooter: React.FC<Props> = ({
   langs,
   setLang,
 }) => {
-  if (!isPushed) {
-    return (
-      <Container>
-        <IconButton variant="text" onClick={() => pushNav(true)}>
-          <CogIcon />
-        </IconButton>
-      </Container>
-    )
-  }
+  // if (!isPushed) {
+  //   return (
+  //     <Container>
+  //       <IconButton variant="text" onClick={() => pushNav(true)}>
+  //         <CogIcon />
+  //       </IconButton>
+  //     </Container>
+  //   )
+  // }
 
   return (
     <Container>
-      <SocialEntry>
+      {/* <SocialEntry>
         {finixPriceUsd ? (
           <PriceLink href="https://definixswap.info/token/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82" target="_blank">
             <DefinixRoundIcon width="24px" mr="8px" />
@@ -108,7 +108,7 @@ const PanelFooter: React.FC<Props> = ({
             )
           })}
         </Flex>
-      </SocialEntry>
+      </SocialEntry> */}
       <SettingsEntry>
         <Button variant="text" onClick={() => toggleTheme(!isDark)}>
           {/* alignItems center is a Safari fix */}
@@ -120,7 +120,7 @@ const PanelFooter: React.FC<Props> = ({
             <MoonIcon color={isDark ? 'text' : 'textDisabled'} width="24px" />
           </Flex>
         </Button>
-        <Dropdown
+        {/* <Dropdown
           position="top-right"
           target={
             <Button variant="text" startIcon={<LanguageIcon color="textSubtle" width="24px" />}>
@@ -139,7 +139,7 @@ const PanelFooter: React.FC<Props> = ({
               {lang.language}
             </MenuButton>
           ))}
-        </Dropdown>
+        </Dropdown> */}
       </SettingsEntry>
     </Container>
   )
