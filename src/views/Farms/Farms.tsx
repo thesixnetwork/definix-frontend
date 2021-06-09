@@ -58,7 +58,7 @@ const Farms: React.FC = () => {
   const { fastRefresh } = useRefresh()
 
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [listView, setListView] = useState(false)
+  const [listView, setListView] = useState(true)
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
