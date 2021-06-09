@@ -523,7 +523,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   // CHART
   const chartColors = []
   const defaultColor = ['#0973B9', '#E2B23A', '#24B181']
-  defaultColor.splice(0, topThree.length).forEach(c => {
+  defaultColor.splice(0, topThree.length).forEach((c) => {
     chartColors.push(c)
   })
   const otherColor = '#8C90A5'
@@ -622,14 +622,16 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </Legend>
                   ))}
 
-                  {other > 0 && <Legend>
-                    <Text fontSize="12px" color="textSubtle">
-                      OTHER
-                    </Text>
-                    <Text bold style={{ paddingLeft: '80px' }}>
-                      {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                    </Text>
-                  </Legend>}
+                  {other > 0 && (
+                    <Legend>
+                      <Text fontSize="12px" color="textSubtle">
+                        OTHER
+                      </Text>
+                      <Text bold style={{ paddingLeft: '80px' }}>
+                        {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                      </Text>
+                    </Legend>
+                  )}
                 </div>
               </div>
             </>
