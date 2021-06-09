@@ -228,6 +228,21 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
   },
   {
+    pid: 15,
+    lpSymbol: 'KDAI-KUSDT LP',
+    lpAddresses: {
+      1001: process.env.REACT_APP_KDAI_KUSDT_LP_TESTNET,
+      8217: process.env.REACT_APP_KDAI_KUSDT_LP_MAINNET,
+    },
+    tokenSymbol: 'KDAI',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.KUSDT,
+    quoteTokenAdresses: contracts.kusdt,
+  },
+  {
     pid: 16,
     lpSymbol: 'KBNB-KUSDT LP',
     lpAddresses: {
