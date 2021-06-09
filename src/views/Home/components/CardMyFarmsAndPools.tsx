@@ -12,6 +12,8 @@ import {
   usePriceEthBusd,
   usePriceFinixUsd,
   usePriceSixUsd,
+  usePoolsIsFetched,
+  useFarmsIsFetched,
 } from 'state/hooks'
 import _ from 'lodash'
 
@@ -172,7 +174,7 @@ const Dot = styled.div`
 `
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
@@ -180,6 +182,15 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+
+  const isPoolFetched = usePoolsIsFetched()
+  const isFarmFetched = useFarmsIsFetched()
+
+  useEffect(() => {
+    if (isFarmFetched && isPoolFetched) {
+      setIsLoading(false)
+    }
+  }, [isPoolFetched, isFarmFetched])
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -460,7 +471,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         totalValue = sixPrice.times(d.lpTotalInQuoteToken)
       }
 
-      return new BigNumber(totalValue).div(d.lpTotalInQuoteToken).times(stakedTotalInQuoteToken)
+      const earningRaw = _.get(d, 'userData.earnings', 0)
+      const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
+      const totalEarning = finixPrice.times(earning)
+      return new BigNumber(totalValue).div(d.lpTotalInQuoteToken).times(stakedTotalInQuoteToken).plus(totalEarning)
     }
     if (typeof d.sousId === 'number') {
       const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
@@ -479,7 +493,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       if (d.stakingTokenName === QuoteToken.SIX) {
         totalValue = sixPrice.times(stakedTotal)
       }
-      return new BigNumber(totalValue)
+      const earningRaw = _.get(d, 'userData.pendingReward', 0)
+      const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
+      const totalEarning = finixPrice.times(earning)
+      return new BigNumber(totalValue).plus(totalEarning)
     }
     return new BigNumber(0)
   }
@@ -504,7 +521,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const other = result.reduce((a, b) => a + b, 0)
 
   // CHART
-  const chartColors = ['#0973B9', '#E2B23A', '#24B181', '#8C90A5']
+  const chartColors = []
+  const defaultColor = ['#0973B9', '#E2B23A', '#24B181']
+  defaultColor.splice(0, topThree.length).forEach(c => {
+    chartColors.push(c)
+  })
+  const otherColor = '#8C90A5'
+  if (other > 0) chartColors.push(otherColor)
   const chart = {
     data: {
       labels: stackedOnlyFarms.map((d) => d.lpSymbol),
@@ -599,14 +622,14 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </Legend>
                   ))}
 
-                  <Legend>
+                  {other > 0 && <Legend>
                     <Text fontSize="12px" color="textSubtle">
                       OTHER
                     </Text>
                     <Text bold style={{ paddingLeft: '80px' }}>
                       {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
                     </Text>
-                  </Legend>
+                  </Legend>}
                 </div>
               </div>
             </>
