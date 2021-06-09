@@ -66,7 +66,7 @@ export const darkColors: Colors = {
   backgroundBlueGradient: 'linear-gradient(#0D418E, #349BE7)',
 
   contrast: '#FFFFFF',
-  invertedContrast: '#191326',
+  invertedContrast: '#2c2c2c',
   input: '#483f5a',
   primaryDark: '#0098A1',
   tertiary: '#2c2c2c',
