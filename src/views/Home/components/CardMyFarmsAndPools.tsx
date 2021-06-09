@@ -434,31 +434,54 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   // Net Worth
   const getNetWorth = (d) => {
-    const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
-    const stakedTotalInQuoteToken = new BigNumber(stakedBalance)
-      .div(new BigNumber(10).pow(18))
-      .times(new BigNumber(2))
-      .times(d.lpTokenRatio)
-    // const displayBalance = rawStakedBalance.toLocaleString()
-    let totalValue
-    if (!d.lpTotalInQuoteToken) {
-      totalValue = new BigNumber(0)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.BNB) {
-      totalValue = bnbPrice.times(stakedTotalInQuoteToken)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.FINIX) {
-      totalValue = finixPrice.times(stakedTotalInQuoteToken)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.ETH) {
-      totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
-    }
-    if (d.quoteTokenSymbol === QuoteToken.SIX) {
-      totalValue = sixPrice.times(stakedTotalInQuoteToken)
-    }
+    if (typeof d.pid === 'number') {
+      // farm
+      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const stakedTotalInQuoteToken = new BigNumber(stakedBalance)
+        .div(new BigNumber(10).pow(18))
+        .times(new BigNumber(2))
+        .times(d.lpTokenRatio)
+      // const displayBalance = rawStakedBalance.toLocaleString()
+      let totalValue
+      totalValue = d.lpTotalInQuoteToken
+      if (!d.lpTotalInQuoteToken) {
+        totalValue = new BigNumber(0)
+      }
+      if (d.quoteTokenSymbol === QuoteToken.BNB) {
+        totalValue = bnbPrice.times(d.lpTotalInQuoteToken)
+      }
+      if (d.quoteTokenSymbol === QuoteToken.FINIX) {
+        totalValue = finixPrice.times(d.lpTotalInQuoteToken)
+      }
+      if (d.quoteTokenSymbol === QuoteToken.ETH) {
+        totalValue = ethPriceUsd.times(d.lpTotalInQuoteToken)
+      }
+      if (d.quoteTokenSymbol === QuoteToken.SIX) {
+        totalValue = sixPrice.times(d.lpTotalInQuoteToken)
+      }
 
-    totalValue = stakedTotalInQuoteToken
-    return totalValue
+      return new BigNumber(totalValue).div(d.lpTotalInQuoteToken).times(stakedTotalInQuoteToken)
+    }
+    if (typeof d.sousId === 'number') {
+      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const stakedTotal = new BigNumber(stakedBalance).div(new BigNumber(10).pow(18))
+      let totalValue
+      totalValue = stakedTotal
+      if (d.stakingTokenName === QuoteToken.BNB) {
+        totalValue = bnbPrice.times(stakedTotal)
+      }
+      if (d.stakingTokenName === QuoteToken.FINIX) {
+        totalValue = finixPrice.times(stakedTotal)
+      }
+      if (d.stakingTokenName === QuoteToken.ETH) {
+        totalValue = ethPriceUsd.times(stakedTotal)
+      }
+      if (d.stakingTokenName === QuoteToken.SIX) {
+        totalValue = sixPrice.times(stakedTotal)
+      }
+      return new BigNumber(totalValue)
+    }
+    return new BigNumber(0)
   }
 
   const dataFarms = stackedOnlyFarms.map((f) => ({
@@ -525,7 +548,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <Heading fontSize="24px !important">
               {(() => {
-                const allNetWorth = stackedOnlyFarms.map((f) => {
+                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools].map((f) => {
                   return getNetWorth(f)
                 })
                 // eslint-disable-next-line
