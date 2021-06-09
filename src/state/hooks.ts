@@ -144,7 +144,7 @@ export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
   const sixUsd = usePriceSixUsd()
-  console.log(">>>>>>>>>>>>>>>>>>>>>>>>> usePriceSixKusdt = ", sixUsd.toNumber());
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>> usePriceSixKusdt = ', sixUsd.toNumber())
   // const pancakeBnbPrice = usePricePancakeBnbUsd()
   // const selectedPools = pools.find((pool) => pool.sousId === 6) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
   const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
@@ -185,66 +185,66 @@ export const usePriceTVL = (): BigNumber => {
   //   return totalStaked.times(sixUsd)
   //   // eslint-disable-next-line
   // } else {
-    // let totalStaked = new BigNumber(0)
-    // switch (typeof selectedPools.totalStaked) {
-    //   case 'undefined':
-    //     totalStaked = new BigNumber(0)
-    //     break
-    //   case 'string':
-    //     totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
-    //     break
-    //   default:
-    //     totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
-    //     break
-    // }
-    let totalStakedFinixFinix = new BigNumber(0)
-    switch (typeof selectedPoolsFinixFinix.totalStaked) {
-      case 'undefined':
-        totalStakedFinixFinix = new BigNumber(0)
-        break
-      case 'string':
-        totalStakedFinixFinix = new BigNumber(
-          (parseFloat(selectedPoolsFinixFinix.totalStaked) || 0) / 10 ** selectedPoolsFinixFinix.tokenDecimals,
-        )
-        break
-      default:
-        totalStakedFinixFinix = selectedPoolsFinixFinix.totalStaked.times(new BigNumber(10).pow(18))
-        break
-    }
-    let totalStakedSixFinix = new BigNumber(0)
-    switch (typeof selectedPoolsSixFinix.totalStaked) {
-      case 'undefined':
-        totalStakedSixFinix = new BigNumber(0)
-        break
-      case 'string':
-        totalStakedSixFinix = new BigNumber(
-          (parseFloat(selectedPoolsSixFinix.totalStaked) || 0) / 10 ** selectedPoolsSixFinix.tokenDecimals,
-        )
-        break
-      default:
-        totalStakedSixFinix = selectedPoolsSixFinix.totalStaked.times(new BigNumber(10).pow(18))
-        break
-    }
-    const wklayKusdtPrice = new BigNumber(wklayKusdtQuote)
-    const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
-    const sixKusdtPrice = new BigNumber(sixKusdtQuote)
-    const sixWklayPrice = new BigNumber(sixWklayQuote).times(klayUsdPrice)
-    const finixKusdtPrice = new BigNumber(finixKusdtQuote)
-    const finixWklayPrice = new BigNumber(finixWklayQuote).times(finixUsdPrice)
-    const finixKspPrice = new BigNumber(finixKspQuote).times(finixUsdPrice)
-    return BigNumber.sum.apply(null, [
-      sixFinixPrice,
-      sixKusdtPrice,
-      sixWklayPrice,
-      finixKusdtPrice,
-      finixWklayPrice,
-      wklayKusdtPrice,
-      finixKspPrice,
-      // kdaiKusdtPrice,
-      // totalStaked.times(sixUsd).toNumber(),
-      totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
-      totalStakedSixFinix.times(sixUsd).toNumber(),
-    ])
+  // let totalStaked = new BigNumber(0)
+  // switch (typeof selectedPools.totalStaked) {
+  //   case 'undefined':
+  //     totalStaked = new BigNumber(0)
+  //     break
+  //   case 'string':
+  //     totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
+  //     break
+  //   default:
+  //     totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
+  //     break
+  // }
+  let totalStakedFinixFinix = new BigNumber(0)
+  switch (typeof selectedPoolsFinixFinix.totalStaked) {
+    case 'undefined':
+      totalStakedFinixFinix = new BigNumber(0)
+      break
+    case 'string':
+      totalStakedFinixFinix = new BigNumber(
+        (parseFloat(selectedPoolsFinixFinix.totalStaked) || 0) / 10 ** selectedPoolsFinixFinix.tokenDecimals,
+      )
+      break
+    default:
+      totalStakedFinixFinix = selectedPoolsFinixFinix.totalStaked.times(new BigNumber(10).pow(18))
+      break
+  }
+  let totalStakedSixFinix = new BigNumber(0)
+  switch (typeof selectedPoolsSixFinix.totalStaked) {
+    case 'undefined':
+      totalStakedSixFinix = new BigNumber(0)
+      break
+    case 'string':
+      totalStakedSixFinix = new BigNumber(
+        (parseFloat(selectedPoolsSixFinix.totalStaked) || 0) / 10 ** selectedPoolsSixFinix.tokenDecimals,
+      )
+      break
+    default:
+      totalStakedSixFinix = selectedPoolsSixFinix.totalStaked.times(new BigNumber(10).pow(18))
+      break
+  }
+  const wklayKusdtPrice = new BigNumber(wklayKusdtQuote)
+  const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
+  const sixKusdtPrice = new BigNumber(sixKusdtQuote)
+  const sixWklayPrice = new BigNumber(sixWklayQuote).times(klayUsdPrice)
+  const finixKusdtPrice = new BigNumber(finixKusdtQuote)
+  const finixWklayPrice = new BigNumber(finixWklayQuote).times(finixUsdPrice)
+  const finixKspPrice = new BigNumber(finixKspQuote).times(finixUsdPrice)
+  return BigNumber.sum.apply(null, [
+    sixFinixPrice,
+    sixKusdtPrice,
+    sixWklayPrice,
+    finixKusdtPrice,
+    finixWklayPrice,
+    wklayKusdtPrice,
+    finixKspPrice,
+    // kdaiKusdtPrice,
+    // totalStaked.times(sixUsd).toNumber(),
+    totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
+    totalStakedSixFinix.times(sixUsd).toNumber(),
+  ])
   // }
 }
 
