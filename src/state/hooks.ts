@@ -105,11 +105,8 @@ export const usePriceKlayKusdt = (): BigNumber => {
 }
 
 export const usePriceSixKusdt = (): BigNumber => {
-  // const pid = 5 // SIX-KUSDT LP
-  const pid = parseInt(process.env.REACT_APP_SIX_KUSDT_PID, 10) // SIX-KUSDT LP
-  const farm = useFarmFromPid(pid)
-  if (!farm) return ZERO
-  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
+  const sixPrice = useSelector((state: State) => state.finixPrice.sixPrice)
+  return new BigNumber(sixPrice)
 }
 
 export const usePriceFinixKusdt = (): BigNumber => {
@@ -147,8 +144,9 @@ export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
   const sixUsd = usePriceSixUsd()
+  console.log(">>>>>>>>>>>>>>>>>>>>>>>>> usePriceSixKusdt = ", sixUsd.toNumber());
   // const pancakeBnbPrice = usePricePancakeBnbUsd()
-  const selectedPools = pools.find((pool) => pool.sousId === 6) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
+  // const selectedPools = pools.find((pool) => pool.sousId === 6) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
   const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
     totalStaked: new BigNumber(0),
     tokenDecimals: 18,
@@ -167,26 +165,26 @@ export const usePriceTVL = (): BigNumber => {
   const kdaiKusdtQuote = useSelector((state: State) => state.finixPrice.kdaiKusdtQuote)
   const finixUsdPrice = usePriceFinixUsd()
   const klayUsdPrice = usePriceKlayUsd()
-  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-    : new Date().getTime()
-  const currentTime = new Date().getTime()
-  if (currentTime < phrase2TimeStamp) {
-    let totalStaked = new BigNumber(0)
-    switch (typeof selectedPools.totalStaked) {
-      case 'undefined':
-        totalStaked = new BigNumber(0)
-        break
-      case 'string':
-        totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
-        break
-      default:
-        totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
-        break
-    }
-    return totalStaked.times(sixUsd)
-    // eslint-disable-next-line
-  } else {
+  // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+  //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+  //   : new Date().getTime()
+  // const currentTime = new Date().getTime()
+  // if (currentTime < phrase2TimeStamp) {
+  //   let totalStaked = new BigNumber(0)
+  //   switch (typeof selectedPools.totalStaked) {
+  //     case 'undefined':
+  //       totalStaked = new BigNumber(0)
+  //       break
+  //     case 'string':
+  //       totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
+  //       break
+  //     default:
+  //       totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
+  //       break
+  //   }
+  //   return totalStaked.times(sixUsd)
+  //   // eslint-disable-next-line
+  // } else {
     // let totalStaked = new BigNumber(0)
     // switch (typeof selectedPools.totalStaked) {
     //   case 'undefined':
@@ -247,7 +245,7 @@ export const usePriceTVL = (): BigNumber => {
       totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
       totalStakedSixFinix.times(sixUsd).toNumber(),
     ])
-  }
+  // }
 }
 
 export const usePriceKethKlay = (): BigNumber => {

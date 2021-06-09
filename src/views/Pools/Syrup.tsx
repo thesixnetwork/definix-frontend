@@ -10,7 +10,7 @@ import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
+import { useFarms, usePools, usePriceFinixUsd, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Heading, Text } from 'uikit-dev'
 import bg from 'uikit-dev/images/for-ui-v2/bg.png'
@@ -45,6 +45,7 @@ const Farm: React.FC = () => {
   const farms = useFarms()
   const pools = usePools(account)
   const sixPriceUSD = usePriceSixUsd()
+  const finixPriceUSD = usePriceFinixUsd()
   const klayPriceUSD = usePriceKlayKusdt()
   const ethPriceKlay = usePriceKethKlay()
   const block = useBlock()
@@ -73,7 +74,7 @@ const Farm: React.FC = () => {
 
   const poolsWithApy = pools.map((pool) => {
     const isKlayPool = pool.poolCategory === PoolCategory.KLAYTN
-    let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
     let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
       case 0:
@@ -96,19 +97,6 @@ const Farm: React.FC = () => {
         break
       case 6:
         stakingTokenFarm = farms.find((s) => s.pid === 6)
-        break
-      default:
-        break
-    }
-    switch (pool.sousId) {
-      case 0:
-      case 1:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-        rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
         break
       default:
         break
@@ -164,50 +152,15 @@ const Farm: React.FC = () => {
         const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
         const currentTotalStaked = getBalanceNumber(pool.totalStaked)
-        apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+        const finixInSix = new BigNumber(currentTotalStaked).times(sixPriceUSD).div(finixPriceUSD)
+        apy = finixRewardPerYear.div(finixInSix).times(100)
         break
       }
       case 2:
       case 3:
       case 4:
       case 5:
-      case 6: {
-        const { startBlock, endBlock, rewardPerBlock, totalStaked } = pool
-        const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
-        const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)
-        const currentBlockNumber = typeof block === 'number' ? block : parseInt(block, 10)
-        const totalDiffBlock = endBlockNumber - startBlockNumber
-        const remainBlock = endBlockNumber - currentBlockNumber
-        const remainTimeSec = remainBlock * 3
-        const totalDiffBlockCeil =
-          totalDiffBlock % 1200 > 1100 ? totalDiffBlock + (1200 - (totalDiffBlock % 1200)) : totalDiffBlock
-        const currentDiffBlock = currentBlockNumber - startBlockNumber
-        const totalReward = totalDiffBlockCeil * (rewardPerBlock / 10 ** 18)
-        const alreadyRewarded = currentDiffBlock * (rewardPerBlock / 10 ** 18)
-        const remainReward = totalReward - alreadyRewarded
-
-        const B33 = remainReward
-        const B34 = sixPriceUSD
-
-        const E33 = stakingTokenFarm.lpTotalSupply
-        const E34 = totalStaked
-        const E35 = highestToken
-
-        const F34 = new BigNumber(E34).div(new BigNumber(E33))
-        const F35 = new BigNumber(E35).times(F34)
-
-        const B35 = F35.times(new BigNumber(B34)).times(2)
-        const B38 = 365 * 24 * 60 * 60
-
-        apy = new BigNumber(B33)
-          .times(new BigNumber(B34))
-          .div(B35)
-          .times(new BigNumber(B38))
-          .div(new BigNumber(remainTimeSec))
-          .times(100)
-
-        break
-      }
+      case 6:
       default:
         break
     }

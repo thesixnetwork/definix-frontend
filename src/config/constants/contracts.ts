@@ -1,7 +1,7 @@
 export default {
   definixHerodotus: {
-    1001: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
-    8217: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
+    1001: process.env.REACT_APP_HERODOTUS_TESTNET,
+    8217: process.env.REACT_APP_HERODOTUS_TESTNET,
   },
   herodotus: {
     1001: process.env.REACT_APP_HERODOTUS_TESTNET,
