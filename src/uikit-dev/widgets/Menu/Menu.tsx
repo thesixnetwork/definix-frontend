@@ -278,27 +278,27 @@ const Menu: React.FC<NavProps> = ({
                 className="network px-2"
               >
                 <Text fontSize="12px" fontWeight="500">
-                    Klaytn Chain
+                  Klaytn Chain
                 </Text>
               </Button>
             }
           >
-              <MenuButton
-                href="https://klaytn.definix.com"
-                variant="text"
-                startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
-                className="color-primary mb-2"
-              >
-                Klaytn Chain
-              </MenuButton>
-              <MenuButton
-                href="https://bsc.definix.com"
-                variant="text"
-                startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
-                className="color-primary mb-2"
-              >
-                Binance Smart Chain
-              </MenuButton>
+            <MenuButton
+              href="https://klaytn.definix.com"
+              variant="text"
+              startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
+              className="color-primary mb-2"
+            >
+              Klaytn Chain
+            </MenuButton>
+            <MenuButton
+              href="https://bsc.definix.com"
+              variant="text"
+              startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
+              className="color-primary mb-2"
+            >
+              Binance Smart Chain
+            </MenuButton>
           </Dropdown>
         </Flex>
 
