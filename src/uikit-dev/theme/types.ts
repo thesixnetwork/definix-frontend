@@ -52,15 +52,20 @@ export type Colors = {
   invertedContrast: string
   input: string
   background: string
+  backgroundHeader: string
+  backgroundSideMenu: string
+  backgroundFooter: string
   backgroundDisabled: string
   backgroundBox: string
   backgroundGray: string
   backgroundRadial: string
+  backgroundPolygon: string
   backgroundBlueGradient: string
   text: string
   textDisabled: string
   textSubtle: string
   card: string
+  cardFooter: string
   border: string
   white: string
   placeholder: string

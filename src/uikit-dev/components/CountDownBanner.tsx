@@ -6,9 +6,10 @@ import { Text } from './Text'
 
 const Banner = styled.div`
   background: ${({ theme }) => theme.colors.primary};
-  padding: 8px 24px;
+  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  padding: 4px 24px;
 
-  * {
+  > div > * {
     margin: 4px;
   }
 
@@ -135,7 +136,7 @@ const CountDownBanner = ({
         {endTime && (
           <Text bold color="#ffd157" fontSize="24px" className="mr-2" textAlign="center">
             {`${addLeadingZeros(timer.days)}:${addLeadingZeros(timer.hours)}:${addLeadingZeros(
-              timer.min
+              timer.min,
             )}:${addLeadingZeros(timer.sec)}`}
           </Text>
         )}

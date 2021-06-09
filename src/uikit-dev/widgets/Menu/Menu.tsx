@@ -54,7 +54,7 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   z-index: 20;
   height: ${MENU_HEIGHT}px;
   transform: translate3d(0, 0, 0);
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundHeader};
 
   &:before {
     content: '';
@@ -81,7 +81,7 @@ const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   flex-grow: 1;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 124px);
@@ -95,7 +95,7 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   max-width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 12px;

@@ -1,25 +1,26 @@
 import React, { useState } from 'react'
-import Lottie from 'react-lottie'
+// import Lottie from 'react-lottie'
 import styled from 'styled-components'
-import moon from '../../animation/moon.json'
-import sun from '../../animation/sun.json'
+// import moon from '../../animation/moon.json'
+// import sun from '../../animation/sun.json'
 import Button from '../../components/Button/Button'
 import { ChevronDownIcon } from '../../components/Svg'
 import Text from '../../components/Text/Text'
 import { MENU_ENTRY_HEIGHT } from './config'
+import { MoonIcon, SunIcon } from './icons'
 import { PanelProps, PushedProps } from './types'
 
-const sunOptions = {
-  loop: false,
-  autoplay: false,
-  animationData: sun,
-}
+// const sunOptions = {
+//   loop: false,
+//   autoplay: false,
+//   animationData: sun,
+// }
 
-const moonOptions = {
-  loop: false,
-  autoplay: false,
-  animationData: moon,
-}
+// const moonOptions = {
+//   loop: false,
+//   autoplay: false,
+//   animationData: moon,
+// }
 
 interface Props extends PanelProps, PushedProps {}
 
@@ -175,6 +176,7 @@ const PanelFooter: React.FC<Props> = ({
               variant="text"
               radii="card"
               endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
+              padding="0 16px"
               disabled
             >
               <Text color="textSubtle" bold>
@@ -198,6 +200,7 @@ const PanelFooter: React.FC<Props> = ({
         <ChangeLanguage
           variant="text"
           radii="card"
+          padding="0 16px"
           endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
           disabled
         >
@@ -207,10 +210,11 @@ const PanelFooter: React.FC<Props> = ({
         </ChangeLanguage>
         <ChangeTheme isDark={isDark}>
           <Button variant="text" size="sm" radii="card" onClick={() => clickChangeTheme(false)}>
-            <Lottie options={sunOptions} height={56} width={56} isStopped={isStopped} direction={direction} speed={3} />
+            {/* <Lottie options={sunOptions} height={56} width={56} isStopped={isStopped} direction={direction} speed={3} /> */}
+            <SunIcon color={isDark ? 'textSubtle' : 'white !important'} />
           </Button>
           <Button variant="text" size="sm" radii="card" onClick={() => clickChangeTheme(true)}>
-            <Lottie
+            {/* <Lottie
               options={moonOptions}
               height={56}
               width={56}
@@ -218,7 +222,8 @@ const PanelFooter: React.FC<Props> = ({
               direction={direction}
               delay={0}
               speed={3}
-            />
+            /> */}
+            <MoonIcon color={!isDark ? 'textSubtle' : 'white !important'} />
           </Button>
         </ChangeTheme>
       </SettingsEntry>

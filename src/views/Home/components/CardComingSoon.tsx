@@ -5,7 +5,7 @@ import astro from 'uikit-dev/images/for-ui-v2/astro.png'
 
 const StyledBanner = styled(Card)`
   width: 100%;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.card};
   padding: 48px 24px;
   position: relative;
   overflow: visible;

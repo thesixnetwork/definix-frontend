@@ -13,7 +13,6 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
-import bg from 'uikit-dev/images/for-ui-v2/bg.png'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
@@ -32,7 +31,7 @@ const ModalWrapper = styled.div`
   bottom: 0;
   left: 0;
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
-  background: url(${bg});
+  background: url(${({ theme }) => theme.colors.backgroundPolygon});
   background-size: cover;
   background-repeat: no-repeat;
   background-color: ${({ theme }) => theme.colors.grayBlue};
