@@ -21,7 +21,7 @@ const Container = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
-  padding: 12px;
+  padding: 4px 12px 12px 12px;
 `
 
 const PanelBody: React.FC<Props> = (props) => {
@@ -86,7 +86,9 @@ const PanelBody: React.FC<Props> = (props) => {
   return (
     <Container>
       {links.map((link) => (
-        <MenuItem menu={link} key={link.label} />
+        <div className="py-2 bd-b">
+          <MenuItem menu={link} key={link.label} />
+        </div>
       ))}
 
       {/* <BorderBox>

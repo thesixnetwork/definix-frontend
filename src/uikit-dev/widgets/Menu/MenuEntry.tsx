@@ -33,7 +33,6 @@ const MenuEntry = styled.div<Props>`
   background-color: ${({ isActive, theme }) => (isActive ? theme.colors.primary : 'transparent')};
   color: ${({ isActive, theme }) => (isActive ? theme.colors.white : theme.colors.text)};
   font-weight: ${({ isActive }) => (isActive ? 'bold' : 'normal')};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ isActive, theme }) => (isActive ? theme.radii.small : 0)};
 
   &.new {
