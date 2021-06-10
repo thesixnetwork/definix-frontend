@@ -47,7 +47,7 @@ const FinixStats = () => {
         <Row>
           <Row className="mb-0">
             <Text small>{TranslateString(536, 'Total FINIX Supply')}</Text>
-            <Helper text="Does not include burned" className="ml-2" />
+            <Helper text="Does not include burned" className="ml-2" position="top" />
           </Row>
           {finixSupply && <CardValue fontSize="18px" fontWeight="bold" value={finixSupply} />}
         </Row>
