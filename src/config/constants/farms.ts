@@ -124,21 +124,6 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 8,
-    lpSymbol: 'KLAY-KUSDT LP',
-    lpAddresses: {
-      1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
-      8217: process.env.REACT_APP_KLAY_KUSDT_LP_MAINNET,
-    },
-    tokenSymbol: 'KLAY',
-    tokenAddresses: {
-      1001: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
-      8217: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
-    },
-    quoteTokenSymbol: QuoteToken.KUSDT,
-    quoteTokenAdresses: contracts.kusdt,
-  },
-  {
-    pid: 9,
     lpSymbol: 'KLAY-KETH LP',
     lpAddresses: {
       1001: process.env.REACT_APP_KLAY_KETH_LP_TESTNET,
@@ -153,7 +138,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wklay,
   },
   {
-    pid: 10,
+    pid: 9,
     lpSymbol: 'KLAY-KBTC LP',
     lpAddresses: {
       1001: process.env.REACT_APP_KLAY_KBTC_LP_TESTNET,
@@ -168,7 +153,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wklay,
   },
   {
-    pid: 11,
+    pid: 10,
     lpSymbol: 'KLAY-KXRP LP',
     lpAddresses: {
       1001: process.env.REACT_APP_KLAY_KXRP_LP_TESTNET,
@@ -183,7 +168,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.wklay,
   },
   {
-    pid: 12,
+    pid: 11,
     lpSymbol: 'KETH-KUSDT LP',
     lpAddresses: {
       1001: process.env.REACT_APP_KETH_KUSDT_LP_TESTNET,
@@ -198,7 +183,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
   },
   {
-    pid: 13,
+    pid: 12,
     lpSymbol: 'KBTC-KUSDT LP',
     lpAddresses: {
       1001: process.env.REACT_APP_KBTC_KUSDT_LP_TESTNET,
@@ -213,7 +198,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.kusdt,
   },
   {
-    pid: 14,
+    pid: 13,
     lpSymbol: 'KXRP-KUSDT LP',
     lpAddresses: {
       1001: process.env.REACT_APP_KXRP_KUSDT_LP_TESTNET,
@@ -223,6 +208,21 @@ const farms: FarmConfig[] = [
     tokenAddresses: {
       1001: process.env.REACT_APP_KXRP_ADDRESS_TESTNET,
       8217: process.env.REACT_APP_KXRP_ADDRESS_MAINNET,
+    },
+    quoteTokenSymbol: QuoteToken.KUSDT,
+    quoteTokenAdresses: contracts.kusdt,
+  },
+  {
+    pid: 14,
+    lpSymbol: 'KLAY-KUSDT LP',
+    lpAddresses: {
+      1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
+      8217: process.env.REACT_APP_KLAY_KUSDT_LP_MAINNET,
+    },
+    tokenSymbol: 'KLAY',
+    tokenAddresses: {
+      1001: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
+      8217: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
