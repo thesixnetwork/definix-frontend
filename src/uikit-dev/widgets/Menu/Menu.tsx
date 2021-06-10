@@ -159,7 +159,7 @@ const Menu: React.FC<NavProps> = ({
   login,
   logout,
   isDark,
-  setIsDark,
+  toggleTheme,
   langs,
   setLang,
   currentLang,
@@ -173,7 +173,7 @@ const Menu: React.FC<NavProps> = ({
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
-  const Icons = (IconModule as unknown) as { [key: string]: React.FC<SvgProps> }
+  const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
   const { LanguageIcon } = Icons
   const IconFlag = () => {
     if (currentLang === 'en') {
@@ -347,7 +347,7 @@ const Menu: React.FC<NavProps> = ({
           isMobile={isMobile}
           showMenu={showMenu}
           isDark={isDark}
-          setIsDark={setIsDark}
+          toggleTheme={toggleTheme}
           langs={langs}
           setLang={setLang}
           currentLang={currentLang}

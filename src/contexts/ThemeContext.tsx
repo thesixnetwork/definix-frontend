@@ -4,7 +4,7 @@ import { dark, light } from 'uikit-dev'
 
 const CACHE_KEY = 'IS_DARK'
 
-const ThemeContext = React.createContext({ isDark: null, toggleTheme: () => null, setIsDark: (theme) => null })
+const ThemeContext = React.createContext({ isDark: null, toggleTheme: (isDarkMode) => null })
 
 const ThemeContextProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
@@ -12,15 +12,15 @@ const ThemeContextProvider = ({ children }) => {
     return isDarkUserSetting ? JSON.parse(isDarkUserSetting) : false
   })
 
-  const toggleTheme = () => {
-    setIsDark((prevState) => {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(!prevState))
-      return !prevState
+  const toggleTheme = (isDarkMode) => {
+    setIsDark(() => {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(isDarkMode))
+      return isDarkMode
     })
   }
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme, setIsDark }}>
+    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
       <SCThemeProvider theme={isDark ? dark : light}>{children}</SCThemeProvider>
     </ThemeContext.Provider>
   )
