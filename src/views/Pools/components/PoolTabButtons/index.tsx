@@ -1,4 +1,5 @@
 import useI18n from 'hooks/useI18n'
+import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
 import { Button, CardViewIcon, ListViewIcon, Text, Toggle, useMatchBreakpoints } from 'uikit-dev'
@@ -34,6 +35,7 @@ const ToggleWrapper = styled.div`
 
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, listView, setListView }) => {
   const TranslateString = useI18n()
+  const { isDark } = useTheme()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isMd && !isXl
 
@@ -46,7 +48,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
             onClick={() => {
               setListView(true)
             }}
-            startIcon={<ListViewIcon color={listView ? 'white' : 'primary'} />}
+            startIcon={<ListViewIcon color={listView || isDark ? 'white' : 'primary'} />}
             variant={listView ? 'primary' : 'secondary'}
             className="mr-2"
           >
@@ -58,7 +60,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
               setListView(false)
             }}
             variant={!listView ? 'primary' : 'secondary'}
-            startIcon={<CardViewIcon color={!listView ? 'white' : 'primary'} />}
+            startIcon={<CardViewIcon color={!listView || isDark ? 'white' : 'primary'} />}
           >
             Card View
           </Button>
