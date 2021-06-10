@@ -100,7 +100,7 @@ const Home: React.FC = () => {
             <MaxWidthRight>
               {account && !hasProfile ? (
                 <>
-                  <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
+                  <Heading className="mb-3" fontSize="20px !important" textTransform="uppercase">
                     My farms & pools
                   </Heading>
 
@@ -108,7 +108,7 @@ const Home: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Heading className="mb-3" fontSize="18px !important" textTransform="uppercase">
+                  <Heading className="mb-3" fontSize="20px !important" textTransform="uppercase">
                     TUTORIALS
                   </Heading>
                   <CardGetStarted />
