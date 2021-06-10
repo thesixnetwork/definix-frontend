@@ -18,11 +18,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .btn-secondary-disable:disabled {
-    background: ${({ theme }) => theme.colors.white};
+    background: ${({ theme }) => theme.colors.backgroundDisabled};
     border-color: ${({ theme }) => theme.colors.backgroundDisabled};
-    color: ${({ theme }) => theme.colors.backgroundDisabled};
+    color: ${({ theme }) => theme.colors.textDisabled};
 
-    svg { fill: ${({ theme }) => theme.colors.backgroundDisabled}; }
+    svg { fill: ${({ theme }) => theme.colors.textDisabled}; }
   }
 
   .text-bold { font-weight: 600; color: ${({ theme }) => theme.colors.text}; }

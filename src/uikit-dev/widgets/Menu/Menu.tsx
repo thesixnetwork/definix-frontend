@@ -54,7 +54,7 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   z-index: 20;
   height: ${MENU_HEIGHT}px;
   transform: translate3d(0, 0, 0);
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundHeader};
 
   &:before {
     content: '';
@@ -81,7 +81,7 @@ const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   flex-grow: 1;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 124px);
@@ -95,7 +95,7 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   max-width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 12px;
@@ -173,7 +173,7 @@ const Menu: React.FC<NavProps> = ({
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
-  const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
+  const Icons = (IconModule as unknown) as { [key: string]: React.FC<SvgProps> }
   const { LanguageIcon } = Icons
   const IconFlag = () => {
     if (currentLang === 'en') {
@@ -419,7 +419,7 @@ const Menu: React.FC<NavProps> = ({
                 }
               />
             )}
-            <div style={{ width: '100%' }}>{children}</div>
+            <div style={{ width: '100%', flexGrow: 1 }}>{children}</div>
           </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />

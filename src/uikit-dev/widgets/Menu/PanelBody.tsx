@@ -1,3 +1,4 @@
+import useTheme from 'hooks/useTheme'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -25,6 +26,7 @@ const Container = styled.div`
 
 const PanelBody: React.FC<Props> = (props) => {
   const location = useLocation()
+  const { isDark } = useTheme()
 
   const { isPushed, pushNav, isMobile, links } = props
 
@@ -44,7 +46,7 @@ const PanelBody: React.FC<Props> = (props) => {
           key={menu.label}
           isPushed={isPushed}
           pushNav={pushNav}
-          icon={<img src={menu.icon} alt="" width="24" className="mr-3" />}
+          icon={<img src={isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />}
           label={menu.label}
           initialOpenState={initialOpenState}
           className={calloutClass}
@@ -74,7 +76,7 @@ const PanelBody: React.FC<Props> = (props) => {
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
         <MenuLink href={menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
-          <img src={isActive ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
+          <img src={isActive || isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
           <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
         </MenuLink>
       </MenuEntry>

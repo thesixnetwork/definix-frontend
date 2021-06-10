@@ -24,7 +24,7 @@ const getDisabledStyles = ({ isLoading, theme }: ThemedProps) => {
       background-color: ${theme.colors.backgroundDisabled};
       border-color: ${theme.colors.backgroundDisabled};
       box-shadow: none;
-      color: ${theme.colors.white};
+      color: ${theme.colors.textDisabled};
       cursor: not-allowed;
     }
   `
