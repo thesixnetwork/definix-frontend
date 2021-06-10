@@ -104,7 +104,7 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
 `
 
 const PanelFooter: React.FC<Props> = ({
-  setIsDark,
+  toggleTheme,
   isDark,
   currentLang,
   // isPushed,
@@ -114,11 +114,11 @@ const PanelFooter: React.FC<Props> = ({
   // setLang,
 }) => {
   const [isStopped, setIsStop] = useState(false)
-  const [direction, setDirection] = useState(-1)
+  const [direction, setDirection] = useState(isDark ? 1 : -1)
 
   const clickChangeTheme = (isDarkMode) => {
     if (isDarkMode !== isDark) {
-      setIsDark(isDarkMode)
+      toggleTheme(isDarkMode)
       if (!isStopped) {
         setDirection(direction * -1)
       }

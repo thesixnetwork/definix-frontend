@@ -159,7 +159,7 @@ const Menu: React.FC<NavProps> = ({
   login,
   logout,
   isDark,
-  setIsDark,
+  toggleTheme,
   langs,
   setLang,
   currentLang,
@@ -347,7 +347,7 @@ const Menu: React.FC<NavProps> = ({
           isMobile={isMobile}
           showMenu={showMenu}
           isDark={isDark}
-          setIsDark={setIsDark}
+          toggleTheme={toggleTheme}
           langs={langs}
           setLang={setLang}
           currentLang={currentLang}
