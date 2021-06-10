@@ -1,26 +1,25 @@
 import React, { useState } from 'react'
-// import Lottie from 'react-lottie'
+import Lottie from 'react-lottie'
 import styled from 'styled-components'
-// import moon from '../../animation/moon.json'
-// import sun from '../../animation/sun.json'
+import moon from '../../animation/moon.json'
+import sun from '../../animation/sun.json'
 import Button from '../../components/Button/Button'
 import { ChevronDownIcon } from '../../components/Svg'
 import Text from '../../components/Text/Text'
 import { MENU_ENTRY_HEIGHT } from './config'
-import { MoonIcon, SunIcon } from './icons'
 import { PanelProps, PushedProps } from './types'
 
-// const sunOptions = {
-//   loop: false,
-//   autoplay: false,
-//   animationData: sun,
-// }
+const sunOptions = {
+  loop: false,
+  autoplay: false,
+  animationData: sun,
+}
 
-// const moonOptions = {
-//   loop: false,
-//   autoplay: false,
-//   animationData: moon,
-// }
+const moonOptions = {
+  loop: false,
+  autoplay: false,
+  animationData: moon,
+}
 
 interface Props extends PanelProps, PushedProps {}
 
@@ -79,10 +78,11 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
     position: absolute;
     top: 6px;
     left: 6px;
-    transition: 0.2s;
+    transition: 0.3s;
     background: ${({ theme }) => theme.colors.primary};
     border-radius: ${({ theme }) => theme.radii.small};
     transform: translateX(${({ isDark }) => (isDark ? '100%' : '0')});
+    transition-delay: 0.1s;
   }
 
   button {
@@ -95,6 +95,7 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
     overflow: hidden;
     z-index: 1;
     background: transparent !important;
+    position: relative;
 
     > div {
       position: absolute;
@@ -113,14 +114,16 @@ const PanelFooter: React.FC<Props> = ({
   // setLang,
 }) => {
   const [isStopped, setIsStop] = useState(false)
-  const [direction, setDirection] = useState(1)
+  const [direction, setDirection] = useState(-1)
 
   const clickChangeTheme = (isDarkMode) => {
-    setIsDark(isDarkMode)
-    if (!isStopped) {
-      setDirection(direction * -1)
+    if (isDarkMode !== isDark) {
+      setIsDark(isDarkMode)
+      if (!isStopped) {
+        setDirection(direction * -1)
+      }
+      setIsStop(false)
     }
-    setIsStop(false)
   }
 
   // if (!isPushed) {
@@ -210,20 +213,17 @@ const PanelFooter: React.FC<Props> = ({
         </ChangeLanguage>
         <ChangeTheme isDark={isDark}>
           <Button variant="text" size="sm" radii="card" onClick={() => clickChangeTheme(false)}>
-            {/* <Lottie options={sunOptions} height={56} width={56} isStopped={isStopped} direction={direction} speed={3} /> */}
-            <SunIcon color={isDark ? 'textSubtle' : 'white !important'} />
+            <Lottie options={sunOptions} height={56} width={56} isStopped={isStopped} direction={direction} speed={3} />
           </Button>
           <Button variant="text" size="sm" radii="card" onClick={() => clickChangeTheme(true)}>
-            {/* <Lottie
+            <Lottie
               options={moonOptions}
               height={56}
               width={56}
               isStopped={isStopped}
               direction={direction}
-              delay={0}
               speed={3}
-            /> */}
-            <MoonIcon color={!isDark ? 'textSubtle' : 'white !important'} />
+            />
           </Button>
         </ChangeTheme>
       </SettingsEntry>
