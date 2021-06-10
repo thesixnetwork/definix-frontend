@@ -11,7 +11,8 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
@@ -191,9 +192,10 @@ const Farms: React.FC = () => {
                 <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
                   Farm
                 </Heading>
-                <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+
+                <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
-                </Button>
+                </HelpButton>
               </div>
               <Text>
                 Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.

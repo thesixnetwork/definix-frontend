@@ -360,7 +360,7 @@ const Menu: React.FC<NavProps> = ({
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
           <InnerBg>
-            <CountDownBanner
+            {/* <CountDownBanner
               logo={definixCoin}
               title="Ceritakan tentang pengalamanmu di Crypto"
               highlight="dan menangkan 20$"
@@ -376,7 +376,7 @@ const Menu: React.FC<NavProps> = ({
                 </Button>
               }
               disableCountdown
-            />
+            /> */}
 
             <CountDownBanner
               logo={logoTrade}

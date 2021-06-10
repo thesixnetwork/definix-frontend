@@ -11,7 +11,8 @@ import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -267,9 +268,9 @@ const Farm: React.FC = () => {
                 <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
                   Pool
                 </Heading>
-                <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
-                </Button>
+                </HelpButton>
               </div>
               <Text>
                 Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.
