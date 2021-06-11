@@ -54,7 +54,7 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   z-index: 20;
   height: ${MENU_HEIGHT}px;
   transform: translate3d(0, 0, 0);
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundHeader};
 
   &:before {
     content: '';
@@ -69,7 +69,9 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   }
 
   .network {
-    // box-shadow: ${({ theme }) => theme.shadows.elevation1};
+    box-shadow: ${({ theme }) => theme.shadows.elevation1};
+    background: ${({ theme }) => theme.colors.networkBtnInner} !important;
+    border: 1px solid ${({ theme }) => theme.colors.networkBtnBorder} !important;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -81,7 +83,7 @@ const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   flex-grow: 1;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 124px);
@@ -95,7 +97,7 @@ const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   max-width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
   ${({ theme }) => theme.mediaQueries.md} {
     padding-top: 12px;
@@ -159,7 +161,7 @@ const Menu: React.FC<NavProps> = ({
   login,
   logout,
   isDark,
-  setIsDark,
+  toggleTheme,
   langs,
   setLang,
   currentLang,
@@ -287,15 +289,13 @@ const Menu: React.FC<NavProps> = ({
             <MenuButton
               variant="text"
               startIcon={<img src={bsc} alt="" width="20px" className="mr-2" />}
-              className="color-primary mb-2"
+              className="color-primary text-bold mb-2"
             >
               Binance Smart Chain
             </MenuButton>
             <MenuButton
               variant="text"
               startIcon={<img src={klaytn} alt="" width="20px" className="mr-2" />}
-              disabled
-              className="color-disable"
               style={{ background: 'transparent' }}
             >
               Klaytn
@@ -347,7 +347,7 @@ const Menu: React.FC<NavProps> = ({
           isMobile={isMobile}
           showMenu={showMenu}
           isDark={isDark}
-          setIsDark={setIsDark}
+          toggleTheme={toggleTheme}
           langs={langs}
           setLang={setLang}
           currentLang={currentLang}
@@ -360,7 +360,7 @@ const Menu: React.FC<NavProps> = ({
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
           <InnerBg>
-            <CountDownBanner
+            {/* <CountDownBanner
               logo={definixCoin}
               title="Ceritakan tentang pengalamanmu di Crypto"
               highlight="dan menangkan 20$"
@@ -376,7 +376,7 @@ const Menu: React.FC<NavProps> = ({
                 </Button>
               }
               disableCountdown
-            />
+            /> */}
 
             <CountDownBanner
               logo={logoTrade}
@@ -419,7 +419,7 @@ const Menu: React.FC<NavProps> = ({
                 }
               />
             )}
-            <div style={{ width: '100%' }}>{children}</div>
+            <div style={{ width: '100%', flexGrow: 1 }}>{children}</div>
           </InnerBg>
         </Inner>
         <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />

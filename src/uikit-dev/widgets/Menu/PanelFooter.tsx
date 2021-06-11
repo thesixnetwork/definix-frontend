@@ -78,10 +78,11 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
     position: absolute;
     top: 6px;
     left: 6px;
-    transition: 0.2s;
+    transition: 0.3s;
     background: ${({ theme }) => theme.colors.primary};
     border-radius: ${({ theme }) => theme.radii.small};
     transform: translateX(${({ isDark }) => (isDark ? '100%' : '0')});
+    transition-delay: 0.1s;
   }
 
   button {
@@ -94,6 +95,7 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
     overflow: hidden;
     z-index: 1;
     background: transparent !important;
+    position: relative;
 
     > div {
       position: absolute;
@@ -102,7 +104,7 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
 `
 
 const PanelFooter: React.FC<Props> = ({
-  setIsDark,
+  toggleTheme,
   isDark,
   currentLang,
   // isPushed,
@@ -112,14 +114,16 @@ const PanelFooter: React.FC<Props> = ({
   // setLang,
 }) => {
   const [isStopped, setIsStop] = useState(false)
-  const [direction, setDirection] = useState(1)
+  const [direction, setDirection] = useState(isDark ? 1 : -1)
 
   const clickChangeTheme = (isDarkMode) => {
-    setIsDark(isDarkMode)
-    if (!isStopped) {
-      setDirection(direction * -1)
+    if (isDarkMode !== isDark) {
+      toggleTheme(isDarkMode)
+      if (!isStopped) {
+        setDirection(direction * -1)
+      }
+      setIsStop(false)
     }
-    setIsStop(false)
   }
 
   // if (!isPushed) {
@@ -175,6 +179,7 @@ const PanelFooter: React.FC<Props> = ({
               variant="text"
               radii="card"
               endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
+              padding="0 16px"
               disabled
             >
               <Text color="textSubtle" bold>
@@ -198,6 +203,7 @@ const PanelFooter: React.FC<Props> = ({
         <ChangeLanguage
           variant="text"
           radii="card"
+          padding="0 16px"
           endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
           disabled
         >
@@ -216,7 +222,6 @@ const PanelFooter: React.FC<Props> = ({
               width={56}
               isStopped={isStopped}
               direction={direction}
-              delay={0}
               speed={3}
             />
           </Button>

@@ -1,3 +1,4 @@
+import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
 import { Button, CardViewIcon, ListViewIcon, useMatchBreakpoints } from 'uikit-dev'
@@ -22,6 +23,7 @@ const Wrapper = styled.div`
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
   const { isXl, isMd } = useMatchBreakpoints()
+  const { isDark } = useTheme()
   const isMobile = !isMd && !isXl
 
   return (
@@ -33,7 +35,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
             onClick={() => {
               setListView(true)
             }}
-            startIcon={<ListViewIcon color={listView ? 'white' : 'primary'} />}
+            startIcon={<ListViewIcon color={listView || isDark ? 'white' : 'primary'} />}
             variant={listView ? 'primary' : 'secondary'}
             className="mr-2"
           >
@@ -45,7 +47,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
               setListView(false)
             }}
             variant={!listView ? 'primary' : 'secondary'}
-            startIcon={<CardViewIcon color={!listView ? 'white' : 'primary'} />}
+            startIcon={<CardViewIcon color={!listView || isDark ? 'white' : 'primary'} />}
           >
             Card View
           </Button>

@@ -5,21 +5,22 @@ import astro from 'uikit-dev/images/for-ui-v2/astro.png'
 
 const StyledBanner = styled(Card)`
   width: 100%;
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.card};
   padding: 48px 24px;
   position: relative;
   overflow: visible;
 
   &:before {
     content: '';
-    width: 50%;
+    width: 70%;
     height: calc(100% + 24px);
     background: url(${astro});
-    background-size: cover;
+    background-size: contain;
+    background-position: right bottom;
     background-repeat: no-repeat;
     position: absolute;
     top: -24px;
-    right: 0;
+    right: -1px;
     opacity: 0.2;
   }
 
@@ -35,6 +36,7 @@ const StyledBanner = styled(Card)`
     padding: 48px 50% 48px 24px;
 
     &:before {
+      width: 50%;
       opacity: 1;
     }
 

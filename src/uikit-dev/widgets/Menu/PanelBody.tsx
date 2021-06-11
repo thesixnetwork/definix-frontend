@@ -1,3 +1,4 @@
+import useTheme from 'hooks/useTheme'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
@@ -20,11 +21,12 @@ const Container = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
-  padding: 12px;
+  padding: 4px 12px 12px 12px;
 `
 
 const PanelBody: React.FC<Props> = (props) => {
   const location = useLocation()
+  const { isDark } = useTheme()
 
   const { isPushed, pushNav, isMobile, links } = props
 
@@ -44,7 +46,7 @@ const PanelBody: React.FC<Props> = (props) => {
           key={menu.label}
           isPushed={isPushed}
           pushNav={pushNav}
-          icon={<img src={menu.icon} alt="" width="24" className="mr-3" />}
+          icon={<img src={isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />}
           label={menu.label}
           initialOpenState={initialOpenState}
           className={calloutClass}
@@ -74,7 +76,7 @@ const PanelBody: React.FC<Props> = (props) => {
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
         <MenuLink href={menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
-          <img src={isActive ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
+          <img src={isActive || isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
           <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
         </MenuLink>
       </MenuEntry>
@@ -84,7 +86,9 @@ const PanelBody: React.FC<Props> = (props) => {
   return (
     <Container>
       {links.map((link) => (
-        <MenuItem menu={link} key={link.label} />
+        <div className="py-2 bd-b">
+          <MenuItem menu={link} key={link.label} />
+        </div>
       ))}
 
       {/* <BorderBox>

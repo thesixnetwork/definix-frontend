@@ -7,7 +7,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { DetailsSectionProps } from './types'
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
-  background: ${({ isHorizontal }) => (!isHorizontal ? '#fafcff' : 'transparent')};
+  background: ${({ isHorizontal, theme }) => (!isHorizontal ? theme.colors.cardFooter : 'transparent')};
   border-top: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};

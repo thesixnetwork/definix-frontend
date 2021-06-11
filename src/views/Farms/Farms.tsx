@@ -1,7 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
-import Page from 'components/layout/Page'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
@@ -12,8 +11,9 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text, useMatchBreakpoints } from 'uikit-dev'
-import bg from 'uikit-dev/images/for-ui-v2/bg.png'
+import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import HelpButton from 'uikit-dev/components/HelpButton'
+import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
@@ -32,10 +32,15 @@ const ModalWrapper = styled.div`
   bottom: 0;
   left: 0;
   z-index: ${({ theme }) => theme.zIndices.modal - 1};
-  background: url(${bg});
+  background: url(${({ theme }) => theme.colors.backgroundPolygon});
   background-size: cover;
   background-repeat: no-repeat;
-  background-color: ${({ theme }) => theme.colors.grayBlue};
+`
+
+const MaxWidth = styled.div`
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 const Farms: React.FC = () => {
@@ -178,38 +183,46 @@ const Farms: React.FC = () => {
         onDismiss: handleDismiss,
       }}
     >
-      <Page style={{ display: isOpenModal ? 'none' : 'block' }}>
-        <div className="flex align-center mt-2 mb-4">
-          <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-            Farm
-          </Heading>
-          <Button size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-            Help
-          </Button>
-        </div>
-        <Text className="mb-5 col-8">
-          Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. <br />{' '}
-          The amount of returns will be calculated by the annual percentage rate (APR).
-        </Text>
+      <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
+        <LeftPanel isShowRightPanel={false}>
+          <MaxWidth>
+            <div className="mb-5">
+              <div className="flex align-center mb-2">
+                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                  Farm
+                </Heading>
 
-        <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-          <FarmTabButtons
-            stackedOnly={stackedOnly}
-            setStackedOnly={setStackedOnly}
-            listView={listView}
-            setListView={setListView}
-          />
+                <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                  Help
+                </HelpButton>
+              </div>
+              <Text>
+                Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.
+                <br />
+                The amount of returns will be calculated by the annual percentage rate (APR).
+              </Text>
+            </div>
 
-          <FlexLayout cols={listView ? 1 : 3}>
-            <Route exact path={`${path}`}>
-              {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
-            </Route>
-            <Route exact path={`${path}/history`}>
-              {farmsList(inactiveFarms, true)}
-            </Route>
-          </FlexLayout>
-        </TimerWrapper>
-      </Page>
+            <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
+              <FarmTabButtons
+                stackedOnly={stackedOnly}
+                setStackedOnly={setStackedOnly}
+                listView={listView}
+                setListView={setListView}
+              />
+
+              <FlexLayout cols={listView ? 1 : 3}>
+                <Route exact path={`${path}`}>
+                  {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+                </Route>
+                <Route exact path={`${path}/history`}>
+                  {farmsList(inactiveFarms, true)}
+                </Route>
+              </FlexLayout>
+            </TimerWrapper>
+          </MaxWidth>
+        </LeftPanel>
+      </TwoPanelLayout>
 
       {isOpenModal && React.isValidElement(modalNode) && (
         <ModalWrapper>
