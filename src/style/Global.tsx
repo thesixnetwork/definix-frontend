@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
     svg { fill: ${({ theme }) => theme.colors.textDisabled}; }
   }
 
-  .text-bold { font-weight: 600; color: ${({ theme }) => theme.colors.text}; }
+  .text-bold { font-weight: 600 !important; }
   .text-right { text-align: right; }
   .text-left { text-align: left; }
 

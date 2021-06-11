@@ -1,4 +1,6 @@
 import React from 'react'
+import styled from 'styled-components'
+import Text from '../../components/Text/Text'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import Heading from '../../components/Heading/Heading'
@@ -15,6 +17,27 @@ interface Props {
   logout: () => void
 }
 
+const ConnectButton = styled(Button)`
+  padding: 4px;
+  box-shadow: ${({ theme }) => theme.shadows.elevation1} !important;
+  background: ${({ theme }) => theme.colors.connectBtnBorder} !important;
+
+  > div {
+    background: ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => theme.radii.large};
+    padding: 0 16px;
+    display: block;
+    height: 24px;
+    line-height: 24px;
+  }
+`
+
+const AccountButton = styled(ConnectButton)`
+  > div {
+    background: ${({ theme }) => theme.colors.connectBtnInner};
+  }
+`
+
 const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
@@ -29,17 +52,19 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
           position="bottom-right"
           isRainbow={false}
           target={
-            <Button
+            <AccountButton
               size="sm"
               fullWidth
-              variant="secondary"
+              variant="text"
               className="connect-btn"
               // onClick={() => {
               //   onPresentAccountModal()
               // }}
             >
-              {isMobileOrTablet ? accountEllipsis : accountEllipsisLong}
-            </Button>
+              <Text fontSize="12px" color="white" fontWeight="600">
+                {isMobileOrTablet ? accountEllipsis : accountEllipsisLong}
+              </Text>
+            </AccountButton>
           }
         >
           <div style={{ zIndex: 999 }}>
@@ -74,17 +99,19 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
           </div>
         </Dropdown>
       ) : (
-        <Button
+        <ConnectButton
           size="sm"
           fullWidth
-          variant="secondary"
+          variant="text"
           className="connect-btn"
           onClick={() => {
             onPresentConnectModal()
           }}
         >
-          {isMobileOrTablet ? 'Connect' : 'Connect wallet'}
-        </Button>
+          <Text fontSize="12px" color="white" fontWeight="600">
+            {isMobileOrTablet ? 'Connect' : 'Connect wallet'}
+          </Text>
+        </ConnectButton>
       )}
     </div>
   )

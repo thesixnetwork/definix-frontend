@@ -48,6 +48,11 @@ export const lightColors: Colors = {
   placeholder: '#CCCCCC',
   harvest: '#24B181',
   grayBlue: '#e2e7f4',
+
+  connectBtnBorder: '#FFFFFF',
+  connectBtnInner: '#8C90A5',
+  networkBtnBorder: '#FFFFFF',
+  networkBtnInner: '#FFFFFF',
 }
 
 export const darkColors: Colors = {
@@ -83,4 +88,9 @@ export const darkColors: Colors = {
   placeholder: '#CCCCCC',
   harvest: '#24B181',
   grayBlue: '#e2e7f4',
+
+  connectBtnBorder: '#3D3D3D',
+  connectBtnInner: '#57575B',
+  networkBtnBorder: '#57575B',
+  networkBtnInner: '#2c2c2c',
 }

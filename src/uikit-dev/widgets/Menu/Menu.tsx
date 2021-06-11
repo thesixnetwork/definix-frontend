@@ -69,7 +69,9 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   }
 
   .network {
-    // box-shadow: ${({ theme }) => theme.shadows.elevation1};
+    box-shadow: ${({ theme }) => theme.shadows.elevation1};
+    background: ${({ theme }) => theme.colors.networkBtnInner} !important;
+    border: 1px solid ${({ theme }) => theme.colors.networkBtnBorder} !important;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -287,15 +289,13 @@ const Menu: React.FC<NavProps> = ({
             <MenuButton
               variant="text"
               startIcon={<img src={bsc} alt="" width="20px" className="mr-2" />}
-              className="color-primary mb-2"
+              className="color-primary text-bold mb-2"
             >
               Binance Smart Chain
             </MenuButton>
             <MenuButton
               variant="text"
               startIcon={<img src={klaytn} alt="" width="20px" className="mr-2" />}
-              disabled
-              className="color-disable"
               style={{ background: 'transparent' }}
             >
               Klaytn
