@@ -71,6 +71,10 @@ export type Colors = {
   placeholder: string
   harvest: string
   grayBlue: string
+  connectBtnBorder: string
+  connectBtnInner: string
+  networkBtnBorder: string
+  networkBtnInner: string
 
   // Gradients
   gradients: Gradients
