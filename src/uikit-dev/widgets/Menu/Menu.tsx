@@ -5,28 +5,22 @@ import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
+import DropdownNetwork from 'uikit-dev/components/DropdownNetwork'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
 import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
-import definixCoin from 'uikit-dev/images/KR-Banner/AWforDefinix-03.png'
 import Button from '../../components/Button/Button'
-import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
-import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
-import Text from '../../components/Text/Text'
 import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
-import bsc from '../../images/Logo-BinanceSmartChain.png'
-import klaytn from '../../images/Logo-Klaytn.png'
 import th from '../../images/th.png'
 import { MENU_HEIGHT } from './config'
 import * as IconModule from './icons'
 import Logo from './Logo'
-import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
 import UserBlock from './UserBlock'
@@ -66,12 +60,6 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
     left: 0;
     background: url(${colorGradient});
     background-size: cover;
-  }
-
-  .network {
-    box-shadow: ${({ theme }) => theme.shadows.elevation1};
-    background: ${({ theme }) => theme.colors.networkBtnInner} !important;
-    border: 1px solid ${({ theme }) => theme.colors.networkBtnBorder} !important;
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -131,7 +119,6 @@ const MobileOnlyOverlay = styled(Overlay)`
 const Price = styled.a`
   display: flex;
   align-items: center;
-  margin-right: 1rem;
   font-size: 0.5rem;
 
   img {
@@ -170,8 +157,8 @@ const Menu: React.FC<NavProps> = ({
   children,
   price,
 }) => {
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isMd && !isXl
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl && !isLg
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
@@ -265,80 +252,20 @@ const Menu: React.FC<NavProps> = ({
             isDark={isDark}
             href={homeLink?.href ?? '/'}
           />
-          {/* <StyledLogo as="a" href="/" aria-label="Definix home page">
-            <img src={logoDesktop} alt="" />
-          </StyledLogo> */}
 
-          <Dropdown
-            position="bottom"
-            target={
-              <Button
-                variant="text"
-                size="sm"
-                startIcon={<img src={bsc} alt="" width="20px" className="mr-2" />}
-                endIcon={<ChevronDownIcon className="ml-1" />}
-                color="text"
-                className="network px-2"
-              >
-                <Text fontSize="12px" fontWeight="500">
-                  {isMobile ? 'BSC' : 'Binance Smart Chain'}
-                </Text>
-              </Button>
-            }
-          >
-            <MenuButton
-              variant="text"
-              startIcon={<img src={bsc} alt="" width="20px" className="mr-2" />}
-              className="color-primary text-bold mb-2"
-            >
-              Binance Smart Chain
-            </MenuButton>
-            <MenuButton
-              variant="text"
-              startIcon={<img src={klaytn} alt="" width="20px" className="mr-2" />}
-              style={{ background: 'transparent' }}
-            >
-              Klaytn
-            </MenuButton>
-          </Dropdown>
+          {!isMobile && <DropdownNetwork />}
         </Flex>
 
         <Flex alignItems="center">
-          {!isMobile && (
-            <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
-              <img src={FinixCoin} alt="" />
-              <p>
-                <span>FINIX : </span>
-                <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
-              </p>
-            </Price>
-          )}
-          <UserBlock account={account} login={login} logout={logout} />
-          {/* <Dropdown
-            position="bottom-right"
-            target={
-              <Button
-                variant="tertiary"
-                size="sm"
-                startIcon={<IconFlag />}
-                endIcon={<ChevronDownIcon className="ml-1" />}
-                style={{ borderRadius: '6px', padding: '0 8px 0 12px', boxShadow: '0 1px 2px rgba(0,0,0,0.16)' }}
-              >
-              </Button>
-            }
-          >
-            {langs.map((lang) => (
-              <MenuButton
-                key={lang.code}
-                fullWidth
-                onClick={() => setLang(lang)}
-                style={{ minHeight: '32px', height: 'auto' }}
-              >
-                {lang.language}
-              </MenuButton>
-            ))}
-          </Dropdown> */}
-          {/* {profile && <Avatar profile={profile} />} */}
+          <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
+            <img src={FinixCoin} alt="" />
+            <p>
+              <span>FINIX : </span>
+              <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
+            </p>
+          </Price>
+
+          {!isMobile && <UserBlock account={account} login={login} logout={logout} className="ml-3" />}
         </Flex>
       </StyledNav>
       <BodyWrapper>
@@ -422,7 +349,7 @@ const Menu: React.FC<NavProps> = ({
             <div style={{ width: '100%', flexGrow: 1 }}>{children}</div>
           </InnerBg>
         </Inner>
-        <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
+        <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" zIndex={21} />
       </BodyWrapper>
       <Footer />
     </Wrapper>

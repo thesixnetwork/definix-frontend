@@ -1,11 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import Text from '../../components/Text/Text'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import Heading from '../../components/Heading/Heading'
 import LinkExternal from '../../components/Link/LinkExternal'
-import { useMatchBreakpoints } from '../../hooks'
+import Text from '../../components/Text/Text'
 import { useWalletModal } from '../WalletModal'
 import { localStorageKey } from '../WalletModal/config'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
@@ -15,6 +14,7 @@ interface Props {
   account?: string
   login: Login
   logout: () => void
+  className?: string
 }
 
 const ConnectButton = styled(Button)`
@@ -38,15 +38,12 @@ const AccountButton = styled(ConnectButton)`
   }
 `
 
-const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
+const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
-  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
-  const accountEllipsisLong = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
-  const { isXl } = useMatchBreakpoints()
-  const isMobileOrTablet = !isXl
+  const accountEllipsis = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
 
   return (
-    <div>
+    <div className={className}>
       {account ? (
         <Dropdown
           position="bottom-right"
@@ -62,14 +59,14 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
               // }}
             >
               <Text fontSize="12px" color="white" fontWeight="600">
-                {isMobileOrTablet ? accountEllipsis : accountEllipsisLong}
+                {accountEllipsis}
               </Text>
             </AccountButton>
           }
         >
           <div style={{ zIndex: 999 }}>
             <Heading fontSize="14px !important" className="mb-3 pa-0 pt-2">
-              {accountEllipsisLong}
+              {accountEllipsis}
             </Heading>
             <LinkExternal
               isIconLeft
@@ -109,7 +106,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
           }}
         >
           <Text fontSize="12px" color="white" fontWeight="600">
-            {isMobileOrTablet ? 'Connect' : 'Connect wallet'}
+            Connect wallet
           </Text>
         </ConnectButton>
       )}
