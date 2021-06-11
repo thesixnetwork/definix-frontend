@@ -17,7 +17,7 @@ export const TwoPanelLayout = styled.div`
 `
 
 export const MaxWidthLeft = styled(MaxWidth)`
-  max-width: 1000px;
+  max-width: 800px;
 `
 
 export const MaxWidthRight = styled(MaxWidth)`
