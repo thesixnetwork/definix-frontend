@@ -45,8 +45,8 @@ const MaxWidth = styled.div`
 `
 
 const Farm: React.FC = () => {
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isMd && !isXl
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const farms = useFarms()

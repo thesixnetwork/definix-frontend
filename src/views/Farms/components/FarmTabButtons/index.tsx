@@ -22,9 +22,9 @@ const Wrapper = styled.div`
 `
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
-  const { isXl, isMd } = useMatchBreakpoints()
+  const { isXl, isLg } = useMatchBreakpoints()
   const { isDark } = useTheme()
-  const isMobile = !isMd && !isXl
+  const isMobile = !isLg && !isXl
 
   return (
     <Wrapper className="mb-6">

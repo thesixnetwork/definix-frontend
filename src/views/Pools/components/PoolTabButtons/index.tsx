@@ -36,8 +36,8 @@ const ToggleWrapper = styled.div`
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, listView, setListView }) => {
   const TranslateString = useI18n()
   const { isDark } = useTheme()
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isMd && !isXl
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isLg && !isXl
 
   return (
     <Wrapper>

@@ -44,8 +44,8 @@ const MaxWidth = styled.div`
 `
 
 const Farms: React.FC = () => {
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isMd && !isXl
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isLg && !isXl
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
