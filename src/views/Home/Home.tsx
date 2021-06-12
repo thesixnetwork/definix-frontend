@@ -75,7 +75,7 @@ const Home: React.FC = () => {
           </Cards>
 
           {/* <Slider {...settings}></Slider> */}
-          
+
           <CardUpcomingFarms />
 
           <div className="flex flex-wrap align-center justify-center mt-5">
