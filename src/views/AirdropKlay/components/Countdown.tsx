@@ -72,7 +72,7 @@ const CountDown = ({ showCom = false }) => {
               alt=""
               className="logo"
             />{' '}
-            21.5 KLAY
+            11 KLAY
           </Text>
 
           <Text style={{ textAlign: 'center', marginBottom: '20px', color: '#8C90A3' }}>

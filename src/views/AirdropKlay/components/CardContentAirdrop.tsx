@@ -157,7 +157,7 @@ export default function CardContentAirdrop({ className = '' }): ReactElement {
             alt=""
             className="logo"
           />{' '}
-          21.5 KLAY
+          11 KLAY
         </Text>
 
         <div style={{ float: 'left', marginRight: '10px' }}>

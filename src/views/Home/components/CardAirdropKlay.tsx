@@ -71,7 +71,7 @@ const CardAirdropKlay = ({ showBtn = false, className = '' }) => {
         <b>Get free </b>
       </Text>
       <Heading fontSize="18px" color="#3F4042" className="mb-2">
-        21.5 KLAY
+        11 KLAY
       </Heading>
       {/* {showBtn && ( */}
       {/* <Route path={`${path}/airdropklay`}> */}
