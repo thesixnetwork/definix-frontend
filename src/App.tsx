@@ -16,6 +16,7 @@ import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import Flip from './uikit-dev/components/Flip'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
+
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
 ReactGA.initialize('G-L997LXLF8F')
@@ -37,6 +38,7 @@ const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
 const NotFound = lazy(() => import('./views/NotFound'))
+const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -111,6 +113,10 @@ const App: React.FC = () => {
             <Route path="/info">
               <Info />
             </Route>
+            <Route path="/AirdropKlay">
+              <AirdropKlay />
+            </Route>
+
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
             </Route> */}
