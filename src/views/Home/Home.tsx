@@ -9,6 +9,7 @@ import InfoBanner from 'views/Info/components/InfoBanner'
 import CardUpcomingFarms from './components/CardUpcomingFarms'
 import FinixStats from './components/FinixStats'
 import TotalValueLockedCard from './components/TotalValueLockedCard'
+import CardAirdropKlay from './components/CardAirdropKlay'
 
 const Cards = styled(BaseLayout)`
   align-items: stretch;
@@ -65,7 +66,7 @@ const Home: React.FC = () => {
           <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
             Dashboard
           </Heading>
-
+          <CardAirdropKlay showBtn className="mb-5" />
           <InfoBanner className="mb-5" showBtn />
 
           <Cards>
@@ -74,6 +75,7 @@ const Home: React.FC = () => {
           </Cards>
 
           {/* <Slider {...settings}></Slider> */}
+          
           <CardUpcomingFarms />
 
           <div className="flex flex-wrap align-center justify-center mt-5">

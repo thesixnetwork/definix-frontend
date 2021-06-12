@@ -51,6 +51,10 @@ export default {
     97: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,
     56: process.env.REACT_APP_TRADING_COMPET_REGIS_MAINNET,
   },
+  airdropKlay: {
+    97: process.env.REACT_APP_ARIDROP_KLAY_TESTNET,
+    56: process.env.REACT_APP_ARIDROP_KLAY_MAINNET,
+  },
   // configured =====================================================
   syrup: {
     97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
