@@ -8,6 +8,7 @@ import InfoBanner from 'views/Info/components/InfoBanner'
 // import Flip from '../../uikit-dev/components/Flip'
 // import CardStakeBlue from './components/CardStakeBlue'
 import CardUpcomingFarms from './components/CardUpcomingFarms'
+import CardAirdropKlay from './components/CardAirdropKlay'
 // import FarmStakingCard from 'views/Home/components/FarmStakingCard'
 // import LotteryCard from 'views/Home/components/LotteryCard'
 // import EarnAPYCard from 'views/Home/components/EarnAPYCard'
@@ -203,6 +204,7 @@ const Home: React.FC = () => {
           <EarnAssetCard />
           <WinCard />
         </CTACards> */}
+            <CardAirdropKlay showBtn className="mb-5" />
             <InfoBanner className="mb-5" showBtn />
             <Cards>
               <TotalValueLockedCard />
