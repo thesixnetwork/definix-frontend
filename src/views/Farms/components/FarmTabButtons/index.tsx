@@ -8,7 +8,11 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-bottom: 2rem;
+  } ;
 `
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
@@ -17,7 +21,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
   const isMobile = !isXl
 
   return (
-    <Wrapper className="mb-6">
+    <Wrapper>
       <div className="flex">
         {isMobile ? (
           <>
