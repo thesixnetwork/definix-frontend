@@ -1,60 +1,74 @@
 import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
-import { Button, CardViewIcon, ListViewIcon, useMatchBreakpoints } from 'uikit-dev'
+import { Button, CardViewIcon, IconButton, ListViewIcon, useMatchBreakpoints } from 'uikit-dev'
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  flex-wrap: wrap;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: row;
-    justify-content: space-between;
-
-    .flex {
-      margin: 0 !important;
-    }
-  } ;
 `
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
-  const { isXl, isLg } = useMatchBreakpoints()
   const { isDark } = useTheme()
-  const isMobile = !isLg && !isXl
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
 
   return (
     <Wrapper className="mb-6">
-      {!isMobile && (
-        <div className="flex">
-          <Button
-            size="sm"
-            onClick={() => {
-              setListView(true)
-            }}
-            startIcon={<ListViewIcon color={listView || isDark ? 'white' : 'primary'} />}
-            variant={listView ? 'primary' : 'secondary'}
-            className="mr-2"
-          >
-            List View
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => {
-              setListView(false)
-            }}
-            variant={!listView ? 'primary' : 'secondary'}
-            startIcon={<CardViewIcon color={!listView || isDark ? 'white' : 'primary'} />}
-          >
-            Card View
-          </Button>
-        </div>
-      )}
+      <div className="flex">
+        {isMobile ? (
+          <>
+            <IconButton
+              size="sm"
+              onClick={() => {
+                setListView(true)
+              }}
+              variant="text"
+              className="mr-1"
+            >
+              <ListViewIcon color={listView || isDark ? 'primary' : 'textSubtle'} />
+            </IconButton>
+            <IconButton
+              size="sm"
+              onClick={() => {
+                setListView(false)
+              }}
+              variant="text"
+            >
+              <CardViewIcon color={!listView || isDark ? 'primary' : 'textSubtle'} />
+            </IconButton>
+          </>
+        ) : (
+          <>
+            <Button
+              size="sm"
+              onClick={() => {
+                setListView(true)
+              }}
+              startIcon={<ListViewIcon color={listView || isDark ? 'white' : 'primary'} />}
+              variant={listView ? 'primary' : 'secondary'}
+              className="mr-2"
+            >
+              List View
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => {
+                setListView(false)
+              }}
+              variant={!listView ? 'primary' : 'secondary'}
+              startIcon={<CardViewIcon color={!listView || isDark ? 'white' : 'primary'} />}
+            >
+              Card View
+            </Button>
+          </>
+        )}
+      </div>
 
-      <div className="flex mt-2">
+      <div className="flex">
         <Button
           size="sm"
           onClick={() => {

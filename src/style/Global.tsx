@@ -112,6 +112,10 @@ const GlobalStyle = createGlobalStyle`
     .align-self-center { align-self: center; }
     .align-self-start { align-self: flex-start; }
     .align-self-end { align-self: flex-end; }
+
+    .justify-self-center { align-self: center; }
+    .justify-self-start { align-self: flex-start; }
+    .justify-self-end { align-self: flex-end; }
   
     .flex-grow { flex-grow: 1; }
     .flex-shrink { flex-shrink: 0; }

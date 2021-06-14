@@ -11,7 +11,7 @@ import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -45,8 +45,6 @@ const MaxWidth = styled.div`
 `
 
 const Farm: React.FC = () => {
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const farms = useFarms()
@@ -58,7 +56,7 @@ const Farm: React.FC = () => {
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
-  const [listView, setListView] = useState(!isMobile)
+  const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
 
@@ -237,12 +235,6 @@ const Farm: React.FC = () => {
       setIsPhrase1(true)
     }
   }, [currentTime, phrase1TimeStamp])
-
-  useEffect(() => {
-    if (isMobile) {
-      setListView(false)
-    }
-  }, [isMobile])
 
   useEffect(() => {
     return () => {

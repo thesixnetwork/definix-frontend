@@ -18,7 +18,7 @@ interface Props {
 }
 
 const ConnectButton = styled(Button)`
-  padding: 4px;
+  padding: 4px !important;
   box-shadow: ${({ theme }) => theme.shadows.elevation1} !important;
   background: ${({ theme }) => theme.colors.connectBtnBorder} !important;
 
