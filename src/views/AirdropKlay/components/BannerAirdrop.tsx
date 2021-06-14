@@ -104,7 +104,7 @@ const BannerAirdrop = ({ showBtn = false, className = '' }) => {
           <br />
           <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
             <b>
-              <span style={{ fontSize: '20px' }}>Get free </span> <span style={{ fontSize: '30px' }}>21.5 KLAY</span>
+              <span style={{ fontSize: '20px' }}>Get free </span> <span style={{ fontSize: '30px' }}>11 KLAY</span>
             </b>
           </div>
         </div>
