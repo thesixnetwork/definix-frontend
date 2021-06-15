@@ -1,11 +1,11 @@
 import Page from 'components/layout/Page'
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Button, Card, Heading, IconButton, Text } from 'uikit-dev'
 import Title from 'views/Ifos/components/Title'
 import BannerAirdrop from './components/BannerAirdrop'
 import CardContentAirdrop from './components/CardContentAirdrop'
-import CustomModal from "./components/CustomModal"
+import CustomModal from './components/CustomModal'
 
 const MaxWidth = styled.div`
   max-width: 800px;
@@ -93,22 +93,26 @@ const StyledButton = styled(Button)`
   background: transparent !important;
 `
 
-
 const AirdropKlay: React.FC = () => {
   const [showModal, setShowModal] = useState(false)
-  const [title, setTitle] = useState("")
-  const [bodyModal, setBodyModal] = useState("")
+  const [title, setTitle] = useState('')
+  const [bodyModal, setBodyModal] = useState('')
   const [modalSuccess, setModalSuccess] = useState(false)
-  const toggleModal = () =>{
+  const toggleModal = () => {
     setShowModal(!showModal)
   }
   return (
     <>
-      <CustomModal isSuccess={modalSuccess} title={title} hidden={!showModal}  isRainbow={false} >
+      <CustomModal isSuccess={modalSuccess} title={title} hidden={!showModal} isRainbow={false}>
         <div>
-          <Text fontSize="15px" lineHeight="25px" textAlign="center">{bodyModal}</Text>
-          <br /><br />
-          <Button style={{width:"100%"}} onClick={toggleModal}>Close</Button>
+          <Text fontSize="15px" lineHeight="25px" textAlign="center">
+            {bodyModal}
+          </Text>
+          <br />
+          <br />
+          <Button style={{ width: '100%' }} onClick={toggleModal}>
+            Close
+          </Button>
         </div>
       </CustomModal>
       <Panel id="root">
@@ -118,7 +122,12 @@ const AirdropKlay: React.FC = () => {
           </Card>
 
           <Card className="flex flex-column align-stretch mx-auto" style={{ marginTop: '30px', maxWidth: '1000px' }}>
-            <CardContentAirdrop setModalSuccess={setModalSuccess} setTitleModal={setTitle} setBodyModal={setBodyModal} toggleModal={toggleModal}/>
+            <CardContentAirdrop
+              setModalSuccess={setModalSuccess}
+              setTitleModal={setTitle}
+              setBodyModal={setBodyModal}
+              toggleModal={toggleModal}
+            />
           </Card>
         </Page>
       </Panel>

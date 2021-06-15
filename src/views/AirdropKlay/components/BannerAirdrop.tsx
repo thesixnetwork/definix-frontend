@@ -115,4 +115,3 @@ const BannerAirdrop = ({ showBtn = false, className = '' }) => {
 }
 
 export default BannerAirdrop
-
