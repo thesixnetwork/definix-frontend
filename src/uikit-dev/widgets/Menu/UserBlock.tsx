@@ -65,7 +65,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) 
           }
         >
           <div style={{ zIndex: 999 }}>
-            <Heading fontSize="14px !important" className="mb-3 pa-0 pt-2">
+            <Heading fontSize="16px !important" className="mb-3 pa-0 pt-2">
               {accountEllipsis}
             </Heading>
             <LinkExternal
