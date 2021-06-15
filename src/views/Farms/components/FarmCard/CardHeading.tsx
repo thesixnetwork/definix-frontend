@@ -109,12 +109,6 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
-      {!inlineMultiplier && (
-        <MultiplierTag>
-          <p>{farm.multiplier}</p>
-        </MultiplierTag>
-      )}
-
       <StyledFarmImages>
         <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
         <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
@@ -131,12 +125,6 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
-
-          {inlineMultiplier && (
-            <InlineMultiplierTag>
-              <p>{farm.multiplier}</p>
-            </InlineMultiplierTag>
-          )}
         </div>
       )}
 
