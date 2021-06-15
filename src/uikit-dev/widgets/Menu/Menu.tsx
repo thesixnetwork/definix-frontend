@@ -287,24 +287,6 @@ const Menu: React.FC<NavProps> = ({
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
           <InnerBg>
-            {/* <CountDownBanner
-              logo={definixCoin}
-              title="Ceritakan tentang pengalamanmu di Crypto"
-              highlight="dan menangkan 20$"
-              endTime=""
-              button={
-                <Button
-                  as="a"
-                  target="_blank"
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeD1LOcZ9bIBrPrZGy3PV-pS9gF-ijg-aj3XyMEAluj7wCbBQ/viewform"
-                  size="sm"
-                >
-                  Click
-                </Button>
-              }
-              disableCountdown
-            /> */}
-
             <CountDownBanner
               logo={logoTrade}
               title="Definix Trading Tournament"
