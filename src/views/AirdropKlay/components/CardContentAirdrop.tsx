@@ -185,8 +185,7 @@ export default function CardContentAirdrop({
         </Text>
 
         <Text style={{ textAlign: 'center', marginBottom: '20px', fontSize: '30px' }}>
-          You will receive{' '}
-          11 KLAY
+          You will receive 11 KLAY
           <img
             style={{ width: '15px', marginLeft: '10px', marginRight: '5px' }}
             src={klaytnLogo}
@@ -290,8 +289,8 @@ export default function CardContentAirdrop({
           </Heading>
           <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', opacity: '0.3' }} />
           <Text lineHeight="2">
-            1. The users who start using bsc.definix.com from 1st April 2021, 3:00:00PM - 12th June 2021, 6:59:59PM (GMT+7) are
-            screenshot on the block count.
+            1. The users who start using bsc.definix.com from 1st April 2021, 3:00:00PM - 12th June 2021, 6:59:59PM
+            (GMT+7) are screenshot on the block count.
           </Text>
           <Text lineHeight="2">
             2. Users can start claiming their airdrop on 21st June 2021 10:00:00 AM - 20th July 2021 2:59:59 PM (GMT+7)
