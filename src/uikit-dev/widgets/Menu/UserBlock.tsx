@@ -40,7 +40,7 @@ const AccountButton = styled(ConnectButton)`
 
 const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
-  const accountEllipsis = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
+  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
 
   return (
     <div className={className}>
