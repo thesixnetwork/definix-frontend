@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import styled from 'styled-components'
-import { Button } from 'uikit-dev'
+import Button from './Button/Button'
 import bsc from '../images/Logo-BinanceSmartChain.png'
 import klaytn from '../images/Logo-Klaytn.png'
 import MenuButton from '../widgets/Menu/MenuButton'
