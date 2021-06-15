@@ -111,7 +111,7 @@ export default function CardContentAirdrop({
   toggleModal,
   setModalSuccess,
 }: Props): ReactElement {
-  const countDownEnd = new Date(2021, 4, 21, 0, 0, 0)
+  const countDownEnd = new Date(2021, 5, 21, 0, 0, 0)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const airdropKlayAddress = getAirdropKlayAddress()
   const web3 = new Web3(ethereum)
