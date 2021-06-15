@@ -65,7 +65,7 @@ const CardAirdropKlay = ({ showBtn = false, className = '' }) => {
         <img src={definixLogo} width="200px" alt="" /> <span style={StyleAirDrop}>is now on</span>
       </Heading>
       <Heading fontSize="18px" color="#895E38" className="mb-2">
-        Klatn Blockchain
+        Klaytn Blockchain
       </Heading>
       <Text style={{ float: 'left', marginTop: '8px', marginRight: '8px' }} color="#3F4042" fontSize="15px">
         <b>Get free </b>
