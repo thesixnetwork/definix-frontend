@@ -24,7 +24,7 @@ const Caption = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.primary};
   padding: 4px 16px;
-  border-radius: ${({ theme }) => theme.radii.large};
+  border-radius: ${({ theme }) => theme.radii.card};
   display: inline-block;
 `
 

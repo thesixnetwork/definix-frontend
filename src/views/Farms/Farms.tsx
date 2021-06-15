@@ -18,7 +18,7 @@ import {
   usePriceSixUsd,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
@@ -51,8 +51,6 @@ const MaxWidth = styled.div`
 `
 
 const Farms: React.FC = () => {
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isMd && !isXl
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
   const klayPrice = usePriceKlayKusdt()
@@ -65,7 +63,7 @@ const Farms: React.FC = () => {
   const { fastRefresh } = useRefresh()
 
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [listView, setListView] = useState(!isMobile)
+  const [listView, setListView] = useState(true)
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
@@ -167,12 +165,6 @@ const Farms: React.FC = () => {
       dispatch(fetchFarmUserDataAsync(account))
     }
   }, [account, dispatch, fastRefresh])
-
-  useEffect(() => {
-    if (isMobile) {
-      setListView(false)
-    }
-  }, [isMobile])
 
   useEffect(() => {
     return () => {

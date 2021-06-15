@@ -2,22 +2,27 @@ import BigNumber from 'bignumber.js'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
-import React, { useCallback, useContext, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { useMatchBreakpoints } from 'uikit-dev'
 import PoolContext from 'views/Pools/PoolContext'
 import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
 import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
+import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 import { PoolCardProps } from './types'
 
-const VerticalStyle = styled.div`
+const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
+`
+
+const VerticalStyle = styled(CardStyle)`
   display: flex;
   position: relative;
   align-self: baseline;
@@ -26,12 +31,23 @@ const VerticalStyle = styled.div`
   text-align: center;
 `
 
-const HorizontalStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+const HorizontalStyle = styled(CardStyle)`
   display: flex;
   position: relative;
+`
+
+const HorizontalMobileStyle = styled(CardStyle)`
+  position: relative;
+
+  .accordion-content {
+    &.hide {
+      display: none;
+    }
+
+    &.show {
+      display: block;
+    }
+  }
 `
 
 const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
@@ -51,6 +67,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
 
   const isBnbPool = poolCategory === PoolCategory.KLAYTN
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
+
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const allowance = new BigNumber(userData?.allowance || 0)
   const earnings = useMemo(() => new BigNumber(userData?.pendingReward || 0), [userData?.pendingReward])
@@ -161,19 +181,44 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string) => (
+    (className?: string, isHor?: boolean) => (
       <DetailsSection
         tokenName={tokenName}
         klaytnScopeAddress=""
         totalStaked={totalStaked}
-        isHorizontal={isHorizontal}
+        isHorizontal={isHor}
         className={className}
       />
     ),
-    [isHorizontal, tokenName, totalStaked],
+    [tokenName, totalStaked],
   )
 
+  useEffect(() => {
+    setIsOpenAccordion(false)
+  }, [])
+
   if (isHorizontal) {
+    if (isMobile) {
+      return (
+        <HorizontalMobileStyle className="mb-3">
+          {renderSash()}
+          <CardHeadingAccordion
+            tokenName={tokenName}
+            isOldSyrup={isOldSyrup}
+            apy={apy}
+            className=""
+            isOpenAccordion={isOpenAccordion}
+            setIsOpenAccordion={setIsOpenAccordion}
+          />
+          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+            {renderStakeAction('pa-5')}
+            {renderHarvestAction('pa-5')}
+            {renderDetailsSection('px-5 py-3')}
+          </div>
+        </HorizontalMobileStyle>
+      )
+    }
+
     return (
       <HorizontalStyle className="flex align-stretch px-5 py-6 mb-4">
         {renderSash()}

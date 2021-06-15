@@ -36,6 +36,8 @@ const GlobalStyle = createGlobalStyle`
   .pos-relative { position: relative; }
   .pos-static { position: static; }
 
+  .dis-in-block { display: inline-block !important; }  
+
   .slider-profile .slick-slider {
     display: flex; flex-direction: column; align-items: stretch; height: 100%;
 
@@ -110,6 +112,10 @@ const GlobalStyle = createGlobalStyle`
     .align-self-center { align-self: center; }
     .align-self-start { align-self: flex-start; }
     .align-self-end { align-self: flex-end; }
+
+    .justify-self-center { align-self: center; }
+    .justify-self-start { align-self: flex-start; }
+    .justify-self-end { align-self: flex-end; }
   
     .flex-grow { flex-grow: 1; }
     .flex-shrink { flex-shrink: 0; }

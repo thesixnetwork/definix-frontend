@@ -76,6 +76,7 @@ const StyledButton = styled.button<ButtonProps>`
 
     svg {
       fill: ${getButtonVariantProp('colorHover')};
+      stroke: ${getButtonVariantProp('colorHover')};
     }
   }
 
