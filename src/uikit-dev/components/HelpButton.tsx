@@ -5,6 +5,7 @@ const HelpButton = styled(Button)`
   &:hover {
     svg {
       fill: ${({ theme }) => theme.colors.primary} !important;
+      stroke: ${({ theme }) => theme.colors.white} !important;
     }
   }
 `

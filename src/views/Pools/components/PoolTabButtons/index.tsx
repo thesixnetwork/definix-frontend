@@ -51,17 +51,19 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
             }}
             variant="text"
             className="mr-1"
+            isStroke
           >
-            <ListViewIcon color={listView || isDark ? 'primary' : 'textSubtle'} />
+            <ListViewIcon isStroke color={listView || isDark ? 'primary' : 'textSubtle'} />
           </IconButton>
           <IconButton
             size="sm"
             onClick={() => {
               setListView(false)
             }}
+            isStroke
             variant="text"
           >
-            <CardViewIcon color={!listView || isDark ? 'primary' : 'textSubtle'} />
+            <CardViewIcon isStroke color={!listView || isDark ? 'primary' : 'textSubtle'} />
           </IconButton>
         </div>
       ) : (
@@ -71,9 +73,10 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
             onClick={() => {
               setListView(true)
             }}
-            startIcon={<ListViewIcon color={listView || isDark ? 'white' : 'primary'} />}
+            startIcon={<ListViewIcon isStroke color={listView || isDark ? 'white' : 'primary'} />}
             variant={listView ? 'primary' : 'secondary'}
             className="mr-2"
+            isStroke
           >
             List View
           </Button>
@@ -83,7 +86,8 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
               setListView(false)
             }}
             variant={!listView ? 'primary' : 'secondary'}
-            startIcon={<CardViewIcon color={!listView || isDark ? 'white' : 'primary'} />}
+            startIcon={<CardViewIcon isStroke color={!listView || isDark ? 'white' : 'primary'} />}
+            isStroke
           >
             Card View
           </Button>
