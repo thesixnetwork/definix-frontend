@@ -73,7 +73,7 @@ export const fetchUserStakeBalances = async (account) => {
   const { amount: masterPoolAmount } = await herodotusContract.methods.userInfo('0', account).call()
 
   // SIX / Finix pool
-  const { amount: sixPoolAmount } = await herodotusContract.methods.userInfo('8', account).call()
+  const { amount: sixPoolAmount } = await herodotusContract.methods.userInfo('1', account).call()
 
   return { ...stakedBalances, 0: new BigNumber(masterPoolAmount).toJSON(), 1: new BigNumber(sixPoolAmount).toJSON() }
 }
