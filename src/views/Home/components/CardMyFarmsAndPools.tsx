@@ -763,18 +763,20 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </Text>
                   )}
                 </div>
-                {false && <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    Multiplier
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
-                  ) : (
-                    <Text bold color="warning">
-                      {d.props.farm.multiplier}
+                {false && (
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      Multiplier
                     </Text>
-                  )}
-                </div>}
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    ) : (
+                      <Text bold color="warning">
+                        {d.props.farm.multiplier}
+                      </Text>
+                    )}
+                  </div>
+                )}
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     FINIX Earned
