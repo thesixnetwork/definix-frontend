@@ -65,7 +65,7 @@ const CountDown = ({ showCom = false }) => {
           </Text>
 
           <Text style={{ textAlign: 'center', marginBottom: '20px', fontSize: '30px' }}>
-            You will receive{' '}
+            You will receive 11 KLAY
             <img
               style={{ width: '20px', marginLeft: '15px', marginRight: '10px' }}
               src={klaytnLogo}

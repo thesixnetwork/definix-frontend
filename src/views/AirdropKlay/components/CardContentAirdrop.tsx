@@ -98,11 +98,19 @@ const customText = {
   borderRadius: '1px !important',
 }
 
-// interface Props {
+interface Props {
+  setTitleModal: (text: string) => void
+  setBodyModal: (text: string) => void
+  toggleModal: () => void
+  setModalSuccess: (status: boolean) => void
+}
 
-// }
-
-export default function CardContentAirdrop({ className = '' }): ReactElement {
+export default function CardContentAirdrop({
+  setBodyModal,
+  setTitleModal,
+  toggleModal,
+  setModalSuccess,
+}: Props): ReactElement {
   const countDownEnd = new Date(2021, 5, 21, 0, 0, 0)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const airdropKlayAddress = getAirdropKlayAddress()
@@ -123,6 +131,7 @@ export default function CardContentAirdrop({ className = '' }): ReactElement {
   const onSubbmit = async () => {
     if (accountClaim !== undefined && accountClaim !== '') {
       setLoading(true)
+
       try {
         contractAirdropKlay.methods
           .claimAll(accountClaim)
@@ -130,18 +139,44 @@ export default function CardContentAirdrop({ className = '' }): ReactElement {
           .on('receipt', (receipt) => {
             setState(CLAIMED)
             setLoading(false)
+            setTitleModal('Congratulations')
+            setBodyModal('Your airdrop is successfully claim,\n It’s will transfer to destination wallet soon.')
+            toggleModal()
+            setModalSuccess(true)
+
             // return tx.transactionHash
           })
-          .on('error', () => {
+          .on('error', (e) => {
+            setTitleModal('Transaction fail')
+            console.log(e)
+            setBodyModal(getErrorMsg(e.code))
             setLoading(false)
-            alert('Transaction is fail')
+            setModalSuccess(false)
+            toggleModal()
+
+            // alert('Transaction is fail')
           })
       } catch (e) {
-        alert(e.code)
+        setTitleModal('Warning')
+        setBodyModal('Address is wrong')
+        setLoading(false)
+        setModalSuccess(false)
+        toggleModal()
+        setLoading(false)
       }
     }
   }
-
+  const getErrorMsg = (errorCode) => {
+    let errorMsg = ''
+    switch (errorCode) {
+      case -32603:
+        errorMsg = 'gas too low'
+        break
+      default:
+        errorMsg = 'transaction error'
+    }
+    return errorMsg
+  }
   const renderClaimDiv = () => {
     return (
       <div style={{ textAlign: 'center', marginRight: 'auto', marginLeft: 'auto' }}>
@@ -150,7 +185,7 @@ export default function CardContentAirdrop({ className = '' }): ReactElement {
         </Text>
 
         <Text style={{ textAlign: 'center', marginBottom: '20px', fontSize: '30px' }}>
-          You will receive{' '}
+          You will receive 11 KLAY
           <img
             style={{ width: '15px', marginLeft: '10px', marginRight: '5px' }}
             src={klaytnLogo}
@@ -232,15 +267,7 @@ export default function CardContentAirdrop({ className = '' }): ReactElement {
   }
   const renderModal = () => {
     return (
-      <div
-        style={{
-          position: 'absolute',
-
-          left: '50%',
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
+      <div>
         <Modal title="xxx" hideCloseButton isRainbow={false}>
           <div>xxx</div>
         </Modal>
@@ -248,7 +275,7 @@ export default function CardContentAirdrop({ className = '' }): ReactElement {
     )
   }
   return (
-    <StyledBanner className={className}>
+    <StyledBanner>
       <MaxWidth>
         <div>
           {!account ? <UnlockButton fullWidth radii="small" /> : checkRender()}
@@ -259,34 +286,34 @@ export default function CardContentAirdrop({ className = '' }): ReactElement {
           {state == CLAIMED ? renderClaimedBtn() : null}
 
           <Heading style={{ marginTop: '40px' }} as="h3">
-            Criteria for Airdrop claim
+            Criteria for airdrop claim
           </Heading>
           <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', opacity: '0.3' }} />
           <Text lineHeight="2">
-            1. The users who start using bsc.definix.com from 1st April 2021, 3:00:00PM - 31st May 2021, 11:59:59PM
+            1. The users who start using bsc.definix.com from 1st April 2021, 3:00:00PM - 12th June 2021, 6:59:59PM
             (GMT+7) are screenshot on the block count.
           </Text>
           <Text lineHeight="2">
-            2. Users can start claiming their airdrop on 21st June 2021 3:00:00 PM - 15th July 2021 2:59:59 PM.
+            2. Users can start claiming their airdrop on 21st June 2021 10:00:00 AM - 20th July 2021 2:59:59 PM (GMT+7)
           </Text>
           <Text lineHeight="2">
             3. The users need to sign-in their wallet; the address of the wallet must be matched with the screenshot
             block mentioned above.
           </Text>
-          <Text lineHeight="2">4. Input the destination wallet (KIP-7 supported) on the claiming page</Text>
+          <Text lineHeight="2">4. Input the destination Klaytn wallet (KIP-7 supported) on the claiming page</Text>
           <div style={{ marginLeft: '20px' }}>
             <Text lineHeight="2">
               4.1. In case you use software wallet such as Metamask, Binance Chain Wallet, Trust Wallet, and etc. as a
               destination, you can import your seed phrase to Kaikas wallet.
-              <a style={{ color: '#528FA9' }} href="/" target="#">
+              {/* <a style={{ color: '#528FA9' }} href="/" target="#">
                 How to import seed phrase to Kaikas wallet.
-              </a>
+              </a> */}
             </Text>
             <Text lineHeight="2">
               4.2. In case you use hardware wallet, please create new Kaikas wallet.
-              <a style={{ color: '#528FA9' }} href="/" target="#">
+              {/* <a style={{ color: '#528FA9' }} href="/" target="#">
                 Create Kaikas wallet
-              </a>
+              </a> */}
             </Text>
           </div>
           <Text lineHeight="2">

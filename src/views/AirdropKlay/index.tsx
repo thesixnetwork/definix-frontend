@@ -1,18 +1,11 @@
 import Page from 'components/layout/Page'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { ArrowBackIcon, Button, Card, Heading, IconButton, Text } from 'uikit-dev'
-// import bg from 'uikit-dev/images/for-ui-v2/bg.png'
-import colorStroke from '../../uikit-dev/images/Color-stroke.png'
-import info from '../../uikit-dev/images/for-Info-page/info.png'
-import m1 from '../../uikit-dev/images/for-Info-page/m1.png'
-import m2 from '../../uikit-dev/images/for-Info-page/m2.png'
-import m3 from '../../uikit-dev/images/for-Info-page/m3.png'
-import u1 from '../../uikit-dev/images/for-Info-page/u1.png'
-import u2 from '../../uikit-dev/images/for-Info-page/u2.png'
-import u3 from '../../uikit-dev/images/for-Info-page/u3.png'
+import { Button, Card, Heading, IconButton, Text } from 'uikit-dev'
+import Title from 'views/Ifos/components/Title'
 import BannerAirdrop from './components/BannerAirdrop'
 import CardContentAirdrop from './components/CardContentAirdrop'
+import CustomModal from './components/CustomModal'
 
 const MaxWidth = styled.div`
   max-width: 800px;
@@ -101,18 +94,44 @@ const StyledButton = styled(Button)`
 `
 
 const AirdropKlay: React.FC = () => {
+  const [showModal, setShowModal] = useState(false)
+  const [title, setTitle] = useState('')
+  const [bodyModal, setBodyModal] = useState('')
+  const [modalSuccess, setModalSuccess] = useState(false)
+  const toggleModal = () => {
+    setShowModal(!showModal)
+  }
   return (
-    <Panel id="root">
-      <Page style={{ maxWidth: '1280px' }}>
-        <Card className="flex flex-column align-stretch mx-auto" style={{ maxWidth: '1000px' }}>
-          <BannerAirdrop />
-        </Card>
+    <>
+      <CustomModal isSuccess={modalSuccess} title={title} hidden={!showModal} isRainbow={false}>
+        <div>
+          <Text fontSize="15px" lineHeight="25px" textAlign="center">
+            {bodyModal}
+          </Text>
+          <br />
+          <br />
+          <Button style={{ width: '100%' }} onClick={toggleModal}>
+            Close
+          </Button>
+        </div>
+      </CustomModal>
+      <Panel id="root">
+        <Page style={{ maxWidth: '1280px' }}>
+          <Card className="flex flex-column align-stretch mx-auto" style={{ maxWidth: '1000px' }}>
+            <BannerAirdrop />
+          </Card>
 
-        <Card className="flex flex-column align-stretch mx-auto" style={{ marginTop: '30px', maxWidth: '1000px' }}>
-          <CardContentAirdrop />
-        </Card>
-      </Page>
-    </Panel>
+          <Card className="flex flex-column align-stretch mx-auto" style={{ marginTop: '30px', maxWidth: '1000px' }}>
+            <CardContentAirdrop
+              setModalSuccess={setModalSuccess}
+              setTitleModal={setTitle}
+              setBodyModal={setBodyModal}
+              toggleModal={toggleModal}
+            />
+          </Card>
+        </Page>
+      </Panel>
+    </>
   )
 }
 
