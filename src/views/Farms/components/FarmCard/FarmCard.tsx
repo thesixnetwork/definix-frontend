@@ -213,7 +213,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         {renderCardHeading('col-3 pos-static')}
 
         <div className="col-4 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-5')}
+          {renderStakeAction('pb-4')}
           {renderDetailsSection('', true)}
         </div>
 
