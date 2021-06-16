@@ -226,9 +226,9 @@ const Farm: React.FC = () => {
                 <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
                   Pool
                 </Heading>
-                <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                {false && <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
-                </HelpButton>
+                </HelpButton>}
               </div>
               <Text>
                 Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.

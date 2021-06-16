@@ -224,7 +224,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceKethKusdt()
   const [listView, setListView] = useState(false)
-  const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.multiplier !== '0X')
+  const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 1 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
     (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
   )
@@ -294,51 +294,43 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const klayPriceUSD = usePriceKlayKusdt()
   const ethPriceKlay = usePriceKethKlay()
   const block = useBlock()
-  const priceToBnb = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
-    const tokenPriceBN = new BigNumber(tokenPrice)
-    if (tokenName === 'BNB') {
+
+  const priceToKlay = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
+    const tokenPriceKLAYTN = new BigNumber(tokenPrice)
+    if (tokenName === 'KLAY') {
       return new BigNumber(1)
     }
     if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
-      return tokenPriceBN.div(klayPriceUSD)
+      return tokenPriceKLAYTN.div(klayPriceUSD)
     }
-    return tokenPriceBN
+    return tokenPriceKLAYTN
   }
 
   const poolsWithApy = pools.map((pool) => {
-    const isBnbPool = pool.poolCategory === PoolCategory.KLAYTN
-    let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+    const isKlayPool = pool.poolCategory === PoolCategory.KLAYTN
+    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
     let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
       case 0:
         stakingTokenFarm = farms.find((s) => s.pid === 0)
         break
-      case 2:
+      case 1:
         stakingTokenFarm = farms.find((s) => s.pid === 1)
         break
-      case 3:
+      case 2:
         stakingTokenFarm = farms.find((s) => s.pid === 2)
         break
-      case 4:
+      case 3:
         stakingTokenFarm = farms.find((s) => s.pid === 3)
         break
-      case 5:
+      case 4:
         stakingTokenFarm = farms.find((s) => s.pid === 4)
         break
-      case 6:
+      case 5:
         stakingTokenFarm = farms.find((s) => s.pid === 5)
         break
-      default:
-        break
-    }
-    switch (pool.sousId) {
-      case 0:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
       case 6:
-        rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
+        stakingTokenFarm = farms.find((s) => s.pid === 6)
         break
       default:
         break
@@ -346,20 +338,20 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KLAY' ? ethPriceKlay : 1
+    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
 
-    // /!\ Assume that the farm quote price is BNB
-    const stakingTokenPriceInBNB = isBnbPool
+    // /!\ Assume that the farm quote price is KLAY
+    const stakingTokenPriceInKLAY = isKlayPool
       ? new BigNumber(1)
       : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote).times(tempMultiplier)
-    const rewardTokenPriceInBNB = priceToBnb(
+    const rewardTokenPriceInKLAY = priceToKlay(
       pool.tokenName,
       rewardTokenFarm?.tokenPriceVsQuote,
       rewardTokenFarm?.quoteTokenSymbol,
     )
 
-    const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
-    const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(pool.totalStaked))
+    const totalRewardPricePerYear = rewardTokenPriceInKLAY.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
+    const totalStakingTokenInPool = stakingTokenPriceInKLAY.times(getBalanceNumber(pool.totalStaked))
     let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
     const totalLP = new BigNumber(stakingTokenFarm.lpTotalSupply).div(new BigNumber(10).pow(18))
     let highestToken
@@ -387,53 +379,28 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         apy = finixRewardPerYear.div(currentTotalStaked).times(100)
         break
       }
+      case 1: {
+        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
+          .times(stakingTokenFarm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
+        const finixInSix = new BigNumber(currentTotalStaked).times(sixPriceUSD).div(finixPrice)
+        apy = finixRewardPerYear.div(finixInSix).times(100)
+        break
+      }
       case 2:
       case 3:
       case 4:
       case 5:
-      case 6: {
-        const { startBlock, endBlock, rewardPerBlock, totalStaked } = pool
-        const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
-        const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)
-        const currentBlockNumber = typeof block === 'number' ? block : parseInt(block, 10)
-        const totalDiffBlock = endBlockNumber - startBlockNumber
-        const remainBlock = endBlockNumber - currentBlockNumber
-        const remainTimeSec = remainBlock * 3
-        const totalDiffBlockCeil =
-          totalDiffBlock % 1200 > 1100 ? totalDiffBlock + (1200 - (totalDiffBlock % 1200)) : totalDiffBlock
-        const currentDiffBlock = currentBlockNumber - startBlockNumber
-        const totalReward = totalDiffBlockCeil * (rewardPerBlock / 10 ** 18)
-        const alreadyRewarded = currentDiffBlock * (rewardPerBlock / 10 ** 18)
-        const remainReward = totalReward - alreadyRewarded
-
-        const B33 = remainReward
-        const B34 = sixPriceUSD
-
-        const E33 = stakingTokenFarm.lpTotalSupply
-        const E34 = totalStaked
-        const E35 = highestToken
-
-        const F34 = new BigNumber(E34).div(new BigNumber(E33))
-        const F35 = new BigNumber(E35).times(F34)
-
-        const B35 = F35.times(new BigNumber(B34)).times(2)
-        const B38 = 365 * 24 * 60 * 60
-
-        apy = new BigNumber(B33)
-          .times(new BigNumber(B34))
-          .div(B35)
-          .times(new BigNumber(B38))
-          .div(new BigNumber(remainTimeSec))
-          .times(100)
-
-        break
-      }
+      case 6:
       default:
         break
     }
     return {
       ...pool,
-      isFinished: pool.sousId === 0 ? false : pool.isFinished || block > pool.endBlock,
+      isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
       apy,
       estimatePrice,
     }
@@ -796,7 +763,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </Text>
                   )}
                 </div>
-                <div>
+                {false && <div>
                   <Text fontSize="12px" color="textSubtle">
                     Multiplier
                   </Text>
@@ -807,7 +774,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       {d.props.farm.multiplier}
                     </Text>
                   )}
-                </div>
+                </div>}
                 <div>
                   <Text fontSize="12px" color="textSubtle">
                     FINIX Earned

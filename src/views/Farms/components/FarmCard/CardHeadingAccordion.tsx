@@ -139,10 +139,6 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
-
-          <InlineMultiplierTag>
-            <p>{farm.multiplier}</p>
-          </InlineMultiplierTag>
         </div>
       )}
 

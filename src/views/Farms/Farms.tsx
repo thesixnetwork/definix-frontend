@@ -192,9 +192,9 @@ const Farms: React.FC = () => {
                   Farm
                 </Heading>
 
-                <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                {false && <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
-                </HelpButton>
+                </HelpButton>}
               </div>
               <Text>
                 Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.
