@@ -23,6 +23,10 @@ export default {
     97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
     56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
   },
+  btc: {
+    97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+  },
   finix: {
     97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
     56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
