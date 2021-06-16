@@ -72,7 +72,7 @@ const fetchFarms = async () => {
         .div(new BigNumber(10).pow(quoteTokenDecimals))
         .times(lpTokenRatio)
 
-      const [info, totalAllocPoint, finixPerBlock, BONUS_MULTIPLIER] = await multicall(herodotusABI, [
+      const [info, totalAllocPoint, finixPerBlock, BONUS_MULTIPLIER, bundleRewardLength] = await multicall(herodotusABI, [
         {
           address: getHerodotusAddress(),
           name: 'poolInfo',
@@ -90,11 +90,27 @@ const fetchFarms = async () => {
           address: getHerodotusAddress(),
           name: 'BONUS_MULTIPLIER',
         },
+        {
+          address: getHerodotusAddress(),
+          name: 'bundleRewardLength',
+        },
       ])
 
       const allocPoint = new BigNumber(info.allocPoint._hex)
       const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
+      const numberBundleRewards = new BigNumber(bundleRewardLength).toNumber()
 
+      if (numberBundleRewards > 0) {
+        let allBundles = []
+        for (let i = 0; i < numberBundleRewards; i++) {
+          allBundles.push({
+          address: getHerodotusAddress(),
+          name: 'totalAllocPoint',
+            params: [farmConfig.pid, i],
+        },)
+        }
+
+      }
       return {
         ...farmConfig,
         tokenAmount: tokenAmount.toJSON(),
@@ -107,6 +123,7 @@ const fetchFarms = async () => {
         BONUS_MULTIPLIER: new BigNumber(BONUS_MULTIPLIER).toJSON(),
         lpTotalSupply,
         lpTokenRatio,
+        bundleRewardLength: new BigNumber(bundleRewardLength).toJSON(),
       }
     }),
   )
