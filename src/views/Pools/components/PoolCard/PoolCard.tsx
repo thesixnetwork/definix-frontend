@@ -213,7 +213,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
             {renderStakeAction('pa-5')}
             {renderHarvestAction('pa-5')}
-            {renderDetailsSection('px-5 py-3')}
+            {renderDetailsSection('px-5 py-3', false)}
           </div>
         </HorizontalMobileStyle>
       )
@@ -225,8 +225,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         {renderCardHeading('col-3 pos-static')}
 
         <div className="col-5 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-5')}
-          {renderDetailsSection()}
+          {renderStakeAction('pb-4')}
+          {renderDetailsSection('', true)}
         </div>
 
         {renderHarvestAction('col-4 pl-5 flex-grow')}

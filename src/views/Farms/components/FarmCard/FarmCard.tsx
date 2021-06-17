@@ -202,7 +202,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
           />
           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
             {renderStakeAction('pa-5')}
-            {/* {renderHarvestAction('pa-5')} */}
+            {/* renderHarvestAction('pa-5') */}
             {renderHarvestActionAirDrop('pa-5 pt-0', false)}
             {renderDetailsSection('px-5 py-3', false)}
           </div>
@@ -215,7 +215,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         {renderCardHeading('col-3 pos-static')}
 
         <div className="col-4 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-5')}
+          {renderStakeAction('pb-4')}
           {renderDetailsSection('', true)}
         </div>
 

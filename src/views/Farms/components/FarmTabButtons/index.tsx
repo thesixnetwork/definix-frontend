@@ -32,8 +32,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
               }}
               variant="text"
               className="mr-1"
+              isStroke
             >
-              <ListViewIcon color={listView || isDark ? 'primary' : 'textSubtle'} />
+              <ListViewIcon isStroke color={listView || isDark ? 'primary' : 'textSubtle'} />
             </IconButton>
             <IconButton
               size="sm"
@@ -41,8 +42,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
                 setListView(false)
               }}
               variant="text"
+              isStroke
             >
-              <CardViewIcon color={!listView || isDark ? 'primary' : 'textSubtle'} />
+              <CardViewIcon isStroke color={!listView || isDark ? 'primary' : 'textSubtle'} />
             </IconButton>
           </>
         ) : (
@@ -52,7 +54,8 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
               onClick={() => {
                 setListView(true)
               }}
-              startIcon={<ListViewIcon color={listView || isDark ? 'white' : 'primary'} />}
+              isStroke
+              startIcon={<ListViewIcon isStroke color={listView || isDark ? 'white' : 'primary'} />}
               variant={listView ? 'primary' : 'secondary'}
               className="mr-2"
             >
@@ -63,8 +66,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
               onClick={() => {
                 setListView(false)
               }}
+              isStroke
               variant={!listView ? 'primary' : 'secondary'}
-              startIcon={<CardViewIcon color={!listView || isDark ? 'white' : 'primary'} />}
+              startIcon={<CardViewIcon isStroke color={!listView || isDark ? 'white' : 'primary'} />}
             >
               Card View
             </Button>
