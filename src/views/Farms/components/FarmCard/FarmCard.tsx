@@ -20,7 +20,7 @@ import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
 
 const CardStyle = styled.div`
-  background: ${props => props.theme.card.background};
+  background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `

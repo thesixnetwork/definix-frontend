@@ -15,20 +15,20 @@ const asyncForEach = async (array, callback) => {
 export const fetchFarmUserAllowances = async (account: string) => {
   const herodotusAdress = getHerodotusAddress()
 
-  const calls = farmsConfig.map(farm => {
+  const calls = farmsConfig.map((farm) => {
     const lpContractAddress = getAddress(farm.lpAddresses)
     return { address: lpContractAddress, name: 'allowance', params: [account, herodotusAdress] }
   })
 
   const rawLpAllowances = await multicall(erc20ABI, calls)
-  const parsedLpAllowances = rawLpAllowances.map(lpBalance => {
+  const parsedLpAllowances = rawLpAllowances.map((lpBalance) => {
     return new BigNumber(lpBalance).toJSON()
   })
   return parsedLpAllowances
 }
 
 export const fetchFarmUserTokenBalances = async (account: string) => {
-  const calls = farmsConfig.map(farm => {
+  const calls = farmsConfig.map((farm) => {
     const lpContractAddress = getAddress(farm.lpAddresses)
     return {
       address: lpContractAddress,
@@ -38,7 +38,7 @@ export const fetchFarmUserTokenBalances = async (account: string) => {
   })
 
   const rawTokenBalances = await multicall(erc20ABI, calls)
-  const parsedTokenBalances = rawTokenBalances.map(tokenBalance => {
+  const parsedTokenBalances = rawTokenBalances.map((tokenBalance) => {
     return new BigNumber(tokenBalance).toJSON()
   })
   return parsedTokenBalances
@@ -47,7 +47,7 @@ export const fetchFarmUserTokenBalances = async (account: string) => {
 export const fetchFarmUserStakedBalances = async (account: string) => {
   const herodotusAdress = getHerodotusAddress()
 
-  const calls = farmsConfig.map(farm => {
+  const calls = farmsConfig.map((farm) => {
     return {
       address: herodotusAdress,
       name: 'userInfo',
@@ -56,7 +56,7 @@ export const fetchFarmUserStakedBalances = async (account: string) => {
   })
 
   const rawStakedBalances = await multicall(herodotusABI, calls)
-  const parsedStakedBalances = rawStakedBalances.map(stakedBalance => {
+  const parsedStakedBalances = rawStakedBalances.map((stakedBalance) => {
     return new BigNumber(stakedBalance[0]._hex).toJSON()
   })
   return parsedStakedBalances
@@ -65,7 +65,7 @@ export const fetchFarmUserStakedBalances = async (account: string) => {
 export const fetchFarmUserEarnings = async (account: string) => {
   const herodotusAdress = getHerodotusAddress()
 
-  const calls = farmsConfig.map(farm => {
+  const calls = farmsConfig.map((farm) => {
     return {
       address: herodotusAdress,
       name: 'pendingFinix',
@@ -74,7 +74,7 @@ export const fetchFarmUserEarnings = async (account: string) => {
   })
 
   const rawEarnings = await multicall(herodotusABI, calls)
-  const parsedEarnings = rawEarnings.map(earnings => {
+  const parsedEarnings = rawEarnings.map((earnings) => {
     return new BigNumber(earnings).toJSON()
   })
   return parsedEarnings
@@ -84,7 +84,7 @@ export const fetchFarmPendingRewards = async (account: string) => {
   const herodotusAdress = getHerodotusAddress()
 
   const allBundleRewards = []
-  await asyncForEach(farmsConfig, async farm => {
+  await asyncForEach(farmsConfig, async (farm) => {
     const [bundleRewardLength] = await multicall(herodotusABI, [
       {
         address: herodotusAdress,
@@ -103,7 +103,11 @@ export const fetchFarmPendingRewards = async (account: string) => {
         })
       }
       const allPendingBundleRewards = await multicall(herodotusABI, allBundleRequests)
-      allBundleRewards.push(allPendingBundleRewards.map((apbr, index) => { return {reward: new BigNumber(apbr), bundleId: index}}))
+      allBundleRewards.push(
+        allPendingBundleRewards.map((apbr, index) => {
+          return { reward: new BigNumber(apbr), bundleId: index }
+        }),
+      )
     } else {
       allBundleRewards.push([])
     }

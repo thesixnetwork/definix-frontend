@@ -10,9 +10,9 @@ import { uniq } from 'lodash'
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < (array.length || array.size); index++) {
     // eslint-disable-next-line
-    await callback(array[index] || array.docs[index], index, array);
+    await callback(array[index] || array.docs[index], index, array)
   }
-};
+}
 
 const fetchFarms = async () => {
   const data = await Promise.all(
@@ -122,13 +122,10 @@ const fetchFarms = async () => {
             params: [farmConfig.pid, i],
           })
         }
-        allBundleRewards = await multicall(
-          herodotusABI,
-          allBundleRequests,
-        )
-        const allTokenRewardToFetch = uniq(allBundleRewards.map(abr => abr.rewardToken))
+        allBundleRewards = await multicall(herodotusABI, allBundleRequests)
+        const allTokenRewardToFetch = uniq(allBundleRewards.map((abr) => abr.rewardToken))
         const fetchedTokenInfo = {}
-        await asyncForEach(allTokenRewardToFetch, async tokenAddress => {
+        await asyncForEach(allTokenRewardToFetch, async (tokenAddress) => {
           const singleTokenRequests = []
           singleTokenRequests.push({
             address: tokenAddress,
@@ -146,10 +143,10 @@ const fetchFarms = async () => {
           fetchedTokenInfo[tokenAddress] = {
             symbol: tokenSymbol[0],
             name: tokenName[0],
-            totalSupply: tokenTotalSupply[0]
+            totalSupply: tokenTotalSupply[0],
           }
         })
-        allBundleRewards = allBundleRewards.map(abr => {
+        allBundleRewards = allBundleRewards.map((abr) => {
           if (fetchedTokenInfo[abr.rewardToken]) {
             return { ...abr, rewardTokenInfo: fetchedTokenInfo[abr.rewardToken] }
           }

@@ -91,7 +91,11 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           return (
             <div className="flex justify-space-between align-baseline mb-2">
               <div className="flex align-baseline">
-                <MiniLogo src={`/images/coins/${br.rewardTokenInfo.name === "WKLAY" ? "KLAY" : br.rewardTokenInfo.name}.png`} alt="" className="align-self-start" />
+                <MiniLogo
+                  src={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
+                  alt=""
+                  className="align-self-start"
+                />
                 <Heading
                   fontSize="24px !important"
                   color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
@@ -101,12 +105,15 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
                   {getBalanceNumber((pendingRewards[bundleId] || {}).reward).toLocaleString()}
                 </Heading>
                 <Text color="textSubtle" textAlign="left">
-                  {br.rewardTokenInfo.name === "WKLAY" ? "KLAY" : br.rewardTokenInfo.name}
+                  {br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
                 </Text>
               </div>
 
               <Text color="textSubtle" textAlign="right" fontSize="12px">
-                = ${numeral(getBalanceNumber((pendingRewards[bundleId] || {}).reward) * finixUsd.toNumber()).format('0,0.0000')}
+                = $
+                {numeral(getBalanceNumber((pendingRewards[bundleId] || {}).reward) * finixUsd.toNumber()).format(
+                  '0,0.0000',
+                )}
               </Text>
             </div>
           )
