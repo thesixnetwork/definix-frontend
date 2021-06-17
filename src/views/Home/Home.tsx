@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
