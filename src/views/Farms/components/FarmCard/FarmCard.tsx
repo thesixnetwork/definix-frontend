@@ -200,8 +200,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
           />
           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
             {renderStakeAction('pa-5')}
-            {/* {renderHarvestAction('pa-5')} */}
-            {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+            {renderHarvestAction('pa-5')}
+            {/* renderHarvestActionAirDrop('pa-5 pt-0', false) */}
             {renderDetailsSection('px-5 py-3', false)}
           </div>
         </HorizontalMobileStyle>
@@ -217,8 +217,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
           {renderDetailsSection('', true)}
         </div>
 
-        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
-        {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
+        {renderHarvestAction('col-5 pl-5 flex-grow')}
+        {/* renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true) */}
       </HorizontalStyle>
     )
   }
@@ -228,8 +228,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
       <div className="flex flex-column flex-grow">
         {renderCardHeading('pt-7')}
         {renderStakeAction('pa-5')}
-        {/* {renderHarvestAction('pa-5')} */}
-        {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+        {renderHarvestAction('pa-5')}
+        {/* renderHarvestActionAirDrop('pa-5 pt-0', false) */}
       </div>
       {renderDetailsSection('px-5 py-3', false)}
     </VerticalStyle>
