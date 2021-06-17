@@ -22,6 +22,7 @@ const StyledBanner = styled(Card)`
     top: -24px;
     right: -1px;
     opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
   }
 
   h2 {
@@ -52,20 +53,22 @@ const StyledBanner = styled(Card)`
 const CardComingSoon = ({ showBtn = false, className = '' }) => {
   return (
     <StyledBanner className={className}>
-      <Heading className="mb-2" color="primary">
-        COMING SOON!!
-      </Heading>
-      <Heading as="h3" className="mb-2">
-        CRYPTO MUTUAL FUND TRADING
-      </Heading>
-      <Text color="textSubtle" fontSize="12px">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore
-      </Text>
-      {showBtn && (
-        <Button as="a" href="#" size="sm" variant="primary" className="btn-secondary-disable mt-3">
-          View details
-        </Button>
-      )}
+      <div className="pos-relative" style={{ zIndex: 1 }}>
+        <Heading className="mb-2" color="primary">
+          COMING SOON!!
+        </Heading>
+        <Heading as="h3" className="mb-2">
+          CRYPTO MUTUAL FUND TRADING
+        </Heading>
+        <Text color="textSubtle" fontSize="12px">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore
+        </Text>
+        {showBtn && (
+          <Button as="a" href="#" size="sm" variant="primary" className="btn-secondary-disable mt-3">
+            View details
+          </Button>
+        )}
+      </div>
     </StyledBanner>
   )
 }

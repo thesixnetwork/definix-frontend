@@ -35,6 +35,7 @@ export type ButtonProps = {
   isLoading?: boolean
   disabled?: boolean
   radii?: string
+  isStroke?: boolean
 } & ButtonTypes &
   SpaceProps
 

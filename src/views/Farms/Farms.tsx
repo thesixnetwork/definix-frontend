@@ -11,7 +11,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
@@ -44,8 +44,6 @@ const MaxWidth = styled.div`
 `
 
 const Farms: React.FC = () => {
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isMd && !isXl
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
@@ -57,7 +55,7 @@ const Farms: React.FC = () => {
   const { fastRefresh } = useRefresh()
 
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [listView, setListView] = useState(!isMobile)
+  const [listView, setListView] = useState(true)
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
@@ -161,12 +159,6 @@ const Farms: React.FC = () => {
   }, [account, dispatch, fastRefresh])
 
   useEffect(() => {
-    if (isMobile) {
-      setListView(false)
-    }
-  }, [isMobile])
-
-  useEffect(() => {
     return () => {
       setStackedOnly(false)
       setListView(true)
@@ -192,9 +184,9 @@ const Farms: React.FC = () => {
                   Farm
                 </Heading>
 
-                <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
-                </HelpButton>
+                </HelpButton> */}
               </div>
               <Text>
                 Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.

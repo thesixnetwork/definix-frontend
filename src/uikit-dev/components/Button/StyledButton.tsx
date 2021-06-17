@@ -76,6 +76,7 @@ const StyledButton = styled.button<ButtonProps>`
 
     svg {
       fill: ${getButtonVariantProp('colorHover')};
+      stroke: ${({ isStroke }) => (isStroke ? getButtonVariantProp('colorHover') : 'none')};
     }
   }
 
@@ -96,6 +97,7 @@ const StyledButton = styled.button<ButtonProps>`
 StyledButton.defaultProps = {
   fullWidth: false,
   type: 'button',
+  isStroke: false,
 }
 
 export default StyledButton

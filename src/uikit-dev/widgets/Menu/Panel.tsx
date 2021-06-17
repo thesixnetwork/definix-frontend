@@ -20,23 +20,24 @@ const StyledPanel = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   justify-content: space-between;
   flex-shrink: 0;
 
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100%;
+  z-index: 22;
 
   width: ${({ isPushed }) => (isPushed ? `${SIDEBAR_WIDTH_FULL}px` : 0)};
-  z-index: 11;
+  height: 100%;
   transition: padding-top 0.2s, width 0.2s;
   overflow: ${({ isPushed }) => (isPushed ? 'initial' : 'hidden')};
   transform: translate3d(0, 0, 0);
-  background: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
-  ${({ theme }) => theme.mediaQueries.nav} {
+  ${({ theme }) => theme.mediaQueries.md} {
     position: sticky;
     height: initial;
     width: ${SIDEBAR_WIDTH_FULL}px;
     background: transparent;
+    z-index: 11;
   }
 `
 

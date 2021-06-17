@@ -1,8 +1,9 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, Skeleton, Text, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import { Overlay } from 'uikit-dev/components/Overlay'
 import {
@@ -24,13 +25,15 @@ const Caption = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
   background: ${({ theme }) => theme.colors.primary};
   padding: 4px 16px;
-  border-radius: ${({ theme }) => theme.radii.large};
+  border-radius: ${({ theme }) => theme.radii.card};
   display: inline-block;
 `
 
 const Home: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
+  const [isLoading, setIsLoading] = useState(true)
+  const themes = useTheme()
 
   const { account } = useWallet()
   const { hasProfile } = useProfile()
@@ -71,7 +74,17 @@ const Home: React.FC = () => {
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
                 Home
               </Heading>
-              <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
+              {isLoading ? (
+                <Skeleton
+                  animation="pulse"
+                  variant="rect"
+                  height="29px"
+                  width="60%"
+                  style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
+                />
+              ) : (
+                <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
+              )}
             </div>
 
             <CardComingSoon showBtn className="mb-5" />

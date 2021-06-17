@@ -40,7 +40,7 @@ const radii = {
   medium: '16px',
   large: '32px',
   default: '8px',
-  card: '8px',
+  card: '12px',
   circle: '50%',
 }
 

@@ -1,12 +1,16 @@
 import useTheme from 'hooks/useTheme'
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import DropdownNetwork from 'uikit-dev/components/DropdownNetwork'
+import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
+import logoWhite from '../../images/definix-white-logo.png'
 import { Login } from '../WalletModal/types'
 import Accordion from './Accordion'
 import { LinkLabel, MenuEntry } from './MenuEntry'
 import MenuLink from './MenuLink'
 import { PanelProps, PushedProps } from './types'
+import UserBlock from './UserBlock'
 
 interface Props extends PanelProps, PushedProps {
   isMobile: boolean
@@ -24,11 +28,28 @@ const Container = styled.div`
   padding: 4px 12px 12px 12px;
 `
 
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: center;
+  margin-bottom: 16px;
+
+  img {
+    height: 14px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.nav} {
+    img {
+      height: 24px;
+    }
+  }
+`
+
 const PanelBody: React.FC<Props> = (props) => {
   const location = useLocation()
   const { isDark } = useTheme()
-
-  const { isPushed, pushNav, isMobile, links } = props
+  const { isPushed, pushNav, isMobile, links, account, login, logout } = props
 
   // Close the menu when a user clicks a link on mobile
   const handleClick = isMobile ? () => pushNav(false) : undefined
@@ -85,6 +106,18 @@ const PanelBody: React.FC<Props> = (props) => {
 
   return (
     <Container>
+      {isMobile && (
+        <div className="bd-b py-4">
+          <StyledLink as="a" href="/" aria-label="Definix home page">
+            <img src={isDark ? logoWhite : logoDesktop} alt="" />
+          </StyledLink>
+
+          <DropdownNetwork />
+
+          <UserBlock account={account} login={login} logout={logout} className="mt-2 dis-in-block" />
+        </div>
+      )}
+
       {links.map((link) => (
         <div className="py-2 bd-b">
           <MenuItem menu={link} key={link.label} />
