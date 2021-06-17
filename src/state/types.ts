@@ -22,9 +22,11 @@ export interface Farm extends FarmConfig {
   finixPerBlock?: BigNumber
   BONUS_MULTIPLIER?: BigNumber
   bundleRewardLength?: BigNumber
+  bundleRewards?: any
   lpTotalSupply?: BigNumber
   apy?: BigNumber
   userData?: {
+    pendingRewards?: any
     allowance: BigNumber
     tokenBalance: BigNumber
     stakedBalance: BigNumber
@@ -38,6 +40,7 @@ export interface Pool extends PoolConfig {
   endBlock?: number
   rewardPerBlock?: number
   userData?: {
+    pendingRewards?: any
     allowance: BigNumber
     stakingTokenBalance: BigNumber
     stakedBalance: BigNumber

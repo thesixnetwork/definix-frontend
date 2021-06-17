@@ -5,6 +5,14 @@ import multicall from 'utils/multicall'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import farmsConfig from 'config/constants/farms'
 import numeral from 'numeral'
+import { uniq } from 'lodash'
+
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < (array.length || array.size); index++) {
+    // eslint-disable-next-line
+    await callback(array[index] || array.docs[index], index, array)
+  }
+}
 
 const fetchFarms = async () => {
   const data = await Promise.all(
@@ -95,6 +103,7 @@ const fetchFarms = async () => {
           {
             address: getHerodotusAddress(),
             name: 'bundleRewardLength',
+            params: [farmConfig.pid],
           },
         ],
       )
@@ -102,16 +111,47 @@ const fetchFarms = async () => {
       const allocPoint = new BigNumber(info.allocPoint._hex)
       const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
       const numberBundleRewards = new BigNumber(bundleRewardLength).toNumber()
+      let allBundleRewards = []
 
       if (numberBundleRewards > 0) {
-        let allBundles = []
+        const allBundleRequests = []
         for (let i = 0; i < numberBundleRewards; i++) {
-          allBundles.push({
+          allBundleRequests.push({
             address: getHerodotusAddress(),
-            name: 'totalAllocPoint',
+            name: 'bundleRewards',
             params: [farmConfig.pid, i],
           })
         }
+        allBundleRewards = await multicall(herodotusABI, allBundleRequests)
+        const allTokenRewardToFetch = uniq(allBundleRewards.map((abr) => abr.rewardToken))
+        const fetchedTokenInfo = {}
+        await asyncForEach(allTokenRewardToFetch, async (tokenAddress) => {
+          const singleTokenRequests = []
+          singleTokenRequests.push({
+            address: tokenAddress,
+            name: 'symbol',
+          })
+          singleTokenRequests.push({
+            address: tokenAddress,
+            name: 'symbol',
+          })
+          singleTokenRequests.push({
+            address: tokenAddress,
+            name: 'totalSupply',
+          })
+          const [tokenSymbol, tokenName, tokenTotalSupply] = await multicall(erc20, singleTokenRequests)
+          fetchedTokenInfo[tokenAddress] = {
+            symbol: tokenSymbol[0],
+            name: tokenName[0],
+            totalSupply: tokenTotalSupply[0],
+          }
+        })
+        allBundleRewards = allBundleRewards.map((abr) => {
+          if (fetchedTokenInfo[abr.rewardToken]) {
+            return { ...abr, rewardTokenInfo: fetchedTokenInfo[abr.rewardToken] }
+          }
+          return { ...abr }
+        })
       }
       return {
         ...farmConfig,
@@ -126,6 +166,7 @@ const fetchFarms = async () => {
         lpTotalSupply,
         lpTokenRatio,
         bundleRewardLength: new BigNumber(bundleRewardLength).toJSON(),
+        bundleRewards: allBundleRewards,
       }
     }),
   )

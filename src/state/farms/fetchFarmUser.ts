@@ -5,6 +5,13 @@ import multicall from 'utils/multicall'
 import farmsConfig from 'config/constants/farms'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 
+const asyncForEach = async (array, callback) => {
+  for (let index = 0; index < (array.length || array.size); index++) {
+    // eslint-disable-next-line
+    await callback(array[index] || array.docs[index], index, array)
+  }
+}
+
 export const fetchFarmUserAllowances = async (account: string) => {
   const herodotusAdress = getHerodotusAddress()
 
@@ -71,4 +78,40 @@ export const fetchFarmUserEarnings = async (account: string) => {
     return new BigNumber(earnings).toJSON()
   })
   return parsedEarnings
+}
+
+export const fetchFarmPendingRewards = async (account: string) => {
+  const herodotusAdress = getHerodotusAddress()
+
+  const allBundleRewards = []
+  await asyncForEach(farmsConfig, async (farm) => {
+    const [bundleRewardLength] = await multicall(herodotusABI, [
+      {
+        address: herodotusAdress,
+        name: 'bundleRewardLength',
+        params: [farm.pid],
+      },
+    ])
+    const numberBundleRewardLength = new BigNumber(bundleRewardLength).toNumber()
+    if (numberBundleRewardLength > 0) {
+      const allBundleRequests = []
+      for (let i = 0; i < numberBundleRewardLength; i++) {
+        allBundleRequests.push({
+          address: herodotusAdress,
+          name: 'pendingBundleReward',
+          params: [farm.pid, i, account],
+        })
+      }
+      const allPendingBundleRewards = await multicall(herodotusABI, allBundleRequests)
+      allBundleRewards.push(
+        allPendingBundleRewards.map((apbr, index) => {
+          return { reward: new BigNumber(apbr), bundleId: index }
+        }),
+      )
+    } else {
+      allBundleRewards.push([])
+    }
+  })
+
+  return allBundleRewards
 }
