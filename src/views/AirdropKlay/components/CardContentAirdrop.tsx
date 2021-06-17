@@ -262,17 +262,7 @@ export default function CardContentAirdrop({ setBodyModal, setTitleModal, toggle
       </div>
     )
   }
-  const renderModal = () => {
-    return (
-      <div
 
-      >
-        <Modal title="xxx" hideCloseButton isRainbow={false}>
-          <div>xxx</div>
-        </Modal>
-      </div>
-    )
-  }
   return (
     <StyledBanner>
       <MaxWidth>
@@ -293,7 +283,7 @@ export default function CardContentAirdrop({ setBodyModal, setTitleModal, toggle
             screenshot on the block count.
           </Text>
           <Text lineHeight="2">
-            2. Users can start claiming their airdrop on 21st June 2021 10:00:00 AM - 20th July 2021 2:59:59 PM (GMT+7)
+            2. Users can start claiming their airdrop on 21st June 2021 10:00:00 AM - 20th August 2021 9:59:59 AM (GMT+7)
           </Text>
           <Text lineHeight="2">
             3. The users need to sign-in their wallet; the address of the wallet must be matched with the screenshot
@@ -325,7 +315,6 @@ export default function CardContentAirdrop({ setBodyModal, setTitleModal, toggle
           <br />
           <br />
         </div>
-        {/* <div>{}</div> */}
       </MaxWidth>
     </StyledBanner>
   )
