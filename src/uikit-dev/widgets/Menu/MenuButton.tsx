@@ -5,6 +5,7 @@ const MenuButton = styled(Button)`
   color: ${({ theme }) => theme.colors.text};
   padding: 0 8px;
   border-radius: ${({ theme }) => theme.radii.default};
+  font-weight: normal;
 `
 MenuButton.defaultProps = {
   variant: 'text',

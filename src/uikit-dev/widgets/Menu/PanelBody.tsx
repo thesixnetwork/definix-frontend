@@ -1,15 +1,16 @@
+import useTheme from 'hooks/useTheme'
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import Heading from '../../components/Heading/Heading'
-import certik from '../../images/Audit/AW-42.png'
-import techRate from '../../images/Audit/AW-43.png'
+import DropdownNetwork from 'uikit-dev/components/DropdownNetwork'
+import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
+import logoWhite from '../../images/definix-white-logo.png'
 import { Login } from '../WalletModal/types'
+import Accordion from './Accordion'
 import { LinkLabel, MenuEntry } from './MenuEntry'
 import MenuLink from './MenuLink'
 import { PanelProps, PushedProps } from './types'
 import UserBlock from './UserBlock'
-// import Accordion from './Accordion'
 
 interface Props extends PanelProps, PushedProps {
   isMobile: boolean
@@ -24,73 +25,79 @@ const Container = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   height: 100%;
+  padding: 4px 12px 12px 12px;
 `
 
-const BorderBox = styled.div`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.white};
-  padding: 1.5rem 0;
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  justify-content: center;
+  margin-bottom: 16px;
 
-  &:last-child {
-    border: none;
+  img {
+    height: 14px;
   }
 
-  > h2 {
-    font-size: 12px !important;
-    padding: 0 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  [role='button'] {
-    padding: 0 1.75rem;
-  }
-
-  .connect-btn {
-    background: transparent;
-    overflow: hidden;
-    width: 190px;
+  ${({ theme }) => theme.mediaQueries.nav} {
+    img {
+      height: 24px;
+    }
   }
 `
 
 const PanelBody: React.FC<Props> = (props) => {
   const location = useLocation()
-
+  const { isDark } = useTheme()
   const { isPushed, pushNav, isMobile, links, account, login, logout } = props
 
   // Close the menu when a user clicks a link on mobile
   const handleClick = isMobile ? () => pushNav(false) : undefined
 
   const MenuItem = ({ menu }) => {
-    // if (entry.items) {
-    //   const itemsMatchIndex = entry.items.findIndex((item) => item.href === location.pathname)
-    //   const initialOpenState = entry.initialOpenState === true ? entry.initialOpenState : itemsMatchIndex >= 0
-
-    //   return (
-    //     <Accordion
-    //       key={entry.label}
-    //       isPushed={isPushed}
-    //       pushNav={pushNav}
-    //       icon={iconElement}
-    //       label={entry.label}
-    //       initialOpenState={initialOpenState}
-    //       className={calloutClass}
-    //     >
-    //       {isPushed &&
-    //         entry.items.map((item) => (
-    //           <MenuEntry key={item.href} secondary isActive={item.href === location.pathname} onClick={handleClick}>
-    //             <MenuLink href={item.href}>{item.label}</MenuLink>
-    //           </MenuEntry>
-    //         ))}
-    //     </Accordion>
-    //   )
-    // }
-
     const calloutClass = menu.calloutClass ? menu.calloutClass : undefined
-    const isActive = location.pathname.includes(menu.href) && !menu.notHighlight
+    const isActive = location.pathname === menu.href && !menu.notHighlight
+
+    if (menu.items) {
+      const itemsMatchIndex = menu.items.findIndex((item) => item.href === location.pathname)
+      const initialOpenState = menu.initialOpenState === true ? menu.initialOpenState : itemsMatchIndex >= 0
+
+      return (
+        <Accordion
+          key={menu.label}
+          isPushed={isPushed}
+          pushNav={pushNav}
+          icon={<img src={isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />}
+          label={menu.label}
+          initialOpenState={initialOpenState}
+          className={calloutClass}
+        >
+          {isPushed &&
+            menu.items.map((item) => (
+              <MenuEntry
+                key={item.label}
+                isActive={item.href === location.pathname && !item.notHighlight}
+                className={calloutClass}
+                style={{ border: 'none' }}
+              >
+                <MenuLink
+                  href={item.href}
+                  onClick={handleClick}
+                  target={item.newTab ? '_blank' : ''}
+                  style={{ paddingLeft: '40px' }}
+                >
+                  <LinkLabel isPushed={isPushed}>{item.label}</LinkLabel>
+                </MenuLink>
+              </MenuEntry>
+            ))}
+        </Accordion>
+      )
+    }
 
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
         <MenuLink href={menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
-          <img src={isActive ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
+          <img src={isActive || isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
           <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
         </MenuLink>
       </MenuEntry>
@@ -99,11 +106,28 @@ const PanelBody: React.FC<Props> = (props) => {
 
   return (
     <Container>
-      <BorderBox>
+      {isMobile && (
+        <div className="bd-b py-4">
+          <StyledLink as="a" href="/" aria-label="Definix home page">
+            <img src={isDark ? logoWhite : logoDesktop} alt="" />
+          </StyledLink>
+
+          <DropdownNetwork />
+
+          <UserBlock account={account} login={login} logout={logout} className="mt-2 dis-in-block" />
+        </div>
+      )}
+
+      {links.map((link) => (
+        <div className="py-2 bd-b">
+          <MenuItem menu={link} key={link.label} />
+        </div>
+      ))}
+
+      {/* <BorderBox>
         <Heading fontSize="14px" className="mb-4">
           Wallet
         </Heading>
-        <UserBlock account={account} login={login} logout={logout} />
 
         {links
           .filter((link) => link.group === 'wallet')
@@ -144,32 +168,13 @@ const PanelBody: React.FC<Props> = (props) => {
           ))}
       </BorderBox>
       <BorderBox>
-        <Heading fontSize="14px">Certified by</Heading>
-        <div className="flex flex-wrap align-center px-4 pt-2">
-          <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
-            <img src={certik} width="80" alt="" />
-          </a>
-          <a href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate" target="_blank" rel="noreferrer">
-            <img src={techRate} width="70" alt="" />
-          </a>
-        </div>
-      </BorderBox>
-      <BorderBox>
-        <Heading fontSize="14px">Info</Heading>
-        {links
-          .filter((link) => link.group === 'info')
-          .map((link) => (
-            <MenuItem menu={link} />
-          ))}
-      </BorderBox>
-      <BorderBox>
         <Heading fontSize="14px">Contact</Heading>
         {links
           .filter((link) => link.group === 'contact')
           .map((link) => (
             <MenuItem menu={link} />
           ))}
-      </BorderBox>
+      </BorderBox> */}
     </Container>
   )
 }

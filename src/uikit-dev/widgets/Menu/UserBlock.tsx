@@ -1,8 +1,10 @@
 import React from 'react'
+import styled from 'styled-components'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
 import Heading from '../../components/Heading/Heading'
 import LinkExternal from '../../components/Link/LinkExternal'
+import Text from '../../components/Text/Text'
 import { useWalletModal } from '../WalletModal'
 import { localStorageKey } from '../WalletModal/config'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
@@ -12,36 +14,58 @@ interface Props {
   account?: string
   login: Login
   logout: () => void
+  className?: string
 }
 
-const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
+const ConnectButton = styled(Button)`
+  padding: 4px !important;
+  box-shadow: ${({ theme }) => theme.shadows.elevation1} !important;
+  background: ${({ theme }) => theme.colors.connectBtnBorder} !important;
+
+  > div {
+    background: ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => theme.radii.large};
+    padding: 0 16px;
+    display: block;
+    height: 24px;
+    line-height: 24px;
+  }
+`
+
+const AccountButton = styled(ConnectButton)`
+  > div {
+    background: ${({ theme }) => theme.colors.connectBtnInner};
+  }
+`
+
+const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
-  const accountEllipsis = account ? `${account.substring(0, 8)}...${account.substring(account.length - 8)}` : null
-  // const accountEllipsisLong = account ? `${account.substring(0, 12)}...${account.substring(account.length - 12)}` : null
+  const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
 
   return (
-    <div className="mx-5 mb-4">
+    <div className={className}>
       {account ? (
         <Dropdown
-          isFullWidth
-          position="bottom"
-          isRainbow
+          position="bottom-right"
+          isRainbow={false}
           target={
-            <Button
+            <AccountButton
               size="sm"
               fullWidth
-              variant="secondary"
+              variant="text"
               className="connect-btn"
               // onClick={() => {
               //   onPresentAccountModal()
               // }}
             >
-              {accountEllipsis}
-            </Button>
+              <Text fontSize="12px" color="white" fontWeight="600">
+                {accountEllipsis}
+              </Text>
+            </AccountButton>
           }
         >
-          <div className="pb-2">
-            <Heading fontSize="14px !important" className="mb-3 pa-0 pt-2">
+          <div style={{ zIndex: 999 }}>
+            <Heading fontSize="16px !important" className="mb-3 pa-0 pt-2">
               {accountEllipsis}
             </Heading>
             <LinkExternal
@@ -72,17 +96,19 @@ const UserBlock: React.FC<Props> = ({ account, login, logout }) => {
           </div>
         </Dropdown>
       ) : (
-        <Button
+        <ConnectButton
           size="sm"
           fullWidth
-          variant="secondary"
+          variant="text"
           className="connect-btn"
           onClick={() => {
             onPresentConnectModal()
           }}
         >
-          Connect wallet
-        </Button>
+          <Text fontSize="12px" color="white" fontWeight="600">
+            Connect wallet
+          </Text>
+        </ConnectButton>
       )}
     </div>
   )

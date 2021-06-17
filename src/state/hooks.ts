@@ -47,6 +47,16 @@ export const useFarmUnlockDate = (): Date => {
   return unlockDate
 }
 
+export const usePoolsIsFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.pools.isFetched)
+  return isFetched
+}
+
+export const useFarmsIsFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.farms.isFetched)
+  return isFetched
+}
+
 export const useFarms = (): Farm[] => {
   const farms = useSelector((state: State) => state.farms.data)
   return farms

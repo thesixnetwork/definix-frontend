@@ -19,6 +19,7 @@ const spinStyle = css`
 const Svg = styled.svg<SvgProps>`
   fill: ${({ theme, color }) => getThemeValue(`colors.${color}`, color)(theme)};
   flex-shrink: 0;
+  stroke: ${({ theme, color, isStroke }) => (isStroke ? getThemeValue(`colors.${color}`, color)(theme) : 'none')};
 
   ${({ spin }) => spin && spinStyle}
   ${space}
@@ -29,6 +30,7 @@ Svg.defaultProps = {
   width: '20px',
   xmlns: 'http://www.w3.org/2000/svg',
   spin: false,
+  isStroke: false,
 }
 
 export default Svg

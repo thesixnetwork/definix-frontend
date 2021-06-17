@@ -1,73 +1,68 @@
 import { MenuEntry } from 'uikit-dev'
 import newIcon from 'uikit-dev/images/for-trading-challenge/New-icon.png'
-import bridgeClick from 'uikit-dev/images/Menu-Icon/bridge-click.png'
-import bridge from 'uikit-dev/images/Menu-Icon/bridge.png'
-import dashboardClick from 'uikit-dev/images/Menu-Icon/dashboard-click.png'
-import dashboard from 'uikit-dev/images/Menu-Icon/dashboard.png'
-import exploreClick from 'uikit-dev/images/Menu-Icon/explore-click.png'
-import explore from 'uikit-dev/images/Menu-Icon/explore.png'
-import farmClick from 'uikit-dev/images/Menu-Icon/farm-click.png'
-import farm from 'uikit-dev/images/Menu-Icon/farm.png'
-import gitbookClick from 'uikit-dev/images/Menu-Icon/Gitbook-click.png'
-import gitbook from 'uikit-dev/images/Menu-Icon/Gitbook.png'
-import liquidityClick from 'uikit-dev/images/Menu-Icon/liquidity-click.png'
-import liquidity from 'uikit-dev/images/Menu-Icon/liquidity.png'
-import myFundClick from 'uikit-dev/images/Menu-Icon/my-funds-click.png'
-import myFund from 'uikit-dev/images/Menu-Icon/my-funds.png'
-import partnerClick from 'uikit-dev/images/Menu-Icon/partnership-click.png'
-import partner from 'uikit-dev/images/Menu-Icon/partnership.png'
-import poolClick from 'uikit-dev/images/Menu-Icon/pool-click.png'
-import pool from 'uikit-dev/images/Menu-Icon/pool.png'
-import portfolioClick from 'uikit-dev/images/Menu-Icon/portfolio-click.png'
-import portfolio from 'uikit-dev/images/Menu-Icon/portfolio.png'
-import swapClick from 'uikit-dev/images/Menu-Icon/swap-click.png'
-import swap from 'uikit-dev/images/Menu-Icon/swap.png'
+import bridgeBlack from 'uikit-dev/images/for-ui-v2/menu/Bridge-Black.png'
+import bridgeWhite from 'uikit-dev/images/for-ui-v2/menu/Bridge-White.png'
+import farmBlack from 'uikit-dev/images/for-ui-v2/menu/Farm-Black.png'
+import farmWhite from 'uikit-dev/images/for-ui-v2/menu/Farm-White.png'
+import gitbookBlack from 'uikit-dev/images/for-ui-v2/menu/Gitbook-Black.png'
+import gitbookWhite from 'uikit-dev/images/for-ui-v2/menu/Gitbook-White.png'
+import homeBlack from 'uikit-dev/images/for-ui-v2/menu/Home-Black.png'
+import homeWhite from 'uikit-dev/images/for-ui-v2/menu/Home-White.png'
+import liquidityBlack from 'uikit-dev/images/for-ui-v2/menu/Liquidity-Black.png'
+import liquidityWhite from 'uikit-dev/images/for-ui-v2/menu/Liquidity-White.png'
+import mutualBlack from 'uikit-dev/images/for-ui-v2/menu/Mutual-fund-Black.png'
+import mutualWhite from 'uikit-dev/images/for-ui-v2/menu/Mutual-fund-White.png'
+import partnerBlack from 'uikit-dev/images/for-ui-v2/menu/Partnership-Black.png'
+import partnerWhite from 'uikit-dev/images/for-ui-v2/menu/Partnership-White.png'
+import swapBlack from 'uikit-dev/images/for-ui-v2/menu/Swap-Black.png'
+import swapWhite from 'uikit-dev/images/for-ui-v2/menu/Swap-White.png'
 
 const config: MenuEntry[] = [
   {
-    label: 'Dashboard',
-    icon: dashboardClick,
-    iconActive: dashboard,
-    href: '/dashboard',
-    group: 'wallet',
+    label: 'Home',
+    icon: homeBlack,
+    iconActive: homeWhite,
+    href: '/',
     notHighlight: false,
     newTab: false,
   },
   {
-    label: 'Swap',
-    icon: swapClick,
-    iconActive: swap,
+    label: 'Exchange',
+    icon: swapBlack,
+    iconActive: swapWhite,
     href: 'https://d366hs9omsigpt.cloudfront.net/#/swap',
-    group: 'dex',
     notHighlight: false,
     newTab: false,
   },
   {
     label: 'Liquidity',
-    icon: liquidityClick,
-    iconActive: liquidity,
+    icon: liquidityBlack,
+    iconActive: liquidityWhite,
     href: 'https://d366hs9omsigpt.cloudfront.net/#/liquidity',
-    group: 'dex',
     notHighlight: false,
     newTab: false,
   },
   {
-    label: 'Farm',
-    icon: farmClick,
-    iconActive: farm,
+    label: 'Yield Farming',
+    icon: farmBlack,
+    iconActive: farmWhite,
     href: '/farm',
-    group: 'dex',
     notHighlight: false,
     newTab: false,
-  },
-  {
-    label: 'Pool',
-    icon: poolClick,
-    iconActive: pool,
-    href: '/pool',
-    group: 'dex',
-    notHighlight: false,
-    newTab: false,
+    items: [
+      {
+        label: 'Farm',
+        href: '/farm',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
+        label: 'Pool',
+        href: '/pool',
+        notHighlight: false,
+        newTab: false,
+      },
+    ],
   },
   // {
   //   label: 'Register',
@@ -79,67 +74,80 @@ const config: MenuEntry[] = [
   //   notHighlight: false,
   //   newTab: false,
   // },
+  // {
+  //   label: 'Leaderboard',
+  //   icon: newIcon,
+  //   iconActive: newIcon,
+  //   calloutClass: 'new',
+  //   href: '/leaderboard',
+  //   notHighlight: false,
+  //   newTab: false,
+  // },
   {
-    label: 'Leaderboard',
-    icon: newIcon,
-    iconActive: newIcon,
-    calloutClass: 'new',
-    href: '/leaderboard',
-    group: 'trading',
+    label: 'Mutual Fund',
+    icon: mutualBlack,
+    iconActive: mutualWhite,
+    href: '/info',
     notHighlight: false,
     newTab: false,
-  },
-  {
-    label: 'Investors',
-    icon: myFundClick,
-    iconActive: myFund,
-    href: '/info',
-    group: 'invest',
-    notHighlight: true,
-    newTab: false,
-  },
-  {
-    label: 'Fund Managers',
-    icon: portfolioClick,
-    iconActive: portfolio,
-    href: '/info',
-    group: 'invest',
-    notHighlight: true,
-    newTab: false,
-  },
-  {
-    label: 'Network Monitor',
-    icon: exploreClick,
-    iconActive: explore,
-    href: '/info',
-    group: 'invest',
-    notHighlight: true,
-    newTab: false,
+    items: [
+      {
+        label: 'Investors',
+        href: '/info',
+        notHighlight: true,
+        newTab: false,
+      },
+      {
+        label: 'Fund Managers',
+        href: '/info',
+        notHighlight: true,
+        newTab: false,
+      },
+      {
+        label: 'Network Monitor',
+        href: '/info',
+        notHighlight: true,
+        newTab: false,
+      },
+    ],
   },
   {
     label: 'Bridge',
-    icon: bridgeClick,
-    iconActive: bridge,
+    icon: bridgeBlack,
+    iconActive: bridgeWhite,
     href: 'https://bridge.six.network',
-    group: 'tool',
     notHighlight: true,
-    newTab: false,
+    newTab: true,
   },
+  // {
+  //   label: 'Tutorial',
+  //   icon: exploreClick,
+  //   iconActive: explore,
+  //   href: '#',
+  //   notHighlight: true,
+  //   newTab: false,
+  // },
+  // {
+  //   label: 'Blogs',
+  //   icon: exploreClick,
+  //   iconActive: explore,
+  //   href: '#',
+  //   notHighlight: true,
+  //   newTab: true,
+  // },
   {
     label: 'Gitbook',
-    icon: gitbookClick,
-    iconActive: gitbook,
+    icon: gitbookBlack,
+    iconActive: gitbookWhite,
     href: 'https://app.gitbook.com/@sixnetwork/s/definix/',
-    group: 'info',
     notHighlight: true,
     newTab: true,
   },
   {
     label: 'Partnership',
-    icon: partnerClick,
-    iconActive: partner,
+    icon: partnerBlack,
+    iconActive: partnerWhite,
     href: 'https://docs.google.com/forms/d/e/1FAIpQLSfKMRNlTsTCk__s4v_qnwE3Uw4-kro8XRMPVQTS5OE6zX2Uqg/viewform',
-    group: 'contact',
     notHighlight: true,
     newTab: true,
   },

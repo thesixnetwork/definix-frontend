@@ -16,7 +16,7 @@ export const light: ButtonTheme = {
     colorHover: '#FFFFFF',
   },
   [SECONDARY]: {
-    background: 'transparent',
+    background: lightColors.invertedContrast,
     backgroundActive: lightColors.white,
     backgroundHover: lightColors.primary,
     border: `1px solid ${lightColors.primary}`,
@@ -51,7 +51,7 @@ export const light: ButtonTheme = {
   [DANGER]: {
     background: lightColors.failure,
     backgroundActive: '#D43285', // darkten 10%
-    backgroundHover: '#FF65B8', // lighten 10%
+    backgroundHover: '#d74956', // lighten 10%
     border: 0,
     borderColorHover: 'currentColor',
     boxShadow: 'none',
@@ -89,6 +89,9 @@ export const dark: ButtonTheme = {
   },
   [SECONDARY]: {
     ...light.secondary,
+    color: darkColors.text,
+    border: `1px solid ${darkColors.border}`,
+    background: darkColors.invertedContrast,
   },
   [TERTIARY]: {
     ...light.tertiary,

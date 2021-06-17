@@ -1,100 +1,138 @@
-import Page from 'components/layout/Page'
-import React from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
+import useTheme from 'hooks/useTheme'
+import React, { useEffect, useState } from 'react'
+import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
-import { BaseLayout, Heading } from 'uikit-dev'
+import { Heading, Skeleton, Text, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import certik from 'uikit-dev/images/Audit/AW-42.png'
-import techRate from 'uikit-dev/images/Audit/AW-43.png'
-import InfoBanner from 'views/Info/components/InfoBanner'
-import CardUpcomingFarms from './components/CardUpcomingFarms'
-import FinixStats from './components/FinixStats'
-import TotalValueLockedCard from './components/TotalValueLockedCard'
+import { Overlay } from 'uikit-dev/components/Overlay'
+import {
+  LeftPanel,
+  MaxWidthLeft,
+  MaxWidthRight,
+  RightPanel,
+  ShowHideButton,
+  TwoPanelLayout,
+} from 'uikit-dev/components/TwoPanelLayout'
+import CardAudit from './components/CardAudit'
+import CardComingSoon from './components/CardComingSoon'
+import CardGetStarted from './components/CardGetStarted'
+import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
+import CardTVL from './components/CardTVL'
+import CardTweet from './components/CardTweet'
 import CardAirdropKlay from './components/CardAirdropKlay'
 
-const Cards = styled(BaseLayout)`
-  align-items: stretch;
-  justify-content: stretch;
-  margin-bottom: 24px;
-
-  & > div {
-    grid-column: span 6;
-    width: 100%;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    & > div {
-      grid-column: span 12;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    & > div {
-      grid-column: span 6;
-    }
-  }
-`
-
-const MaxWidth = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
+const Caption = styled(Text)`
+  color: ${({ theme }) => theme.colors.white};
+  background: ${({ theme }) => theme.colors.primary};
+  padding: 4px 16px;
+  border-radius: ${({ theme }) => theme.radii.card};
+  display: inline-block;
 `
 
 const Home: React.FC = () => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl
+  const [isLoading, setIsLoading] = useState(true)
+  const themes = useTheme()
+
+  const { account } = useWallet()
+  const { hasProfile } = useProfile()
   // const TranslateString = useI18n()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
 
-  // const { isSm } = useMatchBreakpoints()
+  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
 
-  // const settings = {
-  //   infinite: true,
-  //   lazyLoad: true,
-  //   dots: true,
-  //   arrows: false,
-  //   adaptiveHeight: true,
-  //   className: 'pb-7',
-  // }
+  useEffect(() => {
+    if (isMobileOrTablet) {
+      setIsShowRightPanel(false)
+    }
+  }, [isMobileOrTablet])
+
+  useEffect(() => {
+    return () => {
+      setIsShowRightPanel(true)
+    }
+  }, [])
 
   return (
     <>
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
-      <Page>
-        <MaxWidth>
-          <Heading as="h1" fontSize="32px !important" className="mb-6 mt-2" textAlign="center">
-            Dashboard
-          </Heading>
-          <CardAirdropKlay showBtn className="mb-5" />
-          <InfoBanner className="mb-5" showBtn />
-
-          <Cards>
-            <TotalValueLockedCard />
-            <FinixStats />
-          </Cards>
-
-          {/* <Slider {...settings}></Slider> */}
-
-          <CardUpcomingFarms />
-
-          <div className="flex flex-wrap align-center justify-center mt-5">
-            <p className="ma-1">Certified by</p>
-            <div className="flex align-center ma-1">
-              <a className="mr-3" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
-                <img src={certik} width="120" alt="" />
-              </a>
-              <a
-                href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <img src={techRate} width="100" alt="" />
-              </a>
+      <TwoPanelLayout>
+        <LeftPanel isShowRightPanel={isShowRightPanel}>
+          <Overlay
+            show={isShowRightPanel && isMobileOrTablet}
+            style={{ position: 'absolute', zIndex: 1 }}
+            onClick={() => {
+              setIsShowRightPanel(false)
+            }}
+          />
+          <MaxWidthLeft>
+            <div className="mb-5">
+              <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
+                Home
+              </Heading>
+              {isLoading ? (
+                <Skeleton
+                  animation="pulse"
+                  variant="rect"
+                  height="29px"
+                  width="60%"
+                  style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
+                />
+              ) : (
+                <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
+              )}
             </div>
-          </div>
-        </MaxWidth>
-      </Page>
+
+            <CardAirdropKlay showBtn className="mb-5" />
+
+            <CardComingSoon showBtn className="mb-5" />
+
+            <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
+              <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>
+                <CardTVL className="mb-5" />
+                <CardAudit />
+              </div>
+              <div className={isMobileOrTablet ? 'col-12 mt-5' : 'col-6 ml-3'}>
+                <CardTweet />
+              </div>
+            </div>
+          </MaxWidthLeft>
+        </LeftPanel>
+
+        <RightPanel isShowRightPanel={isShowRightPanel}>
+          <ShowHideButton
+            isShow={isShowRightPanel}
+            action={() => {
+              setIsShowRightPanel(!isShowRightPanel)
+            }}
+          />
+
+          {isShowRightPanel && (
+            <MaxWidthRight>
+              {account && !hasProfile ? (
+                <>
+                  <Heading className="mb-3" fontSize="20px !important" textTransform="uppercase">
+                    My farms & pools
+                  </Heading>
+                  <CardMyFarmsAndPools />
+                </>
+              ) : (
+                <>
+                  <Heading className="mb-3" fontSize="20px !important" textTransform="uppercase">
+                    TUTORIALS
+                  </Heading>
+                  <CardGetStarted />
+                </>
+              )}
+            </MaxWidthRight>
+          )}
+        </RightPanel>
+      </TwoPanelLayout>
     </>
   )
 }

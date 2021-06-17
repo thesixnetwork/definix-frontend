@@ -25,8 +25,12 @@ export interface NavTheme {
 
 export interface MenuSubEntry {
   label: string
-  href: string
+  href?: string
   calloutClass?: string
+  initialOpenState?: boolean
+  group?: string
+  notHighlight?: boolean
+  newTab?: boolean
 }
 
 export interface MenuEntry {
@@ -35,9 +39,9 @@ export interface MenuEntry {
   iconActive: any
   items?: MenuSubEntry[]
   href?: string
+  group?: string
   calloutClass?: string
   initialOpenState?: boolean
-  group?: string
   notHighlight?: boolean
   newTab?: boolean
 }
