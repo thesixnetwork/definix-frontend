@@ -104,7 +104,12 @@ interface Props {
   setModalSuccess: (status: boolean) => void
 }
 
-export default function CardContentAirdrop({ setBodyModal, setTitleModal, toggleModal, setModalSuccess }: Props): ReactElement {
+export default function CardContentAirdrop({
+  setBodyModal,
+  setTitleModal,
+  toggleModal,
+  setModalSuccess,
+}: Props): ReactElement {
   const countDownEnd = new Date(2021, 4, 21, 0, 0, 0)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const airdropKlayAddress = getAirdropKlayAddress()
@@ -127,25 +132,24 @@ export default function CardContentAirdrop({ setBodyModal, setTitleModal, toggle
     }
   }, [account])
   useEffect(() => {
-    if(state == CLAIMED){
+    if (state == CLAIMED) {
       setOpenFirstAirdrop(false)
       setOpenSecondAirdrop(true)
-    }else if (state == CLAIM){
+    } else if (state == CLAIM) {
       setOpenFirstAirdrop(true)
       setOpenSecondAirdrop(false)
-    }else {
+    } else {
       setOpenFirstAirdrop(true)
       setOpenSecondAirdrop(false)
     }
-   
   }, [state])
   const onChangeHandle = (e) => {
     setAccountClaim(e.target.value)
   }
-  const toggleAirdropSecond = () =>{
+  const toggleAirdropSecond = () => {
     setOpenSecondAirdrop(!openSecondAirdrop)
   }
-  const toggleAirdropFirst = () =>{
+  const toggleAirdropFirst = () => {
     setOpenFirstAirdrop(!openFirstAirdrop)
   }
   const onSubbmit = async () => {
@@ -284,7 +288,7 @@ export default function CardContentAirdrop({ setBodyModal, setTitleModal, toggle
       </div>
     )
   }
-  
+
   return (
     <StyledBanner>
       <MaxWidth>
@@ -297,10 +301,16 @@ export default function CardContentAirdrop({ setBodyModal, setTitleModal, toggle
           {state == CLAIMED ? renderClaimedBtn() : null}
 
           <div style={{ marginTop: '40px' }}>
-            <DiscriptionFirstAirdrop toggle={toggleAirdropFirst}  open={openFirstAirdrop} disable={state != CLAIMED} />
+            <DiscriptionFirstAirdrop toggle={toggleAirdropFirst} open={openFirstAirdrop} disable={state != CLAIMED} />
             <br />
             <br />
-            {state == CLAIMED ? <DiscriptionSecondAirdrop  toggle={toggleAirdropSecond} open={openSecondAirdrop} disable={state != CLAIMED} /> : null}
+            {state == CLAIMED ? (
+              <DiscriptionSecondAirdrop
+                toggle={toggleAirdropSecond}
+                open={openSecondAirdrop}
+                disable={state != CLAIMED}
+              />
+            ) : null}
           </div>
         </div>
       </MaxWidth>

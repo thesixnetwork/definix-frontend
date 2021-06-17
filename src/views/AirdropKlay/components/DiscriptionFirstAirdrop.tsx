@@ -5,37 +5,32 @@ import { Text, ChevronDownIcon, ChevronUpIcon } from 'uikit-dev'
 interface Props {
   open: boolean
   disable: boolean
-  toggle: ()=> void
+  toggle: () => void
 }
-const TriggerElement = ({ isDown}): ReactElement => {
-    return (
-        <div style={{ width: '100%', cursor: "pointer" }}>
-            <div style={{ fontSize: '20px' }}>
-                Criteria for 1st airdrop claim
-                
-                <div style={{ float: "right" }}>
-                    {console.log("isdown ",isDown)}
-                    <div style={{marginTop:"15px"}}>
-                    {isDown ? <ChevronDownIcon />:<ChevronUpIcon /> }
-                    </div>
-                </div>
-            </div>
-
-            <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', opacity: '0.3' }} />
-
+const TriggerElement = ({ isDown }): ReactElement => {
+  return (
+    <div style={{ width: '100%', cursor: 'pointer' }}>
+      <div style={{ fontSize: '20px' }}>
+        Criteria for 1st airdrop claim
+        <div style={{ float: 'right' }}>
+          {console.log('isdown ', isDown)}
+          <div style={{ marginTop: '15px' }}>{isDown ? <ChevronDownIcon /> : <ChevronUpIcon />}</div>
         </div>
-    )
+      </div>
+
+      <hr style={{ width: '100%', marginTop: '20px', marginBottom: '20px', opacity: '0.3' }} />
+    </div>
+  )
 }
-export default function DiscriptionFirstAirdrop({ open = false, disable = false,toggle }: Props): ReactElement {
+export default function DiscriptionFirstAirdrop({ open = false, disable = false, toggle }: Props): ReactElement {
   return (
     <Collapsible
-    trigger={<TriggerElement isDown={open} />} 
-    handleTriggerClick={toggle} 
+      trigger={<TriggerElement isDown={open} />}
+      handleTriggerClick={toggle}
       triggerStyle={{ fontSize: '20px' }}
       open={open}
       disabled={disable}
     >
-      
       <Text lineHeight="2">
         1. The users who start using bsc.definix.com from 1st April 2021, 3:00:00PM - 12th June 2021, 6:59:59PM (GMT+7)
         are screenshot on the block count.
