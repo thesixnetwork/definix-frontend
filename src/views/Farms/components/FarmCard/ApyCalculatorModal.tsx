@@ -17,15 +17,15 @@ const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, auto);
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 `
 
 const GridItem = styled.div`
-  margin-bottom: '10px';
+  margin-bottom: 8px;
 `
 
 const Description = styled(Text)`
-  max-width: 320px;
+  max-width: 400px;
   margin-bottom: 28px;
 `
 
@@ -50,17 +50,17 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
     <Modal title="ROI" onDismiss={onDismiss} isRainbow={false}>
       <Grid>
         <GridItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
+          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
             {TranslateString(860, 'Timeframe')}
           </Text>
         </GridItem>
         <GridItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
+          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
             {TranslateString(858, 'ROI')}
           </Text>
         </GridItem>
         <GridItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="20px">
+          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
             {TranslateString(864, 'FINIX per $1000')}
           </Text>
         </GridItem>

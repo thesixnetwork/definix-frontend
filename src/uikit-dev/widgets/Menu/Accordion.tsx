@@ -23,7 +23,6 @@ const AccordionContent = styled.div<{ isOpen: boolean; isPushed: boolean; maxHei
   max-height: ${({ isOpen, maxHeight }) => (isOpen ? `${maxHeight}px` : 0)};
   transition: max-height 0.3s ease-out;
   overflow: hidden;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const Accordion: React.FC<Props> = ({

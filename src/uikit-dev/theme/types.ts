@@ -28,6 +28,7 @@ export type Shadows = {
   focus: string
   inset: string
   inset2: string
+  inset3: string
   elevation1: string
   elevation2: string
   elevation3: string
@@ -51,20 +52,29 @@ export type Colors = {
   invertedContrast: string
   input: string
   background: string
+  backgroundHeader: string
+  backgroundSideMenu: string
+  backgroundFooter: string
   backgroundDisabled: string
   backgroundBox: string
   backgroundGray: string
   backgroundRadial: string
+  backgroundPolygon: string
   backgroundBlueGradient: string
   text: string
   textDisabled: string
   textSubtle: string
   card: string
+  cardFooter: string
   border: string
   white: string
   placeholder: string
   harvest: string
   grayBlue: string
+  connectBtnBorder: string
+  connectBtnInner: string
+  networkBtnBorder: string
+  networkBtnInner: string
 
   // Gradients
   gradients: Gradients

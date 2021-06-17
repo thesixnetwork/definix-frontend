@@ -24,7 +24,7 @@ const getDisabledStyles = ({ isLoading, theme }: ThemedProps) => {
       background-color: ${theme.colors.backgroundDisabled};
       border-color: ${theme.colors.backgroundDisabled};
       box-shadow: none;
-      color: ${theme.colors.white};
+      color: ${theme.colors.textDisabled};
       cursor: not-allowed;
     }
   `
@@ -76,6 +76,7 @@ const StyledButton = styled.button<ButtonProps>`
 
     svg {
       fill: ${getButtonVariantProp('colorHover')};
+      stroke: ${({ isStroke }) => (isStroke ? getButtonVariantProp('colorHover') : 'none')};
     }
   }
 
@@ -96,6 +97,7 @@ const StyledButton = styled.button<ButtonProps>`
 StyledButton.defaultProps = {
   fullWidth: false,
   type: 'button',
+  isStroke: false,
 }
 
 export default StyledButton

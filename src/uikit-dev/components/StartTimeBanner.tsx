@@ -6,9 +6,10 @@ import { Text } from './Text'
 
 const Banner = styled.div`
   background: ${({ theme }) => theme.colors.primary};
-  padding: 8px 24px;
+  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  padding: 4px 24px;
 
-  * {
+  > div > * {
     margin: 4px;
   }
 

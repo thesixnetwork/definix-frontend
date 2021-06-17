@@ -24,7 +24,7 @@ export interface ExpandableSectionProps {
 
 const MultiplierTag = styled.div`
   position: absolute;
-  top: -3px;
+  top: -1px;
   left: 16px;
   width: 52px;
   height: 36px;

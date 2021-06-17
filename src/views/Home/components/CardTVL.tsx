@@ -62,7 +62,7 @@ const CardTVL = ({ className = '' }) => {
         <Row>
           <div className="flex align-center">
             <Text color="textSubtle">{TranslateString(536, 'Total FINIX Supply')}</Text>
-            <Helper text="Does not include burned" className="ml-2" />
+            <Helper text="Does not include burned" className="ml-2" position="top" />
           </div>
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
         </Row>

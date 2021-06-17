@@ -3,37 +3,51 @@ import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
-import React, { useCallback, useContext, useMemo } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
+import { useMatchBreakpoints } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import FarmContext from '../../FarmContext'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
+import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
+import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
 
-const VerticalStyle = styled.div`
+const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
+`
+
+const VerticalStyle = styled(CardStyle)`
   display: flex;
   position: relative;
-  align-self: baseline;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   text-align: center;
 `
 
-const HorizontalStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+const HorizontalStyle = styled(CardStyle)`
   display: flex;
   position: relative;
+`
+
+const HorizontalMobileStyle = styled(CardStyle)`
+  .accordion-content {
+    &.hide {
+      display: none;
+    }
+
+    &.show {
+      display: block;
+    }
+  }
 `
 
 const FarmCard: React.FC<FarmCardProps> = ({
@@ -48,6 +62,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
   isHorizontal = false,
 }) => {
   const { onPresent } = useContext(FarmContext)
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const totalValue: BigNumber = useMemo(() => {
     if (!farm.lpTotalInQuoteToken) {
@@ -141,42 +158,80 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [earnings, pid],
   )
 
+  const renderHarvestActionAirDrop = useCallback(
+    (className?: string, isHor?: boolean) => (
+      <HarvestActionAirDrop earnings={earnings} pid={pid} className={className} isHorizontal={isHor} />
+    ),
+    [earnings, pid],
+  )
+
   const renderDetailsSection = useCallback(
-    (className?: string) => (
+    (className?: string, isHor?: boolean) => (
       <DetailsSection
         removed={removed}
         bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
         totalValueFormated={totalValueFormated}
         lpLabel={lpLabel}
         addLiquidityUrl={addLiquidityUrl}
-        isHorizontal={isHorizontal}
+        isHorizontal={isHor}
         className={className}
       />
     ),
-    [addLiquidityUrl, farm.lpAddresses, isHorizontal, lpLabel, removed, totalValueFormated],
+    [addLiquidityUrl, farm.lpAddresses, lpLabel, removed, totalValueFormated],
   )
 
+  useEffect(() => {
+    setIsOpenAccordion(false)
+  }, [])
+
   if (isHorizontal) {
+    if (isMobile) {
+      return (
+        <HorizontalMobileStyle className="mb-3">
+          <CardHeadingAccordion
+            farm={farm}
+            lpLabel={lpLabel}
+            removed={removed}
+            addLiquidityUrl={addLiquidityUrl}
+            finixPrice={finixPrice}
+            className=""
+            isOpenAccordion={isOpenAccordion}
+            setIsOpenAccordion={setIsOpenAccordion}
+          />
+          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+            {renderStakeAction('pa-5')}
+            {/* {renderHarvestAction('pa-5')} */}
+            {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+            {renderDetailsSection('px-5 py-3', false)}
+          </div>
+        </HorizontalMobileStyle>
+      )
+    }
+
     return (
-      <HorizontalStyle className="flex align-stretch pa-5 mb-5">
+      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
         {renderCardHeading('col-3 pos-static')}
 
-        <div className="col-5 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-5')}
-          {renderDetailsSection()}
+        <div className="col-4 bd-x flex flex-column justify-space-between px-5">
+          {renderStakeAction('pb-4')}
+          {renderDetailsSection('', true)}
         </div>
 
-        {renderHarvestAction('col-4 pl-5 flex-grow')}
+        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
+        {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
       </HorizontalStyle>
     )
   }
 
   return (
     <VerticalStyle className="mb-7">
-      {renderCardHeading('pt-7')}
-      {renderStakeAction('pa-5')}
-      {renderHarvestAction('pa-5')}
-      {renderDetailsSection('px-5 py-3')}
+      <div className="flex flex-column flex-grow">
+        {renderCardHeading('pt-7')}
+        {renderStakeAction('pa-5')}
+        {/* {renderHarvestAction('pa-5')} */}
+        {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+      </div>
+      {renderDetailsSection('px-5 py-3', false)}
     </VerticalStyle>
   )
 }

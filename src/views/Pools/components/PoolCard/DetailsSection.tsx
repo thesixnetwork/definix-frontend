@@ -7,7 +7,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { DetailsSectionProps } from './types'
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
-  background: ${({ isHorizontal }) => (!isHorizontal ? '#fafcff' : 'transparent')};
+  background: ${({ isHorizontal, theme }) => (!isHorizontal ? theme.colors.cardFooter : 'transparent')};
   border-top: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
@@ -41,19 +41,14 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
       <div className="flex align-baseline flex-wrap justify-space-between">
         <Text color="textSubtle">Total {tokenName} Staked</Text>
 
-        <div className="flex align-baseline">
-          <Text bold className="flex-shrink">
-            {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
-          </Text>
-          {isHorizontal && <LinkView linkClassName="ml-2" />}
-        </div>
+        <Text bold className="flex-shrink">
+          {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
+        </Text>
       </div>
 
-      {!isHorizontal && (
-        <div className="flex justify-end mt-1">
-          <LinkView />
-        </div>
-      )}
+      <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
+        <LinkView />
+      </div>
     </Wrapper>
   )
 }

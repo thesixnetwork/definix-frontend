@@ -14,7 +14,7 @@ export interface ExpandableSectionProps {
 }
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
-  background: ${({ isHorizontal }) => (!isHorizontal ? '#fafcff' : 'transparent')};
+  background: ${({ isHorizontal, theme }) => (!isHorizontal ? theme.colors.cardFooter : 'transparent')};
   border-top: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
@@ -47,30 +47,19 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
-      {/* <div className="flex align-baseline flex-wrap justify-space-between mb-1">
-        <Text>{TranslateString(316, 'Deposit')}:</Text>
-        <StyledLinkExternal className="flex-shrink" href={addLiquidityUrl}>
-          {lpLabel}
-        </StyledLinkExternal>
-      </div> */}
       {!removed && (
         <div className="flex align-baseline flex-wrap justify-space-between">
           <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
 
-          <div className="flex align-baseline">
-            <Text bold className="flex-shrink">
-              {totalValueFormated}
-            </Text>
-            {isHorizontal && <LinkView linkClassName="ml-2" />}
-          </div>
+          <Text bold className="flex-shrink">
+            {totalValueFormated}
+          </Text>
         </div>
       )}
 
-      {!isHorizontal && (
-        <div className="flex justify-end mt-1">
-          <LinkView />
-        </div>
-      )}
+      <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
+        <LinkView />
+      </div>
     </Wrapper>
   )
 }

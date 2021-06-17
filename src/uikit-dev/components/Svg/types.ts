@@ -6,4 +6,5 @@ export interface SvgProps extends SVGAttributes<HTMLOrSVGElement>, SpaceProps {
   theme?: DefaultTheme
   spin?: boolean
   color?: string
+  isStroke?: boolean
 }
