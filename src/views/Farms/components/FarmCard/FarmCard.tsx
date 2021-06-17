@@ -20,7 +20,7 @@ import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
 
 const CardStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
+  background: ${props => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
@@ -91,9 +91,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
-  const { earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
+  const { pendingRewards, earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
 
-  const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+  const { bundleRewardLength, bundleRewards, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
@@ -160,9 +160,17 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const renderHarvestActionAirDrop = useCallback(
     (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop earnings={earnings} pid={pid} className={className} isHorizontal={isHor} />
+      <HarvestActionAirDrop
+        pendingRewards={pendingRewards}
+        bundleRewardLength={bundleRewardLength}
+        bundleRewards={bundleRewards}
+        earnings={earnings}
+        pid={pid}
+        className={className}
+        isHorizontal={isHor}
+      />
     ),
-    [earnings, pid],
+    [earnings, pid, pendingRewards, bundleRewardLength, bundleRewards],
   )
 
   const renderDetailsSection = useCallback(

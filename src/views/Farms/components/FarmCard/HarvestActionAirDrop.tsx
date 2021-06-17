@@ -11,6 +11,9 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import AirDropHarvestModal from './AirDropHarvestModal'
 
 interface FarmCardActionsProps {
+  pendingRewards?: any
+  bundleRewardLength?: BigNumber
+  bundleRewards?: any
   earnings?: BigNumber
   pid?: number
   className?: string
@@ -25,7 +28,14 @@ const MiniLogo = styled.img`
   flex-shrink: 0;
 `
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', isHorizontal }) => {
+const HarvestAction: React.FC<FarmCardActionsProps> = ({
+  bundleRewardLength,
+  pendingRewards,
+  bundleRewards,
+  pid,
+  className = '',
+  isHorizontal,
+}) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
   const finixUsd = usePriceFinixUsd()
@@ -35,6 +45,19 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
   const rawEarningsBalance = getBalanceNumber(earnings)
   const displayBalance = rawEarningsBalance.toLocaleString()
 
+  console.log('bundleRewardLength', bundleRewardLength)
+  console.log('bundleRewardLength', bundleRewardLength)
+  console.log('bundleRewardLength', bundleRewardLength)
+  console.log('bundleRewardLength', bundleRewardLength)
+  console.log('bundleRewardLength', bundleRewardLength)
+  console.log('bundleRewardLength', bundleRewardLength)
+  console.log('bundleRewardLength', bundleRewardLength)
+  console.log('bundleRewards', bundleRewards)
+  console.log('bundleRewards', bundleRewards)
+  console.log('bundleRewards', bundleRewards)
+  console.log('pendingRewards', pendingRewards)
+  console.log('pendingRewards', pendingRewards)
+  console.log('pendingRewards', pendingRewards)
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
 
   return (
@@ -53,7 +76,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
               className="mr-2"
               textAlign="left"
             >
-              300.75
+              {displayBalance}
             </Heading>
             <Text color="textSubtle" textAlign="left">
               FINIX
@@ -64,14 +87,40 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
             = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
           </Text>
         </div>
+        {(bundleRewards || []).map((br, bundleId) => {
+          return (
+            <div className="flex justify-space-between align-baseline mb-2">
+              <div className="flex align-baseline">
+                <MiniLogo src={`/images/coins/${br.rewardTokenInfo.name === "WKLAY" ? "KLAY" : br.rewardTokenInfo.name}.png`} alt="" className="align-self-start" />
+                <Heading
+                  fontSize="24px !important"
+                  color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
+                  className="mr-2"
+                  textAlign="left"
+                >
+                  {getBalanceNumber((pendingRewards[bundleId] || {}).reward).toLocaleString()}
+                </Heading>
+                <Text color="textSubtle" textAlign="left">
+                  {br.rewardTokenInfo.name === "WKLAY" ? "KLAY" : br.rewardTokenInfo.name}
+                </Text>
+              </div>
 
-        <div className="flex align-center justify-space-between">
-          <Text color="textSubtle">Claim Ended Bonus</Text>
+              <Text color="textSubtle" textAlign="right" fontSize="12px">
+                = ${numeral(getBalanceNumber((pendingRewards[bundleId] || {}).reward) * finixUsd.toNumber()).format('0,0.0000')}
+              </Text>
+            </div>
+          )
+        })}
 
-          <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-            Claim
-          </Button>
-        </div>
+        {false && (
+          <div className="flex align-center justify-space-between">
+            <Text color="textSubtle">Claim Ended Bonus</Text>
+
+            <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
+              Claim
+            </Button>
+          </div>
+        )}
       </div>
       <Button
         fullWidth
