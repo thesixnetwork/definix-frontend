@@ -39,7 +39,6 @@ import {
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
 
-
 const initialState: FinixPriceState = {
   price: 0,
   sixPrice: 0,
@@ -201,7 +200,7 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
 }
 
 // Thunks
-export const fetchSixPrice = () => async dispatch => {
+export const fetchSixPrice = () => async (dispatch) => {
   const fetchPromise = []
 
   fetchPromise.push(
@@ -221,7 +220,7 @@ export const fetchSixPrice = () => async dispatch => {
   )
 }
 
-export const fetchKlayPriceFromKlayswap = () => async dispatch => {
+export const fetchKlayPriceFromKlayswap = () => async (dispatch) => {
   const response = await axios.get('https://stat.klayswap.com/klayPrice.json')
   const usdPrice = _.get(response, 'data.priceUsd')
   dispatch(
@@ -231,7 +230,7 @@ export const fetchKlayPriceFromKlayswap = () => async dispatch => {
   )
 }
 
-export const fetchDefinixKlayPrice = () => async dispatch => {
+export const fetchDefinixKlayPrice = () => async (dispatch) => {
   const fetchPromise = []
 
   fetchPromise.push(
@@ -251,7 +250,7 @@ export const fetchDefinixKlayPrice = () => async dispatch => {
   )
 }
 
-export const fetchFinixPrice = () => async dispatch => {
+export const fetchFinixPrice = () => async (dispatch) => {
   const fetchPromise = []
 
   // pid 2
@@ -470,7 +469,7 @@ export const fetchFinixPrice = () => async dispatch => {
 }
 
 // Thunks
-export const fetchQuote = () => async dispatch => {
+export const fetchQuote = () => async (dispatch) => {
   const finixAddress = getFinixAddress()
   const sixAddress = getSixAddress()
   const kdaiAddress = getKdaiAddress()

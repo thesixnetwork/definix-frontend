@@ -65,16 +65,16 @@ export const useFarms = (): Farm[] => {
 }
 
 export const useFarmFromPid = (pid): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find(f => f.pid === pid))
+  const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
   return farm
 }
 
 export const useFarmFromSymbol = (lpSymbol: string): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find(f => f.lpSymbol === lpSymbol))
+  const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
   return farm
 }
 
-export const useFarmUser = pid => {
+export const useFarmUser = (pid) => {
   const farm = useFarmFromPid(pid)
 
   return {
@@ -102,7 +102,7 @@ export const usePools = (account): Pool[] => {
 }
 
 export const usePoolFromPid = (sousId): Pool => {
-  const pool = useSelector((state: State) => state.pools.data.find(p => p.sousId === sousId))
+  const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
   return pool
 }
 
@@ -158,11 +158,11 @@ export const usePriceTVL = (): BigNumber => {
   console.log('>>>>>>>>>>>>>>>>>>>>>>>>> usePriceSixKusdt = ', sixUsd.toNumber())
   // const pancakeBnbPrice = usePricePancakeBnbUsd()
   // const selectedPools = pools.find((pool) => pool.sousId === 6) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
-  const selectedPoolsFinixFinix = pools.find(pool => pool.sousId === 0) || {
+  const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
     totalStaked: new BigNumber(0),
     tokenDecimals: 18,
   }
-  const selectedPoolsSixFinix = pools.find(pool => pool.sousId === 1) || {
+  const selectedPoolsSixFinix = pools.find((pool) => pool.sousId === 1) || {
     totalStaked: new BigNumber(0),
     tokenDecimals: 18,
   }
