@@ -122,10 +122,19 @@ const Page = styled(Text)`
 `
 
 const CardGetStarted = ({ isBsc = false, className = '' }) => {
-  const [isStarted, setIsStarted] = useState(true)
+  const [isStarted, setIsStarted] = useState(false)
   const [curMainStep, setCurMainStep] = useState(null)
   const [curSubStep, setCurSubStep] = useState(null)
   const [isTransferSixFromKlaytn, setIsTransferSixFromKlaytn] = useState(false) // For Klaytn > Main2 > Sub2 > Select 'From Klaytn'
+
+  useEffect(() => {
+    return () => {
+      setIsStarted(false)
+      setCurMainStep(null)
+      setCurSubStep(null)
+      setIsTransferSixFromKlaytn(false)
+    }
+  }, [])
 
   const bsc = [
     {
@@ -198,9 +207,11 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       setIsStarted(false)
       setCurMainStep(null)
       setCurSubStep(null)
+      setIsTransferSixFromKlaytn(false)
     } else if (curSubStep < 1) {
       setCurMainStep(null)
       setCurSubStep(null)
+      setIsTransferSixFromKlaytn(false)
     } else {
       setCurSubStep(curSubStep - 1)
     }
@@ -213,6 +224,17 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
     } else {
       setCurSubStep(curSubStep + 1)
     }
+  }
+
+  const subStepsLength = () => {
+    const mainStep = mainSteps[curMainStep]
+    return isTransferSixFromKlaytn ? mainStep.stepsKlaytn.length - 1 : mainStep.steps.length - 1
+  }
+
+  const SubStep = (props) => {
+    const mainStep = mainSteps[curMainStep]
+    const Handler = isTransferSixFromKlaytn ? mainStep.stepsKlaytn[curSubStep] : mainStep.steps[curSubStep]
+    return <Handler {...props} />
   }
 
   const BeforeStart = () => (
@@ -256,7 +278,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
             {`${curMainStep + 1} / ${curSubStep + 1}`}
           </Page>
 
-          {curSubStep < mainSteps[curMainStep].steps.length - 1 && <NextButton />}
+          {curSubStep < subStepsLength() && <NextButton />}
         </>
       )}
     </TopNavigationStyle>
@@ -282,8 +304,8 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
     </Button>
   )
 
-  const NextMainButton = ({ nextClassName = '' }) => (
-    <div className={`flex justify-center flex-column align-center ${nextClassName}`}>
+  const NextMainStepButton = () => (
+    <div className="flex justify-center flex-column align-center mt-6">
       <MainStep
         src={mainSteps[curMainStep + 1].img}
         onClick={() => {
@@ -305,24 +327,6 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       </Button>
     </div>
   )
-
-  const DynamicSubStep = (props) => {
-    let Handler = mainSteps[curMainStep].steps[curSubStep]
-
-    if (!isBsc && curMainStep === 1 && isTransferSixFromKlaytn) {
-      Handler = mainSteps[1].stepsKlaytn[curSubStep]
-    }
-
-    return <Handler {...props} />
-  }
-
-  useEffect(() => {
-    return () => {
-      setIsStarted(false)
-      setCurMainStep(null)
-      setCurSubStep(null)
-    }
-  }, [])
 
   return (
     <StyledBanner className={className} isStarted={isStarted}>
@@ -354,16 +358,19 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           ) : (
             <>
               <Overflow>
-                <DynamicSubStep
+                {/* Sub Step */}
+                <SubStep
                   title={mainSteps[curMainStep].title}
                   onNext={onNext}
                   setIsTransferSixFromKlaytn={setIsTransferSixFromKlaytn}
                 />
-                {curSubStep === mainSteps[curMainStep].steps.length - 1 && curMainStep < mainSteps.length - 1 && (
-                  <NextMainButton nextClassName="mt-6" />
-                )}
+
+                {/* Show in Last Sub Step */}
+                {curSubStep === subStepsLength() && curMainStep < mainSteps.length - 1 && <NextMainStepButton />}
               </Overflow>
-              {curSubStep < mainSteps[curMainStep].steps.length - 1 && <BottomNavigation />}
+
+              {/* Show in (Not) Last Sub Step */}
+              {curSubStep < subStepsLength() && <BottomNavigation />}
             </>
           )}
         </>
