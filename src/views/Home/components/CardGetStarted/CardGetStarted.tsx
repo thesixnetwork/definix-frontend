@@ -20,6 +20,15 @@ import BSC_2_4 from './BSC/BSC_2_4'
 import BSC_2_5 from './BSC/BSC_2_5'
 import BSC_2_6 from './BSC/BSC_2_6'
 import BSC_2_7 from './BSC/BSC_2_7'
+import BSC_3_1 from './BSC/BSC_3_1'
+import BSC_3_2 from './BSC/BSC_3_2'
+import BSC_3_3 from './BSC/BSC_3_3'
+import BSC_3_4 from './BSC/BSC_3_4'
+import BSC_4_1 from './BSC/BSC_4_1'
+import BSC_4_2 from './BSC/BSC_4_2'
+import BSC_4_3 from './BSC/BSC_4_3'
+import BSC_4_4 from './BSC/BSC_4_4'
+import BSC_4_5 from './BSC/BSC_4_5'
 import MainStep from './MainStep'
 
 const StyledBanner = styled(Card)<{ isStarted: boolean }>`
@@ -106,12 +115,14 @@ const CardGetStarted = ({ network = 'bsc', className = '' }) => {
       steps: [BSC_2_1, BSC_2_2, BSC_2_3, BSC_2_4, BSC_2_5, BSC_2_6, BSC_2_7],
     },
     {
-      title: 'Connect wallet and swap tokens',
+      title: 'Connect wallet & Swap tokens',
       img: m03,
+      steps: [BSC_3_1, BSC_3_2, BSC_3_3, BSC_3_4],
     },
     {
       title: 'Liquidity pairing and start farming',
       img: m04,
+      steps: [BSC_4_1, BSC_4_2, BSC_4_3, BSC_4_4, BSC_4_5],
     },
   ]
 
@@ -288,7 +299,9 @@ const CardGetStarted = ({ network = 'bsc', className = '' }) => {
             <>
               <Overflow>
                 <SubStep title={mainSteps[curMainStep].title} onNext={onNext} />
-                {curSubStep === mainSteps[curMainStep].steps.length - 1 && <NextMainButton />}
+                {curSubStep === mainSteps[curMainStep].steps.length - 1 && curMainStep < mainSteps.length - 1 && (
+                  <NextMainButton />
+                )}
               </Overflow>
               {curSubStep < mainSteps[curMainStep].steps.length - 1 && (
                 <div className="bottom-next-btn">

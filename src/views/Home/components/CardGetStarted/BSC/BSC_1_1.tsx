@@ -8,7 +8,7 @@ import newMetamask from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Defini
 const BSC_1_1 = ({ title }) => {
   return (
     <>
-      <Heading className="mb-4" color="primary">
+      <Heading className="mb-6" color="primary">
         {title}
       </Heading>
       <div>

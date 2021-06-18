@@ -12,7 +12,7 @@ const BSC_2_5 = ({ title }) => {
 
   return (
     <>
-      <Heading className="mb-4" color="primary">
+      <Heading className="mb-6" color="primary">
         {`${title} (SIX)`}
       </Heading>
       <div>

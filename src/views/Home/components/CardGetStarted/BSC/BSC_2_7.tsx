@@ -4,7 +4,7 @@ import { Heading, Text } from 'uikit-dev'
 const BSC_2_7 = ({ title }) => {
   return (
     <>
-      <Heading className="mb-4" color="primary">
+      <Heading className="mb-6" color="primary">
         {title}
       </Heading>
       <div>

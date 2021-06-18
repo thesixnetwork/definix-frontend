@@ -11,10 +11,10 @@ const CustomButton = styled.img`
   margin: 0 8px;
 `
 
-const BSC_2_1 = ({ title, className = '', onNext }) => {
+const BSC_2_1 = ({ title, onNext }) => {
   return (
     <>
-      <Heading className="mb-4" color="primary">
+      <Heading className="mb-6" color="primary">
         {title}
       </Heading>
       <div>

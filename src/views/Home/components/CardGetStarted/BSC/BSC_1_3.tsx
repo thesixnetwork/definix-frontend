@@ -6,7 +6,7 @@ import select from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tut
 const BSC_1_3 = ({ title }) => {
   return (
     <>
-      <Heading className="mb-4" color="primary">
+      <Heading className="mb-6" color="primary">
         {title}
       </Heading>
       <div>

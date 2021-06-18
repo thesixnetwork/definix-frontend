@@ -5,7 +5,7 @@ import img from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutori
 const BSC_1_4 = ({ title }) => {
   return (
     <>
-      <Heading className="mb-4" color="primary">
+      <Heading className="mb-6" color="primary">
         {title}
       </Heading>
       <div>
