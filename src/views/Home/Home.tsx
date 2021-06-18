@@ -16,7 +16,7 @@ import {
 } from 'uikit-dev/components/TwoPanelLayout'
 import CardAudit from './components/CardAudit'
 import CardComingSoon from './components/CardComingSoon'
-import CardGetStarted from './components/CardGetStarted'
+import CardGetStarted from './components/CardGetStarted/CardGetStarted'
 import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
