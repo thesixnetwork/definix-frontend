@@ -32,7 +32,7 @@ const Caption = styled(Text)`
 const Home: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const themes = useTheme()
 
   const { account } = useWallet()

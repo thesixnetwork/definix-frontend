@@ -119,7 +119,7 @@ const Summary = styled.div`
 `
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const data = [
     {
@@ -162,6 +162,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           label: '# of Votes',
           data: data.map((d) => d.percent),
           backgroundColor: data.map((d) => d.color),
+          borderWidth: 0,
         },
       ],
     },
@@ -176,7 +177,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         padding: 24,
       },
       rotation: 2,
-      cutoutPercentage: 90,
+      cutoutPercentage: 94,
     },
   }
 
