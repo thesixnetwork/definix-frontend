@@ -1,7 +1,7 @@
 import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
-import { BLOCKS_PER_YEAR } from 'config'
+import { BLOCKS_PER_YEAR, KLAY_PER_BLOCK } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -81,6 +81,7 @@ const Farms: React.FC = () => {
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
+  console.log('--------------------------------')
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsKlay = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
@@ -88,11 +89,37 @@ const Farms: React.FC = () => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
+        let klayApy = new BigNumber(0)
         const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
           .times(farm.BONUS_MULTIPLIER)
           .div(new BigNumber(10).pow(18))
+        // const totalKlayRewardPerBlock = new BigNumber(KLAY_PER_BLOCK)
         const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+        if ((farm.bundleRewards || []).length > 0) {
+          const klayBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.WKLAY)
+          if (klayBundle) {
+            // @ts-ignore
+            const klayRewardPerBlock = new BigNumber([klayBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
+            const klayRewardPerYear = klayRewardPerBlock.times(BLOCKS_PER_YEAR)
+            const yieldValue = klayPrice.times(klayRewardPerYear)
+            let totalValue = farm.lpTotalInQuoteToken
+            if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+              totalValue = klayPrice.times(farm.lpTotalInQuoteToken)
+            }
+            if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+              totalValue = finixPrice.times(farm.lpTotalInQuoteToken)
+            }
+            if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+              totalValue = kethPriceUsd.times(farm.lpTotalInQuoteToken)
+            }
+            if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+              totalValue = sixPrice.times(farm.lpTotalInQuoteToken)
+            }
+            klayApy = yieldValue.div(totalValue)
+          }
+        }
 
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
         let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
@@ -118,7 +145,13 @@ const Farms: React.FC = () => {
           apy = finixApy && dualApy && finixApy.plus(dualApy)
         }
 
-        return { ...farm, apy }
+        const finixApy = apy
+        const sumApy = BigNumber.sum(finixApy, klayApy)
+        // console.log('farm', farm.lpSymbol)
+        // console.log('sumApy', sumApy.toNumber())
+        // console.log('finixApy', finixApy.toNumber())
+        // console.log('klayApy', klayApy.toNumber())
+        return { ...farm, apy: sumApy, finixApy, klayApy }
       })
 
       return farmsToDisplayWithAPY.map((farm) => (

@@ -7,6 +7,7 @@ BigNumber.config({
 
 export const IS_GENESIS = false
 export const FINIX_PER_BLOCK = new BigNumber(1.08)
+export const KLAY_PER_BLOCK = new BigNumber(0.1)
 export const BLOCKS_PER_YEAR = new BigNumber(31536000)
 export const BSC_BLOCK_TIME = 3
 export const FINIX_POOL_PID = 7
