@@ -20,6 +20,7 @@ import CardGetStarted from './components/CardGetStarted'
 import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
+import CardAirdropKlay from './components/CardAirdropKlay'
 
 const Caption = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
@@ -86,7 +87,7 @@ const Home: React.FC = () => {
                 <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
               )}
             </div>
-
+                <CardAirdropKlay showBtn className="mb-5"/>
             <CardComingSoon showBtn className="mb-5" />
 
             <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
