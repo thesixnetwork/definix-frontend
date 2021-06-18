@@ -503,6 +503,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           data: chartValue,
           backgroundColor: chartColors,
           hoverBackgroundColor: chartColors,
+          borderWidth: 0,
         },
       ],
       hoverOffset: 4,
@@ -520,8 +521,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         padding: 24,
       },
       rotation: 2,
-      cutoutPercentage: 90,
-      responsive: true,
+      cutoutPercentage: 94,
     },
   }
 

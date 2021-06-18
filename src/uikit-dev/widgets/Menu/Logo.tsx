@@ -46,7 +46,7 @@ const Logo: React.FC<Props> = ({ togglePush, href }) => {
   const { isDark } = useTheme()
 
   return (
-    <Flex alignItems="center" className="mr-4">
+    <Flex alignItems="center" className="mr-5">
       {isMobileOrTablet && (
         <StyledTogglePanel aria-label="Toggle menu" onClick={togglePush}>
           <HamburgerIcon width="24px" color="textSubtle" />
