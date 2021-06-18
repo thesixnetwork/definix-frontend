@@ -2,7 +2,6 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { isConstructSignatureDeclaration } from 'typescript'
 import { Button, Card, ChevronLeftIcon, ChevronRightIcon, Heading, Text } from 'uikit-dev'
 import getStarted from 'uikit-dev/images/for-ui-v2/get-started.png'
 import m01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-01.png'
@@ -86,14 +85,6 @@ const StyledBanner = styled(Card)<{ isStarted: boolean }>`
       font-size: 32px !important;
     }
   }
-
-  .bottom-navigation {
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
 `
 
 const TopNavigationStyle = styled.div`
@@ -105,6 +96,14 @@ const TopNavigationStyle = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`
+
+const BottomNavigationStyle = styled.div`
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `
 
 const Overflow = styled.div`
@@ -126,7 +125,6 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [isStarted, setIsStarted] = useState(true)
   const [curMainStep, setCurMainStep] = useState(null)
   const [curSubStep, setCurSubStep] = useState(null)
-  const [fromNetwork, setFromNetwork] = useState('bsc')
 
   const bsc = [
     {
@@ -256,6 +254,12 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
     </TopNavigationStyle>
   )
 
+  const BottomNavigation = () => (
+    <BottomNavigationStyle>
+      <NextButton />
+    </BottomNavigationStyle>
+  )
+
   const NextButton = () => (
     <Button
       variant="text"
@@ -294,7 +298,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
     </div>
   )
 
-  const SubStep = (props) => {
+  const DynamicSubStep = (props) => {
     const Handler = mainSteps[curMainStep].steps[curSubStep]
     return <Handler {...props} />
   }
@@ -337,16 +341,12 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           ) : (
             <>
               <Overflow>
-                <SubStep title={mainSteps[curMainStep].title} onNext={onNext} />
+                <DynamicSubStep title={mainSteps[curMainStep].title} onNext={onNext} />
                 {curSubStep === mainSteps[curMainStep].steps.length - 1 && curMainStep < mainSteps.length - 1 && (
                   <NextMainButton nextClassName="mt-6" />
                 )}
               </Overflow>
-              {curSubStep < mainSteps[curMainStep].steps.length - 1 && (
-                <div className="bottom-navigation">
-                  <NextButton />
-                </div>
-              )}
+              {curSubStep < mainSteps[curMainStep].steps.length - 1 && <BottomNavigation />}
             </>
           )}
         </>
