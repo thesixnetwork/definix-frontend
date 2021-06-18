@@ -98,14 +98,14 @@ const BannerAirdrop = ({ showBtn = false, className = '' }) => {
       <MaxWidth>
         <div>
           <Heading as="h3" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-            <img src={definixLogo} alt="" /> <span style={{ fontSize: '15px' }}>is now on</span>{' '}
+            <img src={definixLogo} alt="" /> <span style={{ fontSize: '15px' ,color:"black"}}>is now on</span>{' '}
             <span style={{ fontSize: '25px', color: '#83603E' }}>Klaytn Blockchain</span>
           </Heading>
           <br />
           <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
             <b>
-              <span style={{ fontSize: '20px' }}>Get free </span>{' '}
-              <span style={{ fontSize: '30px' }}>
+              <span style={{ fontSize: '20px' ,color:"black"}}>Get free </span>{' '}
+              <span style={{ fontSize: '30px' ,color:"black"}}>
                 30{' '}
                 <img
                   style={{ width: '20px', marginLeft: '5px', marginRight: '5px' }}
