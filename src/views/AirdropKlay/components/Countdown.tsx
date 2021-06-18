@@ -14,7 +14,7 @@ const CountDown = ({ showCom = false }) => {
 
   useEffect(() => {
     const countdownInterval = () => {
-      const endCountDown = new Date(2021, 5, 21, 0, 0, 0)
+      const endCountDown = new Date(2021, 5, 21, 9, 59, 59)
       const timer = endCountDown.getTime() - Date.now()
       if (timer <= 0) {
         setCountdown({
