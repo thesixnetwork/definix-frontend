@@ -98,7 +98,7 @@ const SwitchNetwork = () => {
         variant="text"
         onClick={() => {
           window.location.href = 'https://bsc.definix.com'
-          //setIsBsc(true)
+          // setIsBsc(true)
         }}
       >
         <img src={isBsc ? bscWhite : bsc} alt="" width="20px" />
@@ -107,7 +107,7 @@ const SwitchNetwork = () => {
       <IconButton
         variant="text"
         onClick={() => {
-          //setIsBsc(false)
+          // setIsBsc(false)
         }}
       >
         <img src={!isBsc || isDark ? klaytnWhite : klaytn} alt="" width="20px" />
