@@ -74,7 +74,9 @@ export default function DiscriptionSecondAirdrop({ open = false, disable = false
                  justifyContent: "center",
                  alignItems: "center",
             }}>
-                <Button href="https://klaytn.definix.com">Supply your liquidity at Definix on Klaytn</Button>
+                <a href="https://klaytn.definix.com">
+                <Button >Supply your liquidity at Definix on Klaytn</Button>
+                </a>
             </div>
         </Collapsible>
     )
