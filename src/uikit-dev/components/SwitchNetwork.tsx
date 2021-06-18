@@ -6,6 +6,7 @@ import klaytn from '../images/for-ui-v2/toggle-icon/Definix-guide2-04.png'
 import bscWhite from '../images/for-ui-v2/toggle-icon/Definix-guide2-05.png'
 import bsc from '../images/for-ui-v2/toggle-icon/Definix-guide2-06.png'
 import { IconButton } from './Button'
+import Text from './Text/Text'
 
 const SwitchStyle = styled.div<{ isBsc: boolean }>`
   display: flex;
@@ -37,14 +38,53 @@ const SwitchStyle = styled.div<{ isBsc: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
     z-index: 1;
     background: transparent !important;
     margin-right: 4px;
+    position: relative;
 
     &:last-child {
       margin: 0;
     }
+
+    &:hover {
+      > div {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+  }
+`
+
+const Tooltip = styled(Text)`
+  transition: 0.2s;
+  width: max-content;
+  max-width: 180px;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1;
+  font-size: 12px;
+  padding: 12px;
+  line-height: 1.5;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.tertiary};
+  border-radius: ${({ theme }) => theme.radii.default};
+  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  opacity: 0;
+  visibility: hidden;
+  color: ${({ theme }) => theme.colors.textSubtle};
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+    position: absolute;
+    border-bottom-color: ${({ theme }) => theme.colors.white};
+    top: -16px;
+    left: calc(50% - 8px);
   }
 `
 
@@ -61,6 +101,7 @@ const SwitchNetwork = () => {
         }}
       >
         <img src={isBsc ? bscWhite : bsc} alt="" width="20px" />
+        <Tooltip>Binance Smart Chain</Tooltip>
       </IconButton>
       <IconButton
         variant="text"
@@ -69,6 +110,7 @@ const SwitchNetwork = () => {
         }}
       >
         <img src={!isBsc || isDark ? klaytnWhite : klaytn} alt="" width="20px" />
+        <Tooltip>Klaytn Chain</Tooltip>
       </IconButton>
     </SwitchStyle>
   )
