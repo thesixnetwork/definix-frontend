@@ -97,7 +97,7 @@ const SwitchNetwork = () => {
       <IconButton
         variant="text"
         onClick={() => {
-          window.location.href = "https://bsc.definix.com"
+          window.location.href = 'https://bsc.definix.com'
           //setIsBsc(true)
         }}
       >
