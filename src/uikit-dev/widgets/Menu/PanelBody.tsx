@@ -112,10 +112,8 @@ const PanelBody: React.FC<Props> = (props) => {
             <img src={isDark ? logoWhite : logoDesktop} alt="" />
           </StyledLink>
 
-          <div className="flex align-center justify-space-between mt-2">
-            <SwitchNetwork />
-            <UserBlock account={account} login={login} logout={logout} className="dis-in-block" />
-          </div>
+          <SwitchNetwork />
+          <UserBlock account={account} login={login} logout={logout} className="mt-2 dis-in-block" />
         </div>
       )}
 
