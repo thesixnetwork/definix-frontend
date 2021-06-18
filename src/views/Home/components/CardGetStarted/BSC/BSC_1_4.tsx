@@ -13,7 +13,7 @@ const BSC_1_4 = ({ title }) => {
           Input network information follow the picture below.
         </Text>
         <img src={img} alt="" />
-        <Text fontSize="14px" className="mb-4" textAlign="center">
+        <Text fontSize="14px" textAlign="center">
           Click on Save button to complete
         </Text>
       </div>

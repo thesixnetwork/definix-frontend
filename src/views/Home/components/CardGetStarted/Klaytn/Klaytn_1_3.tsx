@@ -21,7 +21,7 @@ const Klaytn_1_3 = ({ title }) => {
           Every transaction on DEFINIX on Klaytn require KLAY to pay for a gas fee. Make sure you have enough KLAY to
           pay for it.
         </Text>
-        <Text fontSize="14px" className="mb-6">
+        <Text fontSize="14px">
           Now you are ready to proceed to next step. Transfer your token from exchange to your wallet.
         </Text>
       </div>

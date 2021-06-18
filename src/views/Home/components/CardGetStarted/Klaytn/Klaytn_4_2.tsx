@@ -39,7 +39,7 @@ const Klaytn_4_2 = ({ title }) => {
           will be send directly into your wallet.
         </Text>
 
-        <Text fontSize="14px" className="mb-4">
+        <Text fontSize="14px">
           Now you are ready to start your first farm. Go to{' '}
           <Text fontSize="14px" color="primary" className="dis-in-block">
             Yield farming

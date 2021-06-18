@@ -2,6 +2,7 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { isConstructSignatureDeclaration } from 'typescript'
 import { Button, Card, ChevronLeftIcon, ChevronRightIcon, Heading, Text } from 'uikit-dev'
 import getStarted from 'uikit-dev/images/for-ui-v2/get-started.png'
 import m01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-01.png'
@@ -32,6 +33,17 @@ import BSC_4_5 from './BSC/BSC_4_5'
 import Klaytn_1_1 from './Klaytn/Klaytn_1_1'
 import Klaytn_1_2 from './Klaytn/Klaytn_1_2'
 import Klaytn_1_3 from './Klaytn/Klaytn_1_3'
+import Klaytn_2_1 from './Klaytn/Klaytn_2_1'
+import Klaytn_2_2 from './Klaytn/Klaytn_2_2'
+import Klaytn_2_3_bsc from './Klaytn/Klaytn_2_3_bsc'
+import Klaytn_2_3_klaytn from './Klaytn/Klaytn_2_3_klaytn'
+import Klaytn_2_4_bsc from './Klaytn/Klaytn_2_4_bsc'
+import Klaytn_2_4_klaytn from './Klaytn/Klaytn_2_4_klaytn'
+import Klaytn_2_5_bsc from './Klaytn/Klaytn_2_5_bsc'
+import Klaytn_2_6_bsc from './Klaytn/Klaytn_2_6_bsc'
+import Klaytn_2_7 from './Klaytn/Klaytn_2_7'
+import Klaytn_2_8 from './Klaytn/Klaytn_2_8'
+import Klaytn_2_9 from './Klaytn/Klaytn_2_9'
 import Klaytn_3_1 from './Klaytn/Klaytn_3_1'
 import Klaytn_3_2 from './Klaytn/Klaytn_3_2'
 import Klaytn_3_3 from './Klaytn/Klaytn_3_3'
@@ -75,7 +87,7 @@ const StyledBanner = styled(Card)<{ isStarted: boolean }>`
     }
   }
 
-  .bottom-next-btn {
+  .bottom-navigation {
     padding: 8px;
     display: flex;
     align-items: center;
@@ -84,7 +96,7 @@ const StyledBanner = styled(Card)<{ isStarted: boolean }>`
   }
 `
 
-const ButtonGroupStyle = styled.div`
+const TopNavigationStyle = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -98,7 +110,7 @@ const ButtonGroupStyle = styled.div`
 const Overflow = styled.div`
   flex-grow: 1;
   overflow: auto;
-  padding: 0 40px;
+  padding: 0 40px 40px 40px;
 `
 
 const Page = styled(Text)`
@@ -114,6 +126,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [isStarted, setIsStarted] = useState(true)
   const [curMainStep, setCurMainStep] = useState(null)
   const [curSubStep, setCurSubStep] = useState(null)
+  const [fromNetwork, setFromNetwork] = useState('bsc')
 
   const bsc = [
     {
@@ -147,7 +160,18 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
     {
       title: 'Transfer token to your wallet',
       img: m02,
-      steps: [],
+      steps: [
+        Klaytn_2_1,
+        Klaytn_2_2,
+        Klaytn_2_3_bsc,
+        Klaytn_2_4_bsc,
+        Klaytn_2_5_bsc,
+        Klaytn_2_6_bsc,
+        Klaytn_2_7,
+        Klaytn_2_8,
+        Klaytn_2_9,
+      ],
+      stepsKlaytn: [Klaytn_2_1, Klaytn_2_2, Klaytn_2_3_klaytn, Klaytn_2_4_klaytn, Klaytn_2_7, Klaytn_2_8, Klaytn_2_9],
     },
     {
       title: 'Connect wallet & Swap tokens',
@@ -207,8 +231,8 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
     </Overflow>
   )
 
-  const ButtonGroup = () => (
-    <ButtonGroupStyle>
+  const TopNavigation = () => (
+    <TopNavigationStyle>
       <Button
         variant="text"
         onClick={onBack}
@@ -229,7 +253,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           {curSubStep < mainSteps[curMainStep].steps.length - 1 && <NextButton />}
         </>
       )}
-    </ButtonGroupStyle>
+    </TopNavigationStyle>
   )
 
   const NextButton = () => (
@@ -246,8 +270,8 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
     </Button>
   )
 
-  const NextMainButton = () => (
-    <div className="flex justify-center flex-column align-center">
+  const NextMainButton = ({ nextClassName = '' }) => (
+    <div className={`flex justify-center flex-column align-center ${nextClassName}`}>
       <MainStep
         src={mainSteps[curMainStep + 1].img}
         onClick={() => {
@@ -289,7 +313,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
         <BeforeStart />
       ) : (
         <>
-          <ButtonGroup />
+          <TopNavigation />
 
           {curMainStep === null ? (
             <Overflow>
@@ -315,11 +339,11 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
               <Overflow>
                 <SubStep title={mainSteps[curMainStep].title} onNext={onNext} />
                 {curSubStep === mainSteps[curMainStep].steps.length - 1 && curMainStep < mainSteps.length - 1 && (
-                  <NextMainButton />
+                  <NextMainButton nextClassName="mt-6" />
                 )}
               </Overflow>
               {curSubStep < mainSteps[curMainStep].steps.length - 1 && (
-                <div className="bottom-next-btn">
+                <div className="bottom-navigation">
                   <NextButton />
                 </div>
               )}

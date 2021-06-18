@@ -28,7 +28,7 @@ const Klaytn_3_2 = ({ title }) => {
           Now you can select the token you want to swap from “Select Token” dropdown menu The system will auto-calculate
           the amount of token you will get automatically.
         </Text>
-        <img src={img03} alt="" className="mb-4" />
+        <img src={img03} alt="" />
       </div>
     </>
   )

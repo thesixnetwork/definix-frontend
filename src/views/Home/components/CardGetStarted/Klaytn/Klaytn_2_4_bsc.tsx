@@ -1,8 +1,9 @@
+/* eslint-disable camelcase */
 import React, { memo } from 'react'
 import { Heading, Text } from 'uikit-dev'
-import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-17.png'
+import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-Tutorial-Elements-56.png'
 
-const BSC_2_3 = ({ title }) => {
+const Klaytn_2_4 = ({ title }) => {
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -12,10 +13,11 @@ const BSC_2_3 = ({ title }) => {
         <Text fontSize="14px" className="mb-4">
           Enter your email address and amount then copy your wallet address from metamask into “Destination” field.
         </Text>
+
         <img src={img01} alt="" />
       </div>
     </>
   )
 }
 
-export default memo(BSC_2_3)
+export default memo(Klaytn_2_4)

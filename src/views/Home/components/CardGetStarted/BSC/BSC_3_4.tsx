@@ -41,9 +41,7 @@ const BSC_3_4 = ({ title }) => {
           ( 1.2 USD )
         </Text>
 
-        <Text fontSize="14px" className="mb-4">
-          Prepare your tokens, we’re moving to the last process.
-        </Text>
+        <Text fontSize="14px">Prepare your tokens, we’re moving to the last process.</Text>
       </div>
     </>
   )
