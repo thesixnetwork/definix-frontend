@@ -12,7 +12,7 @@ const CustomButton = styled.img`
   display: block;
 `
 
-const Klaytn_2_2 = ({ title, onNext }) => {
+const Klaytn_2_2 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -32,6 +32,7 @@ const Klaytn_2_2 = ({ title, onNext }) => {
           alt=""
           onClick={() => {
             onNext(1, 2)
+            setIsTransferSixFromKlaytn(false)
           }}
           className="mb-3"
         />
@@ -40,6 +41,7 @@ const Klaytn_2_2 = ({ title, onNext }) => {
           alt=""
           onClick={() => {
             onNext(1, 2)
+            setIsTransferSixFromKlaytn(true)
           }}
         />
       </div>
