@@ -1,7 +1,8 @@
+/* eslint-disable camelcase */
 import React, { memo } from 'react'
 import { Heading, Text } from 'uikit-dev'
 
-const BSC_4_2 = ({ title }) => {
+const Klaytn_4_2 = ({ title }) => {
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -54,4 +55,4 @@ const BSC_4_2 = ({ title }) => {
   )
 }
 
-export default memo(BSC_4_2)
+export default memo(Klaytn_4_2)

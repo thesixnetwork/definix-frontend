@@ -29,6 +29,18 @@ import BSC_4_2 from './BSC/BSC_4_2'
 import BSC_4_3 from './BSC/BSC_4_3'
 import BSC_4_4 from './BSC/BSC_4_4'
 import BSC_4_5 from './BSC/BSC_4_5'
+import Klaytn_1_1 from './Klaytn/Klaytn_1_1'
+import Klaytn_1_2 from './Klaytn/Klaytn_1_2'
+import Klaytn_1_3 from './Klaytn/Klaytn_1_3'
+import Klaytn_3_1 from './Klaytn/Klaytn_3_1'
+import Klaytn_3_2 from './Klaytn/Klaytn_3_2'
+import Klaytn_3_3 from './Klaytn/Klaytn_3_3'
+import Klaytn_3_4 from './Klaytn/Klaytn_3_4'
+import Klaytn_4_1 from './Klaytn/Klaytn_4_1'
+import Klaytn_4_2 from './Klaytn/Klaytn_4_2'
+import Klaytn_4_3 from './Klaytn/Klaytn_4_3'
+import Klaytn_4_4 from './Klaytn/Klaytn_4_4'
+import Klaytn_4_5 from './Klaytn/Klaytn_4_5'
 import MainStep from './MainStep'
 
 const StyledBanner = styled(Card)<{ isStarted: boolean }>`
@@ -98,7 +110,7 @@ const Page = styled(Text)`
   transform: translate(-50%, 0);
 `
 
-const CardGetStarted = ({ network = 'bsc', className = '' }) => {
+const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [isStarted, setIsStarted] = useState(true)
   const [curMainStep, setCurMainStep] = useState(null)
   const [curSubStep, setCurSubStep] = useState(null)
@@ -120,7 +132,7 @@ const CardGetStarted = ({ network = 'bsc', className = '' }) => {
       steps: [BSC_3_1, BSC_3_2, BSC_3_3, BSC_3_4],
     },
     {
-      title: 'Liquidity pairing and start farming',
+      title: 'Liquidity pairing & Farming',
       img: m04,
       steps: [BSC_4_1, BSC_4_2, BSC_4_3, BSC_4_4, BSC_4_5],
     },
@@ -130,23 +142,26 @@ const CardGetStarted = ({ network = 'bsc', className = '' }) => {
     {
       title: 'Preparation & Wallet setup',
       img: m01,
-      steps: [BSC_1_1, BSC_1_2, BSC_1_3, BSC_1_4],
+      steps: [Klaytn_1_1, Klaytn_1_2, Klaytn_1_3],
     },
     {
-      title: 'Transfer coin from exchange to wallet',
+      title: 'Transfer token to your wallet',
       img: m02,
+      steps: [],
     },
     {
-      title: 'Connect wallet and swap tokens',
+      title: 'Connect wallet & Swap tokens',
       img: m03,
+      steps: [Klaytn_3_1, Klaytn_3_2, Klaytn_3_3, Klaytn_3_4],
     },
     {
-      title: 'Liquidity pairing and start farming',
+      title: 'Liquidity pairing & Farming',
       img: m04,
+      steps: [Klaytn_4_1, Klaytn_4_2, Klaytn_4_3, Klaytn_4_4, Klaytn_4_5],
     },
   ]
 
-  const mainSteps = network === 'bsc' ? bsc : klaytn
+  const mainSteps = isBsc ? bsc : klaytn
 
   const onBack = () => {
     if (curMainStep === null) {
