@@ -5,7 +5,7 @@ import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import DropdownNetwork from 'uikit-dev/components/DropdownNetwork'
+import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
 import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
@@ -253,7 +253,7 @@ const Menu: React.FC<NavProps> = ({
             href={homeLink?.href ?? '/'}
           />
 
-          {!isMobile && <DropdownNetwork />}
+          {!isMobile && <SwitchNetwork />}
         </Flex>
 
         <Flex alignItems="center">

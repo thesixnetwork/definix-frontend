@@ -2,7 +2,7 @@ import useTheme from 'hooks/useTheme'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import DropdownNetwork from 'uikit-dev/components/DropdownNetwork'
+import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
 import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
 import logoWhite from '../../images/definix-white-logo.png'
 import { Login } from '../WalletModal/types'
@@ -112,9 +112,10 @@ const PanelBody: React.FC<Props> = (props) => {
             <img src={isDark ? logoWhite : logoDesktop} alt="" />
           </StyledLink>
 
-          <DropdownNetwork />
-
-          <UserBlock account={account} login={login} logout={logout} className="mt-2 dis-in-block" />
+          <div className="flex align-center justify-space-between mt-2">
+            <SwitchNetwork />
+            <UserBlock account={account} login={login} logout={logout} className="dis-in-block" />
+          </div>
         </div>
       )}
 

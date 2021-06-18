@@ -57,9 +57,8 @@ const SettingsEntry = styled.div`
 `
 
 const ChangeLanguage = styled(Button)`
-  height: 48px;
+  height: 40px;
   border: 2px solid ${({ theme }) => theme.colors.backgroundBox} !important;
-  padding: 0 16px;
   background: transparent !important;
 `
 
@@ -68,27 +67,29 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
   align-items: center;
   background: ${({ theme }) => theme.colors.backgroundBox};
   border-radius: ${({ theme }) => theme.radii.small};
-  padding: 6px;
+  padding: 4px;
   position: relative;
+  width: 84px;
+  height: 40px;
 
   &:before {
     content: '';
-    width: 40px;
-    height: 36px;
+    width: 36px;
+    height: 32px;
     position: absolute;
-    top: 6px;
-    left: 6px;
+    top: 4px;
+    left: 4px;
     transition: 0.3s;
     background: ${({ theme }) => theme.colors.primary};
     border-radius: ${({ theme }) => theme.radii.small};
-    transform: translateX(${({ isDark }) => (isDark ? '100%' : '0')});
+    transform: translateX(${({ isDark }) => (isDark ? 'calc(100% + 4px)' : '0')});
     transition-delay: 0.1s;
   }
 
   button {
     padding: 0;
-    width: 40px;
-    height: 36px;
+    width: 36px !important;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,9 +97,14 @@ const ChangeTheme = styled.div<{ isDark: boolean }>`
     z-index: 1;
     background: transparent !important;
     position: relative;
+    margin-right: 4px;
 
     > div {
       position: absolute;
+    }
+
+    &:last-child {
+      margin: 0;
     }
   }
 `
