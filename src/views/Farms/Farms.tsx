@@ -98,7 +98,7 @@ const Farms: React.FC = () => {
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
 
         if ((farm.bundleRewards || []).length > 0) {
-          const klayBundle = (farm.bundleRewards || []).find(br => br.rewardTokenInfo.name === QuoteToken.WKLAY)
+          const klayBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.WKLAY)
           if (klayBundle) {
             // @ts-ignore
             const klayRewardPerBlock = new BigNumber([klayBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
@@ -107,10 +107,10 @@ const Farms: React.FC = () => {
             let totalValue = farm.lpTotalInQuoteToken
             if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
               totalValue = klayPrice.times(farm.lpTotalInQuoteToken)
-            }             
+            }
             if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
               totalValue = finixPrice.times(farm.lpTotalInQuoteToken)
-            }             
+            }
             if (farm.quoteTokenSymbol === QuoteToken.KETH) {
               totalValue = kethPriceUsd.times(farm.lpTotalInQuoteToken)
             }

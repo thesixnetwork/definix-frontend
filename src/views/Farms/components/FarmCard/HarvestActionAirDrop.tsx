@@ -38,7 +38,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
   pid,
   className = '',
   isHorizontal,
-  farm
+  farm,
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
@@ -87,9 +87,11 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
               FINIX
             </Text>
           </div>
-          {false && <Text color="textSubtle" textAlign="right" fontSize="12px">
-            = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
-          </Text>}
+          {false && (
+            <Text color="textSubtle" textAlign="right" fontSize="12px">
+              = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
+            </Text>
+          )}
         </div>
         {(bundleRewards || []).map((br, bundleId) => {
           let apy = new BigNumber(0)
@@ -129,12 +131,14 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
                   {br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
                 </Text>
               </div>
-              {false && <Text color="textSubtle" textAlign="right" fontSize="12px">
-                = $
-                {numeral(getBalanceNumber((pendingRewards[bundleId] || {}).reward) * finixUsd.toNumber()).format(
-                  '0,0.0000',
-                )}
-              </Text>}
+              {false && (
+                <Text color="textSubtle" textAlign="right" fontSize="12px">
+                  = $
+                  {numeral(getBalanceNumber((pendingRewards[bundleId] || {}).reward) * finixUsd.toNumber()).format(
+                    '0,0.0000',
+                  )}
+                </Text>
+              )}
             </div>
           )
         })}
