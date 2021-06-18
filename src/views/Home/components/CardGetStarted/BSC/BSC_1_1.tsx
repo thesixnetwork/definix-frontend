@@ -1,17 +1,17 @@
-import React from 'react'
-import { Heading, Image, LinkExternal, Text } from 'uikit-dev'
-import chrome from 'uikit-dev/images/for-ui-v2/tutorial-elements/Definix-Tutorial-Elements-05.png'
-import metamask from 'uikit-dev/images/for-ui-v2/tutorial-elements/Definix-Tutorial-Elements-06.png'
-import addToChrome from 'uikit-dev/images/for-ui-v2/tutorial-elements/Definix-Tutorial-Elements-07.png'
-import newMetamask from 'uikit-dev/images/for-ui-v2/tutorial-elements/Definix-Tutorial-Elements-08.png'
+import React, { memo } from 'react'
+import { Heading, Image, Link, Text } from 'uikit-dev'
+import chrome from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-05.png'
+import metamask from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-06.png'
+import addToChrome from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-07.png'
+import newMetamask from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-08.png'
 
-const Preparation1 = ({ title, className = '' }) => {
+const BSC_1_1 = ({ title }) => {
   return (
     <>
       <Heading className="mb-4" color="primary">
         {title}
       </Heading>
-      <div className={className}>
+      <div>
         <div className="flex align-center mb-2">
           <Image src={chrome} width={72} height={72} mr="12px" />
           <Text fontSize="14px">
@@ -22,9 +22,9 @@ const Preparation1 = ({ title, className = '' }) => {
           <Image src={metamask} width={72} height={72} mr="12px" />
           <Text fontSize="14px">
             Download and install chrome plugin wallet from this linkMetamask :{' '}
-            <LinkExternal href="https://metamask.io/" target="_blank" fontWeight="100 !important">
+            <Link href="https://metamask.io/" target="_blank">
               https://metamask.io/
-            </LinkExternal>
+            </Link>
           </Text>
         </div>
 
@@ -40,4 +40,4 @@ const Preparation1 = ({ title, className = '' }) => {
   )
 }
 
-export default Preparation1
+export default memo(BSC_1_1)
