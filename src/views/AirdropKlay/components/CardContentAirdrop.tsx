@@ -93,20 +93,15 @@ const StyledBanner = styled(Card)`
   }
 `
 
-
-export default function CardContentAirdrop(): ReactElement {  
-  
+export default function CardContentAirdrop(): ReactElement {
   return (
     <StyledBanner>
       <MaxWidth>
         <div>
-          
-
           <div style={{ marginTop: '40px' }}>
             <DiscriptionSecondAirdrop open disable />
             <br />
             <br />
-           
           </div>
         </div>
       </MaxWidth>

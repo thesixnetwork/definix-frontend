@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import { Text } from 'uikit-dev'
 
-
 interface Props {
   open: boolean
   disable: boolean
@@ -14,7 +13,6 @@ const TriggerElement = ({ isDown }): ReactElement => {
         Criteria for 2nd airdrop claim
         {/* <img src={Airdrop2img} style={{ width: '50px', marginLeft: '15px' }} alt="" /> */}
         <div style={{ float: 'right' }}>
-
           {/* <div style={{ marginTop: '15px' }}>{isDown ? <ChevronDownIcon /> : <ChevronUpIcon />}</div> */}
         </div>
       </div>
@@ -30,7 +28,8 @@ export default function DiscriptionSecondAirdrop({ open = true, disable = true }
       <TriggerElement isDown={open} />
       <div>
         <Text lineHeight="2">
-          1. Must have LP staked on Definix Klaytn-based during <b>21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59 a.m.(GMT +7).</b>
+          1. Must have LP staked on Definix Klaytn-based during{' '}
+          <b>21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59 a.m.(GMT +7).</b>
         </Text>
         <Text lineHeight="2">
           2. The airdrop will be automatically distributed 30 KLAY within 48 hours to the wallet address that used on{' '}
@@ -47,12 +46,14 @@ export default function DiscriptionSecondAirdrop({ open = true, disable = true }
         </Text>
         <Text lineHeight="2">4. Airdrop is limited and distributed in a first come first serve method.</Text>
 
-
         <Text lineHeight="2">
-          5. All the airdrop activity is performed and triggered by the action of a smart contract. In case the user puts in the account that the user doesn’t have a private key; the airdrop cannot be claimed and will be lost forever.
+          5. All the airdrop activity is performed and triggered by the action of a smart contract. In case the user
+          puts in the account that the user doesn’t have a private key; the airdrop cannot be claimed and will be lost
+          forever.
         </Text>
         <Text lineHeight="2">
-          6. Airdrops will be distributed to all users equally which sums up to $200K plus unclaimed airdrop from the first campaign per account.
+          6. Airdrops will be distributed to all users equally which sums up to $200K plus unclaimed airdrop from the
+          first campaign per account.
         </Text>
       </div>
       <br />

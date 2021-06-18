@@ -103,16 +103,19 @@ const BannerAirdrop = ({ showBtn = false, className = '' }) => {
           </Heading>
           <br />
           <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-
             <b>
-              <span style={{ fontSize: '20px' }}>Get free </span> <span style={{ fontSize: '30px' }}>30  <img
-                style={{ width: '20px', marginLeft: '5px', marginRight: '5px' }}
-                src={klaytnLogo}
-                alt=""
-                className="logo"
-              /> KLAY</span>
+              <span style={{ fontSize: '20px' }}>Get free </span>{' '}
+              <span style={{ fontSize: '30px' }}>
+                30{' '}
+                <img
+                  style={{ width: '20px', marginLeft: '5px', marginRight: '5px' }}
+                  src={klaytnLogo}
+                  alt=""
+                  className="logo"
+                />{' '}
+                KLAY
+              </span>
             </b>
-
           </div>
         </div>
         <div>{/* <img src={dashboardBanner} alt="" className="logo" /> */}</div>

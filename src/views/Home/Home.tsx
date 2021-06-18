@@ -87,7 +87,7 @@ const Home: React.FC = () => {
                 <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
               )}
             </div>
-                <CardAirdropKlay showBtn className="mb-5"/>
+            <CardAirdropKlay showBtn className="mb-5" />
             <CardComingSoon showBtn className="mb-5" />
 
             <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>

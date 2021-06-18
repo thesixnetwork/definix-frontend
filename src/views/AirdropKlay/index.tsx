@@ -94,28 +94,28 @@ const StyledButton = styled(Button)`
 `
 
 const AirdropKlay: React.FC = () => {
-    const [showModal, setShowModal] = useState(false)
-    const [title, setTitle] = useState('')
-    const [bodyModal, setBodyModal] = useState('')
-    const [modalSuccess, setModalSuccess] = useState(false)
-    const toggleModal = () => {
-        setShowModal(!showModal)
-    }
-    return (
-        <> 
-            <Panel id="root">
-                <Page style={{ maxWidth: '1280px' }}>
-                    <Card className="flex flex-column align-stretch mx-auto" style={{ maxWidth: '1000px' }}>
-                        <BannerAirdrop />
-                    </Card>
+  const [showModal, setShowModal] = useState(false)
+  const [title, setTitle] = useState('')
+  const [bodyModal, setBodyModal] = useState('')
+  const [modalSuccess, setModalSuccess] = useState(false)
+  const toggleModal = () => {
+    setShowModal(!showModal)
+  }
+  return (
+    <>
+      <Panel id="root">
+        <Page style={{ maxWidth: '1280px' }}>
+          <Card className="flex flex-column align-stretch mx-auto" style={{ maxWidth: '1000px' }}>
+            <BannerAirdrop />
+          </Card>
 
-                    <Card className="flex flex-column align-stretch mx-auto" style={{ marginTop: '30px', maxWidth: '1000px' }}>
-                        <CardContentAirdrop />
-                    </Card>
-                </Page>
-            </Panel>
-        </>
-    )
+          <Card className="flex flex-column align-stretch mx-auto" style={{ marginTop: '30px', maxWidth: '1000px' }}>
+            <CardContentAirdrop />
+          </Card>
+        </Page>
+      </Panel>
+    </>
+  )
 }
 
 export default AirdropKlay
