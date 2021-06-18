@@ -37,6 +37,7 @@ const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
 const NotFound = lazy(() => import('./views/NotFound'))
+const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -107,6 +108,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/info">
               <Info />
+            </Route>
+            <Route path="/AirdropKlay">
+              <AirdropKlay />
             </Route>
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
