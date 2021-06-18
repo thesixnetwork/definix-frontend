@@ -34,6 +34,18 @@ export const getKdaiAddress = () => {
 export const getKusdtAddress = () => {
   return getAddress(addresses.kusdt)
 }
+export const getKethAddress = () => {
+  return getAddress(addresses.keth)
+}
+export const getKbtcAddress = () => {
+  return getAddress(addresses.kbtc)
+}
+export const getKxrpAddress = () => {
+  return getAddress(addresses.kxrp)
+}
+export const getKbnbAddress = () => {
+  return getAddress(addresses.kbnb)
+}
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }
@@ -51,6 +63,36 @@ export const getSixKusdtLPAddress = () => {
 }
 export const getSixKlayLPAddress = () => {
   return getAddress(addresses.sixKlayLP)
+}
+export const getKlayKethLPAddress = () => {
+  return getAddress(addresses.klayKethLP)
+}
+export const getKlayKbtcLPAddress = () => {
+  return getAddress(addresses.klayKbtcLP)
+}
+export const getKlayKxrpLPAddress = () => {
+  return getAddress(addresses.klayKxrpLP)
+}
+export const getKethKusdtLPAddress = () => {
+  return getAddress(addresses.kethKusdtLP)
+}
+export const getKbtcKusdtLPAddress = () => {
+  return getAddress(addresses.kbtcKusdtLP)
+}
+export const getKxrpKusdtLPAddress = () => {
+  return getAddress(addresses.kxrpKusdtLP)
+}
+export const getKlayKusdtLPAddress = () => {
+  return getAddress(addresses.klayKusdtLP)
+}
+export const getKdaiKusdtLPAddress = () => {
+  return getAddress(addresses.kdaiKusdtLP)
+}
+export const getKbnbKusdtLPAddress = () => {
+  return getAddress(addresses.kbnbKusdtLP)
+}
+export const getKbnbFinixLPAddress = () => {
+  return getAddress(addresses.kbnbFinixLP)
 }
 export const getDefinixKlayKusdtLPAddress = () => {
   return getAddress(addresses.definixKlayKusdtLP)

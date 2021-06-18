@@ -23,6 +23,22 @@ export default {
     1001: process.env.REACT_APP_KSP_ADDRESS_TESTNET,
     8217: process.env.REACT_APP_KSP_ADDRESS_MAINNET,
   },
+  keth: {
+    1001: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
+  },
+  kbtc: {
+    1001: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
+  },
+  kxrp: {
+    1001: process.env.REACT_APP_KXRP_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_KXRP_ADDRESS_MAINNET,
+  },
+  kbnb: {
+    1001: process.env.REACT_APP_KBNB_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_KBNB_ADDRESS_MAINNET,
+  },
   six: {
     1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
     8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
@@ -54,6 +70,46 @@ export default {
   sixKlayLP: {
     1001: process.env.REACT_APP_SIX_KLAY_LP_TESTNET,
     8217: process.env.REACT_APP_SIX_KLAY_LP_MAINNET,
+  },
+  klayKethLP: {
+    1001: process.env.REACT_APP_KLAY_KETH_LP_TESTNET,
+    8217: process.env.REACT_APP_KLAY_KETH_LP_MAINNET,
+  },
+  klayKbtcLP: {
+    1001: process.env.REACT_APP_KLAY_KBTC_LP_TESTNET,
+    8217: process.env.REACT_APP_KLAY_KBTC_LP_MAINNET,
+  },
+  klayKxrpLP: {
+    1001: process.env.REACT_APP_KLAY_KXRP_LP_TESTNET,
+    8217: process.env.REACT_APP_KLAY_KXRP_LP_MAINNET,
+  },
+  kethKusdtLP: {
+    1001: process.env.REACT_APP_KETH_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KETH_KUSDT_LP_MAINNET,
+  },
+  kbtcKusdtLP: {
+    1001: process.env.REACT_APP_KBTC_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KBTC_KUSDT_LP_MAINNET,
+  },
+  kxrpKusdtLP: {
+    1001: process.env.REACT_APP_KXRP_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KXRP_KUSDT_LP_MAINNET,
+  },
+  klayKusdtLP: {
+    1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KLAY_KUSDT_LP_MAINNET,
+  },
+  kdaiKusdtLP: {
+    1001: process.env.REACT_APP_KDAI_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KDAI_KUSDT_LP_MAINNET,
+  },
+  kbnbKusdtLP: {
+    1001: process.env.REACT_APP_KBNB_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KBNB_KUSDT_LP_MAINNET,
+  },
+  kbnbFinixLP: {
+    1001: process.env.REACT_APP_KBNB_FINIX_LP_TESTNET,
+    8217: process.env.REACT_APP_KBNB_FINIX_LP_MAINNET,
   },
   definixKlayKusdtLP: {
     1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,

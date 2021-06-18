@@ -65,16 +65,16 @@ export const useFarms = (): Farm[] => {
 }
 
 export const useFarmFromPid = (pid): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.pid === pid))
+  const farm = useSelector((state: State) => state.farms.data.find(f => f.pid === pid))
   return farm
 }
 
 export const useFarmFromSymbol = (lpSymbol: string): Farm => {
-  const farm = useSelector((state: State) => state.farms.data.find((f) => f.lpSymbol === lpSymbol))
+  const farm = useSelector((state: State) => state.farms.data.find(f => f.lpSymbol === lpSymbol))
   return farm
 }
 
-export const useFarmUser = (pid) => {
+export const useFarmUser = pid => {
   const farm = useFarmFromPid(pid)
 
   return {
@@ -102,7 +102,7 @@ export const usePools = (account): Pool[] => {
 }
 
 export const usePoolFromPid = (sousId): Pool => {
-  const pool = useSelector((state: State) => state.pools.data.find((p) => p.sousId === sousId))
+  const pool = useSelector((state: State) => state.pools.data.find(p => p.sousId === sousId))
   return pool
 }
 
@@ -158,56 +158,51 @@ export const usePriceTVL = (): BigNumber => {
   console.log('>>>>>>>>>>>>>>>>>>>>>>>>> usePriceSixKusdt = ', sixUsd.toNumber())
   // const pancakeBnbPrice = usePricePancakeBnbUsd()
   // const selectedPools = pools.find((pool) => pool.sousId === 6) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
-  const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
+  const selectedPoolsFinixFinix = pools.find(pool => pool.sousId === 0) || {
     totalStaked: new BigNumber(0),
     tokenDecimals: 18,
   }
-  const selectedPoolsSixFinix = pools.find((pool) => pool.sousId === 1) || {
+  const selectedPoolsSixFinix = pools.find(pool => pool.sousId === 1) || {
     totalStaked: new BigNumber(0),
     tokenDecimals: 18,
   }
   const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
-  const sixKusdtQuote = useSelector((state: State) => state.finixPrice.sixKusdtQuote)
-  const sixWklayQuote = useSelector((state: State) => state.finixPrice.sixWklayQuote)
   const finixKusdtQuote = useSelector((state: State) => state.finixPrice.finixKusdtQuote)
   const finixWklayQuote = useSelector((state: State) => state.finixPrice.finixWklayQuote)
   const finixKspQuote = useSelector((state: State) => state.finixPrice.finixKspQuote)
+  const sixKusdtQuote = useSelector((state: State) => state.finixPrice.sixKusdtQuote)
+  const sixWklayQuote = useSelector((state: State) => state.finixPrice.sixWklayQuote)
+  const klayKethQuote = useSelector((state: State) => state.finixPrice.klayKethQuote)
+  const klayKbtcQuote = useSelector((state: State) => state.finixPrice.klayKbtcQuote)
+  const klayKxrpQuote = useSelector((state: State) => state.finixPrice.klayKxrpQuote)
+  const kethKusdtQuote = useSelector((state: State) => state.finixPrice.kethKusdtQuote)
+  const kbtcKusdtQuote = useSelector((state: State) => state.finixPrice.kbtcKusdtQuote)
+  const kxrpKusdtQuote = useSelector((state: State) => state.finixPrice.kxrpKusdtQuote)
   const wklayKusdtQuote = useSelector((state: State) => state.finixPrice.wklayKusdtQuote)
   const kdaiKusdtQuote = useSelector((state: State) => state.finixPrice.kdaiKusdtQuote)
+  const kbnbKusdtQuote = useSelector((state: State) => state.finixPrice.kbnbKusdtQuote)
+  const kbnbFinixQuote = useSelector((state: State) => state.finixPrice.kbnbFinixQuote)
+
   const finixUsdPrice = usePriceFinixUsd()
   const klayUsdPrice = usePriceKlayUsd()
-  // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-  //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-  //   : new Date().getTime()
-  // const currentTime = new Date().getTime()
-  // if (currentTime < phrase2TimeStamp) {
-  //   let totalStaked = new BigNumber(0)
-  //   switch (typeof selectedPools.totalStaked) {
-  //     case 'undefined':
-  //       totalStaked = new BigNumber(0)
-  //       break
-  //     case 'string':
-  //       totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
-  //       break
-  //     default:
-  //       totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
-  //       break
-  //   }
-  //   return totalStaked.times(sixUsd)
-  //   // eslint-disable-next-line
-  // } else {
-  // let totalStaked = new BigNumber(0)
-  // switch (typeof selectedPools.totalStaked) {
-  //   case 'undefined':
-  //     totalStaked = new BigNumber(0)
-  //     break
-  //   case 'string':
-  //     totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
-  //     break
-  //   default:
-  //     totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
-  //     break
-  // }
+
+  const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
+  const finixKusdtPrice = new BigNumber(finixKusdtQuote)
+  const finixWklayPrice = new BigNumber(finixWklayQuote).times(finixUsdPrice)
+  const finixKspPrice = new BigNumber(finixKspQuote).times(finixUsdPrice)
+  const sixKusdtPrice = new BigNumber(sixKusdtQuote)
+  const sixWklayPrice = new BigNumber(sixWklayQuote).times(klayUsdPrice)
+  const klayKethPrice = new BigNumber(klayKethQuote).times(klayUsdPrice)
+  const klayKbtcPrice = new BigNumber(klayKbtcQuote).times(klayUsdPrice)
+  const klayKxrpPrice = new BigNumber(klayKxrpQuote).times(klayUsdPrice)
+  const kethKusdtPrice = new BigNumber(kethKusdtQuote)
+  const kbtcKusdtPrice = new BigNumber(kbtcKusdtQuote)
+  const kxrpKusdtPrice = new BigNumber(kxrpKusdtQuote)
+  const klayKusdtPrice = new BigNumber(wklayKusdtQuote)
+  const kdaiKusdtPrice = new BigNumber(kdaiKusdtQuote)
+  const kbnbKusdtPrice = new BigNumber(kbnbKusdtQuote)
+  const kbnbFinixPrice = new BigNumber(kbnbFinixQuote).times(finixUsdPrice)
+
   let totalStakedFinixFinix = new BigNumber(0)
   switch (typeof selectedPoolsFinixFinix.totalStaked) {
     case 'undefined':
@@ -236,23 +231,23 @@ export const usePriceTVL = (): BigNumber => {
       totalStakedSixFinix = selectedPoolsSixFinix.totalStaked.times(new BigNumber(10).pow(18))
       break
   }
-  const wklayKusdtPrice = new BigNumber(wklayKusdtQuote)
-  const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
-  const sixKusdtPrice = new BigNumber(sixKusdtQuote)
-  const sixWklayPrice = new BigNumber(sixWklayQuote).times(klayUsdPrice)
-  const finixKusdtPrice = new BigNumber(finixKusdtQuote)
-  const finixWklayPrice = new BigNumber(finixWklayQuote).times(finixUsdPrice)
-  const finixKspPrice = new BigNumber(finixKspQuote).times(finixUsdPrice)
   return BigNumber.sum.apply(null, [
     sixFinixPrice,
-    sixKusdtPrice,
-    sixWklayPrice,
     finixKusdtPrice,
     finixWklayPrice,
-    wklayKusdtPrice,
     finixKspPrice,
-    // kdaiKusdtPrice,
-    // totalStaked.times(sixUsd).toNumber(),
+    sixKusdtPrice,
+    sixWklayPrice,
+    klayKethPrice,
+    klayKbtcPrice,
+    klayKxrpPrice,
+    kethKusdtPrice,
+    kbtcKusdtPrice,
+    kxrpKusdtPrice,
+    klayKusdtPrice,
+    kdaiKusdtPrice,
+    kbnbKusdtPrice,
+    kbnbFinixPrice,
     totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
     totalStakedSixFinix.times(sixUsd).toNumber(),
   ])
