@@ -33,6 +33,11 @@ const Home: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   const [isLoading, setIsLoading] = useState(true)
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 2500)
+  }, [setIsLoading])
   const themes = useTheme()
 
   const { account } = useWallet()

@@ -8,7 +8,9 @@ import styled from 'styled-components'
 import { Button, Heading, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { QuoteToken } from 'config/constants/types'
 import AirDropHarvestModal from './AirDropHarvestModal'
+import { FarmWithStakedValue } from './types'
 
 interface FarmCardActionsProps {
   pendingRewards?: any
@@ -18,6 +20,7 @@ interface FarmCardActionsProps {
   pid?: number
   className?: string
   isHorizontal?: boolean
+  farm?: FarmWithStakedValue
 }
 
 const MiniLogo = styled.img`
@@ -35,6 +38,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
   pid,
   className = '',
   isHorizontal,
+  farm
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
@@ -45,20 +49,8 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
   const rawEarningsBalance = getBalanceNumber(earnings)
   const displayBalance = rawEarningsBalance.toLocaleString()
 
-  console.log('bundleRewardLength', bundleRewardLength)
-  console.log('bundleRewardLength', bundleRewardLength)
-  console.log('bundleRewardLength', bundleRewardLength)
-  console.log('bundleRewardLength', bundleRewardLength)
-  console.log('bundleRewardLength', bundleRewardLength)
-  console.log('bundleRewardLength', bundleRewardLength)
-  console.log('bundleRewardLength', bundleRewardLength)
-  console.log('bundleRewards', bundleRewards)
-  console.log('bundleRewards', bundleRewards)
-  console.log('bundleRewards', bundleRewards)
-  console.log('pendingRewards', pendingRewards)
-  console.log('pendingRewards', pendingRewards)
-  console.log('pendingRewards', pendingRewards)
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
+  const finixApy = farm.finixApy || new BigNumber(0)
 
   return (
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
@@ -70,8 +62,21 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
         <div className="flex justify-space-between align-baseline mb-2">
           <div className="flex align-baseline">
             <MiniLogo src={miniLogo} alt="" className="align-self-start" />
+            <Text color="textSubtle" className="mr-2" textAlign="left">
+              APR
+            </Text>
             <Heading
-              fontSize="24px !important"
+              fontSize="20px !important"
+              color={finixApy.toNumber() === 0 ? 'textDisabled' : 'text'}
+              textAlign="left"
+            >
+              {`${numeral(finixApy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+            </Heading>
+          </div>
+
+          <div className="flex align-baseline">
+            <Heading
+              fontSize="22px !important"
               color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
               className="mr-2"
               textAlign="left"
@@ -82,12 +87,15 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
               FINIX
             </Text>
           </div>
-
-          <Text color="textSubtle" textAlign="right" fontSize="12px">
+          {false && <Text color="textSubtle" textAlign="right" fontSize="12px">
             = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
-          </Text>
+          </Text>}
         </div>
         {(bundleRewards || []).map((br, bundleId) => {
+          let apy = new BigNumber(0)
+          if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
+            apy = farm.klayApy
+          }
           return (
             <div className="flex justify-space-between align-baseline mb-2">
               <div className="flex align-baseline">
@@ -96,8 +104,21 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
                   alt=""
                   className="align-self-start"
                 />
+                <Text color="textSubtle" className="mr-2" textAlign="left">
+                  AAPR
+                </Text>
                 <Heading
-                  fontSize="24px !important"
+                  fontSize="20px !important"
+                  color={apy.toNumber() === 0 ? 'textDisabled' : 'text'}
+                  textAlign="left"
+                >
+                  {`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+                </Heading>
+              </div>
+
+              <div className="flex align-baseline">
+                <Heading
+                  fontSize="22px !important"
                   color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
                   className="mr-2"
                   textAlign="left"
@@ -108,13 +129,12 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
                   {br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
                 </Text>
               </div>
-
-              <Text color="textSubtle" textAlign="right" fontSize="12px">
+              {false && <Text color="textSubtle" textAlign="right" fontSize="12px">
                 = $
                 {numeral(getBalanceNumber((pendingRewards[bundleId] || {}).reward) * finixUsd.toNumber()).format(
                   '0,0.0000',
                 )}
-              </Text>
+              </Text>}
             </div>
           )
         })}

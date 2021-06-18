@@ -24,6 +24,7 @@ export interface Ifo {
 
 export enum QuoteToken {
   'KLAY' = 'KLAY',
+  'WKLAY' = 'WKLAY',
   'SYRUP' = 'SYRUP',
   'KUSDT' = 'KUSDT',
   'KDAI' = 'KDAI',

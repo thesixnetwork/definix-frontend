@@ -161,6 +161,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderHarvestActionAirDrop = useCallback(
     (className?: string, isHor?: boolean) => (
       <HarvestActionAirDrop
+        farm={farm}
         pendingRewards={pendingRewards}
         bundleRewardLength={bundleRewardLength}
         bundleRewards={bundleRewards}
@@ -170,7 +171,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         isHorizontal={isHor}
       />
     ),
-    [earnings, pid, pendingRewards, bundleRewardLength, bundleRewards],
+    [earnings, pid, pendingRewards, bundleRewardLength, bundleRewards, farm],
   )
 
   const renderDetailsSection = useCallback(
