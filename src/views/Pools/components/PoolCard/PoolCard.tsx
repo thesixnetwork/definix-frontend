@@ -13,6 +13,7 @@ import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
+import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { PoolCardProps } from './types'
 
@@ -180,6 +181,22 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   )
 
+  const renderHarvestActionAirDrop = useCallback(
+    (className?: string, isHor?: boolean) => (
+      <HarvestActionAirDrop
+        sousId={sousId}
+        isBnbPool={isBnbPool}
+        earnings={earnings}
+        tokenDecimals={tokenDecimals}
+        needsApproval={needsApproval}
+        isOldSyrup={isOldSyrup}
+        className={className}
+        isHorizontal={isHor}
+      />
+    ),
+    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
+  )
+
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection
@@ -212,7 +229,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
           />
           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
             {renderStakeAction('pa-5')}
-            {renderHarvestAction('pa-5')}
+            {/* {renderHarvestAction('pa-5')} */}
+            {renderHarvestActionAirDrop('pa-5 pt-0', false)}
             {renderDetailsSection('px-5 py-3', false)}
           </div>
         </HorizontalMobileStyle>
@@ -220,16 +238,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     }
 
     return (
-      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-4">
+      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
         {renderSash()}
         {renderCardHeading('col-3 pos-static')}
 
-        <div className="col-5 bd-x flex flex-column justify-space-between px-5">
+        <div className="col-4 bd-x flex flex-column justify-space-between px-5">
           {renderStakeAction('pb-4')}
           {renderDetailsSection('', true)}
         </div>
 
-        {renderHarvestAction('col-4 pl-5 flex-grow')}
+        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
+        {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
       </HorizontalStyle>
     )
   }
@@ -237,10 +256,13 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   return (
     <VerticalStyle className="mb-7">
       {renderSash()}
-      {renderCardHeading('pt-7')}
-      {renderStakeAction('pa-5')}
-      {renderHarvestAction('pa-5')}
-      {renderDetailsSection('px-5 py-3')}
+      <div className="flex flex-column flex-grow">
+        {renderCardHeading('pt-7')}
+        {renderStakeAction('pa-5')}
+        {/* {renderHarvestAction('pa-5')} */}
+        {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+      </div>
+      {renderDetailsSection('px-5 py-3', false)}
     </VerticalStyle>
   )
 }
