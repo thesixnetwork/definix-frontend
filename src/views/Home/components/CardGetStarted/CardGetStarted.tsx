@@ -310,12 +310,14 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
         src={mainSteps[curMainStep + 1].img}
         onClick={() => {
           onNext(curMainStep + 1, 0)
+          setIsTransferSixFromKlaytn(false)
         }}
       />
       <Button
         variant="text"
         onClick={() => {
           onNext(curMainStep + 1, 0)
+          setIsTransferSixFromKlaytn(false)
         }}
         padding="0 12px"
         endIcon={<ChevronRightIcon color="primary" />}
@@ -370,7 +372,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
               </Overflow>
 
               {/* Show in (Not) Last Sub Step */}
-              {curSubStep < subStepsLength() && <BottomNavigation />}
+              {/* {curSubStep < subStepsLength() && <BottomNavigation />} */}
             </>
           )}
         </>
