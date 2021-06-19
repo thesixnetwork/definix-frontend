@@ -141,25 +141,25 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       title: 'Preparation & Wallet setup',
       img: m01,
       steps: [BSC_1_1, BSC_1_2, BSC_1_3, BSC_1_4, BSC_1_5],
-      stepsKlaytn: undefined,
+      stepsKlaytn: [],
     },
     {
       title: 'Transfer token to your wallet',
       img: m02,
       steps: [BSC_2_1, BSC_2_2, BSC_2_3, BSC_2_4, BSC_2_5, BSC_2_6, BSC_2_7],
-      stepsKlaytn: undefined,
+      stepsKlaytn: [],
     },
     {
       title: 'Connect wallet & Swap tokens',
       img: m03,
       steps: [BSC_3_1, BSC_3_2, BSC_3_3, BSC_3_4],
-      stepsKlaytn: undefined,
+      stepsKlaytn: [],
     },
     {
       title: 'Liquidity pairing & Farming',
       img: m04,
       steps: [BSC_4_1, BSC_4_2, BSC_4_3, BSC_4_4, BSC_4_5],
-      stepsKlaytn: undefined,
+      stepsKlaytn: [],
     },
   ]
 
@@ -168,7 +168,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       title: 'Preparation & Wallet setup',
       img: m01,
       steps: [Klaytn_1_1, Klaytn_1_2, Klaytn_1_3],
-      stepsKlaytn: undefined,
+      stepsKlaytn: [],
     },
     {
       title: 'Transfer token to your wallet',
@@ -190,13 +190,13 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       title: 'Connect wallet & Swap tokens',
       img: m03,
       steps: [Klaytn_3_1, Klaytn_3_2, Klaytn_3_3, Klaytn_3_4],
-      stepsKlaytn: undefined,
+      stepsKlaytn: [],
     },
     {
       title: 'Liquidity pairing & Farming',
       img: m04,
       steps: [Klaytn_4_1, Klaytn_4_2, Klaytn_4_3, Klaytn_4_4, Klaytn_4_5],
-      stepsKlaytn: undefined,
+      stepsKlaytn: [],
     },
   ]
 
