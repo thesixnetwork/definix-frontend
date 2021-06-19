@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import React, { memo } from 'react'
 import { Heading, Text } from 'uikit-dev'
 import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-Tutorial-Elements-64.png'
