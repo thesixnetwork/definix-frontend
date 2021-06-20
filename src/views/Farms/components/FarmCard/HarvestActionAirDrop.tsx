@@ -54,7 +54,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
 
   const AirDrop = ({ logo, title, percent, value, name }) => (
     <div className="flex justify-space-between align-baseline mb-2">
-      <div className="flex align-baseline flex-shrink" style={{ width: '120px' }}>
+      <div className="flex align-baseline flex-shrink" style={{ width: '160px' }}>
         <MiniLogo src={logo} alt="" className="align-self-center" />
         <Text color="textSubtle" textAlign="left" className="mr-2">
           {title}
@@ -81,7 +81,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
 
   return (
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
-      <div className={isHorizontal ? 'col-8 pr-6' : ''}>
+      <div className={isHorizontal ? 'col-8 pr-4' : ''}>
         <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
           Earned
         </Text>

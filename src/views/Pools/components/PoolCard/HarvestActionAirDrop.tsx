@@ -68,7 +68,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
 
   const AirDrop = ({ logo, title, percent, value, name }) => (
     <div className="flex justify-space-between align-baseline mb-2">
-      <div className="flex align-baseline flex-shrink" style={{ width: '120px' }}>
+      <div className="flex align-baseline flex-shrink" style={{ width: '150px' }}>
         <MiniLogo src={logo} alt="" className="align-self-center" />
         <Text color="textSubtle" textAlign="left" className="mr-2">
           {title}
