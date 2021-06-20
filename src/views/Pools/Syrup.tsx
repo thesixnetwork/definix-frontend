@@ -7,7 +7,7 @@ import useBlock from 'hooks/useBlock'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
-import { HelpCircle } from 'react-feather'
+import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import {
   useFarms,
@@ -20,7 +20,6 @@ import {
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
-import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -283,6 +282,9 @@ const Farm: React.FC = () => {
         onDismiss: handleDismiss,
       }}
     >
+      <Helmet>
+        <title>Pool - Definix - Advance Your Crypto Assets</title>
+      </Helmet>
       <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>

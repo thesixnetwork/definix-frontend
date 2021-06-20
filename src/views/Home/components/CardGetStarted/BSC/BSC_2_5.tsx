@@ -23,7 +23,7 @@ const BSC_2_5 = ({ title }) => {
           Press Connect Wallet
         </Text>
 
-        <UserBlock account={account} login={connect} logout={reset} className="mb-4 dis-in-block" />
+        <UserBlock account={account} login={connect} logout={reset} className="mb-4 dis-in-block" position="bottom" />
 
         <Text fontSize="14px" className="mb-4">
           And press these buttons

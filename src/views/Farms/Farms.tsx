@@ -5,7 +5,7 @@ import { BLOCKS_PER_YEAR, KLAY_PER_BLOCK } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import React, { useCallback, useEffect, useState } from 'react'
-import { HelpCircle } from 'react-feather'
+import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
@@ -19,7 +19,6 @@ import {
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
-import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
@@ -218,6 +217,9 @@ const Farms: React.FC = () => {
         onDismiss: handleDismiss,
       }}
     >
+      <Helmet>
+        <title>Farm - Definix - Advance Your Crypto Assets</title>
+      </Helmet>
       <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>

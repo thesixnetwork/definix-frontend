@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Button from '../../components/Button/Button'
 import Dropdown from '../../components/Dropdown/Dropdown'
-import Heading from '../../components/Heading/Heading'
+import { Position } from '../../components/Dropdown/types'
 import LinkExternal from '../../components/Link/LinkExternal'
 import Text from '../../components/Text/Text'
 import { useWalletModal } from '../WalletModal'
@@ -15,6 +15,7 @@ interface Props {
   login: Login
   logout: () => void
   className?: string
+  position?: Position
 }
 
 const ConnectButton = styled(Button)`
@@ -38,7 +39,7 @@ const AccountButton = styled(ConnectButton)`
   }
 `
 
-const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) => {
+const UserBlock: React.FC<Props> = ({ account, login, logout, className = '', position = 'bottom-right' }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
 
@@ -46,7 +47,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) 
     <div className={className}>
       {account ? (
         <Dropdown
-          position="bottom-right"
+          position={position}
           isRainbow={false}
           target={
             <AccountButton
@@ -65,9 +66,9 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) 
           }
         >
           <div style={{ zIndex: 999 }}>
-            <Heading fontSize="16px !important" className="mb-3 pa-0 pt-2">
+            <Text fontSize="16px !important" className="mb-3 pa-0 pt-2" fontWeight="600">
               {accountEllipsis}
-            </Heading>
+            </Text>
             <LinkExternal
               isIconLeft
               small
@@ -104,6 +105,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) 
           onClick={() => {
             onPresentConnectModal()
           }}
+          disabled={!!account}
         >
           <Text fontSize="12px" color="white" fontWeight="600">
             Connect wallet

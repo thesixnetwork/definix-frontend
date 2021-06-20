@@ -58,9 +58,10 @@ const StyledBanner = styled(Card)<{ isStarted: boolean }>`
   width: 100%;
   padding: 64px 0 0 0;
   position: relative;
-  flex-grow: 1;
   display: flex;
   flex-direction: column;
+  max-height: 820px;
+  flex-grow: 1;
 
   &:before {
     content: '';
@@ -91,7 +92,7 @@ const TopNavigationStyle = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  padding: 8px;
+  padding: 16px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -99,7 +100,7 @@ const TopNavigationStyle = styled.div`
 `
 
 const BottomNavigationStyle = styled.div`
-  padding: 8px;
+  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -119,6 +120,49 @@ const Page = styled(Text)`
   top: calc(50% - 12px);
   left: 50%;
   transform: translate(-50%, 0);
+`
+
+const CustomButton = styled(Button)`
+  box-shadow: ${({ theme }) => theme.shadows.elevation};
+`
+
+const SpecialButton = styled(Button)`
+  position: relative;
+  padding: 12px 24px;
+  // background-color: ${({ theme }) => theme.colors.primary};
+  background: linear-gradient(#f3d36c, #e27d3a);
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #f3d36c;
+    transform: scaleX(0);
+    transform-origin: 100%;
+    transition: transform 0.6s ease;
+  }
+
+  &:hover {
+    &:before {
+      transform-origin: 0;
+      transform: scaleX(1);
+    }
+
+    span {
+      color: #e27d3a !important;
+    }
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+    transition: all 0.6s ease;
+  }
 `
 
 const CardGetStarted = ({ isBsc = false, className = '' }) => {
@@ -202,13 +246,13 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const mainSteps = isBsc ? bsc : klaytn
 
-  const onBack = () => {
+  const onBack = (isBackToFirstPage = false) => {
     if (curMainStep === null) {
       setIsStarted(false)
       setCurMainStep(null)
       setCurSubStep(null)
       setIsTransferSixFromKlaytn(false)
-    } else if (curSubStep < 1) {
+    } else if (curSubStep < 1 || isBackToFirstPage) {
       setCurMainStep(null)
       setCurSubStep(null)
       setIsTransferSixFromKlaytn(false)
@@ -244,34 +288,36 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       </Heading>
       <Text color="textSubtle">You don’t have any investment yet. Don’t worry, I’ll guide you through the process</Text>
 
-      <Button
+      <SpecialButton
         size="md"
         fullWidth
         variant="primary"
-        className="btn-secondary-disable mt-5"
+        className="btn-secondary-disable mt-8"
         onClick={() => {
           setIsStarted(true)
         }}
         radii="card"
       >
-        Get Started
-      </Button>
+        <span>Get Started</span>
+      </SpecialButton>
     </Overflow>
   )
 
   const TopNavigation = () => (
     <TopNavigationStyle>
-      <Button
-        variant="text"
-        onClick={onBack}
-        padding="0 12px"
-        startIcon={<ChevronLeftIcon color="primary" />}
-        radii="card"
+      <CustomButton
+        padding="0 16px 0 8px"
+        variant="tertiary"
+        onClick={() => {
+          onBack(false)
+        }}
+        startIcon={<ChevronLeftIcon color="primary" className="mr-1" />}
+        size="sm"
       >
         <Text fontSize="14px" bold>
           BACK
         </Text>
-      </Button>
+      </CustomButton>
       {curMainStep !== null && (
         <>
           <Page fontSize="14px" bold>
@@ -286,22 +332,40 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const BottomNavigation = () => (
     <BottomNavigationStyle>
-      <NextButton />
+      {/* Show in (Not) Last Sub Step */}
+      {curSubStep < subStepsLength() && <NextButton />}
+
+      {/* Show in Last Main Step */}
+      {curMainStep === mainSteps.length - 1 && curSubStep === subStepsLength() && (
+        <CustomButton
+          padding="0 16px 0 8px"
+          variant="tertiary"
+          onClick={() => {
+            onBack(true)
+          }}
+          size="sm"
+          startIcon={<ChevronLeftIcon color="primary" className="mr-1" />}
+        >
+          <Text fontSize="14px" bold>
+            BACK TO FIRST PAGE
+          </Text>
+        </CustomButton>
+      )}
     </BottomNavigationStyle>
   )
 
   const NextButton = () => (
-    <Button
-      variant="text"
+    <CustomButton
+      padding="0 8px 0 16px"
+      variant="tertiary"
       onClick={onNext}
-      padding="0 12px"
-      endIcon={<ChevronRightIcon color="primary" />}
-      radii="card"
+      size="sm"
+      endIcon={<ChevronRightIcon color="primary" className="ml-1" />}
     >
       <Text fontSize="14px" bold>
         NEXT
       </Text>
-    </Button>
+    </CustomButton>
   )
 
   const NextMainStepButton = () => (
@@ -313,20 +377,20 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           setIsTransferSixFromKlaytn(false)
         }}
       />
-      <Button
-        variant="text"
+      <CustomButton
+        padding="0 8px 0 16px"
+        variant="tertiary"
         onClick={() => {
           onNext(curMainStep + 1, 0)
           setIsTransferSixFromKlaytn(false)
         }}
-        padding="0 12px"
-        endIcon={<ChevronRightIcon color="primary" />}
-        radii="card"
+        size="sm"
+        endIcon={<ChevronRightIcon color="primary" className="ml-1" />}
       >
         <Text fontSize="14px" bold>
           PROCEED TO NEXT STEP
         </Text>
-      </Button>
+      </CustomButton>
     </div>
   )
 
@@ -360,7 +424,6 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           ) : (
             <>
               <Overflow>
-                {/* Sub Step */}
                 <SubStep
                   title={mainSteps[curMainStep].title}
                   onNext={onNext}
@@ -371,8 +434,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
                 {curSubStep === subStepsLength() && curMainStep < mainSteps.length - 1 && <NextMainStepButton />}
               </Overflow>
 
-              {/* Show in (Not) Last Sub Step */}
-              {/* {curSubStep < subStepsLength() && <BottomNavigation />} */}
+              <BottomNavigation />
             </>
           )}
         </>
