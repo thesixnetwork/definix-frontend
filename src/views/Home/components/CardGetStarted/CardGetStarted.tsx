@@ -321,7 +321,7 @@ const CardGetStarted = ({ isBsc = true, className = '' }) => {
       {curMainStep !== null && (
         <>
           <Page fontSize="14px" bold>
-            {`${curMainStep + 1} / ${curSubStep + 1}`}
+            Step {`${curSubStep + 1} / ${subStepsLength() + 1}`}
           </Page>
 
           {curSubStep < subStepsLength() && <NextButton />}

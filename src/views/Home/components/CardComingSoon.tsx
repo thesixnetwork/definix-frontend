@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Card, Heading, Text } from 'uikit-dev'
 import astro from 'uikit-dev/images/for-ui-v2/astro.png'
@@ -61,10 +62,12 @@ const CardComingSoon = ({ showBtn = false, className = '' }) => {
           CRYPTO MUTUAL FUND TRADING
         </Heading>
         <Text color="textSubtle" fontSize="12px">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. sed do eiusmod tempor incididunt ut labore et dolore
+          Maximize your investment with FINIX token that you earn from Definix.com. FINIX token can be utilized as a
+          discount for financial products and other privillege on upcoming features. Moreover, we also have an expert to
+          make sure that you will select the best for your investment
         </Text>
         {showBtn && (
-          <Button as="a" href="#" size="sm" variant="primary" className="btn-secondary-disable mt-3">
+          <Button as={Link} to="/info" size="sm" variant="primary" className="btn-secondary-disable mt-3">
             View details
           </Button>
         )}
