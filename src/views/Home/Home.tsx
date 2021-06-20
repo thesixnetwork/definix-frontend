@@ -64,6 +64,12 @@ const Home: React.FC = () => {
   const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
   const themes = useTheme()
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 1500)
+  }, [])
+
   const { account } = useWallet()
   const { hasProfile } = useProfile()
   // const TranslateString = useI18n()
