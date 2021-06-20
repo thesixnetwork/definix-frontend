@@ -206,7 +206,19 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         pool={pool}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals, farm, pool, pendingRewards, bundleRewardLength, bundleRewards],
+    [
+      earnings,
+      isBnbPool,
+      isOldSyrup,
+      needsApproval,
+      sousId,
+      tokenDecimals,
+      farm,
+      pool,
+      pendingRewards,
+      bundleRewardLength,
+      bundleRewards,
+    ],
   )
 
   const renderDetailsSection = useCallback(

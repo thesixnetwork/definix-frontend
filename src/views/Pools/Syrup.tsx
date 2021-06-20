@@ -9,7 +9,15 @@ import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceFinixUsd, usePriceKethKusdt, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
+import {
+  useFarms,
+  usePools,
+  usePriceFinixUsd,
+  usePriceKethKusdt,
+  usePriceSixUsd,
+  usePriceKlayKusdt,
+  usePriceKethKlay,
+} from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
@@ -78,31 +86,31 @@ const Farm: React.FC = () => {
     return tokenPriceKLAYTN
   }
 
-  const poolsWithApy = pools.map(pool => {
+  const poolsWithApy = pools.map((pool) => {
     const isKlayPool = pool.poolCategory === PoolCategory.KLAYTN
-    const rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
-    let stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
+    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
+    let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
       case 0:
-        stakingTokenFarm = farms.find(s => s.pid === 0)
+        stakingTokenFarm = farms.find((s) => s.pid === 0)
         break
       case 1:
-        stakingTokenFarm = farms.find(s => s.pid === 1)
+        stakingTokenFarm = farms.find((s) => s.pid === 1)
         break
       case 2:
-        stakingTokenFarm = farms.find(s => s.pid === 2)
+        stakingTokenFarm = farms.find((s) => s.pid === 2)
         break
       case 3:
-        stakingTokenFarm = farms.find(s => s.pid === 3)
+        stakingTokenFarm = farms.find((s) => s.pid === 3)
         break
       case 4:
-        stakingTokenFarm = farms.find(s => s.pid === 4)
+        stakingTokenFarm = farms.find((s) => s.pid === 4)
         break
       case 5:
-        stakingTokenFarm = farms.find(s => s.pid === 5)
+        stakingTokenFarm = farms.find((s) => s.pid === 5)
         break
       case 6:
-        stakingTokenFarm = farms.find(s => s.pid === 6)
+        stakingTokenFarm = farms.find((s) => s.pid === 6)
         break
       default:
         break
@@ -152,7 +160,7 @@ const Farm: React.FC = () => {
         apy = finixRewardPerYear.div(currentTotalStaked).times(100)
         if ((stakingTokenFarm.bundleRewards || []).length > 0) {
           const klayBundle = (stakingTokenFarm.bundleRewards || []).find(
-            br => br.rewardTokenInfo.name === QuoteToken.WKLAY,
+            (br) => br.rewardTokenInfo.name === QuoteToken.WKLAY,
           )
           if (klayBundle) {
             // @ts-ignore
@@ -188,7 +196,7 @@ const Farm: React.FC = () => {
         apy = finixRewardPerYear.div(finixInSix).times(100)
         if ((stakingTokenFarm.bundleRewards || []).length > 0) {
           const klayBundle = (stakingTokenFarm.bundleRewards || []).find(
-            br => br.rewardTokenInfo.name === QuoteToken.WKLAY,
+            (br) => br.rewardTokenInfo.name === QuoteToken.WKLAY,
           )
           if (klayBundle) {
             // @ts-ignore
@@ -234,10 +242,10 @@ const Farm: React.FC = () => {
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithApy, pool => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
 
-  const filterStackedOnlyPools = poolsForFilter =>
-    poolsForFilter.filter(pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
+  const filterStackedOnlyPools = (poolsForFilter) =>
+    poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
   const handlePresent = useCallback((node: React.ReactNode) => {
     setModalNode(node)
@@ -308,7 +316,7 @@ const Farm: React.FC = () => {
                 <div>
                   <Route exact path={`${path}`}>
                     <>
-                      {poolsWithApy.map(pool => (
+                      {poolsWithApy.map((pool) => (
                         <PoolCardGenesis key={pool.sousId} pool={pool} />
                       ))}
                       {/* <Coming /> */}
@@ -320,14 +328,14 @@ const Farm: React.FC = () => {
                   <Route exact path={`${path}`}>
                     {liveOnly
                       ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
-                          pool => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )
                       : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                          pool => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )}
                   </Route>
                   <Route path={`${path}/history`}>
-                    {orderBy(finishedPools, ['sortOrder']).map(pool => (
+                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
                       <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                     ))}
                   </Route>

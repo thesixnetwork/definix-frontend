@@ -123,13 +123,15 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           )
         })}
 
-        {false && <div className="flex align-center justify-space-between">
-          <Text color="textSubtle">Claim Ended Bonus</Text>
+        {false && (
+          <div className="flex align-center justify-space-between">
+            <Text color="textSubtle">Claim Ended Bonus</Text>
 
-          <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-            Claim
-          </Button>
-        </div>}
+            <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
+              Claim
+            </Button>
+          </div>
+        )}
       </div>
 
       <div
@@ -150,9 +152,11 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           {TranslateString(562, 'Harvest')}
         </Button>
 
-        {false && <Text color="textSubtle" textAlign="right" fontSize="12px" className="mb-4 mt-2">
-          = ${numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')}
-        </Text>}
+        {false && (
+          <Text color="textSubtle" textAlign="right" fontSize="12px" className="mb-4 mt-2">
+            = ${numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')}
+          </Text>
+        )}
       </div>
     </div>
   )
