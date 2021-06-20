@@ -165,7 +165,7 @@ const SpecialButton = styled(Button)`
   }
 `
 
-const CardGetStarted = ({ isBsc = false, className = '' }) => {
+const CardGetStarted = ({ isBsc = true, className = '' }) => {
   const [isStarted, setIsStarted] = useState(false)
   const [curMainStep, setCurMainStep] = useState(null)
   const [curSubStep, setCurSubStep] = useState(null)
@@ -321,7 +321,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       {curMainStep !== null && (
         <>
           <Page fontSize="14px" bold>
-            {`${curMainStep + 1} / ${curSubStep + 1}`}
+            Step {`${curSubStep + 1} / ${subStepsLength() + 1}`}
           </Page>
 
           {curSubStep < subStepsLength() && <NextButton />}
