@@ -21,7 +21,7 @@ const BSC_3_1 = ({ title }) => {
           login={connect}
           logout={reset}
           className="mb-4 dis-in-block mx-auto"
-          onlyConnectBtn
+          position="bottom"
         />
         <Text fontSize="14px" className="mb-4">
           Keep in mind that on every transaction, you need BNB to pay for a gas price. Please prepare enough BNB in your
