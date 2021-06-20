@@ -1,10 +1,4 @@
 echo "./deploy.sh {env} {profile}"
-if [ "$1" == "production" ]; then
-  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  echo "!!!please check klaytn address in sdk before deploy production!!!"
-  echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-  exit 1
-fi
 DEPLOY_ENV=$1
 
 function _exit_if_fail
