@@ -1,10 +1,14 @@
 import BigNumber from 'bignumber.js'
 import { Pool } from 'state/types'
+import { FarmWithStakedValue } from '../../../Farms/components/FarmCard/types'
 
 export interface PoolWithApy extends Pool {
   apy: BigNumber
+  finixApy: BigNumber
+  klayApy: BigNumber
   rewardPerBlock?: number
   estimatePrice: BigNumber
+  farm: FarmWithStakedValue
 }
 
 export interface PoolCardProps {
@@ -42,6 +46,7 @@ export interface HarvestActionProps {
   needsApproval?: boolean
   isOldSyrup?: boolean
   className?: string
+  pool?: PoolWithApy
 }
 
 export interface DetailsSectionProps {

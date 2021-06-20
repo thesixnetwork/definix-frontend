@@ -9,7 +9,7 @@ import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceFinixUsd, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
+import { useFarms, usePools, usePriceFinixUsd, usePriceKethKusdt, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
@@ -52,6 +52,7 @@ const Farm: React.FC = () => {
   const sixPriceUSD = usePriceSixUsd()
   const finixPriceUSD = usePriceFinixUsd()
   const klayPriceUSD = usePriceKlayKusdt()
+  const kethPriceUsd = usePriceKethKusdt()
   const ethPriceKlay = usePriceKethKlay()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
@@ -77,31 +78,31 @@ const Farm: React.FC = () => {
     return tokenPriceKLAYTN
   }
 
-  const poolsWithApy = pools.map((pool) => {
+  const poolsWithApy = pools.map(pool => {
     const isKlayPool = pool.poolCategory === PoolCategory.KLAYTN
-    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
-    let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
+    const rewardTokenFarm = farms.find(f => f.tokenSymbol === pool.tokenName)
+    let stakingTokenFarm = farms.find(s => s.tokenSymbol === pool.stakingTokenName)
     switch (pool.sousId) {
       case 0:
-        stakingTokenFarm = farms.find((s) => s.pid === 0)
+        stakingTokenFarm = farms.find(s => s.pid === 0)
         break
       case 1:
-        stakingTokenFarm = farms.find((s) => s.pid === 1)
+        stakingTokenFarm = farms.find(s => s.pid === 1)
         break
       case 2:
-        stakingTokenFarm = farms.find((s) => s.pid === 2)
+        stakingTokenFarm = farms.find(s => s.pid === 2)
         break
       case 3:
-        stakingTokenFarm = farms.find((s) => s.pid === 3)
+        stakingTokenFarm = farms.find(s => s.pid === 3)
         break
       case 4:
-        stakingTokenFarm = farms.find((s) => s.pid === 4)
+        stakingTokenFarm = farms.find(s => s.pid === 4)
         break
       case 5:
-        stakingTokenFarm = farms.find((s) => s.pid === 5)
+        stakingTokenFarm = farms.find(s => s.pid === 5)
         break
       case 6:
-        stakingTokenFarm = farms.find((s) => s.pid === 6)
+        stakingTokenFarm = farms.find(s => s.pid === 6)
         break
       default:
         break
@@ -139,6 +140,7 @@ const Farm: React.FC = () => {
     const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(sixPriceUSD))
     const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
 
+    let klayApy = new BigNumber(0)
     switch (pool.sousId) {
       case 0: {
         const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
@@ -148,6 +150,31 @@ const Farm: React.FC = () => {
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
         const currentTotalStaked = getBalanceNumber(pool.totalStaked)
         apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+        if ((stakingTokenFarm.bundleRewards || []).length > 0) {
+          const klayBundle = (stakingTokenFarm.bundleRewards || []).find(
+            br => br.rewardTokenInfo.name === QuoteToken.WKLAY,
+          )
+          if (klayBundle) {
+            // @ts-ignore
+            const klayRewardPerBlock = new BigNumber([klayBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
+            const klayRewardPerYear = klayRewardPerBlock.times(BLOCKS_PER_YEAR)
+            const yieldValue = klayPriceUSD.times(klayRewardPerYear)
+            let totalValue = new BigNumber(currentTotalStaked)
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KLAY) {
+              totalValue = klayPriceUSD.times(new BigNumber(currentTotalStaked))
+            }
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.FINIX) {
+              totalValue = finixPriceUSD.times(new BigNumber(currentTotalStaked))
+            }
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KETH) {
+              totalValue = kethPriceUsd.times(new BigNumber(currentTotalStaked))
+            }
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
+              totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))
+            }
+            klayApy = yieldValue.div(totalValue)
+          }
+        }
         break
       }
       case 1: {
@@ -159,6 +186,31 @@ const Farm: React.FC = () => {
         const currentTotalStaked = getBalanceNumber(pool.totalStaked)
         const finixInSix = new BigNumber(currentTotalStaked).times(sixPriceUSD).div(finixPriceUSD)
         apy = finixRewardPerYear.div(finixInSix).times(100)
+        if ((stakingTokenFarm.bundleRewards || []).length > 0) {
+          const klayBundle = (stakingTokenFarm.bundleRewards || []).find(
+            br => br.rewardTokenInfo.name === QuoteToken.WKLAY,
+          )
+          if (klayBundle) {
+            // @ts-ignore
+            const klayRewardPerBlock = new BigNumber([klayBundle.rewardPerBlock]).div(new BigNumber(10).pow(18))
+            const klayRewardPerYear = klayRewardPerBlock.times(BLOCKS_PER_YEAR)
+            const yieldValue = klayPriceUSD.times(klayRewardPerYear)
+            let totalValue = new BigNumber(currentTotalStaked)
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KLAY) {
+              totalValue = klayPriceUSD.times(new BigNumber(currentTotalStaked))
+            }
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.FINIX) {
+              totalValue = finixPriceUSD.times(new BigNumber(currentTotalStaked))
+            }
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KETH) {
+              totalValue = kethPriceUsd.times(new BigNumber(currentTotalStaked))
+            }
+            if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
+              totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))
+            }
+            klayApy = yieldValue.div(totalValue)
+          }
+        }
         break
       }
       case 2:
@@ -169,18 +221,23 @@ const Farm: React.FC = () => {
       default:
         break
     }
+    const finixApy = apy
+    const sumApy = BigNumber.sum(finixApy, klayApy)
     return {
       ...pool,
       isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
-      apy,
+      apy: sumApy,
+      finixApy,
+      klayApy,
       estimatePrice,
+      farm: stakingTokenFarm,
     }
   })
 
-  const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
+  const [finishedPools, openPools] = partition(poolsWithApy, pool => pool.isFinished)
 
-  const filterStackedOnlyPools = (poolsForFilter) =>
-    poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
+  const filterStackedOnlyPools = poolsForFilter =>
+    poolsForFilter.filter(pool => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
   const handlePresent = useCallback((node: React.ReactNode) => {
     setModalNode(node)
@@ -251,7 +308,7 @@ const Farm: React.FC = () => {
                 <div>
                   <Route exact path={`${path}`}>
                     <>
-                      {poolsWithApy.map((pool) => (
+                      {poolsWithApy.map(pool => (
                         <PoolCardGenesis key={pool.sousId} pool={pool} />
                       ))}
                       {/* <Coming /> */}
@@ -263,14 +320,14 @@ const Farm: React.FC = () => {
                   <Route exact path={`${path}`}>
                     {liveOnly
                       ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                          pool => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )
                       : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                          pool => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )}
                   </Route>
                   <Route path={`${path}/history`}>
-                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                    {orderBy(finishedPools, ['sortOrder']).map(pool => (
                       <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                     ))}
                   </Route>

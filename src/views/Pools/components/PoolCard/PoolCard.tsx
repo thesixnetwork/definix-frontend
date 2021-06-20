@@ -3,6 +3,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
 import PoolContext from 'views/Pools/PoolContext'
@@ -58,6 +59,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     stakingTokenName,
     stakingTokenAddress,
     apy,
+    finixApy,
+    klayApy,
+    farm,
     tokenDecimals,
     poolCategory,
     totalStaked,
@@ -65,6 +69,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     userData,
     stakingLimit,
   } = pool
+
+  const { pendingRewards } = useFarmUser(farm.pid)
+  const { bundleRewardLength, bundleRewards } = farm
 
   const isBnbPool = poolCategory === PoolCategory.KLAYTN
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
@@ -184,6 +191,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const renderHarvestActionAirDrop = useCallback(
     (className?: string, isHor?: boolean) => (
       <HarvestActionAirDrop
+        bundleRewards={bundleRewards}
+        bundleRewardLength={bundleRewardLength}
+        pendingRewards={pendingRewards}
         sousId={sousId}
         isBnbPool={isBnbPool}
         earnings={earnings}
@@ -192,9 +202,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         isOldSyrup={isOldSyrup}
         className={className}
         isHorizontal={isHor}
+        farm={farm}
+        pool={pool}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
+    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals, farm, pool, pendingRewards, bundleRewardLength, bundleRewards],
   )
 
   const renderDetailsSection = useCallback(

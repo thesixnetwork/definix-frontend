@@ -1,4 +1,4 @@
-import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
@@ -10,7 +10,10 @@ import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import klay from 'uikit-dev/images/Logo-Klaytn.png'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { QuoteToken } from 'config/constants/types'
 import AirDropHarvestModal from './AirDropHarvestModal'
+import { FarmWithStakedValue } from '../../../Farms/components/FarmCard/types'
+import { PoolWithApy } from './types'
 
 const MiniLogo = styled.img`
   width: 20px;
@@ -20,6 +23,9 @@ const MiniLogo = styled.img`
 `
 
 interface HarvestActionAirdropProps {
+  pendingRewards?: any
+  bundleRewardLength?: BigNumber
+  bundleRewards?: any
   sousId?: number
   isBnbPool?: boolean
   earnings?: BigNumber
@@ -28,9 +34,14 @@ interface HarvestActionAirdropProps {
   isOldSyrup?: boolean
   className?: string
   isHorizontal?: boolean
+  farm?: FarmWithStakedValue
+  pool?: PoolWithApy
 }
 
 const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
+  bundleRewardLength,
+  pendingRewards,
+  bundleRewards,
   sousId,
   isBnbPool,
   earnings,
@@ -39,6 +50,8 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   isOldSyrup,
   className = '',
   isHorizontal,
+  farm,
+  pool,
 }) => {
   const TranslateString = useI18n()
 
@@ -49,6 +62,9 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   const { onReward } = useSousHarvest(sousId, isBnbPool)
 
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
+  const rawEarningsBalance = getBalanceNumber(earnings)
+  const displayBalance = rawEarningsBalance.toLocaleString()
+  const finixApy = pool.finixApy || new BigNumber(0)
 
   const AirDrop = ({ logo, title, percent, value, name }) => (
     <div className="flex justify-space-between align-baseline mb-2">
@@ -81,19 +97,39 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
       <div className={isHorizontal ? 'col-8 pr-4' : ''}>
         <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
-          Earn
+          Earned
         </Text>
 
-        <AirDrop logo={miniLogo} title="APR" percent="120%" value="12,300.75" name="FINIX" />
-        <AirDrop logo={klay} title="AAPR" percent="20%" value="0.0" name="KLAY" />
+        <AirDrop
+          logo={miniLogo}
+          title="APR"
+          percent={`${numeral(finixApy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+          value={displayBalance}
+          name="FINIX"
+        />
+        {(bundleRewards || []).map((br, bundleId) => {
+          let apy = new BigNumber(0)
+          if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
+            apy = pool.klayApy
+          }
+          return (
+            <AirDrop
+              logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
+              title="AAPR"
+              percent={`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+              value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
+              name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
+            />
+          )
+        })}
 
-        <div className="flex align-center justify-space-between">
+        {false && <div className="flex align-center justify-space-between">
           <Text color="textSubtle">Claim Ended Bonus</Text>
 
           <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
             Claim
           </Button>
-        </div>
+        </div>}
       </div>
 
       <div
@@ -114,9 +150,9 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           {TranslateString(562, 'Harvest')}
         </Button>
 
-        <Text color="textSubtle" textAlign="right" fontSize="12px" className="mb-4 mt-2">
+        {false && <Text color="textSubtle" textAlign="right" fontSize="12px" className="mb-4 mt-2">
           = ${numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')}
-        </Text>
+        </Text>}
       </div>
     </div>
   )

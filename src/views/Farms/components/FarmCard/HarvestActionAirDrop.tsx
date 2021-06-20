@@ -52,6 +52,33 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const finixApy = farm.finixApy || new BigNumber(0)
 
+  const AirDrop = ({ logo, title, percent, value, name }) => (
+    <div className="flex justify-space-between align-baseline mb-2">
+      <div className="flex align-baseline flex-shrink" style={{ width: '120px' }}>
+        <MiniLogo src={logo} alt="" className="align-self-center" />
+        <Text color="textSubtle" textAlign="left" className="mr-2">
+          {title}
+        </Text>
+        <Text textAlign="left" fontSize="14px !important" bold>
+          {percent}
+        </Text>
+      </div>
+
+      <Text color="textSubtle" fontSize="14px !important" style={{ width: '16px' }} className="flex-shrink">
+        :
+      </Text>
+
+      <div className="flex align-baseline flex-grow">
+        <Text fontSize="14px !important" bold className="mr-2" textAlign="left">
+          {value}
+        </Text>
+        <Text color="textSubtle" textAlign="left">
+          {name}
+        </Text>
+      </div>
+    </div>
+  )
+
   return (
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
       <div className={isHorizontal ? 'col-8 pr-6' : ''}>
@@ -59,87 +86,26 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           Earned
         </Text>
 
-        <div className="flex justify-space-between align-baseline mb-2">
-          <div className="flex align-baseline">
-            <MiniLogo src={miniLogo} alt="" className="align-self-start" />
-            <Text color="textSubtle" className="mr-2" textAlign="left">
-              APR
-            </Text>
-            <Heading
-              fontSize="20px !important"
-              color={finixApy.toNumber() === 0 ? 'textDisabled' : 'text'}
-              textAlign="left"
-            >
-              {`${numeral(finixApy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
-            </Heading>
-          </div>
-
-          <div className="flex align-baseline">
-            <Heading
-              fontSize="22px !important"
-              color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
-              className="mr-2"
-              textAlign="left"
-            >
-              {displayBalance}
-            </Heading>
-            <Text color="textSubtle" textAlign="left">
-              FINIX
-            </Text>
-          </div>
-          {false && (
-            <Text color="textSubtle" textAlign="right" fontSize="12px">
-              = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}
-            </Text>
-          )}
-        </div>
+        <AirDrop
+          logo={miniLogo}
+          title="APR"
+          percent={`${numeral(finixApy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+          value={displayBalance}
+          name="FINIX"
+        />
         {(bundleRewards || []).map((br, bundleId) => {
           let apy = new BigNumber(0)
           if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
             apy = farm.klayApy
           }
           return (
-            <div className="flex justify-space-between align-baseline mb-2">
-              <div className="flex align-baseline">
-                <MiniLogo
-                  src={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
-                  alt=""
-                  className="align-self-start"
-                />
-                <Text color="textSubtle" className="mr-2" textAlign="left">
-                  AAPR
-                </Text>
-                <Heading
-                  fontSize="20px !important"
-                  color={apy.toNumber() === 0 ? 'textDisabled' : 'text'}
-                  textAlign="left"
-                >
-                  {`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
-                </Heading>
-              </div>
-
-              <div className="flex align-baseline">
-                <Heading
-                  fontSize="22px !important"
-                  color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
-                  className="mr-2"
-                  textAlign="left"
-                >
-                  {getBalanceNumber((pendingRewards[bundleId] || {}).reward).toLocaleString()}
-                </Heading>
-                <Text color="textSubtle" textAlign="left">
-                  {br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
-                </Text>
-              </div>
-              {false && (
-                <Text color="textSubtle" textAlign="right" fontSize="12px">
-                  = $
-                  {numeral(getBalanceNumber((pendingRewards[bundleId] || {}).reward) * finixUsd.toNumber()).format(
-                    '0,0.0000',
-                  )}
-                </Text>
-              )}
-            </div>
+            <AirDrop
+              logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
+              title="AAPR"
+              percent={`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+              value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
+              name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
+            />
           )
         })}
 
@@ -153,19 +119,24 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           </div>
         )}
       </div>
-      <Button
-        fullWidth
-        disabled={rawEarningsBalance === 0 || pendingTx}
-        className={isHorizontal ? 'col-4 align-self-center' : 'mt-4'}
-        radii="small"
-        onClick={async () => {
-          setPendingTx(true)
-          await onReward()
-          setPendingTx(false)
-        }}
+      <div
+        className={`flex  ${
+          isHorizontal ? 'flex-column col-4 align-center justify-center' : 'flex-column-reverse align-start'
+        }`}
       >
-        {TranslateString(562, 'Harvest')}
-      </Button>
+        <Button
+          fullWidth
+          disabled={rawEarningsBalance === 0 || pendingTx}
+          radii="small"
+          onClick={async () => {
+            setPendingTx(true)
+            await onReward()
+            setPendingTx(false)
+          }}
+        >
+          {TranslateString(562, 'Harvest')}
+        </Button>
+      </div>
     </div>
   )
 }
