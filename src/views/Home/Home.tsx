@@ -1,6 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Skeleton, Text, useMatchBreakpoints } from 'uikit-dev'
@@ -59,6 +60,9 @@ const Home: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Home - Definix - Advance Your Crypto Assets</title>
+      </Helmet>
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={isShowRightPanel}>
