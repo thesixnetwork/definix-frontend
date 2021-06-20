@@ -10,6 +10,7 @@ import styled from 'styled-components'
 import certikWhite from '../../images/Audit/certik-white.png'
 import certik from '../../images/Audit/certik.png'
 import six from '../../images/Footer-Icon/Powered-by-SIX.png'
+import sixWhite from '../../images/Footer-Icon/definix-logo-25.png'
 import facebookWhite from '../../images/for-ui-v2/footer/facebook-white.png'
 import facebook from '../../images/for-ui-v2/footer/facebook.png'
 import gitbookWhite from '../../images/for-ui-v2/footer/gitbook-white.png'
@@ -157,7 +158,7 @@ function Footer() {
             rel="noreferrer"
             className="six-logo"
           >
-            <img src={six} alt="" />
+            <img src={isDark ? sixWhite : six} alt="" />
           </a>
           <div>
             <Text color="textSubtle" fontSize="12px" className="mr-2">

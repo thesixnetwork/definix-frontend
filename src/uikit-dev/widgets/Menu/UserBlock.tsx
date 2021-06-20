@@ -15,6 +15,7 @@ interface Props {
   login: Login
   logout: () => void
   className?: string
+  onlyConnectBtn?: boolean
 }
 
 const ConnectButton = styled(Button)`
@@ -38,13 +39,13 @@ const AccountButton = styled(ConnectButton)`
   }
 `
 
-const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) => {
+const UserBlock: React.FC<Props> = ({ account, login, logout, className = '', onlyConnectBtn = false }) => {
   const { onPresentConnectModal } = useWalletModal(login, logout, account)
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
 
   return (
     <div className={className}>
-      {account ? (
+      {account && !onlyConnectBtn ? (
         <Dropdown
           position="bottom-right"
           isRainbow={false}
@@ -104,6 +105,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '' }) 
           onClick={() => {
             onPresentConnectModal()
           }}
+          disabled={!!account}
         >
           <Text fontSize="12px" color="white" fontWeight="600">
             Connect wallet

@@ -81,7 +81,7 @@ const HarvestAll = styled.div`
       width: 0;
       height: 0;
       border: 8px solid transparent;
-      border-top-color: ${({ theme }) => theme.colors.white};
+      border-top-color: ${({ theme }) => theme.colors.card};
       position: absolute;
       top: 100%;
       left: calc(50% - 8px);
@@ -536,6 +536,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           data: chartValue,
           backgroundColor: chartColors,
           hoverBackgroundColor: chartColors,
+          borderWidth: 0,
         },
       ],
       hoverOffset: 4,
@@ -553,7 +554,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         padding: 24,
       },
       rotation: 2,
-      cutoutPercentage: 90,
+      cutoutPercentage: 94,
       responsive: true,
     },
   }
@@ -656,7 +657,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 </>
               ) : (
                 <>
-                  <Heading fontSize="24px !important" textAlign="center">
+                  <Heading fontSize="24px !important" textAlign="center" color="textInvert">
                     <FinixHarvestBalance />
                   </Heading>
                 </>
@@ -673,7 +674,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 </>
               ) : (
                 <>
-                  <Heading fontSize="24px !important" textAlign="center">
+                  <Heading fontSize="24px !important" textAlign="center" color="textInvert">
                     <FinixHarvestPool />
                   </Heading>
                 </>

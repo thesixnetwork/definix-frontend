@@ -29,6 +29,7 @@ export type Shadows = {
   inset: string
   inset2: string
   inset3: string
+  elevation: string
   elevation1: string
   elevation2: string
   elevation3: string
@@ -62,6 +63,7 @@ export type Colors = {
   backgroundPolygon: string
   backgroundBlueGradient: string
   text: string
+  textInvert: string
   textDisabled: string
   textSubtle: string
   card: string

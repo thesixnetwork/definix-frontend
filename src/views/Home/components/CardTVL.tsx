@@ -71,7 +71,7 @@ const CardTVL = ({ className = '' }) => {
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text color="textSubtle">{TranslateString(540, 'New FINIX / block')}</Text>
+          <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={3} />
         </Row>
       </Stat>

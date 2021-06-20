@@ -1,6 +1,7 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
+import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Skeleton, Text, useMatchBreakpoints } from 'uikit-dev'
@@ -16,7 +17,7 @@ import {
 } from 'uikit-dev/components/TwoPanelLayout'
 import CardAudit from './components/CardAudit'
 import CardComingSoon from './components/CardComingSoon'
-import CardGetStarted from './components/CardGetStarted'
+import CardGetStarted from './components/CardGetStarted/CardGetStarted'
 import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
@@ -29,10 +30,37 @@ const Caption = styled(Text)`
   display: inline-block;
 `
 
+const CustomTab = styled.div`
+  display: flex;
+
+  h2 {
+    cursor: pointer;
+    position: relative;
+
+    &:before {
+      content: '';
+      width: 100%;
+      height: 2px;
+      background: ${({ theme }) => theme.colors.primary};
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      opacity: 0;
+      transition: 0.2s;
+    }
+
+    &.current:before {
+      opacity: 1;
+    }
+  }
+`
+
 const Home: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isViewTurial, setIsViewTurial] = useState(false)
+  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
   const themes = useTheme()
 
   const { account } = useWallet()
@@ -43,8 +71,6 @@ const Home: React.FC = () => {
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
 
-  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
-
   useEffect(() => {
     if (isMobileOrTablet) {
       setIsShowRightPanel(false)
@@ -52,19 +78,29 @@ const Home: React.FC = () => {
   }, [isMobileOrTablet])
 
   useEffect(() => {
+    if (!account) {
+      setIsViewTurial(true)
+    }
+  }, [account])
+
+  useEffect(() => {
     return () => {
       setIsShowRightPanel(true)
+      setIsViewTurial(false)
     }
   }, [])
 
   return (
     <>
+      <Helmet>
+        <title>Home - Definix - Advance Your Crypto Assets</title>
+      </Helmet>
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={isShowRightPanel}>
           <Overlay
             show={isShowRightPanel && isMobileOrTablet}
-            style={{ position: 'absolute', zIndex: 1 }}
+            style={{ position: 'absolute', zIndex: 2 }}
             onClick={() => {
               setIsShowRightPanel(false)
             }}
@@ -111,21 +147,33 @@ const Home: React.FC = () => {
 
           {isShowRightPanel && (
             <MaxWidthRight>
-              {account && !hasProfile ? (
-                <>
-                  <Heading className="mb-3" fontSize="20px !important" textTransform="uppercase">
+              <CustomTab className="mb-4">
+                {account && !hasProfile && (
+                  <Heading
+                    fontSize="18px !important"
+                    textTransform="uppercase"
+                    className={`mr-3 ${!isViewTurial ? 'current' : ''}`}
+                    onClick={() => {
+                      setIsViewTurial(false)
+                    }}
+                  >
                     My farms & pools
                   </Heading>
-                  <CardMyFarmsAndPools />
-                </>
-              ) : (
-                <>
-                  <Heading className="mb-3" fontSize="20px !important" textTransform="uppercase">
-                    TUTORIALS
-                  </Heading>
-                  <CardGetStarted />
-                </>
-              )}
+                )}
+
+                <Heading
+                  fontSize="18px !important"
+                  textTransform="uppercase"
+                  className={isViewTurial || !account ? 'current' : ''}
+                  onClick={() => {
+                    setIsViewTurial(true)
+                  }}
+                >
+                  TUTORIALS
+                </Heading>
+              </CustomTab>
+
+              {account && !hasProfile && !isViewTurial ? <CardMyFarmsAndPools /> : <CardGetStarted />}
             </MaxWidthRight>
           )}
         </RightPanel>
