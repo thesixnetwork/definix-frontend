@@ -18,7 +18,7 @@ const Klaytn_2_8 = ({ title }) => {
           In SIX Bridge, you have to connect wallet
         </Text>
 
-        <UserBlock account={account} login={connect} logout={reset} className="mb-4 dis-in-block" />
+        <UserBlock account={account} login={connect} logout={reset} className="mb-4 dis-in-block" onlyConnectBtn />
 
         <Text fontSize="14px" className="mb-4">
           and then you have to copy your wallet address from Kaikas into “Destination” field.

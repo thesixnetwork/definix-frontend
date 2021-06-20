@@ -126,6 +126,45 @@ const CustomButton = styled(Button)`
   box-shadow: ${({ theme }) => theme.shadows.elevation};
 `
 
+const SpecialButton = styled(Button)`
+  position: relative;
+  padding: 12px 24px;
+  // background-color: ${({ theme }) => theme.colors.primary};
+  background: linear-gradient(#f3d36c, #e27d3a);
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #f3d36c;
+    transform: scaleX(0);
+    transform-origin: 100%;
+    transition: transform 0.6s ease;
+  }
+
+  &:hover {
+    &:before {
+      transform-origin: 0;
+      transform: scaleX(1);
+    }
+
+    span {
+      color: #e27d3a !important;
+    }
+  }
+
+  span {
+    position: relative;
+    z-index: 1;
+    transition: all 0.6s ease;
+  }
+`
+
 const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [isStarted, setIsStarted] = useState(false)
   const [curMainStep, setCurMainStep] = useState(null)
@@ -249,18 +288,18 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       </Heading>
       <Text color="textSubtle">You don’t have any investment yet. Don’t worry, I’ll guide you through the process</Text>
 
-      <Button
+      <SpecialButton
         size="md"
         fullWidth
         variant="primary"
-        className="btn-secondary-disable mt-5"
+        className="btn-secondary-disable mt-8"
         onClick={() => {
           setIsStarted(true)
         }}
         radii="card"
       >
-        Get Started
-      </Button>
+        <span>Get Started</span>
+      </SpecialButton>
     </Overflow>
   )
 
