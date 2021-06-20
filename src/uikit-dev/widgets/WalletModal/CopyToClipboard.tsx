@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { CopyIcon } from '../../components/Svg'
@@ -7,6 +8,8 @@ interface Props {
   toCopy: string
   noPadding?: boolean
   noText?: boolean
+  color?: string
+  tooltipPos?: string
 }
 
 const StyleButton = styled(Text).attrs({ role: 'button' })<{ noPadding: boolean }>`
@@ -17,11 +20,18 @@ const StyleButton = styled(Text).attrs({ role: 'button' })<{ noPadding: boolean 
   padding: ${(props) => (props.noPadding ? '0 !important' : 'initial')};
 `
 
-const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
+const Tooltip = styled.div<{ isTooltipDisplayed: boolean; tooltipPos?: string }>`
   display: ${({ isTooltipDisplayed }) => (isTooltipDisplayed ? 'block' : 'none')};
   position: absolute;
-  top: 100%;
-  left: calc(50% - 40px);
+
+  top: ${({ tooltipPos }) => (tooltipPos === 'top' ? 'auto' : tooltipPos === 'bottom' ? 'calc(100% + 8px)' : '50%')};
+  left: ${({ tooltipPos }) => (tooltipPos === 'left' ? 'auto' : tooltipPos === 'right' ? 'calc(100% + 8px)' : '50%')};
+  bottom: ${({ tooltipPos }) => (tooltipPos === 'top' ? 'calc(100% + 8px)' : 'auto')};
+  right: ${({ tooltipPos }) => (tooltipPos === 'left' ? 'calc(100% + 8px)' : 'auto')};
+  transform: ${({ tooltipPos }) =>
+    tooltipPos === 'top' || tooltipPos === 'bottom' ? 'translate(-50%, 0)' : 'translate(0, -50%)'};
+
+  z-index: 1;
   width: 80px;
   text-align: center;
   background-color: ${({ theme }) => theme.colors.contrast};
@@ -32,7 +42,15 @@ const Tooltip = styled.div<{ isTooltipDisplayed: boolean }>`
   font-size: 12px;
 `
 
-const CopyToClipboard: React.FC<Props> = ({ toCopy, children, noPadding = false, noText = false, ...props }) => {
+const CopyToClipboard: React.FC<Props> = ({
+  toCopy,
+  children,
+  noPadding = false,
+  noText = false,
+  color,
+  tooltipPos = 'bottom',
+  ...props
+}) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
 
   return (
@@ -51,9 +69,11 @@ const CopyToClipboard: React.FC<Props> = ({ toCopy, children, noPadding = false,
       noPadding={noPadding}
       {...props}
     >
-      <CopyIcon width="20px" color="primary" mr={noText ? '' : '8px'} />
+      <CopyIcon width="20px" color={color || 'primary'} mr={noText ? '' : '8px'} />
       {children}
-      <Tooltip isTooltipDisplayed={isTooltipDisplayed}>Copied</Tooltip>
+      <Tooltip isTooltipDisplayed={isTooltipDisplayed} tooltipPos={tooltipPos}>
+        Copied
+      </Tooltip>
     </StyleButton>
   )
 }
