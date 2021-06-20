@@ -91,7 +91,7 @@ const TopNavigationStyle = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  padding: 8px;
+  padding: 16px;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -99,7 +99,7 @@ const TopNavigationStyle = styled.div`
 `
 
 const BottomNavigationStyle = styled.div`
-  padding: 8px;
+  padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,6 +120,8 @@ const Page = styled(Text)`
   left: 50%;
   transform: translate(-50%, 0);
 `
+
+const CustomButton = styled(Button)``
 
 const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [isStarted, setIsStarted] = useState(false)
@@ -202,13 +204,13 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const mainSteps = isBsc ? bsc : klaytn
 
-  const onBack = () => {
+  const onBack = (isBackToFirstPage = false) => {
     if (curMainStep === null) {
       setIsStarted(false)
       setCurMainStep(null)
       setCurSubStep(null)
       setIsTransferSixFromKlaytn(false)
-    } else if (curSubStep < 1) {
+    } else if (curSubStep < 1 || isBackToFirstPage) {
       setCurMainStep(null)
       setCurSubStep(null)
       setIsTransferSixFromKlaytn(false)
@@ -261,17 +263,19 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const TopNavigation = () => (
     <TopNavigationStyle>
-      <Button
-        variant="text"
-        onClick={onBack}
-        padding="0 12px"
-        startIcon={<ChevronLeftIcon color="primary" />}
-        radii="card"
+      <CustomButton
+        padding="0 16px 0 8px"
+        variant="tertiary"
+        onClick={() => {
+          onBack(false)
+        }}
+        startIcon={<ChevronLeftIcon color="primary" className="mr-1" />}
+        size="sm"
       >
         <Text fontSize="14px" bold>
           BACK
         </Text>
-      </Button>
+      </CustomButton>
       {curMainStep !== null && (
         <>
           <Page fontSize="14px" bold>
@@ -286,22 +290,40 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const BottomNavigation = () => (
     <BottomNavigationStyle>
-      <NextButton />
+      {/* Show in (Not) Last Sub Step */}
+      {curSubStep < subStepsLength() && <NextButton />}
+
+      {/* Show in Last Main Step */}
+      {curMainStep === mainSteps.length - 1 && curSubStep === subStepsLength() && (
+        <CustomButton
+          padding="0 16px 0 8px"
+          variant="tertiary"
+          onClick={() => {
+            onBack(true)
+          }}
+          size="sm"
+          startIcon={<ChevronLeftIcon color="primary" className="mr-1" />}
+        >
+          <Text fontSize="14px" bold>
+            BACK TO FIRST PAGE
+          </Text>
+        </CustomButton>
+      )}
     </BottomNavigationStyle>
   )
 
   const NextButton = () => (
-    <Button
-      variant="text"
+    <CustomButton
+      padding="0 8px 0 16px"
+      variant="tertiary"
       onClick={onNext}
-      padding="0 12px"
-      endIcon={<ChevronRightIcon color="primary" />}
-      radii="card"
+      size="sm"
+      endIcon={<ChevronRightIcon color="primary" className="ml-1" />}
     >
       <Text fontSize="14px" bold>
         NEXT
       </Text>
-    </Button>
+    </CustomButton>
   )
 
   const NextMainStepButton = () => (
@@ -313,20 +335,20 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           setIsTransferSixFromKlaytn(false)
         }}
       />
-      <Button
-        variant="text"
+      <CustomButton
+        padding="0 8px 0 16px"
+        variant="tertiary"
         onClick={() => {
           onNext(curMainStep + 1, 0)
           setIsTransferSixFromKlaytn(false)
         }}
-        padding="0 12px"
-        endIcon={<ChevronRightIcon color="primary" />}
-        radii="card"
+        size="sm"
+        endIcon={<ChevronRightIcon color="primary" className="ml-1" />}
       >
         <Text fontSize="14px" bold>
           PROCEED TO NEXT STEP
         </Text>
-      </Button>
+      </CustomButton>
     </div>
   )
 
@@ -360,7 +382,6 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           ) : (
             <>
               <Overflow>
-                {/* Sub Step */}
                 <SubStep
                   title={mainSteps[curMainStep].title}
                   onNext={onNext}
@@ -371,8 +392,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
                 {curSubStep === subStepsLength() && curMainStep < mainSteps.length - 1 && <NextMainStepButton />}
               </Overflow>
 
-              {/* Show in (Not) Last Sub Step */}
-              {/* {curSubStep < subStepsLength() && <BottomNavigation />} */}
+              <BottomNavigation />
             </>
           )}
         </>
