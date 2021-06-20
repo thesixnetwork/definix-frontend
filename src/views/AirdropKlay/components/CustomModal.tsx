@@ -138,5 +138,4 @@ const CustomModal: React.FC<Props> = ({
     </div>
   </>
 )
-
 export default CustomModal
