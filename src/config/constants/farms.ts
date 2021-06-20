@@ -14,8 +14,8 @@ const farms: FarmConfig[] = [
       1001: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
       8217: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
     },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
   },
   {
     pid: 1,
@@ -29,8 +29,8 @@ const farms: FarmConfig[] = [
       1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
       8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
     },
-    quoteTokenSymbol: QuoteToken.FINIX,
-    quoteTokenAdresses: contracts.finix,
+    quoteTokenSymbol: QuoteToken.SIX,
+    quoteTokenAdresses: contracts.six,
   },
   {
     pid: 2,

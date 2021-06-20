@@ -103,7 +103,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
         <AirDrop
           logo={miniLogo}
           title="APR"
-          percent={`${numeral(finixApy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+          percent={`${numeral(finixApy.toNumber() || 0).format('0,0')}%`}
           value={displayBalance}
           name="FINIX"
         />
@@ -116,7 +116,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
             <AirDrop
               logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
               title="AAPR"
-              percent={`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+              percent={`${numeral(apy.toNumber() || 0).format('0,0')}%`}
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />

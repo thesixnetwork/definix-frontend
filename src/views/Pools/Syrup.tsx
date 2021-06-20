@@ -179,7 +179,7 @@ const Farm: React.FC = () => {
             if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
               totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))
             }
-            klayApy = yieldValue.div(totalValue)
+            klayApy = yieldValue.div(totalValue).times(100)
           }
         }
         break
@@ -215,7 +215,7 @@ const Farm: React.FC = () => {
             if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
               totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))
             }
-            klayApy = yieldValue.div(totalValue)
+            klayApy = yieldValue.div(totalValue).times(100)
           }
         }
         break
