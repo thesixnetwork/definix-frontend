@@ -147,7 +147,7 @@ const config: MenuEntry[] = [
     label: 'Partnership',
     icon: partnerBlack,
     iconActive: partnerWhite,
-    href: 'https://docs.google.com/forms/d/e/1FAIpQLSfKMRNlTsTCk__s4v_qnwE3Uw4-kro8XRMPVQTS5OE6zX2Uqg/viewform',
+    href: 'https://docs.google.com/forms/d/e/1FAIpQLScQcrUmV53N5y-ita6zD4Do8nQ6zdI_Al795jMUK--HSbHU5Q/viewform',
     notHighlight: true,
     newTab: true,
   },
