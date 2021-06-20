@@ -25,6 +25,8 @@ export interface Farm extends FarmConfig {
   bundleRewards?: any
   lpTotalSupply?: BigNumber
   apy?: BigNumber
+  tokenDecimals?: BigNumber
+  quoteTokenDecimals?: BigNumber
   userData?: {
     pendingRewards?: any
     allowance: BigNumber

@@ -59,18 +59,10 @@ const fetchFarms = async () => {
 
       // Ratio in % a LP tokens that are in staking, vs the total number in circulation
       const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
-      // console.log(farmConfig)
-      // console.log('tokenBalanceLP', numeral(new BigNumber(tokenBalanceLP).div(new BigNumber(10).pow(18)).toNumber()).format('0,0.0000'))
-      // console.log('quoteTokenBlanceLP', numeral(new BigNumber(quoteTokenBlanceLP).div(new BigNumber(10).pow(18)).toNumber()).format('0,0.0000'))
-      // console.log('lpTokenBalanceMC', numeral(new BigNumber(lpTokenBalanceMC).div(new BigNumber(10).pow(18)).toNumber()).format('0,0.0000'))
-      // console.log('lpTotalSupply', numeral(new BigNumber(lpTotalSupply).div(new BigNumber(10).pow(18)).toNumber()).format('0,0.0000'))
-      // console.log('tokenDecimals', tokenDecimals[0])
-      // console.log('quoteTokenDecimals', quoteTokenDecimals[0])
-      // console.log('lpTokenRatio', lpTokenRatio.toNumber())
 
       // Total value in staking in quote token value
       const lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(18))
+        .div(new BigNumber(10).pow(quoteTokenDecimals))
         .times(new BigNumber(2))
         .times(lpTokenRatio)
 
@@ -167,6 +159,8 @@ const fetchFarms = async () => {
         lpTokenRatio,
         bundleRewardLength: new BigNumber(bundleRewardLength).toJSON(),
         bundleRewards: allBundleRewards,
+        tokenDecimals,
+        quoteTokenDecimals,
       }
     }),
   )
