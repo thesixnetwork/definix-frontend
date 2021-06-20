@@ -49,7 +49,7 @@ const HarvestAll = styled.div`
       width: 0;
       height: 0;
       border: 8px solid transparent;
-      border-top-color: ${({ theme }) => theme.colors.white};
+      border-top-color: ${({ theme }) => theme.colors.card};
       position: absolute;
       top: 100%;
       left: calc(50% - 8px);
@@ -235,7 +235,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 </>
               ) : (
                 <>
-                  <Heading fontSize="24px !important" textAlign="center">
+                  <Heading fontSize="24px !important" textAlign="center" color="textInvert">
                     58.1
                   </Heading>
                   <Text textAlign="center" color="textSubtle">
@@ -255,7 +255,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 </>
               ) : (
                 <>
-                  <Heading fontSize="24px !important" textAlign="center">
+                  <Heading fontSize="24px !important" textAlign="center" color="textInvert">
                     0.0
                   </Heading>
                   <Text textAlign="center" color="textSubtle">

@@ -63,6 +63,7 @@ export type Colors = {
   backgroundPolygon: string
   backgroundBlueGradient: string
   text: string
+  textInvert: string
   textDisabled: string
   textSubtle: string
   card: string
