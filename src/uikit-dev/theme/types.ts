@@ -29,6 +29,7 @@ export type Shadows = {
   inset: string
   inset2: string
   inset3: string
+  elevation: string
   elevation1: string
   elevation2: string
   elevation3: string

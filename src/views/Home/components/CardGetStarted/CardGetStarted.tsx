@@ -122,6 +122,10 @@ const Page = styled(Text)`
   transform: translate(-50%, 0);
 `
 
+const CustomButton = styled(Button)`
+  box-shadow: ${({ theme }) => theme.shadows.elevation};
+`
+
 const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [isStarted, setIsStarted] = useState(false)
   const [curMainStep, setCurMainStep] = useState(null)
@@ -262,7 +266,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const TopNavigation = () => (
     <TopNavigationStyle>
-      <Button
+      <CustomButton
         padding="0 16px 0 8px"
         variant="tertiary"
         onClick={() => {
@@ -274,7 +278,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
         <Text fontSize="14px" bold>
           BACK
         </Text>
-      </Button>
+      </CustomButton>
       {curMainStep !== null && (
         <>
           <Page fontSize="14px" bold>
@@ -294,7 +298,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
       {/* Show in Last Main Step */}
       {curMainStep === mainSteps.length - 1 && curSubStep === subStepsLength() && (
-        <Button
+        <CustomButton
           padding="0 16px 0 8px"
           variant="tertiary"
           onClick={() => {
@@ -306,13 +310,13 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           <Text fontSize="14px" bold>
             BACK TO FIRST PAGE
           </Text>
-        </Button>
+        </CustomButton>
       )}
     </BottomNavigationStyle>
   )
 
   const NextButton = () => (
-    <Button
+    <CustomButton
       padding="0 8px 0 16px"
       variant="tertiary"
       onClick={onNext}
@@ -322,7 +326,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       <Text fontSize="14px" bold>
         NEXT
       </Text>
-    </Button>
+    </CustomButton>
   )
 
   const NextMainStepButton = () => (
@@ -334,7 +338,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           setIsTransferSixFromKlaytn(false)
         }}
       />
-      <Button
+      <CustomButton
         padding="0 8px 0 16px"
         variant="tertiary"
         onClick={() => {
@@ -347,7 +351,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
         <Text fontSize="14px" bold>
           PROCEED TO NEXT STEP
         </Text>
-      </Button>
+      </CustomButton>
     </div>
   )
 
