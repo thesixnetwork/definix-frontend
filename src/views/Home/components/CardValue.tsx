@@ -3,7 +3,7 @@ import { useCountUp } from 'react-countup'
 import { Text } from 'uikit-dev'
 
 export interface CardValueProps {
-  value: number
+  value?: number
   decimals?: number
   fontSize?: string
   lineHeight?: string
@@ -12,10 +12,11 @@ export interface CardValueProps {
   bold?: boolean
   color?: string
   fontWeight?: string
+  valueString?: string
 }
 
 const CardValue: React.FC<CardValueProps> = ({
-  value,
+  value = 0,
   decimals,
   fontSize = '30px',
   lineHeight = '1',
@@ -24,6 +25,7 @@ const CardValue: React.FC<CardValueProps> = ({
   bold = true,
   fontWeight = 'bold',
   color = 'text',
+  valueString
 }) => {
   const { countUp, update } = useCountUp({
     start: 0,
@@ -44,7 +46,7 @@ const CardValue: React.FC<CardValueProps> = ({
   return (
     <Text fontWeight={fontWeight} bold={bold} fontSize={fontSize} style={{ lineHeight }} color={color}>
       {prefix}
-      {countUp}
+      {valueString || countUp}
       {suffix}
     </Text>
   )
