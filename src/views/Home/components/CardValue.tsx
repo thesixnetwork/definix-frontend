@@ -25,7 +25,7 @@ const CardValue: React.FC<CardValueProps> = ({
   bold = true,
   fontWeight = 'bold',
   color = 'text',
-  valueString
+  valueString,
 }) => {
   const { countUp, update } = useCountUp({
     start: 0,
