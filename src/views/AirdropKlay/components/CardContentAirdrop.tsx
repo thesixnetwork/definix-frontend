@@ -203,7 +203,7 @@ export default function CardContentAirdrop({
   }
   const renderClaimDiv = () => {
     return (
-      <div style={{ textAlign: 'center', marginRight: 'auto', marginLeft: 'auto' ,width:"100%"}}>
+      <div style={{ textAlign: 'center', marginRight: 'auto', marginLeft: 'auto', width: '100%' }}>
         <Text color="primary" style={{ textAlign: 'center', marginBottom: '10px', fontSize: '30px' }}>
           Congratulations!
         </Text>
@@ -218,24 +218,23 @@ export default function CardContentAirdrop({
           />{' '}
         </Text>
 
-        <div style={{ marginRight: '10px' ,width:"100%"}}>
+        <div style={{ marginRight: '10px', width: '100%' }}>
           <Input
             style={{ backgroundColor: '#F8F8F8', width: '70%', textAlign: 'center', height: '45px', float: 'left' }}
             onChange={onChangeHandle}
             value={accountClaim}
             placeholder="Please fill your Address"
           />
-           <Button
-          style={{ borderRadius: '7px',width:"20%"}}
-          onClick={onSubbmit}
-          variant="primary"
-          className="customClaimBtn btn-secondary-disable"
-          disabled={loading}
-        >
-          submit
-        </Button>
+          <Button
+            style={{ borderRadius: '7px', width: '20%' }}
+            onClick={onSubbmit}
+            variant="primary"
+            className="customClaimBtn btn-secondary-disable"
+            disabled={loading}
+          >
+            submit
+          </Button>
         </div>
-       
       </div>
     )
   }
@@ -268,7 +267,7 @@ export default function CardContentAirdrop({
   }
   const renderClaimedBtn = () => {
     return (
-      <div style={{ marginLeft: 'auto', marginRight: 'auto', width: "70%" }}>
+      <div style={{ marginLeft: 'auto', marginRight: 'auto', width: '70%' }}>
         <Button fullWidth radii="small" disabled>
           Claimed
         </Button>
@@ -277,13 +276,13 @@ export default function CardContentAirdrop({
   }
   const renderClaimBtn = () => {
     return (
-      <div style={{ margin: 'auto' ,width:"80%"}}>
+      <div style={{ margin: 'auto', width: '80%' }}>
         <Button
-          fullWidth radii="small"
+          fullWidth
+          radii="small"
           onClick={() => {
             setClickClaim(true)
           }}
-
         >
           Claim
         </Button>
@@ -301,7 +300,6 @@ export default function CardContentAirdrop({
           {state == CLAIM && clickClaim == false ? renderClaimBtn() : null}
           {state == CLAIM && clickClaim == true ? renderClaimDiv() : null}
           {state == CLAIMED ? renderClaimedBtn() : null}
-          
 
           <div style={{ marginTop: '40px' }}>
             <DiscriptionFirstAirdrop toggle={toggleAirdropFirst} open={openFirstAirdrop} disable={state != CLAIMED} />
