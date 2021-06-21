@@ -30,13 +30,16 @@ import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
 import caver from '../klaytn/caver'
+// import Caver from 'caver-js'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
+  // @ts-ignore
+  // const caver = new Caver(window.klaytn)
   const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
 
   useEffect(() => {
     setcontract(new caver.klay.Contract(abi, address, contractOptions))
-  }, [abi, address, contractOptions])
+  }, [caver, abi, address, contractOptions])
 
   return contract
 }

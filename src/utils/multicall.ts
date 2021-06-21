@@ -1,6 +1,7 @@
 import { AbiItem } from 'web3-utils'
 import { Interface } from '@ethersproject/abi'
-import { getCaver } from 'utils/caver'
+// import { getCaver } from 'utils/caver'
+import Caver from 'caver-js'
 import MultiCallAbi from 'config/abi/Multicall.json'
 import { getMulticallAddress } from 'utils/addressHelpers'
 
@@ -11,7 +12,9 @@ interface Call {
 }
 
 const multicall = async (abi: any[], calls: Call[]) => {
-  const caver = getCaver()
+  // const caver = getCaver()
+  // @ts-ignore
+  const caver = new Caver(window.klaytn)
   const multi = new caver.klay.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
 
