@@ -5,8 +5,9 @@ import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
+import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
+import finixCoin from 'uikit-dev/images/finix-coin.png'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
 import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import Button from '../../components/Button/Button'
@@ -18,6 +19,7 @@ import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
 import th from '../../images/th.png'
+import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
 import * as IconModule from './icons'
 import Logo from './Logo'
@@ -296,6 +298,21 @@ const Menu: React.FC<NavProps> = ({
                 <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
                   Register now
                 </Button>
+              }
+            />
+
+            <CountDownBanner
+              logo={finixCoin}
+              title="FINIX-Klaytn Address : "
+              detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+              disableCountdown
+              button={
+                <CopyToClipboard
+                  color="warning"
+                  noText
+                  toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+                  tooltipPos="right"
+                />
               }
             />
 
