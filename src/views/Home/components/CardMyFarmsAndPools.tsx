@@ -156,7 +156,6 @@ const List = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    max-height: 370px;
     overflow: auto;
   }
 `
@@ -742,7 +741,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           })}
         </>
 
-        {farmsList(stackedOnlyFarms, false).map((d) => {
+        {farmsList(farms, false).map((d) => {
           const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
           return (
             <FarmsAndPools key={d.props.farm.lpSymbol}>
