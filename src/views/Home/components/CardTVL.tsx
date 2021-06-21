@@ -1,6 +1,6 @@
 import { useGetStats } from 'hooks/api'
 import useI18n from 'hooks/useI18n'
-import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance'
+import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
 import React from 'react'
 import { usePriceTVL } from 'state/hooks'
 import styled from 'styled-components'
@@ -53,8 +53,10 @@ const CardTVL = ({ className = '' }) => {
   const data = useGetStats()
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
+  const totalTransferFromBsc = useTotalTransfer()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  const finixTransfered = totalTransferFromBsc ? getBalanceNumber(totalTransferFromBsc) : 0
 
   return (
     <Card className={className}>
@@ -82,7 +84,7 @@ const CardTVL = ({ className = '' }) => {
               FINIX Generated
             </Text>
           </div>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={0} />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={finixSupply && finixTransfered ? finixSupply - finixTransfered : 0} />
         </Row>
         <Row>
           <div className="flex align-center">
@@ -91,7 +93,7 @@ const CardTVL = ({ className = '' }) => {
               FINIX transfered from BSC
             </Text>
           </div>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={0} />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={finixTransfered} />
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>

@@ -419,6 +419,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       const stakedTotalInQuoteToken = new BigNumber(d.quoteTokenBlanceLP)
         .div(new BigNumber(10).pow(d.quoteTokenDecimals))
         .times(ratio)
+        .times(new BigNumber(2))
       // const displayBalance = rawStakedBalance.toLocaleString()
       let totalValue
       totalValue = stakedTotalInQuoteToken
