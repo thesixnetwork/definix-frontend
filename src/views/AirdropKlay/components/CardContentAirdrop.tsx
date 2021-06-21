@@ -220,6 +220,7 @@ export default function CardContentAirdrop({
 
         <div style={{ float: 'left', marginRight: '10px' }}>
           <Input
+          
             style={{ backgroundColor: '#F8F8F8', width: '500px', textAlign: 'center', height: '45px' }}
             onChange={onChangeHandle}
             value={accountClaim}
@@ -267,11 +268,11 @@ export default function CardContentAirdrop({
   }
   const renderClaimedBtn = () => {
     return (
-      <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-        <Button style={{ borderRadius: '7px', width: '400px' }} disabled>
+      <div style={{ marginLeft: 'auto', marginRight: 'auto' ,width:"70%"}}>
+        <Button fullWidth radii="small"  disabled>
           Claimed
         </Button>
-      </div>
+       </div>
     )
   }
   const renderClaimBtn = () => {
