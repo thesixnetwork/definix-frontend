@@ -2,13 +2,10 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import caver from '../klaytn/caver'
 
-const MAX_INT =
-  "115792089237316195423570985008687907853269984665640564039457584007913129639935";
+const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
 
 export const approve = async (lpContract, herodotusContract, account) => {
-  return lpContract.methods
-    .approve(herodotusContract.options.address, MAX_INT)
-    .send({ from: account, gas: 300000 })
+  return lpContract.methods.approve(herodotusContract.options.address, MAX_INT).send({ from: account, gas: 300000 })
 }
 
 export const stake = async (herodotusContract, pid, amount, account) => {
