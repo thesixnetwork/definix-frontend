@@ -165,7 +165,7 @@ const SpecialButton = styled(Button)`
   }
 `
 
-const CardGetStarted = ({ isBsc = true, className = '' }) => {
+const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [isStarted, setIsStarted] = useState(false)
   const [curMainStep, setCurMainStep] = useState(null)
   const [curSubStep, setCurSubStep] = useState(null)
