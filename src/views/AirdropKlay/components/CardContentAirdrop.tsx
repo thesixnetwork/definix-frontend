@@ -30,7 +30,7 @@ const StyledBanner = styled(Card)`
   background-size: 150%;
   background-repeat: no-repeat;
   background-position: center 40%;
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.card};
 
   h2 {
     font-size: 24px;
