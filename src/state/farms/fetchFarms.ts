@@ -107,6 +107,10 @@ const fetchFarms = async () => {
         BONUS_MULTIPLIER: new BigNumber(BONUS_MULTIPLIER).toJSON(),
         lpTotalSupply,
         lpTokenRatio,
+        tokenBalanceLP,
+        quoteTokenBlanceLP,
+        tokenDecimals,
+        quoteTokenDecimals,
       }
     }),
   )

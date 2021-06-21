@@ -104,8 +104,8 @@ const farms: FarmConfig[] = [
       97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
       56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
     },
-    quoteTokenSymbol: QuoteToken.SIX,
-    quoteTokenAdresses: contracts.six,
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
   },
   {
     pid: 7,
