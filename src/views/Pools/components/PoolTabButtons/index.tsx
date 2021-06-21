@@ -120,6 +120,10 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
           Staked
         </Button>
       </div>
+
+      <Text fontSize="12px" color="textSubtle" className="mt-4 justify-self-start col-12">
+        *AAPR = Airdrop APR supported by our partners
+      </Text>
     </Wrapper>
   )
 }
