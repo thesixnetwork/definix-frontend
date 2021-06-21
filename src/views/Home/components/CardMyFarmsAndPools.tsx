@@ -741,7 +741,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           })}
         </>
 
-        {farmsList(farms, false).map((d) => {
+        {farmsList(stackedOnlyFarms, false).map((d) => {
           const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
           return (
             <FarmsAndPools key={d.props.farm.lpSymbol}>
