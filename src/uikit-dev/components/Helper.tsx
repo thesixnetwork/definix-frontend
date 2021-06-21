@@ -33,6 +33,7 @@ const PopoverStyled = styled.div<{ position: string }>`
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
   opacity: 0;
   visibility: hidden;
+  color: ${({ theme }) => theme.colors.textSubtle};
 
   &:before {
     content: '';
@@ -53,7 +54,6 @@ const Helper = ({ text, className = '', position = 'left' }) => {
   return (
     <HelperStyled className={className}>
       <HelpCircle width={16} height={16} color="#0973B9" />
-
       <PopoverStyled position={position}>{text}</PopoverStyled>
     </HelperStyled>
   )

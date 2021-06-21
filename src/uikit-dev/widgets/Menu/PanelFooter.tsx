@@ -1,41 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Lottie from 'react-lottie'
 import styled from 'styled-components'
+import moon from '../../animation/moon.json'
+import sun from '../../animation/sun.json'
 import Button from '../../components/Button/Button'
-import IconButton from '../../components/Button/IconButton'
-import Dropdown from '../../components/Dropdown/Dropdown'
-import Flex from '../../components/Box/Flex'
-import Link from '../../components/Link/Link'
-import Skeleton from '../../components/Skeleton/Skeleton'
-import { CogIcon, DefinixRoundIcon, SvgProps } from '../../components/Svg'
+import { ChevronDownIcon } from '../../components/Svg'
 import Text from '../../components/Text/Text'
-import { MENU_ENTRY_HEIGHT, socials } from './config'
-import * as IconModule from './icons'
-import MenuButton from './MenuButton'
+import { MENU_ENTRY_HEIGHT } from './config'
 import { PanelProps, PushedProps } from './types'
+
+const sunOptions = {
+  loop: false,
+  autoplay: false,
+  animationData: sun,
+}
+
+const moonOptions = {
+  loop: false,
+  autoplay: false,
+  animationData: moon,
+}
 
 interface Props extends PanelProps, PushedProps {}
 
-const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
-const { MoonIcon, SunIcon, LanguageIcon } = Icons
+// const PriceLink = styled.a`
+//   display: flex;
+//   align-items: center;
+//   svg {
+//     transition: transform 0.3s;
+//   }
+//   :hover {
+//     svg {
+//       transform: scale(1.2);
+//     }
+//   }
+// `
+
+// const SocialEntry = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+//   height: ${MENU_ENTRY_HEIGHT}px;
+//   padding: 0 16px;
+// `
 
 const Container = styled.div`
   flex: none;
-  padding: 8px 4px;
-  background-color: ${({ theme }) => theme.nav.background};
-  border-top: solid 2px rgba(133, 133, 133, 0.1);
-`
-
-const PriceLink = styled.a`
-  display: flex;
-  align-items: center;
-  svg {
-    transition: transform 0.3s;
-  }
-  :hover {
-    svg {
-      transform: scale(1.2);
-    }
-  }
+  padding: 24px;
 `
 
 const SettingsEntry = styled.div`
@@ -43,40 +54,97 @@ const SettingsEntry = styled.div`
   align-items: center;
   justify-content: space-between;
   height: ${MENU_ENTRY_HEIGHT}px;
-  padding: 0 8px;
 `
 
-const SocialEntry = styled.div`
+const ChangeLanguage = styled(Button)`
+  height: 40px;
+  border: 2px solid ${({ theme }) => theme.colors.backgroundBox} !important;
+  background: transparent !important;
+`
+
+const ChangeTheme = styled.div<{ isDark: boolean }>`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: ${MENU_ENTRY_HEIGHT}px;
-  padding: 0 16px;
+  background: ${({ theme }) => theme.colors.backgroundBox};
+  border-radius: ${({ theme }) => theme.radii.small};
+  padding: 4px;
+  position: relative;
+  width: 84px;
+  height: 40px;
+
+  &:before {
+    content: '';
+    width: 36px;
+    height: 32px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    transition: 0.3s;
+    background: ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => theme.radii.small};
+    transform: translateX(${({ isDark }) => (isDark ? 'calc(100% + 4px)' : '0')});
+    transition-delay: 0.1s;
+  }
+
+  button {
+    padding: 0;
+    width: 36px !important;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 1;
+    background: transparent !important;
+    position: relative;
+    margin-right: 4px;
+
+    > div {
+      position: absolute;
+    }
+
+    &:last-child {
+      margin: 0;
+    }
+  }
 `
 
 const PanelFooter: React.FC<Props> = ({
-  isPushed,
-  pushNav,
   toggleTheme,
   isDark,
-  finixPriceUsd,
   currentLang,
-  langs,
-  setLang,
+  // isPushed,
+  // pushNav,
+  // finixPriceUsd,
+  // langs,
+  // setLang,
 }) => {
-  if (!isPushed) {
-    return (
-      <Container>
-        <IconButton variant="text" onClick={() => pushNav(true)}>
-          <CogIcon />
-        </IconButton>
-      </Container>
-    )
+  const [isStopped, setIsStop] = useState(false)
+  const [direction, setDirection] = useState(isDark ? 1 : -1)
+
+  const clickChangeTheme = (isDarkMode) => {
+    if (isDarkMode !== isDark) {
+      toggleTheme(isDarkMode)
+      if (!isStopped) {
+        setDirection(direction * -1)
+      }
+      setIsStop(false)
+    }
   }
+
+  // if (!isPushed) {
+  //   return (
+  //     <Container>
+  //       <IconButton variant="text" onClick={() => pushNav(true)}>
+  //         <CogIcon />
+  //       </IconButton>
+  //     </Container>
+  //   )
+  // }
 
   return (
     <Container>
-      <SocialEntry>
+      {/* <SocialEntry>
         {finixPriceUsd ? (
           <PriceLink href="https://definixswap.info/token/0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82" target="_blank">
             <DefinixRoundIcon width="24px" mr="8px" />
@@ -108,24 +176,22 @@ const PanelFooter: React.FC<Props> = ({
             )
           })}
         </Flex>
-      </SocialEntry>
+      </SocialEntry> */}
       <SettingsEntry>
-        <Button variant="text" onClick={() => toggleTheme(!isDark)}>
-          {/* alignItems center is a Safari fix */}
-          <Flex alignItems="center">
-            <SunIcon color={isDark ? 'textDisabled' : 'text'} width="24px" />
-            <Text color="textDisabled" mx="4px">
-              /
-            </Text>
-            <MoonIcon color={isDark ? 'text' : 'textDisabled'} width="24px" />
-          </Flex>
-        </Button>
-        <Dropdown
+        {/* <Dropdown
           position="top-right"
           target={
-            <Button variant="text" startIcon={<LanguageIcon color="textSubtle" width="24px" />}>
-              <Text color="textSubtle">{currentLang?.toUpperCase()}</Text>
-            </Button>
+            <ChangeLanguage
+              variant="text"
+              radii="card"
+              endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
+              padding="0 16px"
+              disabled
+            >
+              <Text color="textSubtle" bold>
+                {currentLang?.toUpperCase()}
+              </Text>
+            </ChangeLanguage>
           }
         >
           {langs.map((lang) => (
@@ -139,7 +205,33 @@ const PanelFooter: React.FC<Props> = ({
               {lang.language}
             </MenuButton>
           ))}
-        </Dropdown>
+        </Dropdown> */}
+        <ChangeLanguage
+          variant="text"
+          radii="card"
+          padding="0 16px"
+          endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
+          disabled
+        >
+          <Text color="textSubtle" bold>
+            {currentLang?.toUpperCase()}
+          </Text>
+        </ChangeLanguage>
+        <ChangeTheme isDark={isDark}>
+          <Button variant="text" size="sm" radii="card" onClick={() => clickChangeTheme(false)}>
+            <Lottie options={sunOptions} height={56} width={56} isStopped={isStopped} direction={direction} speed={3} />
+          </Button>
+          <Button variant="text" size="sm" radii="card" onClick={() => clickChangeTheme(true)}>
+            <Lottie
+              options={moonOptions}
+              height={56}
+              width={56}
+              isStopped={isStopped}
+              direction={direction}
+              speed={3}
+            />
+          </Button>
+        </ChangeTheme>
       </SettingsEntry>
     </Container>
   )

@@ -20,7 +20,7 @@ const HelpLink = styled(Link)`
 `
 
 const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
-  <Modal title="Connect to a wallet" onDismiss={onDismiss} isRainbow>
+  <Modal title="Connect to a wallet" onDismiss={onDismiss} isRainbow={false}>
     {config.map((entry, index) => (
       <WalletCard
         key={entry.title}
@@ -30,13 +30,13 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
         mb={index < config.length - 1 ? '8px' : '0'}
       />
     ))}
-    <HelpLink
+    {/* <HelpLink
       href="https://docs.definixswap.finance/guides/faq#how-do-i-set-up-my-wallet-on-binance-smart-chain"
       external
     >
       <HelpIcon color="primary" mr="6px" />
       Learn how to connect
-    </HelpLink>
+    </HelpLink> */}
   </Modal>
 )
 

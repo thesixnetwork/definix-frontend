@@ -33,7 +33,7 @@ const getHeight = ({ scale = scales.MD }: StyledInputProps) => {
 }
 
 const Input = styled.input<InputProps>`
-  background-color: ${({ theme }) => theme.colors.white};
+  background-color: ${({ theme }) => theme.colors.backgroundBox};
   // box-shadow: ${getBoxShadow};
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.default};

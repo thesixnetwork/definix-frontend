@@ -8,6 +8,7 @@ const Wrapper = styled.div<ContainerProps>`
   background-repeat: no-repeat;
   background-size: cover;
   height: ${({ height, responsive }) => (responsive ? 0 : height)}px;
+  min-width: ${({ width }) => width}px;
   max-width: ${({ width }) => width}px;
   max-height: ${({ height }) => height}px;
   width: 100%;

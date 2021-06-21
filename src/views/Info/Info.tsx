@@ -1,5 +1,6 @@
 import Page from 'components/layout/Page'
 import React from 'react'
+import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { ArrowBackIcon, Button, Card, Heading, IconButton, Text } from 'uikit-dev'
 import colorStroke from '../../uikit-dev/images/Color-stroke.png'
@@ -136,8 +137,11 @@ const Info: React.FC = () => {
 
   return (
     <Page style={{ maxWidth: '1280px' }}>
+      <Helmet>
+        <title>Info - Definix - Advance Your Crypto Assets</title>
+      </Helmet>
       <Card isRainbow className="flex flex-column align-stretch mx-auto" style={{ maxWidth: '1000px' }}>
-        <IconButton variant="text" as="a" href="/dashboard" area-label="go back" className="ma-3">
+        <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
           <ArrowBackIcon />
         </IconButton>
 

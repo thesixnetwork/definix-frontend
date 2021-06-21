@@ -6,28 +6,26 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
+import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
+import finixCoin from 'uikit-dev/images/finix-coin.png'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
-import definixCoin from 'uikit-dev/images/KR-Banner/AWforDefinix-03.png'
+import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import Button from '../../components/Button/Button'
-import Dropdown from '../../components/Dropdown/Dropdown'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
 import { SvgProps } from '../../components/Svg'
-import ChevronDownIcon from '../../components/Svg/Icons/ChevronDown'
-import Text from '../../components/Text/Text'
 import { useMatchBreakpoints } from '../../hooks'
 import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
-import bsc from '../../images/Logo-BinanceSmartChain.png'
-import klaytn from '../../images/Logo-Klaytn.png'
 import th from '../../images/th.png'
-import { MENU_HEIGHT, SIDEBAR_WIDTH_FULL, SIDEBAR_WIDTH_REDUCED } from './config'
+import CopyToClipboard from '../WalletModal/CopyToClipboard'
+import { MENU_HEIGHT } from './config'
 import * as IconModule from './icons'
 import Logo from './Logo'
-import MenuButton from './MenuButton'
 import Panel from './Panel'
 import { NavProps } from './types'
+import UserBlock from './UserBlock'
 
 const Wrapper = styled.div`
   position: relative;
@@ -38,20 +36,6 @@ const Wrapper = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.2);
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    min-height: calc(100vh - 48px);
-  }
-
-  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    -webkit-backdrop-filter: blur(16px);
-    backdrop-filter: blur(16px);
-  }
-
-  @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-    background: rgba(255, 255, 255, 0.7);
-  }
 `
 
 const StyledNav = styled.nav<{ showMenu: boolean }>`
@@ -60,19 +44,37 @@ const StyledNav = styled.nav<{ showMenu: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 16px;
   width: 100%;
+  position: relative;
   z-index: 20;
   height: ${MENU_HEIGHT}px;
-  background-color: ${({ theme }) => theme.nav.background};
-  // border-bottom: solid 1px ${({ theme }) => theme.colors.border};
   transform: translate3d(0, 0, 0);
+  background: ${({ theme }) => theme.colors.backgroundHeader};
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: #f90;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: url(${colorGradient});
+    background-size: cover;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 0 24px;
+  }
 `
 
 const BodyWrapper = styled.div`
   position: relative;
   display: flex;
   flex-grow: 1;
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
+
   ${({ theme }) => theme.mediaQueries.md} {
     min-height: calc(100% - 124px);
   }
@@ -80,17 +82,31 @@ const BodyWrapper = styled.div`
 
 const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
   flex-grow: 1;
-  // margin-top: ${({ showMenu }) => (showMenu ? `${MENU_HEIGHT}px` : 0)};
   transition: margin-top 0.2s;
   transform: translate3d(0, 0, 0);
   max-width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  background: ${({ theme }) => theme.colors.backgroundSideMenu};
 
-  // ${({ theme }) => theme.mediaQueries.nav} {
-  //   margin-left: ${({ isPushed }) => `${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px`};
-  //   max-width: ${({ isPushed }) => `calc(100% - ${isPushed ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_REDUCED}px)`};
-  // }
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding-top: 12px;
+  }
+`
+
+const InnerBg = styled.div`
+  position: relative;
+  background: ${({ theme }) => theme.colors.backgroundRadial};
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: ${({ theme }) => theme.shadows.inset3};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    border-top-left-radius: ${({ theme }) => theme.radii.medium};
+    border-bottom-left-radius: ${({ theme }) => theme.radii.medium};
+  }
 `
 
 const MobileOnlyOverlay = styled(Overlay)`
@@ -105,7 +121,6 @@ const MobileOnlyOverlay = styled(Overlay)`
 const Price = styled.a`
   display: flex;
   align-items: center;
-  margin-right: 1rem;
   font-size: 0.5rem;
 
   img {
@@ -144,9 +159,9 @@ const Menu: React.FC<NavProps> = ({
   children,
   price,
 }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = isXl === false
-  const [isPushed, setIsPushed] = useState(!isMobile)
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl && !isLg
+  const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
   const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
@@ -239,43 +254,10 @@ const Menu: React.FC<NavProps> = ({
             isDark={isDark}
             href={homeLink?.href ?? '/'}
           />
-          {!isMobile && (
-            <Dropdown
-              position="bottom"
-              target={
-                <Button
-                  variant="text"
-                  size="sm"
-                  startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
-                  endIcon={<ChevronDownIcon className="ml-1" />}
-                  className="ml-4 color-text"
-                  style={{ marginTop: '4px' }}
-                >
-                  <Text fontSize="12px" fontWeight="500">
-                    Binance Smart Chain
-                  </Text>
-                </Button>
-              }
-            >
-              <MenuButton
-                variant="text"
-                startIcon={<img src={bsc} alt="" width="24" className="mr-2" />}
-                className="color-primary mb-2"
-              >
-                Binance Smart Chain
-              </MenuButton>
-              <MenuButton
-                variant="text"
-                startIcon={<img src={klaytn} alt="" width="24" className="mr-2" />}
-                disabled
-                className="color-disable"
-                style={{ background: 'transparent' }}
-              >
-                Klaytn
-              </MenuButton>
-            </Dropdown>
-          )}
+
+          {!isMobile && <SwitchNetwork />}
         </Flex>
+
         <Flex alignItems="center">
           <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
             <img src={FinixCoin} alt="" />
@@ -284,31 +266,8 @@ const Menu: React.FC<NavProps> = ({
               <strong>${(price || 0) <= 0 ? 'N/A' : numeral(price).format('0,0.0000')}</strong>
             </p>
           </Price>
-          {/* <Dropdown
-            position="bottom-right"
-            target={
-              <Button
-                variant="tertiary"
-                size="sm"
-                startIcon={<IconFlag />}
-                endIcon={<ChevronDownIcon className="ml-1" />}
-                style={{ borderRadius: '6px', padding: '0 8px 0 12px', boxShadow: '0 1px 2px rgba(0,0,0,0.16)' }}
-              >
-              </Button>
-            }
-          >
-            {langs.map((lang) => (
-              <MenuButton
-                key={lang.code}
-                fullWidth
-                onClick={() => setLang(lang)}
-                style={{ minHeight: '32px', height: 'auto' }}
-              >
-                {lang.language}
-              </MenuButton>
-            ))}
-          </Dropdown> */}
-          {/* {profile && <Avatar profile={profile} />} */}
+
+          {!isMobile && <UserBlock account={account} login={login} logout={logout} className="ml-3" />}
         </Flex>
       </StyledNav>
       <BodyWrapper>
@@ -329,50 +288,67 @@ const Menu: React.FC<NavProps> = ({
           logout={logout}
         />
         <Inner isPushed={isPushed} showMenu={showMenu}>
-          <CountDownBanner
-            logo={logoTrade}
-            title="Definix Trading Tournament"
-            detail="Registration Period end in"
-            endTime={endRegisterTimestamp}
-            button={
-              <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
-                Register now
-              </Button>
-            }
-          />
-
-          {currentTime > endStatedTradingTime ? (
+          <InnerBg>
             <CountDownBanner
               logo={logoTrade}
-              title="The 1st Definix Trading Tournament"
-              detail="will end in"
-              topTitle="Top trader gain profit"
-              topValue={`${valuePnl}%`}
-              endTime={endTradingTimestamp}
+              title="Definix Trading Tournament"
+              detail="Registration Period end in"
+              endTime={endRegisterTimestamp}
               button={
-                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
-                  See more
+                <Button as="a" href="https://bsc.definix.com/trading-challenge" size="sm">
+                  Register now
                 </Button>
               }
             />
-          ) : (
-            <StartTimeBanner
-              logo={logoTrade}
-              title="The 1st Definix Trading Tournament"
-              detail="has started"
-              topTitle="Top trader gain profit"
-              topValue={`${valuePnl}%`}
-              endTime={endStatedTradingTime}
+
+            <CountDownBanner
+              logo={finixCoin}
+              title="FINIX-BSC Address : "
+              detail="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
+              disableCountdown
               button={
-                <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
-                  See more
-                </Button>
+                <CopyToClipboard
+                  color="warning"
+                  noText
+                  toCopy="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
+                  tooltipPos="right"
+                />
               }
             />
-          )}
-          {children}
+
+            {currentTime > endStatedTradingTime ? (
+              <CountDownBanner
+                logo={logoTrade}
+                title="The 1st Definix Trading Tournament"
+                detail="will end in"
+                topTitle="Top trader gain profit"
+                topValue={`${valuePnl}%`}
+                endTime={endTradingTimestamp}
+                button={
+                  <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                    See more
+                  </Button>
+                }
+              />
+            ) : (
+              <StartTimeBanner
+                logo={logoTrade}
+                title="The 1st Definix Trading Tournament"
+                detail="has started"
+                topTitle="Top trader gain profit"
+                topValue={`${valuePnl}%`}
+                endTime={endStatedTradingTime}
+                button={
+                  <Button as="a" href="https://bsc.definix.com/leaderboard" size="sm">
+                    See more
+                  </Button>
+                }
+              />
+            )}
+            <div style={{ width: '100%', flexGrow: 1 }}>{children}</div>
+          </InnerBg>
         </Inner>
-        <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" />
+        <MobileOnlyOverlay show={isPushed} onClick={() => setIsPushed(false)} role="presentation" zIndex={21} />
       </BodyWrapper>
       <Footer />
     </Wrapper>

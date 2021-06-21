@@ -106,6 +106,7 @@ const fetchFarms = async () => {
         finixPerBlock: new BigNumber(finixPerBlock).toJSON(),
         BONUS_MULTIPLIER: new BigNumber(BONUS_MULTIPLIER).toJSON(),
         lpTotalSupply,
+        lpTokenRatio,
       }
     }),
   )
