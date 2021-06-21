@@ -26,7 +26,7 @@ const getBoxShadow = ({ isActive, isSuccess, isWarning, isRainbow, theme }: Styl
     return theme.shadows.elevation2
   }
 
-  return theme.card.boxShadow
+  return theme.shadows.elevation1
 }
 
 const StyledCard = styled.div<StyledCardProps>`

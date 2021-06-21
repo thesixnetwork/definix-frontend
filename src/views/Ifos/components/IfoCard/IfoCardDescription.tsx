@@ -14,7 +14,7 @@ const StyledIfoCardDescription = styled.div`
 `
 
 const Divider = styled.div`
-  background-color: ${({ theme }) => theme.colors.borderColor};
+  background-color: ${({ theme }) => theme.colors.border};
   height: 1px;
   margin-left: auto;
   margin-right: auto;

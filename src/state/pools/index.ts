@@ -10,7 +10,7 @@ import {
 } from './fetchPoolsUser'
 import { PoolsState, Pool } from '../types'
 
-const initialState: PoolsState = { data: [...poolsConfig] }
+const initialState: PoolsState = { isFetched: false, data: [...poolsConfig] }
 
 export const PoolsSlice = createSlice({
   name: 'Pools',
@@ -29,11 +29,13 @@ export const PoolsSlice = createSlice({
         const userPoolData = userData.find((entry) => entry.sousId === pool.sousId)
         return { ...pool, userData: userPoolData }
       })
+      state.isFetched = true
     },
     updatePoolsUserData: (state, action) => {
       const { field, value, sousId } = action.payload
       const index = state.data.findIndex((p) => p.sousId === sousId)
       state.data[index] = { ...state.data[index], userData: { ...state.data[index].userData, [field]: value } }
+      state.isFetched = true
     },
   },
 })

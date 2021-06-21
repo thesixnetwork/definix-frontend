@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Text } from 'uikit-dev/components/Text'
 import Flex from '../../components/Box/Flex'
-import { IconButton } from '../../components/Button'
+import { Button, IconButton } from '../../components/Button'
 import Heading from '../../components/Heading/Heading'
 import { ArrowBackIcon, CloseIcon } from '../../components/Svg'
 import colorStroke from '../../images/Color-stroke.png'
@@ -13,6 +14,9 @@ interface Props extends InjectedProps {
   onBack?: () => void
   bodyPadding?: string
   isRainbow?: boolean
+  classHeader?: string
+  maxWidth?: string
+  className?: string
 }
 
 const StyledModal = styled.div<{ isRainbow: boolean }>`
@@ -24,8 +28,11 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
     width: auto;
+    min-width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 360px;
-    max-width: 100%;
   }
   position: relative;
   padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
@@ -40,11 +47,12 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   }
 `
 
-const ModalHeader = styled.div`
+const ModalHeader = styled.div<{ className?: string }>`
   display: flex;
   align-items: center;
   align-items: center;
-  padding: 12px 12px 0 24px;
+  padding: 8px 8px 8px 24px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const ModalTitle = styled(Flex)`
@@ -60,26 +68,34 @@ const Modal: React.FC<Props> = ({
   hideCloseButton = false,
   bodyPadding = '24px',
   isRainbow = true,
+  classHeader = '',
+  maxWidth = '',
+  className = '',
 }) => (
-  <StyledModal isRainbow={isRainbow}>
-    <ModalHeader>
+  <StyledModal isRainbow={isRainbow} style={{ maxWidth }} className={className}>
+    <ModalHeader className={classHeader}>
       <ModalTitle>
         {onBack && (
-          <IconButton variant="text" onClick={onBack} area-label="go back" mr="8px">
-            <ArrowBackIcon color="primary" />
-          </IconButton>
+          <Button variant="text" onClick={onBack} ml="-12px" padding="0 12px" startIcon={<ArrowBackIcon />}>
+            <Text fontSize="14px" color="textSubtle">
+              Back
+            </Text>
+          </Button>
         )}
         <Heading>{title}</Heading>
       </ModalTitle>
+
       {!hideCloseButton && (
         <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
           <CloseIcon color="primary" />
         </IconButton>
       )}
     </ModalHeader>
+
     <Flex flexDirection="column" p={bodyPadding}>
       {children}
     </Flex>
+
     {isRainbow && <img className="color-stroke" alt="" src={colorStroke} />}
   </StyledModal>
 )

@@ -3,6 +3,7 @@ import { Link, LinkProps } from 'react-router-dom'
 import { SpaceProps } from 'styled-system'
 
 export const sizes = {
+  XS: 'xs',
   SM: 'sm',
   MD: 'md',
 } as const
@@ -33,6 +34,8 @@ export type ButtonProps = {
   external?: boolean
   isLoading?: boolean
   disabled?: boolean
+  radii?: string
+  isStroke?: boolean
 } & ButtonTypes &
   SpaceProps
 

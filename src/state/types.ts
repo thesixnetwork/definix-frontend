@@ -16,6 +16,7 @@ export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
   quoteTokenAmount?: BigNumber
   lpTotalInQuoteToken?: BigNumber
+  lpTokenRatio?: BigNumber
   tokenPriceVsQuote?: BigNumber
   poolWeight?: BigNumber
   finixPerBlock?: BigNumber
@@ -63,11 +64,13 @@ export interface ToastsState {
 }
 
 export interface FarmsState {
+  isFetched: boolean
   data: Farm[]
   farmUnlockAt?: Date
 }
 
 export interface PoolsState {
+  isFetched: boolean
   data: Pool[]
 }
 

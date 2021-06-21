@@ -47,6 +47,16 @@ export const useFarmUnlockDate = (): Date => {
   return unlockDate
 }
 
+export const usePoolsIsFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.pools.isFetched)
+  return isFetched
+}
+
+export const useFarmsIsFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.farms.isFetched)
+  return isFetched
+}
+
 export const useFarms = (): Farm[] => {
   const farms = useSelector((state: State) => state.farms.data)
   return farms
@@ -97,10 +107,10 @@ export const usePoolFromPid = (sousId): Pool => {
 
 export const usePriceBnbBusd = (): BigNumber => {
   // const pid = 5 // BUSD-BNB LP
-  const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID, 10) // BUSD-SIX LP
+  const pid = parseInt(process.env.REACT_APP_BNB_BUSD_PID, 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
-  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
+  return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
 }
 
 export const usePriceSixBusd = (): BigNumber => {
@@ -108,7 +118,7 @@ export const usePriceSixBusd = (): BigNumber => {
   const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID, 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
-  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
+  return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
 }
 
 export const usePriceFinixBusd = (): BigNumber => {
@@ -116,7 +126,7 @@ export const usePriceFinixBusd = (): BigNumber => {
   const pid = parseInt(process.env.REACT_APP_FINIX_BUSD_PID, 10) // FINIX-BUSD LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
-  return farm.tokenPriceVsQuote ? new BigNumber(1).div(farm.tokenPriceVsQuote) : ZERO
+  return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
 }
 
 export const usePricePancakeBnbUsd = (): BigNumber => {

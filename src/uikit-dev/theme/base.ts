@@ -26,16 +26,22 @@ export const shadows = {
   warning: '0px 0px 0px 1px #d42837, 0px 0px 0px 4px rgba(212, 40, 55, 0.2)',
   focus: '0px 0px 0px 1px #0973B9, 0px 0px 0px 4px rgba(9, 115, 185, 0.2)',
   inset: 'inset 0px 2px 2px -1px rgba(74, 74, 104, 0.1)',
+  inset2: 'inset 0 6px 30px rgba(165, 194, 205, 0.5)',
+  inset3: 'inset 0 1px 15px rgba(16, 39, 72, 0.2)',
+  elevation: '0 1px 2px rgba(0,0,0,0.16)',
   elevation1: '0 3px 6px rgba(0,0,0,0.16)',
   elevation2: '0 6px 9px rgba(0,0,0,0.16)',
+  elevation3: '0 6px 30px rgba(165, 194, 205, 0.5)',
 }
 
 const spacing: Spacing = [0, 4, 8, 16, 24, 32, 48, 64]
 
 const radii = {
-  small: '6px',
-  default: '6px',
-  card: '6px',
+  small: '8px',
+  medium: '16px',
+  large: '32px',
+  default: '8px',
+  card: '12px',
   circle: '50%',
 }
 
