@@ -53,7 +53,7 @@
     "klaytn-use-wallet": "^1.0.1",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
-    "numeral": "^2.0.6",
+    "numeral": "2.0.4",
     "react": "^17.0.1",
     "react-chartjs-2": "^2.11.1",
     "react-countup": "^4.3.3",

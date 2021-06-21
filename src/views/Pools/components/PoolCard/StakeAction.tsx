@@ -8,6 +8,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
+import numeral from 'numeral'
 import { StakeActionProps } from './types'
 
 const IconButtonWrapper = styled.div`
@@ -41,7 +42,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const stakingTokenContract = useERC20(stakingTokenAddress)
 
   const rawStakedBalance = getBalanceNumber(stakedBalance)
-  const displayBalance = rawStakedBalance.toLocaleString()
+  const displayBalance = numeral(rawStakedBalance || 0).format('0,0.0[0000000000]')
 
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
