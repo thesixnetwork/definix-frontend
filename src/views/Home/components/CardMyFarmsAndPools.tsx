@@ -442,33 +442,34 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     if (typeof d.pid === 'number') {
       // farm
       const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
-      const stakedTotalInQuoteToken = new BigNumber(stakedBalance)
-        .div(new BigNumber(10).pow(18))
+      const ratio = new BigNumber(stakedBalance).div(new BigNumber(d.lpTotalSupply))
+      const stakedTotalInQuoteToken = new BigNumber(d.quoteTokenBlanceLP)
+        .div(new BigNumber(10).pow(d.quoteTokenDecimals))
+        .times(ratio)
         .times(new BigNumber(2))
-        .times(d.lpTokenRatio)
       // const displayBalance = rawStakedBalance.toLocaleString()
       let totalValue
-      totalValue = d.lpTotalInQuoteToken
+      totalValue = stakedTotalInQuoteToken
       if (!d.lpTotalInQuoteToken) {
         totalValue = new BigNumber(0)
       }
       if (d.quoteTokenSymbol === QuoteToken.BNB) {
-        totalValue = bnbPrice.times(d.lpTotalInQuoteToken)
+        totalValue = bnbPrice.times(stakedTotalInQuoteToken)
       }
       if (d.quoteTokenSymbol === QuoteToken.FINIX) {
-        totalValue = finixPrice.times(d.lpTotalInQuoteToken)
+        totalValue = finixPrice.times(stakedTotalInQuoteToken)
       }
       if (d.quoteTokenSymbol === QuoteToken.ETH) {
-        totalValue = ethPriceUsd.times(d.lpTotalInQuoteToken)
+        totalValue = ethPriceUsd.times(stakedTotalInQuoteToken)
       }
       if (d.quoteTokenSymbol === QuoteToken.SIX) {
-        totalValue = sixPrice.times(d.lpTotalInQuoteToken)
+        totalValue = sixPrice.times(stakedTotalInQuoteToken)
       }
 
       const earningRaw = _.get(d, 'userData.earnings', 0)
       const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
       const totalEarning = finixPrice.times(earning)
-      return new BigNumber(totalValue).div(d.lpTotalInQuoteToken).times(stakedTotalInQuoteToken).plus(totalEarning)
+      return new BigNumber(totalValue).plus(totalEarning)
     }
     if (typeof d.sousId === 'number') {
       const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))

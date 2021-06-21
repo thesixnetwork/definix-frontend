@@ -21,6 +21,10 @@ export interface Farm extends FarmConfig {
   poolWeight?: BigNumber
   finixPerBlock?: BigNumber
   BONUS_MULTIPLIER?: BigNumber
+  tokenBalanceLP?: BigNumber
+  quoteTokenBlanceLP?: BigNumber
+  tokenDecimals?: BigNumber
+  quoteTokenDecimals?: BigNumber
   lpTotalSupply?: BigNumber
   apy?: BigNumber
   userData?: {
