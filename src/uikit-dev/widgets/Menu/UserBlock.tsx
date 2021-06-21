@@ -72,7 +72,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '', po
             <LinkExternal
               isIconLeft
               small
-              href={`https://baobab.scope.klaytn.com/account/${account}`}
+              href={`https://scope.klaytn.com/account/${account}`}
               className="mb-2"
               fontSize="13px"
             >
