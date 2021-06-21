@@ -52,7 +52,6 @@ export const useTotalTransfer = () => {
 
   useEffect(() => {
     async function fetchTotalTransfer() {
-
       const finixContract = getWeb3Contract(finixABI, getBscFinixAddress())
       const supply = await finixContract.methods.balanceOf(getBscCollecteralAddress()).call()
       setTotalTransfer(new BigNumber(supply))

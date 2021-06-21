@@ -84,7 +84,13 @@ const CardTVL = ({ className = '' }) => {
               FINIX Generated
             </Text>
           </div>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={finixSupply && finixTransfered ? finixSupply - finixTransfered : 0} />
+          <CardValue
+            fontSize="16px"
+            color="primary"
+            fontWeight="bold"
+            decimals={0}
+            value={finixSupply && finixTransfered ? finixSupply - finixTransfered : 0}
+          />
         </Row>
         <Row>
           <div className="flex align-center">
