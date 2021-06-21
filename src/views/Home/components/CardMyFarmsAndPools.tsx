@@ -1,36 +1,35 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import { Doughnut } from 'react-chartjs-2'
-import styled from 'styled-components'
+import UnlockButton from 'components/UnlockButton'
+import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
+import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
+import { useAllHarvest } from 'hooks/useHarvest'
+import useI18n from 'hooks/useI18n'
+import useRefresh from 'hooks/useRefresh'
+import _ from 'lodash'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Doughnut } from 'react-chartjs-2'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { fetchFarmUserDataAsync } from 'state/actions'
 import {
   useFarms,
+  useFarmsIsFetched,
   usePools,
+  usePoolsIsFetched,
   usePriceBnbBusd,
   usePriceEthBnb,
   usePriceEthBusd,
   usePriceFinixUsd,
   usePriceSixUsd,
-  usePoolsIsFetched,
-  useFarmsIsFetched,
 } from 'state/hooks'
-import _ from 'lodash'
-
-import { getBalanceNumber } from 'utils/formatBalance'
-import { BLOCKS_PER_YEAR } from 'config'
-import { Button, Card, ChevronRightIcon, Heading, Skeleton, Text } from 'uikit-dev'
+import styled from 'styled-components'
+import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text } from 'uikit-dev'
 import Loading from 'uikit-dev/components/Loading'
-import { fetchFarmUserDataAsync } from 'state/actions'
-import { useDispatch } from 'react-redux'
-import useRefresh from 'hooks/useRefresh'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import useI18n from 'hooks/useI18n'
-import { useAllHarvest } from 'hooks/useHarvest'
-import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import UnlockButton from 'components/UnlockButton'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
-
 import FarmCard from '../../Farms/components/FarmCard/FarmCard'
 import { FarmWithStakedValue } from '../../Farms/components/FarmCard/types'
 import FinixHarvestBalance from './FinixHarvestBalance'
@@ -58,14 +57,6 @@ const Legend = styled.div`
 
   &:last-child {
     margin: 0;
-  }
-
-  .dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 8px;
   }
 `
 
@@ -108,7 +99,7 @@ const StatAll = styled.div`
   }
 `
 
-const FarmsAndPools = styled.a`
+const FarmsAndPools = styled.div`
   display: flex;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
@@ -169,8 +160,11 @@ const List = styled.div`
     overflow: auto;
   }
 `
-const Dot = styled.div`
-  margin-top: 3px;
+const Dot = styled.span`
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: ${({ theme }) => theme.radii.circle};
 `
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
@@ -598,20 +592,19 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <>
               <div className="mt-2 flex">
-                <Dot className="col-2">
+                <div
+                  className="col-2 flex flex-column justify-space-between flex-shrink pr-2"
+                  style={{ paddingTop: '6px', paddingBottom: '6px' }}
+                >
                   {chartColors.map((color) => (
-                    <Legend>
-                      <span
-                        className="dot"
-                        style={{
-                          background: color === '#8C90A5' && arrayData.length === 3 ? 'transparent' : color,
-                          marginBottom: '11px',
-                        }}
-                      />
-                    </Legend>
+                    <Dot
+                      style={{
+                        background: color === '#8C90A5' && arrayData.length === 3 ? 'transparent' : color,
+                      }}
+                    />
                   ))}
-                </Dot>
-                <div className="col-8">
+                </div>
+                <div className="col-8 flex-grow">
                   {topThree.map((d) => (
                     <Legend key={`legend${d.lpSymbol}`}>
                       <Text fontSize="12px" color="textSubtle">
@@ -706,7 +699,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           {stackedOnlyPools.map((d) => {
             const imgs = d.tokenName.split(' ')[0].split('-')
             return (
-              <FarmsAndPools href="#" key={d.tokenName}>
+              <FarmsAndPools key={d.tokenName}>
                 <Coins>
                   <div className="flex">
                     <img src={`/images/coins/${imgs[0]}.png`} alt="" />
@@ -740,9 +733,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </Text>
                   </div>
                 </Summary>
-                <div className="icon">
+                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
                   <ChevronRightIcon color="textDisabled" width="28" />
-                </div>
+                </IconButton>
               </FarmsAndPools>
             )
           })}
@@ -751,7 +744,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         {farmsList(stackedOnlyFarms, false).map((d) => {
           const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
           return (
-            <FarmsAndPools href="#" key={d.props.farm.lpSymbol}>
+            <FarmsAndPools key={d.props.farm.lpSymbol}>
               <Coins>
                 {isLoading ? (
                   <>
@@ -764,8 +757,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 ) : (
                   <>
                     <div className="flex">
-                      <img src={`/images/coins/${imgs[0]}.png`} alt="" />
-                      <img src={`/images/coins/${imgs[1]}.png`} alt="" />
+                      {imgs[0] && <img src={`/images/coins/${imgs[0]}.png`} alt="" />}
+                      {imgs[1] && <img src={`/images/coins/${imgs[1]}.png`} alt="" />}
                     </div>
                     <Text bold>{d.props.farm.lpSymbol}</Text>
                   </>
@@ -827,9 +820,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   )}
                 </div>
               </Summary>
-              <div className="icon">
+              <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
                 <ChevronRightIcon color="textDisabled" width="28" />
-              </div>
+              </IconButton>
             </FarmsAndPools>
           )
         })}
