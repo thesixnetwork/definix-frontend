@@ -1,7 +1,15 @@
 export default {
+  bscFinix: {
+    1001: process.env.REACT_APP_BSC_FINIX_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_BSC_FINIX_ADDRESS_MAINNET,
+  },
+  bscCollecteral: {
+    1001: process.env.REACT_APP_BSC_COLLECTERAL_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_BSC_COLLECTERAL_ADDRESS_MAINNET,
+  },
   definixHerodotus: {
     1001: process.env.REACT_APP_HERODOTUS_TESTNET,
-    8217: process.env.REACT_APP_HERODOTUS_TESTNET,
+    8217: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
   herodotus: {
     1001: process.env.REACT_APP_HERODOTUS_TESTNET,

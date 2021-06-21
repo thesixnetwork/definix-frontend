@@ -10,6 +10,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
+import numeral from 'numeral'
 import { FarmWithStakedValue } from './types'
 
 interface FarmStakeActionProps {
@@ -50,7 +51,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const farmUnlockDate = useFarmUnlockDate()
 
   const rawStakedBalance = getBalanceNumber(stakedBalance)
-  const displayBalance = rawStakedBalance.toLocaleString()
+  const displayBalance = numeral(rawStakedBalance || 0).format('0,0.0[0000000000]')
 
   const lpContract = useMemo(() => {
     return getContract(klaytn as provider, lpAddress)

@@ -27,6 +27,8 @@ export interface Farm extends FarmConfig {
   apy?: BigNumber
   tokenDecimals?: BigNumber
   quoteTokenDecimals?: BigNumber
+  tokenBalanceLP?: BigNumber
+  quoteTokenBlanceLP?: BigNumber
   userData?: {
     pendingRewards?: any
     allowance: BigNumber

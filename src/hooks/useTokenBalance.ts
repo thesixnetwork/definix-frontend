@@ -3,9 +3,9 @@ import BigNumber from 'bignumber.js'
 import { useWallet } from 'klaytn-use-wallet'
 import { provider } from 'web3-core'
 import finixABI from 'config/abi/finix.json'
-import { getContract } from 'utils/caver'
+import { getContract, getWeb3Contract } from 'utils/caver'
 import { getTokenBalance } from 'utils/erc20'
-import { getFinixAddress } from 'utils/addressHelpers'
+import { getFinixAddress, getBscFinixAddress, getBscCollecteralAddress } from 'utils/addressHelpers'
 import useCaver from './useCaver'
 import useRefresh from './useRefresh'
 
@@ -44,6 +44,23 @@ export const useTotalSupply = () => {
   }, [slowRefresh, finixBurned])
 
   return totalSupply
+}
+
+export const useTotalTransfer = () => {
+  const { slowRefresh } = useRefresh()
+  const [totalTransfer, setTotalTransfer] = useState<BigNumber>()
+
+  useEffect(() => {
+    async function fetchTotalTransfer() {
+      const finixContract = getWeb3Contract(finixABI, getBscFinixAddress())
+      const supply = await finixContract.methods.balanceOf(getBscCollecteralAddress()).call()
+      setTotalTransfer(new BigNumber(supply))
+    }
+
+    fetchTotalTransfer()
+  }, [slowRefresh])
+
+  return totalTransfer
 }
 
 export const useBurnedBalance = (tokenAddress: string) => {

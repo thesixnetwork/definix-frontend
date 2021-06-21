@@ -7,6 +7,12 @@ export const getAddress = (address: Address): string => {
   return address[chainId] ? address[chainId] : address[mainNetChainId]
 }
 
+export const getBscFinixAddress = () => {
+  return getAddress(addresses.bscFinix)
+}
+export const getBscCollecteralAddress = () => {
+  return getAddress(addresses.bscCollecteral)
+}
 export const getFinixAddress = () => {
   return getAddress(addresses.finix)
 }
