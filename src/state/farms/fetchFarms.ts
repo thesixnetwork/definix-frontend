@@ -161,6 +161,8 @@ const fetchFarms = async () => {
         bundleRewards: allBundleRewards,
         tokenDecimals,
         quoteTokenDecimals,
+        tokenBalanceLP,
+        quoteTokenBlanceLP,
       }
     }),
   )
