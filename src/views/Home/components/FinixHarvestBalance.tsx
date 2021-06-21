@@ -34,7 +34,7 @@ const FinixHarvestBalance = () => {
 
   return (
     <Block>
-      <CardValue value={earningsSum} lineHeight="1.5" />
+      <CardValue value={earningsSum} lineHeight="1.5" color="textInvert" />
       <CardBusdValue value={earningsBusd} />
     </Block>
   )
