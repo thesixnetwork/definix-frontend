@@ -125,7 +125,7 @@ const Home: React.FC = () => {
                   style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
                 />
               ) : (
-                <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
+                <Caption>Farm reward will start at 3PM (GMT+7) 21 June 2021.</Caption>
               )}
             </div>
             <CardAirdropKlay showBtn className="mb-5" />
