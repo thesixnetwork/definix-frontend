@@ -651,7 +651,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
             <Button
               id="harvest-all"
               size="sm"
-              className="btn-secondary-disable mt-3"
+              variant="tertiary"
+              className="mt-3"
+              style={{ background: 'white' }}
               disabled={balancesWithValue.length <= 0 || pendingTx}
               onClick={harvestAllFarms}
             >

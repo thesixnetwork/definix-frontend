@@ -35,7 +35,7 @@ const FinixHarvestPool = () => {
 
   return (
     <Block>
-      <CardValue value={earningsPoolSum} lineHeight="1.5" />
+      <CardValue value={earningsPoolSum} lineHeight="1.5" color="textInvert" />
       <CardBusdValue value={earningsBusd} />
     </Block>
   )
