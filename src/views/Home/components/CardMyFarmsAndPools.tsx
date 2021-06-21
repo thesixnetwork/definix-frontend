@@ -156,7 +156,6 @@ const List = styled.div`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    max-height: 370px;
     overflow: auto;
   }
 `
