@@ -72,7 +72,7 @@ const CardTVL = ({ className = '' }) => {
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={3} />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} valueString="1" />
         </Row>
       </Stat>
     </Card>
