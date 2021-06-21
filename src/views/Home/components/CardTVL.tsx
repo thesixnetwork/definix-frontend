@@ -38,6 +38,15 @@ const Row = styled.div`
   }
 `
 
+const Dot = styled.span`
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: ${({ theme }) => theme.radii.circle};
+  background: ${({ theme }) => theme.colors.primary};
+  margin-right: 8px;
+`
+
 const CardTVL = ({ className = '' }) => {
   const totalTVL = usePriceTVL().toNumber()
   const TranslateString = useI18n()
@@ -65,6 +74,24 @@ const CardTVL = ({ className = '' }) => {
             <Helper text="Does not include burned" className="ml-2" position="top" />
           </div>
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
+        </Row>
+        <Row>
+          <div className="flex align-center">
+            <Dot />
+            <Text color="textSubtle" fontSize="12px">
+              FINIX Generated
+            </Text>
+          </div>
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={0} />
+        </Row>
+        <Row>
+          <div className="flex align-center">
+            <Dot />
+            <Text color="textSubtle" fontSize="12px">
+              FINIX transfered from BSC
+            </Text>
+          </div>
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={0} />
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
