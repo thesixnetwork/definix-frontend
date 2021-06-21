@@ -159,7 +159,7 @@ export default function CardContentAirdrop({
       try {
         contractAirdropKlay.methods
           .claimAll(accountClaim)
-          .send({ from: account, gas: 2100000 })
+          .send({ from: account, gas: 600000 })
           .on('receipt', (receipt) => {
             setState(CLAIMED)
             setLoading(false)
