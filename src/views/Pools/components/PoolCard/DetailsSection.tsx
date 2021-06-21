@@ -46,9 +46,11 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
         </Text>
       </div>
 
-      {false && <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
-        <LinkView />
-      </div>}
+      {false && (
+        <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
+          <LinkView />
+        </div>
+      )}
     </Wrapper>
   )
 }
