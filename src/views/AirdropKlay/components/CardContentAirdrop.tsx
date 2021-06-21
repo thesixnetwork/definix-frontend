@@ -300,7 +300,6 @@ export default function CardContentAirdrop({
           {state == CLAIM && clickClaim == false ? renderClaimBtn() : null}
           {state == CLAIM && clickClaim == true ? renderClaimDiv() : null}
           {state == CLAIMED ? renderClaimedBtn() : null}
-          
 
           <div style={{ marginTop: '40px' }}>
             <DiscriptionFirstAirdrop toggle={toggleAirdropFirst} open={openFirstAirdrop} disable={state != CLAIMED} />

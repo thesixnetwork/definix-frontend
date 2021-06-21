@@ -230,7 +230,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
             {renderStakeAction('pa-5')}
             {renderHarvestAction('pa-5')}
-            {/* renderHarvestActionAirDrop('pa-5 pt-0', false) */}
+            {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
             {renderDetailsSection('px-5 py-3', false)}
           </div>
         </HorizontalMobileStyle>
@@ -248,7 +248,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         </div>
 
         {renderHarvestAction('col-5 pl-5 flex-grow')}
-        {/* renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true) */}
+        {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
       </HorizontalStyle>
     )
   }
@@ -260,7 +260,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         {renderCardHeading('pt-7')}
         {renderStakeAction('pa-5')}
         {renderHarvestAction('pa-5')}
-        {/* renderHarvestActionAirDrop('pa-5 pt-0', false) */}
+        {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
       </div>
       {renderDetailsSection('px-5 py-3', false)}
     </VerticalStyle>
