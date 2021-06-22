@@ -126,7 +126,10 @@ const Home: React.FC = () => {
                   style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
                 />
               ) : (
-                <Caption>2nd Airdrop will be distributed after you staked your asset within 48 hours on your staked wallet at klaytn.definix.com</Caption>
+                <Caption>
+                  2nd Airdrop will be distributed after you staked your asset within 48 hours on your staked wallet at
+                  klaytn.definix.com
+                </Caption>
               )}
             </div>
 
