@@ -235,6 +235,9 @@ export default function CardContentAirdrop({
             submit
           </Button>
         </div>
+        <Text style={{ textAlign: 'center',marginTop:"10px", marginBottom: '20px', fontSize: '15px' ,color:"red"}}>
+        Please fill your KIP7 supported wallet address such as Kaikas wallet, D’CENT wallet and Klip
+        </Text>
       </div>
     )
   }
