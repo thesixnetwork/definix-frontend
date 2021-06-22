@@ -4,7 +4,7 @@ import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import useFarmEarning from 'hooks/useFarmEarning'
-import { usePriceFinixKusdt } from 'state/hooks'
+import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import CardValue from './CardValue'
 import CardBusdValue from './CardBusdValue'
@@ -22,7 +22,7 @@ const FinixHarvestBalance = () => {
   const earningsSum = farmEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
-  const earningsBusd = new BigNumber(earningsSum).multipliedBy(usePriceFinixKusdt()).toNumber()
+  const earningsBusd = new BigNumber(earningsSum).multipliedBy(usePriceFinixUsd()).toNumber()
 
   if (!account) {
     return (
