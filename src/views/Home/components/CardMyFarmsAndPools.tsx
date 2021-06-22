@@ -610,7 +610,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {topThree.map((d) => (
                     <Legend key={`legend${d.lpSymbol}`}>
                       <Text fontSize="12px" color="textSubtle">
-                        {(d.lpSymbol || "").replace(/ LP$/, '')}
+                        {(d.lpSymbol || '').replace(/ LP$/, '')}
                       </Text>
                       <Text bold style={{ paddingLeft: '80px' }}>
                         {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
@@ -762,7 +762,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       {imgs[0] && <img src={`/images/coins/${imgs[0]}.png`} alt="" />}
                       {imgs[1] && <img src={`/images/coins/${imgs[1]}.png`} alt="" />}
                     </div>
-                    <Text bold>{(d.props.farm.lpSymbol || "").replace(/ LP$/, '')}</Text>
+                    <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
                   </>
                 )}
               </Coins>
