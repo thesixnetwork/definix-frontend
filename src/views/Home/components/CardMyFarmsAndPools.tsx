@@ -690,7 +690,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       {new BigNumber(d.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
                     </Text>
                   </div>
-                  <div />
                   <div>
                     <Text fontSize="12px" color="textSubtle">
                       FINIX Earned
