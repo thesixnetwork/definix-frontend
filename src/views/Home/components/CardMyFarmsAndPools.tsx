@@ -219,7 +219,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const [listView, setListView] = useState(false)
   const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
-    (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
+    (farms) => farms.userData && farms.pid !== 0 && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
   )
 
   const farmsList = useCallback(
@@ -743,7 +743,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           })}
         </>
 
-        {farmsList(stackedOnlyFarms, false).map((d) => {
+        {farmsList(farms, false).map((d) => {
           const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
           return (
             <FarmsAndPools key={d.props.farm.lpSymbol}>
