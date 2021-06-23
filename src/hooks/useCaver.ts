@@ -19,7 +19,8 @@ const useCaver = () => {
 
   useEffect(() => {
     if (klaytn !== refKlay.current) {
-      setCaver(new Caver(klaytn || httpProvider))
+      // @ts-ignore
+      setCaver(window.caver || new Caver(klaytn || httpProvider))
       refKlay.current = klaytn
     }
   }, [klaytn])

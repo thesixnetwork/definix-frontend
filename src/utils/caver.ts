@@ -16,11 +16,13 @@ const web3HttpProvider = new Web3.providers.HttpProvider(process.env.REACT_APP_B
  */
 const getCaver = () => {
   // console.log("httpProvider = ", httpProvider)
-  const caver = new Caver(httpProvider)
+  // @ts-ignore
+  const caver = window.caver || new Caver(httpProvider)
   return caver
 }
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {
-  const caver = getCaver()
+  // @ts-ignore
+  const caver = window.caver || getCaver()
   return new caver.klay.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
