@@ -19,6 +19,7 @@ variables:
 build_docker_image:
   stage: build_image
   script:
+    - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - docker build -t $TEST_ENV_DOCKER_IMAGE_URL:$VERSION-$COMMIT_TIME .
   only:
     - /^v.*-test$/
@@ -28,6 +29,7 @@ build_docker_image:
 push_docker_image_beta:
   stage: push_image
   script:
+    - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
     - docker push $TEST_ENV_DOCKER_IMAGE_URL:$VERSION-$COMMIT_TIME
   only:
     - /^v.*-test$/
@@ -38,16 +40,19 @@ clear:
   stage: clear_deploy
   script:
     - docker image prune
+    - kubeclt delete deployment/definix-soft-test
+    - kubectl delete svc/definix-soft-test
   only:
     - /^v.*-test$/
   tags:
     - test
 
-# deploy_uat:
-#   stage: deploy
-#   script:
-#     - kubectl apply -f deploy/deploy.yml --force
-#   only:
-#     - /^v.*-test$/
-#   tags:
-#     - test
+deploy_uat:
+  stage: deploy
+  script:
+    - export COMMIT_TIME=$(git show -s --format=%ct $CI_COMMIT_SHA)
+    - IMG_URL=$TEST_ENV_DOCKER_IMAGE_URL:$VERSION-$COMMIT_TIME kubectl apply -f deploy/deploy.yml --force
+  only:
+    - /^v.*-test$/
+  tags:
+    - test
