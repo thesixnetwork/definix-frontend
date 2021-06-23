@@ -15,6 +15,10 @@ export default {
     97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
     56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
   },
+  btcb: {
+    97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+  },
   usdt: {
     97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
     56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,

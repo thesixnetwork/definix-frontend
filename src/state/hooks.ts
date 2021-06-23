@@ -148,6 +148,7 @@ export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
   const sixUsd = usePriceSixUsd()
+  const bnbUsdPrice = usePriceBnbBusd()
   const pancakeBnbPrice = usePricePancakeBnbUsd()
   const selectedPools = pools.find((pool) => pool.sousId === 1) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
   const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
@@ -164,6 +165,7 @@ export const usePriceTVL = (): BigNumber => {
   const wbnbBusdQuote = useSelector((state: State) => state.finixPrice.wbnbBusdQuote)
   const wbnbUsdtQuote = useSelector((state: State) => state.finixPrice.wbnbUsdtQuote)
   const busdUsdtQuote = useSelector((state: State) => state.finixPrice.busdUsdtQuote)
+  const bnbBtcbQuote = useSelector((state: State) => state.finixPrice.bnbBtcbQuote)
   const finixUsdPrice = usePriceFinixUsd()
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -221,6 +223,7 @@ export const usePriceTVL = (): BigNumber => {
     const wbnbBusdPrice = new BigNumber(wbnbBusdQuote)
     const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
     const busdUsdtPrice = new BigNumber(busdUsdtQuote)
+    const bnbBtcbPrice = new BigNumber(bnbBtcbQuote).times(bnbUsdPrice)
     return BigNumber.sum.apply(null, [
       sixFinixPrice,
       sixBusdPrice,

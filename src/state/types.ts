@@ -92,6 +92,7 @@ export interface FinixPriceState {
   wbnbBusdQuote: number
   wbnbUsdtQuote: number
   busdUsdtQuote: number
+  bnbBtcbQuote: number
 }
 export interface ProfileState {
   isInitialized: boolean

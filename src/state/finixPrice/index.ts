@@ -13,6 +13,7 @@ import {
   getFinixAddress,
   getBusdAddress,
   getUsdtAddress,
+  getBtcbAddress,
   getFinixSixLPAddress,
   getFinixBusdLPAddress,
   getFinixBnbLPAddress,
@@ -36,6 +37,7 @@ const initialState: FinixPriceState = {
   wbnbBusdQuote: 0,
   wbnbUsdtQuote: 0,
   busdUsdtQuote: 0,
+  bnbBtcbQuote: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -66,6 +68,7 @@ export const finixPriceSlice = createSlice({
         wbnbBusdQuote,
         wbnbUsdtQuote,
         busdUsdtQuote,
+        bnbBtcbQuote,
       } = action.payload
       state.sixFinixQuote = sixFinixQuote
       state.sixBusdQuote = sixBusdQuote
@@ -77,6 +80,7 @@ export const finixPriceSlice = createSlice({
       state.wbnbBusdQuote = wbnbBusdQuote
       state.wbnbUsdtQuote = wbnbUsdtQuote
       state.busdUsdtQuote = busdUsdtQuote
+      state.bnbBtcbQuote = bnbBtcbQuote
     },
   },
 })
@@ -319,6 +323,7 @@ export const fetchQuote = () => async (dispatch) => {
   const busdAddress = getBusdAddress()
   const wbnbAddress = getWbnbAddress()
   const usdtAddress = getUsdtAddress()
+  const btcbAddress = getBtcbAddress()
   let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
   if (chainId === ChainId.MAINNET) {
     chainId = ChainId.MAINNET
@@ -331,6 +336,7 @@ export const fetchQuote = () => async (dispatch) => {
   const BUSD = new Token(chainId, busdAddress, 18, 'BUSD', 'BUSD')
   const WBNB = new Token(chainId, wbnbAddress, 18, 'WBNB', 'Wrapped BNB')
   const USDT = new Token(chainId, usdtAddress, 18, 'USDT', 'USDT')
+  const BTCB = new Token(chainId, btcbAddress, 18, 'BTCB', 'BTCB')
 
   const fetchPromise = []
 
@@ -394,6 +400,12 @@ export const fetchQuote = () => async (dispatch) => {
       qouteToken: busdAddress,
     }),
   )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(WBNB, BTCB),
+      qouteToken: wbnbAddress,
+    }),
+  )
 
   const [
     sixFinixQuote,
@@ -406,6 +418,7 @@ export const fetchQuote = () => async (dispatch) => {
     wbnbBusdQuote,
     wbnbUsdtQuote,
     busdUsdtQuote,
+    bnbBtcbQuote,
   ] = await Promise.all(fetchPromise)
 
   dispatch(
@@ -420,6 +433,7 @@ export const fetchQuote = () => async (dispatch) => {
       wbnbBusdQuote,
       wbnbUsdtQuote,
       busdUsdtQuote,
+      bnbBtcbQuote,
     }),
   )
 }
