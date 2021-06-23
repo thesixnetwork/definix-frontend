@@ -8,9 +8,13 @@ import Caver from 'caver-js'
 // const rpcURL = process.env.REACT_APP_KLAYTN_RPC_URL;
 // console.log("rpcURL = ", rpcURL);
 
-window.addEventListener('klaytn#initialized', () => {
-  window.caver = new Caver(window.klaytn)
-}, false)
+window.addEventListener(
+  'klaytn#initialized',
+  () => {
+    window.caver = new Caver(window.klaytn)
+  },
+  false,
+)
 // const caver = new Caver(rpcURL);
 
 export default window.klaytn
