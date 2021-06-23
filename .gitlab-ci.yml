@@ -39,7 +39,7 @@ push_docker_image_beta:
 clear:
   stage: clear_deploy
   script:
-    - docker image prune
+    # - docker image prune
     - kubeclt delete deployment/definix-soft-test
     - kubectl delete svc/definix-soft-test
   only:
