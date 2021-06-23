@@ -99,7 +99,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Home - Definix - Advance Your Crypto Assets</title>
+        <title>home - Definix - Advance Your Crypto Assets</title>
       </Helmet>
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
@@ -125,7 +125,7 @@ const Home: React.FC = () => {
                   style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
                 />
               ) : (
-                <Caption>Farm reward will start at 3PM (GMT+7) 21 June 2021.</Caption>
+                <Caption>Farmmmm reward will start at 3PM (GMT+7) 21 June 2021.</Caption>
               )}
             </div>
             <CardAirdropKlay showBtn className="mb-5" />

@@ -27,7 +27,6 @@ import Panel from './Panel'
 import { NavProps } from './types'
 import UserBlock from './UserBlock'
 
-
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
@@ -244,7 +243,7 @@ const Menu: React.FC<NavProps> = ({
     }
     fetchLeaderBoard()
   }, [valuePnl])
- 
+
   return (
     <Wrapper>
       <StyledNav showMenu={showMenu}>
@@ -257,9 +256,8 @@ const Menu: React.FC<NavProps> = ({
           />
           {!isMobile && <SwitchNetwork />}
         </Flex>
-     
+
         <Flex alignItems="center">
-          
           <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
             <img src={FinixCoin} alt="" />
             <p>

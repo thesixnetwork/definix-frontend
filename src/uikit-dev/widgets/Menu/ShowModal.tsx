@@ -1,3 +1,1 @@
-export const ShowModal =()=>{
-
-}
+export const ShowModal = () => {}

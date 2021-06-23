@@ -6,7 +6,7 @@ import { Modal } from '../Modal'
 import WalletCard from './WalletCard'
 import config from './config'
 import { Login } from './types'
-import CustomWalletCard  from "./CustomWalletCard"
+import CustomWalletCard from './CustomWalletCard'
 
 interface Props {
   login: Login
@@ -29,7 +29,6 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
         onDismiss={onDismiss}
         mb={index < config.length - 1 ? '8px' : '0'}
       />
-
     ))}
     <br />
     {CustomWalletCard()}
