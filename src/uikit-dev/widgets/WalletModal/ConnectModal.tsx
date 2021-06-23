@@ -6,6 +6,7 @@ import { Modal } from '../Modal'
 import WalletCard from './WalletCard'
 import config from './config'
 import { Login } from './types'
+import CustomWalletCard  from "./CustomWalletCard"
 
 interface Props {
   login: Login
@@ -18,7 +19,6 @@ const HelpLink = styled(Link)`
   align-items: center;
   margin-top: 24px;
 `
-
 const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
   <Modal title="Connect to a wallet" onDismiss={onDismiss} isRainbow={false}>
     {config.map((entry, index) => (
@@ -29,7 +29,10 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
         onDismiss={onDismiss}
         mb={index < config.length - 1 ? '8px' : '0'}
       />
+
     ))}
+    <br />
+    {CustomWalletCard()}
     {/* <HelpLink
       href="https://docs.definixswap.finance/guides/faq#how-do-i-set-up-my-wallet-on-binance-smart-chain"
       external

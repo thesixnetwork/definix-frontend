@@ -1,0 +1,53 @@
+
+stages:
+  - build_image
+  - push_image
+  # - clear_deploy
+  # - deploy
+
+variables:
+  PACKAGE_NAME: definix
+  MAJOR_RELEASE: 1
+  MINOR_RELEASE: 5
+  PATCH_LEVEL: "0-SNAPSHOT"
+  VERSION: $MAJOR_RELEASE.$MINOR_RELEASE.$PATCH_LEVEL
+  TEST_ENV_DOCKER_IMAGE_URL: asia.gcr.io/starry-antonym-317404/$PACKAGE_NAME
+
+  
+
+
+build_docker_image:
+  stage: build_image
+  script:
+    - docker build -t $TEST_ENV_DOCKER_IMAGE_URL:$VERSION-$COMMIT_TIME .
+  only:
+    - /^v.*-test$/
+  tags:
+    - test
+
+push_docker_image_beta:
+  stage: push_image
+  script:
+    - docker push $TEST_ENV_DOCKER_IMAGE_URL:$VERSION-$COMMIT_TIME
+  only:
+    - /^v.*-test$/
+  tags:
+    - test
+
+# clear:
+#   stage: clear_deploy
+#   script:
+#     - kubectl delete deployment/klip-test
+#   only:
+#     - /^v.*-test$/
+#   tags:
+#     - test
+
+# deploy_uat:
+#   stage: deploy
+#   script:
+#     - kubectl apply -f deploy/deploy.yml --force
+#   only:
+#     - /^v.*-test$/
+#   tags:
+#     - test

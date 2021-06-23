@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: definix-soft-test
+  labels:
+    app: definix-soft-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: definix-soft-test
+  template:
+    metadata:
+      labels:
+        app: definix-soft-test
+    spec:
+      containers:
+      - name: definix-soft-test
+        image: asia.gcr.io/starry-antonym-317404/definix-soft-test
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: definix-soft-test
+spec:
+  selector:
+    app: definix-soft-test
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+    
