@@ -2,7 +2,7 @@
 stages:
   - build_image
   - push_image
-  - clear_deploy
+  # - clear_deploy
   - deploy
 
 variables:
@@ -36,16 +36,16 @@ push_docker_image_beta:
   tags:
     - test
 
-clear:
-  stage: clear_deploy
-  script:
-    # - docker image prune
-    - kubectl delete deployment/definix-soft-test
-    - kubectl delete svc/definix-soft-test
-  only:
-    - /^v.*-test$/
-  tags:
-    - test
+# clear:
+#   stage: clear_deploy
+#   script:
+#     # - docker image prune
+#     # - kubectl delete deployment/definix-soft-test
+#     # - kubectl delete svc/definix-soft-test
+#   only:
+#     - /^v.*-test$/
+#   tags:
+#     - test
 
 deploy_uat:
   stage: deploy
