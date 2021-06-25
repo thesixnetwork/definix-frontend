@@ -99,7 +99,7 @@ const CardTVL = ({ className = '' }) => {
               FINIX transferred from BSC
             </Text>
           </div>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={finixTransfered} />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={finixTransfered - 600000} />
         </Row>
         <Row>
           <div className="flex align-center">
