@@ -1,6 +1,8 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import _ from 'lodash'
 import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
@@ -97,6 +99,21 @@ const Home: React.FC = () => {
     }
   }, [])
 
+  const [captionText, setCaptionText] = React.useState()
+  useEffect(() => {
+    async function fetchCaptionText() {
+      const captionTextAPI = process.env.REACT_APP_API_CAPTION_TEXT_BSC
+      const response = await axios.get(`${captionTextAPI}`)
+      if (response.data.data) {
+        const caption = _.get(response.data.data, 'data.0.text', '')
+        setCaptionText(caption)
+      } else {
+        console.log('error')
+      }
+    }
+    fetchCaptionText()
+  }, [])
+
   return (
     <>
       <Helmet>
@@ -126,10 +143,7 @@ const Home: React.FC = () => {
                   style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
                 />
               ) : (
-                <Caption>
-                  2nd Airdrop will be distributed after you staked your asset within 48 hours on your staked wallet at
-                  klaytn.definix.com
-                </Caption>
+                <Caption>{captionText}</Caption>
               )}
             </div>
 
