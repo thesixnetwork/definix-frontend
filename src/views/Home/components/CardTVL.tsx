@@ -96,10 +96,19 @@ const CardTVL = ({ className = '' }) => {
           <div className="flex align-center">
             <Dot />
             <Text color="textSubtle" fontSize="12px">
-              FINIX transfered from BSC
+              FINIX transferred from BSC
             </Text>
           </div>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={finixTransfered} />
+        </Row>
+        <Row>
+          <div className="flex align-center">
+            <Dot />
+            <Text color="textSubtle" fontSize="12px">
+              FINIX reserved for bridge
+            </Text>
+          </div>
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={600000} />
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
