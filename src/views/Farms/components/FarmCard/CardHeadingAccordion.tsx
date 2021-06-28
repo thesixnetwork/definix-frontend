@@ -138,9 +138,7 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
               href={
                 secondCoin === 'klay'
                   ? `${process.env.REACT_APP_KLAYTN_URL}`
-                  : `${process.env.REACT_APP_KLAYTN_URL}/account/${
-                      farm.secondToken[process.env.REACT_APP_CHAIN_ID]
-                    }`
+                  : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.secondToken[process.env.REACT_APP_CHAIN_ID]}`
               }
               target="_blank"
               rel="noreferrer"
