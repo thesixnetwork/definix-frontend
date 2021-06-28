@@ -1,9 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import herodotus from 'config/abi/herodotus.json'
-import {
-  getHerodotusAddress
-} from 'utils/addressHelpers'
+import { getHerodotusAddress } from 'utils/addressHelpers'
 import caverFeeDelegate from '../klaytn/caverFeeDelegate'
 
 export const approve = async (lpContract, herodotusContract, account) => {
@@ -160,7 +158,6 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 }
 
 export const harvest = async (herodotusContract, pid, account) => {
-
   if (pid === 0) {
     return herodotusContract.methods
       .leaveStaking('0')
@@ -182,7 +179,7 @@ export const harvest = async (herodotusContract, pid, account) => {
   // const sender = caver.wallet.keyring.createFromPrivateKey(senderPrivateKey)
   // caver.wallet.add(sender)
   const feePayerAddress = '0x3695a6A9ed1f9488e008c20cF3f3e2c3507aea34'
-  
+
   // const contractAddress = '0x5657c921b34AdC30A42ba301eB67aB0F8e055D75'
   // Create a feeDelegatedSmartContractExecution transaction
   // const tx = caver.transaction.feeDelegatedSmartContractExecution.create({
@@ -193,12 +190,19 @@ export const harvest = async (herodotusContract, pid, account) => {
   //     feePayer: feePayerAddress,
   // })
   const herodotusContractWithFeeDelegate = new caverFeeDelegate.klay.Contract(herodotus, getHerodotusAddress())
-  return herodotusContractWithFeeDelegate.send({
-    from: account,
-    gas: 400000,
-    feeDelegation: true,
-    feePayer: feePayerAddress,
-  }, 'deposit', pid, '0').then(function (tx) {
+  return herodotusContractWithFeeDelegate
+    .send(
+      {
+        from: account,
+        gas: 400000,
+        feeDelegation: true,
+        feePayer: feePayerAddress,
+      },
+      'deposit',
+      pid,
+      '0',
+    )
+    .then(function (tx) {
       console.log('harvest tx = ', tx)
       return tx.transactionHash
     })
