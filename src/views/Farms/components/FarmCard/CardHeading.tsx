@@ -116,7 +116,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
           href={
             firstCoin === 'klay'
               ? `${process.env.REACT_APP_KLAYTN_URL}`
-              : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.tokenAddresses[process.env.REACT_APP_CHAIN_ID]}`
+              : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.firstToken[process.env.REACT_APP_CHAIN_ID]}`
           }
           target="_blank"
           rel="noreferrer"
@@ -127,7 +127,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
           href={
             secondCoin === 'klay'
               ? `${process.env.REACT_APP_KLAYTN_URL}`
-              : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.quoteTokenAdresses[process.env.REACT_APP_CHAIN_ID]}`
+              : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.secondToken[process.env.REACT_APP_CHAIN_ID]}`
           }
           target="_blank"
           rel="noreferrer"

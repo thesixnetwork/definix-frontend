@@ -155,7 +155,7 @@ export const usePriceTVL = (): BigNumber => {
   const { account } = useWallet()
   const pools = usePools(account)
   const sixUsd = usePriceSixUsd()
-  console.log('>>>>>>>>>>>>>>>>>>>>>>>>> usePriceSixKusdt = ', sixUsd.toNumber())
+  // console.log('>>>>>>>>>>>>>>>>>>>>>>>>> usePriceSixKusdt = ', sixUsd.toNumber())
   // const pancakeBnbPrice = usePricePancakeBnbUsd()
   // const selectedPools = pools.find((pool) => pool.sousId === 6) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
   const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {

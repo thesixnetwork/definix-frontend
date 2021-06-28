@@ -46,6 +46,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+    firstToken: contracts.finix,
+    secondToken: contracts.six,
   },
   {
     pid: 3,
@@ -61,6 +63,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+    firstToken: contracts.finix,
+    secondToken: contracts.wklay,
   },
   {
     pid: 4,
@@ -76,6 +80,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+    firstToken: contracts.finix,
+    secondToken: contracts.ksp,
   },
   {
     pid: 5,
@@ -91,6 +97,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+    firstToken: contracts.finix,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 6,
@@ -106,6 +114,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.six,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 7,
@@ -121,6 +131,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.SIX,
     quoteTokenAdresses: contracts.six,
+    firstToken: contracts.six,
+    secondToken: contracts.wklay,
   },
   {
     pid: 8,
@@ -136,6 +148,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KLAY,
     quoteTokenAdresses: contracts.wklay,
+    firstToken: contracts.wklay,
+    secondToken: contracts.keth,
   },
   {
     pid: 9,
@@ -151,6 +165,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KLAY,
     quoteTokenAdresses: contracts.wklay,
+    firstToken: contracts.wklay,
+    secondToken: contracts.kwbtc,
   },
   {
     pid: 10,
@@ -166,6 +182,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KLAY,
     quoteTokenAdresses: contracts.wklay,
+    firstToken: contracts.wklay,
+    secondToken: contracts.kxrp,
   },
   {
     pid: 11,
@@ -181,6 +199,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.keth,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 12,
@@ -196,6 +216,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.kwbtc,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 13,
@@ -211,6 +233,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.kxrp,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 14,
@@ -226,6 +250,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.wklay,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 15,
@@ -241,6 +267,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.kdai,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 16,
@@ -256,6 +284,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.KUSDT,
     quoteTokenAdresses: contracts.kusdt,
+    firstToken: contracts.kbnb,
+    secondToken: contracts.kusdt,
   },
   {
     pid: 17,
@@ -271,6 +301,8 @@ const farms: FarmConfig[] = [
     },
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+    firstToken: contracts.kbnb,
+    secondToken: contracts.finix,
   },
 
   // {

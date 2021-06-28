@@ -68,6 +68,8 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
+  firstToken?: Address
+  secondToken?: Address
 }
 
 export interface PoolConfig {
