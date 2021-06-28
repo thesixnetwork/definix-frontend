@@ -101,7 +101,9 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
   const firstCoin = farmImage.split('-')[0].toLocaleLowerCase()
+  // const firstCoin = farm.tokenSymbol.toLocaleLowerCase()
   const secondCoin = farmImage.split('-')[1].toLocaleLowerCase()
+  // const secondCoin = farm.quoteTokenSymbol.toLocaleLowerCase()
   const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
@@ -121,8 +123,12 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
       <div className="flex justify-space-between">
         <div className="currency">
           <StyledFarmImages className="imgs">
+          <a href={firstCoin === "klay" ? `${process.env.REACT_APP_KLAYTN_URL}` : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.tokenAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank" rel="noreferrer">
             <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+          </a>
+          <a href={secondCoin === "klay" ? `${process.env.REACT_APP_KLAYTN_URL}` : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.quoteTokenAdresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank" rel="noreferrer">
             <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+          </a>
           </StyledFarmImages>
 
           <Heading fontSize="16px" fontWeight="500 !important">

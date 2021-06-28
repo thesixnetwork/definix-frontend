@@ -126,8 +126,7 @@ const Home: React.FC = () => {
                 />
               ) : (
                 <Caption>
-                  2nd Airdrop will be distributed after you staked your asset within 48 hours on your staked wallet at
-                  klaytn.definix.com
+                  Don&apos;t forget to claim your reward and utilize on Pool or compound on your farm
                 </Caption>
               )}
             </div>
