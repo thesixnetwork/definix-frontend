@@ -35,7 +35,7 @@ export default {
     1001: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
     8217: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
   },
-  kbtc: {
+  kwbtc: {
     1001: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
     8217: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
   },
@@ -84,8 +84,8 @@ export default {
     8217: process.env.REACT_APP_KLAY_KETH_LP_MAINNET,
   },
   klayKbtcLP: {
-    1001: process.env.REACT_APP_KLAY_KBTC_LP_TESTNET,
-    8217: process.env.REACT_APP_KLAY_KBTC_LP_MAINNET,
+    1001: process.env.REACT_APP_KLAY_KWBTC_LP_TESTNET,
+    8217: process.env.REACT_APP_KLAY_KWBTC_LP_MAINNET,
   },
   klayKxrpLP: {
     1001: process.env.REACT_APP_KLAY_KXRP_LP_TESTNET,
@@ -96,8 +96,8 @@ export default {
     8217: process.env.REACT_APP_KETH_KUSDT_LP_MAINNET,
   },
   kbtcKusdtLP: {
-    1001: process.env.REACT_APP_KBTC_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KBTC_KUSDT_LP_MAINNET,
+    1001: process.env.REACT_APP_KWBTC_KUSDT_LP_TESTNET,
+    8217: process.env.REACT_APP_KWBTC_KUSDT_LP_MAINNET,
   },
   kxrpKusdtLP: {
     1001: process.env.REACT_APP_KXRP_KUSDT_LP_TESTNET,

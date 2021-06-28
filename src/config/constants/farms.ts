@@ -139,12 +139,12 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 9,
-    lpSymbol: 'KLAY-KBTC LP',
+    lpSymbol: 'KLAY-KWBTC LP',
     lpAddresses: {
-      1001: process.env.REACT_APP_KLAY_KBTC_LP_TESTNET,
-      8217: process.env.REACT_APP_KLAY_KBTC_LP_MAINNET,
+      1001: process.env.REACT_APP_KLAY_KWBTC_LP_TESTNET,
+      8217: process.env.REACT_APP_KLAY_KWBTC_LP_MAINNET,
     },
-    tokenSymbol: 'KBTC',
+    tokenSymbol: 'KWBTC',
     tokenAddresses: {
       1001: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
       8217: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
@@ -184,12 +184,12 @@ const farms: FarmConfig[] = [
   },
   {
     pid: 12,
-    lpSymbol: 'KBTC-KUSDT LP',
+    lpSymbol: 'KWBTC-KUSDT LP',
     lpAddresses: {
-      1001: process.env.REACT_APP_KBTC_KUSDT_LP_TESTNET,
-      8217: process.env.REACT_APP_KBTC_KUSDT_LP_MAINNET,
+      1001: process.env.REACT_APP_KWBTC_KUSDT_LP_TESTNET,
+      8217: process.env.REACT_APP_KWBTC_KUSDT_LP_MAINNET,
     },
-    tokenSymbol: 'KBTC',
+    tokenSymbol: 'KWBTC',
     tokenAddresses: {
       1001: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
       8217: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,

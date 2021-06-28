@@ -30,7 +30,7 @@ export enum QuoteToken {
   'KDAI' = 'KDAI',
   'KETH' = 'KETH',
   'KXRP' = 'KXRP',
-  'KBTC' = 'KBTC',
+  'KWBTC' = 'KWBTC',
   'KBNB' = 'KBNB',
   'SIX' = 'SIX',
   'FINIX' = 'FINIX',

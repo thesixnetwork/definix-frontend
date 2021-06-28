@@ -44,7 +44,7 @@ export const getKethAddress = () => {
   return getAddress(addresses.keth)
 }
 export const getKbtcAddress = () => {
-  return getAddress(addresses.kbtc)
+  return getAddress(addresses.kwbtc)
 }
 export const getKxrpAddress = () => {
   return getAddress(addresses.kxrp)
