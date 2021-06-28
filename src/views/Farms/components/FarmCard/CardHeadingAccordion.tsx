@@ -123,12 +123,30 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
       <div className="flex justify-space-between">
         <div className="currency">
           <StyledFarmImages className="imgs">
-          <a href={firstCoin === "klay" ? `${process.env.REACT_APP_KLAYTN_URL}` : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.tokenAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank" rel="noreferrer">
-            <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-          </a>
-          <a href={secondCoin === "klay" ? `${process.env.REACT_APP_KLAYTN_URL}` : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.quoteTokenAdresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank" rel="noreferrer">
-            <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-          </a>
+            <a
+              href={
+                firstCoin === 'klay'
+                  ? `${process.env.REACT_APP_KLAYTN_URL}`
+                  : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.tokenAddresses[process.env.REACT_APP_CHAIN_ID]}`
+              }
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+            </a>
+            <a
+              href={
+                secondCoin === 'klay'
+                  ? `${process.env.REACT_APP_KLAYTN_URL}`
+                  : `${process.env.REACT_APP_KLAYTN_URL}/account/${
+                      farm.quoteTokenAdresses[process.env.REACT_APP_CHAIN_ID]
+                    }`
+              }
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+            </a>
           </StyledFarmImages>
 
           <Heading fontSize="16px" fontWeight="500 !important">

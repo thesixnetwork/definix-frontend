@@ -112,12 +112,28 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <StyledFarmImages>
-      <a href={firstCoin === "klay" ? `${process.env.REACT_APP_KLAYTN_URL}` : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.tokenAddresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank" rel="noreferrer">
-        <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-      </a>
-      <a href={secondCoin === "klay" ? `${process.env.REACT_APP_KLAYTN_URL}` : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.quoteTokenAdresses[process.env.REACT_APP_CHAIN_ID]}`} target="_blank" rel="noreferrer">
-        <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-      </a>
+        <a
+          href={
+            firstCoin === 'klay'
+              ? `${process.env.REACT_APP_KLAYTN_URL}`
+              : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.tokenAddresses[process.env.REACT_APP_CHAIN_ID]}`
+          }
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+        </a>
+        <a
+          href={
+            secondCoin === 'klay'
+              ? `${process.env.REACT_APP_KLAYTN_URL}`
+              : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.quoteTokenAdresses[process.env.REACT_APP_CHAIN_ID]}`
+          }
+          target="_blank"
+          rel="noreferrer"
+        >
+          <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+        </a>
       </StyledFarmImages>
 
       <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">

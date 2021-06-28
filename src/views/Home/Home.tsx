@@ -125,9 +125,7 @@ const Home: React.FC = () => {
                   style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
                 />
               ) : (
-                <Caption>
-                  Don&apos;t forget to claim your reward and utilize on Pool or compound on your farm
-                </Caption>
+                <Caption>Don&apos;t forget to claim your reward and utilize on Pool or compound on your farm</Caption>
               )}
             </div>
             <CardAirdropKlay showBtn className="mb-5" />
