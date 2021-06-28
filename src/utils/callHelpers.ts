@@ -1,6 +1,10 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-// import caver from '../klaytn/caver'
+import herodotus from 'config/abi/herodotus.json'
+import {
+  getHerodotusAddress
+} from 'utils/addressHelpers'
+import caverFeeDelegate from '../klaytn/caverFeeDelegate'
 
 export const approve = async (lpContract, herodotusContract, account) => {
   return lpContract.methods
@@ -10,32 +14,6 @@ export const approve = async (lpContract, herodotusContract, account) => {
 
 export const stake = async (herodotusContract, pid, amount, account) => {
   if (pid === 0) {
-    // const data = caver.klay.abi.encodeFunctionCall(
-    //   {
-    //     name: 'enterStaking',
-    //     type: 'function',
-    //     inputs: [
-    //       {
-    //         type: 'uint256',
-    //         name: '_amount',
-    //       }
-    //     ]
-    //   },
-    //   [
-    //     new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()
-    //   ]
-    // )
-    // return caver.klay
-    //   .sendTransaction({
-    //     type: 'SMART_CONTRACT_EXECUTION',
-    //     from: account,
-    //     to: herodotusContract.options.address,
-    //     data,
-    //     gas: 300000
-    //   })
-    //   .on('transactionHash', (tx) => {
-    //     return tx.transactionHash
-    //   })
     return herodotusContract.methods
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 300000 })
@@ -182,10 +160,11 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 }
 
 export const harvest = async (herodotusContract, pid, account) => {
+
   if (pid === 0) {
     return herodotusContract.methods
       .leaveStaking('0')
-      .send({ from: account, gas: 500000 })
+      .send({ from: account, gas: 400000 })
       .then(function (tx) {
         return tx.transactionHash
       })
@@ -197,10 +176,29 @@ export const harvest = async (herodotusContract, pid, account) => {
     // })
   }
 
-  return herodotusContract.methods
-    .deposit(pid, '0')
-    .send({ from: account, gas: 300000 })
-    .then(function (tx) {
+  // const input = herodotusContract.methods.deposit(pid, '0').encodeABI();
+
+  // const senderPrivateKey = ''
+  // const sender = caver.wallet.keyring.createFromPrivateKey(senderPrivateKey)
+  // caver.wallet.add(sender)
+  const feePayerAddress = '0x3695a6A9ed1f9488e008c20cF3f3e2c3507aea34'
+  
+  // const contractAddress = '0x5657c921b34AdC30A42ba301eB67aB0F8e055D75'
+  // Create a feeDelegatedSmartContractExecution transaction
+  // const tx = caver.transaction.feeDelegatedSmartContractExecution.create({
+  //     from: sender.address,
+  //     to: contractAddress,
+  //     gas: '3000000',
+  //     data : input,
+  //     feePayer: feePayerAddress,
+  // })
+  const herodotusContractWithFeeDelegate = new caverFeeDelegate.klay.Contract(herodotus, getHerodotusAddress())
+  return herodotusContractWithFeeDelegate.send({
+    from: account,
+    gas: 400000,
+    feeDelegation: true,
+    feePayer: feePayerAddress,
+  }, 'deposit', pid, '0').then(function (tx) {
       console.log('harvest tx = ', tx)
       return tx.transactionHash
     })
@@ -208,9 +206,25 @@ export const harvest = async (herodotusContract, pid, account) => {
       console.log('harvest error tx = ', tx)
       return tx.transactionHash
     })
-  // .on('transactionHash', (tx) => {
-  //   return tx.transactionHash
-  // })
+
+  // const feePayerSigningResult = await caver.rpc.klay.signTransactionAsFeePayer(tx)
+  // console.log(feePayerSigningResult)
+  // const feePayerSignedTx = caver.transaction.decode(feePayerSigningResult.raw)
+  // const senderSigned = await caver.wallet.sign(sender.address, feePayerSignedTx)
+  // return caver.rpc.klay.sendRawTransaction(senderSigned)
+  // console.log(result)
+
+  // return herodotusContract.methods
+  //   .deposit(pid, '0')
+  //   .send({ from: account, gas: 400000 })
+  //   .then(function (tx) {
+  //     console.log('harvest tx = ', tx)
+  //     return tx.transactionHash
+  //   })
+  //   .catch(function (tx) {
+  //     console.log('harvest error tx = ', tx)
+  //     return tx.transactionHash
+  //   })
 }
 
 export const soushHarvest = async (sousChefContract, account) => {
