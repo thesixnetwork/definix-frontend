@@ -2,8 +2,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import herodotus from 'config/abi/herodotus.json'
 import { getHerodotusAddress } from 'utils/addressHelpers'
-// import caver from "../klaytn/caver";
-import caverFeeDelegate from '../klaytn/caverFeeDelegate'
+import Caver from "caver-js"
 
 export const approve = async (lpContract, herodotusContract, account) => {
   return lpContract.methods
@@ -174,29 +173,32 @@ export const harvest = async (herodotusContract, pid, account) => {
     // })
   }
 
+  const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
   const feePayerAddress = '0x3695a6A9ed1f9488e008c20cF3f3e2c3507aea34'
-  const herodotusContractWithFeeDelegate = new caverFeeDelegate.klay.Contract(herodotus, getHerodotusAddress())
-
+  
   // @ts-ignore
-  const caver = window.caver
+  const caver = new Caver(window.caver)
+  // console.log('caver = ', caver)
+  const masterChefContract = new caver.klay.Contract(herodotus, getHerodotusAddress())
+
   return caver.klay
     .signTransaction({
       type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
       from: account,
       to: getHerodotusAddress(),
       gas: 300000,
-      data: herodotusContractWithFeeDelegate.methods.deposit(pid, '0').encodeABI(),
+      data: masterChefContract.methods.deposit(pid, '0').encodeABI(),
     })
     .then(function (userSignTx) {
       // console.log('userSignTx tx = ', userSignTx)
-      const userSigned = caverFeeDelegate.transaction.decode(userSignTx.rawTransaction)
+      const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
       // console.log('userSigned tx = ', userSigned)
       userSigned.feePayer = feePayerAddress
       // console.log('userSigned After add feePayer tx = ', userSigned)
 
       return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
         // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-        return caverFeeDelegate.rpc.klay
+        return caver.rpc.klay
           .sendRawTransaction(feePayerSigningResult.raw)
           .on('transactionHash', (sendTx) => {
             console.log('harvest tx = ', sendTx)
