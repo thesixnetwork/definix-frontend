@@ -176,13 +176,13 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   // @ts-ignore
   const caver = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
-  console.log("caver = ", caver)
+  console.log('caver = ', caver)
   const feePayerAddress = '0x3695a6A9ed1f9488e008c20cF3f3e2c3507aea34'
   const herodotusContractWithFeeDelegate = new caver.klay.Contract(herodotus, getHerodotusAddress())
 
-  const input = herodotusContractWithFeeDelegate.methods.deposit(pid, '0').encodeABI();
-  console.log("input = ", input)
-  console.log("account = ", account)
+  const input = herodotusContractWithFeeDelegate.methods.deposit(pid, '0').encodeABI()
+  console.log('input = ', input)
+  console.log('account = ', account)
 
   const feeTx = caver.transaction.feeDelegatedSmartContractExecution.create({
     from: account,
@@ -194,29 +194,29 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   console.log('feeDelegatedSmartContractExecution tx = ', feeTx)
   const feePayerSigningResult = await caver.rpc.klay.signTransactionAsFeePayer(feeTx)
-  console.log("feePayerSigningResult = ",feePayerSigningResult)
+  console.log('feePayerSigningResult = ', feePayerSigningResult)
   const feePayerSignedTx = caver.transaction.decode(feePayerSigningResult.raw)
-  console.log("feePayerSignedTx.getRLPEncoding = ",feePayerSignedTx.getRLPEncoding())
+  console.log('feePayerSignedTx.getRLPEncoding = ', feePayerSignedTx.getRLPEncoding())
 
-    // @ts-ignore
-    return window.caver.klay.signTransaction({
-    type: "FEE_DELEGATED_SMART_CONTRACT_EXECUTION",
-    from: account,
-    to: getHerodotusAddress(),
-    gas: 3000000,
-    data: feePayerSignedTx.getRLPEncoding(),
-    feePayer: feePayerAddress,
-  })
-  .then(function (tx) {
-          console.log('harvest tx = ', tx)
-          return caver.rpc.klay.sendRawTransaction(tx.rawTransaction)
+  // @ts-ignore
+  return window.caver.klay
+    .signTransaction({
+      type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+      from: account,
+      to: getHerodotusAddress(),
+      gas: 3000000,
+      data: feePayerSignedTx.getRLPEncoding(),
+      feePayer: feePayerAddress,
+    })
+    .then(function (tx) {
+      console.log('harvest tx = ', tx)
+      return caver.rpc.klay.sendRawTransaction(tx.rawTransaction)
     })
     .catch(function (tx) {
       console.log('harvest error tx = ', tx)
       return tx.transactionHash
     })
   // const result = await caver.rpc.klay.sendRawTransaction(senderSigned)
-
 
   // return herodotusContract.methods
   //   .deposit(pid, '0')
