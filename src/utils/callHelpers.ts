@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import herodotus from 'config/abi/herodotus.json'
 import { getHerodotusAddress } from 'utils/addressHelpers'
-import Caver from "caver-js"
+import Caver from 'caver-js'
 
 export const approve = async (lpContract, herodotusContract, account) => {
   return lpContract.methods
@@ -175,7 +175,7 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
   const feePayerAddress = '0x3695a6A9ed1f9488e008c20cF3f3e2c3507aea34'
-  
+
   // @ts-ignore
   const caver = new Caver(window.caver)
   // console.log('caver = ', caver)
@@ -198,12 +198,10 @@ export const harvest = async (herodotusContract, pid, account) => {
 
       return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
         // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-        return caver.rpc.klay
-          .sendRawTransaction(feePayerSigningResult.raw)
-          .on('transactionHash', (sendTx) => {
-            console.log('harvest tx = ', sendTx)
-            return sendTx.transactionHash
-          })
+        return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
+          console.log('harvest tx = ', sendTx)
+          return sendTx.transactionHash
+        })
         // .then(function (sendTx) {
         //   console.log('harvest tx = ', sendTx)
         //   return sendTx.transactionHash
