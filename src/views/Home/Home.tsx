@@ -1,6 +1,8 @@
 import { useWallet } from 'klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import _ from 'lodash'
 import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
@@ -96,6 +98,21 @@ const Home: React.FC = () => {
     }
   }, [])
 
+  const [captionText, setCaptionText] = React.useState()
+  useEffect(() => {
+    async function fetchCaptionText() {
+      const captionTextAPI = process.env.REACT_APP_API_CAPTION_TEXT_KLAYTN
+      const response = await axios.get(`${captionTextAPI}`)
+      if (response.data.data) {
+        const caption = _.get(response.data.data, 'data.0.text', '')
+        setCaptionText(caption)
+      } else {
+        console.log('error')
+      }
+    }
+    fetchCaptionText()
+  }, [])
+
   return (
     <>
       <Helmet>
@@ -125,7 +142,7 @@ const Home: React.FC = () => {
                   style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
                 />
               ) : (
-                <Caption>Don&apos;t forget to claim your reward and utilize on Pool or compound on your farm</Caption>
+                <Caption>{captionText}</Caption>
               )}
             </div>
             <CardAirdropKlay showBtn className="mb-5" />
