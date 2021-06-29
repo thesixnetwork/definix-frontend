@@ -179,7 +179,8 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   // @ts-ignore
   const caver = window.caver
-  return caver.klay.signTransaction({
+  return caver.klay
+    .signTransaction({
       type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
       from: account,
       to: getHerodotusAddress(),
@@ -193,14 +194,14 @@ export const harvest = async (herodotusContract, pid, account) => {
       userSigned.feePayer = feePayerAddress
       // console.log('userSigned After add feePayer tx = ', userSigned)
 
-      return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned)
-      .then(function (feePayerSigningResult) {
+      return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
         // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-        return caverFeeDelegate.rpc.klay.sendRawTransaction(feePayerSigningResult.raw)
-        .on('transactionHash', (sendTx) => {
-          console.log('harvest tx = ', sendTx)
-          return sendTx.transactionHash
-        })
+        return caverFeeDelegate.rpc.klay
+          .sendRawTransaction(feePayerSigningResult.raw)
+          .on('transactionHash', (sendTx) => {
+            console.log('harvest tx = ', sendTx)
+            return sendTx.transactionHash
+          })
         // .then(function (sendTx) {
         //   console.log('harvest tx = ', sendTx)
         //   return sendTx.transactionHash
