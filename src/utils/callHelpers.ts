@@ -2,7 +2,8 @@ import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
 import herodotus from 'config/abi/herodotus.json'
 import { getHerodotusAddress } from 'utils/addressHelpers'
-import caverFeeDelegate from '../klaytn/caverFeeDelegate'
+// import caverFeeDelegate from '../klaytn/caverFeeDelegate'
+import Caver from 'caver-js'
 
 export const approve = async (lpContract, herodotusContract, account) => {
   return lpContract.methods
@@ -173,50 +174,49 @@ export const harvest = async (herodotusContract, pid, account) => {
     // })
   }
 
-  // const input = herodotusContract.methods.deposit(pid, '0').encodeABI();
-
-  // const senderPrivateKey = ''
-  // const sender = caver.wallet.keyring.createFromPrivateKey(senderPrivateKey)
-  // caver.wallet.add(sender)
+  // @ts-ignore
+  const caver = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
+  console.log("caver = ", caver)
   const feePayerAddress = '0x3695a6A9ed1f9488e008c20cF3f3e2c3507aea34'
+  const herodotusContractWithFeeDelegate = new caver.klay.Contract(herodotus, getHerodotusAddress())
 
-  // const contractAddress = '0x5657c921b34AdC30A42ba301eB67aB0F8e055D75'
-  // Create a feeDelegatedSmartContractExecution transaction
-  // const tx = caver.transaction.feeDelegatedSmartContractExecution.create({
-  //     from: sender.address,
-  //     to: contractAddress,
-  //     gas: '3000000',
-  //     data : input,
-  //     feePayer: feePayerAddress,
-  // })
-  const herodotusContractWithFeeDelegate = new caverFeeDelegate.klay.Contract(herodotus, getHerodotusAddress())
-  return herodotusContractWithFeeDelegate
-    .send(
-      {
-        from: account,
-        gas: 400000,
-        feeDelegation: true,
-        feePayer: feePayerAddress,
-      },
-      'deposit',
-      pid,
-      '0',
-    )
-    .then(function (tx) {
-      console.log('harvest tx = ', tx)
-      return tx.transactionHash
+  const input = herodotusContractWithFeeDelegate.methods.deposit(pid, '0').encodeABI();
+  console.log("input = ", input)
+  console.log("account = ", account)
+
+  const feeTx = caver.transaction.feeDelegatedSmartContractExecution.create({
+    from: account,
+    to: getHerodotusAddress(),
+    input,
+    gas: 3000000,
+    feePayer: feePayerAddress,
+  })
+
+  console.log('feeDelegatedSmartContractExecution tx = ', feeTx)
+  const feePayerSigningResult = await caver.rpc.klay.signTransactionAsFeePayer(feeTx)
+  console.log("feePayerSigningResult = ",feePayerSigningResult)
+  const feePayerSignedTx = caver.transaction.decode(feePayerSigningResult.raw)
+  console.log("feePayerSignedTx.getRLPEncoding = ",feePayerSignedTx.getRLPEncoding())
+
+    // @ts-ignore
+    return window.caver.klay.signTransaction({
+    type: "FEE_DELEGATED_SMART_CONTRACT_EXECUTION",
+    from: account,
+    to: getHerodotusAddress(),
+    gas: 3000000,
+    data: feePayerSignedTx.getRLPEncoding(),
+    feePayer: feePayerAddress,
+  })
+  .then(function (tx) {
+          console.log('harvest tx = ', tx)
+          return caver.rpc.klay.sendRawTransaction(tx.rawTransaction)
     })
     .catch(function (tx) {
       console.log('harvest error tx = ', tx)
       return tx.transactionHash
     })
+  // const result = await caver.rpc.klay.sendRawTransaction(senderSigned)
 
-  // const feePayerSigningResult = await caver.rpc.klay.signTransactionAsFeePayer(tx)
-  // console.log(feePayerSigningResult)
-  // const feePayerSignedTx = caver.transaction.decode(feePayerSigningResult.raw)
-  // const senderSigned = await caver.wallet.sign(sender.address, feePayerSignedTx)
-  // return caver.rpc.klay.sendRawTransaction(senderSigned)
-  // console.log(result)
 
   // return herodotusContract.methods
   //   .deposit(pid, '0')
