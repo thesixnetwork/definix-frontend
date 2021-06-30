@@ -1,4 +1,5 @@
 import Kaikas from './icons/Kaikas'
+import Dcent from './icons/Dcent'
 import MathWallet from './icons/MathWallet'
 import TokenPocket from './icons/TokenPocket'
 import TrustWallet from './icons/TrustWallet'
@@ -10,6 +11,11 @@ const connectors: Config[] = [
   {
     title: 'Kaikas',
     icon: Kaikas,
+    connectorId: 'injected',
+  },
+  {
+    title: 'D`CENT',
+    icon: Dcent,
     connectorId: 'injected',
   },
 ]
