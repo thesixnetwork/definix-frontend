@@ -500,7 +500,7 @@ export const fetchQuote = () => async (dispatch) => {
   const KSP = new Token(chainId, kspAddress, 18, 'KSP', 'Klayswap Protocol')
   const KUSDT = new Token(chainId, kusdtAddress, 18, 'KUSDT', 'KUSDT')
   const KETH = new Token(chainId, kethAddress, 18, 'KETH', 'KETH')
-  const KBTC = new Token(chainId, kbtcAddress, 18, 'KBTC', 'KBTC')
+  const KWBTC = new Token(chainId, kbtcAddress, 18, 'KWBTC', 'KWBTC')
   const KXRP = new Token(chainId, kxrpAddress, 18, 'KXRP', 'KXRP')
   const KBNB = new Token(chainId, kbnbAddress, 18, 'KBNB', 'KBNB')
 
@@ -551,7 +551,7 @@ export const fetchQuote = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(WKLAY, KBTC),
+      lpAddress: Pair.getAddress(WKLAY, KWBTC),
       qouteToken: wklayAddress,
     }),
   )
@@ -569,7 +569,7 @@ export const fetchQuote = () => async (dispatch) => {
   )
   fetchPromise.push(
     getTotalQuote({
-      lpAddress: Pair.getAddress(KBTC, KUSDT),
+      lpAddress: Pair.getAddress(KWBTC, KUSDT),
       qouteToken: kusdtAddress,
     }),
   )

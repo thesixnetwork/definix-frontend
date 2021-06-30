@@ -80,7 +80,7 @@ const Farms: React.FC = () => {
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
-  console.log('--------------------------------')
+  // console.log('--------------------------------')
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsKlay = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
