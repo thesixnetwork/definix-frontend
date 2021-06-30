@@ -4,7 +4,7 @@ import { SvgProps } from '../../../components/Svg/types'
 
 const Icon: React.FC<SvgProps> = (props) => {
   return (
-    <Svg viewBox="0 0 1307.63 1307.63" {...props}>
+    <Svg viewBox="0 0 120 138" {...props}>
       <defs>
         <clipPath id="clip-dcent-logomark-full-colored_d_cent_mint">
           <rect width="120" height="138" />
