@@ -158,28 +158,55 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 }
 
 export const harvest = async (herodotusContract, pid, account) => {
-  if (pid === 0) {
-    return herodotusContract.methods
-      .leaveStaking('0')
-      .send({ from: account, gas: 300000 })
-      .then(function (tx) {
-        return tx.transactionHash
-      })
-      .catch(function (tx) {
-        return tx.transactionHash
-      })
-    // .on('transactionHash', (tx) => {
-    //   return tx.transactionHash
-    // })
-  }
-
   const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
   const feePayerAddress = '0x3695a6A9ed1f9488e008c20cF3f3e2c3507aea34'
 
   // @ts-ignore
   const caver = new Caver(window.caver)
   // console.log('caver = ', caver)
-  const masterChefContract = new caver.klay.Contract(herodotus, getHerodotusAddress())
+
+  if (pid === 0) {
+    return caver.klay
+    .signTransaction({
+      type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+      from: account,
+      to: getHerodotusAddress(),
+      gas: 300000,
+      data: herodotusContract.methods.leaveStaking('0').encodeABI(),
+    })
+    .then(function (userSignTx) {
+      console.log('userSignTx tx = ', userSignTx)
+      const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
+      console.log('userSigned tx = ', userSigned)
+      userSigned.feePayer = feePayerAddress
+      console.log('userSigned After add feePayer tx = ', userSigned)
+
+      return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
+        console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+        return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
+          console.log('harvest tx = ', sendTx)
+          return sendTx.transactionHash
+        })
+      })
+    })
+    .catch(function (tx) {
+      console.log('harvest error tx = ', tx)
+      return tx.transactionHash
+    })
+
+    // return herodotusContract.methods
+    //   .leaveStaking('0')
+    //   .send({ from: account, gas: 300000 })
+    //   .then(function (tx) {
+    //     return tx.transactionHash
+    //   })
+    //   .catch(function (tx) {
+    //     return tx.transactionHash
+    //   })
+    // .on('transactionHash', (tx) => {
+    //   return tx.transactionHash
+    // })
+  }
 
   return caver.klay
     .signTransaction({
@@ -187,29 +214,21 @@ export const harvest = async (herodotusContract, pid, account) => {
       from: account,
       to: getHerodotusAddress(),
       gas: 300000,
-      data: masterChefContract.methods.deposit(pid, '0').encodeABI(),
+      data: herodotusContract.methods.deposit(pid, '0').encodeABI(),
     })
     .then(function (userSignTx) {
-      // console.log('userSignTx tx = ', userSignTx)
+      console.log('userSignTx tx = ', userSignTx)
       const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-      // console.log('userSigned tx = ', userSigned)
+      console.log('userSigned tx = ', userSigned)
       userSigned.feePayer = feePayerAddress
-      // console.log('userSigned After add feePayer tx = ', userSigned)
+      console.log('userSigned After add feePayer tx = ', userSigned)
 
       return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-        // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+        console.log('feePayerSigningResult tx = ', feePayerSigningResult)
         return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
           console.log('harvest tx = ', sendTx)
           return sendTx.transactionHash
         })
-        // .then(function (sendTx) {
-        //   console.log('harvest tx = ', sendTx)
-        //   return sendTx.transactionHash
-        // })
-        // .catch(function (sendTx) {
-        //   console.log('harvest error tx = ', sendTx)
-        //   return sendTx.transactionHash
-        // })
       })
     })
     .catch(function (tx) {
