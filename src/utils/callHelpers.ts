@@ -167,32 +167,32 @@ export const harvest = async (herodotusContract, pid, account) => {
 
   if (pid === 0) {
     return caver.klay
-    .signTransaction({
-      type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-      from: account,
-      to: getHerodotusAddress(),
-      gas: 300000,
-      data: herodotusContract.methods.leaveStaking('0').encodeABI(),
-    })
-    .then(function (userSignTx) {
-      console.log('userSignTx tx = ', userSignTx)
-      const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-      console.log('userSigned tx = ', userSigned)
-      userSigned.feePayer = feePayerAddress
-      console.log('userSigned After add feePayer tx = ', userSigned)
+      .signTransaction({
+        type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+        from: account,
+        to: getHerodotusAddress(),
+        gas: 300000,
+        data: herodotusContract.methods.leaveStaking('0').encodeABI(),
+      })
+      .then(function (userSignTx) {
+        console.log('userSignTx tx = ', userSignTx)
+        const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
+        console.log('userSigned tx = ', userSigned)
+        userSigned.feePayer = feePayerAddress
+        console.log('userSigned After add feePayer tx = ', userSigned)
 
-      return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-        console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-        return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-          console.log('harvest tx = ', sendTx)
-          return sendTx.transactionHash
+        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
+          console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+          return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
+            console.log('harvest tx = ', sendTx)
+            return sendTx.transactionHash
+          })
         })
       })
-    })
-    .catch(function (tx) {
-      console.log('harvest error tx = ', tx)
-      return tx.transactionHash
-    })
+      .catch(function (tx) {
+        console.log('harvest error tx = ', tx)
+        return tx.transactionHash
+      })
 
     // return herodotusContract.methods
     //   .leaveStaking('0')
