@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
+import Caver from 'caver-js'
 import {
   getAddress,
   getHerodotusAddress,
@@ -33,7 +34,7 @@ import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   // @ts-ignore
-  const caver = window.caver
+  const caver = window.caver || new Caver(process.env.REACT_APP_NODE_3)
   const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
 
   useEffect(() => {

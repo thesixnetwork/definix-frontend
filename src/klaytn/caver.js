@@ -15,6 +15,7 @@ window.addEventListener(
   },
   false,
 )
+window.caver = new Caver(process.env.REACT_APP_NODE_3)
 // const caver = new Caver(rpcURL);
 
 export default window.klaytn

@@ -241,6 +241,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         if (farm.quoteTokenSymbol === QuoteToken.KUSDT) {
           apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(klayPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+          apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
           apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
