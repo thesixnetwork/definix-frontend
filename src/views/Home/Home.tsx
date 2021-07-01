@@ -1,5 +1,5 @@
-import { useWallet } from 'klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
+import { useWallet } from 'klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
@@ -15,13 +15,13 @@ import {
   ShowHideButton,
   TwoPanelLayout,
 } from 'uikit-dev/components/TwoPanelLayout'
+import CardAirdropKlay from './components/CardAirdropKlay'
 import CardAudit from './components/CardAudit'
-import CardComingSoon from './components/CardComingSoon'
+import CardAutoRebalancing from './components/CardAutoRebalancing'
 import CardGetStarted from './components/CardGetStarted/CardGetStarted'
 import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
-import CardAirdropKlay from './components/CardAirdropKlay'
 
 const Caption = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
@@ -129,7 +129,8 @@ const Home: React.FC = () => {
               )}
             </div>
             <CardAirdropKlay showBtn className="mb-5" />
-            <CardComingSoon showBtn className="mb-5" />
+
+            <CardAutoRebalancing className="mb-5" />
 
             <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
               <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>
