@@ -1,12 +1,15 @@
+import { allLanguages } from 'config/localisation/languageCodes'
 import React, { useState } from 'react'
 import Lottie from 'react-lottie'
 import styled from 'styled-components'
 import moon from '../../animation/moon.json'
 import sun from '../../animation/sun.json'
 import Button from '../../components/Button/Button'
+import Dropdown from '../../components/Dropdown/Dropdown'
 import { ChevronDownIcon } from '../../components/Svg'
 import Text from '../../components/Text/Text'
 import { MENU_ENTRY_HEIGHT } from './config'
+import MenuButton from './MenuButton'
 import { PanelProps, PushedProps } from './types'
 
 const sunOptions = {
@@ -113,11 +116,11 @@ const PanelFooter: React.FC<Props> = ({
   toggleTheme,
   isDark,
   currentLang,
+  setLang,
   // isPushed,
   // pushNav,
   // finixPriceUsd,
   // langs,
-  // setLang,
 }) => {
   const [isStopped, setIsStop] = useState(false)
   const [direction, setDirection] = useState(isDark ? 1 : -1)
@@ -179,14 +182,13 @@ const PanelFooter: React.FC<Props> = ({
       </SocialEntry> */}
       <SettingsEntry>
         {/* <Dropdown
-          position="top-right"
+          position="top"
           target={
             <ChangeLanguage
               variant="text"
               radii="card"
-              endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
               padding="0 16px"
-              disabled
+              endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
             >
               <Text color="textSubtle" bold>
                 {currentLang?.toUpperCase()}
@@ -194,7 +196,7 @@ const PanelFooter: React.FC<Props> = ({
             </ChangeLanguage>
           }
         >
-          {langs.map((lang) => (
+          {allLanguages.map((lang) => (
             <MenuButton
               key={lang.code}
               fullWidth
