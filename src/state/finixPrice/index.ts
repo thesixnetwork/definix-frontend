@@ -14,6 +14,7 @@ import {
   getBusdAddress,
   getUsdtAddress,
   getBtcbAddress,
+  getEthAddress,
   getFinixSixLPAddress,
   getFinixBusdLPAddress,
   getFinixBnbLPAddress,

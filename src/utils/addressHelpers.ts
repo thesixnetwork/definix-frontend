@@ -34,6 +34,9 @@ export const getUsdtAddress = () => {
 export const getBtcbAddress = () => {
   return getAddress(addresses.btcb)
 }
+export const getEthAddress = () => {
+  return getAddress(addresses.eth)
+}
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }
