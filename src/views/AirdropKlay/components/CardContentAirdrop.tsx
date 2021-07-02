@@ -304,13 +304,13 @@ export default function CardContentAirdrop({
     <StyledBanner>
       <MaxWidth>
         <div>
-          {/* {!account ? <UnlockButton fullWidth radii="small" /> : checkRender()}
+          {!account ? <UnlockButton fullWidth radii="small" /> : checkRender()}
           {state == COUNTDOWN ? <CountDown showCom /> : null}
           {state == NOT_CLAIM ? renderNotClaim() : null}
           {state == CLAIM && clickClaim == false ? renderClaimBtn() : null}
           {state == CLAIM && clickClaim == true ? renderClaimDiv() : null}
-          {state == CLAIMED ? renderClaimedBtn() : null} */}
-          {renderClaimDiv()}
+          {state == CLAIMED ? renderClaimedBtn() : null}
+          
           <div style={{ marginTop: '40px' }}>
             <DiscriptionFirstAirdrop toggle={toggleAirdropFirst} open={openFirstAirdrop} disable={state != CLAIMED} />
             <br />
