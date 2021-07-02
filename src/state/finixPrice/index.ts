@@ -14,6 +14,7 @@ import {
   getBusdAddress,
   getUsdtAddress,
   getBtcbAddress,
+  getEthAddress,
   getFinixSixLPAddress,
   getFinixBusdLPAddress,
   getFinixBnbLPAddress,
@@ -38,6 +39,7 @@ const initialState: FinixPriceState = {
   wbnbUsdtQuote: 0,
   busdUsdtQuote: 0,
   bnbBtcbQuote: 0,
+  ethBnbQuote: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -69,6 +71,7 @@ export const finixPriceSlice = createSlice({
         wbnbUsdtQuote,
         busdUsdtQuote,
         bnbBtcbQuote,
+        ethBnbQuote,
       } = action.payload
       state.sixFinixQuote = sixFinixQuote
       state.sixBusdQuote = sixBusdQuote
@@ -81,6 +84,7 @@ export const finixPriceSlice = createSlice({
       state.wbnbUsdtQuote = wbnbUsdtQuote
       state.busdUsdtQuote = busdUsdtQuote
       state.bnbBtcbQuote = bnbBtcbQuote
+      state.ethBnbQuote = ethBnbQuote
     },
   },
 })
@@ -324,6 +328,7 @@ export const fetchQuote = () => async (dispatch) => {
   const wbnbAddress = getWbnbAddress()
   const usdtAddress = getUsdtAddress()
   const btcbAddress = getBtcbAddress()
+  const ethAddress = getEthAddress()
   let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
   if (chainId === ChainId.MAINNET) {
     chainId = ChainId.MAINNET
@@ -337,6 +342,7 @@ export const fetchQuote = () => async (dispatch) => {
   const WBNB = new Token(chainId, wbnbAddress, 18, 'WBNB', 'Wrapped BNB')
   const USDT = new Token(chainId, usdtAddress, 18, 'USDT', 'USDT')
   const BTCB = new Token(chainId, btcbAddress, 18, 'BTCB', 'BTCB')
+  const ETH = new Token(chainId, ethAddress, 18, 'ETH', 'ETH')
 
   const fetchPromise = []
 
@@ -406,6 +412,12 @@ export const fetchQuote = () => async (dispatch) => {
       qouteToken: wbnbAddress,
     }),
   )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(ETH, WBNB),
+      qouteToken: wbnbAddress,
+    }),
+  )
 
   const [
     sixFinixQuote,
@@ -419,6 +431,7 @@ export const fetchQuote = () => async (dispatch) => {
     wbnbUsdtQuote,
     busdUsdtQuote,
     bnbBtcbQuote,
+    ethBnbQuote,
   ] = await Promise.all(fetchPromise)
 
   dispatch(
@@ -434,6 +447,7 @@ export const fetchQuote = () => async (dispatch) => {
       wbnbUsdtQuote,
       busdUsdtQuote,
       bnbBtcbQuote,
+      ethBnbQuote,
     }),
   )
 }

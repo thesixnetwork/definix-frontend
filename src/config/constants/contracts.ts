@@ -35,6 +35,10 @@ export default {
     97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
     56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
   },
+  eth: {
+    97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
+  },
   finixSixLP: {
     97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
     56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
@@ -99,10 +103,6 @@ export default {
   bunnyFactory: {
     56: '0xfa249Caa1D16f75fa159F7DFBAc0cC5EaB48CeFf',
     97: '0x707CBF373175fdB601D34eeBF2Cf665d08f01148',
-  },
-  eth: {
-    56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-    97: '',
   },
   claimRefund: {
     56: '0xE7e53A7e9E3Cf6b840f167eF69519175c497e149',

@@ -166,6 +166,7 @@ export const usePriceTVL = (): BigNumber => {
   const wbnbUsdtQuote = useSelector((state: State) => state.finixPrice.wbnbUsdtQuote)
   const busdUsdtQuote = useSelector((state: State) => state.finixPrice.busdUsdtQuote)
   const bnbBtcbQuote = useSelector((state: State) => state.finixPrice.bnbBtcbQuote)
+  const ethBnbQuote = useSelector((state: State) => state.finixPrice.ethBnbQuote)
   const finixUsdPrice = usePriceFinixUsd()
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -224,6 +225,7 @@ export const usePriceTVL = (): BigNumber => {
     const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
     const busdUsdtPrice = new BigNumber(busdUsdtQuote)
     const bnbBtcbPrice = new BigNumber(bnbBtcbQuote).times(bnbUsdPrice)
+    const ethBnbPrice = new BigNumber(ethBnbQuote).times(bnbUsdPrice)
     return BigNumber.sum.apply(null, [
       sixFinixPrice,
       sixBusdPrice,
@@ -235,6 +237,7 @@ export const usePriceTVL = (): BigNumber => {
       wbnbBusdPrice,
       wbnbUsdtPrice,
       busdUsdtPrice,
+      ethBnbPrice,
       totalStaked.times(sixUsd).toNumber(),
       totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
     ])
@@ -243,7 +246,7 @@ export const usePriceTVL = (): BigNumber => {
 
 export const usePriceEthBusd = (): BigNumber => {
   // const pid = 6 // ETH-BNB LP
-  const pid = 10 // ETH-BNB LP
+  const pid = parseInt(process.env.REACT_APP_ETH_BNB_PID, 10) // BUSD-SIX LP
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
