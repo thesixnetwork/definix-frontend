@@ -671,7 +671,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <FarmsAndPools key={d.tokenName}>
                 <Coins>
                   <div className="flex">
-                    <img src={`/images/coins/${imgs[0]}.png`} alt="" />
+                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
                   </div>
                   <Text bold>{d.tokenName}</Text>
                 </Coins>
@@ -725,8 +725,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 ) : (
                   <>
                     <div className="flex">
-                      {imgs[0] && <img src={`/images/coins/${imgs[0]}.png`} alt="" />}
-                      {imgs[1] && <img src={`/images/coins/${imgs[1]}.png`} alt="" />}
+                      {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                      {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
                     </div>
                     <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
                   </>
