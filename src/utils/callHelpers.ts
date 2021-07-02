@@ -225,9 +225,9 @@ export const harvest = async (herodotusContract, pid, account) => {
 
       return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
         console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-        return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-          console.log('harvest tx = ', sendTx)
-          return sendTx.transactionHash
+        return caverFeeDelegate.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).then('receipt', (receipt) => {
+          console.log('harvest receipt tx = ', receipt)
+          return receipt.transactionHash
         })
       })
     })
