@@ -60,6 +60,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   kethPrice,
   account,
   isHorizontal = false,
+  connector
 }) => {
   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
@@ -148,9 +149,10 @@ const FarmCard: React.FC<FarmCardProps> = ({
         className={className}
         onPresentDeposit={renderDepositModal}
         onPresentWithdraw={renderWithdrawModal}
+        connector={connector}
       />
     ),
-    [account, klaytn, farm, renderDepositModal, renderWithdrawModal],
+    [account, klaytn, farm, renderDepositModal, renderWithdrawModal,connector],
   )
 
   const renderHarvestAction = useCallback(

@@ -55,7 +55,7 @@ const Farms: React.FC = () => {
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn,connector }: { account: string; klaytn: provider ,connector:string} = useWallet()
   const kethPriceUsd = usePriceKethKusdt()
 
   const dispatch = useDispatch()
@@ -167,10 +167,11 @@ const Farms: React.FC = () => {
           klaytn={klaytn}
           account={account}
           isHorizontal={listView}
+          connector={connector}
         />
       ))
     },
-    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView],
+    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView,connector],
   )
 
   const handlePresent = useCallback((node: React.ReactNode) => {

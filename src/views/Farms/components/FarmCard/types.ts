@@ -18,4 +18,5 @@ export interface FarmCardProps {
   klaytn?: provider
   account?: string
   isHorizontal?: boolean
+  connector?:string
 }

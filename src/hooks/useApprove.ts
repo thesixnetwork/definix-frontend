@@ -14,9 +14,18 @@ export const useApprove = (lpContract: Contract) => {
   const { account }: { account: string } = useWallet()
   const herodotusContract = useHerodotus()
 
-  const handleApprove = useCallback(async () => {
+  const handleApprove = useCallback(async (connector: string, showKlipModal: (state: boolean) => void) => {
     try {
-      const tx = await approve(lpContract, herodotusContract, account)
+      let tx
+      switch (connector) {
+        case "injected": tx = await approve(lpContract, herodotusContract, account); break;
+        case "klip":
+          showKlipModal(true)
+
+          showKlipModal(false)
+          break;
+        default: console.log("other connector")
+      }
       dispatch(fetchFarmUserDataAsync(account))
       return tx
     } catch (e) {

@@ -8,10 +8,24 @@ import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { BlockContextProvider } from 'contexts/BlockContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
+import { KlipModalContext } from './KlipModal'
 
 const Providers: React.FC = ({ children }) => {
   const rpcUrl = getRpcUrl()
-
+  const { setShowModal, showModal } = React.useContext(KlipModalContext)
+  
+  const onPresent = () => {
+    setShowModal(true)
+  }
+  const onHiddenModal = () => {
+    setShowModal(false)
+  }
+  window.onclick = function (event) {
+    console.log("event.target ", event.target)
+    if (event.target === document.getElementById("customKlipModal")) {
+      onHiddenModal()
+    }
+  }
   return (
     <Provider store={store}>
       <ThemeContextProvider>

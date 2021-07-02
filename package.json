@@ -51,7 +51,7 @@
     "date-fns": "^2.17.0",
     "definixswap-sdk": "0.0.21-klaytn",
     "definixswap-uikit": "^0.0.2",
-    "klaytn-use-wallet": "^1.0.1",
+    "klaytn-use-wallet": "file:../../klaytn-use-wallet",
     "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
     "numeral": "2.0.4",
