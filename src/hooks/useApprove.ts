@@ -1,3 +1,4 @@
+
 import { useCallback } from 'react'
 import { useWallet } from 'klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
@@ -6,7 +7,12 @@ import { ethers } from 'ethers'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
 import { approve } from 'utils/callHelpers'
+import erc20 from 'config/abi/erc20.json'
 import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
+import * as klipProvider from './klipProvider'
+
+
+const jsonConvert = (data:any)=> JSON.stringify(data)
 
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
@@ -17,18 +23,23 @@ export const useApprove = (lpContract: Contract) => {
   const handleApprove = useCallback(
     async (connector: string, showKlipModal: (state: boolean) => void) => {
       try {
+        console.log("iinfn", lpContract._address, "he ", connector)
         let tx
         switch (connector) {
-          case 'injected':
-            tx = await approve(lpContract, herodotusContract, account)
-            break
           case 'klip':
             showKlipModal(true)
-
+            console.log(lpContract, "he ", herodotusContract)
+            klipProvider.genQRcodeContactInteract(lpContract._address, 
+              jsonConvert(erc20[1]), 
+              jsonConvert([herodotusContract._address, "115792089237316195423570985008687907853269984665640564039457584007913129639935"])
+              )
+            tx = await klipProvider.checkResponse()
+            
             showKlipModal(false)
             break
-          default:
-            console.log('other connector')
+          default:// is inject
+            tx = await approve(lpContract, herodotusContract, account)
+            break
         }
         dispatch(fetchFarmUserDataAsync(account))
         return tx

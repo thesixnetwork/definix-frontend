@@ -77,7 +77,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
-      connect('injected')
+      // connect('injected')
     }
   }, [account, connect])
 

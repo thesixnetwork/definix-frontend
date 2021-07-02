@@ -34,6 +34,7 @@ const Providers: React.FC = ({ children }) => {
             chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
             connectors={{
               injected,
+              klip: { showModal: onPresent, closeModal: onHiddenModal }
             }}
           >
             <BlockContextProvider>
