@@ -7,9 +7,9 @@ import { KlipModalProvider } from './KlipModal'
 ReactDOM.render(
   <React.StrictMode>
     <KlipModalProvider>
-    <Providers>
-      <App />
-    </Providers>
+      <Providers>
+        <App />
+      </Providers>
     </KlipModalProvider>
   </React.StrictMode>,
   document.getElementById('root'),

@@ -22,7 +22,7 @@ interface FarmStakeActionProps {
   className?: string
   onPresentDeposit?: any
   onPresentWithdraw?: any
-  connector?:string
+  connector?: string
 }
 
 const IconButtonWrapper = styled.div`
@@ -40,7 +40,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   className = '',
   onPresentDeposit,
   onPresentWithdraw,
-  connector
+  connector,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { setShowModal } = React.useContext(KlipModalContext)
@@ -65,12 +65,12 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onApprove(connector,setShowModal)
+      await onApprove(connector, setShowModal)
       setRequestedApproval(false)
     } catch (e) {
       console.error(e)
     }
-  }, [onApprove,connector,setShowModal])
+  }, [onApprove, connector, setShowModal])
 
   const renderStakingButtons = () => {
     if (rawStakedBalance === 0) {

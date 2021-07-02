@@ -21,8 +21,8 @@ const connectors: Config[] = [
   {
     title: 'klip',
     icon: WalletConnect,
-    connectorId: 'klip'
-  }
+    connectorId: 'klip',
+  },
 ]
 
 export default connectors

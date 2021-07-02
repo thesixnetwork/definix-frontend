@@ -26,10 +26,10 @@ interface FarmCardActionsProps {
   klaytn?: provider
   account?: string
   addLiquidityUrl?: string
-  connector?:string
+  connector?: string
 }
 
-const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, addLiquidityUrl,connector }) => {
+const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, addLiquidityUrl, connector }) => {
   const { setShowModal } = React.useContext(KlipModalContext)
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -38,7 +38,6 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, ad
   const lpAddress = getAddress(lpAddresses)
   const lpName = farm.lpSymbol.toUpperCase()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
-  
 
   const lpContract = useMemo(() => {
     return getContract(klaytn as provider, lpAddress)
@@ -49,12 +48,12 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, ad
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onApprove(connector,setShowModal)
+      await onApprove(connector, setShowModal)
       setRequestedApproval(false)
     } catch (e) {
       console.error(e)
     }
-  }, [onApprove,connector,setShowModal])
+  }, [onApprove, connector, setShowModal])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (
