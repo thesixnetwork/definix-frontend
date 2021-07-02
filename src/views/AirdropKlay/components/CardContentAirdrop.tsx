@@ -220,7 +220,14 @@ export default function CardContentAirdrop({
 
         <div style={{ marginRight: '10px', width: '100%' }}>
           <Input
-            style={{ backgroundColor: '#F8F8F8', width: '70%', textAlign: 'center', height: '45px', float: 'left' ,color:"black"}}
+            style={{
+              backgroundColor: '#F8F8F8',
+              width: '70%',
+              textAlign: 'center',
+              height: '45px',
+              float: 'left',
+              color: 'black',
+            }}
             onChange={onChangeHandle}
             value={accountClaim}
             placeholder="Please fill your Address"
