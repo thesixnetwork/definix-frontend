@@ -220,7 +220,7 @@ export default function CardContentAirdrop({
 
         <div style={{ marginRight: '10px', width: '100%' }}>
           <Input
-            style={{ backgroundColor: '#F8F8F8', width: '70%', textAlign: 'center', height: '45px', float: 'left' }}
+            style={{ backgroundColor: '#F8F8F8', width: '70%', textAlign: 'center', height: '45px', float: 'left' ,color:"black"}}
             onChange={onChangeHandle}
             value={accountClaim}
             placeholder="Please fill your Address"
@@ -297,13 +297,13 @@ export default function CardContentAirdrop({
     <StyledBanner>
       <MaxWidth>
         <div>
-          {!account ? <UnlockButton fullWidth radii="small" /> : checkRender()}
+          {/* {!account ? <UnlockButton fullWidth radii="small" /> : checkRender()}
           {state == COUNTDOWN ? <CountDown showCom /> : null}
           {state == NOT_CLAIM ? renderNotClaim() : null}
           {state == CLAIM && clickClaim == false ? renderClaimBtn() : null}
           {state == CLAIM && clickClaim == true ? renderClaimDiv() : null}
-          {state == CLAIMED ? renderClaimedBtn() : null}
-
+          {state == CLAIMED ? renderClaimedBtn() : null} */}
+          {renderClaimDiv()}
           <div style={{ marginTop: '40px' }}>
             <DiscriptionFirstAirdrop toggle={toggleAirdropFirst} open={openFirstAirdrop} disable={state != CLAIMED} />
             <br />
