@@ -24,7 +24,7 @@ const LanguageContext = React.createContext({
   setTranslatedLanguage: () => undefined,
 } as LanguageState)
 
-const fileId = 8
+const fileId = 14
 const projectId = parseInt(process.env.REACT_APP_CROWDIN_PROJECTID)
 const stringTranslationsApi = new StringTranslations({
   token: process.env.REACT_APP_CROWDIN_APIKEY,
@@ -65,7 +65,9 @@ const LanguageContextProvider = ({ children }) => {
             setTranslations(translationApiResponse.data)
           }
         })
-        .then(() => setTranslatedLanguage(selectedLanguage))
+        .then(() => {
+          setTranslatedLanguage(selectedLanguage)
+        })
         .catch((e) => {
           setTranslations([])
           console.error('Error while loading translations', e)

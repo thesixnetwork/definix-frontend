@@ -45,7 +45,7 @@ const DropdownContent = styled.div<{ position: Position; isFullWidth: boolean }>
   right: ${getRight};
   background-color: ${({ theme }) => theme.nav.background};
   box-shadow: ${({ theme }) => theme.shadows.elevation2};
-  padding: 16px;
+  padding: 8px;
   max-height: 500px;
   overflow-y: auto;
   z-index: ${({ theme }) => theme.zIndices.dropdown};
