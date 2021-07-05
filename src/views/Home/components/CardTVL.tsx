@@ -6,7 +6,8 @@ import { usePriceTVL } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
-import space from 'uikit-dev/images/for-ui-v2/space.png'
+import bscWhite from 'uikit-dev/images/bsc-white.png'
+import klaytnWhite from 'uikit-dev/images/klaytn-white.png'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 import CardValue from './CardValue'
@@ -67,6 +68,27 @@ const CardTVL = ({ className = '' }) => {
         <Heading fontSize="32px !important">
           ${(totalTVL || 0) <= 0 ? 'N/A' : totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
+
+        <div className="flex mt-3">
+          <div className="col-6 flex flex-column align-center">
+            <div className="flex align-center justify-center mb-2">
+              <Text color="white" fontSize="12px">
+                TVL in BSC
+              </Text>
+              <img src={bscWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
+            </div>
+            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={25000000} />
+          </div>
+          <div className="col-6 flex flex-column align-center">
+            <div className="flex align-center justify-center mb-2">
+              <Text color="white" fontSize="12px">
+                TVL in Klaytn
+              </Text>
+              <img src={klaytnWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
+            </div>
+            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={25000000} />
+          </div>
+        </div>
       </Total>
 
       <Stat>
