@@ -61,10 +61,7 @@ export const finixPriceSlice = createSlice({
       state.pancakeBnbPrice = price
     },
     setTVL: (state, action) => {
-      const {
-        caverTVL,
-        web3TVL,
-      } = action.payload
+      const { caverTVL, web3TVL } = action.payload
       state.caverTVL = caverTVL
       state.web3TVL = web3TVL
     },

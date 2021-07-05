@@ -32,7 +32,10 @@ const TotalValueLockedCard = () => {
       <CardBody className="flex flex-column align-center pa-6 mx-auto">
         <Heading mb="16px">{TranslateString(762, 'Total Value Locked (TVL)')}</Heading>
         <Heading fontSize="28px !important" mb="12px">
-          ${((totalTVL || 0) + (totalCaverTVL || 0)) <= 0 ? 'N/A' : ((totalTVL || 0) + (totalCaverTVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+          $
+          {(totalTVL || 0) + (totalCaverTVL || 0) <= 0
+            ? 'N/A'
+            : ((totalTVL || 0) + (totalCaverTVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
         <Text small>(Across all LPs and Pools)</Text>
         {/* data ? (
