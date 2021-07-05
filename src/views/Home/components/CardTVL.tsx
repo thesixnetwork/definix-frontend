@@ -77,7 +77,7 @@ const CardTVL = ({ className = '' }) => {
               </Text>
               <img src={bscWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
             </div>
-            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={25000000} />
+            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={totalTVL} />
           </div>
           <div className="col-6 flex flex-column align-center">
             <div className="flex align-center justify-center mb-2">
@@ -86,7 +86,7 @@ const CardTVL = ({ className = '' }) => {
               </Text>
               <img src={klaytnWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
             </div>
-            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={25000000} />
+            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={totalCaverTVL} />
           </div>
         </div>
       </Total>
