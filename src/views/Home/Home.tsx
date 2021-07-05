@@ -1,4 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -62,6 +63,7 @@ const Home: React.FC = () => {
   const [isViewTurial, setIsViewTurial] = useState(false)
   const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
   const themes = useTheme()
+  const TranslateString = useI18n()
 
   useEffect(() => {
     setTimeout(() => {
@@ -114,7 +116,7 @@ const Home: React.FC = () => {
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                Home
+                {TranslateString(190, 'Home')}
               </Heading>
               {isLoading ? (
                 <Skeleton
