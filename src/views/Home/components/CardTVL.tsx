@@ -74,7 +74,10 @@ const CardTVL = ({ className = '' }) => {
           {TranslateString(762, 'Total Value Locked (TVL)')}
         </Text>
         <Heading fontSize="32px !important">
-          ${((totalTVL || 0) + (totalWeb3TVL || 0)) <= 0 ? 'N/A' : ((totalTVL || 0) + (totalWeb3TVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+          $
+          {(totalTVL || 0) + (totalWeb3TVL || 0) <= 0
+            ? 'N/A'
+            : ((totalTVL || 0) + (totalWeb3TVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
 
         <div className="flex mt-3">

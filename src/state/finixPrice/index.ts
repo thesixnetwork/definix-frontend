@@ -85,10 +85,7 @@ export const finixPriceSlice = createSlice({
       state.klayswapKlayPrice = klayPrice
     },
     setTVL: (state, action) => {
-      const {
-        caverTVL,
-        web3TVL,
-      } = action.payload
+      const { caverTVL, web3TVL } = action.payload
       state.caverTVL = caverTVL
       state.web3TVL = web3TVL
     },
@@ -236,7 +233,9 @@ export const fetchSixPrice = () => async (dispatch) => {
 }
 
 export const fetchTVL = () => async (dispatch) => {
-  const response = await axios.get('https://database-s3public-g8ignhbbbk6e.s3.ap-southeast-1.amazonaws.com/definix/tvl.json')
+  const response = await axios.get(
+    'https://database-s3public-g8ignhbbbk6e.s3.ap-southeast-1.amazonaws.com/definix/tvl.json',
+  )
   const caverTVL = _.get(response, 'data.caverTVL')
   const web3TVL = _.get(response, 'data.web3TVL')
   dispatch(
