@@ -40,6 +40,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
 
 const initialState: FinixPriceState = {
+  caverTVL: 0,
+  web3TVL: 0,
   price: 0,
   sixPrice: 0,
   definixKlayPrice: 0,
@@ -82,6 +84,14 @@ export const finixPriceSlice = createSlice({
       const { klayPrice } = action.payload
       state.klayswapKlayPrice = klayPrice
     },
+    setTVL: (state, action) => {
+      const {
+        caverTVL,
+        web3TVL,
+      } = action.payload
+      state.caverTVL = caverTVL
+      state.web3TVL = web3TVL
+    },
     setQuote: (state, action) => {
       const {
         sixFinixQuote,
@@ -122,7 +132,7 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setSixPrice, setFinixPrice, setQuote, setDefinixKlayPrice, setKlayswapKlayPrice } =
+export const { setTVL, setSixPrice, setFinixPrice, setQuote, setDefinixKlayPrice, setKlayswapKlayPrice } =
   finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
@@ -221,6 +231,18 @@ export const fetchSixPrice = () => async (dispatch) => {
   dispatch(
     setSixPrice({
       sixPrice: definixSixKusdtRatio,
+    }),
+  )
+}
+
+export const fetchTVL = () => async (dispatch) => {
+  const response = await axios.get('https://database-s3public-g8ignhbbbk6e.s3.ap-southeast-1.amazonaws.com/definix/tvl.json')
+  const caverTVL = _.get(response, 'data.caverTVL')
+  const web3TVL = _.get(response, 'data.web3TVL')
+  dispatch(
+    setTVL({
+      caverTVL,
+      web3TVL,
     }),
   )
 }

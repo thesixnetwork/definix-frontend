@@ -1,8 +1,10 @@
 import { useGetStats } from 'hooks/api'
+import useRefresh from 'hooks/useRefresh'
+import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
-import React from 'react'
-import { usePriceTVL } from 'state/hooks'
+import React, { useEffect } from 'react'
+import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
@@ -49,7 +51,9 @@ const Dot = styled.span`
 `
 
 const CardTVL = ({ className = '' }) => {
+  const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
+  const totalWeb3TVL = usePriceWeb3TVL().toNumber()
   const TranslateString = useI18n()
   const data = useGetStats()
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
@@ -59,6 +63,10 @@ const CardTVL = ({ className = '' }) => {
   const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
   const finixTransfered = totalTransferFromBsc ? getBalanceNumber(totalTransferFromBsc) : 0
 
+  useEffect(() => {
+    fetchTVL()
+  }, [fastRefresh])
+
   return (
     <Card className={className}>
       <Total>
@@ -66,7 +74,7 @@ const CardTVL = ({ className = '' }) => {
           {TranslateString(762, 'Total Value Locked (TVL)')}
         </Text>
         <Heading fontSize="32px !important">
-          ${(totalTVL || 0) <= 0 ? 'N/A' : totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+          ${((totalTVL || 0) + (totalWeb3TVL || 0)) <= 0 ? 'N/A' : ((totalTVL || 0) + (totalWeb3TVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
 
         <div className="flex mt-3">
@@ -77,7 +85,7 @@ const CardTVL = ({ className = '' }) => {
               </Text>
               <img src={bscWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
             </div>
-            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={25000000} />
+            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={totalWeb3TVL} />
           </div>
           <div className="col-6 flex flex-column align-center">
             <div className="flex align-center justify-center mb-2">
@@ -86,7 +94,7 @@ const CardTVL = ({ className = '' }) => {
               </Text>
               <img src={klaytnWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
             </div>
-            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={25000000} />
+            <CardValue fontSize="16px" color="white" fontWeight="bold" decimals={0} value={totalTVL} />
           </div>
         </div>
       </Total>

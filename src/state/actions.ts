@@ -12,6 +12,7 @@ export {
   fetchKlayPriceFromKlayswap,
   fetchDefinixKlayPrice,
   fetchSixPrice,
+  fetchTVL,
   fetchFinixPrice,
   fetchQuote,
 } from './finixPrice'
