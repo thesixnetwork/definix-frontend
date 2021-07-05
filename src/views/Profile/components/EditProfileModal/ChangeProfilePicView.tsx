@@ -25,26 +25,32 @@ const ChangeProfilePicPage: React.FC<ChangeProfilePicPageProps> = ({ onDismiss }
   const profileContract = useProfileContract()
   const { account } = useWallet()
   const { toastSuccess } = useToast()
-  const { isApproving, isApproved, isConfirmed, isConfirming, handleApprove, handleConfirm } =
-    useApproveConfirmTransaction({
-      onApprove: () => {
-        return definixRabbitsContract.methods.approve(getDefinixProfileAddress(), tokenId).send({ from: account })
-      },
-      onConfirm: () => {
-        if (!profile.isActive) {
-          return profileContract.methods.reactivateProfile(getDefinixRabbitsAddress(), tokenId).send({ from: account })
-        }
+  const {
+    isApproving,
+    isApproved,
+    isConfirmed,
+    isConfirming,
+    handleApprove,
+    handleConfirm,
+  } = useApproveConfirmTransaction({
+    onApprove: () => {
+      return definixRabbitsContract.methods.approve(getDefinixProfileAddress(), tokenId).send({ from: account })
+    },
+    onConfirm: () => {
+      if (!profile.isActive) {
+        return profileContract.methods.reactivateProfile(getDefinixRabbitsAddress(), tokenId).send({ from: account })
+      }
 
-        return profileContract.methods.updateProfile(getDefinixRabbitsAddress(), tokenId).send({ from: account })
-      },
-      onSuccess: async () => {
-        // Re-fetch profile
-        await dispatch(fetchProfile(account))
-        toastSuccess('Profile Updated!')
+      return profileContract.methods.updateProfile(getDefinixRabbitsAddress(), tokenId).send({ from: account })
+    },
+    onSuccess: async () => {
+      // Re-fetch profile
+      await dispatch(fetchProfile(account))
+      toastSuccess('Profile Updated!')
 
-        onDismiss()
-      },
-    })
+      onDismiss()
+    },
+  })
   const bunnyIds = Object.keys(nftsInWallet).map((nftWalletItem) => Number(nftWalletItem))
   const walletNfts = nftList.filter((nft) => bunnyIds.includes(nft.bunnyId))
 

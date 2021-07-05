@@ -187,9 +187,7 @@ export const fetchSixPrice = () => async (dispatch) => {
 
 // Thunks
 export const fetchTVL = () => async (dispatch) => {
-  const response = await axios.get(
-    process.env.REACT_APP_S3_TVL,
-  )
+  const response = await axios.get(process.env.REACT_APP_S3_TVL)
   const caverTVL = _.get(response, 'data.caverTVL', 0)
   const web3TVL = _.get(response, 'data.web3TVL', 0)
   dispatch(
