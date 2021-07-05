@@ -234,7 +234,7 @@ export const fetchSixPrice = () => async (dispatch) => {
 
 export const fetchTVL = () => async (dispatch) => {
   const response = await axios.get(
-    'https://database-s3public-g8ignhbbbk6e.s3.ap-southeast-1.amazonaws.com/definix/tvl.json',
+    process.env.REACT_APP_S3_TVL,
   )
   const caverTVL = _.get(response, 'data.caverTVL')
   const web3TVL = _.get(response, 'data.web3TVL')
