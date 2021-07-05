@@ -1,8 +1,10 @@
 import { useGetStats } from 'hooks/api'
+import useRefresh from 'hooks/useRefresh'
+import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'
 import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance'
-import React from 'react'
-import { usePriceTVL } from 'state/hooks'
+import React, { useEffect } from 'react'
+import { usePriceTVL, usePriceCaverTVL } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
@@ -39,13 +41,19 @@ const Row = styled.div`
 `
 
 const CardTVL = ({ className = '' }) => {
+  const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
+  const totalCaverTVL = usePriceCaverTVL().toNumber()
   const TranslateString = useI18n()
   const data = useGetStats()
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+
+  useEffect(() => {
+    fetchTVL()
+  }, [fastRefresh])
 
   return (
     <Card className={className}>
@@ -54,7 +62,7 @@ const CardTVL = ({ className = '' }) => {
           {TranslateString(762, 'Total Value Locked (TVL)')}
         </Text>
         <Heading fontSize="32px !important">
-          ${(totalTVL || 0) <= 0 ? 'N/A' : totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+          ${((totalTVL || 0) + (totalCaverTVL || 0)) <= 0 ? 'N/A' : ((totalTVL || 0) + (totalCaverTVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
       </Total>
 

@@ -79,6 +79,8 @@ export interface PoolsState {
 }
 
 export interface FinixPriceState {
+  caverTVL: number
+  web3TVL: number
   price: number
   sixPrice: number
   pancakeBnbPrice: number
