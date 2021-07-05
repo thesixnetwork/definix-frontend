@@ -1,3 +1,4 @@
+import useI18n from 'hooks/useI18n'
 import useTheme from 'hooks/useTheme'
 import { useWallet } from 'klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
@@ -62,6 +63,8 @@ const Home: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   const [isLoading, setIsLoading] = useState(false)
+  const TranslateString = useI18n()
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
@@ -131,7 +134,7 @@ const Home: React.FC = () => {
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                Home
+                {TranslateString(190, 'Home')}
               </Heading>
               {isLoading ? (
                 <Skeleton
