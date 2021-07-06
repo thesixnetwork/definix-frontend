@@ -1,9 +1,12 @@
+import { languageList } from 'config/localization/languages'
 import React, { useState } from 'react'
 import Lottie from 'react-lottie'
 import styled from 'styled-components'
 import moon from '../../animation/moon.json'
 import sun from '../../animation/sun.json'
 import Button from '../../components/Button/Button'
+import Dropdown from '../../components/Dropdown/Dropdown'
+import MenuButton from './MenuButton'
 import { ChevronDownIcon } from '../../components/Svg'
 import Text from '../../components/Text/Text'
 import { MENU_ENTRY_HEIGHT } from './config'
@@ -113,11 +116,11 @@ const PanelFooter: React.FC<Props> = ({
   toggleTheme,
   isDark,
   currentLang,
+  setLang,
   // isPushed,
   // pushNav,
   // finixPriceUsd,
   // langs,
-  // setLang,
 }) => {
   const [isStopped, setIsStop] = useState(false)
   const [direction, setDirection] = useState(isDark ? 1 : -1)
@@ -194,7 +197,7 @@ const PanelFooter: React.FC<Props> = ({
             </ChangeLanguage>
           }
         >
-          {langs.map((lang) => (
+          {languageList.map((lang) => (
             <MenuButton
               key={lang.code}
               fullWidth

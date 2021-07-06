@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { useHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React, { useState } from 'react'
 import { useFarmUser, usePriceFinixUsd } from 'state/hooks'
@@ -25,7 +25,7 @@ const MiniLogo = styled.img`
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) => {
   const [pendingTx, setPendingTx] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const finixUsd = usePriceFinixUsd()
   const { onReward } = useHarvest(pid)
   const { earnings } = useFarmUser(pid)
@@ -38,7 +38,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) 
       <div className="col-8 pr-3">
         <Text textAlign="left" className="flex align-center" color="textSubtle">
           <MiniLogo src={miniLogo} alt="" />
-          {`FINIX ${TranslateString(1072, 'Earned')}`}
+          {`FINIX ${t('Earned')}`}
         </Text>
 
         <Heading
@@ -65,7 +65,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) 
           setPendingTx(false)
         }}
       >
-        {TranslateString(562, 'Harvest')}
+        {t('Harvest')}
       </Button>
     </div>
   )

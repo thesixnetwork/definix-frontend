@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import ModalInput from 'components/ModalInput'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Modal } from 'uikit-dev'
 import { getFullDisplayBalance } from 'utils/formatBalance'
@@ -22,7 +22,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
   }, [max])
@@ -56,7 +56,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         value={val}
         max={fullBalance}
         symbol={tokenName}
-        inputTitle={TranslateString(588, 'Unstake')}
+        inputTitle={t('Unstake')}
       />
 
       <Button
@@ -71,7 +71,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         radii="card"
         className="mt-5"
       >
-        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, 'Remove LP')}
+        {pendingTx ? t('Pending') : t('Remove LP')}
       </Button>
     </Modal>
   )

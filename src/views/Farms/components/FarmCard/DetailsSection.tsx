@@ -1,4 +1,4 @@
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
 import { ChevronRightIcon, Link, Text } from 'uikit-dev'
@@ -29,7 +29,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   // lpLabel,
   // addLiquidityUrl,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const LinkView = ({ linkClassName = '' }) => (
     <Link
@@ -40,7 +40,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       color="textSubtle"
       fontSize="12px"
     >
-      {TranslateString(356, 'View on KlaytnScope')}
+      {t('View on KlaytnScope')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )
@@ -49,7 +49,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
     <Wrapper isHorizontal={isHorizontal} className={className}>
       {!removed && (
         <div className="flex align-baseline flex-wrap justify-space-between">
-          <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
+          <Text color="textSubtle">{t('Total Liquidity')}</Text>
 
           <Text bold className="flex-shrink">
             {totalValueFormated}

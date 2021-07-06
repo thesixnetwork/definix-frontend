@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
@@ -105,7 +105,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const imgSize = isHorizontal ? 48 : 56
 
@@ -143,7 +143,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       {!removed && (
         <div className="flex align-center justify-center mt-2">
           <Apr color="success" bold>
-            {TranslateString(736, 'APR')}
+            {t('APR')}
             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />

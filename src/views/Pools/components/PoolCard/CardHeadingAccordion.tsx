@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
@@ -74,7 +74,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
   isOpenAccordion = false,
   setIsOpenAccordion,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const finixPrice = usePriceFinixUsd()
 
@@ -96,7 +96,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
           </StyledFarmImages>
 
           <Heading fontSize="16px" fontWeight="500 !important">
-            {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
+            {isOldSyrup && '[OLD]'} {tokenName} {t('Pool')}
           </Heading>
         </div>
         {isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}
@@ -104,7 +104,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
 
       <div className="flex align-center mt-2">
         <Apr color="success" bold>
-          {TranslateString(736, 'APR')}
+          {t('APR')}
           <div className="ml-1">
             {apy ? `${numeral(apy?.toNumber()).format('0,0.00')}%` : <Skeleton height={24} width={80} />}
           </div>
