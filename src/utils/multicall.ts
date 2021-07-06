@@ -12,7 +12,7 @@ interface Call {
 
 const multicall = async (abi: any[], calls: Call[]) => {
   const caver = getCaver()
-  const multi = new caver.klay.Contract((MultiCallAbi as unknown) as AbiItem, getMulticallAddress())
+  const multi = new caver.klay.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const itf = new Interface(abi)
 
   const calldata = calls.map((call) => [call.address.toLowerCase(), itf.encodeFunctionData(call.name, call.params)])
