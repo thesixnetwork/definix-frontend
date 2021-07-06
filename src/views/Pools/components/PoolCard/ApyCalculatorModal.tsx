@@ -2,7 +2,7 @@ import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from 'uikit-dev'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { calculateFinixEarnedPerThousandDollarsOfPool, apyModalRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
@@ -36,7 +36,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   apy,
   addLiquidityUrl,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const poolApy = apy.times(new BigNumber(1)).toNumber()
 
   const oneThousandDollarsWorthOfFinix = 1000 / finixPrice.toNumber()
@@ -67,17 +67,17 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
       <Grid>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
-            {TranslateString(860, 'Timeframe')}
+            {t('Timeframe')}
           </Text>
         </GridItem>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
-            {TranslateString(858, 'ROI')}
+            {t('ROI')}
           </Text>
         </GridItem>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
-            {TranslateString(864, 'FINIX per $1000')}
+            {t('FINIX per $1000')}
           </Text>
         </GridItem>
         {/* 1 day row */}
@@ -131,14 +131,13 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
       </Grid>
       <Description fontSize="12px" color="textSubtle">
-        {TranslateString(
-          866,
+        {t(
           'Calculated based on current rates. Compounding once daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.',
         )}
       </Description>
       <Flex justifyContent="center">
         <LinkExternal href={addLiquidityUrl}>
-          {TranslateString(999, 'Get')} {lpLabel}
+          {t('Get')} {lpLabel}
         </LinkExternal>
       </Flex>
     </Modal>

@@ -4,7 +4,7 @@ import React, { useMemo, useState } from 'react'
 import { Button, Modal } from 'uikit-dev'
 import ModalActions from 'components/ModalActions'
 import Balance from 'components/Balance'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
 interface DepositModalProps {
@@ -16,14 +16,14 @@ interface DepositModalProps {
 
 const CompoundModal: React.FC<DepositModalProps> = ({ earnings, onConfirm, onDismiss, tokenName = '' }) => {
   const [pendingTx, setPendingTx] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(earnings)
   }, [earnings])
 
   return (
     <Modal
-      title={`${TranslateString(704, 'Compound')} ${TranslateString(330, `${tokenName} Earned`)}`}
+      title={`${t('Compound')} ${t(`${tokenName} Earned`)}`}
       onDismiss={onDismiss}
       isRainbow
     >
@@ -32,7 +32,7 @@ const CompoundModal: React.FC<DepositModalProps> = ({ earnings, onConfirm, onDis
       </BalanceRow>
       <ModalActions>
         <Button fullWidth variant="secondary" onClick={onDismiss}>
-          {TranslateString(462, 'Cancel')}
+          {t('Cancel')}
         </Button>
         <Button
           id="compound-finix"
@@ -45,7 +45,7 @@ const CompoundModal: React.FC<DepositModalProps> = ({ earnings, onConfirm, onDis
             onDismiss()
           }}
         >
-          {pendingTx ? TranslateString(488, 'Pending Confirmation') : TranslateString(464, 'Confirm')}
+          {pendingTx ? t('Pending Confirmation') : t('Confirm')}
         </Button>
       </ModalActions>
     </Modal>

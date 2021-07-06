@@ -2,7 +2,7 @@ import React, { useCallback, useRef } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon, Skeleton } from 'uikit-dev'
 import { NavLink } from 'react-router-dom'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import { QuoteToken } from 'config/constants/types'
 import { useFarms, usePriceBnbBusd } from 'state/hooks'
@@ -22,7 +22,7 @@ const CardMidContent = styled(Heading).attrs({ size: 'xl' })`
   line-height: 44px;
 `
 const EarnAPYCard = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
 
@@ -82,7 +82,7 @@ const EarnAPYCard = () => {
         </Heading>
         <CardMidContent color="#7645d9">
           {getHighestAPY() ? (
-            `${getHighestAPY()}% ${TranslateString(736, 'APR')}`
+            `${getHighestAPY()}% ${t('APR')}`
           ) : (
             <Skeleton animation="pulse" variant="rect" height="44px" />
           )}

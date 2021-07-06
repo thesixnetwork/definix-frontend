@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { ChevronDown, ChevronUp } from 'react-feather'
 import Balance from 'components/Balance'
 import { CommunityTag, CoreTag, BinanceTag } from 'components/Tags'
@@ -81,7 +81,7 @@ const CardFooter: React.FC<Props> = ({
   poolCategory,
 }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const Icon = isOpen ? ChevronUp : ChevronDown
 
   const handleClick = () => setIsOpen(!isOpen)
@@ -94,7 +94,7 @@ const CardFooter: React.FC<Props> = ({
           <Tag />
         </FlexFull>
         <StyledDetailsButton onClick={handleClick}>
-          {isOpen ? TranslateString(1066, 'Hide') : TranslateString(658, 'Details')} <Icon />
+          {isOpen ? t('Hide') : t('Details')} <Icon />
         </StyledDetailsButton>
       </Row>
       {isOpen && (
@@ -105,7 +105,7 @@ const CardFooter: React.FC<Props> = ({
                 <span role="img" aria-label="syrup">
                   🥞{' '}
                 </span>
-                {TranslateString(408, 'Total')}
+                {t('Total')}
               </Label>
             </FlexFull>
             <Balance fontSize="14px" isDisabled={isFinished} value={getBalanceNumber(totalStaked)} />
@@ -113,7 +113,7 @@ const CardFooter: React.FC<Props> = ({
           {blocksUntilStart > 0 && (
             <Row>
               <FlexFull>
-                <Label>{TranslateString(410, 'Start')}:</Label>
+                <Label>{t('Start')}:</Label>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksUntilStart} decimals={0} />
             </Row>
@@ -121,13 +121,13 @@ const CardFooter: React.FC<Props> = ({
           {blocksUntilStart === 0 && blocksRemaining > 0 && (
             <Row>
               <FlexFull>
-                <Label>{TranslateString(410, 'End')}:</Label>
+                <Label>{t('End')}:</Label>
               </FlexFull>
               <Balance fontSize="14px" isDisabled={isFinished} value={blocksRemaining} decimals={0} />
             </Row>
           )}
           <TokenLink href={projectLink} target="_blank">
-            {TranslateString(412, 'View project site')}
+            {t('View project site')}
           </TokenLink>
         </Details>
       )}

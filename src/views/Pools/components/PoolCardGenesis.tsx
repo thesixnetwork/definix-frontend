@@ -7,7 +7,7 @@ import { useSousApprove } from 'hooks/useApprove'
 import useBlock from 'hooks/useBlock'
 import { useERC20 } from 'hooks/useContract'
 import { useSousHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import numeral from 'numeral'
@@ -125,7 +125,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWallet()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)

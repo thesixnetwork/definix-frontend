@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import ModalInput from 'components/ModalInput'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React, { useCallback, useMemo, useState } from 'react'
 import Lottie from 'react-lottie'
 import { Button, Modal } from 'uikit-dev'
@@ -32,7 +32,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
   }, [max])
@@ -67,7 +67,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         max={fullBalance}
         symbol={tokenName}
         addLiquidityUrl={addLiquidityUrl}
-        inputTitle={TranslateString(1070, 'Stake')}
+        inputTitle={t('Stake')}
       />
 
       <Button
@@ -82,7 +82,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         className="mt-5"
         radii="card"
       >
-        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Deposit ${tokenName}`)}
+        {pendingTx ? t('Pending') : t(`Deposit ${tokenName}`)}
       </Button>
     </Modal>
   )

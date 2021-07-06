@@ -1,4 +1,4 @@
-import { allLanguages } from 'config/localisation/languageCodes'
+import { languageList } from 'config/localization/languages'
 import React, { useState } from 'react'
 import Lottie from 'react-lottie'
 import styled from 'styled-components'
@@ -196,7 +196,7 @@ const PanelFooter: React.FC<Props> = ({
             </ChangeLanguage>
           }
         >
-          {allLanguages.map((lang) => (
+          {languageList.map((lang) => (
             <MenuButton
               key={lang.code}
               fullWidth

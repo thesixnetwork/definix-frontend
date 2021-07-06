@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useFarmFromSymbol, useFarmUnlockDate, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
@@ -40,7 +40,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
 
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { allowance, stakedBalance } = useFarmUser(pid)
   const lpAddress = getAddress(lpAddresses)
@@ -77,7 +77,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
           fullWidth
           radii="small"
         >
-          {TranslateString(999, 'Stake LP')}
+          {t('Stake LP')}
         </Button>
       )
     }
@@ -106,7 +106,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     if (!isApproved) {
       return (
         <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
-          {TranslateString(758, 'Approve Contract')}
+          {t('Approve Contract')}
         </Button>
       )
     }
@@ -129,7 +129,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
+      <Text textAlign="left" className="mb-2" color="textSubtle">{`${lpName} ${t('Staked')}`}</Text>
       {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
     </div>
   )

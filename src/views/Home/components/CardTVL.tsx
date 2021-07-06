@@ -1,5 +1,5 @@
 import { useGetStats } from 'hooks/api'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance'
 import React from 'react'
 import { usePriceTVL } from 'state/hooks'
@@ -41,7 +41,7 @@ const Row = styled.div`
 
 const CardTVL = ({ className = '' }) => {
   const totalTVL = usePriceTVL().toNumber()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const data = useGetStats()
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
@@ -52,7 +52,7 @@ const CardTVL = ({ className = '' }) => {
     <Card className={className}>
       <Total>
         <Text color="inherit" className="mb-2" textAlign="center">
-          {TranslateString(762, 'Total Value Locked (TVL)')}
+          {t('Total Value Locked (TVL)')}
         </Text>
         <Heading fontSize="32px !important">
           ${(totalTVL || 0) <= 0 ? 'N/A' : totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
@@ -83,17 +83,17 @@ const CardTVL = ({ className = '' }) => {
       <Stat>
         <Row>
           <div className="flex align-center">
-            <Text color="textSubtle">{TranslateString(536, 'Total FINIX Supply')}</Text>
+            <Text color="textSubtle">{t('Total FINIX Supply')}</Text>
             <Helper text="Does not include burned" className="ml-2" position="top" />
           </div>
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
         </Row>
         <Row>
-          <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
+          <Text color="textSubtle">{t('Total FINIX Burned')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
+          <Text color="textSubtle">{t('New FINIX / sec')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={3} />
         </Row>
       </Stat>

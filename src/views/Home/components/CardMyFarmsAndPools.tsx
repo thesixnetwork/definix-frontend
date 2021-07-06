@@ -6,7 +6,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useRefresh from 'hooks/useRefresh'
 import _ from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -171,7 +171,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
@@ -685,8 +685,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               onClick={harvestAllFarms}
             >
               {pendingTx
-                ? TranslateString(548, 'Collecting FINIX')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length})`)}
+                ? t('Collecting FINIX')
+                : t(`Harvest all (${balancesWithValue.length})`)}
             </Button>
           ) : (
             <UnlockButton />

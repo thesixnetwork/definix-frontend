@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Button, Input, InputProps, Link, Text } from 'uikit-dev'
-import useI18n from '../../hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 interface ModalInputProps {
   max: string
@@ -55,7 +55,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
   addLiquidityUrl,
   inputTitle,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const isBalanceZero = max === '0' || !max
   const displayBalance = isBalanceZero ? '0' : parseFloat(max).toFixed(4)
 
@@ -66,7 +66,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
           {inputTitle}
         </Text>
         <Text fontSize="14px" color="textSubtle">
-          {TranslateString(1120, 'Balance')}: {displayBalance.toLocaleString()}
+          {t('Balance')}: {displayBalance.toLocaleString()}
         </Text>
       </div>
 
@@ -81,7 +81,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
           variant="tertiary"
           style={{ borderRadius: '6px' }}
         >
-          {TranslateString(452, 'Max')}
+          {t('Max')}
         </Button>
 
         <Text fontSize="16px">{symbol}</Text>

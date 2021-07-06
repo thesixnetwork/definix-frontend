@@ -1,5 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -63,7 +63,7 @@ const Home: React.FC = () => {
   const [isViewTurial, setIsViewTurial] = useState(false)
   const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
   const themes = useTheme()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   useEffect(() => {
     setTimeout(() => {
@@ -73,7 +73,6 @@ const Home: React.FC = () => {
 
   const { account } = useWallet()
   const { hasProfile } = useProfile()
-  // const TranslateString = useI18n()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -116,7 +115,7 @@ const Home: React.FC = () => {
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                {TranslateString(190, 'Home')}
+                {t('Home')}
               </Heading>
               {isLoading ? (
                 <Skeleton
