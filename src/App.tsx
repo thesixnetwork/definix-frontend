@@ -15,7 +15,7 @@ import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import Flip from './uikit-dev/components/Flip'
-import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
+// import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
 ReactGA.initialize('G-L997LXLF8F')
@@ -148,7 +148,7 @@ const App: React.FC = () => {
         </Suspense>
       </Menu>
       <ToastListener />
-      <GlobalCheckBullHiccupClaimStatus />
+      {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (
         <div
           style={{
