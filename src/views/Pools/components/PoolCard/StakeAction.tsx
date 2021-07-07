@@ -134,9 +134,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${tokenName} ${t(
-        'Staked',
-      )}`}</Text>
+      <Text textAlign="left" className="mb-2" color="textSubtle">{`${tokenName} ${t('Staked')}`}</Text>
       {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
     </div>
   )

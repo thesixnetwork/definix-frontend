@@ -76,9 +76,7 @@ const FarmedStakingCard = () => {
               onClick={harvestAllFarms}
               fullWidth
             >
-              {pendingTx
-                ? t('Collecting FINIX')
-                : t(`Harvest all (${balancesWithValue.length})`)}
+              {pendingTx ? t('Collecting FINIX') : t(`Harvest all (${balancesWithValue.length})`)}
             </Button>
           ) : (
             <UnlockButton fullWidth />
