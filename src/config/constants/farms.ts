@@ -152,6 +152,21 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
   },
+  {
+    pid: 10,
+    lpSymbol: 'XRP-BNB LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_XRP_BNB_LP_TESTNET,
+      56: process.env.REACT_APP_XRP_BNB_LP_MAINNET,
+    },
+    tokenSymbol: 'XRP',
+    tokenAddresses: {
+      97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',

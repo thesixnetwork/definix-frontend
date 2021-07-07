@@ -39,6 +39,10 @@ export default {
     97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
     56: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
   },
+  xrp: {
+    97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
+  },
   finixSixLP: {
     97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
     56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,

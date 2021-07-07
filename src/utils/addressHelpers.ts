@@ -37,6 +37,9 @@ export const getBtcbAddress = () => {
 export const getEthAddress = () => {
   return getAddress(addresses.eth)
 }
+export const getXrpAddress = () => {
+  return getAddress(addresses.xrp)
+}
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }
