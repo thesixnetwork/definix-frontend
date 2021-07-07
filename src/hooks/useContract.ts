@@ -47,12 +47,12 @@ const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOp
  */
 
 export const useIfoContract = (address: string) => {
-  const ifoAbi = (ifo as unknown) as AbiItem
+  const ifoAbi = ifo as unknown as AbiItem
   return useContract(ifoAbi, address)
 }
 
 export const useERC20 = (address: string) => {
-  const erc20Abi = (erc20 as unknown) as AbiItem
+  const erc20Abi = erc20 as unknown as AbiItem
   return useContract(erc20Abi, address)
 }
 
@@ -61,54 +61,54 @@ export const useFinix = () => {
 }
 
 export const useBunnyFactory = () => {
-  const bunnyFactoryAbi = (bunnyFactory as unknown) as AbiItem
+  const bunnyFactoryAbi = bunnyFactory as unknown as AbiItem
   return useContract(bunnyFactoryAbi, getBunnyFactoryAddress())
 }
 
 export const useDefinixRabbits = () => {
-  const definixRabbitsAbi = (definixRabbits as unknown) as AbiItem
+  const definixRabbitsAbi = definixRabbits as unknown as AbiItem
   return useContract(definixRabbitsAbi, getDefinixRabbitsAddress())
 }
 
 export const useProfile = () => {
-  const profileABIAbi = (profile as unknown) as AbiItem
+  const profileABIAbi = profile as unknown as AbiItem
   return useContract(profileABIAbi, getDefinixProfileAddress())
 }
 
 export const useLottery = () => {
-  const abi = (lottery as unknown) as AbiItem
+  const abi = lottery as unknown as AbiItem
   return useContract(abi, getLotteryAddress())
 }
 
 export const useLotteryTicket = () => {
-  const abi = (lotteryTicket as unknown) as AbiItem
+  const abi = lotteryTicket as unknown as AbiItem
   return useContract(abi, getLotteryTicketAddress())
 }
 
 export const useHerodotus = () => {
-  const abi = (herodotus as unknown) as AbiItem
+  const abi = herodotus as unknown as AbiItem
   return useContract(abi, getHerodotusAddress())
 }
 
 export const useTradingCompetRegisContract = () => {
-  const abi = (tradeCompetRegisAbi as unknown) as AbiItem
+  const abi = tradeCompetRegisAbi as unknown as AbiItem
   return useContract(abi, getTradingCompetRegisAddress())
 }
 
 export const useSousChef = (id) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
   const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
-  const abi = (rawAbi as unknown) as AbiItem
+  const abi = rawAbi as unknown as AbiItem
   return useContract(abi, getAddress(config.contractAddress))
 }
 
 export const usePointCenterIfoContract = () => {
-  const abi = (pointCenterIfo as unknown) as AbiItem
+  const abi = pointCenterIfo as unknown as AbiItem
   return useContract(abi, getPointCenterIfoAddress())
 }
 
 export const useBunnySpecialContract = () => {
-  const abi = (bunnySpecial as unknown) as AbiItem
+  const abi = bunnySpecial as unknown as AbiItem
   return useContract(abi, getBunnySpecialAddress())
 }
 

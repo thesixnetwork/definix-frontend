@@ -114,7 +114,7 @@ export default function CardContentAirdrop({
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const airdropKlayAddress = getAirdropKlayAddress()
   const web3 = new Web3(ethereum)
-  const contractAirdropKlay = new web3.eth.Contract((abiAirdrop as unknown) as AbiItem, airdropKlayAddress)
+  const contractAirdropKlay = new web3.eth.Contract(abiAirdrop as unknown as AbiItem, airdropKlayAddress)
   const [state, setState] = useState<string>('null')
   const [clickClaim, setClickClaim] = useState<boolean>(false)
   const [accountClaim, setAccountClaim] = useState<string>('')

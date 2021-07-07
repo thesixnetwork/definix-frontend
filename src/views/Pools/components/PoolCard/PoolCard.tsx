@@ -76,9 +76,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const allowance = new BigNumber(userData?.allowance || 0)
   const earnings = useMemo(() => new BigNumber(userData?.pendingReward || 0), [userData?.pendingReward])
   const stakedBalance = useMemo(() => new BigNumber(userData?.stakedBalance || 0), [userData?.stakedBalance])
-  const stakingTokenBalance = useMemo(() => new BigNumber(userData?.stakingTokenBalance || 0), [
-    userData?.stakingTokenBalance,
-  ])
+  const stakingTokenBalance = useMemo(
+    () => new BigNumber(userData?.stakingTokenBalance || 0),
+    [userData?.stakingTokenBalance],
+  )
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
 
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
