@@ -52,7 +52,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
           <div className="flex align-baseline flex-wrap justify-space-between mb-1">
             <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text>
 
-            <div className="flex justify-end" style={{ marginRight: '-6px' }}>
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
               <Text bold className="flex-shrink">
                 {totalValueFormated}
               </Text>
@@ -63,7 +63,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
           <div className="flex align-baseline flex-wrap justify-space-between">
             <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
 
-            <div className="flex justify-end" style={{ marginRight: '-6px' }}>
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
               <Text bold className="flex-shrink">
                 {totalValueFormated}
               </Text>
