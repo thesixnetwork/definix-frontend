@@ -38,6 +38,7 @@
     "@crowdin/crowdin-api-client": "^1.10.4",
     "@ethersproject/abi": "^5.0.7",
     "@ethersproject/experimental": "^5.0.1",
+    "@kanthakarn-test/klaytn-use-wallet": "^1.0.4",
     "@reduxjs/toolkit": "^1.5.0",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",

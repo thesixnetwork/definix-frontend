@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { useBunnySpecialContract } from 'hooks/useContract'
 import { useToast } from 'state/hooks'
 import { Button, InjectedModalProps, Modal, Text, Flex } from 'uikit-dev'

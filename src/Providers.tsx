@@ -1,6 +1,6 @@
 import React from 'react'
 import { ModalProvider } from 'uikit-dev'
-import injected, { UseWalletProvider } from 'klaytn-use-wallet'
+import injected, { UseWalletProvider ,KlipModalProvider} from '@kanthakarn-test/klaytn-use-wallet'
 import { Provider } from 'react-redux'
 import getRpcUrl from 'utils/getRpcUrl'
 import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
@@ -22,11 +22,13 @@ const Providers: React.FC = ({ children }) => {
               injected,
             }}
           >
+            <KlipModalProvider>
             <BlockContextProvider>
               <RefreshContextProvider>
                 <ModalProvider>{children}</ModalProvider>
               </RefreshContextProvider>
             </BlockContextProvider>
+            </KlipModalProvider>
           </UseWalletProvider>
         </LanguageContextProvider>
       </ThemeContextProvider>

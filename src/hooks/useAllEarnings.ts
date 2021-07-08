@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import multicall from 'utils/multicall'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import herodotusABI from 'config/abi/herodotus.json'
