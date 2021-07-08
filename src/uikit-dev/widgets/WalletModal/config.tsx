@@ -6,6 +6,7 @@ import TrustWallet from './icons/TrustWallet'
 import WalletConnect from './icons/WalletConnect'
 import BinanceChain from './icons/BinanceChain'
 import { Config } from './types'
+import KlipConnect from './icons/KlipConnect'
 
 const connectors: Config[] = [
   {
@@ -18,6 +19,11 @@ const connectors: Config[] = [
     icon: Dcent,
     connectorId: 'injected',
   },
+  {
+    title: 'klip',
+    icon: KlipConnect,
+    connectorId: 'klip',
+  }
 ]
 
 export default connectors

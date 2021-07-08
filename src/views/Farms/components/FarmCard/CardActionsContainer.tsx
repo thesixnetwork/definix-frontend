@@ -13,6 +13,7 @@ import { provider } from 'web3-core'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
 
+
 const Action = styled.div`
   padding-top: 16px;
 `
@@ -24,7 +25,7 @@ interface FarmCardActionsProps {
   farm: FarmWithStakedValue
   klaytn?: provider
   account?: string
-  addLiquidityUrl?: string
+  addLiquidityUrl?: string,
 }
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, addLiquidityUrl }) => {
