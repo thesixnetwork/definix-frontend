@@ -110,9 +110,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const LinkView = ({ linkClassName = '' }) => (
     <Link
       external
-      href={`${process.env.REACT_APP_KLAYTN_URL}/account/${
-        farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
-      }`}
+      href={`${process.env.REACT_APP_KLAYTN_URL}/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
       bold={false}
       className={`flex-shrink ${linkClassName} ml-2`}
       color="textSubtle"
