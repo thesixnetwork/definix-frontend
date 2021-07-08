@@ -93,6 +93,34 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { pendingRewards, earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
 
+  const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
+  const stakedTotalInQuoteToken = new BigNumber(farm.quoteTokenBlanceLP)
+    .div(new BigNumber(10).pow(farm.quoteTokenDecimals))
+    .times(ratio)
+    .times(new BigNumber(2))
+  const stakedBalanceValue: BigNumber = useMemo(() => {
+    if (!farm.lpTotalInQuoteToken) {
+      return new BigNumber(0)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+      return klayPrice.times(stakedTotalInQuoteToken)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+      return finixPrice.times(stakedTotalInQuoteToken)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+      return kethPrice.times(stakedTotalInQuoteToken)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+      return sixPrice.times(stakedTotalInQuoteToken)
+    }
+    return stakedTotalInQuoteToken
+  }, [sixPrice, klayPrice, finixPrice, kethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol, stakedTotalInQuoteToken])
+
+  const stakedBalanceValueFormated = stakedBalanceValue
+    ? `$${Number(stakedBalanceValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+    : '-'
+
   const { bundleRewardLength, bundleRewards, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
@@ -182,13 +210,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
           farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]
         }`}
         totalValueFormated={totalValueFormated}
+        stakedBalanceValueFormated={stakedBalanceValueFormated}
         lpLabel={lpLabel}
         addLiquidityUrl={addLiquidityUrl}
         isHorizontal={isHor}
         className={className}
       />
     ),
-    [addLiquidityUrl, farm.lpAddresses, lpLabel, removed, totalValueFormated],
+    [addLiquidityUrl, farm.lpAddresses, lpLabel, removed, totalValueFormated, stakedBalanceValueFormated],
   )
 
   useEffect(() => {
