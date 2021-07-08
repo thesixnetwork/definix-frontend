@@ -148,6 +148,10 @@ export default {
     1001: process.env.REACT_APP_MULTICALL_ADDRESS_TESTNET,
     8217: process.env.REACT_APP_MULTICALL_ADDRESS_MAINNET,
   },
+  deParam: {
+    1001: process.env.REACT_APP_DEPARAM_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_DEPARAM_ADDRESS_MAINNET,
+  },
   ust: {
     8217: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',
     1001: '',
