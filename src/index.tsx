@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { KlipModalProvider } from '@sixnetwork/klaytn-use-wallet'
 import App from './App'
 import Providers from './Providers'
-import { KlipModalProvider } from './KlipModal'
+
 
 ReactDOM.render(
   <React.StrictMode>

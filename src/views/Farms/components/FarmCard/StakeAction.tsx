@@ -11,8 +11,8 @@ import { getContract } from 'utils/erc20'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
 import numeral from 'numeral'
+import {KlipModalContext} from '@sixnetwork/klaytn-use-wallet'
 import { FarmWithStakedValue } from './types'
-import { KlipModalContext } from '../../../../KlipModal'
 
 interface FarmStakeActionProps {
   farm: FarmWithStakedValue
@@ -43,7 +43,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   connector,
 }) => {
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const { setShowModal } = React.useContext(KlipModalContext)
+  const { setShowModal } = React.useContext(KlipModalContext())
   const TranslateString = useI18n()
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { allowance, stakedBalance } = useFarmUser(pid)
@@ -65,12 +65,12 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onApprove(connector, setShowModal)
+      await onApprove(connector)
       setRequestedApproval(false)
     } catch (e) {
       console.error(e)
     }
-  }, [onApprove, connector, setShowModal])
+  }, [onApprove, connector])
 
   const renderStakingButtons = () => {
     if (rawStakedBalance === 0) {

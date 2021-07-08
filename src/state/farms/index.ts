@@ -14,7 +14,6 @@ import {
 import { FarmsState, Farm } from '../types'
 
 const initialState: FarmsState = { isFetched: false, data: [...farmsConfig], farmUnlockAt: undefined }
-
 export const farmsSlice = createSlice({
   name: 'Farms',
   initialState,
@@ -56,6 +55,7 @@ export const fetchFarmUnlockDate = () => async (dispatch) => {
   dispatch(setFarmUnlockAt({ farmUnlockAt: unlockDate }))
 }
 export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
+
   const userFarmAllowances = await fetchFarmUserAllowances(account)
   const userFarmTokenBalances = await fetchFarmUserTokenBalances(account)
   const userStakedBalances = await fetchFarmUserStakedBalances(account)
@@ -72,8 +72,8 @@ export const fetchFarmUserDataAsync = (account) => async (dispatch) => {
       pendingRewards: userPendingRewards[index],
     }
   })
-
   dispatch(setFarmUserData({ arrayOfUserDataObjects }))
+
 }
 
 export default farmsSlice.reducer

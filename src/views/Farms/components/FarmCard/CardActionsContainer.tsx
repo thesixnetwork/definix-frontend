@@ -12,7 +12,6 @@ import { getContract } from 'utils/erc20'
 import { provider } from 'web3-core'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
-import { KlipModalContext } from '../../../../KlipModal'
 
 const Action = styled.div`
   padding-top: 16px;
@@ -30,7 +29,6 @@ interface FarmCardActionsProps {
 }
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, addLiquidityUrl, connector }) => {
-  const { setShowModal } = React.useContext(KlipModalContext)
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
@@ -48,12 +46,12 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, ad
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      await onApprove(connector, setShowModal)
+      await onApprove(connector)
       setRequestedApproval(false)
     } catch (e) {
       console.error(e)
     }
-  }, [onApprove, connector, setShowModal])
+  }, [onApprove, connector])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved ? (

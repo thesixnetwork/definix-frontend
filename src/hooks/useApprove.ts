@@ -1,45 +1,47 @@
-
-import { useCallback } from 'react'
-import { useWallet } from 'klaytn-use-wallet'
+import { useCallback, useContext } from 'react'
+import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import Caver from 'caver-js'
 import { ethers } from 'ethers'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
 import { approve } from 'utils/callHelpers'
-import erc20 from 'config/abi/erc20.json'
 import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
 import * as klipProvider from './klipProvider'
+import { getAbiERC20ByName } from './hookHelper'
 
-
-const jsonConvert = (data:any)=> JSON.stringify(data)
+const jsonConvert = (data: any) => JSON.stringify(data)
 
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
   const dispatch = useDispatch()
   const { account }: { account: string } = useWallet()
   const herodotusContract = useHerodotus()
+  const { setShowModal } = useContext(KlipModalContext())
 
   const handleApprove = useCallback(
-    async (connector: string, showKlipModal: (state: boolean) => void) => {
+    async (connector: string) => {
       try {
-        console.log("iinfn", lpContract._address, "he ", connector)
+        console.log('iinfn', lpContract._address, 'he ', connector)
         let tx
-        switch (connector) {
-          case 'klip':
-            showKlipModal(true)
-            console.log(lpContract, "he ", herodotusContract)
-            klipProvider.genQRcodeContactInteract(lpContract._address, 
-              jsonConvert(erc20[1]), 
-              jsonConvert([herodotusContract._address, "115792089237316195423570985008687907853269984665640564039457584007913129639935"])
-              )
-            tx = await klipProvider.checkResponse()
-            
-            showKlipModal(false)
-            break
-          default:// is inject
-            tx = await approve(lpContract, herodotusContract, account)
-            break
+        if (connector === "klip") {
+          setShowModal(true)
+          console.log(lpContract, 'he ', herodotusContract)
+          klipProvider.genQRcodeContactInteract(
+            lpContract._address,
+            jsonConvert(getAbiERC20ByName("approve")),
+            jsonConvert([
+              herodotusContract._address,
+              '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+            ]),
+          )
+          tx = await klipProvider.checkResponse()
+
+          setShowModal(false)
+        }
+        else {
+          // is inject
+          tx = await approve(lpContract, herodotusContract, account)
         }
         dispatch(fetchFarmUserDataAsync(account))
         return tx
@@ -47,7 +49,7 @@ export const useApprove = (lpContract: Contract) => {
         return false
       }
     },
-    [account, dispatch, lpContract, herodotusContract],
+    [account, dispatch, lpContract, herodotusContract, setShowModal],
   )
 
   return { onApprove: handleApprove }
@@ -56,18 +58,36 @@ export const useApprove = (lpContract: Contract) => {
 // Approve a Pool
 export const useSousApprove = (lpContract: Contract, sousId) => {
   const dispatch = useDispatch()
-  const { account }: { account: string } = useWallet()
+  const { account, connector }: { account: string, connector: string } = useWallet()
+  const { setShowModal } = useContext(KlipModalContext())
   const sousChefContract = useSousChef(sousId)
-
+  const herodotusContract = useHerodotus()
   const handleApprove = useCallback(async () => {
     try {
-      const tx = await approve(lpContract, sousChefContract, account)
-      dispatch(updateUserAllowance(sousId, account))
+      let tx
+      if (connector === "klip") {
+        setShowModal(true)
+        klipProvider.genQRcodeContactInteract(
+          lpContract._address,
+          jsonConvert(getAbiERC20ByName("approve")),
+          jsonConvert([
+            herodotusContract._address,
+            '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          ]),
+        )
+        tx = await klipProvider.checkResponse()
+
+        setShowModal(false)
+      }
+      else {
+        tx = await approve(lpContract, sousChefContract, account)
+        dispatch(updateUserAllowance(sousId, account))
+      }
       return tx
     } catch (e) {
       return false
     }
-  }, [account, dispatch, lpContract, sousChefContract, sousId])
+  }, [account, dispatch, lpContract, sousChefContract, sousId, connector,setShowModal,herodotusContract])
 
   return { onApprove: handleApprove }
 }

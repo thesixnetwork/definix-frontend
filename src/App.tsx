@@ -1,4 +1,4 @@
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'

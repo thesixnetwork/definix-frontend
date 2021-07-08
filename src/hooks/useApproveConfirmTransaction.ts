@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef } from 'react'
 import { noop } from 'lodash'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useToast } from 'state/hooks'
 
 type CaverPayload = Record<string, unknown> | null

@@ -5,6 +5,7 @@ import TokenPocket from './icons/TokenPocket'
 import TrustWallet from './icons/TrustWallet'
 import WalletConnect from './icons/WalletConnect'
 import BinanceChain from './icons/BinanceChain'
+import KlipConnect from './icons/KlipConnect'
 import { Config } from './types'
 
 const connectors: Config[] = [
@@ -20,7 +21,7 @@ const connectors: Config[] = [
   },
   {
     title: 'klip',
-    icon: WalletConnect,
+    icon: KlipConnect,
     connectorId: 'klip',
   },
 ]

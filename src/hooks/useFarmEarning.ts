@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import multicall from 'utils/multicall'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import herodotusABI from 'config/abi/herodotus.json'
@@ -12,7 +12,9 @@ const useFarmEarning = () => {
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
+
     const fetchAllBalances = async () => {
+      
       const calls = farmsConfig
         .filter((farm) => farm.pid > 0)
         .map((farm) => ({
@@ -20,9 +22,10 @@ const useFarmEarning = () => {
           name: 'pendingFinix',
           params: [farm.pid, account],
         }))
+        
 
       const res = await multicall(herodotusABI, calls)
-
+        
       setBalance(res)
     }
 
