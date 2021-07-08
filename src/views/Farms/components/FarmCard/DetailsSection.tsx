@@ -56,7 +56,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
               <Text bold className="flex-shrink">
                 {stakedBalanceValueFormated}
               </Text>
-              <LinkView />
+              {/* <LinkView /> */}
             </div>
           </div>
 
@@ -67,7 +67,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
               <Text bold className="flex-shrink">
                 {totalValueFormated}
               </Text>
-              <LinkView />
+              {/* <LinkView /> */}
             </div>
           </div>
         </>
