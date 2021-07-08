@@ -10,11 +10,10 @@ const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 // @ts-ignore
 const caver = new Caver(window.caver)
 
-
 export const approve = async (lpContract, herodotusContract, account) => {
-  const flagFeeDelegate = await UseDeParam("KLAYTN_FEE_DELEGATE", "N");
+  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
-  if (flagFeeDelegate === "Y") {
+  if (flagFeeDelegate === 'Y') {
     return caver.klay
       .signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -49,10 +48,10 @@ export const approve = async (lpContract, herodotusContract, account) => {
 }
 
 export const stake = async (herodotusContract, pid, amount, account) => {
-  const flagFeeDelegate = await UseDeParam("KLAYTN_FEE_DELEGATE", "N");
+  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
-    if (flagFeeDelegate === "Y") {
+    if (flagFeeDelegate === 'Y') {
       return caver.klay
         .signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -95,7 +94,7 @@ export const stake = async (herodotusContract, pid, amount, account) => {
       })
   }
 
-  if (flagFeeDelegate === "Y") {
+  if (flagFeeDelegate === 'Y') {
     return caver.klay
       .signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -171,10 +170,10 @@ export const sousStakeBnb = async (sousChefContract, amount, account) => {
 }
 
 export const unstake = async (herodotusContract, pid, amount, account) => {
-  const flagFeeDelegate = await UseDeParam("KLAYTN_FEE_DELEGATE", "N");
+  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
-    if (flagFeeDelegate === "Y") {
+    if (flagFeeDelegate === 'Y') {
       return caver.klay
         .signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -217,7 +216,7 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
       })
   }
 
-  if (flagFeeDelegate === "Y") {
+  if (flagFeeDelegate === 'Y') {
     return caver.klay
       .signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -311,10 +310,10 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 }
 
 export const harvest = async (herodotusContract, pid, account) => {
-  const flagFeeDelegate = await UseDeParam("KLAYTN_FEE_DELEGATE", "N");
+  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
-    if (flagFeeDelegate === "Y") {
+    if (flagFeeDelegate === 'Y') {
       return caver.klay
         .signTransaction({
           type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
@@ -353,12 +352,12 @@ export const harvest = async (herodotusContract, pid, account) => {
       .catch(function (tx) {
         return tx.transactionHash
       })
-    .on('transactionHash', (tx) => {
-      return tx.transactionHash
-    })
+      .on('transactionHash', (tx) => {
+        return tx.transactionHash
+      })
   }
 
-  if (flagFeeDelegate === "Y") {
+  if (flagFeeDelegate === 'Y') {
     return caver.klay
       .signTransaction({
         type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
