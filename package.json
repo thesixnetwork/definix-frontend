@@ -47,7 +47,7 @@
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.3.3",
-    "caver-js": "^1.6.1",
+    "caver-js": "1.6.3-rc.4",
     "chart.js": "^2.9.4",
     "date-fns": "^2.17.0",
     "definixswap-sdk": "0.0.21-klaytn",

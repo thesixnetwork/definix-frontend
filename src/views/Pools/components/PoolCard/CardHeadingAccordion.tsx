@@ -92,7 +92,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
       <div className="flex justify-space-between">
         <div className="currency">
           <StyledFarmImages className="imgs">
-            <Image src={`/images/coins/${tokenName}.png`} width={imgSize} height={imgSize} />
+            <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={imgSize} height={imgSize} />
           </StyledFarmImages>
 
           <Heading fontSize="16px" fontWeight="500 !important">
