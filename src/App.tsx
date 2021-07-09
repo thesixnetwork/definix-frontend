@@ -76,11 +76,11 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus')) {
-      // connect('injected')
+    if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
+      connect('injected')
     }
   }, [account, connect])
-
+  const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
   useFetchPublicData()
   useFetchProfile()
 
