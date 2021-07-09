@@ -36,6 +36,7 @@ TagManager.initialize(tagManagerArgs)
 const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
+const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 // const Lottery = lazy(() => import('./views/Lottery'))
@@ -108,6 +109,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/info">
               <Info />
+            </Route>
+            <Route path="/explore">
+              <Explore />
             </Route>
             <Route path="/AirdropKlay">
               <AirdropKlay />

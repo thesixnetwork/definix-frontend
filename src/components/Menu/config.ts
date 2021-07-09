@@ -92,6 +92,12 @@ const config: MenuEntry[] = [
     newTab: false,
     items: [
       {
+        label: 'Explore',
+        href: '/explore',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
         label: 'Investors',
         href: '/info',
         notHighlight: true,
