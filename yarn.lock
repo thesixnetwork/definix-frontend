@@ -2805,10 +2805,10 @@
   resolved "https://registry.yarnpkg.com/@kanthakarn-test/caverjs-react-types/-/caverjs-react-types-1.0.0.tgz#a4ec915d7280374975b53e26af50b178fa821f5c"
   integrity sha512-CTYngKJO5iqq/E1QkLDUwpw+JMriot8uc2yIzo1RXhnImLJ7w8UL+b0DjQEN1VotN5KEFpaSXaV19TOoKoPphw==
 
-"@kanthakarn-test/klaytn-use-wallet@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@kanthakarn-test/klaytn-use-wallet/-/klaytn-use-wallet-1.0.4.tgz#5699a522fa643939e86adf39fd4ba636168bced7"
-  integrity sha512-DKJ6Hg0KtAsKGW2hCrtTU7yrsd0xQOa01BVr+ZcjbtDrx+xWioQTXl3/hveWpl3P5Nqjfx0NGEnaw/xaEXky9A==
+"@kanthakarn-test/klaytn-use-wallet@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@kanthakarn-test/klaytn-use-wallet/-/klaytn-use-wallet-1.0.6.tgz#a98a01d1aabb83d8a4dc98a44b73bd3a88120ce4"
+  integrity sha512-B56LJ2gi+MD9cqjMHOaQXFsq3O33FgElCTzHVA6Tl/D+rpj8s0rujvPfP2ttn2hRnHwSkrKKlVHZGMuxFqgG/w==
   dependencies:
     "@kanthakarn-test/caverjs-react-core" "^1.0.3"
     "@kanthakarn-test/caverjs-react-injected-connector" "^1.0.0"
@@ -2816,7 +2816,7 @@
     "@rollup/plugin-image" "^2.0.6"
     jsbi "^3.1.1"
     qrcode "^1.4.4"
-    react "^16.12.0"
+    react "^17.0.2"
 
 "@kanthakarn-test/klip-connector@^1.0.0":
   version "1.0.0"
@@ -17132,15 +17132,6 @@ react-twitter-widgets@^1.10.0:
   integrity sha512-K7MAREhkKJxrhoiNWricKs1O++NyElnVpcplLzZ67gDrmeIsD3E4TUzlt0/nTZAHPOPPc86V4kEd4KIg4de7cQ==
   dependencies:
     loadjs "^4.2.0"
-
-react@^16.12.0:
-  version "16.14.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
-  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
 
 react@^17.0.1, react@^17.0.2:
   version "17.0.2"
