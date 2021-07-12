@@ -13,7 +13,7 @@ export const useHarvest = (farmPid: number) => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
- 
+
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
@@ -72,6 +72,7 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
+    console.log('connector ', connector)
     if (connector === 'klip') {
       setShowModal(true)
 

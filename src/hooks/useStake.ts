@@ -10,7 +10,6 @@ import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
 
-
 const jsonConvert = (data: any) => JSON.stringify(data)
 const useStake = (pid: number) => {
   const dispatch = useDispatch()

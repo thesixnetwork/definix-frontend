@@ -18,37 +18,33 @@ export const useApprove = (lpContract: Contract) => {
   const { setShowModal } = useContext(KlipModalContext())
   const herodotusContract = useHerodotus()
 
-  const handleApprove = useCallback(
-    async () => {
-      try {
-        let tx
-        if (connector === "klip") {
-          setShowModal(true)
-          console.log(lpContract, 'he ', herodotusContract)
-          klipProvider.genQRcodeContactInteract(
-            lpContract._address,
-            jsonConvert(getAbiERC20ByName("approve")),
-            jsonConvert([
-              herodotusContract._address,
-              '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-            ]),
-          )
-          tx = await klipProvider.checkResponse()
+  const handleApprove = useCallback(async () => {
+    try {
+      let tx
+      if (connector === 'klip') {
+        setShowModal(true)
+        console.log(lpContract, 'he ', herodotusContract)
+        klipProvider.genQRcodeContactInteract(
+          lpContract._address,
+          jsonConvert(getAbiERC20ByName('approve')),
+          jsonConvert([
+            herodotusContract._address,
+            '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+          ]),
+        )
+        tx = await klipProvider.checkResponse()
 
-          setShowModal(false)
-        }
-        else {
-          // is inject
-          tx = await approve(lpContract, herodotusContract, account)
-        }
-        dispatch(fetchFarmUserDataAsync(account))
-        return tx
-      } catch (e) {
-        return false
+        setShowModal(false)
+      } else {
+        // is inject
+        tx = await approve(lpContract, herodotusContract, account)
       }
-    },
-    [account, dispatch, lpContract, herodotusContract, setShowModal,connector],
-  )
+      dispatch(fetchFarmUserDataAsync(account))
+      return tx
+    } catch (e) {
+      return false
+    }
+  }, [account, dispatch, lpContract, herodotusContract, setShowModal, connector])
   return { onApprove: handleApprove }
 }
 
@@ -58,7 +54,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
   const { account, connector }: { account: string; connector: string } = useWallet()
   const sousChefContract = useSousChef(sousId)
   const { setShowModal } = useContext(KlipModalContext())
-  
+
   const herodotusContract = useHerodotus()
   const handleApprove = useCallback(async () => {
     try {

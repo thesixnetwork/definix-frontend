@@ -23,7 +23,7 @@ const connectors: Config[] = [
     title: 'klip',
     icon: KlipConnect,
     connectorId: 'klip',
-  }
+  },
 ]
 
 export default connectors
