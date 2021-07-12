@@ -1,6 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useMatchBreakpoints } from 'uikit-dev'
+import { Button, useMatchBreakpoints, Text } from 'uikit-dev'
+import Apy from './Apy'
+import AssetRatio from './AssetRatio'
+import CardHeading from './CardHeading'
+import MiniChart from './MiniChart'
+import SharePrice from './SharePrice'
+import TotalAssetValue from './TotalAssetValue'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -17,7 +23,6 @@ const VerticalStyle = styled(CardStyle)`
   position: relative;
   flex-direction: column;
   justify-content: space-between;
-  text-align: center;
 `
 
 const HorizontalStyle = styled(CardStyle)`
@@ -43,13 +48,68 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
 
   if (isHorizontal) {
     if (isMobile) {
-      return <HorizontalMobileStyle className="mb-3">wenf</HorizontalMobileStyle>
+      return (
+        <HorizontalMobileStyle className="mb-3 pa-4">
+          <CardHeading isHorizontal={false} />
+          <AssetRatio isHorizontal={isHorizontal} />
+        </HorizontalMobileStyle>
+      )
     }
 
-    return <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">ewkd</HorizontalStyle>
+    return (
+      <HorizontalStyle className="flex align-strench mb-5 pa-5">
+        <CardHeading isHorizontal={isHorizontal} className="col-3 pr-4 bd-r" />
+
+        <div className="col-5 flex flex-column justify-space-between px-4 bd-r">
+          <div className="flex justify-space-between mb-2">
+            <TotalAssetValue className="col-6" />
+            <Apy className="col-6" />
+          </div>
+          <AssetRatio isHorizontal={isHorizontal} />
+        </div>
+
+        <div className="col-2 px-4">
+          <SharePrice className="mb-2" />
+          <MiniChart height={60} />
+        </div>
+
+        <div className="col-2 flex flex-column justify-center">
+          <Text textAlign="center" className="mb-2">
+            128 INVESTORS
+          </Text>
+          <Button fullWidth radii="card">
+            View Details
+          </Button>
+        </div>
+      </HorizontalStyle>
+    )
   }
 
-  return <VerticalStyle className="mb-7">osd</VerticalStyle>
+  return (
+    <VerticalStyle className="mb-7">
+      <div className="pa-4">
+        <CardHeading isHorizontal={isHorizontal} className="mb-3" />
+        <div className="flex justify-space-between">
+          <TotalAssetValue />
+          <SharePrice />
+        </div>
+      </div>
+
+      <MiniChart />
+
+      <div className="pa-4">
+        <div className="flex align-end justify-space-between mb-2">
+          <Text textAlign="center">128 INVESTORS</Text>
+          <Apy />
+        </div>
+        <Button fullWidth radii="card">
+          View Details
+        </Button>
+      </div>
+
+      <AssetRatio isHorizontal={isHorizontal} className="px-4 py-3 bd-t" />
+    </VerticalStyle>
+  )
 }
 
 export default ExploreCard
