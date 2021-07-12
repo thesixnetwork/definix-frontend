@@ -55,8 +55,8 @@ const CardTVL = ({ className = '' }) => {
   const totalTVL = usePriceTVL().toNumber()
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
   const TranslateString = useI18n()
-  const data = useGetStats()
-  const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
+  // const data = useGetStats()
+  // const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
   const totalTransferFromBsc = useTotalTransfer()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))

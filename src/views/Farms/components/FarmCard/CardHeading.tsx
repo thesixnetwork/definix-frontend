@@ -3,7 +3,7 @@ import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
+import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
@@ -107,6 +107,20 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   const TranslateString = useI18n()
 
+  const LinkView = ({ linkClassName = '' }) => (
+    <Link
+      external
+      href={`${process.env.REACT_APP_KLAYTN_URL}/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+      bold={false}
+      className={`flex-shrink ${linkClassName} ml-2`}
+      color="textSubtle"
+      fontSize="12px"
+    >
+      {TranslateString(356, 'KlaytnScope')}
+      <ChevronRightIcon color="textSubtle" />
+    </Link>
+  )
+
   const imgSize = isHorizontal ? 48 : 56
 
   return (
@@ -149,6 +163,8 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
         </div>
       )}
+
+      <LinkView />
 
       {/* <Flex justifyContent="center">
         {isCommunityFarm ? <CommunityTag /> : <CoreTag />}

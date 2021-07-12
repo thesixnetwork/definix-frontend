@@ -11,6 +11,7 @@ export interface ExpandableSectionProps {
   addLiquidityUrl?: string
   isHorizontal?: boolean
   className?: string
+  stakedBalanceValueFormated?: string
 }
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
@@ -26,8 +27,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   totalValueFormated,
   isHorizontal = false,
   className = '',
-  // lpLabel,
-  // addLiquidityUrl,
+  stakedBalanceValueFormated,
 }) => {
   const TranslateString = useI18n()
 
@@ -54,9 +54,9 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
             <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
               <Text bold className="flex-shrink">
-                {totalValueFormated}
+                {stakedBalanceValueFormated}
               </Text>
-              <LinkView />
+              {/* <LinkView /> */}
             </div>
           </div>
 
@@ -67,7 +67,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
               <Text bold className="flex-shrink">
                 {totalValueFormated}
               </Text>
-              <LinkView />
+              {/* <LinkView /> */}
             </div>
           </div>
         </>

@@ -51,7 +51,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <StyledFarmImages>
-        <Image src={`/images/coins/${tokenName}.png`} width={imgSize} height={imgSize} />
+        <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={imgSize} height={imgSize} />
       </StyledFarmImages>
 
       <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
