@@ -19,6 +19,11 @@ const connectors: Config[] = [
     connectorId: 'injected',
   },
   {
+    title: 'TokenPocket',
+    icon: TokenPocket,
+    connectorId: 'injected',
+  },
+  {
     title: 'TrustWallet',
     icon: TrustWallet,
     connectorId: 'injected',
@@ -26,11 +31,6 @@ const connectors: Config[] = [
   {
     title: 'MathWallet',
     icon: MathWallet,
-    connectorId: 'injected',
-  },
-  {
-    title: 'TokenPocket',
-    icon: TokenPocket,
     connectorId: 'injected',
   },
   {
