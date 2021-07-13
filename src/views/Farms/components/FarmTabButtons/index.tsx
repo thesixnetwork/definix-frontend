@@ -1,5 +1,6 @@
 import useTheme from 'hooks/useTheme'
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Button, CardViewIcon, IconButton, ListViewIcon, Text, useMatchBreakpoints } from 'uikit-dev'
 
@@ -15,6 +16,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
   const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const { t } = useTranslation()
 
   return (
     <Wrapper>
@@ -56,7 +58,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
                 variant={listView ? 'primary' : 'secondary'}
                 className="mr-2"
               >
-                List View
+                {t('List View')}
               </Button>
               <Button
                 size="sm"
@@ -67,7 +69,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
                 variant={!listView ? 'primary' : 'secondary'}
                 startIcon={<CardViewIcon isStroke color={!listView || isDark ? 'white' : 'primary'} />}
               >
-                Card View
+                {t('Card View')}
               </Button>
             </>
           )}
@@ -82,7 +84,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
             variant={!stackedOnly ? 'primary' : 'secondary'}
             className="mr-2"
           >
-            All Farm
+            {t('All Farm')}
           </Button>
           <Button
             size="sm"
@@ -91,13 +93,13 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
             }}
             variant={stackedOnly ? 'primary' : 'secondary'}
           >
-            Staked
+            {t('Staked')}
           </Button>
         </div>
       </div>
 
       <Text fontSize="12px" color="textSubtle" className="mt-4">
-        *AAPR = Airdrop APR supported by our partners
+        *AAPR = {t('Airdrop APR supported by our partners')}
       </Text>
     </Wrapper>
   )

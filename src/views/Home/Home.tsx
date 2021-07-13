@@ -118,7 +118,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Helmet>
-        <title>Home - Definix - Advance Your Crypto Assets</title>
+        <title>{t('Home - Definix - Advance Your Crypto Assets')}</title>
       </Helmet>
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
@@ -183,7 +183,7 @@ const Home: React.FC = () => {
                       setIsViewTurial(false)
                     }}
                   >
-                    My farms & pools
+                    {t('My farms & pools')}
                   </Heading>
                 )}
 
@@ -195,7 +195,7 @@ const Home: React.FC = () => {
                     setIsViewTurial(true)
                   }}
                 >
-                  TUTORIALS
+                  {t('TUTORIALS')}
                 </Heading>
               </CustomTab>
 

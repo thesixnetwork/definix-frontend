@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Button, Heading, Modal, Text } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
@@ -12,6 +13,8 @@ const MiniLogo = styled.img`
 `
 
 const AirDropHarvestModal = ({ onDismiss = () => null }) => {
+  const { t } = useTranslation()
+
   return (
     <Modal title="Rewards you haven't harvest yet" onDismiss={onDismiss} isRainbow={false} bodyPadding="16px 24px">
       <div className="flex my-3">
@@ -21,14 +24,14 @@ const AirDropHarvestModal = ({ onDismiss = () => null }) => {
             0.00
           </Heading>
           <Text color="textSubtle" textAlign="left">
-            KLAY (Airdrop)
+            {t('KLAY (Airdrop)')}
           </Text>
           <Text color="textSubtle" fontSize="12px" className="col-12 ml-6">
             = $0.00
           </Text>
         </div>
         <Button fullWidth className="col-4 align-self-center" radii="small">
-          Harvest
+          {t('Harvest')}
         </Button>
       </div>
       <div className="flex my-3">
@@ -38,14 +41,14 @@ const AirDropHarvestModal = ({ onDismiss = () => null }) => {
             0.00
           </Heading>
           <Text color="textSubtle" textAlign="left">
-            KLAY (Airdrop)
+            {t('KLAY (Airdrop)')}
           </Text>
           <Text color="textSubtle" fontSize="12px" className="col-12 ml-6">
             = $0.00
           </Text>
         </div>
         <Button fullWidth className="col-4 align-self-center" radii="small">
-          Harvest
+          {t('Harvest')}
         </Button>
       </div>
     </Modal>

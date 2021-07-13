@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Button, Card, Heading } from 'uikit-dev'
 import dashboardBanner from '../../../assets/images/dashboard-banner.png'
@@ -87,15 +88,17 @@ const StyledBanner = styled(Card)`
 `
 
 const InfoBanner = ({ showBtn = false, className = '' }) => {
+  const { t } = useTranslation()
+
   return (
     <StyledBanner className={className}>
       <MaxWidth>
         <div>
-          <Heading as="h3">The Decentralized Multi-chain</Heading>
-          <Heading color="primary">Fund Management Protocol</Heading>
+          <Heading as="h3">{t('The Decentralized Multi-chain')}</Heading>
+          <Heading color="primary">{t('Fund Management Protocol')}</Heading>
           {showBtn && (
             <Button as="a" href="/info" variant="secondary" className="btn-secondary-disable">
-              Read more
+              {t('Read more')}
             </Button>
           )}
         </div>

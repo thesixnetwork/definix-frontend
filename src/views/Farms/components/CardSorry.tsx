@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { useFarmUnlockDate } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Card, Heading } from 'uikit-dev'
@@ -78,6 +79,7 @@ const CardSorry = styled(Card)`
 
 const CardWhatIsFarm = () => {
   const farmUnlockAt = useFarmUnlockDate()
+  const { t } = useTranslation()
 
   return (
     <CardSorry className="mb-6">
@@ -86,17 +88,17 @@ const CardWhatIsFarm = () => {
 
         <div>
           <Heading as="h3" fontSize="24px !important" color="#FFF" className="mb-2">
-            For maximum yield farming return and best experience, we are upgrading our farm.
+            {t('For maximum yield farming return and best experience, we are upgrading our farm.')}
           </Heading>
           <Heading as="h3" fontSize="24px !important" color="#FFD157" className="mb-2">
-            Our farm will be available in{' '}
+            {t('Our farm will be available in')}{' '}
             <Flip small date={farmUnlockAt instanceof Date ? farmUnlockAt.getTime() : farmUnlockAt} />
           </Heading>
-          <p>You can stake your LP and get six now</p>
+          <p>{t('You can stake your LP and get six now')}</p>
         </div>
 
         <Button as="a" href="/pool" variant="secondary" className="btn-secondary-disable">
-          Go to stake
+          {t('Go to stake')}
         </Button>
       </MaxWidth>
     </CardSorry>

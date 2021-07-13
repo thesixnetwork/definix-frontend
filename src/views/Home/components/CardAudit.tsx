@@ -1,3 +1,4 @@
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
@@ -31,11 +32,12 @@ const Audit = styled(Card)`
 
 const CardAudit = ({ className = '' }) => {
   const { isDark } = useTheme()
+  const { t } = useTranslation()
 
   return (
     <Audit className={className}>
       <Text className="mb-2" color="textSubtle">
-        Audited by
+        {t('Audited by')}
       </Text>
       <a className="mb-1" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
         <img src={isDark ? certikWhite : certik} width="120" alt="" />

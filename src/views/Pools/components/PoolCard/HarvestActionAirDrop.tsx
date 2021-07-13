@@ -97,7 +97,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
       <div className={isHorizontal ? 'col-8 pr-4' : ''}>
         <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
-          Earned
+          {t('Earned')}
         </Text>
 
         <AirDrop
@@ -125,10 +125,10 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
 
         {false && (
           <div className="flex align-center justify-space-between">
-            <Text color="textSubtle">Claim Ended Bonus</Text>
+            <Text color="textSubtle">{t('Claim Ended Bonus')}</Text>
 
             <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-              Claim
+              {t('Claim')}
             </Button>
           </div>
         )}

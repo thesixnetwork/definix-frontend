@@ -1,5 +1,6 @@
 import Page from 'components/layout/Page'
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Helmet } from 'react-helmet'
 import styled from 'styled-components'
 import { ArrowBackIcon, Button, Card, Heading, IconButton, Text } from 'uikit-dev'
@@ -92,44 +93,46 @@ const StyledButton = styled(Button)`
 `
 
 const Info: React.FC = () => {
+  const { t } = useTranslation()
+
   const s2 = [
     [
       {
-        title: 'Chance to Optimize your profit',
+        title: t('Chance to Optimize your profit'),
         detail:
-          'Maximize your investment with FINIX token that you earn from Definix.com. FINIX token can be utilized as a discount for financial products and other privillege on upcoming features. Moreover, we also have an expert to make sure that you will select the best for your investment',
+          t('Maximize your investment with FINIX token that you earn from Definix.com. FINIX token can be utilized as a discount for financial products and other privillege on upcoming features. Moreover, we also have an expert to make sure that you will select the best for your investment'),
         img: u1,
       },
       {
-        title: 'Transparency Investment',
+        title: t('Transparency Investment'),
         detail:
-          'All your assets will be traded and controlled by smart contract. All of your investment logs will be recorded on public blockchain. With the property of blockchain, you can freely trace your transactions at every moments.',
+        t('All your assets will be traded and controlled by smart contract. All of your investment logs will be recorded on public blockchain. With the property of blockchain, you can freely trace your transactions at every moments.'),
         img: u2,
       },
       {
-        title: 'Investment Assessment',
+        title: t('Investment Assessment'),
         detail:
-          'We have algorithmic investment assessment that aggregate the data across blockchain. We utilize this data to create the best investment choice for you to choose base on your requirement.',
+        t('We have algorithmic investment assessment that aggregate the data across blockchain. We utilize this data to create the best investment choice for you to choose base on your requirement.'),
         img: u3,
       },
     ],
     [
       {
-        title: 'User Generated Fund',
+        title: t('User Generated Fund'),
         detail:
-          'You can create and managed your own fund on our platform by submit your fund on smart contract with the property of blockchain. Every investment log will be shown on the platform. This allows the person who invest in your fund to trace their asset. As a fund manager you can generate income from your fund.',
+        t('You can create and managed your own fund on our platform by submit your fund on smart contract with the property of blockchain. Every investment log will be shown on the platform. This allows the person who invest in your fund to trace their asset. As a fund manager you can generate income from your fund.'),
         img: m1,
       },
       {
-        title: 'Multi-Strategy Investment',
+        title: t('Multi-Strategy Investment'),
         detail:
-          'With the multi-chain environment (BSC, Klaytn). The fund manger is allow to match variety of assets across different blockchain and help maximize the profit for fund manager.',
+        t('With the multi-chain environment (BSC, Klaytn). The fund manger is allow to match variety of assets across different blockchain and help maximize the profit for fund manager.'),
         img: m2,
       },
       {
-        title: 'Trade Reputation',
+        title: t('Trade Reputation'),
         detail:
-          'Let people know how good are you on trading. All trade logs are recorded on blockchain. The trade data will be sort and ranked in the platform. Fund manager can use this record as a reputation for them gain more investor to maximize the volume of their fund.',
+        t('Let people know how good are you on trading. All trade logs are recorded on blockchain. The trade data will be sort and ranked in the platform. Fund manager can use this record as a reputation for them gain more investor to maximize the volume of their fund.'),
         img: m3,
       },
     ],
@@ -138,7 +141,7 @@ const Info: React.FC = () => {
   return (
     <Page style={{ maxWidth: '1280px' }}>
       <Helmet>
-        <title>Info - Definix - Advance Your Crypto Assets</title>
+        <title>{t('Info - Definix - Advance Your Crypto Assets')}</title>
       </Helmet>
       <Card isRainbow className="flex flex-column align-stretch mx-auto" style={{ maxWidth: '1000px' }}>
         <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
@@ -151,9 +154,7 @@ const Info: React.FC = () => {
           <section>
             <img src={info} alt="" className="info" />
             <Text fontSize="16px">
-              <strong>Definix</strong> is the decentralized multi-chain fund management platform that allows everybody
-              to trade with the high level of transparency. With the technology of blockchain, Definix makes crypto
-              investment become one of the most simple things for everyone.
+              <strong>Definix</strong> {t('is the decentralized multi-chain fund management platform that allows everybody to trade with the high level of transparency. With the technology of blockchain, Definix makes crypto investment become one of the most simple things for everyone.')}
             </Text>
           </section>
 
@@ -161,12 +162,12 @@ const Info: React.FC = () => {
 
           <section>
             <Heading as="h2" fontSize="32px !important" className="mb-6" textAlign="center">
-              Benefits
+              {t('Benefits')}
             </Heading>
             <Flex>
               <div className="col-6">
                 <Text color="primary" fontSize="20px" textAlign="center" fontWeight="bold" className="mb-4">
-                  for Crypto investors
+                  {t('for Crypto investors')}
                 </Text>
 
                 {s2[0].map((user) => (
@@ -181,7 +182,7 @@ const Info: React.FC = () => {
               </div>
               <div className="col-6">
                 <Text color="primary" fontSize="20px" textAlign="center" fontWeight="bold" className="mb-4">
-                  for Professional Traders
+                  {t('for Professional Traders')}
                 </Text>
 
                 {s2[1].map((manager) => (
@@ -197,7 +198,7 @@ const Info: React.FC = () => {
             </Flex>
 
             <StyledButton variant="secondary" disabled>
-              Coming soon
+              {t('Coming soon')}
             </StyledButton>
           </section>
         </MaxWidth>

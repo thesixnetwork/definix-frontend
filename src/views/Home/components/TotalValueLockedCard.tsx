@@ -33,7 +33,7 @@ const TotalValueLockedCard = () => {
         <Heading fontSize="28px !important" mb="12px">
           ${(totalTVL || 0) <= 0 ? 'N/A' : totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
-        <Text small>(Across all LPs and Pools)</Text>
+        <Text small>({t('Across all LPs and Pools')})</Text>
         {/* data ? (
           <>
             <Heading fontSize="28px !important" mb="12px">

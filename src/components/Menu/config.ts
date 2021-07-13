@@ -142,6 +142,11 @@ const config: MenuEntry[] = [
     href: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
     notHighlight: true,
     newTab: true,
+    customHref: {
+      en: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
+      th: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
+      ko: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-kr/'
+    },
   },
   {
     label: 'Partnership',

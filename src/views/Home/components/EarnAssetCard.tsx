@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import orderBy from 'lodash/orderBy'
 import { Heading, Card, CardBody, Flex, ArrowForwardIcon } from 'uikit-dev'
@@ -24,17 +25,18 @@ const EarnAssetCard = () => {
   const latestPools: Pool[] = orderBy(activeNonFinixPools, ['sortOrder', 'pid'], ['desc', 'desc']).slice(0, 3)
   // Always include FINIX
   const assets = ['FINIX', ...latestPools.map((pool) => pool.tokenName)].join(', ')
+  const { t } = useTranslation()
 
   return (
     <StyledFarmStakingCard>
       <CardBody>
         <Heading color="contrast" size="lg">
-          Earn
+          {t('Earn')}
         </Heading>
         <CardMidContent color="invertedContrast">{assets}</CardMidContent>
         <Flex justifyContent="space-between">
           <Heading color="contrast" size="lg">
-            in Pools
+            {t('in Pools')}
           </Heading>
           <NavLink exact activeClassName="active" to="/syrup" id="pool-cta">
             <ArrowForwardIcon mt={30} color="primary" />

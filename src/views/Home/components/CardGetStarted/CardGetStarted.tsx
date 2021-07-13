@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-pascal-case */
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Button, Card, ChevronLeftIcon, ChevronRightIcon, Heading, Text } from 'uikit-dev'
 import getStarted from 'uikit-dev/images/for-ui-v2/get-started.png'
@@ -170,6 +171,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const [curMainStep, setCurMainStep] = useState(null)
   const [curSubStep, setCurSubStep] = useState(null)
   const [isTransferSixFromKlaytn, setIsTransferSixFromKlaytn] = useState(false) // For Klaytn > Main2 > Sub2 > Select 'From Klaytn'
+  const { t } = useTranslation()
 
   useEffect(() => {
     return () => {
@@ -182,25 +184,25 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const bsc = [
     {
-      title: 'Preparation & Wallet setup',
+      title: t('Preparation & Wallet setup'),
       img: m01,
       steps: [BSC_1_1, BSC_1_2, BSC_1_3, BSC_1_4, BSC_1_5],
       stepsKlaytn: [],
     },
     {
-      title: 'Transfer token to your wallet',
+      title: t('Transfer token to your wallet'),
       img: m02,
       steps: [BSC_2_1, BSC_2_2, BSC_2_3, BSC_2_4, BSC_2_5, BSC_2_6, BSC_2_7],
       stepsKlaytn: [],
     },
     {
-      title: 'Connect wallet & Swap tokens',
+      title: t('Connect wallet & Swap tokens'),
       img: m03,
       steps: [BSC_3_1, BSC_3_2, BSC_3_3, BSC_3_4],
       stepsKlaytn: [],
     },
     {
-      title: 'Liquidity pairing & Farming',
+      title: t('Liquidity pairing & Farming'),
       img: m04,
       steps: [BSC_4_1, BSC_4_2, BSC_4_3, BSC_4_4, BSC_4_5],
       stepsKlaytn: [],
@@ -209,13 +211,13 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const klaytn = [
     {
-      title: 'Preparation & Wallet setup',
+      title: t('Preparation & Wallet setup'),
       img: m01,
       steps: [Klaytn_1_1, Klaytn_1_2, Klaytn_1_3],
       stepsKlaytn: [],
     },
     {
-      title: 'Transfer token to your wallet',
+      title: t('Transfer token to your wallet'),
       img: m02,
       steps: [
         Klaytn_2_1,
@@ -231,13 +233,13 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       stepsKlaytn: [Klaytn_2_1, Klaytn_2_2, Klaytn_2_3_klaytn, Klaytn_2_4_klaytn, Klaytn_2_7, Klaytn_2_8, Klaytn_2_9],
     },
     {
-      title: 'Connect wallet & Swap tokens',
+      title: t('Connect wallet & Swap tokens'),
       img: m03,
       steps: [Klaytn_3_1, Klaytn_3_2, Klaytn_3_3, Klaytn_3_4],
       stepsKlaytn: [],
     },
     {
-      title: 'Liquidity pairing & Farming',
+      title: t('Liquidity pairing & Farming'),
       img: m04,
       steps: [Klaytn_4_1, Klaytn_4_2, Klaytn_4_3, Klaytn_4_4, Klaytn_4_5],
       stepsKlaytn: [],
@@ -284,7 +286,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
   const BeforeStart = () => (
     <Overflow>
       <Heading className="mb-2" color="primary">
-        Let’s start from here :)
+        {t('Let’s start from here :)')}
       </Heading>
       <Text color="textSubtle">You don’t have any investment yet. Don’t worry, I’ll guide you through the process</Text>
 
@@ -298,7 +300,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
         }}
         radii="card"
       >
-        <span>Get Started</span>
+        <span>{t('Get Started')}</span>
       </SpecialButton>
     </Overflow>
   )
@@ -315,13 +317,13 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
         size="sm"
       >
         <Text fontSize="14px" bold>
-          BACK
+          {t('BACK')}
         </Text>
       </CustomButton>
       {curMainStep !== null && (
         <>
           <Page fontSize="14px" bold>
-            Step {`${curSubStep + 1} / ${subStepsLength() + 1}`}
+            {t('Step')} {`${curSubStep + 1} / ${subStepsLength() + 1}`}
           </Page>
 
           {curSubStep < subStepsLength() && <NextButton />}
@@ -347,7 +349,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           startIcon={<ChevronLeftIcon color="primary" className="mr-1" />}
         >
           <Text fontSize="14px" bold>
-            BACK TO FIRST PAGE
+            {t('BACK TO FIRST PAGE')}
           </Text>
         </CustomButton>
       )}
@@ -363,7 +365,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
       endIcon={<ChevronRightIcon color="primary" className="ml-1" />}
     >
       <Text fontSize="14px" bold>
-        NEXT
+        {t('NEXT')}
       </Text>
     </CustomButton>
   )
@@ -388,7 +390,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
         endIcon={<ChevronRightIcon color="primary" className="ml-1" />}
       >
         <Text fontSize="14px" bold>
-          PROCEED TO NEXT STEP
+          {t('PROCEED TO NEXT STEP')}
         </Text>
       </CustomButton>
     </div>
@@ -405,7 +407,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
           {curMainStep === null ? (
             <Overflow>
               <Heading className="mb-2" color="primary">
-                Start farming in 4 major steps
+                {t('Start farming in 4 major steps')}
               </Heading>
 
               <div className="mt-5">
