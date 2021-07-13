@@ -1,10 +1,9 @@
-import { useGetStats } from 'hooks/api'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
-import useI18n from 'hooks/useI18n'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
 import React, { useEffect } from 'react'
 import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Card, Heading, Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
@@ -54,9 +53,7 @@ const CardTVL = ({ className = '' }) => {
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
-  const TranslateString = useI18n()
-  // const data = useGetStats()
-  // const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
+  const { t } = useTranslation()
   const totalSupply = useTotalSupply()
   const totalTransferFromBsc = useTotalTransfer()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
@@ -71,7 +68,7 @@ const CardTVL = ({ className = '' }) => {
     <Card className={className}>
       <Total>
         <Text color="inherit" className="mb-2" textAlign="center">
-          {TranslateString(762, 'Total Value Locked (TVL)')}
+          {t('Total Value Locked (TVL)')}
         </Text>
         <Heading fontSize="32px !important">
           $
@@ -105,7 +102,7 @@ const CardTVL = ({ className = '' }) => {
       <Stat>
         <Row>
           <div className="flex align-center">
-            <Text color="textSubtle">{TranslateString(536, 'Total FINIX Supply')}</Text>
+            <Text color="textSubtle">{t('Total FINIX Supply')}</Text>
             <Helper text="Does not include burned" className="ml-2" position="top" />
           </div>
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
@@ -156,11 +153,11 @@ const CardTVL = ({ className = '' }) => {
           />
         </Row>
         <Row>
-          <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
+          <Text color="textSubtle">{t('Total FINIX Burned')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
+          <Text color="textSubtle">{t('New FINIX / sec')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} valueString="1.5" />
         </Row>
       </Stat>

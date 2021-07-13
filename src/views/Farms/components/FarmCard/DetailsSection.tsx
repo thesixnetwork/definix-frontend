@@ -1,4 +1,4 @@
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
 import { ChevronRightIcon, Link, Text } from 'uikit-dev'
@@ -29,45 +29,29 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   className = '',
   stakedBalanceValueFormated,
 }) => {
-  const TranslateString = useI18n()
-
-  const LinkView = ({ linkClassName = '' }) => (
-    <Link
-      external
-      href={klaytnAddress}
-      bold={false}
-      className={`flex-shrink ${linkClassName} ml-2`}
-      color="textSubtle"
-      fontSize="12px"
-    >
-      {TranslateString(356, 'KlaytnScope')}
-      <ChevronRightIcon color="textSubtle" />
-    </Link>
-  )
+  const { t } = useTranslation()
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
       {!removed && (
         <>
           <div className="flex align-baseline flex-wrap justify-space-between mb-1">
-            <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text>
+            <Text color="textSubtle">{t('My Liquidity')}</Text>
 
             <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
               <Text bold className="flex-shrink">
                 {stakedBalanceValueFormated}
               </Text>
-              {/* <LinkView /> */}
             </div>
           </div>
 
           <div className="flex align-baseline flex-wrap justify-space-between">
-            <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
+            <Text color="textSubtle">{t('Total Liquidity')}</Text>
 
             <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
               <Text bold className="flex-shrink">
                 {totalValueFormated}
               </Text>
-              {/* <LinkView /> */}
             </div>
           </div>
         </>

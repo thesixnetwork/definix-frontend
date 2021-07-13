@@ -1,7 +1,7 @@
 import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import { useSousHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
@@ -53,7 +53,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   farm,
   pool,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const [pendingTx, setPendingTx] = useState(false)
 
@@ -149,7 +149,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
             setPendingTx(false)
           }}
         >
-          {TranslateString(562, 'Harvest')}
+          {t('Harvest')}
         </Button>
 
         {false && (

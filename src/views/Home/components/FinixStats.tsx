@@ -1,4 +1,4 @@
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance'
 import React from 'react'
 import styled from 'styled-components'
@@ -35,7 +35,7 @@ const Row = styled.div`
 `
 
 const FinixStats = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
@@ -46,17 +46,17 @@ const FinixStats = () => {
         <Heading mb="20px">FINIX Stats</Heading>
         <Row>
           <Row className="mb-0">
-            <Text small>{TranslateString(536, 'Total FINIX Supply')}</Text>
+            <Text small>{t('Total FINIX Supply')}</Text>
             <Helper text="Does not include burned" className="ml-2" position="top" />
           </Row>
           {finixSupply && <CardValue fontSize="18px" fontWeight="bold" value={finixSupply} />}
         </Row>
         <Row>
-          <Text small>{TranslateString(538, 'Total FINIX Burned')}</Text>
+          <Text small>{t('Total FINIX Burned')}</Text>
           <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
-          <Text small>{TranslateString(540, 'New FINIX/block')}</Text>
+          <Text small>{t('New FINIX/block')}</Text>
           <CardValue fontSize="18px" fontWeight="bold" decimals={0} value={3} />
         </Row>
       </CardBody>

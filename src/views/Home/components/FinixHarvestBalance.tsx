@@ -2,7 +2,7 @@ import React from 'react'
 import { Text } from 'uikit-dev'
 import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useFarmEarning from 'hooks/useFarmEarning'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
@@ -16,7 +16,7 @@ const Block = styled.div`
 `
 
 const FinixHarvestBalance = () => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { account } = useWallet()
   const farmEarnings = useFarmEarning()
   const earningsSum = farmEarnings.reduce((accum, earning) => {
@@ -27,7 +27,7 @@ const FinixHarvestBalance = () => {
   if (!account) {
     return (
       <Text fontSize="24px !important" color="textDisabled" style={{ lineHeight: '76px' }}>
-        {TranslateString(298, 'Locked')}
+        {t('Locked')}
       </Text>
     )
   }

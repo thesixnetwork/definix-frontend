@@ -1,3 +1,4 @@
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
@@ -62,6 +63,8 @@ const Home: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   const [isLoading, setIsLoading] = useState(false)
+  const { t } = useTranslation()
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false)
@@ -73,7 +76,6 @@ const Home: React.FC = () => {
 
   const { account } = useWallet()
   const { hasProfile } = useProfile()
-  // const TranslateString = useI18n()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -131,7 +133,7 @@ const Home: React.FC = () => {
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                Home
+                {t('Home')}
               </Heading>
               {isLoading ? (
                 <Skeleton

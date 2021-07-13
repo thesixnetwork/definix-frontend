@@ -1,4 +1,4 @@
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
@@ -20,7 +20,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
   isHorizontal = false,
   className = '',
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const LinkView = ({ linkClassName = '' }) => (
     <Link
@@ -31,7 +31,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
       color="textSubtle"
       fontSize="12px"
     >
-      {TranslateString(356, 'View on KlaytnScope')}
+      {t('View on KlaytnScope')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )

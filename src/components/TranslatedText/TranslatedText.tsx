@@ -1,14 +1,13 @@
 import React from 'react'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 export interface TranslatedTextProps {
-  translationId: number
   children: string
 }
 
-const TranslatedText = ({ translationId, children }: TranslatedTextProps) => {
-  const TranslateString = useI18n()
-  return <>{TranslateString(translationId, children)}</>
+const TranslatedText = ({ children }: TranslatedTextProps) => {
+  const { t } = useTranslation()
+  return <>{t(children)}</>
 }
 
 export default TranslatedText

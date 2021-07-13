@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
@@ -32,7 +32,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentWithdraw,
   className = '',
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [readyToStake, setReadyToStake] = useState(false)
@@ -69,7 +69,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
           fullWidth
           radii="small"
         >
-          {TranslateString(999, 'Stake LP')}
+          {t('Stake LP')}
         </Button>
       )
     }
@@ -111,7 +111,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     if (needsApproval && !isOldSyrup) {
       return (
         <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
-          {TranslateString(758, 'Approve Contract')}
+          {t('Approve Contract')}
         </Button>
       )
     }
@@ -134,10 +134,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${tokenName} ${TranslateString(
-        1074,
-        'Staked',
-      )}`}</Text>
+      <Text textAlign="left" className="mb-2" color="textSubtle">{`${tokenName} ${t('Staked')}`}</Text>
       {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
     </div>
   )

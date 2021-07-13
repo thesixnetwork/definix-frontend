@@ -5,7 +5,7 @@ import Lottie from 'react-lottie'
 import { Button, Modal } from 'uikit-dev'
 import loading from 'uikit-dev/animation/farmPool.json'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import useI18n from '../../../hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 
 const options = {
   loop: true,
@@ -30,7 +30,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
   }, [max])
@@ -64,7 +64,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         onChange={handleChange}
         max={fullBalance}
         symbol={tokenName}
-        inputTitle={TranslateString(1070, 'Stake')}
+        inputTitle={t('Stake')}
       />
 
       <Button
@@ -79,7 +79,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
           onDismiss()
         }}
       >
-        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Deposit ${tokenName}`)}
+        {pendingTx ? t('Pending') : t(`Deposit ${tokenName}`)}
       </Button>
     </Modal>
   )

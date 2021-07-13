@@ -1,4 +1,4 @@
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
@@ -35,7 +35,7 @@ const ToggleWrapper = styled.div`
 `
 
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, listView, setListView }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -97,7 +97,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
       <div className="flex mt-3">
         <ToggleWrapper>
           <Toggle checked={liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
-          <Text> {TranslateString(999, 'Live')}</Text>
+          <Text> {t('Live')}</Text>
         </ToggleWrapper>
 
         <Button

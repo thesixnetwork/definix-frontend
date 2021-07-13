@@ -1,6 +1,6 @@
 import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { useSousHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
@@ -26,7 +26,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   isOldSyrup,
   className = '',
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
 
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
@@ -40,7 +40,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
     <div className={className}>
       <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
         <MiniLogo src={miniLogo} alt="" />
-        {`FINIX ${TranslateString(1072, 'Earned')}`}
+        {`FINIX ${t('Earned')}`}
       </Text>
 
       <div className="flex align-center justify-space-between">
@@ -65,7 +65,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
             setPendingTx(false)
           }}
         >
-          {TranslateString(562, 'Harvest')}
+          {t('Harvest')}
         </Button>
       </div>
 

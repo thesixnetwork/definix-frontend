@@ -1,5 +1,5 @@
 import { useGetStats } from 'hooks/api'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import { usePriceTVL } from 'state/hooks'
 import styled from 'styled-components'
@@ -22,14 +22,14 @@ const StyledTotalValueLockedCard = styled(Card)`
 
 const TotalValueLockedCard = () => {
   const totalTVL = usePriceTVL().toNumber()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const data = useGetStats()
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
 
   return (
     <StyledTotalValueLockedCard isRainbow>
       <CardBody className="flex flex-column align-center pa-6 mx-auto">
-        <Heading mb="16px">{TranslateString(762, 'Total Value Locked (TVL)')}</Heading>
+        <Heading mb="16px">{t('Total Value Locked (TVL)')}</Heading>
         <Heading fontSize="28px !important" mb="12px">
           ${(totalTVL || 0) <= 0 ? 'N/A' : totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>

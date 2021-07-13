@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import { Heading, Card, CardBody, Button } from 'uikit-dev'
 import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import UnlockButton from 'components/UnlockButton'
@@ -36,7 +36,7 @@ const Actions = styled.div`
 const FarmedStakingCard = () => {
   const [pendingTx, setPendingTx] = useState(false)
   const { account } = useWallet()
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
 
@@ -57,15 +57,15 @@ const FarmedStakingCard = () => {
     <StyledFarmStakingCard>
       <CardBody>
         <Heading size="xl" mb="24px">
-          {TranslateString(542, 'Farms & Staking')}
+          {t('Farms & Staking')}
         </Heading>
         <CardImage src="/images/finix.svg" alt="finix logo" width={64} height={64} />
         <Block>
-          <Label>{TranslateString(544, 'FINIX to Harvest')}:</Label>
+          <Label>{t('FINIX to Harvest')}:</Label>
           <FinixHarvestBalance />
         </Block>
         <Block>
-          <Label>{TranslateString(546, 'FINIX in Wallet')}:</Label>
+          <Label>{t('FINIX in Wallet')}:</Label>
           <FinixWalletBalance />
         </Block>
         <Actions>
@@ -76,9 +76,7 @@ const FarmedStakingCard = () => {
               onClick={harvestAllFarms}
               fullWidth
             >
-              {pendingTx
-                ? TranslateString(548, 'Collecting FINIX')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length})`)}
+              {pendingTx ? t('Collecting FINIX') : t(`Harvest all (${balancesWithValue.length})`)}
             </Button>
           ) : (
             <UnlockButton fullWidth />
