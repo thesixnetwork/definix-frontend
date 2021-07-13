@@ -10,7 +10,7 @@ import config from './config'
 
 const Menu = (props) => {
   const { account, connect, reset } = useWallet()
-  const { currentLanguage, setLanguage} = useTranslation()
+  const { currentLanguage, setLanguage } = useTranslation()
   const { isDark, toggleTheme } = useTheme()
   const finixPriceUsd = usePriceFinixUsd()
   const { profile } = useProfile()
