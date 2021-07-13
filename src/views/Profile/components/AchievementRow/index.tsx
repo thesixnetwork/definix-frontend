@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import styled from 'styled-components'
 import { AutoRenewIcon, Button, Flex } from 'uikit-dev'
 import { Achievement } from 'state/types'

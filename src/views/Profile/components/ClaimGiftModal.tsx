@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Modal, Text, InjectedModalProps, Button, AutoRenewIcon } from 'uikit-dev'
 import { AbiItem } from 'web3-utils'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import claimRefundAbi from 'config/abi/claimRefund.json'
 import { getClaimRefundAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/caver'
@@ -40,7 +40,7 @@ export const useCanClaim = () => {
 }
 
 const useClaimRefundContract = () => {
-  const abi = (claimRefundAbi as unknown) as AbiItem
+  const abi = claimRefundAbi as unknown as AbiItem
   return useContract(abi, claimRefundAddress)
 }
 

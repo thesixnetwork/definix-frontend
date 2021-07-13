@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, useWalletModal } from 'uikit-dev'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import useI18n from 'hooks/useI18n'
 
 const UnlockButton = (props) => {

@@ -23,7 +23,7 @@ const getCaver = () => {
 const getContract = (abi: any, address: string, contractOptions?: ContractOptions) => {
   // @ts-ignore
   const caver = window.caver || getCaver()
-  return new caver.klay.Contract((abi as unknown) as AbiItem, address, contractOptions)
+  return new caver.klay.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
 /**
@@ -35,7 +35,7 @@ const getWeb3 = () => {
 }
 const getWeb3Contract = (abi: any, address: string, contractOptions?: ContractOptions) => {
   const web3 = getWeb3()
-  return new web3.eth.Contract((abi as unknown) as AbiItem, address, contractOptions)
+  return new web3.eth.Contract(abi as unknown as AbiItem, address, contractOptions)
 }
 
 export { getWeb3Contract, getWeb3, getCaver, getContract, httpProvider }

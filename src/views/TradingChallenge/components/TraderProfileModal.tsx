@@ -1,4 +1,4 @@
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import axios from 'axios'
 import { useTradingCompetRegisContract } from 'hooks/useContract'
 import React, { useEffect, useState } from 'react'

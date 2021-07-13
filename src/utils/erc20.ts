@@ -8,7 +8,7 @@ import Caver from 'caver-js'
 export const getContract = (provider: ProviderType, address: string) => {
   // @ts-ignore
   const caver = window.caver || new Caver(process.env.REACT_APP_NODE_3)
-  return new caver.klay.Contract((erc20 as unknown) as AbiItem, address)
+  return new caver.klay.Contract(erc20 as unknown as AbiItem, address)
 }
 
 export const getAllowance = async (

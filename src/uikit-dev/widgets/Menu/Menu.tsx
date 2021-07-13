@@ -164,7 +164,7 @@ const Menu: React.FC<NavProps> = ({
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
-  const Icons = (IconModule as unknown) as { [key: string]: React.FC<SvgProps> }
+  const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
   const { LanguageIcon } = Icons
   const IconFlag = () => {
     if (currentLang === 'en') {
@@ -258,7 +258,7 @@ const Menu: React.FC<NavProps> = ({
         </Flex>
 
         <Flex alignItems="center">
-          <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
+          <Price href="https://klaytn.loremboard.finance/chart/FINIX" target="_blank">
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>

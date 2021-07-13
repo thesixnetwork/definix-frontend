@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'uikit-dev'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import useFarmEarning from 'hooks/useFarmEarning'

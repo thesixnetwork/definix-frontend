@@ -1,4 +1,4 @@
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
@@ -329,12 +329,12 @@ const Farm: React.FC = () => {
                 <FlexLayout cols={listView ? 1 : 3}>
                   <Route exact path={`${path}`}>
                     {liveOnly
-                      ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, [
-                          'sortOrder',
-                        ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />)
-                      : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, [
-                          'sortOrder',
-                        ]).map((pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />)}
+                      ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
+                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                        )
+                      : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                        )}
                   </Route>
                   <Route path={`${path}/history`}>
                     {orderBy(finishedPools, ['sortOrder']).map((pool) => (

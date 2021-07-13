@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { BaseLayout } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useTotalClaim } from 'hooks/useTickets'

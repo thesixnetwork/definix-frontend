@@ -7,7 +7,7 @@ import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import _ from 'lodash'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
@@ -671,7 +671,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <FarmsAndPools key={d.tokenName}>
                 <Coins>
                   <div className="flex">
-                    <img src={`/images/coins/${imgs[0]}.png`} alt="" />
+                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
                   </div>
                   <Text bold>{d.tokenName}</Text>
                 </Coins>
@@ -725,8 +725,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 ) : (
                   <>
                     <div className="flex">
-                      {imgs[0] && <img src={`/images/coins/${imgs[0]}.png`} alt="" />}
-                      {imgs[1] && <img src={`/images/coins/${imgs[1]}.png`} alt="" />}
+                      {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                      {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
                     </div>
                     <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
                   </>

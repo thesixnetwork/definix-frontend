@@ -1,4 +1,4 @@
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
@@ -76,11 +76,11 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus')) {
+    if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
       connect('injected')
     }
   }, [account, connect])
-
+  const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
   useFetchPublicData()
   useFetchProfile()
 

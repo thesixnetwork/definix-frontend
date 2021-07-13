@@ -15,7 +15,7 @@ const nonBnbPools = poolsConfig.filter((p) => p.stakingTokenName !== QuoteToken.
 const bnbPools = poolsConfig.filter((p) => p.stakingTokenName === QuoteToken.KLAY)
 const nonMasterPools = poolsConfig.filter((p) => p.sousId !== 0 && p.sousId !== 1)
 const caver = getCaver()
-const herodotusContract = new caver.klay.Contract((herodotusABI as unknown) as AbiItem, getHerodotusAddress())
+const herodotusContract = new caver.klay.Contract(herodotusABI as unknown as AbiItem, getHerodotusAddress())
 
 export const fetchPoolsAllowance = async (account) => {
   const calls = nonBnbPools.map((p) => ({

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { sumBy } from 'lodash'
 import { useDispatch } from 'react-redux'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from 'uikit-dev'
 import { useProfile } from 'state/hooks'
 import { Achievement } from 'state/types'

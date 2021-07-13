@@ -106,6 +106,9 @@ export const getDefinixKlayKusdtLPAddress = () => {
 export const getTradingCompetRegisAddress = () => {
   return getAddress(addresses.tradingCompetRegis)
 }
+export const getDeParamAddress = () => {
+  return getAddress(addresses.deParam)
+}
 export const getLotteryAddress = () => {
   return getAddress(addresses.lottery)
 }
