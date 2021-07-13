@@ -15,7 +15,7 @@ const CustomButton = styled.img`
 
 const Klaytn_2_2 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">

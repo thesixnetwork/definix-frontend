@@ -6,7 +6,7 @@ import el09 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-Tu
 
 const Klaytn_1_2 = ({ title }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">

@@ -653,7 +653,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               disabled={balancesWithValue.length <= 0 || pendingTx}
               onClick={harvestAllFarms}
             >
-              {pendingTx ? t('Collecting FINIX') : t('Harvest all (%count%)', { count: balancesWithValue.length} ) }
+              {pendingTx ? t('Collecting FINIX') : t('Harvest all (%count%)', { count: balancesWithValue.length })}
             </Button>
           ) : (
             <UnlockButton />

@@ -22,7 +22,9 @@ const BSC_2_1 = ({ title, onNext }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('You need a wallet address to transfer token to your wallet (Metamask). Your address will be shown at the upper part of Metamask as a picture below.')}
+          {t(
+            'You need a wallet address to transfer token to your wallet (Metamask). Your address will be shown at the upper part of Metamask as a picture below.',
+          )}
         </Text>
         <img src={img01} alt="" className="mb-4" />
         <Text fontSize="14px" className="mb-3">

@@ -15,7 +15,7 @@ const CustomButton = styled.img`
 
 const Klaytn_2_1 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -23,7 +23,9 @@ const Klaytn_2_1 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('You need a wallet address to transfer token to your wallet (Kaikas). Your address will be shown at the upper part of Kaikas as a picture below.')}
+          {t(
+            'You need a wallet address to transfer token to your wallet (Kaikas). Your address will be shown at the upper part of Kaikas as a picture below.',
+          )}
         </Text>
         <img src={img01} alt="" className="mb-4" />
         <Text fontSize="14px" className="mb-3">

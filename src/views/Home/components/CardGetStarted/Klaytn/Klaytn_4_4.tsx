@@ -6,7 +6,7 @@ import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-T
 
 const Klaytn_4_4 = ({ title }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -14,7 +14,9 @@ const Klaytn_4_4 = ({ title }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('After approve contract, The interface will be changed. You have to stake your LP into this farm by press on')}{' '}
+          {t(
+            'After approve contract, The interface will be changed. You have to stake your LP into this farm by press on',
+          )}{' '}
           <Text fontSize="18px" bold color="primary" className="dis-in-block" style={{ lineHeight: 1 }}>
             +
           </Text>{' '}
@@ -24,7 +26,9 @@ const Klaytn_4_4 = ({ title }) => {
         <img src={img01} alt="" className="mb-6" />
 
         <Text fontSize="14px">
-          {t('In the future, if you want to remove your LP. You can remove by press on - button instead. The removed LP will be send to your wallet.')}
+          {t(
+            'In the future, if you want to remove your LP. You can remove by press on - button instead. The removed LP will be send to your wallet.',
+          )}
         </Text>
       </div>
     </>

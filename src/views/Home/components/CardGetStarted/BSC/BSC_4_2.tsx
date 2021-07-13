@@ -34,7 +34,7 @@ const BSC_4_2 = ({ title }) => {
         </Text>
 
         <Text fontSize="14px" className="mb-4">
-        {t('The')}{' '}
+          {t('The')}{' '}
           <Text fontSize="14px" color="primary" className="dis-in-block">
             FINIX-SIX LP
           </Text>{' '}

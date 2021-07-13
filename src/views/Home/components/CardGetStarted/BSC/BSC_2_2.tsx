@@ -13,14 +13,18 @@ const BSC_2_2 = ({ title }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('To transfer SIX to metamask. You need to bridge SIX from Stella (XLM) network to BSC network by using this link.')}
+          {t(
+            'To transfer SIX to metamask. You need to bridge SIX from Stella (XLM) network to BSC network by using this link.',
+          )}
         </Text>
         <Link href="https://bridge.six.network/" target="_blank">
           https://bridge.six.network/
         </Link>
         <img src={img01} alt="" className="mb-4" />
         <Text fontSize="14px">
-          {t('The bridge transaction from Stellar network is including with 25 SIX/XLM per transaction, the transaction fee will be deducted from your bridge amount automatically.')}
+          {t(
+            'The bridge transaction from Stellar network is including with 25 SIX/XLM per transaction, the transaction fee will be deducted from your bridge amount automatically.',
+          )}
         </Text>
       </div>
     </>

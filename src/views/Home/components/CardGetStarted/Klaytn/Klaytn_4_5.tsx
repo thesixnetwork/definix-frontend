@@ -6,7 +6,7 @@ import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-T
 
 const Klaytn_4_5 = ({ title }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">

@@ -300,7 +300,9 @@ const Farm: React.FC = () => {
                 </HelpButton> */}
               </div>
               <Text>
-                {t('Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.')}
+                {t(
+                  'Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.',
+                )}
                 <br />
                 {t('The amount of returns will be calculated by the annual percentage rate (APR).')}
               </Text>

@@ -61,10 +61,14 @@ const CardAutoRebalancing = ({ className = '' }) => {
           {t('AUTO RE-BALANCING MUTUAL FUNDS')}
         </Heading>
         <Text color="textSubtle" fontSize="12px">
-          {t('Rebalancing involves periodically buying or selling assets in a portfolio to maintain an original or desired level of asset allocation or risk.')}
+          {t(
+            'Rebalancing involves periodically buying or selling assets in a portfolio to maintain an original or desired level of asset allocation or risk.',
+          )}
         </Text>
         <Text bold fontSize="12px">
-          {t('Sound complicated? Don’t worry we will take care your investment automatically with our in-house experts!!')}
+          {t(
+            'Sound complicated? Don’t worry we will take care your investment automatically with our in-house experts!!',
+          )}
         </Text>
 
         <Button size="sm" variant="primary" className="btn-secondary-disable mt-3">

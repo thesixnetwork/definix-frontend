@@ -14,7 +14,9 @@ const BSC_1_3 = ({ title }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('Now your wallet is ready to use. but DEFINIX is run on Binance smart chain. You have to change your network first.')}
+          {t(
+            'Now your wallet is ready to use. but DEFINIX is run on Binance smart chain. You have to change your network first.',
+          )}
         </Text>
         <img src={click} alt="" />
         <Text fontSize="14px" className="mb-4" textAlign="center">

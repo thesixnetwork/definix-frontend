@@ -26,7 +26,9 @@ const BSC_3_1 = ({ title }) => {
           position="bottom"
         />
         <Text fontSize="14px" className="mb-4">
-          {t('Keep in mind that on every transaction, you need BNB to pay for a gas price. Please prepare enough BNB in your wallet.')}
+          {t(
+            'Keep in mind that on every transaction, you need BNB to pay for a gas price. Please prepare enough BNB in your wallet.',
+          )}
           <br />
           {t('These tokens can be swap in DEFINIX.')}
         </Text>

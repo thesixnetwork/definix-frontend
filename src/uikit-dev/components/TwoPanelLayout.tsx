@@ -109,7 +109,7 @@ export const ShowHideButton = ({ isShow, action }) => {
       onClick={action}
       size="sm"
     >
-      {isShow ? t("Hide") : t("Show")}
+      {isShow ? t('Hide') : t('Show')}
     </Button>
   )
 }

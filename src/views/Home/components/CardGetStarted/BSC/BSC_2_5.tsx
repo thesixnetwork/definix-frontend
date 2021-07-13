@@ -52,7 +52,9 @@ const BSC_2_5 = ({ title }) => {
         </div>
 
         <Text fontSize="14px">
-          {t('After finish the process, please wait 10-20 minutes. You will recieve SIX in your metamask wallet automatically.')}
+          {t(
+            'After finish the process, please wait 10-20 minutes. You will recieve SIX in your metamask wallet automatically.',
+          )}
         </Text>
       </div>
     </>

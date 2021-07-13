@@ -17,7 +17,9 @@ const BSC_1_5 = ({ title }) => {
         </Text>
         <img src={img01} alt="" />
         <Text fontSize="14px" className="mb-4">
-          {t('Every transaction on DEFINIX on BSC require BNB to pay for a gas fee. Make sure you have enough BNB to pay for it.')}
+          {t(
+            'Every transaction on DEFINIX on BSC require BNB to pay for a gas fee. Make sure you have enough BNB to pay for it.',
+          )}
         </Text>
         <Text fontSize="14px">
           {t('Now you are ready to proceed to next step. Transfer your token from exchange to your wallet.')}

@@ -61,7 +61,7 @@ const PanelBody: React.FC<Props> = (props) => {
     if (menu.items) {
       const itemsMatchIndex = menu.items.findIndex((item) => item.href === location.pathname)
       const initialOpenState = menu.initialOpenState === true ? menu.initialOpenState : itemsMatchIndex >= 0
-      
+
       return (
         <Accordion
           key={menu.label}
@@ -96,7 +96,11 @@ const PanelBody: React.FC<Props> = (props) => {
 
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
-        <MenuLink href={menu.customHref ? (menu.customHref || {})[(currentLang || '').toLowerCase()] : menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
+        <MenuLink
+          href={menu.customHref ? (menu.customHref || {})[(currentLang || '').toLowerCase()] : menu.href}
+          onClick={handleClick}
+          target={menu.newTab ? '_blank' : ''}
+        >
           <img src={isActive || isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
           <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
         </MenuLink>

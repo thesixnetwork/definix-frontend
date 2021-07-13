@@ -13,7 +13,9 @@ const BSC_2_4 = ({ title }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('After confirmation, QR code will be generated from the system. You have to use these address and memo text as a destination when transfer from exchange platform.')}
+          {t(
+            'After confirmation, QR code will be generated from the system. You have to use these address and memo text as a destination when transfer from exchange platform.',
+          )}
         </Text>
         <img src={img01} alt="" />
       </div>

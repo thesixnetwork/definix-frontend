@@ -7,7 +7,7 @@ import img02 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-T
 
 const Klaytn_2_6 = ({ title }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -35,7 +35,9 @@ const Klaytn_2_6 = ({ title }) => {
         <img src={img02} alt="" className="mb-4" />
 
         <Text fontSize="14px">
-          {t('After finish the process, please wait 10-20 minutes. You will recieve SIX in your metamask wallet automatically.')}
+          {t(
+            'After finish the process, please wait 10-20 minutes. You will recieve SIX in your metamask wallet automatically.',
+          )}
         </Text>
       </div>
     </>

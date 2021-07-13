@@ -145,7 +145,7 @@ const config: MenuEntry[] = [
     customHref: {
       en: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
       th: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
-      ko: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-kr/'
+      ko: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-kr/',
     },
   },
   {

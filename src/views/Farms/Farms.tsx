@@ -10,13 +10,7 @@ import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import {
-  useFarms,
-  usePriceKlayKusdt,
-  usePriceKethKusdt,
-  usePriceFinixUsd,
-  usePriceSixUsd,
-} from 'state/hooks'
+import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -235,7 +229,9 @@ const Farms: React.FC = () => {
                 </HelpButton> */}
               </div>
               <Text>
-                {t('Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.')}
+                {t(
+                  'Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.',
+                )}
                 <br />
                 {t('The amount of returns will be calculated by the annual percentage rate (APR).')}
               </Text>

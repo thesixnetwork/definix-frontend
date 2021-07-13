@@ -27,7 +27,9 @@ const BSC_3_2 = ({ title }) => {
 
         <img src={img02} alt="" className="mb-1" />
         <Text fontSize="14px" className="mb-4">
-          {t('Now you can select the token you want to swap from “Select Token” dropdown menu The system will auto-calculate the amount of token you will get automatically.')}
+          {t(
+            'Now you can select the token you want to swap from “Select Token” dropdown menu The system will auto-calculate the amount of token you will get automatically.',
+          )}
         </Text>
         <img src={img03} alt="" />
       </div>

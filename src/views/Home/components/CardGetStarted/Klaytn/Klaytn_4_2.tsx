@@ -5,7 +5,7 @@ import { Heading, Text } from 'uikit-dev'
 
 const Klaytn_4_2 = ({ title }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -21,7 +21,7 @@ const Klaytn_4_2 = ({ title }) => {
         <Text fontSize="14px" className="mb-4">
           {t('After that you need to “Approve contract” by press on')}{' '}
           <Text fontSize="14px" color="primary" className="dis-in-block">
-          {t('Approve')}
+            {t('Approve')}
           </Text>{' '}
           {t('button.')}
         </Text>

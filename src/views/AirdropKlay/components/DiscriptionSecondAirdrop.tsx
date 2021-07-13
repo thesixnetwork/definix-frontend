@@ -37,7 +37,9 @@ export default function DiscriptionSecondAirdrop({ open = true, disable = true }
           <b>{t('21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59 a.m.(GMT +7).')}</b>
         </Text>
         <Text lineHeight="2">
-          {t('2. The airdrop will be automatically distributed 30 KLAY within 48 hours to the wallet address that used on')}{' '}
+          {t(
+            '2. The airdrop will be automatically distributed 30 KLAY within 48 hours to the wallet address that used on',
+          )}{' '}
           <a style={{ color: '#0973B9' }} href="https://klaytn.definix.com">
             klaytn.definix.com
           </a>{' '}
@@ -52,10 +54,14 @@ export default function DiscriptionSecondAirdrop({ open = true, disable = true }
         <Text lineHeight="2">{t('4. Airdrop is limited and distributed in a first come first serve method.')}</Text>
 
         <Text lineHeight="2">
-          {t('5. All the airdrop activity is performed and triggered by the action of a smart contract. In case the user puts in the account that the user doesn’t have a private key; the airdrop cannot be claimed and will be lost forever.')}
+          {t(
+            '5. All the airdrop activity is performed and triggered by the action of a smart contract. In case the user puts in the account that the user doesn’t have a private key; the airdrop cannot be claimed and will be lost forever.',
+          )}
         </Text>
         <Text lineHeight="2">
-          {t('6. Airdrops will be distributed to all users equally which sums up to $200K plus unclaimed airdrop from the first campaign per account.')}
+          {t(
+            '6. Airdrops will be distributed to all users equally which sums up to $200K plus unclaimed airdrop from the first campaign per account.',
+          )}
         </Text>
       </div>
       <br />

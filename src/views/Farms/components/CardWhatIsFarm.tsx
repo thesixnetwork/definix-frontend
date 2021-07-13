@@ -69,7 +69,9 @@ const CardWhatIsFarm = () => {
               {t('What is Farm?')}
             </Heading>
             <p>
-              {t('Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. The amount of returns will be calculated by the annual percentage rate (APR). The APR of each farm will be different and fluctuated due to the size of the pool. You can choose any farm you like to start farming now.')}
+              {t(
+                'Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. The amount of returns will be calculated by the annual percentage rate (APR). The APR of each farm will be different and fluctuated due to the size of the pool. You can choose any farm you like to start farming now.',
+              )}
             </p>
           </div>
         </MaxWidth>
@@ -88,18 +90,24 @@ const CardWhatIsFarm = () => {
           {t('2. Add liquidity')}
         </Heading>
         <Text className="mb-3">
-          {t('For example, if you want to stake in FINIX-SIX LP farm, you go to “Liquidity” menu and add your FINIX and SIX tokens to liquidity pool. You’ll get FINIX-SIX LP tokens from this step.')}
+          {t(
+            'For example, if you want to stake in FINIX-SIX LP farm, you go to “Liquidity” menu and add your FINIX and SIX tokens to liquidity pool. You’ll get FINIX-SIX LP tokens from this step.',
+          )}
         </Text>
 
         <Heading as="h3" className="mb-1" color="primary">
           {t('3. Start farming')}
         </Heading>
         <Text className="mb-3">
-          {t('Bring your LP tokens that you’ve got from the previous step to stake in the farm and earn much more FINIX as a return!')}
+          {t(
+            'Bring your LP tokens that you’ve got from the previous step to stake in the farm and earn much more FINIX as a return!',
+          )}
         </Text>
 
         <Text color="primary">
-          {t('Don’t have cryptocurrency for a farm you want to stake ? No worries, you can use swap to exchange for what you want.')}
+          {t(
+            'Don’t have cryptocurrency for a farm you want to stake ? No worries, you can use swap to exchange for what you want.',
+          )}
         </Text>
       </MaxWidth>
     </Card>

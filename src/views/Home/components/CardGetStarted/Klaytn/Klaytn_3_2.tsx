@@ -8,7 +8,7 @@ import img03 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-T
 
 const Klaytn_3_2 = ({ title }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -28,7 +28,9 @@ const Klaytn_3_2 = ({ title }) => {
 
         <img src={img02} alt="" className="mb-1" />
         <Text fontSize="14px" className="mb-4">
-          {t('Now you can select the token you want to swap from “Select Token” dropdown menu The system will auto-calculate the amount of token you will get automatically.')}
+          {t(
+            'Now you can select the token you want to swap from “Select Token” dropdown menu The system will auto-calculate the amount of token you will get automatically.',
+          )}
         </Text>
         <img src={img03} alt="" />
       </div>

@@ -5,7 +5,7 @@ import { Heading, Text } from 'uikit-dev'
 
 const Klaytn_3_4 = ({ title }) => {
   const { t } = useTranslation()
-  
+
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -13,7 +13,9 @@ const Klaytn_3_4 = ({ title }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('After confirming your transaction, it will take 15-60 seconds to complete. Once the process is completed, coins will be shown in your wallet.')}
+          {t(
+            'After confirming your transaction, it will take 15-60 seconds to complete. Once the process is completed, coins will be shown in your wallet.',
+          )}
           <br />
           {t('For your first farm, what you need is 2 tokens with equal value to make liquidity.')}
         </Text>

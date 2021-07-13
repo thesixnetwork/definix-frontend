@@ -15,7 +15,7 @@ const BSC_4_5 = ({ title }) => {
         <Text fontSize="14px" className="mb-4">
           {t('The last step is to deposit your LP into this farm by enter an amount of your LP and press')}{' '}
           <Text fontSize="14px" color="primary" className="dis-in-block" style={{ lineHeight: 1 }}>
-          {t('Deposit')} SIX-FINIX LP
+            {t('Deposit')} SIX-FINIX LP
           </Text>{' '}
           {t('button ( Require BNB for a gas price )')}
         </Text>

@@ -13,7 +13,9 @@ const BSC_2_3 = ({ title }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          {t('Enter your email address and amount then copy your wallet address from metamask into “Destination” field.')}
+          {t(
+            'Enter your email address and amount then copy your wallet address from metamask into “Destination” field.',
+          )}
         </Text>
         <img src={img01} alt="" />
       </div>
