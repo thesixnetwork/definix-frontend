@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, useMatchBreakpoints, Text } from 'uikit-dev'
 import Apy from './Apy'
@@ -77,7 +78,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
           <Text textAlign="center" className="mb-2">
             128 INVESTORS
           </Text>
-          <Button fullWidth radii="card">
+          <Button fullWidth radii="card" as={Link} to="/explore/detail">
             View Details
           </Button>
         </div>
@@ -102,7 +103,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
           <Text textAlign="center">128 INVESTORS</Text>
           <Apy />
         </div>
-        <Button fullWidth radii="card">
+        <Button fullWidth radii="card" as={Link} to="/explore/detail">
           View Details
         </Button>
       </div>

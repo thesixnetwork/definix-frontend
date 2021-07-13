@@ -20,6 +20,7 @@ const MaxWidth = styled.div`
 const Explore: React.FC = () => {
   const { path } = useRouteMatch()
   const [listView, setListView] = useState(true)
+  const [isInvested, setIsInvested] = useState(false)
 
   return (
     <>
@@ -51,7 +52,12 @@ const Explore: React.FC = () => {
                 </Text>
               </div>
 
-              <ExploreTabButtons listView={listView} setListView={setListView} />
+              <ExploreTabButtons
+                listView={listView}
+                setListView={setListView}
+                isInvested={isInvested}
+                setIsInvested={setIsInvested}
+              />
 
               <FlexLayout cols={listView ? 1 : 3}>
                 <ExploreCard isHorizontal={listView} />

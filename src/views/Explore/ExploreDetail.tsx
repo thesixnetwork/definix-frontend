@@ -42,8 +42,6 @@ const ExploreDetail: React.FC = () => {
               </Text>
             </div>
 
-            <ExploreTabButtons listView={listView} setListView={setListView} />
-
             <FlexLayout cols={listView ? 1 : 3}>
               <ExploreCard isHorizontal={listView} />
             </FlexLayout>

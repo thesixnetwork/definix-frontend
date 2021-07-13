@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   } ;
 `
 
-const ExploreTabButtons = ({ listView, setListView }) => {
+const ExploreTabButtons = ({ listView, setListView, isInvested, setIsInvested }) => {
   const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -71,6 +71,30 @@ const ExploreTabButtons = ({ listView, setListView }) => {
               </Button>
             </>
           )}
+        </div>
+
+        <div className="flex">
+          <Button
+            size="sm"
+            onClick={() => {
+              setIsInvested(false)
+            }}
+            isStroke
+            variant={!isInvested ? 'primary' : 'secondary'}
+            className="mr-2"
+          >
+            All Fund
+          </Button>
+          <Button
+            size="sm"
+            onClick={() => {
+              setIsInvested(true)
+            }}
+            isStroke
+            variant={isInvested ? 'primary' : 'secondary'}
+          >
+            Invested
+          </Button>
         </div>
       </div>
     </Wrapper>
