@@ -40,6 +40,9 @@ export const getEthAddress = () => {
 export const getXrpAddress = () => {
   return getAddress(addresses.xrp)
 }
+export const getAdaAddress = () => {
+  return getAddress(addresses.ada)
+}
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }

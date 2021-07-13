@@ -167,6 +167,21 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
   },
+  {
+    pid: 11,
+    lpSymbol: 'ADA-BNB LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_ADA_BNB_LP_TESTNET,
+      56: process.env.REACT_APP_ADA_BNB_LP_MAINNET,
+    },
+    tokenSymbol: 'ADA',
+    tokenAddresses: {
+      97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',
