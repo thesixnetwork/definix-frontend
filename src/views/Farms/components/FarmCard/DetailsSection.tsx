@@ -36,11 +36,11 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       external
       href={bscScanAddress}
       bold={false}
-      className={`flex-shrink ${linkClassName}`}
+      className={`flex-shrink ${linkClassName} ml-2`}
       color="textSubtle"
       fontSize="12px"
     >
-      {TranslateString(356, 'View on BscScan')}
+      {TranslateString(356, 'BscScan')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )
@@ -48,18 +48,32 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
       {!removed && (
-        <div className="flex align-baseline flex-wrap justify-space-between">
-          <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
+        <>
+          <div className="flex align-baseline flex-wrap justify-space-between mb-1">
+            <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text>
 
-          <Text bold className="flex-shrink">
-            {totalValueFormated}
-          </Text>
-        </div>
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink">
+                {totalValueFormated}
+              </Text>
+
+              <LinkView />
+            </div>
+          </div>
+
+          <div className="flex align-baseline flex-wrap justify-space-between">
+            <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
+
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink">
+                {totalValueFormated}
+              </Text>
+
+              <LinkView />
+            </div>
+          </div>
+        </>
       )}
-
-      <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
-        <LinkView />
-      </div>
     </Wrapper>
   )
 }
