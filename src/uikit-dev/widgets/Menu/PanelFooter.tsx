@@ -181,7 +181,7 @@ const PanelFooter: React.FC<Props> = ({
         </Flex>
       </SocialEntry> */}
       <SettingsEntry>
-        {/* <Dropdown
+        <Dropdown
           position="top"
           target={
             <ChangeLanguage
@@ -207,8 +207,8 @@ const PanelFooter: React.FC<Props> = ({
               {lang.language}
             </MenuButton>
           ))}
-        </Dropdown> */}
-        <ChangeLanguage
+        </Dropdown>
+        {/* <ChangeLanguage
           variant="text"
           radii="card"
           padding="0 16px"
@@ -218,7 +218,7 @@ const PanelFooter: React.FC<Props> = ({
           <Text color="textSubtle" bold>
             {currentLang?.toUpperCase()}
           </Text>
-        </ChangeLanguage>
+        </ChangeLanguage> */}
         <ChangeTheme isDark={isDark}>
           <Button variant="text" size="sm" radii="card" onClick={() => clickChangeTheme(false)}>
             <Lottie options={sunOptions} height={56} width={56} isStopped={isStopped} direction={direction} speed={3} />
