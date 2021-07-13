@@ -24,11 +24,11 @@ const connectors: Config[] = [
     icon: TokenPocket,
     connectorId: 'injected',
   },
-  {
-    title: 'Klip',
-    icon: KlipConnect,
-    connectorId: 'klip',
-  },
+  // {
+  //   title: 'Klip',
+  //   icon: KlipConnect,
+  //   connectorId: 'klip',
+  // },
 ]
 
 export default connectors
