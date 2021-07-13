@@ -116,7 +116,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       color="textSubtle"
       fontSize="12px"
     >
-      {TranslateString(356, 'KlaytnScope')}
+      {t('KlaytnScope')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )

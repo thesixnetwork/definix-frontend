@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'contexts/Localization'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import { Farm } from 'state/types'
@@ -28,7 +28,7 @@ interface FarmCardActionsProps {
 }
 
 const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, addLiquidityUrl }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { allowance, earnings } = useFarmUser(pid)
@@ -57,17 +57,17 @@ const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, ad
       <StakeAction farm={farm} />
     ) : (
       <Button fullWidth disabled={requestedApproval} onClick={handleApprove}>
-        {TranslateString(758, 'Approve Contract')}
+        {t('Approve Contract')}
       </Button>
     )
   }
 
   return (
     <Action>
-      <Text textAlign="left" className="mb-3">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
+      <Text textAlign="left" className="mb-3">{`${lpName} ${t('Staked')}`}</Text>
       <div className="mb-5">{!account ? <UnlockButton fullWidth /> : renderApprovalOrStakeButton()}</div>
 
-      <Text textAlign="left" className="mb-3">{`FINIX ${TranslateString(1072, 'Earned')}`}</Text>
+      <Text textAlign="left" className="mb-3">{`FINIX ${t('Earned')}`}</Text>
       <HarvestAction earnings={earnings} pid={pid} />
     </Action>
   )

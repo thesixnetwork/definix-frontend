@@ -1,3 +1,4 @@
+import React from 'react'
 import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { useTranslation } from 'contexts/Localization'
 import { languageList } from 'config/localization/languages'
@@ -9,7 +10,7 @@ import config from './config'
 
 const Menu = (props) => {
   const { account, connect, reset } = useWallet()
-  const { currentLanguage, setLanguage, t } = useTranslation()
+  const { currentLanguage, setLanguage} = useTranslation()
   const { isDark, toggleTheme } = useTheme()
   const finixPriceUsd = usePriceFinixUsd()
   const { profile } = useProfile()
