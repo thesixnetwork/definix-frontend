@@ -258,7 +258,7 @@ const Menu: React.FC<NavProps> = ({
         </Flex>
 
         <Flex alignItems="center">
-          <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
+          <Price href="https://klaytn.loremboard.finance/chart/FINIX" target="_blank">
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
