@@ -49,7 +49,7 @@ const StyledLink = styled(Link)`
 const PanelBody: React.FC<Props> = (props) => {
   const location = useLocation()
   const { isDark } = useTheme()
-  const { isPushed, pushNav, isMobile, links, account, login, logout } = props
+  const { isPushed, pushNav, isMobile, links, account, login, logout, currentLang } = props
 
   // Close the menu when a user clicks a link on mobile
   const handleClick = isMobile ? () => pushNav(false) : undefined
@@ -81,7 +81,7 @@ const PanelBody: React.FC<Props> = (props) => {
                 style={{ border: 'none' }}
               >
                 <MenuLink
-                  href={item.href}
+                  href={item.customHref ? (item.customHref || {})[(currentLang || '').toLowerCase()] : item.href}
                   onClick={handleClick}
                   target={item.newTab ? '_blank' : ''}
                   style={{ paddingLeft: '40px' }}
