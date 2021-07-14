@@ -1,23 +1,24 @@
-import FlexLayout from 'components/layout/FlexLayout'
-import React, { useState } from 'react'
-import { HelpCircle } from 'react-feather'
+import React from 'react'
 import { Helmet } from 'react-helmet'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Heading, Text } from 'uikit-dev'
-import HelpButton from 'uikit-dev/components/HelpButton'
+import { Card, ArrowBackIcon, Button, Text } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import ExploreCard from './components/ExploreCard'
-import ExploreTabButtons from './components/ExploreTabButtons'
+import CardHeading from './components/CardHeading'
+import FullAssetRatio from './components/FullAssetRatio'
+import FullChart from './components/FullChart'
+import SelectTime from './components/SelectTime'
+import TradeStrategy from './components/TradeStrategy'
+import TwoLineFormat from './components/TwoLineFormat'
+import WithDrawalFees from './WithdrawalFees'
 
 const MaxWidth = styled.div`
-  max-width: 1280px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 `
 
 const ExploreDetail: React.FC = () => {
-  const [listView, setListView] = useState(true)
-
   return (
     <>
       <Helmet>
@@ -26,25 +27,79 @@ const ExploreDetail: React.FC = () => {
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
-            <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  Explore Detail
-                </Heading>
+            <Card className="mb-4">
+              <div className="pa-4 pt-2 bd-b">
+                <Button
+                  variant="text"
+                  as={Link}
+                  to="/explore"
+                  ml="-12px"
+                  mb="8px"
+                  padding="0 12px"
+                  startIcon={<ArrowBackIcon />}
+                >
+                  <Text fontSize="14px" color="textSubtle">
+                    Back
+                  </Text>
+                </Button>
 
-                <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-                  Help
-                </HelpButton>
+                <div className="flex justify-space-between align-end mb-2">
+                  <CardHeading />
+                  <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" large />
+                </div>
+
+                <div className="flex pl-8">
+                  <TwoLineFormat className="col-3" title="Total asset value" value="$2,038,553.12" />
+                  <TwoLineFormat className="col-3" title="24H Performance" value="$4,300.76" />
+                  <TwoLineFormat className="col-3" title="Investors" value="123" />
+                </div>
               </div>
-              <Text>
-                You can invest your tokens in our mutual funds on this list. Every fund is administered by a
-                DEFINIX-certified fund manager.
-              </Text>
-            </div>
 
-            <FlexLayout cols={listView ? 1 : 3}>
-              <ExploreCard isHorizontal={listView} />
-            </FlexLayout>
+              <div className="pa-4">
+                <div className="flex align-center justify-space-between mb-3">
+                  <SelectTime />
+                  <div className="flex">
+                    <TwoLineFormat title="APY" value="00%" hint="xxx" className="mr-6" />
+                    <TwoLineFormat title="Return" value="00%" hint="xxx" />
+                  </div>
+                </div>
+
+                <FullChart />
+              </div>
+
+              <div className="flex bd-t">
+                <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Risk-O-Meter" value="Medium" />
+                <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Sharpe ratio" value="1.00" hint="xxx" />
+                <TwoLineFormat className="px-4 py-3 col-4" title="Max Drawdown" value="10.00%" hint="xxx" />
+              </div>
+
+              <div className="flex justify-space-between pa-4 bd-t">
+                <TwoLineFormat
+                  title="Current investment"
+                  subTitle="1.24 Shares"
+                  value="$1,000.23"
+                  percent="+0.2%"
+                  days="1 D"
+                  large
+                />
+
+                <div className="col-6 flex">
+                  <Button fullWidth radii="small" className="mr-3" variant="success">
+                    INVEST
+                  </Button>
+                  <Button fullWidth radii="small" className="flex flex-column">
+                    WITHDRAW
+                    <Text fontSize="12px" color="white">
+                      0.00%
+                    </Text>
+                  </Button>
+                </div>
+              </div>
+            </Card>
+
+            <FullAssetRatio className="mb-4" />
+            <TradeStrategy className="mb-4" />
+            <WithDrawalFees className="mb-4" />
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout>

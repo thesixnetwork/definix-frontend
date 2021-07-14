@@ -1,13 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, useMatchBreakpoints, Text } from 'uikit-dev'
-import Apy from './Apy'
+import { Button, Text, useMatchBreakpoints } from 'uikit-dev'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
 import MiniChart from './MiniChart'
-import SharePrice from './SharePrice'
-import TotalAssetValue from './TotalAssetValue'
+import TwoLineFormat from './TwoLineFormat'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -51,7 +49,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
     if (isMobile) {
       return (
         <HorizontalMobileStyle className="mb-3 pa-4">
-          <CardHeading isHorizontal={false} />
+          <CardHeading />
           <AssetRatio isHorizontal={isHorizontal} />
         </HorizontalMobileStyle>
       )
@@ -63,14 +61,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
 
         <div className="col-5 flex flex-column justify-space-between px-4 bd-r">
           <div className="flex justify-space-between mb-2">
-            <TotalAssetValue className="col-6" />
-            <Apy className="col-6" />
+            <TwoLineFormat className="col-6" title="Total asset value" value="$2,038,553.12" />
+            <TwoLineFormat className="col-6" title="APY" value="00%" hint="xxx" />
           </div>
           <AssetRatio isHorizontal={isHorizontal} />
         </div>
 
         <div className="col-2 px-4">
-          <SharePrice className="mb-2" />
+          <TwoLineFormat className="mb-2" title="Share price" value="$1,928.03" percent="+0.2%" />
           <MiniChart height={60} />
         </div>
 
@@ -78,7 +76,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
           <Text textAlign="center" className="mb-2">
             128 INVESTORS
           </Text>
-          <Button fullWidth radii="card" as={Link} to="/explore/detail">
+          <Button fullWidth radii="small" as={Link} to="/explore/detail">
             View Details
           </Button>
         </div>
@@ -91,8 +89,8 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
       <div className="pa-4">
         <CardHeading isHorizontal={isHorizontal} className="mb-3" />
         <div className="flex justify-space-between">
-          <TotalAssetValue />
-          <SharePrice />
+          <TwoLineFormat title="Total asset value" value="$2,038,553.12" />
+          <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" />
         </div>
       </div>
 
@@ -101,9 +99,9 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
       <div className="pa-4">
         <div className="flex align-end justify-space-between mb-2">
           <Text textAlign="center">128 INVESTORS</Text>
-          <Apy />
+          <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
         </div>
-        <Button fullWidth radii="card" as={Link} to="/explore/detail">
+        <Button fullWidth radii="small" as={Link} to="/explore/detail">
           View Details
         </Button>
       </div>

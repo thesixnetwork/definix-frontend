@@ -2,7 +2,7 @@ import React from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
 
-interface MiniChartType {
+interface FullChartType {
   className?: string
   height?: number
 }
@@ -13,13 +13,13 @@ const Box = styled.div`
   }
 `
 
-const MiniChart: React.FC<MiniChartType> = ({ className = '', height = 100 }) => {
+const FullChart: React.FC<FullChartType> = ({ className = '', height = 320 }) => {
   const data = (canvas) => {
     const color = '#30ADFF'
 
     const ctx = canvas.getContext('2d')
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 140)
+    const gradient = ctx.createLinearGradient(0, 0, 0, 320)
     gradient.addColorStop(0, color)
     gradient.addColorStop(0.7, 'transparent')
 
@@ -43,22 +43,10 @@ const MiniChart: React.FC<MiniChartType> = ({ className = '', height = 100 }) =>
     animation: false,
     responsive: true,
     maintainAspectRatio: false,
-    legend: {
-      display: false,
-    },
-    layout: {
-      padding: {
-        left: -10,
-        bottom: -10,
-      },
-    },
     scales: {
       yAxes: [
         {
           gridLines: {
-            display: false,
-          },
-          ticks: {
             display: false,
           },
         },
@@ -66,9 +54,6 @@ const MiniChart: React.FC<MiniChartType> = ({ className = '', height = 100 }) =>
       xAxes: [
         {
           gridLines: {
-            display: false,
-          },
-          ticks: {
             display: false,
           },
         },
@@ -83,4 +68,4 @@ const MiniChart: React.FC<MiniChartType> = ({ className = '', height = 100 }) =>
   )
 }
 
-export default MiniChart
+export default FullChart

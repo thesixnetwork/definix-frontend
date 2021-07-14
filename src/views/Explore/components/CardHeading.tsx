@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text } from 'uikit-dev'
 
 interface CardHeadingType {
-  isHorizontal: boolean
+  isHorizontal?: boolean
   className?: string
 }
 
