@@ -219,7 +219,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const [listView, setListView] = useState(false)
   const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
-    (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
+    (farms) => farms.userData && farms.pid !== 0 && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
   )
 
   const farmsList = useCallback(
@@ -244,6 +244,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.BNB) {
+          apy = finixPrice.div(bnbPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
           apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
@@ -608,7 +610,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {topThree.map((d) => (
                     <Legend key={`legend${d.lpSymbol}`}>
                       <Text fontSize="12px" color="textSubtle">
-                        {d.lpSymbol}
+                        {(d.lpSymbol || '').replace(/ LP$/, '')}
                       </Text>
                       <Text bold style={{ paddingLeft: '80px' }}>
                         {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
@@ -684,7 +686,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               disabled={balancesWithValue.length <= 0 || pendingTx}
               onClick={harvestAllFarms}
             >
-              {pendingTx ? t('Collecting FINIX') : t(`Harvest all (${balancesWithValue.length})`)}
+              {pendingTx ? t('Collecting FINIX') : t('Harvest all (%count%)', { count: balancesWithValue.length })}
             </Button>
           ) : (
             <UnlockButton />
@@ -758,7 +760,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       {imgs[0] && <img src={`/images/coins/${imgs[0]}.png`} alt="" />}
                       {imgs[1] && <img src={`/images/coins/${imgs[1]}.png`} alt="" />}
                     </div>
-                    <Text bold>{d.props.farm.lpSymbol}</Text>
+                    <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
                   </>
                 )}
               </Coins>

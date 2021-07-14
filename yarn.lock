@@ -17839,6 +17839,11 @@ react-chartjs-2@^2.11.1:
     lodash "^4.17.19"
     prop-types "^15.7.2"
 
+react-collapsible@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/react-collapsible/-/react-collapsible-2.8.3.tgz#55b2c41f670a2031d29622110bbdb66c1a10ebc9"
+  integrity sha512-SiVsLZW8qeh09eARzJ9/fwrwOlPWfAdu+vUJGQaTqVYH61XBnKqnwcTDeGZjL005hatmJSkk2CAtYtb4rz14fA==
+
 react-countup@^4.3.3:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/react-countup/-/react-countup-4.3.3.tgz#143a8d854d47290b73d6915eac20a12d839153c2"

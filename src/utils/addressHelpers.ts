@@ -31,6 +31,18 @@ export const getBusdAddress = () => {
 export const getUsdtAddress = () => {
   return getAddress(addresses.usdt)
 }
+export const getBtcbAddress = () => {
+  return getAddress(addresses.btcb)
+}
+export const getEthAddress = () => {
+  return getAddress(addresses.eth)
+}
+export const getXrpAddress = () => {
+  return getAddress(addresses.xrp)
+}
+export const getAdaAddress = () => {
+  return getAddress(addresses.ada)
+}
 export const getFinixSixLPAddress = () => {
   return getAddress(addresses.finixSixLP)
 }
@@ -72,4 +84,7 @@ export const getPointCenterIfoAddress = () => {
 }
 export const getBunnySpecialAddress = () => {
   return getAddress(addresses.bunnySpecial)
+}
+export const getAirdropKlayAddress = () => {
+  return getAddress(addresses.airdropKlay)
 }

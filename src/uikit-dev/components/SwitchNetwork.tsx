@@ -89,7 +89,7 @@ const Tooltip = styled(Text)`
 `
 
 const SwitchNetwork = () => {
-  const [isBsc, setIsBsc] = useState(true)
+  const [isBsc] = useState(true)
   const { isDark } = useTheme()
 
   return (
@@ -97,7 +97,7 @@ const SwitchNetwork = () => {
       <IconButton
         variant="text"
         onClick={() => {
-          setIsBsc(true)
+          // setIsBsc(true)
         }}
       >
         <img src={isBsc ? bscWhite : bsc} alt="" width="20px" />
@@ -106,7 +106,8 @@ const SwitchNetwork = () => {
       <IconButton
         variant="text"
         onClick={() => {
-          setIsBsc(false)
+          // setIsBsc(false)
+          window.location.href = 'https://klaytn.definix.com'
         }}
       >
         <img src={!isBsc || isDark ? klaytnWhite : klaytn} alt="" width="20px" />

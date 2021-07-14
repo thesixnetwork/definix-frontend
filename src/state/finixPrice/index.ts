@@ -13,6 +13,8 @@ import {
   getFinixAddress,
   getBusdAddress,
   getUsdtAddress,
+  getBtcbAddress,
+  getEthAddress,
   getFinixSixLPAddress,
   getFinixBusdLPAddress,
   getFinixBnbLPAddress,
@@ -23,6 +25,8 @@ import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
 
 const initialState: FinixPriceState = {
+  caverTVL: 0,
+  web3TVL: 0,
   price: 0,
   sixPrice: 0,
   pancakeBnbPrice: 0,
@@ -36,6 +40,8 @@ const initialState: FinixPriceState = {
   wbnbBusdQuote: 0,
   wbnbUsdtQuote: 0,
   busdUsdtQuote: 0,
+  bnbBtcbQuote: 0,
+  ethBnbQuote: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -54,6 +60,11 @@ export const finixPriceSlice = createSlice({
       const { price } = action.payload
       state.pancakeBnbPrice = price
     },
+    setTVL: (state, action) => {
+      const { caverTVL, web3TVL } = action.payload
+      state.caverTVL = caverTVL
+      state.web3TVL = web3TVL
+    },
     setQuote: (state, action) => {
       const {
         sixFinixQuote,
@@ -66,6 +77,8 @@ export const finixPriceSlice = createSlice({
         wbnbBusdQuote,
         wbnbUsdtQuote,
         busdUsdtQuote,
+        bnbBtcbQuote,
+        ethBnbQuote,
       } = action.payload
       state.sixFinixQuote = sixFinixQuote
       state.sixBusdQuote = sixBusdQuote
@@ -77,12 +90,14 @@ export const finixPriceSlice = createSlice({
       state.wbnbBusdQuote = wbnbBusdQuote
       state.wbnbUsdtQuote = wbnbUsdtQuote
       state.busdUsdtQuote = busdUsdtQuote
+      state.bnbBtcbQuote = bnbBtcbQuote
+      state.ethBnbQuote = ethBnbQuote
     },
   },
 })
 
 // Actions
-export const { setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice } = finixPriceSlice.actions
+export const { setTVL, setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
@@ -166,6 +181,19 @@ export const fetchSixPrice = () => async (dispatch) => {
   dispatch(
     setSixPrice({
       sixPrice: usdPrice,
+    }),
+  )
+}
+
+// Thunks
+export const fetchTVL = () => async (dispatch) => {
+  const response = await axios.get(process.env.REACT_APP_S3_TVL)
+  const caverTVL = _.get(response, 'data.caverTVL', 0)
+  const web3TVL = _.get(response, 'data.web3TVL', 0)
+  dispatch(
+    setTVL({
+      caverTVL,
+      web3TVL,
     }),
   )
 }
@@ -319,6 +347,8 @@ export const fetchQuote = () => async (dispatch) => {
   const busdAddress = getBusdAddress()
   const wbnbAddress = getWbnbAddress()
   const usdtAddress = getUsdtAddress()
+  const btcbAddress = getBtcbAddress()
+  const ethAddress = getEthAddress()
   let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
   if (chainId === ChainId.MAINNET) {
     chainId = ChainId.MAINNET
@@ -331,6 +361,8 @@ export const fetchQuote = () => async (dispatch) => {
   const BUSD = new Token(chainId, busdAddress, 18, 'BUSD', 'BUSD')
   const WBNB = new Token(chainId, wbnbAddress, 18, 'WBNB', 'Wrapped BNB')
   const USDT = new Token(chainId, usdtAddress, 18, 'USDT', 'USDT')
+  const BTCB = new Token(chainId, btcbAddress, 18, 'BTCB', 'BTCB')
+  const ETH = new Token(chainId, ethAddress, 18, 'ETH', 'ETH')
 
   const fetchPromise = []
 
@@ -394,6 +426,18 @@ export const fetchQuote = () => async (dispatch) => {
       qouteToken: busdAddress,
     }),
   )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(WBNB, BTCB),
+      qouteToken: wbnbAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(ETH, WBNB),
+      qouteToken: wbnbAddress,
+    }),
+  )
 
   const [
     sixFinixQuote,
@@ -406,6 +450,8 @@ export const fetchQuote = () => async (dispatch) => {
     wbnbBusdQuote,
     wbnbUsdtQuote,
     busdUsdtQuote,
+    bnbBtcbQuote,
+    ethBnbQuote,
   ] = await Promise.all(fetchPromise)
 
   dispatch(
@@ -420,6 +466,8 @@ export const fetchQuote = () => async (dispatch) => {
       wbnbBusdQuote,
       wbnbUsdtQuote,
       busdUsdtQuote,
+      bnbBtcbQuote,
+      ethBnbQuote,
     }),
   )
 }

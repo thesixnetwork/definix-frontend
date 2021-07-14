@@ -1,7 +1,6 @@
-import { useGetStats } from 'hooks/api'
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
-import { usePriceTVL } from 'state/hooks'
+import { usePriceTVL, usePriceCaverTVL } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, Text } from 'uikit-dev'
 import total from '../../../assets/images/total-value.png'
@@ -23,15 +22,17 @@ const StyledTotalValueLockedCard = styled(Card)`
 const TotalValueLockedCard = () => {
   const totalTVL = usePriceTVL().toNumber()
   const { t } = useTranslation()
-  const data = useGetStats()
-  const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
+  const totalCaverTVL = usePriceCaverTVL().toNumber()
 
   return (
     <StyledTotalValueLockedCard isRainbow>
       <CardBody className="flex flex-column align-center pa-6 mx-auto">
         <Heading mb="16px">{t('Total Value Locked (TVL)')}</Heading>
         <Heading fontSize="28px !important" mb="12px">
-          ${(totalTVL || 0) <= 0 ? 'N/A' : totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+          $
+          {(totalTVL || 0) + (totalCaverTVL || 0) <= 0
+            ? 'N/A'
+            : ((totalTVL || 0) + (totalCaverTVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
         <Text small>(Across all LPs and Pools)</Text>
         {/* data ? (

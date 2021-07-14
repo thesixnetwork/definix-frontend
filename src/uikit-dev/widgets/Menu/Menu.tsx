@@ -303,14 +303,14 @@ const Menu: React.FC<NavProps> = ({
 
             <CountDownBanner
               logo={finixCoin}
-              title="FINIX-Klaytn Address : "
-              detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+              title="FINIX-BSC Address : "
+              detail="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
               disableCountdown
               button={
                 <CopyToClipboard
                   color="warning"
                   noText
-                  toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+                  toCopy="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
                   tooltipPos="right"
                 />
               }

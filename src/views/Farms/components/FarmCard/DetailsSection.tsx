@@ -1,16 +1,16 @@
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronRightIcon, Link, Text } from 'uikit-dev'
+import { Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
-  bscScanAddress?: string
   removed?: boolean
   totalValueFormated?: string
   lpLabel?: string
   addLiquidityUrl?: string
   isHorizontal?: boolean
   className?: string
+  stakedBalanceValueFormated?: string
 }
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
@@ -21,45 +21,39 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
-  bscScanAddress,
   removed,
   totalValueFormated,
   isHorizontal = false,
   className = '',
-  // lpLabel,
-  // addLiquidityUrl,
+  stakedBalanceValueFormated,
 }) => {
   const { t } = useTranslation()
-
-  const LinkView = ({ linkClassName = '' }) => (
-    <Link
-      external
-      href={bscScanAddress}
-      bold={false}
-      className={`flex-shrink ${linkClassName}`}
-      color="textSubtle"
-      fontSize="12px"
-    >
-      {t('View on BscScan')}
-      <ChevronRightIcon color="textSubtle" />
-    </Link>
-  )
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
       {!removed && (
-        <div className="flex align-baseline flex-wrap justify-space-between">
-          <Text color="textSubtle">{t('Total Liquidity')}</Text>
+        <>
+          <div className="flex align-baseline flex-wrap justify-space-between mb-1">
+            <Text color="textSubtle">{t('My Liquidity')}</Text>
 
-          <Text bold className="flex-shrink">
-            {totalValueFormated}
-          </Text>
-        </div>
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink">
+                {stakedBalanceValueFormated}
+              </Text>
+            </div>
+          </div>
+
+          <div className="flex align-baseline flex-wrap justify-space-between">
+            <Text color="textSubtle">{t('Total Liquidity')}</Text>
+
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink">
+                {totalValueFormated}
+              </Text>
+            </div>
+          </div>
+        </>
       )}
-
-      <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
-        <LinkView />
-      </div>
     </Wrapper>
   )
 }

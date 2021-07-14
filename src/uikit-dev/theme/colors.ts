@@ -66,7 +66,7 @@ export const darkColors: Colors = {
   backgroundFooter: '#1C1C1D',
   backgroundDisabled: '#2c2c2c',
   backgroundBox: 'rgba(186, 191, 199, 0.12)',
-  backgroundGray: '#F7F6FB',
+  backgroundGray: '#100C18',
   backgroundRadial: '#1A1A1A',
   backgroundPolygon: polygonBlack,
   backgroundBlueGradient: 'linear-gradient(#0D418E, #349BE7)',

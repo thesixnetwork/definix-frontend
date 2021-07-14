@@ -2,6 +2,8 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import _ from 'lodash'
 import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
@@ -16,8 +18,9 @@ import {
   ShowHideButton,
   TwoPanelLayout,
 } from 'uikit-dev/components/TwoPanelLayout'
+import CardAirdropKlay from './components/CardAirdropKlay'
 import CardAudit from './components/CardAudit'
-import CardComingSoon from './components/CardComingSoon'
+import CardAutoRebalancing from './components/CardAutoRebalancing'
 import CardGetStarted from './components/CardGetStarted/CardGetStarted'
 import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
@@ -97,6 +100,21 @@ const Home: React.FC = () => {
     }
   }, [])
 
+  const [captionText, setCaptionText] = React.useState()
+  useEffect(() => {
+    async function fetchCaptionText() {
+      const captionTextAPI = process.env.REACT_APP_API_CAPTION_TEXT_BSC
+      const response = await axios.get(`${captionTextAPI}`)
+      if (response.data.data) {
+        const caption = _.get(response.data.data, 'data.0.text', '')
+        setCaptionText(caption)
+      } else {
+        console.log('error')
+      }
+    }
+    fetchCaptionText()
+  }, [])
+
   return (
     <>
       <Helmet>
@@ -126,11 +144,13 @@ const Home: React.FC = () => {
                   style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
                 />
               ) : (
-                <Caption>Put your helmet on!! We are going to the MOON!!</Caption>
+                <Caption>{captionText}</Caption>
               )}
             </div>
 
-            <CardComingSoon showBtn className="mb-5" />
+            <CardAirdropKlay showBtn className="mb-5" />
+
+            <CardAutoRebalancing className="mb-5" />
 
             <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
               <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>

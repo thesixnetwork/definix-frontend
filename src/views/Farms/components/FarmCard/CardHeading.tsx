@@ -3,11 +3,10 @@ import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
+import { Flex, Heading, Image, Skeleton, Text, Link, ChevronRightIcon } from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
-// import { communityFarms } from 'config/constants'
 
 export interface ExpandableSectionProps {
   farm: FarmWithStakedValue
@@ -20,6 +19,7 @@ export interface ExpandableSectionProps {
   className?: string
   isHorizontal?: boolean
   inlineMultiplier?: boolean
+  bscScanAddress?: string
 }
 
 const MultiplierTag = styled.div`
@@ -94,6 +94,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   className = '',
   isHorizontal = false,
   inlineMultiplier = false,
+  bscScanAddress,
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
@@ -104,6 +105,20 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
   const { t } = useTranslation()
+
+  const LinkView = ({ linkClassName = '' }) => (
+    <Link
+      external
+      href={bscScanAddress}
+      bold={false}
+      className={`flex-shrink ${linkClassName} ml-2`}
+      color="textSubtle"
+      fontSize="12px"
+    >
+      {t('View on BscScan')}
+      <ChevronRightIcon color="textSubtle" />
+    </Link>
+  )
 
   const imgSize = isHorizontal ? 48 : 56
 
@@ -139,6 +154,8 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
           )}
         </div>
       )}
+
+      <LinkView />
 
       {/* <Flex justifyContent="center">
         {isCommunityFarm ? <CommunityTag /> : <CoreTag />}

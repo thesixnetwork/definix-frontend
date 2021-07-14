@@ -122,6 +122,66 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BUSD,
     quoteTokenAdresses: contracts.busd,
   },
+  {
+    pid: 8,
+    lpSymbol: 'BNB-BTCB LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_BNB_BTCB_LP_TESTNET,
+      56: process.env.REACT_APP_BNB_BTCB_LP_MAINNET,
+    },
+    tokenSymbol: 'BTCB',
+    tokenAddresses: {
+      97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
+  {
+    pid: 9,
+    lpSymbol: 'ETH-BNB LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_ETH_BNB_LP_TESTNET,
+      56: process.env.REACT_APP_ETH_BNB_LP_MAINNET,
+    },
+    tokenSymbol: 'ETH',
+    tokenAddresses: {
+      97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
+  {
+    pid: 10,
+    lpSymbol: 'XRP-BNB LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_XRP_BNB_LP_TESTNET,
+      56: process.env.REACT_APP_XRP_BNB_LP_MAINNET,
+    },
+    tokenSymbol: 'XRP',
+    tokenAddresses: {
+      97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
+  {
+    pid: 11,
+    lpSymbol: 'ADA-BNB LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_ADA_BNB_LP_TESTNET,
+      56: process.env.REACT_APP_ADA_BNB_LP_MAINNET,
+    },
+    tokenSymbol: 'ADA',
+    tokenAddresses: {
+      97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
+    },
+    quoteTokenSymbol: QuoteToken.BNB,
+    quoteTokenAdresses: contracts.wbnb,
+  },
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',

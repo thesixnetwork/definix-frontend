@@ -15,6 +15,10 @@ export default {
     97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
     56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
   },
+  btcb: {
+    97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+  },
   usdt: {
     97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
     56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
@@ -23,9 +27,25 @@ export default {
     97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
     56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
   },
+  btc: {
+    97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+  },
   finix: {
     97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
     56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+  },
+  eth: {
+    97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
+  },
+  xrp: {
+    97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
+  },
+  ada: {
+    97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
+    56: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
   },
   finixSixLP: {
     97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
@@ -50,6 +70,10 @@ export default {
   tradingCompetRegis: {
     97: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,
     56: process.env.REACT_APP_TRADING_COMPET_REGIS_MAINNET,
+  },
+  airdropKlay: {
+    97: process.env.REACT_APP_ARIDROP_KLAY_TESTNET,
+    56: process.env.REACT_APP_ARIDROP_KLAY_MAINNET,
   },
   // configured =====================================================
   syrup: {
@@ -87,10 +111,6 @@ export default {
   bunnyFactory: {
     56: '0xfa249Caa1D16f75fa159F7DFBAc0cC5EaB48CeFf',
     97: '0x707CBF373175fdB601D34eeBF2Cf665d08f01148',
-  },
-  eth: {
-    56: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-    97: '',
   },
   claimRefund: {
     56: '0xE7e53A7e9E3Cf6b840f167eF69519175c497e149',

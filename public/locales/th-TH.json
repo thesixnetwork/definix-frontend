@@ -106,7 +106,7 @@
   "Cake Stats": "Cake Stats",
   "Total FINIX Supply": "จำนวน FINIX ทั้งหมด",
   "Total FINIX Burned": "จำนวน FINIX ที่ถูกเผาทิ้ง",
-  "New FINIX/block": "New FINIX/block",
+  "New FINIX / sec": "จำนวน FINIX ใหม่ / วินาที",
   "Farms & Staking": "Farms & Staking",
   "FINIX to Harvest": "FINIX to Harvest",
   "FINIX in Wallet": "FINIX in Wallet",
@@ -904,6 +904,5 @@
   "Your winnings": "Your winnings",
   "Includes your original position and your winnings, minus the %fee% fee.": "Includes your original position and your winnings, minus the %fee% fee.",
   "Your funds have been staked in the farm": "Your funds have been staked in the farm",
-  "Base APR (yield only)": "Base APR (yield only)",
-  "New FINIX / sec": "จำนวน FINIX ใหม่ / วินาที"
+  "Base APR (yield only)": "Base APR (yield only)"
 }
