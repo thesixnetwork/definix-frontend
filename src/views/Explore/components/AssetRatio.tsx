@@ -37,7 +37,7 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
     },
     {
       img: '/images/coins/FINIX.png',
-      value: '25%',
+      value: '15%',
     },
     {
       img: '/images/coins/usdt.png',
