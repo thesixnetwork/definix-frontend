@@ -7,8 +7,10 @@ import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
+import FundDetail from './components/FundDetail'
 import SelectTime from './components/SelectTime'
 import TradeStrategy from './components/TradeStrategy'
+import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
 import WithDrawalFees from './WithdrawalFees'
 
@@ -100,6 +102,8 @@ const ExploreDetail: React.FC = () => {
             <FullAssetRatio className="mb-4" />
             <TradeStrategy className="mb-4" />
             <WithDrawalFees className="mb-4" />
+            <FundDetail className="mb-4" />
+            <Transaction className="mb-4" />
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout>
