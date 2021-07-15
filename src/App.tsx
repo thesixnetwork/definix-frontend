@@ -4,6 +4,7 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
 import { Redirect, Route, Router, Switch } from 'react-router-dom'
+import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { Modal, ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
@@ -16,8 +17,10 @@ import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import Flip from './uikit-dev/components/Flip'
 import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
-// import WaitingPage from 'uikit-dev/components/WaitingPage'
+import sdkConfig from './sdkconfig'
 
+// import WaitingPage from 'uikit-dev/components/WaitingPage'
+Config.configure(sdkConfig)
 ReactGA.initialize('G-L997LXLF8F')
 
 const tagManagerArgs = {

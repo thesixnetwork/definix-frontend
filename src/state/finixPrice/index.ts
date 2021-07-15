@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
-import { Token, Pair, ChainId } from 'definixswap-sdk'
+import { Token, Pair } from 'definixswap-sdk'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import _ from 'lodash'
 import axios from 'axios'
+
 import {
   getDefinixHerodotusAddress,
   getHerodotusAddress,
@@ -37,6 +38,7 @@ import {
   getDefinixKlayKusdtLPAddress,
 } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
+import { ChainId } from '../../config'
 import { FinixPriceState } from '../types'
 
 const initialState: FinixPriceState = {
@@ -508,8 +510,8 @@ export const fetchQuote = () => async (dispatch) => {
   let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
   if (chainId === ChainId.MAINNET) {
     chainId = ChainId.MAINNET
-  } else if (chainId === ChainId.BAOBABTESTNET) {
-    chainId = ChainId.BAOBABTESTNET
+  } else if (chainId === ChainId.TESTNET) {
+    chainId = ChainId.TESTNET
   }
 
   const FINIX = new Token(chainId, finixAddress, 18, 'FINIX', 'FINIX')
