@@ -7,6 +7,7 @@ import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
+import FundAction from './components/FundAction'
 import FundDetail from './components/FundDetail'
 import SelectTime from './components/SelectTime'
 import TradeStrategy from './components/TradeStrategy'
@@ -18,6 +19,17 @@ const MaxWidth = styled.div`
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
+`
+
+const LeftPanelAbsolute = styled(LeftPanel)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding-bottom: 24px;
 `
 
 const ExploreDetail: React.FC = () => {
@@ -27,7 +39,7 @@ const ExploreDetail: React.FC = () => {
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
       <TwoPanelLayout>
-        <LeftPanel isShowRightPanel={false}>
+        <LeftPanelAbsolute isShowRightPanel={false}>
           <MaxWidth>
             <Card className="mb-4">
               <div className="pa-4 pt-2 bd-b">
@@ -74,29 +86,6 @@ const ExploreDetail: React.FC = () => {
                 <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Sharpe ratio" value="1.00" hint="xxx" />
                 <TwoLineFormat className="px-4 py-3 col-4" title="Max Drawdown" value="10.00%" hint="xxx" />
               </div>
-
-              <div className="flex justify-space-between pa-4 bd-t">
-                <TwoLineFormat
-                  title="Current investment"
-                  subTitle="1.24 Shares"
-                  value="$1,000.23"
-                  percent="+0.2%"
-                  days="1 D"
-                  large
-                />
-
-                <div className="col-6 flex">
-                  <Button fullWidth radii="small" className="mr-3" variant="success">
-                    INVEST
-                  </Button>
-                  <Button fullWidth radii="small" className="flex flex-column">
-                    WITHDRAW
-                    <Text fontSize="12px" color="white">
-                      0.00%
-                    </Text>
-                  </Button>
-                </div>
-              </div>
             </Card>
 
             <FullAssetRatio className="mb-4" />
@@ -104,8 +93,9 @@ const ExploreDetail: React.FC = () => {
             <WithDrawalFees className="mb-4" />
             <FundDetail className="mb-4" />
             <Transaction className="mb-4" />
+            <FundAction />
           </MaxWidth>
-        </LeftPanel>
+        </LeftPanelAbsolute>
       </TwoPanelLayout>
     </>
   )
