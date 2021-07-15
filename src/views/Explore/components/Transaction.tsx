@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { Card, LinkExternal, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import CardTab from './CardTab'
-import Pagination from './Pagination'
+import PaginationCustom from './Pagination'
 import { Table, TD, TH, TR } from './Table'
 
 interface TransactionType {
@@ -21,15 +21,32 @@ const EmptyData = ({ text }) => (
 )
 
 const TransactionTable = ({ rows, empText }) => {
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(1)
   const [cols] = useState(['DATE', 'INVESTORS', 'ACTION', 'SHARES', 'TOTAL AMOUNT'])
   const pages = useMemo(() => Math.ceil(rows.length / 7), [rows])
 
-  useEffect(() => setCurrentPage(0), [])
+  useEffect(
+    () => () => {
+      setCurrentPage(1)
+    },
+    [],
+  )
 
   return (
     <>
-      {pages > 1 && <Pagination count={pages} current={currentPage} setCurrent={setCurrentPage} />}
+      {pages > 1 && (
+        <PaginationCustom
+          count={pages}
+          size="small"
+          hidePrevButton
+          hideNextButton
+          className="mb-2"
+          onChange={(e, page) => {
+            setCurrentPage(page)
+          }}
+        />
+      )}
+
       <Table>
         <TR>
           {cols.map((c) => (
@@ -83,7 +100,12 @@ const TransactionTable = ({ rows, empText }) => {
 const Transaction: React.FC<TransactionType> = ({ className = '' }) => {
   const [currentTab, setCurrentTab] = useState(0)
 
-  useEffect(() => setCurrentTab(0), [])
+  useEffect(
+    () => () => {
+      setCurrentTab(0)
+    },
+    [],
+  )
 
   const rowsAllTs = [
     {
@@ -132,97 +154,6 @@ const Transaction: React.FC<TransactionType> = ({ className = '' }) => {
       date: '15/06/2021, 21:08',
       investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
       action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Withdraw',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Withdraw',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Withdraw',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Withdraw',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Withdraw',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Invest',
-      shares: '19.993',
-      total: '$67,055.30',
-    },
-    {
-      date: '15/06/2021, 21:08',
-      investors: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      action: 'Withdraw',
       shares: '19.993',
       total: '$67,055.30',
     },

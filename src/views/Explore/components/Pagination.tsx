@@ -1,36 +1,35 @@
+import Pagination from '@material-ui/lab/Pagination'
 import React from 'react'
 import styled from 'styled-components'
-import { Button } from 'uikit-dev'
 
-interface PaginationType {
-  count: number
-  current: number
-  setCurrent: (idx: number) => void
-  className?: string
-}
-
-const StyledButton = styled(Button)<{ active: boolean }>``
-
-const Pagination: React.FC<PaginationType> = ({ className = '', count, current = 0, setCurrent }) => {
-  const pages = []
-
-  for (let idx = 0; idx < count; idx++) {
-    pages.push(
-      <StyledButton
-        variant="text"
-        size="xs"
-        active={current === idx}
-        onClick={() => {
-          setCurrent(idx)
-        }}
-        key={idx}
-      >
-        {idx + 1}
-      </StyledButton>,
-    )
+const PaginationStyle = styled(Pagination)`
+  .MuiPagination-ul {
+    justify-content: flex-end;
   }
 
-  return <div className={`flex ${className}`}>{pages}</div>
+  .MuiPaginationItem-root {
+    background: transparent !important;
+    color: ${({ theme }) => theme.colors.textSubtle};
+    font: inherit;
+    font-size: 12px;
+    margin: 0;
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.primary};
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .Mui-selected {
+    color: ${({ theme }) => theme.colors.text};
+  }
+`
+
+const PaginationCustom = (props) => {
+  return <PaginationStyle {...props} />
 }
 
-export default Pagination
+export default PaginationCustom

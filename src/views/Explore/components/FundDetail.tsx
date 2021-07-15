@@ -135,7 +135,12 @@ const FactSheet = () => {
 const FundDetail: React.FC<FundDetailType> = ({ className = '' }) => {
   const [currentTab, setCurrentTab] = useState(0)
 
-  useEffect(() => setCurrentTab(0), [])
+  useEffect(
+    () => () => {
+      setCurrentTab(0)
+    },
+    [],
+  )
 
   return (
     <Card className={className}>
