@@ -13,40 +13,6 @@ const initData = () => {
   responseData = null
 }
 
-export const genQRcode = () => {
-  initData()
-  const mockData = {
-    bapp: {
-      name: 'definix',
-    },
-    type: 'auth',
-  }
-  axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
-    requestKey = response.data.request_key
-    QRcode.toCanvas(
-      document.getElementById('qrcode'),
-      `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
-      () => {
-        intervalCheckResult = setInterval(getResult, 1000)
-      },
-    )
-  })
-}
-const getResult = async () => {
-  const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
-  // const url = `http://localhost:8080`
-  const res = await axios.get(url)
-  console.log('request status : ', res.data.status)
-  if (res.data.status == 'completed') {
-    account = res.data.result.klaytn_address
-    responseData = res.data.result.klaytn_address
-
-    // const modalELement = document.getElementById("modal")
-    // if (modalELement != null)
-    // ReactDOM.createPortal( null,modalELement)
-    clearInterval(intervalCheckResult)
-  }
-}
 
 export const getAccount = () => account
 export const getRequestKey = () => requestKey
@@ -64,17 +30,12 @@ export const checkResponse = async (): Promise<string> => {
 }
 
 const getResultContract = async () => {
-  const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
-  // const url = `http://localhost:8080`
+  const url = process.env.KLIPMOCK ? `http://localhost:8080/con` : `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
+  
   const res = await axios.get(url)
   console.log('request status : ', res.data.status)
   if (res.data.status == 'completed') {
-    // account = res.data.result.klaytn_address
     responseData = res.data.result.tx_hash
-
-    // const modalELement = document.getElementById("modal")
-    // if (modalELement != null)
-    // ReactDOM.createPortal( null,modalELement)
     clearInterval(intervalCheckResult)
   }
 }

@@ -1,6 +1,6 @@
 /* eslint no-lonely-if: 0 */
 import { useCallback, useContext } from 'react'
-import { useWallet, KlipModalContext } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useDispatch } from 'react-redux'
 import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { fetchFarmUserDataAsync, updateUserBalance, updateUserPendingReward } from 'state/actions'

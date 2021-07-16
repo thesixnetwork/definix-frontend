@@ -3030,64 +3030,6 @@
   resolved "https://registry.yarnpkg.com/@josephg/resolvable/-/resolvable-1.0.1.tgz#69bc4db754d79e1a2f17a650d3466e038d94a5eb"
   integrity sha512-CtzORUwWTTOTqfVtHaKRJ0I1kNQd1bpn3sUh8I3nJDVY+5/M/Oe1DnEWzPQvqq/xPIIkzzzIP7mfCoAjFRvDhg==
 
-"@kanthakarn-test/caverjs-react-abstract-connector@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@kanthakarn-test/caverjs-react-abstract-connector/-/caverjs-react-abstract-connector-1.0.0.tgz#8027fb139a0d7af90f00f1e688c6b43e5f9c2976"
-  integrity sha512-Gg9xkc4pTpZwYwchZ4M23sAhreF/qfxb2lIsvndCRtsCRXL3laBFTKfmoYpYf22qA1YQydKh0QWN0rfQdulyvw==
-  dependencies:
-    "@kanthakarn-test/caverjs-react-types" "^1.0.0"
-
-"@kanthakarn-test/caverjs-react-core@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@kanthakarn-test/caverjs-react-core/-/caverjs-react-core-1.0.3.tgz#a7dae64fdbfd25d74255aa65f326b1d7775862ab"
-  integrity sha512-FTXrHEQYN1uwFHKPmQ4eTbHZbb36e4Lg0TD57LuLigyUPxi3qebkboruXwutfOWq/EXQkasG+XicEOAO+XQ2HQ==
-  dependencies:
-    "@ethersproject/keccak256" "^5.1.0"
-    "@kanthakarn-test/caverjs-react-abstract-connector" "^1.0.0"
-    "@kanthakarn-test/caverjs-react-types" "^1.0.0"
-    tiny-invariant "^1.0.6"
-    tiny-warning "^1.0.3"
-
-"@kanthakarn-test/caverjs-react-injected-connector@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@kanthakarn-test/caverjs-react-injected-connector/-/caverjs-react-injected-connector-1.0.0.tgz#5a9f7df766b8d29e6e37c1a5ae00e3e3acbc985d"
-  integrity sha512-4YV5g6N7xeE75Iwf4wpzfsBF/ZInxrd9i/vjs21ewpeVycYYFse9ZZQdClibVY+aUWD6dmYc5fqz9xN4Ury4xQ==
-  dependencies:
-    "@kanthakarn-test/caverjs-react-abstract-connector" "^1.0.0"
-    "@kanthakarn-test/caverjs-react-types" "^1.0.0"
-    tiny-warning "^1.0.3"
-
-"@kanthakarn-test/caverjs-react-types@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@kanthakarn-test/caverjs-react-types/-/caverjs-react-types-1.0.0.tgz#a4ec915d7280374975b53e26af50b178fa821f5c"
-  integrity sha512-CTYngKJO5iqq/E1QkLDUwpw+JMriot8uc2yIzo1RXhnImLJ7w8UL+b0DjQEN1VotN5KEFpaSXaV19TOoKoPphw==
-
-"@kanthakarn-test/klaytn-use-wallet@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@kanthakarn-test/klaytn-use-wallet/-/klaytn-use-wallet-1.0.6.tgz#a98a01d1aabb83d8a4dc98a44b73bd3a88120ce4"
-  integrity sha512-B56LJ2gi+MD9cqjMHOaQXFsq3O33FgElCTzHVA6Tl/D+rpj8s0rujvPfP2ttn2hRnHwSkrKKlVHZGMuxFqgG/w==
-  dependencies:
-    "@kanthakarn-test/caverjs-react-core" "^1.0.3"
-    "@kanthakarn-test/caverjs-react-injected-connector" "^1.0.0"
-    "@kanthakarn-test/klip-connector" "^1.0.0"
-    "@rollup/plugin-image" "^2.0.6"
-    jsbi "^3.1.1"
-    qrcode "^1.4.4"
-    react "^17.0.2"
-
-"@kanthakarn-test/klip-connector@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@kanthakarn-test/klip-connector/-/klip-connector-1.0.0.tgz#f5a1e2fbd4764b9598e7cc8397d8dd31fb808efb"
-  integrity sha512-teHmFRyG7ITkgIjEE3aJKsgg/9BtADu0XGZYiX/EjjPAly7zlmNA4aH8jbD89gkdvhesrL4LvypfT9c7v5BjyA==
-  dependencies:
-    "@kanthakarn-test/caverjs-react-abstract-connector" "^1.0.0"
-    "@kanthakarn-test/caverjs-react-types" "^1.0.0"
-    "@types/qrcode" "^1.4.0"
-    axios "^0.21.1"
-    lit-html "^1.4.1"
-    qrcode "^1.4.4"
-    tiny-warning "^1.0.3"
-
 "@ledgerhq/devices@^5.51.1":
   version "5.51.1"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-5.51.1.tgz#d741a4a5d8f17c2f9d282fd27147e6fe1999edb7"
@@ -3411,6 +3353,64 @@
   integrity sha512-MZPUxrmFubI36XS1DI3qmI0YdN1gks62JtFZvxR67ljjSNCeK6U08Zx4msEWOXuofgqUt6zPHSi1H9fbjR/NRA==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
+
+"@sixnetwork/caverjs-react-abstract-connector@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/caverjs-react-abstract-connector/-/caverjs-react-abstract-connector-1.0.4.tgz#b500ea16820378e1332f9fd77d2deb0af65761a0"
+  integrity sha512-ycrWxG7UDj2GqV9gEZDHHBDpYwq2l9VMcGWe3m3C4S1dItrGm5wggvmc8LHFZ+tMjyyMz4P8zTDzTbVu8A5D2Q==
+  dependencies:
+    "@sixnetwork/caverjs-react-types" "^1.0.3"
+
+"@sixnetwork/caverjs-react-core@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/caverjs-react-core/-/caverjs-react-core-1.1.3.tgz#ab54109d9df943260fe71e5d71b82ca739bed26d"
+  integrity sha512-+NsCbAmGZU0FdCDHefiG1pwie4vXE5Cn50k2AIkLFzgIrXE9T2dUOursbyAQ1aks7GD+TNNLpc2vBkMGrYmlfg==
+  dependencies:
+    "@ethersproject/keccak256" "^5.1.0"
+    "@sixnetwork/caverjs-react-abstract-connector" "^1.0.4"
+    "@sixnetwork/caverjs-react-types" "^1.0.3"
+    tiny-invariant "^1.0.6"
+    tiny-warning "^1.0.3"
+
+"@sixnetwork/caverjs-react-injected-connector@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/caverjs-react-injected-connector/-/caverjs-react-injected-connector-1.0.5.tgz#0db8a48f439f5d7ac27ab4be4e52b33f2b1e3f3e"
+  integrity sha512-NzP8Am5DaE0oZzQ7yqlcmv1/zz93pK1RC8n72aJsTpduVxKCt96Xsji6682dRV6BuyEPcgUASkeBmI8DksP5Rw==
+  dependencies:
+    "@sixnetwork/caverjs-react-abstract-connector" "^1.0.4"
+    "@sixnetwork/caverjs-react-types" "^1.0.3"
+    tiny-warning "^1.0.3"
+
+"@sixnetwork/caverjs-react-types@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/caverjs-react-types/-/caverjs-react-types-1.0.3.tgz#fe327838a9361c6f00d751052b7b6f429f0450ce"
+  integrity sha512-0A09AIhxypZ4qvsSE9EGsQPgzpuLRtf644xV/JDkpA7j1HhAcH3lZ/Lb0SOxiipHi9T6U/phAZLdRrL9euH/1w==
+
+"@sixnetwork/klaytn-use-wallet@^1.1.3-debug-v1":
+  version "1.1.3-debug-v1"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klaytn-use-wallet/-/klaytn-use-wallet-1.1.3-debug-v1.tgz#02334c97af290287ef099f5a6af8a68864873b01"
+  integrity sha512-oP/4GBkcv1a7J8zKmp9bUmJ+2zfdyyb1JOdvgi4ZexLuusrt0fUeCagxjDMFU2U7A74qlJPsWL5BJaz3e+fSoQ==
+  dependencies:
+    "@rollup/plugin-image" "^2.0.6"
+    "@sixnetwork/caverjs-react-core" "^1.1.3"
+    "@sixnetwork/caverjs-react-injected-connector" "^1.0.5"
+    "@sixnetwork/klip-connector" "^1.0.5-debug-v1"
+    jsbi "^3.1.1"
+    qrcode "^1.4.4"
+
+"@sixnetwork/klip-connector@^1.0.5-debug-v1":
+  version "1.0.5-debug-v1"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klip-connector/-/klip-connector-1.0.5-debug-v1.tgz#950af11d1bc3a322cdbe3b6b3e1d82c805e18b09"
+  integrity sha512-G+myyay5lhpM3RtOBZCVEbyB2Eb/4wIsKthl3ovUz9cSrmL8+G/W+CzUMaAPcQ8os6AerQI914XCstPomlXDzg==
+  dependencies:
+    "@sixnetwork/caverjs-react-abstract-connector" "^1.0.4"
+    "@sixnetwork/caverjs-react-types" "^1.0.3"
+    "@types/qrcode" "^1.4.0"
+    axios "^0.21.1"
+    caver-js "^1.6.3"
+    lit-html "^1.4.1"
+    qrcode "^1.4.4"
+    tiny-warning "^1.0.3"
 
 "@solidity-parser/parser@^0.8.0":
   version "0.8.2"
@@ -6856,37 +6856,43 @@ caver-js@1.6.3-rc.4:
     websocket "1.0.31"
     xhr2-cookies "1.1.0"
 
-caverjs-react-abstract-connector@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/caverjs-react-abstract-connector/-/caverjs-react-abstract-connector-1.0.0.tgz#0fcda320186ecd9457d787a96f3ed16b5c3ce34f"
-  integrity sha512-Eq6Lh7rFiXWWuG07KbBRYH++yhaO0RHwm4LGWVZV3qBHbLURm1ZWDrz/cGft6xFAF+blkPIR5VGM9Yy3ndnqlg==
+caver-js@^1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/caver-js/-/caver-js-1.6.3.tgz#10de697d6cc251ff253de1ab983072b1be731b3a"
+  integrity sha512-xSPnawdVFregH6eTO+1TF1rDAueiyFkgphKOAgSaPSw8DGz9jcRliTU2OH0jCghyTt0k9yntAR0NzlIKTc/76A==
   dependencies:
-    caverjs-react-types "^1.0.0"
-
-caverjs-react-core@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/caverjs-react-core/-/caverjs-react-core-1.0.0.tgz#56ea610d6da45c142e24aaf3d6d1b5f94ec5e545"
-  integrity sha512-HkblYJ/jmjNfUsmzbrZyPIQ8w4/WcUvNLo1wkPEqx29oKwfYTNXmbsqFcGUcBnAOd5dXzRBMZzzopFBxnHU/rg==
-  dependencies:
-    "@ethersproject/keccak256" "^5.1.0"
-    caverjs-react-abstract-connector "^1.0.0"
-    caverjs-react-types "^1.0.0"
-    tiny-invariant "^1.0.6"
-    tiny-warning "^1.0.3"
-
-caverjs-react-injected-connector@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/caverjs-react-injected-connector/-/caverjs-react-injected-connector-1.0.0.tgz#a571eb9a731ae94c52d64cdcce7a2abd641a9e95"
-  integrity sha512-9JWpx0ksdwAW7nvdX66uaEh0kKcf6xipFXFImKhZ9MIc6AyqgL26HaoCoFB9oy/hpZJnLy7zGSzcMdGhv5D+fQ==
-  dependencies:
-    caverjs-react-abstract-connector "^1.0.0"
-    caverjs-react-types "^1.0.0"
-    tiny-warning "^1.0.3"
-
-caverjs-react-types@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/caverjs-react-types/-/caverjs-react-types-1.0.0.tgz#dac33e658d3f1fe09aea0413d8705acfe6b7e17c"
-  integrity sha512-6K3KU5xeubLjS9XnexAmSSDe7b2wlgTBJexQ2HRFcatcEzlet6u0kmGaV56uQTe8GC6olB95kM79JsMwSahQIw==
+    "@babel/runtime" "7.3.1"
+    "@ethersproject/abi" "5.0.7"
+    "@web3-js/scrypt-shim" "0.1.0"
+    any-promise "1.3.0"
+    bignumber.js "8.0.2"
+    bn.js "4.11.6"
+    chai "4.1.2"
+    crypto-browserify "3.12.0"
+    dotenv "8.2.0"
+    elliptic "6.5.4"
+    eth-lib "0.2.8"
+    ethers "5.0.32"
+    ethjs-unit "0.1.6"
+    eventemitter3 "4.0.0"
+    ipfs-http-client-lite "0.3.0"
+    it-each "0.4.0"
+    lodash "4.17.21"
+    mocha "8.3.2"
+    multihashes "4.0.2"
+    node-fetch "2.6.1"
+    number-to-bn "1.7.0"
+    oboe "2.1.3"
+    request "2.87.0"
+    requestretry "2.0.2"
+    scrypt-js "3.0.1"
+    semver "6.2.0"
+    utf8 "2.1.1"
+    uuid "3.0.0"
+    webpack "4.44.2"
+    webpack-cli "3.3.12"
+    websocket "1.0.31"
+    xhr2-cookies "1.1.0"
 
 cbor@^5.1.0:
   version "5.2.0"
@@ -13224,16 +13230,6 @@ kind-of@^6.0.0, kind-of@^6.0.2, kind-of@^6.0.3:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-klaytn-use-wallet@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/klaytn-use-wallet/-/klaytn-use-wallet-1.0.1.tgz#822a8f33cec1f6d75466fdef3833599610091abf"
-  integrity sha512-jOTvJE1/VEscN7ue1yL0Wa1O9jniIGh+IcP4hnNq0qqE+vrTI1MtE1RJ3JRoaJrlRde99LZtm9G/tSUI9ZZmFg==
-  dependencies:
-    caverjs-react-core "^1.0.0"
-    caverjs-react-injected-connector "^1.0.0"
-    jsbi "^3.1.1"
-    react "^17.0.2"
-
 kleur@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
@@ -17367,7 +17363,7 @@ react-twitter-widgets@^1.10.0:
   dependencies:
     loadjs "^4.2.0"
 
-react@^17.0.1, react@^17.0.2:
+react@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
   integrity sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==

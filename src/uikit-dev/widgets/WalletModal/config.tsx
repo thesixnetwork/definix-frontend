@@ -20,15 +20,15 @@ const connectors: Config[] = [
     connectorId: 'injected',
   },
   {
+    title: 'Klip',
+    icon: KlipConnect,
+    connectorId: 'klip',
+  },
+  {
     title: 'TokenPocket',
     icon: TokenPocket,
     connectorId: 'injected',
   },
-  // {
-  //   title: 'Klip',
-  //   icon: KlipConnect,
-  //   connectorId: 'klip',
-  // },
 ]
 
 export default connectors
