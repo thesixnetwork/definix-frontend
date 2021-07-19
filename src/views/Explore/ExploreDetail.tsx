@@ -13,7 +13,7 @@ import SelectTime from './components/SelectTime'
 import TradeStrategy from './components/TradeStrategy'
 import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
-import WithDrawalFees from './WithdrawalFees'
+import WithDrawalFees from './components/WithdrawalFees'
 
 const MaxWidth = styled.div`
   max-width: 800px;

@@ -10,6 +10,8 @@ import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import ExploreCard from './components/ExploreCard'
 import ExploreTabButtons from './components/ExploreTabButtons'
 import ExploreDetail from './ExploreDetail'
+import Invest from './Invest'
+import Withdraw from './Withdraw'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
@@ -69,6 +71,14 @@ const Explore: React.FC = () => {
 
       <Route exact path={`${path}/detail`}>
         <ExploreDetail />
+      </Route>
+
+      <Route exact path={`${path}/invest`}>
+        <Invest />
+      </Route>
+
+      <Route exact path={`${path}/withdraw`}>
+        <Withdraw />
       </Route>
     </>
   )

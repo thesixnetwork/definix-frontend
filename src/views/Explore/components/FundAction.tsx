@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Card, Text } from 'uikit-dev'
 import TwoLineFormat from './TwoLineFormat'
@@ -29,10 +30,10 @@ const FundAction: React.FC<FundActionType> = ({ className }) => {
       />
 
       <div className="col-6 flex">
-        <Button fullWidth radii="small" className="mr-3" variant="success">
+        <Button as={Link} to="/explore/invest" fullWidth radii="small" className="mr-3" variant="success">
           INVEST
         </Button>
-        <Button fullWidth radii="small" className="flex flex-column">
+        <Button as={Link} to="/explore/withdraw" fullWidth radii="small" className="flex flex-column">
           WITHDRAW
           <Text fontSize="12px" color="white">
             0.00%
