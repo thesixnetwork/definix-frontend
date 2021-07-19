@@ -1,6 +1,6 @@
 import React from 'react'
 import { ModalProvider } from 'uikit-dev'
-import injected, { UseWalletProvider, KlipModalContext } from '@kanthakarn-test/klaytn-use-wallet'
+import injected, { UseWalletProvider, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Provider } from 'react-redux'
 import getRpcUrl from 'utils/getRpcUrl'
 import { LanguageContextProvider } from 'contexts/Localisation/languageContext'

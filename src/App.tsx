@@ -1,4 +1,4 @@
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
@@ -152,7 +152,7 @@ const App: React.FC = () => {
         </Suspense>
       </Menu>
       <ToastListener />
-      <GlobalCheckBullHiccupClaimStatus />
+      {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (
         <div
           style={{

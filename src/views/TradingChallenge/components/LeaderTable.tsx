@@ -1,4 +1,4 @@
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React from 'react'
 import styled from 'styled-components'
 import { Skeleton, Card, Text, useMatchBreakpoints } from 'uikit-dev'

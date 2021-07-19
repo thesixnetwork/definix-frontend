@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'uikit-dev'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useI18n from 'hooks/useI18n'
 import { getFinixAddress } from 'utils/addressHelpers'
