@@ -3,8 +3,7 @@ import styled from 'styled-components'
 import { Text } from 'uikit-dev'
 import currency from '../mockCurrency'
 
-interface AssetRatioType {
-  isHorizontal: boolean
+interface VerticalAssetRatioType {
   className?: string
 }
 
@@ -22,22 +21,22 @@ const Coin = styled.div`
   }
 `
 
-const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className = '' }) => {
+const VerticalAssetRatio: React.FC<VerticalAssetRatioType> = ({ className = '' }) => {
   return (
     <div className={className}>
-      <Text fontSize="12px" color="textSubtle" textAlign={isHorizontal ? 'left' : 'center'}>
-        Asset ratio
-      </Text>
-      <div className="flex flex-wrap">
-        {currency.map((m) => (
+      {currency.map((m) => (
+        <div className="flex justify-space-between align-center">
           <Coin>
             <img src={m.img} alt="" />
-            <Text>{m.percent}</Text>
+            <Text bold>{m.value}</Text>
           </Coin>
-        ))}
-      </div>
+          <Text bold className="pl-3">
+            {m.name}
+          </Text>
+        </div>
+      ))}
     </div>
   )
 }
 
-export default AssetRatio
+export default VerticalAssetRatio

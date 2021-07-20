@@ -105,10 +105,7 @@ const CurrencyInputPanel = ({
               )}
               <Coin>
                 <img src={currency.img} alt="" />
-                <div>
-                  <Text>{currency.value}</Text>
-                  <Text>{currency.name}</Text>
-                </div>
+                <Text>{currency.name}</Text>
               </Coin>
             </>
           )}
