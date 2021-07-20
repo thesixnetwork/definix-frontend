@@ -49,7 +49,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
     <Wrapper isHorizontal={isHorizontal} className={className}>
       {!removed && (
         <>
-          <div className="flex align-baseline flex-wrap justify-space-between mb-1">
+          {false && <div className="flex align-baseline flex-wrap justify-space-between mb-1">
             <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text>
 
             <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
@@ -59,7 +59,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
 
               <LinkView />
             </div>
-          </div>
+          </div>}
 
           <div className="flex align-baseline flex-wrap justify-space-between">
             <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>

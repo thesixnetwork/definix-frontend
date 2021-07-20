@@ -182,6 +182,21 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.BNB,
     quoteTokenAdresses: contracts.wbnb,
   },
+  {
+    pid: 12,
+    lpSymbol: 'ETH-BTCB LP',
+    lpAddresses: {
+      97: process.env.REACT_APP_ETH_BTCB_LP_TESTNET,
+      56: process.env.REACT_APP_ETH_BTCB_LP_MAINNET,
+    },
+    tokenSymbol: 'BTCB',
+    tokenAddresses: {
+      97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+      56: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    },
+    quoteTokenSymbol: QuoteToken.ETH,
+    quoteTokenAdresses: contracts.eth,
+  },
   // {
   //   pid: 1,
   //   lpSymbol: 'FINIX-BNB LP',
