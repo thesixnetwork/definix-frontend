@@ -3386,23 +3386,23 @@
   resolved "https://registry.yarnpkg.com/@sixnetwork/caverjs-react-types/-/caverjs-react-types-1.0.3.tgz#fe327838a9361c6f00d751052b7b6f429f0450ce"
   integrity sha512-0A09AIhxypZ4qvsSE9EGsQPgzpuLRtf644xV/JDkpA7j1HhAcH3lZ/Lb0SOxiipHi9T6U/phAZLdRrL9euH/1w==
 
-"@sixnetwork/klaytn-use-wallet@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@sixnetwork/klaytn-use-wallet/-/klaytn-use-wallet-1.1.4.tgz#b231746b923e7b8fda337b38d99f6727b3436d68"
-  integrity sha512-C+RwnNuN0eO2pSoI0Sr9dufWvryoBSDBLBLCy2XxjbF/7FNxBrnByjzz/62DTBtSG5sSf5Tn9QIs/HrXW90eEg==
+"@sixnetwork/klaytn-use-wallet@^1.1.8":
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klaytn-use-wallet/-/klaytn-use-wallet-1.1.8.tgz#df10e72f552cb2fe16d876cedd32ad36a8365357"
+  integrity sha512-JTWMsDmbusVcq3wXdZvg2NZHghbPqBc/d6aJvziM9Np0Ms/w29qUPLHh/5ZxdWbWViQIn3NCwDwj002DsYnvSQ==
   dependencies:
     "@rollup/plugin-image" "^2.0.6"
     "@sixnetwork/caverjs-react-core" "^1.1.3"
     "@sixnetwork/caverjs-react-injected-connector" "^1.0.5"
-    "@sixnetwork/klip-connector" "^1.0.6"
+    "@sixnetwork/klip-connector" "^1.0.8"
     axios "^0.21.1"
     jsbi "^3.1.1"
     qrcode "^1.4.4"
 
-"@sixnetwork/klip-connector@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@sixnetwork/klip-connector/-/klip-connector-1.0.6.tgz#c2966a0fcbc4d746c9f54344541768b20640f2b1"
-  integrity sha512-HdUBxdH0llnTtIpwqp9Dxq+8IEENgAt1iVhb2QYyqNMpvb6aEJVBEWfuxRc4Umm1ixUZB+jOfO1wb3z7ORh6fQ==
+"@sixnetwork/klip-connector@^1.0.8":
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klip-connector/-/klip-connector-1.0.8.tgz#d513df08d191a5d119f86c50ac8ca63b876e2ff3"
+  integrity sha512-Dpfndpuqe4nuJq+M4/gIHoZwqO0botxhOg8iMNd+NRUQW4Txh8azSw55JVSyUDOp7JAthWcq5gbLzP7ZknSrAQ==
   dependencies:
     "@sixnetwork/caverjs-react-abstract-connector" "^1.0.4"
     "@sixnetwork/caverjs-react-types" "^1.0.3"

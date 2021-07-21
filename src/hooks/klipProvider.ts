@@ -34,9 +34,7 @@ export const genQRcode = () => {
 }
 const getResult = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
-  
   const res = await axios.get(url)
-  
   if (res.data.status == 'completed') {
     account = res.data.result.klaytn_address
     responseData = res.data.result.klaytn_address
@@ -50,7 +48,6 @@ export const getRequestKey = () => requestKey
 export const checkResponse = async (): Promise<string> => {
   return new Promise((resolve) => {
     const interCheck = setInterval(() => {
-      
       if (responseData != undefined) {
         clearInterval(interCheck)
         resolve(responseData)
@@ -62,9 +59,7 @@ export const checkResponse = async (): Promise<string> => {
 const getResultContract = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
   const res = await axios.get(url)
-  
   if (res.data.status == 'completed') {
-    
     responseData = res.data.result.tx_hash
     clearInterval(intervalCheckResult)
   }
