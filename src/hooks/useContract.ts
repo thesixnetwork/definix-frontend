@@ -38,7 +38,7 @@ const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOp
   const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
 
   useEffect(() => {
-    const caverEffect = (new Caver(process.env.REACT_APP_NODE_3))
+    const caverEffect = new Caver(process.env.REACT_APP_NODE_3)
     setcontract(new caverEffect.klay.Contract(abi, address, contractOptions))
   }, [abi, address, contractOptions])
 
