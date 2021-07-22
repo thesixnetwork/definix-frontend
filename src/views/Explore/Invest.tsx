@@ -41,7 +41,7 @@ const LeftPanelAbsolute = styled(LeftPanel)`
 
 const CardInput = ({ onNext }) => (
   <Card className="mb-4">
-    <div className="pa-6 pt-4 bd-b">
+    <div className="pa-6 pt-4">
       <Button
         variant="text"
         as={Link}
@@ -66,7 +66,8 @@ const CardInput = ({ onNext }) => (
         {currency.map((c) => (
           <CurrencyInputPanel
             currency={c}
-            id="invest-btc"
+            id={`invest-${c.name}`}
+            key={`invest-${c.name}`}
             showMaxButton
             className="mb-2"
             value=""
@@ -120,7 +121,7 @@ const CardCalculate = ({ onBack, onNext }) => (
       <SpaceBetweenFormat className="mb-2" title="Price Impact" value="< 0.1%" valueColor="success" /* || failure */ />
       <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" />
 
-      <Button fullWidth radii="small" className="mt-3" onClick={onNext}>
+      <Button fullWidth radii="small" className="mt-2" onClick={onNext}>
         Invest
       </Button>
     </div>
