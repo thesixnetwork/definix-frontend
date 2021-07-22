@@ -60,7 +60,7 @@ const CardTVL = ({ className = '' }) => {
   const totalSupply = useTotalSupply()
   const totalTransferFromBsc = useTotalTransfer()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
-  const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  const finixSupply = totalSupply && getBalanceNumber(totalSupply)
   const finixTransfered = totalTransferFromBsc ? getBalanceNumber(totalTransferFromBsc) : 0
 
   useEffect(() => {
