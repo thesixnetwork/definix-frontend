@@ -5,12 +5,13 @@ interface ShareType {
   className?: string
   share: string
   usd: string
+  textAlign?: string
 }
 
-const Share: React.FC<ShareType> = ({ className = '', share, usd }) => {
+const Share: React.FC<ShareType> = ({ className = '', share, usd, textAlign }) => {
   return (
     <div className={className}>
-      <div className="flex align-baseline">
+      <div className={`flex align-baseline justify-${textAlign}`}>
         <Text fontSize="20px" bold className="mr-2">
           {share}
         </Text>

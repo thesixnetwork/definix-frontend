@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import CardHeading from './components/CardHeading'
@@ -39,144 +39,169 @@ const LeftPanelAbsolute = styled(LeftPanel)`
   padding-bottom: 24px;
 `
 
-const CardInput = ({ onNext }) => (
-  <Card className="mb-4">
-    <div className="pa-6 pt-4">
-      <Button
-        variant="text"
-        as={Link}
-        to="/explore/detail"
-        ml="-12px"
-        mb="8px"
-        padding="0 12px"
-        startIcon={<ArrowBackIcon />}
-      >
-        <Text fontSize="14px" color="textSubtle">
-          Back
-        </Text>
-      </Button>
+const CardInput = ({ onNext }) => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
 
-      <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" large className="mb-4" />
+  return (
+    <Card className="mb-4">
+      <div className={isMobile ? 'pa-4 pt-2' : 'pa-6 pt-4'}>
+        <Button
+          variant="text"
+          as={Link}
+          to="/explore/detail"
+          ml="-12px"
+          mb="8px"
+          padding="0 12px"
+          startIcon={<ArrowBackIcon />}
+        >
+          <Text fontSize="14px" color="textSubtle">
+            Back
+          </Text>
+        </Button>
 
-      <div className="flex">
-        <Text className="mb-2">Invest</Text>
-      </div>
+        <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" large className="mb-4" />
 
-      <div className="mb-6">
-        {currency.map((c) => (
-          <CurrencyInputPanel
-            currency={c}
-            id={`invest-${c.name}`}
-            key={`invest-${c.name}`}
-            showMaxButton
-            className="mb-2"
-            value=""
-            label=""
-            onUserInput={(value) => {
-              console.log(value)
-            }}
-          />
-        ))}
-      </div>
-
-      <Button fullWidth radii="small" onClick={onNext}>
-        Calculate invest amount
-      </Button>
-    </div>
-  </Card>
-)
-
-const CardCalculate = ({ onBack, onNext }) => (
-  <Card className="mb-4">
-    <div className="pa-6 pt-4 bd-b">
-      <Button variant="text" ml="-12px" mb="8px" padding="0 12px" startIcon={<ArrowBackIcon />} onClick={onBack}>
-        <Text fontSize="14px" color="textSubtle">
-          Back
-        </Text>
-      </Button>
-
-      <CardHeading />
-    </div>
-
-    <div className="px-6 py-5 bd-b">
-      <Text fontSize="24px" bold lineHeight="1.3" className="mb-3">
-        Invest
-      </Text>
-
-      <div className="flex align-center mb-3">
-        <VerticalAssetRatio className="col-5" />
-        <div className="col-7 pl-4 flex flex-column align-end">
-          <Share share="100" usd="~192,803.00" className="align-self-center" />
-          <PriceUpdate className="mt-3" />
+        <div className="flex">
+          <Text className="mb-2">Invest</Text>
         </div>
-      </div>
 
-      <Text fontSize="12px">
-        Output is estimated. You will receive at least <strong>192,803.00 USD</strong> or the transaction will revert.
-      </Text>
-    </div>
-
-    <div className="pa-6 pt-4">
-      <SpaceBetweenFormat className="mb-2" title="Minimum Received" value="100 SHARE" />
-      <SpaceBetweenFormat className="mb-2" title="Price Impact" value="< 0.1%" valueColor="success" /* || failure */ />
-      <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" />
-
-      <Button fullWidth radii="small" className="mt-2" onClick={onNext}>
-        Invest
-      </Button>
-    </div>
-  </Card>
-)
-
-const CardResponse = () => (
-  <Card className="mb-4">
-    <div className="pa-6">
-      <div className="flex flex-column align-center justify-center mb-6">
-        <Lottie options={SuccessOptions} height={120} width={120} />
-        {/* <ErrorIcon width="80px" color="failure" className="mb-3" /> */}
-        <Text fontSize="24px" bold textAlign="center">
-          Invest Complete
-        </Text>
-        <Text color="textSubtle" textAlign="center" className="mt-1" fontSize="12px">
-          27 June 2021, 15:32
-        </Text>
-
-        <CardHeading className="mt-6" />
-      </div>
-
-      <div className="flex align-center mb-6">
-        <VerticalAssetRatio className="col-5" />
-        <div className="col-7 pl-4 flex flex-column align-end">
-          <Share share="100" usd="~192,803.00" className="align-self-center" />
+        <div className={isMobile ? 'mb-4' : 'mb-6'}>
+          {currency.map((c) => (
+            <CurrencyInputPanel
+              currency={c}
+              id={`invest-${c.name}`}
+              key={`invest-${c.name}`}
+              showMaxButton
+              className="mb-2"
+              value=""
+              label=""
+              onUserInput={(value) => {
+                console.log(value)
+              }}
+            />
+          ))}
         </div>
+
+        <Button fullWidth radii="small" onClick={onNext}>
+          Calculate invest amount
+        </Button>
+      </div>
+    </Card>
+  )
+}
+
+const CardCalculate = ({ onBack, onNext }) => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+
+  return (
+    <Card className="mb-4">
+      <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-6 py-4'} `}>
+        <Button variant="text" ml="-12px" mb="8px" padding="0 12px" startIcon={<ArrowBackIcon />} onClick={onBack}>
+          <Text fontSize="14px" color="textSubtle">
+            Back
+          </Text>
+        </Button>
+
+        <CardHeading />
       </div>
 
-      <SpaceBetweenFormat
-        titleElm={
-          <div className="flex">
-            <Text fontSize="12px" color="textSubtle" className="mr-2">
-              Transaction Hash
-            </Text>
-            <Text fontSize="12px" color="primary" bold>
-              0x91….24xd
-            </Text>
+      <div className={`bd-b ${isMobile ? 'pa-4' : 'px-6 py-4'} `}>
+        <Text fontSize="24px" bold lineHeight="1.3" className="mb-3">
+          Invest
+        </Text>
+
+        <div className="flex align-center flex-wrap mb-3">
+          <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} />
+          <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
+            <Share share="100" usd="~192,803.00" textAlign={isMobile ? 'center' : 'left'} />
+            <PriceUpdate className="mt-3" />
           </div>
-        }
-        valueElm={
-          <UiLink href="https://scope.klaytn.com/account/}" fontSize="12px" color="textSubtle">
-            View on KlaytnScope
-            <ChevronRightIcon color="textSubtle" />
-          </UiLink>
-        }
-        className="mb-2"
-      />
+        </div>
 
-      <Button as={Link} to="/explore/detail" fullWidth radii="small" className="mt-3">
-        Back to Explore
-      </Button>
-    </div>
-  </Card>
-)
+        <Text fontSize="12px" textAlign={isMobile ? 'center' : 'left'}>
+          Output is estimated. You will receive at least <strong>192,803.00 USD</strong> or the transaction will revert.
+        </Text>
+      </div>
+
+      <div className={isMobile ? 'pa-4' : 'pa-6 pt-4'}>
+        <SpaceBetweenFormat className="mb-2" title="Minimum Received" value="100 SHARE" />
+        <SpaceBetweenFormat
+          className="mb-2"
+          title="Price Impact"
+          value="< 0.1%"
+          valueColor="success" /* || failure */
+        />
+        <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" />
+
+        <Button fullWidth radii="small" className="mt-2" onClick={onNext}>
+          Invest
+        </Button>
+      </div>
+    </Card>
+  )
+}
+
+const CardResponse = () => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+
+  return (
+    <Card className="mb-4">
+      <div className={isMobile ? 'pa-4' : 'pa-6'}>
+        <div className="flex flex-column align-center justify-center mb-6">
+          <Lottie options={SuccessOptions} height={120} width={120} />
+          {/* <ErrorIcon width="80px" color="failure" className="mb-3" /> */}
+          <Text fontSize="24px" bold textAlign="center">
+            Invest Complete
+          </Text>
+          <Text color="textSubtle" textAlign="center" className="mt-1" fontSize="12px">
+            27 June 2021, 15:32
+          </Text>
+
+          <CardHeading className="mt-6" />
+        </div>
+
+        <div className="flex align-center flex-wrap mb-6">
+          <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} />
+          <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
+            <Share share="100" usd="~192,803.00" textAlign={isMobile ? 'center' : 'left'} />
+          </div>
+        </div>
+
+        <SpaceBetweenFormat
+          titleElm={
+            <div className="flex">
+              <Text fontSize="12px" color="textSubtle" className="mr-2">
+                Transaction Hash
+              </Text>
+              <Text fontSize="12px" color="primary" bold>
+                0x91….24xd
+              </Text>
+            </div>
+          }
+          valueElm={
+            <UiLink
+              href="https://scope.klaytn.com/account/}"
+              fontSize="12px"
+              color="textSubtle"
+              style={{ marginRight: '-4px' }}
+            >
+              KlaytnScope
+              <ChevronRightIcon color="textSubtle" />
+            </UiLink>
+          }
+          className="mb-2"
+        />
+
+        <Button as={Link} to="/explore/detail" fullWidth radii="small" className="mt-3">
+          Back to Explore
+        </Button>
+      </div>
+    </Card>
+  )
+}
 
 const Invest: React.FC = () => {
   const [isInputting, setIsInputting] = useState(true)
