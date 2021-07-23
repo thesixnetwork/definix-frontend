@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, Card, Text } from 'uikit-dev'
+import { Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import TwoLineFormat from './TwoLineFormat'
 
 interface FundActionType {
@@ -18,8 +18,11 @@ const CardStyled = styled(Card)`
 `
 
 const FundAction: React.FC<FundActionType> = ({ className }) => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+
   return (
-    <CardStyled className={`flex justify-space-between pa-4 bd-t ${className}`}>
+    <CardStyled className={`flex flex-wrap justify-space-between pa-4 bd-t ${className}`}>
       <TwoLineFormat
         title="Current investment"
         subTitle="1.24 Shares"
@@ -29,7 +32,7 @@ const FundAction: React.FC<FundActionType> = ({ className }) => {
         large
       />
 
-      <div className="col-6 flex">
+      <div className={`flex ${isMobile ? 'col-12 pt-2' : 'col-6'}`}>
         <Button as={Link} to="/explore/invest" fullWidth radii="small" className="mr-3" variant="success">
           INVEST
         </Button>

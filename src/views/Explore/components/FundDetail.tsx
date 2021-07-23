@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import CardTab from './CardTab'
@@ -7,6 +8,10 @@ import { Table, TD, TH, TR } from './Table'
 interface FundDetailType {
   className?: string
 }
+
+const Overflow = styled.div`
+  overflow: auto;
+`
 
 const AssetDetail = () => {
   const data = {
@@ -146,7 +151,11 @@ const FundDetail: React.FC<FundDetailType> = ({ className = '' }) => {
     <Card className={className}>
       <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
 
-      <div className="pa-4">{currentTab === 0 ? <AssetDetail /> : <FactSheet />}</div>
+      <Overflow>
+        <div className="pa-4" style={{ width: 'fit-content' }}>
+          {currentTab === 0 ? <AssetDetail /> : <FactSheet />}
+        </div>
+      </Overflow>
     </Card>
   )
 }

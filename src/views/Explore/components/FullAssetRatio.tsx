@@ -1,18 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Text } from 'uikit-dev'
+import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import currency from '../mockCurrency'
 
 interface FullAssetRatioType {
   className?: string
 }
 
-const Coin = styled.div<{ width: string }>`
+const Coin = styled.div<{ width: string; isMobile: boolean }>`
   width: ${({ width }) => width};
 
   .name {
     display: flex;
-    align-items: center;
+    flex-direction: ${({ isMobile }) => (isMobile ? 'column' : 'row')};
+    align-items: ${({ isMobile }) => (isMobile ? 'flex-start' : 'center')};
 
     img {
       flex-shrink: 0;
@@ -32,6 +33,9 @@ const Bar = styled.div<{ color: string }>`
 `
 
 const FullAssetRatio: React.FC<FullAssetRatioType> = ({ className = '' }) => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+
   return (
     <Card className={`pa-4 ${className}`}>
       <Text bold className="mb-2">
@@ -40,7 +44,7 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ className = '' }) => {
 
       <div className="flex">
         {currency.map((m) => (
-          <Coin width={m.percent}>
+          <Coin width={m.percent} isMobile={isMobile}>
             <Bar color={m.color} />
             <div className="name">
               <img src={m.img} alt="" />
