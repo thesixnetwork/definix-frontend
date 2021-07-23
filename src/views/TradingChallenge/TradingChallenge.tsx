@@ -1,4 +1,4 @@
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import Page from 'components/layout/Page'
 import { useTradingCompetRegisContract } from 'hooks/useContract'
 import _ from 'lodash'

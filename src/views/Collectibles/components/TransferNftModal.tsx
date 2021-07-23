@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { getCaver } from 'utils/caver'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Button, Input, Modal, Text } from 'uikit-dev'
 import { useToast } from 'state/hooks'
 import { Nft } from 'config/constants/types'

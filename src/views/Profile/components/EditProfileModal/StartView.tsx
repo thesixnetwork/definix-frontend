@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Button, Flex, Text, InjectedModalProps } from 'uikit-dev'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import { getDefinixProfileAddress } from 'utils/addressHelpers'
