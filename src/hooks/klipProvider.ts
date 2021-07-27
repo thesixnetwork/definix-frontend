@@ -82,7 +82,7 @@ export const genQRcodeContactInteract = (contractAddress: string, abi: string, i
   }
   axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
     requestKey = response.data.request_key
-    console.log('response.data.request_key', response.data.request_key)
+
     QRcode.toCanvas(
       document.getElementById('qrcode'),
       `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,

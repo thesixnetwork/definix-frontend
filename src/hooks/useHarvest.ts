@@ -72,7 +72,7 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
-    console.log('connector ', connector)
+    
     if (connector === 'klip') {
       setShowModal(true)
 
