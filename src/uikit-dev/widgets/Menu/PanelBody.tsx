@@ -49,7 +49,7 @@ const StyledLink = styled(Link)`
 const PanelBody: React.FC<Props> = (props) => {
   const location = useLocation()
   const { isDark } = useTheme()
-  const { isPushed, pushNav, isMobile, links, account, login, logout } = props
+  const { isPushed, pushNav, isMobile, links, account, login, logout, currentLang } = props
 
   // Close the menu when a user clicks a link on mobile
   const handleClick = isMobile ? () => pushNav(false) : undefined
@@ -81,7 +81,8 @@ const PanelBody: React.FC<Props> = (props) => {
                 style={{ border: 'none' }}
               >
                 <MenuLink
-                  href={item.href}
+                  // href={item.href}
+                  href={item.customHref ? (item.customHref || {})[(currentLang || '').toLowerCase()] : item.href}
                   onClick={handleClick}
                   target={item.newTab ? '_blank' : ''}
                   style={{ paddingLeft: '40px' }}
@@ -96,7 +97,11 @@ const PanelBody: React.FC<Props> = (props) => {
 
     return (
       <MenuEntry key={menu.label} isActive={isActive} className={calloutClass}>
-        <MenuLink href={menu.href} onClick={handleClick} target={menu.newTab ? '_blank' : ''}>
+        <MenuLink
+          href={menu.customHref ? (menu.customHref || {})[(currentLang || '').toLowerCase()] : menu.href}
+          onClick={handleClick}
+          target={menu.newTab ? '_blank' : ''}
+        >
           <img src={isActive || isDark ? menu.iconActive : menu.icon} alt="" width="24" className="mr-3" />
           <LinkLabel isPushed={isPushed}>{menu.label}</LinkLabel>
         </MenuLink>

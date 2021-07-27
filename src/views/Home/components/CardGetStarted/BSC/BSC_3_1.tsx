@@ -1,11 +1,13 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import React, { memo } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import { Heading, Text } from 'uikit-dev'
 import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-33.png'
 import UserBlock from 'uikit-dev/widgets/Menu/UserBlock'
 
 const BSC_3_1 = ({ title }) => {
   const { account, connect, reset } = useWallet()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -14,7 +16,7 @@ const BSC_3_1 = ({ title }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          To use DEFINIX, you need to connect your wallet to the platform easily by press on this button.
+          {t('To use DEFINIX, you need to connect your wallet to the platform easily by press on this button.')}
         </Text>
         <UserBlock
           account={account}
@@ -24,10 +26,11 @@ const BSC_3_1 = ({ title }) => {
           position="bottom"
         />
         <Text fontSize="14px" className="mb-4">
-          Keep in mind that on every transaction, you need BNB to pay for a gas price. Please prepare enough BNB in your
-          wallet.
+          {t(
+            'Keep in mind that on every transaction, you need BNB to pay for a gas price. Please prepare enough BNB in your wallet.',
+          )}
           <br />
-          These tokens can be swap in DEFINIX.
+          {t('These tokens can be swap in DEFINIX.')}
         </Text>
         <img src={img01} alt="" />
       </div>

@@ -9,6 +9,7 @@ import { Button, Heading, Text } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { HarvestActionProps } from './types'
+import { getLanguageCodeFromLS } from '../../../../contexts/Localization/helpers'
 
 const MiniLogo = styled.img`
   width: 20px;
@@ -27,7 +28,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation()
-
+  const codeFromStorage = getLanguageCodeFromLS()
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
@@ -41,6 +42,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
       <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
         <MiniLogo src={miniLogo} alt="" />
         {`FINIX ${t('Earned')}`}
+        {/* {codeFromStorage === 'th-TH' ? <>{`${t('Earned')} FINIX`}</> : <>{`FINIX ${t('Earned')}`}</>} */}
       </Text>
 
       <div className="flex align-center justify-space-between">

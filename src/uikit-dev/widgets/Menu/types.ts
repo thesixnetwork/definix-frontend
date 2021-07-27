@@ -44,6 +44,7 @@ export interface MenuEntry {
   initialOpenState?: boolean
   notHighlight?: boolean
   newTab?: boolean
+  customHref?: any
 }
 
 export interface PanelProps {

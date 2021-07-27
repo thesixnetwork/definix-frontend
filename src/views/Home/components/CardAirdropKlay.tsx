@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Button, Card, Heading, Text } from 'uikit-dev'
 import astro from 'uikit-dev/images/Airdrop/Definix-on-KLAYTN-06.jpg'
@@ -58,25 +59,26 @@ const StyleKlaytnBlockchain = {
 
 const CardAirdropKlay = ({ showBtn = false, className = '' }) => {
   const { path } = useRouteMatch()
-
+  const { t } = useTranslation()
   return (
     <StyledBanner className={className}>
       <Heading className="mb-2" color="#3F4042">
-        <img src={definixLogo} width="200px" alt="" /> <span style={StyleAirDrop}>is now on</span>
+        <img src={definixLogo} width="200px" alt="" /> <span style={StyleAirDrop}>{t('is now on')}</span>
       </Heading>
       <Heading fontSize="18px" color="#895E38" className="mb-2">
-        Klaytn Blockchain
+        {t('Klaytn Blockchain')}
       </Heading>
       <Text style={{ float: 'left', marginTop: '8px', marginRight: '8px' }} color="#3F4042" fontSize="15px">
-        <b>Get free </b>
+        <b>{t('Get free ')}</b>
       </Text>
       <Heading fontSize="18px" color="#3F4042" className="mb-2">
         11 KLAY
+        {/* {t('11 KLAY')} */}
       </Heading>
       {/* {showBtn && ( */}
       {/* <Route path={`${path}/airdropklay`}> */}
       <Button as="a" href="/airdropklay" size="sm" variant="primary" className="btn-secondary-disable mt-3">
-        Get Airdrop
+        {t('Get Airdrop')}
       </Button>
       {/* </Route> */}
       {/* )} */}

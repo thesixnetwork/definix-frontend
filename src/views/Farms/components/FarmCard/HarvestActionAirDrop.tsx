@@ -41,7 +41,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
       <div className={isHorizontal ? 'col-8 pr-6' : ''}>
         <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
-          Earned
+          {t('Earned')}
         </Text>
 
         <div className="flex justify-space-between align-baseline mb-2">
@@ -66,10 +66,10 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
         </div>
 
         <div className="flex align-center justify-space-between">
-          <Text color="textSubtle">Claim Ended Bonus</Text>
+          <Text color="textSubtle">{t('Claim Ended Bonus')}</Text>
 
           <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-            Claim
+            {t('Claim')}
           </Button>
         </div>
       </div>

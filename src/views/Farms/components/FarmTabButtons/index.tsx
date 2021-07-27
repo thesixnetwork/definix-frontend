@@ -1,6 +1,7 @@
 import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 import { Button, CardViewIcon, IconButton, ListViewIcon, useMatchBreakpoints } from 'uikit-dev'
 
 const Wrapper = styled.div`
@@ -19,6 +20,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
   const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const { t } = useTranslation()
 
   return (
     <Wrapper>
@@ -59,7 +61,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
               variant={listView ? 'primary' : 'secondary'}
               className="mr-2"
             >
-              List View
+              {t('List View')}
             </Button>
             <Button
               size="sm"
@@ -70,7 +72,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
               variant={!listView ? 'primary' : 'secondary'}
               startIcon={<CardViewIcon isStroke color={!listView || isDark ? 'white' : 'primary'} />}
             >
-              Card View
+              {t('Card View')}
             </Button>
           </>
         )}
@@ -85,7 +87,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
           variant={!stackedOnly ? 'primary' : 'secondary'}
           className="mr-2"
         >
-          All Farm
+          {t('All Farm')}
         </Button>
         <Button
           size="sm"
@@ -94,7 +96,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
           }}
           variant={stackedOnly ? 'primary' : 'secondary'}
         >
-          Staked
+          {t('Staked')}
         </Button>
       </div>
     </Wrapper>

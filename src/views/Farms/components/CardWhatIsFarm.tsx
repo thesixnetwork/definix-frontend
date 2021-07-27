@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Card, Heading, Text } from 'uikit-dev'
 import man from 'uikit-dev/images/for-Farm-Elements/1558.png'
@@ -55,6 +56,7 @@ const WhatIsFarm = styled.div`
 `
 
 const CardWhatIsFarm = () => {
+  const { t } = useTranslation()
   return (
     <Card className="mb-6">
       <WhatIsFarm>
@@ -63,13 +65,12 @@ const CardWhatIsFarm = () => {
 
           <div>
             <Heading as="h2" fontSize="28px !important" color="#FFF" className="mb-2">
-              What is Farm?
+              {t('What is Farm?')}
             </Heading>
             <p>
-              Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. The
-              amount of returns will be calculated by the annual percentage rate (APR). The APR of each farm will be
-              different and fluctuated due to the size of the pool. You can choose any farm you like to start farming
-              now.
+              {t(
+                'Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX. The amount of returns will be calculated by the annual percentage rate (APR). The APR of each farm will be different and fluctuated due to the size of the pool. You can choose any farm you like to start farming now.',
+              )}
             </p>
           </div>
         </MaxWidth>
@@ -77,32 +78,35 @@ const CardWhatIsFarm = () => {
 
       <MaxWidth className="py-6 px-6">
         <Heading as="h2" fontSize="28px !important" className="mb-4">
-          How to farm in just 1, 2, 3
+          {t('How to farm in just 1, 2, 3')}
         </Heading>
         <Heading as="h3" className="mb-1" color="primary">
-          1. Choose a farm you like
+          {t('1. Choose a farm you like')}
         </Heading>
-        <Text className="mb-3">See the list of the active farms and decide which farm you want to stake.</Text>
+        <Text className="mb-3">{t('See the list of the active farms and decide which farm you want to stake.')}</Text>
 
         <Heading as="h3" className="mb-1" color="primary">
-          2. Add liquidity
+          {t('2. Add liquidity')}
         </Heading>
         <Text className="mb-3">
-          For example, if you want to stake in FINIX-SIX LP farm, you go to “Liquidity” menu and add your FINIX and SIX
-          tokens to liquidity pool. You’ll get FINIX-SIX LP tokens from this step.
+          {t(
+            'For example, if you want to stake in FINIX-SIX LP farm, you go to “Liquidity” menu and add your FINIX and SIX tokens to liquidity pool. You’ll get FINIX-SIX LP tokens from this step.',
+          )}
         </Text>
 
         <Heading as="h3" className="mb-1" color="primary">
-          3. Start farming
+          {t('3. Start farming')}
         </Heading>
         <Text className="mb-3">
-          Bring your LP tokens that you’ve got from the previous step to stake in the farm and earn much more FINIX as a
-          return!
+          {t(
+            'Bring your LP tokens that you’ve got from the previous step to stake in the farm and earn much more FINIX as a return!',
+          )}
         </Text>
 
         <Text color="primary">
-          Don’t have cryptocurrency for a farm you want to stake ? No worries, you can use swap to exchange for what you
-          want.
+          {t(
+            'Don’t have cryptocurrency for a farm you want to stake ? No worries, you can use swap to exchange for what you want.',
+          )}
         </Text>
       </MaxWidth>
     </Card>

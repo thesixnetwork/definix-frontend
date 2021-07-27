@@ -1,4 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
@@ -58,6 +59,7 @@ const Farm: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const { t } = useTranslation()
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -251,7 +253,7 @@ const Farm: React.FC = () => {
       }}
     >
       <Helmet>
-        <title>Pool - Definix - Advance Your Crypto Assets</title>
+        <title>{t('Pool - Definix - Advance Your Crypto Assets')}</title>
       </Helmet>
       <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
         <LeftPanel isShowRightPanel={false}>
@@ -259,16 +261,18 @@ const Farm: React.FC = () => {
             <div className="mb-5">
               <div className="flex align-center mb-2">
                 <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  Pool
+                  {t('Pool')}
                 </Heading>
                 {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
                 </HelpButton> */}
               </div>
               <Text>
-                Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.
+                {t(
+                  'Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.',
+                )}
                 <br />
-                The amount of returns will be calculated by the annual percentage rate (APR).
+                {t('The amount of returns will be calculated by the annual percentage rate (APR).')}
               </Text>
             </div>
 

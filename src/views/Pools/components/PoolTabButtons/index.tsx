@@ -78,7 +78,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
             className="mr-2"
             isStroke
           >
-            List View
+            {t('List View')}
           </Button>
           <Button
             size="sm"
@@ -89,7 +89,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
             startIcon={<CardViewIcon isStroke color={!listView || isDark ? 'white' : 'primary'} />}
             isStroke
           >
-            Card View
+            {t('Card View')}
           </Button>
         </div>
       )}
@@ -108,7 +108,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
           variant={!stackedOnly ? 'primary' : 'secondary'}
           className="mr-2"
         >
-          All Pool
+          {t('All Pool')}
         </Button>
         <Button
           size="sm"
@@ -117,7 +117,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
           }}
           variant={stackedOnly ? 'primary' : 'secondary'}
         >
-          Staked
+          {t('Staked')}
         </Button>
       </div>
     </Wrapper>

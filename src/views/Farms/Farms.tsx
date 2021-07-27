@@ -1,4 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
+import { useTranslation } from 'contexts/Localization'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
@@ -43,6 +44,7 @@ const MaxWidth = styled.div`
 `
 
 const Farms: React.FC = () => {
+  const { t } = useTranslation()
   const { path } = useRouteMatch()
   const farmsLP = useFarms()
   const bnbPrice = usePriceBnbBusd()
@@ -177,7 +179,7 @@ const Farms: React.FC = () => {
       }}
     >
       <Helmet>
-        <title>Farm - Definix - Advance Your Crypto Assets</title>
+        <title>{t('Farm - Definix - Advance Your Crypto Assets')}</title>
       </Helmet>
       <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
         <LeftPanel isShowRightPanel={false}>
@@ -185,7 +187,7 @@ const Farms: React.FC = () => {
             <div className="mb-5">
               <div className="flex align-center mb-2">
                 <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  Farm
+                  {t('Farm')}
                 </Heading>
 
                 {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
@@ -193,9 +195,11 @@ const Farms: React.FC = () => {
                 </HelpButton> */}
               </div>
               <Text>
-                Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.
+                {t(
+                  'Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.',
+                )}
                 <br />
-                The amount of returns will be calculated by the annual percentage rate (APR).
+                {t('The amount of returns will be calculated by the annual percentage rate (APR).')}
               </Text>
             </div>
 

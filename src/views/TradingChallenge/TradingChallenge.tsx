@@ -131,7 +131,7 @@ const TradingChallenge = () => {
                 - The final results after the trading period ended will be calculated
               </Text>
               <Text lineHeight="2">
-                2. The participants are only allowed to swap/farm on specified symbols and exchanges, Pancakeswap and
+                2. The participants are only allowed to swap/farm on specified symbols and exchanges, Definix and
                 Definix swap only. Please see the qualified symbols and exchanges on the following list.
               </Text>
               <img

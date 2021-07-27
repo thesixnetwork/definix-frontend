@@ -70,7 +70,7 @@ const CardTVL = ({ className = '' }) => {
           <div className="col-6 flex flex-column align-center">
             <div className="flex align-center justify-center mb-2">
               <Text color="white" fontSize="12px">
-                TVL in BSC
+                {t('TVL in BSC')}
               </Text>
               <img src={bscWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
             </div>
@@ -79,7 +79,7 @@ const CardTVL = ({ className = '' }) => {
           <div className="col-6 flex flex-column align-center">
             <div className="flex align-center justify-center mb-2">
               <Text color="white" fontSize="12px">
-                TVL in Klaytn
+                {t('TVL in Klaytn')}
               </Text>
               <img src={klaytnWhite} alt="" style={{ height: '24px', width: 'auto', marginLeft: '8px' }} />
             </div>
@@ -92,7 +92,7 @@ const CardTVL = ({ className = '' }) => {
         <Row>
           <div className="flex align-center">
             <Text color="textSubtle">{t('Total FINIX Supply')}</Text>
-            <Helper text="Does not include burned" className="ml-2" position="top" />
+            <Helper text={t('Does not include burned')} className="ml-2" position="top" />
           </div>
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
         </Row>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { ArrowBackIcon, IconButton, Button, Card, Heading } from 'uikit-dev'
 import astro from 'uikit-dev/images/Airdrop/Definix-on-KLAYTN-01.jpg'
@@ -89,17 +90,18 @@ const StyledBanner = styled(Card)`
 `
 
 const BannerAirdrop = ({ showBtn = false, className = '' }) => {
+  const { t } = useTranslation()
   return (
     <StyledBanner className={className}>
       <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-2">
         <ArrowBackIcon style={{ opacity: '0.6' }} />{' '}
-        <span style={{ verticalAlign: 'super', opacity: '0.6', color: 'black' }}>Back</span>
+        <span style={{ verticalAlign: 'super', opacity: '0.6', color: 'black' }}>{t('Back')}</span>
       </IconButton>
       <MaxWidth>
         <div>
           <Heading as="h3" style={{ marginLeft: 'auto', marginRight: 'auto' }}>
-            <img src={definixLogo} alt="" /> <span style={{ fontSize: '15px' }}>is now on</span>{' '}
-            <span style={{ fontSize: '25px', color: '#83603E' }}>Klaytn Blockchain</span>
+            <img src={definixLogo} alt="" /> <span style={{ fontSize: '15px', color: 'black' }}>{t('is now on')}</span>{' '}
+            <span style={{ fontSize: '25px', color: '#83603E' }}>{t('Klaytn Blockchain')}</span>
           </Heading>
           <br />
           <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>

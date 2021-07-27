@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import Collapsible from 'react-collapsible'
 import { Text, ChevronDownIcon, ChevronUpIcon } from 'uikit-dev'
 
@@ -8,10 +9,11 @@ interface Props {
   toggle: () => void
 }
 const TriggerElement = ({ isDown }): ReactElement => {
+  const { t } = useTranslation()
   return (
     <div style={{ width: '100%', cursor: 'pointer' }}>
       <div style={{ fontSize: '20px' }}>
-        Criteria for 1st airdrop claim
+        {t('Criteria for 1st airdrop claim')}
         <div style={{ float: 'right' }}>
           {console.log('isdown ', isDown)}
           <div style={{ marginTop: '15px' }}>{isDown ? <ChevronDownIcon /> : <ChevronUpIcon />}</div>

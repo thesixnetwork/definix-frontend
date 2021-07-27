@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Button } from './Button'
 import { ChevronLeftIcon, ChevronRightIcon } from './Svg'
@@ -98,6 +99,7 @@ export const RightPanel = styled.div<{ isShowRightPanel: boolean }>`
 `
 
 export const ShowHideButton = ({ isShow, action }) => {
+  const { t } = useTranslation()
   return (
     <Button
       className="show-hide"
@@ -106,7 +108,7 @@ export const ShowHideButton = ({ isShow, action }) => {
       onClick={action}
       size="sm"
     >
-      {isShow ? 'Hide' : 'Show'}
+      {isShow ? t('Hide') : t('Show')}
     </Button>
   )
 }

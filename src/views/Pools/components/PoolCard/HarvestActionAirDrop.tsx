@@ -81,7 +81,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
       <div className={isHorizontal ? 'col-8 pr-4' : ''}>
         <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
-          Earn
+          {t('Earned')}
         </Text>
 
         <AirDrop logo={miniLogo} title="APR" percent="120%" value="12,300.75" name="FINIX" />
@@ -91,7 +91,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           <Text color="textSubtle">Claim Ended Bonus</Text>
 
           <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-            Claim
+            {t('Claim')}
           </Button>
         </div>
       </div>

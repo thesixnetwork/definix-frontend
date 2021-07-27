@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React, { memo } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import bsc from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-Tutorial-Elements-53.png'
@@ -13,6 +14,7 @@ const CustomButton = styled.img`
 `
 
 const Klaytn_2_2 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
+  const { t } = useTranslation()
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -20,11 +22,11 @@ const Klaytn_2_2 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          To transfer SIX to Kaikas, It’s have 2 choices
+          {t('To transfer SIX to Kaikas, It’s have 2 choices')}
         </Text>
 
         <Text fontSize="14px" className="mb-4">
-          Please select a choice
+          {t('Please select a choice')}
         </Text>
 
         <CustomButton

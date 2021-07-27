@@ -562,7 +562,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           {isLoading ? <Loading /> : <Doughnut data={chart.data} options={chart.options} height={150} width={150} />}
         </div>
         <div className="sum col-7 pa-3 pl-0">
-          <Text color="textSubtle">Net Worth</Text>
+          <Text color="textSubtle">{t('Net Worth')}</Text>
           {isLoading ? (
             <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
           ) : (
@@ -621,7 +621,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {other > 0 && (
                     <Legend>
                       <Text fontSize="12px" color="textSubtle">
-                        OTHER
+                        {t('OTHER')}
                       </Text>
                       <Text bold style={{ paddingLeft: '80px' }}>
                         {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
@@ -637,13 +637,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
       <HarvestAll>
         <Text bold textAlign="center" className="ready">
-          FINIX ready to harvest
+          {t('FINIX ready to harvest')}
         </Text>
         <div className="harvest">
           <div className="flex justify-center">
             <StatAll>
               <Text textAlign="center" color="textSubtle">
-                From all farms
+                {t('From all farms')}
               </Text>
               {isLoading ? (
                 <>
@@ -660,7 +660,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
             </StatAll>
             <StatAll>
               <Text textAlign="center" color="textSubtle">
-                From all pools
+                {t('From all pools')}
               </Text>
               {isLoading ? (
                 <>
@@ -709,7 +709,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 <Summary>
                   <div>
                     <Text fontSize="12px" color="textSubtle">
-                      APR
+                      {t('APR')}
                     </Text>
                     <Text bold color="success">
                       {new BigNumber(d.apy).toNumber().toFixed(2)}%
@@ -717,7 +717,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   </div>
                   <div>
                     <Text fontSize="12px" color="textSubtle">
-                      LP Staked
+                      {t('LP Staked')}
                     </Text>
                     <Text bold>
                       {new BigNumber(d.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
@@ -726,7 +726,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   <div />
                   <div>
                     <Text fontSize="12px" color="textSubtle">
-                      FINIX Earned
+                      {t('FINIX Earned')}
                     </Text>
                     <Text bold>
                       {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
@@ -767,7 +767,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Summary>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
-                    APR
+                    {t('APR')}
                   </Text>
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
@@ -779,7 +779,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
-                    LP Staked
+                    {t('LP Staked')}
                   </Text>
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="21px" />
@@ -806,7 +806,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
-                    FINIX Earned
+                    {t('FINIX Earned')}
                   </Text>
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="21px" />

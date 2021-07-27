@@ -1,4 +1,5 @@
 import React, { memo } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-14.png'
@@ -12,6 +13,7 @@ const CustomButton = styled.img`
 `
 
 const BSC_2_1 = ({ title, onNext }) => {
+  const { t } = useTranslation()
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -19,12 +21,13 @@ const BSC_2_1 = ({ title, onNext }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          You need a wallet address to transfer token to your wallet (Metamask). Your address will be shown at the upper
-          part of Metamask as a picture below.
+          {t(
+            'You need a wallet address to transfer token to your wallet (Metamask). Your address will be shown at the upper part of Metamask as a picture below.',
+          )}
         </Text>
         <img src={img01} alt="" className="mb-4" />
         <Text fontSize="14px" className="mb-3">
-          Please select a token you want to transfer
+          {t('Please select a token you want to transfer')}
         </Text>
         <div className="flex align-center justify-center">
           <CustomButton

@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Button, Card, Heading, Text } from 'uikit-dev'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
@@ -51,22 +52,26 @@ const StyledBanner = styled(Card)`
 `
 
 const CardAutoRebalancing = ({ className = '' }) => {
+  const { t } = useTranslation()
   return (
     <StyledBanner className={className}>
       <div className="pos-relative" style={{ zIndex: 1 }}>
         <Heading className="mb-2" color="primary">
-          AUTO RE-BALANCING MUTUAL FUNDS
+          {t('AUTO RE-BALANCING MUTUAL FUNDS')}
         </Heading>
         <Text color="textSubtle" fontSize="12px">
-          Rebalancing involves periodically buying or selling assets in a portfolio to maintain an original or desired
-          level of asset allocation or risk.
+          {t(
+            'Rebalancing involves periodically buying or selling assets in a portfolio to maintain an original or desired level of asset allocation or risk.',
+          )}
         </Text>
         <Text bold fontSize="12px">
-          Sound complicated? Don’t worry we will take care your investment automatically with our in-house experts!!
+          {t(
+            'Sound complicated? Don’t worry we will take care your investment automatically with our in-house experts!!',
+          )}
         </Text>
 
         <Button size="sm" variant="primary" className="btn-secondary-disable mt-3">
-          Coming Soon!
+          {t('Coming Soon!')}
         </Button>
       </div>
     </StyledBanner>

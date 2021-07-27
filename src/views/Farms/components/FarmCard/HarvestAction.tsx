@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useHarvest } from 'hooks/useHarvest'
 import { useTranslation } from 'contexts/Localization'
@@ -24,12 +25,11 @@ const MiniLogo = styled.img`
 `
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '' }) => {
-  const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
+  const [pendingTx, setPendingTx] = useState(false)
   const finixUsd = usePriceFinixUsd()
   const { onReward } = useHarvest(pid)
   const { earnings } = useFarmUser(pid)
-
   const rawEarningsBalance = getBalanceNumber(earnings)
   const displayBalance = rawEarningsBalance.toLocaleString()
 

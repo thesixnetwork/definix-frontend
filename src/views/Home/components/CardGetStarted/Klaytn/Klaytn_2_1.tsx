@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import React, { memo } from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-Tutorial-Elements-51.png'
@@ -13,6 +14,7 @@ const CustomButton = styled.img`
 `
 
 const Klaytn_2_1 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
+  const { t } = useTranslation()
   return (
     <>
       <Heading className="mb-6" color="primary">
@@ -20,12 +22,13 @@ const Klaytn_2_1 = ({ title, onNext, setIsTransferSixFromKlaytn }) => {
       </Heading>
       <div>
         <Text fontSize="14px" className="mb-4">
-          You need a wallet address to transfer token to your wallet (Kaikas). Your address will be shown at the upper
-          part of Kaikas as a picture below.
+          {t(
+            'You need a wallet address to transfer token to your wallet (Kaikas). Your address will be shown at the upper part of Kaikas as a picture below.',
+          )}
         </Text>
         <img src={img01} alt="" className="mb-4" />
         <Text fontSize="14px" className="mb-3">
-          Please select a token you want to transfer
+          {t('Please select a token you want to transfer')}
         </Text>
         <div className="flex align-center justify-center">
           <CustomButton

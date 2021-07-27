@@ -34,7 +34,7 @@ const TotalValueLockedCard = () => {
             ? 'N/A'
             : ((totalTVL || 0) + (totalCaverTVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Heading>
-        <Text small>(Across all LPs and Pools)</Text>
+        <Text small>({t('Across all LPs and Pools')})</Text>
         {/* data ? (
           <>
             <Heading fontSize="28px !important" mb="12px">
