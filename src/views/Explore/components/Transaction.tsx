@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty'
 import React, { useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { Card, LinkExternal, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import CardTab from './CardTab'
@@ -19,6 +20,10 @@ const EmptyData = ({ text }) => (
     </TD>
   </TR>
 )
+
+const Overflow = styled.div`
+  overflow: auto;
+`
 
 const TransactionTable = ({ rows, empText }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -40,59 +45,63 @@ const TransactionTable = ({ rows, empText }) => {
           size="small"
           hidePrevButton
           hideNextButton
-          className="mb-2"
+          className="pa-4 pb-0"
           onChange={(e, page) => {
             setCurrentPage(page)
           }}
         />
       )}
 
-      <Table>
-        <TR>
-          {cols.map((c) => (
-            <TH>
-              <Text color="textSubtle" fontSize="12px" bold>
-                {c}
-              </Text>
-            </TH>
-          ))}
-          <TH />
-        </TR>
-
-        {isEmpty(rows) ? (
-          <EmptyData text={empText} />
-        ) : (
-          rows.map((r) => (
+      <Overflow>
+        <div className="pa-4" style={{ width: 'fit-content' }}>
+          <Table>
             <TR>
-              <TD>
-                <Text>{r.date}</Text>
-              </TD>
-              <TD>
-                <div className="flex">
-                  <Text className="mr-2">
-                    {r.investors.substring(0, 6)}...{r.investors.substring(r.investors.length - 4)}
+              {cols.map((c) => (
+                <TH>
+                  <Text color="textSubtle" fontSize="12px" bold>
+                    {c}
                   </Text>
-                  <CopyToClipboard toCopy={r.investors} iconWidth="16px" noText />
-                </div>
-              </TD>
-              <TD>
-                <Text>{r.action}</Text>
-              </TD>
-              <TD>
-                <Text>{r.shares}</Text>
-              </TD>
-              <TD>
-                <Text>{r.total}</Text>
-              </TD>
-              <TD>
-                <LinkExternal noIcon href="https://scope.klaytn.com/account/}" fontSize="12px">
-                  KlaytnScope
-                </LinkExternal>
-              </TD>
+                </TH>
+              ))}
+              <TH />
             </TR>
-          ))
-        )}
-      </Table>
+
+            {isEmpty(rows) ? (
+              <EmptyData text={empText} />
+            ) : (
+              rows.map((r) => (
+                <TR>
+                  <TD>
+                    <Text>{r.date}</Text>
+                  </TD>
+                  <TD>
+                    <div className="flex">
+                      <Text className="mr-2">
+                        {r.investors.substring(0, 6)}...{r.investors.substring(r.investors.length - 4)}
+                      </Text>
+                      <CopyToClipboard toCopy={r.investors} iconWidth="16px" noText />
+                    </div>
+                  </TD>
+                  <TD>
+                    <Text>{r.action}</Text>
+                  </TD>
+                  <TD>
+                    <Text>{r.shares}</Text>
+                  </TD>
+                  <TD>
+                    <Text>{r.total}</Text>
+                  </TD>
+                  <TD>
+                    <LinkExternal noIcon href="https://scope.klaytn.com/account/}" fontSize="12px">
+                      KlaytnScope
+                    </LinkExternal>
+                  </TD>
+                </TR>
+              ))
+            )}
+          </Table>
+        </div>
+      </Overflow>
     </>
   )
 }
@@ -171,13 +180,11 @@ const Transaction: React.FC<TransactionType> = ({ className = '' }) => {
     <Card className={className}>
       <CardTab menus={['ALL TRANSACTION', 'MY TRANSACTION']} current={currentTab} setCurrent={setCurrentTab} />
 
-      <div className="pa-4">
-        {currentTab === 0 ? (
-          <TransactionTable rows={rowsAllTs} empText="Don't have any transactions in this fund." />
-        ) : (
-          <TransactionTable rows={rowsMyTs} empText="You haven't made any transactions in this fund." />
-        )}
-      </div>
+      {currentTab === 0 ? (
+        <TransactionTable rows={rowsAllTs} empText="Don't have any transactions in this fund." />
+      ) : (
+        <TransactionTable rows={rowsMyTs} empText="You haven't made any transactions in this fund." />
+      )}
     </Card>
   )
 }

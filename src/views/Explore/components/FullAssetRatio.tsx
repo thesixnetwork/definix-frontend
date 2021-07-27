@@ -1,17 +1,19 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Text } from 'uikit-dev'
+import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import currency from '../mockCurrency'
 
 interface FullAssetRatioType {
   className?: string
 }
 
-const Coin = styled.div<{ width: string }>`
+const Coin = styled.div<{ width: string; isMobile: boolean }>`
   width: ${({ width }) => width};
 
   .name {
     display: flex;
-    align-items: center;
+    flex-direction: ${({ isMobile }) => (isMobile ? 'column' : 'row')};
+    align-items: ${({ isMobile }) => (isMobile ? 'flex-start' : 'center')};
 
     img {
       flex-shrink: 0;
@@ -31,33 +33,8 @@ const Bar = styled.div<{ color: string }>`
 `
 
 const FullAssetRatio: React.FC<FullAssetRatioType> = ({ className = '' }) => {
-  const mockData = [
-    {
-      img: '/images/coins/BTC.png',
-      value: '40%',
-      color: '#FF8C3C',
-    },
-    {
-      img: '/images/coins/bnb.png',
-      value: '20%',
-      color: '#E2B23A',
-    },
-    {
-      img: '/images/coins/six.png',
-      value: '15%',
-      color: '#647BD4',
-    },
-    {
-      img: '/images/coins/FINIX.png',
-      value: '15%',
-      color: '#EBEBEB',
-    },
-    {
-      img: '/images/coins/usdt.png',
-      value: '10%',
-      color: '#2A9D8F',
-    },
-  ]
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
 
   return (
     <Card className={`pa-4 ${className}`}>
@@ -66,12 +43,12 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ className = '' }) => {
       </Text>
 
       <div className="flex">
-        {mockData.map((m) => (
-          <Coin width={m.value}>
+        {currency.map((m) => (
+          <Coin width={m.percent} isMobile={isMobile}>
             <Bar color={m.color} />
             <div className="name">
               <img src={m.img} alt="" />
-              <Text>{m.value}</Text>
+              <Text>{m.percent}</Text>
             </div>
           </Coin>
         ))}

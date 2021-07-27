@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Text, useMatchBreakpoints } from 'uikit-dev'
@@ -42,15 +42,46 @@ const HorizontalMobileStyle = styled(CardStyle)`
 `
 
 const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
+  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+
+  useEffect(() => {
+    return () => {
+      setIsOpenAccordion(false)
+    }
+  }, [])
 
   if (isHorizontal) {
     if (isMobile) {
       return (
-        <HorizontalMobileStyle className="mb-3 pa-4">
-          <CardHeading />
-          <AssetRatio isHorizontal={isHorizontal} />
+        <HorizontalMobileStyle className="mb-3">
+          <CardHeading
+            className="pa-4"
+            showAccordion
+            isOpenAccordion={isOpenAccordion}
+            setIsOpenAccordion={setIsOpenAccordion}
+          />
+          <div style={{ display: isOpenAccordion ? 'block' : 'none' }}>
+            <div className="flex justify-space-between pa-4 pt-0">
+              <TwoLineFormat title="Total asset value" value="$2,038,553.12" />
+              <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" />
+            </div>
+
+            <MiniChart />
+
+            <div className="pa-4">
+              <div className="flex align-end justify-space-between mb-2">
+                <Text textAlign="center">128 INVESTORS</Text>
+                <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
+              </div>
+              <Button fullWidth radii="small" as={Link} to="/explore/detail">
+                View Details
+              </Button>
+            </div>
+
+            <AssetRatio isHorizontal={false} className="px-4 py-3 bd-t" />
+          </div>
         </HorizontalMobileStyle>
       )
     }
@@ -86,12 +117,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false }) => {
 
   return (
     <VerticalStyle className="mb-7">
-      <div className="pa-4">
-        <CardHeading isHorizontal={isHorizontal} className="mb-3" />
-        <div className="flex justify-space-between">
-          <TwoLineFormat title="Total asset value" value="$2,038,553.12" />
-          <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" />
-        </div>
+      <CardHeading className="pa-4" isHorizontal={isHorizontal} />
+
+      <div className="flex justify-space-between pa-4 pt-0">
+        <TwoLineFormat title="Total asset value" value="$2,038,553.12" />
+        <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" />
       </div>
 
       <MiniChart />
