@@ -34,7 +34,9 @@ export const genQRcode = () => {
 }
 const getResult = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
+
   const res = await axios.get(url)
+
   if (res.data.status == 'completed') {
     account = res.data.result.klaytn_address
     responseData = res.data.result.klaytn_address
