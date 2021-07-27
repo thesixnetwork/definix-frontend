@@ -116,7 +116,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       color="textSubtle"
       fontSize="12px"
     >
-      {t('KlaytnScope')}
+      {t('View on KlaytnScope')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )

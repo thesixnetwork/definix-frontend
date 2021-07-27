@@ -189,7 +189,7 @@ const PanelFooter: React.FC<Props> = ({
               radii="card"
               endIcon={<ChevronDownIcon color="textDisabled" width="24px" />}
               padding="0 16px"
-              disabled
+              // disabled
             >
               <Text color="textSubtle" bold>
                 {currentLang?.toUpperCase()}
