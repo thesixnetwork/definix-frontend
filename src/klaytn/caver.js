@@ -15,7 +15,7 @@ window.addEventListener(
   },
   false,
 )
-getRPCHalper().then(rpc => {
+getRPCHalper().then((rpc) => {
   window.caver = new Caver(rpc)
 })
 

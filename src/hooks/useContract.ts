@@ -39,7 +39,7 @@ const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOp
   const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
 
   useEffect(() => {
-    const fetchData = async() => {
+    const fetchData = async () => {
       const rpc = await getRPCHalper()
       const caverEffect = new Caver(rpc)
       setcontract(new caverEffect.klay.Contract(abi, address, contractOptions))
