@@ -15,9 +15,11 @@ window.addEventListener(
   },
   false,
 )
-getRPCHalper().then((rpc) => {
-  window.caver = new Caver(rpc)
-})
+
+window.caver = new Caver(process.env.REACT_APP_NODE_3)
+// getRPCHalper().then((rpc) => {
+//   window.caver = new Caver(rpc)
+// })
 
 // const caver = new Caver(rpcURL);
 

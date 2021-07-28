@@ -2,11 +2,7 @@
 /* eslint no-restricted-syntax: 0 */
 import axios from 'axios'
 
-const RPCS = [
-  process.env.REACT_APP_NODE_3,
-  process.env.REACT_APP_NODE_2,
-  process.env.REACT_APP_NODE_1,
-]
+const RPCS = [process.env.REACT_APP_NODE_3, process.env.REACT_APP_NODE_2, process.env.REACT_APP_NODE_1]
 
 const checkHeartBeat = async (rpc: string): Promise<number> => {
   return new Promise((reslove) => {

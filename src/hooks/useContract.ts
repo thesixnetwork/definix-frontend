@@ -30,7 +30,7 @@ import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
-import getRPCHalper from 'utils/getRPCHalper'
+// import getRPCHalper from 'utils/getRPCHalper'
 // import caver from '../klaytn/caver'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
@@ -39,12 +39,15 @@ const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOp
   const [contract, setcontract] = useState(new caver.klay.Contract(abi, address, contractOptions))
 
   useEffect(() => {
-    const fetchData = async () => {
-      const rpc = await getRPCHalper()
-      const caverEffect = new Caver(rpc)
-      setcontract(new caverEffect.klay.Contract(abi, address, contractOptions))
-    }
-    fetchData()
+    // const fetchData = async () => {
+    //   const rpc = await getRPCHalper()
+    //   const caverEffect = new Caver(rpc)
+    //   setcontract(new caverEffect.klay.Contract(abi, address, contractOptions))
+    // }
+    // fetchData()
+    const caverEffect = (new Caver(process.env.REACT_APP_NODE_3))
+    setcontract(new caverEffect.klay.Contract(abi, address, contractOptions))
+
   }, [abi, address, contractOptions])
 
   return contract
