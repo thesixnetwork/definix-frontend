@@ -2,7 +2,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { ArrowBackIcon, Button, Card, Text } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
@@ -33,6 +33,9 @@ const LeftPanelAbsolute = styled(LeftPanel)`
 `
 
 const ExploreDetail: React.FC = () => {
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+
   return (
     <>
       <Helmet>
@@ -70,9 +73,9 @@ const ExploreDetail: React.FC = () => {
               </div>
 
               <div className="pa-4">
-                <div className="flex align-center justify-space-between mb-3">
+                <div className="flex flex-wrap align-center justify-space-between mb-3">
                   <SelectTime />
-                  <div className="flex">
+                  <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
                     <TwoLineFormat title="APY" value="00%" hint="xxx" className="mr-6" />
                     <TwoLineFormat title="Return" value="00%" hint="xxx" />
                   </div>
