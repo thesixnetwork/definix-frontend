@@ -24,7 +24,7 @@ const ConnectButton = styled(Button)`
   background: ${({ theme }) => theme.colors.connectBtnBorder} !important;
 
   > div {
-    background: ${({ theme }) => theme.colors.primary};
+    background: #8b0000;
     border-radius: ${({ theme }) => theme.radii.large};
     padding: 0 16px;
     display: block;
