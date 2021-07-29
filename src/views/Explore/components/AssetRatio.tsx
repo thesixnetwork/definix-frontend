@@ -32,7 +32,7 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
       <div className="flex flex-wrap">
         {ratio.map((m) => (
           <Coin>
-            <img src={`/images/coins/${(m.symbol || "")}.png`} alt={m.symbol} />
+            <img src={`/images/coins/${m.symbol || ''}.png`} alt={m.symbol} />
             <Text>{m.value}%</Text>
           </Coin>
         ))}

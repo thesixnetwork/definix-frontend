@@ -22,7 +22,7 @@ import VerticalAssetRatio from './components/VerticalAssetRatio'
 import currency from './mockCurrency'
 import { Rebalance } from '../../state/types'
 
-interface WithdrawType { 
+interface WithdrawType {
   rebalance: Rebalance | any
 }
 

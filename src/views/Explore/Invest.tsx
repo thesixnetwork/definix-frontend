@@ -80,7 +80,7 @@ const CardInput = ({ onNext, rebalance }) => {
         </div>
 
         <div className={isMobile ? 'mb-4' : 'mb-6'}>
-          {currency.map(c => (
+          {currency.map((c) => (
             <CurrencyInputPanel
               currency={c}
               id={`invest-${c.name}`}
@@ -89,7 +89,7 @@ const CardInput = ({ onNext, rebalance }) => {
               className="mb-2"
               value=""
               label=""
-              onUserInput={value => {
+              onUserInput={(value) => {
                 console.log(value)
               }}
             />

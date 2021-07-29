@@ -17,7 +17,7 @@ interface ExploreCardType {
 }
 
 const CardStyle = styled.div`
-  background: ${props => props.theme.card.background};
+  background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
@@ -71,8 +71,15 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           />
           <div style={{ display: isOpenAccordion ? 'block' : 'none' }}>
             <div className="flex justify-space-between pa-4 pt-0">
-              <TwoLineFormat title="Total asset value" value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`} />
-              <TwoLineFormat title="Share price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} percent="+0.2%" />
+              <TwoLineFormat
+                title="Total asset value"
+                value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+              />
+              <TwoLineFormat
+                title="Share price"
+                value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                percent="+0.2%"
+              />
             </div>
 
             <MiniChart />
@@ -99,14 +106,23 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
 
         <div className="col-5 flex flex-column justify-space-between px-4 bd-r">
           <div className="flex justify-space-between mb-2">
-            <TwoLineFormat className="col-6" title="Total asset value" value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`} />
+            <TwoLineFormat
+              className="col-6"
+              title="Total asset value"
+              value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+            />
             <TwoLineFormat className="col-6" title="APY" value="00%" hint="xxx" />
           </div>
           <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
         </div>
 
         <div className="col-2 px-4">
-          <TwoLineFormat className="mb-2" title="Share price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} percent="+0.2%" />
+          <TwoLineFormat
+            className="mb-2"
+            title="Share price"
+            value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+            percent="+0.2%"
+          />
           <MiniChart height={60} />
         </div>
 
@@ -128,7 +144,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
 
       <div className="flex justify-space-between pa-4 pt-0">
         <TwoLineFormat title="Total asset value" value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`} />
-        <TwoLineFormat title="Share price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} percent="+0.2%" />
+        <TwoLineFormat
+          title="Share price"
+          value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+          percent="+0.2%"
+        />
       </div>
 
       <MiniChart />

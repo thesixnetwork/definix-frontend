@@ -31,9 +31,9 @@ export const rebalanceSlice = createSlice({
 // Actions
 export const { setRebalances } = rebalanceSlice.actions
 
-export const fetchRebalances = () => async dispatch => {
+export const fetchRebalances = () => async (dispatch) => {
   const data = await Promise.all(
-    rebalancesConfig.map(async rebalanceConfig => {
+    rebalancesConfig.map(async (rebalanceConfig) => {
       const address = getAddress(rebalanceConfig.address)
       const rebalanceCalls = [
         {
@@ -81,13 +81,13 @@ export const fetchRebalances = () => async dispatch => {
       }
       const tokenAddresss = _.flattenDeep(await Promise.all(tokenCallers))
       const tokenRatioPoints = _.flattenDeep(await Promise.all(tokenRatioPointsCallers))
-      const makeTokenCallers = inputArray => {
-        return inputArray.map(tokenAddress => {
+      const makeTokenCallers = (inputArray) => {
+        return inputArray.map((tokenAddress) => {
           return multicall(erc20, [
             { address: tokenAddress, name: 'name' },
             { address: tokenAddress, name: 'symbol' },
             { address: tokenAddress, name: 'decimals' },
-          ]).then(calledTokenData => {
+          ]).then((calledTokenData) => {
             const [[name], [symbol], [decimals]] = calledTokenData
             return {
               address: tokenAddress,

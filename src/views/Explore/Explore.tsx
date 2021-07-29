@@ -66,7 +66,7 @@ const Explore: React.FC = () => {
               />
 
               <FlexLayout cols={listView ? 1 : 3}>
-                {(rebalances || []).map(rebalance => {
+                {(rebalances || []).map((rebalance) => {
                   return (
                     <ExploreCard
                       isHorizontal={listView}

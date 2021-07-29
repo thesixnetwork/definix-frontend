@@ -67,13 +67,26 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
                 <div className="flex justify-space-between align-end mb-2">
                   <CardHeading rebalance={rebalance} />
-                  <TwoLineFormat title="Share price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} percent="+0.2%" large />
+                  <TwoLineFormat
+                    title="Share price"
+                    value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                    percent="+0.2%"
+                    large
+                  />
                 </div>
 
                 <div className="flex pl-8">
-                  <TwoLineFormat className="col-3" title="Total asset value" value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`} />
+                  <TwoLineFormat
+                    className="col-3"
+                    title="Total asset value"
+                    value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+                  />
                   <TwoLineFormat className="col-3" title="24H Performance" value="$4,300.76" />
-                  <TwoLineFormat className="col-3" title="Investors" value={numeral(rebalance.activeUserCountNumber).format('0,0')} />
+                  <TwoLineFormat
+                    className="col-3"
+                    title="Investors"
+                    value={numeral(rebalance.activeUserCountNumber).format('0,0')}
+                  />
                 </div>
               </div>
 
