@@ -33,8 +33,8 @@ const LeftPanelAbsolute = styled(LeftPanel)`
 `
 
 const ExploreDetail: React.FC = () => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isMd && !isLg
 
   return (
     <>
@@ -62,13 +62,25 @@ const ExploreDetail: React.FC = () => {
 
                 <div className="flex justify-space-between align-end mb-2">
                   <CardHeading />
-                  <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" large />
+                  {!isMobile && <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" large />}
                 </div>
 
-                <div className="flex pl-8">
-                  <TwoLineFormat className="col-3" title="Total asset value" value="$2,038,553.12" />
-                  <TwoLineFormat className="col-3" title="24H Performance" value="$4,300.76" />
-                  <TwoLineFormat className="col-3" title="Investors" value="123" />
+                <div className={`flex flex-wrap ${!isMobile ? 'pl-8' : ''}`}>
+                  <TwoLineFormat
+                    className={isMobile ? 'col-6 my-2' : 'col-3'}
+                    title="Total asset value"
+                    value="$2,038,553.12"
+                  />
+                  {isMobile && (
+                    <TwoLineFormat
+                      className={isMobile ? 'col-6 my-2' : 'col-3'}
+                      title="Share price"
+                      value="$1,928.03"
+                      percent="+0.2%"
+                    />
+                  )}
+                  <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="24H Performance" value="$4,300.76" />
+                  <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="Investors" value="123" />
                 </div>
               </div>
 

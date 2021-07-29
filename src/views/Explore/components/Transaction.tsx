@@ -52,55 +52,53 @@ const TransactionTable = ({ rows, empText }) => {
         />
       )}
 
-      <Overflow>
-        <div className="pa-4" style={{ width: 'fit-content' }}>
-          <Table>
-            <TR>
-              {cols.map((c) => (
-                <TH>
-                  <Text color="textSubtle" fontSize="12px" bold>
-                    {c}
-                  </Text>
-                </TH>
-              ))}
-              <TH />
-            </TR>
+      <Overflow className="pa-4">
+        <Table>
+          <TR>
+            {cols.map((c) => (
+              <TH>
+                <Text color="textSubtle" fontSize="12px" bold>
+                  {c}
+                </Text>
+              </TH>
+            ))}
+            <TH />
+          </TR>
 
-            {isEmpty(rows) ? (
-              <EmptyData text={empText} />
-            ) : (
-              rows.map((r) => (
-                <TR>
-                  <TD>
-                    <Text>{r.date}</Text>
-                  </TD>
-                  <TD>
-                    <div className="flex">
-                      <Text className="mr-2">
-                        {r.investors.substring(0, 6)}...{r.investors.substring(r.investors.length - 4)}
-                      </Text>
-                      <CopyToClipboard toCopy={r.investors} iconWidth="16px" noText />
-                    </div>
-                  </TD>
-                  <TD>
-                    <Text>{r.action}</Text>
-                  </TD>
-                  <TD>
-                    <Text>{r.shares}</Text>
-                  </TD>
-                  <TD>
-                    <Text>{r.total}</Text>
-                  </TD>
-                  <TD>
-                    <LinkExternal noIcon href="https://scope.klaytn.com/account/}" fontSize="12px">
-                      KlaytnScope
-                    </LinkExternal>
-                  </TD>
-                </TR>
-              ))
-            )}
-          </Table>
-        </div>
+          {isEmpty(rows) ? (
+            <EmptyData text={empText} />
+          ) : (
+            rows.map((r) => (
+              <TR>
+                <TD>
+                  <Text>{r.date}</Text>
+                </TD>
+                <TD>
+                  <div className="flex">
+                    <Text className="mr-2">
+                      {r.investors.substring(0, 6)}...{r.investors.substring(r.investors.length - 4)}
+                    </Text>
+                    <CopyToClipboard toCopy={r.investors} iconWidth="16px" noText />
+                  </div>
+                </TD>
+                <TD>
+                  <Text>{r.action}</Text>
+                </TD>
+                <TD>
+                  <Text>{r.shares}</Text>
+                </TD>
+                <TD>
+                  <Text>{r.total}</Text>
+                </TD>
+                <TD>
+                  <LinkExternal noIcon href="https://scope.klaytn.com/account/}" fontSize="12px">
+                    KlaytnScope
+                  </LinkExternal>
+                </TD>
+              </TR>
+            ))
+          )}
+        </Table>
       </Overflow>
     </>
   )

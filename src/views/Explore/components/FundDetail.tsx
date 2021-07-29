@@ -150,12 +150,7 @@ const FundDetail: React.FC<FundDetailType> = ({ className = '' }) => {
   return (
     <Card className={className}>
       <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
-
-      <Overflow>
-        <div className="pa-4" style={{ width: 'fit-content' }}>
-          {currentTab === 0 ? <AssetDetail /> : <FactSheet />}
-        </div>
-      </Overflow>
+      <Overflow className="pa-4">{currentTab === 0 ? <AssetDetail /> : <FactSheet />}</Overflow>
     </Card>
   )
 }
