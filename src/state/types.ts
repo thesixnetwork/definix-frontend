@@ -1,6 +1,6 @@
 import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
-import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
+import { CampaignType, FarmConfig, RebalanceConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 
 export type TranslatableText =
   | string
@@ -65,6 +65,27 @@ export interface Profile {
   hasRegistered: boolean
 }
 
+export interface Token {
+  address: string
+  name: string
+  symbol: string
+  decimals: number
+}
+export interface Rebalance extends RebalanceConfig {
+  currentPoolUsdBalances?: BigNumber[]
+  sumCurrentPoolUsdBalance?: BigNumber
+  totalSupply?: BigNumber
+  activeUserCount?: BigNumber
+  tokens?: Token[]
+  usdToken?: Token[]
+  usdTokenRatioPoint?: BigNumber
+  totalRatioPoints?: BigNumber[]
+
+  activeUserCountNumber?: number
+  totalAssetValue?: BigNumber
+  sharedPrice?: BigNumber
+}
+
 // Slices states
 
 export interface ToastsState {
@@ -80,6 +101,11 @@ export interface FarmsState {
 export interface PoolsState {
   isFetched: boolean
   data: Pool[]
+}
+
+export interface RebalanceState {
+  isFetched: boolean
+  data: Rebalance[]
 }
 
 export interface FinixPriceState {
@@ -155,4 +181,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
+  rebalances: RebalanceState
 }

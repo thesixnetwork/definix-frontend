@@ -2,10 +2,12 @@
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import numeral from 'numeral'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
+import history from 'routerHistory'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -15,6 +17,11 @@ import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
 import currency from './mockCurrency'
+import { Rebalance } from '../../state/types'
+
+interface InvestType {
+  rebalance: Rebalance | any
+}
 
 const SuccessOptions = {
   loop: true,
@@ -39,7 +46,7 @@ const LeftPanelAbsolute = styled(LeftPanel)`
   padding-bottom: 24px;
 `
 
-const CardInput = ({ onNext }) => {
+const CardInput = ({ onNext, rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
@@ -60,14 +67,20 @@ const CardInput = ({ onNext }) => {
           </Text>
         </Button>
 
-        <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" large className="mb-4" />
+        <TwoLineFormat
+          title="Share price"
+          value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+          percent="+0.2%"
+          large
+          className="mb-4"
+        />
 
         <div className="flex">
           <Text className="mb-2">Invest</Text>
         </div>
 
         <div className={isMobile ? 'mb-4' : 'mb-6'}>
-          {currency.map((c) => (
+          {currency.map(c => (
             <CurrencyInputPanel
               currency={c}
               id={`invest-${c.name}`}
@@ -76,7 +89,7 @@ const CardInput = ({ onNext }) => {
               className="mb-2"
               value=""
               label=""
-              onUserInput={(value) => {
+              onUserInput={value => {
                 console.log(value)
               }}
             />
@@ -91,7 +104,7 @@ const CardInput = ({ onNext }) => {
   )
 }
 
-const CardCalculate = ({ onBack, onNext }) => {
+const CardCalculate = ({ onBack, onNext, rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
@@ -104,7 +117,7 @@ const CardCalculate = ({ onBack, onNext }) => {
           </Text>
         </Button>
 
-        <CardHeading />
+        <CardHeading rebalance={rebalance} />
       </div>
 
       <div className={`bd-b ${isMobile ? 'pa-4' : 'px-6 py-4'} `}>
@@ -143,7 +156,7 @@ const CardCalculate = ({ onBack, onNext }) => {
   )
 }
 
-const CardResponse = () => {
+const CardResponse = ({ rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
@@ -160,7 +173,7 @@ const CardResponse = () => {
             27 June 2021, 15:32
           </Text>
 
-          <CardHeading className="mt-6" />
+          <CardHeading className="mt-6" rebalance={rebalance} />
         </div>
 
         <div className="flex align-center flex-wrap mb-6">
@@ -203,11 +216,10 @@ const CardResponse = () => {
   )
 }
 
-const Invest: React.FC = () => {
+const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [isInputting, setIsInputting] = useState(true)
   const [isCalculating, setIsCalculating] = useState(false)
   const [isInvested, setIsInvested] = useState(false)
-
   useEffect(() => {
     return () => {
       setIsInputting(true)
@@ -215,6 +227,7 @@ const Invest: React.FC = () => {
       setIsInvested(false)
     }
   }, [])
+  if (!rebalance) return <Redirect to="/explore" />
 
   return (
     <>
@@ -226,6 +239,7 @@ const Invest: React.FC = () => {
           <MaxWidth>
             {isInputting && (
               <CardInput
+                rebalance={rebalance}
                 onNext={() => {
                   setIsInputting(false)
                   setIsCalculating(true)
@@ -234,6 +248,7 @@ const Invest: React.FC = () => {
             )}{' '}
             {isCalculating && (
               <CardCalculate
+                rebalance={rebalance}
                 onBack={() => {
                   setIsCalculating(false)
                   setIsInputting(true)
@@ -244,7 +259,7 @@ const Invest: React.FC = () => {
                 }}
               />
             )}
-            {isInvested && <CardResponse />}
+            {isInvested && <CardResponse rebalance={rebalance} />}
           </MaxWidth>
         </LeftPanelAbsolute>
       </TwoPanelLayout>

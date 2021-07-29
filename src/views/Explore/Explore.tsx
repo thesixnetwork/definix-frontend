@@ -3,10 +3,12 @@ import React, { useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
+import { useRebalances } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { Rebalance } from '../../state/types'
 import ExploreCard from './components/ExploreCard'
 import ExploreTabButtons from './components/ExploreTabButtons'
 import ExploreDetail from './ExploreDetail'
@@ -23,6 +25,8 @@ const Explore: React.FC = () => {
   const { path } = useRouteMatch()
   const [listView, setListView] = useState(true)
   const [isInvested, setIsInvested] = useState(false)
+  const [selectedRebalance, setSelectedRebalance] = useState<Rebalance | undefined>()
+  const rebalances = useRebalances()
 
   return (
     <>
@@ -62,7 +66,17 @@ const Explore: React.FC = () => {
               />
 
               <FlexLayout cols={listView ? 1 : 3}>
-                <ExploreCard isHorizontal={listView} />
+                {(rebalances || []).map(rebalance => {
+                  return (
+                    <ExploreCard
+                      isHorizontal={listView}
+                      rebalance={rebalance}
+                      onClickViewDetail={() => {
+                        setSelectedRebalance(rebalance)
+                      }}
+                    />
+                  )
+                })}
               </FlexLayout>
             </MaxWidth>
           </LeftPanel>
@@ -70,15 +84,15 @@ const Explore: React.FC = () => {
       </Route>
 
       <Route exact path={`${path}/detail`}>
-        <ExploreDetail />
+        <ExploreDetail rebalance={selectedRebalance} />
       </Route>
 
       <Route exact path={`${path}/invest`}>
-        <Invest />
+        <Invest rebalance={selectedRebalance} />
       </Route>
 
       <Route exact path={`${path}/withdraw`}>
-        <Withdraw />
+        <Withdraw rebalance={selectedRebalance} />
       </Route>
     </>
   )

@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
-import currency from '../mockCurrency'
+import { Ratio } from 'config/constants/types'
 
 interface FullAssetRatioType {
   className?: string
+  ratio: Ratio[] | any
 }
 
 const Coin = styled.div<{ width: string; isMobile: boolean }>`
@@ -32,7 +33,7 @@ const Bar = styled.div<{ color: string }>`
   margin-bottom: 8px;
 `
 
-const FullAssetRatio: React.FC<FullAssetRatioType> = ({ className = '' }) => {
+const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = '' }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
@@ -43,12 +44,12 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ className = '' }) => {
       </Text>
 
       <div className="flex">
-        {currency.map((m) => (
-          <Coin width={m.percent} isMobile={isMobile}>
+        {ratio.map((m) => (
+          <Coin width={`${m.value}%`} isMobile={isMobile}>
             <Bar color={m.color} />
             <div className="name">
-              <img src={m.img} alt="" />
-              <Text>{m.percent}</Text>
+              <img src={`/images/coins/${(m.symbol || "")}.png`} alt="" />
+              <Text>{m.value}%</Text>
             </div>
           </Coin>
         ))}

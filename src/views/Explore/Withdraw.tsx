@@ -7,7 +7,7 @@ import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
@@ -20,6 +20,11 @@ import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
 import currency from './mockCurrency'
+import { Rebalance } from '../../state/types'
+
+interface WithdrawType { 
+  rebalance: Rebalance | any
+}
 
 const SuccessOptions = {
   loop: true,
@@ -200,7 +205,7 @@ const CardInput = ({ onNext, ratioType, setRatioType }) => {
   )
 }
 
-const CardResponse = () => {
+const CardResponse = ({ rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
@@ -217,7 +222,7 @@ const CardResponse = () => {
             27 June 2021, 15:32
           </Text>
 
-          <CardHeading className="mt-6" />
+          <CardHeading rebalance={rebalance} className="mt-6" />
         </div>
 
         <div className="flex flex-wrap align-center mb-6">
@@ -260,7 +265,7 @@ const CardResponse = () => {
   )
 }
 
-const Invest: React.FC = () => {
+const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const [isInputting, setIsInputting] = useState(true)
   const [isWithdrawn, setIsWithdrawn] = useState(false)
   const [ratioType, setRatioType] = useState('all')
@@ -272,6 +277,8 @@ const Invest: React.FC = () => {
       setRatioType('all')
     }
   }, [])
+
+  if (!rebalance) return <Redirect to="/explore" />
 
   return (
     <>
@@ -291,7 +298,7 @@ const Invest: React.FC = () => {
                 }}
               />
             )}{' '}
-            {isWithdrawn && <CardResponse />}
+            {isWithdrawn && <CardResponse rebalance={rebalance} />}
           </MaxWidth>
         </LeftPanelAbsolute>
       </TwoPanelLayout>
@@ -299,4 +306,4 @@ const Invest: React.FC = () => {
   )
 }
 
-export default Invest
+export default Withdraw

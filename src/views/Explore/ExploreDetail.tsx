@@ -1,9 +1,10 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { ArrowBackIcon, Button, Card, Text } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import numeral from 'numeral'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
@@ -14,6 +15,7 @@ import TradeStrategy from './components/TradeStrategy'
 import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
 import WithDrawalFees from './components/WithdrawalFees'
+import { Rebalance } from '../../state/types'
 
 const MaxWidth = styled.div`
   max-width: 800px;
@@ -32,7 +34,13 @@ const LeftPanelAbsolute = styled(LeftPanel)`
   padding-bottom: 24px;
 `
 
-const ExploreDetail: React.FC = () => {
+interface ExploreDetailType {
+  rebalance: Rebalance | any
+}
+
+const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
+  if (!rebalance) return <Redirect to="/explore" />
+  const ratio = rebalance.ratio
   return (
     <>
       <Helmet>
@@ -58,14 +66,14 @@ const ExploreDetail: React.FC = () => {
                 </Button>
 
                 <div className="flex justify-space-between align-end mb-2">
-                  <CardHeading />
-                  <TwoLineFormat title="Share price" value="$1,928.03" percent="+0.2%" large />
+                  <CardHeading rebalance={rebalance} />
+                  <TwoLineFormat title="Share price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} percent="+0.2%" large />
                 </div>
 
                 <div className="flex pl-8">
-                  <TwoLineFormat className="col-3" title="Total asset value" value="$2,038,553.12" />
+                  <TwoLineFormat className="col-3" title="Total asset value" value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`} />
                   <TwoLineFormat className="col-3" title="24H Performance" value="$4,300.76" />
-                  <TwoLineFormat className="col-3" title="Investors" value="123" />
+                  <TwoLineFormat className="col-3" title="Investors" value={numeral(rebalance.activeUserCountNumber).format('0,0')} />
                 </div>
               </div>
 
@@ -88,7 +96,7 @@ const ExploreDetail: React.FC = () => {
               </div>
             </Card>
 
-            <FullAssetRatio className="mb-4" />
+            <FullAssetRatio ratio={ratio} className="mb-4" />
             <TradeStrategy className="mb-4" />
             <WithDrawalFees className="mb-4" />
             <FundDetail className="mb-4" />

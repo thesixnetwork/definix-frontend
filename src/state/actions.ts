@@ -1,5 +1,6 @@
 export { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchFarmUnlockDate } from './farms'
 export { clear, remove, push } from './toasts'
+export { fetchRebalances } from './rebalance'
 export {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,

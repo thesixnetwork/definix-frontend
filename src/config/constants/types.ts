@@ -53,6 +53,20 @@ export interface Address {
   8217: string
 }
 
+export interface Ratio {
+  symbol: string
+  value: number
+  color?: string
+}
+
+export interface RebalanceConfig {
+  title: string
+  description: string
+  icon: string
+  address: Address
+  ratio: Ratio[]
+}
+
 export interface FarmConfig {
   pid: number
   lpSymbol: string

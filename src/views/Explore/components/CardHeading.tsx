@@ -3,6 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Text, ChevronUpIcon, ChevronDownIcon } from 'uikit-dev'
+import { Rebalance } from '../../../state/types'
 
 interface CardHeadingType {
   isHorizontal?: boolean
@@ -10,6 +11,7 @@ interface CardHeadingType {
   isOpenAccordion?: boolean
   className?: string
   setIsOpenAccordion?: (open: boolean) => void
+  rebalance: Rebalance | any
 }
 
 const FocusImg = styled.img<{ isHorizontal: boolean }>`
@@ -27,6 +29,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
   showAccordion = false,
   isOpenAccordion = false,
   setIsOpenAccordion,
+  rebalance = {},
 }) => {
   return (
     <div
@@ -40,12 +43,12 @@ const CardHeading: React.FC<CardHeadingType> = ({
       }
     >
       <div className={`flex ${isHorizontal ? 'flex-column justify-center' : 'align-center'}`}>
-        <FocusImg src="#" alt="" isHorizontal={isHorizontal} />
+        <FocusImg src={rebalance.icon} alt="" isHorizontal={isHorizontal} />
         <div>
           <Text color="primary" bold>
-            AUTO REBALANCING FUND
+            {rebalance.title}
           </Text>
-          <Text bold>RE-BALANCING : BTC FOCUS</Text>
+          <Text bold>{rebalance.description}</Text>
         </div>
       </div>
 

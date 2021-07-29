@@ -17,11 +17,12 @@ import {
   fetchSixPrice,
   fetchQuote,
   fetchTVL,
+  fetchRebalances,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState } from './types'
+import { State, Farm, Rebalance, Pool, ProfileState, TeamsState, AchievementState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -41,6 +42,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchKlayPriceFromKlayswap())
     dispatch(fetchDefinixKlayPrice())
     dispatch(fetchQuote())
+    dispatch(fetchRebalances())
   }, [dispatch, slowRefresh])
 }
 
@@ -54,6 +56,16 @@ export const useFarmUnlockDate = (): Date => {
 export const usePoolsIsFetched = (): boolean => {
   const isFetched = useSelector((state: State) => state.pools.isFetched)
   return isFetched
+}
+
+export const useRebalancesIsFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.rebalances.isFetched)
+  return isFetched
+}
+
+export const useRebalances = (): Rebalance[] => {
+  const rebalances = useSelector((state: State) => state.rebalances.data)
+  return rebalances
 }
 
 export const useFarmsIsFetched = (): boolean => {
