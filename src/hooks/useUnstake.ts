@@ -30,14 +30,14 @@ const useUnstake = (pid: number) => {
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('leaveStaking')),
             jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal
+            setShowModal,
           )
         } else {
           klipProvider.genQRcodeContactInteract(
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('withdraw')),
             jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal
+            setShowModal,
           )
         }
         const tx = await klipProvider.checkResponse()
@@ -77,14 +77,14 @@ export const useSousUnstake = (sousId) => {
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('leaveStaking')),
             jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal
+            setShowModal,
           )
         } else {
           klipProvider.genQRcodeContactInteract(
             herodotusContract._address,
             jsonConvert(getAbiHerodotusByName('withdraw')),
             jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal
+            setShowModal,
           )
         }
         const tx = await klipProvider.checkResponse()

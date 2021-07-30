@@ -29,7 +29,7 @@ export const useApprove = (lpContract: Contract) => {
             herodotusContract._address,
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           ]),
-          setShowModal
+          setShowModal,
         )
         tx = await klipProvider.checkResponse()
 
@@ -67,7 +67,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
             herodotusContract._address,
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           ]),
-          setShowModal
+          setShowModal,
         )
         tx = await klipProvider.checkResponse()
         dispatch(updateUserAllowance(sousId, account))

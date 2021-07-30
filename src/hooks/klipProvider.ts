@@ -3,9 +3,7 @@
 
 import QRcode from 'qrcode'
 import axios from 'axios'
-import {
-  isMobile
-} from "react-device-detect";
+import { isMobile } from 'react-device-detect'
 
 let requestKey = ''
 let responseData: any | null = null
@@ -45,7 +43,6 @@ export const genQRcode = () => {
 const getResult = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
 
-
   const res = await axios.get(url)
 
   if (res.data.status == 'completed') {
@@ -77,7 +74,12 @@ const getResultContract = async () => {
     clearInterval(intervalCheckResult)
   }
 }
-export const genQRcodeContactInteract = (contractAddress: string, abi: string, input: string, setShowModal: (bool: boolean) => void) => {
+export const genQRcodeContactInteract = (
+  contractAddress: string,
+  abi: string,
+  input: string,
+  setShowModal: (bool: boolean) => void,
+) => {
   initData()
   const mockData = {
     bapp: {
@@ -123,13 +125,15 @@ export const genQRcodeContactInteract = (contractAddress: string, abi: string, i
 
 // ReactDOM.render((<ExampleComponent />), rootElement);
 const openDeeplink = async (url: string) => {
-  const checkRedirect = window.open(url, "_blank")
+  const checkRedirect = window.open(url, '_blank')
   if (checkRedirect === null) {
     window.location.href = `kakaotalk://klipwallet/open?url=${url}`
     setTimeout(function () {
       if (document.hasFocus()) {
-        window.location.replace("https://apps.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947")
+        window.location.replace(
+          'https://apps.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947',
+        )
       }
-    }, 4500);
+    }, 4500)
   }
 }
