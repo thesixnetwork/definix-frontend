@@ -22,8 +22,6 @@ export const useApprove = (lpContract: Contract) => {
     try {
       let tx
       if (connector === 'klip') {
-        
-        console.log(lpContract, 'he ', herodotusContract)
         klipProvider.genQRcodeContactInteract(
           lpContract._address,
           jsonConvert(getAbiERC20ByName('approve')),
