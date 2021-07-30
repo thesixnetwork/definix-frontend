@@ -186,6 +186,30 @@ const Flip = ({ date, small = false, smallBg = false, color = '#ffffff' }) => {
     return val
   }
 
+  const FlipColumn = () => (
+    <>
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.days)}</strong>
+        <span>{timer.days === 1 ? 'Day' : 'Days'}</span>
+      </div>
+
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.hours)}</strong>
+        <span>Hours</span>
+      </div>
+
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.min)}</strong>
+        <span>Miniutes</span>
+      </div>
+
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.sec)}</strong>
+        <span>Seconds</span>
+      </div>
+    </>
+  )
+
   useEffect(() => {
     const interval = setInterval(() => {
       const d = calculateCountdown(date)
@@ -218,50 +242,14 @@ const Flip = ({ date, small = false, smallBg = false, color = '#ffffff' }) => {
   if (smallBg) {
     return (
       <FlipStyledSmallBg>
-        <div className="countdown-col">
-          <strong>{addLeadingZeros(timer.days)}</strong>
-          <span>{timer.days === 1 ? 'Day' : 'Days'}</span>
-        </div>
-
-        <div className="countdown-col">
-          <strong>{addLeadingZeros(timer.hours)}</strong>
-          <span>Hours</span>
-        </div>
-
-        <div className="countdown-col">
-          <strong>{addLeadingZeros(timer.min)}</strong>
-          <span>Miniutes</span>
-        </div>
-
-        <div className="countdown-col">
-          <strong>{addLeadingZeros(timer.sec)}</strong>
-          <span>Seconds</span>
-        </div>
+        <FlipColumn />
       </FlipStyledSmallBg>
     )
   }
 
   return (
     <FlipStyled>
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.days)}</strong>
-        <span>{timer.days === 1 ? 'Day' : 'Days'}</span>
-      </div>
-
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.hours)}</strong>
-        <span>Hours</span>
-      </div>
-
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.min)}</strong>
-        <span>Miniutes</span>
-      </div>
-
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.sec)}</strong>
-        <span>Seconds</span>
-      </div>
+      <FlipColumn />
     </FlipStyled>
   )
 }
