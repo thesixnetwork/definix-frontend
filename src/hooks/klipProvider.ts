@@ -123,9 +123,13 @@ export const genQRcodeContactInteract = (contractAddress: string, abi: string, i
 
 // ReactDOM.render((<ExampleComponent />), rootElement);
 const openDeeplink = async (url: string) => {
-  const windowReference = window.open();
-  if (windowReference)
-    window.open(url, "_blank");
-  else
-    alert("Your browser is not support.")
+  const checkRedirect = window.open(url, "_blank")
+  if (checkRedirect === null) {
+    window.location.href = `kakaotalk://klipwallet/open?url=${url}`
+    setTimeout(function () {
+      if (document.hasFocus()) {
+        window.location.replace("https://apps.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947")
+      }
+    }, 4500);
+  }
 }
