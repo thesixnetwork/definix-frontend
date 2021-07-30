@@ -18,19 +18,21 @@ export const useHarvest = (farmPid: number) => {
 
   const handleHarvest = useCallback(async () => {
     if (connector === 'klip') {
-      setShowModal(true)
+      // setShowModal(true)
 
       if (farmPid === 0) {
         klipProvider.genQRcodeContactInteract(
           herodotusContract._address,
           jsonConvert(getAbiHerodotusByName('leaveStaking')),
           jsonConvert(['0']),
+          setShowModal,
         )
       } else {
         klipProvider.genQRcodeContactInteract(
           herodotusContract._address,
           jsonConvert(getAbiHerodotusByName('deposit')),
           jsonConvert([farmPid, '0']),
+          setShowModal,
         )
       }
       const tx = await klipProvider.checkResponse()
@@ -72,21 +74,22 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
-
     if (connector === 'klip') {
-      setShowModal(true)
+      // setShowModal(true)
 
       if (sousId === 0) {
         klipProvider.genQRcodeContactInteract(
           herodotusContract._address,
           jsonConvert(getAbiHerodotusByName('leaveStaking')),
           jsonConvert(['0']),
+          setShowModal,
         )
       } else {
         klipProvider.genQRcodeContactInteract(
           herodotusContract._address,
           jsonConvert(getAbiHerodotusByName('deposit')),
           jsonConvert([sousId, '0']),
+          setShowModal,
         )
       }
       const tx = await klipProvider.checkResponse()

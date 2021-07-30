@@ -22,8 +22,6 @@ export const useApprove = (lpContract: Contract) => {
     try {
       let tx
       if (connector === 'klip') {
-        setShowModal(true)
-        console.log(lpContract, 'he ', herodotusContract)
         klipProvider.genQRcodeContactInteract(
           lpContract._address,
           jsonConvert(getAbiERC20ByName('approve')),
@@ -31,6 +29,7 @@ export const useApprove = (lpContract: Contract) => {
             herodotusContract._address,
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           ]),
+          setShowModal,
         )
         tx = await klipProvider.checkResponse()
 
@@ -60,7 +59,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
     try {
       let tx
       if (connector === 'klip') {
-        setShowModal(true)
+        // setShowModal(true)
         klipProvider.genQRcodeContactInteract(
           lpContract._address,
           jsonConvert(getAbiERC20ByName('approve')),
@@ -68,6 +67,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
             herodotusContract._address,
             '115792089237316195423570985008687907853269984665640564039457584007913129639935',
           ]),
+          setShowModal,
         )
         tx = await klipProvider.checkResponse()
         dispatch(updateUserAllowance(sousId, account))
