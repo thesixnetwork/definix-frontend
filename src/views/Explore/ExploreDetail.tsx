@@ -70,7 +70,14 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
                 <div className="flex justify-space-between align-end mb-2">
                   <CardHeading rebalance={rebalance} />
-                  {!isMobile && <TwoLineFormat title="Share price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} percent="+0.2%" large />}
+                  {!isMobile && (
+                    <TwoLineFormat
+                      title="Share price"
+                      value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                      percent="+0.2%"
+                      large
+                    />
+                  )}
                 </div>
 
                 <div className={`flex flex-wrap ${!isMobile ? 'pl-8' : ''}`}>
@@ -88,7 +95,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     />
                   )}
                   <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="24H Performance" value="$4,300.76" />
-                  <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="Investors" value={numeral(rebalance.activeUserCountNumber).format('0,0')} />
+                  <TwoLineFormat
+                    className={isMobile ? 'col-6' : 'col-3'}
+                    title="Investors"
+                    value={numeral(rebalance.activeUserCountNumber).format('0,0')}
+                  />
                 </div>
               </div>
 
