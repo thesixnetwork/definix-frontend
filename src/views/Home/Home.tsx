@@ -1,8 +1,8 @@
-import useTheme from 'hooks/useTheme'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import React, { useEffect, useState } from 'react'
 import axios from 'axios'
+import useTheme from 'hooks/useTheme'
 import _ from 'lodash'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
@@ -17,7 +17,6 @@ import {
   ShowHideButton,
   TwoPanelLayout,
 } from 'uikit-dev/components/TwoPanelLayout'
-import CardAirdropKlay from './components/CardAirdropKlay'
 import CardAudit from './components/CardAudit'
 import CardAutoRebalancing from './components/CardAutoRebalancing'
 import CardGetStarted from './components/CardGetStarted/CardGetStarted'
@@ -145,7 +144,6 @@ const Home: React.FC = () => {
                 <Caption>{captionText}</Caption>
               )}
             </div>
-            <CardAirdropKlay showBtn className="mb-5" />
 
             <CardAutoRebalancing className="mb-5" />
 
