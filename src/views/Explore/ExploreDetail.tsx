@@ -2,7 +2,7 @@ import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { ArrowBackIcon, Button, Card, Text } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
 import CardHeading from './components/CardHeading'
@@ -39,8 +39,11 @@ interface ExploreDetailType {
 }
 
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isMd && !isLg
   if (!rebalance) return <Redirect to="/explore" />
   const ratio = rebalance.ratio
+
   return (
     <>
       <Helmet>
@@ -67,33 +70,32 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
                 <div className="flex justify-space-between align-end mb-2">
                   <CardHeading rebalance={rebalance} />
-                  <TwoLineFormat
-                    title="Share price"
-                    value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                    percent="+0.2%"
-                    large
-                  />
+                  {!isMobile && <TwoLineFormat title="Share price" value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`} percent="+0.2%" large />}
                 </div>
 
-                <div className="flex pl-8">
+                <div className={`flex flex-wrap ${!isMobile ? 'pl-8' : ''}`}>
                   <TwoLineFormat
-                    className="col-3"
+                    className={isMobile ? 'col-6 my-2' : 'col-3'}
                     title="Total asset value"
                     value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
                   />
-                  <TwoLineFormat className="col-3" title="24H Performance" value="$4,300.76" />
-                  <TwoLineFormat
-                    className="col-3"
-                    title="Investors"
-                    value={numeral(rebalance.activeUserCountNumber).format('0,0')}
-                  />
+                  {isMobile && (
+                    <TwoLineFormat
+                      className={isMobile ? 'col-6 my-2' : 'col-3'}
+                      title="Share price"
+                      value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                      percent="+0.2%"
+                    />
+                  )}
+                  <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="24H Performance" value="$4,300.76" />
+                  <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="Investors" value={numeral(rebalance.activeUserCountNumber).format('0,0')} />
                 </div>
               </div>
 
               <div className="pa-4">
-                <div className="flex align-center justify-space-between mb-3">
+                <div className="flex flex-wrap align-center justify-space-between mb-3">
                   <SelectTime />
-                  <div className="flex">
+                  <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
                     <TwoLineFormat title="APY" value="00%" hint="xxx" className="mr-6" />
                     <TwoLineFormat title="Return" value="00%" hint="xxx" />
                   </div>
