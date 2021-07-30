@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, useWalletModal } from 'uikit-dev'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { useTranslation } from 'contexts/Localization'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 const UnlockButton = (props) => {
   const { t } = useTranslation()

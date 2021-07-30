@@ -57,7 +57,7 @@ const CardTVL = ({ className = '' }) => {
   const totalSupply = useTotalSupply()
   const totalTransferFromBsc = useTotalTransfer()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
-  const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  const finixSupply = totalSupply && getBalanceNumber(totalSupply)
   const finixTransfered = totalTransferFromBsc ? getBalanceNumber(totalTransferFromBsc) : 0
 
   useEffect(() => {
@@ -158,7 +158,7 @@ const CardTVL = ({ className = '' }) => {
         </Row>
         <Row>
           <Text color="textSubtle">{t('New FINIX / sec')}</Text>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} valueString="1.5" />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} valueString="1" />
         </Row>
       </Stat>
     </Card>

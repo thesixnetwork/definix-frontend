@@ -1,7 +1,7 @@
 import React from 'react'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { useTranslation } from 'contexts/Localization'
 import { languageList } from 'config/localization/languages'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import numeral from 'numeral'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'

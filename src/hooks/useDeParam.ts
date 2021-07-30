@@ -8,8 +8,6 @@ const UseDeParam = async (key, defaultValue = '') => {
 
   const valuesResp = await deParamContract.methods.deParam(key).call()
 
-  // console.log(">>>>>>>>>>>>>>>>>>>>>>>> valuesResp = ", valuesResp.toString())
-
   return valuesResp !== null && valuesResp !== undefined && valuesResp.toString() !== null
     ? valuesResp.toString()
     : defaultValue

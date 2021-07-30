@@ -34,16 +34,12 @@ export const genQRcode = () => {
 }
 const getResult = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
-  // const url = `http://localhost:8080`
+
   const res = await axios.get(url)
-  console.log('request status : ', res.data.status)
+
   if (res.data.status == 'completed') {
     account = res.data.result.klaytn_address
     responseData = res.data.result.klaytn_address
-
-    // const modalELement = document.getElementById("modal")
-    // if (modalELement != null)
-    // ReactDOM.createPortal( null,modalELement)
     clearInterval(intervalCheckResult)
   }
 }
@@ -54,7 +50,6 @@ export const getRequestKey = () => requestKey
 export const checkResponse = async (): Promise<string> => {
   return new Promise((resolve) => {
     const interCheck = setInterval(() => {
-      console.log('check interval')
       if (responseData != undefined) {
         clearInterval(interCheck)
         resolve(responseData)
@@ -65,16 +60,9 @@ export const checkResponse = async (): Promise<string> => {
 
 const getResultContract = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
-  // const url = `http://localhost:8080`
   const res = await axios.get(url)
-  console.log('request status : ', res.data.status)
   if (res.data.status == 'completed') {
-    // account = res.data.result.klaytn_address
     responseData = res.data.result.tx_hash
-
-    // const modalELement = document.getElementById("modal")
-    // if (modalELement != null)
-    // ReactDOM.createPortal( null,modalELement)
     clearInterval(intervalCheckResult)
   }
 }
@@ -94,7 +82,7 @@ export const genQRcodeContactInteract = (contractAddress: string, abi: string, i
   }
   axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
     requestKey = response.data.request_key
-    console.log('response.data.request_key', response.data.request_key)
+
     QRcode.toCanvas(
       document.getElementById('qrcode'),
       `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,

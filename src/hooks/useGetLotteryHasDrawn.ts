@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useLottery } from 'hooks/useContract'
 import { getLotteryStatus } from 'utils/lotteryUtils'
 

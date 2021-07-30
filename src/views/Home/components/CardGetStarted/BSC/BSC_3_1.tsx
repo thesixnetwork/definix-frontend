@@ -1,4 +1,4 @@
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { memo } from 'react'
 import { useTranslation } from 'contexts/Localization'
 import { Heading, Text } from 'uikit-dev'

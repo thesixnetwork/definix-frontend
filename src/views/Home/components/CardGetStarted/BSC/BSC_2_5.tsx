@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { useTranslation } from 'contexts/Localization'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { memo } from 'react'
 import { Heading, Text } from 'uikit-dev'
 import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/BSC/Definix-Tutorial-Elements-20.png'

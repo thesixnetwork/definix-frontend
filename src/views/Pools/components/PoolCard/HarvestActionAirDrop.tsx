@@ -1,4 +1,4 @@
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import { useSousHarvest } from 'hooks/useHarvest'
 import { useTranslation } from 'contexts/Localization'

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import multicall from 'utils/multicall'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import herodotusABI from 'config/abi/herodotus.json'

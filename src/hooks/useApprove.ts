@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react'
-import { useWallet, KlipModalContext } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import Caver from 'caver-js'
 import { ethers } from 'ethers'

@@ -1,5 +1,5 @@
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
 import { useTranslation } from 'contexts/Localization'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'

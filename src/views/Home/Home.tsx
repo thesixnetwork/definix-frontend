@@ -1,6 +1,6 @@
 import { useTranslation } from 'contexts/Localization'
 import useTheme from 'hooks/useTheme'
-import { useWallet } from '@kanthakarn-test/klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import _ from 'lodash'
