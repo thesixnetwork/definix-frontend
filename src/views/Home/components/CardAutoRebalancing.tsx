@@ -52,7 +52,7 @@ const StyledBanner = styled(Card)`
 `
 
 const CardAutoRebalancing = ({ className = '' }) => {
-  const openDate = new Date('2021 Aug 13, 13:00')
+  const openDate = new Date(1628834400000)
 
   return (
     <StyledBanner className={className}>
