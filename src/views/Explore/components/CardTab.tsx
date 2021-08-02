@@ -60,7 +60,9 @@ const CardTab: React.FC<CardTabType> = ({ menus, current, setCurrent, className 
       {menus.map((m, idx) => (
         <Tab
           onClick={() => {
-            setCurrent(idx)
+            if (current !== idx) {
+              setCurrent(idx)
+            }
           }}
           active={current === idx}
         >

@@ -42,7 +42,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
   if (!rebalance) return <Redirect to="/explore" />
-  const ratio = rebalance.ratio
+  const { ratio } = rebalance
 
   return (
     <>
@@ -126,7 +126,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             <TradeStrategy className="mb-4" />
             <WithDrawalFees className="mb-4" />
             <FundDetail className="mb-4" />
-            <Transaction className="mb-4" />
+            <Transaction className="mb-4" rbAddress={rebalance.address} />
             <FundAction />
           </MaxWidth>
         </LeftPanelAbsolute>
