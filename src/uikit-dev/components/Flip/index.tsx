@@ -73,7 +73,64 @@ const FlipStyled = styled.div`
   }
 `
 
-const Flip = ({ date, small = false, color = '#ffffff' }) => {
+const FlipStyledSmallBg = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+
+  .countdown-col {
+    margin: 0 12px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:last-child strong:after {
+      display: none;
+    }
+  }
+
+  strong,
+  span {
+    display: block;
+    text-align: center;
+  }
+
+  strong {
+    background: ${({ theme }) => theme.colors.backgroundBox};
+    border: 1px solid ${({ theme }) => theme.colors.border};
+    padding: 12px;
+    color: ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => theme.radii.default};
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 24px;
+    position: relative;
+    width: 54px;
+    text-align: center;
+
+    &:after {
+      content: ':';
+      position: absolute;
+      top: calc(50% - 12px);
+      right: -14px;
+      font-size: 24px;
+      color: ${({ theme }) => theme.colors.textSubtle};
+      font-weight: initial;
+    }
+  }
+
+  span {
+    font-size: 10px;
+    color: ${({ theme }) => theme.colors.textSubtle};
+  }
+`
+
+const Flip = ({ date, small = false, smallBg = false, color = '#ffffff' }) => {
   const [timer, setTime] = useState({
     days: 0,
     hours: 0,
@@ -129,6 +186,30 @@ const Flip = ({ date, small = false, color = '#ffffff' }) => {
     return val
   }
 
+  const FlipColumn = () => (
+    <>
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.days)}</strong>
+        <span>{timer.days === 1 ? 'Day' : 'Days'}</span>
+      </div>
+
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.hours)}</strong>
+        <span>Hours</span>
+      </div>
+
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.min)}</strong>
+        <span>Miniutes</span>
+      </div>
+
+      <div className="countdown-col">
+        <strong>{addLeadingZeros(timer.sec)}</strong>
+        <span>Seconds</span>
+      </div>
+    </>
+  )
+
   useEffect(() => {
     const interval = setInterval(() => {
       const d = calculateCountdown(date)
@@ -158,27 +239,17 @@ const Flip = ({ date, small = false, color = '#ffffff' }) => {
     )
   }
 
+  if (smallBg) {
+    return (
+      <FlipStyledSmallBg>
+        <FlipColumn />
+      </FlipStyledSmallBg>
+    )
+  }
+
   return (
     <FlipStyled>
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.days)}</strong>
-        <span>{timer.days === 1 ? 'Day' : 'Days'}</span>
-      </div>
-
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.hours)}</strong>
-        <span>Hours</span>
-      </div>
-
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.min)}</strong>
-        <span>Miniutes</span>
-      </div>
-
-      <div className="countdown-col">
-        <strong>{addLeadingZeros(timer.sec)}</strong>
-        <span>Seconds</span>
-      </div>
+      <FlipColumn />
     </FlipStyled>
   )
 }

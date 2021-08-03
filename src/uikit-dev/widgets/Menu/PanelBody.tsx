@@ -81,7 +81,6 @@ const PanelBody: React.FC<Props> = (props) => {
                 style={{ border: 'none' }}
               >
                 <MenuLink
-                  // href={item.href}
                   href={item.customHref ? (item.customHref || {})[(currentLang || '').toLowerCase()] : item.href}
                   onClick={handleClick}
                   target={item.newTab ? '_blank' : ''}
