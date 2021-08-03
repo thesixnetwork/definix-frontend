@@ -84,10 +84,10 @@ const config: MenuEntry[] = [
   //   newTab: false,
   // },
   {
-    label: 'Mutual Fund',
+    label: 'Vault',
     icon: mutualBlack,
     iconActive: mutualWhite,
-    href: '/info',
+    href: '/explore',
     notHighlight: false,
     newTab: false,
     items: [
@@ -97,24 +97,24 @@ const config: MenuEntry[] = [
         notHighlight: false,
         newTab: false,
       },
-      {
-        label: 'Investors',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
-      {
-        label: 'Fund Managers',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
-      {
-        label: 'Network Monitor',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
+      // {
+      //   label: 'Investors',
+      //   href: '/info',
+      //   notHighlight: true,
+      //   newTab: false,
+      // },
+      // {
+      //   label: 'Fund Managers',
+      //   href: '/info',
+      //   notHighlight: true,
+      //   newTab: false,
+      // },
+      // {
+      //   label: 'Network Monitor',
+      //   href: '/info',
+      //   notHighlight: true,
+      //   newTab: false,
+      // },
     ],
   },
   {

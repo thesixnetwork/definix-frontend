@@ -46,9 +46,9 @@ const CardHeading: React.FC<CardHeadingType> = ({
         <FocusImg src={rebalance.icon} alt="" isHorizontal={isHorizontal} />
         <div>
           <Text color="primary" bold>
-            {rebalance.title}
+            SYSTEMATIC VAULTS
           </Text>
-          <Text bold>{rebalance.description}</Text>
+          <Text bold>{rebalance.title}</Text>
         </div>
       </div>
 

@@ -53,8 +53,8 @@ const Explore: React.FC = () => {
                   </HelpButton>
                 </div>
                 <Text>
-                  You can invest your tokens in our mutual funds on this list. Every fund is administered by a
-                  DEFINIX-certified fund manager.
+                  You can invest your tokens in our vaults on this list. Every vaults is administered by a
+                  DEFINIX-certified vault manager.
                 </Text>
               </div>
 
