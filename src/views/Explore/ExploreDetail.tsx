@@ -9,6 +9,7 @@ import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
 import FundAction from './components/FundAction'
 import FundDetail from './components/FundDetail'
+import NotiSystematicVault from './components/NotiSystematicVault'
 import SelectTime from './components/SelectTime'
 import TradeStrategy from './components/TradeStrategy'
 import Transaction from './components/Transaction'
@@ -43,6 +44,7 @@ const ExploreDetail: React.FC = () => {
       </Helmet>
       <TwoPanelLayout>
         <LeftPanelAbsolute isShowRightPanel={false}>
+          <NotiSystematicVault />
           <MaxWidth>
             <Card className="mb-4">
               <div className="pa-4 pt-2 bd-b">

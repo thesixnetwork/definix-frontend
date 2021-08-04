@@ -4,11 +4,22 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
+import {
+  ArrowBackIcon,
+  Button,
+  Card,
+  ChevronRightIcon,
+  Link as UiLink,
+  Text,
+  useMatchBreakpoints,
+  useModal,
+} from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
+import ErrorOverLimitModal from './components/ErrorOverLimitModal'
+import NotiSystematicVault from './components/NotiSystematicVault'
 import PriceUpdate from './components/PriceUpdate'
 import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
@@ -66,7 +77,7 @@ const CardInput = ({ onNext }) => {
           <Text className="mb-2">Invest</Text>
         </div>
 
-        <div className={isMobile ? 'mb-4' : 'mb-6'}>
+        <div className="mb-4">
           {currency.map((c) => (
             <CurrencyInputPanel
               currency={c}
@@ -82,6 +93,8 @@ const CardInput = ({ onNext }) => {
             />
           ))}
         </div>
+
+        <SpaceBetweenFormat className="mb-4" title="Total value" value="$00" />
 
         <Button fullWidth radii="small" onClick={onNext}>
           Calculate invest amount
@@ -208,6 +221,8 @@ const Invest: React.FC = () => {
   const [isCalculating, setIsCalculating] = useState(false)
   const [isInvested, setIsInvested] = useState(false)
 
+  const [onPresentErrorOverLimitModal] = useModal(<ErrorOverLimitModal />)
+
   useEffect(() => {
     return () => {
       setIsInputting(true)
@@ -221,8 +236,10 @@ const Invest: React.FC = () => {
       <Helmet>
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
+
       <TwoPanelLayout>
         <LeftPanelAbsolute isShowRightPanel={false}>
+          <NotiSystematicVault />
           <MaxWidth>
             {isInputting && (
               <CardInput

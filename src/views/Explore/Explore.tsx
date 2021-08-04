@@ -9,6 +9,7 @@ import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import ExploreCard from './components/ExploreCard'
 import ExploreTabButtons from './components/ExploreTabButtons'
+import NotiSystematicVault from './components/NotiSystematicVault'
 import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
@@ -32,6 +33,7 @@ const Explore: React.FC = () => {
         </Helmet>
         <TwoPanelLayout>
           <LeftPanel isShowRightPanel={false}>
+            <NotiSystematicVault />
             <MaxWidth>
               <div className="mb-5">
                 <div className="flex align-center mb-2">
