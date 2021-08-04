@@ -7,6 +7,7 @@ import profileReducer from './profile'
 import teamsReducer from './teams'
 import achievementsReducer from './achievements'
 import rebalanceReducer from './rebalance'
+import walletReducer from './wallet'
 
 export default configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -19,5 +20,6 @@ export default configureStore({
     teams: teamsReducer,
     achievements: achievementsReducer,
     rebalances: rebalanceReducer,
+    wallet: walletReducer,
   },
 })

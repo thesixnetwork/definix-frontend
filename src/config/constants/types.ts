@@ -57,6 +57,7 @@ export interface Ratio {
   symbol: string
   value: number
   color?: string
+  address: Address,
 }
 
 export interface RebalanceConfig {

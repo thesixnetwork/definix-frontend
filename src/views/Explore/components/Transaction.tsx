@@ -53,7 +53,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
     <Overflow className="pa-4">
       <Table>
         <TR>
-          {cols.map(c => (
+          {cols.map((c) => (
             <TH key={c}>
               <Text color="textSubtle" fontSize="12px" bold>
                 {c}
@@ -68,7 +68,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
         ) : isEmpty(rows) ? (
           <EmptyData text={empText} />
         ) : (
-          rows.map(r => (
+          rows.map((r) => (
             <TR key={`tsc-${r.block_number}`}>
               <TD>
                 <div className="flex">
@@ -135,7 +135,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
     setTransactions(response.data.result)
   }, [account, address, currentPage, currentTab])
 
-  const onTabChange = tab => {
+  const onTabChange = (tab) => {
     setCurrentTab(tab)
     setCurrentPage(1)
   }

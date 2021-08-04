@@ -108,6 +108,18 @@ export interface RebalanceState {
   data: Rebalance[]
 }
 
+export interface Balances {
+  [key: string]: BigNumber
+}
+
+export interface Balance {
+  [key: string]: Balances
+}
+
+export interface WalletState {
+  balances: Balance
+}
+
 export interface FinixPriceState {
   caverTVL: number
   web3TVL: number
@@ -182,4 +194,5 @@ export interface State {
   teams: TeamsState
   achievements: AchievementState
   rebalances: RebalanceState
+  wallet: WalletState
 }
