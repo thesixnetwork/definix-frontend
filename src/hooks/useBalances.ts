@@ -4,9 +4,9 @@
 // import { getAddress } from 'utils/addressHelpers'
 // import contracts from 'config/constants/contracts'
 // import BigNumber from 'bignumber.js'
-// 
+//
 // const { wklay } = contracts
-// 
+//
 // const useBalances = (account: string, addresses: string[] | undefined) => {
 //   const addressesWithoutMain = addresses.filter(address => address.toLowerCase() !== getAddress(wklay).toLowerCase())
 //   const addressMain = addresses.find(address => address.toLowerCase() === getAddress(wklay).toLowerCase())
@@ -19,7 +19,7 @@
 //           params: [account],
 //         }
 //   })
-// 
+//
 //   const withoutMainBalances = await multicall(erc20, calls)
 //   const mainBalance = addressMain ? await multicallEth(addressMain) : new BigNumber(0)
 //   return useMemo(
@@ -33,9 +33,7 @@
 //     [account, addresses, mainBalance, withoutMainBalances, addressesWithoutMain],
 //   )
 // }
-// 
+//
 // export default useBalances
-const useBalances = () => {
-
-}
+const useBalances = () => {}
 export default useBalances
