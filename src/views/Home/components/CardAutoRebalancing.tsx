@@ -75,7 +75,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
         <Text bold fontSize="12px" className="my-4" color="primary">
           {t('Definix Systematic Vault is available to use in')}
         </Text>
-        
+
         <Flip date={openDate} smallBg />
       </div>
     </StyledBanner>
