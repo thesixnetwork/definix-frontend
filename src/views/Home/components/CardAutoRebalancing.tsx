@@ -69,7 +69,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
         </Text>
         <Text bold fontSize="12px">
           {t(
-            'Sound complicated? Don’t worry we will take care your investment automatically with our in-house experts!!',
+            'Sound complicated? Don’t worry we will take care your investment automatically with our investment partner',
           )}
         </Text>
 
