@@ -285,10 +285,12 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
   const BeforeStart = () => (
     <Overflow>
-      <Heading className="mb-2" color="primary">
-        {t('Let’s start from here :)')}
+      <Heading className="mb-2 pt-2" color="primary">
+        {t('Let’s start from here')}
       </Heading>
-      <Text color="textSubtle">You don’t have any investment yet. Don’t worry, I’ll guide you through the process</Text>
+      <Text color="textSubtle">
+        {t('You don’t have any investment yet. Don’t worry, I’ll guide you through the process')}
+      </Text>
 
       <SpecialButton
         size="md"
@@ -406,7 +408,7 @@ const CardGetStarted = ({ isBsc = false, className = '' }) => {
 
           {curMainStep === null ? (
             <Overflow>
-              <Heading className="mb-2" color="primary">
+              <Heading className="mb-2" color="primary" style={{ lineHeight: '40px' }}>
                 {t('Start farming in 4 major steps')}
               </Heading>
 
