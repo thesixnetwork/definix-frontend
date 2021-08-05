@@ -58,7 +58,8 @@ const CardAutoRebalancing = ({ className = '' }) => {
     <StyledBanner className={className}>
       <div className="pos-relative" style={{ zIndex: 1 }}>
         <Heading className="mb-2" color="primary">
-          {t('AUTO RE-BALANCING MUTUAL FUNDS')}
+          {/* {t('AUTO RE-BALANCING MUTUAL FUNDS')} */}
+          {t('DEFINIX SYSTEMATIC VAULTS')}
         </Heading>
         <Text color="textSubtle" fontSize="12px">
           {t(
@@ -70,10 +71,12 @@ const CardAutoRebalancing = ({ className = '' }) => {
             'Sound complicated? Don’t worry we will take care your investment automatically with our investment partner',
           )}
         </Text>
-
-        <Button size="sm" variant="primary" className="btn-secondary-disable mt-3">
+        <Text bold fontSize="12px" className="my-4" color="primary">
+          {t('Definix Systematic Vault is available to use in')}
+        </Text>
+        {/* <Button size="sm" variant="primary" className="btn-secondary-disable mt-3">
           {t('Coming Soon!')}
-        </Button>
+        </Button> */}
       </div>
     </StyledBanner>
   )
