@@ -117,7 +117,7 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, li
           }}
           variant={stackedOnly ? 'primary' : 'secondary'}
         >
-          {t('Staked Pool')}
+          {t('Pool Staked')}
         </Button>
       </div>
 

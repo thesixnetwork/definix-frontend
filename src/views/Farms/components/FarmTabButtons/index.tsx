@@ -93,7 +93,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
             }}
             variant={stackedOnly ? 'primary' : 'secondary'}
           >
-            {t('Staked Farm')}
+            {t('Farm Staked')}
           </Button>
         </div>
       </div>
