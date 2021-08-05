@@ -30,6 +30,7 @@ const CardTweet = ({ className = '' }) => {
             screenName: 'DefinixOfficial',
           }}
           options={{
+            id: 'profile:TwitterDev',
             chrome: 'noheader, nofooter',
             height: '400',
           }}
