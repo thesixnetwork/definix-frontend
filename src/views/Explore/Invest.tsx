@@ -19,7 +19,6 @@ import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
 import ErrorOverLimitModal from './components/ErrorOverLimitModal'
-import NotiSystematicVault from './components/NotiSystematicVault'
 import PriceUpdate from './components/PriceUpdate'
 import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
@@ -239,7 +238,6 @@ const Invest: React.FC = () => {
 
       <TwoPanelLayout>
         <LeftPanelAbsolute isShowRightPanel={false}>
-          <NotiSystematicVault />
           <MaxWidth>
             {isInputting && (
               <CardInput

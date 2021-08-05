@@ -1,15 +1,18 @@
 import axios from 'axios'
-import throttle from 'lodash/throttle'
-import React, { useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
 import _ from 'lodash'
+import throttle from 'lodash/throttle'
+import numeral from 'numeral'
+import React, { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
+import { Text } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
 import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
 import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
 import finixCoin from 'uikit-dev/images/finix-coin.png'
 import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
 import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
-import numeral from 'numeral'
+import logoNoti from 'uikit-dev/images/for-ui-v2/noti.png'
 import Button from '../../components/Button/Button'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
@@ -159,6 +162,7 @@ const Menu: React.FC<NavProps> = ({
   children,
   price,
 }) => {
+  const location = useLocation()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isMd && !isXl && !isLg
   const [isPushed, setIsPushed] = useState(false)
@@ -300,20 +304,46 @@ const Menu: React.FC<NavProps> = ({
               }
             />
 
-            <CountDownBanner
-              logo={finixCoin}
-              title="FINIX-Klaytn Address : "
-              detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
-              disableCountdown
-              button={
-                <CopyToClipboard
-                  color="warning"
-                  noText
-                  toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
-                  tooltipPos="right"
-                />
-              }
-            />
+            {location.pathname === '/explore' ||
+            location.pathname === '/explore/detail' ||
+            location.pathname === '/explore/invest' ? (
+              <CountDownBanner
+                logo={logoNoti}
+                customText={
+                  <Text color="white" fontSize="12px">
+                    <strong>New Feature : Systematic Vault (Beta) :</strong>{' '}
+                    <span className="mr-1">
+                      Systematic vault is a vault that has been built by using rebalancing strategy. This feature is
+                      still in beta period. For the security of your assets,
+                    </span>
+                    <strong className="mr-1" style={{ color: '#ffd157' }}>
+                      {' '}
+                      the maximum amount of investment will be $100 per vault
+                    </strong>
+                    <span>
+                      during the beta period. This limit will be removed once the auditor finishes the smart contract of
+                      systematic vault.
+                    </span>
+                  </Text>
+                }
+                disableCountdown
+              />
+            ) : (
+              <CountDownBanner
+                logo={finixCoin}
+                title="FINIX-Klaytn Address : "
+                detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+                disableCountdown
+                button={
+                  <CopyToClipboard
+                    color="warning"
+                    noText
+                    toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+                    tooltipPos="right"
+                  />
+                }
+              />
+            )}
 
             {currentTime > endStatedTradingTime ? (
               <CountDownBanner
