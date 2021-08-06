@@ -1,23 +1,23 @@
 /* eslint-disable no-nested-ternary */
+import numeral from 'numeral'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import numeral from 'numeral'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
-import history from 'routerHistory'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { Rebalance } from '../../state/types'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
 import PriceUpdate from './components/PriceUpdate'
+import SettingButton from './components/SettingButton'
 import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
 import currency from './mockCurrency'
-import { Rebalance } from '../../state/types'
 
 interface InvestType {
   rebalance: Rebalance | any
@@ -53,19 +53,21 @@ const CardInput = ({ onNext, rebalance }) => {
   return (
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4 pt-2' : 'pa-6 pt-4'}>
-        <Button
-          variant="text"
-          as={Link}
-          to="/explore/detail"
-          ml="-12px"
-          mb="8px"
-          padding="0 12px"
-          startIcon={<ArrowBackIcon />}
-        >
-          <Text fontSize="14px" color="textSubtle">
-            Back
-          </Text>
-        </Button>
+        <div className="flex justify-space-between mb-2">
+          <Button
+            variant="text"
+            as={Link}
+            to="/explore/detail"
+            ml="-12px"
+            padding="0 12px"
+            startIcon={<ArrowBackIcon />}
+          >
+            <Text fontSize="14px" color="textSubtle">
+              Back
+            </Text>
+          </Button>
+          <SettingButton />
+        </div>
 
         <TwoLineFormat
           title="Share price"

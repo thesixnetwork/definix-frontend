@@ -13,14 +13,15 @@ import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, us
 import success from 'uikit-dev/animation/complete.json'
 import Helper from 'uikit-dev/components/Helper'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { Rebalance } from '../../state/types'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
+import SettingButton from './components/SettingButton'
 import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
 import currency from './mockCurrency'
-import { Rebalance } from '../../state/types'
 
 interface WithdrawType {
   rebalance: Rebalance | any
@@ -95,19 +96,21 @@ const CardInput = ({ onNext, ratioType, setRatioType }) => {
   return (
     <Card className="mb-4">
       <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-6 py-4'} `}>
-        <Button
-          variant="text"
-          as={Link}
-          to="/explore/detail"
-          ml="-12px"
-          mb="8px"
-          padding="0 12px"
-          startIcon={<ArrowBackIcon />}
-        >
-          <Text fontSize="14px" color="textSubtle">
-            Back
-          </Text>
-        </Button>
+        <div className="flex justify-space-between mb-2">
+          <Button
+            variant="text"
+            as={Link}
+            to="/explore/detail"
+            ml="-12px"
+            padding="0 12px"
+            startIcon={<ArrowBackIcon />}
+          >
+            <Text fontSize="14px" color="textSubtle">
+              Back
+            </Text>
+          </Button>
+          <SettingButton />
+        </div>
 
         <TwoLineFormat title="Current investment" value="1.24 Shares" subTitle="$1,000.23" large className="mb-4" />
 
