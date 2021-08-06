@@ -3,8 +3,9 @@ import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
+import { ChevronRightIcon, Flex, Heading, Image, Link, Skeleton, Text } from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
+import { apyModalRoi, calculateFinixEarnedPerThousandDollars } from 'utils/compoundApyHelpers'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
@@ -105,6 +106,13 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
+  const finixEarnedPerThousand365D = calculateFinixEarnedPerThousandDollars({
+    numberOfDays: 365,
+    farmApy: farm.apy ? farm.apy.times(new BigNumber(100)).toNumber() : 0,
+    finixPrice,
+  })
+  const oneThousandDollarsWorthOfFinix = 1000 / finixPrice.toNumber()
+
   const TranslateString = useI18n()
 
   const LinkView = ({ linkClassName = '' }) => (
@@ -164,7 +172,10 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
             <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
           </div>
           <Text color="primary" bold className="mt-2 mb-1" fontSize="12px">
-            APY 32,000%
+            {`APY ${apyModalRoi({
+              amountEarned: finixEarnedPerThousand365D,
+              amountInvested: oneThousandDollarsWorthOfFinix,
+            })}%`}
           </Text>
         </>
       )}

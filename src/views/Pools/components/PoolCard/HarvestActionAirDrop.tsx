@@ -116,7 +116,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
             <AirDrop
               logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
               title="AAPR"
-              percent={`${numeral(apy.toNumber() || 0).format('0,0')}%`}
+              percent={`${numeral(apy.toNumber() || 0).format('0,0.0')}%`}
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />
