@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
 import { Text } from 'uikit-dev/components/Text'
 import Flex from '../../components/Box/Flex'
@@ -71,33 +72,36 @@ const Modal: React.FC<Props> = ({
   classHeader = '',
   maxWidth = '',
   className = '',
-}) => (
-  <StyledModal isRainbow={isRainbow} style={{ maxWidth }} className={className}>
-    <ModalHeader className={classHeader}>
-      <ModalTitle>
-        {onBack && (
-          <Button variant="text" onClick={onBack} ml="-12px" padding="0 12px" startIcon={<ArrowBackIcon />}>
-            <Text fontSize="14px" color="textSubtle">
-              Back
-            </Text>
-          </Button>
+}) => {
+  const { t } = useTranslation()
+  return (
+    <StyledModal isRainbow={isRainbow} style={{ maxWidth }} className={className}>
+      <ModalHeader className={classHeader}>
+        <ModalTitle>
+          {onBack && (
+            <Button variant="text" onClick={onBack} ml="-12px" padding="0 12px" startIcon={<ArrowBackIcon />}>
+              <Text fontSize="14px" color="textSubtle">
+                {t('Back')}
+              </Text>
+            </Button>
+          )}
+          <Heading>{title}</Heading>
+        </ModalTitle>
+
+        {!hideCloseButton && (
+          <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
+            <CloseIcon color="primary" />
+          </IconButton>
         )}
-        <Heading>{title}</Heading>
-      </ModalTitle>
+      </ModalHeader>
 
-      {!hideCloseButton && (
-        <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
-          <CloseIcon color="primary" />
-        </IconButton>
-      )}
-    </ModalHeader>
+      <Flex flexDirection="column" p={bodyPadding}>
+        {children}
+      </Flex>
 
-    <Flex flexDirection="column" p={bodyPadding}>
-      {children}
-    </Flex>
-
-    {isRainbow && <img className="color-stroke" alt="" src={colorStroke} />}
-  </StyledModal>
-)
+      {isRainbow && <img className="color-stroke" alt="" src={colorStroke} />}
+    </StyledModal>
+  )
+}
 
 export default Modal

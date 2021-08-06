@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'contexts/Localization'
 import { Link } from '../../components/Link'
 import { HelpIcon } from '../../components/Svg'
 import { Modal } from '../Modal'
@@ -19,25 +20,28 @@ const HelpLink = styled(Link)`
   margin-top: 24px;
 `
 
-const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
-  <Modal title="Connect to a wallet" onDismiss={onDismiss} isRainbow={false}>
-    {config.map((entry, index) => (
-      <WalletCard
-        key={entry.title}
-        login={login}
-        walletConfig={entry}
-        onDismiss={onDismiss}
-        mb={index < config.length - 1 ? '8px' : '0'}
-      />
-    ))}
-    {/* <HelpLink
+const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => {
+  const { t } = useTranslation()
+  return (
+    <Modal title={t('Connect to a wallet')} onDismiss={onDismiss} isRainbow={false}>
+      {config.map((entry, index) => (
+        <WalletCard
+          key={entry.title}
+          login={login}
+          walletConfig={entry}
+          onDismiss={onDismiss}
+          mb={index < config.length - 1 ? '8px' : '0'}
+        />
+      ))}
+      {/* <HelpLink
       href="https://docs.definixswap.finance/guides/faq#how-do-i-set-up-my-wallet-on-binance-smart-chain"
       external
     >
       <HelpIcon color="primary" mr="6px" />
       Learn how to connect
     </HelpLink> */}
-  </Modal>
-)
+    </Modal>
+  )
+}
 
 export default ConnectModal

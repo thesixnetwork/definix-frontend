@@ -90,10 +90,10 @@ const ModalInput: React.FC<ModalInputProps> = ({
       {isBalanceZero && (
         <div className="flex align-center justify-center mt-5">
           <Text color="failure" className="mr-3">
-            Not enough LP to stake
+            {t('Not enough LP to stake')}
           </Text>
           <Button size="sm" variant="secondary" as={Link} href={addLiquidityUrl}>
-            Add Liquidity
+            {t('Add Liquidity')}
           </Button>
         </div>
       )}
