@@ -99,6 +99,10 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) 
       <Text fontSize="12px" color="textSubtle" className="mt-4">
         *AAPR = Airdrop APR supported by our partners
       </Text>
+      <Text fontSize="12px" color="textSubtle" className="mt-1">
+        *APY (Annual Percentage Yield) = the actual rate of return that will be earned in one year if the interest is
+        compounded.
+      </Text>
     </Wrapper>
   )
 }
