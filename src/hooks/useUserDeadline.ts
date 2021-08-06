@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setDeadline } from '../state/actions'
 import { State } from '../state/types'
 
-
 export default function useUserDeadline(): [number, (slippage: number) => void] {
   const dispatch = useDispatch()
   const savedDeadlineRaw: string | null = localStorage.getItem('deadline')
