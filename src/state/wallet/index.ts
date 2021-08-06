@@ -40,15 +40,15 @@ export const walletSlice = createSlice({
 // Actions
 export const { setBalance, setAllowance, setUserDeadline, setUserSlippage } = walletSlice.actions
 
-export const setDeadline = (slippage: number) => async (dispatch) => {
+export const setDeadline = (slippage: number) => async dispatch => {
   return dispatch(setUserDeadline(slippage))
 }
 
-export const setSlippage = (slippage: number) => async (dispatch) => {
+export const setSlippage = (slippage: number) => async dispatch => {
   return dispatch(setUserSlippage(slippage))
 }
 
-export const fetchBalances = (account, addresses: string[]) => async (dispatch) => {
+export const fetchBalances = (account, addresses: string[]) => async dispatch => {
   // const addressesWithoutMain = addresses.filter(address => address.toLowerCase() !== getAddress(wklay).toLowerCase())
   // const addressMain = addresses.find(address => address.toLowerCase() === getAddress(wklay).toLowerCase())
   // const calls = addressesWithoutMain.map(address => {
@@ -63,19 +63,28 @@ export const fetchBalances = (account, addresses: string[]) => async (dispatch) 
 
   // const withoutMainBalances = await multicall(erc20, calls)
   // const mainBalance = addressMain ? await multicallEth(addressMain) : new BigNumber(0)
-  const calls = addresses.map((address) => {
+  const calls = addresses.map(address => {
     return {
       address,
       name: 'balanceOf',
       params: [account],
     }
   })
+  const decimalCalls = addresses.map(address => {
+    return {
+      address,
+      name: 'decimals',
+    }
+  })
 
-  const balancesResponse = await multicall(erc20, calls)
+  const [balancesResponse, decimalsResponse] = await Promise.all([
+    multicall(erc20, calls),
+    multicall(erc20, decimalCalls),
+  ])
   const data = {}
   addresses.forEach((address, index) => {
     if (!account || !address) return undefined
-    data[address] = balancesResponse[index]
+    data[address] = new BigNumber(balancesResponse[index]).div(new BigNumber(10).pow(decimalsResponse[index]))
     return undefined
   })
   return dispatch(setBalance({ account, data }))

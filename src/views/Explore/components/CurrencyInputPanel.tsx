@@ -2,6 +2,7 @@
 /* eslint-disable react/require-default-props */
 import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
@@ -81,7 +82,7 @@ const CurrencyInputPanel = ({
             </Text>
             {account && (
               <Text fontSize="14px" color="textSubtle">
-                Balance: {!hideBalance && !!currency && balance ? balance : ' -'}
+                Balance: {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
               </Text>
             )}
           </div>
