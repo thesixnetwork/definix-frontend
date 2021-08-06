@@ -5,14 +5,13 @@ import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
-import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
-import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
-import finixCoin from 'uikit-dev/images/finix-coin.png'
-import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
-import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
-import logoNoti from 'uikit-dev/images/for-ui-v2/noti.png'
+import { Text } from '../../components/Text'
+import CountDownBanner from '../../components/CountDownBanner'
+import StartTimeBanner from '../../components/StartTimeBanner'
+import SwitchNetwork from '../../components/SwitchNetwork'
+import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challenge-29.png'
+import colorGradient from '../../images/for-ui-v2/color-gradient.png'
+import logoNoti from '../../images/for-ui-v2/noti.png'
 import Button from '../../components/Button/Button'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
@@ -330,7 +329,7 @@ const Menu: React.FC<NavProps> = ({
               />
             ) : (
               <CountDownBanner
-                logo={finixCoin}
+                logo={FinixCoin}
                 title="FINIX-Klaytn Address : "
                 detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
                 disableCountdown

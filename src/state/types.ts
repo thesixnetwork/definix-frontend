@@ -118,6 +118,9 @@ export interface Balance {
 
 export interface WalletState {
   balances: Balance
+  userDeadline?: number
+  allowances: Balance
+  userSlippage?: number
 }
 
 export interface FinixPriceState {

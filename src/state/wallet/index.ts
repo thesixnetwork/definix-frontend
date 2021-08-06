@@ -11,6 +11,9 @@ import { WalletState } from '../types'
 
 const initialState: WalletState = {
   balances: {},
+  allowances: {},
+  userDeadline: 20,
+  userSlippage: 0.8,
 }
 
 export const walletSlice = createSlice({
@@ -21,11 +24,29 @@ export const walletSlice = createSlice({
       const { account, data } = action.payload
       state.balances = { ...state.balances, [account]: { ..._.get(state, 'balances', {}), ...data } }
     },
+    setAllowance: (state, action) => {
+      const { account, data } = action.payload
+      state.allowances = { ...state.allowances, [account]: { ..._.get(state, 'allowances', {}), ...data } }
+    },
+    setUserDeadline: (state, action) => {
+      state.userDeadline = action.payload
+    },
+    setUserSlippage: (state, action) => {
+      state.userSlippage = action.payload
+    },
   },
 })
 
 // Actions
-export const { setBalance } = walletSlice.actions
+export const { setBalance, setAllowance, setUserDeadline, setUserSlippage } = walletSlice.actions
+
+export const setDeadline = (slippage: number) => async (dispatch) => {
+  return dispatch(setUserDeadline(slippage))
+}
+
+export const setSlippage = (slippage: number) => async (dispatch) => {
+  return dispatch(setUserSlippage(slippage))
+}
 
 export const fetchBalances = (account, addresses: string[]) => async (dispatch) => {
   // const addressesWithoutMain = addresses.filter(address => address.toLowerCase() !== getAddress(wklay).toLowerCase())

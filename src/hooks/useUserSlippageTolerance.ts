@@ -1,21 +1,23 @@
-import { createAction } from '@reduxjs/toolkit'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-const updateUserSlippageTolerance = createAction<{ userSlippageTolerance: number }>('user/updateUserSlippageTolerance')
+import { setSlippage } from '../state/actions'
+import { State } from '../state/types'
 
 export default function useUserSlippageTolerance(): [number, (slippage: number) => void] {
-  const dispatch = useDispatch<AppDispatch>()
-  const userSlippageTolerance = useSelector<AppState, AppState['user']['userSlippageTolerance']>((state) => {
-    return state.user.userSlippageTolerance
+  const dispatch = useDispatch()
+  const savedSlippageRaw: string | null = localStorage.getItem('slippage')
+  const selectedSlippage = useSelector((state: State) => {
+    return state.wallet.userSlippage
   })
+  const userSlippageTolerance = savedSlippageRaw ? parseInt(savedSlippageRaw, 10) : selectedSlippage
 
-  const setUserSlippageTolerance = useCallback(
-    (slippageTolerance: number) => {
-      dispatch(updateUserSlippageTolerance({ userSlippageTolerance: slippageTolerance }))
+  const setUserSlippage = useCallback(
+    (slippage: number) => {
+      localStorage.setItem('slippage', JSON.stringify(slippage))
+      dispatch(setSlippage(slippage))
     },
     [dispatch],
   )
 
-  return [userSlippageTolerance, setUserSlippageTolerance]
+  return [userSlippageTolerance, setUserSlippage]
 }
