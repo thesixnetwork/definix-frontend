@@ -66,7 +66,7 @@ const CardInput = ({ onNext, rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const assets = rebalance.ratio
-  const assetAddresses = assets.map(a => getAddress(a.address))
+  const assetAddresses = assets.map((a) => getAddress(a.address))
   const dispatch = useDispatch()
   const { account } = useWallet()
   const balances = useBalances(account)
