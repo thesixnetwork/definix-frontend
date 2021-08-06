@@ -1,4 +1,5 @@
 import React from 'react'
+import { useTranslation } from 'contexts/Localization'
 import Button from '../../components/Button/Button'
 import Text from '../../components/Text/Text'
 import LinkExternal from '../../components/Link/LinkExternal'
@@ -13,36 +14,39 @@ interface Props {
   onDismiss?: () => void
 }
 
-const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null }) => (
-  <Modal title="Your wallet" onDismiss={onDismiss} isRainbow={false}>
-    <Text
-      fontSize="20px"
-      bold
-      style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: '8px' }}
-    >
-      {account}
-    </Text>
-    <Flex mb="32px">
-      <LinkExternal small href={`https://bscscan.com/address/${account}`} mr="16px">
-        View on BscScan
-      </LinkExternal>
-      <CopyToClipboard toCopy={account}>Copy Address</CopyToClipboard>
-    </Flex>
-    <Flex justifyContent="center">
-      <Button
-        size="sm"
-        variant="secondary"
-        onClick={() => {
-          logout()
-          window.localStorage.removeItem(localStorageKey)
-          onDismiss()
-          window.location.reload()
-        }}
+const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null }) => {
+  const { t } = useTranslation()
+  return (
+    <Modal title="Your wallet" onDismiss={onDismiss} isRainbow={false}>
+      <Text
+        fontSize="20px"
+        bold
+        style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginBottom: '8px' }}
       >
-        Logout
-      </Button>
-    </Flex>
-  </Modal>
-)
+        {account}
+      </Text>
+      <Flex mb="32px">
+        <LinkExternal small href={`https://bscscan.com/address/${account}`} mr="16px">
+          {t('View on BscScan')}
+        </LinkExternal>
+        <CopyToClipboard toCopy={account}>Copy Address</CopyToClipboard>
+      </Flex>
+      <Flex justifyContent="center">
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() => {
+            logout()
+            window.localStorage.removeItem(localStorageKey)
+            onDismiss()
+            window.location.reload()
+          }}
+        >
+          {t('Logout')}
+        </Button>
+      </Flex>
+    </Modal>
+  )
+}
 
 export default AccountModal

@@ -43,11 +43,11 @@ const FinixStats = () => {
   return (
     <StyledFinixStats isRainbow>
       <CardBody className="pa-6">
-        <Heading mb="20px">FINIX Stats</Heading>
+        <Heading mb="20px">{t('FINIX Stats')}</Heading>
         <Row>
           <Row className="mb-0">
             <Text small>{t('Total FINIX Supply')}</Text>
-            <Helper text="Does not include burned" className="ml-2" position="top" />
+            <Helper text={t('"Does not include burned"')} className="ml-2" position="top" />
           </Row>
           {finixSupply && <CardValue fontSize="18px" fontWeight="bold" value={finixSupply} />}
         </Row>

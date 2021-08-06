@@ -2,6 +2,7 @@ import React from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from 'uikit-dev'
+import Helper from 'uikit-dev/components/Helper'
 import { useTranslation } from 'contexts/Localization'
 import { calculateFinixEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
 
@@ -55,8 +56,16 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
           </Text>
         </GridItem>
         <GridItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
+          <Text
+            fontSize="12px"
+            bold
+            color="textSubtle"
+            textTransform="uppercase"
+            mb="16px"
+            className="align-center flex"
+          >
             {t('ROI')}
+            <Helper text={t('Return on Investment')} className="ml-2" position="top" />
           </Text>
         </GridItem>
         <GridItem>
@@ -115,9 +124,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
       </Grid>
       <Description fontSize="12px" color="textSubtle">
-        {t(
-          'Calculated based on current rates. Compounding once daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.',
-        )}
+        {t('Calculated based on current rates')}
       </Description>
       <Flex justifyContent="center">
         <LinkExternal href={addLiquidityUrl}>
