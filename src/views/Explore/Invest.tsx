@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import { useWallet } from 'klaytn-use-wallet'
 import {
   ArrowBackIcon,
   Button,
@@ -15,9 +16,14 @@ import {
   useMatchBreakpoints,
   useModal,
 } from 'uikit-dev'
+import _ from 'lodash'
+import { getAddress } from 'utils/addressHelpers'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { useDispatch } from 'react-redux'
 import { Rebalance } from '../../state/types'
+import { useBalances } from '../../state/hooks'
+import { fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
 import ErrorOverLimitModal from './components/ErrorOverLimitModal'
@@ -59,6 +65,15 @@ const LeftPanelAbsolute = styled(LeftPanel)`
 const CardInput = ({ onNext, rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const assets = rebalance.ratio
+  const assetAddresses = assets.map(a => getAddress(a.address))
+  const dispatch = useDispatch()
+  const { account } = useWallet()
+  const balances = useBalances(account)
+
+  useEffect(() => {
+    dispatch(fetchBalances(account, assetAddresses))
+  }, [dispatch, account, assetAddresses])
 
   return (
     <Card className="mb-4">
@@ -92,11 +107,12 @@ const CardInput = ({ onNext, rebalance }) => {
         </div>
 
         <div className="mb-4">
-          {currency.map((c) => (
+          {assets.map((c) => (
             <CurrencyInputPanel
               currency={c}
-              id={`invest-${c.name}`}
-              key={`invest-${c.name}`}
+              balance={_.get(balances, getAddress(c.address))}
+              id={`invest-${c.symbol}`}
+              key={`invest-${c.symbol}`}
               showMaxButton
               className="mb-2"
               value=""

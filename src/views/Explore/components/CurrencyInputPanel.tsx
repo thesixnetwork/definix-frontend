@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/require-default-props */
 import { useWallet } from 'klaytn-use-wallet'
+import BigNumber from 'bignumber.js'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
@@ -10,6 +11,7 @@ import { Input as NumericalInput } from './NumericalInput'
 interface CurrencyInputPanelProps {
   value: string
   showMaxButton: boolean
+  balance?: BigNumber
   id: string
   currency: any
   label?: string
@@ -53,6 +55,7 @@ const Coin = styled.div`
 const CurrencyInputPanel = ({
   value,
   showMaxButton,
+  balance,
   label = 'Input',
   currency,
   hideBalance = false,
@@ -65,7 +68,6 @@ const CurrencyInputPanel = ({
   onUserInput,
 }: CurrencyInputPanelProps) => {
   const { account } = useWallet()
-  const [balance, setBalance] = useState()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
 
@@ -104,8 +106,8 @@ const CurrencyInputPanel = ({
                 </div>
               )}
               <Coin>
-                {currency.img && <img src={currency.img} alt="" />}
-                <Text>{currency.name}</Text>
+                {currency.symbol && <img src={`/images/coins/${currency.symbol}.png`} alt="" />}
+                <Text>{currency.symbol}</Text>
               </Coin>
             </>
           )}
