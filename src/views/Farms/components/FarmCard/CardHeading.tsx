@@ -125,19 +125,24 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       </Heading>
 
       {!removed && (
-        <div className="flex align-center justify-center mt-2">
-          <Apr color="success" bold>
-            {TranslateString(736, 'APR')}
-            <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
-          </Apr>
-          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+        <>
+          <div className="flex align-center justify-center mt-2">
+            <Apr color="success" bold>
+              {TranslateString(736, 'APR')}
+              <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
+            </Apr>
+            <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
 
-          {inlineMultiplier && (
-            <InlineMultiplierTag>
-              <p>{farm.multiplier}</p>
-            </InlineMultiplierTag>
-          )}
-        </div>
+            {inlineMultiplier && (
+              <InlineMultiplierTag>
+                <p>{farm.multiplier}</p>
+              </InlineMultiplierTag>
+            )}
+          </div>
+          <Text color="primary" bold className="mt-2 mb-1" fontSize="12px">
+            APY 32,000%
+          </Text>
+        </>
       )}
 
       {/* <Flex justifyContent="center">

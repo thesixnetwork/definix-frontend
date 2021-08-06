@@ -143,6 +143,10 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
           <InlineMultiplierTag>
             <p>{farm.multiplier}</p>
           </InlineMultiplierTag>
+
+          <Text color="primary" bold className="ml-2" fontSize="12px">
+            APY 32,000%
+          </Text>
         </div>
       )}
 
