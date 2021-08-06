@@ -5,6 +5,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
 import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
+import { apyModalRoi, calculateFinixEarnedPerThousandDollars } from 'utils/compoundApyHelpers'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
@@ -103,6 +104,13 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
+  const finixEarnedPerThousand365D = calculateFinixEarnedPerThousandDollars({
+    numberOfDays: 365,
+    farmApy: farm.apy ? farm.apy.times(new BigNumber(100)).toNumber() : 0,
+    finixPrice,
+  })
+  const oneThousandDollarsWorthOfFinix = 1000 / finixPrice.toNumber()
+
   const TranslateString = useI18n()
 
   const imgSize = isHorizontal ? 48 : 56
@@ -140,7 +148,10 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
             )}
           </div>
           <Text color="primary" bold className="mt-2 mb-1" fontSize="12px">
-            APY 32,000%
+            {`APY ${apyModalRoi({
+              amountEarned: finixEarnedPerThousand365D,
+              amountInvested: oneThousandDollarsWorthOfFinix,
+            })}%`}
           </Text>
         </>
       )}
