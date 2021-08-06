@@ -18,13 +18,46 @@ export const walletSlice = createSlice({
   initialState,
   reducers: {
     setBalance: (state, action) => {
-      const { data } = action.payload
-      state.balances = data
+      const { account, data } = action.payload
+      state.balances = { ...state.balances, [account]: { ..._.get(state, 'balances', {}), ...data } }
     },
   },
 })
 
 // Actions
 export const { setBalance } = walletSlice.actions
+
+export const fetchBalances = (account, addresses: string[]) => async dispatch => {
+  // const addressesWithoutMain = addresses.filter(address => address.toLowerCase() !== getAddress(wklay).toLowerCase())
+  // const addressMain = addresses.find(address => address.toLowerCase() === getAddress(wklay).toLowerCase())
+  // const calls = addressesWithoutMain.map(address => {
+  //   return address === getAddress(wklay)
+  //     ? {}
+  //     : {
+  //         address,
+  //         name: 'balanceOf',
+  //         params: [account],
+  //       }
+  // })
+
+  // const withoutMainBalances = await multicall(erc20, calls)
+  // const mainBalance = addressMain ? await multicallEth(addressMain) : new BigNumber(0)
+  const calls = addresses.map(address => {
+    return {
+      address,
+      name: 'balanceOf',
+      params: [account],
+    }
+  })
+
+  const balancesResponse = await multicall(erc20, calls)
+  const data = {}
+  addresses.forEach((address, index) => {
+    if (!account || !address) return undefined
+    data[address] = balancesResponse[index]
+    return undefined
+  })
+  return dispatch(setBalance({ account, data }))
+}
 
 export default walletSlice.reducer

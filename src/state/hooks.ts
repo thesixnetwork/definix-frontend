@@ -22,7 +22,7 @@ import {
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Rebalance, Pool, ProfileState, TeamsState, AchievementState } from './types'
+import { Balances, State, Farm, Rebalance, Pool, ProfileState, TeamsState, AchievementState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -47,6 +47,11 @@ export const useFetchPublicData = () => {
 }
 
 // Farms
+
+export const useBalances = (account: string): Balances => {
+  const balances = useSelector((state: State) => state.wallet.balances[account])
+  return balances
+}
 
 export const useFarmUnlockDate = (): Date => {
   const unlockDate = useSelector((state: State) => state.farms.farmUnlockAt)
