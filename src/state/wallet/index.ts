@@ -40,15 +40,15 @@ export const walletSlice = createSlice({
 // Actions
 export const { setBalance, setAllowance, setUserDeadline, setUserSlippage } = walletSlice.actions
 
-export const setDeadline = (slippage: number) => async dispatch => {
+export const setDeadline = (slippage: number) => async (dispatch) => {
   return dispatch(setUserDeadline(slippage))
 }
 
-export const setSlippage = (slippage: number) => async dispatch => {
+export const setSlippage = (slippage: number) => async (dispatch) => {
   return dispatch(setUserSlippage(slippage))
 }
 
-export const fetchBalances = (account, addresses: string[]) => async dispatch => {
+export const fetchBalances = (account, addresses: string[]) => async (dispatch) => {
   // const addressesWithoutMain = addresses.filter(address => address.toLowerCase() !== getAddress(wklay).toLowerCase())
   // const addressMain = addresses.find(address => address.toLowerCase() === getAddress(wklay).toLowerCase())
   // const calls = addressesWithoutMain.map(address => {
@@ -63,14 +63,14 @@ export const fetchBalances = (account, addresses: string[]) => async dispatch =>
 
   // const withoutMainBalances = await multicall(erc20, calls)
   // const mainBalance = addressMain ? await multicallEth(addressMain) : new BigNumber(0)
-  const calls = addresses.map(address => {
+  const calls = addresses.map((address) => {
     return {
       address,
       name: 'balanceOf',
       params: [account],
     }
   })
-  const decimalCalls = addresses.map(address => {
+  const decimalCalls = addresses.map((address) => {
     return {
       address,
       name: 'decimals',

@@ -82,7 +82,8 @@ const CurrencyInputPanel = ({
             </Text>
             {account && (
               <Text fontSize="14px" color="textSubtle">
-                Balance: {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
+                Balance:{' '}
+                {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
               </Text>
             )}
           </div>
