@@ -39,10 +39,10 @@ const InputBox = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
 `
 const Coin = styled.div`
-  min-width: 65px;
+  min-width: 80px;
   display: flex;
   align-items: center;
-  margin: 4px 16px 4px 0;
+  margin: 4px 0;
 
   img {
     flex-shrink: 0;
