@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
@@ -26,7 +26,7 @@ import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
 import { Rebalance } from '../../state/types'
-import { useDecimals, useBalances, useAllowances } from '../../state/hooks'
+import { useBalances, useAllowances } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -204,9 +204,16 @@ const CardInput = ({
   )
 }
 
-const CardCalculate = ({ onBack, onNext, rebalance }) => {
+const CardCalculate = ({ isSimulating, recalculate, poolUSDBalances, poolAmounts, onBack, onNext, rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+
+  // @ts-ignore
+  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance]).div(new BigNumber(10).pow(18)).toNumber()
+  const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(18)).toNumber()
+  // @ts-ignore
+  const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
+  const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
 
   return (
     <Card className="mb-4">
@@ -226,20 +233,20 @@ const CardCalculate = ({ onBack, onNext, rebalance }) => {
         </Text>
 
         <div className="flex align-center flex-wrap mb-3">
-          <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} />
+          <VerticalAssetRatio rebalance={rebalance} poolAmounts={poolAmounts} className={isMobile ? 'col-12' : 'col-5'} />
           <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
-            <Share share="100" usd="~192,803.00" textAlign={isMobile ? 'center' : 'left'} />
-            <PriceUpdate className="mt-3" />
+            <Share share={numeral(currentShare).format('0,0.[00]')} usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`} textAlign={isMobile ? 'center' : 'left'} />
+            <PriceUpdate className="mt-3" onClick={recalculate} />
           </div>
         </div>
 
         <Text fontSize="12px" textAlign={isMobile ? 'center' : 'left'}>
-          Output is estimated. You will receive at least <strong>192,803.00 USD</strong> or the transaction will revert.
+          Output is estimated. You will receive at least <strong>{numeral(totalUserUsdAmount).format('0,0.[00]')} USD</strong> or the transaction will revert.
         </Text>
       </div>
 
       <div className={isMobile ? 'pa-4' : 'pa-6 pt-4'}>
-        <SpaceBetweenFormat className="mb-2" title="Minimum Received" value="100 SHARE" />
+        <SpaceBetweenFormat className="mb-2" title="Minimum Received" value={`${numeral(currentShare).format('0,0.[00]')} SHARE`} />
         <SpaceBetweenFormat
           className="mb-2"
           title="Price Impact"
@@ -248,7 +255,7 @@ const CardCalculate = ({ onBack, onNext, rebalance }) => {
         />
         <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" />
 
-        <Button fullWidth radii="small" className="mt-2" onClick={onNext}>
+        <Button fullWidth radii="small" className="mt-2" disabled={isSimulating} onClick={onNext}>
           Invest
         </Button>
       </div>
@@ -318,8 +325,7 @@ const CardResponse = ({ rebalance }) => {
 
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [poolUSDBalances, setPoolUSDBalances] = useState([])
-  // const [poolAmounts, setPoolAmounts] = useState([])
-  const [, setPoolAmounts] = useState([])
+  const [poolAmounts, setPoolAmounts] = useState([])
   const [isSimulating, setIsSimulating] = useState(true)
   const [isInputting, setIsInputting] = useState(true)
   const [isCalculating, setIsCalculating] = useState(false)
@@ -328,7 +334,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
   const dispatch = useDispatch()
   const { account } = useWallet()
-  const decimals = useDecimals(account)
   const balances = useBalances(account)
   const allowances = useAllowances(account, getAddress(_.get(rebalance, 'address', {})))
 
@@ -349,35 +354,36 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
     }
   }, [])
 
-  // eslint-disable-next-line
+  const fetchData = useCallback(async () => {
+    setIsSimulating(true)
+    const [poolUSDBalancesData, poolAmountsData] = await simulateInvest(
+      _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
+        const ratioPoint = (
+          ((rebalance || {}).tokenRatioPoints || [])[index] ||
+          ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
+          new BigNumber(0)
+        ).toNumber()
+        const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
+        const decimal = c.decimals
+        return {
+          ...c,
+          symbol: c.symbol,
+          address: ratioObject.address,
+          ratioPoint,
+          value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
+          balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+        }
+      }),
+    )
+    setPoolUSDBalances(poolUSDBalancesData)
+    setPoolAmounts(poolAmountsData)
+    setIsSimulating(false)
+  }, [balances, currentInput, rebalance])
+
   useEffect(() => {
-    const fetchData = async () => {
-      setIsSimulating(true)
-      const [poolUSDBalancesData, poolAmountsData] = await simulateInvest(
-        _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
-          const ratioPoint = (
-            ((rebalance || {}).tokenRatioPoints || [])[index] ||
-            ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
-            new BigNumber(0)
-          ).toNumber()
-          const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
-          const decimal = c.decimals
-          return {
-            ...c,
-            symbol: c.symbol,
-            address: ratioObject.address,
-            ratioPoint,
-            value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
-            balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
-          }
-        }),
-      )
-      setPoolUSDBalances(poolUSDBalancesData)
-      setPoolAmounts(poolAmountsData)
-      setIsSimulating(false)
-    }
     fetchData()
-  }, [balances, currentInput, decimals, rebalance])
+  }, [balances, currentInput, rebalance, fetchData])
+
   if (!rebalance) return <Redirect to="/explore" />
 
   const totalUSDAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(18)).toNumber()
@@ -398,9 +404,12 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
                 balances={balances}
                 allowances={allowances}
                 onNext={() => {
-                  setIsInputting(false)
-                  setIsCalculating(true)
-                  onPresentErrorOverLimitModal()
+                  if (totalUSDAmount > 100) {
+                    onPresentErrorOverLimitModal()
+                  } else {
+                    setIsInputting(false)
+                    setIsCalculating(true)
+                  }
                 }}
                 totalUSDAmount={totalUSDAmount}
                 isSimulating={isSimulating}
@@ -408,6 +417,10 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
             )}{' '}
             {isCalculating && (
               <CardCalculate
+                isSimulating={isSimulating}
+                recalculate={fetchData}
+                poolUSDBalances={poolUSDBalances}
+                poolAmounts={poolAmounts}
                 rebalance={rebalance}
                 onBack={() => {
                   setIsCalculating(false)

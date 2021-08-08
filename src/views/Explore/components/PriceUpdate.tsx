@@ -3,14 +3,15 @@ import { Button, Text } from 'uikit-dev'
 
 interface PriceUpdateType {
   className?: string
+  onClick?: () => void
 }
 
-const PriceUpdate: React.FC<PriceUpdateType> = ({ className = '' }) => {
+const PriceUpdate: React.FC<PriceUpdateType> = ({ onClick, className = '' }) => {
   return (
     <div className={`flex align-center ${className}`}>
       <Text className="mr-3">Price Updated</Text>
 
-      <Button size="sm" className="flex-shrink">
+      <Button onClick={onClick} size="sm" className="flex-shrink">
         Recalculate
       </Button>
     </div>

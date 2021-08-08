@@ -1,11 +1,10 @@
 import React from 'react'
+import _ from 'lodash'
+import numeral from 'numeral'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Text } from 'uikit-dev'
 import currency from '../mockCurrency'
-
-interface VerticalAssetRatioType {
-  className?: string
-}
 
 const Coin = styled.div`
   display: flex;
@@ -21,20 +20,20 @@ const Coin = styled.div`
   }
 `
 
-const VerticalAssetRatio: React.FC<VerticalAssetRatioType> = ({ className = '' }) => {
+const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
     <div className={className}>
-      {currency.map((m) => (
-        <div className="flex justify-space-between align-center">
+      {_.compact([...((rebalance || {} as any).tokens || []), ...((rebalance || {} as any).usdToken || [])]).map((c, index) => {
+        return <div className="flex justify-space-between align-center">
           <Coin>
-            <img src={m.img} alt="" />
-            <Text bold>{m.value}</Text>
+            <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
+            <Text bold>{numeral(((poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals))).toNumber()).format('0,0.[0000000000]')}</Text>
           </Coin>
           <Text bold className="pl-3">
-            {m.name}
+            {c.symbol}
           </Text>
         </div>
-      ))}
+      })}
     </div>
   )
 }

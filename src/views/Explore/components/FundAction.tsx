@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
@@ -29,7 +30,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance }) => {
   const isMobile = !isXl
   const { account } = useWallet()
   const balances = useBalances(account)
-  const currentBalance = _.get(balances, getAddress(rebalance.address))
+  const currentBalance = _.get(balances, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
   return (
