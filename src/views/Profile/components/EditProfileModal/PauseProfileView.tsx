@@ -7,7 +7,7 @@ import { fetchProfile } from 'state/profile'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { useProfile as useProfileContract } from 'hooks/useContract'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 type PauseProfilePageProps = InjectedModalProps
 

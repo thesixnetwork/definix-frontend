@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text } from 'uikit-dev'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import useFarmEarning from 'hooks/useFarmEarning'
@@ -11,7 +11,6 @@ import CardBusdValue from './CardBusdValue'
 
 const Block = styled.div`
   margin-bottom: 24px;
-  
 }
 `
 

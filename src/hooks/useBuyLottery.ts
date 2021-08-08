@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useLottery, useLotteryTicket } from 'hooks/useContract'
 import { multiClaim, getMax, multiBuy } from '../utils/lotteryUtils'
 

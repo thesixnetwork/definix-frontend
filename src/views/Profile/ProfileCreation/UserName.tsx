@@ -17,7 +17,7 @@ import {
   Checkbox,
 } from 'uikit-dev'
 import { parseISO, formatDistance } from 'date-fns'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useToast } from 'state/hooks'
 import useCaver from 'hooks/useCaver'
 import useI18n from 'hooks/useI18n'

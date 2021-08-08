@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, InjectedModalProps, Skeleton, Text } from 'uikit-dev'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useDispatch } from 'react-redux'
 import nftList from 'config/constants/nfts'
 import { useProfile, useToast } from 'state/hooks'

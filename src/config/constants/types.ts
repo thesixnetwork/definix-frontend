@@ -71,11 +71,11 @@ export interface RebalanceConfig {
 export interface FarmConfig {
   pid: number
   lpSymbol: string
-  lpAddresses: Address
+  lpAddresses: any
   tokenSymbol: string
-  tokenAddresses: Address
+  tokenAddresses: any
   quoteTokenSymbol: QuoteToken
-  quoteTokenAdresses: Address
+  quoteTokenAdresses: any
   multiplier?: string
   isCommunity?: boolean
   dual?: {
@@ -83,8 +83,8 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
-  firstToken?: Address
-  secondToken?: Address
+  firstToken?: any
+  secondToken?: any
 }
 
 export interface PoolConfig {
@@ -94,7 +94,7 @@ export interface PoolConfig {
   stakingTokenName: QuoteToken
   stakingLimit?: number
   stakingTokenAddress?: string
-  contractAddress: Address
+  contractAddress: any
   poolCategory: PoolCategory
   projectLink: string
   tokenPerBlock: string

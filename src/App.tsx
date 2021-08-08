@@ -1,9 +1,10 @@
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
 import { Route, Router, Switch } from 'react-router-dom'
+import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
@@ -14,9 +15,10 @@ import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
-import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
-// import WaitingPage from 'uikit-dev/components/WaitingPage'
+import sdkConfig from './sdkconfig'
 
+// import WaitingPage from 'uikit-dev/components/WaitingPage'
+Config.configure(sdkConfig)
 ReactGA.initialize('G-L997LXLF8F')
 
 const tagManagerArgs = {
@@ -76,11 +78,11 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus')) {
+    if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
       connect('injected')
     }
   }, [account, connect])
-
+  const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
   useFetchPublicData()
   useFetchProfile()
 
@@ -155,7 +157,7 @@ const App: React.FC = () => {
         </Suspense>
       </Menu>
       <ToastListener />
-      <GlobalCheckBullHiccupClaimStatus />
+      {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (
         <div
           style={{

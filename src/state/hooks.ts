@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Toast, toastTypes } from 'uikit-dev'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'

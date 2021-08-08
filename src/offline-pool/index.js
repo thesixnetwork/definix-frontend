@@ -145,6 +145,9 @@ const simulateRemoveFund = async () => {
   }
 }
 
+export const simulateWithdraw = (tokens = []) => {
+  console.log(tokens)
+}
 export const simulateInvest = (tokens = []) => {
   const testtokens = [
     {
