@@ -23,17 +23,25 @@ const Coin = styled.div`
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
     <div className={className}>
-      {_.compact([...((rebalance || {} as any).tokens || []), ...((rebalance || {} as any).usdToken || [])]).map((c, index) => {
-        return <div className="flex justify-space-between align-center">
-          <Coin>
-            <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-            <Text bold>{numeral(((poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals))).toNumber()).format('0,0.[0000000000]')}</Text>
-          </Coin>
-          <Text bold className="pl-3">
-            {c.symbol}
-          </Text>
-        </div>
-      })}
+      {_.compact([...((rebalance || ({} as any)).tokens || []), ...((rebalance || ({} as any)).usdToken || [])]).map(
+        (c, index) => {
+          return (
+            <div className="flex justify-space-between align-center">
+              <Coin>
+                <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
+                <Text bold>
+                  {numeral(
+                    (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals)).toNumber(),
+                  ).format('0,0.[0000000000]')}
+                </Text>
+              </Coin>
+              <Text bold className="pl-3">
+                {c.symbol}
+              </Text>
+            </div>
+          )
+        },
+      )}
     </div>
   )
 }

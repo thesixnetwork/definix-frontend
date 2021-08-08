@@ -233,20 +233,33 @@ const CardCalculate = ({ isSimulating, recalculate, poolUSDBalances, poolAmounts
         </Text>
 
         <div className="flex align-center flex-wrap mb-3">
-          <VerticalAssetRatio rebalance={rebalance} poolAmounts={poolAmounts} className={isMobile ? 'col-12' : 'col-5'} />
+          <VerticalAssetRatio
+            rebalance={rebalance}
+            poolAmounts={poolAmounts}
+            className={isMobile ? 'col-12' : 'col-5'}
+          />
           <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
-            <Share share={numeral(currentShare).format('0,0.[00]')} usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`} textAlign={isMobile ? 'center' : 'left'} />
+            <Share
+              share={numeral(currentShare).format('0,0.[00]')}
+              usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
+              textAlign={isMobile ? 'center' : 'left'}
+            />
             <PriceUpdate className="mt-3" onClick={recalculate} />
           </div>
         </div>
 
         <Text fontSize="12px" textAlign={isMobile ? 'center' : 'left'}>
-          Output is estimated. You will receive at least <strong>{numeral(totalUserUsdAmount).format('0,0.[00]')} USD</strong> or the transaction will revert.
+          Output is estimated. You will receive at least{' '}
+          <strong>{numeral(totalUserUsdAmount).format('0,0.[00]')} USD</strong> or the transaction will revert.
         </Text>
       </div>
 
       <div className={isMobile ? 'pa-4' : 'pa-6 pt-4'}>
-        <SpaceBetweenFormat className="mb-2" title="Minimum Received" value={`${numeral(currentShare).format('0,0.[00]')} SHARE`} />
+        <SpaceBetweenFormat
+          className="mb-2"
+          title="Minimum Received"
+          value={`${numeral(currentShare).format('0,0.[00]')} SHARE`}
+        />
         <SpaceBetweenFormat
           className="mb-2"
           title="Price Impact"
