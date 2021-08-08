@@ -18,9 +18,9 @@ class Utils {
     ])
 
     // eslint-disable-next-line
-    const erc0 = new caver.contract(IERC20.abi,pairResults[0])
+    const erc0 = new caver.contract(IERC20.abi, pairResults[0])
     // eslint-disable-next-line
-    const erc1 = new caver.contract(IERC20.abi,pairResults[1])
+    const erc1 = new caver.contract(IERC20.abi, pairResults[1])
 
     const tokenResults = await Promise.all([
       erc0.methods.symbol().call(),

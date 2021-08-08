@@ -330,14 +330,16 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   }, [])
   if (!rebalance) return <Redirect to="/explore" />
 
-  simulateInvest(rebalance.ratio.map(c => {
-    const decimal = _.get(decimals, getAddress(c.address)) || 18
-    return {
-      symbol: c.symbol,
-      address: c.address,
-      value: new BigNumber(currentInput[getAddress(c.address)] as string).times(new BigNumber(10).pow(decimal)),
-    }
-  }))
+  simulateInvest(
+    rebalance.ratio.map((c) => {
+      const decimal = _.get(decimals, getAddress(c.address)) || 18
+      return {
+        symbol: c.symbol,
+        address: c.address,
+        value: new BigNumber(currentInput[getAddress(c.address)] as string).times(new BigNumber(10).pow(decimal)),
+      }
+    }),
+  )
   return (
     <>
       <Helmet>
