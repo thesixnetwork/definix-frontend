@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import axios from 'axios'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
 import numeral from 'numeral'

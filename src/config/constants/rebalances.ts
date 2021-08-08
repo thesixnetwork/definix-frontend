@@ -1,7 +1,5 @@
 import { RebalanceConfig } from './types'
-import contracts from './contracts'
-
-const { six, finix, kusdt } = contracts
+import { SIX, FINIX, KUSDT } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
@@ -17,19 +15,19 @@ const rebalances: RebalanceConfig[] = [
         symbol: 'SIX',
         value: 33.3,
         color: '#647BD4',
-        address: six,
+        address: SIX,
       },
       {
         symbol: 'FINIX',
         value: 33.3,
         color: '#FFFFFF',
-        address: finix,
+        address: FINIX,
       },
       {
         symbol: 'KUSDT',
         value: 33.3,
         color: '#2A9D8F',
-        address: kusdt,
+        address: KUSDT,
       },
     ],
   },
@@ -46,19 +44,19 @@ const rebalances: RebalanceConfig[] = [
         symbol: 'SIX',
         value: 33.3,
         color: '#647BD4',
-        address: six,
+        address: SIX,
       },
       {
         symbol: 'FINIX',
         value: 33.3,
         color: '#FFFFFF',
-        address: finix,
+        address: FINIX,
       },
       {
         symbol: 'KUSDT',
         value: 33.3,
         color: '#2A9D8F',
-        address: kusdt,
+        address: KUSDT,
       },
     ],
   },
@@ -75,19 +73,19 @@ const rebalances: RebalanceConfig[] = [
         symbol: 'SIX',
         value: 33.3,
         color: '#647BD4',
-        address: six,
+        address: SIX,
       },
       {
         symbol: 'FINIX',
         value: 33.3,
         color: '#FFFFFF',
-        address: finix,
+        address: FINIX,
       },
       {
         symbol: 'KUSDT',
         value: 33.3,
         color: '#2A9D8F',
-        address: kusdt,
+        address: KUSDT,
       },
     ],
   },

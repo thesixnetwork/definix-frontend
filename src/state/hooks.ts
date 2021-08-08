@@ -53,6 +53,11 @@ export const useBalances = (account: string): Balances => {
   return balances
 }
 
+export const useDecimals = (account: string): Balances => {
+  const decimals = useSelector((state: State) => state.wallet.decimals[account])
+  return decimals
+}
+
 export const useAllowances = (account: string, spender: string): Balances | undefined => {
   const allowances = useSelector((state: State) => state.wallet.allowances[account])
   return (allowances || {})[spender]

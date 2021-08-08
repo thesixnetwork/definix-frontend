@@ -121,6 +121,7 @@ export interface Allowance {
 }
 
 export interface WalletState {
+  decimals: Balance
   balances: Balance
   userDeadline?: number
   allowances: Allowance

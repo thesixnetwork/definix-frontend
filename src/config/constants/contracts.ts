@@ -1,16 +1,4 @@
-import {
-  SIX,
-  FINIX,
-  WKLAY,
-  KUSDT,
-  KDAI,
-  KETH,
-  KWBTC,
-  KXRP,
-  KBNB,
-  KSP,
-  getLpNetwork,
-} from './tokens'
+import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork } from './tokens'
 
 export default {
   bscFinix: {

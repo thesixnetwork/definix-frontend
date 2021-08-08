@@ -9,6 +9,7 @@ import { WalletState } from '../types'
 const initialState: WalletState = {
   balances: {},
   allowances: {},
+  decimals: {},
   userDeadline: 20,
   userSlippage: 0.8,
 }
@@ -17,6 +18,10 @@ export const walletSlice = createSlice({
   name: 'Wallet',
   initialState,
   reducers: {
+    setDecimals: (state, action) => {
+      const { account, data } = action.payload
+      state.decimals = { ...state.decimals, [account]: { ..._.get(state, 'decimals', {}), ...data } }
+    },
     setBalance: (state, action) => {
       const { account, data } = action.payload
       state.balances = { ...state.balances, [account]: { ..._.get(state, 'balances', {}), ...data } }
@@ -41,7 +46,7 @@ export const walletSlice = createSlice({
 })
 
 // Actions
-export const { setBalance, setAllowance, setUserDeadline, setUserSlippage } = walletSlice.actions
+export const { setBalance, setAllowance, setUserDeadline, setUserSlippage, setDecimals } = walletSlice.actions
 
 export const setDeadline = (slippage: number) => async (dispatch) => {
   return dispatch(setUserDeadline(slippage))
@@ -90,11 +95,14 @@ export const fetchBalances = (account, addresses: string[]) => async (dispatch) 
     multicall(erc20, decimalCalls),
   ])
   const data = {}
+  const dataDecimals = {}
   addresses.forEach((address, index) => {
     if (!account || !address) return undefined
     data[address] = new BigNumber(balancesResponse[index]).div(new BigNumber(10).pow(decimalsResponse[index]))
+    dataDecimals[address] = new BigNumber(decimalsResponse[index])
     return undefined
   })
+  await dispatch(setDecimals(dataDecimals))
   return dispatch(setBalance({ account, data }))
 }
 

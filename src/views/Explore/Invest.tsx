@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWallet } from 'klaytn-use-wallet'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import {
   ArrowBackIcon,
@@ -26,7 +26,7 @@ import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
 import { Rebalance } from '../../state/types'
-import { useBalances, useAllowances } from '../../state/hooks'
+import { useDecimals, useBalances, useAllowances } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -37,6 +37,7 @@ import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
+import { simulateInvest } from '../../offline-pool'
 
 interface InvestType {
   rebalance: Rebalance | any
@@ -177,7 +178,7 @@ const CardInput = ({ onNext, rebalance, setCurrentInput, currentInput }) => {
         {(() => {
           const totalInput = rebalance.ratio.map((c) => currentInput[getAddress(c.address)]).join('')
           const needsApproval = rebalance.ratio.find((c) => {
-            const currentValue = parseFloat(currentInput[getAddress(c.address)], 10)
+            const currentValue = parseFloat(currentInput[getAddress(c.address)])
             const currentAllowance = (_.get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()
             return currentAllowance < currentValue
           })
@@ -317,6 +318,8 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [isInvested, setIsInvested] = useState(false)
   const [onPresentErrorOverLimitModal] = useModal(<ErrorOverLimitModal />)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
+  const { account } = useWallet()
+  const decimals = useDecimals(account)
 
   useEffect(() => {
     return () => {
@@ -327,6 +330,14 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   }, [])
   if (!rebalance) return <Redirect to="/explore" />
 
+  simulateInvest(rebalance.ratio.map(c => {
+    const decimal = _.get(decimals, getAddress(c.address)) || 18
+    return {
+      symbol: c.symbol,
+      address: c.address,
+      value: new BigNumber(currentInput[getAddress(c.address)] as string).times(new BigNumber(10).pow(decimal)),
+    }
+  }))
   return (
     <>
       <Helmet>

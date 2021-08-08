@@ -9,7 +9,7 @@ const caver = new Caver('https://kaikas.baobab.klaytn.net:8651/')
 class Utils {
   static getPairData = async (_pairAddress) => {
     // eslint-disable-next-line
-    const pairContract = new caver.contract(DefinixPair)
+    const pairContract = new caver.contract(DefinixPair.abi, _pairAddress)
 
     const pairResults = await Promise.all([
       pairContract.methods.token0().call(),
@@ -18,9 +18,9 @@ class Utils {
     ])
 
     // eslint-disable-next-line
-    const erc0 = new caver.contract(IERC20)
+    const erc0 = new caver.contract(IERC20.abi,pairResults[0])
     // eslint-disable-next-line
-    const erc1 = new caver.contract(IERC20)
+    const erc1 = new caver.contract(IERC20.abi,pairResults[1])
 
     const tokenResults = await Promise.all([
       erc0.methods.symbol().call(),
