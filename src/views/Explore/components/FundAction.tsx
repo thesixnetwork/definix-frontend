@@ -50,9 +50,6 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance }) => {
         </Button>
         <Button as={Link} to="/explore/withdraw" fullWidth radii="small" className="flex flex-column">
           WITHDRAW
-          <Text fontSize="12px" color="white">
-            0.00%
-          </Text>
         </Button>
       </div>
     </CardStyled>

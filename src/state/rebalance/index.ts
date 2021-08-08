@@ -85,13 +85,20 @@ export const fetchRebalances = () => async (dispatch) => {
             { address: tokenAddress, name: 'name' },
             { address: tokenAddress, name: 'symbol' },
             { address: tokenAddress, name: 'decimals' },
+            {
+              address: tokenAddress,
+              name: 'balanceOf',
+              params: [address],
+            },
           ]).then((calledTokenData) => {
-            const [[name], [symbol], [decimals]] = calledTokenData
+            const [[name], [symbol], [decimals], [totalBalance]] = calledTokenData
             return {
               address: tokenAddress,
               name,
               symbol,
               decimals,
+              // @ts-ignore
+              totalBalance: new BigNumber([totalBalance]),
             }
           })
         })
@@ -114,6 +121,11 @@ export const fetchRebalances = () => async (dispatch) => {
       const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
       // @ts-ignore
       const sharedPrice = totalAssetValue.div(new BigNumber([selectedTotalSupply]).div(new BigNumber(10).pow(18)))
+      const tokenUsd = [...tokens, ...usdToken].map((t: any, index) => {
+        // @ts-ignore
+        const totalUsd = new BigNumber([currentPoolUsdBalances[index]])
+        return totalUsd.div(t.totalBalance)
+      })
       return {
         ...rebalanceConfig,
         currentPoolUsdBalances,
@@ -128,6 +140,7 @@ export const fetchRebalances = () => async (dispatch) => {
         activeUserCountNumber,
         totalAssetValue,
         sharedPrice,
+        tokenUsd,
       }
     }),
   )
