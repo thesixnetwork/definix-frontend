@@ -13,10 +13,10 @@ class Address {
   }
 
   safeTransfer = (_token, _to, _amount) => {
-    this._require(
-      this.balances[_token] && this.balances[_token].isGreaterThanOrEqualTo(_amount),
-      'INSUFFICIENT BALANCE',
-    )
+    // this._require(
+    //   this.balances[_token] && this.balances[_token].isGreaterThan(_amount),
+    //   'INSUFFICIENT BALANCE',
+    // )
     if (!_to.balances[_token]) {
       _to.balances[_token] = new BigNumber(0)
     }

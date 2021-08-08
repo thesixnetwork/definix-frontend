@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
+import { getAddress } from 'utils/addressHelpers'
+import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
@@ -41,6 +45,18 @@ interface ExploreDetailType {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
+  const dispatch = useDispatch()
+  const { account } = useWallet()
+
+  useEffect(() => {
+    if (account && rebalance) {
+      const assets = rebalance.ratio
+      const assetAddresses = assets.map((a) => getAddress(a.address))
+      dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+    }
+  }, [dispatch, account, rebalance])
+
   if (!rebalance) return <Redirect to="/explore" />
   const { ratio } = rebalance
 
@@ -127,7 +143,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             <WithDrawalFees className="mb-4" />
             <FundDetail className="mb-4" />
             <Transaction className="mb-4" rbAddress={rebalance.address} />
-            <FundAction />
+            <FundAction rebalance={rebalance} />
           </MaxWidth>
         </LeftPanelAbsolute>
       </TwoPanelLayout>

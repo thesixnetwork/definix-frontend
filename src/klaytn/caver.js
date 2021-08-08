@@ -4,7 +4,7 @@
  * default rpcURL is 'https://api.baobab.klaytn.net:8651'.
  */
 import Caver from 'caver-js'
-import getRPCHalper from 'utils/getRPCHalper'
+// import getRPCHalper from 'utils/getRPCHalper'
 // const rpcURL = process.env.REACT_APP_KLAYTN_RPC_URL;
 // console.log("rpcURL = ", rpcURL);
 

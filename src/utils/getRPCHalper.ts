@@ -11,7 +11,7 @@ const checkHeartBeat = async (rpc: string): Promise<number> => {
       .then((res) => {
         reslove(res.status)
       })
-      .catch(function (error) {
+      .catch((error) => {
         if (error.response) {
           reslove(error.response.status)
         }

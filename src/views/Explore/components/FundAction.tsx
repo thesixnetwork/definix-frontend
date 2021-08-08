@@ -1,11 +1,18 @@
 import React from 'react'
+import _ from 'lodash'
+import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import { getAddress } from 'utils/addressHelpers'
+import { useBalances } from '../../../state/hooks'
 import TwoLineFormat from './TwoLineFormat'
+import { Rebalance } from '../../../state/types'
 
 interface FundActionType {
   className?: string
+  rebalance?: Rebalance | any
 }
 
 const CardStyled = styled(Card)`
@@ -17,16 +24,20 @@ const CardStyled = styled(Card)`
   width: 100%;
 `
 
-const FundAction: React.FC<FundActionType> = ({ className }) => {
+const FundAction: React.FC<FundActionType> = ({ className, rebalance }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const { account } = useWallet()
+  const balances = useBalances(account)
+  const currentBalance = _.get(balances, getAddress(rebalance.address))
+  const currentBalanceNumber = currentBalance.toNumber()
 
   return (
     <CardStyled className={`flex flex-wrap justify-space-between pa-4 bd-t ${className}`}>
       <TwoLineFormat
         title="Current investment"
-        subTitle="1.24 Shares"
-        value="$1,000.23"
+        subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
+        value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
         percent="+0.2%"
         days="1 D"
         large
