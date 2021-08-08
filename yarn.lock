@@ -3473,23 +3473,23 @@
   resolved "https://registry.yarnpkg.com/@sixnetwork/caverjs-react-types/-/caverjs-react-types-1.0.3.tgz#fe327838a9361c6f00d751052b7b6f429f0450ce"
   integrity sha512-0A09AIhxypZ4qvsSE9EGsQPgzpuLRtf644xV/JDkpA7j1HhAcH3lZ/Lb0SOxiipHi9T6U/phAZLdRrL9euH/1w==
 
-"@sixnetwork/klaytn-use-wallet@^1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@sixnetwork/klaytn-use-wallet/-/klaytn-use-wallet-1.1.4.tgz#b231746b923e7b8fda337b38d99f6727b3436d68"
-  integrity sha512-C+RwnNuN0eO2pSoI0Sr9dufWvryoBSDBLBLCy2XxjbF/7FNxBrnByjzz/62DTBtSG5sSf5Tn9QIs/HrXW90eEg==
+"@sixnetwork/klaytn-use-wallet@1.1.8-klip-mobile-support-v1":
+  version "1.1.8-klip-mobile-support-v1"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klaytn-use-wallet/-/klaytn-use-wallet-1.1.8-klip-mobile-support-v1.tgz#30d50a1a9b19469093fdaf6f62e6b35bcb041dc5"
+  integrity sha512-7unfn06XD+a19C30ssebYkQCLW6zuIvhuJeHQAmaRADQU3RFLMBqKO5N2FOx1vnwWq2s+IM69ePlhtcDX2ztRQ==
   dependencies:
     "@rollup/plugin-image" "^2.0.6"
     "@sixnetwork/caverjs-react-core" "^1.1.3"
     "@sixnetwork/caverjs-react-injected-connector" "^1.0.5"
-    "@sixnetwork/klip-connector" "^1.0.6"
+    "@sixnetwork/klip-connector" "^1.0.8-klip-mobile-support-v6"
     axios "^0.21.1"
     jsbi "^3.1.1"
     qrcode "^1.4.4"
 
-"@sixnetwork/klip-connector@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@sixnetwork/klip-connector/-/klip-connector-1.0.6.tgz#c2966a0fcbc4d746c9f54344541768b20640f2b1"
-  integrity sha512-HdUBxdH0llnTtIpwqp9Dxq+8IEENgAt1iVhb2QYyqNMpvb6aEJVBEWfuxRc4Umm1ixUZB+jOfO1wb3z7ORh6fQ==
+"@sixnetwork/klip-connector@1.0.8-klip-mobile-support-v6", "@sixnetwork/klip-connector@^1.0.8-klip-mobile-support-v6":
+  version "1.0.8-klip-mobile-support-v6"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klip-connector/-/klip-connector-1.0.8-klip-mobile-support-v6.tgz#13b8420198a8a47315e59c76a066a926dd2cd76d"
+  integrity sha512-M+0oRBk/gBx6zW5v48zwOTnQ/CrsRqQv0tYpk4KNGTEr+at3DzvDdYtFH1/69o9Q7s64vlx8u3wELtAF9fN+Uw==
   dependencies:
     "@sixnetwork/caverjs-react-abstract-connector" "^1.0.4"
     "@sixnetwork/caverjs-react-types" "^1.0.3"
@@ -3498,6 +3498,7 @@
     caver-js "^1.6.3"
     lit-html "^1.4.1"
     qrcode "^1.4.4"
+    react-device-detect "^1.17.0"
     tiny-warning "^1.0.3"
 
 "@solidity-parser/parser@^0.8.0":
@@ -17506,6 +17507,13 @@ react-dev-utils@^11.0.3:
     strip-ansi "6.0.0"
     text-table "0.2.0"
 
+react-device-detect@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/react-device-detect/-/react-device-detect-1.17.0.tgz#a00b4fd6880cebfab3fd8a42a79dc0290cdddca9"
+  integrity sha512-bBblIStwpHmoS281JFIVqeimcN3LhpoP5YKDWzxQdBIUP8S2xPvHDgizLDhUq2ScguLfVPmwfF5y268EEQR60w==
+  dependencies:
+    ua-parser-js "^0.7.24"
+
 react-dom@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -20504,7 +20512,7 @@ typescript@^4.1.5:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
   integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
 
-ua-parser-js@^0.7.18:
+ua-parser-js@^0.7.18, ua-parser-js@^0.7.24:
   version "0.7.28"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.28.tgz#8ba04e653f35ce210239c64661685bf9121dec31"
   integrity sha512-6Gurc1n//gjp9eQNXjD9O3M/sMwVtN5S8Lv9bvOYBfKfDNiIIhqiyi01vMBO45u4zkDE420w/e0se7Vs+sIg+g==

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Card, Heading, Text } from 'uikit-dev'
+import { Card, Heading, Text } from 'uikit-dev'
+import Flip from 'uikit-dev/components/Flip'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 
 const StyledBanner = styled(Card)`
@@ -51,23 +52,27 @@ const StyledBanner = styled(Card)`
 `
 
 const CardAutoRebalancing = ({ className = '' }) => {
+  const openDate = new Date(1628834400000)
+
   return (
     <StyledBanner className={className}>
       <div className="pos-relative" style={{ zIndex: 1 }}>
         <Heading className="mb-2" color="primary">
-          AUTO RE-BALANCING MUTUAL FUNDS
+          DEFINIX SYSTEMATIC VAULTS
         </Heading>
         <Text color="textSubtle" fontSize="12px">
           Rebalancing involves periodically buying or selling assets in a portfolio to maintain an original or desired
           level of asset allocation or risk.
         </Text>
         <Text bold fontSize="12px">
-          Sound complicated? Don’t worry we will take care your investment automatically with our in-house experts!!
+          Sound complicated? Don’t worry we will take care your investment automatically with our investment partner
         </Text>
 
-        <Button size="sm" variant="primary" className="btn-secondary-disable mt-3">
-          Coming Soon!
-        </Button>
+        <Text bold fontSize="12px" className="my-4" color="primary">
+          Definix Systematic Vault is available to use in
+        </Text>
+
+        <Flip date={openDate} smallBg />
       </div>
     </StyledBanner>
   )

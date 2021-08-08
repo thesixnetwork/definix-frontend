@@ -3,6 +3,7 @@
 
 import QRcode from 'qrcode'
 import axios from 'axios'
+import { isMobile } from 'react-device-detect'
 
 let requestKey = ''
 let responseData: any | null = null
@@ -23,13 +24,20 @@ export const genQRcode = () => {
   }
   axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
     requestKey = response.data.request_key
-    QRcode.toCanvas(
-      document.getElementById('qrcode'),
-      `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
-      () => {
-        intervalCheckResult = setInterval(getResult, 1000)
-      },
-    )
+    if (isMobile === true) {
+      const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
+      // await axios.get(url)
+      intervalCheckResult = setInterval(getResultContract, 1000)
+      openDeeplink(url)
+    } else {
+      QRcode.toCanvas(
+        document.getElementById('qrcode'),
+        `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
+        () => {
+          intervalCheckResult = setInterval(getResult, 1000)
+        },
+      )
+    }
   })
 }
 const getResult = async () => {
@@ -61,13 +69,17 @@ export const checkResponse = async (): Promise<string> => {
 const getResultContract = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
   const res = await axios.get(url)
-
   if (res.data.status == 'completed') {
     responseData = res.data.result.tx_hash
     clearInterval(intervalCheckResult)
   }
 }
-export const genQRcodeContactInteract = (contractAddress: string, abi: string, input: string) => {
+export const genQRcodeContactInteract = (
+  contractAddress: string,
+  abi: string,
+  input: string,
+  setShowModal: (bool: boolean) => void,
+) => {
   initData()
   const mockData = {
     bapp: {
@@ -83,13 +95,21 @@ export const genQRcodeContactInteract = (contractAddress: string, abi: string, i
   }
   axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
     requestKey = response.data.request_key
-    QRcode.toCanvas(
-      document.getElementById('qrcode'),
-      `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
-      () => {
-        intervalCheckResult = setInterval(getResultContract, 1000)
-      },
-    )
+    if (isMobile === true) {
+      const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
+      // await axios.get(url)
+      intervalCheckResult = setInterval(getResultContract, 1000)
+      openDeeplink(url)
+    } else {
+      setShowModal(true)
+      QRcode.toCanvas(
+        document.getElementById('qrcode'),
+        `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
+        () => {
+          intervalCheckResult = setInterval(getResultContract, 1000)
+        },
+      )
+    }
   })
 }
 
@@ -104,3 +124,16 @@ export const genQRcodeContactInteract = (contractAddress: string, abi: string, i
 // const rootElement = document.getElementById("root");
 
 // ReactDOM.render((<ExampleComponent />), rootElement);
+const openDeeplink = async (url: string) => {
+  const checkRedirect = window.open(url, '_blank')
+  if (checkRedirect === null) {
+    window.location.href = `kakaotalk://klipwallet/open?url=${url}`
+    setTimeout(function () {
+      if (document.hasFocus()) {
+        window.location.replace(
+          'https://apps.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947',
+        )
+      }
+    }, 4500)
+  }
+}
