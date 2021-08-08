@@ -147,7 +147,7 @@ const CardInput = ({ onNext, ratioType, setRatioType }) => {
           value=""
           label=""
           onUserInput={(value) => {
-            console.log(value)
+            return value
           }}
         />
         <Text fontSize="12px" color="textSubtle" className="mt-1" textAlign="right">

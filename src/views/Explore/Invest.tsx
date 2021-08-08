@@ -1,11 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import numeral from 'numeral'
+import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from 'klaytn-use-wallet'
+import { provider } from 'web3-core'
 import {
   ArrowBackIcon,
   Button,
@@ -18,12 +20,14 @@ import {
 } from 'uikit-dev'
 import _ from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
+import { approveOther } from 'utils/callHelpers'
+import { getContract } from 'utils/erc20'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
 import { Rebalance } from '../../state/types'
-import { useBalances } from '../../state/hooks'
-import { fetchBalances } from '../../state/wallet'
+import { useBalances, useAllowances } from '../../state/hooks'
+import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
 import ErrorOverLimitModal from './components/ErrorOverLimitModal'
@@ -33,7 +37,6 @@ import Share from './components/Share'
 import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
-import currency from './mockCurrency'
 
 interface InvestType {
   rebalance: Rebalance | any
@@ -62,18 +65,36 @@ const LeftPanelAbsolute = styled(LeftPanel)`
   padding-bottom: 24px;
 `
 
-const CardInput = ({ onNext, rebalance }) => {
+const CardInput = ({ onNext, rebalance, setCurrentInput, currentInput }) => {
+  const [isApproving, setIsApproving] = useState(false)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const assets = rebalance.ratio
-  const assetAddresses = assets.map((a) => getAddress(a.address))
   const dispatch = useDispatch()
-  const { account } = useWallet()
+  const { account, klaytn } = useWallet()
   const balances = useBalances(account)
+  const allowances = useAllowances(account, getAddress(rebalance.address))
 
   useEffect(() => {
+    const assets = rebalance.ratio
+    const assetAddresses = assets.map((a) => getAddress(a.address))
     dispatch(fetchBalances(account, assetAddresses))
-  }, [dispatch, account, assetAddresses])
+    dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+  }, [dispatch, account, rebalance])
+
+  const onApprove = (token) => async () => {
+    const tokenContract = getContract(klaytn as provider, getAddress(token.address))
+    setIsApproving(true)
+    try {
+      await approveOther(tokenContract, getAddress(rebalance.address), account)
+      const assets = rebalance.ratio
+      const assetAddresses = assets.map((a) => getAddress(a.address))
+      dispatch(fetchBalances(account, assetAddresses))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      setIsApproving(false)
+    } catch {
+      setIsApproving(false)
+    }
+  }
 
   return (
     <Card className="mb-4">
@@ -107,18 +128,45 @@ const CardInput = ({ onNext, rebalance }) => {
         </div>
 
         <div className="mb-4">
-          {assets.map((c) => (
+          {rebalance.ratio.map((c) => (
             <CurrencyInputPanel
               currency={c}
               balance={_.get(balances, getAddress(c.address))}
               id={`invest-${c.symbol}`}
               key={`invest-${c.symbol}`}
-              showMaxButton
+              showMaxButton={
+                String((_.get(balances, getAddress(c.address)) || new BigNumber(0)).toNumber()) !==
+                currentInput[getAddress(c.address)]
+              }
               className="mb-2"
-              value=""
+              value={currentInput[getAddress(c.address)]}
               label=""
+              onMax={() => {
+                setCurrentInput({
+                  ...currentInput,
+                  [getAddress(c.address)]: String(
+                    (_.get(balances, getAddress(c.address)) || new BigNumber(0)).toNumber(),
+                  ),
+                })
+              }}
+              onQuarter={() => {
+                setCurrentInput({
+                  ...currentInput,
+                  [getAddress(c.address)]: String(
+                    (_.get(balances, getAddress(c.address)) || new BigNumber(0)).times(0.75).toNumber(),
+                  ),
+                })
+              }}
+              onHalf={() => {
+                setCurrentInput({
+                  ...currentInput,
+                  [getAddress(c.address)]: String(
+                    (_.get(balances, getAddress(c.address)) || new BigNumber(0)).times(0.5).toNumber(),
+                  ),
+                })
+              }}
               onUserInput={(value) => {
-                console.log(value)
+                setCurrentInput({ ...currentInput, [getAddress(c.address)]: value })
               }}
             />
           ))}
@@ -126,9 +174,26 @@ const CardInput = ({ onNext, rebalance }) => {
 
         <SpaceBetweenFormat className="mb-4" title="Total value" value="$00" />
 
-        <Button fullWidth radii="small" onClick={onNext}>
-          Calculate invest amount
-        </Button>
+        {(() => {
+          const totalInput = rebalance.ratio.map((c) => currentInput[getAddress(c.address)]).join('')
+          const needsApproval = rebalance.ratio.find((c) => {
+            const currentValue = parseFloat(currentInput[getAddress(c.address)], 10)
+            const currentAllowance = (_.get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()
+            return currentAllowance < currentValue
+          })
+          if (needsApproval) {
+            return (
+              <Button fullWidth radii="small" disabled={isApproving} onClick={onApprove(needsApproval)}>
+                Approve {needsApproval.symbol}
+              </Button>
+            )
+          }
+          return (
+            <Button fullWidth radii="small" disabled={totalInput.length === 0} onClick={onNext}>
+              Calculate invest amount
+            </Button>
+          )
+        })()}
       </div>
     </Card>
   )
@@ -251,6 +316,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [isCalculating, setIsCalculating] = useState(false)
   const [isInvested, setIsInvested] = useState(false)
   const [onPresentErrorOverLimitModal] = useModal(<ErrorOverLimitModal />)
+  const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
 
   useEffect(() => {
     return () => {
@@ -273,9 +339,12 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
             {isInputting && (
               <CardInput
                 rebalance={rebalance}
+                currentInput={currentInput}
+                setCurrentInput={setCurrentInput}
                 onNext={() => {
                   setIsInputting(false)
                   setIsCalculating(true)
+                  onPresentErrorOverLimitModal()
                 }}
               />
             )}{' '}

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Card, CardBody, Heading, Image, Text } from 'uikit-dev'
+import { Button, Card, CardBody, Heading } from 'uikit-dev'
 import bg from 'uikit-dev/images/FINIX-Love-You/bg.png'
 import coin from 'uikit-dev/images/FINIX-Love-You/coin.png'
 

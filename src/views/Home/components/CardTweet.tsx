@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Text } from 'uikit-dev'
+import { Card } from 'uikit-dev'
 import { Timeline } from 'react-twitter-widgets'
 
 const Tweet = styled(Card)`
@@ -14,10 +14,6 @@ const Inner = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.card};
   height: 100%;
-`
-
-const BorderStyle = styled(Text)`
-  border-radius: 6px;
 `
 
 const CardTweet = ({ className = '' }) => {

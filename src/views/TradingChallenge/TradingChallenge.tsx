@@ -55,7 +55,6 @@ const DateModal = ({ date }) => {
 
 const TradingChallenge = () => {
   const { connect, account } = useWallet()
-  const [isTradingEnd, setIsTradingEnd] = useState(false)
   const [isRegisterSuccess, setIsRegisterSuccess] = useState(false)
   const { isSm } = useMatchBreakpoints()
 
@@ -69,9 +68,6 @@ const TradingChallenge = () => {
         const traderAddress = _.get(data, 'traderAddr', '')
         setIsRegisterSuccess(traderAddress === account)
       })
-      .catch((error) => {
-        console.log('error = ', error)
-      })
   }
   const [onPresentTraderProfileModal] = useModal(<TraderProfileModal onSuccessRefresh={handleModalSuccess} />)
   const tradingCompetRegisContract = useTradingCompetRegisContract()
@@ -84,9 +80,6 @@ const TradingChallenge = () => {
         .then((data) => {
           const traderAddress = _.get(data, 'traderAddr', '')
           setIsRegisterSuccess(traderAddress === account)
-        })
-        .catch((error) => {
-          console.log('error = ', error)
         })
     }
     checkAccountTradingExists()

@@ -1,12 +1,7 @@
 import React, { ReactElement } from 'react'
 import { Text } from 'uikit-dev'
 
-interface Props {
-  open: boolean
-  disable: boolean
-}
-
-const TriggerElement = ({ isDown }): ReactElement => {
+const TriggerElement = (): ReactElement => {
   return (
     <div style={{ width: '100%', cursor: 'pointer' }}>
       <div style={{ fontSize: '20px' }}>
@@ -21,11 +16,11 @@ const TriggerElement = ({ isDown }): ReactElement => {
     </div>
   )
 }
-export default function DiscriptionSecondAirdrop({ open = true, disable = true }: Props): ReactElement {
+export default function DiscriptionSecondAirdrop(): ReactElement {
   return (
     // <Collapsible trigger={} open={open} disabled={disable}>
     <div>
-      <TriggerElement isDown={open} />
+      <TriggerElement />
       <div>
         <Text lineHeight="2">
           1. Must have LP staked on Definix Klaytn-based during{' '}

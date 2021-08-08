@@ -1,7 +1,7 @@
 import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
-import { BLOCKS_PER_YEAR, KLAY_PER_BLOCK } from 'config'
+import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -9,14 +9,7 @@ import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import {
-  useFarmUnlockDate,
-  useFarms,
-  usePriceKlayKusdt,
-  usePriceKethKusdt,
-  usePriceFinixUsd,
-  usePriceSixUsd,
-} from 'state/hooks'
+import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'

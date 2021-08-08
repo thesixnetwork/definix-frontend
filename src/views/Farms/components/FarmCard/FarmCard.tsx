@@ -14,7 +14,6 @@ import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
-import HarvestAction from './HarvestAction'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
@@ -187,11 +186,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
       />
     ),
     [account, klaytn, farm, renderDepositModal, renderWithdrawModal],
-  )
-
-  const renderHarvestAction = useCallback(
-    (className?: string) => <HarvestAction earnings={earnings} pid={pid} className={className} />,
-    [earnings, pid],
   )
 
   const renderHarvestActionAirDrop = useCallback(

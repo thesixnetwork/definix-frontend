@@ -6,8 +6,6 @@ import multicall from 'utils/multicall'
 import _ from 'lodash'
 import axios from 'axios'
 import {
-  getDefinixHerodotusAddress,
-  getHerodotusAddress,
   getKbnbAddress,
   getWklayAddress,
   getKethAddress,
@@ -24,16 +22,7 @@ import {
   getFinixKspLPAddress,
   getSixKusdtLPAddress,
   getSixKlayLPAddress,
-  getKlayKethLPAddress,
-  getKlayKbtcLPAddress,
-  getKlayKxrpLPAddress,
-  getKethKusdtLPAddress,
-  getKbtcKusdtLPAddress,
-  getKxrpKusdtLPAddress,
   getKlayKusdtLPAddress,
-  getKdaiKusdtLPAddress,
-  getKbnbKusdtLPAddress,
-  getKbnbFinixLPAddress,
   getDefinixKlayKusdtLPAddress,
 } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
@@ -132,7 +121,7 @@ export const finixPriceSlice = createSlice({
 export const { setTVL, setSixPrice, setFinixPrice, setQuote, setDefinixKlayPrice, setKlayswapKlayPrice } =
   finixPriceSlice.actions
 
-const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
+const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
   let pair1Amount = 0
   let pair2Amount = 0
   try {
@@ -162,7 +151,8 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) 
     pair1Amount = new BigNumber(pair1BalanceLP).div(new BigNumber(10).pow(pair1Decimals)).toNumber()
     pair2Amount = new BigNumber(pair2BalanceLP).div(new BigNumber(10).pow(pair2Decimals)).toNumber()
   } catch (error) {
-    console.log(error)
+    pair1Amount = 0
+    pair2Amount = 0
   }
   return [pair1Amount, pair2Amount]
 }
@@ -177,17 +167,6 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
         name: 'balanceOf',
         params: [lpAddress],
       },
-      // Balance of LP tokens in the master chef contract
-      {
-        address: lpAddress,
-        name: 'balanceOf',
-        params: [getHerodotusAddress()],
-      },
-      // Total supply of LP tokens
-      {
-        address: lpAddress,
-        name: 'totalSupply',
-      },
       // Quote token decimals
       {
         address: qouteToken,
@@ -195,7 +174,7 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
       },
     ]
 
-    const [quoteTokenBlanceLP, lpTokenBalanceMC, lpTotalSupply, quoteTokenDecimals] = await multicall(erc20, calls)
+    const [quoteTokenBlanceLP, quoteTokenDecimals] = await multicall(erc20, calls)
 
     // const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
     const lpTokenRatio = 1
@@ -204,9 +183,8 @@ const getTotalQuote = async ({ lpAddress, qouteToken }) => {
       .times(new BigNumber(2))
       .times(lpTokenRatio)
       .toNumber()
-  } catch (error) {
-    console.log('>>>>>>>>>>>>>>>>>> lpAddress = ', lpAddress, ' qouteToken = ', qouteToken)
-    console.log(error)
+  } catch {
+    lpTotalInQuoteToken = 0
   }
   return lpTotalInQuoteToken
 }
@@ -220,7 +198,6 @@ export const fetchSixPrice = () => async (dispatch) => {
       lpAddress: getSixKusdtLPAddress(),
       pair1: getSixAddress(),
       pair2: getKusdtAddress(),
-      herodotusAddress: getHerodotusAddress(),
     }),
   )
   const [[totalSixInDefinixSixKusdtPair, totalKusdtInDefinixSixKusdtPair]] = await Promise.all(fetchPromise)
@@ -262,7 +239,6 @@ export const fetchDefinixKlayPrice = () => async (dispatch) => {
       lpAddress: getDefinixKlayKusdtLPAddress(),
       pair1: getWklayAddress(),
       pair2: getKusdtAddress(),
-      herodotusAddress: getDefinixHerodotusAddress(),
     }),
   )
   const [[totalKlayInDefinixKlayKusdtPair, totalKusdtInDefinixKlayKusdtPair]] = await Promise.all(fetchPromise)
@@ -283,7 +259,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getFinixSixLPAddress(),
       pair1: getFinixAddress(),
       pair2: getSixAddress(),
-      herodotusAddress: getHerodotusAddress(),
     }),
   )
   // pid 3
@@ -292,7 +267,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getFinixKlayLPAddress(),
       pair1: getFinixAddress(),
       pair2: getWklayAddress(),
-      herodotusAddress: getHerodotusAddress(),
     }),
   )
   // pid 4
@@ -301,7 +275,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getFinixKspLPAddress(),
       pair1: getFinixAddress(),
       pair2: getKspAddress(),
-      herodotusAddress: getHerodotusAddress(),
     }),
   )
   // pid 5
@@ -310,7 +283,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getFinixKusdtLPAddress(),
       pair1: getFinixAddress(),
       pair2: getKusdtAddress(),
-      herodotusAddress: getHerodotusAddress(),
     }),
   )
   // pid 6
@@ -319,7 +291,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getSixKusdtLPAddress(),
       pair1: getSixAddress(),
       pair2: getKusdtAddress(),
-      herodotusAddress: getHerodotusAddress(),
     }),
   )
   // pid 7
@@ -328,7 +299,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getSixKlayLPAddress(),
       pair1: getSixAddress(),
       pair2: getWklayAddress(),
-      herodotusAddress: getHerodotusAddress(),
     }),
   )
   // // pid 8
@@ -391,7 +361,6 @@ export const fetchFinixPrice = () => async (dispatch) => {
       lpAddress: getKlayKusdtLPAddress(),
       pair1: getWklayAddress(),
       pair2: getKusdtAddress(),
-      herodotusAddress: getDefinixHerodotusAddress(),
     }),
   )
   // // pid 15
@@ -446,10 +415,10 @@ export const fetchFinixPrice = () => async (dispatch) => {
   const finixSixRatio = totalSixDefinixFinixSixPair / totalFinixDefinixFinixSixPair || 0
   const finixKusdtRatio = totalKusdtDefinixFinixKusdtPair / totalFinixDefinixFinixKusdtPair || 0
   const finixKlayRatio = totalKlayDefinixFinixKlayPair / totalFinixDefinixFinixKlayPair || 0
-  const finixKspRatio = totalFinixDefinixFinixKspPair / totalKspDefinixFinixKspPair || 0
+  // const finixKspRatio = totalFinixDefinixFinixKspPair / totalKspDefinixFinixKspPair || 0
   const sixKusdtRatio = totalKusdtDefinixSixKusdtPair / totalSixDefinixSixKusdtPair || 0
 
-  const sixKlayRatio = totalSixDefinixSixKlayPair / totalKlayDefinixSixKlayPair || 0
+  // const sixKlayRatio = totalSixDefinixSixKlayPair / totalKlayDefinixSixKlayPair || 0
 
   // NEW
   // const klayKethRatio = totalKlayDefinixKlayKethPair / totalKethDefinixKlayKethPair || 0
@@ -463,8 +432,8 @@ export const fetchFinixPrice = () => async (dispatch) => {
   // Price cal
   const finixSixPrice = finixSixRatio * sixKusdtRatio
   const finixKlayPrice = finixKlayRatio * definixKlayKusdtRatio
-  const finixKspPrice = finixKspRatio * finixKusdtRatio
-  const sixKlayPrice = sixKlayRatio * definixKlayKusdtRatio
+  // const finixKspPrice = finixKspRatio * finixKusdtRatio
+  // const sixKlayPrice = sixKlayRatio * definixKlayKusdtRatio
   const averageFinixPrice =
     (finixKusdtRatio * totalFinixDefinixFinixKusdtPair +
       finixKlayPrice * totalFinixDefinixFinixKlayPair +

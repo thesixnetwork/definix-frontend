@@ -4,7 +4,6 @@ import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
-import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
@@ -21,41 +20,6 @@ export interface ExpandableSectionProps {
   isHorizontal?: boolean
   inlineMultiplier?: boolean
 }
-
-const MultiplierTag = styled.div`
-  position: absolute;
-  top: -1px;
-  left: 16px;
-  width: 52px;
-  height: 36px;
-  background: url(${ribbin});
-  background-size: contain;
-  background-repeat: no-repeat;
-
-  p {
-    color: ${({ theme }) => theme.colors.white};
-    font-weight: bold;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
-  }
-`
-
-const InlineMultiplierTag = styled.div`
-  background: linear-gradient(#f3d36c, #e27d3a);
-
-  border-radius: ${({ theme }) => theme.radii.small};
-  margin-left: 4px;
-
-  p {
-    padding: 0 8px;
-    line-height: 26px;
-    color: ${({ theme }) => theme.colors.white};
-    font-weight: bold;
-    font-size: 12px;
-    text-align: center;
-  }
-`
 
 const StyledFarmImages = styled.div`
   display: flex;
@@ -93,7 +57,6 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   finixPrice,
   className = '',
   isHorizontal = false,
-  inlineMultiplier = false,
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg

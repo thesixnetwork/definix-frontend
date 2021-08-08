@@ -1,4 +1,3 @@
-import { useGetStats } from 'hooks/api'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'

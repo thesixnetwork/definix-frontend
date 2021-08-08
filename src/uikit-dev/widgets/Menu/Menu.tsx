@@ -16,14 +16,10 @@ import Button from '../../components/Button/Button'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
-import { SvgProps } from '../../components/Svg'
 import { useMatchBreakpoints } from '../../hooks'
-import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
-import th from '../../images/th.png'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
-import * as IconModule from './icons'
 import Logo from './Logo'
 import Panel from './Panel'
 import { NavProps } from './types'
@@ -142,11 +138,6 @@ const Price = styled.a`
   }
 `
 
-const Flag = styled.img`
-  width: 24px;
-  height: auto;
-`
-
 const Menu: React.FC<NavProps> = ({
   account,
   login,
@@ -167,19 +158,6 @@ const Menu: React.FC<NavProps> = ({
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
-  const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
-  const { LanguageIcon } = Icons
-  const IconFlag = () => {
-    if (currentLang === 'en') {
-      return <Flag src={en} alt="" />
-    }
-
-    if (currentLang === 'th') {
-      return <Flag src={th} alt="" />
-    }
-
-    return <LanguageIcon color="textSubtle" width="24px" />
-  }
   const endRegisterTimestamp = process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP
     ? parseInt(process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()

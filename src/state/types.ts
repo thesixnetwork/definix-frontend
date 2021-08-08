@@ -116,10 +116,14 @@ export interface Balance {
   [key: string]: Balances
 }
 
+export interface Allowance {
+  [key: string]: Balance
+}
+
 export interface WalletState {
   balances: Balance
   userDeadline?: number
-  allowances: Balance
+  allowances: Allowance
   userSlippage?: number
 }
 

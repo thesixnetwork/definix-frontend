@@ -1,14 +1,8 @@
 /* eslint eqeqeq: 0 */
 
-import React, { ReactElement, useState, useEffect, useMemo } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components'
-import { Button, Card, Heading, Text, Link, Input, Modal } from 'uikit-dev'
-import { provider } from 'web3-core'
-import UnlockButton from 'components/UnlockButton'
-import Web3 from 'web3'
-import { AbiItem } from 'web3-utils'
-import klaytnLogo from 'uikit-dev/images/Logo-Klaytn.png'
-import { tr } from 'date-fns/locale'
+import { Card } from 'uikit-dev'
 import DiscriptionSecondAirdrop from './DiscriptionSecondAirdrop'
 
 const MaxWidth = styled.div`
@@ -99,7 +93,7 @@ export default function CardContentAirdrop(): ReactElement {
       <MaxWidth>
         <div>
           <div style={{ marginTop: '40px' }}>
-            <DiscriptionSecondAirdrop open disable />
+            <DiscriptionSecondAirdrop />
             <br />
             <br />
           </div>

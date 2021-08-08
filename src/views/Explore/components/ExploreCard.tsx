@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Text, useMatchBreakpoints } from 'uikit-dev'
-import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -50,7 +49,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const ratio = rebalance.ratio
+  const { ratio } = rebalance
 
   useEffect(() => {
     return () => {

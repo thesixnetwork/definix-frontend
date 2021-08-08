@@ -106,8 +106,6 @@ const Home: React.FC = () => {
       if (response.data.data) {
         const caption = _.get(response.data.data, 'data.0.text', '')
         setCaptionText(caption)
-      } else {
-        console.log('error')
       }
     }
     fetchCaptionText()
@@ -145,7 +143,7 @@ const Home: React.FC = () => {
                 <Caption>{captionText}</Caption>
               )}
             </div>
-            <CardAirdropKlay showBtn className="mb-5" />
+            <CardAirdropKlay className="mb-5" />
 
             <CardAutoRebalancing className="mb-5" />
 

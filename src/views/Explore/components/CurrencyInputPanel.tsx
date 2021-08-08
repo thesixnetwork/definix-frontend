@@ -3,7 +3,7 @@
 import { useWallet } from 'klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
 import AnountButton from 'uikit-dev/components/AnountButton'

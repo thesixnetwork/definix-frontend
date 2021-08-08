@@ -53,6 +53,11 @@ export const useBalances = (account: string): Balances => {
   return balances
 }
 
+export const useAllowances = (account: string, spender: string): Balances | undefined => {
+  const allowances = useSelector((state: State) => state.wallet.allowances[account])
+  return (allowances || {})[spender]
+}
+
 export const useFarmUnlockDate = (): Date => {
   const unlockDate = useSelector((state: State) => state.farms.farmUnlockAt)
   return unlockDate

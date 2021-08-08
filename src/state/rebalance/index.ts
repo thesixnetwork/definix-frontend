@@ -1,11 +1,9 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
-import { Token, Pair, ChainId } from 'definixswap-sdk'
 import erc20 from 'config/abi/erc20.json'
 import rebalance from 'config/abi/rebalance.json'
 import multicall from 'utils/multicall'
 import _ from 'lodash'
-import axios from 'axios'
 import { createSlice } from '@reduxjs/toolkit'
 import { getAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'

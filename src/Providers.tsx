@@ -8,11 +8,8 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import store from 'state'
 import { ModalProvider } from 'uikit-dev'
-import getRpcUrl from 'utils/getRpcUrl'
 
 const Providers: React.FC = ({ children }) => {
-  const rpcUrl = getRpcUrl()
-
   const muiTheme = createTheme({
     palette: {
       primary: {

@@ -1,12 +1,9 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
-import { Token, Pair, ChainId } from 'definixswap-sdk'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import _ from 'lodash'
-import axios from 'axios'
 import { createSlice } from '@reduxjs/toolkit'
-import { getAddress } from 'utils/addressHelpers'
 import { WalletState } from '../types'
 
 const initialState: WalletState = {
@@ -25,8 +22,14 @@ export const walletSlice = createSlice({
       state.balances = { ...state.balances, [account]: { ..._.get(state, 'balances', {}), ...data } }
     },
     setAllowance: (state, action) => {
-      const { account, data } = action.payload
-      state.allowances = { ...state.allowances, [account]: { ..._.get(state, 'allowances', {}), ...data } }
+      const { account, data, spender } = action.payload
+      state.allowances = {
+        ...state.allowances,
+        [account]: {
+          ..._.get(state, 'allowances', {}),
+          [spender]: { ..._.get(state, `allowances.${spender}`, {}), ...data },
+        },
+      }
     },
     setUserDeadline: (state, action) => {
       state.userDeadline = action.payload
@@ -48,21 +51,26 @@ export const setSlippage = (slippage: number) => async (dispatch) => {
   return dispatch(setUserSlippage(slippage))
 }
 
-export const fetchBalances = (account, addresses: string[]) => async (dispatch) => {
-  // const addressesWithoutMain = addresses.filter(address => address.toLowerCase() !== getAddress(wklay).toLowerCase())
-  // const addressMain = addresses.find(address => address.toLowerCase() === getAddress(wklay).toLowerCase())
-  // const calls = addressesWithoutMain.map(address => {
-  //   return address === getAddress(wklay)
-  //     ? {}
-  //     : {
-  //         address,
-  //         name: 'balanceOf',
-  //         params: [account],
-  //       }
-  // })
+export const fetchAllowances = (account: string, addresses: string[], spender: string) => async (dispatch) => {
+  const allowanceCalls = addresses.map((address) => {
+    return {
+      address,
+      name: 'allowance',
+      params: [account, spender],
+    }
+  })
 
-  // const withoutMainBalances = await multicall(erc20, calls)
-  // const mainBalance = addressMain ? await multicallEth(addressMain) : new BigNumber(0)
+  const [allowancesData] = await Promise.all([multicall(erc20, allowanceCalls)])
+  const data = {}
+  addresses.forEach((address, index) => {
+    if (!account || !address) return undefined
+    data[address] = new BigNumber(allowancesData[index])
+    return undefined
+  })
+  return dispatch(setAllowance({ account, data, spender }))
+}
+
+export const fetchBalances = (account, addresses: string[]) => async (dispatch) => {
   const calls = addresses.map((address) => {
     return {
       address,
