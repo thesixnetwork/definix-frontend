@@ -70,6 +70,7 @@ export interface Token {
   name: string
   symbol: string
   decimals: number
+  totalBalance: BigNumber
 }
 export interface Rebalance extends RebalanceConfig {
   currentPoolUsdBalances?: BigNumber[]
@@ -87,6 +88,7 @@ export interface Rebalance extends RebalanceConfig {
 
   sharpeRatio?: number
   maxDrawdown?: number
+  tokenUsd?: BigNumber[]
 }
 
 // Slices states

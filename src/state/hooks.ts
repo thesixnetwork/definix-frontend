@@ -48,6 +48,11 @@ export const useFetchPublicData = () => {
 
 // Farms
 
+export const useSlippage = (): number => {
+  const slippage = useSelector((state: State) => state.wallet.userSlippage)
+  return slippage
+}
+
 export const useBalances = (account: string): Balances => {
   const balances = useSelector((state: State) => state.wallet.balances[account])
   return balances

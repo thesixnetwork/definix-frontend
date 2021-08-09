@@ -86,13 +86,20 @@ export const fetchRebalances = () => async (dispatch) => {
             { address: tokenAddress, name: 'name' },
             { address: tokenAddress, name: 'symbol' },
             { address: tokenAddress, name: 'decimals' },
+            {
+              address: tokenAddress,
+              name: 'balanceOf',
+              params: [address],
+            },
           ]).then((calledTokenData) => {
-            const [[name], [symbol], [decimals]] = calledTokenData
+            const [[name], [symbol], [decimals], [totalBalance]] = calledTokenData
             return {
               address: tokenAddress,
               name,
               symbol,
               decimals,
+              // @ts-ignore
+              totalBalance: new BigNumber([totalBalance]),
             }
           })
         })
@@ -126,6 +133,11 @@ export const fetchRebalances = () => async (dispatch) => {
 
       const sharpeRatio = _.get(performanceResp, 'data.result.sharpeRatio', 0)
       const maxDrawdown = Math.abs(_.get(performanceResp, 'data.result.maxDrawDown', 0))
+      const tokenUsd = [...tokens, ...usdToken].map((t: any, index) => {
+        // @ts-ignore
+        const totalUsd = new BigNumber([currentPoolUsdBalances[index]])
+        return totalUsd.div(t.totalBalance)
+      })
       return {
         ...rebalanceConfig,
         currentPoolUsdBalances,
@@ -143,6 +155,7 @@ export const fetchRebalances = () => async (dispatch) => {
 
         sharpeRatio,
         maxDrawdown,
+        tokenUsd,
       }
     }),
   )

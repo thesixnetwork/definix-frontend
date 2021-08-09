@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalances } from 'state/hooks'
 import styled from 'styled-components'
+import { getAddress } from 'utils/addressHelpers'
 import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -84,15 +85,27 @@ const Explore: React.FC = () => {
       </Route>
 
       <Route exact path={`${path}/detail`}>
-        <ExploreDetail rebalance={selectedRebalance} />
+        <ExploreDetail
+          rebalance={
+            selectedRebalance && rebalances.find((r) => getAddress(r.address) === getAddress(selectedRebalance.address))
+          }
+        />
       </Route>
 
       <Route exact path={`${path}/invest`}>
-        <Invest rebalance={selectedRebalance} />
+        <Invest
+          rebalance={
+            selectedRebalance && rebalances.find((r) => getAddress(r.address) === getAddress(selectedRebalance.address))
+          }
+        />
       </Route>
 
       <Route exact path={`${path}/withdraw`}>
-        <Withdraw rebalance={selectedRebalance} />
+        <Withdraw
+          rebalance={
+            selectedRebalance && rebalances.find((r) => getAddress(r.address) === getAddress(selectedRebalance.address))
+          }
+        />
       </Route>
     </>
   )

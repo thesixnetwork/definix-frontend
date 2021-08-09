@@ -88,7 +88,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                 <Text textAlign="center">{numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS</Text>
                 <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
               </div>
-              <Button fullWidth radii="small" as={Link} to="/explore/detail">
+              <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
                 View Details
               </Button>
             </div>
@@ -157,7 +157,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           <Text textAlign="center">{numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS</Text>
           <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
         </div>
-        <Button fullWidth radii="small" as={Link} to="/explore/detail">
+        <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
           View Details
         </Button>
       </div>

@@ -1,8 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import Checkbox from '@material-ui/core/Checkbox'
+import _ from 'lodash'
+import BigNumber from 'bignumber.js'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import Radio from '@material-ui/core/Radio'
+import { getAddress } from 'utils/addressHelpers'
+import { useDispatch } from 'react-redux'
+import numeral from 'numeral'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -13,6 +19,8 @@ import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, us
 import success from 'uikit-dev/animation/complete.json'
 import Helper from 'uikit-dev/components/Helper'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { useBalances } from '../../state/hooks'
+import { fetchBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -89,7 +97,7 @@ const InlineAssetRatioLabel = ({ coin, className = '' }) => (
   </div>
 )
 
-const CardInput = ({ onNext, ratioType, setRatioType }) => {
+const CardInput = ({ onNext, ratioType, setRatioType, currentBalanceNumber }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
@@ -112,7 +120,13 @@ const CardInput = ({ onNext, ratioType, setRatioType }) => {
           <SettingButton />
         </div>
 
-        <TwoLineFormat title="Current investment" value="1.24 Shares" subTitle="$1,000.23" large className="mb-4" />
+        <TwoLineFormat
+          title="Current investment"
+          value={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
+          subTitle="$1,000.23"
+          large
+          className="mb-4"
+        />
 
         <div className="flex flex-wrap justify-space-between align-center">
           <Text>Withdraw</Text>
@@ -273,6 +287,18 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const [isWithdrawn, setIsWithdrawn] = useState(false)
   const [ratioType, setRatioType] = useState('all')
 
+  const dispatch = useDispatch()
+  const { account } = useWallet()
+  const balances = useBalances(account)
+
+  useEffect(() => {
+    if (account && rebalance) {
+      const assets = rebalance.ratio
+      const assetAddresses = assets.map((a) => getAddress(a.address))
+      dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
+    }
+  }, [dispatch, account, rebalance])
+
   useEffect(() => {
     return () => {
       setIsInputting(true)
@@ -282,6 +308,9 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   }, [])
 
   if (!rebalance) return <Redirect to="/explore" />
+
+  const currentBalance = _.get(balances, getAddress(rebalance.address), new BigNumber(0))
+  const currentBalanceNumber = currentBalance.toNumber()
 
   return (
     <>
@@ -293,6 +322,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           <MaxWidth>
             {isInputting && (
               <CardInput
+                currentBalanceNumber={currentBalanceNumber}
                 ratioType={ratioType}
                 setRatioType={setRatioType}
                 onNext={() => {

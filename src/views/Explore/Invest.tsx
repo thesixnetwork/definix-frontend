@@ -7,6 +7,7 @@ import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { AbiItem } from 'web3-utils'
 import { provider } from 'web3-core'
 import {
   ArrowBackIcon,
@@ -21,12 +22,13 @@ import {
 import _ from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
-import { getContract } from 'utils/erc20'
+import rebalanceAbi from 'config/abi/rebalance.json'
+import { getContract, getCustomContract } from 'utils/erc20'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
 import { Rebalance } from '../../state/types'
-import { useBalances, useAllowances } from '../../state/hooks'
+import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -204,16 +206,64 @@ const CardInput = ({
   )
 }
 
-const CardCalculate = ({ isSimulating, recalculate, poolUSDBalances, poolAmounts, onBack, onNext, rebalance }) => {
+const CardCalculate = ({
+  currentInput,
+  isInvesting,
+  setIsInvesting,
+  isSimulating,
+  recalculate,
+  poolUSDBalances,
+  poolAmounts,
+  onBack,
+  onNext,
+  rebalance,
+}) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const slippage = useSlippage()
+  const { account, klaytn } = useWallet()
+  const dispatch = useDispatch()
 
   // @ts-ignore
   const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance]).div(new BigNumber(10).pow(18)).toNumber()
   const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(18)).toNumber()
+  const minUserUsdAmount = totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))
   // @ts-ignore
   const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
   const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
+  const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
+
+  const onInvest = async () => {
+    onNext()
+    const rebalanceContract = getCustomContract(
+      klaytn as provider,
+      rebalanceAbi as unknown as AbiItem,
+      getAddress(rebalance.address),
+    )
+    setIsInvesting(true)
+    try {
+      const arrayTokenAmount = ((rebalance || {}).tokens || []).map((token) => {
+        return new BigNumber((currentInput[token.address] || '0') as string)
+          .times(new BigNumber(10).pow(token.decimals))
+          .toJSON()
+      })
+      const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
+      const usdTokenAmount = new BigNumber((currentInput[usdToken.address] || '0') as string)
+        .times(new BigNumber(10).pow(usdToken.decimals))
+        .toJSON()
+      const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
+      await rebalanceContract.methods
+        .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
+        .send({ from: account, gas: 300000 })
+      const assets = rebalance.ratio
+      const assetAddresses = assets.map((a) => getAddress(a.address))
+      dispatch(fetchBalances(account, assetAddresses))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      setIsInvesting(false)
+    } catch {
+      setIsInvesting(false)
+    }
+  }
 
   return (
     <Card className="mb-4">
@@ -250,7 +300,10 @@ const CardCalculate = ({ isSimulating, recalculate, poolUSDBalances, poolAmounts
 
         <Text fontSize="12px" textAlign={isMobile ? 'center' : 'left'}>
           Output is estimated. You will receive at least{' '}
-          <strong>{numeral(totalUserUsdAmount).format('0,0.[00]')} USD</strong> or the transaction will revert.
+          <strong>
+            {numeral(totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD
+          </strong>{' '}
+          or the transaction will revert.
         </Text>
       </div>
 
@@ -263,12 +316,12 @@ const CardCalculate = ({ isSimulating, recalculate, poolUSDBalances, poolAmounts
         <SpaceBetweenFormat
           className="mb-2"
           title="Price Impact"
-          value="< 0.1%"
+          value={`${priceImpact <= 0.1 ? '< 0.1' : priceImpact}%`}
           valueColor="success" /* || failure */
         />
-        <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" />
+        {/* <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" /> */}
 
-        <Button fullWidth radii="small" className="mt-2" disabled={isSimulating} onClick={onNext}>
+        <Button fullWidth radii="small" className="mt-2" disabled={isInvesting || isSimulating} onClick={onInvest}>
           Invest
         </Button>
       </div>
@@ -343,6 +396,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [isInputting, setIsInputting] = useState(true)
   const [isCalculating, setIsCalculating] = useState(false)
   const [isInvested, setIsInvested] = useState(false)
+  const [isInvesting, setIsInvesting] = useState(false)
   const [onPresentErrorOverLimitModal] = useModal(<ErrorOverLimitModal />)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
   const dispatch = useDispatch()
@@ -430,6 +484,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
             )}{' '}
             {isCalculating && (
               <CardCalculate
+                currentInput={currentInput}
+                isInvesting={isInvesting}
+                setIsInvesting={setIsInvesting}
                 isSimulating={isSimulating}
                 recalculate={fetchData}
                 poolUSDBalances={poolUSDBalances}
