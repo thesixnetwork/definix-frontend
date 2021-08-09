@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import rebalance from 'config/abi/rebalance.json'
@@ -114,6 +115,17 @@ export const fetchRebalances = () => async (dispatch) => {
       const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
       // @ts-ignore
       const sharedPrice = totalAssetValue.div(new BigNumber([selectedTotalSupply]).div(new BigNumber(10).pow(18)))
+
+      const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
+      const performanceResp = await axios.get(performanceAPI, {
+        params: {
+          address,
+          period: '1D',
+        },
+      })
+
+      const sharpeRatio = _.get(performanceResp, "data.result.sharpeRatio", 0)
+      const maxDrawdown = Math.abs(_.get(performanceResp, "data.result.maxDrawDown", 0))
       return {
         ...rebalanceConfig,
         currentPoolUsdBalances,
@@ -128,6 +140,9 @@ export const fetchRebalances = () => async (dispatch) => {
         activeUserCountNumber,
         totalAssetValue,
         sharedPrice,
+
+        sharpeRatio,
+        maxDrawdown,
       }
     }),
   )

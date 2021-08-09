@@ -84,6 +84,9 @@ export interface Rebalance extends RebalanceConfig {
   activeUserCountNumber?: number
   totalAssetValue?: BigNumber
   sharedPrice?: BigNumber
+
+  sharpeRatio?: number,
+  maxDrawdown?: number,
 }
 
 // Slices states
