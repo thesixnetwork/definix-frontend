@@ -85,7 +85,7 @@ export interface Rebalance extends RebalanceConfig {
   activeUserCountNumber?: number
   totalAssetValue?: BigNumber
   sharedPrice?: BigNumber
-
+  last24Data?: any
   // sharpeRatio?: number
   // maxDrawdown?: number
   // tokenUsd?: BigNumber[]
