@@ -86,9 +86,9 @@ export interface Rebalance extends RebalanceConfig {
   totalAssetValue?: BigNumber
   sharedPrice?: BigNumber
 
-  sharpeRatio?: number
-  maxDrawdown?: number
-  tokenUsd?: BigNumber[]
+  // sharpeRatio?: number
+  // maxDrawdown?: number
+  // tokenUsd?: BigNumber[]
   enableAutoCompound?: boolean
   autoHerodotus?: string
 }
