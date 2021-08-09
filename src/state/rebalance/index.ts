@@ -124,8 +124,8 @@ export const fetchRebalances = () => async (dispatch) => {
         },
       })
 
-      const sharpeRatio = _.get(performanceResp, "data.result.sharpeRatio", 0)
-      const maxDrawdown = Math.abs(_.get(performanceResp, "data.result.maxDrawDown", 0))
+      const sharpeRatio = _.get(performanceResp, 'data.result.sharpeRatio', 0)
+      const maxDrawdown = Math.abs(_.get(performanceResp, 'data.result.maxDrawDown', 0))
       return {
         ...rebalanceConfig,
         currentPoolUsdBalances,

@@ -133,8 +133,18 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
               <div className="flex bd-t">
                 <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Risk-O-Meter" value="Medium" />
-                <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Sharpe ratio" value={`${numeral(rebalance.sharpeRatio).format('0,0.00')}`} hint="xxx" />
-                <TwoLineFormat className="px-4 py-3 col-4" title="Max Drawdown" value={`${numeral(rebalance.maxDrawdown).format('0,0.00')}%`} hint="xxx" />
+                <TwoLineFormat
+                  className="px-4 py-3 col-4 bd-r"
+                  title="Sharpe ratio"
+                  value={`${numeral(rebalance.sharpeRatio).format('0,0.00')}`}
+                  hint="xxx"
+                />
+                <TwoLineFormat
+                  className="px-4 py-3 col-4"
+                  title="Max Drawdown"
+                  value={`${numeral(rebalance.maxDrawdown).format('0,0.00')}%`}
+                  hint="xxx"
+                />
               </div>
             </Card>
 
