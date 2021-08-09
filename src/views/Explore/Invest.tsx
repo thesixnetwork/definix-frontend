@@ -335,7 +335,7 @@ const CardCalculate = ({
 const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const transactionHash = { ...tx.transactionHash }
+  const { transactionHash } = tx
 
   // @ts-ignore
   const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance]).div(new BigNumber(10).pow(18)).toNumber()
