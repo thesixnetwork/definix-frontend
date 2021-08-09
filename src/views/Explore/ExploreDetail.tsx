@@ -129,7 +129,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       })()}
                     />
                   )}
-                  <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="24H Performance" value="$4,300.76" />
+                  <TwoLineFormat
+                    className={isMobile ? 'col-6' : 'col-3'}
+                    title="24H Performance"
+                    value={`$ ${numeral(rebalance.twentyHperformance).format('0,0.[00]')}`}
+                  />
                   <TwoLineFormat
                     className={isMobile ? 'col-6' : 'col-3'}
                     title="Investors"

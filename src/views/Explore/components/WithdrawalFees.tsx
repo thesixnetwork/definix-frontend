@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
+import { buyBackFee, managementFee, ecosystemFee } from 'config/constants'
 
 interface WithDrawalFeesType {
   className?: string
@@ -20,27 +21,27 @@ const WithDrawalFees: React.FC<WithDrawalFeesType> = ({ className = '' }) => {
         <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="12px">Management fee</Text>
           <Helper text="xxx" className="mx-2" position="top" />
-          <Text>0.2%</Text>
+          <Text>{managementFee}%</Text>
         </div>
         <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="12px">FINIX buy back fee</Text>
           <Helper text="xxx" className="mx-2" position="top" />
-          <Text>0.3%</Text>
+          <Text>{buyBackFee}%</Text>
         </div>
         <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="12px">Bounty Fee</Text>
           <Helper text="xxx" className="mx-2" position="top" />
-          <Text>0.3%</Text>
+          <Text>{ecosystemFee}%</Text>
         </div>
       </div>
 
-      <Text fontSize="12px" className="mt-2">
+      {/* <Text fontSize="12px" className="mt-2">
         ({' '}
         <Text color="primary" style={{ display: 'inline' }}>
           +0.5% fee
         </Text>{' '}
         for EARLY WITHDRAWALS within 1 day )
-      </Text>
+      </Text> */}
     </Card>
   )
 }

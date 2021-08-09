@@ -152,6 +152,8 @@ export const fetchRebalances = () => async (dispatch) => {
       const sharedPricePercentDiff =
         sharedPrice.div(oldSharedPrice.div(100)).toNumber() * (diffSharedPrice.isLessThan(0) ? -1 : 1)
 
+      const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
+
       // const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
       // const performanceResp = await axios.get(performanceAPI, {
       //   params: {
@@ -190,6 +192,7 @@ export const fetchRebalances = () => async (dispatch) => {
         enableAutoCompound,
         autoHerodotus,
         sharedPricePercentDiff,
+        twentyHperformance,
       }
     }),
   )

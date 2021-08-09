@@ -92,6 +92,7 @@ export interface Rebalance extends RebalanceConfig {
   enableAutoCompound?: boolean
   autoHerodotus?: string
   sharedPricePercentDiff?: number
+  twentyHperformance?: number
 }
 
 // Slices states
