@@ -77,7 +77,16 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               <TwoLineFormat
                 title="Share price"
                 value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                percent="+0.2%"
+                percent={`${
+                  rebalance.sharedPricePercentDiff >= 0
+                    ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                    : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                }%`}
+                percentClass={(() => {
+                  if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                  if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                  return ''
+                })()}
               />
             </div>
 
@@ -120,7 +129,16 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             className="mb-2"
             title="Share price"
             value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-            percent="+0.2%"
+            percent={`${
+              rebalance.sharedPricePercentDiff >= 0
+                ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+            }%`}
+            percentClass={(() => {
+              if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+              if (rebalance.sharedPricePercentDiff > 0) return 'success'
+              return ''
+            })()}
           />
           <MiniChart height={60} />
         </div>
@@ -146,7 +164,16 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         <TwoLineFormat
           title="Share price"
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent="+0.2%"
+          percent={`${
+            rebalance.sharedPricePercentDiff >= 0
+              ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+              : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+          }%`}
+          percentClass={(() => {
+            if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+            if (rebalance.sharedPricePercentDiff > 0) return 'success'
+            return ''
+          })()}
         />
       </div>
 

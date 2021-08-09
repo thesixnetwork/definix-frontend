@@ -91,6 +91,7 @@ export interface Rebalance extends RebalanceConfig {
   // tokenUsd?: BigNumber[]
   enableAutoCompound?: boolean
   autoHerodotus?: string
+  sharedPricePercentDiff?: number
 }
 
 // Slices states

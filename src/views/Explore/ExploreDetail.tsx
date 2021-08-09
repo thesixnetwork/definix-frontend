@@ -91,7 +91,16 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     <TwoLineFormat
                       title="Share price"
                       value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                      percent="+0.2%"
+                      percent={`${
+                        rebalance.sharedPricePercentDiff >= 0
+                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      }%`}
+                      percentClass={(() => {
+                        if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                        if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                        return ''
+                      })()}
                       large
                     />
                   )}
@@ -108,7 +117,16 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       className={isMobile ? 'col-6 my-2' : 'col-3'}
                       title="Share price"
                       value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                      percent="+0.2%"
+                      percent={`${
+                        rebalance.sharedPricePercentDiff >= 0
+                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      }%`}
+                      percentClass={(() => {
+                        if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                        if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                        return ''
+                      })()}
                     />
                   )}
                   <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="24H Performance" value="$4,300.76" />

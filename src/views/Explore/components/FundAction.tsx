@@ -42,8 +42,17 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance }) => {
         title="Current investment"
         subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
         value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-        percent="+0.2%"
-        days="1 D"
+        percent={`${
+          rebalance.sharedPricePercentDiff >= 0
+            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+        }%`}
+        percentClass={(() => {
+          if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+          if (rebalance.sharedPricePercentDiff > 0) return 'success'
+          return ''
+        })()}
+        days="24H"
         large
       />
 

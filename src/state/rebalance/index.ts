@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import rebalance from 'config/abi/rebalance.json'
@@ -131,9 +132,26 @@ export const fetchRebalances = () => async (dispatch) => {
       const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
       // @ts-ignore
       const sharedPrice = totalAssetValue.div(new BigNumber([selectedTotalSupply]).div(new BigNumber(10).pow(18)))
+      const last24Response = await axios.get(`${process.env.REACT_APP_API_LAST_24}?address=${address}`)
+      const last24Data = _.get(last24Response, 'data.result', {})
+      const last24TotalSupply = new BigNumber(_.get(last24Data, 'total_supply')).div(new BigNumber(10).pow(18))
+      const last24Tokens = _.get(last24Data, 'tokens', {})
+      const sumOldTokenPrice = BigNumber.sum.apply(
+        null,
+        tokens.map((token: any) => {
+          const tokenAmount = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.balance`, '0')).div(
+            new BigNumber(10).pow(token.decimals),
+          )
+          const tokenPrice = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.price`, 0))
+          const totalTokenPrice = tokenAmount.times(tokenPrice)
+          return totalTokenPrice
+        }),
+      )
+      const oldSharedPrice = sumOldTokenPrice.div(last24TotalSupply)
+      const diffSharedPrice = sharedPrice.minus(oldSharedPrice)
+      const sharedPricePercentDiff =
+        sharedPrice.div(oldSharedPrice.div(100)).toNumber() * (diffSharedPrice.isLessThan(0) ? -1 : 1)
 
-      // // eslint-disable-next-line
-      // debugger
       // const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
       // const performanceResp = await axios.get(performanceAPI, {
       //   params: {
@@ -171,6 +189,7 @@ export const fetchRebalances = () => async (dispatch) => {
         // tokenUsd,
         enableAutoCompound,
         autoHerodotus,
+        sharedPricePercentDiff,
       }
     }),
   )

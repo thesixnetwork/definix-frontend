@@ -12,6 +12,7 @@ interface TwoLineFormatType {
   large?: boolean
   days?: string
   alignRight?: boolean
+  percentClass?: string
 }
 
 const TwoLineFormat: React.FC<TwoLineFormatType> = ({
@@ -24,6 +25,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   large = false,
   days,
   alignRight = false,
+  percentClass = 'success',
 }) => {
   return (
     <div className={className}>
@@ -46,7 +48,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
           {value}
         </Text>
         {percent && (
-          <Text fontSize={large ? '14px' : '12px'} bold color="success" /* || failure */ className="ml-1">
+          <Text fontSize={large ? '14px' : '12px'} bold color={percentClass} /* || failure */ className="ml-1">
             {percent}
           </Text>
         )}
