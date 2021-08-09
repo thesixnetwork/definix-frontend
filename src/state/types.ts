@@ -86,6 +86,8 @@ export interface Rebalance extends RebalanceConfig {
   totalAssetValue?: BigNumber
   sharedPrice?: BigNumber
   tokenUsd?: BigNumber[]
+  enableAutoCompound?: boolean
+  autoHerodotus?: string
 }
 
 // Slices states
@@ -125,6 +127,7 @@ export interface Allowance {
 export interface WalletState {
   decimals: Balance
   balances: Balance
+  userRebalanceBalances: Balance
   userDeadline?: number
   allowances: Allowance
   userSlippage?: number

@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
+import moment from 'moment'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
@@ -207,6 +208,7 @@ const CardInput = ({
 }
 
 const CardCalculate = ({
+  setTx,
   currentInput,
   isInvesting,
   setIsInvesting,
@@ -234,7 +236,6 @@ const CardCalculate = ({
   const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
 
   const onInvest = async () => {
-    onNext()
     const rebalanceContract = getCustomContract(
       klaytn as provider,
       rebalanceAbi as unknown as AbiItem,
@@ -252,13 +253,15 @@ const CardCalculate = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-      await rebalanceContract.methods
+      const tx = await rebalanceContract.methods
         .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-        .send({ from: account, gas: 300000 })
+        .send({ from: account, gas: 5000000 })
+      setTx(tx)
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      onNext()
       setIsInvesting(false)
     } catch {
       setIsInvesting(false)
@@ -329,9 +332,17 @@ const CardCalculate = ({
   )
 }
 
-const CardResponse = ({ rebalance }) => {
+const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const transactionHash = { ...tx.transactionHash }
+
+  // @ts-ignore
+  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance]).div(new BigNumber(10).pow(18)).toNumber()
+  const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(18)).toNumber()
+  // @ts-ignore
+  const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
+  const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
 
   return (
     <Card className="mb-4">
@@ -343,7 +354,7 @@ const CardResponse = ({ rebalance }) => {
             Invest Complete
           </Text>
           <Text color="textSubtle" textAlign="center" className="mt-1" fontSize="12px">
-            27 June 2021, 15:32
+            {moment(new Date()).format('DD MMM YYYY, HH:mm')}
           </Text>
 
           <CardHeading className="mt-6" rebalance={rebalance} />
@@ -352,7 +363,11 @@ const CardResponse = ({ rebalance }) => {
         <div className="flex align-center flex-wrap mb-6">
           <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} />
           <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
-            <Share share="100" usd="~192,803.00" textAlign={isMobile ? 'center' : 'left'} />
+            <Share
+              share={numeral(currentShare).format('0,0.[00]')}
+              usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
+              textAlign={isMobile ? 'center' : 'left'}
+            />
           </div>
         </div>
 
@@ -363,13 +378,16 @@ const CardResponse = ({ rebalance }) => {
                 Transaction Hash
               </Text>
               <Text fontSize="12px" color="primary" bold>
-                0x91….24xd
+                {`${transactionHash.slice(0, 4)}...${transactionHash.slice(
+                  transactionHash.length - 4,
+                  transactionHash.length,
+                )}`}
               </Text>
             </div>
           }
           valueElm={
             <UiLink
-              href="https://scope.klaytn.com/account/}"
+              href={`https://scope.klaytn.com/tx/${transactionHash}`}
               fontSize="12px"
               color="textSubtle"
               style={{ marginRight: '-4px' }}
@@ -390,6 +408,7 @@ const CardResponse = ({ rebalance }) => {
 }
 
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
+  const [tx, setTx] = useState({})
   const [poolUSDBalances, setPoolUSDBalances] = useState([])
   const [poolAmounts, setPoolAmounts] = useState([])
   const [isSimulating, setIsSimulating] = useState(true)
@@ -418,6 +437,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       setIsInputting(true)
       setIsCalculating(false)
       setIsInvested(false)
+      setTx({})
     }
   }, [])
 
@@ -484,6 +504,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
             )}{' '}
             {isCalculating && (
               <CardCalculate
+                setTx={setTx}
                 currentInput={currentInput}
                 isInvesting={isInvesting}
                 setIsInvesting={setIsInvesting}
@@ -502,7 +523,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
                 }}
               />
             )}
-            {isInvested && <CardResponse rebalance={rebalance} />}
+            {isInvested && <CardResponse poolUSDBalances={poolUSDBalances} tx={tx} rebalance={rebalance} />}
           </MaxWidth>
         </LeftPanelAbsolute>
       </TwoPanelLayout>

@@ -8,7 +8,7 @@ import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-de
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
 import { getAddress } from 'utils/addressHelpers'
-import { fetchAllowances, fetchBalances } from '../../state/wallet'
+import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
@@ -54,6 +54,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      dispatch(fetchRebalanceBalances(account, [rebalance]))
     }
   }, [dispatch, account, rebalance])
 

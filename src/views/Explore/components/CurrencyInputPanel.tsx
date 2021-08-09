@@ -80,7 +80,7 @@ const CurrencyInputPanel = ({
             <Text fontSize="14px" color="textSubtle">
               {label}
             </Text>
-            {account && (
+            {account && !!hideBalance === false && (
               <Text fontSize="14px" color="textSubtle">
                 Balance:{' '}
                 {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
@@ -107,10 +107,12 @@ const CurrencyInputPanel = ({
                   <AnountButton title="MAX" onClick={onMax} />
                 </div>
               )}
-              <Coin>
-                {currency.symbol && <img src={`/images/coins/${currency.symbol}.png`} alt="" />}
-                <Text>{currency.symbol}</Text>
-              </Coin>
+              {!currency.hide && (
+                <Coin>
+                  {currency.symbol && <img src={`/images/coins/${currency.symbol}.png`} alt="" />}
+                  <Text>{currency.symbol}</Text>
+                </Coin>
+              )}
             </>
           )}
         </InputBox>

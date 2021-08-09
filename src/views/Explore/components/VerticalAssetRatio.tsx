@@ -4,7 +4,6 @@ import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Text } from 'uikit-dev'
-import currency from '../mockCurrency'
 
 const Coin = styled.div`
   display: flex;

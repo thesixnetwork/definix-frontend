@@ -5,9 +5,9 @@ import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Button, Card, useMatchBreakpoints } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
-import { useBalances } from '../../../state/hooks'
+import { useRebalanceBalances, useBalances } from '../../../state/hooks'
 import TwoLineFormat from './TwoLineFormat'
 import { Rebalance } from '../../../state/types'
 
@@ -30,7 +30,10 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance }) => {
   const isMobile = !isXl
   const { account } = useWallet()
   const balances = useBalances(account)
-  const currentBalance = _.get(balances, getAddress(rebalance.address), new BigNumber(0))
+  const rebalanceBalances = useRebalanceBalances(account)
+
+  const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
+  const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
   return (

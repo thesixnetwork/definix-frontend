@@ -53,6 +53,11 @@ export const useSlippage = (): number => {
   return slippage
 }
 
+export const useRebalanceBalances = (account: string): Balances => {
+  const rebalanceBalances = useSelector((state: State) => state.wallet.userRebalanceBalances[account])
+  return rebalanceBalances
+}
+
 export const useBalances = (account: string): Balances => {
   const balances = useSelector((state: State) => state.wallet.balances[account])
   return balances

@@ -54,6 +54,14 @@ export const fetchRebalances = () => async (dispatch) => {
           address,
           name: 'usdTokenRatioPoint',
         },
+        {
+          address,
+          name: 'enableAutoCompound',
+        },
+        {
+          address,
+          name: 'autoHerodotus',
+        },
       ]
       const erc20Calls = [
         {
@@ -68,6 +76,8 @@ export const fetchRebalances = () => async (dispatch) => {
         tokenLength,
         usdTokenAddresses,
         usdTokenRatioPoint,
+        [enableAutoCompound],
+        [autoHerodotus],
       ] = await multicall(rebalance, rebalanceCalls)
       const tokenCallers = []
       for (let i = 0; i < tokenLength; i++) {
@@ -141,6 +151,8 @@ export const fetchRebalances = () => async (dispatch) => {
         totalAssetValue,
         sharedPrice,
         tokenUsd,
+        enableAutoCompound,
+        autoHerodotus,
       }
     }),
   )

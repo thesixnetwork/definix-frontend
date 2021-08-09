@@ -1,5 +1,5 @@
 import FlexLayout from 'components/layout/FlexLayout'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
@@ -9,6 +9,9 @@ import { getAddress } from 'utils/addressHelpers'
 import { Heading, Text } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { useDispatch } from 'react-redux'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { fetchRebalanceBalances, fetchBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
 import ExploreCard from './components/ExploreCard'
 import ExploreTabButtons from './components/ExploreTabButtons'
@@ -28,6 +31,27 @@ const Explore: React.FC = () => {
   const [isInvested, setIsInvested] = useState(false)
   const [selectedRebalance, setSelectedRebalance] = useState<Rebalance | undefined>()
   const rebalances = useRebalances()
+  const dispatch = useDispatch()
+  const { account } = useWallet()
+
+  useEffect(() => {
+    if (account) {
+      const addressObject = {}
+      rebalances.forEach((rebalance) => {
+        const assets = rebalance.ratio
+        assets.forEach((a) => {
+          addressObject[getAddress(a.address)] = true
+        })
+      })
+      dispatch(
+        fetchBalances(account, [
+          ...Object.keys(addressObject),
+          ...rebalances.map((rebalance) => getAddress(rebalance.address)),
+        ]),
+      )
+      dispatch(fetchRebalanceBalances(account, rebalances))
+    }
+  }, [dispatch, account, rebalances])
 
   return (
     <>
