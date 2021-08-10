@@ -1,18 +1,16 @@
 import Checkbox from '@material-ui/core/Checkbox'
+import axios from 'axios'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import currency from '../mockCurrency'
+import { TD, TR } from './Table'
 
 const rebalanceColor = '#30ADFF'
-
-interface FullChartType {
-  className?: string
-  height?: number
-}
 
 const Box = styled.div`
   canvas {
@@ -47,6 +45,25 @@ const LegendItem = styled.div`
   }
 `
 
+const FullDiv = styled.div`
+  background: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+`
+
+const RelativeDiv = styled.div`
+  position: relative;
+`
+
+const LoadingData = () => (
+  <div className="flex align-center justify-center" style={{ height: '100%' }}>
+    <CircularProgress size={16} color="inherit" className="mr-2" />
+    <Text>Loading...</Text>
+  </div>
+)
+
 const Legend = () => {
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
@@ -78,7 +95,7 @@ const Legend = () => {
   )
 }
 
-const FullChart: React.FC<FullChartType> = ({ className = '', height = 320 }) => {
+const FullChart = ({ isLoading, className = '', height = 320 }) => {
   const data = (canvas) => {
     const ctx = canvas.getContext('2d')
 
@@ -90,6 +107,7 @@ const FullChart: React.FC<FullChartType> = ({ className = '', height = 320 }) =>
       labels: ['1', '2', '3', '4', '5', '6'],
       datasets: [
         {
+          label: 'BTC',
           data: [5, 8, 13, 15, 16, 19],
           fill: true,
           borderColor: rebalanceColor,
@@ -127,9 +145,16 @@ const FullChart: React.FC<FullChartType> = ({ className = '', height = 320 }) =>
   return (
     <div className={className}>
       <Legend />
-      <Box>
-        <Line data={data} options={options} height={height} legend={{ display: false }} />
-      </Box>
+      <RelativeDiv>
+        <Box>
+          <Line data={data} options={options} height={height} legend={{ display: false }} />
+        </Box>
+        {isLoading && (
+          <FullDiv>
+            <LoadingData />
+          </FullDiv>
+        )}
+      </RelativeDiv>
     </div>
   )
 }

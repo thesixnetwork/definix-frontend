@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import axios from 'axios'
+import moment from 'moment'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
@@ -42,7 +44,19 @@ interface ExploreDetailType {
   rebalance: Rebalance | any
 }
 
+const modder = {
+  '1D': 300000,
+}
+
+const formatter = {
+  '1D': 'HH:mm',
+}
+
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
+  const [isLoading, setIsLoading] = useState(true)
+  const [timeframe, setTimeframe] = useState('1D')
+  const [performanceData, setPerformanceData] = useState({})
+  const [graphData, setGraphData] = useState({})
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
   const dispatch = useDispatch()
@@ -57,6 +71,39 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       dispatch(fetchRebalanceBalances(account, [rebalance]))
     }
   }, [dispatch, account, rebalance])
+
+  const fetchGraphData = useCallback(async () => {
+    if (rebalance && rebalance.address) {
+      setIsLoading(true)
+      const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
+      const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
+      try {
+        const performanceResp = await axios.get(
+          `${performanceAPI}?address=${getAddress(rebalance.address)}&period=${timeframe}`,
+        )
+        const fundGraphResp = await axios.get(
+          `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
+        )
+        const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+        const label = []
+        const rebalanceData = {
+          name: 'rebalance',
+          values: [],
+        }
+        //const (this / first) * 100
+        //// eslint-disable-next-line
+        //debugger
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+      }
+    }
+  }, [rebalance, timeframe])
+  useEffect(() => {
+    if (rebalance && rebalance.address) {
+      fetchGraphData()
+    }
+  }, [rebalance, timeframe, fetchGraphData])
 
   if (!rebalance) return <Redirect to="/explore" />
   const { ratio } = rebalance
@@ -144,14 +191,14 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
               <div className="pa-4">
                 <div className="flex flex-wrap align-center justify-space-between mb-3">
-                  <SelectTime />
+                  <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                   <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
                     <TwoLineFormat title="APY" value="00%" hint="xxx" className="mr-6" />
                     <TwoLineFormat title="Return" value="00%" hint="xxx" />
                   </div>
                 </div>
 
-                <FullChart />
+                <FullChart isLoading={isLoading} />
               </div>
 
               <div className="flex bd-t">

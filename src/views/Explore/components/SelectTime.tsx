@@ -2,10 +2,6 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button } from 'uikit-dev'
 
-interface SelectTimeType {
-  className?: string
-}
-
 const GroupButton = styled.div`
   display: flex;
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -31,14 +27,21 @@ const GroupButton = styled.div`
   }
 `
 
-const SelectTime: React.FC<SelectTimeType> = ({ className = '' }) => {
+const SelectTime = ({ timeframe, setTimeframe, className = '' }) => {
   const times = ['1 D', '1 W', '1 M', '3 M', 'ALL']
   const current = 0
 
   return (
     <GroupButton className={className}>
       {times.map((t, idx) => (
-        <Button fullWidth variant={idx === current ? 'primary' : 'text'} radii="card">
+        <Button
+          fullWidth
+          variant={t.split(' ').join('') === timeframe ? 'primary' : 'text'}
+          radii="card"
+          onClick={() => {
+            setTimeframe(t.split(' ').join(''))
+          }}
+        >
           {t}
         </Button>
       ))}
