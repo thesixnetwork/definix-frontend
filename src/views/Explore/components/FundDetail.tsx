@@ -113,7 +113,7 @@ const AssetDetail = ({ rebalance }) => {
         const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
           new BigNumber(10).pow(18),
         )
-        const tokenPrice = totalPrice.div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
+        const tokenPrice = (totalPrice || new BigNumber(0)).div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
         const priceLast24 = _.get(rebalance, `last24data.tokens.${r.address.toLowerCase()}.price`, new BigNumber(0))
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
