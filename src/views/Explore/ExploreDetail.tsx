@@ -90,9 +90,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           name: 'rebalance',
           values: [],
         }
-        //const (this / first) * 100
-        //// eslint-disable-next-line
-        //debugger
+        // const (this / first) * 100
+        // // eslint-disable-next-line
+        // debugger
         setIsLoading(false)
       } catch (error) {
         setIsLoading(false)
