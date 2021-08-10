@@ -222,44 +222,5 @@
     "payable": false,
     "stateMutability": "view",
     "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_lpAmount",
-        "type": "uint256"
-      },
-      {
-        "name": "_toAllAssets",
-        "type": "bool"
-      },
-      {
-        "name": "_outputRatios",
-        "type": "uint256[]"
-      },
-      {
-        "name": "_outputUSDRatio",
-        "type": "uint256"
-      }
-    ],
-    "name": "removeFund",
-    "outputs": [
-      {
-        "name": "outAmounts",
-        "type": "uint256[]"
-      },
-      {
-        "name": "outAmountsInUSD",
-        "type": "uint256[]"
-      },
-      {
-        "name": "outUSD",
-        "type": "uint256"
-      }
-    ],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
   }
 ]
