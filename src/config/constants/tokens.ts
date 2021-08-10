@@ -51,6 +51,19 @@ export const KSP = {
   [intTestnetId]: process.env.REACT_APP_KSP_ADDRESS_TESTNET,
 }
 
+export const allTokens = {
+  SIX,
+  FINIX,
+  WKLAY,
+  KUSDT,
+  KDAI,
+  KETH,
+  KWBTC,
+  KXRP,
+  KBNB,
+  KSP,
+}
+
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
   return Pair.getAddress(
     new Token(chainId, firstAddress, 18, 'DUMMY', 'DUMMY'),

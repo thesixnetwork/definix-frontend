@@ -145,22 +145,6 @@ export interface FinixPriceState {
   sixPrice: number
   klayswapKlayPrice: number
   definixKlayPrice: number
-  sixFinixQuote: number
-  finixKusdtQuote: number
-  finixWklayQuote: number
-  finixKspQuote: number
-  sixKusdtQuote: number
-  sixWklayQuote: number
-  klayKethQuote: number
-  klayKbtcQuote: number
-  klayKxrpQuote: number
-  kethKusdtQuote: number
-  kbtcKusdtQuote: number
-  kxrpKusdtQuote: number
-  wklayKusdtQuote: number
-  kdaiKusdtQuote: number
-  kbnbKusdtQuote: number
-  kbnbFinixQuote: number
 }
 export interface ProfileState {
   isInitialized: boolean
