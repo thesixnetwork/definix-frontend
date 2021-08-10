@@ -25,7 +25,7 @@ import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, us
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
-import { fetchBalances } from '../../state/wallet'
+import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -114,6 +114,7 @@ const CardInput = ({
   onNext,
   ratioType,
   setRatioType,
+  currentBalance,
   currentBalanceNumber,
   selectedToken,
   setSelectedToken,
@@ -132,9 +133,12 @@ const CardInput = ({
     )
     setIsWithdrawing(true)
     try {
+      const thisInput = currentBalance.isLessThan(new BigNumber(currentInput))
+        ? currentBalance
+        : new BigNumber(currentInput)
       const tx = await rebalanceContract.methods
         .removeFund(
-          new BigNumber(currentInput).times(new BigNumber(10).pow(18)).toJSON(),
+          thisInput.times(new BigNumber(10).pow(18)).toJSON(),
           ratioType === 'all',
           ((rebalance || {}).tokens || []).map((token, index) => {
             return (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
@@ -146,6 +150,7 @@ const CardInput = ({
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
+      dispatch(fetchRebalanceBalances(account, [rebalance]))
       onNext()
       setIsWithdrawing(false)
     } catch {
@@ -345,8 +350,13 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
         <div className="flex flex-wrap align-center mb-6">
           <div className={`flex flex-column ${isMobile ? 'col-12 pb-4 align-center' : 'col-7 pl-4 align-end'}`}>
             <Share
-              share="100"
-              usd={`~${numeral(usdToBeRecieve / (100 / (ecosystemFee / 100))).format('0,0.[0000]')}`}
+              share={currentInput}
+              usd={`~ $${numeral(
+                usdToBeRecieve -
+                  usdToBeRecieve / (100 / (ecosystemFee / 100)) -
+                  usdToBeRecieve / (100 / (buyBackFee / 100)) -
+                  usdToBeRecieve / (100 / (managementFee / 100)),
+              ).format('0,0.[0000]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />
           </div>
@@ -479,6 +489,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
                 isSimulating={isSimulating}
                 currentInput={currentInput}
                 setCurrentInput={setCurrentInput}
+                currentBalance={currentBalance}
                 currentBalanceNumber={currentBalanceNumber}
                 ratioType={ratioType}
                 setRatioType={setRatioType}

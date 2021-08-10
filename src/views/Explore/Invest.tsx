@@ -30,7 +30,7 @@ import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
-import { fetchAllowances, fetchBalances } from '../../state/wallet'
+import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
 import ErrorOverLimitModal from './components/ErrorOverLimitModal'
@@ -243,11 +243,20 @@ const CardCalculate = ({
     )
     setIsInvesting(true)
     try {
+      let containMainCoin = false
+      let mainCoinValue = '0'
       const arrayTokenAmount = ((rebalance || {}).tokens || []).map((token) => {
+        if (token.symbol === 'WKLAY' || token.symbol === 'WBNB') {
+          containMainCoin = true
+          mainCoinValue = new BigNumber((currentInput[token.address] || '0') as string)
+            .times(new BigNumber(10).pow(token.decimals))
+            .toJSON()
+        }
         return new BigNumber((currentInput[token.address] || '0') as string)
           .times(new BigNumber(10).pow(token.decimals))
           .toJSON()
       })
+
       const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
       const usdTokenAmount = new BigNumber((currentInput[usdToken.address] || '0') as string)
         .times(new BigNumber(10).pow(usdToken.decimals))
@@ -255,12 +264,13 @@ const CardCalculate = ({
       const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
       const tx = await rebalanceContract.methods
         .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-        .send({ from: account, gas: 5000000 })
+        .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
       setTx(tx)
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      dispatch(fetchRebalanceBalances(account, [rebalance]))
       onNext()
       setIsInvesting(false)
     } catch {

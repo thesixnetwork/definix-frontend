@@ -23,11 +23,11 @@ export const walletSlice = createSlice({
   reducers: {
     setDecimals: (state, action) => {
       const { account, data } = action.payload
-      state.decimals = { ...state.decimals, [account]: { ..._.get(state, 'decimals', {}), ...data } }
+      state.decimals = { ...state.decimals, [account]: { ..._.get(state, `decimals.${account}`, {}), ...data } }
     },
     setBalance: (state, action) => {
       const { account, data } = action.payload
-      state.balances = { ...state.balances, [account]: { ..._.get(state, 'balances', {}), ...data } }
+      state.balances = { ...state.balances, [account]: { ..._.get(state, `balances.${account}`, {}), ...data } }
     },
     setUserRabalanceBalance: (state, action) => {
       const { account, data } = action.payload
