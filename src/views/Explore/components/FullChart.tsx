@@ -79,27 +79,34 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
         </Text>
       </LegendItem>
 
-      {tokens.map((c) => (
-        <FormControlLabelCustom
-          className={isMobile ? 'col-6 ma-0' : ' mr-6'}
-          control={
-            <Checkbox
-              size="small"
-              color="primary"
-              checked={!!selectedTokens[c.symbol] === false}
-              onChange={onCheck(c)}
-            />
-          }
-          label={
-            <LegendItem>
-              <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-              <Text fontSize="12px" bold>
-                {c.symbol}
-              </Text>
-            </LegendItem>
-          }
-        />
-      ))}
+      {tokens.map((c) => {
+        const thisName = (() => {
+          if (c.symbol === 'WKLAY') return 'KLAY'
+          if (c.symbol === 'WBNB') return 'BNB'
+          return c.symbol
+        })()
+        return (
+          <FormControlLabelCustom
+            className={isMobile ? 'col-6 ma-0' : ' mr-6'}
+            control={
+              <Checkbox
+                size="small"
+                color="primary"
+                checked={!!selectedTokens[c.symbol] === false}
+                onChange={onCheck(c)}
+              />
+            }
+            label={
+              <LegendItem>
+                <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
+                <Text fontSize="12px" bold>
+                  {thisName}
+                </Text>
+              </LegendItem>
+            }
+          />
+        )
+      })}
     </FormGroup>
   )
 }

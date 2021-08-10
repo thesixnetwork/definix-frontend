@@ -2,7 +2,7 @@
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import rebalanceAbi from 'config/abi/rebalance.json'
-import multicall from 'utils/multicall'
+import multicall, { multicallEth } from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
 import _ from 'lodash'
 import { createSlice } from '@reduxjs/toolkit'
@@ -128,18 +128,21 @@ export const fetchBalances = (account, addresses: string[]) => async (dispatch) 
     }
   })
 
+  const mainBalance = await multicallEth(account)
   const [balancesResponse, decimalsResponse] = await Promise.all([
     multicall(erc20, calls),
     multicall(erc20, decimalCalls),
   ])
-  const data = {}
-  const dataDecimals = {}
+  const data: Record<string, BigNumber> = {}
+  const dataDecimals: Record<string, BigNumber> = {}
   addresses.forEach((address, index) => {
     if (!account || !address) return undefined
     data[address] = new BigNumber(balancesResponse[index]).div(new BigNumber(10).pow(decimalsResponse[index]))
     dataDecimals[address] = new BigNumber(decimalsResponse[index])
     return undefined
   })
+  data.main = new BigNumber(mainBalance).div(new BigNumber(10).pow(18))
+  dataDecimals.main = new BigNumber(18)
   await dispatch(setDecimals(dataDecimals))
   return dispatch(setBalance({ account, data }))
 }

@@ -24,6 +24,11 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
     <div className={className}>
       {_.compact([...((rebalance || ({} as any)).tokens || []), ...((rebalance || ({} as any)).usdToken || [])]).map(
         (c, index) => {
+          const thisName = (() => {
+            if (c.symbol === 'WKLAY') return 'KLAY'
+            if (c.symbol === 'WBNB') return 'BNB'
+            return c.symbol
+          })()
           return (
             <div className="flex justify-space-between align-center">
               <Coin>
@@ -35,7 +40,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
                 </Text>
               </Coin>
               <Text bold className="pl-3">
-                {c.symbol}
+                {thisName}
               </Text>
             </div>
           )

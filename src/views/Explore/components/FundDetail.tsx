@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
-import { getContract } from 'utils/erc20'
-import { getCaver } from 'utils/caver'
-import axios from 'axios'
 import _ from 'lodash'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
@@ -15,80 +14,82 @@ interface FundDetailType {
   className?: string
 }
 
-interface PriceAll {
-  prices: any
-}
 const Overflow = styled.div`
   overflow: auto;
 `
-const caver = getCaver()
 const AssetDetail = ({ rebalance }) => {
   const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
-  const [rows, setRows] = useState([])
-  useEffect(() => {
-    if (rebalance.tokens) {
-      const tokens = [...rebalance.tokens, ...rebalance.usdToken]
-      const bulidRows = (
-        name: string,
-        balance: number,
-        price: number,
-        value: number,
-        change: number,
-        ratio: string,
-      ) => {
-        return {
-          img: `/images/coins/${name}.png`,
-          name,
-          balance,
-          price,
-          value,
-          change,
-          ratio,
-        }
-      }
-      const updateData = async () => {
-        setRows([])
-        const balanceToken = []
-        const priceAlltoken: PriceAll = (
-          await axios.get(
-            'https://klaytn.api.sixnetwork.io/prices?fbclid=IwAR2m4gK4b_XvHDAFb0h6_obefrqyMd63escpVWzdIk4iZ3gACAinbnccpq4',
-          )
-        ).data
+  let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+  if (tokens.length === 0) tokens = rebalance.ratio
 
-        for (let i = 0; i < tokens.length; i++) {
-          const rebalanceToken = tokens[i]
-          // eslint-disable-next-line
-          const balance = await getTokenBalance(rebalanceToken.address)
-          const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === rebalanceToken.symbol)
-          const priceLast24 = rebalance.last24data.tokens[rebalanceToken.address.toLowerCase()].price
-          const priceCurrent = priceAlltoken.prices[rebalanceToken.symbol]
-          const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
+  // useEffect(() => {
+  //   if (rebalance.tokens) {
+  //     const bulidRows = (
+  //       name: string,
+  //       balance: number,
+  //       price: number,
+  //       value: number,
+  //       change: number,
+  //       ratio: string,
+  //     ) => {
+  //       return {
+  //         img: `/images/coins/${name}.png`,
+  //         name,
+  //         balance,
+  //         price,
+  //         value,
+  //         change,
+  //         ratio,
+  //       }
+  //     }
+  //     const updateData = async () => {
+  //       setRows([])
+  //       const balanceToken = []
+  //       const priceAlltoken: PriceAll = (
+  //         await axios.get(
+  //           'https://klaytn.api.sixnetwork.io/prices?fbclid=IwAR2m4gK4b_XvHDAFb0h6_obefrqyMd63escpVWzdIk4iZ3gACAinbnccpq4',
+  //         )
+  //       ).data
 
-          setRows((oldRows) => [
-            ...oldRows,
-            bulidRows(
-              rebalanceToken.symbol,
-              balance,
-              priceCurrent,
-              balance * priceAlltoken.prices[rebalanceToken.symbol],
-              change,
-              `${ratio.value} %`,
-            ),
-          ])
-          balanceToken.push(balance)
-        }
-      }
-      updateData()
-    }
-  }, [rebalance])
+  //       for (let i = 0; i < tokens.length; i++) {
+  //         const rebalanceToken = tokens[i]
+  //         // eslint-disable-next-line
+  //         const balance = await getTokenBalance(rebalanceToken.address)
+  //         const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === rebalanceToken.symbol)
+  //         const priceLast24 = rebalance.last24data.tokens[rebalanceToken.address.toLowerCase()].price
+  //         const priceCurrent = priceAlltoken.prices[rebalanceToken.symbol]
+  //         const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
 
-  const getTokenBalance = async (tokenAddress) => {
-    const poolAddress = '0x5E840B91cF0675Ada96FBA09028a371b6CFbD551'
-    const sixAmount = await getContract(caver, tokenAddress).methods.balanceOf(poolAddress).call()
-    const sixDecimal = await getContract(caver, tokenAddress).methods.decimals().call()
-    return sixAmount / 10 ** sixDecimal
+  //         setRows((oldRows) => [
+  //           ...oldRows,
+  //           bulidRows(
+  //             rebalanceToken.symbol,
+  //             balance,
+  //             priceCurrent,
+  //             balance * priceAlltoken.prices[rebalanceToken.symbol],
+  //             change,
+  //             `${ratio.value} %`,
+  //           ),
+  //         ])
+  //         balanceToken.push(balance)
+  //       }
+  //     }
+  //     updateData()
+  //   }
+  // }, [tokens, getTokenBalance, rebalance])
+
+  // const getTokenBalance = async (tokenAddress) => {
+  //   const poolAddress = getAddress(rebalance.address)
+  //   const sixAmount = await getContract(caver, tokenAddress).methods.balanceOf(poolAddress).call()
+  //   const sixDecimal = await getContract(caver, tokenAddress).methods.decimals().call()
+  //   return sixAmount / 10 ** sixDecimal
+  // }
+
+  const selectClass = (inputNumber) => {
+    if (inputNumber < 0) return 'failure'
+    if (inputNumber > 0) return 'success'
+    return ''
   }
-
   return (
     <Table>
       <TR>
@@ -101,35 +102,51 @@ const AssetDetail = ({ rebalance }) => {
         ))}
       </TR>
 
-      {rows.map((r) => (
-        <TR>
-          <TD>
-            <div className="flex align-center">
-              <img src={r.img} alt="" width={32} height={32} className="mr-3" />
-              <Text bold>{r.name}</Text>
-            </div>
-          </TD>
-          <TD align="center">
-            <Text>{r.balance.toFixed(3)}</Text>
-          </TD>
-          <TD align="center">
-            <Text>{r.price.toFixed(3)} $</Text>
-          </TD>
-          <TD align="center">
-            <Text>{r.value.toFixed(3)} $</Text>
-          </TD>
-          <TD align="center">
-            {r.change > 0 ? (
-              <Text color="success" /* || failure */>{r.change.toFixed(3)} %</Text>
-            ) : (
-              <Text color="failure" /* || failure */>{r.change.toFixed(3)} %</Text>
-            )}
-          </TD>
-          <TD align="center">
-            <Text>{r.ratio}</Text>
-          </TD>
-        </TR>
-      ))}
+      {tokens.map((r, index) => {
+        const thisName = (() => {
+          if (r.symbol === 'WKLAY') return 'KLAY'
+          if (r.symbol === 'WBNB') return 'BNB'
+          return r.symbol
+        })()
+        const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
+        // @ts-ignore
+        const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
+          new BigNumber(10).pow(18),
+        )
+        const tokenPrice = totalPrice.div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
+        // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
+        const priceLast24 = _.get(rebalance, `last24data.tokens.${r.address.toLowerCase()}.price`, new BigNumber(0))
+        const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
+        const changeNumber = change.toNumber()
+
+        return (
+          <TR>
+            <TD>
+              <div className="flex align-center">
+                <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={32} height={32} className="mr-3" />
+                <Text bold>{thisName}</Text>
+              </div>
+            </TD>
+            <TD align="center">
+              <Text>
+                {numeral(r.totalBalance.div(new BigNumber(10).pow(r.decimals)).toNumber()).format('0,0.[000]')}
+              </Text>
+            </TD>
+            <TD align="center">
+              <Text>{numeral(tokenPrice.toNumber()).format('0,0.[00]')} $</Text>
+            </TD>
+            <TD align="center">
+              <Text>{numeral(totalPrice.toNumber()).format('0,0.[00]')} $</Text>
+            </TD>
+            <TD align="center">
+              <Text color={selectClass(changeNumber)}>{numeral(changeNumber).format('0,0.[000]')} $</Text>
+            </TD>
+            <TD align="center">
+              <Text>{ratio.value}%</Text>
+            </TD>
+          </TR>
+        )
+      })}
     </Table>
   )
 }

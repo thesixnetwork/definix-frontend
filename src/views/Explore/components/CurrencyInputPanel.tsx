@@ -72,6 +72,11 @@ const CurrencyInputPanel = ({
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
 
+  const thisName = (() => {
+    if (currency.symbol === 'WKLAY') return 'KLAY'
+    if (currency.symbol === 'WBNB') return 'BNB'
+    return currency.symbol
+  })()
   return (
     <>
       <Container id={id} hideInput={hideInput} className={className}>
@@ -110,7 +115,7 @@ const CurrencyInputPanel = ({
               {!currency.hide && (
                 <Coin>
                   {currency.symbol && <img src={`/images/coins/${currency.symbol}.png`} alt="" />}
-                  <Text>{currency.symbol}</Text>
+                  <Text>{thisName}</Text>
                 </Coin>
               )}
             </>

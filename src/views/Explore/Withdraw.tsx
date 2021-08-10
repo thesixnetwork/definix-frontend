@@ -86,21 +86,28 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
-const InlineAssetRatioLabel = ({ coin, className = '' }) => (
-  <div className={`flex justify-space-between align-center ${className}`}>
-    <Coin className="col-8">
-      <img src={`/images/coins/${coin.symbol}.png`} alt="" />
-      <Text className="col-3 mr-4" bold>
-        {coin.amount ? numeral(coin.amount.toNumber()).format('0,0.[0000]') : '-'}
-      </Text>
-      <Text>{coin.symbol}</Text>
-    </Coin>
+const InlineAssetRatioLabel = ({ coin, className = '' }) => {
+  const thisName = (() => {
+    if (coin.symbol === 'WKLAY') return 'KLAY'
+    if (coin.symbol === 'WBNB') return 'BNB'
+    return coin.symbol
+  })()
+  return (
+    <div className={`flex justify-space-between align-center ${className}`}>
+      <Coin className="col-8">
+        <img src={`/images/coins/${coin.symbol}.png`} alt="" />
+        <Text className="col-3 mr-4" bold>
+          {coin.amount ? numeral(coin.amount.toNumber()).format('0,0.[0000]') : '-'}
+        </Text>
+        <Text>{thisName}</Text>
+      </Coin>
 
-    <Text fontSize="12px" color="textSubtle" className="col-4" textAlign="right" style={{ letterSpacing: '0' }}>
-      Ratio : {coin.value} %
-    </Text>
-  </div>
-)
+      <Text fontSize="12px" color="textSubtle" className="col-4" textAlign="right" style={{ letterSpacing: '0' }}>
+        Ratio : {coin.value} %
+      </Text>
+    </div>
+  )
+}
 
 const CardInput = ({
   setTx,

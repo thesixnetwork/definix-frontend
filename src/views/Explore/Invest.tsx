@@ -100,6 +100,10 @@ const CardInput = ({
     }
   }
 
+  const findAddress = (token) => {
+    if (token.symbol === 'WKLAY' || token.symbol === 'WBNB') return 'main'
+    return getAddress(token.address)
+  }
   return (
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4 pt-2' : 'pa-6 pt-4'}>
@@ -135,11 +139,11 @@ const CardInput = ({
           {rebalance.ratio.map((c) => (
             <CurrencyInputPanel
               currency={c}
-              balance={_.get(balances, getAddress(c.address))}
+              balance={_.get(balances, findAddress(c))}
               id={`invest-${c.symbol}`}
               key={`invest-${c.symbol}`}
               showMaxButton={
-                String((_.get(balances, getAddress(c.address)) || new BigNumber(0)).toNumber()) !==
+                String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber()) !==
                 currentInput[getAddress(c.address)]
               }
               className="mb-2"
@@ -148,16 +152,14 @@ const CardInput = ({
               onMax={() => {
                 setCurrentInput({
                   ...currentInput,
-                  [getAddress(c.address)]: String(
-                    (_.get(balances, getAddress(c.address)) || new BigNumber(0)).toNumber(),
-                  ),
+                  [getAddress(c.address)]: String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber()),
                 })
               }}
               onQuarter={() => {
                 setCurrentInput({
                   ...currentInput,
                   [getAddress(c.address)]: String(
-                    (_.get(balances, getAddress(c.address)) || new BigNumber(0)).times(0.75).toNumber(),
+                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.75).toNumber(),
                   ),
                 })
               }}
@@ -165,7 +167,7 @@ const CardInput = ({
                 setCurrentInput({
                   ...currentInput,
                   [getAddress(c.address)]: String(
-                    (_.get(balances, getAddress(c.address)) || new BigNumber(0)).times(0.5).toNumber(),
+                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.5).toNumber(),
                   ),
                 })
               }}
@@ -187,7 +189,7 @@ const CardInput = ({
           const needsApproval = rebalance.ratio.find((c) => {
             const currentValue = parseFloat(currentInput[getAddress(c.address)])
             const currentAllowance = (_.get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()
-            return currentAllowance < currentValue
+            return currentAllowance < currentValue && c.symbol !== 'WKLAY' && c.symbol !== 'WBNB'
           })
           if (needsApproval) {
             return (
