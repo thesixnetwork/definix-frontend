@@ -75,7 +75,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   useEffect(() => {
     if (account && rebalance) {
       const assets = rebalance.ratio
-      const assetAddresses = assets.map(a => getAddress(a.address))
+      const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
@@ -103,7 +103,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         }
         const graphTokenData: Record<string, any> = {}
         const base: Record<string, any> = {}
-        fundGraphResult.forEach(data => {
+        fundGraphResult.forEach((data) => {
           const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
             formatter[timeframe],
           )
@@ -126,7 +126,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 base[token.symbol] = dataValues[index]
               }
               if (!graphTokenData[token.symbol]) {
-                const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
                 graphTokenData[token.symbol] = {
                   name: token.symbol,
                   values: [],
