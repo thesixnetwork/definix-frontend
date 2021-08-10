@@ -48,10 +48,18 @@ interface ExploreDetailType {
 
 const modder = {
   '1D': 300000,
+  '1W': 600000,
+  '1M': 3600000,
+  '3M': 3600000,
+  ALL: 3600000,
 }
 
 const formatter = {
   '1D': 'HH:mm',
+  '1W': 'DD MMM HH:mm',
+  '1M': 'DD MMM HH:mm',
+  '3M': 'DD MMM HH:mm',
+  ALL: 'DD MMM HH:mm',
 }
 
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {

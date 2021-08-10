@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { getAddress } from 'utils/addressHelpers'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Text, useMatchBreakpoints } from 'uikit-dev'
@@ -90,7 +91,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               />
             </div>
 
-            <MiniChart />
+            <MiniChart rebalanceAddress={getAddress(rebalance.address)} />
 
             <div className="pa-4">
               <div className="flex align-end justify-space-between mb-2">
@@ -140,7 +141,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               return ''
             })()}
           />
-          <MiniChart height={60} />
+          <MiniChart rebalanceAddress={getAddress(rebalance.address)} height={60} />
         </div>
 
         <div className="col-2 flex flex-column justify-center">
@@ -177,7 +178,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         />
       </div>
 
-      <MiniChart />
+      <MiniChart rebalanceAddress={getAddress(rebalance.address)} />
 
       <div className="pa-4">
         <div className="flex align-end justify-space-between mb-2">

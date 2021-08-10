@@ -153,6 +153,11 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
       ],
       xAxes: [
         {
+          ticks: {
+            autoSkip: true,
+            maxRotation: 0,
+            autoSkipPadding: 23,
+          },
           gridLines: {
             display: false,
           },
