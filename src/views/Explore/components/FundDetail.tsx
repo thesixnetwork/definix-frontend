@@ -2,73 +2,98 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
-import CardTab from './CardTab'
+import { getContract } from 'utils/erc20'
+import { getCaver } from 'utils/caver'
+import axios from 'axios'
+import _ from 'lodash'
 import { Table, TD, TH, TR } from './Table'
+import CardTab from './CardTab'
+import { Rebalance } from '../../../state/types'
 
 interface FundDetailType {
+  rebalance?: Rebalance | any
   className?: string
 }
 
+interface PriceAll {
+  prices: any
+}
 const Overflow = styled.div`
   overflow: auto;
 `
+const caver = getCaver()
+const AssetDetail = ({ rebalance }) => {
+  const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
+  const [rows, setRows] = useState([])
+  useEffect(() => {
+    if (rebalance.tokens) {
+      const tokens = [...rebalance.tokens, ...rebalance.usdToken]
+      const bulidRows = (
+        name: string,
+        balance: number,
+        price: number,
+        value: number,
+        change: number,
+        ratio: string,
+      ) => {
+        return {
+          img: `/images/coins/${name}.png`,
+          name,
+          balance,
+          price,
+          value,
+          change,
+          ratio,
+        }
+      }
+      const updateData = async () => {
+        setRows([])
+        const balanceToken = []
+        const priceAlltoken: PriceAll = (
+          await axios.get(
+            'https://klaytn.api.sixnetwork.io/prices?fbclid=IwAR2m4gK4b_XvHDAFb0h6_obefrqyMd63escpVWzdIk4iZ3gACAinbnccpq4',
+          )
+        ).data
 
-const AssetDetail = () => {
-  const data = {
-    cols: ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO'],
-    rows: [
-      {
-        img: '/images/coins/BTC.png',
-        name: 'BTC',
-        balance: '80.00',
-        price: '$32,273',
-        value: '$32,273,300.00',
-        change: '+2.60%',
-        ratio: '40%',
-      },
-      {
-        img: '/images/coins/bnb.png',
-        name: 'BNB',
-        balance: '100.00',
-        price: '$32,273',
-        value: '$32,273,300.00',
-        change: '+2.60%',
-        ratio: '20%',
-      },
-      {
-        img: '/images/coins/six.png',
-        name: 'SIX',
-        balance: '100.00',
-        price: '$32,273',
-        value: '$32,273,300.00',
-        change: '+2.60%',
-        ratio: '15%',
-      },
-      {
-        img: '/images/coins/FINIX.png',
-        name: 'FINIX',
-        balance: '100.00',
-        price: '$32,273',
-        value: '$32,273,300.00',
-        change: '+2.60%',
-        ratio: '15%',
-      },
-      {
-        img: '/images/coins/usdt.png',
-        name: 'BUSD',
-        balance: '100.00',
-        price: '$32,273',
-        value: '$32,273,300.00',
-        change: '+2.60%',
-        ratio: '10%',
-      },
-    ],
+        for (let i = 0; i < tokens.length; i++) {
+          const rebalanceToken = tokens[i]
+          // eslint-disable-next-line
+          const balance = await getTokenBalance(rebalanceToken.address)
+          const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === rebalanceToken.symbol)
+          const priceLast24 = rebalance.last24data.tokens[rebalanceToken.address.toLowerCase()].price
+          const priceCurrent = priceAlltoken.prices[rebalanceToken.symbol]
+          const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
+          console.log('priceLast24', priceLast24, 'priceCurrent', priceCurrent)
+
+          setRows((oldRows) => [
+            ...oldRows,
+            bulidRows(
+              rebalanceToken.symbol,
+              balance,
+              priceCurrent,
+              balance * priceAlltoken.prices[rebalanceToken.symbol],
+              change,
+              `${ratio.value} %`,
+            ),
+          ])
+          balanceToken.push(balance)
+        }
+      }
+      updateData()
+    }
+  }, [rebalance])
+
+  const getTokenBalance = async (tokenAddress) => {
+    const poolAddress = '0x5E840B91cF0675Ada96FBA09028a371b6CFbD551'
+    const sixAmount = await getContract(caver, tokenAddress).methods.balanceOf(poolAddress).call()
+    const sixDecimal = await getContract(caver, tokenAddress).methods.decimals().call()
+    return sixAmount / 10 ** sixDecimal
   }
 
   return (
     <Table>
       <TR>
-        {data.cols.map((c, idx) => (
+        {cols.map((c, idx) => (
           <TH align={idx > 0 ? 'center' : null}>
             <Text color="textSubtle" fontSize="12px" bold>
               {c}
@@ -77,7 +102,7 @@ const AssetDetail = () => {
         ))}
       </TR>
 
-      {data.rows.map((r) => (
+      {rows.map((r) => (
         <TR>
           <TD>
             <div className="flex align-center">
@@ -86,16 +111,20 @@ const AssetDetail = () => {
             </div>
           </TD>
           <TD align="center">
-            <Text>{r.balance}</Text>
+            <Text>{r.balance.toFixed(3)}</Text>
           </TD>
           <TD align="center">
-            <Text>{r.price}</Text>
+            <Text>{r.price.toFixed(3)} $</Text>
           </TD>
           <TD align="center">
-            <Text>{r.value}</Text>
+            <Text>{r.value.toFixed(3)} $</Text>
           </TD>
           <TD align="center">
-            <Text color="success" /* || failure */>{r.change}</Text>
+            {r.change > 0 ? (
+              <Text color="success" /* || failure */>{r.change.toFixed(3)} %</Text>
+            ) : (
+              <Text color="failure" /* || failure */>{r.change.toFixed(3)} %</Text>
+            )}
           </TD>
           <TD align="center">
             <Text>{r.ratio}</Text>
@@ -137,7 +166,7 @@ const FactSheet = () => {
   )
 }
 
-const FundDetail: React.FC<FundDetailType> = ({ className = '' }) => {
+const FundDetail: React.FC<FundDetailType> = ({ rebalance, className = '' }) => {
   const [currentTab, setCurrentTab] = useState(0)
 
   useEffect(
@@ -150,7 +179,7 @@ const FundDetail: React.FC<FundDetailType> = ({ className = '' }) => {
   return (
     <Card className={className}>
       <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
-      <Overflow className="pa-4">{currentTab === 0 ? <AssetDetail /> : <FactSheet />}</Overflow>
+      <Overflow className="pa-4">{currentTab === 0 ? <AssetDetail rebalance={rebalance} /> : <FactSheet />}</Overflow>
     </Card>
   )
 }

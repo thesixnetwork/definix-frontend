@@ -221,7 +221,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             <FullAssetRatio ratio={ratio} className="mb-4" />
             <TradeStrategy className="mb-4" />
             <WithDrawalFees className="mb-4" />
-            <FundDetail className="mb-4" />
+            <FundDetail className="mb-4" rebalance={rebalance} />
             <Transaction className="mb-4" rbAddress={rebalance.address} />
             <FundAction rebalance={rebalance} />
           </MaxWidth>

@@ -181,7 +181,7 @@ export const fetchRebalances = () => async (dispatch) => {
         usdToken,
         usdTokenRatioPoint,
         tokenRatioPoints,
-
+        last24data: last24Data,
         activeUserCountNumber,
         totalAssetValue,
         sharedPrice,
