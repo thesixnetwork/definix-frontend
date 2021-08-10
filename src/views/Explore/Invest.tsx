@@ -2,7 +2,7 @@
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useRef, useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
@@ -428,6 +428,14 @@ const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
   )
 }
 
+const usePrevious = (value, initialValue) => {
+  const ref = useRef(initialValue)
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+}
+
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [tx, setTx] = useState({})
   const [poolUSDBalances, setPoolUSDBalances] = useState([])
@@ -443,6 +451,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const { account } = useWallet()
   const balances = useBalances(account)
   const allowances = useAllowances(account, getAddress(_.get(rebalance, 'address', {})))
+  const prevRebalance = usePrevious(rebalance, {})
+  const prevBalances = usePrevious(balances, {})
+  const prevCurrentInput = usePrevious(currentInput, {})
 
   useEffect(() => {
     if (account && rebalance) {
@@ -463,34 +474,40 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   }, [])
 
   const fetchData = useCallback(async () => {
-    setIsSimulating(true)
-    const [poolUSDBalancesData, poolAmountsData] = await simulateInvest(
-      _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
-        const ratioPoint = (
-          ((rebalance || {}).tokenRatioPoints || [])[index] ||
-          ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
-          new BigNumber(0)
-        ).toNumber()
-        const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
-        const decimal = c.decimals
-        return {
-          ...c,
-          symbol: c.symbol,
-          address: ratioObject.address,
-          ratioPoint,
-          value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
-          balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
-        }
-      }),
-    )
-    setPoolUSDBalances(poolUSDBalancesData)
-    setPoolAmounts(poolAmountsData)
-    setIsSimulating(false)
-  }, [balances, currentInput, rebalance])
+    if (
+      !_.isEqual(rebalance, prevRebalance) ||
+      !_.isEqual(balances, prevBalances) ||
+      !_.isEqual(currentInput, prevCurrentInput)
+    ) {
+      setIsSimulating(true)
+      const [poolUSDBalancesData, poolAmountsData] = await simulateInvest(
+        _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
+          const ratioPoint = (
+            ((rebalance || {}).tokenRatioPoints || [])[index] ||
+            ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
+            new BigNumber(0)
+          ).toNumber()
+          const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
+          const decimal = c.decimals
+          return {
+            ...c,
+            symbol: c.symbol,
+            address: ratioObject.address,
+            ratioPoint,
+            value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
+            balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+          }
+        }),
+      )
+      setPoolUSDBalances(poolUSDBalancesData)
+      setPoolAmounts(poolAmountsData)
+      setIsSimulating(false)
+    }
+  }, [balances, currentInput, rebalance, prevRebalance, prevBalances, prevCurrentInput])
 
   useEffect(() => {
     fetchData()
-  }, [balances, currentInput, rebalance, fetchData])
+  }, [fetchData])
 
   if (!rebalance) return <Redirect to="/explore" />
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useRef, useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
@@ -62,6 +62,14 @@ const formatter = {
   ALL: 'DD MMM HH:mm',
 }
 
+const usePrevious = (value, initialValue) => {
+  const ref = useRef(initialValue)
+  useEffect(() => {
+    ref.current = value
+  })
+  return ref.current
+}
+
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
@@ -71,6 +79,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const isMobile = !isXl && !isMd && !isLg
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const prevRebalance = usePrevious(rebalance, {})
+  const prevTimeframe = usePrevious(timeframe, '')
 
   useEffect(() => {
     if (account && rebalance) {
@@ -83,74 +93,76 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [dispatch, account, rebalance])
 
   const fetchGraphData = useCallback(async () => {
-    if (rebalance && rebalance.address) {
-      setIsLoading(true)
-      const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
-      const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
-      try {
-        const performanceResp = await axios.get(
-          `${performanceAPI}?address=${getAddress(rebalance.address)}&period=${timeframe}`,
-        )
-        const fundGraphResp = await axios.get(
-          `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
-        )
-        const performanceResult = _.get(performanceResp, 'data.result', {})
-        const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
-        const label = []
-        const rebalanceData = {
-          name: 'rebalance',
-          values: [],
-        }
-        const graphTokenData: Record<string, any> = {}
-        const base: Record<string, any> = {}
-        fundGraphResult.forEach((data) => {
-          const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
-            formatter[timeframe],
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
+      if (rebalance && rebalance.address) {
+        setIsLoading(true)
+        const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
+        const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
+        try {
+          const performanceResp = await axios.get(
+            `${performanceAPI}?address=${getAddress(rebalance.address)}&period=${timeframe}`,
           )
-          label.push(timestampLabel)
-          let dataValues = _.get(data, 'values', [])
-          if (!base.rebalance) {
-            base.rebalance = new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
+          const fundGraphResp = await axios.get(
+            `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
+          )
+          const performanceResult = _.get(performanceResp, 'data.result', {})
+          const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+          const label = []
+          const rebalanceData = {
+            name: 'rebalance',
+            values: [],
           }
-          rebalanceData.values.push(
-            new BigNumber(dataValues[0])
-              .div(new BigNumber(10).pow(18))
-              .div(new BigNumber(base.rebalance as number))
-              .times(100)
-              .toNumber(),
-          )
-          dataValues = dataValues.splice(_.get(rebalance, 'tokens', []).length)
-          _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).forEach(
-            (token, index) => {
-              if (!base[token.symbol]) {
-                base[token.symbol] = dataValues[index]
-              }
-              if (!graphTokenData[token.symbol]) {
-                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-                graphTokenData[token.symbol] = {
-                  name: token.symbol,
-                  values: [],
-                  color: ratioObject.color,
+          const graphTokenData: Record<string, any> = {}
+          const base: Record<string, any> = {}
+          fundGraphResult.forEach((data) => {
+            const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
+              formatter[timeframe],
+            )
+            label.push(timestampLabel)
+            let dataValues = _.get(data, 'values', [])
+            if (!base.rebalance) {
+              base.rebalance = new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
+            }
+            rebalanceData.values.push(
+              new BigNumber(dataValues[0])
+                .div(new BigNumber(10).pow(18))
+                .div(new BigNumber(base.rebalance as number))
+                .times(100)
+                .toNumber(),
+            )
+            dataValues = dataValues.splice(_.get(rebalance, 'tokens', []).length)
+            _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).forEach(
+              (token, index) => {
+                if (!base[token.symbol]) {
+                  base[token.symbol] = dataValues[index]
                 }
-              }
-              graphTokenData[token.symbol].values.push(
-                new BigNumber(dataValues[index])
-                  .div(base[token.symbol] as number)
-                  .times(100)
-                  .toNumber(),
-              )
-            },
-          )
-        })
-        graphTokenData.rebalance = rebalanceData
-        setGraphData({ labels: label, graph: graphTokenData })
-        setPerformanceData(performanceResult)
-        setIsLoading(false)
-      } catch (error) {
-        setIsLoading(false)
+                if (!graphTokenData[token.symbol]) {
+                  const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
+                  graphTokenData[token.symbol] = {
+                    name: token.symbol,
+                    values: [],
+                    color: ratioObject.color,
+                  }
+                }
+                graphTokenData[token.symbol].values.push(
+                  new BigNumber(dataValues[index])
+                    .div(base[token.symbol] as number)
+                    .times(100)
+                    .toNumber(),
+                )
+              },
+            )
+          })
+          graphTokenData.rebalance = rebalanceData
+          setGraphData({ labels: label, graph: graphTokenData })
+          setPerformanceData(performanceResult)
+          setIsLoading(false)
+        } catch (error) {
+          setIsLoading(false)
+        }
       }
     }
-  }, [rebalance, timeframe])
+  }, [rebalance, timeframe, prevRebalance, prevTimeframe])
   useEffect(() => {
     fetchGraphData()
   }, [fetchGraphData])
