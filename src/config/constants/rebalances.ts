@@ -20,7 +20,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'WKLAY',
         value: 33.3,
-        color: '#FFFFFF',
+        color: '#4f463c',
         address: WKLAY,
       },
       {

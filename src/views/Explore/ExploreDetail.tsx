@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
+import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import moment from 'moment'
 import { Helmet } from 'react-helmet'
@@ -56,7 +57,7 @@ const formatter = {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
-  const [performanceData, setPerformanceData] = useState({})
+  const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
   const [graphData, setGraphData] = useState({})
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
@@ -85,15 +86,57 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         const fundGraphResp = await axios.get(
           `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
         )
+        const performanceResult = _.get(performanceResp, 'data.result', {})
         const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
         const label = []
         const rebalanceData = {
           name: 'rebalance',
           values: [],
         }
-        // const (this / first) * 100
-        // // eslint-disable-next-line
-        // debugger
+        const graphTokenData: Record<string, any> = {}
+        const base: Record<string, any> = {}
+        fundGraphResult.forEach((data) => {
+          const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
+            formatter[timeframe],
+          )
+          label.push(timestampLabel)
+          let dataValues = _.get(data, 'values', [])
+          if (!base.rebalance) {
+            base.rebalance = new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
+          }
+          rebalanceData.values.push(
+            new BigNumber(dataValues[0])
+              .div(new BigNumber(10).pow(18))
+              .div(new BigNumber(base.rebalance as number))
+              .times(100)
+              .toNumber(),
+          )
+          dataValues = dataValues.splice(_.get(rebalance, 'tokens', []).length)
+          _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).forEach(
+            (token, index) => {
+              if (!base[token.symbol]) {
+                base[token.symbol] = dataValues[index]
+              }
+              if (!graphTokenData[token.symbol]) {
+                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
+                graphTokenData[token.symbol] = {
+                  name: token.symbol,
+                  values: [],
+                  color: ratioObject.color,
+                }
+              }
+              graphTokenData[token.symbol].values.push(
+                new BigNumber(dataValues[index])
+                  .div(base[token.symbol] as number)
+                  .times(100)
+                  .toNumber(),
+              )
+            },
+          )
+        })
+        graphTokenData.rebalance = rebalanceData
+        setGraphData({ labels: label, graph: graphTokenData })
+        setPerformanceData(performanceResult)
         setIsLoading(false)
       } catch (error) {
         setIsLoading(false)
@@ -101,14 +144,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [rebalance, timeframe])
   useEffect(() => {
-    if (rebalance && rebalance.address) {
-      fetchGraphData()
-    }
-  }, [rebalance, timeframe, fetchGraphData])
+    fetchGraphData()
+  }, [fetchGraphData])
 
   if (!rebalance) return <Redirect to="/explore" />
   const { ratio } = rebalance
-
   return (
     <>
       <Helmet>
@@ -199,7 +239,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   </div>
                 </div>
 
-                <FullChart isLoading={isLoading} />
+                <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
               </div>
 
               <div className="flex bd-t">
@@ -207,13 +247,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 <TwoLineFormat
                   className="px-4 py-3 col-4 bd-r"
                   title="Sharpe ratio"
-                  value={`${numeral(rebalance.sharpeRatio).format('0,0.00')}`}
+                  value={`${numeral(performanceData.sharpeRatio).format('0,0.00')}`}
                   hint="xxx"
                 />
                 <TwoLineFormat
                   className="px-4 py-3 col-4"
                   title="Max Drawdown"
-                  value={`${numeral(rebalance.maxDrawdown).format('0,0.00')}%`}
+                  value={`${numeral(performanceData.maxDrawDown).format('0,0.00')}%`}
                   hint="xxx"
                 />
               </div>

@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Toast, toastTypes } from 'uikit-dev'
+import { getAddress } from 'utils/addressHelpers'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
@@ -86,6 +87,11 @@ export const usePoolsIsFetched = (): boolean => {
 export const useRebalancesIsFetched = (): boolean => {
   const isFetched = useSelector((state: State) => state.rebalances.isFetched)
   return isFetched
+}
+
+export const useRebalanceAddress = (address): Rebalance => {
+  const rebalance = useSelector((state: State) => state.rebalances.data.find((f) => getAddress(f.address) === address))
+  return rebalance
 }
 
 export const useRebalances = (): Rebalance[] => {

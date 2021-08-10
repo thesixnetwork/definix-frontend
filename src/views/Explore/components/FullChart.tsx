@@ -1,14 +1,12 @@
 import Checkbox from '@material-ui/core/Checkbox'
-import axios from 'axios'
+import _ from 'lodash'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import currency from '../mockCurrency'
-import { TD, TR } from './Table'
 
 const rebalanceColor = '#30ADFF'
 
@@ -64,9 +62,13 @@ const LoadingData = () => (
   </div>
 )
 
-const Legend = () => {
+const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
+
+  const onCheck = (token) => (event) => {
+    setSelectedTokens({ ...selectedTokens, [token.symbol]: !event.target.checked })
+  }
 
   return (
     <FormGroup row className="flex flex-wrap mb-5">
@@ -77,15 +79,22 @@ const Legend = () => {
         </Text>
       </LegendItem>
 
-      {currency.map((c) => (
+      {tokens.map((c) => (
         <FormControlLabelCustom
           className={isMobile ? 'col-6 ma-0' : ' mr-6'}
-          control={<Checkbox size="small" color="primary" />}
+          control={
+            <Checkbox
+              size="small"
+              color="primary"
+              checked={!!selectedTokens[c.symbol] === false}
+              onChange={onCheck(c)}
+            />
+          }
           label={
             <LegendItem>
-              <img src={c.img} alt="" />
+              <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
               <Text fontSize="12px" bold>
-                {c.name}
+                {c.symbol}
               </Text>
             </LegendItem>
           }
@@ -95,7 +104,8 @@ const Legend = () => {
   )
 }
 
-const FullChart = ({ isLoading, className = '', height = 320 }) => {
+const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
+  const [selectedTokens, setSelectedTokens] = useState({})
   const data = (canvas) => {
     const ctx = canvas.getContext('2d')
 
@@ -104,19 +114,28 @@ const FullChart = ({ isLoading, className = '', height = 320 }) => {
     gradient.addColorStop(0.7, 'transparent')
 
     return {
-      labels: ['1', '2', '3', '4', '5', '6'],
-      datasets: [
-        {
-          label: 'BTC',
-          data: [5, 8, 13, 15, 16, 19],
-          fill: true,
-          borderColor: rebalanceColor,
-          backgroundColor: gradient,
-          tension: 0,
-          pointBackgroundColor: 'transparent',
-          pointBorderColor: 'transparent',
-        },
-      ],
+      labels: _.get(graphData, 'labels', []),
+      datasets: Object.keys(_.get(graphData, 'graph', {}))
+        .filter((key) => !selectedTokens[key])
+        .map((key) => {
+          const thisData = _.get(graphData, `graph.${key}`, {})
+          const thisName = thisData.name || ''
+          return {
+            label: thisName,
+            data: thisData.values || [],
+            fill: true,
+            borderColor: thisData.color,
+            tension: 0,
+            ...(thisName === 'rebalance'
+              ? {
+                  borderColor: rebalanceColor,
+                  backgroundColor: gradient,
+                  pointBackgroundColor: 'transparent',
+                  pointBorderColor: 'transparent',
+                }
+              : {}),
+          }
+        }),
     }
   }
 
@@ -144,7 +163,7 @@ const FullChart = ({ isLoading, className = '', height = 320 }) => {
 
   return (
     <div className={className}>
-      <Legend />
+      <Legend tokens={tokens} selectedTokens={selectedTokens} setSelectedTokens={setSelectedTokens} />
       <RelativeDiv>
         <Box>
           <Line data={data} options={options} height={height} legend={{ display: false }} />

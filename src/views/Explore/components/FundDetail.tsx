@@ -63,7 +63,6 @@ const AssetDetail = ({ rebalance }) => {
           const priceLast24 = rebalance.last24data.tokens[rebalanceToken.address.toLowerCase()].price
           const priceCurrent = priceAlltoken.prices[rebalanceToken.symbol]
           const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
-          console.log('priceLast24', priceLast24, 'priceCurrent', priceCurrent)
 
           setRows((oldRows) => [
             ...oldRows,

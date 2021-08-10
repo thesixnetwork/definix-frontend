@@ -29,11 +29,10 @@ const GroupButton = styled.div`
 
 const SelectTime = ({ timeframe, setTimeframe, className = '' }) => {
   const times = ['1 D', '1 W', '1 M', '3 M', 'ALL']
-  const current = 0
 
   return (
     <GroupButton className={className}>
-      {times.map((t, idx) => (
+      {times.map((t) => (
         <Button
           fullWidth
           variant={t.split(' ').join('') === timeframe ? 'primary' : 'text'}

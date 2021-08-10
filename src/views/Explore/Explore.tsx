@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { HelpCircle } from 'react-feather'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useRebalances } from 'state/hooks'
+import { useRebalanceAddress, useRebalances } from 'state/hooks'
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { Heading, Text } from 'uikit-dev'
@@ -31,6 +31,7 @@ const Explore: React.FC = () => {
   const [isInvested, setIsInvested] = useState(false)
   const [selectedRebalance, setSelectedRebalance] = useState<Rebalance | undefined>()
   const rebalances = useRebalances()
+  const targetRebalance = useRebalanceAddress(selectedRebalance ? getAddress(selectedRebalance.address) : undefined)
   const dispatch = useDispatch()
   const { account } = useWallet()
 
@@ -109,27 +110,15 @@ const Explore: React.FC = () => {
       </Route>
 
       <Route exact path={`${path}/detail`}>
-        <ExploreDetail
-          rebalance={
-            selectedRebalance && rebalances.find((r) => getAddress(r.address) === getAddress(selectedRebalance.address))
-          }
-        />
+        <ExploreDetail rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
       <Route exact path={`${path}/invest`}>
-        <Invest
-          rebalance={
-            selectedRebalance && rebalances.find((r) => getAddress(r.address) === getAddress(selectedRebalance.address))
-          }
-        />
+        <Invest rebalance={selectedRebalance && targetRebalance} />
       </Route>
 
       <Route exact path={`${path}/withdraw`}>
-        <Withdraw
-          rebalance={
-            selectedRebalance && rebalances.find((r) => getAddress(r.address) === getAddress(selectedRebalance.address))
-          }
-        />
+        <Withdraw rebalance={selectedRebalance && targetRebalance} />
       </Route>
     </>
   )
