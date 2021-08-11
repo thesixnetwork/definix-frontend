@@ -26,7 +26,6 @@ const VerticalStyle = styled(CardStyle)`
   display: flex;
   position: relative;
   flex-direction: column;
-  justify-content: space-between;
 `
 
 const HorizontalStyle = styled(CardStyle)`
@@ -94,8 +93,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             <MiniChart rebalanceAddress={getAddress(rebalance.address)} />
 
             <div className="pa-4">
-              <div className="flex align-end justify-space-between mb-2">
-                <Text textAlign="center">{numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS</Text>
+              <div className="flex align-end justify-space-between mb-3">
+                {/* <Text textAlign="center" fontSize="12px">
+                  {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
+                </Text> */}
                 <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
               </div>
               <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
@@ -145,9 +146,9 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         </div>
 
         <div className="col-2 flex flex-column justify-center">
-          <Text textAlign="center" className="mb-2">
+          {/* <Text textAlign="center" className="mb-3" fontSize="12px">
             {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
-          </Text>
+          </Text> */}
           <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
             View Details
           </Button>
@@ -181,8 +182,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
       <MiniChart rebalanceAddress={getAddress(rebalance.address)} />
 
       <div className="pa-4">
-        <div className="flex align-end justify-space-between mb-2">
-          <Text textAlign="center">{numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS</Text>
+        <div className="flex align-end justify-space-between mb-3">
+          {/* <Text textAlign="center" fontSize="12px">
+            {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
+          </Text> */}
           <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
         </div>
         <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>

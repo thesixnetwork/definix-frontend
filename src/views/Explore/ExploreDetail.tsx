@@ -365,22 +365,23 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           <MaxWidth className={!isMobile ? 'flex' : ''}>
             <div className={!isMobile ? 'col-9' : ''}>
               <Card className="mb-4">
-                <div className="pa-4 pt-2 bd-b">
+                <div className="pa-4 pt-3 bd-b">
                   <Button
                     variant="text"
                     as={Link}
                     to="/explore"
                     ml="-12px"
-                    mb="8px"
+                    mb="12px"
                     padding="0 12px"
-                    startIcon={<ArrowBackIcon />}
+                    size="sm"
+                    startIcon={<ArrowBackIcon color="textSubtle" />}
                   >
                     <Text fontSize="14px" color="textSubtle">
                       Back
                     </Text>
                   </Button>
 
-                  <div className="flex justify-space-between align-end mb-2">
+                  <div className="flex justify-space-between align-end mb-3">
                     <CardHeading rebalance={rebalance} />
                     {!isMobile && (
                       <TwoLineFormat
@@ -442,7 +443,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   </div>
                 </div>
 
-                <div className="pa-4">
+                <div className="pa-4 pt-5">
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>

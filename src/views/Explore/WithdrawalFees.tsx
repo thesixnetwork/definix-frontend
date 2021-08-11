@@ -15,17 +15,17 @@ const WithDrawalFees: React.FC<WithDrawalFeesType> = ({ className = '' }) => {
 
       <div className="flex">
         <div className="col-4 flex align-center">
-          <Text fontSize="12px">Management fee</Text>
+          <Text fontSize="14px">Management fee</Text>
           <Helper text="xxx" className="mx-2" position="top" />
           <Text>0.2%</Text>
         </div>
         <div className="col-4 flex align-center">
-          <Text fontSize="12px">FINIX buy back fee</Text>
+          <Text fontSize="14px">FINIX buy back fee</Text>
           <Helper text="xxx" className="mx-2" position="top" />
           <Text>0.3%</Text>
         </div>
         <div className="col-4 flex align-center">
-          <Text fontSize="12px">Bounty Fee</Text>
+          <Text fontSize="14px">Bounty Fee</Text>
           <Helper text="xxx" className="mx-2" position="top" />
           <Text>0.3%</Text>
         </div>

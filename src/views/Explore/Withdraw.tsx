@@ -166,7 +166,7 @@ const CardInput = ({
   }
   return (
     <Card className="mb-4">
-      <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-6 py-4'} `}>
+      <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-4 py-4'} `}>
         <div className="flex justify-space-between mb-2">
           <Button
             variant="text"
@@ -174,7 +174,8 @@ const CardInput = ({
             to="/explore/detail"
             ml="-12px"
             padding="0 12px"
-            startIcon={<ArrowBackIcon />}
+            size="sm"
+            startIcon={<ArrowBackIcon color="textSubtle" />}
           >
             <Text fontSize="14px" color="textSubtle">
               Back

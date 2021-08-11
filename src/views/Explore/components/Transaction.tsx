@@ -157,7 +157,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
 
   return (
     <Card className={className}>
-      <CardTab menus={['ALL TRANSACTION', 'MY TRANSACTION']} current={currentTab} setCurrent={onTabChange} />
+      <CardTab menus={['ALL TRANSACTIONS', 'MY TRANSACTION']} current={currentTab} setCurrent={onTabChange} />
 
       <PaginationCustom
         count={pages}
