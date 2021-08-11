@@ -16,7 +16,7 @@ import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
 import { BLOCKS_PER_YEAR } from 'config'
 import herodotusABI from 'config/abi/herodotus.json'
-import {usePriceFinixUsd} from "state/hooks"
+import { usePriceFinixUsd } from 'state/hooks'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
@@ -115,34 +115,39 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     if (rebalance && rebalance.address && rebalance.tokens) {
       setIsLoading(true)
       try {
-        const autoHerodotusContract = getContract([
-          {
-            "constant": true,
-            "inputs": [
-              {
-                "name": "",
-                "type": "address"
-              }
-            ],
-            "name": "rebalancePID",
-            "outputs": [
-              {
-                "name": "",
-                "type": "uint256"
-              }
-            ],
-            "payable": false,
-            "stateMutability": "view",
-            "type": "function"
-          }
-        ], rebalance.autoHerodotus)
+        const autoHerodotusContract = getContract(
+          [
+            {
+              constant: true,
+              inputs: [
+                {
+                  name: '',
+                  type: 'address',
+                },
+              ],
+              name: 'rebalancePID',
+              outputs: [
+                {
+                  name: '',
+                  type: 'uint256',
+                },
+              ],
+              payable: false,
+              stateMutability: 'view',
+              type: 'function',
+            },
+          ],
+          rebalance.autoHerodotus,
+        )
         // getAddress( "0x115DE0E312ae3Fd19E8000379D9A8103dB2e789c"
         const herodotusContract = getContract(herodotusABI, getHerodotusAddress())
         const [pid, BONUS_MULTIPLIER, totalAllocPoint, currentPriceTokensResp] = await Promise.all([
           autoHerodotusContract.methods.rebalancePID(getAddress(rebalance.address)).call(),
           herodotusContract.methods.BONUS_MULTIPLIER().call(),
           herodotusContract.methods.totalAllocPoint().call(),
-          axios.get('https://klaytn.api.sixnetwork.io/prices?fbclid=IwAR2m4gK4b_XvHDAFb0h6_obefrqyMd63escpVWzdIk4iZ3gACAinbnccpq4')
+          axios.get(
+            'https://klaytn.api.sixnetwork.io/prices?fbclid=IwAR2m4gK4b_XvHDAFb0h6_obefrqyMd63escpVWzdIk4iZ3gACAinbnccpq4',
+          ),
         ])
         const currentPriceAllResult = _.get(currentPriceTokensResp, 'data.prices', [])
 
@@ -183,7 +188,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           {
             address,
             name: 'usdToken',
-          }
+          },
         ]
         const erc20Calls = [
           {
@@ -192,13 +197,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           },
         ]
 
-        const [
-          [currentPoolUsdBalances],
-          tokenLength,
-          usdTokenAddresses,
-       
-        ] = await multicall(rebalanceABI, rebalanceCalls)
-        
+        const [[currentPoolUsdBalances], tokenLength, usdTokenAddresses] = await multicall(rebalanceABI, rebalanceCalls)
+
         const tokenCallers = []
         for (let i = 0; i < tokenLength; i++) {
           tokenCallers.push(multicall(rebalanceABI, [{ address, name: 'tokens', params: [i] }]))
@@ -237,7 +237,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         const usdTokenCallers = makeTokenCallers(usdTokenAddresses)
         const usdToken = await Promise.all(usdTokenCallers)
         const [totalSupply] = await multicall(erc20, erc20Calls)
-  
+
         // @ts-ignore
         const selectedTotalSupply = (totalSupply || [])[0]
         const poolUsdBalance = (currentPoolUsdBalances || []).map((x, index) => {
@@ -249,7 +249,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
         // @ts-ignore
         const sharedPrice = totalAssetValue.div(new BigNumber([selectedTotalSupply]).div(new BigNumber(10).pow(18)))
-        const last24Response = await axios.get(`${process.env.REACT_APP_API_LAST_24}?address=${address}&period=${timeframe}`)
+        const last24Response = await axios.get(
+          `${process.env.REACT_APP_API_LAST_24}?address=${address}&period=${timeframe}`,
+        )
         const last24Data = _.get(last24Response, 'data.result', {})
         const last24TotalSupply = new BigNumber(_.get(last24Data, 'total_supply')).div(new BigNumber(10).pow(18))
         const last24Tokens = _.get(last24Data, 'tokens', {})
@@ -268,7 +270,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         const diffSharedPrice = sharedPrice.minus(oldSharedPrice)
         const sharedPricePercentDiff =
           sharedPrice.div(oldSharedPrice.div(100)).toNumber() * (diffSharedPrice.isLessThan(0) ? -1 : 1)
-          setReturnPercent(sharedPricePercentDiff)
+        setReturnPercent(sharedPricePercentDiff)
 
         setIsLoading(false)
       } catch (error) {
@@ -385,10 +387,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     <TwoLineFormat
                       title="Share price"
                       value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                      percent={`${rebalance.sharedPricePercentDiff >= 0
-                        ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                      percent={`${
+                        rebalance.sharedPricePercentDiff >= 0
+                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      }%`}
                       percentClass={(() => {
                         if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                         if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -410,10 +413,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       className={isMobile ? 'col-6 my-2' : 'col-3'}
                       title="Share price"
                       value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                      percent={`${rebalance.sharedPricePercentDiff >= 0
-                        ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                      percent={`${
+                        rebalance.sharedPricePercentDiff >= 0
+                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                      }%`}
                       percentClass={(() => {
                         if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                         if (rebalance.sharedPricePercentDiff > 0) return 'success'
