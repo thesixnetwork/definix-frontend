@@ -14,6 +14,7 @@ import { provider } from 'web3-core'
 import rebalanceAbi from 'config/abi/rebalance.json'
 import { getCustomContract } from 'utils/erc20'
 import numeral from 'numeral'
+import useTheme from 'hooks/useTheme'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -130,6 +131,7 @@ const CardInput = ({
   const isMobile = !isXl
   const { account, klaytn } = useWallet()
   const dispatch = useDispatch()
+  const { isDark } = useTheme()
 
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
   const onWithdraw = async () => {
@@ -186,6 +188,7 @@ const CardInput = ({
 
         <TwoLineFormat
           title="Current investment"
+          titleColor={isDark ? '#ADB4C2' : ''}
           value={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
           subTitle={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
           large

@@ -6,6 +6,7 @@ interface TwoLineFormatType {
   className?: string
   title: string
   subTitle?: string
+  titleColor?: string
   value: string
   percent?: string
   hint?: string
@@ -20,6 +21,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   className = '',
   title,
   subTitle,
+  titleColor,
   value,
   percent,
   hint,
@@ -32,7 +34,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   return (
     <div className={className}>
       <div className={`flex ${alignRight ? 'justify-end' : ''}`} style={{ lineHeight: '0' }}>
-        <Text fontSize="14px" color="textSubtle">
+        <Text fontSize="14px" color={titleColor || 'textSubtle'}>
           {title}
         </Text>
 
