@@ -151,7 +151,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           {/* <Text textAlign="center" className="mb-3" fontSize="12px">
             {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
           </Text> */}
-          <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
+          <Button fullWidth className="mt-3" radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
             View Details
           </Button>
         </div>
