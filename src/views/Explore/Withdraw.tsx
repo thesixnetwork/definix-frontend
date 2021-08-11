@@ -6,6 +6,8 @@ import BigNumber from 'bignumber.js'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import Radio from '@material-ui/core/Radio'
+import { getAbiRebalanceByName } from 'hooks/hookHelper'
+import * as klipProvider from 'hooks/klipProvider'
 import { managementFee, ecosystemFee, buyBackFee } from 'config/constants'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
@@ -14,7 +16,7 @@ import { provider } from 'web3-core'
 import rebalanceAbi from 'config/abi/rebalance.json'
 import { getCustomContract } from 'utils/erc20'
 import numeral from 'numeral'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -128,7 +130,8 @@ const CardInput = ({
 }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const { account, klaytn } = useWallet()
+  const { setShowModal } = React.useContext(KlipModalContext())
+  const { account, klaytn, connector } = useWallet()
   const dispatch = useDispatch()
 
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
@@ -143,17 +146,35 @@ const CardInput = ({
       const thisInput = currentBalance.isLessThan(new BigNumber(currentInput))
         ? currentBalance
         : new BigNumber(currentInput)
-      const tx = await rebalanceContract.methods
-        .removeFund(
-          thisInput.times(new BigNumber(10).pow(18)).toJSON(),
-          ratioType === 'all',
-          ((rebalance || {}).tokens || []).map((token, index) => {
-            return (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
-          }),
-          (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber(),
+      if (connector === 'klip') {
+        klipProvider.genQRcodeContactInteract(
+          getAddress(rebalance.address),
+          JSON.stringify(getAbiRebalanceByName('removeFund')),
+          JSON.stringify([
+            thisInput.times(new BigNumber(10).pow(18)).toJSON(),
+            ratioType === 'all',
+            ((rebalance || {}).tokens || []).map((token, index) => {
+              return (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+            }),
+            (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber(),
+          ]),
+          setShowModal,
         )
-        .send({ from: account, gas: 5000000 })
-      setTx(tx)
+        const tx = await klipProvider.checkResponse()
+        setTx(tx)
+      } else {
+        const tx = await rebalanceContract.methods
+          .removeFund(
+            thisInput.times(new BigNumber(10).pow(18)).toJSON(),
+            ratioType === 'all',
+            ((rebalance || {}).tokens || []).map((token, index) => {
+              return (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+            }),
+            (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber(),
+          )
+          .send({ from: account, gas: 5000000 })
+        setTx(tx)
+      }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
@@ -360,9 +381,9 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
               share={currentInput}
               usd={`~ $${numeral(
                 usdToBeRecieve -
-                  usdToBeRecieve / (100 / (ecosystemFee / 100)) -
-                  usdToBeRecieve / (100 / (buyBackFee / 100)) -
-                  usdToBeRecieve / (100 / (managementFee / 100)),
+                usdToBeRecieve / (100 / (ecosystemFee / 100)) -
+                usdToBeRecieve / (100 / (buyBackFee / 100)) -
+                usdToBeRecieve / (100 / (managementFee / 100)),
               ).format('0,0.[0000]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />

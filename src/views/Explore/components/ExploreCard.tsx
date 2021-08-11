@@ -78,11 +78,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               <TwoLineFormat
                 title="Share price"
                 value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                percent={`${
-                  rebalance.sharedPricePercentDiff >= 0
+                percent={`${rebalance.sharedPricePercentDiff >= 0
                     ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                     : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                }%`}
+                  }%`}
                 percentClass={(() => {
                   if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                   if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -118,9 +117,9 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             <TwoLineFormat
               className="col-6"
               title="Total asset value"
-              value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+              value={`${numeral((rebalance.totalAssetValue || 0)).format('0,0.00')}`}
             />
-            <TwoLineFormat className="col-6" title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" />
+            <TwoLineFormat className="col-6" title="APY" value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" />
           </div>
           <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
         </div>
@@ -130,11 +129,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             className="mb-2"
             title="Share price"
             value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-            percent={`${
-              rebalance.sharedPricePercentDiff >= 0
+            percent={`${rebalance.sharedPricePercentDiff >= 0
                 ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                 : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-            }%`}
+              }%`}
             percentClass={(() => {
               if (rebalance.sharedPricePercentDiff < 0) return 'failure'
               if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -165,11 +163,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         <TwoLineFormat
           title="Share price"
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent={`${
-            rebalance.sharedPricePercentDiff >= 0
+          percent={`${rebalance.sharedPricePercentDiff >= 0
               ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
               : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-          }%`}
+            }%`}
           percentClass={(() => {
             if (rebalance.sharedPricePercentDiff < 0) return 'failure'
             if (rebalance.sharedPricePercentDiff > 0) return 'success'

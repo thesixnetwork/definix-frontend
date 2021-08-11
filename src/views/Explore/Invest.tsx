@@ -7,8 +7,10 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { AbiItem } from 'web3-utils'
+import * as klipProvider from 'hooks/klipProvider'
+import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
 import {
   ArrowBackIcon,
@@ -126,11 +128,10 @@ const CardInput = ({
         <TwoLineFormat
           title="Share price"
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent={`${
-            rebalance.sharedPricePercentDiff >= 0
+          percent={`${rebalance.sharedPricePercentDiff >= 0
               ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
               : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-          }%`}
+            }%`}
           percentClass={(() => {
             if (rebalance.sharedPricePercentDiff < 0) return 'failure'
             if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -234,7 +235,8 @@ const CardCalculate = ({
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const slippage = useSlippage()
-  const { account, klaytn } = useWallet()
+  const { setShowModal } = React.useContext(KlipModalContext())
+  const { account, klaytn, connector } = useWallet()
   const dispatch = useDispatch()
 
   // @ts-ignore
@@ -277,10 +279,21 @@ const CardCalculate = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-      const tx = await rebalanceContract.methods
-        .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-        .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
-      setTx(tx)
+      if (connector === 'klip') {
+        klipProvider.genQRcodeContactInteract(
+          getAddress(rebalance.address),
+          JSON.stringify(getAbiRebalanceByName('addFund')),
+          JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
+          setShowModal,
+        )
+        const tx = await klipProvider.checkResponse()
+        setTx(tx)
+      } else {
+        const tx = await rebalanceContract.methods
+          .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
+          .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+        setTx(tx)
+      }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))

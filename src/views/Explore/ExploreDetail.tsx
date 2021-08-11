@@ -106,7 +106,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [dispatch, account, rebalance])
 
-  
   const fetchReturnPercentData = useCallback(async () => {
     if (rebalance && rebalance.address && rebalance.tokens) {
       setIsLoading(true)
@@ -288,8 +287,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   useEffect(() => {
     fetchGraphData()
     fetchReturnPercentData()
-    
-  }, [fetchGraphData, fetchReturnPercentData ])
+  }, [fetchGraphData, fetchReturnPercentData])
 
   if (!rebalance) return <Redirect to="/explore" />
   const { ratio } = rebalance
@@ -324,11 +322,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <TwoLineFormat
                         title="Share price"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
+                        percent={`${rebalance.sharedPricePercentDiff >= 0
                             ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                             : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                          }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -350,11 +347,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         className={isMobile ? 'col-6 my-2' : 'col-3'}
                         title="Share price"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
+                        percent={`${rebalance.sharedPricePercentDiff >= 0
                             ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                             : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                          }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -384,7 +380,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                      <TwoLineFormat title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" className="mr-6" />
+                      <TwoLineFormat
+                        title="APY"
+                        value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
+                        hint="xxx"
+                        className="mr-6"
+                      />
                       <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
                     </div>
                   </div>
