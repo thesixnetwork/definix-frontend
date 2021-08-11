@@ -81,7 +81,7 @@ export interface Rebalance extends RebalanceConfig {
   usdToken?: Token[]
   usdTokenRatioPoint?: BigNumber
   totalRatioPoints?: BigNumber[]
-
+  apyPool?:BigNumber
   activeUserCountNumber?: number
   totalAssetValue?: BigNumber
   sharedPrice?: BigNumber

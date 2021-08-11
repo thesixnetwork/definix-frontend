@@ -8,15 +8,11 @@ import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
-import { getContract, getWeb3Contract } from 'utils/caver'
-import { getAddress, getHerodotusAddress, getFinixAddress } from 'utils/addressHelpers'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
-import { BLOCKS_PER_YEAR } from 'config'
-import herodotusABI from 'config/abi/herodotus.json'
-import { usePriceFinixUsd } from 'state/hooks'
+import { getAddress, getHerodotusAddress, getFinixAddress } from 'utils/addressHelpers'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
@@ -80,7 +76,6 @@ const usePrevious = (value, initialValue) => {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
-  const [apy, setApy] = useState(0)
   const [returnPercent, setReturnPercent] = useState(0)
   const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
   const [graphData, setGraphData] = useState({})
@@ -111,64 +106,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [dispatch, account, rebalance])
 
-  const fetchAPYData = useCallback(async () => {
-    if (rebalance && rebalance.address && rebalance.tokens) {
-      setIsLoading(true)
-      try {
-        const autoHerodotusContract = getContract(
-          [
-            {
-              constant: true,
-              inputs: [
-                {
-                  name: '',
-                  type: 'address',
-                },
-              ],
-              name: 'rebalancePID',
-              outputs: [
-                {
-                  name: '',
-                  type: 'uint256',
-                },
-              ],
-              payable: false,
-              stateMutability: 'view',
-              type: 'function',
-            },
-          ],
-          rebalance.autoHerodotus,
-        )
-        // getAddress( "0x115DE0E312ae3Fd19E8000379D9A8103dB2e789c"
-        const herodotusContract = getContract(herodotusABI, getHerodotusAddress())
-        const [pid, BONUS_MULTIPLIER, totalAllocPoint, currentPriceTokensResp] = await Promise.all([
-          autoHerodotusContract.methods.rebalancePID(getAddress(rebalance.address)).call(),
-          herodotusContract.methods.BONUS_MULTIPLIER().call(),
-          herodotusContract.methods.totalAllocPoint().call(),
-          axios.get(process.env.REACT_APP_DEFINIX_GET_PRICE_API),
-        ])
-        const currentPriceAllResult = _.get(currentPriceTokensResp, 'data.prices', [])
-
-        const poolInfo = await herodotusContract.methods.poolInfo(pid).call()
-
-        const totalRewardPerBlock = new BigNumber(poolInfo.lastRewardBlock)
-          .times(BONUS_MULTIPLIER)
-          .div(new BigNumber(10).pow(18))
-
-        const finixRewardPerBlock = totalRewardPerBlock.times(totalAllocPoint)
-        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-        const finixPrice = new BigNumber(currentPriceAllResult.FINIX)
-
-        const finixApy = finixPrice.times(finixRewardPerYear).div(rebalance.totalAssetValue)
-        setApy(finixApy.toNumber())
-        // eslint-disable-next-line
-
-        setIsLoading(false)
-      } catch (error) {
-        setIsLoading(false)
-      }
-    }
-  }, [rebalance])
+  
   const fetchReturnPercentData = useCallback(async () => {
     if (rebalance && rebalance.address && rebalance.tokens) {
       setIsLoading(true)
@@ -350,8 +288,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   useEffect(() => {
     fetchGraphData()
     fetchReturnPercentData()
-    fetchAPYData()
-  }, [fetchGraphData, fetchReturnPercentData, fetchAPYData])
+    
+  }, [fetchGraphData, fetchReturnPercentData ])
 
   if (!rebalance) return <Redirect to="/explore" />
   const { ratio } = rebalance
@@ -446,7 +384,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                      <TwoLineFormat title="APY" value={`${apy.toFixed(2)}%`} hint="xxx" className="mr-6" />
+                      <TwoLineFormat title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" className="mr-6" />
                       <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
                     </div>
                   </div>
@@ -465,7 +403,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <TwoLineFormat
                     className="px-4 py-3 col-4"
                     title="Max Drawdown"
-                    value={`${numeral(performanceData.maxDrawDown).format('0,0.00')}%`}
+                    value={`${numeral(performanceData.maxDrawDown).format('0')}%`}
                     hint="xxx"
                   />
                 </div>

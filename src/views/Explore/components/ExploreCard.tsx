@@ -96,7 +96,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             <div className="pa-4">
               <div className="flex align-end justify-space-between mb-2">
                 <Text textAlign="center">{numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS</Text>
-                <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
+                <TwoLineFormat title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" alignRight />
               </div>
               <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
                 View Details
@@ -120,7 +120,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               title="Total asset value"
               value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
             />
-            <TwoLineFormat className="col-6" title="APY" value="00%" hint="xxx" />
+            <TwoLineFormat className="col-6" title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" />
           </div>
           <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
         </div>
@@ -183,7 +183,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
       <div className="pa-4">
         <div className="flex align-end justify-space-between mb-2">
           <Text textAlign="center">{numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS</Text>
-          <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
+          <TwoLineFormat title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" alignRight />
         </div>
         <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
           View Details
