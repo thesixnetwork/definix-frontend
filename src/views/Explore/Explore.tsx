@@ -79,8 +79,8 @@ const Explore: React.FC = () => {
                   </HelpButton>
                 </div>
                 <Text>
-                  You can invest your tokens in our vaults on this list. Every vaults is administered by a
-                  DEFINIX-certified vault manager.
+                  You can invest your tokens in our farms on this list. Every farms is administered by a
+                  DEFINIX-certified farm manager.
                 </Text>
               </div>
 
