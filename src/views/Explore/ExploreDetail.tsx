@@ -384,7 +384,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
                       <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" className="mr-6" />
-                      <TwoLineFormat title="APY"  value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" className="mr-6" />
+                      <TwoLineFormat
+                        title="APY"
+                        value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
+                        hint="xxx"
+                        className="mr-6"
+                      />
                       <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
                     </div>
                   </div>
