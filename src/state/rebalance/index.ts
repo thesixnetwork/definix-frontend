@@ -132,7 +132,12 @@ export const fetchRebalances = () => async (dispatch) => {
       const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
       // @ts-ignore
       const sharedPrice = totalAssetValue.div(new BigNumber([selectedTotalSupply]).div(new BigNumber(10).pow(18)))
-      const last24Response = await axios.get(`${process.env.REACT_APP_API_LAST_24}?address=${address}`)
+      let last24Response
+      try {
+        last24Response = await axios.get(`${process.env.REACT_APP_API_LAST_24}?address=${address}`)
+      } catch {
+        last24Response = {}
+      }
       const last24Data = _.get(last24Response, 'data.result', {})
       const last24TotalSupply = new BigNumber(_.get(last24Data, 'total_supply')).div(new BigNumber(10).pow(18))
       const last24Tokens = _.get(last24Data, 'tokens', {})
