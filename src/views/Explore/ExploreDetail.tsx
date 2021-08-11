@@ -145,9 +145,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           autoHerodotusContract.methods.rebalancePID(getAddress(rebalance.address)).call(),
           herodotusContract.methods.BONUS_MULTIPLIER().call(),
           herodotusContract.methods.totalAllocPoint().call(),
-          axios.get(
-            process.env.REACT_APP_DEFINIX_GET_PRICE_API,
-          ),
+          axios.get(process.env.REACT_APP_DEFINIX_GET_PRICE_API),
         ])
         const currentPriceAllResult = _.get(currentPriceTokensResp, 'data.prices', [])
 
