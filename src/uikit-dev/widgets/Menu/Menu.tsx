@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios'
 import _ from 'lodash'
 import throttle from 'lodash/throttle'
@@ -5,19 +6,21 @@ import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { Text } from '../../components/Text'
-import CountDownBanner from '../../components/CountDownBanner'
-import StartTimeBanner from '../../components/StartTimeBanner'
-import SwitchNetwork from '../../components/SwitchNetwork'
-import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challenge-29.png'
-import colorGradient from '../../images/for-ui-v2/color-gradient.png'
-import logoNoti from '../../images/for-ui-v2/noti.png'
+import DisclaimersModal from 'views/Explore/components/DisclaimersModal'
 import Button from '../../components/Button/Button'
+import CountDownBanner from '../../components/CountDownBanner'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
+import StartTimeBanner from '../../components/StartTimeBanner'
+import SwitchNetwork from '../../components/SwitchNetwork'
+import { Text } from '../../components/Text'
 import { useMatchBreakpoints } from '../../hooks'
 import FinixCoin from '../../images/finix-coin.png'
+import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challenge-29.png'
+import colorGradient from '../../images/for-ui-v2/color-gradient.png'
+import logoNoti from '../../images/for-ui-v2/noti.png'
+import { useModal } from '../Modal'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
 import Logo from './Logo'
@@ -158,6 +161,7 @@ const Menu: React.FC<NavProps> = ({
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
+  const [onPresentDisclaimersModal] = useModal(<DisclaimersModal />)
   const endRegisterTimestamp = process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP
     ? parseInt(process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
@@ -283,23 +287,25 @@ const Menu: React.FC<NavProps> = ({
 
             {location.pathname === '/explore' ||
             location.pathname === '/explore/detail' ||
-            location.pathname === '/explore/invest' ? (
+            location.pathname === '/explore/invest' ||
+            location.pathname === '/explore/withdraw' ? (
               <CountDownBanner
                 logo={logoNoti}
                 customText={
                   <Text color="white" fontSize="12px">
-                    <strong>New Feature : Systematic Vault (Beta) :</strong>{' '}
+                    <strong>Rebalancing Farm :</strong>{' '}
                     <span className="mr-1">
-                      Systematic vault is a vault that has been built by using rebalancing strategy. This feature is
-                      still in beta period. For the security of your assets,
+                      Rebalancing farm is a special farm that implements rebalancing strategy. The advantage of the
+                      strategy is that it can help you minimize risk and get favored positions for your investment in
+                      the long run.
                     </span>
-                    <strong className="mr-1" style={{ color: '#ffd157' }}>
-                      {' '}
-                      the maximum amount of investment will be $100 per vault
-                    </strong>
-                    <span>
-                      during the beta period. This limit will be removed once the auditor finishes the smart contract of
-                      systematic vault.
+                    <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong>
+                    <span
+                      role="none"
+                      style={{ color: '#ffd157', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}
+                      onClick={onPresentDisclaimersModal}
+                    >
+                      READ MORE.
                     </span>
                   </Text>
                 }

@@ -157,7 +157,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
 
   return (
     <Card className={className}>
-      <CardTab menus={['ALL TRANSACTION', 'MY TRANSACTION']} current={currentTab} setCurrent={onTabChange} />
+      <CardTab menus={['ALL TRANSACTIONS', 'MY TRANSACTIONS']} current={currentTab} setCurrent={onTabChange} />
 
       <PaginationCustom
         count={pages}
@@ -173,8 +173,8 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         isLoading={isLoading}
         empText={
           currentTab === 0
-            ? 'Don`t have any transactions in this vault.'
-            : 'You haven`t made any transactions in this vault.'
+            ? 'Don`t have any transactions in this farm.'
+            : 'You haven`t made any transactions in this farm.'
         }
       />
     </Card>

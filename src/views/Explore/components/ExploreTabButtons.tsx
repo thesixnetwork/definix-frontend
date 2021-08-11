@@ -83,7 +83,7 @@ const ExploreTabButtons = ({ listView, setListView, isInvested, setIsInvested })
             variant={!isInvested ? 'primary' : 'secondary'}
             className="mr-2"
           >
-            All Vault
+            All Farm
           </Button>
           <Button
             size="sm"

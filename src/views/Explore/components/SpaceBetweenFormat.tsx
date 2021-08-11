@@ -25,9 +25,7 @@ const SpaceBetweenFormat: React.FC<SpaceBetweenFormatType> = ({
     <div className={`flex justify-space-between align-center ${className}`}>
       {titleElm || (
         <div className="flex pr-3">
-          <Text fontSize="12px" color="textSubtle">
-            {title}
-          </Text>
+          <Text fontSize="14px">{title}</Text>
           {hint && <Helper text={hint} className="ml-2" position="top" />}
         </div>
       )}

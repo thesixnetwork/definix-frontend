@@ -14,20 +14,21 @@ import { Rebalance } from '../../../state/types'
 interface FundActionType {
   className?: string
   rebalance?: Rebalance | any
+  isVertical?: boolean
 }
 
-const CardStyled = styled(Card)`
-  // border-top-left-radius: 0;
-  // border-top-right-radius: 0;
+const CardStyled = styled(Card)<{ isVertical: boolean }>`
   position: sticky;
-  bottom: 0;
+  top: ${({ isVertical }) => (isVertical ? '0' : 'initial')};
+  bottom: ${({ isVertical }) => (!isVertical ? '0' : 'initial')};
+  align-self: start;
   left: 0;
   width: 100%;
 `
 
-const FundAction: React.FC<FundActionType> = ({ className, rebalance }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical = false }) => {
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isMd && !isLg
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
@@ -37,16 +38,31 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance }) => {
   const currentBalanceNumber = currentBalance.toNumber()
 
   return (
-    <CardStyled className={`flex flex-wrap justify-space-between pa-4 bd-t ${className}`}>
+    <CardStyled
+      className={`flex flex-wrap justify-space-between ${className} ${isVertical ? 'flex-column ml-4' : 'pa-4 bd-t'}`}
+      isVertical={isVertical}
+    >
       <TwoLineFormat
+        className={isVertical ? 'pa-4' : ''}
         title="Current investment"
         subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
         value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
         large
       />
 
-      <div className={`flex ${isMobile ? 'col-12 pt-2' : 'col-6'}`}>
-        <Button as={Link} to="/explore/invest" fullWidth radii="small" className="mr-3" variant="success">
+      <div
+        className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
+          isVertical ? 'flex-column bd-t pa-4' : ''
+        }`}
+      >
+        <Button
+          as={Link}
+          to="/explore/invest"
+          fullWidth
+          radii="small"
+          className={isVertical ? 'mb-2' : 'mr-2'}
+          variant="success"
+        >
           INVEST
         </Button>
         <Button as={Link} to="/explore/withdraw" fullWidth radii="small" className="flex flex-column">

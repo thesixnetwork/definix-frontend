@@ -140,13 +140,13 @@ const AssetDetail = ({ rebalance }) => {
               </Text>
             </TD>
             <TD align="center">
-              <Text>{numeral(tokenPrice.toNumber()).format('0,0.[00]')} $</Text>
+              <Text>$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
             <TD align="center">
-              <Text>{numeral(totalPrice.toNumber()).format('0,0.[00]')} $</Text>
+              <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
             <TD align="center">
-              <Text color={selectClass(changeNumber)}>{numeral(changeNumber).format('0,0.[000]')} $</Text>
+              <Text color={selectClass(changeNumber)}>$ {numeral(changeNumber).format('0,0.[000]')}</Text>
             </TD>
             <TD align="center">
               <Text>{ratio.value}%</Text>
@@ -163,7 +163,7 @@ const FactSheet = () => {
     { name: 'Name', value: 'Re-balancing BTC focus', copy: false },
     { name: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
     { name: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
-    { name: 'Vault', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+    { name: 'Farm', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
     { name: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     { name: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
     { name: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
@@ -175,11 +175,15 @@ const FactSheet = () => {
       {data.map((r) => (
         <TR>
           <TD>
-            <Text bold>{r.name}</Text>
+            <Text fontSize="14px" bold>
+              {r.name}
+            </Text>
           </TD>
           <TD>
             <div className="flex">
-              <Text className={r.copy ? 'mr-2' : ''}>{r.value}</Text>
+              <Text fontSize="14px" className={r.copy ? 'mr-2' : ''}>
+                {r.value}
+              </Text>
               {r.copy && <CopyToClipboard toCopy={r.value} iconWidth="16px" noText />}
             </div>
           </TD>
