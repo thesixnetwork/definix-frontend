@@ -381,9 +381,9 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
               share={currentInput}
               usd={`~ $${numeral(
                 usdToBeRecieve -
-                usdToBeRecieve / (100 / (ecosystemFee / 100)) -
-                usdToBeRecieve / (100 / (buyBackFee / 100)) -
-                usdToBeRecieve / (100 / (managementFee / 100)),
+                  usdToBeRecieve / (100 / (ecosystemFee / 100)) -
+                  usdToBeRecieve / (100 / (buyBackFee / 100)) -
+                  usdToBeRecieve / (100 / (managementFee / 100)),
               ).format('0,0.[0000]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />
