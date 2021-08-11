@@ -30,6 +30,7 @@ import { getContract, getCustomContract } from 'utils/erc20'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
+import useTheme from 'hooks/useTheme'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
@@ -86,6 +87,7 @@ const CardInput = ({
   const isMobile = !isXl
   const dispatch = useDispatch()
   const { account, klaytn } = useWallet()
+  const { isDark } = useTheme()
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
@@ -109,14 +111,15 @@ const CardInput = ({
   return (
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4 pt-2' : 'pa-6 pt-4'}>
-        <div className="flex justify-space-between mb-2">
+        <div className="flex justify-space-between align-center mb-2">
           <Button
             variant="text"
             as={Link}
             to="/explore/detail"
             ml="-12px"
             padding="0 12px"
-            startIcon={<ArrowBackIcon />}
+            size="sm"
+            startIcon={<ArrowBackIcon color="textSubtle" />}
           >
             <Text fontSize="14px" color="textSubtle">
               Back
@@ -127,6 +130,7 @@ const CardInput = ({
 
         <TwoLineFormat
           title="Share price"
+          titleColor={isDark ? '#ADB4C2' : ''}
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
           percent={`${
             rebalance.sharedPricePercentDiff >= 0

@@ -1,7 +1,7 @@
+import { Ratio } from 'config/constants/types'
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from 'uikit-dev'
-import { Ratio } from 'config/constants/types'
 
 interface AssetRatioType {
   isHorizontal: boolean
@@ -9,10 +9,12 @@ interface AssetRatioType {
   ratio: Ratio[] | any
 }
 
-const Coin = styled.div`
+const Coin = styled.div<{ isHorizontal?: boolean }>`
   display: flex;
   align-items: center;
-  margin: 4px 16px 4px 0;
+  margin: 4px 0;
+  padding: 0 8px;
+  width: ${({ isHorizontal }) => (!isHorizontal ? '33.333%' : 'auto')};
 
   img {
     flex-shrink: 0;
@@ -26,14 +28,19 @@ const Coin = styled.div`
 const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className = '', ratio = [] }) => {
   return (
     <div className={className}>
-      <Text fontSize="12px" color="textSubtle" textAlign={isHorizontal ? 'left' : 'center'}>
+      <Text
+        fontSize="14px"
+        color="textSubtle"
+        className={!isHorizontal ? 'mb-2' : ''}
+        textAlign={isHorizontal ? 'left' : 'center'}
+      >
         Asset ratio
       </Text>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap" style={{ marginLeft: isHorizontal ? '-8px' : '' }}>
         {ratio.map((m) => (
-          <Coin>
+          <Coin isHorizontal={isHorizontal}>
             <img src={`/images/coins/${m.symbol || ''}.png`} alt={m.symbol} />
-            <Text>{m.value}%</Text>
+            <Text fontSize="16px">{m.value}%</Text>
           </Coin>
         ))}
       </div>

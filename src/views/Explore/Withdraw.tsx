@@ -17,6 +17,7 @@ import rebalanceAbi from 'config/abi/rebalance.json'
 import { getCustomContract } from 'utils/erc20'
 import numeral from 'numeral'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import useTheme from 'hooks/useTheme'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
@@ -133,6 +134,7 @@ const CardInput = ({
   const { setShowModal } = React.useContext(KlipModalContext())
   const { account, klaytn, connector } = useWallet()
   const dispatch = useDispatch()
+  const { isDark } = useTheme()
 
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
   const onWithdraw = async () => {
@@ -187,7 +189,7 @@ const CardInput = ({
   }
   return (
     <Card className="mb-4">
-      <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-6 py-4'} `}>
+      <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-4 py-4'} `}>
         <div className="flex justify-space-between mb-2">
           <Button
             variant="text"
@@ -195,7 +197,8 @@ const CardInput = ({
             to="/explore/detail"
             ml="-12px"
             padding="0 12px"
-            startIcon={<ArrowBackIcon />}
+            size="sm"
+            startIcon={<ArrowBackIcon color="textSubtle" />}
           >
             <Text fontSize="14px" color="textSubtle">
               Back
@@ -206,6 +209,7 @@ const CardInput = ({
 
         <TwoLineFormat
           title="Current investment"
+          titleColor={isDark ? '#ADB4C2' : ''}
           value={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
           subTitle={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
           large
