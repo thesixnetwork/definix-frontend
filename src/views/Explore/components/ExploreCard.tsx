@@ -97,6 +97,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                 {/* <Text textAlign="center" fontSize="12px">
                   {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
                 </Text> */}
+                <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" />
                 <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
               </div>
               <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
@@ -117,11 +118,12 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         <div className="col-5 flex flex-column justify-space-between px-4 bd-r">
           <div className="flex justify-space-between mb-2">
             <TwoLineFormat
-              className="col-6"
+              className="col-5"
               title="Total asset value"
               value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
             />
-            <TwoLineFormat className="col-6" title="APY" value="00%" hint="xxx" />
+            <TwoLineFormat className="col-5" title="FINIX Yield APR" value="00%" hint="xxx" />
+            <TwoLineFormat className="col-2" title="APY" value="00%" hint="xxx" />
           </div>
           <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
         </div>
@@ -186,6 +188,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           {/* <Text textAlign="center" fontSize="12px">
             {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
           </Text> */}
+          <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" />
           <TwoLineFormat title="APY" value="00%" hint="xxx" alignRight />
         </div>
         <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
