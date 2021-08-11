@@ -245,6 +245,10 @@ const CardCalculate = ({
   const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
   const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
   const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
+  const priceImpactDisplay = (() => {
+    if (priceImpact === Number.POSITIVE_INFINITY || priceImpact === Number.NEGATIVE_INFINITY) return 0
+    return priceImpact
+  })()
 
   const onInvest = async () => {
     const rebalanceContract = getCustomContract(
@@ -314,11 +318,15 @@ const CardCalculate = ({
           />
           <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
             <Share
-              share={numeral(currentShare).format('0,0.[00]')}
+              share={
+                currentShare <= 0 || Number.isNaN(currentShare)
+                  ? numeral(totalUserUsdAmount).format('0,0.[00]')
+                  : numeral(currentShare).format('0,0.[00]')
+              }
               usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />
-            <PriceUpdate className="mt-3" onClick={recalculate} />
+            {false && <PriceUpdate className="mt-3" onClick={recalculate} />}
           </div>
         </div>
 
@@ -340,7 +348,7 @@ const CardCalculate = ({
         <SpaceBetweenFormat
           className="mb-2"
           title="Price Impact"
-          value={`${priceImpact <= 0.1 ? '< 0.1' : priceImpact}%`}
+          value={`${priceImpactDisplay <= 0.1 ? '< 0.1' : priceImpactDisplay}%`}
           valueColor="success" /* || failure */
         />
         {/* <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" /> */}
@@ -385,7 +393,11 @@ const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
           <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} />
           <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
             <Share
-              share={numeral(currentShare).format('0,0.[00]')}
+              share={
+                currentShare <= 0 || Number.isNaN(currentShare)
+                  ? numeral(totalUserUsdAmount).format('0,0.[00]')
+                  : numeral(currentShare).format('0,0.[00]')
+              }
               usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />
