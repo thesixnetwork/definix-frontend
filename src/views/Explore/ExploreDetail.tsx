@@ -146,7 +146,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           herodotusContract.methods.BONUS_MULTIPLIER().call(),
           herodotusContract.methods.totalAllocPoint().call(),
           axios.get(
-            'https://klaytn.api.sixnetwork.io/prices?fbclid=IwAR2m4gK4b_XvHDAFb0h6_obefrqyMd63escpVWzdIk4iZ3gACAinbnccpq4',
+            process.env.REACT_APP_DEFINIX_GET_PRICE_API,
           ),
         ])
         const currentPriceAllResult = _.get(currentPriceTokensResp, 'data.prices', [])
