@@ -34,6 +34,7 @@ import useTheme from 'hooks/useTheme'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { fetchRebalances } from '../../state/rebalance'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
 import PriceUpdate from './components/PriceUpdate'
@@ -303,6 +304,7 @@ const CardCalculate = ({
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
+      dispatch(fetchRebalances())
       onNext()
       setIsInvesting(false)
     } catch {
