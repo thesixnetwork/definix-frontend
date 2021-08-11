@@ -1,17 +1,24 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
+import rebalanceABI from 'config/abi/rebalance.json'
 import _ from 'lodash'
 import moment from 'moment'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
+import { getContract, getWeb3Contract } from 'utils/caver'
+import { getAddress, getHerodotusAddress, getFinixAddress } from 'utils/addressHelpers'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
-import { getAddress } from 'utils/addressHelpers'
+import { BLOCKS_PER_YEAR } from 'config'
+import herodotusABI from 'config/abi/herodotus.json'
+import { usePriceFinixUsd } from 'state/hooks'
+import erc20 from 'config/abi/erc20.json'
+import multicall from 'utils/multicall'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
@@ -73,6 +80,8 @@ const usePrevious = (value, initialValue) => {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
+  const [apy, setApy] = useState(0)
+  const [returnPercent, setReturnPercent] = useState(0)
   const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
   const [graphData, setGraphData] = useState({})
   const { isXl, isLg } = useMatchBreakpoints()
@@ -92,6 +101,181 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [dispatch, account, rebalance])
 
+  useEffect(() => {
+    if (account && rebalance) {
+      const assets = rebalance.ratio
+      const assetAddresses = assets.map((a) => getAddress(a.address))
+      dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      dispatch(fetchRebalanceBalances(account, [rebalance]))
+    }
+  }, [dispatch, account, rebalance])
+
+  const fetchAPYData = useCallback(async () => {
+    if (rebalance && rebalance.address && rebalance.tokens) {
+      setIsLoading(true)
+      try {
+        const autoHerodotusContract = getContract(
+          [
+            {
+              constant: true,
+              inputs: [
+                {
+                  name: '',
+                  type: 'address',
+                },
+              ],
+              name: 'rebalancePID',
+              outputs: [
+                {
+                  name: '',
+                  type: 'uint256',
+                },
+              ],
+              payable: false,
+              stateMutability: 'view',
+              type: 'function',
+            },
+          ],
+          rebalance.autoHerodotus,
+        )
+        // getAddress( "0x115DE0E312ae3Fd19E8000379D9A8103dB2e789c"
+        const herodotusContract = getContract(herodotusABI, getHerodotusAddress())
+        const [pid, BONUS_MULTIPLIER, totalAllocPoint, currentPriceTokensResp] = await Promise.all([
+          autoHerodotusContract.methods.rebalancePID(getAddress(rebalance.address)).call(),
+          herodotusContract.methods.BONUS_MULTIPLIER().call(),
+          herodotusContract.methods.totalAllocPoint().call(),
+          axios.get(process.env.REACT_APP_DEFINIX_GET_PRICE_API),
+        ])
+        const currentPriceAllResult = _.get(currentPriceTokensResp, 'data.prices', [])
+
+        const poolInfo = await herodotusContract.methods.poolInfo(pid).call()
+
+        const totalRewardPerBlock = new BigNumber(poolInfo.lastRewardBlock)
+          .times(BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+
+        const finixRewardPerBlock = totalRewardPerBlock.times(totalAllocPoint)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+        const finixPrice = new BigNumber(currentPriceAllResult.FINIX)
+
+        const finixApy = finixPrice.times(finixRewardPerYear).div(rebalance.totalAssetValue)
+        setApy(finixApy.toNumber())
+        // eslint-disable-next-line
+
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+      }
+    }
+  }, [rebalance])
+  const fetchReturnPercentData = useCallback(async () => {
+    if (rebalance && rebalance.address && rebalance.tokens) {
+      setIsLoading(true)
+      try {
+        const address = getAddress(rebalance.address)
+        const rebalanceCalls = [
+          {
+            address,
+            name: 'getCurrentPoolUSDBalance',
+          },
+          {
+            address,
+            name: 'getTokensLength',
+          },
+          {
+            address,
+            name: 'usdToken',
+          },
+        ]
+        const erc20Calls = [
+          {
+            address,
+            name: 'totalSupply',
+          },
+        ]
+
+        const [[currentPoolUsdBalances], tokenLength, usdTokenAddresses] = await multicall(rebalanceABI, rebalanceCalls)
+
+        const tokenCallers = []
+        for (let i = 0; i < tokenLength; i++) {
+          tokenCallers.push(multicall(rebalanceABI, [{ address, name: 'tokens', params: [i] }]))
+        }
+        const tokenRatioPointsCallers = []
+        for (let i = 0; i < tokenLength; i++) {
+          tokenRatioPointsCallers.push(multicall(rebalanceABI, [{ address, name: 'tokenRatioPoints', params: [i] }]))
+        }
+        const tokenAddresss = _.flattenDeep(await Promise.all(tokenCallers))
+        const makeTokenCallers = (inputArray) => {
+          return inputArray.map((tokenAddress) => {
+            return multicall(erc20, [
+              { address: tokenAddress, name: 'name' },
+              { address: tokenAddress, name: 'symbol' },
+              { address: tokenAddress, name: 'decimals' },
+              {
+                address: tokenAddress,
+                name: 'balanceOf',
+                params: [address],
+              },
+            ]).then((calledTokenData) => {
+              const [[name], [symbol], [decimals], [totalBalance]] = calledTokenData
+              return {
+                address: tokenAddress,
+                name,
+                symbol,
+                decimals,
+                // @ts-ignore
+                totalBalance: new BigNumber([totalBalance]),
+              }
+            })
+          })
+        }
+        const tokenInfoCallers = makeTokenCallers(tokenAddresss)
+        const tokens = await Promise.all(tokenInfoCallers)
+        const usdTokenCallers = makeTokenCallers(usdTokenAddresses)
+        const usdToken = await Promise.all(usdTokenCallers)
+        const [totalSupply] = await multicall(erc20, erc20Calls)
+
+        // @ts-ignore
+        const selectedTotalSupply = (totalSupply || [])[0]
+        const poolUsdBalance = (currentPoolUsdBalances || []).map((x, index) => {
+          let currentToken = tokens[index]
+          if (currentToken) currentToken = (usdToken || [])[0]
+          // @ts-ignore
+          return new BigNumber([x]).div(new BigNumber(10).pow((currentToken || {}).decimals || 18))
+        })
+        const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
+        // @ts-ignore
+        const sharedPrice = totalAssetValue.div(new BigNumber([selectedTotalSupply]).div(new BigNumber(10).pow(18)))
+        const last24Response = await axios.get(
+          `${process.env.REACT_APP_API_LAST_24}?address=${address}&period=${timeframe}`,
+        )
+        const last24Data = _.get(last24Response, 'data.result', {})
+        const last24TotalSupply = new BigNumber(_.get(last24Data, 'total_supply')).div(new BigNumber(10).pow(18))
+        const last24Tokens = _.get(last24Data, 'tokens', {})
+        const sumOldTokenPrice = BigNumber.sum.apply(
+          null,
+          tokens.map((token: any) => {
+            const tokenAmount = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.balance`, '0')).div(
+              new BigNumber(10).pow(token.decimals),
+            )
+            const tokenPrice = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.price`, 0))
+            const totalTokenPrice = tokenAmount.times(tokenPrice)
+            return totalTokenPrice
+          }),
+        )
+        const oldSharedPrice = sumOldTokenPrice.div(last24TotalSupply)
+        const diffSharedPrice = sharedPrice.minus(oldSharedPrice)
+        const sharedPricePercentDiff =
+          sharedPrice.div(oldSharedPrice.div(100)).toNumber() * (diffSharedPrice.isLessThan(0) ? -1 : 1)
+        setReturnPercent(sharedPricePercentDiff)
+
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+      }
+    }
+  }, [rebalance, timeframe])
   const fetchGraphData = useCallback(async () => {
     if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
       if (rebalance && rebalance.address) {
@@ -165,7 +349,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe])
   useEffect(() => {
     fetchGraphData()
-  }, [fetchGraphData])
+    fetchReturnPercentData()
+    fetchAPYData()
+  }, [fetchGraphData, fetchReturnPercentData, fetchAPYData])
 
   if (!rebalance) return <Redirect to="/explore" />
   const { ratio } = rebalance
@@ -260,8 +446,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                      <TwoLineFormat title="APY" value="00%" hint="xxx" className="mr-6" />
-                      <TwoLineFormat title="Return" value="00%" hint="xxx" />
+                      <TwoLineFormat title="APY" value={`${apy.toFixed(2)}%`} hint="xxx" className="mr-6" />
+                      <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
                     </div>
                   </div>
 
