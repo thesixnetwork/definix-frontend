@@ -8,6 +8,7 @@ import _ from 'lodash'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
+import { useRebalances } from '../../../state/hooks'
 
 interface FundDetailType {
   rebalance?: Rebalance | any
@@ -152,23 +153,15 @@ const AssetDetail = ({ rebalance }) => {
 }
 
 const FactSheet = () => {
-  const data = [
-    { name: 'Name', value: 'Re-balancing BTC focus', copy: false },
-    { name: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
-    { name: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
-    { name: 'Vault', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-    { name: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
-    { name: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
-    { name: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-    { name: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
-  ]
+  const rebalances = useRebalances()
+  const data = _.get(rebalances, '0.factsheet')
 
   return (
     <Table>
       {data.map((r) => (
         <TR>
           <TD>
-            <Text bold>{r.name}</Text>
+            <Text bold>{r.title}</Text>
           </TD>
           <TD>
             <div className="flex">
