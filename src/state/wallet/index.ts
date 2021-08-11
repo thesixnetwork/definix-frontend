@@ -14,7 +14,7 @@ const initialState: WalletState = {
   allowances: {},
   decimals: {},
   userDeadline: 20,
-  userSlippage: 0.8,
+  userSlippage: 80,
 }
 
 export const walletSlice = createSlice({

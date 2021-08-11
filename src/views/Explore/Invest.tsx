@@ -33,7 +33,6 @@ import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
-import ErrorOverLimitModal from './components/ErrorOverLimitModal'
 import PriceUpdate from './components/PriceUpdate'
 import SettingButton from './components/SettingButton'
 import Share from './components/Share'
@@ -168,7 +167,7 @@ const CardInput = ({
                 setCurrentInput({
                   ...currentInput,
                   [getAddress(c.address)]: String(
-                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.75).toNumber(),
+                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.25).toNumber(),
                   ),
                 })
               }}
@@ -457,7 +456,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [isCalculating, setIsCalculating] = useState(false)
   const [isInvested, setIsInvested] = useState(false)
   const [isInvesting, setIsInvesting] = useState(false)
-  const [onPresentErrorOverLimitModal] = useModal(<ErrorOverLimitModal />)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -541,12 +539,8 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
                 balances={balances}
                 allowances={allowances}
                 onNext={() => {
-                  if (totalUSDAmount > 100) {
-                    onPresentErrorOverLimitModal()
-                  } else {
-                    setIsInputting(false)
-                    setIsCalculating(true)
-                  }
+                  setIsInputting(false)
+                  setIsCalculating(true)
                 }}
                 totalUSDAmount={totalUSDAmount}
                 isSimulating={isSimulating}
