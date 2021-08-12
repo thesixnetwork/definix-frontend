@@ -148,6 +148,7 @@ const CardInput = ({
       const thisInput = currentBalance.isLessThan(new BigNumber(currentInput))
         ? currentBalance
         : new BigNumber(currentInput)
+      const usdToken = _.get(rebalance, 'usdToken.0', {})
       if (connector === 'klip') {
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
@@ -156,9 +157,14 @@ const CardInput = ({
             thisInput.times(new BigNumber(10).pow(18)).toJSON(),
             ratioType === 'all',
             ((rebalance || {}).tokens || []).map((token, index) => {
-              return (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+              const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
+              return selectedToken[tokenAddress]
+                ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+                : 0
             }),
-            (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber(),
+            selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
+              ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
+              : 0,
           ]),
           setShowModal,
         )
@@ -170,9 +176,14 @@ const CardInput = ({
             thisInput.times(new BigNumber(10).pow(18)).toJSON(),
             ratioType === 'all',
             ((rebalance || {}).tokens || []).map((token, index) => {
-              return (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+              const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
+              return selectedToken[tokenAddress]
+                ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+                : 0
             }),
-            (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber(),
+            selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
+              ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
+              : 0,
           )
           .send({ from: account, gas: 5000000 })
         setTx(tx)
