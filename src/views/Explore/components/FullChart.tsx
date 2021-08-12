@@ -74,7 +74,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
     <FormGroup row className="flex flex-wrap mb-5">
       <LegendItem className={isMobile ? 'col-6' : 'mr-6'}>
         <div className="rebalancing" />
-        <Text fontSize="12px" bold>
+        <Text fontSize="14px" bold>
           Rebalancing
         </Text>
       </LegendItem>
@@ -99,7 +99,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
             label={
               <LegendItem>
                 <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-                <Text fontSize="12px" bold>
+                <Text fontSize="14px" bold>
                   {thisName}
                 </Text>
               </LegendItem>

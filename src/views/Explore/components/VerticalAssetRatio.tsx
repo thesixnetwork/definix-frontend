@@ -39,7 +39,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
                   ).format('0,0.[0000000000]')}
                 </Text>
               </Coin>
-              <Text bold className="pl-3">
+              <Text bold className="pl-3" style={{ width: '56px' }} textAlign="left">
                 {thisName}
               </Text>
             </div>

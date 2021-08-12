@@ -134,13 +134,13 @@ const AssetDetail = ({ rebalance }) => {
               </Text>
             </TD>
             <TD align="center">
-              <Text>{numeral(tokenPrice.toNumber()).format('0,0.[00]')} $</Text>
+              <Text>$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
             <TD align="center">
-              <Text>{numeral(totalPrice.toNumber()).format('0,0.[00]')} $</Text>
+              <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
             <TD align="center">
-              <Text color={selectClass(changeNumber)}>{numeral(changeNumber).format('0,0.[000]')} $</Text>
+              <Text color={selectClass(changeNumber)}>$ {numeral(changeNumber).format('0,0.[000]')}</Text>
             </TD>
             <TD align="center">
               <Text>{ratio.value}%</Text>
@@ -177,7 +177,9 @@ const FactSheet = () => {
           </TD>
           <TD>
             <div className="flex">
-              <Text className={r.copy ? 'mr-2' : ''}>{r.value}</Text>
+              <Text fontSize="14px" className={r.copy ? 'mr-2' : ''}>
+                {r.value}
+              </Text>
               {r.copy && <CopyToClipboard toCopy={r.value} iconWidth="16px" noText />}
             </div>
           </TD>

@@ -5,8 +5,12 @@ import erc20 from 'config/abi/erc20.json'
 import rebalance from 'config/abi/rebalance.json'
 import multicall from 'utils/multicall'
 import _ from 'lodash'
+import { BLOCKS_PER_YEAR } from 'config'
+import herodotusABI from 'config/abi/herodotus.json'
+import { usePriceFinixUsd } from 'state/hooks'
 import { createSlice } from '@reduxjs/toolkit'
-import { getAddress } from 'utils/addressHelpers'
+import { getContract, getWeb3Contract } from 'utils/caver'
+import { getAddress, getHerodotusAddress, getFinixAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'
 import { RebalanceState } from '../types'
 
@@ -159,6 +163,53 @@ export const fetchRebalances = () => async (dispatch) => {
 
       const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
 
+      const autoHerodotusContract = getContract(
+        [
+          {
+            constant: true,
+            inputs: [
+              {
+                name: '',
+                type: 'address',
+              },
+            ],
+            name: 'rebalancePID',
+            outputs: [
+              {
+                name: '',
+                type: 'uint256',
+              },
+            ],
+            payable: false,
+            stateMutability: 'view',
+            type: 'function',
+          },
+        ],
+        autoHerodotus,
+      )
+      const herodotusContract = getContract(herodotusABI, getHerodotusAddress())
+      const [pid, BONUS_MULTIPLIER, totalAllocPoint, currentPriceTokensResp] = await Promise.all([
+        autoHerodotusContract.methods.rebalancePID(address).call(),
+        herodotusContract.methods.BONUS_MULTIPLIER().call(),
+        herodotusContract.methods.totalAllocPoint().call(),
+        axios.get(process.env.REACT_APP_DEFINIX_GET_PRICE_API),
+      ])
+      const currentPriceAllResult = _.get(currentPriceTokensResp, 'data.prices', [])
+
+      const poolInfo = await herodotusContract.methods.poolInfo(pid).call()
+
+      const totalRewardPerBlock = new BigNumber(poolInfo.lastRewardBlock)
+        .times(BONUS_MULTIPLIER)
+        .div(new BigNumber(10).pow(18))
+
+      const finixRewardPerBlock = totalRewardPerBlock.times(totalAllocPoint)
+      const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+      const finixPrice = new BigNumber(currentPriceAllResult.FINIX)
+
+      const apyPool = finixPrice.times(finixRewardPerYear).div(totalAssetValue).times(100)
+
+      // eslint-disable-next-line
+
       // const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
       // const performanceResp = await axios.get(performanceAPI, {
       //   params: {
@@ -195,6 +246,7 @@ export const fetchRebalances = () => async (dispatch) => {
         // maxDrawdown,
         // tokenUsd,
         enableAutoCompound,
+        apyPool,
         autoHerodotus,
         sharedPricePercentDiff,
         twentyHperformance,

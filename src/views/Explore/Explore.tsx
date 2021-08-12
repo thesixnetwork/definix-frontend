@@ -6,7 +6,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalanceAddress, useRebalances } from 'state/hooks'
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
-import { Heading, Text } from 'uikit-dev'
+import { Heading, Text, useModal } from 'uikit-dev'
 import HelpButton from 'uikit-dev/components/HelpButton'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
@@ -18,6 +18,7 @@ import ExploreTabButtons from './components/ExploreTabButtons'
 import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
+import DisclaimersModal from './components/DisclaimersModal'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
@@ -34,6 +35,7 @@ const Explore: React.FC = () => {
   const targetRebalance = useRebalanceAddress(selectedRebalance ? getAddress(selectedRebalance.address) : undefined)
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
 
   useEffect(() => {
     if (account) {
@@ -53,6 +55,11 @@ const Explore: React.FC = () => {
       dispatch(fetchRebalanceBalances(account, rebalances))
     }
   }, [dispatch, account, rebalances])
+
+  useEffect(() => {
+    onPresentDisclaimersModal()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>

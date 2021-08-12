@@ -49,7 +49,7 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
             <Bar color={m.color} />
             <div className="name">
               <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
-              <Text>{m.value}%</Text>
+              <Text fontSize="16px">{m.value}%</Text>
             </div>
           </Coin>
         ))}

@@ -7,8 +7,10 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { AbiItem } from 'web3-utils'
+import * as klipProvider from 'hooks/klipProvider'
+import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
 import {
   ArrowBackIcon,
@@ -28,6 +30,7 @@ import { getContract, getCustomContract } from 'utils/erc20'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
+import useTheme from 'hooks/useTheme'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
@@ -84,6 +87,7 @@ const CardInput = ({
   const isMobile = !isXl
   const dispatch = useDispatch()
   const { account, klaytn } = useWallet()
+  const { isDark } = useTheme()
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
@@ -107,14 +111,15 @@ const CardInput = ({
   return (
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4 pt-2' : 'pa-6 pt-4'}>
-        <div className="flex justify-space-between mb-2">
+        <div className="flex justify-space-between align-center mb-2">
           <Button
             variant="text"
             as={Link}
             to="/explore/detail"
             ml="-12px"
             padding="0 12px"
-            startIcon={<ArrowBackIcon />}
+            size="sm"
+            startIcon={<ArrowBackIcon color="textSubtle" />}
           >
             <Text fontSize="14px" color="textSubtle">
               Back
@@ -125,6 +130,7 @@ const CardInput = ({
 
         <TwoLineFormat
           title="Share price"
+          titleColor={isDark ? '#ADB4C2' : ''}
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
           percent={`${
             rebalance.sharedPricePercentDiff >= 0
@@ -234,7 +240,8 @@ const CardCalculate = ({
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const slippage = useSlippage()
-  const { account, klaytn } = useWallet()
+  const { setShowModal } = React.useContext(KlipModalContext())
+  const { account, klaytn, connector } = useWallet()
   const dispatch = useDispatch()
 
   // @ts-ignore
@@ -277,10 +284,21 @@ const CardCalculate = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-      const tx = await rebalanceContract.methods
-        .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-        .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
-      setTx(tx)
+      if (connector === 'klip') {
+        klipProvider.genQRcodeContactInteract(
+          getAddress(rebalance.address),
+          JSON.stringify(getAbiRebalanceByName('addFund')),
+          JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
+          setShowModal,
+        )
+        const tx = await klipProvider.checkResponse()
+        setTx(tx)
+      } else {
+        const tx = await rebalanceContract.methods
+          .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
+          .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+        setTx(tx)
+      }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))

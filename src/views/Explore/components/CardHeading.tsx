@@ -45,10 +45,12 @@ const CardHeading: React.FC<CardHeadingType> = ({
       <div className={`flex ${isHorizontal ? 'flex-column justify-center' : 'align-center'}`}>
         <FocusImg src={rebalance.icon} alt="" isHorizontal={isHorizontal} />
         <div>
-          <Text color="primary" bold>
+          <Text color="primary" bold fontSize="16px" textTransform="uppercase">
             {rebalance.title}
           </Text>
-          <Text bold>{rebalance.description}</Text>
+          <Text bold fontSize="16px" textTransform="uppercase">
+            {rebalance.description}
+          </Text>
         </div>
       </div>
 
