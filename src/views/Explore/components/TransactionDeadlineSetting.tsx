@@ -62,7 +62,7 @@ const TransactionDeadlineSetting = () => {
         <Helper
           text="Your transaction will revert if it is pending for more than this long."
           className="ml-2"
-          position="top"
+          position="right"
         />
       </Label>
       <Field>
