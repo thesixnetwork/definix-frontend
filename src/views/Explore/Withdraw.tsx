@@ -465,7 +465,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
 
   const fetchData = useCallback(async () => {
     setIsSimulating(true)
-    const thisRebalanceBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
+    const thisRebalanceBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
     const myBalance = _.get(thisRebalanceBalance, getAddress(rebalance.address), new BigNumber(0))
     const thisInput = myBalance.isLessThan(new BigNumber(currentInput)) ? myBalance : new BigNumber(currentInput)
     const [, poolAmountsData] = await simulateWithdraw(
@@ -500,7 +500,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
 
   if (!rebalance) return <Redirect to="/explore" />
 
-  const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
+  const thisBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
   const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
