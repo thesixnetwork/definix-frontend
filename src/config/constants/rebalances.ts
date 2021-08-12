@@ -36,6 +36,16 @@ const rebalances: RebalanceConfig[] = [
         address: KUSDT,
       },
     ],
+    factsheet: [
+      { title: 'Name', value: 'Satoshi and Friends', copy: false },
+      { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+      { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'Vault', value: '0x8354aa7342d32ebCa12f1613A4b832c9aB15c74C', copy: true },
+      { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+    ],
   },
 
   {
@@ -78,6 +88,16 @@ const rebalances: RebalanceConfig[] = [
         address: KUSDT,
       },
     ],
+    factsheet: [
+      { title: 'Name', value: 'Big Cap One Plus', copy: false },
+      { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+      { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'Vault', value: '0x82a17B0f7E9b5719f94013B1240505a2Ba3e7840', copy: true },
+      { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+    ],
   },
 
   {
@@ -114,6 +134,16 @@ const rebalances: RebalanceConfig[] = [
         address: KUSDT,
       },
     ],
+    factsheet: [
+      { title: 'Name', value: 'Chain Creators', copy: false },
+      { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+      { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'Vault', value: '0xE967080620699AeC88E01F1e9c9C1d77652522E2', copy: true },
+      { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+    ],
   },
 
   {
@@ -149,6 +179,16 @@ const rebalances: RebalanceConfig[] = [
         color: '#2A9D8F',
         address: KUSDT,
       },
+    ],
+    factsheet: [
+      { title: 'Name', value: 'ALT Party', copy: false },
+      { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+      { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'Vault', value: '0x40525428616498F077cf801E9aA38A7464EA4256', copy: true },
+      { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 
@@ -204,6 +244,16 @@ const rebalances: RebalanceConfig[] = [
         address: KUSDT,
       },
     ],
+    factsheet: [
+      { title: 'Name', value: 'FINIX Volatility', copy: false },
+      { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+      { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'Vault', value: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773', copy: true },
+      { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+    ],
   },
 
   {
@@ -251,6 +301,16 @@ const rebalances: RebalanceConfig[] = [
         color: '#2A9D8F',
         address: KUSDT,
       },
+    ],
+    factsheet: [
+      { title: 'Name', value: 'FINIX Force', copy: false },
+      { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+      { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'Vault', value: '0x41844a6Db9144eBEfBa470E6F994341FbC095810', copy: true },
+      { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+      { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 ]
