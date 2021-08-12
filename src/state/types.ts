@@ -93,8 +93,15 @@ export interface Rebalance extends RebalanceConfig {
   autoHerodotus?: string
   sharedPricePercentDiff?: number
   twentyHperformance?: number
+  dataFactsheet2?: dataFactsheetRow[]
 }
 
+export interface dataFactsheetRow {
+  compiler: {
+    title: string
+    address: string
+  }
+}
 // Slices states
 
 export interface ToastsState {

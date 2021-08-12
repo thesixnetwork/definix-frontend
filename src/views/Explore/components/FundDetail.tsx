@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import _ from 'lodash'
+// import { getAddress } from 'utils/addressHelpers'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
@@ -109,6 +110,7 @@ const AssetDetail = ({ rebalance }) => {
           if (r.symbol === 'WBNB') return 'BNB'
           return r.symbol
         })()
+
         const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
         // @ts-ignore
         const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
@@ -164,27 +166,35 @@ const AssetDetail = ({ rebalance }) => {
     </Table>
   )
 }
+const FactRow = ({ name, value, isCopy }) => {
+  return (
+    <TR>
+      <TD>
+        <Text bold>{name}</Text>
+      </TD>
+      <TD>
+        <div className="flex">
+          <Text fontSize="14px" className={isCopy ? 'mr-2' : ''}>
+            {value}
+          </Text>
+          {isCopy && <CopyToClipboard toCopy={isCopy} iconWidth="16px" noText />}
+        </div>
+      </TD>
+    </TR>
+  )
+}
 
 const FactSheet = ({ rebalance }) => {
-  const data = _.get(rebalance, 'factsheet')
-
   return (
     <Table>
-      {data.map((r) => (
-        <TR>
-          <TD>
-            <Text bold>{r.title}</Text>
-          </TD>
-          <TD>
-            <div className="flex">
-              <Text fontSize="14px" className={r.copy ? 'mr-2' : ''}>
-                {r.value}
-              </Text>
-              {r.copy && <CopyToClipboard toCopy={r.value} iconWidth="16px" noText />}
-            </div>
-          </TD>
-        </TR>
-      ))}
+      <FactRow name="Name" value={rebalance.factsheet.name} isCopy={false} />
+      <FactRow name="Inception date" value={rebalance.factsheet.inceptionDate} isCopy />
+      <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy />
+      <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy />
+      <FactRow name="Comptroller" value={rebalance.factsheet.comptroller} isCopy />
+      <FactRow name="Management" value={rebalance.factsheet.management} isCopy />
+      <FactRow name="Finix buy back fee" value={rebalance.factsheet.finixBuyBackFee} isCopy />
+      <FactRow name="Bounty fee" value={rebalance.factsheet.bountyFee} isCopy />
     </Table>
   )
 }
