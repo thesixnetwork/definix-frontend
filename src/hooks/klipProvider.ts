@@ -79,6 +79,7 @@ export const genQRcodeContactInteract = (
   abi: string,
   input: string,
   setShowModal: (bool: boolean) => void,
+  value?:string
 ) => {
   initData()
   const mockData = {
@@ -88,7 +89,7 @@ export const genQRcodeContactInteract = (
     type: 'execute_contract',
     transaction: {
       to: contractAddress,
-      value: '0',
+      value: (value || "0"),
       abi,
       params: input,
     },
@@ -112,6 +113,7 @@ export const genQRcodeContactInteract = (
     }
   })
 }
+
 
 // interface Props {
 
