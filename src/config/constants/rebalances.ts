@@ -10,7 +10,7 @@ const rebalances: RebalanceConfig[] = [
     icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
     address: {
       1001: '0xfaf517E6efB3D799315D5538C34975c51291c2cF',
-      8217: '0xfaf517E6efB3D799315D5538C34975c51291c2cF',
+      8217: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
     },
     ratio: [
       {
@@ -58,7 +58,7 @@ const rebalances: RebalanceConfig[] = [
     icon: ['/images/vaults/bigcap_1.png', '/images/vaults/bigcap_2.png'],
     address: {
       1001: '0xc292478FaEb31f25744023b03748A4090fcb59dA',
-      8217: '0xc292478FaEb31f25744023b03748A4090fcb59dA',
+      8217: '0x35F59B33c6510D87eDd1f8F81d9DB9c2763D61C0',
     },
     ratio: [
       {
@@ -112,7 +112,7 @@ const rebalances: RebalanceConfig[] = [
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '0x47B77DfC1FA6d1D9148558381a13e791ea8a2491',
-      8217: '0x47B77DfC1FA6d1D9148558381a13e791ea8a2491',
+      8217: '0x7BBc8e4978585D4067b3Cf74e5C48E5778C31c40',
     },
     ratio: [
       {
@@ -160,7 +160,7 @@ const rebalances: RebalanceConfig[] = [
     icon: ['/images/vaults/altparty_1.png', '/images/vaults/altparty_2.png'],
     address: {
       1001: '0x49C493b6B87E90AE06c6f2D9D0c5D88aCE9137A9',
-      8217: '0x49C493b6B87E90AE06c6f2D9D0c5D88aCE9137A9',
+      8217: '0xdc8794615df8CF117B4c856442DbCb7CdF3116ca',
     },
     ratio: [
       {
@@ -208,7 +208,7 @@ const rebalances: RebalanceConfig[] = [
     icon: ['/images/vaults/volatility_1.png', '/images/vaults/volatility_2.png'],
     address: {
       1001: '0x495788Eb76f90F64eaD6297f5b571C4Cdb07EA2e',
-      8217: '0x495788Eb76f90F64eaD6297f5b571C4Cdb07EA2e',
+      8217: '0xa3A506d486F02bB54E495ed92d89905860803910',
     },
     ratio: [
       {
@@ -274,7 +274,7 @@ const rebalances: RebalanceConfig[] = [
     icon: ['/images/vaults/finixforce_1.png', '/images/vaults/finixforce_2.png'],
     address: {
       1001: '0xE9B499B7639022E7CB68Ce53B9347292d0eA43e9',
-      8217: '0xE9B499B7639022E7CB68Ce53B9347292d0eA43e9',
+      8217: '0x8152c76e4D58A06F660a3736246F7906e849419c',
     },
     ratio: [
       {
