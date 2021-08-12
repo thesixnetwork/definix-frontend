@@ -144,6 +144,7 @@ export const fetchRebalances = () => async (dispatch) => {
       }
       const last24Data = _.get(last24Response, 'data.result', {})
       const last24TotalSupply = new BigNumber(_.get(last24Data, 'total_supply')).div(new BigNumber(10).pow(18))
+
       const last24Tokens = _.get(last24Data, 'tokens', {})
       const sumOldTokenPrice = BigNumber.sum.apply(
         null,
@@ -153,6 +154,7 @@ export const fetchRebalances = () => async (dispatch) => {
           )
           const tokenPrice = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.price`, 0))
           const totalTokenPrice = tokenAmount.times(tokenPrice)
+
           return totalTokenPrice
         }),
       )
@@ -163,6 +165,7 @@ export const fetchRebalances = () => async (dispatch) => {
 
       const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
 
+      // cal pool apy
       const autoHerodotusContract = getContract(
         [
           {
@@ -209,7 +212,7 @@ export const fetchRebalances = () => async (dispatch) => {
       const apyPool = finixPrice.times(finixRewardPerYear).div(totalAssetValue).times(100)
 
       // eslint-disable-next-line
-
+      // debugger
       // const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
       // const performanceResp = await axios.get(performanceAPI, {
       //   params: {

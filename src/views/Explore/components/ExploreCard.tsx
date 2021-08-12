@@ -98,7 +98,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                   {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
                 </Text> */}
                 <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" />
-                <TwoLineFormat title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" alignRight />
+                <TwoLineFormat title="APY" value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" alignRight />
               </div>
               <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
                 View Details
@@ -189,7 +189,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
           </Text> */}
           <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" />
-          <TwoLineFormat title="APY" value={`${rebalance.apyPool.toFixed(2)}%`} hint="xxx" alignRight />
+          <TwoLineFormat title="APY" value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" alignRight />
         </div>
         <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
           View Details
