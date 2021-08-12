@@ -22,6 +22,14 @@ const FullDiv = styled.div`
   height: 100%;
 `
 
+const FullDivDark = styled.div`
+  background: rgba(33, 33, 33, 0.8);
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+`
+
 const RelativeDiv = styled.div`
   position: relative;
 `
@@ -192,7 +200,12 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
       <Box className={className}>
         <Line data={data} options={options} height={height} />
       </Box>
-      {isLoading && (
+      {isDark && isLoading && (
+        <FullDivDark>
+          <LoadingData />
+        </FullDivDark>
+      )}
+      {!isDark && isLoading && (
         <FullDiv>
           <LoadingData />
         </FullDiv>
