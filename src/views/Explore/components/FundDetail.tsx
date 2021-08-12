@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
+import { getAddress } from 'utils/addressHelpers'
 import numeral from 'numeral'
 import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
@@ -113,9 +114,18 @@ const AssetDetail = ({ rebalance }) => {
         const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
           new BigNumber(10).pow(18),
         )
-        const tokenPrice = (totalPrice || new BigNumber(0)).div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
+        const tokenPrice = (totalPrice || new BigNumber(0)).div(
+          _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(_.get(r, 'decimals', 18))),
+        )
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
-        const priceLast24 = _.get(rebalance, `last24data.tokens.${r.address.toLowerCase()}.price`, new BigNumber(0))
+        const priceLast24 = _.get(
+          rebalance,
+          `last24data.tokens.${(typeof _.get(r, 'address', '') === 'string'
+            ? _.get(r, 'address', '')
+            : getAddress(_.get(r, 'address', ''))
+          ).toLowerCase()}.price`,
+          new BigNumber(0),
+        )
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
 
@@ -129,7 +139,11 @@ const AssetDetail = ({ rebalance }) => {
             </TD>
             <TD align="center">
               <Text>
-                {numeral(r.totalBalance.div(new BigNumber(10).pow(r.decimals)).toNumber()).format('0,0.[000]')}
+                {numeral(
+                  _.get(r, 'totalBalance', new BigNumber(0))
+                    .div(new BigNumber(10).pow(_.get(r, 'decimals', 18)))
+                    .toNumber(),
+                ).format('0,0.[000]')}
               </Text>
             </TD>
             <TD align="center">

@@ -58,6 +58,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
     }
   }, [])
 
+  const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
   if (isHorizontal) {
     if (isMobile) {
       return (
@@ -91,7 +92,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               />
             </div>
 
-            <MiniChart rebalanceAddress={getAddress(rebalance.address)} />
+            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
 
             <div className="pa-4">
               <div className="flex align-end justify-space-between mb-3">
@@ -139,19 +140,19 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           <TwoLineFormat
             className="mb-2"
             title="Share price"
-            value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+            value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
             percent={`${
               rebalance.sharedPricePercentDiff >= 0
-                ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+                : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
             }%`}
             percentClass={(() => {
-              if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-              if (rebalance.sharedPricePercentDiff > 0) return 'success'
+              if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
+              if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
               return ''
             })()}
           />
-          <MiniChart rebalanceAddress={getAddress(rebalance.address)} height={60} />
+          <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={60} />
         </div>
 
         <div className="col-2 flex flex-column justify-center">
@@ -171,24 +172,27 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
       <CardHeading className="pa-4" isHorizontal={isHorizontal} rebalance={rebalance} />
 
       <div className="flex justify-space-between pa-4 pt-0">
-        <TwoLineFormat title="Total asset value" value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`} />
+        <TwoLineFormat
+          title="Total asset value"
+          value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
+        />
         <TwoLineFormat
           title="Share price"
-          value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+          value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
           percent={`${
             rebalance.sharedPricePercentDiff >= 0
-              ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-              : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+              ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+              : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
           }%`}
           percentClass={(() => {
-            if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-            if (rebalance.sharedPricePercentDiff > 0) return 'success'
+            if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
+            if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
             return ''
           })()}
         />
       </div>
 
-      <MiniChart rebalanceAddress={getAddress(rebalance.address)} />
+      <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
 
       <div className="pa-4">
         <div className="flex align-end justify-space-between mb-3">

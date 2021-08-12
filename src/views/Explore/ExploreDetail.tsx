@@ -236,43 +236,53 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
+            const allCurrentTokens = _.compact([
+              ...((rebalance || {}).tokens || []),
+              ...((rebalance || {}).usdToken || []),
+            ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
             )
             label.push(timestampLabel)
             let dataValues = _.get(data, 'values', [])
+            let sumUsd = 0
+            for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
+              const currentIndex = i + 1
+              const currentLoopToken = allCurrentTokens[i]
+              const currentLoopValue = new BigNumber(dataValues[currentIndex]).div(
+                new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+              )
+              sumUsd += currentLoopValue.toNumber()
+            }
             if (!base.rebalance) {
-              base.rebalance = new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
+              base.rebalance = sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
             }
             rebalanceData.values.push(
-              new BigNumber(dataValues[0])
-                .div(new BigNumber(10).pow(18))
+              new BigNumber(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
                 .div(new BigNumber(base.rebalance as number))
                 .times(100)
                 .toNumber(),
             )
-            dataValues = dataValues.splice(_.get(rebalance, 'tokens', []).length)
-            _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).forEach(
-              (token, index) => {
-                if (!base[token.symbol]) {
-                  base[token.symbol] = dataValues[index]
+            dataValues = dataValues.splice(allCurrentTokens.length + 1)
+            allCurrentTokens.forEach((token, index) => {
+              if (!base[token.symbol]) {
+                base[token.symbol] = dataValues[index]
+              }
+              if (!graphTokenData[token.symbol]) {
+                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
+                graphTokenData[token.symbol] = {
+                  name: token.symbol,
+                  values: [],
+                  color: ratioObject.color,
                 }
-                if (!graphTokenData[token.symbol]) {
-                  const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-                  graphTokenData[token.symbol] = {
-                    name: token.symbol,
-                    values: [],
-                    color: ratioObject.color,
-                  }
-                }
-                graphTokenData[token.symbol].values.push(
-                  new BigNumber(dataValues[index])
-                    .div(base[token.symbol] as number)
-                    .times(100)
-                    .toNumber(),
-                )
-              },
-            )
+              }
+              graphTokenData[token.symbol].values.push(
+                new BigNumber(dataValues[index])
+                  .div(base[token.symbol] as number)
+                  .times(100)
+                  .toNumber(),
+              )
+            })
           })
           graphTokenData.rebalance = rebalanceData
           setGraphData({ labels: label, graph: graphTokenData })

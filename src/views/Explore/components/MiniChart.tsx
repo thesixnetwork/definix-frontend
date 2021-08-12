@@ -40,12 +40,12 @@ const formatter = {
   '1D': 'HH:mm',
 }
 
-const MiniChart = ({ rebalanceAddress, className = '', height = 100 }) => {
+const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) => {
   const { isDark } = useTheme()
   const [graphData, setGraphData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const fetchGraphData = useCallback(async () => {
-    if (rebalanceAddress) {
+    if (rebalanceAddress && _.compact(tokens.map((t) => t.decimals)).length > 0) {
       setIsLoading(true)
       const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
       try {
@@ -64,12 +64,20 @@ const MiniChart = ({ rebalanceAddress, className = '', height = 100 }) => {
           )
           label.push(timestampLabel)
           const dataValues = _.get(data, 'values', [])
+          let sumUsd = 0
+          for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
+            const currentIndex = i + 1
+            const currentLoopToken = tokens[i]
+            const currentLoopValue = new BigNumber(dataValues[currentIndex]).div(
+              new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+            )
+            sumUsd += currentLoopValue.toNumber()
+          }
           if (!base.rebalance) {
-            base.rebalance = new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
+            base.rebalance = sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
           }
           rebalanceData.values.push(
-            new BigNumber(dataValues[0])
-              .div(new BigNumber(10).pow(18))
+            new BigNumber(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
               .div(new BigNumber(base.rebalance as number))
               .times(100)
               .toNumber(),
@@ -104,7 +112,7 @@ const MiniChart = ({ rebalanceAddress, className = '', height = 100 }) => {
         setIsLoading(false)
       }
     }
-  }, [rebalanceAddress, setGraphData])
+  }, [rebalanceAddress, setGraphData, tokens])
   useEffect(() => {
     fetchGraphData()
   }, [fetchGraphData])

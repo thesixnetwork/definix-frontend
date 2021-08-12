@@ -316,18 +316,18 @@ const CardInput = ({
         <SpaceBetweenFormat
           className="mb-2"
           title={`Management fee ${managementFee}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / (managementFee / 100))).format('0,0.[0000]')}`}
+          value={`$${numeral(usdToBeRecieve / (100 / managementFee)).format('0,0.[0000]')}`}
           hint="xx"
         />
         <SpaceBetweenFormat
           className="mb-2"
           title={`FINIX buy back fee ${buyBackFee}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / (buyBackFee / 100))).format('0,0.[0000]')}`}
+          value={`$${numeral(usdToBeRecieve / (100 / buyBackFee)).format('0,0.[0000]')}`}
           hint="xx"
         />
         <SpaceBetweenFormat
           title={`Ecosystem fee ${ecosystemFee}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / (ecosystemFee / 100))).format('0,0.[0000]')}`}
+          value={`$${numeral(usdToBeRecieve / (100 / ecosystemFee)).format('0,0.[0000]')}`}
           hint="xx"
         />
       </div>
@@ -385,9 +385,9 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
               share={currentInput}
               usd={`~ $${numeral(
                 usdToBeRecieve -
-                  usdToBeRecieve / (100 / (ecosystemFee / 100)) -
-                  usdToBeRecieve / (100 / (buyBackFee / 100)) -
-                  usdToBeRecieve / (100 / (managementFee / 100)),
+                  usdToBeRecieve / (100 / ecosystemFee) -
+                  usdToBeRecieve / (100 / buyBackFee) -
+                  usdToBeRecieve / (100 / managementFee),
               ).format('0,0.[0000]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />
@@ -464,7 +464,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   }, [])
 
   const fetchData = useCallback(async () => {
-    if (!rebalance) {
+    if (rebalance && new BigNumber(currentInput).toNumber() > 0) {
       setIsSimulating(true)
       const thisRebalanceBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
       const myBalance = _.get(thisRebalanceBalance, getAddress(rebalance.address), new BigNumber(0))
@@ -493,6 +493,9 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       )
       setPoolAmounts(poolAmountsData)
       setIsSimulating(false)
+    }
+    if (new BigNumber(currentInput).toNumber() <= 0) {
+      setPoolAmounts([])
     }
   }, [selectedToken, currentInput, rebalance, ratioType, balances, rebalanceBalances])
 
