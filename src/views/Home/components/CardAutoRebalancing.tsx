@@ -58,7 +58,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
     <StyledBanner className={className}>
       <div className="pos-relative" style={{ zIndex: 1 }}>
         <Heading className="mb-2" color="primary">
-          DEFINIX SYSTEMATIC FARMS
+          DEFINIX REBALANCING FARM
         </Heading>
         <Text color="textSubtle" fontSize="12px">
           Rebalancing involves periodically buying or selling assets in a portfolio to maintain an original or desired
@@ -69,7 +69,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
         </Text>
 
         <Text bold fontSize="12px" className="my-4" color="primary">
-          Definix Systematic Farm is available to use in
+          Definix Rebalancing Farm is available to use in
         </Text>
 
         <Flip date={openDate} smallBg />

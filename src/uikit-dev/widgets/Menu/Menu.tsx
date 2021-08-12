@@ -20,7 +20,7 @@ import FinixCoin from '../../images/finix-coin.png'
 import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challenge-29.png'
 import colorGradient from '../../images/for-ui-v2/color-gradient.png'
 import logoNoti from '../../images/for-ui-v2/noti.png'
-import { useModal } from '../Modal'
+import useModal from '../Modal/useModal'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
 import Logo from './Logo'
@@ -305,7 +305,7 @@ const Menu: React.FC<NavProps> = ({
                       style={{ color: '#ffd157', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}
                       onClick={onPresentDisclaimersModal}
                     >
-                      READ MORE.
+                      read more here.
                     </span>
                   </Text>
                 }
