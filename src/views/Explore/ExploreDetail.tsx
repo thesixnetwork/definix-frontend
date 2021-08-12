@@ -390,7 +390,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         hint="xxx"
                         className="mr-6"
                       />
-                      <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
+                      <TwoLineFormat title="Return" value={`${(returnPercent || 0).toFixed(2)}%`} hint="xxx" />
                     </div>
                   </div>
 
