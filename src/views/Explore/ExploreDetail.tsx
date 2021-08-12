@@ -323,11 +323,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <TwoLineFormat
                         title="Share price"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
+                        percent={`${rebalance.sharedPricePercentDiff >= 0
                             ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                             : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                          }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -349,11 +348,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         className={isMobile ? 'col-6 my-2' : 'col-3'}
                         title="Share price"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
+                        percent={`${rebalance.sharedPricePercentDiff >= 0
                             ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                             : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                          }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -390,7 +388,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         hint="xxx"
                         className="mr-6"
                       />
-                      <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
+                      <TwoLineFormat title="Return" value={`${(returnPercent || 0).toFixed(2)}%`} hint="xxx" />
                     </div>
                   </div>
 
