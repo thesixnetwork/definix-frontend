@@ -99,6 +99,9 @@ const CardInput = ({
     if (token.symbol === 'WKLAY' || token.symbol === 'WBNB') return 'main'
     return getAddress(token.address)
   }
+  function toFixedCustom(num) {
+    return num.toString().match(/^-?\d+(?:\.\d{0,7})?/)[0]
+  }
   return (
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4 pt-2' : 'pa-6 pt-4'}>
@@ -156,9 +159,14 @@ const CardInput = ({
               value={currentInput[getAddress(c.address)]}
               label=""
               onMax={() => {
+                const max = String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber())
+
+                const testMax = toFixedCustom(max)
+                // eslint-disable-next-line
+                // debugger
                 setCurrentInput({
                   ...currentInput,
-                  [getAddress(c.address)]: String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber()),
+                  [getAddress(c.address)]: testMax,
                 })
               }}
               onQuarter={() => {
