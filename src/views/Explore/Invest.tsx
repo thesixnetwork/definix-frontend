@@ -285,16 +285,16 @@ const CardCalculate = ({
         .toJSON()
       const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
       if (connector === 'klip') {
-        const valueNumber = (Number( mainCoinValue) / (10 ** 18)).toString()
+        const valueNumber = (Number(mainCoinValue) / 10 ** 18).toString()
         const valueklip = Number.parseFloat(valueNumber).toFixed(6)
-        let expectValue = (`${(Number(valueklip) + 0.00001) * (10 ** 18)}`)
+        let expectValue = `${(Number(valueklip) + 0.00001) * 10 ** 18}`
         expectValue = expectValue.slice(0, -13)
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('addFund')),
           JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
           setShowModal,
-          mainCoinValue ? `${expectValue}0000000000000` : "0",
+          mainCoinValue ? `${expectValue}0000000000000` : '0',
         )
         const tx = await klipProvider.checkResponse()
         setTx(tx)
