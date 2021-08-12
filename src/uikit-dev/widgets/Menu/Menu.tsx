@@ -288,18 +288,18 @@ const Menu: React.FC<NavProps> = ({
                 logo={logoNoti}
                 customText={
                   <Text color="white" fontSize="12px">
-                    <strong>New Feature : Systematic Vault (Beta) :</strong>{' '}
+                    <strong>New Feature : Systematic Farm (Beta) :</strong>{' '}
                     <span className="mr-1">
-                      Systematic vault is a vault that has been built by using rebalancing strategy. This feature is
-                      still in beta period. For the security of your assets,
+                      Systematic farm is a farm that has been built by using rebalancing strategy. This feature is still
+                      in beta period. For the security of your assets,
                     </span>
                     <strong className="mr-1" style={{ color: '#ffd157' }}>
                       {' '}
-                      the maximum amount of investment will be $100 per vault
+                      the maximum amount of investment will be $100 per farm
                     </strong>
                     <span>
                       during the beta period. This limit will be removed once the auditor finishes the smart contract of
-                      systematic vault.
+                      systematic farm.
                     </span>
                   </Text>
                 }

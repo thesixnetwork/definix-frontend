@@ -33,7 +33,7 @@ import WithDrawalFees from './components/WithdrawalFees'
 import { Rebalance } from '../../state/types'
 
 const MaxWidth = styled.div`
-  max-width: 800px;
+  max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -84,8 +84,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [returnPercent, setReturnPercent] = useState(0)
   const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
   const [graphData, setGraphData] = useState({})
-  const { isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isMd && !isLg
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg
   const dispatch = useDispatch()
   const { account } = useWallet()
   const prevRebalance = usePrevious(rebalance, {})
@@ -362,120 +362,123 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       </Helmet>
       <TwoPanelLayout>
         <LeftPanelAbsolute isShowRightPanel={false}>
-          <MaxWidth>
-            <Card className="mb-4">
-              <div className="pa-4 pt-2 bd-b">
-                <Button
-                  variant="text"
-                  as={Link}
-                  to="/explore"
-                  ml="-12px"
-                  mb="8px"
-                  padding="0 12px"
-                  startIcon={<ArrowBackIcon />}
-                >
-                  <Text fontSize="14px" color="textSubtle">
-                    Back
-                  </Text>
-                </Button>
+          <MaxWidth className={!isMobile ? 'flex' : ''}>
+            <div className={!isMobile ? 'col-9' : ''}>
+              <Card className="mb-4">
+                <div className="pa-4 pt-2 bd-b">
+                  <Button
+                    variant="text"
+                    as={Link}
+                    to="/explore"
+                    ml="-12px"
+                    mb="8px"
+                    padding="0 12px"
+                    startIcon={<ArrowBackIcon />}
+                  >
+                    <Text fontSize="14px" color="textSubtle">
+                      Back
+                    </Text>
+                  </Button>
 
-                <div className="flex justify-space-between align-end mb-2">
-                  <CardHeading rebalance={rebalance} />
-                  {!isMobile && (
-                    <TwoLineFormat
-                      title="Share price"
-                      value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                      percent={`${
-                        rebalance.sharedPricePercentDiff >= 0
-                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                      }%`}
-                      percentClass={(() => {
-                        if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                        if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                        return ''
-                      })()}
-                      large
-                    />
-                  )}
-                </div>
+                  <div className="flex justify-space-between align-end mb-2">
+                    <CardHeading rebalance={rebalance} />
+                    {!isMobile && (
+                      <TwoLineFormat
+                        title="Share price"
+                        value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                        percent={`${
+                          rebalance.sharedPricePercentDiff >= 0
+                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                        }%`}
+                        percentClass={(() => {
+                          if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                          if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                          return ''
+                        })()}
+                        large
+                      />
+                    )}
+                  </div>
 
-                <div className={`flex flex-wrap ${!isMobile ? 'pl-8' : ''}`}>
-                  <TwoLineFormat
-                    className={isMobile ? 'col-6 my-2' : 'col-3'}
-                    title="Total asset value"
-                    value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
-                  />
-                  {isMobile && (
+                  <div className={`flex flex-wrap ${!isMobile ? 'pl-8' : ''}`}>
                     <TwoLineFormat
                       className={isMobile ? 'col-6 my-2' : 'col-3'}
-                      title="Share price"
-                      value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                      percent={`${
-                        rebalance.sharedPricePercentDiff >= 0
-                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                      }%`}
-                      percentClass={(() => {
-                        if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                        if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                      title="Total asset value"
+                      value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+                    />
+                    {isMobile && (
+                      <TwoLineFormat
+                        className={isMobile ? 'col-6 my-2' : 'col-3'}
+                        title="Share price"
+                        value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                        percent={`${
+                          rebalance.sharedPricePercentDiff >= 0
+                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                        }%`}
+                        percentClass={(() => {
+                          if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                          if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                          return ''
+                        })()}
+                      />
+                    )}
+                    <TwoLineFormat
+                      className={isMobile ? 'col-6' : 'col-3'}
+                      title="24H Performance"
+                      value={`$${numeral(rebalance.twentyHperformance).format('0,0.[00]')}`}
+                      valueClass={(() => {
+                        if (rebalance.twentyHperformance < 0) return 'failure'
+                        if (rebalance.twentyHperformance > 0) return 'success'
                         return ''
                       })()}
                     />
-                  )}
-                  <TwoLineFormat
-                    className={isMobile ? 'col-6' : 'col-3'}
-                    title="24H Performance"
-                    value={`$${numeral(rebalance.twentyHperformance).format('0,0.[00]')}`}
-                    valueClass={(() => {
-                      if (rebalance.twentyHperformance < 0) return 'failure'
-                      if (rebalance.twentyHperformance > 0) return 'success'
-                      return ''
-                    })()}
-                  />
-                  <TwoLineFormat
-                    className={isMobile ? 'col-6' : 'col-3'}
-                    title="Investors"
-                    value={numeral(rebalance.activeUserCountNumber).format('0,0')}
-                  />
-                </div>
-              </div>
-
-              <div className="pa-4">
-                <div className="flex flex-wrap align-center justify-space-between mb-3">
-                  <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
-                  <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                    <TwoLineFormat title="APY" value={`${apy.toFixed(2)}%`} hint="xxx" className="mr-6" />
-                    <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
+                    <TwoLineFormat
+                      className={isMobile ? 'col-6' : 'col-3'}
+                      title="Investors"
+                      value={numeral(rebalance.activeUserCountNumber).format('0,0')}
+                    />
                   </div>
                 </div>
 
-                <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
-              </div>
+                <div className="pa-4">
+                  <div className="flex flex-wrap align-center justify-space-between mb-3">
+                    <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
+                    <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
+                      <TwoLineFormat title="APY" value={`${apy.toFixed(2)}%`} hint="xxx" className="mr-6" />
+                      <TwoLineFormat title="Return" value={`${returnPercent.toFixed(2)}%`} hint="xxx" />
+                    </div>
+                  </div>
 
-              <div className="flex bd-t">
-                <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Risk-O-Meter" value="Medium" />
-                <TwoLineFormat
-                  className="px-4 py-3 col-4 bd-r"
-                  title="Sharpe ratio"
-                  value={`${numeral(performanceData.sharpeRatio).format('0,0.00')}`}
-                  hint="xxx"
-                />
-                <TwoLineFormat
-                  className="px-4 py-3 col-4"
-                  title="Max Drawdown"
-                  value={`${numeral(performanceData.maxDrawDown).format('0,0.00')}%`}
-                  hint="xxx"
-                />
-              </div>
-            </Card>
+                  <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
+                </div>
 
-            <FullAssetRatio ratio={ratio} className="mb-4" />
-            <TradeStrategy className="mb-4" />
-            <WithDrawalFees className="mb-4" />
-            <FundDetail className="mb-4" rebalance={rebalance} />
-            <Transaction className="mb-4" rbAddress={rebalance.address} />
-            <FundAction rebalance={rebalance} />
+                <div className="flex bd-t">
+                  <TwoLineFormat className="px-4 py-3 col-4 bd-r" title="Risk-O-Meter" value="Medium" />
+                  <TwoLineFormat
+                    className="px-4 py-3 col-4 bd-r"
+                    title="Sharpe ratio"
+                    value={`${numeral(performanceData.sharpeRatio).format('0,0.00')}`}
+                    hint="xxx"
+                  />
+                  <TwoLineFormat
+                    className="px-4 py-3 col-4"
+                    title="Max Drawdown"
+                    value={`${numeral(performanceData.maxDrawDown).format('0,0.00')}%`}
+                    hint="xxx"
+                  />
+                </div>
+              </Card>
+
+              <FullAssetRatio ratio={ratio} className="mb-4" />
+              <TradeStrategy className="mb-4" />
+              <WithDrawalFees className="mb-4" />
+              <FundDetail className="mb-4" rebalance={rebalance} />
+              <Transaction className="mb-4" rbAddress={rebalance.address} />
+            </div>
+
+            <FundAction rebalance={rebalance} isVertical={!isMobile} className={!isMobile ? 'col-3' : ''} />
           </MaxWidth>
         </LeftPanelAbsolute>
       </TwoPanelLayout>

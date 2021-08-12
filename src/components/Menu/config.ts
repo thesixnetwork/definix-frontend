@@ -83,7 +83,7 @@ const config: MenuEntry[] = [
   //   newTab: false,
   // },
   {
-    label: 'Vault',
+    label: 'Rebalancing',
     icon: mutualBlack,
     iconActive: mutualWhite,
     href: '/explore',

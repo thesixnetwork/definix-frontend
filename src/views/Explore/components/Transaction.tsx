@@ -173,8 +173,8 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         isLoading={isLoading}
         empText={
           currentTab === 0
-            ? 'Don`t have any transactions in this vault.'
-            : 'You haven`t made any transactions in this vault.'
+            ? 'Don`t have any transactions in this farm.'
+            : 'You haven`t made any transactions in this farm.'
         }
       />
     </Card>

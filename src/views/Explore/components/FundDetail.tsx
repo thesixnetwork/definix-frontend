@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { getAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import styled from 'styled-components'
@@ -115,13 +114,9 @@ const AssetDetail = ({ rebalance }) => {
         const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
           new BigNumber(10).pow(18),
         )
-        const tokenPrice =
-          (totalPrice || new BigNumber(0)).div(
-            _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(r.decimals)),
-          ) || new BigNumber(0)
+        const tokenPrice = (totalPrice || new BigNumber(0)).div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
-        const address = r.address.toLowerCase ? r.address.toLowerCase() : getAddress(r.address).toLowerCase()
-        const priceLast24 = _.get(rebalance, `last24data.tokens.${address}.price`, new BigNumber(0))
+        const priceLast24 = _.get(rebalance, `last24data.tokens.${r.address.toLowerCase()}.price`, new BigNumber(0))
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
 
@@ -135,9 +130,7 @@ const AssetDetail = ({ rebalance }) => {
             </TD>
             <TD align="center">
               <Text>
-                {numeral(
-                  _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(r.decimals)).toNumber(),
-                ).format('0,0.[000]')}
+                {numeral(r.totalBalance.div(new BigNumber(10).pow(r.decimals)).toNumber()).format('0,0.[000]')}
               </Text>
             </TD>
             <TD align="center">
@@ -160,9 +153,21 @@ const AssetDetail = ({ rebalance }) => {
 }
 
 const FactSheet = () => {
-  const rebalances = useRebalances()
-  const data = _.get(rebalances, '0.factsheet')
+  const data = [
+    { title: 'Name', value: 'Title', copy: false },
+    { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+    { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+    { title: 'Vault', value: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773', copy: true },
+    { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+    { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+    { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+    { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+  ]
 
+  const rebalances = useRebalances()
+  console.log('rebalances =', rebalances)
+  const data1 = _.get(rebalances, 'factsheet.0')
+  console.log('data1 =', data1)
   return (
     <Table>
       {data.map((r) => (
