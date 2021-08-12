@@ -2,7 +2,11 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import React from 'react'
 import styled from 'styled-components'
-import { Button, CheckmarkIcon, Heading, Modal, Text } from 'uikit-dev'
+import Button from 'uikit-dev/components/Button/Button'
+import Heading from 'uikit-dev/components/Heading/Heading'
+import CheckmarkIcon from 'uikit-dev/components/Svg/Icons/Checkmark'
+import Text from 'uikit-dev/components/Text/Text'
+import Modal from 'uikit-dev/widgets/Modal/Modal'
 
 const Box = styled.div`
   padding: 16px;
