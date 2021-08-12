@@ -133,11 +133,10 @@ const AssetDetail = ({ rebalance }) => {
           ).toLowerCase()}.price`,
           new BigNumber(0),
         )
-        
+
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
-        // eslint-disable-next-line  
-        // debugger
+
         return (
           <TR>
             <TD>
@@ -163,7 +162,8 @@ const AssetDetail = ({ rebalance }) => {
             </TD>
             <TD align="center">
               <Text color={selectClass(changeNumber)}>
-                {selectSymbolChange(changeNumber)}{`${numeral(changeNumber).format('0,0.[000]')} %`}
+                {selectSymbolChange(changeNumber)}
+                {`${numeral(changeNumber).format('0,0.[000]')} %`}
               </Text>
             </TD>
             <TD align="center">
