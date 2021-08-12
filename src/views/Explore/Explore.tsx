@@ -5,7 +5,7 @@ import { HelpCircle } from 'react-feather'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useRebalanceAddress, useRebalances } from 'state/hooks'
+import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
 import styled from 'styled-components'
 import Heading from 'uikit-dev/components/Heading/Heading'
 import HelpButton from 'uikit-dev/components/HelpButton'
@@ -37,8 +37,8 @@ const Explore: React.FC = () => {
   const targetRebalance = useRebalanceAddress(selectedRebalance ? getAddress(selectedRebalance.address) : undefined)
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const rebalanceBalances = useRebalanceBalances(account)
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
-
   useEffect(() => {
     if (account) {
       const addressObject = {}
@@ -102,17 +102,20 @@ const Explore: React.FC = () => {
               />
 
               <FlexLayout cols={listView ? 1 : 3}>
-                {(rebalances || []).map((rebalance) => {
-                  return (
-                    <ExploreCard
-                      isHorizontal={listView}
-                      rebalance={rebalance}
-                      onClickViewDetail={() => {
-                        setSelectedRebalance(rebalance)
-                      }}
-                    />
-                  )
-                })}
+                {(rebalances || [])
+                  .filter((r) => (!isInvested ? true : rebalanceBalances[getAddress(r.address)].toNumber() > 0))
+                  .map((rebalance) => {
+                    return (
+                      <ExploreCard
+                        key={rebalance.title}
+                        isHorizontal={listView}
+                        rebalance={rebalance}
+                        onClickViewDetail={() => {
+                          setSelectedRebalance(rebalance)
+                        }}
+                      />
+                    )
+                  })}
               </FlexLayout>
             </MaxWidth>
           </LeftPanel>
