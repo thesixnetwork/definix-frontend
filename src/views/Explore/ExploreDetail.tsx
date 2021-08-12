@@ -249,8 +249,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
               const currentIndex = i + 1
               const currentLoopToken = allCurrentTokens[i]
-              const currentLoopValue = new BigNumber(dataValues[currentIndex]).div(
-                new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+
+              const currentLoopValue = new BigNumber(
+                dataValues[currentIndex + (dataValues.length - 1) / 2] || '1',
+              ).times(
+                new BigNumber(dataValues[currentIndex]).div(
+                  new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+                ),
               )
               sumUsd += currentLoopValue.toNumber()
             }
@@ -395,16 +400,18 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                      {false && <TwoLineFormat
-                        title="24H Performance"
-                        value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
-                        valueClass={(() => {
-                          if (_.get(rebalance, 'twentyHperformance', 0) < 0) return 'failure'
-                          if (_.get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
-                          return ''
-                        })()}
-                        className="mr-6"
-                      />}
+                      {false && (
+                        <TwoLineFormat
+                          title="24H Performance"
+                          value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
+                          valueClass={(() => {
+                            if (_.get(rebalance, 'twentyHperformance', 0) < 0) return 'failure'
+                            if (_.get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
+                            return ''
+                          })()}
+                          className="mr-6"
+                        />
+                      )}
                       <TwoLineFormat
                         title="Return"
                         value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}

@@ -76,8 +76,10 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
           for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
             const currentIndex = i + 1
             const currentLoopToken = tokens[i]
-            const currentLoopValue = new BigNumber(dataValues[currentIndex]).div(
-              new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+            const currentLoopValue = new BigNumber(dataValues[currentIndex + (dataValues.length - 1) / 2] || '1').times(
+              new BigNumber(dataValues[currentIndex]).div(
+                new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+              ),
             )
             sumUsd += currentLoopValue.toNumber()
           }
