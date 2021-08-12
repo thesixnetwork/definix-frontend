@@ -94,7 +94,7 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
 
   const pebUnit = new BigNumber(10).pow(18)
 
-  const userRemoveLP = new BigNumber(userInput || 0).multipliedBy(pebUnit)
+  const userRemoveLP = (userInput || new BigNumber(0)).multipliedBy(pebUnit)
   const feePercentage = new BigNumber(0)
   const totalLP = userRemoveLP.multipliedBy(new BigNumber(100).minus(feePercentage)).dividedBy(new BigNumber(100))
 

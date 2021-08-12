@@ -20,7 +20,6 @@ import {
   Link as UiLink,
   Text,
   useMatchBreakpoints,
-  useModal,
 } from 'uikit-dev'
 import _ from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
