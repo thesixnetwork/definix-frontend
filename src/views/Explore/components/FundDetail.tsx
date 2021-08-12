@@ -5,9 +5,11 @@ import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import _ from 'lodash'
+import { getAddress } from 'utils/addressHelpers'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
+
 
 interface FundDetailType {
   rebalance?: Rebalance | any
@@ -158,8 +160,18 @@ const AssetDetail = ({ rebalance }) => {
 }
 
 const FactSheet = ({ rebalance }) => {
-  const data = _.get(rebalance, 'factsheet')
-
+  // const datax = _.get(rebalance, 'factsheet')
+  
+  const data = [
+    { title: 'Name', value: 'Satoshi and Friends', copy: false },
+    { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+    { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+    { title: 'Vault', value: getAddress(rebalance.address), copy: true },
+    { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+    { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+    { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+    { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+  ]
   return (
     <Table>
       {data.map((r) => (

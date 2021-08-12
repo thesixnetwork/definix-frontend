@@ -210,6 +210,8 @@ export const fetchRebalances = () => async (dispatch) => {
 
       const apyPool = finixPrice.times(finixRewardPerYear).div(totalAssetValue).times(100)
 
+
+      getAddress(rebalanceConfig.factsheet2.comptroller)
       // eslint-disable-next-line
       // debugger
       // const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
