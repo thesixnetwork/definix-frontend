@@ -103,22 +103,27 @@ const AssetDetail = ({ rebalance }) => {
       </TR>
 
       {tokens.map((r, index) => {
+        
         const thisName = (() => {
           if (r.symbol === 'WKLAY') return 'KLAY'
           if (r.symbol === 'WBNB') return 'BNB'
           return r.symbol
         })()
+        
         const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
         // @ts-ignore
         const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
           new BigNumber(10).pow(18),
         )
-        const tokenPrice = (totalPrice || new BigNumber(0)).div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
+        let tokenPrice = new BigNumber(0)
+        let changeNumber =0
+        if(r && r.totalBalance){
+        tokenPrice = (totalPrice || new BigNumber(0)).div((r.totalBalance).div(new BigNumber(10).pow(r.decimals)))
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
         const priceLast24 = _.get(rebalance, `last24data.tokens.${r.address.toLowerCase()}.price`, new BigNumber(0))
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
-        const changeNumber = change.toNumber()
-
+        changeNumber = change.toNumber()
+        }
         return (
           <TR>
             <TD>
@@ -129,7 +134,7 @@ const AssetDetail = ({ rebalance }) => {
             </TD>
             <TD align="center">
               <Text>
-                {numeral(r.totalBalance.div(new BigNumber(10).pow(r.decimals)).toNumber()).format('0,0.[000]')}
+                {numeral((r.totalBalance||new BigNumber(0)).div(new BigNumber(10).pow(r.decimals)).toNumber()).format('0,0.[000]')}
               </Text>
             </TD>
             <TD align="center">
