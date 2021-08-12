@@ -395,7 +395,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                      <TwoLineFormat
+                      {false && <TwoLineFormat
                         title="24H Performance"
                         value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
                         valueClass={(() => {
@@ -404,7 +404,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                           return ''
                         })()}
                         className="mr-6"
-                      />
+                      />}
                       <TwoLineFormat
                         title="Return"
                         value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
