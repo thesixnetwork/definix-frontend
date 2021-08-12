@@ -371,11 +371,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         return ''
                       })()}
                     />
-                    <TwoLineFormat
+                    {/* <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
                       title="Investors"
                       value={numeral(rebalance.activeUserCountNumber).format('0,0')}
-                    />
+                    /> */}
                   </div>
                 </div>
 

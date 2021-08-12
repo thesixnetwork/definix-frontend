@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import CircularProgress from '@material-ui/core/CircularProgress'
-import axios from 'axios'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import axios from 'axios'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
 import numeral from 'numeral'
@@ -50,7 +50,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
   const [cols] = useState(['INVESTORS', 'ACTION', 'SHARES', 'TOTAL AMOUNT', 'DATE'])
 
   return (
-    <Overflow className="pa-4">
+    <Overflow className="pa-4 pt-0">
       <Table>
         <TR>
           {cols.map((c) => (
@@ -115,6 +115,13 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   const [total, setTotal] = useState(0)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
 
+  const setDefault = (tab) => {
+    setCurrentTab(tab)
+    setCurrentPage(1)
+    setTransactions([])
+    setTotal(0)
+  }
+
   const fetchTransaction = useCallback(async () => {
     if (currentTab === 1 && !account) {
       return
@@ -136,8 +143,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   }, [account, address, currentPage, currentTab])
 
   const onTabChange = (tab) => {
-    setCurrentTab(tab)
-    setCurrentPage(1)
+    setDefault(tab)
   }
   const onPageChange = (e, page) => {
     setCurrentPage(page)
@@ -147,24 +153,23 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
     fetchTransaction()
   }, [fetchTransaction])
 
-  useEffect(
-    () => () => {
-      setCurrentTab(0)
-      setCurrentPage(1)
-    },
-    [],
-  )
+  useEffect(() => {
+    return () => {
+      setDefault(0)
+    }
+  }, [])
 
   return (
     <Card className={className}>
       <CardTab menus={['ALL TRANSACTIONS', 'MY TRANSACTIONS']} current={currentTab} setCurrent={onTabChange} />
 
       <PaginationCustom
+        page={currentPage}
         count={pages}
         size="small"
         hidePrevButton
         hideNextButton
-        className="pa-4 pb-0"
+        className="px-4 py-2"
         onChange={onPageChange}
       />
 

@@ -3,6 +3,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 const PaginationStyle = styled(Pagination)`
+  height: 42px;
+
   .MuiPagination-ul {
     justify-content: flex-end;
   }
