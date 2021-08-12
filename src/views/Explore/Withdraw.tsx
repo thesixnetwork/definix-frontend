@@ -464,34 +464,36 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   }, [])
 
   const fetchData = useCallback(async () => {
-    setIsSimulating(true)
-    const thisRebalanceBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
-    const myBalance = _.get(thisRebalanceBalance, getAddress(rebalance.address), new BigNumber(0))
-    const thisInput = myBalance.isLessThan(new BigNumber(currentInput)) ? myBalance : new BigNumber(currentInput)
-    const [, poolAmountsData] = await simulateWithdraw(
-      thisInput,
-      _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
-        const ratioPoint = (
-          ((rebalance || {}).tokenRatioPoints || [])[index] ||
-          ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
-          new BigNumber(0)
-        ).toNumber()
-        const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
-        const decimal = c.decimals
-        return {
-          ...c,
-          symbol: c.symbol,
-          address: ratioObject.address,
-          ratioPoint,
-          value: new BigNumber(currentInput as string).times(new BigNumber(10).pow(decimal)),
-          isSelected: !!selectedToken[getAddress(ratioObject.address)],
-        }
-      }),
-      [((rebalance || {}).totalSupply || [])[0]],
-      ratioType === 'all',
-    )
-    setPoolAmounts(poolAmountsData)
-    setIsSimulating(false)
+    if (!rebalance) {
+      setIsSimulating(true)
+      const thisRebalanceBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
+      const myBalance = _.get(thisRebalanceBalance, getAddress(rebalance.address), new BigNumber(0))
+      const thisInput = myBalance.isLessThan(new BigNumber(currentInput)) ? myBalance : new BigNumber(currentInput)
+      const [, poolAmountsData] = await simulateWithdraw(
+        thisInput,
+        _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
+          const ratioPoint = (
+            ((rebalance || {}).tokenRatioPoints || [])[index] ||
+            ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
+            new BigNumber(0)
+          ).toNumber()
+          const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
+          const decimal = c.decimals
+          return {
+            ...c,
+            symbol: c.symbol,
+            address: ratioObject.address,
+            ratioPoint,
+            value: new BigNumber(currentInput as string).times(new BigNumber(10).pow(decimal)),
+            isSelected: !!selectedToken[getAddress(ratioObject.address)],
+          }
+        }),
+        [((rebalance || {}).totalSupply || [])[0]],
+        ratioType === 'all',
+      )
+      setPoolAmounts(poolAmountsData)
+      setIsSimulating(false)
+    }
   }, [selectedToken, currentInput, rebalance, ratioType, balances, rebalanceBalances])
 
   useEffect(() => {

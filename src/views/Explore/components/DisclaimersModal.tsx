@@ -37,13 +37,31 @@ const CustomCheckbox = styled(Checkbox)`
 
 const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
   const [isAccept, setIsAccept] = useState(false)
+  const [isSkip, setIsSkip] = useState(false)
 
   useEffect(() => {
     return () => {
       setIsAccept(false)
+      setIsSkip(false)
     }
   }, [])
 
+  const onExit = () => {
+    if (isSkip) localStorage.setItem('disclaimerSkipped', 'true')
+    onDismiss()
+  }
+  const onCheckBoxChange = (event) => {
+    setIsSkip(event.target.checked)
+  }
+  const renderCheckBox = () => {
+    return (
+      <FormControlLabel
+        style={{ marginLeft: '-6px' }}
+        control={<CustomCheckbox onChange={onCheckBoxChange} checked={isSkip} color="primary" size="small" />}
+        label={<Text>Do not show this message for 14 days</Text>}
+      />
+    )
+  }
   return (
     <Modal
       title=""
@@ -115,19 +133,18 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
               </Text>
             }
           />
-          <FormControlLabel
-            style={{ marginLeft: '-6px' }}
-            control={<CustomCheckbox color="primary" size="small" />}
-            label={<Text>Do not show this message for 14 days</Text>}
-          />
-          <Button fullWidth onClick={onDismiss} radii="card" className="mt-5" disabled={!isAccept}>
+          {renderCheckBox()}
+          <Button fullWidth onClick={onExit} radii="card" className="mt-5" disabled={!isAccept}>
             Confirm
           </Button>
         </div>
       ) : (
-        <Button fullWidth onClick={onDismiss} radii="card" className="mt-5">
-          Close
-        </Button>
+        <>
+          {renderCheckBox()}
+          <Button fullWidth onClick={onDismiss} radii="card" className="mt-5">
+            Close
+          </Button>
+        </>
       )}
     </Modal>
   )
