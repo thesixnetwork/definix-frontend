@@ -96,10 +96,10 @@ export interface Rebalance extends RebalanceConfig {
   dataFactsheet2?: dataFactsheetRow[]
 }
 
-export interface dataFactsheetRow{
-  compiler:{
-    title:string
-    address:string
+export interface dataFactsheetRow {
+  compiler: {
+    title: string
+    address: string
   }
 }
 // Slices states

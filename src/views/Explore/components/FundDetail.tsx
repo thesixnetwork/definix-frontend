@@ -10,7 +10,6 @@ import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
 
-
 interface FundDetailType {
   rebalance?: Rebalance | any
   className?: string
@@ -161,7 +160,7 @@ const AssetDetail = ({ rebalance }) => {
 
 const FactSheet = ({ rebalance }) => {
   // const datax = _.get(rebalance, 'factsheet')
-  
+  rebalance.dataFactsheet2 // มันคือ array ที่เรา map config มาจาก state/rebalance
   const data = [
     { title: 'Name', value: 'Satoshi and Friends', copy: false },
     { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
@@ -174,10 +173,10 @@ const FactSheet = ({ rebalance }) => {
   ]
   return (
     <Table>
-      {data.map((r) => (
+      {data.map((r) => ( 
         <TR>
           <TD>
-            <Text bold>{r.title}</Text>
+            <Text bold>{(r.title || "")}</Text>
           </TD>
           <TD>
             <div className="flex">

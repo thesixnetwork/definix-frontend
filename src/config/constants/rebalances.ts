@@ -1,7 +1,6 @@
 import { RebalanceConfig } from './types'
 import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
 
-
 const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
@@ -41,7 +40,7 @@ const rebalances: RebalanceConfig[] = [
       comptroller: {
         1001: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
         8217: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
-      }
+      },
     },
     factsheet: [
       { title: 'Name', value: 'Satoshi and Friends', copy: false },
