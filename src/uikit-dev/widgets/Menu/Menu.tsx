@@ -6,7 +6,7 @@ import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-// import DisclaimersModal from 'views/Explore/components/DisclaimersModal'
+import DisclaimersModal from 'views/Explore/components/DisclaimersModal'
 import Button from '../../components/Button/Button'
 import CountDownBanner from '../../components/CountDownBanner'
 import { Flex } from '../../components/Flex'
@@ -161,7 +161,7 @@ const Menu: React.FC<NavProps> = ({
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
-  // const [onPresentDisclaimersModal] = useModal(<DisclaimersModal />)
+  const [onPresentDisclaimersModal] = useModal(<DisclaimersModal />)
   const endRegisterTimestamp = process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP
     ? parseInt(process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
@@ -303,7 +303,7 @@ const Menu: React.FC<NavProps> = ({
                     <span
                       role="none"
                       style={{ color: '#ffd157', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}
-                      // onClick={onPresentDisclaimersModal}
+                      onClick={onPresentDisclaimersModal}
                     >
                       READ MORE.
                     </span>
