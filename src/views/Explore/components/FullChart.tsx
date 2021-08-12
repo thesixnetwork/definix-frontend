@@ -7,6 +7,7 @@ import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import useTheme from 'hooks/useTheme'
 
 const rebalanceColor = '#30ADFF'
 
@@ -112,13 +113,14 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
 }
 
 const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
+  const { isDark } = useTheme()
   const [selectedTokens, setSelectedTokens] = useState({})
   const data = (canvas) => {
     const ctx = canvas.getContext('2d')
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 320)
     gradient.addColorStop(0, rebalanceColor)
-    gradient.addColorStop(0.7, 'transparent')
+    gradient.addColorStop(0.7, isDark ? 'transparent' : 'white')
 
     return {
       labels: _.get(graphData, 'labels', []),

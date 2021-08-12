@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import moment from 'moment'
 import _ from 'lodash'
 import { Line } from 'react-chartjs-2'
-// import useTheme from 'hooks/useTheme'
+import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import axios from 'axios'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -41,7 +41,7 @@ const formatter = {
 }
 
 const MiniChart = ({ rebalanceAddress, className = '', height = 100 }) => {
-  // const { isDark } = useTheme()
+  const { isDark } = useTheme()
   const [graphData, setGraphData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const fetchGraphData = useCallback(async () => {
@@ -116,7 +116,7 @@ const MiniChart = ({ rebalanceAddress, className = '', height = 100 }) => {
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 140)
     gradient.addColorStop(0, color)
-    gradient.addColorStop(0.7, 'transparent')
+    gradient.addColorStop(0.5, isDark ? 'transparent' : 'white')
 
     return {
       labels: _.get(graphData, 'labels', []),
