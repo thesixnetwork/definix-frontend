@@ -408,7 +408,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <TwoLineFormat
                     className="px-4 py-3 col-4"
                     title="Max Drawdown"
-                    value={`${numeral(performanceData.maxDrawDown).format('0')}%`}
+                    value={`${Math.abs(numeral(performanceData.maxDrawDown).format('0,0.00'))}%`}
                     hint="xxx"
                   />
                 </div>
