@@ -1,4 +1,5 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import React, { useEffect, useState } from 'react'
 import { HelpCircle } from 'react-feather'
@@ -37,7 +38,7 @@ const Explore: React.FC = () => {
   const targetRebalance = useRebalanceAddress(selectedRebalance ? getAddress(selectedRebalance.address) : undefined)
   const dispatch = useDispatch()
   const { account } = useWallet()
-  const rebalanceBalances = useRebalanceBalances(account)
+  const rebalanceBalances = useRebalanceBalances(account) || {}
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
   useEffect(() => {
     if (account) {
@@ -103,7 +104,9 @@ const Explore: React.FC = () => {
 
               <FlexLayout cols={listView ? 1 : 3}>
                 {(rebalances || [])
-                  .filter((r) => (!isInvested ? true : rebalanceBalances[getAddress(r.address)].toNumber() > 0))
+                  .filter((r) =>
+                    !isInvested ? true : (rebalanceBalances[getAddress(r.address)] || new BigNumber(0)).toNumber() > 0,
+                  )
                   .map((rebalance) => {
                     return (
                       <ExploreCard
