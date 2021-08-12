@@ -7,8 +7,8 @@ import multicall from 'utils/multicall'
 import _ from 'lodash'
 import { BLOCKS_PER_YEAR } from 'config'
 import herodotusABI from 'config/abi/herodotus.json'
+import autoHerodotusABI from 'config/abi/autoHerodotus.json'
 import { createSlice } from '@reduxjs/toolkit'
-import { getContract } from 'utils/caver'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'
 import { RebalanceState } from '../types'
@@ -147,7 +147,7 @@ export const fetchRebalances = () => async (dispatch) => {
       const last24Tokens = _.get(last24Data, 'tokens', {})
       const sumOldTokenPrice = BigNumber.sum.apply(
         null,
-        tokens.map((token: any) => {
+        [...tokens, ...usdToken].map((token: any) => {
           const tokenAmount = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.balance`, '0')).div(
             new BigNumber(10).pow(token.decimals),
           )
@@ -162,71 +162,41 @@ export const fetchRebalances = () => async (dispatch) => {
 
       const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
 
-      // cal pool apy
-      const autoHerodotusContract = getContract(
-        [
-          {
-            constant: true,
-            inputs: [
-              {
-                name: '',
-                type: 'address',
-              },
-            ],
-            name: 'rebalancePID',
-            outputs: [
-              {
-                name: '',
-                type: 'uint256',
-              },
-            ],
-            payable: false,
-            stateMutability: 'view',
-            type: 'function',
-          },
-        ],
-        autoHerodotus,
-      )
-      const herodotusContract = getContract(herodotusABI, getHerodotusAddress())
-      const [pid, BONUS_MULTIPLIER, totalAllocPoint, currentPriceTokensResp] = await Promise.all([
-        autoHerodotusContract.methods.rebalancePID(address).call(),
-        herodotusContract.methods.BONUS_MULTIPLIER().call(),
-        herodotusContract.methods.totalAllocPoint().call(),
-        axios.get(process.env.REACT_APP_DEFINIX_GET_PRICE_API),
-      ])
-      const currentPriceAllResult = _.get(currentPriceTokensResp, 'data.prices', [])
-
-      const poolInfo = await herodotusContract.methods.poolInfo(pid).call()
-
-      const totalRewardPerBlock = new BigNumber(poolInfo.lastRewardBlock)
-        .times(BONUS_MULTIPLIER)
-        .div(new BigNumber(10).pow(18))
-
-      const finixRewardPerBlock = totalRewardPerBlock.times(totalAllocPoint)
+      const autoHerodotusCalls = [
+        {
+          address: autoHerodotus,
+          name: 'rebalancePID',
+          params: [address],
+        },
+      ]
+      const [bigNumberPid] = await multicall(autoHerodotusABI, autoHerodotusCalls)
+      const pid = new BigNumber(bigNumberPid)
+      const herodotusAddress = getHerodotusAddress()
+      const herodotusCalls = [
+        {
+          address: herodotusAddress,
+          name: 'poolInfo',
+          params: [pid.toNumber()],
+        },
+        {
+          address: herodotusAddress,
+          name: 'BONUS_MULTIPLIER',
+        },
+        {
+          address: herodotusAddress,
+          name: 'totalAllocPoint',
+        },
+        {
+          address: herodotusAddress,
+          name: 'finixPerBlock',
+        },
+      ]
+      const [info, BONUS_MULTIPLIER, totalAllocPoint, finixPerBlock] = await multicall(herodotusABI, herodotusCalls)
+      const allocPoint = new BigNumber(info.allocPoint._hex)
+      const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
+      const totalRewardPerBlock = new BigNumber(finixPerBlock).times(BONUS_MULTIPLIER).div(new BigNumber(10).pow(18))
+      const finixRewardPerBlock = totalRewardPerBlock.times(poolWeight)
       const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-      const finixPrice = new BigNumber(currentPriceAllResult.FINIX)
-
-      const apyPool = finixPrice.times(finixRewardPerYear).div(totalAssetValue).times(100)
-
-      // eslint-disable-next-line
-      // debugger
-      // const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
-      // const performanceResp = await axios.get(performanceAPI, {
-      //   params: {
-      //     address,
-      //     period: '1D',
-      //   },
-      // })
-      // // eslint-disable-next-line
-      // debugger
-
-      // const sharpeRatio = _.get(performanceResp, 'data.result.sharpeRatio', 0)
-      // const maxDrawdown = Math.abs(_.get(performanceResp, 'data.result.maxDrawDown', 0))
-      // const tokenUsd = [...tokens, ...usdToken].map((t: any, index) => {
-      //   // @ts-ignore
-      //   const totalUsd = new BigNumber([currentPoolUsdBalances[index]])
-      //   return totalUsd.div(t.totalBalance)
-      // })
       return {
         ...rebalanceConfig,
         currentPoolUsdBalances,
@@ -246,7 +216,7 @@ export const fetchRebalances = () => async (dispatch) => {
         // maxDrawdown,
         // tokenUsd,
         enableAutoCompound,
-        apyPool,
+        finixRewardPerYear,
         autoHerodotus,
         sharedPricePercentDiff,
         twentyHperformance,

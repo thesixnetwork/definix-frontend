@@ -16,6 +16,7 @@ import { getAddress } from 'utils/addressHelpers'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { usePriceFinixUsd } from '../../state/hooks'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
 import FullChart from './components/FullChart'
@@ -80,6 +81,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
   const [graphData, setGraphData] = useState({})
   const { isXl, isLg } = useMatchBreakpoints()
+  const finixPrice = usePriceFinixUsd()
   const isMobile = !isXl && !isLg
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -192,7 +194,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         const last24Tokens = _.get(last24Data, 'tokens', {})
         const sumOldTokenPrice = BigNumber.sum.apply(
           null,
-          tokens.map((token: any) => {
+          [...tokens, ...usdToken].map((token: any) => {
             const tokenAmount = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.balance`, '0')).div(
               new BigNumber(10).pow(token.decimals),
             )
@@ -202,9 +204,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }),
         )
         const oldSharedPrice = sumOldTokenPrice.div(last24TotalSupply)
-        const diffSharedPrice = sharedPrice.minus(oldSharedPrice)
-        const sharedPricePercentDiff =
-          sharedPrice.div(oldSharedPrice.div(100)).toNumber() * (diffSharedPrice.isLessThan(0) ? -1 : 1)
+        const sharedPricePercentDiff = sharedPrice.minus(oldSharedPrice).div(oldSharedPrice).times(100).toNumber()
         setReturnPercent(sharedPricePercentDiff)
 
         setIsLoading(false)
@@ -373,13 +373,15 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     )}
                     <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
-                      title="24H Performance"
-                      value={`$${numeral(rebalance.twentyHperformance).format('0,0.[00]')}`}
-                      valueClass={(() => {
-                        if (rebalance.twentyHperformance < 0) return 'failure'
-                        if (rebalance.twentyHperformance > 0) return 'success'
-                        return ''
-                      })()}
+                      title="FINIX Yield APR"
+                      value={numeral(
+                        finixPrice
+                          .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+                          .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                          .times(100)
+                          .toFixed(2),
+                      ).format('0,0.[00]')}
+                      hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
                     />
                     {/* <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
@@ -394,20 +396,18 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
                       <TwoLineFormat
-                        title="FINIX Yield APR"
-                        value="00%"
-                        hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                        className="mr-6"
-                      />
-                      <TwoLineFormat
-                        title="APY"
-                        value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
-                        hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
+                        title="24H Performance"
+                        value={`$${numeral(_.get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
+                        valueClass={(() => {
+                          if (_.get(rebalance, 'twentyHperformance', 0) < 0) return 'failure'
+                          if (_.get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
+                          return ''
+                        })()}
                         className="mr-6"
                       />
                       <TwoLineFormat
                         title="Return"
-                        value={`${(returnPercent || 0).toFixed(2)}%`}
+                        value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
                         hint="Probability return on investment measures approximately over a period of time."
                         hintPosition="left"
                       />

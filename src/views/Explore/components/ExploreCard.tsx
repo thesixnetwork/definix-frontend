@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import { Link } from 'react-router-dom'
@@ -10,6 +11,7 @@ import CardHeading from './CardHeading'
 import MiniChart from './MiniChart'
 import TwoLineFormat from './TwoLineFormat'
 import { Rebalance } from '../../../state/types'
+import { usePriceFinixUsd } from '../../../state/hooks'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -51,6 +53,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { ratio } = rebalance
+  const finixPrice = usePriceFinixUsd()
 
   useEffect(() => {
     return () => {
@@ -102,14 +105,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                 </Text> */}
                 <TwoLineFormat
                   title="FINIX Yield APR"
-                  value="00%"
+                  value={`${numeral(
+                    finixPrice
+                      .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+                      .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                      .times(100)
+                      .toFixed(2),
+                  ).format('0,0.[00]')}%`}
                   hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                />
-                <TwoLineFormat
-                  title="APY"
-                  value={`${_.get(rebalance, 'apyPool', 0).toFixed(2)}%`}
-                  hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
-                  alignRight
                 />
               </div>
               <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
@@ -137,14 +140,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             <TwoLineFormat
               className="col-5"
               title="FINIX Yield APR"
-              value="00%"
+              value={`${numeral(
+                finixPrice
+                  .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+                  .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                  .times(100)
+                  .toFixed(2),
+              ).format('0,0.[00]')}%`}
               hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-            />
-            <TwoLineFormat
-              className="col-2"
-              title="APY"
-              value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
-              hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
             />
           </div>
           <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
@@ -215,14 +218,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           </Text> */}
           <TwoLineFormat
             title="FINIX Yield APR"
-            value="00%"
+            value={`${numeral(
+              finixPrice
+                .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+                .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                .times(100)
+                .toFixed(2),
+            ).format('0,0.[00]')}%`}
             hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-          />
-          <TwoLineFormat
-            title="APY"
-            value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
-            hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
-            alignRight
           />
         </div>
         <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
