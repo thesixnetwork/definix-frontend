@@ -12,15 +12,7 @@ import { AbiItem } from 'web3-utils'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
-import {
-  ArrowBackIcon,
-  Button,
-  Card,
-  ChevronRightIcon,
-  Link as UiLink,
-  Text,
-  useMatchBreakpoints,
-} from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import _ from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
