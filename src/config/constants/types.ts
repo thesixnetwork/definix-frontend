@@ -69,7 +69,6 @@ export interface RebalanceConfig {
   ratio: Ratio[]
   last24data?: any
   factsheet: any
-  factsheet2?: any
 }
 
 export interface FarmConfig {

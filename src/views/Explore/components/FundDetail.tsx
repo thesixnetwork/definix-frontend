@@ -92,6 +92,11 @@ const AssetDetail = ({ rebalance }) => {
     if (inputNumber > 0) return 'success'
     return ''
   }
+  const selectSymbolChange = (inputNumber) => {
+    if (inputNumber < 0) return '-'
+    if (inputNumber > 0) return '+'
+    return ''
+  }
   return (
     <Table>
       <TR>
@@ -128,6 +133,7 @@ const AssetDetail = ({ rebalance }) => {
           ).toLowerCase()}.price`,
           new BigNumber(0),
         )
+
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
 
@@ -155,7 +161,10 @@ const AssetDetail = ({ rebalance }) => {
               <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
             <TD align="center">
-              <Text color={selectClass(changeNumber)}>$ {numeral(changeNumber).format('0,0.[000]')}</Text>
+              <Text color={selectClass(changeNumber)}>
+                {selectSymbolChange(changeNumber)}
+                {`${numeral(changeNumber).format('0,0.[000]')} %`}
+              </Text>
             </TD>
             <TD align="center">
               <Text>{ratio.value}%</Text>
