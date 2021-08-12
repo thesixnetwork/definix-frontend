@@ -250,13 +250,13 @@ const CardInput = ({
           label=""
           onUserInput={setCurrentInput}
           onMax={() => {
-            setCurrentInput(new BigNumber(currentBalanceNumber).toNumber())
+            setCurrentInput(new BigNumber(currentBalance).toJSON())
           }}
           onQuarter={() => {
-            setCurrentInput(new BigNumber(currentBalanceNumber).times(0.25).toNumber())
+            setCurrentInput(new BigNumber(currentBalance).times(0.25).toJSON())
           }}
           onHalf={() => {
-            setCurrentInput(new BigNumber(currentBalanceNumber).times(0.5).toNumber())
+            setCurrentInput(new BigNumber(currentBalance).times(0.5).toJSON())
           }}
         />
         <Text fontSize="12px" color="textSubtle" className="mt-1" textAlign="right">
@@ -465,8 +465,11 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
 
   const fetchData = useCallback(async () => {
     setIsSimulating(true)
+    const thisRebalanceBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
+    const myBalance = _.get(thisRebalanceBalance, getAddress(rebalance.address), new BigNumber(0))
+    const thisInput = myBalance.isLessThan(new BigNumber(currentInput)) ? myBalance : new BigNumber(currentInput)
     const [, poolAmountsData] = await simulateWithdraw(
-      currentInput,
+      thisInput,
       _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
         const ratioPoint = (
           ((rebalance || {}).tokenRatioPoints || [])[index] ||
@@ -489,7 +492,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
     )
     setPoolAmounts(poolAmountsData)
     setIsSimulating(false)
-  }, [selectedToken, currentInput, rebalance, ratioType])
+  }, [selectedToken, currentInput, rebalance, ratioType, balances, rebalanceBalances])
 
   useEffect(() => {
     fetchData()
@@ -497,7 +500,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
 
   if (!rebalance) return <Redirect to="/explore" />
 
-  const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
+  const thisBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
   const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 

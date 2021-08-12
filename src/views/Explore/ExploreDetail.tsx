@@ -12,7 +12,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
-import { getAddress, getHerodotusAddress, getFinixAddress } from 'utils/addressHelpers'
+import { getAddress } from 'utils/addressHelpers'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
@@ -408,7 +408,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <TwoLineFormat
                     className="px-4 py-3 col-4"
                     title="Max Drawdown"
-                    value={`${numeral(performanceData.maxDrawDown).format('0')}%`}
+                    value={`${Math.abs(numeral(performanceData.maxDrawDown).format('0,0.00'))}%`}
                     hint="xxx"
                   />
                 </div>

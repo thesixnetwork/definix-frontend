@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import _ from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Button, useMatchBreakpoints } from 'uikit-dev'
 import numeral from 'numeral'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -72,19 +73,19 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             <div className="flex justify-space-between pa-4 pt-0">
               <TwoLineFormat
                 title="Total asset value"
-                value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+                value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
               />
               <TwoLineFormat
                 title="Share price"
-                value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
                 percent={`${
                   rebalance.sharedPricePercentDiff >= 0
-                    ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                    : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                    ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+                    : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
                 }%`}
                 percentClass={(() => {
-                  if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                  if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
+                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
                   return ''
                 })()}
               />
@@ -98,6 +99,12 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                   {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
                 </Text> */}
                 <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" />
+                <TwoLineFormat
+                  title="APY"
+                  value={`${_.get(rebalance, 'apyPool', 0).toFixed(2)}%`}
+                  hint="xxx"
+                  alignRight
+                />
                 <TwoLineFormat title="APY" value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" alignRight />
               </div>
               <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>

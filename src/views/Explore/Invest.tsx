@@ -12,16 +12,7 @@ import { AbiItem } from 'web3-utils'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
-import {
-  ArrowBackIcon,
-  Button,
-  Card,
-  ChevronRightIcon,
-  Link as UiLink,
-  Text,
-  useMatchBreakpoints,
-  useModal,
-} from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import _ from 'lodash'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
@@ -34,9 +25,9 @@ import useTheme from 'hooks/useTheme'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { fetchRebalances } from '../../state/rebalance'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
-import ErrorOverLimitModal from './components/ErrorOverLimitModal'
 import PriceUpdate from './components/PriceUpdate'
 import SettingButton from './components/SettingButton'
 import Share from './components/Share'
@@ -174,7 +165,7 @@ const CardInput = ({
                 setCurrentInput({
                   ...currentInput,
                   [getAddress(c.address)]: String(
-                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.75).toNumber(),
+                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.25).toNumber(),
                   ),
                 })
               }}
@@ -285,11 +276,16 @@ const CardCalculate = ({
         .toJSON()
       const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
       if (connector === 'klip') {
+        const valueNumber = (Number(mainCoinValue) / 10 ** 18).toString()
+        const valueklip = Number.parseFloat(valueNumber).toFixed(6)
+        let expectValue = `${(Number(valueklip) + 0.00001) * 10 ** 18}`
+        expectValue = expectValue.slice(0, -13)
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('addFund')),
           JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
           setShowModal,
+          mainCoinValue ? `${expectValue}0000000000000` : '0',
         )
         const tx = await klipProvider.checkResponse()
         setTx(tx)
@@ -304,6 +300,7 @@ const CardCalculate = ({
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
+      dispatch(fetchRebalances())
       onNext()
       setIsInvesting(false)
     } catch {
@@ -475,7 +472,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [isCalculating, setIsCalculating] = useState(false)
   const [isInvested, setIsInvested] = useState(false)
   const [isInvesting, setIsInvesting] = useState(false)
-  const [onPresentErrorOverLimitModal] = useModal(<ErrorOverLimitModal />)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -559,12 +555,8 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
                 balances={balances}
                 allowances={allowances}
                 onNext={() => {
-                  if (totalUSDAmount > 100) {
-                    onPresentErrorOverLimitModal()
-                  } else {
-                    setIsInputting(false)
-                    setIsCalculating(true)
-                  }
+                  setIsInputting(false)
+                  setIsCalculating(true)
                 }}
                 totalUSDAmount={totalUSDAmount}
                 isSimulating={isSimulating}
