@@ -1,6 +1,6 @@
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Button from 'uikit-dev/components/Button/Button'
 import Heading from 'uikit-dev/components/Heading/Heading'
@@ -36,6 +36,14 @@ const CustomCheckbox = styled(Checkbox)`
 `
 
 const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
+  const [isAccept, setIsAccept] = useState(false)
+
+  useEffect(() => {
+    return () => {
+      setIsAccept(false)
+    }
+  }, [])
+
   return (
     <Modal
       title=""
@@ -61,20 +69,23 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
         </Text>
 
         <Text className="mb-3">
-          No advice on investment; Risk of Loss Each investor must undertake its own independent examination and
-          investigation of the Farm, including the merits and risks involved in an investment in the Farm, and must base
-          its investment decision - including a determination whether the Farm would be a suitable investment for the
-          investor - on such examination and investigation and must not rely on the Manager in making such investment
-          decision. Prospective investors must not construe the contents of this Website as legal, tax, investment, or
-          other advice.
+          No advice on investment; Risk of Loss
+          <br />
+          Each investor must undertake its own independent examination and investigation of the Farm, including the
+          merits and risks involved in an investment in the Farm, and must base its investment decision - including a
+          determination whether the Farm would be a suitable investment for the investor - on such examination and
+          investigation and must not rely on the Manager in making such investment decision. Prospective investors must
+          not construe the contents of this Website as legal, tax, investment, or other advice.
         </Text>
 
         <Text className="mb-3">
-          Performance Disclosures Performance information is provided for informational purposes only. Past performance
-          of the Farm and/or the Manager is not necessarily indicative of future results, and there can be no assurance
-          that any projections, targets or estimates of future performance will be realized. Future performance of the
-          Farm may vary substantially from the performance provided on this Website. An investor may lose all or a
-          substantial part of its investment in the Farm.
+          Performance Disclosures
+          <br />
+          Performance information is provided for informational purposes only. Past performance of the Farm and/or the
+          Manager is not necessarily indicative of future results, and there can be no assurance that any projections,
+          targets or estimates of future performance will be realized. Future performance of the Farm may vary
+          substantially from the performance provided on this Website. An investor may lose all or a substantial part of
+          its investment in the Farm.
         </Text>
 
         <Text>
@@ -85,8 +96,11 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
       {isConfirm ? (
         <div className="mt-5 flex flex-column">
           <FormControlLabel
-            value="all"
+            value={isAccept}
             className="ml-0 mb-2"
+            onChange={() => {
+              setIsAccept(!isAccept)
+            }}
             control={
               <RoundCheckbox
                 color="primary"
@@ -106,7 +120,7 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
             control={<CustomCheckbox color="primary" size="small" />}
             label={<Text>Do not show this message for 14 days</Text>}
           />
-          <Button fullWidth onClick={onDismiss} radii="card" className="mt-5">
+          <Button fullWidth onClick={onDismiss} radii="card" className="mt-5" disabled={!isAccept}>
             Confirm
           </Button>
         </div>

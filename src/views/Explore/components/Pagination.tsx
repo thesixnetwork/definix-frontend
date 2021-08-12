@@ -29,8 +29,7 @@ const PaginationStyle = styled(Pagination)`
 `
 
 const PaginationCustom = (props) => {
-  const { count } = props
-  return count > 1 ? <PaginationStyle {...props} /> : <></>
+  return <PaginationStyle {...props} />
 }
 
 export default PaginationCustom

@@ -4,7 +4,7 @@ import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
 const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
-    description: 'This is description',
+    description: 'REBALANCING FARM',
     icon: '/images/coins/satoshi.png',
     address: {
       1001: '0x8354aa7342d32ebCa12f1613A4b832c9aB15c74C',
@@ -50,7 +50,7 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Big Cap One Plus',
-    description: 'This is description',
+    description: 'REBALANCING FARM',
     icon: '/images/coins/bigcap.png',
     address: {
       1001: '0x82a17B0f7E9b5719f94013B1240505a2Ba3e7840',
@@ -102,7 +102,7 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Chain Creators',
-    description: 'This is description',
+    description: 'REBALANCING FARM',
     icon: '/images/coins/chaincreator.png',
     address: {
       1001: '0xE967080620699AeC88E01F1e9c9C1d77652522E2',
@@ -148,7 +148,7 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'ALT Party',
-    description: 'This is description',
+    description: 'REBALANCING FARM',
     icon: '/images/coins/altparty.png',
     address: {
       1001: '0x40525428616498F077cf801E9aA38A7464EA4256',
@@ -194,7 +194,7 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'FINIX Volatility',
-    description: 'This is description',
+    description: 'REBALANCING FARM',
     icon: '/images/coins/volatility.png',
     address: {
       1001: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773',
@@ -258,7 +258,7 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'FINIX Force',
-    description: 'This is description',
+    description: 'REBALANCING FARM',
     icon: '/images/coins/finixforce.png',
     address: {
       1001: '0x41844a6Db9144eBEfBa470E6F994341FbC095810',
