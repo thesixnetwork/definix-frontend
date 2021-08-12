@@ -338,7 +338,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     )}
                   </div>
 
-                  <div className={`flex flex-wrap ${!isMobile ? 'pl-8' : ''}`}>
+                  <div className="flex flex-wrap">
                     <TwoLineFormat
                       className={isMobile ? 'col-6 my-2' : 'col-3'}
                       title="Total asset value"
@@ -383,14 +383,24 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
                     <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-                      <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" className="mr-6" />
+                      <TwoLineFormat
+                        title="FINIX Yield APR"
+                        value="00%"
+                        hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+                        className="mr-6"
+                      />
                       <TwoLineFormat
                         title="APY"
                         value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
-                        hint="xxx"
+                        hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
                         className="mr-6"
                       />
-                      <TwoLineFormat title="Return" value={`${(returnPercent || 0).toFixed(2)}%`} hint="xxx" />
+                      <TwoLineFormat
+                        title="Return"
+                        value={`${(returnPercent || 0).toFixed(2)}%`}
+                        hint="Probability return on investment measures approximately over a period of time."
+                        hintPosition="left"
+                      />
                     </div>
                   </div>
 
@@ -403,19 +413,19 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     className="px-4 py-3 col-4 bd-r"
                     title="Sharpe ratio"
                     value={`${numeral(performanceData.sharpeRatio).format('0,0.00')}`}
-                    hint="xxx"
+                    hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
                   />
                   <TwoLineFormat
                     className="px-4 py-3 col-4"
                     title="Max Drawdown"
                     value={`${Math.abs(numeral(performanceData.maxDrawDown).format('0,0.00'))}%`}
-                    hint="xxx"
+                    hint="The differentiation between the historical peak and low point through the portfolio."
                   />
                 </div>
               </Card>
 
               <FullAssetRatio ratio={ratio} className="mb-4" />
-              <TradeStrategy className="mb-4" />
+              <TradeStrategy className="mb-4" description={rebalance.fullDescription} />
               <WithDrawalFees className="mb-4" />
               <FundDetail className="mb-4" rebalance={rebalance} />
               <Transaction className="mb-4" rbAddress={rebalance.address} />

@@ -97,7 +97,7 @@ const SlippageToleranceSettings = () => {
         <Helper
           text="Your transaction will revert if the price changes unfavorably by more than this percentage."
           className="ml-2"
-          position="top"
+          position="right"
         />
       </Label>
       <Options>

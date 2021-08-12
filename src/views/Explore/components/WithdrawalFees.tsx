@@ -12,7 +12,7 @@ const WithDrawalFees: React.FC<WithDrawalFeesType> = ({ className = '' }) => {
   const isMobile = !isXl
 
   return (
-    <Card className={`pa-4 ${className}`}>
+    <Card className={`pa-4 ${className}`} style={{ overflow: 'visible' }}>
       <Text bold className="mb-1">
         WITHDRAWAL FEES
       </Text>
@@ -20,17 +20,21 @@ const WithDrawalFees: React.FC<WithDrawalFeesType> = ({ className = '' }) => {
       <div className="flex flex-wrap">
         <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="14px">Management fee</Text>
-          <Helper text="xxx" className="mx-2" position="top" />
+          <Helper text="Fee collected for vault management." className="mx-2" position="top" />
           <Text>{managementFee}%</Text>
         </div>
         <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="14px">FINIX buy back fee</Text>
-          <Helper text="xxx" className="mx-2" position="top" />
+          <Helper
+            text="Fee collected for buyback and burn of FINIX as deflationary purpose."
+            className="mx-2"
+            position="top"
+          />
           <Text>{buyBackFee}%</Text>
         </div>
         <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="14px">Ecosystem fee</Text>
-          <Helper text="xxx" className="mx-2" position="top" />
+          <Helper text="Reservation fee for further development of the ecosystem." className="mx-2" position="top" />
           <Text>{ecosystemFee}%</Text>
         </div>
       </div>

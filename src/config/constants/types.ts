@@ -63,7 +63,8 @@ export interface Ratio {
 export interface RebalanceConfig {
   title: string
   description: string
-  icon: string
+  fullDescription: string
+  icon: string[]
   address: any
   ratio: Ratio[]
   last24data?: any
