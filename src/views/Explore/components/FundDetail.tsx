@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import _ from 'lodash'
-import { getAddress } from 'utils/addressHelpers'
+// import { getAddress } from 'utils/addressHelpers'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
@@ -157,37 +157,35 @@ const AssetDetail = ({ rebalance }) => {
     </Table>
   )
 }
+const FactRow = ({ name, value, isCopy }) => {
+  return (
+    <TR>
+      <TD>
+        <Text bold>{name}</Text>
+      </TD>
+      <TD>
+        <div className="flex">
+          <Text fontSize="14px" className={isCopy ? 'mr-2' : ''}>
+            {value}
+          </Text>
+          {isCopy && <CopyToClipboard toCopy={isCopy} iconWidth="16px" noText />}
+        </div>
+      </TD>
+    </TR>
+  )
+}
 
 const FactSheet = ({ rebalance }) => {
-  // const datax = _.get(rebalance, 'factsheet')
-  rebalance.dataFactsheet2 // มันคือ array ที่เรา map config มาจาก state/rebalance
-  const data = [
-    { title: 'Name', value: 'Satoshi and Friends', copy: false },
-    { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
-    { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
-    { title: 'Vault', value: getAddress(rebalance.address), copy: true },
-    { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
-    { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
-    { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-    { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
-  ]
   return (
     <Table>
-      {data.map((r) => ( 
-        <TR>
-          <TD>
-            <Text bold>{(r.title || "")}</Text>
-          </TD>
-          <TD>
-            <div className="flex">
-              <Text fontSize="14px" className={r.copy ? 'mr-2' : ''}>
-                {r.value}
-              </Text>
-              {r.copy && <CopyToClipboard toCopy={r.value} iconWidth="16px" noText />}
-            </div>
-          </TD>
-        </TR>
-      ))}
+      <FactRow name="Name" value={rebalance.factsheet.name} isCopy={false} />
+      <FactRow name="Inception date" value={rebalance.factsheet.inceptionDate} isCopy />
+      <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy />
+      <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy />
+      <FactRow name="Comptroller" value={rebalance.factsheet.comptroller} isCopy />
+      <FactRow name="Management" value={rebalance.factsheet.management} isCopy />
+      <FactRow name="Finix buy back fee" value={rebalance.factsheet.finixBuyBackFee} isCopy />
+      <FactRow name="Bounty fee" value={rebalance.factsheet.bountyFee} isCopy />
     </Table>
   )
 }
