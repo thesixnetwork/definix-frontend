@@ -8,7 +8,6 @@ import _ from 'lodash'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
-import { useRebalances } from '../../../state/hooks'
 
 interface FundDetailType {
   rebalance?: Rebalance | any
