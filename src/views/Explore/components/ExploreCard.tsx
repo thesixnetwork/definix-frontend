@@ -66,6 +66,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           <CardHeading
             className="pa-4"
             showAccordion
+            isHorizontal
             isOpenAccordion={isOpenAccordion}
             setIsOpenAccordion={setIsOpenAccordion}
             rebalance={rebalance}
@@ -99,14 +100,17 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                 {/* <Text textAlign="center" fontSize="12px">
                   {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
                 </Text> */}
-                <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" />
+                <TwoLineFormat
+                  title="FINIX Yield APR"
+                  value="00%"
+                  hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+                />
                 <TwoLineFormat
                   title="APY"
                   value={`${_.get(rebalance, 'apyPool', 0).toFixed(2)}%`}
-                  hint="xxx"
+                  hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
                   alignRight
                 />
-                <TwoLineFormat title="APY" value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" alignRight />
               </div>
               <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
                 View Details
@@ -130,8 +134,18 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               title="Total asset value"
               value={`${numeral(rebalance.totalAssetValue || 0).format('0,0.00')}`}
             />
-            <TwoLineFormat className="col-5" title="FINIX Yield APR" value="00%" hint="xxx" />
-            <TwoLineFormat className="col-2" title="APY" value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" />
+            <TwoLineFormat
+              className="col-5"
+              title="FINIX Yield APR"
+              value="00%"
+              hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+            />
+            <TwoLineFormat
+              className="col-2"
+              title="APY"
+              value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
+              hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
+            />
           </div>
           <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
         </div>
@@ -169,7 +183,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
 
   return (
     <VerticalStyle className="mb-7">
-      <CardHeading className="pa-4" isHorizontal={isHorizontal} rebalance={rebalance} />
+      <CardHeading className="pa-4" isSkew isHorizontal={isHorizontal} rebalance={rebalance} />
 
       <div className="flex justify-space-between pa-4 pt-0">
         <TwoLineFormat
@@ -199,8 +213,17 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           {/* <Text textAlign="center" fontSize="12px">
             {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
           </Text> */}
-          <TwoLineFormat title="FINIX Yield APR" value="00%" hint="xxx" />
-          <TwoLineFormat title="APY" value={`${(rebalance.apyPool || 0).toFixed(2)}%`} hint="xxx" alignRight />
+          <TwoLineFormat
+            title="FINIX Yield APR"
+            value="00%"
+            hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+          />
+          <TwoLineFormat
+            title="APY"
+            value={`${(rebalance.apyPool || 0).toFixed(2)}%`}
+            hint="Annual Percentage Yield, the actual rate of return that will be earned in one year if the interest is compounded."
+            alignRight
+          />
         </div>
         <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
           View Details

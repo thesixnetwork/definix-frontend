@@ -6,6 +6,7 @@ import { Text, ChevronUpIcon, ChevronDownIcon } from 'uikit-dev'
 import { Rebalance } from '../../../state/types'
 
 interface CardHeadingType {
+  isSkew?: boolean
   isHorizontal?: boolean
   showAccordion?: boolean
   isOpenAccordion?: boolean
@@ -14,16 +15,28 @@ interface CardHeadingType {
   rebalance: Rebalance | any
 }
 
+const CardHeadingStyle = styled.div<{ isSkew?: boolean }>`
+  padding-left: ${({ isSkew }) => (isSkew ? '116px !important' : '0')};
+`
+
 const FocusImg = styled.img<{ isHorizontal: boolean }>`
-  width: 48px;
-  height: 48px;
-  border-radius: ${({ theme }) => theme.radii.circle};
+  width: 120px;
+  height: auto;
   margin-right: ${({ isHorizontal }) => (isHorizontal ? '' : '16px')};
   margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '8px' : '')};
   background: ${({ theme }) => theme.colors.backgroundBox};
 `
 
+const SkewImg = styled.img`
+  width: 106px;
+  height: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+`
+
 const CardHeading: React.FC<CardHeadingType> = ({
+  isSkew = false,
   isHorizontal = false,
   className = '',
   showAccordion = false,
@@ -32,8 +45,8 @@ const CardHeading: React.FC<CardHeadingType> = ({
   rebalance = {},
 }) => {
   return (
-    <div
-      className={`${className} flex justify-space-between`}
+    <CardHeadingStyle
+      className={`${className} flex justify-space-between pos-relative`}
       onClick={
         showAccordion
           ? () => {
@@ -41,9 +54,15 @@ const CardHeading: React.FC<CardHeadingType> = ({
             }
           : undefined
       }
+      isSkew={isSkew}
     >
       <div className={`flex ${isHorizontal ? 'flex-column justify-center' : 'align-center'}`}>
-        <FocusImg src={rebalance.icon} alt="" isHorizontal={isHorizontal} />
+        {!isSkew ? (
+          <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} />
+        ) : (
+          <SkewImg src={rebalance.icon[1]} alt="" />
+        )}
+
         <div>
           <Text color="primary" bold fontSize="16px" textTransform="uppercase">
             {rebalance.title}
@@ -57,7 +76,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
       {showAccordion && (
         <>{isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}</>
       )}
-    </div>
+    </CardHeadingStyle>
   )
 }
 

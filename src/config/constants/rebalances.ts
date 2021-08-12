@@ -5,7 +5,9 @@ const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
     description: 'REBALANCING FARM',
-    icon: '/images/coins/satoshi.png',
+    fullDescription:
+      'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
+    icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
     address: {
       1001: '0xfaf517E6efB3D799315D5538C34975c51291c2cF',
       8217: '0xfaf517E6efB3D799315D5538C34975c51291c2cF',
@@ -44,14 +46,16 @@ const rebalances: RebalanceConfig[] = [
       { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
       { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
       { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Ecosystem fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 
   {
     title: 'Big Cap One Plus',
     description: 'REBALANCING FARM',
-    icon: '/images/coins/bigcap.png',
+    fullDescription:
+      'Consisting of BTC ETH BNB USDT which is a big capital with lower rate of fluctuation than the smaller market cap coins, responsible for the performance running along with the top market cap cryptocurrency. The ratio is distributed equally for rebalancing every time an extra 1% coverage movement occurs.',
+    icon: ['/images/vaults/bigcap_1.png', '/images/vaults/bigcap_2.png'],
     address: {
       1001: '0xc292478FaEb31f25744023b03748A4090fcb59dA',
       8217: '0xc292478FaEb31f25744023b03748A4090fcb59dA',
@@ -96,14 +100,16 @@ const rebalances: RebalanceConfig[] = [
       { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
       { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
       { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Ecosystem fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 
   {
     title: 'Chain Creators',
     description: 'REBALANCING FARM',
-    icon: '/images/coins/chaincreator.png',
+    fullDescription:
+      'Consisting of ETH BNB KLAY USDT which is the chain creator for many DeFi. Representing the trend on the DeFi ecosystem and distributing the ratio in the farm equally to make rebalancing trigger once when covering the rebalance fee.',
+    icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '0x47B77DfC1FA6d1D9148558381a13e791ea8a2491',
       8217: '0x47B77DfC1FA6d1D9148558381a13e791ea8a2491',
@@ -142,14 +148,16 @@ const rebalances: RebalanceConfig[] = [
       { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
       { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
       { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Ecosystem fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 
   {
     title: 'ALT Party',
     description: 'REBALANCING FARM',
-    icon: '/images/coins/altparty.png',
+    fullDescription:
+      'Consisting of ETH XRP BNB USDT with a higher rate of fluctuation in the top market cap coin category. This farm has allocated the risk to the stablecoin and rebalancing strategy is applied every 1 hour.',
+    icon: ['/images/vaults/altparty_1.png', '/images/vaults/altparty_2.png'],
     address: {
       1001: '0x49C493b6B87E90AE06c6f2D9D0c5D88aCE9137A9',
       8217: '0x49C493b6B87E90AE06c6f2D9D0c5D88aCE9137A9',
@@ -188,14 +196,16 @@ const rebalances: RebalanceConfig[] = [
       { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
       { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
       { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Ecosystem fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 
   {
     title: 'FINIX Volatility',
     description: 'REBALANCING FARM',
-    icon: '/images/coins/volatility.png',
+    fullDescription:
+      'Consisting of FINIX BTC ETH SIX KLAY XRP USDT which has the volatility characteristic and high fluctuation. To outperform the top market cap group, the distribution ratio is significant to add up some stablecoin in it. The rebalancing will occur every time it reaches a rebalance fee base.',
+    icon: ['/images/vaults/volatility_1.png', '/images/vaults/volatility_2.png'],
     address: {
       1001: '0x495788Eb76f90F64eaD6297f5b571C4Cdb07EA2e',
       8217: '0x495788Eb76f90F64eaD6297f5b571C4Cdb07EA2e',
@@ -252,14 +262,16 @@ const rebalances: RebalanceConfig[] = [
       { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
       { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
       { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Ecosystem fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 
   {
     title: 'FINIX Force',
     description: 'REBALANCING FARM',
-    icon: '/images/coins/finixforce.png',
+    fullDescription:
+      'Consisting of FINIX BTC ETH BNB XRP USDT, the group has a higher fluctuation rate and manages risk by holding stablecoin to increase profitability by rebalancing every hour.',
+    icon: ['/images/vaults/finixforce_1.png', '/images/vaults/finixforce_2.png'],
     address: {
       1001: '0xE9B499B7639022E7CB68Ce53B9347292d0eA43e9',
       8217: '0xE9B499B7639022E7CB68Ce53B9347292d0eA43e9',
@@ -310,7 +322,7 @@ const rebalances: RebalanceConfig[] = [
       { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
       { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
       { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
-      { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+      { title: 'Ecosystem fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
     ],
   },
 ]
