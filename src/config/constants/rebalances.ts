@@ -36,6 +36,12 @@ const rebalances: RebalanceConfig[] = [
         address: KUSDT,
       },
     ],
+    factsheet2: {
+      comptroller: {
+        1001: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+        8217: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+      },
+    },
     factsheet: [
       { title: 'Name', value: 'Satoshi and Friends', copy: false },
       { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },

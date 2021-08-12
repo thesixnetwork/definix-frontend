@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import _ from 'lodash'
+import { getAddress } from 'utils/addressHelpers'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
@@ -108,17 +109,21 @@ const AssetDetail = ({ rebalance }) => {
           if (r.symbol === 'WBNB') return 'BNB'
           return r.symbol
         })()
+
         const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
         // @ts-ignore
         const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
           new BigNumber(10).pow(18),
         )
-        const tokenPrice = (totalPrice || new BigNumber(0)).div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
-        // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
-        const priceLast24 = _.get(rebalance, `last24data.tokens.${r.address.toLowerCase()}.price`, new BigNumber(0))
-        const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
-        const changeNumber = change.toNumber()
-
+        let tokenPrice = new BigNumber(0)
+        let changeNumber = 0
+        if (r && r.totalBalance) {
+          tokenPrice = (totalPrice || new BigNumber(0)).div(r.totalBalance.div(new BigNumber(10).pow(r.decimals)))
+          // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
+          const priceLast24 = _.get(rebalance, `last24data.tokens.${r.address.toLowerCase()}.price`, new BigNumber(0))
+          const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
+          changeNumber = change.toNumber()
+        }
         return (
           <TR>
             <TD>
@@ -129,7 +134,9 @@ const AssetDetail = ({ rebalance }) => {
             </TD>
             <TD align="center">
               <Text>
-                {numeral(r.totalBalance.div(new BigNumber(10).pow(r.decimals)).toNumber()).format('0,0.[000]')}
+                {numeral((r.totalBalance || new BigNumber(0)).div(new BigNumber(10).pow(r.decimals)).toNumber()).format(
+                  '0,0.[000]',
+                )}
               </Text>
             </TD>
             <TD align="center">
@@ -152,14 +159,24 @@ const AssetDetail = ({ rebalance }) => {
 }
 
 const FactSheet = ({ rebalance }) => {
-  const data = _.get(rebalance, 'factsheet')
-
+  // const datax = _.get(rebalance, 'factsheet')
+  rebalance.dataFactsheet2 // มันคือ array ที่เรา map config มาจาก state/rebalance
+  const data = [
+    { title: 'Name', value: 'Satoshi and Friends', copy: false },
+    { title: 'Inception date', value: 'Sun, 16 May 2021 22:48:20 GMT', copy: false },
+    { title: 'Manager', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+    { title: 'Vault', value: getAddress(rebalance.address), copy: true },
+    { title: 'Comptroller', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+    { title: 'Management fee', value: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2', copy: true },
+    { title: 'FINIX buy back fee', value: '0x86fb84e92c1eedc245987d28a42e123202bd6701', copy: true },
+    { title: 'Bounty fee', value: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d', copy: true },
+  ]
   return (
     <Table>
-      {data.map((r) => (
+      {data.map((r) => ( 
         <TR>
           <TD>
-            <Text bold>{r.title}</Text>
+            <Text bold>{(r.title || "")}</Text>
           </TD>
           <TD>
             <div className="flex">
