@@ -285,10 +285,10 @@ const Menu: React.FC<NavProps> = ({
               }
             />
 
-            {location.pathname === '/explore' ||
-            location.pathname === '/explore/detail' ||
-            location.pathname === '/explore/invest' ||
-            location.pathname === '/explore/withdraw' ? (
+            {location.pathname === '/rebalancing' ||
+            location.pathname === '/rebalancing/detail' ||
+            location.pathname === '/rebalancing/invest' ||
+            location.pathname === '/rebalancing/withdraw' ? (
               <CountDownBanner
                 logo={logoNoti}
                 customText={

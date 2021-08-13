@@ -82,6 +82,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               />
               <TwoLineFormat
                 title="Share price"
+                subTitle="(24 hrs% chg)"
                 value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
                 percent={`${
                   rebalance.sharedPricePercentDiff >= 0
@@ -115,7 +116,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                   hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
                 />
               </div>
-              <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
+              <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
                 View Details
               </Button>
             </div>
@@ -153,10 +154,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
           <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
         </div>
 
-        <div className="col-2 px-4">
+        <div className="col-4 pl-4">
           <TwoLineFormat
-            className="mb-2"
             title="Share price"
+            subTitle="(24 hrs% chg)"
             value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
             percent={`${
               rebalance.sharedPricePercentDiff >= 0
@@ -169,16 +170,27 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               return ''
             })()}
           />
-          <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={60} />
-        </div>
 
-        <div className="col-2 flex flex-column justify-center">
-          {/* <Text textAlign="center" className="mb-3" fontSize="12px">
+          <div className="flex">
+            <div className="col-6 pr-2">
+              <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={60} />
+            </div>
+            <div className="col-6 pl-2 flex flex-column justify-center">
+              {/* <Text textAlign="center" className="mb-3" fontSize="12px">
             {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
           </Text> */}
-          <Button fullWidth className="mt-3" radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
-            View Details
-          </Button>
+              <Button
+                fullWidth
+                radii="small"
+                as={Link}
+                to="/rebalancing/detail"
+                onClick={onClickViewDetail}
+                style={{ marginTop: '-24px' }}
+              >
+                View Details
+              </Button>
+            </div>
+          </div>
         </div>
       </HorizontalStyle>
     )
@@ -195,6 +207,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         />
         <TwoLineFormat
           title="Share price"
+          subTitle="(24 hrs% chg)"
           value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
           percent={`${
             rebalance.sharedPricePercentDiff >= 0
@@ -228,7 +241,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
           />
         </div>
-        <Button fullWidth radii="small" as={Link} to="/explore/detail" onClick={onClickViewDetail}>
+        <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
           View Details
         </Button>
       </div>

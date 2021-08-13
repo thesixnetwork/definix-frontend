@@ -39,13 +39,13 @@ const WithDrawalFees: React.FC<WithDrawalFeesType> = ({ className = '' }) => {
         </div>
       </div>
 
-      <Text fontSize="14px" className="mt-1">
+      {/* <Text fontSize="14px" className="mt-1">
         ({' '}
         <Text color="primary" style={{ display: 'inline' }}>
           +0.5% fee
         </Text>{' '}
         for EARLY WITHDRAWALS within 1 day )
-      </Text>
+      </Text> */}
     </Card>
   )
 }

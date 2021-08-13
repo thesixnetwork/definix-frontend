@@ -222,7 +222,7 @@ const FundDetail: React.FC<FundDetailType> = ({ rebalance, className = '' }) => 
     <Card className={className}>
       <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
       <div style={{ height: '42px' }} />
-      <Overflow className="pa-4">
+      <Overflow className="pa-4 pt-0">
         {currentTab === 0 ? <AssetDetail rebalance={rebalance} /> : <FactSheet rebalance={rebalance} />}
       </Overflow>
     </Card>

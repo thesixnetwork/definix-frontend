@@ -205,7 +205,7 @@ const CardInput = ({
           <Button
             variant="text"
             as={Link}
-            to="/explore/detail"
+            to="/rebalancing/detail"
             ml="-12px"
             padding="0 12px"
             size="sm"
@@ -243,12 +243,12 @@ const CardInput = ({
               control={<Radio color="primary" size="small" />}
               label={<Text>All token</Text>}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               className="mr-0"
               value="multi"
               control={<Radio color="primary" size="small" />}
-              label={<Text>Multiple token</Text>}
-            />
+              label={<Text>Selected token</Text>}
+            /> */}
           </RadioGroup>
         </div>
 
@@ -328,18 +328,18 @@ const CardInput = ({
           className="mb-2"
           title={`Management fee ${managementFee}%`}
           value={`$${numeral(usdToBeRecieve / (100 / managementFee)).format('0,0.[0000]')}`}
-          hint="xx"
+          hint="Fee collected for vault management."
         />
         <SpaceBetweenFormat
           className="mb-2"
           title={`FINIX buy back fee ${buyBackFee}%`}
           value={`$${numeral(usdToBeRecieve / (100 / buyBackFee)).format('0,0.[0000]')}`}
-          hint="xx"
+          hint="Fee collected for buyback and burn of FINIX as deflationary purpose."
         />
         <SpaceBetweenFormat
           title={`Ecosystem fee ${ecosystemFee}%`}
           value={`$${numeral(usdToBeRecieve / (100 / ecosystemFee)).format('0,0.[0000]')}`}
-          hint="xx"
+          hint="Reservation fee for further development of the ecosystem."
         />
       </div>
 
@@ -434,8 +434,8 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
           className="mb-2"
         />
 
-        <Button as={Link} to="/explore/detail" fullWidth radii="small" className="mt-3">
-          Back to Explore
+        <Button as={Link} to="/rebalancing/detail" fullWidth radii="small" className="mt-3">
+          Back to Rebalancing
         </Button>
       </div>
     </Card>
@@ -514,7 +514,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
     fetchData()
   }, [selectedToken, currentInput, rebalance, fetchData, ratioType])
 
-  if (!rebalance) return <Redirect to="/explore" />
+  if (!rebalance) return <Redirect to="/rebalancing" />
 
   const thisBalance = _.get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
   const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))

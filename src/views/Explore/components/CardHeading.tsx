@@ -67,9 +67,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
           <Text color="primary" bold fontSize="16px" textTransform="uppercase">
             {rebalance.title}
           </Text>
-          <Text bold fontSize="16px" textTransform="uppercase">
-            {rebalance.description}
-          </Text>
+          <Text fontSize="10px">{rebalance.description}</Text>
         </div>
       </div>
 

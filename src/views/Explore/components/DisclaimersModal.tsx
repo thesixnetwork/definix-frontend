@@ -78,22 +78,25 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
 
       <Box>
         <Text className="mb-3">
-          Definix Rebalancing Farm (the “Farm”) has been developed by SIX Network PTE. LTD. and its affiliates
-          (collectively, the “Developer”) for the purpose of being an automatic tool (the “Tool”) for investors for
-          applying rebalancing strategy conveniently. However, the Developer is not responsible for managing the Farm.
-          The Farm has been managed by a 3rd party called “Enigma” (the “Manager”). The information about the Farm has
-          been displayed on Definix website (this “Website”) for informational purposes only in relation to a potential
+          Definix is solely a marketplace (the “Marketplace”) which provides a tool. The Rebalancing Farm (the “Farm”)
+          has been managed by a 3rd party called “Enigma” (the “Manager”). The information about the Farm has been
+          displayed on Definix website (this “Website”) for informational purposes only in relation to a potential
           opportunity available in the Farm.
         </Text>
 
         <Text className="mb-3">
           No advice on investment; Risk of Loss
           <br />
-          Each investor must undertake its own independent examination and investigation of the Farm, including the
-          merits and risks involved in an investment in the Farm, and must base its investment decision - including a
-          determination whether the Farm would be a suitable investment for the investor - on such examination and
-          investigation and must not rely on the Manager in making such investment decision. Prospective investors must
-          not construe the contents of this Website as legal, tax, investment, or other advice.
+          Each investor must undertake its own independent examination and investigation of the Marketplace and the
+          Farm, including the merits and risks involved in an investment in the Farm, and must base its investment
+          decision - including a determination whether the Farm would be a suitable investment for the investor - on
+          such examination and investigation and must not rely on the Manager in making such investment decision.
+          Prospective investors must not construe the contents of this Website as legal, tax, investment, or other
+          advice. Prospective investors must acknowledge that the Farm may be affected by factors, including technical
+          difficulties with the performance, bugs, glitches, lack of functionality, and attacks. The Marketplace will
+          not be liable for any loss, whether such loss is direct, indirect, special or consequential, suffered by any
+          party as a result of their use of the Marketplace and the Farm. Each investor must be solely responsible for
+          any damage to any loss that results from any activities on the Marketplace and the Farm.
         </Text>
 
         <Text className="mb-3">
