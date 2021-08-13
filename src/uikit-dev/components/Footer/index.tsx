@@ -211,7 +211,7 @@ function Footer() {
               <AuditedBy />
             </div>
           </div>
-          <div className="flex mb-3">
+          {/* <div className="flex mb-3">
             <div className="col-6 pr-2">
               <PteLtd />
               <CoCeo />
@@ -221,17 +221,17 @@ function Footer() {
               <Address />
               <PersonalInfo />
             </div>
-          </div>
+          </div> */}
           <Social />
         </div>
       ) : (
         <div className="pa-2 flex justify-space-between align-center">
           <div className="flex">
-            <div className="col-3 flex align-center pa-2">
+            <div className="flex align-center pa-2">
               <PoweredSix className="mr-3" />
               <AuditedBy />
             </div>
-            <div className="col-3 pa-2">
+            {/* <div className="col-3 pa-2">
               <PteLtd />
               <CoCeo />
             </div>
@@ -241,7 +241,7 @@ function Footer() {
             </div>
             <div className="col-3 pa-2">
               <PersonalInfo />
-            </div>
+            </div> */}
           </div>
 
           <div className="pa-2">

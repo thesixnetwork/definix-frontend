@@ -197,13 +197,16 @@ const FactSheet = ({ rebalance }) => {
   return (
     <Table>
       <FactRow name="Name" value={rebalance.factsheet.name} isCopy={false} />
-      <FactRow name="Inception date" value={rebalance.factsheet.inceptionDate} isCopy />
-      <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy />
-      <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy />
-      <FactRow name="Comptroller" value={rebalance.factsheet.comptroller} isCopy />
-      <FactRow name="Management" value={rebalance.factsheet.management} isCopy />
-      <FactRow name="Finix buy back fee" value={rebalance.factsheet.finixBuyBackFee} isCopy />
-      <FactRow name="Bounty fee" value={rebalance.factsheet.bountyFee} isCopy />
+      <FactRow name="Inception date" value={rebalance.factsheet.inceptionDate} isCopy={false} />
+      <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy={rebalance.factsheet.manager} />
+      <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy={rebalance.factsheet.vault} />
+      <FactRow name="Management fee" value={rebalance.factsheet.management} isCopy={rebalance.factsheet.management} />
+      <FactRow
+        name="FINIX Buy back fee"
+        value={rebalance.factsheet.finixBuyBackFee}
+        isCopy={rebalance.factsheet.finixBuyBackFee}
+      />
+      <FactRow name="Bounty fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} />
     </Table>
   )
 }
@@ -222,7 +225,7 @@ const FundDetail: React.FC<FundDetailType> = ({ rebalance, className = '' }) => 
     <Card className={className}>
       <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
       <div style={{ height: '42px' }} />
-      <Overflow className="pa-4">
+      <Overflow className="pa-4 pt-0">
         {currentTab === 0 ? <AssetDetail rebalance={rebalance} /> : <FactSheet rebalance={rebalance} />}
       </Overflow>
     </Card>

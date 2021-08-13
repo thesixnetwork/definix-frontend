@@ -77,22 +77,22 @@ const Explore: React.FC = () => {
               <div className="mb-5">
                 <div className="flex align-center mb-2">
                   <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                    Explore
+                    Rebalancing Farm
                   </Heading>
 
-                  <HelpButton
+                  {/* <HelpButton
                     size="sm"
                     variant="secondary"
                     className="px-2"
                     startIcon={<HelpCircle className="mr-2" />}
                   >
                     Help
-                  </HelpButton>
+                  </HelpButton> */}
                 </div>
-                <Text>
+                {/* <Text>
                   You can invest your tokens in our farms on this list. Every farms is administered by a
                   DEFINIX-certified farm manager.
-                </Text>
+                </Text> */}
               </div>
 
               <ExploreTabButtons

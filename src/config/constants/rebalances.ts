@@ -4,7 +4,7 @@ import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
 const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
-    description: 'REBALANCING FARM',
+    description: 'Tribute to the founder of BTC. The rebalancing algorithm will trigger every 4 hour.',
     fullDescription:
       'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
     icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
@@ -40,19 +40,19 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'Satoshi and Friends',
-      inceptionDate: 'Sun, 16 May 2021 22:48:20 GMT',
-      manager: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      vault: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773',
-      comptroller: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
-      management: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      finixBuyBackFee: '0x86fb84e92c1eedc245987d28a42e123202bd6701',
-      bountyFee: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
   },
 
   {
     title: 'Big Cap One Plus',
-    description: 'REBALANCING FARM',
+    description:
+      'Leading crypto currencies in the industry. The rebalancing will trigger once the value of the farm is cover the rebalancing fee +1%.',
     fullDescription:
       'Consisting of BTC ETH BNB USDT which is a big capital with lower rate of fluctuation than the smaller market cap coins, responsible for the performance running along with the top market cap cryptocurrency. The ratio is distributed equally for rebalancing every time an extra 1% coverage movement occurs.',
     icon: ['/images/vaults/bigcap_1.png', '/images/vaults/bigcap_2.png'],
@@ -94,19 +94,19 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'Big Cap One Plus',
-      inceptionDate: 'Sun, 16 May 2021 22:48:20 GMT',
-      manager: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      vault: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773',
-      comptroller: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
-      management: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      finixBuyBackFee: '0x86fb84e92c1eedc245987d28a42e123202bd6701',
-      bountyFee: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x35F59B33c6510D87eDd1f8F81d9DB9c2763D61C0',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
   },
 
   {
     title: 'Chain Creators',
-    description: 'REBALANCING FARM',
+    description:
+      'Inspried by blockchain creator’s asset. The rebalancing will trigger every time the value of the farm is cover with the rebalancing fee.',
     fullDescription:
       'Consisting of ETH BNB KLAY USDT which is the chain creator for many DeFi. Representing the trend on the DeFi ecosystem and distributing the ratio in the farm equally to make rebalancing trigger once when covering the rebalance fee.',
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
@@ -142,19 +142,18 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'Chain Creators',
-      inceptionDate: 'Sun, 16 May 2021 22:48:20 GMT',
-      manager: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      vault: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773',
-      comptroller: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
-      management: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      finixBuyBackFee: '0x86fb84e92c1eedc245987d28a42e123202bd6701',
-      bountyFee: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x7BBc8e4978585D4067b3Cf74e5C48E5778C31c40',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
   },
 
   {
     title: 'ALT Party',
-    description: 'REBALANCING FARM',
+    description: 'Designed for Alt coin advocate. The rebalancing will trigger hourly.',
     fullDescription:
       'Consisting of ETH XRP BNB USDT with a higher rate of fluctuation in the top market cap coin category. This farm has allocated the risk to the stablecoin and rebalancing strategy is applied every 1 hour.',
     icon: ['/images/vaults/altparty_1.png', '/images/vaults/altparty_2.png'],
@@ -190,19 +189,19 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'ALT Party',
-      inceptionDate: 'Sun, 16 May 2021 22:48:20 GMT',
-      manager: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      vault: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773',
-      comptroller: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
-      management: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      finixBuyBackFee: '0x86fb84e92c1eedc245987d28a42e123202bd6701',
-      bountyFee: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0xdc8794615df8CF117B4c856442DbCb7CdF3116ca',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
   },
 
   {
     title: 'FINIX Volatility',
-    description: 'REBALANCING FARM',
+    description:
+      'Mixture of different volatility of assets. The rebalancing will trigger every time the value of the farm is cover with the rebalancing fee.',
     fullDescription:
       'Consisting of FINIX BTC ETH SIX KLAY XRP USDT which has the volatility characteristic and high fluctuation. To outperform the top market cap group, the distribution ratio is significant to add up some stablecoin in it. The rebalancing will occur every time it reaches a rebalance fee base.',
     icon: ['/images/vaults/volatility_1.png', '/images/vaults/volatility_2.png'],
@@ -256,19 +255,18 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'FINIX Volatility',
-      inceptionDate: 'Sun, 16 May 2021 22:48:20 GMT',
-      manager: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      vault: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773',
-      comptroller: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
-      management: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      finixBuyBackFee: '0x86fb84e92c1eedc245987d28a42e123202bd6701',
-      bountyFee: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0xa3A506d486F02bB54E495ed92d89905860803910',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
   },
 
   {
     title: 'FINIX Force',
-    description: 'REBALANCING FARM',
+    description: 'The mixture of ecosystem token the top assets. The rebalancing will trigger hourly.',
     fullDescription:
       'Consisting of FINIX BTC ETH BNB XRP USDT, the group has a higher fluctuation rate and manages risk by holding stablecoin to increase profitability by rebalancing every hour.',
     icon: ['/images/vaults/finixforce_1.png', '/images/vaults/finixforce_2.png'],
@@ -316,13 +314,12 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'FINIX Force',
-      inceptionDate: 'Sun, 16 May 2021 22:48:20 GMT',
-      manager: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      vault: '0xA41dAFFd73A21E4B9bB4AeACdEDD9b5baba62773',
-      comptroller: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
-      management: '0xf5be8b4c82b8a681bacf357cfb712ab9e9296cb2',
-      finixBuyBackFee: '0x86fb84e92c1eedc245987d28a42e123202bd6701',
-      bountyFee: '0x6d38a84ecde417b189ed317420c04fdd0cc4fb5d',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x8152c76e4D58A06F660a3736246F7906e849419c',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
   },
 ]

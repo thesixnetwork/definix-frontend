@@ -304,7 +304,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     fetchReturnPercentData()
   }, [fetchGraphData, fetchReturnPercentData])
 
-  if (!rebalance) return <Redirect to="/explore" />
+  if (!rebalance) return <Redirect to="/rebalancing" />
   const { ratio } = rebalance
   return (
     <>
@@ -320,7 +320,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <Button
                     variant="text"
                     as={Link}
-                    to="/explore"
+                    to="/rebalancing"
                     ml="-12px"
                     mb="12px"
                     padding="0 12px"
@@ -333,10 +333,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   </Button>
 
                   <div className="flex justify-space-between align-end mb-3">
-                    <CardHeading rebalance={rebalance} />
+                    <CardHeading rebalance={rebalance} className="pr-4" />
                     {!isMobile && (
                       <TwoLineFormat
+                        className="flex-shrink"
                         title="Share price"
+                        subTitle="(24 hrs% chg)"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                         percent={`${
                           rebalance.sharedPricePercentDiff >= 0
@@ -363,6 +365,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <TwoLineFormat
                         className={isMobile ? 'col-6 my-2' : 'col-3'}
                         title="Share price"
+                        subTitle="(24 hrs% chg)"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                         percent={`${
                           rebalance.sharedPricePercentDiff >= 0

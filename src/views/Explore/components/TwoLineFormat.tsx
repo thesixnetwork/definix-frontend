@@ -35,13 +35,13 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
 }) => {
   return (
     <div className={className}>
-      <div className={`flex ${alignRight ? 'justify-end' : ''}`} style={{ lineHeight: '0' }}>
+      <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`} style={{ lineHeight: '0' }}>
         <Text fontSize="14px" color={titleColor || 'textSubtle'}>
           {title}
         </Text>
 
         {subTitle && (
-          <Text fontSize="14px" className="ml-1">
+          <Text fontSize={large ? '14px' : '12px'} className="ml-1">
             {subTitle}
           </Text>
         )}

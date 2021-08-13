@@ -109,7 +109,7 @@ const CardInput = ({
           <Button
             variant="text"
             as={Link}
-            to="/explore/detail"
+            to="/rebalancing/detail"
             ml="-12px"
             padding="0 12px"
             size="sm"
@@ -124,6 +124,7 @@ const CardInput = ({
 
         <TwoLineFormat
           title="Share price"
+          subTitle="(24 hrs% chg)"
           titleColor={isDark ? '#ADB4C2' : ''}
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
           percent={`${
@@ -457,8 +458,8 @@ const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
           className="mb-2"
         />
 
-        <Button as={Link} to="/explore/detail" fullWidth radii="small" className="mt-3">
-          Back to Explore
+        <Button as={Link} to="/rebalancing/detail" fullWidth radii="small" className="mt-3">
+          Back to Rebalancing
         </Button>
       </div>
     </Card>
@@ -545,7 +546,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
     fetchData()
   }, [fetchData])
 
-  if (!rebalance) return <Redirect to="/explore" />
+  if (!rebalance) return <Redirect to="/rebalancing" />
 
   const totalUSDAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(18)).toNumber()
   return (
