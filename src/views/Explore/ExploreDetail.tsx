@@ -178,7 +178,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         // @ts-ignore
         const selectedTotalSupply = (totalSupply || [])[0]
         const poolUsdBalance = (currentPoolUsdBalances || []).map((x, index) => {
-          let currentToken = tokens[index]
+          let currentToken = [...tokens, ...usdToken][index]
           if (currentToken) currentToken = (usdToken || [])[0]
           // @ts-ignore
           return new BigNumber([x]).div(new BigNumber(10).pow((currentToken || {}).decimals || 18))
@@ -446,7 +446,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
               <FullAssetRatio ratio={ratio} className="mb-4" />
               <TradeStrategy className="mb-4" description={rebalance.fullDescription} />
-              <WithDrawalFees className="mb-4" />
+              <WithDrawalFees
+                managementFee={_.get(rebalance, 'fee.management', 0.2)}
+                bountyFee={_.get(rebalance, 'fee.bounty', 0.3)}
+                buybackFee={_.get(rebalance, 'fee.buyback', 1.5)}
+                className="mb-4"
+              />
               <FundDetail className="mb-4" rebalance={rebalance} />
               <Transaction className="mb-4" rbAddress={rebalance.address} />
             </div>

@@ -8,7 +8,6 @@ import FormGroup from '@material-ui/core/FormGroup'
 import Radio from '@material-ui/core/Radio'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
-import { managementFee, ecosystemFee, buyBackFee } from 'config/constants'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
 import { AbiItem } from 'web3-utils'
@@ -326,19 +325,19 @@ const CardInput = ({
         /> */}
         <SpaceBetweenFormat
           className="mb-2"
-          title={`Management fee ${managementFee}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / managementFee)).format('0,0.[0000]')}`}
+          title={`Management fee ${_.get(rebalance, 'fee.management', 0.2)}%`}
+          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.management', 0.2))).format('0,0.[0000]')}`}
           hint="Fee collected for vault management."
         />
         <SpaceBetweenFormat
           className="mb-2"
-          title={`FINIX buy back fee ${buyBackFee}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / buyBackFee)).format('0,0.[0000]')}`}
+          title={`FINIX buy back fee ${_.get(rebalance, 'fee.buyback', 1.5)}%`}
+          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.buyback', 1.5))).format('0,0.[0000]')}`}
           hint="Fee collected for buyback and burn of FINIX as deflationary purpose."
         />
         <SpaceBetweenFormat
-          title={`Ecosystem fee ${ecosystemFee}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / ecosystemFee)).format('0,0.[0000]')}`}
+          title={`Ecosystem fee ${_.get(rebalance, 'fee.bounty', 0.3)}%`}
+          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.bounty', 0.3))).format('0,0.[0000]')}`}
           hint="Reservation fee for further development of the ecosystem."
         />
       </div>
@@ -396,9 +395,9 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
               share={currentInput}
               usd={`~ $${numeral(
                 usdToBeRecieve -
-                  usdToBeRecieve / (100 / ecosystemFee) -
-                  usdToBeRecieve / (100 / buyBackFee) -
-                  usdToBeRecieve / (100 / managementFee),
+                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.bounty', 0.3)) -
+                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.buyback', 1.5)) -
+                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.management', 0.2)),
               ).format('0,0.[0000]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />

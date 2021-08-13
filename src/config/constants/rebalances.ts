@@ -4,13 +4,19 @@ import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
 const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
-    description: 'Tribute to the founder of BTC. The rebalancing algorithm will trigger every 4 hour.',
+    description:
+      'Tribute tov the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
     icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
     address: {
       1001: '0xfaf517E6efB3D799315D5538C34975c51291c2cF',
       8217: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
     },
     ratio: [
       {
@@ -59,6 +65,11 @@ const rebalances: RebalanceConfig[] = [
     address: {
       1001: '0xc292478FaEb31f25744023b03748A4090fcb59dA',
       8217: '0x35F59B33c6510D87eDd1f8F81d9DB9c2763D61C0',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
     },
     ratio: [
       {
@@ -114,6 +125,11 @@ const rebalances: RebalanceConfig[] = [
       1001: '0x47B77DfC1FA6d1D9148558381a13e791ea8a2491',
       8217: '0x7BBc8e4978585D4067b3Cf74e5C48E5778C31c40',
     },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
     ratio: [
       {
         symbol: 'KETH',
@@ -153,13 +169,19 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'ALT Party',
-    description: 'Designed for Alt coin advocate. The rebalancing will trigger hourly.',
+    description:
+      'Designed for Alt coin advocate. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of ETH XRP BNB USDT with a higher rate of fluctuation in the top market cap coin category. This farm has allocated the risk to the stablecoin and rebalancing strategy is applied every 1 hour.',
     icon: ['/images/vaults/altparty_1.png', '/images/vaults/altparty_2.png'],
     address: {
       1001: '0x49C493b6B87E90AE06c6f2D9D0c5D88aCE9137A9',
       8217: '0xdc8794615df8CF117B4c856442DbCb7CdF3116ca',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
     },
     ratio: [
       {
@@ -208,6 +230,11 @@ const rebalances: RebalanceConfig[] = [
     address: {
       1001: '0x495788Eb76f90F64eaD6297f5b571C4Cdb07EA2e',
       8217: '0xa3A506d486F02bB54E495ed92d89905860803910',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 0.75,
+      bounty: 0.3,
     },
     ratio: [
       {
@@ -266,13 +293,19 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'FINIX Force',
-    description: 'The mixture of ecosystem token the top assets. The rebalancing will trigger hourly.',
+    description:
+      'The mixture of ecosystem token the top assets. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of FINIX BTC ETH BNB XRP USDT, the group has a higher fluctuation rate and manages risk by holding stablecoin to increase profitability by rebalancing every hour.',
     icon: ['/images/vaults/finixforce_1.png', '/images/vaults/finixforce_2.png'],
     address: {
       1001: '0xE9B499B7639022E7CB68Ce53B9347292d0eA43e9',
       8217: '0x8152c76e4D58A06F660a3736246F7906e849419c',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 0.75,
+      bounty: 0.3,
     },
     ratio: [
       {

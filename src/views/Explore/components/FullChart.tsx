@@ -76,7 +76,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
   const isMobile = !isXl && !isMd && !isLg
 
   const onCheck = (token) => (event) => {
-    setSelectedTokens({ ...selectedTokens, [token.symbol]: !event.target.checked })
+    setSelectedTokens({ ...selectedTokens, [token.symbol]: event.target.checked })
   }
 
   return (
@@ -98,12 +98,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
           <FormControlLabelCustom
             className={isMobile ? 'col-6 ma-0' : ' mr-6'}
             control={
-              <Checkbox
-                size="small"
-                color="primary"
-                checked={!!selectedTokens[c.symbol] === false}
-                onChange={onCheck(c)}
-              />
+              <Checkbox size="small" color="primary" checked={!!selectedTokens[c.symbol]} onChange={onCheck(c)} />
             }
             label={
               <LegendItem>
@@ -133,7 +128,7 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
     return {
       labels: _.get(graphData, 'labels', []),
       datasets: Object.keys(_.get(graphData, 'graph', {}))
-        .filter((key) => !selectedTokens[key])
+        .filter((key) => selectedTokens[key] || key === 'rebalance')
         .map((key) => {
           const thisData = _.get(graphData, `graph.${key}`, {})
           const thisName = thisData.name || ''

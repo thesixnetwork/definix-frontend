@@ -60,6 +60,11 @@ export interface Ratio {
   address: any
 }
 
+export interface Fee {
+  management: number
+  bounty: number
+  buyback: number
+}
 export interface RebalanceConfig {
   title: string
   description: string
@@ -69,6 +74,7 @@ export interface RebalanceConfig {
   ratio: Ratio[]
   last24data?: any
   factsheet: any
+  fee: Fee
 }
 
 export interface FarmConfig {
