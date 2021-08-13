@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Heading, Text } from 'uikit-dev'
-import Flip from 'uikit-dev/components/Flip'
+import { Button, Card, Heading, Text } from 'uikit-dev'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 
 const StyledBanner = styled(Card)`
@@ -72,7 +71,9 @@ const CardAutoRebalancing = ({ className = '' }) => {
           Definix Rebalancing Farm is available to use in
         </Text>
 
-        <Flip date={openDate} smallBg />
+        <Button radii="card" as="a" href="https://klaytn.definix.com/rebalancing">
+          Go to Rebalancing Farm now
+        </Button>
       </div>
     </StyledBanner>
   )
