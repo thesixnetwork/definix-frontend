@@ -20,9 +20,10 @@ const Overflow = styled.div`
   overflow: auto;
 `
 const AssetDetail = ({ rebalance }) => {
-  // const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
-  const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'RATIO']
+  const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
+  // const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'RATIO']
   let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+  
   if (tokens.length === 0) tokens = rebalance.ratio
 
   // useEffect(() => {
@@ -111,6 +112,7 @@ const AssetDetail = ({ rebalance }) => {
       </TR>
 
       {tokens.map((r, index) => {
+        
         const thisName = (() => {
           if (r.symbol === 'WKLAY') return 'KLAY'
           if (r.symbol === 'WBNB') return 'BNB'
@@ -119,9 +121,15 @@ const AssetDetail = ({ rebalance }) => {
 
         const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
         // @ts-ignore
-        const totalPrice = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)]).div(
-          new BigNumber(10).pow(18),
+        const totalPriceNotDevDecimap = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)])
+        const bignumValueAmount =(totalPriceNotDevDecimap.toNumber())
+        const decimals = r.decimals
+        const totalPrice = totalPriceNotDevDecimap.div(
+          new BigNumber(10).pow(6),
         )
+        
+        const testst = (new BigNumber(_.get(rebalance, `currentPoolUsdBalances.${index}`))).toNumber()
+        // console.log()
         const tokenPrice = (totalPrice || new BigNumber(0)).div(
           _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(_.get(r, 'decimals', 18))),
         )
@@ -134,12 +142,13 @@ const AssetDetail = ({ rebalance }) => {
           ).toLowerCase()}.price`,
           new BigNumber(0),
         )
+        console.log("tokenPrice ",tokenPrice.toFixed(3),"priceLast24",priceLast24.toFixed(3))
 
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
 
         // eslint-disable-next-line
-        // debugger
+        debugger
         return (
           <TR>
             <TD>
@@ -163,12 +172,12 @@ const AssetDetail = ({ rebalance }) => {
             <TD align="center">
               <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
-            {/* <TD align="center">
+            <TD align="center">
               <Text color={selectClass(changeNumber)}>
-                {selectSymbolChange(changeNumber)}
+                {/* {selectSymbolChange(changeNumber)} */}
                 {`${numeral(changeNumber).format('0,0.[000]')} %`}
               </Text>
-            </TD> */}
+            </TD>
             <TD align="center">
               <Text>{ratio.value}%</Text>
             </TD>
