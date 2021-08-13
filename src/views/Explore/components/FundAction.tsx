@@ -5,7 +5,7 @@ import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Button, Card, useMatchBreakpoints } from 'uikit-dev'
+import { Button, Card, useMatchBreakpoints, Text } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
 import { useRebalanceBalances, useBalances } from '../../../state/hooks'
 import TwoLineFormat from './TwoLineFormat'
@@ -42,13 +42,24 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
       className={`flex flex-wrap justify-space-between ${className} ${isVertical ? 'flex-column ml-4' : 'pa-4 bd-t'}`}
       isVertical={isVertical}
     >
-      <TwoLineFormat
-        className={isVertical ? 'pa-4' : ''}
-        title="Current investment"
-        subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
-        value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-        large
-      />
+      {isVertical ? (
+        <div className="pa-4">
+          <Text fontSize="14px" color="textSubtle">
+            Current investment
+          </Text>
+          <Text fontSize="14px">{`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}</Text>
+          <Text fontSize="24px" bold lineHeight="1.3">
+            {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
+          </Text>
+        </div>
+      ) : (
+        <TwoLineFormat
+          title="Current investment"
+          subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
+          value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
+          large
+        />
+      )}
 
       <div
         className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
