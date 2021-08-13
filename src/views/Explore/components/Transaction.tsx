@@ -91,7 +91,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
                 <Text>{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
               </TD>
               <TD>
-                <LinkExternal noIcon href={`https://scope.klaytn.com/account/${r.transaction_hash}`} fontSize="12px">
+                <LinkExternal noIcon href={`https://scope.klaytn.com/tx/${r.transaction_hash}`} fontSize="12px">
                   KlaytnScope
                 </LinkExternal>
               </TD>
