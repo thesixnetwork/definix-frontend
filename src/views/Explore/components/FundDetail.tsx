@@ -20,7 +20,8 @@ const Overflow = styled.div`
   overflow: auto;
 `
 const AssetDetail = ({ rebalance }) => {
-  const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
+  // const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
+  const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'RATIO']
   let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
   if (tokens.length === 0) tokens = rebalance.ratio
 
@@ -137,6 +138,8 @@ const AssetDetail = ({ rebalance }) => {
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
 
+        // eslint-disable-next-line
+        // debugger
         return (
           <TR>
             <TD>
@@ -160,12 +163,12 @@ const AssetDetail = ({ rebalance }) => {
             <TD align="center">
               <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
-            <TD align="center">
+            {/* <TD align="center">
               <Text color={selectClass(changeNumber)}>
                 {selectSymbolChange(changeNumber)}
                 {`${numeral(changeNumber).format('0,0.[000]')} %`}
               </Text>
-            </TD>
+            </TD> */}
             <TD align="center">
               <Text>{ratio.value}%</Text>
             </TD>
