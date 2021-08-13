@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { AbiItem } from 'web3-utils'
 import * as klipProvider from 'hooks/klipProvider'
-import { getAbiRebalanceByName ,getAbiERC20ByName } from 'hooks/hookHelper'
+import { getAbiRebalanceByName, getAbiERC20ByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import _ from 'lodash'
@@ -77,7 +77,7 @@ const CardInput = ({
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const dispatch = useDispatch()
-  const { account, klaytn ,connector} = useWallet()
+  const { account, klaytn, connector } = useWallet()
   const { isDark } = useTheme()
   const { setShowModal } = React.useContext(KlipModalContext())
 
@@ -89,15 +89,12 @@ const CardInput = ({
         klipProvider.genQRcodeContactInteract(
           getAddress(token.address),
           JSON.stringify(getAbiERC20ByName('approve')),
-          JSON.stringify([
-            getAddress(rebalance.address), 
-            klipProvider.MAX_UINT_256_KLIP
-          ]),
-          setShowModal
+          JSON.stringify([getAddress(rebalance.address), klipProvider.MAX_UINT_256_KLIP]),
+          setShowModal,
         )
-       await klipProvider.checkResponse()
-       setShowModal(false)
-      }else{
+        await klipProvider.checkResponse()
+        setShowModal(false)
+      } else {
         await approveOther(tokenContract, getAddress(rebalance.address), account)
       }
       const assets = rebalance.ratio
@@ -317,7 +314,7 @@ const CardCalculate = ({
           mainCoinValue ? `${expectValue}0000000000000` : '0',
         )
         const tx = {
-          transactionHash: await klipProvider.checkResponse()
+          transactionHash: await klipProvider.checkResponse(),
         }
         setShowModal(false)
         setTx(tx)
@@ -412,7 +409,7 @@ const CardCalculate = ({
 const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const { transactionHash } = tx 
+  const { transactionHash } = tx
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
   // @ts-ignore
