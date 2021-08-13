@@ -1,7 +1,6 @@
 import { useCallback, useContext } from 'react'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
-import Caver from 'caver-js'
 import { ethers } from 'ethers'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'

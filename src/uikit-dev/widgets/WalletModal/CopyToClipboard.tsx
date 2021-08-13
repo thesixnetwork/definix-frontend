@@ -10,6 +10,7 @@ interface Props {
   noText?: boolean
   color?: string
   tooltipPos?: string
+  iconWidth?: string
 }
 
 const StyleButton = styled(Text).attrs({ role: 'button' })<{ noPadding: boolean }>`
@@ -49,6 +50,7 @@ const CopyToClipboard: React.FC<Props> = ({
   noText = false,
   color,
   tooltipPos = 'bottom',
+  iconWidth = '20px',
   ...props
 }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
@@ -69,7 +71,7 @@ const CopyToClipboard: React.FC<Props> = ({
       noPadding={noPadding}
       {...props}
     >
-      <CopyIcon width="20px" color={color || 'primary'} mr={noText ? '' : '8px'} />
+      <CopyIcon width={iconWidth} color={color || 'primary'} mr={noText ? '' : '8px'} />
       {children}
       <Tooltip isTooltipDisplayed={isTooltipDisplayed} tooltipPos={tooltipPos}>
         Copied

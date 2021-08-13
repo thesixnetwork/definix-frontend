@@ -3,9 +3,10 @@ import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
-import { Redirect, Route, Router, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
+import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import { Modal, ResetCSS } from 'uikit-dev'
+import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
@@ -14,10 +15,10 @@ import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
-import Flip from './uikit-dev/components/Flip'
-import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
-// import WaitingPage from 'uikit-dev/components/WaitingPage'
+import sdkConfig from './sdkconfig'
 
+// import WaitingPage from 'uikit-dev/components/WaitingPage'
+Config.configure(sdkConfig)
 ReactGA.initialize('G-L997LXLF8F')
 
 const tagManagerArgs = {
@@ -36,6 +37,7 @@ TagManager.initialize(tagManagerArgs)
 const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
+const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 // const Lottery = lazy(() => import('./views/Lottery'))
@@ -108,6 +110,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/info">
               <Info />
+            </Route>
+            <Route path="/rebalancing">
+              <Explore />
             </Route>
             <Route path="/AirdropKlay">
               <AirdropKlay />
@@ -193,16 +198,6 @@ const App: React.FC = () => {
         </div>
       ) */}
     </Router>
-  )
-}
-
-const DateModal = ({ date }) => {
-  return (
-    <Modal title="" hideCloseButton isRainbow>
-      <div>
-        <Flip date={date} />
-      </div>
-    </Modal>
   )
 }
 

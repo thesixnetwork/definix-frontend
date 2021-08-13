@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronRightIcon, Link, Text } from 'uikit-dev'
+import { Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   klaytnAddress?: string
@@ -22,7 +22,6 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
-  klaytnAddress,
   removed,
   totalValueFormated,
   isHorizontal = false,
@@ -30,20 +29,6 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   stakedBalanceValueFormated,
 }) => {
   const TranslateString = useI18n()
-
-  const LinkView = ({ linkClassName = '' }) => (
-    <Link
-      external
-      href={klaytnAddress}
-      bold={false}
-      className={`flex-shrink ${linkClassName} ml-2`}
-      color="textSubtle"
-      fontSize="12px"
-    >
-      {TranslateString(356, 'KlaytnScope')}
-      <ChevronRightIcon color="textSubtle" />
-    </Link>
-  )
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>

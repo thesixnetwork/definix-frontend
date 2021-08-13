@@ -1,7 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Link } from '../../components/Link'
-import { HelpIcon } from '../../components/Svg'
 import { Modal } from '../Modal'
 import WalletCard from './WalletCard'
 import config from './config'
@@ -11,13 +8,6 @@ interface Props {
   login: Login
   onDismiss?: () => void
 }
-
-const HelpLink = styled(Link)`
-  display: flex;
-  align-self: center;
-  align-items: center;
-  margin-top: 24px;
-`
 
 const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => (
   <Modal title="Connect to a wallet" onDismiss={onDismiss} isRainbow={false}>
