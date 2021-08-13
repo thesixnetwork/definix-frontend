@@ -52,8 +52,9 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
   const { isDark } = useTheme()
   const [graphData, setGraphData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
+  const [isDisplay, setIsDisplay] = useState(false)
   const fetchGraphData = useCallback(async () => {
-    if (rebalanceAddress && _.compact(tokens.map((t) => t.decimals)).length > 0) {
+    if (rebalanceAddress && _.compact(tokens.map((t) => t.decimals)).length > 0 && isDisplay === false) {
       setIsLoading(true)
       const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
       try {
@@ -118,11 +119,12 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
         graphTokenData.rebalance = rebalanceData
         setGraphData({ labels: label, graph: graphTokenData })
         setIsLoading(false)
+        setIsDisplay(true)
       } catch (error) {
         setIsLoading(false)
       }
     }
-  }, [rebalanceAddress, setGraphData, tokens])
+  }, [rebalanceAddress, setGraphData, tokens, isDisplay])
   useEffect(() => {
     fetchGraphData()
   }, [fetchGraphData])

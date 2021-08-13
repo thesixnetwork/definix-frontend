@@ -296,8 +296,8 @@ const CardCalculate = ({
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('addFund')),
-          JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
-          // JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
+          // JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
+          JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
           setShowModal,
           mainCoinValue ? `${expectValue}0000000000000` : '0',
         )
@@ -305,8 +305,8 @@ const CardCalculate = ({
         setTx(tx)
       } else {
         const tx = await rebalanceContract.methods
-          .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-          // .addFund(arrayTokenAmount, usdTokenAmount, 0)
+          // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
+          .addFund(arrayTokenAmount, usdTokenAmount, 0)
           .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
         setTx(tx)
       }

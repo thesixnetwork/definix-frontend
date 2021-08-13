@@ -166,7 +166,7 @@ const AssetDetail = ({ rebalance }) => {
             <TD align="center">
               <Text color={selectClass(changeNumber)}>
                 {/* {selectSymbolChange(changeNumber)} */}
-                {`${numeral(changeNumber).format('0,0.[000]')} %`}
+                {`${Number.isFinite(changeNumber) ? `${numeral(changeNumber).format('0,0.[000]')}$` : '-'}`}
               </Text>
             </TD>
             <TD align="center">
