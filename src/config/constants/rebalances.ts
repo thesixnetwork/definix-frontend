@@ -4,7 +4,8 @@ import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
 const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
-    description: 'Tribute to the founder of BTC. The rebalancing algorithm will trigger every 4 hour.',
+    description:
+      'Tribute tov the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
     icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
@@ -153,7 +154,8 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'ALT Party',
-    description: 'Designed for Alt coin advocate. The rebalancing will trigger hourly.',
+    description:
+      'Designed for Alt coin advocate. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of ETH XRP BNB USDT with a higher rate of fluctuation in the top market cap coin category. This farm has allocated the risk to the stablecoin and rebalancing strategy is applied every 1 hour.',
     icon: ['/images/vaults/altparty_1.png', '/images/vaults/altparty_2.png'],
@@ -266,7 +268,8 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'FINIX Force',
-    description: 'The mixture of ecosystem token the top assets. The rebalancing will trigger hourly.',
+    description:
+      'The mixture of ecosystem token the top assets. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of FINIX BTC ETH BNB XRP USDT, the group has a higher fluctuation rate and manages risk by holding stablecoin to increase profitability by rebalancing every hour.',
     icon: ['/images/vaults/finixforce_1.png', '/images/vaults/finixforce_2.png'],
