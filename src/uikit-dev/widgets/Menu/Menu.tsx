@@ -7,6 +7,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import DisclaimersModal from 'views/Explore/components/DisclaimersModal'
+import BannerEllipsis from '../../components/BannerEllipsis'
 import Button from '../../components/Button/Button'
 import CountDownBanner from '../../components/CountDownBanner'
 import { Flex } from '../../components/Flex'
@@ -289,34 +290,45 @@ const Menu: React.FC<NavProps> = ({
             location.pathname === '/rebalancing/detail' ||
             location.pathname === '/rebalancing/invest' ||
             location.pathname === '/rebalancing/withdraw' ? (
-              <CountDownBanner
-                logo={logoNoti}
-                customText={
-                  <>
-                    <Text color="white" fontSize="13px">
-                      <strong>Rebalancing Farm :</strong>{' '}
-                      <span className="mr-1">
-                        Rebalancing farm is a special farm that implements rebalancing strategy. The advantage of the
-                        strategy is that it can help you minimize risk and get favored positions for your investment in
-                        the long run.
-                      </span>
-                      <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong>
-                      <span
-                        role="none"
-                        style={{ color: '#ffd157', fontWeight: 'bold', textDecoration: 'underline', cursor: 'pointer' }}
-                        onClick={onPresentDisclaimersModal}
-                      >
-                        read more here.
-                      </span>
-                      <span style={{ fontSize: '11px', display: 'block', opacity: '0.7' }}>
-                        Definix is solely a marketplace which provides a tool. The rebalancing farm has been managed by
-                        a 3rd party called Enigma.
-                      </span>
-                    </Text>
-                  </>
-                }
-                disableCountdown
-              />
+              <>
+                {isMobile ? (
+                  <BannerEllipsis />
+                ) : (
+                  <CountDownBanner
+                    logo={logoNoti}
+                    customText={
+                      <>
+                        <Text color="white" fontSize="13px">
+                          <strong>Rebalancing Farm :</strong>{' '}
+                          <span className="mr-1">
+                            Rebalancing farm is a special farm that implements rebalancing strategy. The advantage of
+                            the strategy is that it can help you minimize risk and get favored positions for your
+                            investment in the long run.
+                          </span>
+                          <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong>
+                          <span
+                            role="none"
+                            style={{
+                              color: '#ffd157',
+                              fontWeight: 'bold',
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                            }}
+                            onClick={onPresentDisclaimersModal}
+                          >
+                            read more here.
+                          </span>
+                          <span style={{ fontSize: '11px', display: 'block', opacity: '0.7' }}>
+                            Definix is solely a marketplace which provides a tool. The rebalancing farm has been managed
+                            by a 3rd party called Enigma.
+                          </span>
+                        </Text>
+                      </>
+                    }
+                    disableCountdown
+                  />
+                )}
+              </>
             ) : (
               <CountDownBanner
                 logo={FinixCoin}
