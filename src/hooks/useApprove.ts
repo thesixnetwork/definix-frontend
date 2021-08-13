@@ -26,7 +26,7 @@ export const useApprove = (lpContract: Contract) => {
           jsonConvert(getAbiERC20ByName('approve')),
           jsonConvert([
             herodotusContract._address,
-            '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+            klipProvider.MAX_UINT_256_KLIP,
           ]),
           setShowModal,
         )
@@ -64,7 +64,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
           jsonConvert(getAbiERC20ByName('approve')),
           jsonConvert([
             herodotusContract._address,
-            '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+            klipProvider.MAX_UINT_256_KLIP,
           ]),
           setShowModal,
         )

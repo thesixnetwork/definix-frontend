@@ -135,7 +135,6 @@ const AssetDetail = ({ rebalance }) => {
           ).toLowerCase()}.price`,
           new BigNumber(0),
         )
-        console.log('tokenPrice ', tokenPrice.toFixed(3), 'priceLast24', priceLast24.toFixed(3))
 
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
