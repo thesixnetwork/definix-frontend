@@ -137,7 +137,11 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
   }
   const swapper = new RebalanceSwapper(context)
   tokens.forEach((token) => {
-    pool.safeTransfer(getLowerAddress(token.address), swapper, pool.balances[getLowerAddress(token.address)].multipliedBy(share))
+    pool.safeTransfer(
+      getLowerAddress(token.address),
+      swapper,
+      pool.balances[getLowerAddress(token.address)].multipliedBy(share),
+    )
   })
 
   let poolUSDBalances = swapper.getCurrentPoolUSDBalance(

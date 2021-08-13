@@ -246,8 +246,12 @@ const CardCalculate = ({
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
   // @ts-ignore
-  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance]).div(new BigNumber(10).pow(usdToken.decimals || 18)).toNumber()
-  const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(usdToken.decimals || 18)).toNumber()
+  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance])
+    .div(new BigNumber(10).pow(usdToken.decimals || 18))
+    .toNumber()
+  const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
+    .div(new BigNumber(10).pow(usdToken.decimals || 18))
+    .toNumber()
   const minUserUsdAmount = totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))
   // @ts-ignore
   const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
@@ -394,8 +398,12 @@ const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
   // @ts-ignore
-  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance]).div(new BigNumber(10).pow(usdToken.decimals || 18)).toNumber()
-  const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(usdToken.decimals || 18)).toNumber()
+  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance])
+    .div(new BigNumber(10).pow(usdToken.decimals || 18))
+    .toNumber()
+  const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
+    .div(new BigNumber(10).pow(usdToken.decimals || 18))
+    .toNumber()
   // @ts-ignore
   const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
   const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
@@ -550,7 +558,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   if (!rebalance) return <Redirect to="/rebalancing" />
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
-  const totalUSDAmount = new BigNumber(_.get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(usdToken.decimals || 18)).toNumber()
+  const totalUSDAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
+    .div(new BigNumber(10).pow(usdToken.decimals || 18))
+    .toNumber()
   return (
     <>
       <Helmet>
