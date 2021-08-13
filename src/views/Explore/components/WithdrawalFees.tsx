@@ -1,13 +1,8 @@
 import React from 'react'
 import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
-import { buyBackFee, managementFee, ecosystemFee } from 'config/constants'
 
-interface WithDrawalFeesType {
-  className?: string
-}
-
-const WithDrawalFees: React.FC<WithDrawalFeesType> = ({ className = '' }) => {
+const WithDrawalFees = ({ managementFee, buybackFee, bountyFee, className = '' }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 
@@ -30,12 +25,12 @@ const WithDrawalFees: React.FC<WithDrawalFeesType> = ({ className = '' }) => {
             className="mx-2"
             position="top"
           />
-          <Text>{buyBackFee}%</Text>
+          <Text>{buybackFee}%</Text>
         </div>
         <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="14px">Ecosystem fee</Text>
           <Helper text="Reservation fee for further development of the ecosystem." className="mx-2" position="top" />
-          <Text>{ecosystemFee}%</Text>
+          <Text>{bountyFee}%</Text>
         </div>
       </div>
 

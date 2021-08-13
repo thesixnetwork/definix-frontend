@@ -43,10 +43,10 @@ class DefinixPair extends Address {
     this.symbol1 = pairData.symbol1
     this.decimals0 = pairData.decimals0
     this.decimals1 = pairData.decimals1
-    this.token0 = pairData.token0
-    this.token1 = pairData.token1
-    this.balances[pairData.token0] = new BigNumber(pairData.balanceOf0 * 1)
-    this.balances[pairData.token1] = new BigNumber(pairData.balanceOf1 * 1)
+    this.token0 = pairData.token0.toLowerCase()
+    this.token1 = pairData.token1.toLowerCase()
+    this.balances[pairData.token0.toLowerCase()] = new BigNumber(pairData.balanceOf0 * 1)
+    this.balances[pairData.token1.toLowerCase()] = new BigNumber(pairData.balanceOf1 * 1)
     this.reserve0 = new BigNumber(pairData.reserve0)
     this.reserve1 = new BigNumber(pairData.reserve1)
   }

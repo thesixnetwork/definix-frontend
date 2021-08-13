@@ -19,6 +19,10 @@ const isStable = (tokenData) => {
   return tokenData.symbol === 'KUSDT' || tokenData.symbol === 'BUSD' || tokenData.symbol === 'USDT'
 }
 
+const getLowerAddress = (address) => {
+  return getAddress(address).toLowerCase()
+}
+
 export const simulateInvest = async (tokens = []) => {
   if (tokens.length === 0) return []
   const stableTokenOnly = tokens.find((token) => isStable(token))
@@ -31,32 +35,32 @@ export const simulateInvest = async (tokens = []) => {
   const router = new DefinixRouter(context, library)
 
   await asyncForEach(notStableToken, async (token) => {
-    await factory.loadPair(getAddress(getLpNetwork(token.address, stableTokenOnly.address)))
+    await factory.loadPair(getLowerAddress(getLpNetwork(token.address, stableTokenOnly.address)))
   })
 
   const user = new Address(context)
   await asyncForEach(tokens, async (token) => {
-    user.balances[getAddress(token.address)] = token.balance
+    user.balances[getLowerAddress(token.address)] = token.balance
   })
 
   const swapper = new RebalanceSwapper(context)
 
   await asyncForEach(tokens, async (token) => {
-    user.safeTransfer(getAddress(token.address), swapper, new BigNumber(token.value))
+    user.safeTransfer(getLowerAddress(token.address), swapper, new BigNumber(token.value))
   })
 
   let poolUSDBalances = swapper.getCurrentPoolUSDBalance(
-    getAddress(stableTokenOnly.address),
-    [...notStableToken.map((token) => getAddress(token.address))],
+    getLowerAddress(stableTokenOnly.address),
+    [...notStableToken.map((token) => getLowerAddress(token.address))],
     notStableToken.map(() => router),
   )
-  let poolAmounts = swapper.getCurrentPoolAmount(getAddress(stableTokenOnly.address), [
-    ...notStableToken.map((token) => getAddress(token.address)),
+  let poolAmounts = swapper.getCurrentPoolAmount(getLowerAddress(stableTokenOnly.address), [
+    ...notStableToken.map((token) => getLowerAddress(token.address)),
   ])
 
   swapper.rebalanceFund(
-    getAddress(stableTokenOnly.address),
-    [...notStableToken.map((token) => getAddress(token.address))],
+    getLowerAddress(stableTokenOnly.address),
+    [...notStableToken.map((token) => getLowerAddress(token.address))],
     notStableToken.map(() => router),
     [...notStableToken.map((token) => new BigNumber(token.ratioPoint))],
     new BigNumber(stableTokenOnly.ratioPoint),
@@ -67,12 +71,12 @@ export const simulateInvest = async (tokens = []) => {
   )
 
   poolUSDBalances = swapper.getCurrentPoolUSDBalance(
-    getAddress(stableTokenOnly.address),
-    [...notStableToken.map((token) => getAddress(token.address))],
+    getLowerAddress(stableTokenOnly.address),
+    [...notStableToken.map((token) => getLowerAddress(token.address))],
     notStableToken.map(() => router),
   )
-  poolAmounts = swapper.getCurrentPoolAmount(getAddress(stableTokenOnly.address), [
-    ...notStableToken.map((token) => getAddress(token.address)),
+  poolAmounts = swapper.getCurrentPoolAmount(getLowerAddress(stableTokenOnly.address), [
+    ...notStableToken.map((token) => getLowerAddress(token.address)),
   ])
   return [poolUSDBalances, poolAmounts]
 }
@@ -89,7 +93,7 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
   const router = new DefinixRouter(context, library)
 
   await asyncForEach(notStableToken, async (token) => {
-    await factory.loadPair(getAddress(getLpNetwork(token.address, stableTokenOnly.address)))
+    await factory.loadPair(getLowerAddress(getLpNetwork(token.address, stableTokenOnly.address)))
   })
 
   const pebUnit = new BigNumber(10).pow(18)
@@ -103,21 +107,21 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
 
   const pool = new Address(context)
   tokens.forEach((token) => {
-    pool.balances[getAddress(token.address)] = new BigNumber(token.totalBalance.toJSON())
+    pool.balances[getLowerAddress(token.address)] = new BigNumber(token.totalBalance.toJSON())
   })
 
   if (allAsset) {
     const user = new Address(context)
     tokens.forEach((token) => {
-      const currentAmount = pool.balances[getAddress(token.address)].multipliedBy(share)
-      user.balances[getAddress(token.address)] = currentAmount
+      const currentAmount = pool.balances[getLowerAddress(token.address)].multipliedBy(share)
+      user.balances[getLowerAddress(token.address)] = currentAmount
     })
     if (userInput) {
       notStableToken.forEach((token) => {
         router.swapExactTokensForTokens(
-          user.balances[getAddress(token.address)],
+          user.balances[getLowerAddress(token.address)],
           0,
-          [getAddress(token.address), getAddress(stableTokenOnly.address)],
+          [getLowerAddress(token.address), getLowerAddress(stableTokenOnly.address)],
           pool,
           user,
         )
@@ -125,29 +129,29 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
     }
 
     return [
-      [[], user.balances[getAddress(stableTokenOnly.address)]],
+      [[], user.balances[getLowerAddress(stableTokenOnly.address)]],
       tokens.map((token) => {
-        return pool.balances[getAddress(token.address)].multipliedBy(share)
+        return pool.balances[getLowerAddress(token.address)].multipliedBy(share)
       }),
     ]
   }
   const swapper = new RebalanceSwapper(context)
   tokens.forEach((token) => {
-    pool.safeTransfer(getAddress(token.address), swapper, pool.balances[getAddress(token.address)].multipliedBy(share))
+    pool.safeTransfer(getLowerAddress(token.address), swapper, pool.balances[getLowerAddress(token.address)].multipliedBy(share))
   })
 
   let poolUSDBalances = swapper.getCurrentPoolUSDBalance(
-    getAddress(stableTokenOnly.address),
-    [...notStableToken.map((token) => getAddress(token.address))],
+    getLowerAddress(stableTokenOnly.address),
+    [...notStableToken.map((token) => getLowerAddress(token.address))],
     notStableToken.map(() => router),
   )
-  let poolAmounts = swapper.getCurrentPoolAmount(getAddress(stableTokenOnly.address), [
-    ...notStableToken.map((token) => getAddress(token.address)),
+  let poolAmounts = swapper.getCurrentPoolAmount(getLowerAddress(stableTokenOnly.address), [
+    ...notStableToken.map((token) => getLowerAddress(token.address)),
   ])
 
   swapper.rebalanceFund(
-    getAddress(stableTokenOnly.address),
-    [...notStableToken.map((token) => getAddress(token.address))],
+    getLowerAddress(stableTokenOnly.address),
+    [...notStableToken.map((token) => getLowerAddress(token.address))],
     notStableToken.map(() => router),
     [...notStableToken.map((token) => (token.isSelected ? new BigNumber(token.ratioPoint) : new BigNumber(0)))],
     new BigNumber(stableTokenOnly.isSelected ? stableTokenOnly.ratioPoint : new BigNumber(0)),
@@ -158,12 +162,12 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
   )
 
   poolUSDBalances = swapper.getCurrentPoolUSDBalance(
-    getAddress(stableTokenOnly.address),
-    [...notStableToken.map((token) => getAddress(token.address))],
+    getLowerAddress(stableTokenOnly.address),
+    [...notStableToken.map((token) => getLowerAddress(token.address))],
     notStableToken.map(() => router),
   )
-  poolAmounts = swapper.getCurrentPoolAmount(getAddress(stableTokenOnly.address), [
-    ...notStableToken.map((token) => getAddress(token.address)),
+  poolAmounts = swapper.getCurrentPoolAmount(getLowerAddress(stableTokenOnly.address), [
+    ...notStableToken.map((token) => getLowerAddress(token.address)),
   ])
   return [poolUSDBalances, poolAmounts]
 }
