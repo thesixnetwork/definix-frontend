@@ -3,13 +3,17 @@ import BigNumber from 'bignumber.js'
 import Caver from 'caver-js'
 import DefinixPair from './contracts/DefinixPair.json'
 import IERC20 from './contracts/IERC20.json'
+import getRpcUrl from '../utils/getRpcUrl'
 
-const caver = new Caver('https://kaikas.baobab.klaytn.net:8651/')
+const RPC_URL = getRpcUrl()
+const httpProvider = new Caver.providers.HttpProvider(RPC_URL)
+
+const caver = window.caver || new Caver(httpProvider)
 
 class Utils {
   static getPairData = async (_pairAddress) => {
     // eslint-disable-next-line
-    const pairContract = new caver.contract(DefinixPair.abi, _pairAddress)
+    const pairContract = new caver.klay.Contract(DefinixPair.abi, _pairAddress)
 
     const pairResults = await Promise.all([
       pairContract.methods.token0().call(),
@@ -18,9 +22,9 @@ class Utils {
     ])
 
     // eslint-disable-next-line
-    const erc0 = new caver.contract(IERC20.abi, pairResults[0])
+    const erc0 = new caver.klay.Contract(IERC20.abi, pairResults[0])
     // eslint-disable-next-line
-    const erc1 = new caver.contract(IERC20.abi, pairResults[1])
+    const erc1 = new caver.klay.Contract(IERC20.abi, pairResults[1])
 
     const tokenResults = await Promise.all([
       erc0.methods.symbol().call(),
