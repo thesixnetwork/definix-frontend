@@ -23,7 +23,7 @@ const AssetDetail = ({ rebalance }) => {
   const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
   // const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'RATIO']
   let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
-  
+
   if (tokens.length === 0) tokens = rebalance.ratio
 
   // useEffect(() => {
@@ -112,7 +112,6 @@ const AssetDetail = ({ rebalance }) => {
       </TR>
 
       {tokens.map((r, index) => {
-        
         const thisName = (() => {
           if (r.symbol === 'WKLAY') return 'KLAY'
           if (r.symbol === 'WBNB') return 'BNB'
@@ -122,14 +121,8 @@ const AssetDetail = ({ rebalance }) => {
         const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
         // @ts-ignore
         const totalPriceNotDevDecimap = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)])
-        const bignumValueAmount =(totalPriceNotDevDecimap.toNumber())
-        const decimals = r.decimals
-        const totalPrice = totalPriceNotDevDecimap.div(
-          new BigNumber(10).pow(6),
-        )
-        
-        const testst = (new BigNumber(_.get(rebalance, `currentPoolUsdBalances.${index}`))).toNumber()
-        // console.log()
+        const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
+
         const tokenPrice = (totalPrice || new BigNumber(0)).div(
           _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(_.get(r, 'decimals', 18))),
         )
@@ -142,13 +135,11 @@ const AssetDetail = ({ rebalance }) => {
           ).toLowerCase()}.price`,
           new BigNumber(0),
         )
-        console.log("tokenPrice ",tokenPrice.toFixed(3),"priceLast24",priceLast24.toFixed(3))
+        console.log('tokenPrice ', tokenPrice.toFixed(3), 'priceLast24', priceLast24.toFixed(3))
 
         const change = tokenPrice.minus(priceLast24).div(tokenPrice.times(100))
         const changeNumber = change.toNumber()
 
-        // eslint-disable-next-line
-        debugger
         return (
           <TR>
             <TD>
