@@ -83,16 +83,24 @@ class RebalanceSwapper extends Address {
     let totalUSDAmount = new BigNumber(0)
     const usdAmounts = Array(amounts.length + 1).fill(new BigNumber(0))
     for (let i = 0; i < amounts.length; i++) {
-      if (amounts[i].isEqualTo(0)) {
-        usdAmounts[i] = new BigNumber(0)
+      let tokenBalance = amounts[i]
+      if (tokenBalance.isEqualTo(0)) {
+        tokenBalance = new BigNumber(0)
       } else {
-        const paths = []
-        paths.push(tokens[i])
-        paths.push(usdToken)
+        const pair = this.context.getFactory().pairFor(tokens[i], usdToken)
 
-        const amountOuts = routers[i].getAmountsOut(amounts[i], paths)
-        totalUSDAmount = totalUSDAmount.plus(amountOuts[amountOuts.length - 1])
-        usdAmounts[i] = amountOuts[amountOuts.length - 1]
+        const _reserve0 = pair.reserve0
+        const _reserve1 = pair.reserve1
+
+        const token0 = pair.token0
+
+        const amountInUSD =
+          token0 === tokens[i]
+            ? tokenBalance.multipliedBy(_reserve1).dividedBy(_reserve0)
+            : tokenBalance.multipliedBy(_reserve0).dividedBy(_reserve1)
+
+        totalUSDAmount = totalUSDAmount.plus(amountInUSD)
+        usdAmounts[i] = amountInUSD
       }
     }
     usdAmounts[usdAmounts.length - 1] = usdAmount

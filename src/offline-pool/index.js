@@ -33,6 +33,7 @@ export const simulateInvest = async (tokens = []) => {
   const factory = new DefinixFactory(context)
   const library = new DefinixLibrary(context, factory)
   const router = new DefinixRouter(context, library)
+  context.setFactory(factory)
 
   await asyncForEach(notStableToken, async (token) => {
     await factory.loadPair(getLowerAddress(getLpNetwork(token.address, stableTokenOnly.address)))
@@ -91,6 +92,7 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
   const factory = new DefinixFactory(context)
   const library = new DefinixLibrary(context, factory)
   const router = new DefinixRouter(context, library)
+  context.setFactory(factory)
 
   await asyncForEach(notStableToken, async (token) => {
     await factory.loadPair(getLowerAddress(getLpNetwork(token.address, stableTokenOnly.address)))

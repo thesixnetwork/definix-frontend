@@ -1,4 +1,6 @@
 class Context {
+  factory
+
   rollBackFunctions = []
 
   addRollBackOperation = (_rollBackFunction) => {
@@ -16,6 +18,14 @@ class Context {
 
   commit = () => {
     this.rollBackFunctions = []
+  }
+
+  setFactory(inputFactory) {
+    this.factory = inputFactory
+  }
+
+  getFactory() {
+    return this.factory
   }
 }
 

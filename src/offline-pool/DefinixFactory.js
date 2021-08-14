@@ -20,8 +20,8 @@ class DefinixFactory extends Address {
       const newPair = new DefinixPair(this.context)
       await newPair.initFromPair(_address)
       this.pairMap[_address] = newPair
-      this.pairMap[`${newPair.token0}-${newPair.token1}`] = newPair
-      this.pairMap[`${newPair.token1}-${newPair.token0}`] = newPair
+      this.pairMap[`${newPair.token0.toLowerCase()}-${newPair.token1.toLowerCase()}`] = newPair
+      this.pairMap[`${newPair.token1.toLowerCase()}-${newPair.token0.toLowerCase()}`] = newPair
     })
   }
 
