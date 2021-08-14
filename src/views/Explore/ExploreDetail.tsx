@@ -381,7 +381,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     )}
                     <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
-                      title="FINIX Yield APR"
+                      title="Yield APR"
                       value={numeral(
                         finixPrice
                           .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))

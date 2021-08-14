@@ -105,7 +105,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
                   {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
                 </Text> */}
                 <TwoLineFormat
-                  title="FINIX Yield APR"
+                  title="Yield APR"
                   value={`${numeral(
                     finixPrice
                       .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
@@ -140,7 +140,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             />
             <TwoLineFormat
               className="col-5"
-              title="FINIX Yield APR"
+              title="Yield APR"
               value={`${numeral(
                 finixPrice
                   .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
@@ -230,7 +230,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             {numeral(rebalance.activeUserCountNumber).format('0,0')} INVESTORS
           </Text> */}
           <TwoLineFormat
-            title="FINIX Yield APR"
+            title="Yield APR"
             value={`${numeral(
               finixPrice
                 .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
