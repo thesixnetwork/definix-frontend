@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { AbiItem } from 'web3-utils'
 import * as klipProvider from 'hooks/klipProvider'
-import { getAbiRebalanceByName } from 'hooks/hookHelper'
+import { getAbiRebalanceByName, getAbiERC20ByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import _ from 'lodash'
@@ -77,14 +77,26 @@ const CardInput = ({
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const dispatch = useDispatch()
-  const { account, klaytn } = useWallet()
+  const { account, klaytn, connector } = useWallet()
   const { isDark } = useTheme()
+  const { setShowModal } = React.useContext(KlipModalContext())
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
     setIsApproving(true)
     try {
-      await approveOther(tokenContract, getAddress(rebalance.address), account)
+      if (connector === 'klip') {
+        klipProvider.genQRcodeContactInteract(
+          getAddress(token.address),
+          JSON.stringify(getAbiERC20ByName('approve')),
+          JSON.stringify([getAddress(rebalance.address), klipProvider.MAX_UINT_256_KLIP]),
+          setShowModal,
+        )
+        await klipProvider.checkResponse()
+        setShowModal(false)
+      } else {
+        await approveOther(tokenContract, getAddress(rebalance.address), account)
+      }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
@@ -301,7 +313,10 @@ const CardCalculate = ({
           setShowModal,
           mainCoinValue ? `${expectValue}0000000000000` : '0',
         )
-        const tx = await klipProvider.checkResponse()
+        const tx = {
+          transactionHash: await klipProvider.checkResponse(),
+        }
+        setShowModal(false)
         setTx(tx)
       } else {
         const tx = await rebalanceContract.methods

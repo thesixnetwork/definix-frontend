@@ -135,7 +135,6 @@ const AssetDetail = ({ rebalance }) => {
           ).toLowerCase()}.price`,
           new BigNumber(0),
         )
-        console.log('tokenPrice ', tokenPrice.toFixed(3), 'priceLast24', priceLast24.toFixed(3))
 
         const change = tokenPrice.minus(priceLast24).div(priceLast24).times(100)
         const changeNumber = change.toNumber()
@@ -209,7 +208,7 @@ const FactSheet = ({ rebalance }) => {
         value={rebalance.factsheet.finixBuyBackFee}
         isCopy={rebalance.factsheet.finixBuyBackFee}
       />
-      <FactRow name="Bounty fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} />
+      <FactRow name="Ecosystem fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} />
     </Table>
   )
 }

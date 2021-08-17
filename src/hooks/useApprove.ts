@@ -24,10 +24,7 @@ export const useApprove = (lpContract: Contract) => {
         klipProvider.genQRcodeContactInteract(
           lpContract._address,
           jsonConvert(getAbiERC20ByName('approve')),
-          jsonConvert([
-            herodotusContract._address,
-            '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-          ]),
+          jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
           setShowModal,
         )
         tx = await klipProvider.checkResponse()
@@ -62,10 +59,7 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
         klipProvider.genQRcodeContactInteract(
           lpContract._address,
           jsonConvert(getAbiERC20ByName('approve')),
-          jsonConvert([
-            herodotusContract._address,
-            '115792089237316195423570985008687907853269984665640564039457584007913129639935',
-          ]),
+          jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
           setShowModal,
         )
         tx = await klipProvider.checkResponse()
