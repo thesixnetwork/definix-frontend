@@ -3,9 +3,9 @@ import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React, { useState } from 'react'
-import { useFarmUser, usePriceFinixUsd } from 'state/hooks'
+import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text, useModal } from 'uikit-dev'
+import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { QuoteToken } from 'config/constants/types'
@@ -32,7 +32,6 @@ const MiniLogo = styled.img`
 `
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({
-  bundleRewardLength,
   pendingRewards,
   bundleRewards,
   pid,
@@ -42,7 +41,6 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
-  const finixUsd = usePriceFinixUsd()
   const { onReward } = useHarvest(pid)
   const { earnings } = useFarmUser(pid)
 

@@ -13,6 +13,13 @@ export const getContract = (provider: ProviderType, address: string) => {
   return new caver.klay.Contract(erc20 as unknown as AbiItem, address)
 }
 
+export const getCustomContract = (provider: ProviderType, abi: AbiItem, address: string) => {
+  // @ts-ignore
+  const caver = window.caver || new Caver(process.env.REACT_APP_NODE_3)
+  // const caver = window.caver || new Caver(await getRPCHalper())
+  return new caver.klay.Contract(abi, address)
+}
+
 export const getAllowance = async (
   lpContract: Contract,
   herodotusContract: Contract,

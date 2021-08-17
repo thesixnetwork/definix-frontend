@@ -1,6 +1,5 @@
 import { getDeParamAddress } from 'utils/addressHelpers'
 import deParamABI from 'config/abi/deParam.json'
-import multicall from 'utils/multicall'
 import { getContract } from 'utils/caver'
 
 const UseDeParam = async (key, defaultValue = '') => {

@@ -1,0 +1,360 @@
+import { RebalanceConfig } from './types'
+import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
+
+const rebalances: RebalanceConfig[] = [
+  {
+    title: 'Satoshi and Friends',
+    description:
+      'Tribute tov the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
+    fullDescription:
+      'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
+    icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
+    address: {
+      1001: '0xfaf517E6efB3D799315D5538C34975c51291c2cF',
+      8217: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KWBTC',
+        value: 40,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 20,
+        color: '#393939',
+        address: KETH,
+      },
+      {
+        symbol: 'KXRP',
+        value: 20,
+        color: '#23292e',
+        address: KXRP,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 20,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Satoshi and Friends',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+
+  {
+    title: 'Big Cap One Plus',
+    description:
+      'Leading crypto currencies in the industry. The rebalancing will trigger once the value of the farm is cover the rebalancing fee +1%.',
+    fullDescription:
+      'Consisting of BTC ETH BNB USDT which is a big capital with lower rate of fluctuation than the smaller market cap coins, responsible for the performance running along with the top market cap cryptocurrency. The ratio is distributed equally for rebalancing every time an extra 1% coverage movement occurs.',
+    icon: ['/images/vaults/bigcap_1.png', '/images/vaults/bigcap_2.png'],
+    address: {
+      1001: '0xc292478FaEb31f25744023b03748A4090fcb59dA',
+      8217: '0x35F59B33c6510D87eDd1f8F81d9DB9c2763D61C0',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KWBTC',
+        value: 20,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 20,
+        color: '#393939',
+        address: KETH,
+      },
+      {
+        symbol: 'KBNB',
+        value: 20,
+        color: '#eeb80c',
+        address: KBNB,
+      },
+      {
+        symbol: 'KXRP',
+        value: 20,
+        color: '#23292e',
+        address: KXRP,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 20,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Big Cap One Plus',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x35F59B33c6510D87eDd1f8F81d9DB9c2763D61C0',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+
+  {
+    title: 'Chain Creators',
+    description:
+      'Inspried by blockchain creator’s asset. The rebalancing will trigger every time the value of the farm is cover with the rebalancing fee.',
+    fullDescription:
+      'Consisting of ETH BNB KLAY USDT which is the chain creator for many DeFi. Representing the trend on the DeFi ecosystem and distributing the ratio in the farm equally to make rebalancing trigger once when covering the rebalance fee.',
+    icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
+    address: {
+      1001: '0x47B77DfC1FA6d1D9148558381a13e791ea8a2491',
+      8217: '0x7BBc8e4978585D4067b3Cf74e5C48E5778C31c40',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KETH',
+        value: 25,
+        color: '#393939',
+        address: KETH,
+      },
+      {
+        symbol: 'KBNB',
+        value: 25,
+        color: '#eeb80c',
+        address: KBNB,
+      },
+      {
+        symbol: 'WKLAY',
+        value: 25,
+        color: '#4f463c',
+        address: WKLAY,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 25,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Chain Creators',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x7BBc8e4978585D4067b3Cf74e5C48E5778C31c40',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+
+  {
+    title: 'ALT Party',
+    description:
+      'Designed for Alt coin advocate. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
+    fullDescription:
+      'Consisting of ETH XRP BNB USDT with a higher rate of fluctuation in the top market cap coin category. This farm has allocated the risk to the stablecoin and rebalancing strategy is applied every 1 hour.',
+    icon: ['/images/vaults/altparty_1.png', '/images/vaults/altparty_2.png'],
+    address: {
+      1001: '0x49C493b6B87E90AE06c6f2D9D0c5D88aCE9137A9',
+      8217: '0xdc8794615df8CF117B4c856442DbCb7CdF3116ca',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KETH',
+        value: 30,
+        color: '#393939',
+        address: KETH,
+      },
+      {
+        symbol: 'KXRP',
+        value: 30,
+        color: '#23292e',
+        address: KXRP,
+      },
+      {
+        symbol: 'KBNB',
+        value: 30,
+        color: '#eeb80c',
+        address: KBNB,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 10,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'ALT Party',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0xdc8794615df8CF117B4c856442DbCb7CdF3116ca',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+
+  {
+    title: 'FINIX Volatility',
+    description:
+      'Mixture of different volatility of assets. The rebalancing will trigger every time the value of the farm is cover with the rebalancing fee.',
+    fullDescription:
+      'Consisting of FINIX BTC ETH SIX KLAY XRP USDT which has the volatility characteristic and high fluctuation. To outperform the top market cap group, the distribution ratio is significant to add up some stablecoin in it. The rebalancing will occur every time it reaches a rebalance fee base.',
+    icon: ['/images/vaults/volatility_1.png', '/images/vaults/volatility_2.png'],
+    address: {
+      1001: '0x495788Eb76f90F64eaD6297f5b571C4Cdb07EA2e',
+      8217: '0xa3A506d486F02bB54E495ed92d89905860803910',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 0.75,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'FINIX',
+        value: 16,
+        color: '#FFFFFF',
+        address: FINIX,
+      },
+      {
+        symbol: 'KWBTC',
+        value: 16,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 16,
+        color: '#393939',
+        address: KETH,
+      },
+      {
+        symbol: 'SIX',
+        value: 16,
+        color: '#647BD4',
+        address: SIX,
+      },
+      {
+        symbol: 'WKLAY',
+        value: 16,
+        color: '#4f463c',
+        address: WKLAY,
+      },
+      {
+        symbol: 'KXRP',
+        value: 16,
+        color: '#23292e',
+        address: KXRP,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 4,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'FINIX Volatility',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0xa3A506d486F02bB54E495ed92d89905860803910',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+
+  {
+    title: 'FINIX Force',
+    description:
+      'The mixture of ecosystem token the top assets. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
+    fullDescription:
+      'Consisting of FINIX BTC ETH BNB XRP USDT, the group has a higher fluctuation rate and manages risk by holding stablecoin to increase profitability by rebalancing every hour.',
+    icon: ['/images/vaults/finixforce_1.png', '/images/vaults/finixforce_2.png'],
+    address: {
+      1001: '0xE9B499B7639022E7CB68Ce53B9347292d0eA43e9',
+      8217: '0x8152c76e4D58A06F660a3736246F7906e849419c',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 0.75,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'FINIX',
+        value: 16.6,
+        color: '#FFFFFF',
+        address: FINIX,
+      },
+      {
+        symbol: 'KWBTC',
+        value: 16.6,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 16.6,
+        color: '#393939',
+        address: KETH,
+      },
+      {
+        symbol: 'KBNB',
+        value: 16.6,
+        color: '#eeb80c',
+        address: KBNB,
+      },
+      {
+        symbol: 'KXRP',
+        value: 16.6,
+        color: '#23292e',
+        address: KXRP,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 16.6,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'FINIX Force',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x8152c76e4D58A06F660a3736246F7906e849419c',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+]
+
+export default rebalances

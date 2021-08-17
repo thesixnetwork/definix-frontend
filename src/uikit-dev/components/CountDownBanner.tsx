@@ -1,6 +1,7 @@
 /* eslint-disable react/require-default-props */
 
 import React, { useEffect, useState } from 'react'
+import { useMatchBreakpoints } from 'uikit-dev/hooks'
 import styled from 'styled-components'
 import { Text } from './Text'
 
@@ -10,11 +11,11 @@ const Banner = styled.div`
   padding: 4px 24px;
 
   > div > * {
-    margin: 4px;
+    margin: 8px;
   }
 
   img {
-    width: 40px;
+    width: 32px;
   }
 
   button,
@@ -40,6 +41,7 @@ interface CountDownBannerProps {
   endTime?: any
   button?: any
   disableCountdown?: boolean
+  customText?: any
 }
 
 const CountDownBanner = ({
@@ -52,6 +54,7 @@ const CountDownBanner = ({
   endTime,
   button,
   disableCountdown = false,
+  customText,
 }: CountDownBannerProps) => {
   const currentTime = new Date().getTime()
   const [timer, setTime] = useState({
@@ -60,6 +63,9 @@ const CountDownBanner = ({
     min: 0,
     sec: 0,
   })
+
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobile = !isMd && !isXl && !isLg
 
   const calculateCountdown = (endDate) => {
     let diff = (new Date(endDate).getTime() - new Date().getTime()) / 1000
@@ -124,36 +130,39 @@ const CountDownBanner = ({
 
   return currentTime < endTime || disableCountdown ? (
     <Banner>
-      <MaxWidth className="flex align-center justify-center flex-wrap">
+      <MaxWidth className={`flex align-center justify-center ${isMobile ? 'flex-wrap' : ''}`}>
         {logo && <img src={logo} alt="" />}
+        {customText || (
+          <>
+            <Text color="white" className="mr-2" textAlign="center">
+              {title && <strong className="mr-1">{title}</strong>}
+              {detail && <span className="m-1">{detail}</span>}
+              {highlight && <strong style={{ color: '#ffd157' }}>{highlight}</strong>}
+            </Text>
 
-        <Text color="white" className="mr-2" textAlign="center">
-          {title && <strong className="mr-1">{title}</strong>}
-          {detail && <span className="m-1">{detail}</span>}
-          {highlight && <strong style={{ color: '#ffd157' }}>{highlight}</strong>}
-        </Text>
+            {endTime && (
+              <Text bold color="#ffd157" fontSize="24px" className="mr-2" textAlign="center">
+                {`${addLeadingZeros(timer.days)}:${addLeadingZeros(timer.hours)}:${addLeadingZeros(
+                  timer.min,
+                )}:${addLeadingZeros(timer.sec)}`}
+              </Text>
+            )}
 
-        {endTime && (
-          <Text bold color="#ffd157" fontSize="24px" className="mr-2" textAlign="center">
-            {`${addLeadingZeros(timer.days)}:${addLeadingZeros(timer.hours)}:${addLeadingZeros(
-              timer.min,
-            )}:${addLeadingZeros(timer.sec)}`}
-          </Text>
+            {topTitle && (
+              <Text color="white" textAlign="center" bold>
+                {topTitle}
+              </Text>
+            )}
+
+            {topValue && (
+              <Text color="#ffd157" textAlign="center" bold fontSize="24px" className="mr-2">
+                {topValue}
+              </Text>
+            )}
+
+            {button}
+          </>
         )}
-
-        {topTitle && (
-          <Text color="white" textAlign="center" bold>
-            {topTitle}
-          </Text>
-        )}
-
-        {topValue && (
-          <Text color="#ffd157" textAlign="center" bold fontSize="24px" className="mr-2">
-            {topValue}
-          </Text>
-        )}
-
-        {button}
       </MaxWidth>
     </Banner>
   ) : (

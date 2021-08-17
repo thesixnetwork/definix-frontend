@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { ethers } from 'ethers'
-import { getHerodotusAddress, getDeParamAddress } from 'utils/addressHelpers'
+import { getHerodotusAddress } from 'utils/addressHelpers'
 import UseDeParam from 'hooks/useDeParam'
 import Caver from 'caver-js'
 
@@ -22,22 +22,15 @@ export const approve = async (lpContract, herodotusContract, account) => {
         gas: 300000,
         data: lpContract.methods.approve(herodotusContract.options.address, ethers.constants.MaxUint256).encodeABI(),
       })
-      .then(function (userSignTx) {
-        // console.log('userSignTx tx = ', userSignTx)
+      .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        // console.log('userSigned tx = ', userSigned)
         userSigned.feePayer = feePayerAddress
-        // console.log('userSigned After add feePayer tx = ', userSigned)
 
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-          // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-          return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (tx) => {
-            console.log('approve tx = ', tx)
-          })
+        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
+          return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw)
         })
       })
-      .catch(function (tx) {
-        console.log('approve error tx = ', tx)
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -45,6 +38,10 @@ export const approve = async (lpContract, herodotusContract, account) => {
   return lpContract.methods
     .approve(herodotusContract.options.address, ethers.constants.MaxUint256)
     .send({ from: account, gas: 300000 })
+}
+
+export const approveOther = async (lpContract, spender, account) => {
+  return lpContract.methods.approve(spender, ethers.constants.MaxUint256).send({ from: account, gas: 300000 })
 }
 
 export const stake = async (herodotusContract, pid, amount, account) => {
@@ -62,23 +59,17 @@ export const stake = async (herodotusContract, pid, amount, account) => {
             .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
             .encodeABI(),
         })
-        .then(function (userSignTx) {
-          // console.log('userSignTx tx = ', userSignTx)
+        .then((userSignTx) => {
           const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-          // console.log('userSigned tx = ', userSigned)
           userSigned.feePayer = feePayerAddress
-          // console.log('userSigned After add feePayer tx = ', userSigned)
 
-          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-            // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
             return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-              console.log('stake tx = ', sendTx)
               return sendTx.transactionHash
             })
           })
         })
-        .catch(function (tx) {
-          console.log('stake error tx = ', tx)
+        .catch((tx) => {
           return tx.transactionHash
         })
     }
@@ -86,10 +77,10 @@ export const stake = async (herodotusContract, pid, amount, account) => {
     return herodotusContract.methods
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 300000 })
-      .then(function (tx) {
+      .then((tx) => {
         return tx.transactionHash
       })
-      .catch(function (tx) {
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -105,25 +96,19 @@ export const stake = async (herodotusContract, pid, amount, account) => {
           .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .encodeABI(),
       })
-      .then(function (userSignTx) {
-        // console.log('userSignTx tx = ', userSignTx)
+      .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        // console.log('userSigned tx = ', userSigned)
         userSigned.feePayer = feePayerAddress
-        // console.log('userSigned After add feePayer tx = ', userSigned)
 
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-          // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
           return caverFeeDelegate.rpc.klay
             .sendRawTransaction(feePayerSigningResult.raw)
             .on('transactionHash', (sendTx) => {
-              console.log('stake sendTx tx = ', sendTx)
               return sendTx.transactionHash
             })
         })
       })
-      .catch(function (tx) {
-        console.log('stake error tx = ', tx)
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -131,10 +116,10 @@ export const stake = async (herodotusContract, pid, amount, account) => {
   return herodotusContract.methods
     .deposit(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 300000 })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
 }
@@ -143,10 +128,10 @@ export const sousStake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .deposit(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 300000 })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
   // .on('transactionHash', (tx) => {
@@ -158,10 +143,10 @@ export const sousStakeBnb = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .deposit()
     .send({ from: account, gas: 300000, value: new BigNumber(amount).times(new BigNumber(10).pow(18)).toString() })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
   // .on('transactionHash', (tx) => {
@@ -184,23 +169,17 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
             .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
             .encodeABI(),
         })
-        .then(function (userSignTx) {
-          // console.log('userSignTx tx = ', userSignTx)
+        .then((userSignTx) => {
           const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-          // console.log('userSigned tx = ', userSigned)
           userSigned.feePayer = feePayerAddress
-          // console.log('userSigned After add feePayer tx = ', userSigned)
 
-          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-            // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
             return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-              console.log('unstake tx = ', sendTx)
               return sendTx.transactionHash
             })
           })
         })
-        .catch(function (tx) {
-          console.log('unstake error tx = ', tx)
+        .catch((tx) => {
           return tx.transactionHash
         })
     }
@@ -208,10 +187,10 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
     return herodotusContract.methods
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 300000 })
-      .then(function (tx) {
+      .then((tx) => {
         return tx.transactionHash
       })
-      .catch(function (tx) {
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -227,25 +206,19 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
           .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
           .encodeABI(),
       })
-      .then(function (userSignTx) {
-        // console.log('userSignTx tx = ', userSignTx)
+      .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        // console.log('userSigned tx = ', userSigned)
         userSigned.feePayer = feePayerAddress
-        // console.log('userSigned After add feePayer tx = ', userSigned)
 
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-          // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
           return caverFeeDelegate.rpc.klay
             .sendRawTransaction(feePayerSigningResult.raw)
             .on('transactionHash', (sendTx) => {
-              console.log('unstake tx = ', sendTx)
               return sendTx.transactionHash
             })
         })
       })
-      .catch(function (tx) {
-        console.log('unstake error tx = ', tx)
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -253,10 +226,10 @@ export const unstake = async (herodotusContract, pid, amount, account) => {
   return herodotusContract.methods
     .withdraw(pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 300000 })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
 }
@@ -267,10 +240,10 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
     return sousChefContract.methods
       .emergencyWithdraw()
       .send({ from: account })
-      .then(function (tx) {
+      .then((tx) => {
         return tx.transactionHash
       })
-      .catch(function (tx) {
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -278,10 +251,10 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
     return sousChefContract.methods
       .emergencyWithdraw()
       .send({ from: account })
-      .then(function (tx) {
+      .then((tx) => {
         return tx.transactionHash
       })
-      .catch(function (tx) {
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -289,10 +262,10 @@ export const sousUnstake = async (sousChefContract, amount, account) => {
   return sousChefContract.methods
     .withdraw(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
     .send({ from: account, gas: 300000 })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
 }
@@ -301,10 +274,10 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
   return sousChefContract.methods
     .emergencyWithdraw()
     .send({ from: account })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
 }
@@ -322,23 +295,17 @@ export const harvest = async (herodotusContract, pid, account) => {
           gas: 300000,
           data: herodotusContract.methods.leaveStaking('0').encodeABI(),
         })
-        .then(function (userSignTx) {
-          // console.log('userSignTx tx = ', userSignTx)
+        .then((userSignTx) => {
           const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-          // console.log('userSigned tx = ', userSigned)
           userSigned.feePayer = feePayerAddress
-          // console.log('userSigned After add feePayer tx = ', userSigned)
 
-          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-            // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+          return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
             return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).on('transactionHash', (sendTx) => {
-              console.log('harvest tx = ', sendTx)
               return sendTx.transactionHash
             })
           })
         })
-        .catch(function (tx) {
-          console.log('harvest error tx = ', tx)
+        .catch((tx) => {
           return tx.transactionHash
         })
     }
@@ -346,10 +313,10 @@ export const harvest = async (herodotusContract, pid, account) => {
     return herodotusContract.methods
       .leaveStaking('0')
       .send({ from: account, gas: 300000 })
-      .then(function (tx) {
+      .then((tx) => {
         return tx.transactionHash
       })
-      .catch(function (tx) {
+      .catch((tx) => {
         return tx.transactionHash
       })
       .on('transactionHash', (tx) => {
@@ -366,25 +333,19 @@ export const harvest = async (herodotusContract, pid, account) => {
         gas: 300000,
         data: herodotusContract.methods.deposit(pid, '0').encodeABI(),
       })
-      .then(function (userSignTx) {
-        // console.log('userSignTx tx = ', userSignTx)
+      .then((userSignTx) => {
         const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
-        // console.log('userSigned tx = ', userSigned)
         userSigned.feePayer = feePayerAddress
-        // console.log('userSigned After add feePayer tx = ', userSigned)
 
-        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-          // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+        return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then((feePayerSigningResult) => {
           return caverFeeDelegate.rpc.klay
             .sendRawTransaction(feePayerSigningResult.raw)
             .on('transactionHash', (sendTx) => {
-              console.log('harvest tx = ', sendTx)
               return sendTx.transactionHash
             })
         })
       })
-      .catch(function (tx) {
-        console.log('harvest error tx = ', tx)
+      .catch((tx) => {
         return tx.transactionHash
       })
   }
@@ -392,12 +353,10 @@ export const harvest = async (herodotusContract, pid, account) => {
   return herodotusContract.methods
     .deposit(pid, '0')
     .send({ from: account, gas: 400000 })
-    .then(function (tx) {
-      console.log('harvest tx = ', tx)
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
-      console.log('harvest error tx = ', tx)
+    .catch((tx) => {
       return tx.transactionHash
     })
 }
@@ -406,10 +365,10 @@ export const soushHarvest = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit('0')
     .send({ from: account, gas: 300000 })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
   // .on('transactionHash', (tx) => {
@@ -421,10 +380,10 @@ export const soushHarvestBnb = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit()
     .send({ from: account, gas: 300000, value: new BigNumber(0) })
-    .then(function (tx) {
+    .then((tx) => {
       return tx.transactionHash
     })
-    .catch(function (tx) {
+    .catch((tx) => {
       return tx.transactionHash
     })
   // .on('transactionHash', (tx) => {

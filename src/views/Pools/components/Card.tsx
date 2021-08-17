@@ -7,7 +7,6 @@ const Card = styled.div<{ isActive?: boolean; isFinished?: boolean }>`
   color: ${({ isFinished, theme }) => theme.colors[isFinished ? 'textDisabled' : 'text']};
   position: relative;
   margin-bottom: 24px;
-  padding-bottom: 4px;
 
   &:last-child {
     margin-bottom: 0;

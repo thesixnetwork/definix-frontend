@@ -79,6 +79,7 @@ export const genQRcodeContactInteract = (
   abi: string,
   input: string,
   setShowModal: (bool: boolean) => void,
+  value?: string,
 ) => {
   initData()
   const mockData = {
@@ -88,7 +89,7 @@ export const genQRcodeContactInteract = (
     type: 'execute_contract',
     transaction: {
       to: contractAddress,
-      value: '0',
+      value: value || '0',
       abi,
       params: input,
     },
@@ -128,7 +129,7 @@ const openDeeplink = async (url: string) => {
   const checkRedirect = window.open(url, '_blank')
   if (checkRedirect === null) {
     window.location.href = `kakaotalk://klipwallet/open?url=${url}`
-    setTimeout(function () {
+    setTimeout(() => {
       if (document.hasFocus()) {
         window.location.replace(
           'https://apps.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947',

@@ -27,7 +27,7 @@ interface FarmCardActionsProps {
   addLiquidityUrl?: string
 }
 
-const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account, addLiquidityUrl }) => {
+const CardActions: React.FC<FarmCardActionsProps> = ({ farm, klaytn, account }) => {
   const TranslateString = useI18n()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)

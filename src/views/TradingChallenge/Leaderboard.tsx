@@ -23,7 +23,6 @@ const Leaderboard = () => {
   const [loadingAPI, setLoadingAPI] = React.useState(true)
   const [fetchLeaders, setFetchLeaders] = React.useState([])
   const [fetchViolate, setFetchViolate] = React.useState([])
-  const [value, setValue] = React.useState([])
 
   useEffect(() => {
     async function fetchLeaderBoard() {
@@ -33,7 +32,6 @@ const Leaderboard = () => {
       if (response.data.success) {
         setLoadingAPI(true)
         const arrData = _.get(response.data, 'data')
-        const balance = _.get(response.data, 'data.0.balance')
         const fetchedData = []
         arrData.map((data, idx) =>
           fetchedData.push({
@@ -49,7 +47,6 @@ const Leaderboard = () => {
             rank: parseInt(`${idx + 1}`),
           }),
         )
-        setValue(balance.toFixed(2))
         setFetchLeaders(fetchedData)
       } else {
         setLoadingAPI(true)

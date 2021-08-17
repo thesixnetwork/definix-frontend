@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { Button, Card, Heading, Text } from 'uikit-dev'
 import bgairdrop from 'uikit-dev/images/Airdrop/2nd-airdrop.jpg'
 import definixLogo from 'uikit-dev/images/Definix-advance-crypto-assets.png'
-import { Route, useRouteMatch } from 'react-router-dom'
 
 const StyledBanner = styled(Card)`
   width: 100%;
@@ -51,14 +50,8 @@ const StyledBanner = styled(Card)`
 const StyleAirDrop = {
   fontSize: 12,
 }
-const StyleKlaytnBlockchain = {
-  color: '#895E38',
-  fontSize: 21,
-}
 
-const CardAirdropKlay = ({ showBtn = false, className = '' }) => {
-  const { path } = useRouteMatch()
-
+const CardAirdropKlay = ({ className = '' }) => {
   return (
     <StyledBanner className={className}>
       <Heading className="mb-2" color="#3F4042">
@@ -73,7 +66,6 @@ const CardAirdropKlay = ({ showBtn = false, className = '' }) => {
       <Heading fontSize="18px" color="#3F4042" className="mb-2">
         30 KLAY
       </Heading>
-      {/* {showBtn && ( */}
       {/* <Route path={`${path}/airdropklay`}> */}
       <Button as="a" href="/airdropklay" size="sm" variant="primary" className="btn-secondary-disable mt-3">
         Get Airdrop

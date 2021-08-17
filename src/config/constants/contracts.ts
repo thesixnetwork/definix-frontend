@@ -1,3 +1,5 @@
+import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork } from './tokens'
+
 export default {
   bscFinix: {
     1001: process.env.REACT_APP_BSC_FINIX_ADDRESS_TESTNET,
@@ -15,114 +17,33 @@ export default {
     1001: process.env.REACT_APP_HERODOTUS_TESTNET,
     8217: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
-  wklay: {
-    1001: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
-  },
-  kusdt: {
-    1001: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
-  },
-  kdai: {
-    1001: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
-  },
-  ksp: {
-    1001: process.env.REACT_APP_KSP_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_KSP_ADDRESS_MAINNET,
-  },
-  keth: {
-    1001: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
-  },
-  kwbtc: {
-    1001: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
-  },
-  kxrp: {
-    1001: process.env.REACT_APP_KXRP_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_KXRP_ADDRESS_MAINNET,
-  },
-  kbnb: {
-    1001: process.env.REACT_APP_KBNB_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_KBNB_ADDRESS_MAINNET,
-  },
-  six: {
-    1001: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-  },
-  finix: {
-    1001: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
-    8217: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
-  },
-  finixSixLP: {
-    1001: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
-    8217: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
-  },
-  finixKusdtLP: {
-    1001: process.env.REACT_APP_FINIX_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_FINIX_KUSDT_LP_MAINNET,
-  },
-  finixKlayLP: {
-    1001: process.env.REACT_APP_FINIX_KLAY_LP_TESTNET,
-    8217: process.env.REACT_APP_FINIX_KLAY_LP_MAINNET,
-  },
-  finixKspLP: {
-    1001: process.env.REACT_APP_FINIX_KSP_LP_TESTNET,
-    8217: process.env.REACT_APP_FINIX_KSP_LP_MAINNET,
-  },
-  sixKusdtLP: {
-    1001: process.env.REACT_APP_SIX_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_SIX_KUSDT_LP_MAINNET,
-  },
-  sixKlayLP: {
-    1001: process.env.REACT_APP_SIX_KLAY_LP_TESTNET,
-    8217: process.env.REACT_APP_SIX_KLAY_LP_MAINNET,
-  },
-  klayKethLP: {
-    1001: process.env.REACT_APP_KLAY_KETH_LP_TESTNET,
-    8217: process.env.REACT_APP_KLAY_KETH_LP_MAINNET,
-  },
-  klayKbtcLP: {
-    1001: process.env.REACT_APP_KLAY_KWBTC_LP_TESTNET,
-    8217: process.env.REACT_APP_KLAY_KWBTC_LP_MAINNET,
-  },
-  klayKxrpLP: {
-    1001: process.env.REACT_APP_KLAY_KXRP_LP_TESTNET,
-    8217: process.env.REACT_APP_KLAY_KXRP_LP_MAINNET,
-  },
-  kethKusdtLP: {
-    1001: process.env.REACT_APP_KETH_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KETH_KUSDT_LP_MAINNET,
-  },
-  kbtcKusdtLP: {
-    1001: process.env.REACT_APP_KWBTC_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KWBTC_KUSDT_LP_MAINNET,
-  },
-  kxrpKusdtLP: {
-    1001: process.env.REACT_APP_KXRP_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KXRP_KUSDT_LP_MAINNET,
-  },
-  klayKusdtLP: {
-    1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KLAY_KUSDT_LP_MAINNET,
-  },
-  kdaiKusdtLP: {
-    1001: process.env.REACT_APP_KDAI_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KDAI_KUSDT_LP_MAINNET,
-  },
-  kbnbKusdtLP: {
-    1001: process.env.REACT_APP_KBNB_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KBNB_KUSDT_LP_MAINNET,
-  },
-  kbnbFinixLP: {
-    1001: process.env.REACT_APP_KBNB_FINIX_LP_TESTNET,
-    8217: process.env.REACT_APP_KBNB_FINIX_LP_MAINNET,
-  },
-  definixKlayKusdtLP: {
-    1001: process.env.REACT_APP_KLAY_KUSDT_LP_TESTNET,
-    8217: process.env.REACT_APP_KLAY_KUSDT_LP_MAINNET,
-  },
+  wklay: WKLAY,
+  kusdt: KUSDT,
+  kdai: KDAI,
+  ksp: KSP,
+  keth: KETH,
+  kwbtc: KWBTC,
+  kxrp: KXRP,
+  kbnb: KBNB,
+  six: SIX,
+  finix: FINIX,
+  finixSixLP: getLpNetwork(FINIX, SIX),
+  finixKusdtLP: getLpNetwork(FINIX, KUSDT),
+  finixKlayLP: getLpNetwork(FINIX, WKLAY),
+  finixKspLP: getLpNetwork(FINIX, KSP),
+  sixKusdtLP: getLpNetwork(SIX, KUSDT),
+  sixKlayLP: getLpNetwork(SIX, WKLAY),
+  klayKethLP: getLpNetwork(WKLAY, KETH),
+  klayKbtcLP: getLpNetwork(WKLAY, KWBTC),
+  klayKxrpLP: getLpNetwork(WKLAY, KXRP),
+  kethKusdtLP: getLpNetwork(KETH, KUSDT),
+  kbtcKusdtLP: getLpNetwork(KWBTC, KUSDT),
+  kxrpKusdtLP: getLpNetwork(KXRP, KUSDT),
+  klayKusdtLP: getLpNetwork(WKLAY, KUSDT),
+  kdaiKusdtLP: getLpNetwork(KDAI, KUSDT),
+  kbnbKusdtLP: getLpNetwork(KBNB, KUSDT),
+  kbnbFinixLP: getLpNetwork(KBNB, FINIX),
+  definixKlayKusdtLP: getLpNetwork(WKLAY, KUSDT),
   tradingCompetRegis: {
     1001: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,
     8217: process.env.REACT_APP_TRADING_COMPET_REGIS_MAINNET,

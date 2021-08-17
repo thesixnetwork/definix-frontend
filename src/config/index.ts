@@ -1,5 +1,10 @@
 import BigNumber from 'bignumber.js/bignumber'
 
+export const ChainId = {
+  MAINNET: parseInt(process.env.REACT_APP_MAINNET_ID || '0') || 0,
+  TESTNET: parseInt(process.env.REACT_APP_TESTNET_ID || '0') || 0,
+}
+
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
   DECIMAL_PLACES: 80,
