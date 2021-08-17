@@ -124,7 +124,7 @@ const CardInput = ({
 
         <TwoLineFormat
           title="Share price"
-          subTitle="(Since Inception)"
+          subTitle="(Since inception)"
           titleColor={isDark ? '#ADB4C2' : ''}
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
           percent={`${
