@@ -82,7 +82,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
               />
               <TwoLineFormat
                 title="Share price"
-                subTitle="(24 hrs% chg)"
+                subTitle="(Since Inception)"
                 value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
                 percent={`${
                   rebalance.sharedPricePercentDiff >= 0
@@ -136,7 +136,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
             <TwoLineFormat
               className="col-5"
               title="Total asset value"
-              value={`${numeral(rebalance.totalAssetValue || 0).format('0,0.00')}`}
+              value={`$${numeral(rebalance.totalAssetValue || 0).format('0,0.00')}`}
             />
             <TwoLineFormat
               className="col-5"
@@ -157,7 +157,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         <div className="col-4 pl-4">
           <TwoLineFormat
             title="Share price"
-            subTitle="(24 hrs% chg)"
+            subTitle="(Since Inception)"
             value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
             percent={`${
               rebalance.sharedPricePercentDiff >= 0
@@ -207,7 +207,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({ isHorizontal = false, rebalanc
         />
         <TwoLineFormat
           title="Share price"
-          subTitle="(24 hrs% chg)"
+          subTitle="(Since Inception)"
           value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
           percent={`${
             rebalance.sharedPricePercentDiff >= 0

@@ -157,8 +157,8 @@ export const fetchRebalances = () => async (dispatch) => {
           return totalTokenPrice
         }),
       )
-      const oldSharedPrice = sumOldTokenPrice.div(last24TotalSupply)
-      const sharedPricePercentDiff = sharedPrice.minus(oldSharedPrice).div(oldSharedPrice).times(100)
+      // const oldSharedPrice = sumOldTokenPrice.div(last24TotalSupply)
+      const sharedPricePercentDiff = sharedPrice.minus(1).times(100)
 
       const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
 
