@@ -169,6 +169,9 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
     legend: {
       display: false,
     },
+    tooltips: {
+      enabled: false,
+    },
     layout: {
       padding: {
         left: -10,
