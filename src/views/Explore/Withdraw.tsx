@@ -242,12 +242,12 @@ const CardInput = ({
               control={<Radio color="primary" size="small" />}
               label={<Text>All token</Text>}
             />
-            {/* <FormControlLabel
+            <FormControlLabel
               className="mr-0"
               value="multi"
               control={<Radio color="primary" size="small" />}
               label={<Text>Selected token</Text>}
-            /> */}
+            />
           </RadioGroup>
         </div>
 
