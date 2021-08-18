@@ -6,6 +6,7 @@ interface TwoLineFormatType {
   className?: string
   title: string
   subTitle?: string
+  subTitleFontSize?: string
   titleColor?: string
   value: string
   percent?: string
@@ -22,6 +23,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   className = '',
   title,
   subTitle,
+  subTitleFontSize,
   titleColor,
   value,
   percent,
@@ -41,7 +43,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
         </Text>
 
         {subTitle && (
-          <Text fontSize={large ? '14px' : '12px'} className="ml-1">
+          <Text fontSize={subTitleFontSize || (large ? '14px' : '12px')} className="ml-1">
             {subTitle}
           </Text>
         )}

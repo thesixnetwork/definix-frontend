@@ -235,6 +235,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         className="flex-shrink"
                         title="Share price"
                         subTitle="(Since inception)"
+                        subTitleFontSize="11px"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                         percent={`${
                           rebalance.sharedPricePercentDiff >= 0
@@ -261,6 +262,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         className={isMobile ? 'col-6 my-2' : 'col-3'}
                         title="Share price"
                         subTitle="(Since inception)"
+                        subTitleFontSize="11px"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                         percent={`${
                           rebalance.sharedPricePercentDiff >= 0

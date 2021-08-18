@@ -110,6 +110,7 @@ const Explore: React.FC = () => {
                         key={rebalance.title}
                         isHorizontal={listView}
                         rebalance={rebalance}
+                        balance={rebalanceBalances[getAddress(rebalance.address)] || new BigNumber(0)}
                         onClickViewDetail={() => {
                           setSelectedRebalance(rebalance)
                         }}
