@@ -129,8 +129,29 @@ const Coins = styled.div`
   }
 `
 
+const Rebalancing = styled.div`
+  padding: 16px;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  .asset {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    img {
+      width: 14px;
+      height: 14px;
+      margin: 1px;
+    }
+  }
+`
+
 const Summary = styled.div`
-  padding: 12px;
+  padding: 12px 0;
   width: 60%;
   display: flex;
   flex-wrap: wrap;
@@ -665,6 +686,64 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
       <List>
         <>
+          <FarmsAndPools>
+            <Rebalancing>
+              <div>
+                <img src="/images/vaults/altparty_1.png" alt="" />
+                <div className="asset">
+                  <img src="/images/coins/KETH.png" alt="" />
+                  <img src="/images/coins/KXRP.png" alt="" />
+                  <img src="/images/coins/KBNB.png" alt="" />
+                  <img src="/images/coins/KUSDT.png" alt="" />
+                </div>
+              </div>
+
+              <Text bold textTransform="uppercase">
+                ALT PARTY
+              </Text>
+            </Rebalancing>
+            <Summary className="flex">
+              <div className="col-4">
+                <Text fontSize="12px" color="textSubtle">
+                  APR
+                </Text>
+                <Text bold color="success">
+                  415%
+                </Text>
+              </div>
+              <div className="col-8">
+                <Text fontSize="12px" color="textSubtle">
+                  Current Investment
+                </Text>
+                <div className="flex align-baseline flex-wrap">
+                  <Text bold>$2,079.09</Text>
+                  <Text className="ml-1" fontSize="11px">
+                    0 Shares
+                  </Text>
+                </div>
+              </div>
+              <div className="col-12">
+                <div className="flex align-baseline">
+                  <Text fontSize="12px" color="textSubtle">
+                    Share price
+                  </Text>
+                  <Text className="ml-1" fontSize="11px" color="textSubtle">
+                    (Since inception)
+                  </Text>
+                </div>
+                <div className="flex align-baseline">
+                  <Text bold>300.75</Text>
+                  <Text className="ml-1" fontSize="11px" bold color="success">
+                    +00%
+                  </Text>
+                </div>
+              </div>
+            </Summary>
+            <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+              <ChevronRightIcon color="textDisabled" width="28" />
+            </IconButton>
+          </FarmsAndPools>
+
           {stackedOnlyPools.map((d) => {
             const imgs = d.tokenName.split(' ')[0].split('-')
             return (
