@@ -108,7 +108,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [dispatch, account, rebalance])
 
- 
   const fetchGraphData = useCallback(async () => {
     if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
       if (rebalance && rebalance.address) {
@@ -186,8 +185,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             })
           })
           graphTokenData.rebalance = rebalanceData
-          
-          setReturnPercent(rebalanceData.values[rebalanceData.values.length-1] - rebalanceData.values[0])
+
+          setReturnPercent(rebalanceData.values[rebalanceData.values.length - 1] - rebalanceData.values[0])
           setGraphData({ labels: label, graph: graphTokenData })
           setPerformanceData(performanceResult)
           setIsLoading(false)
@@ -199,7 +198,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe])
   useEffect(() => {
     fetchGraphData()
-    
   }, [fetchGraphData])
 
   if (!rebalance) return <Redirect to="/rebalancing" />
