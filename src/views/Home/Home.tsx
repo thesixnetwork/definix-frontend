@@ -177,7 +177,7 @@ const Home: React.FC = () => {
                       setIsViewTurial(false)
                     }}
                   >
-                    My farms & pools
+                    My investments
                   </Heading>
                 )}
 
