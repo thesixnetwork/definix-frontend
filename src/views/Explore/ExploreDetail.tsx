@@ -79,6 +79,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [timeframe, setTimeframe] = useState('1D')
   const [returnPercent, setReturnPercent] = useState(0)
   const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
+  const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
   const { isXl, isLg } = useMatchBreakpoints()
   const finixPrice = usePriceFinixUsd()
@@ -114,17 +115,18 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
-        const performanceAPI = process.env.REACT_APP_API_REBALANCING_PERFORMANCE
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
+        const maxDrawDownAPI = process.env.REACT_APP_DEFINIX_MAX_DRAWDOWN_API
         try {
-          const performanceResp = await axios.get(
-            `${performanceAPI}?address=${getAddress(rebalance.address)}&period=${timeframe}`,
+          const maxDrawDownResp = await axios.get(
+            `${maxDrawDownAPI}?pool=${getAddress(rebalance.address)}`,
           )
           const fundGraphResp = await axios.get(
             `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
           )
-          const performanceResult = _.get(performanceResp, 'data.result', {})
           const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+          const currentDrawdown = _.get(maxDrawDownResp, 'data.result.current_drawdown', [])
+          
           const label = []
           const rebalanceData = {
             name: 'rebalance',
@@ -243,10 +245,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               .squareRoot()
             return avg.dividedBy(std)
           }
+          setMaxDrawDown(currentDrawdown)
           setSharpRatio(getSharpeRatio(sharePricesFromGraph, sharePricesFromGraph.length))
           setReturnPercent(rebalanceData.values[rebalanceData.values.length - 1] - rebalanceData.values[0])
           setGraphData({ labels: label, graph: graphTokenData })
-          setPerformanceData(performanceResult)
           setIsLoading(false)
         } catch (error) {
           setIsLoading(false)
@@ -394,7 +396,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   <TwoLineFormat
                     className="px-4 py-3 col-4"
                     title="Max Drawdown"
-                    value={`${Math.abs(numeral(performanceData.maxDrawDown).format('0,0.00'))}%`}
+                    value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
                     hint="The differentiation between the historical peak and low point through the portfolio."
                   />
                 </div>
