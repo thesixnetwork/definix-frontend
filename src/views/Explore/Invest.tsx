@@ -265,7 +265,7 @@ const CardCalculate = ({
   const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
     .div(new BigNumber(10).pow(usdToken.decimals || 18))
     .toNumber()
-  const minUserUsdAmount = totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))
+  // const minUserUsdAmount = totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))
   // @ts-ignore
   const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
   const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
@@ -300,7 +300,7 @@ const CardCalculate = ({
       const usdTokenAmount = new BigNumber((currentInput[usdToken.address] || '0') as string)
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
-      const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
+      // const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
       if (connector === 'klip') {
         const valueNumber = (Number(mainCoinValue) / 10 ** 18).toString()
         const valueklip = Number.parseFloat(valueNumber).toFixed(6)

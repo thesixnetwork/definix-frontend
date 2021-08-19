@@ -15,6 +15,8 @@ const initialState: WalletState = {
   decimals: {},
   userDeadline: 20,
   userSlippage: 80,
+  isFetched: false,
+  isRebalanceFetched: false,
 }
 
 export const walletSlice = createSlice({
@@ -28,6 +30,7 @@ export const walletSlice = createSlice({
     setBalance: (state, action) => {
       const { account, data } = action.payload
       state.balances = { ...state.balances, [account]: { ..._.get(state, `balances.${account}`, {}), ...data } }
+      state.isFetched = true
     },
     setUserRabalanceBalance: (state, action) => {
       const { account, data } = action.payload
@@ -35,6 +38,7 @@ export const walletSlice = createSlice({
         ...state.userRebalanceBalances,
         [account]: { ..._.get(state, 'userRebalanceBalances', {}), ...data },
       }
+      state.isRebalanceFetched = true
     },
     setAllowance: (state, action) => {
       const { account, data, spender } = action.payload

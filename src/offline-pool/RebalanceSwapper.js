@@ -78,7 +78,7 @@ class RebalanceSwapper extends Address {
     usdAmount,
     usdToken,
     tokens,
-    routers, // returns (uint256[] memory usdAmounts, uint256 totalUSDAmount)
+    // routers, // returns (uint256[] memory usdAmounts, uint256 totalUSDAmount)
   ) => {
     let totalUSDAmount = new BigNumber(0)
     const usdAmounts = Array(amounts.length + 1).fill(new BigNumber(0))
@@ -92,7 +92,7 @@ class RebalanceSwapper extends Address {
         const _reserve0 = pair.reserve0
         const _reserve1 = pair.reserve1
 
-        const token0 = pair.token0
+        const { token0 } = pair
 
         const amountInUSD =
           token0 === tokens[i]

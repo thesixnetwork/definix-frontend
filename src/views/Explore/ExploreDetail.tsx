@@ -1,7 +1,6 @@
 import React, { useRef, useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
-import rebalanceABI from 'config/abi/rebalance.json'
 import _ from 'lodash'
 import moment from 'moment'
 import { Helmet } from 'react-helmet'
@@ -13,8 +12,6 @@ import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-de
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
 import { getAddress } from 'utils/addressHelpers'
-import erc20 from 'config/abi/erc20.json'
-import multicall from 'utils/multicall'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { usePriceFinixUsd } from '../../state/hooks'
 import CardHeading from './components/CardHeading'
@@ -78,7 +75,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
   const [returnPercent, setReturnPercent] = useState(0)
-  const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
+  // const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
   const { isXl, isLg } = useMatchBreakpoints()
@@ -216,14 +213,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           // getSharpeRatio()
           // eslint-disable-next-line
           // sharePricesFromGraph
-          const dataPoint = fundGraphResult.map((data) => data.values)
-          console.log('dataPoint', dataPoint)
-          const allCurrentTokens = _.compact([
-            ...((rebalance || {}).tokens || []),
-            ...((rebalance || {}).usdToken || []),
-          ])
-          console.log('allTokens', allCurrentTokens)
-          console.log('sharePricesFromGraph', sharePricesFromGraph)
+          // const dataPoint = fundGraphResult.map((data) => data.values)
+          // const allCurrentTokens = _.compact([
+          //   ...((rebalance || {}).tokens || []),
+          //   ...((rebalance || {}).usdToken || []),
+          // ])
           const getSharpeRatio = (values, backPoint) => {
             const returns = values.map((value, index) =>
               index === 0

@@ -77,6 +77,16 @@ export const useFarmUnlockDate = (): Date => {
   return unlockDate
 }
 
+export const useWalletRebalanceFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.wallet.isRebalanceFetched)
+  return isFetched
+}
+
+export const useWalletFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.wallet.isFetched)
+  return isFetched
+}
+
 export const usePoolsIsFetched = (): boolean => {
   const isFetched = useSelector((state: State) => state.pools.isFetched)
   return isFetched

@@ -64,8 +64,8 @@ class DefinixPair extends Address {
     const balance0 = this.getBalance(this.token0)
     const balance1 = this.getBalance(this.token1)
 
-    const amount0In = balance0.minus(this.reserve0.minus(amount0Out))
-    const amount1In = balance1.minus(this.reserve1.minus(amount1Out))
+    // const amount0In = balance0.minus(this.reserve0.minus(amount0Out))
+    // const amount1In = balance1.minus(this.reserve1.minus(amount1Out))
     // this._require(amount0In.isGreaterThan(0) || amount1In.isGreaterThan(0), 'Definix: INSUFFICIENT_INPUT_AMOUNT')
     // this.checkBalanceAdjust(
     //   amount0Out,

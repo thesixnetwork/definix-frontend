@@ -105,43 +105,43 @@ const AuditedBy = () => {
   )
 }
 
-const PteLtd = () => (
-  <Text color="textSubtle" fontSize="9px" bold>
-    SIX Network PTE.LTD
-  </Text>
-)
+// const PteLtd = () => (
+//   <Text color="textSubtle" fontSize="9px" bold>
+//     SIX Network PTE.LTD
+//   </Text>
+// )
 
-const CoCeo = () => (
-  <Text color="textSubtle" fontSize="9px">
-    Co-CEO Vachara Aemavat, Co-CEO Natavudh Pungcharoenpong
-  </Text>
-)
+// const CoCeo = () => (
+//   <Text color="textSubtle" fontSize="9px">
+//     Co-CEO Vachara Aemavat, Co-CEO Natavudh Pungcharoenpong
+//   </Text>
+// )
 
-const BusinessNo = () => (
-  <Text color="textSubtle" fontSize="9px">
-    <strong className="mr-1">Business Registration No.</strong>210811042Z
-  </Text>
-)
+// const BusinessNo = () => (
+//   <Text color="textSubtle" fontSize="9px">
+//     <strong className="mr-1">Business Registration No.</strong>210811042Z
+//   </Text>
+// )
 
-const Address = () => (
-  <Text color="textSubtle" fontSize="9px">
-    <strong className="mr-1">Address</strong>380 Jalan Besar #08-02 arc 380 Singapore (209000)
-  </Text>
-)
+// const Address = () => (
+//   <Text color="textSubtle" fontSize="9px">
+//     <strong className="mr-1">Address</strong>380 Jalan Besar #08-02 arc 380 Singapore (209000)
+//   </Text>
+// )
 
-const PersonalInfo = () => (
-  <Text
-    color="textSubtle"
-    fontSize="9px"
-    as="a"
-    href="mailto:contact@definix.com"
-    target="_blank"
-    rel="noreferrer"
-    style={{ display: 'block' }}
-  >
-    <strong className="mr-1">Personal Information Management Officer (Email)</strong>contact@definix.com
-  </Text>
-)
+// const PersonalInfo = () => (
+//   <Text
+//     color="textSubtle"
+//     fontSize="9px"
+//     as="a"
+//     href="mailto:contact@definix.com"
+//     target="_blank"
+//     rel="noreferrer"
+//     style={{ display: 'block' }}
+//   >
+//     <strong className="mr-1">Personal Information Management Officer (Email)</strong>contact@definix.com
+//   </Text>
+// )
 
 const Social = () => {
   const { isDark } = useTheme()

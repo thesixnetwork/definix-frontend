@@ -94,11 +94,11 @@ const AssetDetail = ({ rebalance }) => {
     if (inputNumber > 0) return 'success'
     return ''
   }
-  const selectSymbolChange = (inputNumber) => {
-    if (inputNumber < 0) return '-'
-    if (inputNumber > 0) return '+'
-    return ''
-  }
+  // const selectSymbolChange = (inputNumber) => {
+  //   if (inputNumber < 0) return '-'
+  //   if (inputNumber > 0) return '+'
+  //   return ''
+  // }
   return (
     <Table>
       <TR>

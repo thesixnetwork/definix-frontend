@@ -136,6 +136,8 @@ export interface WalletState {
   userDeadline?: number
   allowances: Allowance
   userSlippage?: number
+  isFetched: boolean
+  isRebalanceFetched: boolean
 }
 
 export interface FinixPriceState {
