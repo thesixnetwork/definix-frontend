@@ -118,15 +118,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
         const maxDrawDownAPI = process.env.REACT_APP_DEFINIX_MAX_DRAWDOWN_API
         try {
-          const maxDrawDownResp = await axios.get(
-            `${maxDrawDownAPI}?pool=${getAddress(rebalance.address)}`,
-          )
+          const maxDrawDownResp = await axios.get(`${maxDrawDownAPI}?pool=${getAddress(rebalance.address)}`)
           const fundGraphResp = await axios.get(
             `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
           )
           const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
           const currentDrawdown = _.get(maxDrawDownResp, 'data.result.current_drawdown', [])
-          
+
           const label = []
           const rebalanceData = {
             name: 'rebalance',
