@@ -277,7 +277,7 @@
   "Return on Investment": "ผลตอบแทนจากการลงทุน",
   "Timeframe": "ระยะเวลา",
   "FINIX per $1000": "FINIX / $1000",
-  "Calculated based on current rates": "คำนวณจากอัตราแลกเปลี่บนปัจจุบันโดยสมมุติการทบเงินต้นทุกวัน อัตรา ROI เป็นเพียงการประเมินเพื่อความสะดวกในการลงทุนเท่านั้น เรทของ ROI เป็นการประมาณการเบื้องต้นเพื่อความสะดวกในการตัดสินใจของผู้ลงทุน ทั้งนี้ผลตอบแทนไม่ได้ถูกการันตีตามอัตราดังกล่าว",
+  "Calculated based on current rates": "คำนวณจากอัตราแลกเปลี่ยนปัจจุบันโดยสมมุติการทบเงินต้นทุกวัน อัตรา ROI เป็นเพียงการประเมินเพื่อความสะดวกในการลงทุนเท่านั้น เรทของ ROI เป็นการประมาณการเบื้องต้นเพื่อความสะดวกในการตัดสินใจของผู้ลงทุน ทั้งนี้ผลตอบแทนไม่ได้ถูกการันตีตามอัตราดังกล่าว",
   "Get": "เพิ่ม",
   "Compounding %freq%x daily.": "Compounding %freq%x daily.",
   "All figures are estimates provided for your convenience only, and by no means represent guaranteed returns.": "ตัวเลขทั้งหมดเป็นการประมาณการเพื่อความสะดวกของคุณเท่านั้น และไม่ได้รับประกันผลตอบแทน",
@@ -536,7 +536,7 @@
   "Please try again and confirm the transaction.": "Please try again and confirm the transaction.",
   "Harvested": "Harvested",
   "Close Window": "Close Window",
-  "Insufficient %symbol% balance": "Insufficient %symbol% balance",
+  "Insufficient %symbol% balance": "เหรียญ %symbol% ของคุณไม่เพียงพอ",
   "You’ll need %symbol% to stake in this pool!": "You’ll need %symbol% to stake in this pool!",
   "Buy some %symbol%, or make sure your %symbol% isn’t in another pool or LP.": "Buy some %symbol%, or make sure your %symbol% isn’t in another pool or LP.",
   "Buy": "Buy",
@@ -912,7 +912,7 @@
   "TVL in BSC": "TVL ใน BSC",
   "TVL in Klaytn": "TVL ใน Klaytn",
   "Definix Systematic Vault is available to use in": "Definix Systematic Vaults จะพร้อมใช้ใน",
-  "Does not include burned": "Does not include burned",
+  "Does not include burned": "ไม่รวมจำนวนเหรียญที่ Burn แล้ว",
   "FINIX Generated": "เหรียญ FINIX ที่สร้างขึ้น",
   "FINIX transferred from BSC": "เหรียญ FINIX ที่โอนย้ายมากจาก BSC",
   "FINIX reserved for bridge": "เหรียญ FINIX ที่สำรองไว้สำหรับการ Bridge",
@@ -1098,5 +1098,7 @@
   "Pool - Definix - Advance Your Crypto Assets": "Pool - Definix - Advance Your Crypto Assets",
   "Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.": "Pool คือที่ที่คุณสามารถนำโทเค็นสกุลเดียว ลงไป Stake เพื่อรับผลตอบแทนในรูปแบบของ เหรียญต่าง ๆ ได้",
   "Pending": "รอดำเนินการ",
-  "Remove LP": "ถอน LP ออกจาก Farm"
+  "Remove LP": "ถอน LP ออกจาก Farm",
+  "Remove %tokenname%": "ถอนเหรียญ %tokenname% ออกจาก pool",
+  "Deposit %tokenname%": "ฝากเหรียญ %tokenname%"
 }

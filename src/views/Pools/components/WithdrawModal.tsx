@@ -71,7 +71,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
           onDismiss()
         }}
       >
-        {pendingTx ? t('Pending') : t(`Remove ${tokenName}`)}
+        {pendingTx ? t('Pending') : t('Remove %tokenname%', { tokenname: `${tokenName}` })}
       </Button>
     </Modal>
   )

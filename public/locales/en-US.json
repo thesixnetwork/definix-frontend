@@ -1098,5 +1098,7 @@
   "Pool - Definix - Advance Your Crypto Assets": "Pool - Definix - Advance Your Crypto Assets",
   "Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.": "Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.",
   "Pending": "Pending",
-  "Remove LP": "Remove LP"
+  "Remove LP": "Remove LP",
+  "Remove %tokenname%": "Remove %tokenname%",
+  "Deposit %tokenname%": "Deposit %tokenname%"
 }

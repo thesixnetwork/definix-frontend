@@ -1097,6 +1097,8 @@
   "All Pool": "모든 풀",
   "Pool - Definix - Advance Your Crypto Assets": "풀 - 디피닉스 - 암호자산 강화하기",
   "Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.": "풀은 피닉스 토큰으로 더 높은 회수율을 생성하기 위해 본인의 단일토큰을 스테이킹하는 곳입니다.",
-  "Pending": "예치 취소",
-  "Remove LP": "Remove LP"
+  "Pending": "보류 중",
+  "Remove LP": "제거하기 LP",
+  "Remove %tokenname%": "제거하기 %tokenname%",
+  "Deposit %tokenname%": "보증금 %tokenname%"
 }
