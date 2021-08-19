@@ -87,7 +87,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const { account } = useWallet()
   const prevRebalance = usePrevious(rebalance, {})
   const prevTimeframe = usePrevious(timeframe, '')
-  
+
   const [sharpRatio, setSharpRatio] = useState(0)
 
   useEffect(() => {
@@ -160,7 +160,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             if (!base.rebalance) {
               base.rebalance = sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
             }
-            
+
             rebalanceData.values.push(
               new BigNumber(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
                 .div(new BigNumber(base.rebalance as number))
@@ -170,31 +170,26 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
             // cal sharePrice
             // for (let index = 0; index < mergeArray.length; index++) {
-              const dataPoint = dataValues;
-              let _totalSupply = new BigNumber(dataPoint[0]);
-              _totalSupply = _totalSupply.dividedBy(10**18);
-              let totalUSD = new BigNumber(0);
-              for (let j = 1; j < allCurrentTokens.length +1;j++) {
-                let balance = new BigNumber(dataPoint[j]);
-                balance = balance.dividedBy(
-                  10** allCurrentTokens[j-1].decimals
-                );
-                 
-                let price  = new BigNumber(0);
-                if (j < allCurrentTokens.length) {
-                  price = new BigNumber(dataPoint[j + allCurrentTokens.length]);
-                } else {
-                  price = new BigNumber(1);
-                }
-                totalUSD = totalUSD.plus(balance.multipliedBy(price));
-             
+            const dataPoint = dataValues
+            let _totalSupply = new BigNumber(dataPoint[0])
+            _totalSupply = _totalSupply.dividedBy(10 ** 18)
+            let totalUSD = new BigNumber(0)
+            for (let j = 1; j < allCurrentTokens.length + 1; j++) {
+              let balance = new BigNumber(dataPoint[j])
+              balance = balance.dividedBy(10 ** allCurrentTokens[j - 1].decimals)
+
+              let price = new BigNumber(0)
+              if (j < allCurrentTokens.length) {
+                price = new BigNumber(dataPoint[j + allCurrentTokens.length])
+              } else {
+                price = new BigNumber(1)
               }
-              const sharePrice = totalUSD.dividedBy(_totalSupply);
-                // eslint-disable-next-line
-// debugger
-              sharePricesFromGraph.push(sharePrice)
-             
-          
+              totalUSD = totalUSD.plus(balance.multipliedBy(price))
+            }
+            const sharePrice = totalUSD.dividedBy(_totalSupply)
+            // eslint-disable-next-line
+            // debugger
+            sharePricesFromGraph.push(sharePrice)
 
             dataValues = dataValues.splice(allCurrentTokens.length + 1)
             allCurrentTokens.forEach((token, index) => {
@@ -221,7 +216,14 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           // getSharpeRatio()
           // eslint-disable-next-line
           // sharePricesFromGraph
-          console.log("sharePricesFromGraph",sharePricesFromGraph)
+          const dataPoint = fundGraphResult.map((data) => data.values)
+          console.log('dataPoint', dataPoint)
+          const allCurrentTokens = _.compact([
+            ...((rebalance || {}).tokens || []),
+            ...((rebalance || {}).usdToken || []),
+          ])
+          console.log('allTokens', allCurrentTokens)
+          console.log('sharePricesFromGraph', sharePricesFromGraph)
           const getSharpeRatio = (values, backPoint) => {
             const returns = values.map((value, index) =>
               index === 0
@@ -229,22 +231,19 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 : value
                     .dividedBy(values[index - 1])
                     .minus(1)
-                    .multipliedBy(100)
-            );
-            const sliceReturns = returns.slice(-1 * backPoint);
-            const sum = sliceReturns.reduce(
-              (previous, current) => previous.plus(current),
-              new BigNumber(0)
-            );
-            const avg = sum.dividedBy(sliceReturns.length) || 0;
+                    .multipliedBy(100),
+            )
+            const sliceReturns = returns.slice(-1 * backPoint)
+            const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
+            const avg = sum.dividedBy(sliceReturns.length) || 0
             const std = sliceReturns
               .map((value) => value.minus(avg).exponentiatedBy(2))
               .reduce((previous, current) => previous.plus(current), new BigNumber(0))
               .dividedBy(sliceReturns.length - 1)
-              .squareRoot();
-            return avg.dividedBy(std);
-          };
-          setSharpRatio(getSharpeRatio(sharePricesFromGraph,sharePricesFromGraph.length))
+              .squareRoot()
+            return avg.dividedBy(std)
+          }
+          setSharpRatio(getSharpeRatio(sharePricesFromGraph, sharePricesFromGraph.length))
           setReturnPercent(rebalanceData.values[rebalanceData.values.length - 1] - rebalanceData.values[0])
           setGraphData({ labels: label, graph: graphTokenData })
           setPerformanceData(performanceResult)
@@ -256,9 +255,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [rebalance, timeframe, prevRebalance, prevTimeframe])
 
-  
-  
-  
   // getSharpeRatio(sharePrices, sharePrices.length)
 
   useEffect(() => {
