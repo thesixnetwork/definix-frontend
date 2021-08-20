@@ -143,11 +143,11 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
             tension: 0,
             ...(thisName === 'rebalance'
               ? {
-                borderColor: rebalanceColor,
-                backgroundColor: gradient,
-                pointBackgroundColor: 'transparent',
-                pointBorderColor: 'transparent',
-              }
+                  borderColor: rebalanceColor,
+                  backgroundColor: gradient,
+                  pointBackgroundColor: 'transparent',
+                  pointBorderColor: 'transparent',
+                }
               : {}),
           }
         }),
@@ -189,9 +189,8 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
           if ((dataTooltip.datasets[index].chartName as TypeChartName) === 'Price') {
             const price = dataTooltip.datasets[index].dataPrice[tooltipItem.index]
             return `${dataTooltip.datasets[index].label}: $ ${price.toFixed(3)}`
-          } 
-            return `${dataTooltip.datasets[index].label}: ${tooltipItem.value}`
-          
+          }
+          return `${dataTooltip.datasets[index].label}: ${tooltipItem.value}`
         },
       },
     },
