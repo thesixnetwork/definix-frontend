@@ -304,7 +304,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
 
   const fetchNormalizedGraphData = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Normalized') {
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Normalize') {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -574,7 +574,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <div>
                         <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                       </div>
-                      <div style={{ marginLeft: '20px' }}>
+                      <div style={{marginLeft: (isMobile ? '0px' : '20px'),marginTop: (isMobile ? '10px' : '0px')}}>
                         <SelectChart chartName={chartName} setChartName={setChartName} />
                       </div>
                     </div>

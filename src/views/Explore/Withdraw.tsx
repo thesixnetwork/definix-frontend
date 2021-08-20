@@ -293,7 +293,6 @@ const CardInput = ({
           <FormGroup>
             {_.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
               .map((token, index) => {
-                const ratios = _.get(rebalance, `tokens`)
                 const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
 
                 let countSelect = 0
