@@ -30,7 +30,7 @@ const GroupButton = styled.div`
 `
 
 const SelectChart = ({ chartName, setChartName, className = '' }) => {
-  const charts:TypeChartName[] = ['Passed Perf.','Vol-look']
+  const charts: TypeChartName[] = ['Passed Perf.', 'Vol-look']
 
   return (
     <GroupButton className={className}>

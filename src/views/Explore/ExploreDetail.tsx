@@ -74,7 +74,7 @@ const usePrevious = (value, initialValue) => {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
-  const [chartName, setChartName] = useState<TypeChartName>("Passed Perf.")
+  const [chartName, setChartName] = useState<TypeChartName>('Passed Perf.')
   const [returnPercent, setReturnPercent] = useState(0)
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
@@ -109,7 +109,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [dispatch, account, rebalance])
 
   const fetchReturnData = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || !_.isEqual(chartName, undefined)) {
+    if (
+      !_.isEqual(rebalance, prevRebalance) ||
+      !_.isEqual(timeframe, prevTimeframe) ||
+      !_.isEqual(chartName, undefined)
+    ) {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -172,7 +176,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
 
   const fetchPassedPerfGraphData = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === "Passed Perf.") {
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Passed Perf.') {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -239,13 +243,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               if (j < allCurrentTokens.length) {
                 price = new BigNumber(dataPoint[j + allCurrentTokens.length])
               } else {
-
                 price = new BigNumber(1)
               }
               totalUSD = totalUSD.plus(balance.multipliedBy(price))
             }
             const sharePrice = totalUSD.dividedBy(_totalSupply)
-            
+
             sharePricesFromGraph.push(sharePrice)
 
             dataValues = dataValues.splice(allCurrentTokens.length + 1)
@@ -275,9 +278,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               index === 0
                 ? new BigNumber(0)
                 : value
-                  .dividedBy(values[index - 1])
-                  .minus(1)
-                  .multipliedBy(100),
+                    .dividedBy(values[index - 1])
+                    .minus(1)
+                    .multipliedBy(100),
             )
             const sliceReturns = returns.slice(-1 * backPoint)
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
@@ -301,7 +304,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
 
   const fetchGraphData2 = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === "Vol-look") {
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Vol-look') {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -335,7 +338,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             const dataPoint = _.get(data, 'values', [])
             for (let j = 0; j < allCurrentTokens.length; j++) {
               if (j < allCurrentTokens.length) {
-                priceTokens[j].push(dataPoint[(j + 1) + allCurrentTokens.length])
+                priceTokens[j].push(dataPoint[j + 1 + allCurrentTokens.length])
               } else {
                 priceTokens[j].push(1)
               }
@@ -348,7 +351,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             calToken.push({
               min,
               max,
-              between: (max - min) / 60
+              between: (max - min) / 60,
             })
           })
           fundGraphResult.forEach((data) => {
@@ -375,9 +378,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               base.rebalance = sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
             }
 
-            rebalanceData.values.push(
-              sumUsd
-            )
+            rebalanceData.values.push(sumUsd)
             // cal sharePrice
             const dataPoint = dataValues
             let _totalSupply = new BigNumber(dataPoint[0])
@@ -401,7 +402,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
             dataValues = dataValues.splice(allCurrentTokens.length + 1)
             allCurrentTokens.forEach((token, index) => {
-
               if (!base[token.symbol]) {
                 base[token.symbol] = dataValues[index]
               }
@@ -417,10 +417,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 graphTokenData[token.symbol].values.push(50)
               } else {
                 graphTokenData[token.symbol].values.push(
-                  new BigNumber(dataValues[index])
-                    .minus(calToken[index].min)
-                    .div(calToken[index].between)
-                    .plus(20),
+                  new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
                 )
               }
             })
@@ -430,10 +427,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const rebalanceBetween = (rebalanceMax - rebalanceMin) / 60
 
           const valuesRebalanceCalculate = []
-          rebalanceData.values.forEach(val => {
-            valuesRebalanceCalculate.push(
-              ((val - rebalanceMin) / rebalanceBetween) + 20
-            )
+          rebalanceData.values.forEach((val) => {
+            valuesRebalanceCalculate.push((val - rebalanceMin) / rebalanceBetween + 20)
           })
           rebalanceData.values = valuesRebalanceCalculate
 
@@ -444,9 +439,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               index === 0
                 ? new BigNumber(0)
                 : value
-                  .dividedBy(values[index - 1])
-                  .minus(1)
-                  .multipliedBy(100),
+                    .dividedBy(values[index - 1])
+                    .minus(1)
+                    .multipliedBy(100),
             )
             const sliceReturns = returns.slice(-1 * backPoint)
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
@@ -470,7 +465,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
   useEffect(() => {
     fetchReturnData()
-    if (chartName === "Passed Perf.") {
+    if (chartName === 'Passed Perf.') {
       fetchPassedPerfGraphData()
     } else {
       fetchGraphData2()
@@ -514,10 +509,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         subTitle="(Since inception)"
                         subTitleFontSize="11px"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${rebalance.sharedPricePercentDiff >= 0
-                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                          }%`}
+                        percent={`${
+                          rebalance.sharedPricePercentDiff >= 0
+                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                        }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -540,10 +536,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         subTitle="(Since inception)"
                         subTitleFontSize="11px"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${rebalance.sharedPricePercentDiff >= 0
-                          ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                          : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                          }%`}
+                        percent={`${
+                          rebalance.sharedPricePercentDiff >= 0
+                            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                        }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -577,7 +574,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <div>
                         <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                       </div>
-                      <div style={{ marginLeft: "20px" }}>
+                      <div style={{ marginLeft: '20px' }}>
                         <SelectChart chartName={chartName} setChartName={setChartName} />
                       </div>
                     </div>
