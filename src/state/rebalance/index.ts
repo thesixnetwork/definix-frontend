@@ -33,6 +33,28 @@ export const rebalanceSlice = createSlice({
 // Actions
 export const { setRebalances } = rebalanceSlice.actions
 
+const calculateRatio = (currentPriceUsd:BigNumber[],sumCurrentPoolUsdBalance:BigNumber)=>{
+  let sumRatio = 0
+  const ratioCal = []
+  currentPriceUsd.forEach((data,index)=>{
+    // @ts-ignore
+    const totalPriceNotDevDecimap = new BigNumber([data])
+    const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
+    // @ts-ignore
+    const sumCurrentPoolUsd = new BigNumber([sumCurrentPoolUsdBalance])
+    const sum = sumCurrentPoolUsd.div(new BigNumber(10).pow(6))
+    let ratio = +totalPrice.div(sum).times(100).toNumber().toFixed(2)
+
+    if (currentPriceUsd.length - 1 === index) {
+      ratio = +(100 - sumRatio).toFixed(2)
+    } else {
+      sumRatio += ratio
+    }
+    ratioCal.push(ratio)
+  })
+  return ratioCal
+  
+}
 export const fetchRebalances = () => async (dispatch) => {
   const data = await Promise.all(
     rebalancesConfig.map(async (rebalanceConfig) => {
@@ -83,6 +105,7 @@ export const fetchRebalances = () => async (dispatch) => {
         [enableAutoCompound],
         [autoHerodotus],
       ] = await multicall(rebalance, rebalanceCalls)
+      const ratioCal = calculateRatio(currentPoolUsdBalances,sumCurrentPoolUsdBalance)
       const tokenCallers = []
       for (let i = 0; i < tokenLength; i++) {
         tokenCallers.push(multicall(rebalance, [{ address, name: 'tokens', params: [i] }]))
@@ -220,6 +243,7 @@ export const fetchRebalances = () => async (dispatch) => {
         autoHerodotus,
         sharedPricePercentDiff,
         twentyHperformance,
+        ratioCal
       }
     }),
   )

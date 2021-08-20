@@ -74,7 +74,7 @@ const usePrevious = (value, initialValue) => {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
-  const [chartName, setChartName] = useState<TypeChartName>('Passed Perf.')
+  const [chartName, setChartName] = useState<TypeChartName>('Price Compare')
   const [returnPercent, setReturnPercent] = useState(0)
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
@@ -175,8 +175,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
 
-  const fetchPassedPerfGraphData = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Passed Perf.') {
+  const fetchCompareGraphData = useCallback(async () => {
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Price Compare') {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -303,8 +303,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
 
-  const fetchGraphData2 = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Vol-look') {
+  const fetchNormalizedGraphData = useCallback(async () => {
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Normalized') {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
@@ -465,12 +465,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
   useEffect(() => {
     fetchReturnData()
-    if (chartName === 'Passed Perf.') {
-      fetchPassedPerfGraphData()
+    if (chartName === 'Price Compare') {
+      fetchCompareGraphData()
     } else {
-      fetchGraphData2()
+      fetchNormalizedGraphData()
     }
-  }, [fetchGraphData2, fetchPassedPerfGraphData, fetchReturnData, chartName])
+  }, [fetchNormalizedGraphData, fetchCompareGraphData, fetchReturnData, chartName])
 
   if (!rebalance) return <Redirect to="/rebalancing" />
   const { ratio } = rebalance

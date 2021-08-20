@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Button } from 'uikit-dev'
 
-export type TypeChartName = 'Passed Perf.' | 'Vol-look'
+export type TypeChartName = 'Price Compare' | 'Normalized'
 
 const GroupButton = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const GroupButton = styled.div`
 `
 
 const SelectChart = ({ chartName, setChartName, className = '' }) => {
-  const charts: TypeChartName[] = ['Passed Perf.', 'Vol-look']
+  const charts: TypeChartName[] = ['Price Compare', 'Normalized']
 
   return (
     <GroupButton className={className}>
