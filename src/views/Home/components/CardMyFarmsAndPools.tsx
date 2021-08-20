@@ -550,7 +550,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   let arrayData = [...dataFarms, ...dataPools, ...dataRebalances]
   if (isGrouping) {
     const groupRebalance = {
-      lpSymbol: 'Rebalances',
+      lpSymbol: 'Rebalancing',
       value: Number(
         BigNumber.sum.apply(
           null,
@@ -789,7 +789,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </div>
                   </div>
 
-                  <Text bold textTransform="uppercase">
+                  <Text bold textTransform="uppercase" style={{ fontSize: '10px' }}>
                     {r.title}
                   </Text>
                 </Rebalancing>

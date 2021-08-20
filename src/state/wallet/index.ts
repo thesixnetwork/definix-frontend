@@ -36,7 +36,7 @@ export const walletSlice = createSlice({
       const { account, data } = action.payload
       state.userRebalanceBalances = {
         ...state.userRebalanceBalances,
-        [account]: { ..._.get(state, 'userRebalanceBalances', {}), ...data },
+        [account]: { ..._.get(state, `userRebalanceBalances.${account}`, {}), ...data },
       }
       state.isRebalanceFetched = true
     },
@@ -45,8 +45,8 @@ export const walletSlice = createSlice({
       state.allowances = {
         ...state.allowances,
         [account]: {
-          ..._.get(state, 'allowances', {}),
-          [spender]: { ..._.get(state, `allowances.${spender}`, {}), ...data },
+          ..._.get(state, `allowances.${account}`, {}),
+          [spender]: { ..._.get(state, `allowances.${account}.${spender}`, {}), ...data },
         },
       }
     },
