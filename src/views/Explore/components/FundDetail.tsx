@@ -35,7 +35,7 @@ const AssetDetail = ({ rebalance }) => {
   //   return ''
   // }
 
-  let sumRatio =0 
+  let sumRatio = 0
   return (
     <Table>
       <TR>
@@ -59,22 +59,22 @@ const AssetDetail = ({ rebalance }) => {
         // @ts-ignore
         const totalPriceNotDevDecimap = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)])
         const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
-         // @ts-ignore
+        // @ts-ignore
         const sumCurrentPoolUsdBalance = new BigNumber([_.get(rebalance, `sumCurrentPoolUsdBalance`)])
-        
+
         const sum = sumCurrentPoolUsdBalance.div(new BigNumber(10).pow(6))
-        let ratio = totalPrice.div(sum).times(100).toNumber() 
-        
-        if(tokens.length === index){
-          ratio = 100 - sumRatio
-        }else{
+        let ratio = +totalPrice.div(sum).times(100).toNumber().toFixed(2)
+
+        if (tokens.length-1 === index) {
+          ratio = +(100 - sumRatio).toFixed(2)
+        } else {
           sumRatio += ratio
         }
 
         const tokenPrice = (totalPrice || new BigNumber(0)).div(
           _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(_.get(r, 'decimals', 18))),
         )
-        
+
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
         const priceLast24 = _.get(
           rebalance,
@@ -118,7 +118,7 @@ const AssetDetail = ({ rebalance }) => {
               </Text>
             </TD>
             <TD align="center">
-              <Text>{ratio.toFixed(2)}%</Text>
+              <Text>{ratio}%</Text>
             </TD>
           </TR>
         )
