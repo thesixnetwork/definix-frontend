@@ -279,9 +279,9 @@ const CardInput = ({
           _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
             .map((token, index) => {
               const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-              const ratios = (_.get(rebalance, `ratioCal`)) 
+              const ratios = _.get(rebalance, `ratioCal`)
               // eslint-disable-next-line
-              const ratioMerge = Object.assign({valueRatioCal: ratios ? ratios[index] : 0}, ratioObject);
+              const ratioMerge = Object.assign({ valueRatioCal: ratios ? ratios[index] : 0 }, ratioObject)
               return {
                 ...token,
                 ...ratioMerge,
@@ -293,24 +293,24 @@ const CardInput = ({
           <FormGroup>
             {_.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
               .map((token, index) => {
-                const ratios = (_.get(rebalance, `tokens`)) 
+                const ratios = _.get(rebalance, `tokens`)
                 const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-                
+
                 let countSelect = 0
-                
+
                 const keys = Object.keys(selectedToken)
-                for (let i = 0 ; i < keys.length;i++) {
-                  if( selectedToken[keys[i]] === true) ++countSelect
+                for (let i = 0; i < keys.length; i++) {
+                  if (selectedToken[keys[i]] === true) ++countSelect
                 }
-   
+
                 let valueCalRatio = 0
-                for (let i = 0 ; i < keys.length;i++) {
-                  if( selectedToken[keys[i]] === true && keys[i] === getAddress(ratioObject.address)) valueCalRatio = (100/countSelect)
+                for (let i = 0; i < keys.length; i++) {
+                  if (selectedToken[keys[i]] === true && keys[i] === getAddress(ratioObject.address))
+                    valueCalRatio = 100 / countSelect
                 }
                 // eslint-disable-next-line
-                const ratioMerge = Object.assign({valueRatioCal: valueCalRatio}, ratioObject);
-                
-                
+                const ratioMerge = Object.assign({ valueRatioCal: valueCalRatio }, ratioObject)
+
                 return {
                   ...token,
                   ...ratioMerge,
