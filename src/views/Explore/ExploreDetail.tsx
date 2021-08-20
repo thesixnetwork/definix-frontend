@@ -193,6 +193,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const rebalanceData = {
             name: 'rebalance',
             values: [],
+            valuesPrice: []
           }
           const sharePricesFromGraph = []
           const graphTokenData: Record<string, any> = {}
@@ -229,6 +230,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 .times(100)
                 .toNumber(),
             )
+            rebalanceData.valuesPrice.push(sumUsd)
 
             // cal sharePrice
             const dataPoint = dataValues
@@ -261,9 +263,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 graphTokenData[token.symbol] = {
                   name: token.symbol,
                   values: [],
+                  valuesPrice: [],
                   color: ratioObject.color,
                 }
               }
+              graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
               graphTokenData[token.symbol].values.push(
                 new BigNumber(dataValues[index])
                   .div(base[token.symbol] as number)
@@ -278,9 +282,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               index === 0
                 ? new BigNumber(0)
                 : value
-                    .dividedBy(values[index - 1])
-                    .minus(1)
-                    .multipliedBy(100),
+                  .dividedBy(values[index - 1])
+                  .minus(1)
+                  .multipliedBy(100),
             )
             const sliceReturns = returns.slice(-1 * backPoint)
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
@@ -294,7 +298,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }
           setMaxDrawDown(currentDrawdown)
           setSharpRatio(getSharpeRatio(sharePricesFromGraph, sharePricesFromGraph.length))
-          setGraphData({ labels: label, graph: graphTokenData })
+          setGraphData({ labels: label, graph: graphTokenData ,chartName})
           setIsLoading(false)
         } catch (error) {
           setIsLoading(false)
@@ -320,6 +324,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const rebalanceData = {
             name: 'rebalance',
             values: [],
+            valuesPrice: []
           }
           const sharePricesFromGraph = []
           const graphTokenData: Record<string, any> = {}
@@ -410,14 +415,19 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 graphTokenData[token.symbol] = {
                   name: token.symbol,
                   values: [],
+                  valuesPrice: [],
                   color: ratioObject.color,
                 }
               }
               if (token.symbol === 'KUSDT') {
                 graphTokenData[token.symbol].values.push(50)
+                graphTokenData[token.symbol].valuesPrice.push(1)
               } else {
                 graphTokenData[token.symbol].values.push(
                   new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
+                )
+                graphTokenData[token.symbol].valuesPrice.push(
+                  dataValues[index]
                 )
               }
             })
@@ -427,10 +437,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const rebalanceBetween = (rebalanceMax - rebalanceMin) / 60
 
           const valuesRebalanceCalculate = []
+          const valuesPriceRebalanceCalculate = []
           rebalanceData.values.forEach((val) => {
             valuesRebalanceCalculate.push((val - rebalanceMin) / rebalanceBetween + 20)
+            valuesPriceRebalanceCalculate.push(val)
           })
           rebalanceData.values = valuesRebalanceCalculate
+          rebalanceData.valuesPrice = valuesPriceRebalanceCalculate
 
           graphTokenData.rebalance = rebalanceData
 
@@ -439,9 +452,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               index === 0
                 ? new BigNumber(0)
                 : value
-                    .dividedBy(values[index - 1])
-                    .minus(1)
-                    .multipliedBy(100),
+                  .dividedBy(values[index - 1])
+                  .minus(1)
+                  .multipliedBy(100),
             )
             const sliceReturns = returns.slice(-1 * backPoint)
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
@@ -455,7 +468,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }
           setMaxDrawDown(currentDrawdown)
           setSharpRatio(getSharpeRatio(sharePricesFromGraph, sharePricesFromGraph.length))
-          setGraphData({ labels: label, graph: graphTokenData })
+          setGraphData({ labels: label, graph: graphTokenData ,chartName})
+          // eslint-disable-next-line
+          // debugger
           setIsLoading(false)
         } catch (error) {
           setIsLoading(false)
@@ -509,11 +524,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         subTitle="(Since inception)"
                         subTitleFontSize="11px"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
+                        percent={`${rebalance.sharedPricePercentDiff >= 0
                             ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                             : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                          }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -536,11 +550,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                         subTitle="(Since inception)"
                         subTitleFontSize="11px"
                         value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                        percent={`${
-                          rebalance.sharedPricePercentDiff >= 0
+                        percent={`${rebalance.sharedPricePercentDiff >= 0
                             ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
                             : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                          }%`}
                         percentClass={(() => {
                           if (rebalance.sharedPricePercentDiff < 0) return 'failure'
                           if (rebalance.sharedPricePercentDiff > 0) return 'success'

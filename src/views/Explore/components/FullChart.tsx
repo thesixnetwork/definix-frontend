@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'uikit-dev'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
+import {TypeChartName} from './SelectChart'
 
 const rebalanceColor = '#30ADFF'
 
@@ -134,17 +135,19 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
           const thisName = thisData.name || ''
           return {
             label: thisName,
+            chartName: _.get(graphData, `chartName`,""),
             data: thisData.values || [],
+            dataPrice: thisData.valuesPrice || [],
             fill: true,
             borderColor: thisData.color,
             tension: 0,
             ...(thisName === 'rebalance'
               ? {
-                  borderColor: rebalanceColor,
-                  backgroundColor: gradient,
-                  pointBackgroundColor: 'transparent',
-                  pointBorderColor: 'transparent',
-                }
+                borderColor: rebalanceColor,
+                backgroundColor: gradient,
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+              }
               : {}),
           }
         }),
@@ -176,6 +179,22 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
         },
       ],
     },
+    tooltips: {
+      mode: 'x',
+      displayColors: false,
+      callbacks: {
+        label: (tooltipItem, dataTooltip) => {
+          const index = tooltipItem.datasetIndex
+          
+          if((dataTooltip.datasets[index].chartName as TypeChartName) === "Price"){
+            const price = dataTooltip.datasets[index].dataPrice[tooltipItem.index]
+            return `${dataTooltip.datasets[index].label}: ${price.toFixed(3)} $`
+          }
+          return `${dataTooltip.datasets[index].label}: ${tooltipItem.value.toFixed(3)}`
+        }
+      }
+    }
+
   }
 
   return (
