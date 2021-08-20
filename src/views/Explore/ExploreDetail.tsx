@@ -574,7 +574,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <div>
                         <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
                       </div>
-                      <div style={{marginLeft: (isMobile ? '0px' : '20px'),marginTop: (isMobile ? '10px' : '0px')}}>
+                      <div style={{ marginLeft: isMobile ? '0px' : '20px', marginTop: isMobile ? '10px' : '0px' }}>
                         <SelectChart chartName={chartName} setChartName={setChartName} />
                       </div>
                     </div>
