@@ -21,74 +21,9 @@ const Overflow = styled.div`
 `
 const AssetDetail = ({ rebalance }) => {
   const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
-  // const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'RATIO']
   let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
   if (tokens.length === 0) tokens = rebalance.ratio
-
-  // useEffect(() => {
-  //   if (rebalance.tokens) {
-  //     const bulidRows = (
-  //       name: string,
-  //       balance: number,
-  //       price: number,
-  //       value: number,
-  //       change: number,
-  //       ratio: string,
-  //     ) => {
-  //       return {
-  //         img: `/images/coins/${name}.png`,
-  //         name,
-  //         balance,
-  //         price,
-  //         value,
-  //         change,
-  //         ratio,
-  //       }
-  //     }
-  //     const updateData = async () => {
-  //       setRows([])
-  //       const balanceToken = []
-  //       const priceAlltoken: PriceAll = (
-  //         await axios.get(
-  //           'https://klaytn.api.sixnetwork.io/prices?fbclid=IwAR2m4gK4b_XvHDAFb0h6_obefrqyMd63escpVWzdIk4iZ3gACAinbnccpq4',
-  //         )
-  //       ).data
-
-  //       for (let i = 0; i < tokens.length; i++) {
-  //         const rebalanceToken = tokens[i]
-  //         // eslint-disable-next-line
-  //         const balance = await getTokenBalance(rebalanceToken.address)
-  //         const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === rebalanceToken.symbol)
-  //         const priceLast24 = rebalance.last24data.tokens[rebalanceToken.address.toLowerCase()].price
-  //         const priceCurrent = priceAlltoken.prices[rebalanceToken.symbol]
-  //         const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
-
-  //         setRows((oldRows) => [
-  //           ...oldRows,
-  //           bulidRows(
-  //             rebalanceToken.symbol,
-  //             balance,
-  //             priceCurrent,
-  //             balance * priceAlltoken.prices[rebalanceToken.symbol],
-  //             change,
-  //             `${ratio.value} %`,
-  //           ),
-  //         ])
-  //         balanceToken.push(balance)
-  //       }
-  //     }
-  //     updateData()
-  //   }
-  // }, [tokens, getTokenBalance, rebalance])
-
-  // const getTokenBalance = async (tokenAddress) => {
-  //   const poolAddress = getAddress(rebalance.address)
-  //   const sixAmount = await getContract(caver, tokenAddress).methods.balanceOf(poolAddress).call()
-  //   const sixDecimal = await getContract(caver, tokenAddress).methods.decimals().call()
-  //   return sixAmount / 10 ** sixDecimal
-  // }
-
   const selectClass = (inputNumber) => {
     if (inputNumber < 0) return 'failure'
     if (inputNumber > 0) return 'success'
@@ -99,6 +34,8 @@ const AssetDetail = ({ rebalance }) => {
   //   if (inputNumber > 0) return '+'
   //   return ''
   // }
+
+  let sumRatio =0 
   return (
     <Table>
       <TR>
@@ -118,14 +55,26 @@ const AssetDetail = ({ rebalance }) => {
           return r.symbol
         })()
 
-        const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
+        // const ratio = _.find(rebalance.ratio, (obj) => obj.symbol === r.symbol)
         // @ts-ignore
         const totalPriceNotDevDecimap = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)])
         const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
+         // @ts-ignore
+        const sumCurrentPoolUsdBalance = new BigNumber([_.get(rebalance, `sumCurrentPoolUsdBalance`)])
+        
+        const sum = sumCurrentPoolUsdBalance.div(new BigNumber(10).pow(6))
+        let ratio = totalPrice.div(sum).times(100).toNumber() 
+        
+        if(tokens.length === index){
+          ratio = 100 - sumRatio
+        }else{
+          sumRatio += ratio
+        }
 
         const tokenPrice = (totalPrice || new BigNumber(0)).div(
           _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(_.get(r, 'decimals', 18))),
         )
+        
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
         const priceLast24 = _.get(
           rebalance,
@@ -169,7 +118,7 @@ const AssetDetail = ({ rebalance }) => {
               </Text>
             </TD>
             <TD align="center">
-              <Text>{ratio.value}%</Text>
+              <Text>{ratio.toFixed(2)}%</Text>
             </TD>
           </TR>
         )
