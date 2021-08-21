@@ -185,10 +185,16 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
       callbacks: {
         label: (tooltipItem, dataTooltip) => {
           const index = tooltipItem.datasetIndex
-
+          // eslint-disable-next-line
+          // debugger
           if ((dataTooltip.datasets[index].chartName as TypeChartName) === 'Price') {
             const price = dataTooltip.datasets[index].dataPrice[tooltipItem.index]
-            return `${dataTooltip.datasets[index].label}: $ ${price.toFixed(3)}`
+            
+            if(dataTooltip.datasets[index].label === "rebalance"){
+              return `${dataTooltip.datasets[index].label}: ${price.toFixed(2)}`
+            }
+              return `${dataTooltip.datasets[index].label}: $ ${price.toFixed(2)}`
+            
           }
           return `${dataTooltip.datasets[index].label}: ${tooltipItem.value}`
         },
