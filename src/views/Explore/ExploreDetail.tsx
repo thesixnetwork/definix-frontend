@@ -85,6 +85,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const { account } = useWallet()
   const prevRebalance = usePrevious(rebalance, {})
   const prevTimeframe = usePrevious(timeframe, '')
+  const [periodPriceTokens,setPeriodPriceTokens] = useState([])
 
   const [sharpRatio, setSharpRatio] = useState(0)
 
@@ -122,7 +123,23 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
           )
           const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
-
+          if(timeframe === '1D'){
+            
+            const tokens = _.compact([
+              ...((rebalance || {}).tokens || []),
+              ...((rebalance || {}).usdToken || []),
+            ])
+            const oldPrice = []
+            for (let i = 1; i <= (tokens.length); i++) {
+              oldPrice.push(fundGraphResult[0].values[i+tokens.length])
+            }
+            // eslint-disable-next-line
+            // oldPrice
+           setPeriodPriceTokens(oldPrice)
+          
+            console.log("mmmm",fundGraphResult[0]) 
+          }
+     
           const label = []
           const rebalanceData = {
             name: 'rebalance',
@@ -652,7 +669,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 buybackFee={_.get(rebalance, 'fee.buyback', 1.5)}
                 className="mb-4"
               />
-              <FundDetail className="mb-4" rebalance={rebalance} />
+              <FundDetail className="mb-4" rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
               <Transaction className="mb-4" rbAddress={rebalance.address} />
             </div>
 

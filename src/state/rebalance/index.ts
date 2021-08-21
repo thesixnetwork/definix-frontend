@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import axios from 'axios'
+// import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
 import rebalance from 'config/abi/rebalance.json'
@@ -157,32 +157,32 @@ export const fetchRebalances = () => async (dispatch) => {
       const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
       // @ts-ignore
       const sharedPrice = totalAssetValue.div(new BigNumber([selectedTotalSupply]).div(new BigNumber(10).pow(18)))
-      let last24Response
-      try {
-        last24Response = await axios.get(`${process.env.REACT_APP_API_LAST_24}?address=${address}`)
-      } catch {
-        last24Response = {}
-      }
-      const last24Data = _.get(last24Response, 'data.result', {})
-      const last24TotalSupply = new BigNumber(_.get(last24Data, 'total_supply')).div(new BigNumber(10).pow(18))
+      // let last24Response
+      // try {
+      //   last24Response = await axios.get(`${process.env.REACT_APP_API_LAST_24}?address=${address}`)
+      // } catch {
+      //   last24Response = {}
+      // }
+      // const last24Data = _.get(last24Response, 'data.result', {})
+      // const last24TotalSupply = new BigNumber(_.get(last24Data, 'total_supply')).div(new BigNumber(10).pow(18))
 
-      const last24Tokens = _.get(last24Data, 'tokens', {})
-      const sumOldTokenPrice = BigNumber.sum.apply(
-        null,
-        [...tokens, ...usdToken].map((token: any) => {
-          const tokenAmount = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.balance`, '0')).div(
-            new BigNumber(10).pow(token.decimals),
-          )
-          const tokenPrice = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.price`, 0))
-          const totalTokenPrice = tokenAmount.times(tokenPrice)
+      // const last24Tokens = _.get(last24Data, 'tokens', {})
+      // const sumOldTokenPrice = BigNumber.sum.apply(
+      //   null,
+      //   [...tokens, ...usdToken].map((token: any) => {
+      //     const tokenAmount = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.balance`, '0')).div(
+      //       new BigNumber(10).pow(token.decimals),
+      //     )
+      //     const tokenPrice = new BigNumber(_.get(last24Tokens, `${token.address.toLowerCase()}.price`, 0))
+      //     const totalTokenPrice = tokenAmount.times(tokenPrice)
 
-          return totalTokenPrice
-        }),
-      )
+      //     return totalTokenPrice
+      //   }),
+      // )
       // const oldSharedPrice = sumOldTokenPrice.div(last24TotalSupply)
       const sharedPricePercentDiff = sharedPrice.minus(1).times(100)
 
-      const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
+      // const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
 
       const autoHerodotusCalls = [
         {
@@ -229,7 +229,7 @@ export const fetchRebalances = () => async (dispatch) => {
         usdToken,
         usdTokenRatioPoint,
         tokenRatioPoints,
-        last24data: last24Data,
+        // last24data: last24Data,
         activeUserCountNumber,
         totalAssetValue,
         sharedPrice,
@@ -241,7 +241,7 @@ export const fetchRebalances = () => async (dispatch) => {
         finixRewardPerYear,
         autoHerodotus,
         sharedPricePercentDiff,
-        twentyHperformance,
+        // twentyHperformance,
         ratioCal,
       }
     }),
