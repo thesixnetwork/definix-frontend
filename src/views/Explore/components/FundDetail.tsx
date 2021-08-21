@@ -13,14 +13,14 @@ import { Rebalance } from '../../../state/types'
 
 interface FundDetailType {
   rebalance?: Rebalance | any
-  periodPriceTokens?: number[] 
+  periodPriceTokens?: number[]
   className?: string
 }
 
 const Overflow = styled.div`
   overflow: auto;
 `
-const AssetDetail = ({ rebalance ,periodPriceTokens}) => {
+const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
   let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
@@ -65,10 +65,7 @@ const AssetDetail = ({ rebalance ,periodPriceTokens}) => {
         )
 
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
-        const priceLast24 = periodPriceTokens ? periodPriceTokens[index] :0
-             
-           // eslint-disable-next-line
-           debugger
+        const priceLast24 = periodPriceTokens ? periodPriceTokens[index] : 0
         const change = tokenPrice.minus(priceLast24).div(priceLast24).times(100)
         const changeNumber = change.toNumber()
 
@@ -146,7 +143,7 @@ const FactSheet = ({ rebalance }) => {
   )
 }
 
-const FundDetail: React.FC<FundDetailType> = ({ rebalance,periodPriceTokens, className = '' }) => {
+const FundDetail: React.FC<FundDetailType> = ({ rebalance, periodPriceTokens, className = '' }) => {
   const [currentTab, setCurrentTab] = useState(0)
 
   useEffect(
@@ -161,7 +158,11 @@ const FundDetail: React.FC<FundDetailType> = ({ rebalance,periodPriceTokens, cla
       <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
       <div style={{ height: '42px' }} />
       <Overflow className="pa-4 pt-0">
-        {currentTab === 0 ? <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens}/> : <FactSheet rebalance={rebalance} />}
+        {currentTab === 0 ? (
+          <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
+        ) : (
+          <FactSheet rebalance={rebalance} />
+        )}
       </Overflow>
     </Card>
   )
