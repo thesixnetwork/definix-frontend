@@ -230,7 +230,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 .times(100)
                 .toNumber(),
             )
-            rebalanceData.valuesPrice.push(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
+            rebalanceData.valuesPrice.push(
+              sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber(),
+            )
 
             // cal sharePrice
             const dataPoint = dataValues
@@ -382,18 +384,16 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             }
             if (!base.rebalance) {
               base.rebalance = sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
-              
             }
             sharePrices.push(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
             rebalanceData.values.push(
               new BigNumber(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
-              .div(new BigNumber(base.rebalance as number))
-              .times(100)
-              .toNumber(),
+                .div(new BigNumber(base.rebalance as number))
+                .times(100)
+                .toNumber(),
             )
             // rebalanceData.values.push(sumUsd)
 
-            
             // cal sharePrice
             const dataPoint = dataValues
             let _totalSupply = new BigNumber(dataPoint[0])
@@ -446,7 +446,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
           const valuesRebalanceCalculate = []
           const valuesPriceRebalanceCalculate = []
-          rebalanceData.values.forEach((val,index) => {
+          rebalanceData.values.forEach((val, index) => {
             valuesRebalanceCalculate.push((val - rebalanceMin) / rebalanceBetween + 20)
             valuesPriceRebalanceCalculate.push(sharePrices[index])
           })

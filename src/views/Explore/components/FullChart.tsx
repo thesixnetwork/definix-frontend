@@ -189,12 +189,11 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
           // debugger
           if ((dataTooltip.datasets[index].chartName as TypeChartName) === 'Price') {
             const price = dataTooltip.datasets[index].dataPrice[tooltipItem.index]
-            
-            if(dataTooltip.datasets[index].label === "rebalance"){
+
+            if (dataTooltip.datasets[index].label === 'rebalance') {
               return `${dataTooltip.datasets[index].label}: ${price.toFixed(2)}`
             }
-              return `${dataTooltip.datasets[index].label}: $ ${price.toFixed(2)}`
-            
+            return `${dataTooltip.datasets[index].label}: $ ${price.toFixed(2)}`
           }
           return `${dataTooltip.datasets[index].label}: ${tooltipItem.value}`
         },
