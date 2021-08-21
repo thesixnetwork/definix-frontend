@@ -129,11 +129,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             for (let i = 1; i <= tokens.length; i++) {
               oldPrice.push(fundGraphResult[0].values[i + tokens.length])
             }
-            // eslint-disable-next-line
-            // oldPrice
             setPeriodPriceTokens(oldPrice)
-
-            console.log('mmmm', fundGraphResult[0])
           }
 
           const label = []

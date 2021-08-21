@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { getAddress } from 'utils/addressHelpers'
 import numeral from 'numeral'
 import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import _ from 'lodash'
-// import { getAddress } from 'utils/addressHelpers'
 import { Table, TD, TH, TR } from './Table'
 import CardTab from './CardTab'
 import { Rebalance } from '../../../state/types'
@@ -99,7 +97,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
               </Text>
             </TD>
             <TD align="center">
-              <Text>{ratio ? ratio[index] : 0}%</Text>
+              <Text>{ratio ? ratio[index] : 0} %</Text>
             </TD>
           </TR>
         )
