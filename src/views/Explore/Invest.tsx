@@ -306,20 +306,32 @@ const CardCalculate = ({
         const valueklip = Number.parseFloat(valueNumber).toFixed(6)
         let expectValue = `${(Number(valueklip) + 0.00001) * 10 ** 18}`
         expectValue = expectValue.slice(0, -13)
+        const valueKlipParam = mainCoinValue!== "0" ? `${expectValue}0000000000000` : '0'
+        const al = `arrayTokenAmount : ${JSON.stringify(arrayTokenAmount)} usdTokenAmount: ${usdTokenAmount}`
+        alert(al)
+
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('addFund')),
           // JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
           JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
           setShowModal,
-          mainCoinValue ? `${expectValue}0000000000000` : '0',
+          valueKlipParam
         )
+        // eslint-disable-next-line
+        // debugger
         const tx = {
           transactionHash: await klipProvider.checkResponse(),
         }
         setShowModal(false)
         setTx(tx)
       } else {
+        // eslint-disable-next-line
+        arrayTokenAmount
+// eslint-disable-next-line
+        usdTokenAmount
+        // eslint-disable-next-line
+        // debugger
         const tx = await rebalanceContract.methods
           // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
           .addFund(arrayTokenAmount, usdTokenAmount, 0)
