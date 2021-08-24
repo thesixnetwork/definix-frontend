@@ -74,7 +74,7 @@ const usePrevious = (value, initialValue) => {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
-  const [chartName, setChartName] = useState<TypeChartName>('Price')
+  const [chartName, setChartName] = useState<TypeChartName>('Normalize')
   const [returnPercent, setReturnPercent] = useState(0)
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})

@@ -79,7 +79,15 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
   const onCheck = (token) => (event) => {
     setSelectedTokens({ ...selectedTokens, [token.symbol]: event.target.checked })
   }
-
+  const onCheckAll = () => (event) => {
+    const selectAllToken = {}
+    for (let i = 0; i < tokens.length; i++) {
+      const token = tokens[i]
+      selectAllToken[token.symbol] = event.target.checked
+    }
+    setSelectedTokens(selectAllToken)
+  }
+  
   return (
     <FormGroup row className="flex flex-wrap mb-5">
       <LegendItem className={isMobile ? 'col-6' : 'mr-6'}>
@@ -112,11 +120,26 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
           />
         )
       })}
+      <FormControlLabelCustom
+        className={isMobile ? 'col-6 ma-0' : ' mr-6'}
+        control={
+          <Checkbox size="small" color="primary"  onChange={onCheckAll()} />
+        }
+        label={
+          <LegendItem>
+            {/* <img src={`/images/coins/${c.symbol || ''}.png`} alt="" /> */}
+            <Text fontSize="14px" bold>
+              ALL
+            </Text>
+          </LegendItem>
+        }
+      />
     </FormGroup>
   )
 }
 
 const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
+
   const { isDark } = useTheme()
   const [selectedTokens, setSelectedTokens] = useState({})
   const data = (canvas) => {
@@ -125,7 +148,8 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
     const gradient = ctx.createLinearGradient(0, 0, 0, 320)
     gradient.addColorStop(0, rebalanceColor)
     gradient.addColorStop(0.7, isDark ? 'transparent' : 'white')
-
+    // eslint-disable-next-line
+    // debugger
     return {
       labels: _.get(graphData, 'labels', []),
       datasets: Object.keys(_.get(graphData, 'graph', {}))
@@ -133,6 +157,7 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
         .map((key) => {
           const thisData = _.get(graphData, `graph.${key}`, {})
           const thisName = thisData.name || ''
+
           return {
             label: thisName,
             chartName: _.get(graphData, `chartName`, ''),
@@ -143,11 +168,11 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
             tension: 0,
             ...(thisName === 'rebalance'
               ? {
-                  borderColor: rebalanceColor,
-                  backgroundColor: gradient,
-                  pointBackgroundColor: 'transparent',
-                  pointBorderColor: 'transparent',
-                }
+                borderColor: rebalanceColor,
+                backgroundColor: gradient,
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+              }
               : {}),
           }
         }),
@@ -195,7 +220,7 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
             }
             return `${dataTooltip.datasets[index].label}: $ ${price.toFixed(2)}`
           }
-          return `${dataTooltip.datasets[index].label}: ${tooltipItem.value}`
+          return `${dataTooltip.datasets[index].label}: ${(+tooltipItem.value).toFixed(2)}`
         },
       },
     },

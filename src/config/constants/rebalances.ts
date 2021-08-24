@@ -81,7 +81,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'KETH',
         value: 20,
-        color: '#393939',
+        color: '#6D6D6D',
         address: KETH,
       },
       {
