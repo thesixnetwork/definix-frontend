@@ -1,4 +1,5 @@
 import React from 'react'
+import UnlockButton from 'components/UnlockButton'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
@@ -61,25 +62,35 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
         />
       )}
 
-      <div
-        className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
-          isVertical ? 'flex-column bd-t pa-4' : ''
-        }`}
-      >
-        <Button
-          as={Link}
-          to="/rebalancing/invest"
-          fullWidth
-          radii="small"
-          className={isVertical ? 'mb-2' : 'mr-2'}
-          variant="success"
+      {account ? (
+        <div
+          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
+            isVertical ? 'flex-column bd-t pa-4' : ''
+          }`}
         >
-          INVEST
-        </Button>
-        <Button as={Link} to="/rebalancing/withdraw" fullWidth radii="small" className="flex flex-column">
-          WITHDRAW
-        </Button>
-      </div>
+          <Button
+            as={Link}
+            to="/rebalancing/invest"
+            fullWidth
+            radii="small"
+            className={isVertical ? 'mb-2' : 'mr-2'}
+            variant="success"
+          >
+            INVEST
+          </Button>
+          <Button as={Link} to="/rebalancing/withdraw" fullWidth radii="small" className="flex flex-column">
+            WITHDRAW
+          </Button>
+        </div>
+      ) : (
+        <div
+          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
+            isVertical ? 'flex-column bd-t pa-4' : ''
+          }`}
+        >
+          <UnlockButton fullWidth />
+        </div>
+      )}
     </CardStyled>
   )
 }

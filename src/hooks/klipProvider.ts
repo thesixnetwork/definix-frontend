@@ -96,20 +96,17 @@ export const genQRcodeContactInteract = (
   }
   axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
     requestKey = response.data.request_key
+    const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
     if (isMobile === true) {
-      const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
-      // await axios.get(url)
       intervalCheckResult = setInterval(getResultContract, 1000)
-      openDeeplink(url)
+      setTimeout(() => {
+        openDeeplink(url)
+      }, 1000)
     } else {
       setShowModal(true)
-      QRcode.toCanvas(
-        document.getElementById('qrcode'),
-        `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
-        () => {
-          intervalCheckResult = setInterval(getResultContract, 1000)
-        },
-      )
+      QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
+        intervalCheckResult = setInterval(getResultContract, 1000)
+      })
     }
   })
 }
