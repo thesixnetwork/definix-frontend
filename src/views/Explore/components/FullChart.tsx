@@ -202,7 +202,7 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
       ],
     },
     tooltips: {
-      mode: 'x',
+      mode: 'index',
       displayColors: false,
       callbacks: {
         label: (tooltipItem, dataTooltip) => {
