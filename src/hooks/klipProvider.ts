@@ -99,18 +99,14 @@ export const genQRcodeContactInteract = (
     const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
     if (isMobile === true) {
       intervalCheckResult = setInterval(getResultContract, 1000)
-      setTimeout(()=>{
+      setTimeout(() => {
         openDeeplink(url)
-      },1000)
+      }, 1000)
     } else {
       setShowModal(true)
-      QRcode.toCanvas(
-        document.getElementById('qrcode'),
-        url,
-        () => {
-          intervalCheckResult = setInterval(getResultContract, 1000)
-        },
-      )
+      QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
+        intervalCheckResult = setInterval(getResultContract, 1000)
+      })
     }
   })
 }
