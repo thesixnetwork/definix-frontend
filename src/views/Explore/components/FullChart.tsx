@@ -87,7 +87,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
     }
     setSelectedTokens(selectAllToken)
   }
-  
+
   return (
     <FormGroup row className="flex flex-wrap mb-5">
       <LegendItem className={isMobile ? 'col-6' : 'mr-6'}>
@@ -122,9 +122,7 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
       })}
       <FormControlLabelCustom
         className={isMobile ? 'col-6 ma-0' : ' mr-6'}
-        control={
-          <Checkbox size="small" color="primary"  onChange={onCheckAll()} />
-        }
+        control={<Checkbox size="small" color="primary" onChange={onCheckAll()} />}
         label={
           <LegendItem>
             {/* <img src={`/images/coins/${c.symbol || ''}.png`} alt="" /> */}
@@ -139,7 +137,6 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
 }
 
 const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
-
   const { isDark } = useTheme()
   const [selectedTokens, setSelectedTokens] = useState({})
   const data = (canvas) => {
@@ -168,11 +165,11 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
             tension: 0,
             ...(thisName === 'rebalance'
               ? {
-                borderColor: rebalanceColor,
-                backgroundColor: gradient,
-                pointBackgroundColor: 'transparent',
-                pointBorderColor: 'transparent',
-              }
+                  borderColor: rebalanceColor,
+                  backgroundColor: gradient,
+                  pointBackgroundColor: 'transparent',
+                  pointBorderColor: 'transparent',
+                }
               : {}),
           }
         }),
