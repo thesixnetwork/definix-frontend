@@ -56,7 +56,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
           {value}
         </Text>
         {percent && (
-          <Text fontSize="16px" bold color={percentClass} /* || failure */ className="ml-1">
+          <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
             {percent}
           </Text>
         )}
