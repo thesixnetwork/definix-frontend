@@ -7,7 +7,7 @@ import moment from 'moment'
 import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Card, LinkExternal, Text } from 'uikit-dev'
+import { AddIcon, Card, LinkExternal, MinusIcon, Text } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import { getAddress } from 'utils/addressHelpers'
 import CardTab from './CardTab'
@@ -79,7 +79,19 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
                 </div>
               </TD>
               <TD>
-                <Text>{r.event_name === 'AddFundAmount' ? 'Invest' : 'Withdraw'}</Text>
+                <div className="flex align-center">
+                  {r.event_name === 'AddFundAmount' ? (
+                    <>
+                      <AddIcon color="success" className="mr-1" />
+                      <Text>Invest</Text>
+                    </>
+                  ) : (
+                    <>
+                      <MinusIcon color="failure" className="mr-1" />
+                      <Text>Withdraw</Text>
+                    </>
+                  )}
+                </div>
               </TD>
               <TD>
                 <Text>{numeral(r.lp_amount).format('0,0.000')}</Text>
