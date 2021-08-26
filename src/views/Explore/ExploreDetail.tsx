@@ -20,6 +20,7 @@ import FullChart from './components/FullChart'
 import FundAction from './components/FundAction'
 import FundDetail from './components/FundDetail'
 import SelectTime from './components/SelectTime'
+import SelectChart, { TypeChartName } from './components/SelectChart'
 import TradeStrategy from './components/TradeStrategy'
 import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
@@ -42,7 +43,6 @@ const LeftPanelAbsolute = styled(LeftPanel)`
   overflow: auto;
   padding-bottom: 24px;
 `
-
 interface ExploreDetailType {
   rebalance: Rebalance | any
 }
@@ -74,8 +74,8 @@ const usePrevious = (value, initialValue) => {
 const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
+  const [chartName, setChartName] = useState<TypeChartName>('Normalize')
   const [returnPercent, setReturnPercent] = useState(0)
-  // const [performanceData, setPerformanceData] = useState<Record<string, string>>({})
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
   const { isXl, isLg } = useMatchBreakpoints()
@@ -85,6 +85,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   const { account } = useWallet()
   const prevRebalance = usePrevious(rebalance, {})
   const prevTimeframe = usePrevious(timeframe, '')
+  const [periodPriceTokens, setPeriodPriceTokens] = useState([])
 
   const [sharpRatio, setSharpRatio] = useState(0)
 
@@ -108,27 +109,34 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     }
   }, [dispatch, account, rebalance])
 
-  const fetchGraphData = useCallback(async () => {
-    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe)) {
+  const fetchReturnData = useCallback(async () => {
+    if (
+      !_.isEqual(rebalance, prevRebalance) ||
+      !_.isEqual(timeframe, prevTimeframe) ||
+      !_.isEqual(chartName, undefined)
+    ) {
       if (rebalance && rebalance.address) {
         setIsLoading(true)
         const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
-        const maxDrawDownAPI = process.env.REACT_APP_DEFINIX_MAX_DRAWDOWN_API
         try {
-          const maxDrawDownResp = await axios.get(`${maxDrawDownAPI}?pool=${getAddress(rebalance.address)}`)
           const fundGraphResp = await axios.get(
             `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
           )
           const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
-          const currentDrawdown = _.get(maxDrawDownResp, 'data.result.current_drawdown', [])
+          if (timeframe === '1D') {
+            const tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+            const oldPrice = []
+            for (let i = 1; i <= tokens.length; i++) {
+              oldPrice.push(fundGraphResult[0].values[i + tokens.length])
+            }
+            setPeriodPriceTokens(oldPrice)
+          }
 
           const label = []
           const rebalanceData = {
             name: 'rebalance',
             values: [],
           }
-          const sharePricesFromGraph = []
-          const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
@@ -165,8 +173,77 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 .toNumber(),
             )
 
+            dataValues = dataValues.splice(allCurrentTokens.length + 1)
+          })
+          setReturnPercent(rebalanceData.values[rebalanceData.values.length - 1] - rebalanceData.values[0])
+          setIsLoading(false)
+        } catch (error) {
+          setIsLoading(false)
+        }
+      }
+    }
+  }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
+
+  const fetchNormalizeGraphData = useCallback(async () => {
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Normalize') {
+      if (rebalance && rebalance.address) {
+        setIsLoading(true)
+        const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
+        const maxDrawDownAPI = process.env.REACT_APP_DEFINIX_MAX_DRAWDOWN_API
+        try {
+          const maxDrawDownResp = await axios.get(`${maxDrawDownAPI}?pool=${getAddress(rebalance.address)}`)
+          const fundGraphResp = await axios.get(
+            `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
+          )
+          const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+          const currentDrawdown = _.get(maxDrawDownResp, 'data.result.current_drawdown', [])
+
+          const label = []
+          const rebalanceData = {
+            name: 'rebalance',
+            values: [],
+            valuesPrice: [],
+          }
+          const sharePricesFromGraph = []
+          const graphTokenData: Record<string, any> = {}
+          const base: Record<string, any> = {}
+          fundGraphResult.forEach((data) => {
+            const allCurrentTokens = _.compact([
+              ...((rebalance || {}).tokens || []),
+              ...((rebalance || {}).usdToken || []),
+            ])
+            const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
+              formatter[timeframe],
+            )
+            label.push(timestampLabel)
+            let dataValues = _.get(data, 'values', [])
+            let sumUsd = 0
+            for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
+              const currentIndex = i + 1
+              const currentLoopToken = allCurrentTokens[i]
+              const currentLoopValue = new BigNumber(
+                dataValues[currentIndex + (dataValues.length - 1) / 2] || '1',
+              ).times(
+                new BigNumber(dataValues[currentIndex]).div(
+                  new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+                ),
+              )
+              sumUsd += currentLoopValue.toNumber()
+            }
+            if (!base.rebalance) {
+              base.rebalance = sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
+            }
+            rebalanceData.values.push(
+              new BigNumber(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
+                .div(new BigNumber(base.rebalance as number))
+                .times(100)
+                .toNumber(),
+            )
+            rebalanceData.valuesPrice.push(
+              sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber(),
+            )
+
             // cal sharePrice
-            // for (let index = 0; index < mergeArray.length; index++) {
             const dataPoint = dataValues
             let _totalSupply = new BigNumber(dataPoint[0])
             _totalSupply = _totalSupply.dividedBy(10 ** 18)
@@ -184,8 +261,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               totalUSD = totalUSD.plus(balance.multipliedBy(price))
             }
             const sharePrice = totalUSD.dividedBy(_totalSupply)
-            // eslint-disable-next-line
-            // debugger
+
             sharePricesFromGraph.push(sharePrice)
 
             dataValues = dataValues.splice(allCurrentTokens.length + 1)
@@ -198,9 +274,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 graphTokenData[token.symbol] = {
                   name: token.symbol,
                   values: [],
+                  valuesPrice: [],
                   color: ratioObject.color,
                 }
               }
+              graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
               graphTokenData[token.symbol].values.push(
                 new BigNumber(dataValues[index])
                   .div(base[token.symbol] as number)
@@ -210,14 +288,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             })
           })
           graphTokenData.rebalance = rebalanceData
-          // getSharpeRatio()
-          // eslint-disable-next-line
-          // sharePricesFromGraph
-          // const dataPoint = fundGraphResult.map((data) => data.values)
-          // const allCurrentTokens = _.compact([
-          //   ...((rebalance || {}).tokens || []),
-          //   ...((rebalance || {}).usdToken || []),
-          // ])
           const getSharpeRatio = (values, backPoint) => {
             const returns = values.map((value, index) =>
               index === 0
@@ -239,21 +309,200 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }
           setMaxDrawDown(currentDrawdown)
           setSharpRatio(getSharpeRatio(sharePricesFromGraph, sharePricesFromGraph.length))
-          setReturnPercent(rebalanceData.values[rebalanceData.values.length - 1] - rebalanceData.values[0])
-          setGraphData({ labels: label, graph: graphTokenData })
+          setGraphData({ labels: label, graph: graphTokenData, chartName })
           setIsLoading(false)
         } catch (error) {
           setIsLoading(false)
         }
       }
     }
-  }, [rebalance, timeframe, prevRebalance, prevTimeframe])
+  }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
 
-  // getSharpeRatio(sharePrices, sharePrices.length)
+  const fetchPriceGraphData = useCallback(async () => {
+    if (!_.isEqual(rebalance, prevRebalance) || !_.isEqual(timeframe, prevTimeframe) || chartName === 'Price') {
+      if (rebalance && rebalance.address) {
+        setIsLoading(true)
+        const fundGraphAPI = process.env.REACT_APP_API_FUND_GRAPH
+        const maxDrawDownAPI = process.env.REACT_APP_DEFINIX_MAX_DRAWDOWN_API
+        try {
+          const maxDrawDownResp = await axios.get(`${maxDrawDownAPI}?pool=${getAddress(rebalance.address)}`)
+          const fundGraphResp = await axios.get(
+            `${fundGraphAPI}?rebalance_address=${getAddress(rebalance.address)}&timeframe=${timeframe}`,
+          )
+          const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
+          const currentDrawdown = _.get(maxDrawDownResp, 'data.result.current_drawdown', [])
+          const label = []
+          const rebalanceData = {
+            name: 'rebalance',
+            values: [],
+            valuesPrice: [],
+          }
+          const sharePricesFromGraph = []
+          const graphTokenData: Record<string, any> = {}
+          const base: Record<string, any> = {}
+          // find min max between
+          const allCurrentTokens = _.compact([
+            ...((rebalance || {}).tokens || []),
+            ...((rebalance || {}).usdToken || []),
+          ])
 
+          const priceTokens = []
+          for (let index = 0; index < allCurrentTokens.length; index++) {
+            priceTokens.push([])
+          }
+          fundGraphResult.forEach((data) => {
+            const dataPoint = _.get(data, 'values', [])
+            for (let j = 0; j < allCurrentTokens.length; j++) {
+              if (j < allCurrentTokens.length) {
+                priceTokens[j].push(dataPoint[j + 1 + allCurrentTokens.length])
+              } else {
+                priceTokens[j].push(1)
+              }
+            }
+          })
+          const calToken = []
+          allCurrentTokens.forEach((token, index) => {
+            const min: number = _.min(priceTokens[index])
+            const max: number = _.max(priceTokens[index])
+            calToken.push({
+              min,
+              max,
+              between: (max - min) / 60,
+            })
+          })
+          const sharePrices = []
+          fundGraphResult.forEach((data) => {
+            const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
+              formatter[timeframe],
+            )
+            label.push(timestampLabel)
+            let dataValues = _.get(data, 'values', [])
+            let sumUsd = 0
+            for (let i = 0; i <= (dataValues.length - 1) / 2; i++) {
+              const currentIndex = i + 1
+              const currentLoopToken = allCurrentTokens[i]
+
+              const currentLoopValue = new BigNumber(
+                dataValues[currentIndex + (dataValues.length - 1) / 2] || '1',
+              ).times(
+                new BigNumber(dataValues[currentIndex]).div(
+                  new BigNumber(10).pow(_.get(currentLoopToken, 'decimals', 18)),
+                ),
+              )
+              sumUsd += currentLoopValue.toNumber()
+            }
+            if (!base.rebalance) {
+              base.rebalance = sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber()
+            }
+            sharePrices.push(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
+            rebalanceData.values.push(
+              new BigNumber(sumUsd / new BigNumber(dataValues[0]).div(new BigNumber(10).pow(18)).toNumber())
+                .div(new BigNumber(base.rebalance as number))
+                .times(100)
+                .toNumber(),
+            )
+            // rebalanceData.values.push(sumUsd)
+
+            // cal sharePrice
+            const dataPoint = dataValues
+            let _totalSupply = new BigNumber(dataPoint[0])
+            _totalSupply = _totalSupply.dividedBy(10 ** 18)
+            let totalUSD = new BigNumber(0)
+            for (let j = 1; j < allCurrentTokens.length + 1; j++) {
+              let balance = new BigNumber(dataPoint[j])
+              balance = balance.dividedBy(10 ** allCurrentTokens[j - 1].decimals)
+
+              let price = new BigNumber(0)
+              if (j < allCurrentTokens.length) {
+                price = new BigNumber(dataPoint[j + allCurrentTokens.length])
+              } else {
+                price = new BigNumber(1)
+              }
+              totalUSD = totalUSD.plus(balance.multipliedBy(price))
+            }
+            const sharePrice = totalUSD.dividedBy(_totalSupply)
+            sharePricesFromGraph.push(sharePrice)
+            // cal sharePrice end
+
+            dataValues = dataValues.splice(allCurrentTokens.length + 1)
+            allCurrentTokens.forEach((token, index) => {
+              if (!base[token.symbol]) {
+                base[token.symbol] = dataValues[index]
+              }
+              if (!graphTokenData[token.symbol]) {
+                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
+                graphTokenData[token.symbol] = {
+                  name: token.symbol,
+                  values: [],
+                  valuesPrice: [],
+                  color: ratioObject.color,
+                }
+              }
+              if (token.symbol === 'KUSDT') {
+                graphTokenData[token.symbol].values.push(50)
+                graphTokenData[token.symbol].valuesPrice.push(1)
+              } else {
+                graphTokenData[token.symbol].values.push(
+                  new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
+                )
+                graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+              }
+            })
+          })
+          const rebalanceMin = _.min(rebalanceData.values)
+          const rebalanceMax = _.max(rebalanceData.values)
+          const rebalanceBetween = (rebalanceMax - rebalanceMin) / 60
+
+          const valuesRebalanceCalculate = []
+          const valuesPriceRebalanceCalculate = []
+          rebalanceData.values.forEach((val, index) => {
+            valuesRebalanceCalculate.push((val - rebalanceMin) / rebalanceBetween + 20)
+            valuesPriceRebalanceCalculate.push(sharePrices[index])
+          })
+          rebalanceData.values = valuesRebalanceCalculate
+          rebalanceData.valuesPrice = valuesPriceRebalanceCalculate
+
+          graphTokenData.rebalance = rebalanceData
+
+          const getSharpeRatio = (values, backPoint) => {
+            const returns = values.map((value, index) =>
+              index === 0
+                ? new BigNumber(0)
+                : value
+                    .dividedBy(values[index - 1])
+                    .minus(1)
+                    .multipliedBy(100),
+            )
+            const sliceReturns = returns.slice(-1 * backPoint)
+            const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
+            const avg = sum.dividedBy(sliceReturns.length) || 0
+            const std = sliceReturns
+              .map((value) => value.minus(avg).exponentiatedBy(2))
+              .reduce((previous, current) => previous.plus(current), new BigNumber(0))
+              .dividedBy(sliceReturns.length - 1)
+              .squareRoot()
+            return avg.dividedBy(std)
+          }
+          setMaxDrawDown(currentDrawdown)
+          setSharpRatio(getSharpeRatio(sharePricesFromGraph, sharePricesFromGraph.length))
+          setGraphData({ labels: label, graph: graphTokenData, chartName })
+          // eslint-disable-next-line
+          // debugger
+          setIsLoading(false)
+        } catch (error) {
+          setIsLoading(false)
+        }
+      }
+    }
+  }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
   useEffect(() => {
-    fetchGraphData()
-  }, [fetchGraphData])
+    fetchReturnData()
+    if (chartName === 'Price') {
+      fetchPriceGraphData()
+    } else {
+      fetchNormalizeGraphData()
+    }
+  }, [fetchPriceGraphData, fetchNormalizeGraphData, fetchReturnData, chartName])
 
   if (!rebalance) return <Redirect to="/rebalancing" />
   const { ratio } = rebalance
@@ -353,7 +602,14 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
                 <div className="pa-4 pt-5">
                   <div className="flex flex-wrap align-center justify-space-between mb-3">
-                    <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
+                    <div className="flex flex-wrap align-center justify-space-between mb-3">
+                      <div>
+                        <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
+                      </div>
+                      <div style={{ marginLeft: isMobile ? '0px' : '20px', marginTop: isMobile ? '10px' : '0px' }}>
+                        <SelectChart chartName={chartName} setChartName={setChartName} />
+                      </div>
+                    </div>
                     <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
                       {false && (
                         <TwoLineFormat
@@ -367,6 +623,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                           className="mr-6"
                         />
                       )}
+
                       <TwoLineFormat
                         title="Return"
                         value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
@@ -404,7 +661,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 buybackFee={_.get(rebalance, 'fee.buyback', 1.5)}
                 className="mb-4"
               />
-              <FundDetail className="mb-4" rebalance={rebalance} />
+              <FundDetail className="mb-4" rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
               <Transaction className="mb-4" rbAddress={rebalance.address} />
             </div>
 

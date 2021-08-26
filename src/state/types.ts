@@ -93,6 +93,7 @@ export interface Rebalance extends RebalanceConfig {
   autoHerodotus?: string
   sharedPricePercentDiff?: number
   twentyHperformance?: number
+  ratioCal?: string[]
 }
 
 // Slices states

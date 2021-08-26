@@ -28,7 +28,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'KETH',
         value: 20,
-        color: '#393939',
+        color: '#6D6D6D',
         address: KETH,
       },
       {
@@ -81,7 +81,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'KETH',
         value: 20,
-        color: '#393939',
+        color: '#6D6D6D',
         address: KETH,
       },
       {
@@ -134,7 +134,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'KETH',
         value: 25,
-        color: '#393939',
+        color: '#6D6D6D',
         address: KETH,
       },
       {
@@ -187,7 +187,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'KETH',
         value: 30,
-        color: '#393939',
+        color: '#6D6D6D',
         address: KETH,
       },
       {
@@ -252,7 +252,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'KETH',
         value: 16,
-        color: '#393939',
+        color: '#6D6D6D',
         address: KETH,
       },
       {
@@ -323,7 +323,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'KETH',
         value: 16.6,
-        color: '#393939',
+        color: '#6D6D6D',
         address: KETH,
       },
       {
