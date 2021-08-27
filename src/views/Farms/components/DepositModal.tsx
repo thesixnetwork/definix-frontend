@@ -82,7 +82,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         className="mt-5"
         radii="card"
       >
-        {pendingTx ? t('Pending') : t(`Deposit ${tokenName}`)}
+        {pendingTx ? t('Pending') : t('Deposit %tokenname%', { tokenname: `${tokenName}` })}
       </Button>
     </Modal>
   )
