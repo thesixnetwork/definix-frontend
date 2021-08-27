@@ -1097,5 +1097,6 @@
   "Pending": "Pending",
   "Remove LP": "Remove LP",
   "Remove %tokenname%": "Remove %tokenname%",
-  "Deposit %tokenname%": "Deposit %tokenname%"
+  "Deposit %tokenname%": "Deposit %tokenname%",
+  "Go to Rebalancing Farm now": "Go to Rebalancing Farm now"
 }

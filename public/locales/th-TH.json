@@ -1097,5 +1097,6 @@
   "Pending": "รอดำเนินการ",
   "Remove LP": "ถอน LP ออกจาก Farm",
   "Remove %tokenname%": "ถอนเหรียญ %tokenname% ออกจาก pool",
-  "Deposit %tokenname%": "ฝากเหรียญ %tokenname%"
+  "Deposit %tokenname%": "ฝากเหรียญ %tokenname%",
+  "Go to Rebalancing Farm now": "ไปที่ Rebalancing Farm ตอนนี้"
 }

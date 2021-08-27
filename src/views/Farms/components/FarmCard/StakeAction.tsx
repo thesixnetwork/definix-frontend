@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import { EN } from 'config/localization/languages'
 import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
 import { useTranslation } from 'contexts/Localization'
@@ -11,6 +12,7 @@ import { getContract } from 'utils/erc20'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
 import { FarmWithStakedValue } from './types'
+import { getLanguageCodeFromLS } from '../../../../contexts/Localization/helpers'
 
 interface FarmStakeActionProps {
   farm: FarmWithStakedValue
@@ -41,6 +43,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const [requestedApproval, setRequestedApproval] = useState(false)
 
   const { t } = useTranslation()
+  const codeFromStorage = getLanguageCodeFromLS()
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { allowance, stakedBalance } = useFarmUser(pid)
   const lpAddress = getAddress(lpAddresses)
@@ -129,7 +132,9 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${lpName} ${t('Staked')}`}</Text>
+      <Text textAlign="left" className="mb-2" color="textSubtle">
+        {codeFromStorage === 'ko-KR' ? <>{`${t('Staked')} ${lpName}`}</> : <>{`${lpName} ${t('Staked')}`}</>}
+      </Text>
       {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
     </div>
   )

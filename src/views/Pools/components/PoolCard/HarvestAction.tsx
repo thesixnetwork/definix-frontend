@@ -28,7 +28,9 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation()
-  const codeFromStorage = getLanguageCodeFromLS()
+  // const codeFromStorage = getLanguageCodeFromLS()
+  // console.log('codeFromStorage =', codeFromStorage)
+  // console.log('KO =', codeFromStorage === 'ko-KR')
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
@@ -42,7 +44,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
       <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
         <MiniLogo src={miniLogo} alt="" />
         {`FINIX ${t('Earned')}`}
-        {/* {codeFromStorage === 'th-TH' ? <>{`${t('Earned')} FINIX`}</> : <>{`FINIX ${t('Earned')}`}</>} */}
+        {/* {codeFromStorage === 'ko-KR' ? <>{`${t('Earned')} FINIX`}</> : <>{`FINIX ${t('Earned')}`}</>} */}
       </Text>
 
       <div className="flex align-center justify-space-between">

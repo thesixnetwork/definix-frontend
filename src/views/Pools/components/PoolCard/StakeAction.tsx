@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { StakeActionProps } from './types'
+import { getLanguageCodeFromLS } from '../../../../contexts/Localization/helpers'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   className = '',
 }) => {
   const { t } = useTranslation()
-
+  const codeFromStorage = getLanguageCodeFromLS()
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [readyToStake, setReadyToStake] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
@@ -133,7 +134,9 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${tokenName} ${t('Staked')}`}</Text>
+      <Text textAlign="left" className="mb-2" color="textSubtle">
+        {codeFromStorage === 'ko-KR' ? <>{`${t('Staked')} ${tokenName}`}</> : <>{`${tokenName} ${t('Staked')}`}</>}
+      </Text>
       {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
     </div>
   )

@@ -73,7 +73,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
         </Text>
 
         <Button radii="card" className="mt-4" as="a" href="https://klaytn.definix.com/rebalancing">
-          Go to Rebalancing Farm now
+          {t('Go to Rebalancing Farm now')}
         </Button>
       </div>
     </StyledBanner>
