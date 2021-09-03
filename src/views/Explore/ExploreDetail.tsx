@@ -128,7 +128,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             name: 'rebalance',
             values: [],
           }
-          const ALL = "ALL"
+          const ALL = 'ALL'
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
@@ -167,25 +167,23 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
             dataValues = dataValues.splice(allCurrentTokens.length + 1)
           })
-          let maxValue = new BigNumber(0);
-          let maxDrawDownPercent = new BigNumber(0);
-          
+          let maxValue = new BigNumber(0)
+          let maxDrawDownPercent = new BigNumber(0)
+
           // let maxDrawDownValue;
           for (let index = 0; index < rebalanceData.values.length; index++) {
-            const value = new BigNumber(rebalanceData.values[index]);
-            if(value.isLessThan(maxValue)) {
-              const drawDown = maxValue.minus(value)
-              .dividedBy(maxValue)
-              .multipliedBy(100)
+            const value = new BigNumber(rebalanceData.values[index])
+            if (value.isLessThan(maxValue)) {
+              const drawDown = maxValue.minus(value).dividedBy(maxValue).multipliedBy(100)
               if (drawDown.isGreaterThan(maxDrawDownPercent)) {
-                maxDrawDownPercent = drawDown;
-                
+                maxDrawDownPercent = drawDown
+
                 // maxDrawDownValue = value;
               }
             }
-            if(value.isGreaterThan(maxValue)){
+            if (value.isGreaterThan(maxValue)) {
               // reset max value
-              maxValue = value; 
+              maxValue = value
             }
           }
           setMaxDrawDown(maxDrawDownPercent.toNumber())
@@ -196,7 +194,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
         }
       }
     }
-  },[rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
+  }, [rebalance, timeframe, prevRebalance, prevTimeframe, chartName])
 
   const fetchReturnData = useCallback(async () => {
     if (
@@ -393,7 +391,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               .squareRoot()
             return avg.dividedBy(std)
           }
-        
+
           setSharpRatio(getSharpeRatio(sharePricesFromGraph, sharePricesFromGraph.length))
           setGraphData({ labels: label, graph: graphTokenData, chartName })
           setIsLoading(false)
@@ -589,7 +587,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
     } else {
       fetchNormalizeGraphData()
     }
-  }, [fetchPriceGraphData, fetchNormalizeGraphData, fetchReturnData, chartName,fetchMaxDrawDown])
+  }, [fetchPriceGraphData, fetchNormalizeGraphData, fetchReturnData, chartName, fetchMaxDrawDown])
 
   if (!rebalance) return <Redirect to="/rebalancing" />
   const { ratio } = rebalance
