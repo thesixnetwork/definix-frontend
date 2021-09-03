@@ -88,6 +88,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '', po
               className="mt-4"
               onClick={() => {
                 logout()
+                window.localStorage.removeItem("userAccount")
                 window.localStorage.removeItem('connector')
                 window.localStorage.removeItem(localStorageKey)
                 window.location.reload()

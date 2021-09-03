@@ -168,7 +168,7 @@ const CardInput = ({
           setShowModal,
         )
         const tx = await klipProvider.checkResponse()
-        setTx(tx)
+        setTx({transactionHash:tx})
       } else {
         const tx = await rebalanceContract.methods
           .removeFund(
@@ -392,6 +392,7 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
   const isMobile = !isXl
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
   const { transactionHash } = tx
+
   return (
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4' : 'pa-6'}>
