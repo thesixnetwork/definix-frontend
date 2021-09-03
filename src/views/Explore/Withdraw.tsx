@@ -168,7 +168,7 @@ const CardInput = ({
           setShowModal,
         )
         const tx = await klipProvider.checkResponse()
-        setTx({transactionHash:tx})
+        setTx({ transactionHash: tx })
       } else {
         const tx = await rebalanceContract.methods
           .removeFund(

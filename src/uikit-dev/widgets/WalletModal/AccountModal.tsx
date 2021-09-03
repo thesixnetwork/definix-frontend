@@ -33,7 +33,6 @@ const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null
         size="sm"
         variant="secondary"
         onClick={() => {
-          
           logout()
           window.localStorage.removeItem(localStorageKey)
           onDismiss()
