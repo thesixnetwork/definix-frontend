@@ -322,12 +322,14 @@ const CardCalculate = ({
         }
         setShowModal(false)
         setTx(tx)
+        handleLocalStorage(tx)
       } else {
         const tx = await rebalanceContract.methods
           // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
           .addFund(arrayTokenAmount, usdTokenAmount, 0)
           .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
         setTx(tx)
+        handleLocalStorage(tx)
       }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
@@ -502,6 +504,18 @@ const usePrevious = (value, initialValue) => {
   return ref.current
 }
 
+const handleLocalStorage = async (tx) => {
+  const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
+  const array = []
+  array.push(isLocalStorage)
+
+  localStorage.setItem('my_invest_tx', JSON.stringify(tx))
+
+  if (Object.keys(isLocalStorage).length <= 0) {
+    localStorage.setItem('my_invest_tx', JSON.stringify(tx))
+  }
+}
+
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [tx, setTx] = useState({})
   const [poolUSDBalances, setPoolUSDBalances] = useState([])
@@ -580,6 +594,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const totalUSDAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
     .div(new BigNumber(10).pow(usdToken.decimals || 18))
     .toNumber()
+
   return (
     <>
       <Helmet>

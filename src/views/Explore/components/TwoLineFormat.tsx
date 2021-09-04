@@ -17,6 +17,7 @@ interface TwoLineFormatType {
   alignRight?: boolean
   percentClass?: string
   valueClass?: string
+  currentInvestPercentDiff?: string
 }
 
 const TwoLineFormat: React.FC<TwoLineFormatType> = ({
@@ -34,6 +35,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   alignRight = false,
   percentClass = 'success',
   valueClass,
+  currentInvestPercentDiff,
 }) => {
   return (
     <div className={className}>
@@ -54,6 +56,9 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
       <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
         <Text fontSize={large ? '24px' : '16px'} bold color={valueClass} lineHeight={large ? '1.3' : '1.5'}>
           {value}
+        </Text>
+        <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
+          {currentInvestPercentDiff}
         </Text>
         {percent && (
           <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">

@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import Checkbox from '@material-ui/core/Checkbox'
 import _ from 'lodash'
+import axios from 'axios'
 import moment from 'moment'
 import BigNumber from 'bignumber.js'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -88,6 +89,18 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
+const handleLocalStorage = async (tx) => {
+  const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
+  const array = []
+  array.push(isLocalStorage)
+
+  localStorage.setItem('my_invest_tx', JSON.stringify(tx))
+
+  if (Object.keys(isLocalStorage).length <= 0) {
+    localStorage.setItem('my_invest_tx', JSON.stringify(tx))
+  }
+}
+
 const InlineAssetRatioLabel = ({ coin, className = '' }) => {
   const thisName = (() => {
     if (coin.symbol === 'WKLAY') return 'KLAY'
@@ -135,6 +148,69 @@ const CardInput = ({
   const dispatch = useDispatch()
   const { isDark } = useTheme()
 
+  const api = 'https://d6x5x5n4v3.execute-api.ap-southeast-1.amazonaws.com'
+
+  const [totalUsd, setTotalUsd] = useState(0)
+  const [percentage, setPercentage] = useState(0)
+  const sharedprice = numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')
+
+  const combinedAmount = useCallback(
+    async (rebalances, accounts) => {
+      // get total_usd_amount new tx_hash
+      const getData = JSON.parse(localStorage.getItem('my_invest_tx'))
+      const txnHash = getData.transactionHash
+      if (Object.keys(getData).length !== 0) {
+        const txHash = {
+          txns: [txnHash],
+        }
+        const txns = txHash
+        const resp = await axios.post(`${api}/txns_usd_amount`, txns)
+
+        if (resp.data.success) {
+          const datas = resp.data
+          const total = _.get(datas, 'total_usd_amount')
+          const totalUsdAmount = total + totalUsd
+          if (sharedprice > 0) {
+            const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+            setPercentage(diffNewAmount)
+          }
+        }
+      }
+
+      // get total_usd_amount
+      const poolAddr = _.get(rebalances, 'factsheet.vault', '')
+      const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
+      const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
+      const array = []
+      array.push(isLocalStorage)
+
+      if (res.data.success) {
+        const datas = res.data
+        const latestTxns = _.get(datas, 'latest_txn')
+        const totalUsds = _.get(datas, 'total_usd_amount')
+
+        if (array.length > 0) {
+          array.map((item) => {
+            return (
+              item.transactionHash === latestTxns &&
+              localStorage.setItem('my_invest_tx', JSON.stringify(array.slice(1)))
+            )
+          })
+        }
+        setTotalUsd(totalUsds)
+        if (sharedprice > 0) {
+          const diffPercent = ((sharedprice - totalUsds) / totalUsds) * 100
+          setPercentage(diffPercent)
+        }
+      }
+    },
+    [sharedprice, totalUsd],
+  )
+
+  useEffect(() => {
+    combinedAmount(rebalance, account)
+  }, [rebalance, account, combinedAmount])
+
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
   const onWithdraw = async () => {
     const rebalanceContract = getCustomContract(
@@ -169,6 +245,7 @@ const CardInput = ({
         )
         const tx = await klipProvider.checkResponse()
         setTx(tx)
+        handleLocalStorage(tx)
       } else {
         const tx = await rebalanceContract.methods
           .removeFund(
@@ -186,6 +263,7 @@ const CardInput = ({
           )
           .send({ from: account, gas: 5000000 })
         setTx(tx)
+        handleLocalStorage(tx)
       }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
@@ -197,6 +275,7 @@ const CardInput = ({
       setIsWithdrawing(false)
     }
   }
+
   return (
     <Card className="mb-4">
       <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-4 py-4'} `}>
@@ -216,7 +295,6 @@ const CardInput = ({
           </Button>
           <SettingButton />
         </div>
-
         <TwoLineFormat
           title="Current investment"
           titleColor={isDark ? '#ADB4C2' : ''}
@@ -224,8 +302,15 @@ const CardInput = ({
           subTitle={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
           large
           className="mb-4"
+          currentInvestPercentDiff={`${
+            percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
+          }%`}
+          percentClass={(() => {
+            if (percentage < 0) return 'failure'
+            if (percentage > 0) return 'success'
+            return ''
+          })()}
         />
-
         <div className="flex flex-wrap justify-space-between align-center">
           <Text>Withdraw</Text>
 
