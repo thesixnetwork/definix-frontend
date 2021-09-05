@@ -85,25 +85,25 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const combinedAmount = useCallback(
     async (rebalances, accounts) => {
-      // get total_usd_amount new tx_hash
       const getData = JSON.parse(localStorage.getItem('my_invest_tx'))
-      const txnHash = getData.transactionHash
-      if (Object.keys(getData).length !== 0) {
-        const txHash = {
-          txns: [txnHash],
-        }
+      if (getData !== null) {
+        const txnHash = getData.transactionHash
+        if (Object.keys(getData).length !== 0) {
+          const txHash = {
+            txns: [txnHash],
+          }
+          const txns = txHash
+          const resp = await axios.post(`${api}/txns_usd_amount`, txns)
 
-        const txns = txHash
-        const resp = await axios.post(`${api}/txns_usd_amount`, txns)
+          if (resp.data.success) {
+            const datas = resp.data
+            const total = _.get(datas, 'total_usd_amount')
 
-        if (resp.data.success) {
-          const datas = resp.data
-          const total = _.get(datas, 'total_usd_amount')
-
-          if (sharedprice !== 0) {
-            const totalUsdAmount = total + totalUsd
-            const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-            setPercentage(diffNewAmount)
+            if (sharedprice > 0 && totalUsd > 0) {
+              const totalUsdAmount = total + totalUsd
+              const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+              setPercentage(diffNewAmount)
+            }
           }
         }
       }
@@ -111,6 +111,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       // get total_usd_amount
       const poolAddr = _.get(rebalances, 'factsheet.vault', '')
       const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
+
       const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
       const array = []
       array.push(isLocalStorage)
@@ -119,17 +120,18 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         const datas = res.data
         const latestTxns = _.get(datas, 'latest_txn')
         const totalUsds = _.get(datas, 'total_usd_amount')
-
-        if (array.length > 0) {
-          array.map((item) => {
-            return (
-              item.transactionHash === latestTxns &&
-              localStorage.setItem('my_invest_tx', JSON.stringify(array.slice(1)))
-            )
-          })
+        if (isLocalStorage !== null) {
+          if (array.length > 0) {
+            array.map((item) => {
+              return (
+                item.transactionHash === latestTxns &&
+                localStorage.setItem('my_invest_tx', JSON.stringify(array.slice(1)))
+              )
+            })
+          }
         }
         setTotalUsd(totalUsds)
-        if (sharedprice > 0) {
+        if (sharedprice > 0 && totalUsd > 0) {
           const diffPercent = ((sharedprice - totalUsd) / totalUsd) * 100
           setPercentage(diffPercent)
         }
