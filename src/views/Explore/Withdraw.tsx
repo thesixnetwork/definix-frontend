@@ -169,8 +169,9 @@ const CardInput = ({
         if (resp.data.success) {
           const datas = resp.data
           const total = _.get(datas, 'total_usd_amount')
-          const totalUsdAmount = total + totalUsd
+
           if (sharedprice > 0) {
+            const totalUsdAmount = total + totalUsd
             const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
             setPercentage(diffNewAmount)
           }
@@ -198,7 +199,7 @@ const CardInput = ({
           })
         }
         setTotalUsd(totalUsds)
-        if (sharedprice > 0) {
+        if (sharedprice > 0 && totalUsds > 0) {
           const diffPercent = ((sharedprice - totalUsds) / totalUsds) * 100
           setPercentage(diffPercent)
         }

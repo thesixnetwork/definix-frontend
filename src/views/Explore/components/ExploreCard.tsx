@@ -80,9 +80,8 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const api = 'https://d6x5x5n4v3.execute-api.ap-southeast-1.amazonaws.com'
 
   const [totalUsd, setTotalUsd] = useState(0)
-  const [latest, setLatest] = useState('')
-  const sharedprice = numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')
   const [percentage, setPercentage] = useState(0)
+  const sharedprice = numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')
 
   const combinedAmount = useCallback(
     async (rebalances, accounts) => {
@@ -100,8 +99,9 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         if (resp.data.success) {
           const datas = resp.data
           const total = _.get(datas, 'total_usd_amount')
-          const totalUsdAmount = total + totalUsd
+
           if (sharedprice !== 0) {
+            const totalUsdAmount = total + totalUsd
             const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
             setPercentage(diffNewAmount)
           }
@@ -110,34 +110,32 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
       // get total_usd_amount
       const poolAddr = _.get(rebalances, 'factsheet.vault', '')
-      if (latest !== undefined) {
-        const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
-        const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
-        const array = []
-        array.push(isLocalStorage)
+      const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
+      const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
+      const array = []
+      array.push(isLocalStorage)
 
-        if (res.data.success) {
-          const datas = res.data
-          const latestTxns = _.get(datas, 'latest_txn')
-          const totalUsds = _.get(datas, 'total_usd_amount')
-          setLatest(latestTxns)
-          if (array.length > 0) {
-            array.map((item) => {
-              return (
-                item.transactionHash === latestTxns &&
-                localStorage.setItem('my_invest_tx', JSON.stringify(array.slice(1)))
-              )
-            })
-          }
-          setTotalUsd(totalUsds)
-          if (sharedprice > 0) {
-            const diffPercent = ((sharedprice - totalUsds) / totalUsds) * 100
-            setPercentage(diffPercent)
-          }
+      if (res.data.success) {
+        const datas = res.data
+        const latestTxns = _.get(datas, 'latest_txn')
+        const totalUsds = _.get(datas, 'total_usd_amount')
+
+        if (array.length > 0) {
+          array.map((item) => {
+            return (
+              item.transactionHash === latestTxns &&
+              localStorage.setItem('my_invest_tx', JSON.stringify(array.slice(1)))
+            )
+          })
+        }
+        setTotalUsd(totalUsds)
+        if (sharedprice > 0) {
+          const diffPercent = ((sharedprice - totalUsd) / totalUsd) * 100
+          setPercentage(diffPercent)
         }
       }
     },
-    [sharedprice, totalUsd, latest],
+    [sharedprice, totalUsd],
   )
 
   useEffect(() => {

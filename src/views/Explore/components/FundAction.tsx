@@ -60,8 +60,9 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
         if (resp.data.success) {
           const datas = resp.data
           const total = _.get(datas, 'total_usd_amount')
-          const totalUsdAmount = total + totalUsd
-          if (sharedprice > 0) {
+
+          if (sharedprice > 0 && totalUsd > 0) {
+            const totalUsdAmount = total + totalUsd
             const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
             setPercentage(diffNewAmount)
           }
@@ -89,7 +90,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
           })
         }
         setTotalUsd(totalUsds)
-        if (sharedprice > 0) {
+        if (sharedprice > 0 && totalUsds > 0) {
           const diffPercent = ((sharedprice - totalUsds) / totalUsds) * 100
           setPercentage(diffPercent)
         }
@@ -117,18 +118,6 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
             <Text fontSize="24px" bold lineHeight="1.3">
               {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
             </Text>
-            {/* <Text
-              className="ml-1"
-              fontSize="12px"
-              bold
-              color={(() => {
-                if (diff < 0) return 'failure'
-                if (diff > 0) return 'success'
-                return ''
-              })()}
-            >
-              {diff.toFixed(2)}
-            </Text> */}
             <Text
               className="ml-1"
               fontSize="12px"
