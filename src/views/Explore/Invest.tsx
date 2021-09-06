@@ -506,10 +506,10 @@ const usePrevious = (value, initialValue) => {
 
 const handleLocalStorage = async (tx) => {
   const { transactionHash } = tx
-  const isLocalStorage = localStorage.getItem('my_invest_tx')
-  const myInvestTxns = JSON.parse(isLocalStorage)
+  const isLocalStorage = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : "[]"
+  const myInvestTxns : Array<string> = JSON.parse(isLocalStorage)
 
-  if (Object.keys(myInvestTxns).length <= 0 && myInvestTxns !== undefined) {
+  if (myInvestTxns.length > 0 ) {
     myInvestTxns.push(transactionHash)
     localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
   } else {

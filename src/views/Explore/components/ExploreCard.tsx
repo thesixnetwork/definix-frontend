@@ -85,53 +85,52 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const combinedAmount = useCallback(
     async (rebalances, accounts) => {
-      const getData = localStorage.getItem('my_invest_tx')
-      const myInvestTxns = JSON.parse(getData)
+      const getData = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : "[]"
+      const myInvestTxns: Array<string> = JSON.parse(getData)
 
-      if (Object.keys(myInvestTxns).length <= 0 && myInvestTxns !== null) {
-        const txnHash = myInvestTxns.transactionHash
+      if (myInvestTxns.length > 0) {
+        const txHash = {
+          txns: myInvestTxns,
+        }
+        const resp = await axios.post(`${api}/txns_usd_amount`, txHash)
 
-        if (Object.keys(getData).length !== 0 && txnHash !== undefined) {
-          const txHash = {
-            txns: [txnHash],
+        if (resp.data.success) {
+          const datas = resp.data
+          const total = _.get(datas, 'total_usd_amount')
+
+          if (sharedprice > 0 && totalUsd > 0) {
+            const totalUsdAmount = total + totalUsd
+            const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+            setPercentage(diffNewAmount)
+            
           }
-          const txns = txHash
-          const resp = await axios.post(`${api}/txns_usd_amount`, txns)
+        }
 
-          if (resp.data.success) {
-            const datas = resp.data
-            const total = _.get(datas, 'total_usd_amount')
+      } else { // if dont have txs
 
-            if (sharedprice > 0 && totalUsd > 0) {
-              const totalUsdAmount = total + totalUsd
-              const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-              setPercentage(diffNewAmount)
-            }
+        // get total_usd_amount
+        const poolAddr = _.get(rebalances, 'factsheet.vault', '')
+        const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
+
+        const isLocalStorage = localStorage.getItem('my_invest_tx')
+        const myInvestTxn = JSON.parse(isLocalStorage)
+        if (res.data.success) {
+          const datas = res.data
+          const latestTxns = _.get(datas, 'latest_txn')
+          const totalUsds = _.get(datas, 'total_usd_amount')
+          if (myInvestTxn !== null) {
+            myInvestTxn.map((tx) => {
+              return tx === latestTxns && localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxn.slice(1)))
+            })
+          }
+          setTotalUsd(totalUsds)
+          if (sharedprice > 0 && totalUsd > 0) {
+            const diffPercent = ((sharedprice - totalUsd) / totalUsd) * 100
+            setPercentage(diffPercent)
           }
         }
       }
-
-      // get total_usd_amount
-      const poolAddr = _.get(rebalances, 'factsheet.vault', '')
-      const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
-
-      const isLocalStorage = localStorage.getItem('my_invest_tx')
-      const myInvestTxn = JSON.parse(isLocalStorage)
-      if (res.data.success) {
-        const datas = res.data
-        const latestTxns = _.get(datas, 'latest_txn')
-        const totalUsds = _.get(datas, 'total_usd_amount')
-        if (myInvestTxn !== null) {
-          myInvestTxn.map((tx) => {
-            return tx === latestTxns && localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxn.slice(1)))
-          })
-        }
-        setTotalUsd(totalUsds)
-        if (sharedprice > 0 && totalUsd > 0) {
-          const diffPercent = ((sharedprice - totalUsd) / totalUsd) * 100
-          setPercentage(diffPercent)
-        }
-      }
+      
     },
     [sharedprice, totalUsd],
   )
