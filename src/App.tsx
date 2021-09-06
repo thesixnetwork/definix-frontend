@@ -80,6 +80,13 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
       connect('injected')
+    } else if (
+      !account &&
+      window.localStorage.getItem('accountStatus') &&
+      checkConnector('klip') &&
+      window.localStorage.getItem('userAccount')
+    ) {
+      connect('klip')
     }
   }, [account, connect])
   const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector

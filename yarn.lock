@@ -3473,23 +3473,23 @@
   resolved "https://registry.yarnpkg.com/@sixnetwork/caverjs-react-types/-/caverjs-react-types-1.0.3.tgz#fe327838a9361c6f00d751052b7b6f429f0450ce"
   integrity sha512-0A09AIhxypZ4qvsSE9EGsQPgzpuLRtf644xV/JDkpA7j1HhAcH3lZ/Lb0SOxiipHi9T6U/phAZLdRrL9euH/1w==
 
-"@sixnetwork/klaytn-use-wallet@1.1.8-klip-mobile-support-v1":
-  version "1.1.8-klip-mobile-support-v1"
-  resolved "https://registry.yarnpkg.com/@sixnetwork/klaytn-use-wallet/-/klaytn-use-wallet-1.1.8-klip-mobile-support-v1.tgz#30d50a1a9b19469093fdaf6f62e6b35bcb041dc5"
-  integrity sha512-7unfn06XD+a19C30ssebYkQCLW6zuIvhuJeHQAmaRADQU3RFLMBqKO5N2FOx1vnwWq2s+IM69ePlhtcDX2ztRQ==
+"@sixnetwork/klaytn-use-wallet@1.1.10":
+  version "1.1.10"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klaytn-use-wallet/-/klaytn-use-wallet-1.1.10.tgz#30739c5c9607b8c75c4437abc7194d53753e2c84"
+  integrity sha512-m2E942pva/1O7GTzMOuGHlW+E7/Wo6Aw33Q4UPt5Arqxl3tkaR7BcbZ/gOeUCMOwpY3Vgtq9DM94OlMJCwwfTg==
   dependencies:
     "@rollup/plugin-image" "^2.0.6"
     "@sixnetwork/caverjs-react-core" "^1.1.3"
     "@sixnetwork/caverjs-react-injected-connector" "^1.0.5"
-    "@sixnetwork/klip-connector" "^1.0.8-klip-mobile-support-v6"
+    "@sixnetwork/klip-connector" "^1.0.10"
     axios "^0.21.1"
     jsbi "^3.1.1"
     qrcode "^1.4.4"
 
-"@sixnetwork/klip-connector@1.0.8-klip-mobile-support-v6", "@sixnetwork/klip-connector@^1.0.8-klip-mobile-support-v6":
-  version "1.0.8-klip-mobile-support-v6"
-  resolved "https://registry.yarnpkg.com/@sixnetwork/klip-connector/-/klip-connector-1.0.8-klip-mobile-support-v6.tgz#13b8420198a8a47315e59c76a066a926dd2cd76d"
-  integrity sha512-M+0oRBk/gBx6zW5v48zwOTnQ/CrsRqQv0tYpk4KNGTEr+at3DzvDdYtFH1/69o9Q7s64vlx8u3wELtAF9fN+Uw==
+"@sixnetwork/klip-connector@1.0.10", "@sixnetwork/klip-connector@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@sixnetwork/klip-connector/-/klip-connector-1.0.10.tgz#a6db0c09d306c090999ff854c98181d0db8849f2"
+  integrity sha512-+Lz7t7kVZoLyXCV+TpRUr8Qujg4lZ2GeRb5l7B+Uvg+lo+z0E7on6EIij1A+O5Uj2g10CiHavWTeP4NhQ6NUGA==
   dependencies:
     "@sixnetwork/caverjs-react-abstract-connector" "^1.0.4"
     "@sixnetwork/caverjs-react-types" "^1.0.3"
