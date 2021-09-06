@@ -89,8 +89,6 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
-
-
 const InlineAssetRatioLabel = ({ coin, className = '' }) => {
   const thisName = (() => {
     if (coin.symbol === 'WKLAY') return 'KLAY'
@@ -138,73 +136,77 @@ const CardInput = ({
   const dispatch = useDispatch()
   const { isDark } = useTheme()
 
-  const api = 'https://d6x5x5n4v3.execute-api.ap-southeast-1.amazonaws.com'
+  const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
 
-  
   const [percentage, setPercentage] = useState(0)
   const sharedprice = numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')
 
-  const combinedAmount = useCallback(
-    async (rebalances, accounts) => {
-      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
+  const combinedAmount = useCallback(async () => {
+    const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
 
-      const myInvestTxnLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
-      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
-      const resTotalTxn = (await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${accounts}`))
-      
-      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
-      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-      const indexTx = _.findIndex(
-        myInvestTxns,
-        (investTxs) => investTxs === latestTxns
-      )
+    const myInvestTxnLocalStorage = JSON.parse(
+      localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}',
+    )
 
-       // eslint-disable-next-line
-       debugger
-      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
-      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
-      localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxnLocalStorage))
+    const byAccountLocalStorage = JSON.parse(
+      localStorage.getItem('by_account') ? localStorage.getItem('by_account') : '{}',
+    )
 
-      const txHash = {
-        txns: transactionsSlice,
-      }
+    const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
+    const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
 
-      const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-      const total = _.get(datas, 'total_usd_amount')
-     
+    const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
+    const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
+    const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
 
-      const totalUsd = totalUsds
-      if (sharedprice > 0 && totalUsd > 0) {
-        const totalUsdAmount = total + totalUsd
-        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-        setPercentage(diffNewAmount)
-      }
+    const transactionsSlice = myInvestTxns.slice(indexTx + 1)
+    myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
+    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxnLocalStorage))
 
+    byAccountLocalStorage[account] = transactionsSlice
+    localStorage.setItem('by_account', JSON.stringify(byAccountLocalStorage))
 
-    },
-    [sharedprice, rebalance]
-  )
+    const txHash = {
+      txns: transactionsSlice,
+    }
+
+    const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
+    const total = _.get(datas, 'total_usd_amount')
+
+    const totalUsd = totalUsds
+
+    if (sharedprice > 0 && totalUsd > 0) {
+      const totalUsdAmount = total + totalUsd
+      const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+      setPercentage(diffNewAmount)
+    }
+  }, [sharedprice, rebalance, account, api])
 
   useEffect(() => {
-    combinedAmount(rebalance, account)
-  }, [rebalance, account, combinedAmount])
+    combinedAmount()
+  }, [combinedAmount])
 
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
 
   const handleLocalStorage = async (tx) => {
     const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
-      
-      const { transactionHash } = tx
-      const myInvestTxns = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
-  
-      if(myInvestTxns[rebalanceAddress]){
-        myInvestTxns[rebalanceAddress].push(transactionHash)
-      }else{
-        myInvestTxns[rebalanceAddress] = [transactionHash]
-      }
-     
-      localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
+
+    const { transactionHash } = tx
+    const myInvestTxns = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
+    const myAccountPools = JSON.parse(localStorage.getItem('by_account') ? localStorage.getItem('by_account') : '{}')
+
+    if (myInvestTxns[rebalanceAddress] && myAccountPools[account]) {
+      myInvestTxns[rebalanceAddress].push(transactionHash)
+      myAccountPools[account].push(transactionHash)
+    } else {
+      myInvestTxns[rebalanceAddress] = [transactionHash]
+      myAccountPools[account] = [transactionHash]
+    }
+
+    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
+    localStorage.setItem('by_account', JSON.stringify(myAccountPools))
   }
+
   const onWithdraw = async () => {
     const rebalanceContract = getCustomContract(
       klaytn as provider,

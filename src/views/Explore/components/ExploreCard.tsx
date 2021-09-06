@@ -77,56 +77,55 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
-  const api = 'https://d6x5x5n4v3.execute-api.ap-southeast-1.amazonaws.com'
+  const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
 
-  // const [totalUsd, setTotalUsd] = useState(0)
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
-  const combinedAmount = useCallback(
-    async (rebalances, accounts) => {
-      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
+  const combinedAmount = useCallback(async () => {
+    const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
 
-      const myInvestTxnLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
-      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
-      const resTotalTxn = (await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${accounts}`))
-      
-      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
-      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-      const indexTx = _.findIndex(
-        myInvestTxns,
-        (investTxs) => investTxs === latestTxns
-      )
+    const myInvestTxnLocalStorage = JSON.parse(
+      localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}',
+    )
 
-       // eslint-disable-next-line
-       debugger
-      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
-      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
-      localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxnLocalStorage))
+    const byAccountLocalStorage = JSON.parse(
+      localStorage.getItem('by_account') ? localStorage.getItem('by_account') : '{}',
+    )
 
-      const txHash = {
-        txns: transactionsSlice,
-      }
+    const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
+    const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
 
-      const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-      const total = _.get(datas, 'total_usd_amount')
-     
+    const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
+    const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
+    const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
 
-      const totalUsd = totalUsds
-      if (sharedprice > 0 && totalUsd > 0) {
-        const totalUsdAmount = total + totalUsd
-        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-        setPercentage(diffNewAmount)
-      }
+    const transactionsSlice = myInvestTxns.slice(indexTx + 1)
+    myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
+    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxnLocalStorage))
 
+    byAccountLocalStorage[account] = transactionsSlice
+    localStorage.setItem('by_account', JSON.stringify(byAccountLocalStorage))
 
-    },
-    [sharedprice, rebalance],
-  )
+    const txHash = {
+      txns: transactionsSlice,
+    }
+
+    const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
+    const total = _.get(datas, 'total_usd_amount')
+
+    const totalUsd = totalUsds
+
+    if (sharedprice > 0 && totalUsd > 0) {
+      const totalUsdAmount = total + totalUsd
+      const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+      setPercentage(diffNewAmount)
+    }
+  }, [sharedprice, rebalance, account, api])
 
   useEffect(() => {
-    combinedAmount(rebalance, account)
-  }, [rebalance, account, combinedAmount])
+    combinedAmount()
+  }, [combinedAmount])
 
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
   if (isHorizontal) {

@@ -275,21 +275,22 @@ const CardCalculate = ({
     return priceImpact
   })()
   const handleLocalStorage = async (tx) => {
-     
     const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
-    
+
     const { transactionHash } = tx
     const myInvestTxns = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
+    const myAccountPools = JSON.parse(localStorage.getItem('by_account') ? localStorage.getItem('by_account') : '{}')
 
-    if(myInvestTxns[rebalanceAddress]){
+    if (myInvestTxns[rebalanceAddress] && myAccountPools[account]) {
       myInvestTxns[rebalanceAddress].push(transactionHash)
-    }else{
+      myAccountPools[account].push(transactionHash)
+    } else {
       myInvestTxns[rebalanceAddress] = [transactionHash]
+      myAccountPools[account] = [transactionHash]
     }
-   
+
     localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
-    // eslint-disable-next-line
-    debugger
+    localStorage.setItem('by_account', JSON.stringify(myAccountPools))
   }
   const onInvest = async () => {
     const rebalanceContract = getCustomContract(
