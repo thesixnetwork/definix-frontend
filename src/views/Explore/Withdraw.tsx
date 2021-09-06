@@ -392,6 +392,7 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
   const isMobile = !isXl
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
   const { transactionHash } = tx
+
   return (
     <Card className="mb-4">
       <div className={isMobile ? 'pa-4' : 'pa-6'}>
