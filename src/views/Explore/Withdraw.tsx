@@ -91,7 +91,7 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 
 const handleLocalStorage = async (tx) => {
   const { transactionHash } = tx
-  const isLocalStorage = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : "[]"
+  const isLocalStorage = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '[]'
   const myInvestTxns = JSON.parse(isLocalStorage)
 
   if (Object.keys(myInvestTxns).length <= 0 && myInvestTxns !== undefined) {

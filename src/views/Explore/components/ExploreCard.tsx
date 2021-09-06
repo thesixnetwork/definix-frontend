@@ -79,60 +79,88 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const api = 'https://d6x5x5n4v3.execute-api.ap-southeast-1.amazonaws.com'
 
-  const [totalUsd, setTotalUsd] = useState(0)
+  // const [totalUsd, setTotalUsd] = useState(0)
   const [percentage, setPercentage] = useState(0)
   const sharedprice = numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')
 
   const combinedAmount = useCallback(
     async (rebalances, accounts) => {
-      const getData = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : "[]"
-      const myInvestTxns: Array<string> = JSON.parse(getData)
+      const rebalanceAddress = getAddress(_.get(rebalance,"address"))
+      // eslint-disable-next-line
+      // debugger
+      const getData = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}'
+      const myInvestTxns = JSON.parse(getData)
+      const totalUsdsCalPercents = localStorage.getItem('totalUsdsCalPercent')
+      ? localStorage.getItem('totalUsdsCalPercent')
+      : "{}"
+      const decodeTotalUsdsCalPercents = JSON.parse(totalUsdsCalPercents)
+      if (myInvestTxns[rebalanceAddress] && decodeTotalUsdsCalPercents[rebalanceAddress]) {
+        const res = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${accounts}`)
 
-      if (myInvestTxns.length > 0) {
+
+          const latestTxns = _.get(res.data, 'latest_txn')
+          const totalUsds = _.get(res.data, 'total_usd_amount')
+          const indexTx = _.findIndex(myInvestTxns[rebalanceAddress],(investTxs)=> investTxs === latestTxns)
+          decodeTotalUsdsCalPercents[rebalanceAddress] = totalUsds
+          localStorage.setItem('totalUsdsCalPercent', JSON.stringify(decodeTotalUsdsCalPercents))
+
+          const mySlide = myInvestTxns[rebalanceAddress].slice(indexTx+1)
+          localStorage.setItem('my_invest_tx',JSON.stringify(mySlide))
+        // eslint-disable-next-line
+        console.log('if >0')
         const txHash = {
-          txns: myInvestTxns,
+          txns: mySlide,
         }
         const resp = await axios.post(`${api}/txns_usd_amount`, txHash)
 
         if (resp.data.success) {
           const datas = resp.data
           const total = _.get(datas, 'total_usd_amount')
+          // eslint-disable-next-line
+          // debugger
+              
+          // localStorage.setItem('totalUsdsCalPercent', JSON.stringify(decodeTotalUsdsCalPercents))
 
+            const totalUsd = decodeTotalUsdsCalPercents[rebalanceAddress] ? +decodeTotalUsdsCalPercents[rebalanceAddress] : 0
           if (sharedprice > 0 && totalUsd > 0) {
             const totalUsdAmount = total + totalUsd
             const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
             setPercentage(diffNewAmount)
-            
           }
         }
-
-      } else { // if dont have txs
-
+      } else {
+        // if dont have txs
+        // eslint-disable-next-line
+        console.log('else ret')
         // get total_usd_amount
+      
         const poolAddr = _.get(rebalances, 'factsheet.vault', '')
         const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
 
-        const isLocalStorage = localStorage.getItem('my_invest_tx')
-        const myInvestTxn = JSON.parse(isLocalStorage)
+        // const isLocalStorage = localStorage.getItem('my_invest_tx')
+        // const myInvestTxn = JSON.parse(isLocalStorage)
+
         if (res.data.success) {
           const datas = res.data
-          const latestTxns = _.get(datas, 'latest_txn')
+          // const latestTxns = _.get(datas, 'latest_txn')
           const totalUsds = _.get(datas, 'total_usd_amount')
-          if (myInvestTxn !== null) {
-            myInvestTxn.map((tx) => {
-              return tx === latestTxns && localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxn.slice(1)))
-            })
-          }
-          setTotalUsd(totalUsds)
-          if (sharedprice > 0 && totalUsd > 0) {
-            const diffPercent = ((sharedprice - totalUsd) / totalUsd) * 100
+
+          // if (latestTxns !== null) {
+           
+          // }
+           
+          decodeTotalUsdsCalPercents[rebalanceAddress] = totalUsds
+          
+          localStorage.setItem('totalUsdsCalPercent', JSON.stringify(decodeTotalUsdsCalPercents))
+
+          if (sharedprice > 0 && totalUsds > 0) {
+            const diffPercent = ((sharedprice - totalUsds) / totalUsds) * 100
             setPercentage(diffPercent)
           }
         }
       }
-      
     },
-    [sharedprice, totalUsd],
+    [sharedprice,rebalance],
   )
 
   useEffect(() => {
@@ -163,11 +191,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 subTitle="(Since inception)"
                 subTitleFontSize="11px"
                 value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
-                percent={`${
-                  rebalance.sharedPricePercentDiff >= 0
+                percent={`${rebalance.sharedPricePercentDiff >= 0
                     ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
                     : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-                }%`}
+                  }%`}
                 percentClass={(() => {
                   if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
                   if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
@@ -195,11 +222,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   title="Current investment"
                   value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
                   days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
-                  currentInvestPercentDiff={`${
-                    percentage > 0
+                  currentInvestPercentDiff={`${percentage > 0
                       ? `+${numeral(percentage).format('0,0.[00]')}`
                       : `${numeral(percentage).format('0,0.[00]')}`
-                  }%`}
+                    }%`}
                   percentClass={(() => {
                     if (percentage < 0) return 'failure'
                     if (percentage > 0) return 'success'
@@ -252,11 +278,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               subTitle="(Since inception)"
               subTitleFontSize="11px"
               value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
-              percent={`${
-                rebalance.sharedPricePercentDiff >= 0
+              percent={`${rebalance.sharedPricePercentDiff >= 0
                   ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
                   : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-              }%`}
+                }%`}
               percentClass={(() => {
                 if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
                 if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
@@ -271,11 +296,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               title="Current investment"
               value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
               days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
-              currentInvestPercentDiff={`${
-                percentage > 0
+              currentInvestPercentDiff={`${percentage > 0
                   ? `+${numeral(percentage).format('0,0.[00]')}`
                   : `${numeral(percentage).format('0,0.[00]')}`
-              }%`}
+                }%`}
               percentClass={(() => {
                 if (percentage < 0) return 'failure'
                 if (percentage > 0) return 'success'
@@ -305,11 +329,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           subTitle="(Since inception)"
           subTitleFontSize="11px"
           value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
-          percent={`${
-            rebalance.sharedPricePercentDiff >= 0
+          percent={`${rebalance.sharedPricePercentDiff >= 0
               ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
               : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-          }%`}
+            }%`}
           percentClass={(() => {
             if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
             if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
@@ -337,11 +360,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             title="Current investment"
             value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
             days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
-            currentInvestPercentDiff={`${
-              percentage > 0
+            currentInvestPercentDiff={`${percentage > 0
                 ? `+${numeral(percentage).format('0,0.[00]')}`
                 : `${numeral(percentage).format('0,0.[00]')}`
-            }%`}
+              }%`}
             percentClass={(() => {
               if (percentage < 0) return 'failure'
               if (percentage > 0) return 'success'

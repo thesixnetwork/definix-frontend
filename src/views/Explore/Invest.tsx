@@ -274,7 +274,22 @@ const CardCalculate = ({
     if (priceImpact === Number.POSITIVE_INFINITY || priceImpact === Number.NEGATIVE_INFINITY) return 0
     return priceImpact
   })()
-
+  const handleLocalStorage = async (tx) => {
+    const rebalanceAddress:string = getAddress(_.get(rebalance,"address"))
+    const { transactionHash } = tx
+    const isLocalStorage = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}'
+    const myInvestTxns = JSON.parse(isLocalStorage)
+    
+    if (myInvestTxns[rebalanceAddress]) {
+      myInvestTxns[rebalanceAddress].push(transactionHash)
+      localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
+    } else {
+      const txHash = {}
+      txHash[rebalanceAddress] = [transactionHash]
+      // [transactionHash]
+      localStorage.setItem('my_invest_tx', JSON.stringify(txHash))
+    }
+  }
   const onInvest = async () => {
     const rebalanceContract = getCustomContract(
       klaytn as provider,
@@ -504,19 +519,7 @@ const usePrevious = (value, initialValue) => {
   return ref.current
 }
 
-const handleLocalStorage = async (tx) => {
-  const { transactionHash } = tx
-  const isLocalStorage = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : "[]"
-  const myInvestTxns : Array<string> = JSON.parse(isLocalStorage)
 
-  if (myInvestTxns.length > 0 ) {
-    myInvestTxns.push(transactionHash)
-    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
-  } else {
-    const txHash = [transactionHash]
-    localStorage.setItem('my_invest_tx', JSON.stringify(txHash))
-  }
-}
 
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [tx, setTx] = useState({})
