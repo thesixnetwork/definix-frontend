@@ -19,7 +19,7 @@ interface FundActionType {
   isVertical?: boolean
 }
 
-const CardStyled = styled(Card)<{ isVertical: boolean }>`
+const CardStyled = styled(Card) <{ isVertical: boolean }>`
   position: sticky;
   top: ${({ isVertical }) => (isVertical ? '0' : 'initial')};
   bottom: ${({ isVertical }) => (!isVertical ? '0' : 'initial')};
@@ -41,86 +41,49 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
   const api = 'https://d6x5x5n4v3.execute-api.ap-southeast-1.amazonaws.com'
 
-  // const [totalUsd, setTotalUsd] = useState(0)
+
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
   const combinedAmount = useCallback(
     async (rebalances, accounts) => {
-      const rebalanceAddress = getAddress(_.get(rebalance,"address"))
-      // eslint-disable-next-line
-      // debugger
-      const getData = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}'
-      const myInvestTxns = JSON.parse(getData)
-      // const totalUsdsCalPercents = localStorage.getItem('totalUsdsCalPercent')
-      // ? localStorage.getItem('totalUsdsCalPercent')
-      // : "{}"
-      // const decodeTotalUsdsCalPercents = JSON.parse(totalUsdsCalPercents)
-      if (myInvestTxns[rebalanceAddress]) {
-        const res = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${accounts}`)
+      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
 
-          const latestTxns = _.get(res.data, 'latest_txn')
-          const totalUsds = _.get(res.data, 'total_usd_amount')
-          const indexTx = _.findIndex(myInvestTxns[rebalanceAddress], investTxs => investTxs === latestTxns)
-          // decodeTotalUsdsCalPercents[rebalanceAddress] = totalUsds
-          // localStorage.setItem('totalUsdsCalPercent', JSON.stringify(decodeTotalUsdsCalPercents))
-
-          const mySlide = myInvestTxns[rebalanceAddress].slice(indexTx+1)
-          localStorage.setItem('my_invest_tx',JSON.stringify(mySlide))
-        // eslint-disable-next-line
-        console.log('if >0')
-        const txHash = {
-          txns: mySlide,
-        }
-        const resp = await axios.post(`${api}/txns_usd_amount`, txHash)
-
-        if (resp.data.success) {
-          const datas = resp.data
-          const total = _.get(datas, 'total_usd_amount')
-          // eslint-disable-next-line
-          debugger
-              
-
-            const totalUsd =totalUsds
-          if (sharedprice > 0 && totalUsd > 0) {
-            const totalUsdAmount = total + totalUsd
-            const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-            setPercentage(diffNewAmount)
-          }
-        }
-      } else {
-        // if dont have txs
-        // eslint-disable-next-line
-        console.log('else ret')
-        // get total_usd_amount
+      const myInvestTxnLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
+      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
+      const resTotalTxn = (await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${accounts}`))
       
-        const poolAddr = _.get(rebalances, 'factsheet.vault', '')
-        const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
+      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
+      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
+      const indexTx = _.findIndex(
+        myInvestTxns,
+        (investTxs) => investTxs === latestTxns
+      )
 
-        // const isLocalStorage = localStorage.getItem('my_invest_tx')
-        // const myInvestTxn = JSON.parse(isLocalStorage)
+       // eslint-disable-next-line
+       debugger
+      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
+      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
+      localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxnLocalStorage))
 
-        if (res.data.success) {
-          const datas = res.data
-          // const latestTxns = _.get(datas, 'latest_txn')
-          const totalUsds = _.get(datas, 'total_usd_amount')
-
-          // if (latestTxns !== null) {
-           
-          // }
-           
-          // decodeTotalUsdsCalPercents[rebalanceAddress] = totalUsds
-          // 
-          // localStorage.setItem('totalUsdsCalPercent', JSON.stringify(decodeTotalUsdsCalPercents))
-
-          if (sharedprice > 0 && totalUsds > 0) {
-            const diffPercent = ((sharedprice - totalUsds) / totalUsds) * 100
-            setPercentage(diffPercent)
-          }
-        }
+      const txHash = {
+        txns: transactionsSlice,
       }
+
+      const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
+      const total = _.get(datas, 'total_usd_amount')
+     
+
+      const totalUsd = totalUsds
+      if (sharedprice > 0 && totalUsd > 0) {
+        const totalUsdAmount = total + totalUsd
+        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+        setPercentage(diffNewAmount)
+      }
+
+
     },
-    [sharedprice,rebalance],
+    [sharedprice, rebalance],
   )
 
   useEffect(() => {
@@ -152,11 +115,10 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
                 return ''
               })()}
             >
-              {`(${
-                percentage > 0
-                  ? `+${numeral(percentage).format('0,0.[00]')}`
-                  : `${numeral(percentage).format('0,0.[00]')}`
-              }%)`}
+              {`(${percentage > 0
+                ? `+${numeral(percentage).format('0,0.[00]')}`
+                : `${numeral(percentage).format('0,0.[00]')}`
+                }%)`}
             </Text>
           </div>
         </div>
@@ -166,9 +128,8 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
           subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
           value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
           large
-          currentInvestPercentDiff={`${
-            percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
-          }%`}
+          currentInvestPercentDiff={`${percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
+            }%`}
           percentClass={(() => {
             if (percentage < 0) return 'failure'
             if (percentage > 0) return 'success'
@@ -179,9 +140,8 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
       {account ? (
         <div
-          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
-            isVertical ? 'flex-column bd-t pa-4' : ''
-          }`}
+          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${isVertical ? 'flex-column bd-t pa-4' : ''
+            }`}
         >
           <Button
             as={Link}
@@ -199,9 +159,8 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
         </div>
       ) : (
         <div
-          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
-            isVertical ? 'flex-column bd-t pa-4' : ''
-          }`}
+          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${isVertical ? 'flex-column bd-t pa-4' : ''
+            }`}
         >
           <UnlockButton fullWidth />
         </div>

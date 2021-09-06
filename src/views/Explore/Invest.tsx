@@ -275,20 +275,21 @@ const CardCalculate = ({
     return priceImpact
   })()
   const handleLocalStorage = async (tx) => {
-    const rebalanceAddress:string = getAddress(_.get(rebalance,"address"))
-    const { transactionHash } = tx
-    const isLocalStorage = localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}'
-    const myInvestTxns = JSON.parse(isLocalStorage)
+     
+    const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
     
-    if (myInvestTxns[rebalanceAddress]) {
+    const { transactionHash } = tx
+    const myInvestTxns = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
+
+    if(myInvestTxns[rebalanceAddress]){
       myInvestTxns[rebalanceAddress].push(transactionHash)
-      localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
-    } else {
-      const txHash = {}
-      txHash[rebalanceAddress] = [transactionHash]
-      // [transactionHash]
-      localStorage.setItem('my_invest_tx', JSON.stringify(txHash))
+    }else{
+      myInvestTxns[rebalanceAddress] = [transactionHash]
     }
+   
+    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
+    // eslint-disable-next-line
+    debugger
   }
   const onInvest = async () => {
     const rebalanceContract = getCustomContract(
@@ -518,8 +519,6 @@ const usePrevious = (value, initialValue) => {
   })
   return ref.current
 }
-
-
 
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [tx, setTx] = useState({})
