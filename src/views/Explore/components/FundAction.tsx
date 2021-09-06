@@ -47,10 +47,12 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
   const combinedAmount = useCallback(
     async (rebalances, accounts) => {
-      const getData = JSON.parse(localStorage.getItem('my_invest_tx'))
-      if (getData !== null) {
-        const txnHash = getData.transactionHash
-        if (Object.keys(getData).length !== 0) {
+      const getData = localStorage.getItem('my_invest_tx')
+      const myInvestTxns = JSON.parse(getData)
+
+      if (Object.keys(myInvestTxns).length <= 0 && myInvestTxns !== null) {
+        const txnHash = myInvestTxns.transactionHash
+        if (Object.keys(getData).length !== 0 && txnHash !== undefined) {
           const txHash = {
             txns: [txnHash],
           }
@@ -74,23 +76,16 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
       const poolAddr = _.get(rebalances, 'factsheet.vault', '')
       const res = await axios.get(`${api}/total_txn_amount?pool=${poolAddr}&address=${accounts}`)
 
-      const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
-      const array = []
-      array.push(isLocalStorage)
-
+      const isLocalStorage = localStorage.getItem('my_invest_tx')
+      const myInvestTxn = JSON.parse(isLocalStorage)
       if (res.data.success) {
         const datas = res.data
         const latestTxns = _.get(datas, 'latest_txn')
         const totalUsds = _.get(datas, 'total_usd_amount')
-        if (isLocalStorage !== null) {
-          if (array.length > 0) {
-            array.map((item) => {
-              return (
-                item.transactionHash === latestTxns &&
-                localStorage.setItem('my_invest_tx', JSON.stringify(array.slice(1)))
-              )
-            })
-          }
+        if (myInvestTxn !== null) {
+          myInvestTxn.map((tx) => {
+            return tx === latestTxns && localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxn.slice(1)))
+          })
         }
         setTotalUsd(totalUsds)
         if (sharedprice > 0 && totalUsd > 0) {

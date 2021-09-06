@@ -505,18 +505,16 @@ const usePrevious = (value, initialValue) => {
 }
 
 const handleLocalStorage = async (tx) => {
-  const isLocalStorage = JSON.parse(localStorage.getItem('my_invest_tx'))
-  if (isLocalStorage !== null && isLocalStorage !== undefined) {
-    const array = []
-    array.push(isLocalStorage)
+  const { transactionHash } = tx
+  const isLocalStorage = localStorage.getItem('my_invest_tx')
+  const myInvestTxns = JSON.parse(isLocalStorage)
 
-    localStorage.setItem('my_invest_tx', JSON.stringify(tx))
-
-    if (Object.keys(isLocalStorage).length <= 0) {
-      localStorage.setItem('my_invest_tx', JSON.stringify(tx))
-    }
+  if (Object.keys(myInvestTxns).length <= 0 && myInvestTxns !== undefined) {
+    myInvestTxns.push(transactionHash)
+    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
   } else {
-    localStorage.setItem('my_invest_tx', JSON.stringify(tx))
+    const txHash = [transactionHash]
+    localStorage.setItem('my_invest_tx', JSON.stringify(txHash))
   }
 }
 
