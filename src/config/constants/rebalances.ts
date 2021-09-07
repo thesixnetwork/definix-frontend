@@ -358,10 +358,8 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Bullish Giant',
-    description:
-      'xxx description xxx',
-    fullDescription:
-      'xxx full description xxx',
+    description: 'xxx description xxx',
+    fullDescription: 'xxx full description xxx',
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '',
@@ -399,10 +397,8 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Top Coin Collector',
-    description:
-      'xxx description xxx',
-    fullDescription:
-      'xxx full description xxx',
+    description: 'xxx description xxx',
+    fullDescription: 'xxx full description xxx',
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '',
@@ -446,10 +442,8 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Three Marketeers',
-    description:
-      'xxx description xxx',
-    fullDescription:
-      'xxx full description xxx',
+    description: 'xxx description xxx',
+    fullDescription: 'xxx full description xxx',
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '',
