@@ -18,7 +18,7 @@ interface TwoLineFormatType {
   percentClass?: string
   valueClass?: string
   currentInvestPercentDiff?: string
-  totalUsdAmounts?: string
+  diffAmounts?: string
 }
 
 const TwoLineFormat: React.FC<TwoLineFormatType> = ({
@@ -37,7 +37,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   percentClass = 'success',
   valueClass,
   currentInvestPercentDiff,
-  totalUsdAmounts,
+  diffAmounts,
 }) => {
   return (
     <div className={className}>
@@ -59,13 +59,13 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
         <Text fontSize={large ? '24px' : '16px'} bold color={valueClass} lineHeight={large ? '1.3' : '1.5'}>
           {value}
         </Text>
-        {totalUsdAmounts && (
+        {diffAmounts !== '+0' && (
           <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
-            {totalUsdAmounts}
+            {diffAmounts}
           </Text>
         )}
-        {currentInvestPercentDiff && (
-          <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
+        {currentInvestPercentDiff !== '(0%)' && (
+          <Text fontSize={large ? '14px' : '12px'} bold color={percentClass} className="ml-1">
             {currentInvestPercentDiff}
           </Text>
         )}

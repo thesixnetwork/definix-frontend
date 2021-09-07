@@ -41,7 +41,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
   const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
 
-  const [totalUsdAmounts, setTotalUsdAmounts] = useState(0)
+  const [diffAmounts, setDiffAmount] = useState(0)
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
@@ -77,7 +77,8 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
       if (sharedprice > 0 && totalUsd > 0) {
         const totalUsdAmount = total + totalUsd
-        setTotalUsdAmounts(totalUsdAmount)
+        const diff = totalUsdAmount - sharedprice
+        setDiffAmount(diff)
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
       }
@@ -103,27 +104,44 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
             <Text fontSize="24px" bold lineHeight="1.3">
               {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
             </Text>
-            <Text
-              className="ml-1"
-              fontSize="14px"
-              bold
-              color={(() => {
-                if (percentage < 0) return 'failure'
-                if (percentage > 0) return 'success'
-                return ''
-              })()}
-            >
-              {`${
-                percentage >= 0
-                  ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
-                  : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
-              }`}{' '}
-              {`(${
-                percentage > 0
-                  ? `+${numeral(percentage).format('0,0.[00]')}`
-                  : `${numeral(percentage).format('0,0.[00]')}`
-              }%)`}
-            </Text>
+            <div className="flex align-baseline">
+              {diffAmounts !== 0 && (
+                <Text
+                  className="ml-1"
+                  fontSize="14px"
+                  bold
+                  color={(() => {
+                    if (percentage < 0) return 'failure'
+                    if (percentage > 0) return 'success'
+                    return ''
+                  })()}
+                >
+                  {`${
+                    percentage >= 0
+                      ? `+${numeral(diffAmounts).format('0,0.[00]')}`
+                      : `-${numeral(diffAmounts).format('0,0.[00]')}`
+                  }`}{' '}
+                </Text>
+              )}
+              {percentage !== 0 && (
+                <Text
+                  className="ml-1"
+                  fontSize="12px"
+                  bold
+                  color={(() => {
+                    if (percentage < 0) return 'failure'
+                    if (percentage > 0) return 'success'
+                    return ''
+                  })()}
+                >
+                  {`(${
+                    percentage > 0
+                      ? `+${numeral(percentage).format('0,0.[00]')}`
+                      : `${numeral(percentage).format('0,0.[00]')}`
+                  }%)`}
+                </Text>
+              )}
+            </div>
           </div>
         </div>
       ) : (
@@ -135,10 +153,10 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
           currentInvestPercentDiff={`(${
             percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
           }%)`}
-          totalUsdAmounts={`${
+          diffAmounts={`${
             percentage >= 0
-              ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
-              : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
+              ? `+${numeral(diffAmounts).format('0,0.[00]')}`
+              : `-${numeral(diffAmounts).format('0,0.[00]')}`
           }`}
           percentClass={(() => {
             if (percentage < 0) return 'failure'

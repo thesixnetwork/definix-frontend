@@ -79,7 +79,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
 
-  const [totalUsdAmounts, setTotalUsdAmounts] = useState(0)
+  const [diffAmount, setDiffAmount] = useState(0)
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
@@ -115,7 +115,8 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
       if (sharedprice > 0 && totalUsd > 0) {
         const totalUsdAmount = total + totalUsd
-        setTotalUsdAmounts(totalUsdAmount)
+        const diff = totalUsdAmount - sharedprice
+        setDiffAmount(diff)
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
       }
@@ -186,10 +187,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                       ? `+${numeral(percentage).format('0,0.[00]')}`
                       : `${numeral(percentage).format('0,0.[00]')}`
                   }%)`}
-                  totalUsdAmounts={`${
+                  diffAmounts={`${
                     percentage >= 0
-                      ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
-                      : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
+                      ? `+${numeral(diffAmount).format('0,0.[00]')}`
+                      : `-${numeral(diffAmount).format('0,0.[00]')}`
                   }`}
                   percentClass={(() => {
                     if (percentage < 0) return 'failure'
@@ -266,10 +267,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   ? `+${numeral(percentage).format('0,0.[00]')}`
                   : `${numeral(percentage).format('0,0.[00]')}`
               }%)`}
-              totalUsdAmounts={`${
+              diffAmounts={`${
                 percentage >= 0
-                  ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
-                  : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
+                  ? `+${numeral(diffAmount).format('0,0.[00]')}`
+                  : `-${numeral(diffAmount).format('0,0.[00]')}`
               }`}
               percentClass={(() => {
                 if (percentage < 0) return 'failure'
@@ -336,10 +337,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 ? `+${numeral(percentage).format('0,0.[00]')}`
                 : `${numeral(percentage).format('0,0.[00]')}`
             }%)`}
-            totalUsdAmounts={`${
+            diffAmounts={`${
               percentage >= 0
-                ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
-                : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
+                ? `+${numeral(diffAmount).format('0,0.[00]')}`
+                : `-${numeral(diffAmount).format('0,0.[00]')}`
             }`}
             percentClass={(() => {
               if (percentage < 0) return 'failure'
