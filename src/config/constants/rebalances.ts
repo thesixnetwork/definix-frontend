@@ -355,6 +355,147 @@ const rebalances: RebalanceConfig[] = [
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
   },
+
+  {
+    title: 'Bullish Giant',
+    description:
+      'xxx description xxx',
+    fullDescription:
+      'xxx full description xxx',
+    icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
+    address: {
+      1001: '',
+      8217: '0x422ECCd512Dc89AD5CBa69097A051Dd85f821fac',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 0.75,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KWBTC',
+        value: 70,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 30,
+        color: '#6D6D6D',
+        address: KETH,
+      },
+    ],
+    factsheet: {
+      name: 'Bullish Giant',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x422ECCd512Dc89AD5CBa69097A051Dd85f821fac',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+
+  {
+    title: 'Top Coin Collector',
+    description:
+      'xxx description xxx',
+    fullDescription:
+      'xxx full description xxx',
+    icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
+    address: {
+      1001: '',
+      8217: '0x98085f75b327CdB0762Bd41dd3B99fa787E2e660',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 0.75,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KWBTC',
+        value: 25,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 25,
+        color: '#6D6D6D',
+        address: KETH,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 50,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Top Coin Collector',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x98085f75b327CdB0762Bd41dd3B99fa787E2e660',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
+
+  {
+    title: 'Three Marketeers',
+    description:
+      'xxx description xxx',
+    fullDescription:
+      'xxx full description xxx',
+    icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
+    address: {
+      1001: '',
+      8217: '0x486952bA63eC425C258010518b3A03c052690b09',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 0.75,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KETH',
+        value: 30,
+        color: '#6D6D6D',
+        address: KETH,
+      },
+      {
+        symbol: 'WKLAY',
+        value: 30,
+        color: '#4f463c',
+        address: WKLAY,
+      },
+      {
+        symbol: 'KBNB',
+        value: 30,
+        color: '#eeb80c',
+        address: KBNB,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 10,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Three Marketeers',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x486952bA63eC425C258010518b3A03c052690b09',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+  },
 ]
 
 export default rebalances
