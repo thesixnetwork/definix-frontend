@@ -188,7 +188,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                       : `${numeral(percentage).format('0,0.[00]')}`
                   }%)`}
                   diffAmounts={`${
-                    percentage >= 0
+                    percentage > 0
                       ? `+${numeral(diffAmount).format('0,0.[00]')}`
                       : `-${numeral(diffAmount).format('0,0.[00]')}`
                   }`}
@@ -268,7 +268,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   : `${numeral(percentage).format('0,0.[00]')}`
               }%)`}
               diffAmounts={`${
-                percentage >= 0
+                percentage > 0
                   ? `+${numeral(diffAmount).format('0,0.[00]')}`
                   : `-${numeral(diffAmount).format('0,0.[00]')}`
               }`}
@@ -338,7 +338,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 : `${numeral(percentage).format('0,0.[00]')}`
             }%)`}
             diffAmounts={`${
-              percentage >= 0
+              percentage > 0
                 ? `+${numeral(diffAmount).format('0,0.[00]')}`
                 : `-${numeral(diffAmount).format('0,0.[00]')}`
             }`}

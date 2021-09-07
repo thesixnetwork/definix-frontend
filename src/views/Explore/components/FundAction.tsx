@@ -117,7 +117,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
                   })()}
                 >
                   {`${
-                    percentage >= 0
+                    percentage > 0
                       ? `+${numeral(diffAmounts).format('0,0.[00]')}`
                       : `-${numeral(diffAmounts).format('0,0.[00]')}`
                   }`}{' '}
@@ -154,7 +154,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
             percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
           }%)`}
           diffAmounts={`${
-            percentage >= 0
+            percentage > 0
               ? `+${numeral(diffAmounts).format('0,0.[00]')}`
               : `-${numeral(diffAmounts).format('0,0.[00]')}`
           }`}

@@ -59,7 +59,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
         <Text fontSize={large ? '24px' : '16px'} bold color={valueClass} lineHeight={large ? '1.3' : '1.5'}>
           {value}
         </Text>
-        {diffAmounts !== '+0' && (
+        {diffAmounts !== '+0' && diffAmounts !== '-0' && (
           <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
             {diffAmounts}
           </Text>
