@@ -1,5 +1,5 @@
 import useI18n from 'hooks/useI18n'
-import { useTotalSupply } from 'hooks/useTokenBalance'
+import { useBurnedBalance, useTotalSupply } from 'hooks/useTokenBalance'
 import React from 'react'
 import styled from 'styled-components'
 import { Card, CardBody, Heading, Text } from 'uikit-dev'
@@ -37,6 +37,7 @@ const Row = styled.div`
 const FinixStats = () => {
   const TranslateString = useI18n()
   const totalSupply = useTotalSupply()
+  const burnedBalance = getBalanceNumber(useBurnedBalance())
   const finixSupply = getBalanceNumber(totalSupply)
 
   return (
