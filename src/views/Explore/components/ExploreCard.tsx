@@ -115,7 +115,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
       if (sharedprice > 0 && totalUsd > 0) {
         const totalUsdAmount = total + totalUsd
-        const diff = totalUsdAmount - sharedprice
+        const diff = sharedprice - totalUsdAmount
         setDiffAmount(diff)
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
@@ -190,7 +190,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   diffAmounts={`${
                     percentage > 0
                       ? `+${numeral(diffAmount).format('0,0.[00]')}`
-                      : `-${numeral(diffAmount).format('0,0.[00]')}`
+                      : `${numeral(diffAmount).format('0,0.[00]')}`
                   }`}
                   percentClass={(() => {
                     if (percentage < 0) return 'failure'
@@ -270,7 +270,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               diffAmounts={`${
                 percentage > 0
                   ? `+${numeral(diffAmount).format('0,0.[00]')}`
-                  : `-${numeral(diffAmount).format('0,0.[00]')}`
+                  : `${numeral(diffAmount).format('0,0.[00]')}`
               }`}
               percentClass={(() => {
                 if (percentage < 0) return 'failure'
@@ -340,7 +340,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             diffAmounts={`${
               percentage > 0
                 ? `+${numeral(diffAmount).format('0,0.[00]')}`
-                : `-${numeral(diffAmount).format('0,0.[00]')}`
+                : `${numeral(diffAmount).format('0,0.[00]')}`
             }`}
             percentClass={(() => {
               if (percentage < 0) return 'failure'

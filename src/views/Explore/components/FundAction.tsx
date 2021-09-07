@@ -77,7 +77,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
       if (sharedprice > 0 && totalUsd > 0) {
         const totalUsdAmount = total + totalUsd
-        const diff = totalUsdAmount - sharedprice
+        const diff = sharedprice - totalUsdAmount
         setDiffAmount(diff)
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
@@ -119,7 +119,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
                   {`${
                     percentage > 0
                       ? `+${numeral(diffAmounts).format('0,0.[00]')}`
-                      : `-${numeral(diffAmounts).format('0,0.[00]')}`
+                      : `${numeral(diffAmounts).format('0,0.[00]')}`
                   }`}{' '}
                 </Text>
               )}
@@ -156,7 +156,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
           diffAmounts={`${
             percentage > 0
               ? `+${numeral(diffAmounts).format('0,0.[00]')}`
-              : `-${numeral(diffAmounts).format('0,0.[00]')}`
+              : `${numeral(diffAmounts).format('0,0.[00]')}`
           }`}
           percentClass={(() => {
             if (percentage < 0) return 'failure'
