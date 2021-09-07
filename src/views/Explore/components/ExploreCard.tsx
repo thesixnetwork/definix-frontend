@@ -83,43 +83,40 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
   const combinedAmount = useCallback(async () => {
-    const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
+    if (account) {
+      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
 
-    const myInvestTxnLocalStorage = JSON.parse(
-      localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}',
-    )
+      const myInvestTxnLocalStorage = JSON.parse(
+        localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
+      )
 
-    const byAccountLocalStorage = JSON.parse(
-      localStorage.getItem('by_account') ? localStorage.getItem('by_account') : '{}',
-    )
+      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
+      const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
 
-    const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
-    const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
+      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
+      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
+      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
 
-    const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
-    const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-    const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
+      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
+      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
+      localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
 
-    const transactionsSlice = myInvestTxns.slice(indexTx + 1)
-    myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
-    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxnLocalStorage))
+      const txHash = {
+        txns: transactionsSlice,
+      }
+      let total = 0
+      if (transactionsSlice.length > 0) {
+        const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
+        total = _.get(datas, 'total_usd_amount')
+      }
 
-    byAccountLocalStorage[account] = transactionsSlice
-    localStorage.setItem('by_account', JSON.stringify(byAccountLocalStorage))
+      const totalUsd = totalUsds
 
-    const txHash = {
-      txns: transactionsSlice,
-    }
-
-    const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-    const total = _.get(datas, 'total_usd_amount')
-
-    const totalUsd = totalUsds
-
-    if (sharedprice > 0 && totalUsd > 0) {
-      const totalUsdAmount = total + totalUsd
-      const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-      setPercentage(diffNewAmount)
+      if (sharedprice > 0 && totalUsd > 0) {
+        const totalUsdAmount = total + totalUsd
+        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+        setPercentage(diffNewAmount)
+      }
     }
   }, [sharedprice, rebalance, account, api])
 

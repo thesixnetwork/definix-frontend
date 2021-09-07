@@ -278,19 +278,17 @@ const CardCalculate = ({
     const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
 
     const { transactionHash } = tx
-    const myInvestTxns = JSON.parse(localStorage.getItem('my_invest_tx') ? localStorage.getItem('my_invest_tx') : '{}')
-    const myAccountPools = JSON.parse(localStorage.getItem('by_account') ? localStorage.getItem('by_account') : '{}')
+    const myInvestTxns = JSON.parse(
+      localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
+    )
 
-    if (myInvestTxns[rebalanceAddress] && myAccountPools[account]) {
+    if (myInvestTxns[rebalanceAddress]) {
       myInvestTxns[rebalanceAddress].push(transactionHash)
-      myAccountPools[account].push(transactionHash)
     } else {
       myInvestTxns[rebalanceAddress] = [transactionHash]
-      myAccountPools[account] = [transactionHash]
     }
 
-    localStorage.setItem('my_invest_tx', JSON.stringify(myInvestTxns))
-    localStorage.setItem('by_account', JSON.stringify(myAccountPools))
+    localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxns))
   }
   const onInvest = async () => {
     const rebalanceContract = getCustomContract(
