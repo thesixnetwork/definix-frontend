@@ -50,7 +50,7 @@ const CardTVL = ({ className = '' }) => {
   const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
-  const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  const finixSupply = getBalanceNumber(totalSupply)
 
   useEffect(() => {
     fetchTVL()
