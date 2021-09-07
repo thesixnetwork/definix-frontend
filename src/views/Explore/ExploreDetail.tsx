@@ -133,7 +133,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
-              ...((rebalance || {}).usdToken || []),
+              // ...((rebalance || {}).usdToken || []),
+              ...((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? [] : (rebalance || {}).usdToken || []),
             ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[ALL])).format(
               formatter[ALL],
@@ -165,7 +166,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 .toNumber(),
             )
 
-            dataValues = dataValues.splice(allCurrentTokens.length + 1)
+            dataValues = dataValues.splice((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? allCurrentTokens.length + 2 : allCurrentTokens.length + 1)
           })
           let maxValue = new BigNumber(0)
           let maxDrawDownPercent = new BigNumber(0)
@@ -228,7 +229,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
-              ...((rebalance || {}).usdToken || []),
+              // ...((rebalance || {}).usdToken || []),
+              ...((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? [] : (rebalance || {}).usdToken || []),
             ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
@@ -260,7 +262,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 .toNumber(),
             )
 
-            dataValues = dataValues.splice(allCurrentTokens.length + 1)
+            dataValues = dataValues.splice((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? allCurrentTokens.length + 2 : allCurrentTokens.length + 1)
           })
           setReturnPercent(rebalanceData.values[rebalanceData.values.length - 1] - rebalanceData.values[0])
           setIsLoading(false)
@@ -291,10 +293,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const sharePricesFromGraph = []
           const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
+
+          // console.log(">>>>>>>>>>>>>>>>>>> (rebalance || {}).usdTokenRatioPoint", (rebalance || {}).usdTokenRatioPoint.toString() === "0" ? "Zero" : (rebalance || {}).usdTokenRatioPoint.toString() )
           fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
-              ...((rebalance || {}).usdToken || []),
+              // ...((rebalance || {}).usdToken || []),
+              ...((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? [] : (rebalance || {}).usdToken || []),
             ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
@@ -348,7 +353,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
             sharePricesFromGraph.push(sharePrice)
 
-            dataValues = dataValues.splice(allCurrentTokens.length + 1)
+            dataValues = dataValues.splice((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? allCurrentTokens.length + 2 : allCurrentTokens.length + 1)
             allCurrentTokens.forEach((token, index) => {
               if (!base[token.symbol]) {
                 base[token.symbol] = dataValues[index]
@@ -427,7 +432,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           // find min max between
           const allCurrentTokens = _.compact([
             ...((rebalance || {}).tokens || []),
-            ...((rebalance || {}).usdToken || []),
+            // ...((rebalance || {}).usdToken || []),
+            ...((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? [] : (rebalance || {}).usdToken || []),
           ])
 
           const priceTokens = []
@@ -508,7 +514,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             sharePricesFromGraph.push(sharePrice)
             // cal sharePrice end
 
-            dataValues = dataValues.splice(allCurrentTokens.length + 1)
+            dataValues = dataValues.splice((rebalance || {}).usdTokenRatioPoint.toString() === "0" ? allCurrentTokens.length + 2 : allCurrentTokens.length + 1)
             allCurrentTokens.forEach((token, index) => {
               if (!base[token.symbol]) {
                 base[token.symbol] = dataValues[index]

@@ -457,27 +457,21 @@ const rebalances: RebalanceConfig[] = [
     ratio: [
       {
         symbol: 'KETH',
-        value: 30,
+        value: 33,
         color: '#6D6D6D',
         address: KETH,
       },
       {
         symbol: 'WKLAY',
-        value: 30,
+        value: 33,
         color: '#4f463c',
         address: WKLAY,
       },
       {
         symbol: 'KBNB',
-        value: 30,
+        value: 33,
         color: '#eeb80c',
         address: KBNB,
-      },
-      {
-        symbol: 'KUSDT',
-        value: 10,
-        color: '#2A9D8F',
-        address: KUSDT,
       },
     ],
     factsheet: {
