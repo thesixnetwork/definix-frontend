@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import UnlockButton from 'components/UnlockButton'
 import _ from 'lodash'
+import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
@@ -38,6 +39,56 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
   const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
+  const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
+
+  const [diffAmounts, setDiffAmount] = useState(0)
+  const [percentage, setPercentage] = useState(0)
+  const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
+
+  const combinedAmount = useCallback(async () => {
+    if (account) {
+      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
+
+      const myInvestTxnLocalStorage = JSON.parse(
+        localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
+      )
+
+      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
+      const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
+
+      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
+      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
+      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
+
+      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
+      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
+      localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
+
+      const txHash = {
+        txns: transactionsSlice,
+      }
+      let total = 0
+      if (transactionsSlice.length > 0) {
+        const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
+        total = _.get(datas, 'total_usd_amount')
+      }
+
+      const totalUsd = totalUsds
+
+      if (sharedprice > 0 && totalUsd > 0) {
+        const totalUsdAmount = total + totalUsd
+        const diff = sharedprice - totalUsdAmount
+        setDiffAmount(diff)
+        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+        setPercentage(diffNewAmount)
+      }
+    }
+  }, [sharedprice, rebalance, account, api])
+
+  useEffect(() => {
+    combinedAmount()
+  }, [combinedAmount])
+
   return (
     <CardStyled
       className={`flex flex-wrap justify-space-between ${className} ${isVertical ? 'flex-column ml-4' : 'pa-4 bd-t'}`}
@@ -49,9 +100,49 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
             Current investment
           </Text>
           <Text fontSize="14px">{`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}</Text>
-          <Text fontSize="24px" bold lineHeight="1.3">
-            {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-          </Text>
+          <div className="flex align-baseline">
+            <Text fontSize="24px" bold lineHeight="1.3">
+              {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
+            </Text>
+            <div className="flex align-baseline">
+              {diffAmounts !== 0 && (
+                <Text
+                  className="ml-1"
+                  fontSize="14px"
+                  bold
+                  color={(() => {
+                    if (percentage < 0) return 'failure'
+                    if (percentage > 0) return 'success'
+                    return ''
+                  })()}
+                >
+                  {`${
+                    percentage > 0
+                      ? `+${numeral(diffAmounts).format('0,0.[00]')}`
+                      : `${numeral(diffAmounts).format('0,0.[00]')}`
+                  }`}{' '}
+                </Text>
+              )}
+              {percentage !== 0 && (
+                <Text
+                  className="ml-1"
+                  fontSize="12px"
+                  bold
+                  color={(() => {
+                    if (percentage < 0) return 'failure'
+                    if (percentage > 0) return 'success'
+                    return ''
+                  })()}
+                >
+                  {`(${
+                    percentage > 0
+                      ? `+${numeral(percentage).format('0,0.[00]')}`
+                      : `${numeral(percentage).format('0,0.[00]')}`
+                  }%)`}
+                </Text>
+              )}
+            </div>
+          </div>
         </div>
       ) : (
         <TwoLineFormat
@@ -59,6 +150,19 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
           subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
           value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
           large
+          currentInvestPercentDiff={`(${
+            percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
+          }%)`}
+          diffAmounts={`${
+            percentage > 0
+              ? `+${numeral(diffAmounts).format('0,0.[00]')}`
+              : `${numeral(diffAmounts).format('0,0.[00]')}`
+          }`}
+          percentClass={(() => {
+            if (percentage < 0) return 'failure'
+            if (percentage > 0) return 'success'
+            return ''
+          })()}
         />
       )}
 

@@ -136,6 +136,23 @@ const CardInput = ({
   const { isDark } = useTheme()
 
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
+
+  const handleLocalStorage = async (tx) => {
+    const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
+    const { transactionHash } = tx
+    const myInvestTxns = JSON.parse(
+      localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
+    )
+
+    if (myInvestTxns[rebalanceAddress]) {
+      myInvestTxns[rebalanceAddress].push(transactionHash)
+    } else {
+      myInvestTxns[rebalanceAddress] = [transactionHash]
+    }
+
+    localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxns))
+  }
+
   const onWithdraw = async () => {
     const rebalanceContract = getCustomContract(
       klaytn as provider,
@@ -168,7 +185,8 @@ const CardInput = ({
           setShowModal,
         )
         const tx = await klipProvider.checkResponse()
-        setTx({ transactionHash: tx })
+        setTx(tx)
+        handleLocalStorage(tx)
       } else {
         const tx = await rebalanceContract.methods
           .removeFund(
@@ -186,6 +204,7 @@ const CardInput = ({
           )
           .send({ from: account, gas: 5000000 })
         setTx(tx)
+        handleLocalStorage(tx)
       }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
@@ -197,6 +216,7 @@ const CardInput = ({
       setIsWithdrawing(false)
     }
   }
+
   return (
     <Card className="mb-4">
       <div className={`bd-b ${isMobile ? 'pa-4 pt-2' : 'px-4 py-4'} `}>
@@ -216,7 +236,6 @@ const CardInput = ({
           </Button>
           <SettingButton />
         </div>
-
         <TwoLineFormat
           title="Current investment"
           titleColor={isDark ? '#ADB4C2' : ''}
@@ -225,7 +244,6 @@ const CardInput = ({
           large
           className="mb-4"
         />
-
         <div className="flex flex-wrap justify-space-between align-center">
           <Text>Withdraw</Text>
 

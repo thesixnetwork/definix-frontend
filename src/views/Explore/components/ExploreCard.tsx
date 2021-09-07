@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
+import axios from 'axios'
 import { getAddress } from 'utils/addressHelpers'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, useMatchBreakpoints } from 'uikit-dev'
@@ -11,7 +13,7 @@ import CardHeading from './CardHeading'
 import MiniChart from './MiniChart'
 import TwoLineFormat from './TwoLineFormat'
 import { Rebalance } from '../../../state/types'
-import { usePriceFinixUsd } from '../../../state/hooks'
+import { usePriceFinixUsd, useRebalanceBalances, useBalances } from '../../../state/hooks'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -66,6 +68,64 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       setIsOpenAccordion(false)
     }
   }, [])
+
+  const { account } = useWallet()
+  const balances = useBalances(account)
+  const rebalanceBalances = useRebalanceBalances(account)
+
+  const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
+  const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
+  const currentBalanceNumber = currentBalance.toNumber()
+
+  const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
+
+  const [diffAmount, setDiffAmount] = useState(0)
+  const [percentage, setPercentage] = useState(0)
+  const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
+
+  const combinedAmount = useCallback(async () => {
+    if (account) {
+      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
+
+      const myInvestTxnLocalStorage = JSON.parse(
+        localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
+      )
+
+      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
+      const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
+
+      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
+      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
+      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
+
+      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
+      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
+      localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
+
+      const txHash = {
+        txns: transactionsSlice,
+      }
+      let total = 0
+      if (transactionsSlice.length > 0) {
+        const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
+        total = _.get(datas, 'total_usd_amount')
+      }
+
+      const totalUsd = totalUsds
+
+      if (sharedprice > 0 && totalUsd > 0) {
+        const totalUsdAmount = total + totalUsd
+        const diff = sharedprice - totalUsdAmount
+        setDiffAmount(diff)
+        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
+        setPercentage(diffNewAmount)
+      }
+    }
+  }, [sharedprice, rebalance, account, api])
+
+  useEffect(() => {
+    combinedAmount()
+  }, [combinedAmount])
 
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
   if (isHorizontal) {
@@ -122,7 +182,21 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 <TwoLineFormat
                   title="Current investment"
                   value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-                  days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
+                  currentInvestPercentDiff={`(${
+                    percentage > 0
+                      ? `+${numeral(percentage).format('0,0.[00]')}`
+                      : `${numeral(percentage).format('0,0.[00]')}`
+                  }%)`}
+                  diffAmounts={`${
+                    percentage > 0
+                      ? `+${numeral(diffAmount).format('0,0.[00]')}`
+                      : `${numeral(diffAmount).format('0,0.[00]')}`
+                  }`}
+                  percentClass={(() => {
+                    if (percentage < 0) return 'failure'
+                    if (percentage > 0) return 'success'
+                    return ''
+                  })()}
                 />
               </div>
               <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
@@ -146,7 +220,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               <TwoLineFormat
                 className="col-5"
                 title="Total asset value"
-                value={`$${numeral(rebalance.totalAssetValue || 0).format('0,0.00')}`}
+                value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
               />
               <TwoLineFormat
                 className="col-5"
@@ -188,7 +262,21 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             <TwoLineFormat
               title="Current investment"
               value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-              days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
+              currentInvestPercentDiff={`(${
+                percentage > 0
+                  ? `+${numeral(percentage).format('0,0.[00]')}`
+                  : `${numeral(percentage).format('0,0.[00]')}`
+              }%)`}
+              diffAmounts={`${
+                percentage > 0
+                  ? `+${numeral(diffAmount).format('0,0.[00]')}`
+                  : `${numeral(diffAmount).format('0,0.[00]')}`
+              }`}
+              percentClass={(() => {
+                if (percentage < 0) return 'failure'
+                if (percentage > 0) return 'success'
+                return ''
+              })()}
             />
             <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
               View Details
@@ -244,7 +332,21 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           <TwoLineFormat
             title="Current investment"
             value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-            days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
+            currentInvestPercentDiff={`(${
+              percentage > 0
+                ? `+${numeral(percentage).format('0,0.[00]')}`
+                : `${numeral(percentage).format('0,0.[00]')}`
+            }%)`}
+            diffAmounts={`${
+              percentage > 0
+                ? `+${numeral(diffAmount).format('0,0.[00]')}`
+                : `${numeral(diffAmount).format('0,0.[00]')}`
+            }`}
+            percentClass={(() => {
+              if (percentage < 0) return 'failure'
+              if (percentage > 0) return 'success'
+              return ''
+            })()}
           />
         </div>
         <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
