@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import Checkbox from '@material-ui/core/Checkbox'
 import _ from 'lodash'
-import axios from 'axios'
 import moment from 'moment'
 import BigNumber from 'bignumber.js'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -136,58 +135,10 @@ const CardInput = ({
   const dispatch = useDispatch()
   const { isDark } = useTheme()
 
-  const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
-
-  const [percentage, setPercentage] = useState(0)
-  const sharedprice = numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')
-
-  const combinedAmount = useCallback(async () => {
-    if (account) {
-      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
-
-      const myInvestTxnLocalStorage = JSON.parse(
-        localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
-      )
-
-      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
-      const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
-
-      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
-      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
-
-      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
-      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
-      localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
-
-      const txHash = {
-        txns: transactionsSlice,
-      }
-      let total = 0
-      if (transactionsSlice.length > 0) {
-        const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-        total = _.get(datas, 'total_usd_amount')
-      }
-
-      const totalUsd = totalUsds
-
-      if (sharedprice > 0 && totalUsd > 0) {
-        const totalUsdAmount = total + totalUsd
-        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-        setPercentage(diffNewAmount)
-      }
-    }
-  }, [sharedprice, rebalance, account, api])
-
-  useEffect(() => {
-    combinedAmount()
-  }, [combinedAmount])
-
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
 
   const handleLocalStorage = async (tx) => {
     const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
-
     const { transactionHash } = tx
     const myInvestTxns = JSON.parse(
       localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
@@ -292,14 +243,6 @@ const CardInput = ({
           subTitle={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
           large
           className="mb-4"
-          currentInvestPercentDiff={`${
-            percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
-          }%`}
-          percentClass={(() => {
-            if (percentage < 0) return 'failure'
-            if (percentage > 0) return 'success'
-            return ''
-          })()}
         />
         <div className="flex flex-wrap justify-space-between align-center">
           <Text>Withdraw</Text>

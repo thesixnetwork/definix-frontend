@@ -79,6 +79,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
 
+  const [totalUsdAmounts, setTotalUsdAmounts] = useState(0)
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
@@ -114,6 +115,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
       if (sharedprice > 0 && totalUsd > 0) {
         const totalUsdAmount = total + totalUsd
+        setTotalUsdAmounts(totalUsdAmount)
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
         setPercentage(diffNewAmount)
       }
@@ -179,12 +181,16 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 <TwoLineFormat
                   title="Current investment"
                   value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-                  days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
-                  currentInvestPercentDiff={`${
+                  currentInvestPercentDiff={`(${
                     percentage > 0
                       ? `+${numeral(percentage).format('0,0.[00]')}`
                       : `${numeral(percentage).format('0,0.[00]')}`
-                  }%`}
+                  }%)`}
+                  totalUsdAmounts={`${
+                    percentage >= 0
+                      ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
+                      : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
+                  }`}
                   percentClass={(() => {
                     if (percentage < 0) return 'failure'
                     if (percentage > 0) return 'success'
@@ -255,12 +261,16 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             <TwoLineFormat
               title="Current investment"
               value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-              days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
-              currentInvestPercentDiff={`${
+              currentInvestPercentDiff={`(${
                 percentage > 0
                   ? `+${numeral(percentage).format('0,0.[00]')}`
                   : `${numeral(percentage).format('0,0.[00]')}`
-              }%`}
+              }%)`}
+              totalUsdAmounts={`${
+                percentage >= 0
+                  ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
+                  : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
+              }`}
               percentClass={(() => {
                 if (percentage < 0) return 'failure'
                 if (percentage > 0) return 'success'
@@ -321,12 +331,16 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           <TwoLineFormat
             title="Current investment"
             value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-            days={`${numeral(balance.toFixed(2)).format('0,0.[00]')} Shares`}
-            currentInvestPercentDiff={`${
+            currentInvestPercentDiff={`(${
               percentage > 0
                 ? `+${numeral(percentage).format('0,0.[00]')}`
                 : `${numeral(percentage).format('0,0.[00]')}`
-            }%`}
+            }%)`}
+            totalUsdAmounts={`${
+              percentage >= 0
+                ? `+${numeral(totalUsdAmounts).format('0,0.[00]')}`
+                : `-${numeral(totalUsdAmounts).format('0,0.[00]')}`
+            }`}
             percentClass={(() => {
               if (percentage < 0) return 'failure'
               if (percentage > 0) return 'success'

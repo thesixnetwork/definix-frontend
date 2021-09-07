@@ -274,9 +274,9 @@ const CardCalculate = ({
     if (priceImpact === Number.POSITIVE_INFINITY || priceImpact === Number.NEGATIVE_INFINITY) return 0
     return priceImpact
   })()
+
   const handleLocalStorage = async (tx) => {
     const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
-
     const { transactionHash } = tx
     const myInvestTxns = JSON.parse(
       localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
