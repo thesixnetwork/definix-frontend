@@ -5,7 +5,7 @@ const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
     description:
-      'Tribute tov the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
+      'Tribute to the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
     icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
@@ -358,8 +358,10 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Bullish Giant',
-    description: 'xxx description xxx',
-    fullDescription: 'xxx full description xxx',
+    description:
+      'Withstanding the trend in the market with both giants in the area. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
+    fullDescription:
+      'The representation of the giants of the markert, consisting of BTC and ETH. The distribution of the assets are 70/30 in ratio for this farm and rebalancing will occur once every time rebalancing fee is covered.',
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '',
@@ -367,7 +369,7 @@ const rebalances: RebalanceConfig[] = [
     },
     fee: {
       management: 0.2,
-      buyback: 0.75,
+      buyback: 1.5,
       bounty: 0.3,
     },
     ratio: [
@@ -386,7 +388,7 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'Bullish Giant',
-      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)', // <<<< Need to change before launch
       manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
       vault: '0x422ECCd512Dc89AD5CBa69097A051Dd85f821fac',
       management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
@@ -397,8 +399,10 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Top Coin Collector',
-    description: 'xxx description xxx',
-    fullDescription: 'xxx full description xxx',
+    description:
+      'Famous capital in the farm and highly versatile to the market. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
+    fullDescription:
+      'Consisting of BTC ETH USDT which is a big capital farm, but with a lower fluctuation exposure to the market as the biggest ratio is in USDT and other assets are distributed equally. The rebalancing occurs every time an extra 1% coverage movement occurs.',
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '',
@@ -406,7 +410,7 @@ const rebalances: RebalanceConfig[] = [
     },
     fee: {
       management: 0.2,
-      buyback: 0.75,
+      buyback: 1.5,
       bounty: 0.3,
     },
     ratio: [
@@ -431,7 +435,7 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'Top Coin Collector',
-      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)', // <<<< Need to change before launch
       manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
       vault: '0x98085f75b327CdB0762Bd41dd3B99fa787E2e660',
       management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
@@ -442,16 +446,18 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'Three Marketeers',
-    description: 'xxx description xxx',
-    fullDescription: 'xxx full description xxx',
+    description:
+      'Inspired by Chain Creators, but with no stable coin in it. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
+    fullDescription:
+      'The natives of all three chains consist of ETH KLAY BNB which are equally distributed in the farm. An extra 1% rebalance fee is covered and the system will make rebalance for the group.',
     icon: ['/images/vaults/chaincreator_1.png', '/images/vaults/chaincreator_2.png'],
     address: {
       1001: '',
-      8217: '0x486952bA63eC425C258010518b3A03c052690b09',
+      8217: '0x9e0e235fbd485d43ba44d84684b6bac77033881f',
     },
     fee: {
       management: 0.2,
-      buyback: 0.75,
+      buyback: 1.5,
       bounty: 0.3,
     },
     ratio: [
@@ -476,9 +482,9 @@ const rebalances: RebalanceConfig[] = [
     ],
     factsheet: {
       name: 'Three Marketeers',
-      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)',
+      inceptionDate: 'Friday, August 13, 2021 13:00:00 (UTC+7)', // <<<< Need to change before launch
       manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
-      vault: '0x486952bA63eC425C258010518b3A03c052690b09',
+      vault: '0x9e0e235fbd485d43ba44d84684b6bac77033881f',
       management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',

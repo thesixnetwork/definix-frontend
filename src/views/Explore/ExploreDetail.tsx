@@ -690,13 +690,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
                       title="Yield APR"
-                      value={numeral(
+                      value={`${numeral(
                         finixPrice
                           .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
                           .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
                           .times(100)
                           .toFixed(2),
-                      ).format('0,0.[00]')}
+                      ).format('0,0.[00]')}%`}
                       hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
                     />
                     {/* <TwoLineFormat
@@ -734,7 +734,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <TwoLineFormat
                         title="Return"
                         value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
-                        hint="Probability return on investment measures approximately over a period of time."
+                        hint="Estimated return on investment measures approximately over a period of time."
                         hintPosition="left"
                       />
                     </div>
