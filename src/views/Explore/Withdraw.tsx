@@ -309,7 +309,7 @@ const CardInput = ({
             .map((c) => <InlineAssetRatioLabel coin={c} className="py-1" />)
         ) : (
           <FormGroup>
-            {_.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+            {_.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdTokenRatioPoint.toString() === '0' ? [] : (rebalance || {}).usdToken || [])])
               .map((token, index) => {
                 const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
 
