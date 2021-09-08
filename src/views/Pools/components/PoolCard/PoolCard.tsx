@@ -12,7 +12,6 @@ import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
-import HarvestAction from './HarvestAction'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { PoolCardProps } from './types'
@@ -58,6 +57,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     stakingTokenName,
     stakingTokenAddress,
     apy,
+    farm,
     tokenDecimals,
     poolCategory,
     totalStaked,
@@ -164,21 +164,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
       stakingTokenAddress,
       tokenName,
     ],
-  )
-
-  const renderHarvestAction = useCallback(
-    (className?: string) => (
-      <HarvestAction
-        sousId={sousId}
-        isBnbPool={isBnbPool}
-        earnings={earnings}
-        tokenDecimals={tokenDecimals}
-        needsApproval={needsApproval}
-        isOldSyrup={isOldSyrup}
-        className={className}
-      />
-    ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   )
 
   const renderHarvestActionAirDrop = useCallback(

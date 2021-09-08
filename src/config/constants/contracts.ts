@@ -1,72 +1,104 @@
+import { SIX, FINIX, WKLAY, KUSDT, KDAI, KETH, KWBTC, KXRP, KBNB, KSP, getLpNetwork } from './tokens'
+
 export default {
   definixHerodotus: {
     97: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET,
     56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
   herodotus: {
-    97: process.env.REACT_APP_HERODOTUS_TESTNET,
-    56: process.env.REACT_APP_HERODOTUS_MAINNET,
+  //   97: process.env.REACT_APP_HERODOTUS_TESTNET,
+  //   56: process.env.REACT_APP_HERODOTUS_MAINNET,
+  // },
+  // wbnb: {
+  //   97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
+  // },
+  // busd: {
+  //   97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+  // },
+  // btcb: {
+  //   97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+  // },
+  // usdt: {
+  //   97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+  // },
+  // six: {
+  //   97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+  // },
+  // btc: {
+  //   97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+  // },
+  // finix: {
+  //   97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+  // },
+  // eth: {
+  //   97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
+  // },
+  // xrp: {
+  //   97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
+  // },
+  // ada: {
+  //   97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
+  //   56: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
+  // },
+  // finixSixLP: {
+  //   97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
+  //   56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
+  // },
+  // finixBusdLP: {
+  //   97: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
+  //   56: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
+  // },
+  // finixBnbLP: {
+  //   97: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
+  //   56: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
+  // },
+  // sixBusdLP: {
+  //   97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
+  //   56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
+  // },
+  // definixBnbBusdLP: {
+  //   97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
+  //   56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
+  // },
+    1001: process.env.REACT_APP_HERODOTUS_TESTNET,
+    8217: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
-  wbnb: {
-    97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
-  },
-  busd: {
-    97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
-  },
-  btcb: {
-    97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
-  },
-  usdt: {
-    97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
-  },
-  six: {
-    97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-  },
-  btc: {
-    97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
-  },
-  finix: {
-    97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
-  },
-  eth: {
-    97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
-  },
-  xrp: {
-    97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
-  },
-  ada: {
-    97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
-    56: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
-  },
-  finixSixLP: {
-    97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
-    56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
-  },
-  finixBusdLP: {
-    97: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
-    56: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
-  },
-  finixBnbLP: {
-    97: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
-    56: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
-  },
-  sixBusdLP: {
-    97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
-    56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
-  },
-  definixBnbBusdLP: {
-    97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
-    56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
-  },
+  wklay: WKLAY,
+  kusdt: KUSDT,
+  kdai: KDAI,
+  ksp: KSP,
+  keth: KETH,
+  kwbtc: KWBTC,
+  kxrp: KXRP,
+  kbnb: KBNB,
+  six: SIX,
+  finix: FINIX,
+  finixSixLP: getLpNetwork(FINIX, SIX),
+  finixKusdtLP: getLpNetwork(FINIX, KUSDT),
+  finixKlayLP: getLpNetwork(FINIX, WKLAY),
+  finixKspLP: getLpNetwork(FINIX, KSP),
+  sixKusdtLP: getLpNetwork(SIX, KUSDT),
+  sixKlayLP: getLpNetwork(SIX, WKLAY),
+  klayKethLP: getLpNetwork(WKLAY, KETH),
+  klayKbtcLP: getLpNetwork(WKLAY, KWBTC),
+  klayKxrpLP: getLpNetwork(WKLAY, KXRP),
+  kethKusdtLP: getLpNetwork(KETH, KUSDT),
+  kbtcKusdtLP: getLpNetwork(KWBTC, KUSDT),
+  kxrpKusdtLP: getLpNetwork(KXRP, KUSDT),
+  klayKusdtLP: getLpNetwork(WKLAY, KUSDT),
+  kdaiKusdtLP: getLpNetwork(KDAI, KUSDT),
+  kbnbKusdtLP: getLpNetwork(KBNB, KUSDT),
+  kbnbFinixLP: getLpNetwork(KBNB, FINIX),
+  definixKlayKusdtLP: getLpNetwork(WKLAY, KUSDT),
   tradingCompetRegis: {
     97: process.env.REACT_APP_TRADING_COMPET_REGIS_TESTNET,
     56: process.env.REACT_APP_TRADING_COMPET_REGIS_MAINNET,
@@ -95,6 +127,10 @@ export default {
   mulltiCall: {
     56: '0x1ee38d535d541c55c9dae27b12edf090c608e6fb',
     97: '0x67ADCB4dF3931b0C5Da724058ADC2174a9844412',
+  },
+  deParam: {
+    1001: process.env.REACT_APP_DEPARAM_ADDRESS_TESTNET,
+    8217: process.env.REACT_APP_DEPARAM_ADDRESS_MAINNET,
   },
   ust: {
     56: '0x23396cF899Ca06c4472205fC903bDB4de249D6fC',

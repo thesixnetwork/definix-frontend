@@ -9,6 +9,10 @@ export const getContract = (provider: ProviderType, address: string) => {
   const contract = new web3.eth.Contract(erc20 as unknown as AbiItem, address)
   return contract
 }
+export const getCustomContract = (provider: ProviderType, abi: AbiItem, address: string) => {
+  const web3 = new Web3(provider)
+  return new web3.eth.Contract(abi, address)
+}
 
 export const getAllowance = async (
   lpContract: Contract,

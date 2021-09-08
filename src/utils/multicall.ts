@@ -22,4 +22,11 @@ const multicall = async (abi: any[], calls: Call[]) => {
   return res
 }
 
+export const multicallEth = async (account: string) => {
+  const caver = getCaver()
+  const multi = new caver.klay.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
+  const response = await multi.methods.getEthBalance(account).call()
+  return response
+}
+
 export default multicall

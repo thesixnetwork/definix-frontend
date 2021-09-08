@@ -1,6 +1,6 @@
 import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
-import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
+import { CampaignType, FarmConfig, RebalanceConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 
 export type TranslatableText =
   | string
@@ -61,6 +61,37 @@ export interface Profile {
   hasRegistered: boolean
 }
 
+export interface Token {
+  address: string
+  name: string
+  symbol: string
+  decimals: number
+  totalBalance: BigNumber
+}
+export interface Rebalance extends RebalanceConfig {
+  currentPoolUsdBalances?: BigNumber[]
+  sumCurrentPoolUsdBalance?: BigNumber
+  totalSupply?: BigNumber
+  activeUserCount?: BigNumber
+  tokens?: Token[]
+  usdToken?: Token[]
+  usdTokenRatioPoint?: BigNumber
+  totalRatioPoints?: BigNumber[]
+  finixRewardPerYear?: BigNumber
+  activeUserCountNumber?: number
+  totalAssetValue?: BigNumber
+  sharedPrice?: BigNumber
+  last24Data?: any
+  // sharpeRatio?: number
+  // maxDrawdown?: number
+  // tokenUsd?: BigNumber[]
+  enableAutoCompound?: boolean
+  autoHerodotus?: string
+  sharedPricePercentDiff?: number
+  twentyHperformance?: number
+  ratioCal?: string[]
+}
+
 // Slices states
 
 export interface ToastsState {
@@ -78,24 +109,41 @@ export interface PoolsState {
   data: Pool[]
 }
 
+export interface RebalanceState {
+  isFetched: boolean
+  data: Rebalance[]
+}
+
+export interface Balances {
+  [key: string]: BigNumber
+}
+
+export interface Balance {
+  [key: string]: Balances
+}
+
+export interface Allowance {
+  [key: string]: Balance
+}
+
+export interface WalletState {
+  decimals: Balance
+  balances: Balance
+  userRebalanceBalances: Balance
+  userDeadline?: number
+  allowances: Allowance
+  userSlippage?: number
+  isFetched: boolean
+  isRebalanceFetched: boolean
+}
+
 export interface FinixPriceState {
   caverTVL: number
   web3TVL: number
   price: number
   sixPrice: number
-  pancakeBnbPrice: number
-  sixFinixQuote: number
-  sixBusdQuote: number
-  sixUsdtQuote: number
-  sixWbnbQuote: number
-  finixBusdQuote: number
-  finixUsdtQuote: number
-  finixWbnbQuote: number
-  wbnbBusdQuote: number
-  wbnbUsdtQuote: number
-  busdUsdtQuote: number
-  bnbBtcbQuote: number
-  ethBnbQuote: number
+  klayswapKlayPrice: number
+  definixKlayPrice: number
 }
 export interface ProfileState {
   isInitialized: boolean
@@ -146,4 +194,6 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
+  rebalances: RebalanceState
+  wallet: WalletState
 }

@@ -3,6 +3,7 @@ import BigNumber from 'bignumber.js'
 import { kebabCase } from 'lodash'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { Toast, toastTypes } from 'uikit-dev'
+import { getAddress } from 'utils/addressHelpers'
 import { useSelector, useDispatch } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
@@ -15,12 +16,12 @@ import {
   fetchPancakeBnbPrice,
   fetchSixPrice,
   fetchTVL,
-  fetchQuote,
+  fetchRebalances,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
 } from './actions'
-import { State, Farm, Pool, ProfileState, TeamsState, AchievementState } from './types'
+import { Balances, State, Farm, Rebalance, Pool, ProfileState, TeamsState, AchievementState } from './types'
 import { fetchProfile } from './profile'
 import { fetchTeam, fetchTeams } from './teams'
 import { fetchAchievements } from './achievements'
@@ -37,21 +38,72 @@ export const useFetchPublicData = () => {
     dispatch(fetchFinixPrice())
     dispatch(fetchSixPrice())
     dispatch(fetchTVL())
-    dispatch(fetchPancakeBnbPrice())
-    dispatch(fetchQuote())
+    dispatch(fetchKlayPriceFromKlayswap())
+    dispatch(fetchDefinixKlayPrice())
+    dispatch(fetchRebalances())
   }, [dispatch, slowRefresh])
 }
 
 // Farms
+
+export const useSlippage = (): number => {
+  const slippage = useSelector((state: State) => state.wallet.userSlippage)
+  return slippage
+}
+
+export const useRebalanceBalances = (account: string): Balances => {
+  const rebalanceBalances = useSelector((state: State) => state.wallet.userRebalanceBalances[account])
+  return rebalanceBalances
+}
+
+export const useBalances = (account: string): Balances => {
+  const balances = useSelector((state: State) => state.wallet.balances[account])
+  return balances
+}
+
+export const useDecimals = (account: string): Balances => {
+  const decimals = useSelector((state: State) => state.wallet.decimals[account])
+  return decimals
+}
+
+export const useAllowances = (account: string, spender: string): Balances | undefined => {
+  const allowances = useSelector((state: State) => state.wallet.allowances[account])
+  return (allowances || {})[spender]
+}
 
 export const useFarmUnlockDate = (): Date => {
   const unlockDate = useSelector((state: State) => state.farms.farmUnlockAt)
   return unlockDate
 }
 
+export const useWalletRebalanceFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.wallet.isRebalanceFetched)
+  return isFetched
+}
+
+export const useWalletFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.wallet.isFetched)
+  return isFetched
+}
+
 export const usePoolsIsFetched = (): boolean => {
   const isFetched = useSelector((state: State) => state.pools.isFetched)
   return isFetched
+}
+
+export const useRebalancesIsFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.rebalances.isFetched)
+  return isFetched
+}
+
+export const useRebalanceAddress = (address): Rebalance => {
+  const rebalance = useSelector((state: State) => state.rebalances.data.find((f) => getAddress(f.address) === address))
+  return rebalance
+}
+
+export const useRebalances = (): Rebalance[] => {
+  const rebalances = useSelector((state: State) => state.rebalances.data)
+  return rebalances
 }
 
 export const useFarmsIsFetched = (): boolean => {
@@ -154,103 +206,6 @@ export const usePriceCaverTVL = (): BigNumber => {
 export const usePriceTVL = (): BigNumber => {
   const web3TVL = useSelector((state: State) => state.finixPrice.web3TVL)
   return new BigNumber(web3TVL)
-  // const { account } = useWallet()
-  // const pools = usePools(account)
-  // const sixUsd = usePriceSixUsd()
-  // const bnbUsdPrice = usePriceBnbBusd()
-  // const pancakeBnbPrice = usePricePancakeBnbUsd()
-  // const selectedPools = pools.find((pool) => pool.sousId === 1) || { totalStaked: new BigNumber(0), tokenDecimals: 18 }
-  // const selectedPoolsFinixFinix = pools.find((pool) => pool.sousId === 0) || {
-  //   totalStaked: new BigNumber(0),
-  //   tokenDecimals: 18,
-  // }
-  // const sixFinixQuote = useSelector((state: State) => state.finixPrice.sixFinixQuote)
-  // const sixBusdQuote = useSelector((state: State) => state.finixPrice.sixBusdQuote)
-  // const sixUsdtQuote = useSelector((state: State) => state.finixPrice.sixUsdtQuote)
-  // const sixWbnbQuote = useSelector((state: State) => state.finixPrice.sixWbnbQuote)
-  // const finixBusdQuote = useSelector((state: State) => state.finixPrice.finixBusdQuote)
-  // const finixUsdtQuote = useSelector((state: State) => state.finixPrice.finixUsdtQuote)
-  // const finixWbnbQuote = useSelector((state: State) => state.finixPrice.finixWbnbQuote)
-  // const wbnbBusdQuote = useSelector((state: State) => state.finixPrice.wbnbBusdQuote)
-  // const wbnbUsdtQuote = useSelector((state: State) => state.finixPrice.wbnbUsdtQuote)
-  // const busdUsdtQuote = useSelector((state: State) => state.finixPrice.busdUsdtQuote)
-  // const bnbBtcbQuote = useSelector((state: State) => state.finixPrice.bnbBtcbQuote)
-  // const ethBnbQuote = useSelector((state: State) => state.finixPrice.ethBnbQuote)
-  // const finixUsdPrice = usePriceFinixUsd()
-  // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-  //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-  //   : new Date().getTime()
-  // const currentTime = new Date().getTime()
-  // if (currentTime < phrase2TimeStamp) {
-  //   let totalStaked = new BigNumber(0)
-  //   switch (typeof selectedPools.totalStaked) {
-  //     case 'undefined':
-  //       totalStaked = new BigNumber(0)
-  //       break
-  //     case 'string':
-  //       totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
-  //       break
-  //     default:
-  //       totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
-  //       break
-  //   }
-  //   return totalStaked.times(sixUsd)
-  //   // eslint-disable-next-line
-  // } else {
-  //   let totalStaked = new BigNumber(0)
-  //   switch (typeof selectedPools.totalStaked) {
-  //     case 'undefined':
-  //       totalStaked = new BigNumber(0)
-  //       break
-  //     case 'string':
-  //       totalStaked = new BigNumber((parseFloat(selectedPools.totalStaked) || 0) / 10 ** selectedPools.tokenDecimals)
-  //       break
-  //     default:
-  //       totalStaked = selectedPools.totalStaked.times(new BigNumber(10).pow(18))
-  //       break
-  //   }
-  //   let totalStakedFinixFinix = new BigNumber(0)
-  //   switch (typeof selectedPoolsFinixFinix.totalStaked) {
-  //     case 'undefined':
-  //       totalStakedFinixFinix = new BigNumber(0)
-  //       break
-  //     case 'string':
-  //       totalStakedFinixFinix = new BigNumber(
-  //         (parseFloat(selectedPoolsFinixFinix.totalStaked) || 0) / 10 ** selectedPoolsFinixFinix.tokenDecimals,
-  //       )
-  //       break
-  //     default:
-  //       totalStakedFinixFinix = selectedPoolsFinixFinix.totalStaked.times(new BigNumber(10).pow(18))
-  //       break
-  //   }
-  //   const sixFinixPrice = new BigNumber(sixFinixQuote).times(finixUsdPrice)
-  //   const sixBusdPrice = new BigNumber(sixBusdQuote)
-  //   const sixUsdtPrice = new BigNumber(sixUsdtQuote)
-  //   const sixWbnbPrice = new BigNumber(sixWbnbQuote).times(pancakeBnbPrice)
-  //   const finixBusdPrice = new BigNumber(finixBusdQuote)
-  //   const finixUsdtPrice = new BigNumber(finixUsdtQuote)
-  //   const finixWbnbPrice = new BigNumber(finixWbnbQuote).times(finixUsdPrice)
-  //   const wbnbBusdPrice = new BigNumber(wbnbBusdQuote)
-  //   const wbnbUsdtPrice = new BigNumber(wbnbUsdtQuote)
-  //   const busdUsdtPrice = new BigNumber(busdUsdtQuote)
-  //   const bnbBtcbPrice = new BigNumber(bnbBtcbQuote).times(bnbUsdPrice)
-  //   const ethBnbPrice = new BigNumber(ethBnbQuote).times(bnbUsdPrice)
-  //   return BigNumber.sum.apply(null, [
-  //     sixFinixPrice,
-  //     sixBusdPrice,
-  //     sixUsdtPrice,
-  //     sixWbnbPrice,
-  //     finixBusdPrice,
-  //     finixUsdtPrice,
-  //     finixWbnbPrice,
-  //     wbnbBusdPrice,
-  //     wbnbUsdtPrice,
-  //     busdUsdtPrice,
-  //     ethBnbPrice,
-  //     totalStaked.times(sixUsd).toNumber(),
-  //     totalStakedFinixFinix.times(finixUsdPrice).toNumber(),
-  //   ])
-  // }
 }
 
 export const usePriceEthBusd = (): BigNumber => {

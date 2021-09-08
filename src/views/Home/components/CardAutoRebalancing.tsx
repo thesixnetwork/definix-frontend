@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Card, Heading, Text } from 'uikit-dev'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
@@ -51,7 +52,7 @@ const StyledBanner = styled(Card)`
 `
 
 const CardAutoRebalancing = ({ className = '' }) => {
-  const openDate = new Date(1628841600000)
+  // const openDate = new Date(1628841600000)
 
   return (
     <StyledBanner className={className}>
@@ -67,7 +68,11 @@ const CardAutoRebalancing = ({ className = '' }) => {
           Sound complicated? Don’t worry we will take care your investment automatically with our investment partner
         </Text>
 
+<<<<<<< Updated upstream
         <Button radii="card" className="mt-4" as="a" href="https://klaytn.definix.com/rebalancing">
+=======
+        <Button radii="card" as={Link} to="/rebalancing" className="mt-4">
+>>>>>>> Stashed changes
           Go to Rebalancing Farm now
         </Button>
       </div>

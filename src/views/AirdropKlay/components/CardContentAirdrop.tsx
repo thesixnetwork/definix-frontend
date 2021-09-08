@@ -1,18 +1,8 @@
 /* eslint eqeqeq: 0 */
 
-import React, { ReactElement, useState, useEffect, useMemo } from 'react'
+import React, { ReactElement } from 'react'
 import styled from 'styled-components'
-import { Button, Card, Heading, Text, Link, Input, Modal } from 'uikit-dev'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { provider } from 'web3-core'
-import { getAirdropKlayAddress } from 'utils/addressHelpers'
-import UnlockButton from 'components/UnlockButton'
-import Web3 from 'web3'
-import { AbiItem } from 'web3-utils'
-import abiAirdrop from 'config/abi/airdropKlay.json'
-import klaytnLogo from 'uikit-dev/images/Logo-Klaytn.png'
-import CountDown from './Countdown'
-import DiscriptionFirstAirdrop from './DiscriptionFirstAirdrop'
+import { Card } from 'uikit-dev'
 import DiscriptionSecondAirdrop from './DiscriptionSecondAirdrop'
 
 const MaxWidth = styled.div`
@@ -312,7 +302,7 @@ export default function CardContentAirdrop({
           {state == CLAIMED ? renderClaimedBtn() : null}
 
           <div style={{ marginTop: '40px' }}>
-            <DiscriptionFirstAirdrop toggle={toggleAirdropFirst} open={openFirstAirdrop} disable={state != CLAIMED} />
+            <DiscriptionSecondAirdrop />
             <br />
             <br />
             {state == CLAIMED ? (

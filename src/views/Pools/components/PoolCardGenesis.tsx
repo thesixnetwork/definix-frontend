@@ -7,7 +7,6 @@ import { useSousApprove } from 'hooks/useApprove'
 import useBlock from 'hooks/useBlock'
 import { useERC20 } from 'hooks/useContract'
 import { useSousHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import numeral from 'numeral'
@@ -23,7 +22,6 @@ import Flip from '../../../uikit-dev/components/Flip'
 import man from '../../../uikit-dev/images/for-Farm-Elements/1555.png'
 import bridge from '../../../uikit-dev/images/Menu-Icon/bridge.png'
 import Card from './Card'
-import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
 import PoolSash from './PoolSash'
 import WithdrawModal from './WithdrawModal'
@@ -56,13 +54,9 @@ function secondsToDhms(i, onlyHour = false) {
 const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const {
     sousId,
-    image,
     tokenName,
     stakingTokenName,
     stakingTokenAddress,
-    projectLink,
-    harvest,
-    apy,
     tokenDecimals,
     poolCategory,
     totalStaked,
@@ -85,14 +79,9 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     totalDiffBlock % 1200 > 1100 ? totalDiffBlock + (1200 - (totalDiffBlock % 1200)) : totalDiffBlock
   const totalReward = totalDiffBlockCeil * (rewardPerBlock / 10 ** 18)
   const currentDiffBlock = currentBlockNumber - startBlockNumber
-  const percentage = currentDiffBlock / (totalDiffBlock / 100)
   const totalTimeInSecond = secondsToDhms(totalDiffBlockCeil * 3, true)
-  const remainTime = secondsToDhms((totalDiffBlock - currentDiffBlock) * 3)
   const beforeStart = startBlockNumber - currentBlockNumber
   const endStart = endBlockNumber - currentBlockNumber
-  const beforeStartTime = secondsToDhms(beforeStart * 3)
-  const beforeStartTimeDate = secondsToDhms(beforeStart * 3)
-  const totalBarWidthPercentage = `${(percentage || 0) > 100 ? 100 : percentage || 0}%`
   const alreadyRewarded = currentDiffBlock * (rewardPerBlock / 10 ** 18)
   let totalStakedInt
   switch (typeof totalStaked) {
@@ -141,13 +130,10 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   const stakedBalance = new BigNumber(userData?.stakedBalance || 0)
   const earnings = new BigNumber(userData?.pendingReward || 0)
 
-  const blocksUntilStart = Math.max(startBlock - block, 0)
-  const blocksRemaining = Math.max(endBlock - block, 0)
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
   const isCardActive = isFinished && accountHasStakedBalance
-  const [readyToStake, setReadyToStake] = useState(false)
 
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
   const [onPresentDeposit] = useModal(
@@ -156,10 +142,6 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
       onConfirm={onStake}
       tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
     />,
-  )
-
-  const [onPresentCompound] = useModal(
-    <CompoundModal earnings={earnings} onConfirm={onStake} tokenName={stakingTokenName} />,
   )
 
   const [onPresentWithdraw] = useModal(
@@ -179,21 +161,6 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
     }
   }, [onApprove, setRequestedApproval])
 
-  let timeData = <p>Loading</p>
-  if (currentBlockNumber !== 0) {
-    if (currentBlockNumber < startBlockNumber) {
-      timeData = <p>Starting in {beforeStartTime}</p>
-    } else if (isFinished) {
-      timeData = <p>Finished.</p>
-    } else {
-      timeData = <p>{remainTime} until end.</p>
-    }
-  }
-  const currentDate = new Date()
-  const year =
-    currentDate.getMonth() === 11 && currentDate.getDate() > 23
-      ? currentDate.getFullYear() + 1
-      : currentDate.getFullYear()
   let dateToFlip = new Date().getTime()
   if (currentBlockNumber !== 0) {
     if (currentBlockNumber < startBlockNumber) {
@@ -502,26 +469,6 @@ const CustomTitle = styled.div`
   }
 `
 
-const StyledCardActions = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 16px 0;
-  width: 100%;
-  box-sizing: border-box;
-`
-
-const BalanceAndCompound = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-`
-
-const StyledActionSpacer = styled.div`
-  height: ${(props) => props.theme.spacing[4]}px;
-  width: ${(props) => props.theme.spacing[4]}px;
-`
-
 const Coin = styled.div`
   margin-right: 12px;
   flex-shrink: 0;
@@ -580,32 +527,6 @@ const HalfBox = styled.div`
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 50%;
-  }
-`
-
-const StakePeriod = styled.div`
-  margin: 16px 0 8px 0;
-
-  .track {
-    position: relative;
-    height: 16px;
-    background: ${({ theme }) => theme.colors.backgroundDisabled};
-    border-radius: 16px;
-    margin-bottom: 12px;
-
-    .progress {
-      position: absolute;
-      top: 0;
-      left: 0;
-      height: 100%;
-      border-radius: 16px;
-      background: ${({ theme }) => theme.colors.primary};
-    }
-  }
-
-  p {
-    font-size: 12px;
-    text-align: center;
   }
 `
 

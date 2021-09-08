@@ -1,5 +1,7 @@
 export { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchFarmUnlockDate } from './farms'
 export { clear, remove, push } from './toasts'
+export { fetchRebalances } from './rebalance'
+export { fetchBalances, setDeadline, setSlippage } from './wallet'
 export {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -8,6 +10,12 @@ export {
   updateUserPendingReward,
   updateUserStakedBalance,
 } from './pools'
-export { fetchTVL, fetchPancakeBnbPrice, fetchSixPrice, fetchFinixPrice, fetchQuote } from './finixPrice'
+export {
+  fetchKlayPriceFromKlayswap,
+  fetchDefinixKlayPrice,
+  fetchSixPrice,
+  fetchTVL,
+  fetchFinixPrice,
+} from './finixPrice'
 export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
 export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'

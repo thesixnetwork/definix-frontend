@@ -1,11 +1,8 @@
 import Metamask from './icons/Metamask'
 import Dcent from './icons/Dcent'
-import MathWallet from './icons/MathWallet'
 import TokenPocket from './icons/TokenPocket'
-import TrustWallet from './icons/TrustWallet'
-import WalletConnect from './icons/WalletConnect'
-import BinanceChain from './icons/BinanceChain'
 import { Config } from './types'
+import KlipConnect from './icons/KlipConnect'
 
 const connectors: Config[] = [
   {

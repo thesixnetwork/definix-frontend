@@ -51,14 +51,38 @@ export interface Address {
   56: string
 }
 
+export interface Ratio {
+  symbol: string
+  value: number
+  color?: string
+  address: any
+}
+
+export interface Fee {
+  management: number
+  bounty: number
+  buyback: number
+}
+export interface RebalanceConfig {
+  title: string
+  description: string
+  fullDescription: string
+  icon: string[]
+  address: any
+  ratio: Ratio[]
+  last24data?: any
+  factsheet: any
+  fee: Fee
+}
+
 export interface FarmConfig {
   pid: number
   lpSymbol: string
-  lpAddresses: Address
+  lpAddresses: any
   tokenSymbol: string
-  tokenAddresses: Address
+  tokenAddresses: any
   quoteTokenSymbol: QuoteToken
-  quoteTokenAdresses: Address
+  quoteTokenAdresses: any
   multiplier?: string
   isCommunity?: boolean
   dual?: {
@@ -66,6 +90,8 @@ export interface FarmConfig {
     earnLabel: string
     endBlock: number
   }
+  firstToken?: any
+  secondToken?: any
 }
 
 export interface PoolConfig {
@@ -75,7 +101,7 @@ export interface PoolConfig {
   stakingTokenName: QuoteToken
   stakingLimit?: number
   stakingTokenAddress?: string
-  contractAddress: Address
+  contractAddress: any
   poolCategory: PoolCategory
   projectLink: string
   tokenPerBlock: string

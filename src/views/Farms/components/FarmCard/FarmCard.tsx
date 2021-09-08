@@ -14,7 +14,6 @@ import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
-import HarvestAction from './HarvestAction'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
@@ -93,6 +92,42 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
 
+  const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
+  const stakedTotalInQuoteToken = new BigNumber(farm.quoteTokenBlanceLP)
+    .div(new BigNumber(10).pow(farm.quoteTokenDecimals))
+    .times(ratio)
+    .times(new BigNumber(2))
+  const stakedBalanceValue: BigNumber = useMemo(() => {
+    if (!farm.lpTotalInQuoteToken) {
+      return new BigNumber(0)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+      return klayPrice.times(stakedTotalInQuoteToken)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+      return finixPrice.times(stakedTotalInQuoteToken)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+      return kethPrice.times(stakedTotalInQuoteToken)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+      return sixPrice.times(stakedTotalInQuoteToken)
+    }
+    return stakedTotalInQuoteToken
+  }, [
+    sixPrice,
+    klayPrice,
+    finixPrice,
+    kethPrice,
+    farm.lpTotalInQuoteToken,
+    farm.quoteTokenSymbol,
+    stakedTotalInQuoteToken,
+  ])
+
+  const stakedBalanceValueFormated = stakedBalanceValue
+    ? `$${Number(stakedBalanceValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+    : '-'
+
   const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
@@ -153,11 +188,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [account, ethereum, farm, renderDepositModal, renderWithdrawModal],
   )
 
-  const renderHarvestAction = useCallback(
-    (className?: string) => <HarvestAction earnings={earnings} pid={pid} className={className} />,
-    [earnings, pid],
-  )
-
   const renderHarvestActionAirDrop = useCallback(
     (className?: string, isHor?: boolean) => (
       <HarvestActionAirDrop earnings={earnings} pid={pid} className={className} isHorizontal={isHor} />
@@ -171,13 +201,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
         removed={removed}
         bscScanAddress={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
         totalValueFormated={totalValueFormated}
+        stakedBalanceValueFormated={stakedBalanceValueFormated}
         lpLabel={lpLabel}
         addLiquidityUrl={addLiquidityUrl}
         isHorizontal={isHor}
         className={className}
       />
     ),
-    [addLiquidityUrl, farm.lpAddresses, lpLabel, removed, totalValueFormated],
+    [addLiquidityUrl, farm.lpAddresses, lpLabel, removed, totalValueFormated, stakedBalanceValueFormated],
   )
 
   useEffect(() => {

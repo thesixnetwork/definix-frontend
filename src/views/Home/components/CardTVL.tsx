@@ -1,4 +1,3 @@
-import { useGetStats } from 'hooks/api'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'
@@ -46,11 +45,13 @@ const CardTVL = ({ className = '' }) => {
   const totalTVL = usePriceTVL().toNumber()
   const totalCaverTVL = usePriceCaverTVL().toNumber()
   const TranslateString = useI18n()
-  const data = useGetStats()
-  const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
+  // const data = useGetStats()
+  // const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  // const finixSupply = totalSupply && getBalanceNumber(totalSupply)
+  // const finixTransfered = totalTransferFromBsc ? getBalanceNumber(totalTransferFromBsc) : 0
 
   useEffect(() => {
     fetchTVL()

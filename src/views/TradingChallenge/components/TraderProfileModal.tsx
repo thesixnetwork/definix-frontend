@@ -71,18 +71,15 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
       await tradingCompetRegisContract.methods
         .register(`${currentSlide}`, `${name}`, `${telegramID}`)
         .estimateGas({ from: account })
-        .then(function (gasFee) {
+        .then((gasFee) => {
           setLoadingContract(false)
           tradingCompetRegisContract.methods
             .register(`${currentSlide}`, `${name}`, `${telegramID}`)
             .send({ from: account, gas: gasFee })
-            .on('receipt', function (receipt) {
-              console.log('receipt = ', receipt)
+            .on('receipt', () => {
               onPresentSuccessModal()
             })
-            .on('error', function (error, receipt) {
-              console.log('error = ', error)
-              console.log('receipt on error = ', receipt)
+            .on('error', () => {
               onPresentFailureModal()
             })
         })

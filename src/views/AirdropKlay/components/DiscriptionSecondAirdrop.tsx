@@ -3,13 +3,7 @@ import Collapsible from 'react-collapsible'
 import { Button, Text, ChevronDownIcon, ChevronUpIcon, Link } from 'uikit-dev'
 import Airdrop2img from 'uikit-dev/images/Airdrop/Definix-on-KLAYTN-12.png'
 
-interface Props {
-  open: boolean
-  disable: boolean
-  toggle: () => void
-}
-
-const TriggerElement = ({ isDown }): ReactElement => {
+const TriggerElement = (): ReactElement => {
   return (
     <div style={{ width: '100%', cursor: 'pointer' }}>
       <div style={{ fontSize: '20px' }}>
@@ -25,9 +19,11 @@ const TriggerElement = ({ isDown }): ReactElement => {
     </div>
   )
 }
-export default function DiscriptionSecondAirdrop({ open = false, disable = false, toggle }: Props): ReactElement {
+export default function DiscriptionSecondAirdrop(): ReactElement {
   return (
-    <Collapsible handleTriggerClick={toggle} trigger={<TriggerElement isDown={open} />} open={open} disabled={disable}>
+    // <Collapsible trigger={} open={open} disabled={disable}>
+    <div>
+      <TriggerElement />
       <div>
         <Text lineHeight="2">
           1. Must have LP staked on Definix Klaytn during 21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59

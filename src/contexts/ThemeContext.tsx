@@ -5,7 +5,12 @@ import dark from 'uikit-dev/theme/dark'
 
 const CACHE_KEY = 'IS_DARK'
 
-const ThemeContext = React.createContext({ isDark: null, toggleTheme: (isDarkMode) => null })
+const ThemeContext = React.createContext({
+  isDark: null,
+  toggleTheme: (isDarkMode) => {
+    return isDarkMode
+  },
+})
 
 const ThemeContextProvider = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {

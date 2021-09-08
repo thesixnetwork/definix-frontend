@@ -3,9 +3,9 @@ import { useHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React, { useState } from 'react'
-import { useFarmUser, usePriceFinixUsd } from 'state/hooks'
+import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text, useModal } from 'uikit-dev'
+import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import AirDropHarvestModal from './AirDropHarvestModal'
@@ -25,10 +25,16 @@ const MiniLogo = styled.img`
   flex-shrink: 0;
 `
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', isHorizontal }) => {
+const HarvestAction: React.FC<FarmCardActionsProps> = ({
+  pendingRewards,
+  bundleRewards,
+  pid,
+  className = '',
+  isHorizontal,
+  farm,
+}) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
-  const finixUsd = usePriceFinixUsd()
   const { onReward } = useHarvest(pid)
   const { earnings } = useFarmUser(pid)
 
@@ -44,21 +50,28 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', is
           Earned
         </Text>
 
-        <div className="flex justify-space-between align-baseline mb-2">
-          <div className="flex align-baseline">
-            <MiniLogo src={miniLogo} alt="" className="align-self-start" />
-            <Heading
-              fontSize="24px !important"
-              color={rawEarningsBalance === 0 ? 'textDisabled' : 'text'}
-              className="mr-2"
-              textAlign="left"
-            >
-              300.75
-            </Heading>
-            <Text color="textSubtle" textAlign="left">
-              FINIX
-            </Text>
-          </div>
+        <AirDrop
+          logo={miniLogo}
+          title="APR"
+          percent={`${numeral(finixApy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}%`}
+          value={displayBalance}
+          name="FINIX"
+        />
+        {(bundleRewards || []).map((br, bundleId) => {
+          let apy = new BigNumber(0)
+          if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
+            apy = farm.klayApy
+          }
+          return (
+            <AirDrop
+              logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
+              title="AAPR"
+              percent={`${numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0.0')}%`}
+              value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
+              name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
+            />
+          )
+        })}
 
           <Text color="textSubtle" textAlign="right" fontSize="12px">
             = ${numeral(rawEarningsBalance * finixUsd.toNumber()).format('0,0.0000')}

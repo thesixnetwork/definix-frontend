@@ -1,27 +1,29 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import axios from 'axios'
 import _ from 'lodash'
 import throttle from 'lodash/throttle'
 import numeral from 'numeral'
 import React, { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
-import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
-import finixCoin from 'uikit-dev/images/finix-coin.png'
-import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
-import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
+import DisclaimersModal from 'views/Explore/components/DisclaimersModal'
+import BannerEllipsis from '../../components/BannerEllipsis'
 import Button from '../../components/Button/Button'
+import CountDownBanner from '../../components/CountDownBanner'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
-import { SvgProps } from '../../components/Svg'
+import StartTimeBanner from '../../components/StartTimeBanner'
+import SwitchNetwork from '../../components/SwitchNetwork'
+import { Text } from '../../components/Text'
 import { useMatchBreakpoints } from '../../hooks'
-import en from '../../images/en.png'
 import FinixCoin from '../../images/finix-coin.png'
-import th from '../../images/th.png'
+import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challenge-29.png'
+import colorGradient from '../../images/for-ui-v2/color-gradient.png'
+import logoNoti from '../../images/for-ui-v2/noti.png'
+import useModal from '../Modal/useModal'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
-import * as IconModule from './icons'
 import Logo from './Logo'
 import Panel from './Panel'
 import { NavProps } from './types'
@@ -140,11 +142,6 @@ const Price = styled.a`
   }
 `
 
-const Flag = styled.img`
-  width: 24px;
-  height: auto;
-`
-
 const Menu: React.FC<NavProps> = ({
   account,
   login,
@@ -159,24 +156,13 @@ const Menu: React.FC<NavProps> = ({
   children,
   price,
 }) => {
+  const location = useLocation()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobile = !isMd && !isXl && !isLg
   const [isPushed, setIsPushed] = useState(false)
   const [showMenu, setShowMenu] = useState(true)
   const refPrevOffset = useRef(window.pageYOffset)
-  const Icons = IconModule as unknown as { [key: string]: React.FC<SvgProps> }
-  const { LanguageIcon } = Icons
-  const IconFlag = () => {
-    if (currentLang === 'en') {
-      return <Flag src={en} alt="" />
-    }
-
-    if (currentLang === 'th') {
-      return <Flag src={th} alt="" />
-    }
-
-    return <LanguageIcon color="textSubtle" width="24px" />
-  }
+  const [onPresentDisclaimersModal] = useModal(<DisclaimersModal />)
   const endRegisterTimestamp = process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP
     ? parseInt(process.env.REACT_APP_TRADE_COMPETITION_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
@@ -259,7 +245,7 @@ const Menu: React.FC<NavProps> = ({
         </Flex>
 
         <Flex alignItems="center">
-          <Price href="https://dex.guru/token/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d-bsc" target="_blank">
+          <Price href="https://klaytn.loremboard.finance/chart/FINIX" target="_blank">
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
@@ -301,20 +287,65 @@ const Menu: React.FC<NavProps> = ({
               }
             />
 
-            <CountDownBanner
-              logo={finixCoin}
-              title="FINIX-BSC Address : "
-              detail="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
-              disableCountdown
-              button={
-                <CopyToClipboard
-                  color="warning"
-                  noText
-                  toCopy="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
-                  tooltipPos="right"
-                />
-              }
-            />
+            {location.pathname === '/rebalancing' ||
+            location.pathname === '/rebalancing/detail' ||
+            location.pathname === '/rebalancing/invest' ||
+            location.pathname === '/rebalancing/withdraw' ? (
+              <>
+                {isMobile ? (
+                  <BannerEllipsis />
+                ) : (
+                  <CountDownBanner
+                    logo={logoNoti}
+                    customText={
+                      <>
+                        <Text color="white" fontSize="13px">
+                          <strong>Rebalancing Farm :</strong>{' '}
+                          <span className="mr-1">
+                            Rebalancing farm is a special farm that implements rebalancing strategy. The advantage of
+                            the strategy is that it can help you minimize risk and get favored positions for your
+                            investment in the long run.
+                          </span>
+                          <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong>
+                          <span
+                            role="none"
+                            style={{
+                              color: '#ffd157',
+                              fontWeight: 'bold',
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                            }}
+                            onClick={onPresentDisclaimersModal}
+                          >
+                            read more here.
+                          </span>
+                          <span style={{ fontSize: '11px', display: 'block', opacity: '0.7' }}>
+                            Definix is solely a marketplace which provides a tool. The rebalancing farm has been managed
+                            by a 3rd party called Enigma.
+                          </span>
+                        </Text>
+                      </>
+                    }
+                    disableCountdown
+                  />
+                )}
+              </>
+            ) : (
+              <CountDownBanner
+                logo={FinixCoin}
+                title="FINIX-Klaytn Address : "
+                detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+                disableCountdown
+                button={
+                  <CopyToClipboard
+                    color="warning"
+                    noText
+                    toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+                    tooltipPos="right"
+                  />
+                }
+              />
+            )}
 
             {currentTime > endStatedTradingTime ? (
               <CountDownBanner
