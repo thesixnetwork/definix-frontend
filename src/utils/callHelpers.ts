@@ -50,7 +50,6 @@ export const sousStakeBnb = async (sousChefContract, amount, account) => {
 }
 
 export const unstake = async (herodotusContract, pid, amount, account) => {
-
   if (pid === 0) {
     return herodotusContract.methods
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
@@ -108,7 +107,6 @@ export const harvest = async (herodotusContract, pid, account) => {
   const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
-
     return herodotusContract.methods
       .leaveStaking('0')
       .send({ from: account, gas: 200000 })

@@ -6,69 +6,69 @@ export default {
     56: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET,
   },
   herodotus: {
-  //   97: process.env.REACT_APP_HERODOTUS_TESTNET,
-  //   56: process.env.REACT_APP_HERODOTUS_MAINNET,
-  // },
-  // wbnb: {
-  //   97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
-  // },
-  // busd: {
-  //   97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
-  // },
-  // btcb: {
-  //   97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
-  // },
-  // usdt: {
-  //   97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
-  // },
-  // six: {
-  //   97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-  // },
-  // btc: {
-  //   97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
-  // },
-  // finix: {
-  //   97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
-  // },
-  // eth: {
-  //   97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
-  // },
-  // xrp: {
-  //   97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
-  // },
-  // ada: {
-  //   97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
-  //   56: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
-  // },
-  // finixSixLP: {
-  //   97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
-  //   56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
-  // },
-  // finixBusdLP: {
-  //   97: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
-  //   56: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
-  // },
-  // finixBnbLP: {
-  //   97: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
-  //   56: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
-  // },
-  // sixBusdLP: {
-  //   97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
-  //   56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
-  // },
-  // definixBnbBusdLP: {
-  //   97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
-  //   56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
-  // },
+    //   97: process.env.REACT_APP_HERODOTUS_TESTNET,
+    //   56: process.env.REACT_APP_HERODOTUS_MAINNET,
+    // },
+    // wbnb: {
+    //   97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
+    // },
+    // busd: {
+    //   97: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+    // },
+    // btcb: {
+    //   97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+    // },
+    // usdt: {
+    //   97: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+    // },
+    // six: {
+    //   97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
+    // },
+    // btc: {
+    //   97: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+    // },
+    // finix: {
+    //   97: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
+    // },
+    // eth: {
+    //   97: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
+    // },
+    // xrp: {
+    //   97: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
+    // },
+    // ada: {
+    //   97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
+    //   56: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
+    // },
+    // finixSixLP: {
+    //   97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
+    //   56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
+    // },
+    // finixBusdLP: {
+    //   97: process.env.REACT_APP_FINIX_BUSD_LP_TESTNET,
+    //   56: process.env.REACT_APP_FINIX_BUSD_LP_MAINNET,
+    // },
+    // finixBnbLP: {
+    //   97: process.env.REACT_APP_FINIX_BNB_LP_TESTNET,
+    //   56: process.env.REACT_APP_FINIX_BNB_LP_MAINNET,
+    // },
+    // sixBusdLP: {
+    //   97: process.env.REACT_APP_SIX_BUSD_LP_TESTNET,
+    //   56: process.env.REACT_APP_SIX_BUSD_LP_MAINNET,
+    // },
+    // definixBnbBusdLP: {
+    //   97: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_TESTNET,
+    //   56: process.env.REACT_APP_PANCAKE_BNB_BUSD_LP_MAINNET,
+    // },
     1001: process.env.REACT_APP_HERODOTUS_TESTNET,
     8217: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
