@@ -22,8 +22,11 @@ const Coin = styled.div`
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
     <div className={className}>
-      {_.compact([...((rebalance || ({} as any)).tokens || []), ...((rebalance || ({} as any)).usdToken || [])]).map(
-        (c, index) => {
+      {_.compact([
+        ...((rebalance || ({} as any)).tokens || []),
+        ...(((rebalance || ({} as any)).usdTokenRatioPoint || 0).toString() === '0' ? [] : (rebalance || ({} as any)).usdToken || []),
+      ])
+        .map((c, index) => {
           const thisName = (() => {
             if (c.symbol === 'WKLAY') return 'KLAY'
             if (c.symbol === 'WBNB') return 'BNB'
@@ -44,8 +47,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
               </Text>
             </div>
           )
-        },
-      )}
+        })}
     </div>
   )
 }

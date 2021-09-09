@@ -385,6 +385,12 @@ const rebalances: RebalanceConfig[] = [
         color: '#6D6D6D',
         address: KETH,
       },
+      {
+        symbol: 'KUSDT',
+        value: 0,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
     ],
     factsheet: {
       name: 'Bullish Giant',
@@ -478,6 +484,12 @@ const rebalances: RebalanceConfig[] = [
         value: 33,
         color: '#eeb80c',
         address: KBNB,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 0,
+        color: '#2A9D8F',
+        address: KUSDT,
       },
     ],
     factsheet: {

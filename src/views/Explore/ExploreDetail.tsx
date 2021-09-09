@@ -92,7 +92,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   useEffect(() => {
     if (account && rebalance) {
       const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
+      const assetAddresses = assets.map(a => getAddress(a.address))
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
@@ -102,7 +102,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   useEffect(() => {
     if (account && rebalance) {
       const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
+      const assetAddresses = assets.map(a => getAddress(a.address))
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
@@ -130,11 +130,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }
           const ALL = 'ALL'
           const base: Record<string, any> = {}
-          fundGraphResult.forEach((data) => {
+          fundGraphResult.forEach(data => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
-              // ...((rebalance || {}).usdToken || []),
-              ...((rebalance || {}).usdTokenRatioPoint.toString() === '0' ? [] : (rebalance || {}).usdToken || []),
+              ...((rebalance || {}).usdToken || []),
             ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[ALL])).format(
               formatter[ALL],
@@ -166,11 +165,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 .toNumber(),
             )
 
-            dataValues = dataValues.splice(
-              (rebalance || {}).usdTokenRatioPoint.toString() === '0'
-                ? allCurrentTokens.length + 2
-                : allCurrentTokens.length + 1,
-            )
+            dataValues = dataValues.splice(allCurrentTokens.length + 1)
           })
           let maxValue = new BigNumber(0)
           let maxDrawDownPercent = new BigNumber(0)
@@ -230,11 +225,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             values: [],
           }
           const base: Record<string, any> = {}
-          fundGraphResult.forEach((data) => {
+          fundGraphResult.forEach(data => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
-              // ...((rebalance || {}).usdToken || []),
-              ...((rebalance || {}).usdTokenRatioPoint.toString() === '0' ? [] : (rebalance || {}).usdToken || []),
+              ...((rebalance || {}).usdToken || []),
             ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
@@ -266,11 +260,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 .toNumber(),
             )
 
-            dataValues = dataValues.splice(
-              (rebalance || {}).usdTokenRatioPoint.toString() === '0'
-                ? allCurrentTokens.length + 2
-                : allCurrentTokens.length + 1,
-            )
+            dataValues = dataValues.splice(allCurrentTokens.length + 1)
           })
           setReturnPercent(rebalanceData.values[rebalanceData.values.length - 1] - rebalanceData.values[0])
           setIsLoading(false)
@@ -302,12 +292,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
 
-          // console.log(">>>>>>>>>>>>>>>>>>> (rebalance || {}).usdTokenRatioPoint", (rebalance || {}).usdTokenRatioPoint.toString() === "0" ? "Zero" : (rebalance || {}).usdTokenRatioPoint.toString() )
-          fundGraphResult.forEach((data) => {
+          fundGraphResult.forEach(data => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
-              // ...((rebalance || {}).usdToken || []),
-              ...((rebalance || {}).usdTokenRatioPoint.toString() === '0' ? [] : (rebalance || {}).usdToken || []),
+              ...((rebalance || {}).usdToken || []),
             ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
@@ -361,31 +349,31 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
             sharePricesFromGraph.push(sharePrice)
 
-            dataValues = dataValues.splice(
-              (rebalance || {}).usdTokenRatioPoint.toString() === '0'
-                ? allCurrentTokens.length + 2
-                : allCurrentTokens.length + 1,
-            )
+            dataValues = dataValues.splice(allCurrentTokens.length + 1)
             allCurrentTokens.forEach((token, index) => {
               if (!base[token.symbol]) {
                 base[token.symbol] = dataValues[index]
               }
               if (!graphTokenData[token.symbol]) {
-                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-                graphTokenData[token.symbol] = {
-                  name: token.symbol,
-                  values: [],
-                  valuesPrice: [],
-                  color: ratioObject.color,
+                const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                if (ratioObject) {
+                  graphTokenData[token.symbol] = {
+                    name: token.symbol,
+                    values: [],
+                    valuesPrice: [],
+                    color: ratioObject.color,
+                  }
                 }
               }
-              graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
-              graphTokenData[token.symbol].values.push(
-                new BigNumber(dataValues[index])
-                  .div(base[token.symbol] as number)
-                  .times(100)
-                  .toNumber(),
-              )
+              if (graphTokenData[token.symbol]) {
+                graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+                graphTokenData[token.symbol].values.push(
+                  new BigNumber(dataValues[index])
+                    .div(base[token.symbol] as number)
+                    .times(100)
+                    .toNumber(),
+                )
+              }
             })
           })
           graphTokenData.rebalance = rebalanceData
@@ -402,7 +390,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
             const avg = sum.dividedBy(sliceReturns.length) || 0
             const std = sliceReturns
-              .map((value) => value.minus(avg).exponentiatedBy(2))
+              .map(value => value.minus(avg).exponentiatedBy(2))
               .reduce((previous, current) => previous.plus(current), new BigNumber(0))
               .dividedBy(sliceReturns.length - 1)
               .squareRoot()
@@ -444,15 +432,14 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           // find min max between
           const allCurrentTokens = _.compact([
             ...((rebalance || {}).tokens || []),
-            // ...((rebalance || {}).usdToken || []),
-            ...((rebalance || {}).usdTokenRatioPoint.toString() === '0' ? [] : (rebalance || {}).usdToken || []),
+            ...((rebalance || {}).usdToken || []),
           ])
 
           const priceTokens = []
           for (let index = 0; index < allCurrentTokens.length; index++) {
             priceTokens.push([])
           }
-          fundGraphResult.forEach((data) => {
+          fundGraphResult.forEach(data => {
             const dataPoint = _.get(data, 'values', [])
             for (let j = 0; j < allCurrentTokens.length; j++) {
               if (j < allCurrentTokens.length) {
@@ -473,7 +460,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             })
           })
           const sharePrices = []
-          fundGraphResult.forEach((data) => {
+          fundGraphResult.forEach(data => {
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
             )
@@ -526,32 +513,32 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             sharePricesFromGraph.push(sharePrice)
             // cal sharePrice end
 
-            dataValues = dataValues.splice(
-              (rebalance || {}).usdTokenRatioPoint.toString() === '0'
-                ? allCurrentTokens.length + 2
-                : allCurrentTokens.length + 1,
-            )
+            dataValues = dataValues.splice(allCurrentTokens.length + 1)
             allCurrentTokens.forEach((token, index) => {
               if (!base[token.symbol]) {
                 base[token.symbol] = dataValues[index]
               }
               if (!graphTokenData[token.symbol]) {
-                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-                graphTokenData[token.symbol] = {
-                  name: token.symbol,
-                  values: [],
-                  valuesPrice: [],
-                  color: ratioObject.color,
+                const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                if (ratioObject) {
+                  graphTokenData[token.symbol] = {
+                    name: token.symbol,
+                    values: [],
+                    valuesPrice: [],
+                    color: ratioObject.color,
+                  }
                 }
               }
-              if (token.symbol === 'KUSDT') {
-                graphTokenData[token.symbol].values.push(50)
-                graphTokenData[token.symbol].valuesPrice.push(1)
-              } else {
-                graphTokenData[token.symbol].values.push(
-                  new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
-                )
-                graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+              if (graphTokenData[token.symbol]) {
+                if (token.symbol === 'KUSDT') {
+                  graphTokenData[token.symbol].values.push(50)
+                  graphTokenData[token.symbol].valuesPrice.push(1)
+                } else {
+                  graphTokenData[token.symbol].values.push(
+                    new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
+                  )
+                  graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+                }
               }
             })
           })
@@ -583,7 +570,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
             const avg = sum.dividedBy(sliceReturns.length) || 0
             const std = sliceReturns
-              .map((value) => value.minus(avg).exponentiatedBy(2))
+              .map(value => value.minus(avg).exponentiatedBy(2))
               .reduce((previous, current) => previous.plus(current), new BigNumber(0))
               .dividedBy(sliceReturns.length - 1)
               .squareRoot()
@@ -740,7 +727,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     </div>
                   </div>
 
-                  <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
+                  <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio.filter(rt => rt.value )]} />
                 </div>
 
                 <div className="flex bd-t">

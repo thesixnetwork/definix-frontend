@@ -44,7 +44,7 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
       </Text>
 
       <div className="flex">
-        {ratio.map((m) => (
+        {ratio.filter(r => r.value).map((m) => (
           <Coin width={`${m.value}%`} isMobile={isMobile}>
             <Bar color={m.color} />
             <div className="name">

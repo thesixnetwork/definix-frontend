@@ -159,7 +159,7 @@ const CardInput = ({
         </div>
 
         <div className="mb-4">
-          {rebalance.ratio.map((c) => (
+          {rebalance.ratio.filter(r => r.value).map((c) => (
             <CurrencyInputPanel
               currency={c}
               balance={_.get(balances, findAddress(c))}
@@ -213,7 +213,7 @@ const CardInput = ({
         />
 
         {(() => {
-          const totalInput = rebalance.ratio.map((c) => currentInput[getAddress(c.address)]).join('')
+          const totalInput = rebalance.ratio.filter(r => r.value).map((c) => currentInput[getAddress(c.address)]).join('')
           const needsApproval = rebalance.ratio.find((c) => {
             const currentValue = parseFloat(currentInput[getAddress(c.address)])
             const currentAllowance = (_.get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()

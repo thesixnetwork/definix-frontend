@@ -37,7 +37,7 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
         Asset ratio
       </Text>
       <div className="flex flex-wrap" style={{ marginLeft: isHorizontal ? '-8px' : '' }}>
-        {ratio.map((m) => (
+        {ratio.filter(r => r.value ).map((m) => (
           <Coin isHorizontal={isHorizontal}>
             <img src={`/images/coins/${m.symbol || ''}.png`} alt={m.symbol} />
             <Text fontSize="16px">{m.value}%</Text>
