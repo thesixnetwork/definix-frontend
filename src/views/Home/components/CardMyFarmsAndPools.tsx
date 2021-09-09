@@ -783,9 +783,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   <div>
                     <img src={r.icon[0]} alt="" />
                     <div className="asset">
-                      {r.ratio.filter(rt => rt.value).map((t) => {
-                        return <img src={`/images/coins/${t.symbol}.png`} alt="" />
-                      })}
+                      {r.ratio
+                        .filter((rt) => rt.value)
+                        .map((t) => {
+                          return <img src={`/images/coins/${t.symbol}.png`} alt="" />
+                        })}
                     </div>
                   </div>
 

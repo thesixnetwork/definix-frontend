@@ -92,7 +92,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   useEffect(() => {
     if (account && rebalance) {
       const assets = rebalance.ratio
-      const assetAddresses = assets.map(a => getAddress(a.address))
+      const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
@@ -102,7 +102,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
   useEffect(() => {
     if (account && rebalance) {
       const assets = rebalance.ratio
-      const assetAddresses = assets.map(a => getAddress(a.address))
+      const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
@@ -130,7 +130,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }
           const ALL = 'ALL'
           const base: Record<string, any> = {}
-          fundGraphResult.forEach(data => {
+          fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
               ...((rebalance || {}).usdToken || []),
@@ -225,7 +225,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             values: [],
           }
           const base: Record<string, any> = {}
-          fundGraphResult.forEach(data => {
+          fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
               ...((rebalance || {}).usdToken || []),
@@ -292,7 +292,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
 
-          fundGraphResult.forEach(data => {
+          fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
               ...((rebalance || {}).usdToken || []),
@@ -355,7 +355,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 base[token.symbol] = dataValues[index]
               }
               if (!graphTokenData[token.symbol]) {
-                const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
                 if (ratioObject) {
                   graphTokenData[token.symbol] = {
                     name: token.symbol,
@@ -390,7 +390,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
             const avg = sum.dividedBy(sliceReturns.length) || 0
             const std = sliceReturns
-              .map(value => value.minus(avg).exponentiatedBy(2))
+              .map((value) => value.minus(avg).exponentiatedBy(2))
               .reduce((previous, current) => previous.plus(current), new BigNumber(0))
               .dividedBy(sliceReturns.length - 1)
               .squareRoot()
@@ -439,7 +439,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           for (let index = 0; index < allCurrentTokens.length; index++) {
             priceTokens.push([])
           }
-          fundGraphResult.forEach(data => {
+          fundGraphResult.forEach((data) => {
             const dataPoint = _.get(data, 'values', [])
             for (let j = 0; j < allCurrentTokens.length; j++) {
               if (j < allCurrentTokens.length) {
@@ -460,7 +460,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             })
           })
           const sharePrices = []
-          fundGraphResult.forEach(data => {
+          fundGraphResult.forEach((data) => {
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
             )
@@ -519,7 +519,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 base[token.symbol] = dataValues[index]
               }
               if (!graphTokenData[token.symbol]) {
-                const ratioObject = ((rebalance || {}).ratio || []).find(r => r.symbol === token.symbol)
+                const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
                 if (ratioObject) {
                   graphTokenData[token.symbol] = {
                     name: token.symbol,
@@ -570,7 +570,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             const sum = sliceReturns.reduce((previous, current) => previous.plus(current), new BigNumber(0))
             const avg = sum.dividedBy(sliceReturns.length) || 0
             const std = sliceReturns
-              .map(value => value.minus(avg).exponentiatedBy(2))
+              .map((value) => value.minus(avg).exponentiatedBy(2))
               .reduce((previous, current) => previous.plus(current), new BigNumber(0))
               .dividedBy(sliceReturns.length - 1)
               .squareRoot()
@@ -727,7 +727,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     </div>
                   </div>
 
-                  <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio.filter(rt => rt.value )]} />
+                  <FullChart
+                    isLoading={isLoading}
+                    graphData={graphData}
+                    tokens={[...rebalance.ratio.filter((rt) => rt.value)]}
+                  />
                 </div>
 
                 <div className="flex bd-t">

@@ -13,7 +13,9 @@ import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'
 import { RebalanceState } from '../types'
 
-const filteredRebalances = rebalancesConfig.filter(r => r.address[parseInt(process.env.REACT_APP_CHAIN_ID || "0", 10)])
+const filteredRebalances = rebalancesConfig.filter(
+  (r) => r.address[parseInt(process.env.REACT_APP_CHAIN_ID || '0', 10)],
+)
 const initialState: RebalanceState = {
   isFetched: false,
   data: [...filteredRebalances],
