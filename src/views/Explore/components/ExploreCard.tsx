@@ -194,7 +194,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   diffAmounts={`${
                     percentage > 0
                       ? `+${numeral(diffAmount).format('0,0.[00]')}`
-                      : `${numeral(diffAmount).format('0,0.[00]')}`
+                      : `${numeral(diffAmount).format('0,0.[000]')}`
                   }`}
                   percentClass={(() => {
                     if (percentage < 0) return 'failure'
@@ -274,7 +274,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               diffAmounts={`${
                 percentage > 0
                   ? `+${numeral(diffAmount).format('0,0.[00]')}`
-                  : `${numeral(diffAmount).format('0,0.[00]')}`
+                  : `${numeral(diffAmount).format('0,0.[000]')}`
               }`}
               percentClass={(() => {
                 if (percentage < 0) return 'failure'
@@ -344,7 +344,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             diffAmounts={`${
               percentage > 0
                 ? `+${numeral(diffAmount).format('0,0.[00]')}`
-                : `${numeral(diffAmount).format('0,0.[00]')}`
+                : `${numeral(diffAmount).format('0,0.[000]')}`
             }`}
             percentClass={(() => {
               if (percentage < 0) return 'failure'
