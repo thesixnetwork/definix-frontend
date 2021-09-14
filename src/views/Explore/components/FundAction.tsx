@@ -58,8 +58,9 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
       const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
       const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
+      const totalLps = _.get(resTotalTxn.data, 'total_lp_amount')
 
+      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
       const transactionsSlice = myInvestTxns.slice(indexTx + 1)
       myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
       localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
@@ -67,16 +68,19 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
       const txHash = {
         txns: transactionsSlice,
       }
-      let total = 0
+      let lastTotalAmt = 0
+      let lastTotalLp = 0
       if (transactionsSlice.length > 0) {
         const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-        total = _.get(datas, 'total_usd_amount')
+        lastTotalAmt = _.get(datas, 'total_usd_amount')
+        lastTotalLp = _.get(datas, 'total_lp_amount')
       }
 
       const totalUsd = totalUsds
+      const totalLpAmount = totalLps + lastTotalLp
 
-      if (sharedprice > 0 && totalUsd > 0) {
-        const totalUsdAmount = total + totalUsd
+      if (sharedprice > 0 && totalUsd > 0 && totalLpAmount > 0) {
+        const totalUsdAmount = lastTotalAmt + totalUsd
         const diff = sharedprice - totalUsdAmount
         setDiffAmount(diff)
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
