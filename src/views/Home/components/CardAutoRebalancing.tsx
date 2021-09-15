@@ -1,5 +1,5 @@
 import React from 'react'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Card, Heading, Text } from 'uikit-dev'
 
@@ -103,7 +103,8 @@ const StyledBannerLady = styled(Card)`
 
 const SpecialButton = styled(Button)`
   position: relative;
-  padding: 0 40px;
+  padding: 16px 40px;
+  color: #fff;
   background: linear-gradient(#f3d36c, #e27d3a);
   overflow: hidden;
   border-radius: 40px;
@@ -126,6 +127,7 @@ const SpecialButton = styled(Button)`
     &:before {
       transform-origin: 0;
       transform: scaleX(1);
+      border-radius: 40px;
     }
 
     span {
@@ -203,10 +205,11 @@ const CardAutoRebalancing = ({ className = '' }) => {
             Sound complicated? Don’t worry we will take care your investment automatically with our in-house experts!!
           </Text>
 
-          <SpecialButton className="mt-4">
-            {/* to="/rebalancing" as={Link} */}
+          {/* <SpecialButton className="mt-4">
+            to="/rebalancing" as={Link}
             <span>Interesting, I want to invest</span>
-          </SpecialButton>
+          </SpecialButton> */}
+          <div className="mt-7"> <SpecialButton as={Link} to="/rebalancing"> <span>Interesting, I want to invest</span> </SpecialButton> </div>
         </div>
       </StyledBannerLady>
       {/* <StyledBannerLongTerm className={className}>
