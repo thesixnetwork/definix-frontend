@@ -54,6 +54,9 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
         })()
 
         const ratio = _.get(rebalance, `ratioCal`)
+        // Do not show record when ratio equal 0
+        if (ratio && ratio[index] === 0) return <></>
+
         // @ts-ignore
         const totalPriceNotDevDecimap = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)])
         const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))

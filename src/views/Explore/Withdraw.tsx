@@ -306,6 +306,7 @@ const CardInput = ({
                 amount: ((poolAmounts || [])[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
               }
             })
+            .filter((rt) => rt.value)
             .map((c) => <InlineAssetRatioLabel coin={c} className="py-1" />)
         ) : (
           <FormGroup>
@@ -334,6 +335,7 @@ const CardInput = ({
                   amount: (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
                 }
               })
+              .filter((rt) => rt.value)
               .map((c) => (
                 <FormControlLabelCustom
                   control={

@@ -159,51 +159,53 @@ const CardInput = ({
         </div>
 
         <div className="mb-4">
-          {rebalance.ratio.map((c) => (
-            <CurrencyInputPanel
-              currency={c}
-              balance={_.get(balances, findAddress(c))}
-              id={`invest-${c.symbol}`}
-              key={`invest-${c.symbol}`}
-              showMaxButton={
-                String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber()) !==
-                currentInput[getAddress(c.address)]
-              }
-              className="mb-2"
-              value={currentInput[getAddress(c.address)]}
-              label=""
-              onMax={() => {
-                const max = String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber())
+          {rebalance.ratio
+            .filter((r) => r.value)
+            .map((c) => (
+              <CurrencyInputPanel
+                currency={c}
+                balance={_.get(balances, findAddress(c))}
+                id={`invest-${c.symbol}`}
+                key={`invest-${c.symbol}`}
+                showMaxButton={
+                  String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber()) !==
+                  currentInput[getAddress(c.address)]
+                }
+                className="mb-2"
+                value={currentInput[getAddress(c.address)]}
+                label=""
+                onMax={() => {
+                  const max = String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber())
 
-                const testMax = toFixedCustom(max)
-                // eslint-disable-next-line
-                // debugger
-                setCurrentInput({
-                  ...currentInput,
-                  [getAddress(c.address)]: testMax,
-                })
-              }}
-              onQuarter={() => {
-                setCurrentInput({
-                  ...currentInput,
-                  [getAddress(c.address)]: String(
-                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.25).toNumber(),
-                  ),
-                })
-              }}
-              onHalf={() => {
-                setCurrentInput({
-                  ...currentInput,
-                  [getAddress(c.address)]: String(
-                    (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.5).toNumber(),
-                  ),
-                })
-              }}
-              onUserInput={(value) => {
-                setCurrentInput({ ...currentInput, [getAddress(c.address)]: value })
-              }}
-            />
-          ))}
+                  const testMax = toFixedCustom(max)
+                  // eslint-disable-next-line
+                  // debugger
+                  setCurrentInput({
+                    ...currentInput,
+                    [getAddress(c.address)]: testMax,
+                  })
+                }}
+                onQuarter={() => {
+                  setCurrentInput({
+                    ...currentInput,
+                    [getAddress(c.address)]: String(
+                      (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.25).toNumber(),
+                    ),
+                  })
+                }}
+                onHalf={() => {
+                  setCurrentInput({
+                    ...currentInput,
+                    [getAddress(c.address)]: String(
+                      (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.5).toNumber(),
+                    ),
+                  })
+                }}
+                onUserInput={(value) => {
+                  setCurrentInput({ ...currentInput, [getAddress(c.address)]: value })
+                }}
+              />
+            ))}
         </div>
 
         <SpaceBetweenFormat
@@ -213,7 +215,10 @@ const CardInput = ({
         />
 
         {(() => {
-          const totalInput = rebalance.ratio.map((c) => currentInput[getAddress(c.address)]).join('')
+          const totalInput = rebalance.ratio
+            .filter((r) => r.value)
+            .map((c) => currentInput[getAddress(c.address)])
+            .join('')
           const needsApproval = rebalance.ratio.find((c) => {
             const currentValue = parseFloat(currentInput[getAddress(c.address)])
             const currentAllowance = (_.get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()

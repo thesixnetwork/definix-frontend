@@ -13,9 +13,12 @@ import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'
 import { RebalanceState } from '../types'
 
+const filteredRebalances = rebalancesConfig.filter(
+  (r) => r.address[parseInt(process.env.REACT_APP_CHAIN_ID || '0', 10)],
+)
 const initialState: RebalanceState = {
   isFetched: false,
-  data: [...rebalancesConfig],
+  data: [...filteredRebalances],
 }
 
 export const rebalanceSlice = createSlice({
@@ -56,7 +59,7 @@ const calculateRatio = (currentPriceUsd: BigNumber[], sumCurrentPoolUsdBalance: 
 }
 export const fetchRebalances = () => async (dispatch) => {
   const data = await Promise.all(
-    rebalancesConfig.map(async (rebalanceConfig) => {
+    filteredRebalances.map(async (rebalanceConfig) => {
       const address = getAddress(rebalanceConfig.address)
       const rebalanceCalls = [
         {

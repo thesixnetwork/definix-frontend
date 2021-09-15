@@ -291,6 +291,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const sharePricesFromGraph = []
           const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
+
           fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
@@ -355,20 +356,24 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               }
               if (!graphTokenData[token.symbol]) {
                 const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-                graphTokenData[token.symbol] = {
-                  name: token.symbol,
-                  values: [],
-                  valuesPrice: [],
-                  color: ratioObject.color,
+                if (ratioObject) {
+                  graphTokenData[token.symbol] = {
+                    name: token.symbol,
+                    values: [],
+                    valuesPrice: [],
+                    color: ratioObject.color,
+                  }
                 }
               }
-              graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
-              graphTokenData[token.symbol].values.push(
-                new BigNumber(dataValues[index])
-                  .div(base[token.symbol] as number)
-                  .times(100)
-                  .toNumber(),
-              )
+              if (graphTokenData[token.symbol]) {
+                graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+                graphTokenData[token.symbol].values.push(
+                  new BigNumber(dataValues[index])
+                    .div(base[token.symbol] as number)
+                    .times(100)
+                    .toNumber(),
+                )
+              }
             })
           })
           graphTokenData.rebalance = rebalanceData
@@ -515,21 +520,25 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               }
               if (!graphTokenData[token.symbol]) {
                 const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
-                graphTokenData[token.symbol] = {
-                  name: token.symbol,
-                  values: [],
-                  valuesPrice: [],
-                  color: ratioObject.color,
+                if (ratioObject) {
+                  graphTokenData[token.symbol] = {
+                    name: token.symbol,
+                    values: [],
+                    valuesPrice: [],
+                    color: ratioObject.color,
+                  }
                 }
               }
-              if (token.symbol === 'KUSDT') {
-                graphTokenData[token.symbol].values.push(50)
-                graphTokenData[token.symbol].valuesPrice.push(1)
-              } else {
-                graphTokenData[token.symbol].values.push(
-                  new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
-                )
-                graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+              if (graphTokenData[token.symbol]) {
+                if (token.symbol === 'KUSDT') {
+                  graphTokenData[token.symbol].values.push(50)
+                  graphTokenData[token.symbol].valuesPrice.push(1)
+                } else {
+                  graphTokenData[token.symbol].values.push(
+                    new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
+                  )
+                  graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+                }
               }
             })
           })
@@ -668,13 +677,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                     <TwoLineFormat
                       className={isMobile ? 'col-6' : 'col-3'}
                       title="Yield APR"
-                      value={numeral(
+                      value={`${numeral(
                         finixPrice
                           .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
                           .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
                           .times(100)
                           .toFixed(2),
-                      ).format('0,0.[00]')}
+                      ).format('0,0.[00]')}%`}
                       hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
                     />
                     {/* <TwoLineFormat
@@ -712,13 +721,17 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                       <TwoLineFormat
                         title="Return"
                         value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
-                        hint="Probability return on investment measures approximately over a period of time."
+                        hint="Estimated return on investment measures approximately over a period of time."
                         hintPosition="left"
                       />
                     </div>
                   </div>
 
-                  <FullChart isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio]} />
+                  <FullChart
+                    isLoading={isLoading}
+                    graphData={graphData}
+                    tokens={[...rebalance.ratio.filter((rt) => rt.value)]}
+                  />
                 </div>
 
                 <div className="flex bd-t">
