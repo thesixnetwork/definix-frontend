@@ -151,7 +151,7 @@ const rebalances: RebalanceConfig[] = [
     },
     rebalace: 'New',
   },
-  
+
   {
     title: 'Satoshi and Friends',
     description:
