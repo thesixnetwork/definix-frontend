@@ -53,6 +53,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'Old',
   },
 
   {
@@ -112,6 +113,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'Old',
   },
 
   {
@@ -165,6 +167,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'Old',
   },
 
   {
@@ -218,6 +221,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'Old',
   },
 
   {
@@ -289,6 +293,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'Old',
   },
 
   {
@@ -354,6 +359,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'Old',
   },
 
   {
@@ -401,6 +407,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'New',
   },
 
   {
@@ -448,6 +455,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'New',
   },
 
   {
@@ -501,6 +509,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
+    rebalace: 'New',
   },
 ]
 

@@ -14,6 +14,7 @@ import MiniChart from './MiniChart'
 import TwoLineFormat from './TwoLineFormat'
 import { Rebalance } from '../../../state/types'
 import { usePriceFinixUsd, useRebalanceBalances, useBalances } from '../../../state/hooks'
+import RebalanceSash from './RebalanceSash'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -131,11 +132,28 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     combinedAmount()
   }, [combinedAmount])
 
+  const renderSash = () => {
+    if (isMobile && isHorizontal && rebalance.rebalace === 'New') {
+      return <RebalanceSash type="listCard" />
+    }
+
+    if (isHorizontal && rebalance.rebalace === 'New') {
+      return <RebalanceSash type="list" />
+    }
+
+    if (!isHorizontal && rebalance.rebalace === 'New') {
+      return <RebalanceSash type="card" />
+    }
+
+    return null
+  }
+
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
   if (isHorizontal) {
     if (isMobile) {
       return (
         <HorizontalMobileStyle className="mb-3">
+          {renderSash()}
           <CardHeading
             className="pa-4"
             showAccordion
@@ -144,6 +162,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             setIsOpenAccordion={setIsOpenAccordion}
             rebalance={rebalance}
           />
+
           <div style={{ display: isOpenAccordion ? 'block' : 'none' }}>
             <div className="flex justify-space-between pa-4 pt-0">
               <TwoLineFormat
@@ -216,6 +235,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
     return (
       <HorizontalStyle className="flex align-strench mb-5 pa-5">
+        {renderSash()}
         <CardHeading isHorizontal={isHorizontal} rebalance={rebalance} className="col-3 pr-4 bd-r" />
 
         <div className="col-9 flex">
@@ -293,6 +313,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   return (
     <VerticalStyle className="mb-7">
+      {renderSash()}
       <CardHeading className="pa-4" isSkew isHorizontal={isHorizontal} rebalance={rebalance} />
 
       <div className="flex justify-space-between pa-4 pt-0">
