@@ -3,6 +3,156 @@ import { FINIX, SIX, WKLAY, KWBTC, KETH, KXRP, KUSDT, KBNB } from './tokens'
 
 const rebalances: RebalanceConfig[] = [
   {
+    title: 'Bullish Giant',
+    description:
+      'Withstanding the trend in the market with both giants in the area. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
+    fullDescription:
+      'The representation of the giants of the markert, consisting of BTC and ETH. The distribution of the assets are 70/30 in ratio for this farm and rebalancing will occur once every time rebalancing fee is covered.',
+    icon: ['/images/vaults/bullish_giants_1.png', '/images/vaults/bullish_giants_2.png'],
+    address: {
+      1001: '',
+      8217: '0x422ECCd512Dc89AD5CBa69097A051Dd85f821fac',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KWBTC',
+        value: 70,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 30,
+        color: '#6D6D6D',
+        address: KETH,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 0,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Bullish Giant',
+      inceptionDate: 'Wednesday, September 15, 2021 16:30:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x422ECCd512Dc89AD5CBa69097A051Dd85f821fac',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+    rebalace: 'New',
+  },
+
+  {
+    title: 'Top Coin Collector',
+    description:
+      'Famous capital in the farm and highly versatile to the market. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
+    fullDescription:
+      'Consisting of BTC ETH USDT which is a big capital farm, but with a lower fluctuation exposure to the market as the biggest ratio is in USDT and other assets are distributed equally. The rebalancing occurs every time an extra 1% coverage movement occurs.',
+    icon: ['/images/vaults/topcoin_collector_1.png', '/images/vaults/topcoin_collector_2.png'],
+    address: {
+      1001: '',
+      8217: '0x98085f75b327CdB0762Bd41dd3B99fa787E2e660',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KWBTC',
+        value: 25,
+        color: '#ef9244',
+        address: KWBTC,
+      },
+      {
+        symbol: 'KETH',
+        value: 25,
+        color: '#6D6D6D',
+        address: KETH,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 50,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Top Coin Collector',
+      inceptionDate: 'Wednesday, September 15, 2021 16:30:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x98085f75b327CdB0762Bd41dd3B99fa787E2e660',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+    rebalace: 'New',
+  },
+
+  {
+    title: 'Three Marketeers',
+    description:
+      'Inspired by Chain Creators, but with no stable coin in it. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
+    fullDescription:
+      'The natives of all three chains consist of ETH KLAY BNB which are equally distributed in the farm. An extra 1% rebalance fee is covered and the system will make rebalance for the group.',
+    icon: ['/images/vaults/3_musketeers_1.png', '/images/vaults/3_musketeers_2.png'],
+    address: {
+      1001: '',
+      8217: '0x9e0e235fbd485d43ba44d84684b6bac77033881f',
+    },
+    fee: {
+      management: 0.2,
+      buyback: 1.5,
+      bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'KETH',
+        value: 33,
+        color: '#6D6D6D',
+        address: KETH,
+      },
+      {
+        symbol: 'WKLAY',
+        value: 33,
+        color: '#4f463c',
+        address: WKLAY,
+      },
+      {
+        symbol: 'KBNB',
+        value: 33,
+        color: '#eeb80c',
+        address: KBNB,
+      },
+      {
+        symbol: 'KUSDT',
+        value: 0,
+        color: '#2A9D8F',
+        address: KUSDT,
+      },
+    ],
+    factsheet: {
+      name: 'Three Marketeers',
+      inceptionDate: 'Wednesday, September 15, 2021 16:30:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x9e0e235fbd485d43ba44d84684b6bac77033881f',
+      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
+      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
+      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
+    },
+    rebalace: 'New',
+  },
+  
+  {
     title: 'Satoshi and Friends',
     description:
       'Tribute to the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
@@ -360,156 +510,6 @@ const rebalances: RebalanceConfig[] = [
       bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
     },
     rebalace: 'Old',
-  },
-
-  {
-    title: 'Bullish Giant',
-    description:
-      'Withstanding the trend in the market with both giants in the area. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
-    fullDescription:
-      'The representation of the giants of the markert, consisting of BTC and ETH. The distribution of the assets are 70/30 in ratio for this farm and rebalancing will occur once every time rebalancing fee is covered.',
-    icon: ['/images/vaults/bullish_giants_1.png', '/images/vaults/bullish_giants_2.png'],
-    address: {
-      1001: '',
-      8217: '0x422ECCd512Dc89AD5CBa69097A051Dd85f821fac',
-    },
-    fee: {
-      management: 0.2,
-      buyback: 1.5,
-      bounty: 0.3,
-    },
-    ratio: [
-      {
-        symbol: 'KWBTC',
-        value: 70,
-        color: '#ef9244',
-        address: KWBTC,
-      },
-      {
-        symbol: 'KETH',
-        value: 30,
-        color: '#6D6D6D',
-        address: KETH,
-      },
-      {
-        symbol: 'KUSDT',
-        value: 0,
-        color: '#2A9D8F',
-        address: KUSDT,
-      },
-    ],
-    factsheet: {
-      name: 'Bullish Giant',
-      inceptionDate: 'Wednesday, September 15, 2021 16:30:00 (UTC+7)',
-      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
-      vault: '0x422ECCd512Dc89AD5CBa69097A051Dd85f821fac',
-      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
-      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
-      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
-    },
-    rebalace: 'New',
-  },
-
-  {
-    title: 'Top Coin Collector',
-    description:
-      'Famous capital in the farm and highly versatile to the market. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
-    fullDescription:
-      'Consisting of BTC ETH USDT which is a big capital farm, but with a lower fluctuation exposure to the market as the biggest ratio is in USDT and other assets are distributed equally. The rebalancing occurs every time an extra 1% coverage movement occurs.',
-    icon: ['/images/vaults/topcoin_collector_1.png', '/images/vaults/topcoin_collector_2.png'],
-    address: {
-      1001: '',
-      8217: '0x98085f75b327CdB0762Bd41dd3B99fa787E2e660',
-    },
-    fee: {
-      management: 0.2,
-      buyback: 1.5,
-      bounty: 0.3,
-    },
-    ratio: [
-      {
-        symbol: 'KWBTC',
-        value: 25,
-        color: '#ef9244',
-        address: KWBTC,
-      },
-      {
-        symbol: 'KETH',
-        value: 25,
-        color: '#6D6D6D',
-        address: KETH,
-      },
-      {
-        symbol: 'KUSDT',
-        value: 50,
-        color: '#2A9D8F',
-        address: KUSDT,
-      },
-    ],
-    factsheet: {
-      name: 'Top Coin Collector',
-      inceptionDate: 'Wednesday, September 15, 2021 16:30:00 (UTC+7)',
-      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
-      vault: '0x98085f75b327CdB0762Bd41dd3B99fa787E2e660',
-      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
-      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
-      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
-    },
-    rebalace: 'New',
-  },
-
-  {
-    title: 'Three Marketeers',
-    description:
-      'Inspired by Chain Creators, but with no stable coin in it. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
-    fullDescription:
-      'The natives of all three chains consist of ETH KLAY BNB which are equally distributed in the farm. An extra 1% rebalance fee is covered and the system will make rebalance for the group.',
-    icon: ['/images/vaults/3_musketeers_1.png', '/images/vaults/3_musketeers_2.png'],
-    address: {
-      1001: '',
-      8217: '0x9e0e235fbd485d43ba44d84684b6bac77033881f',
-    },
-    fee: {
-      management: 0.2,
-      buyback: 1.5,
-      bounty: 0.3,
-    },
-    ratio: [
-      {
-        symbol: 'KETH',
-        value: 33,
-        color: '#6D6D6D',
-        address: KETH,
-      },
-      {
-        symbol: 'WKLAY',
-        value: 33,
-        color: '#4f463c',
-        address: WKLAY,
-      },
-      {
-        symbol: 'KBNB',
-        value: 33,
-        color: '#eeb80c',
-        address: KBNB,
-      },
-      {
-        symbol: 'KUSDT',
-        value: 0,
-        color: '#2A9D8F',
-        address: KUSDT,
-      },
-    ],
-    factsheet: {
-      name: 'Three Marketeers',
-      inceptionDate: 'Wednesday, September 15, 2021 16:30:00 (UTC+7)',
-      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
-      vault: '0x9e0e235fbd485d43ba44d84684b6bac77033881f',
-      management: '0xBe1babf28dD56D4Fd79d9F290465a849DB68D53F',
-      finixBuyBackFee: '0xdEf17b43A4FF27F2F38cCD93093E5F09bf2A0A1c',
-      bountyFee: '0x7fF77538930E9E75b3c07ec02077eFeAd27615c2',
-    },
-    rebalace: 'New',
   },
 ]
 

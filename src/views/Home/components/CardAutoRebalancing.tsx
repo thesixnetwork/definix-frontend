@@ -209,7 +209,13 @@ const CardAutoRebalancing = ({ className = '' }) => {
             to="/rebalancing" as={Link}
             <span>Interesting, I want to invest</span>
           </SpecialButton> */}
-          <div className="mt-7"> <SpecialButton as={Link} to="/rebalancing"> <span>Interesting, I want to invest</span> </SpecialButton> </div>
+          <div className="mt-7">
+            {' '}
+            <SpecialButton as={Link} to="/rebalancing">
+              {' '}
+              <span>Interesting, I want to invest</span>{' '}
+            </SpecialButton>{' '}
+          </div>
         </div>
       </StyledBannerLady>
       {/* <StyledBannerLongTerm className={className}>
