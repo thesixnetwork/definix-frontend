@@ -99,7 +99,7 @@ const rebalances: RebalanceConfig[] = [
   },
 
   {
-    title: 'Three Marketeers',
+    title: 'Three Musketeers',
     description:
       'Inspired by Chain Creators, but with no stable coin in it. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
     fullDescription:
@@ -141,7 +141,7 @@ const rebalances: RebalanceConfig[] = [
       },
     ],
     factsheet: {
-      name: 'Three Marketeers',
+      name: 'Three Musketeers',
       inceptionDate: 'Wednesday, September 15, 2021 16:30:00 (UTC+7)',
       manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
       vault: '0x9e0e235fbd485d43ba44d84684b6bac77033881f',
