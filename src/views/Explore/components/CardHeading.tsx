@@ -16,7 +16,7 @@ interface CardHeadingType {
 }
 
 const CardHeadingStyle = styled.div<{ isSkew?: boolean }>`
-  padding-left: ${({ isSkew }) => (isSkew ? '116px !important' : '0')};
+  padding-left: ${({ isSkew }) => (isSkew ? '110px !important' : '0')};
 `
 
 const FocusImg = styled.img<{ isHorizontal: boolean }>`

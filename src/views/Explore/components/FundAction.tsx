@@ -41,7 +41,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
   const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
 
-  const [diffAmounts, setDiffAmount] = useState(0)
+  const [diffAmount, setDiffAmount] = useState(0)
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
@@ -58,8 +58,9 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
 
       const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
       const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
+      const totalLps = _.get(resTotalTxn.data, 'total_lp_amount')
 
+      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
       const transactionsSlice = myInvestTxns.slice(indexTx + 1)
       myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
       localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
@@ -67,16 +68,19 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
       const txHash = {
         txns: transactionsSlice,
       }
-      let total = 0
+      let lastTotalAmt = 0
+      let lastTotalLp = 0
       if (transactionsSlice.length > 0) {
         const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-        total = _.get(datas, 'total_usd_amount')
+        lastTotalAmt = _.get(datas, 'total_usd_amount')
+        lastTotalLp = _.get(datas, 'total_lp_amount')
       }
 
       const totalUsd = totalUsds
+      const totalLpAmount = totalLps + lastTotalLp
 
-      if (sharedprice > 0 && totalUsd > 0) {
-        const totalUsdAmount = total + totalUsd
+      if (sharedprice > 0 && totalUsd > 0 && totalLpAmount > 0) {
+        const totalUsdAmount = lastTotalAmt + totalUsd
         const diff = sharedprice - totalUsdAmount
         setDiffAmount(diff)
         const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
@@ -105,7 +109,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
               {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
             </Text>
             <div className="flex align-baseline">
-              {diffAmounts !== 0 && (
+              {diffAmount !== 0 && (
                 <Text
                   className="ml-1"
                   fontSize="14px"
@@ -118,8 +122,8 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
                 >
                   {`${
                     percentage > 0
-                      ? `+${numeral(diffAmounts).format('0,0.[00]')}`
-                      : `${numeral(diffAmounts).format('0,0.[00]')}`
+                      ? `+${numeral(diffAmount).format('0,0.[000]')}`
+                      : `${numeral(diffAmount).format('0,0.[000]')}`
                   }`}{' '}
                 </Text>
               )}
@@ -155,8 +159,8 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
           }%)`}
           diffAmounts={`${
             percentage > 0
-              ? `+${numeral(diffAmounts).format('0,0.[00]')}`
-              : `${numeral(diffAmounts).format('0,0.[00]')}`
+              ? `+${numeral(diffAmount).format('0,0.[000]')}`
+              : `${numeral(diffAmount).format('0,0.[000]')}`
           }`}
           percentClass={(() => {
             if (percentage < 0) return 'failure'
