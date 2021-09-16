@@ -49,8 +49,18 @@ const StyledLink = styled(Link)`
     }
   }
 `
-const StyledAddress = styled.div`
-  border: 2px solid #f1f1f1;
+const StyleLight = styled.div`
+  border: 2px solid #ececec;
+  border-radius: 10px;
+  padding: 6px;
+  margin: 20px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+`
+const StyledDark = styled.div`
+  border: 2px solid #57575b;
   border-radius: 10px;
   padding: 6px;
   margin: 20px 10px;
@@ -138,16 +148,30 @@ const PanelBody: React.FC<Props> = (props) => {
           <MenuItem menu={link} key={link.label} />
         </div>
       ))}
-      <StyledAddress>
-        <img src={FinixCoin} alt="FinixCoin" width="24" />
-        <Text className="pl-2" color="text" fontSize="14px">
-          FINIX
-        </Text>
-        <Text className="px-1" fontSize="14px">
-          {addressEllipsis}
-        </Text>
-        <CopyToClipboard color="#222331" noText toCopy={addressFinix} tooltipPos="bottom" iconWidth="16px" />
-      </StyledAddress>
+
+      {isDark ? (
+        <StyledDark>
+          <img src={FinixCoin} alt="FinixCoin" width="24" />
+          <Text className="pl-1" color="text" fontSize="14px">
+            FINIX
+          </Text>
+          <Text className="px-1" fontSize="14px">
+            {addressEllipsis}
+          </Text>
+          <CopyToClipboard color="#FFF" noText toCopy={addressFinix} tooltipPos="bottom" iconWidth="16px" />
+        </StyledDark>
+      ) : (
+        <StyleLight>
+          <img src={FinixCoin} alt="FinixCoin" width="24" />
+          <Text className="pl-1" color="text" fontSize="14px">
+            FINIX
+          </Text>
+          <Text className="px-2" fontSize="14px">
+            {addressEllipsis}
+          </Text>
+          <CopyToClipboard color="#000" noText toCopy={addressFinix} tooltipPos="bottom" iconWidth="16px" />
+        </StyleLight>
+      )}
       {/* <BorderBox>
         <Heading fontSize="14px" className="mb-4">
           Wallet

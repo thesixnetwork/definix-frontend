@@ -109,7 +109,7 @@ const StyledBannerLongTerm = styled(Card)`
 
 const SpecialButton = styled(Button)`
   position: relative;
-  padding: 12px 34px;
+  padding: 12px 24px;
   background: linear-gradient(#f3d36c, #e27d3a);
   overflow: hidden;
   border-radius: 40px;
@@ -152,7 +152,7 @@ const SpecialButton = styled(Button)`
 
 const SpecialOutline = styled(Button)`
   position: relative;
-  padding: 12px 34px;
+  padding: 10px 24px;
   background-color: unset;
   overflow: hidden;
   border-radius: 40px;
@@ -221,6 +221,9 @@ const StyledSlider = styled(Slider)`
   .slick-dots li.slick-active button:before {
     opacity: unset;
   }
+  .slick-list {
+    border-radius: 8px;
+  }
 `
 
 const CardAutoRebalancing = ({ className = '' }) => {
@@ -273,12 +276,11 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </Heading>
               <Text color="textSubtle" fontSize="12px">
                 New financial product from DEFINIX. It is the single-sided pool stake FINIX earn vFINIX.{' '}
-                <b style={{ color: '#000' }}>
-                  vFINIX can vote for rewarding fee return from a liquidity pool and Discount fee conditioning for
-                  Rebalancing Farm.
-                </b>
               </Text>
-
+              <Text bold fontSize="12px">
+                vFINIX can vote for rewarding fee return from a liquidity pool and discount fee conditioning for
+                Rebalancing Farm.
+              </Text>
               <div className="mt-6">
                 <SpecialOutline as={Link} to="/">
                   <span>Coming soon!</span>
