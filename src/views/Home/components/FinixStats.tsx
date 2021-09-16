@@ -37,7 +37,7 @@ const Row = styled.div`
 const FinixStats = () => {
   const TranslateString = useI18n()
   const totalSupply = useTotalSupply()
-  const burnedBalance = getBalanceNumber(useBurnedBalance())
+  const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = getBalanceNumber(totalSupply)
 
   return (
