@@ -22,7 +22,7 @@ import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challe
 import colorGradient from '../../images/for-ui-v2/color-gradient.png'
 import logoNoti from '../../images/for-ui-v2/noti.png'
 import useModal from '../Modal/useModal'
-import CopyToClipboard from '../WalletModal/CopyToClipboard'
+// import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
 import Logo from './Logo'
 import Panel from './Panel'
@@ -330,20 +330,21 @@ const Menu: React.FC<NavProps> = ({
                 )}
               </>
             ) : (
-              <CountDownBanner
-                logo={FinixCoin}
-                title="FINIX-Klaytn Address : "
-                detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
-                disableCountdown
-                button={
-                  <CopyToClipboard
-                    color="warning"
-                    noText
-                    toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
-                    tooltipPos="right"
-                  />
-                }
-              />
+              <></>
+              // <CountDownBanner
+              //   logo={FinixCoin}
+              //   title="FINIX-Klaytn Address : "
+              //   detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+              //   disableCountdown
+              //   button={
+              //     <CopyToClipboard
+              //       color="warning"
+              //       noText
+              //       toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
+              //       tooltipPos="right"
+              //     />
+              //   }
+              // />
             )}
 
             {currentTime > endStatedTradingTime ? (
