@@ -3,7 +3,7 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
-import { Text } from 'uikit-dev'
+import { Text } from '../../components/Text'
 import logoDesktop from '../../images/Definix-advance-crypto-assets.png'
 import logoWhite from '../../images/definix-white-logo.png'
 import { Login } from '../WalletModal/types'
@@ -13,7 +13,6 @@ import MenuLink from './MenuLink'
 import { PanelProps, PushedProps } from './types'
 import UserBlock from './UserBlock'
 import FinixCoin from '../../images/finix-coin.png'
-// import useModal from '../Modal/useModal'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
 
 interface Props extends PanelProps, PushedProps {
@@ -155,7 +154,7 @@ const PanelBody: React.FC<Props> = (props) => {
           <Text className="pl-1" color="text" fontSize="14px">
             FINIX
           </Text>
-          <Text className="px-1" fontSize="14px">
+          <Text className="px-2" fontSize="14px">
             {addressEllipsis}
           </Text>
           <CopyToClipboard color="#FFF" noText toCopy={addressFinix} tooltipPos="bottom" iconWidth="16px" />

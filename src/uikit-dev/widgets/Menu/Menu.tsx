@@ -22,7 +22,6 @@ import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challe
 import colorGradient from '../../images/for-ui-v2/color-gradient.png'
 import logoNoti from '../../images/for-ui-v2/noti.png'
 import useModal from '../Modal/useModal'
-// import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
 import Logo from './Logo'
 import Panel from './Panel'
