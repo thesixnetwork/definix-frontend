@@ -7,7 +7,6 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/definix-long-term-stake-with-voting-system.png'
-import arrowLeft from 'uikit-dev/images/for-ui-v2/arrow/arrow-left.png'
 
 const StyledBannerLady = styled(Card)`
   width: 100%;
