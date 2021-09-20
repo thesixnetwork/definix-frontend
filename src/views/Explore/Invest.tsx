@@ -71,7 +71,7 @@ const CardInput = ({
   rebalance,
   setCurrentInput,
   currentInput,
-  totalUSDAmount,
+  sumPoolAmount
 }) => {
   const [isApproving, setIsApproving] = useState(false)
   const { isXl } = useMatchBreakpoints()
@@ -209,7 +209,7 @@ const CardInput = ({
         <SpaceBetweenFormat
           className="mb-4"
           title="Total value"
-          value={`$${numeral(totalUSDAmount).format('0,0.[0000]')}`}
+          value={`$${numeral(sumPoolAmount).format('0,0.[0000]')}`}
         />
 
         {(() => {
@@ -401,10 +401,8 @@ const CardCalculate = ({
 
         <Text fontSize="12px" textAlign={isMobile ? 'center' : 'left'}>
           Output is estimated. You will receive at least{' '}
-          <strong>
-            {numeral(sumPoolAmount - sumPoolAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD
-          </strong>{' '}
-          or the transaction will revert.
+          <strong>{numeral(sumPoolAmount - sumPoolAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD</strong> or
+          the transaction will revert.
         </Text>
       </div>
 
@@ -662,10 +660,10 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
 
   if (!rebalance) return <Redirect to="/rebalancing" />
 
-  const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
-  const totalUSDAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
-    .div(new BigNumber(10).pow(usdToken.decimals || 18))
-    .toNumber()
+  // const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
+  // const totalUSDAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
+  //   .div(new BigNumber(10).pow(usdToken.decimals || 18))
+  //   .toNumber()
 
   return (
     <>
@@ -687,8 +685,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
                   setIsInputting(false)
                   setIsCalculating(true)
                 }}
-                totalUSDAmount={totalUSDAmount}
+                // totalUSDAmount={totalUSDAmount}
                 isSimulating={isSimulating}
+                sumPoolAmount={sumPoolAmount}
               />
             )}{' '}
             {isCalculating && (
