@@ -389,10 +389,10 @@ const CardCalculate = ({
             <Share
               share={
                 currentShare <= 0 || Number.isNaN(currentShare)
-                  ? numeral(totalUserUsdAmount).format('0,0.[00]')
+                  ? numeral(sumPoolAmount).format('0,0.[00]')
                   : numeral(currentShare).format('0,0.[00]')
               }
-              usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
+              usd={`~${numeral(sumPoolAmount).format('0,0.[00]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />
             {false && <PriceUpdate className="mt-3" onClick={recalculate} />}
@@ -402,7 +402,7 @@ const CardCalculate = ({
         <Text fontSize="12px" textAlign={isMobile ? 'center' : 'left'}>
           Output is estimated. You will receive at least{' '}
           <strong>
-            {numeral(totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD
+            {numeral(sumPoolAmount - sumPoolAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD
           </strong>{' '}
           or the transaction will revert.
         </Text>
