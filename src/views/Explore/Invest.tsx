@@ -71,7 +71,7 @@ const CardInput = ({
   rebalance,
   setCurrentInput,
   currentInput,
-  sumPoolAmount
+  sumPoolAmount,
 }) => {
   const [isApproving, setIsApproving] = useState(false)
   const { isXl } = useMatchBreakpoints()
