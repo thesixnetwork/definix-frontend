@@ -140,10 +140,11 @@ const CardInput = ({
           subTitleFontSize="11px"
           titleColor={isDark ? '#ADB4C2' : ''}
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent={`${rebalance.sharedPricePercentDiff >= 0
-            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-            }%`}
+          percent={`${
+            rebalance.sharedPricePercentDiff >= 0
+              ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+              : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+          }%`}
           percentClass={(() => {
             if (rebalance.sharedPricePercentDiff < 0) return 'failure'
             if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -251,7 +252,7 @@ const CardCalculate = ({
   onBack,
   onNext,
   rebalance,
-  sumPoolAmount
+  sumPoolAmount,
 }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -275,8 +276,7 @@ const CardCalculate = ({
   const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
   // const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
 
-  const calNewImpact = Math.abs((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount * 100)
-
+  const calNewImpact = Math.abs(((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount) * 100)
 
   const handleLocalStorage = async (tx) => {
     const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
@@ -418,9 +418,8 @@ const CardCalculate = ({
           className="mb-2"
           title="Price Impact"
           // value={`${calNewImpact <= 0.1 ? '< 0.1' : calNewImpact}%`}
-          value={`${calNewImpact <= 0.1 ? '< ' : ""} ${numeral(calNewImpact).format('0,0.[00]')}%`}
-
-          valueColor={calNewImpact > 3 ? "failure" : "success"} /* || failure */
+          value={`${calNewImpact <= 0.1 ? '< ' : ''} ${numeral(calNewImpact).format('0,0.[00]')}%`}
+          valueColor={calNewImpact > 3 ? 'failure' : 'success'} /* || failure */
         />
         {/* <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" /> */}
 
@@ -615,11 +614,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       for (let i = 0; i < reservePoolAmount[0]?.length || 0; i++) {
         const decimal = rebalance.tokens[i]?.decimals ? rebalance.tokens[i].decimals : 6
         sumUsd = sumUsd.plus(reservePoolAmount[0][i].dividedBy(10 ** (decimal + 6)))
-
       }
 
       setSumPoolAmount(+sumUsd.toFixed())
-
 
       setIsSimulating(false)
     }

@@ -76,11 +76,11 @@ export const simulateInvest = async (tokens = []) => {
     [...notStableToken.map((token) => getLowerAddress(token.address))],
     notStableToken.map(() => router),
   )
- 
+
   poolAmounts = swapper.getCurrentPoolAmount(getLowerAddress(stableTokenOnly.address), [
     ...notStableToken.map((token) => getLowerAddress(token.address)),
   ])
-   
+
   return [poolUSDBalances, poolAmounts]
 }
 
