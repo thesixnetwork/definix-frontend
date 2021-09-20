@@ -14,7 +14,6 @@ class RebalanceSwapper extends Address {
       const usdEachValue = totalUSDAmount.multipliedBy(tokenRatioPoints[i]).dividedBy(totalRatioPoint)
       if (usdAmounts[i].isGreaterThan(usdEachValue)) {
         // sell
-
         const paths = [tokens[i], usdToken]
         if (tokenRatioPoints[i].isEqualTo(0)) {
           // Deplete balance of the token
@@ -92,27 +91,31 @@ class RebalanceSwapper extends Address {
         const _reserve0 = pair.reserve0
         const _reserve1 = pair.reserve1
 
-        const { token0 } = pair
+        const {
+          token0
+        } = pair
 
         const amountInUSD =
-          token0 === tokens[i]
-            ? tokenBalance.multipliedBy(_reserve1).dividedBy(_reserve0)
-            : tokenBalance.multipliedBy(_reserve0).dividedBy(_reserve1)
+          token0 === tokens[i] ?
+          tokenBalance.multipliedBy(_reserve1).dividedBy(_reserve0) :
+          tokenBalance.multipliedBy(_reserve0).dividedBy(_reserve1)
 
         totalUSDAmount = totalUSDAmount.plus(amountInUSD)
         usdAmounts[i] = amountInUSD
+
       }
     }
     usdAmounts[usdAmounts.length - 1] = usdAmount
+
     totalUSDAmount = totalUSDAmount.plus(usdAmount)
 
     return [usdAmounts, totalUSDAmount]
   }
 
   getCurrentPoolAmount = (
-    usdToken,
-    tokens, // public // view
-  ) =>
+      usdToken,
+      tokens, // public // view
+    ) =>
     // returns (uint256[] memory poolAmounts)
     {
       const poolAmounts = Array(tokens.length + 1).fill(0)
