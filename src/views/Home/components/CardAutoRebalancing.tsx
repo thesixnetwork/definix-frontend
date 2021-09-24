@@ -246,7 +246,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 partner
               </Text>
               <div className="mt-6">
-                <SpecialButton as={Link} to="/rebalancing">
+                <SpecialButton as="a" href="https://klaytn.definix.com/rebalancing">
                   <span>Interesting, I want to invest</span>
                 </SpecialButton>
               </div>
