@@ -96,7 +96,11 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
             apy = farm.klayApy
           }
-          return (
+          
+          const reward = (getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0)
+          const allocate = (br.rewardPerBlock || new BigNumber(0))
+        
+          return (reward !== 0 || allocate.toNumber() !== 0) ? (
             <AirDrop
               logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
               title="AAPR"
@@ -104,7 +108,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />
-          )
+          ):``
         })}
 
         {false && (

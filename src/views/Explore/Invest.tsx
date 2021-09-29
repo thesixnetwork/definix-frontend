@@ -81,6 +81,7 @@ const CardInput = ({
   const { isDark } = useTheme()
   const { setShowModal } = React.useContext(KlipModalContext())
 
+
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
     setIsApproving(true)
@@ -140,11 +141,10 @@ const CardInput = ({
           subTitleFontSize="11px"
           titleColor={isDark ? '#ADB4C2' : ''}
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent={`${
-            rebalance.sharedPricePercentDiff >= 0
-              ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-              : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-          }%`}
+          percent={`${rebalance.sharedPricePercentDiff >= 0
+            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+            }%`}
           percentClass={(() => {
             if (rebalance.sharedPricePercentDiff < 0) return 'failure'
             if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -253,6 +253,7 @@ const CardCalculate = ({
   onNext,
   rebalance,
   sumPoolAmount,
+  calNewImpact
 }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -276,7 +277,7 @@ const CardCalculate = ({
   const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
   // const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
 
-  const calNewImpact = Math.abs(((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount) * 100)
+  // const calNewImpact = Math.abs(((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount) * 100)
 
   const handleLocalStorage = async (tx) => {
     const rebalanceAddress: string = getAddress(_.get(rebalance, 'address'))
@@ -523,7 +524,7 @@ const usePrevious = (value, initialValue) => {
 
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [tx, setTx] = useState({})
-  const [poolUSDBalances, setPoolUSDBalances] = useState([])
+  const [poolUSDBalancesState, setPoolUSDBalances] = useState([])
   const [poolAmounts, setPoolAmounts] = useState([])
   const [sumPoolAmount, setSumPoolAmount] = useState(0)
   const [isSimulating, setIsSimulating] = useState(true)
@@ -539,6 +540,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const prevRebalance = usePrevious(rebalance, {})
   const prevBalances = usePrevious(balances, {})
   const prevCurrentInput = usePrevious(currentInput, {})
+  const [calNewImpact, setCalNewImpact] = useState(0)
 
   useEffect(() => {
     if (account && rebalance) {
@@ -566,7 +568,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
     ) {
       setIsSimulating(true)
       // eslint-disable-next-line
-      const [poolUSDBalancesData, poolAmountsData] = await simulateInvest(
+      const [__, poolAmountsData] = await simulateInvest(
         _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
           const ratioPoint = (
             ((rebalance || {}).tokenRatioPoints || [])[index] ||
@@ -585,9 +587,29 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
           }
         }),
       )
-      setPoolAmounts(poolAmountsData)
 
-      const reservePoolAmount = await getReserves(
+
+      const poolUSDBalancesDataProcess = getReserves(
+        _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
+          const ratioPoint = (
+            ((rebalance || {}).tokenRatioPoints || [])[index] ||
+            ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
+            new BigNumber(0)
+          ).toNumber()
+          const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
+          const decimal = c.decimals
+          return {
+            ...c,
+            symbol: c.symbol,
+            address: ratioObject.address,
+            ratioPoint,
+            value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
+            balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+          }
+        }),
+      )
+
+      const reservePoolAmountProcess = getReserves(
         _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
           const ratioPoint = (
             ((rebalance || {}).tokenRatioPoints || [])[index] ||
@@ -608,55 +630,75 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       )
       let sumUsd = new BigNumber(0)
 
-      // @ts-ignore
-      for (let i = 0; i < reservePoolAmount[0]?.length || 0; i++) {
-        const decimal = rebalance.tokens[i]?.decimals ? rebalance.tokens[i].decimals : 6
-        sumUsd = sumUsd.plus(reservePoolAmount[0][i].dividedBy(10 ** (decimal + 6)))
-      }
+      const [poolUSDBalancesData,reservePoolAmount] = await Promise.all([poolUSDBalancesDataProcess,reservePoolAmountProcess])
+      // Promise.all([poolUSDBalancesDataProcess, reservePoolAmountProcess]).then(data => {
+        // const [poolUSDBalancesData,reservePoolAmount]  = data
+        // @ts-ignore
+        for (let i = 0; i < reservePoolAmount[0]?.length || 0; i++) {
+          const decimal = rebalance.tokens[i]?.decimals ? rebalance.tokens[i].decimals : 6
+          sumUsd = sumUsd.plus(reservePoolAmount[0][i].dividedBy(10 ** (decimal + 6)))
+        }
+        const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
+        // @ts-ignore
+        const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalancesData, 1, '0'))
+          .div(new BigNumber(10).pow(usdToken.decimals || 18))
+          .toNumber()
+        const calNewImpactPrice = Math.abs(((totalUserUsdAmount - +sumUsd.toFixed()) / +sumUsd.toFixed()) * 100)
+        
+        setCalNewImpact(calNewImpactPrice)
+        setPoolUSDBalances(poolUSDBalancesData)
+        setSumPoolAmount(+sumUsd.toFixed())
+        setPoolAmounts(poolAmountsData)
+        setIsSimulating(false)
+      // })
 
-      setSumPoolAmount(+sumUsd.toFixed())
 
-      setIsSimulating(false)
     }
   }, [balances, currentInput, rebalance, prevRebalance, prevBalances, prevCurrentInput])
 
-  const calReserve = useCallback(async () => {
-    if (
-      !_.isEqual(rebalance, prevRebalance) ||
-      !_.isEqual(balances, prevBalances) ||
-      !_.isEqual(currentInput, prevCurrentInput)
-    ) {
-      setIsSimulating(true)
+  // const calReserve = useCallback(async () => {
+  //   if (
+  //     !_.isEqual(rebalance, prevRebalance) ||
+  //     !_.isEqual(balances, prevBalances) ||
+  //     !_.isEqual(currentInput, prevCurrentInput)
+  //   ) {
+  //     setIsSimulating(false)
 
-      const poolUSDBalancesData = await getReserves(
-        _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
-          const ratioPoint = (
-            ((rebalance || {}).tokenRatioPoints || [])[index] ||
-            ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
-            new BigNumber(0)
-          ).toNumber()
-          const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
-          const decimal = c.decimals
-          return {
-            ...c,
-            symbol: c.symbol,
-            address: ratioObject.address,
-            ratioPoint,
-            value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
-            balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
-          }
-        }),
-      )
-
-      setPoolUSDBalances(poolUSDBalancesData)
-      setIsSimulating(false)
-    }
-  }, [balances, currentInput, rebalance, prevRebalance, prevBalances, prevCurrentInput])
+  //     const poolUSDBalancesData = await getReserves(
+  //       _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
+  //         const ratioPoint = (
+  //           ((rebalance || {}).tokenRatioPoints || [])[index] ||
+  //           ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
+  //           new BigNumber(0)
+  //         ).toNumber()
+  //         const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
+  //         const decimal = c.decimals
+  //         return {
+  //           ...c,
+  //           symbol: c.symbol,
+  //           address: ratioObject.address,
+  //           ratioPoint,
+  //           value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
+  //           balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+  //         }
+  //       }),
+  //     )
+  //     const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
+  //     const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalances, 1, '0'))
+  //       .div(new BigNumber(10).pow(usdToken.decimals || 18))
+  //       .toNumber()
+  //     console.log("diff", totalUserUsdAmount, sumPoolAmount)
+  //     const calNewImpactPrice = Math.abs(((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount) * 100)
+  //     setCalNewImpact(calNewImpactPrice)
+  //     setPoolUSDBalances(poolUSDBalancesData)
+  //     setIsSimulating(true)
+  //   }
+  // }, [balances, currentInput, rebalance, prevRebalance, prevBalances, prevCurrentInput, poolUSDBalances, sumPoolAmount])
 
   useEffect(() => {
     fetchData()
-    calReserve()
-  }, [fetchData, calReserve])
+    // calReserve()
+  }, [fetchData])
 
   if (!rebalance) return <Redirect to="/rebalancing" />
 
@@ -698,7 +740,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
                 setIsInvesting={setIsInvesting}
                 isSimulating={isSimulating}
                 recalculate={fetchData}
-                poolUSDBalances={poolUSDBalances}
+                poolUSDBalances={poolUSDBalancesState}
                 poolAmounts={poolAmounts}
                 rebalance={rebalance}
                 onBack={() => {
@@ -708,11 +750,13 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
                 sumPoolAmount={sumPoolAmount}
                 onNext={() => {
                   setIsCalculating(false)
+                  fetchData()
                   setIsInvested(true)
                 }}
+                calNewImpact={calNewImpact}
               />
             )}
-            {isInvested && <CardResponse poolUSDBalances={poolUSDBalances} tx={tx} rebalance={rebalance} />}
+            {isInvested && <CardResponse poolUSDBalances={poolUSDBalancesState} tx={tx} rebalance={rebalance} />}
           </MaxWidth>
         </LeftPanelAbsolute>
       </TwoPanelLayout>
