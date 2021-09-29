@@ -81,7 +81,6 @@ const CardInput = ({
   const { isDark } = useTheme()
   const { setShowModal } = React.useContext(KlipModalContext())
 
-
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
     setIsApproving(true)
@@ -141,10 +140,11 @@ const CardInput = ({
           subTitleFontSize="11px"
           titleColor={isDark ? '#ADB4C2' : ''}
           value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent={`${rebalance.sharedPricePercentDiff >= 0
-            ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-            : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-            }%`}
+          percent={`${
+            rebalance.sharedPricePercentDiff >= 0
+              ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+              : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+          }%`}
           percentClass={(() => {
             if (rebalance.sharedPricePercentDiff < 0) return 'failure'
             if (rebalance.sharedPricePercentDiff > 0) return 'success'
@@ -253,7 +253,7 @@ const CardCalculate = ({
   onNext,
   rebalance,
   sumPoolAmount,
-  calNewImpact
+  calNewImpact,
 }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -588,7 +588,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
         }),
       )
 
-
       const poolUSDBalancesDataProcess = getReserves(
         _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
           const ratioPoint = (
@@ -630,29 +629,30 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       )
       let sumUsd = new BigNumber(0)
 
-      const [poolUSDBalancesData,reservePoolAmount] = await Promise.all([poolUSDBalancesDataProcess,reservePoolAmountProcess])
+      const [poolUSDBalancesData, reservePoolAmount] = await Promise.all([
+        poolUSDBalancesDataProcess,
+        reservePoolAmountProcess,
+      ])
       // Promise.all([poolUSDBalancesDataProcess, reservePoolAmountProcess]).then(data => {
-        // const [poolUSDBalancesData,reservePoolAmount]  = data
-        // @ts-ignore
-        for (let i = 0; i < reservePoolAmount[0]?.length || 0; i++) {
-          const decimal = rebalance.tokens[i]?.decimals ? rebalance.tokens[i].decimals : 6
-          sumUsd = sumUsd.plus(reservePoolAmount[0][i].dividedBy(10 ** (decimal + 6)))
-        }
-        const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
-        // @ts-ignore
-        const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalancesData, 1, '0'))
-          .div(new BigNumber(10).pow(usdToken.decimals || 18))
-          .toNumber()
-        const calNewImpactPrice = Math.abs(((totalUserUsdAmount - +sumUsd.toFixed()) / +sumUsd.toFixed()) * 100)
-        
-        setCalNewImpact(calNewImpactPrice)
-        setPoolUSDBalances(poolUSDBalancesData)
-        setSumPoolAmount(+sumUsd.toFixed())
-        setPoolAmounts(poolAmountsData)
-        setIsSimulating(false)
+      // const [poolUSDBalancesData,reservePoolAmount]  = data
+      // @ts-ignore
+      for (let i = 0; i < reservePoolAmount[0]?.length || 0; i++) {
+        const decimal = rebalance.tokens[i]?.decimals ? rebalance.tokens[i].decimals : 6
+        sumUsd = sumUsd.plus(reservePoolAmount[0][i].dividedBy(10 ** (decimal + 6)))
+      }
+      const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
+      // @ts-ignore
+      const totalUserUsdAmount = new BigNumber(_.get(poolUSDBalancesData, 1, '0'))
+        .div(new BigNumber(10).pow(usdToken.decimals || 18))
+        .toNumber()
+      const calNewImpactPrice = Math.abs(((totalUserUsdAmount - +sumUsd.toFixed()) / +sumUsd.toFixed()) * 100)
+
+      setCalNewImpact(calNewImpactPrice)
+      setPoolUSDBalances(poolUSDBalancesData)
+      setSumPoolAmount(+sumUsd.toFixed())
+      setPoolAmounts(poolAmountsData)
+      setIsSimulating(false)
       // })
-
-
     }
   }, [balances, currentInput, rebalance, prevRebalance, prevBalances, prevCurrentInput])
 
