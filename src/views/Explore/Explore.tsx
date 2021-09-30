@@ -82,7 +82,10 @@ const Explore: React.FC = () => {
                   </Heading>
                   <div className="mt-2 flex align-center justify-center">
                     <Text paddingRight="1">I’m new to this,</Text>
-                    <TutorailsLink href="https://github.com/thesixnetwork/" target="_blank">
+                    <TutorailsLink
+                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/rebalancing-farm/how-to-start-investing-in-rebalancing-farm"
+                      target="_blank"
+                    >
                       Learn to invest.
                     </TutorailsLink>
                   </div>
