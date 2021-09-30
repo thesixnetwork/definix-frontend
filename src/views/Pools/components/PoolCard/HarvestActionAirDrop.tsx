@@ -111,7 +111,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
           const allocate = br.rewardPerBlock || new BigNumber(0)
 
-          return  reward !== 0 || allocate.toNumber() !== 0 ? (
+          return reward !== 0 || allocate.toNumber() !== 0 ? (
             <AirDrop
               logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
               title="AAPR"
@@ -119,7 +119,9 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />
-          ):""
+          ) : (
+            ''
+          )
         })}
 
         {false && (
