@@ -26,7 +26,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
-import PoolCardGenesis from './components/PoolCardGenesis'
+// import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolContext from './PoolContext'
 
@@ -322,9 +322,9 @@ const Farm: React.FC = () => {
                 <div>
                   <Route exact path={`${path}`}>
                     <>
-                      {poolsWithApy.map((pool) => (
+                      {/* {poolsWithApy.map((pool) => (
                         <PoolCardGenesis key={pool.sousId} pool={pool} />
-                      ))}
+                      ))} */}
                       {/* <Coming /> */}
                     </>
                   </Route>

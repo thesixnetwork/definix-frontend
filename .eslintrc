@@ -1,4 +1,5 @@
 {
+  "plugins": ["unused-imports"],
   "settings": {
     "import/resolver": {
       "node": {
@@ -13,6 +14,9 @@
   },
   "extends": "@pancakeswap-libs/eslint-config-pancake",
   "rules": {
+    "@typescript-eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports-ts": "warn",
+    "unused-imports/no-unused-vars-ts": "warn",
     "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
     "no-plusplus": 0,
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
@@ -26,7 +30,9 @@
     "@typescript-eslint/no-explicit-any": 0,
     "radix": 0,
     "import/no-extraneous-dependencies": 0,
-    "jsx-a11y/media-has-caption": 0
+    "jsx-a11y/media-has-caption": 0,
+    "import/no-cycle": 0,
+    "eslint-plugin-unused-imports": 0
     // End temporary rules
   }
 }

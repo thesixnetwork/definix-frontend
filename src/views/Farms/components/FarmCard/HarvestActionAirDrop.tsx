@@ -3,9 +3,9 @@ import { useHarvest } from 'hooks/useHarvest'
 import { useTranslation } from 'contexts/Localization'
 import numeral from 'numeral'
 import React, { useState } from 'react'
-import { useFarmUser, usePriceFinixUsd } from 'state/hooks'
+import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Heading, Text, useModal } from 'uikit-dev'
+import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { QuoteToken } from 'config/constants/types'
@@ -32,7 +32,6 @@ const MiniLogo = styled.img`
 `
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({
-  bundleRewardLength,
   pendingRewards,
   bundleRewards,
   pid,
@@ -42,7 +41,6 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
 }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const { t } = useTranslation()
-  const finixUsd = usePriceFinixUsd()
   const { onReward } = useHarvest(pid)
   const { earnings } = useFarmUser(pid)
 
@@ -98,7 +96,11 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
             apy = farm.klayApy
           }
-          return (
+
+          const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
+          const allocate = br.rewardPerBlock || new BigNumber(0)
+
+          return reward !== 0 || allocate.toNumber() !== 0 ? (
             <AirDrop
               logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
               title="AAPR"
@@ -106,6 +108,8 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />
+          ) : (
+            ``
           )
         })}
 

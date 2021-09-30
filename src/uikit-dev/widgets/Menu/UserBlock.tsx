@@ -78,7 +78,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '', po
               className="mb-2"
               fontSize="13px"
             >
-              {t('View on Klaytn Scope')}
+              {t('View on KlaytnScope')}
             </LinkExternal>
             <CopyToClipboard noPadding toCopy={account}>
               {t('Copy Address')}
@@ -90,6 +90,7 @@ const UserBlock: React.FC<Props> = ({ account, login, logout, className = '', po
               className="mt-4"
               onClick={() => {
                 logout()
+                window.localStorage.removeItem('userAccount')
                 window.localStorage.removeItem('connector')
                 window.localStorage.removeItem(localStorageKey)
                 window.location.reload()

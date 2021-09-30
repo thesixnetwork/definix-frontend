@@ -31,7 +31,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
       color="textSubtle"
       fontSize="12px"
     >
-      {t('View on Klaytn Scope')}
+      {t('View on KlaytnScope')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )

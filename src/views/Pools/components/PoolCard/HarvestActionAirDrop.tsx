@@ -8,7 +8,6 @@ import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
-import klay from 'uikit-dev/images/Logo-Klaytn.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { QuoteToken } from 'config/constants/types'
 import AirDropHarvestModal from './AirDropHarvestModal'
@@ -39,18 +38,15 @@ interface HarvestActionAirdropProps {
 }
 
 const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
-  bundleRewardLength,
   pendingRewards,
   bundleRewards,
   sousId,
   isBnbPool,
   earnings,
-  tokenDecimals,
   needsApproval,
   isOldSyrup,
   className = '',
   isHorizontal,
-  farm,
   pool,
 }) => {
   const { t } = useTranslation()

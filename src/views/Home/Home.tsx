@@ -107,8 +107,6 @@ const Home: React.FC = () => {
       if (response.data.data) {
         const caption = _.get(response.data.data, 'data.0.text', '')
         setCaptionText(caption)
-      } else {
-        console.log('error')
       }
     }
     fetchCaptionText()
@@ -147,15 +145,15 @@ const Home: React.FC = () => {
               )}
             </div>
 
-            <CardAutoRebalancing className="mb-5" />
+            <CardAutoRebalancing />
 
-            <div className={`flex align-stretch ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
+            <div className={`flex align-stretch mt-5 ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
               <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>
-                <CardTVL className="mb-5" />
+                <CardTVL className="mb-5 mt-6" />
                 <CardAudit />
               </div>
               <div className={isMobileOrTablet ? 'col-12 mt-5' : 'col-6 ml-3'}>
-                <CardTweet />
+                <CardTweet className="mb-5 mt-6" />
               </div>
             </div>
           </MaxWidthLeft>
@@ -181,7 +179,7 @@ const Home: React.FC = () => {
                       setIsViewTurial(false)
                     }}
                   >
-                    {t('My farms & pools')}
+                    {t('MY INVESTMENTS')}
                   </Heading>
                 )}
 

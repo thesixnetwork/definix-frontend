@@ -1,7 +1,7 @@
 import { useTranslation } from 'contexts/Localization'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronRightIcon, Link, Text } from 'uikit-dev'
+import { Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   klaytnAddress?: string
@@ -22,7 +22,6 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
-  klaytnAddress,
   removed,
   totalValueFormated,
   isHorizontal = false,

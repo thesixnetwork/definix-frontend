@@ -17,6 +17,7 @@ interface Props extends InjectedProps {
   isRainbow?: boolean
   classHeader?: string
   maxWidth?: string
+  maxHeight?: string
   className?: string
 }
 
@@ -71,11 +72,12 @@ const Modal: React.FC<Props> = ({
   isRainbow = true,
   classHeader = '',
   maxWidth = '',
+  maxHeight = '',
   className = '',
 }) => {
   const { t } = useTranslation()
   return (
-    <StyledModal isRainbow={isRainbow} style={{ maxWidth }} className={className}>
+    <StyledModal isRainbow={isRainbow} style={{ maxWidth, maxHeight }} className={className}>
       <ModalHeader className={classHeader}>
         <ModalTitle>
           {onBack && (

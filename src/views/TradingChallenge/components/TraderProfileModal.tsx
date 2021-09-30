@@ -7,9 +7,9 @@ import 'slick-carousel/slick/slick-theme.css'
 import 'slick-carousel/slick/slick.css'
 import styled, { keyframes } from 'styled-components'
 import { Button, ChevronLeftIcon, ChevronRightIcon, Input, Modal, Text, useModal } from 'uikit-dev'
-import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1558.png'
-import avatar02 from 'uikit-dev/images/for-trading-challenge/IMG_1560.png'
-import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_1594.png'
+import avatar01 from 'uikit-dev/images/for-trading-challenge/IMG_1.png'
+import avatar02 from 'uikit-dev/images/for-trading-challenge/IMG_2.png'
+import avatar03 from 'uikit-dev/images/for-trading-challenge/IMG_3.png'
 import loadingIcon from 'uikit-dev/images/loading-icon.png'
 import FailureModal from './FailureModal'
 import SuccessModal from './SuccessModal'
@@ -71,18 +71,15 @@ const TraderProfileModal = ({ onDismiss = () => null, onSuccessRefresh }) => {
       await tradingCompetRegisContract.methods
         .register(`${currentSlide}`, `${name}`, `${telegramID}`)
         .estimateGas({ from: account })
-        .then(function (gasFee) {
+        .then((gasFee) => {
           setLoadingContract(false)
           tradingCompetRegisContract.methods
             .register(`${currentSlide}`, `${name}`, `${telegramID}`)
             .send({ from: account, gas: gasFee })
-            .on('receipt', function (receipt) {
-              console.log('receipt = ', receipt)
+            .on('receipt', () => {
               onPresentSuccessModal()
             })
-            .on('error', function (error, receipt) {
-              console.log('error = ', error)
-              console.log('receipt on error = ', receipt)
+            .on('error', () => {
               onPresentFailureModal()
             })
         })

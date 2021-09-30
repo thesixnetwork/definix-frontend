@@ -27,7 +27,7 @@ const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null
       </Text>
       <Flex mb="32px">
         <LinkExternal small href={`https://scope.klaytn.com/account/${account}`} mr="16px">
-          {t('View on Klaytn Scope')}
+          {t('View on KlaytnScope')}
         </LinkExternal>
         <CopyToClipboard toCopy={account}>Copy Address</CopyToClipboard>
       </Flex>

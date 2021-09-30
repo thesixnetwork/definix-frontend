@@ -26,7 +26,7 @@ const SwitchStyle = styled.div<{ isBsc: boolean }>`
     top: 4px;
     left: 4px;
     transition: 0.2s;
-    background: ${({ isBsc, theme }) => (isBsc ? '#f0b80b' : '#4f473c')};
+    background: ${({ isBsc }) => (isBsc ? '#f0b80b' : '#4f473c')};
     border-radius: ${({ theme }) => theme.radii.small};
     transform: translateX(${({ isBsc }) => (isBsc ? '0' : 'calc(100% + 4px)')});
   }

@@ -32,23 +32,8 @@ const BSC_2_5 = ({ title }) => {
         </Text>
 
         <div className="mb-6">
-          <img
-            src={img01}
-            alt=""
-            className="mb-2"
-            onClick={() => {
-              console.log('SIX')
-            }}
-            style={{ cursor: 'pointer' }}
-          />
-          <img
-            src={img02}
-            onClick={() => {
-              console.log('FINIX')
-            }}
-            style={{ cursor: 'pointer' }}
-            alt=""
-          />
+          <img src={img01} alt="" className="mb-2" style={{ cursor: 'pointer' }} />
+          <img src={img02} style={{ cursor: 'pointer' }} alt="" />
         </div>
 
         <Text fontSize="14px">

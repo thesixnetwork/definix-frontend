@@ -79,6 +79,7 @@ export const genQRcodeContactInteract = (
   abi: string,
   input: string,
   setShowModal: (bool: boolean) => void,
+  value?: string,
 ) => {
   initData()
   const mockData = {
@@ -88,27 +89,24 @@ export const genQRcodeContactInteract = (
     type: 'execute_contract',
     transaction: {
       to: contractAddress,
-      value: '0',
+      value: value || '0',
       abi,
       params: input,
     },
   }
   axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
     requestKey = response.data.request_key
+    const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
     if (isMobile === true) {
-      const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
-      // await axios.get(url)
       intervalCheckResult = setInterval(getResultContract, 1000)
-      openDeeplink(url)
+      setTimeout(() => {
+        openDeeplink(url)
+      }, 1000)
     } else {
       setShowModal(true)
-      QRcode.toCanvas(
-        document.getElementById('qrcode'),
-        `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
-        () => {
-          intervalCheckResult = setInterval(getResultContract, 1000)
-        },
-      )
+      QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
+        intervalCheckResult = setInterval(getResultContract, 1000)
+      })
     }
   })
 }
@@ -128,7 +126,7 @@ const openDeeplink = async (url: string) => {
   const checkRedirect = window.open(url, '_blank')
   if (checkRedirect === null) {
     window.location.href = `kakaotalk://klipwallet/open?url=${url}`
-    setTimeout(function () {
+    setTimeout(() => {
       if (document.hasFocus()) {
         window.location.replace(
           'https://apps.apple.com/kr/app/%EC%B9%B4%EC%B9%B4%EC%98%A4%ED%86%A1-kakaotalk/id362057947',
@@ -137,3 +135,5 @@ const openDeeplink = async (url: string) => {
     }, 4500)
   }
 }
+
+export const MAX_UINT_256_KLIP = '115792089237316195423570985008687907853269984665640564039457584007913129639935'

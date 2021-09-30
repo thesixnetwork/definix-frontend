@@ -15,7 +15,6 @@ import partnerBlack from 'uikit-dev/images/for-ui-v2/menu/Partnership-Black.png'
 import partnerWhite from 'uikit-dev/images/for-ui-v2/menu/Partnership-White.png'
 import swapBlack from 'uikit-dev/images/for-ui-v2/menu/Swap-Black.png'
 import swapWhite from 'uikit-dev/images/for-ui-v2/menu/Swap-White.png'
-import { languages } from 'config/localization/languages'
 
 const config: MenuEntry[] = [
   {
@@ -83,34 +82,50 @@ const config: MenuEntry[] = [
   //   notHighlight: false,
   //   newTab: false,
   // },
+
   {
-    label: 'Mutual Fund',
+    label: 'Rebalancing',
     icon: mutualBlack,
     iconActive: mutualWhite,
-    href: '/info',
+    href: '/rebalancing',
     notHighlight: false,
     newTab: false,
-    items: [
-      {
-        label: 'Investors',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
-      {
-        label: 'Fund Managers',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
-      {
-        label: 'Network Monitor',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
-    ],
   },
+
+  // {
+  //   label: 'Rebalancing',
+  //   icon: mutualBlack,
+  //   iconActive: mutualWhite,
+  //   href: '/rebalancing',
+  //   notHighlight: false,
+  //   newTab: false,
+  //   items: [
+  //     {
+  //       label: 'Explore',
+  //       href: '/rebalancing',
+  //       notHighlight: false,
+  //       newTab: false,
+  //     },
+  //     // {
+  //     //   label: 'Investors',
+  //     //   href: '/info',
+  //     //   notHighlight: true,
+  //     //   newTab: false,
+  //     // },
+  //     // {
+  //     //   label: 'Fund Managers',
+  //     //   href: '/info',
+  //     //   notHighlight: true,
+  //     //   newTab: false,
+  //     // },
+  //     // {
+  //     //   label: 'Network Monitor',
+  //     //   href: '/info',
+  //     //   notHighlight: true,
+  //     //   newTab: false,
+  //     // },
+  //   ],
+  // },
   {
     label: 'Bridge',
     icon: bridgeBlack,

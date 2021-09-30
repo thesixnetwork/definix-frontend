@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
 import styled from 'styled-components'
-import { ArrowBackIcon, IconButton, Button, Card, Heading } from 'uikit-dev'
+import { ArrowBackIcon, IconButton, Card, Heading } from 'uikit-dev'
 import astro from 'uikit-dev/images/Airdrop/2nd-airdrop-small.jpg'
 import definixLogo from 'uikit-dev/images/Definix-advance-crypto-assets.png'
 import klaytnLogo from 'uikit-dev/images/Logo-Klaytn.png'
@@ -89,9 +89,8 @@ const StyledBanner = styled(Card)`
   }
 `
 
-const BannerAirdrop = ({ showBtn = false, className = '' }) => {
+const BannerAirdrop = ({ className = '' }) => {
   const { t } = useTranslation()
-
   return (
     <StyledBanner className={className}>
       <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-2">
