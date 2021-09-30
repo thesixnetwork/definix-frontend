@@ -2,14 +2,14 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useTranslation } from 'contexts/Localization'
 import { languageList } from 'config/localization/languages'
 import useTheme from 'hooks/useTheme'
-import React, { useContext } from 'react'
+import React from 'react'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
 import { Menu as UikitMenu } from 'uikit-dev'
 import config from './config'
 
 const Menu = (props) => {
   const { account, connect, reset } = useWallet()
-  const { currentLanguage, setLanguage, t } = useTranslation()
+  const { currentLanguage, setLanguage } = useTranslation()
   const { isDark, toggleTheme } = useTheme()
   const finixPriceUsd = usePriceFinixUsd()
   const { profile } = useProfile()

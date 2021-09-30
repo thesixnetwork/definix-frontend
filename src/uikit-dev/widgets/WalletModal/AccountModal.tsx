@@ -17,7 +17,7 @@ interface Props {
 const AccountModal: React.FC<Props> = ({ account, logout, onDismiss = () => null }) => {
   const { t } = useTranslation()
   return (
-    <Modal title="Your wallet" onDismiss={onDismiss} isRainbow={false}>
+    <Modal title={t('Your wallet')} onDismiss={onDismiss} isRainbow={false}>
       <Text
         fontSize="20px"
         bold

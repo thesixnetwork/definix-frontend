@@ -1,5 +1,5 @@
 import { MenuEntry } from 'uikit-dev'
-import newIcon from 'uikit-dev/images/for-trading-challenge/New-icon.png'
+// import newIcon from 'uikit-dev/images/for-trading-challenge/New-icon.png'
 import bridgeBlack from 'uikit-dev/images/for-ui-v2/menu/Bridge-Black.png'
 import bridgeWhite from 'uikit-dev/images/for-ui-v2/menu/Bridge-White.png'
 import farmBlack from 'uikit-dev/images/for-ui-v2/menu/Farm-Black.png'

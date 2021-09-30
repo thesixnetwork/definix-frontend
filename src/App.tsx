@@ -3,9 +3,9 @@ import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
-import { Redirect, Route, Router, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import { Modal, ResetCSS } from 'uikit-dev'
+import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
@@ -14,7 +14,7 @@ import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
-import Flip from './uikit-dev/components/Flip'
+// import Flip from './uikit-dev/components/Flip'
 // import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
@@ -197,14 +197,14 @@ const App: React.FC = () => {
   )
 }
 
-const DateModal = ({ date }) => {
-  return (
-    <Modal title="" hideCloseButton isRainbow>
-      <div>
-        <Flip date={date} />
-      </div>
-    </Modal>
-  )
-}
+// const DateModal = ({ date }) => {
+//   return (
+//     <Modal title="" hideCloseButton isRainbow>
+//       <div>
+//         <Flip date={date} />
+//       </div>
+//     </Modal>
+//   )
+// }
 
 export default React.memo(App)

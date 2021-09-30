@@ -38,7 +38,7 @@ const FinixStats = () => {
   const { t } = useTranslation()
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
-  const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
+  const finixSupply = getBalanceNumber(totalSupply)
 
   return (
     <StyledFinixStats isRainbow>
