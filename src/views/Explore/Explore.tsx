@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
 import styled from 'styled-components'
+import { Text, Link } from 'uikit-dev'
 import Heading from 'uikit-dev/components/Heading/Heading'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
@@ -24,6 +25,9 @@ const MaxWidth = styled.div`
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
+`
+const TutorailsLink = styled(Link)`
+  text-decoration-line: underline;
 `
 
 const Explore: React.FC = () => {
@@ -76,7 +80,12 @@ const Explore: React.FC = () => {
                   <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
                     Rebalancing Farm
                   </Heading>
-
+                  <div className="mt-2 flex align-center justify-center">
+                    <Text paddingRight="1">I’m new to this,</Text>
+                    <TutorailsLink href="https://github.com/thesixnetwork/" target="_blank">
+                      Learn to invest.
+                    </TutorailsLink>
+                  </div>
                   {/* <HelpButton
                     size="sm"
                     variant="secondary"
