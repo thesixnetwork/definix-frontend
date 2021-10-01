@@ -103,7 +103,7 @@ export const fetchFarmPendingRewards = async (account: string) => {
         //   params: [farm.pid, i, account],
         // })
         const herodotusAdressContract = getContract(herodotusABI, herodotusAdress)
-        const apbr = herodotusAdressContract.methods.pendingBundleReward(farm.pid, i, account).call({from: account})
+        const apbr = herodotusAdressContract.methods.pendingBundleReward(farm.pid, i, account).call({ from: account })
         allBundleRewards.push({ reward: new BigNumber(apbr), bundleId: i })
       }
       // const allPendingBundleRewards = await multicall(herodotusABI, allBundleRequests)
