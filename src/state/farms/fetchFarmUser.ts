@@ -96,7 +96,7 @@ export const fetchFarmPendingRewards = async (account: string) => {
     const numberBundleRewardLength = new BigNumber(bundleRewardLength).toNumber()
     if (numberBundleRewardLength > 0) {
       // const allBundleRequests = []
-      
+
       /* eslint-disable no-await-in-loop */
       const apbrArr = []
       for (let i = 0; i < numberBundleRewardLength; i++) {
@@ -106,7 +106,9 @@ export const fetchFarmPendingRewards = async (account: string) => {
         //   params: [farm.pid, i, account],
         // })
         const herodotusAdressContract = getContract(herodotusABI, herodotusAdress)
-        const apbr = await herodotusAdressContract.methods.pendingBundleReward(farm.pid, i, account).call({ from: account })
+        const apbr = await herodotusAdressContract.methods
+          .pendingBundleReward(farm.pid, i, account)
+          .call({ from: account })
         apbrArr.push({ reward: new BigNumber(apbr), bundleId: i })
       }
       allBundleRewards.push(apbrArr)
