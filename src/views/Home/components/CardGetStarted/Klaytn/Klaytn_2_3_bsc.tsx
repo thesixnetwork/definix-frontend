@@ -25,11 +25,7 @@ const Klaytn_2_3 = ({ title }) => {
 
         <img src={img01} alt="" className="mb-4" />
 
-        <Text fontSize="14px">
-          {t(
-            'The bridge transaction from Stellar network is including with 25 SIX/XLM per transaction, the transaction fee will be deducted from your bridge amount automatically.',
-          )}
-        </Text>
+        <Text fontSize="14px">{t('The bridge transaction from Stellar network to Klaytn is no fee.')}</Text>
       </div>
     </>
   )

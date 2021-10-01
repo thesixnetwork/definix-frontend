@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { QuoteToken } from 'config/constants/types'
+// import { QuoteToken } from 'config/constants/types'
 import AirDropHarvestModal from './AirDropHarvestModal'
 import { FarmWithStakedValue } from '../../../Farms/components/FarmCard/types'
 import { PoolWithApy } from './types'
@@ -104,18 +104,23 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           name="FINIX"
         />
         {(bundleRewards || []).map((br, bundleId) => {
-          let apy = new BigNumber(0)
-          if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
-            apy = pool.klayApy
-          }
-          return (
+          // let apy = new BigNumber(0)
+          // if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
+          //   apy = pool.klayApy
+          // }
+          const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
+          const allocate = br.rewardPerBlock || new BigNumber(0)
+          // ${numeral(apy.toNumber() || 0).format('0,0')} percent airdrop
+          return reward !== 0 || allocate.toNumber() !== 0 ? (
             <AirDrop
               logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
               title="AAPR"
-              percent={`${numeral(apy.toNumber() || 0).format('0,0')}%`}
+              percent="0.0%"
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />
+          ) : (
+            ''
           )
         })}
 

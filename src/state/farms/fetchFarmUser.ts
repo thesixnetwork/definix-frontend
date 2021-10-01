@@ -2,6 +2,7 @@ import BigNumber from 'bignumber.js'
 import erc20ABI from 'config/abi/erc20.json'
 import herodotusABI from 'config/abi/herodotus.json'
 import multicall from 'utils/multicall'
+import { getContract } from 'utils/caver'
 import farmsConfig from 'config/constants/farms'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 
@@ -94,20 +95,31 @@ export const fetchFarmPendingRewards = async (account: string) => {
     ])
     const numberBundleRewardLength = new BigNumber(bundleRewardLength).toNumber()
     if (numberBundleRewardLength > 0) {
-      const allBundleRequests = []
+      // const allBundleRequests = []
+
+      /* eslint-disable no-await-in-loop */
+      const apbrArr = []
       for (let i = 0; i < numberBundleRewardLength; i++) {
-        allBundleRequests.push({
-          address: herodotusAdress,
-          name: 'pendingBundleReward',
-          params: [farm.pid, i, account],
-        })
+        // allBundleRequests.push({
+        //   address: herodotusAdress,
+        //   name: 'pendingBundleReward',
+        //   params: [farm.pid, i, account],
+        // })
+        const herodotusAdressContract = getContract(herodotusABI, herodotusAdress)
+        const apbr = await herodotusAdressContract.methods
+          .pendingBundleReward(farm.pid, i, account)
+          .call({ from: account })
+        apbrArr.push({ reward: new BigNumber(apbr), bundleId: i })
       }
-      const allPendingBundleRewards = await multicall(herodotusABI, allBundleRequests)
-      allBundleRewards.push(
-        allPendingBundleRewards.map((apbr, index) => {
-          return { reward: new BigNumber(apbr), bundleId: index }
-        }),
-      )
+      allBundleRewards.push(apbrArr)
+      /* eslint-enable no-await-in-loop */
+
+      // const allPendingBundleRewards = await multicall(herodotusABI, allBundleRequests)
+      // allBundleRewards.push(
+      //   allPendingBundleRewards.map((apbr, index) => {
+      //     return { reward: new BigNumber(apbr), bundleId: index }
+      //   }),
+      // )
     } else {
       allBundleRewards.push([])
     }

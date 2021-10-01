@@ -27,7 +27,7 @@ const Klaytn_2_7 = ({ title }) => {
 
         <Text fontSize="14px">
           {t(
-            'The bridge transaction from BSC network is including with 0.1% FINIX per transaction, the transaction fee will be deducted from your bridge amount automatically.',
+            'The bridge transaction from BSC network is including with 0.3% FINIX per transaction, the transaction fee will be deducted from your bridge amount automatically.',
           )}
         </Text>
       </div>

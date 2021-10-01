@@ -1,9 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'contexts/Localization'
+import styled from 'styled-components'
+import { Link } from 'uikit-dev'
 import { Modal } from '../Modal'
 import WalletCard from './WalletCard'
 import config from './config'
 import { Login } from './types'
+import { Text } from '../../components/Text'
 
 interface Props {
   login: Login
@@ -16,6 +19,10 @@ interface Props {
 //   align-items: center;
 //   margin-top: 24px;
 // `
+
+const TutorailsLink = styled(Link)`
+  text-decoration-line: underline;
+`
 
 const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => {
   const { t } = useTranslation()
@@ -30,6 +37,17 @@ const ConnectModal: React.FC<Props> = ({ login, onDismiss = () => null }) => {
           mb={index < config.length - 1 ? '8px' : '0'}
         />
       ))}
+
+      <div className="mt-3 flex align-center justify-center">
+        <Text paddingRight="1">I’m new to this,</Text>
+        <TutorailsLink
+          href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/guides-and-faqs/how-to-use-kaikas-on-definix"
+          target="_blank"
+        >
+          How to set up.
+        </TutorailsLink>
+      </div>
+
       {/* <HelpLink
       href="https://docs.definixswap.finance/guides/faq#how-do-i-set-up-my-wallet-on-binance-smart-chain"
       external
