@@ -98,7 +98,8 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
           // }
 
           const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
-          const allocate = br.rewardPerBlock || new BigNumber(0)
+          // const allocate = br.rewardPerBlock || new BigNumber(0)
+          const allocate = new BigNumber(0)
 
           return reward !== 0 || allocate.toNumber() !== 0 ? (
             <AirDrop
@@ -109,7 +110,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />
           ) : (
-            ``
+            <></>
           )
         })}
 
