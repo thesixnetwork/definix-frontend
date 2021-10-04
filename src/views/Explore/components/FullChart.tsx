@@ -163,7 +163,7 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
             fill: true,
             borderColor: thisData.color,
             tension: 0,
-            ...(thisName === 'rebalance'
+            ...(thisName === 'Rebalance'
               ? {
                   borderColor: rebalanceColor,
                   backgroundColor: gradient,

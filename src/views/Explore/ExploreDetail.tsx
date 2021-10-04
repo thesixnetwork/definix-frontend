@@ -125,7 +125,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
           const label = []
           const rebalanceData = {
-            name: 'rebalance',
+            name: 'Rebalance',
             values: [],
           }
           const ALL = 'ALL'
@@ -221,7 +221,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
           const label = []
           const rebalanceData = {
-            name: 'rebalance',
+            name: 'Rebalance',
             values: [],
           }
           const base: Record<string, any> = {}
@@ -284,7 +284,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
 
           const label = []
           const rebalanceData = {
-            name: 'rebalance',
+            name: 'Rebalance',
             values: [],
             valuesPrice: [],
           }
@@ -422,7 +422,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const currentDrawdown = _.get(maxDrawDownResp, 'data.result.current_drawdown', [])
           const label = []
           const rebalanceData = {
-            name: 'rebalance',
+            name: 'Rebalance',
             values: [],
             valuesPrice: [],
           }

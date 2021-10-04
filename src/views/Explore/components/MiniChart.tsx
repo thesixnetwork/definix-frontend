@@ -62,7 +62,7 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
         const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
         const label = []
         const rebalanceData = {
-          name: 'rebalance',
+          name: 'Rebalance',
           values: [],
         }
         const graphTokenData: Record<string, any> = {}
@@ -149,7 +149,7 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
           fill: true,
           borderColor: thisData.color,
           tension: 0,
-          ...(thisName === 'rebalance'
+          ...(thisName === 'Rebalance'
             ? {
                 borderColor: color,
                 backgroundColor: gradient,
