@@ -268,7 +268,7 @@ const Farm: React.FC = () => {
                 <div className="mt-2 flex align-center justify-center">
                   <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
-                    href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
+                    href="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
                     target="_blank"
                   >
                     How to stake.

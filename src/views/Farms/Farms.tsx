@@ -193,7 +193,7 @@ const Farms: React.FC = () => {
                 <div className="mt-2 flex align-center justify-center">
                   <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
-                    href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
+                    href="https://sixnetwork.gitbook.io/definix/yield-farming/how-to-yield-farm-on-definix"
                     target="_blank"
                   >
                     How to stake.
