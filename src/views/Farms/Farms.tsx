@@ -126,7 +126,6 @@ const Farms: React.FC = () => {
 
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
 
-        
         let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
           apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
