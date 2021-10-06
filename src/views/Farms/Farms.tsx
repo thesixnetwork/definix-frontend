@@ -84,13 +84,19 @@ const Farms: React.FC = () => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
-        let klayApy = new BigNumber(0)
+        const klayApy = new BigNumber(0)
         const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
           .times(farm.BONUS_MULTIPLIER)
           .div(new BigNumber(10).pow(18))
         // const totalKlayRewardPerBlock = new BigNumber(KLAY_PER_BLOCK)
         const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+        /*
+        // DO NOT DELETE THIS CODE 
+        // DESCRIPTION THIS CODE CALCULATE BUNDLE APR 
+        // One day we may have a new bundle.
+        // START FN CAL APR BUNDLE
 
         if ((farm.bundleRewards || []).length > 0) {
           const klayBundle = (farm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.WKLAY)
@@ -115,10 +121,13 @@ const Farms: React.FC = () => {
             klayApy = yieldValue.div(totalValue)
           }
         }
+        // END FN CAL APR BUNDLE
+        */
 
         // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
-        let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
 
+        
+        let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
           apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
@@ -143,12 +152,16 @@ const Farms: React.FC = () => {
         }
 
         const finixApy = apy
+        /* 
+        // DO NOT DELETE THIS CODE 
+        // DESCRIPTION THIS CODE CALCULATE BUNDLE APR 
+        // One day we may have a new bundle.
+        // START FN CAL APR BUNDLE
+
         const sumApy = BigNumber.sum(finixApy, klayApy)
-        // console.log('farm', farm.lpSymbol)
-        // console.log('sumApy', sumApy.toNumber())
-        // console.log('finixApy', finixApy.toNumber())
-        // console.log('klayApy', klayApy.toNumber())
-        return { ...farm, apy: sumApy, finixApy, klayApy }
+        */
+
+        return { ...farm, apy: finixApy, finixApy, klayApy }
       })
 
       return farmsToDisplayWithAPY.map((farm) => (
