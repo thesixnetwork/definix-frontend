@@ -11,7 +11,7 @@ import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text } from 'uikit-dev'
+import { Heading, Text, Link } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -41,6 +41,10 @@ const MaxWidth = styled.div`
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
+`
+
+const TutorailsLink = styled(Link)`
+  text-decoration-line: underline;
 `
 
 const Farm: React.FC = () => {
@@ -261,6 +265,15 @@ const Farm: React.FC = () => {
                 <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
                   Pool
                 </Heading>
+                <div className="mt-2 flex align-center justify-center">
+                  <Text paddingRight="1">I’m new to this,</Text>
+                  <TutorailsLink
+                    href="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
+                    target="_blank"
+                  >
+                    How to stake.
+                  </TutorailsLink>
+                </div>
                 {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
                 </HelpButton> */}
