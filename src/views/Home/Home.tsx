@@ -5,7 +5,7 @@ import useTheme from 'hooks/useTheme'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { useProfile } from 'state/hooks'
+// import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Skeleton, Text, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
@@ -74,7 +74,7 @@ const Home: React.FC = () => {
   }, [])
 
   const { account } = useWallet()
-  const { hasProfile } = useProfile()
+  // const { hasProfile } = useProfile()
   // const TranslateString = useI18n()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
@@ -173,7 +173,7 @@ const Home: React.FC = () => {
           {isShowRightPanel && (
             <MaxWidthRight>
               <CustomTab className="mb-4">
-                {account && !hasProfile && (
+                {account && (
                   <Heading
                     fontSize="18px !important"
                     textTransform="uppercase"
@@ -198,7 +198,7 @@ const Home: React.FC = () => {
                 </Heading>
               </CustomTab>
 
-              {account && !hasProfile && !isViewTurial ? <CardMyFarmsAndPools /> : <CardGetStarted />}
+              {account && !isViewTurial ? <CardMyFarmsAndPools /> : <CardGetStarted />}
             </MaxWidthRight>
           )}
         </RightPanel>
