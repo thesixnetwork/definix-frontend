@@ -132,7 +132,7 @@ function Footer() {
       imgDarkMode: kakaoWhite,
     },
     {
-      url: 'https://app.gitbook.com/@sixnetwork/s/definix',
+      url: 'https://sixnetwork.gitbook.io/definix/',
       img: gitbook,
       imgDarkMode: gitbookWhite,
     },
