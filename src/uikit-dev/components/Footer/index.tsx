@@ -168,7 +168,7 @@ const Social = () => {
       imgDarkMode: kakaoWhite,
     },
     {
-      url: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
+      url: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
       img: gitbook,
       imgDarkMode: gitbookWhite,
     },
