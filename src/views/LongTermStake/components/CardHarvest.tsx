@@ -28,6 +28,7 @@ const CardHarvest = () => {
   const isMobile = !isXl && !isLg && !isMd
   const { handleHarvest } = useHarvest()
   const [status, setStatus] = useState(false)
+  const valueReward = pendingReward.toNumber() > 0
 
   const onHarvest = useCallback(async () => {
     try {
@@ -73,6 +74,7 @@ const CardHarvest = () => {
         variant="success"
         fullWidth
         radii="small"
+        disabled={!valueReward}
         onClick={onHarvest}
         className={`${isMobile ? 'col-12 mt-3' : 'col-4 text-right ml-8 mr-6'}`}
       >

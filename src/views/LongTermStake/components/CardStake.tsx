@@ -220,22 +220,6 @@ const CardStake = () => {
     )
   }
 
-  const renderPercent = () => {
-    return (
-      <div className="flex align-center justify-end" style={{ width: isMobileOrTablet ? '100%' : 'auto' }}>
-        <StylesButton size="sm" onClick={() => setPercent(0.25)}>
-          25%
-        </StylesButton>
-        <StylesButton size="sm" onClick={() => setPercent(0.5)}>
-          50%
-        </StylesButton>
-        <StylesButton size="sm" onClick={() => setPercent(1)}>
-          MAX
-        </StylesButton>
-      </div>
-    )
-  }
-
   useEffect(() => {
     const percentOf = percent * Number(balanceOf)
     if (percentOf) {
@@ -279,7 +263,17 @@ const CardStake = () => {
               <NumberInput placeholder="0.00" value={value} onChange={handleChange} pattern="^[0-9]*[.,]?[0-9]*$" />
             </div>
             <Input className={`${isMobileOrTablet ? 'col-12' : 'col-8'}`}>
-              {isApproved && renderPercent()}
+              <div className="flex align-center justify-end" style={{ width: isMobileOrTablet ? '100%' : 'auto' }}>
+                <StylesButton size="sm" onClick={() => setPercent(0.25)}>
+                  25%
+                </StylesButton>
+                <StylesButton size="sm" onClick={() => setPercent(0.5)}>
+                  50%
+                </StylesButton>
+                <StylesButton size="sm" onClick={() => setPercent(1)}>
+                  MAX
+                </StylesButton>
+              </div>
               <Coin>
                 <img src={`/images/coins/${'FINIX'}.png`} alt="" />
               </Coin>
