@@ -65,7 +65,7 @@ const CardHarvest = () => {
               {numeral(pendingReward).format('0,0.00')}
             </Text>
             <Text fontWeight="800" fontSize="16px" color={textColor()} paddingRight="2" paddingLeft="2">
-              FINIX
+              vFINIX
             </Text>
           </div>
         </div>

@@ -150,6 +150,10 @@ const CardStake = () => {
     setValue(e.target.value.replace(/[^\d]/g, ''))
   }
 
+  const _minimum1 = new BigNumber(_.get(allLock, '0._minimum1')).dividedBy(new BigNumber(10).pow(18)).toNumber()
+  const _minimum2 = new BigNumber(_.get(allLock, '0._minimum2')).dividedBy(new BigNumber(10).pow(18)).toNumber()
+  const _minimum3 = new BigNumber(_.get(allLock, '0._minimum3')).dividedBy(new BigNumber(10).pow(18)).toNumber()
+
   useEffect(() => {
     if (period === 1) {
       const asMinutes = moment.duration({ seconds: _.get(allLock, '0.period1_') }).asMinutes()
@@ -197,16 +201,16 @@ const CardStake = () => {
       setIsDisabled(true)
     } else if (period === 0) {
       setIsDisabled(true)
-    } else if (period === 1 && Number(value) < 0) {
+    } else if (period === 1 && Number(value) < _minimum1) {
       setIsDisabled(true)
-    } else if (period === 2 && Number(value) < 100) {
+    } else if (period === 2 && Number(value) < _minimum2) {
       setIsDisabled(true)
-    } else if (period === 4 && Number(value) < 1000) {
+    } else if (period === 4 && Number(value) < _minimum3) {
       setIsDisabled(true)
     } else {
       setIsDisabled(false)
     }
-  }, [value, period, balanceOf])
+  }, [value, period, balanceOf, _minimum1, _minimum2, _minimum3])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved || transactionHash !== '' ? (

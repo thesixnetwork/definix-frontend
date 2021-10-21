@@ -280,6 +280,9 @@ export const useAllLockPeriods = () => {
           period1_: allLockPeriod._period1,
           period2_: allLockPeriod._period2,
           period3_: allLockPeriod._period3,
+          _minimum1: allLockPeriod._minimum1,
+          _minimum2: allLockPeriod._minimum2,
+          _minimum3: allLockPeriod._minimum3
         })
         setLocks(arrLocks)
       } catch (e) {
@@ -426,7 +429,11 @@ export const useUnstakeId = () => {
     return state.longTerm.periodPenalty
   })
 
-  return { id, level, amount, isPenalty, canBeUnlock, penaltyRate, periodPenalty }
+  const totalFinixLock = useSelector((state: State) => {
+    return state.longTerm.totalFinixLock
+  })
+
+  return { id, level, amount, isPenalty, canBeUnlock, penaltyRate, periodPenalty, totalFinixLock }
 }
 
 export const useClaim = () => {

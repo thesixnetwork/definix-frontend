@@ -120,6 +120,7 @@ export interface LongTermState {
   voteAmount: BigNumber
   canBeUnlock: boolean
   penaltyRate: number
+  totalFinixLock: number
 }
 export interface PoolsState {
   isFetched: boolean

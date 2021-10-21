@@ -1,5 +1,10 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
+import VaultFacet from 'config/abi/VaultFacet.json'
+import multicall from 'utils/multicall'
+import { getFinixAddress, getVFinix } from 'utils/addressHelpers'
+import _ from 'lodash'
 
 const initialState = {
   isFetched: false,
@@ -13,6 +18,7 @@ const initialState = {
   voteAmount: null,
   canBeUnlock: false,
   penaltyRate: 0,
+  totalFinixLock: 0,
 }
 
 export const longTermSlice = createSlice({
@@ -43,11 +49,15 @@ export const longTermSlice = createSlice({
       state.penaltyRate = penaltyRate
       state.periodPenalty = periodPenalty
     },
+    setTotalFinixLock: (state, action) => {
+      const { totalFinixLock } = action.payload
+      state.totalFinixLock = totalFinixLock
+    },
   },
 })
 
 // Actions
-export const { setUnstakeId } = longTermSlice.actions
+export const { setUnstakeId, setTotalFinixLock } = longTermSlice.actions
 
 export const fetchIdData =
   (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty) => async (dispatch) => {
@@ -63,5 +73,37 @@ export const fetchIdData =
       }),
     )
   }
+
+const getVaultFacet = async ({ vFinix }) => {
+  let totalFinixLock = 0
+  try {
+    const calls = [
+      {
+        address: vFinix,
+        name: 'getTotalFinixLock',
+      }
+    ]
+    const [pair1BalanceLP] = await multicall(VaultFacet.abi, calls)
+    totalFinixLock = new BigNumber(
+      _.get(pair1BalanceLP, 'totalFinixLock_').dividedBy(new BigNumber(10).pow(18)),
+    ).toNumber()
+  } catch (error) {
+    totalFinixLock = 0
+    console.log('error', error)
+  }
+  return [totalFinixLock]
+}
+
+export const fetchVaultFacet = () => async (dispatch) => {
+  const fetchPromise = []
+
+  fetchPromise.push(
+    getVaultFacet({
+      vFinix: getVFinix(),
+    }),
+  )
+  const [[totalFinix]] = await Promise.all(fetchPromise)
+  dispatch(setTotalFinixLock({ totalFinixLock: totalFinix }))
+}
 
 export default longTermSlice.reducer
