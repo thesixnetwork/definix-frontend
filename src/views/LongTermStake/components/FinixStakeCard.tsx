@@ -140,7 +140,7 @@ const FinixStakeCard = () => {
               <Text color={isDark ? 'white' : '#000000'} className="mr-2">
                 {numeral(totalSupply).format('0,0')}
               </Text>
-              <Text color={isDark ? 'white' : '#000000'}>FINIX</Text>
+              <Text color={isDark ? 'white' : '#000000'}>vFINIX</Text>
             </div>
           </div>
         </div>
