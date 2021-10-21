@@ -91,6 +91,22 @@ const config: MenuEntry[] = [
     notHighlight: false,
     newTab: false,
   },
+  {
+    label: 'Finix',
+    icon: mutualBlack,
+    iconActive: mutualWhite,
+    href: '/finix',
+    notHighlight: false,
+    newTab: false,
+    items: [
+      {
+        label: 'Long-term Stake',
+        href: '/long-term-stake',
+        notHighlight: false,
+        newTab: false,
+      },
+    ],
+  },
 
   // {
   //   label: 'Rebalancing',

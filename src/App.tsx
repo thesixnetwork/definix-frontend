@@ -40,6 +40,7 @@ const Farms = lazy(() => import('./views/Farms'))
 const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
+const LongTermStake = lazy(() => import('./views/LongTermStake'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -123,6 +124,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/AirdropKlay">
               <AirdropKlay />
+            </Route>
+            <Route path="/long-term-stake">
+              <LongTermStake />
             </Route>
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />

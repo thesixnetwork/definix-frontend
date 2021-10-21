@@ -108,6 +108,19 @@ export interface FarmsState {
   farmUnlockAt?: Date
 }
 
+export interface LongTermState {
+  isFetched: boolean
+  id: string
+  level: string
+  amount: number
+  isPenalty: Boolean
+  periodPenalty: string
+  penaltyUnlockTimestamp: string
+  penaltyFinixAmount: string
+  voteAmount: BigNumber
+  canBeUnlock: boolean
+  penaltyRate: number
+}
 export interface PoolsState {
   isFetched: boolean
   data: Pool[]
@@ -200,4 +213,5 @@ export interface State {
   achievements: AchievementState
   rebalances: RebalanceState
   wallet: WalletState
+  longTerm: LongTermState
 }
