@@ -64,8 +64,8 @@ const Coin = styled.div`
 
   img {
     width: auto;
-    height: 30px;
-    margin: 0px 12px 0px 6px;
+    height: 24px;
+    margin-right: 4px;
   }
 `
 
@@ -256,11 +256,11 @@ const CardStake = () => {
   }, [onApprove, setRequestedApproval])
 
   const handleCol = () => {
-    return percent === 1 ? 'col-6' : 'col-4'
+    return percent === 1 ? 'col-6' : 'col-6'
   }
 
   const handlePercent = () => {
-    return percent === 1 ? 'col-4' : 'col-8'
+    return percent === 1 ? 'col-6' : 'col-6'
   }
 
   return (
@@ -303,7 +303,7 @@ const CardStake = () => {
               <Coin>
                 <img src={`/images/coins/${'FINIX'}.png`} alt="" />
               </Coin>
-              <Heading as="h1" fontSize="18px !important">
+              <Heading as="h1" fontSize="16px !important">
                 FINIX
               </Heading>
             </Input>
