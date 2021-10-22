@@ -27,6 +27,7 @@ const initialState = {
   finixLockMap: [],
   userLockAmount: 0,
   finixEarn: 0,
+  allLockPeriods: [],
 }
 
 export const longTermSlice = createSlice({
@@ -74,12 +75,22 @@ export const longTermSlice = createSlice({
       const { finixEarn } = action.payload
       state.finixEarn = finixEarn
     },
+    setAllLockPeriods: (state, action) => {
+      const { allLockPeriods } = action.payload
+      state.allLockPeriods = allLockPeriods
+    },
   },
 })
 
 // Actions
-export const { setUnstakeId, setTotalFinixLock, setTotalVFinixSupply, setUserLockAmount, setPendingReward } =
-  longTermSlice.actions
+export const {
+  setUnstakeId,
+  setTotalFinixLock,
+  setTotalVFinixSupply,
+  setUserLockAmount,
+  setPendingReward,
+  setAllLockPeriods,
+} = longTermSlice.actions
 
 export const fetchIdData =
   (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty) => async (dispatch) => {
@@ -145,37 +156,66 @@ const getPrivateData = async ({ vFinix, account }) => {
       },
       {
         address: vFinix,
-        name: 'getAllLockPeriods',
-      },
-      {
-        address: vFinix,
         name: 'locks',
         params: [account, 10 * 0, 10],
       },
     ]
-    const [lockAmount, lockPeriods, locks] = await multicall(VaultFacet.abi, calls)
-    for (let i = 0; i < 3; i++) {
-      _.set(periodMap, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_period${i + 1}._hex`)).toNumber())
-      _.set(minimum, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_minimum${i + 1}._hex`)).toNumber())
-      _.set(multiplier, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_multiplier${i + 1}._hex`)))
-      _.set(penaltyPeriod, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyPeriod${i + 1}._hex`)))
-      _.set(penaltyRate, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`)))
-      _.set(penaltyRateDecimal, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`)))
-      _.set(
-        calPenaltyRate,
-        `${i}`,
-        Number(
-          new BigNumber(_.get(lockPeriods, `_penaltyRate${i + 1}`))
-            .dividedBy(_.get(lockPeriods, `_penaltyRateDecimal${i + 1}`))
-            .toFixed(),
-        ),
-      )
-    }
+    const [lockAmount, locks] = await multicall(VaultFacet.abi, calls)
     ulockAmount = new BigNumber(lockAmount).dividedBy(new BigNumber(10).pow(18)).toNumber()
   } catch (error) {
     ulockAmount = 0
   }
   return [ulockAmount]
+}
+
+const getAllLockPeriods = async ({ vFinix }) => {
+  let lockPeriod = []
+  const periodMap = {}
+  const minimum = {}
+  const multiplier = [{}]
+  const penaltyPeriod = {}
+  const penaltyRate = {}
+  const penaltyRateDecimal = {}
+  const realPenaltyRate = {}
+  try {
+    const calls = [
+      {
+        // address: '0xDD3F8597FA8F68fCDEf328748163e558e4D44d5A',
+        address: vFinix,
+        name: 'getAllLockPeriods',
+      },
+    ]
+    const [lockPeriods] = await multicall(VaultFacet.abi, calls)
+    for (let i = 0; i < 3; i++) {
+      _.set(periodMap, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_period${i + 1}._hex`)).toNumber())
+      _.set(minimum, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_minimum${i + 1}._hex`)).dividedBy(new BigNumber(10).pow(18)).toNumber())
+      _.set(multiplier, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_multiplier${i + 1}._hex`)).toNumber() / 10)
+      _.set(penaltyPeriod, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyPeriod${i + 1}._hex`)).toNumber())
+      _.set(penaltyRate, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`)).toNumber())
+      _.set(penaltyRateDecimal, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`)).toNumber())
+      _.set(
+        realPenaltyRate,
+        `${i}`,
+        Number(
+          new BigNumber(_.get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`))
+            .dividedBy(_.get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`))
+            .toFixed(),
+        ),
+      )
+    }
+    lockPeriod.push({
+      periodMap,
+      minimum,
+      multiplier,
+      penaltyPeriod,
+      penaltyRate,
+      penaltyRateDecimal,
+      realPenaltyRate,
+    })
+  } catch (error) {
+    lockPeriod = []
+  }
+  return [lockPeriod]
 }
 
 const getPendingReward = async ({ vFinix, account }) => {
@@ -246,6 +286,17 @@ export const fetchPendingReward = (account) => async (dispatch) => {
   )
   const [[earn]] = await Promise.all(fetchPromise)
   dispatch(setPendingReward({ finixEarn: earn }))
+}
+
+export const fetchAllLockPeriods = () => async (dispatch) => {
+  const fetchPromise = []
+  fetchPromise.push(
+    getAllLockPeriods({
+      vFinix: getVFinix(),
+    }),
+  )
+  const [[lockPeriod]] = await Promise.all(fetchPromise)
+  dispatch(setAllLockPeriods({ allLockPeriods: lockPeriod }))
 }
 
 export const fetchVaultIKIP7 = () => async (dispatch) => {

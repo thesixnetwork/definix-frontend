@@ -15,6 +15,7 @@ import {
   useApprove,
   usePrivateData,
   useUnstakeId,
+  useAllLock,
 } from '../../../hooks/useLongTermStake'
 
 const BoxLevel = styled.div`
@@ -45,16 +46,18 @@ const StakePeriodButton = ({ period, setPeriod }) => {
   const { isDark } = useTheme()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const allLock = useAllLockPeriods()
+  const { allLockPeriod } = useAllLock()
   const isMobile = !isXl && !isLg && !isMd
   const [_minimum1, setMinimum1] = useState(0)
   const [_minimum2, setMinimum2] = useState(0)
   const [_minimum3, setMinimum3] = useState(0)
+  const multiplier = [_.get(allLockPeriod, '0.multiplier')]
 
   useEffect(() => {
-    setMinimum1(new BigNumber(_.get(allLock, '0._minimum1')).dividedBy(new BigNumber(10).pow(18)).toNumber())
-    setMinimum2(new BigNumber(_.get(allLock, '0._minimum2')).dividedBy(new BigNumber(10).pow(18)).toNumber())
-    setMinimum3(new BigNumber(_.get(allLock, '0._minimum3')).dividedBy(new BigNumber(10).pow(18)).toNumber())
-  }, [_minimum1, _minimum2, _minimum3, allLock])
+    setMinimum1(_.get(allLockPeriod, '0.minimum.0') || 0)
+    setMinimum2(_.get(allLockPeriod, '0.minimum.1') || 0)
+    setMinimum3(_.get(allLockPeriod, '0.minimum.2') || 0)
+  }, [_minimum1, _minimum2, _minimum3, allLockPeriod])
 
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'
@@ -90,7 +93,36 @@ const StakePeriodButton = ({ period, setPeriod }) => {
   }
 
   return (
-    <div className={`${!isMobile && 'flex align-center justify-space-between'} mt-2`}>
+    <div className={`${!isMobile && 'flex align-center justify-space-between'} mt-2`}>ww
+      {/* {multiplier.map((item) => (
+        <div className={`${isMobile ? 'col-12' : 'col-4'} w-100 mr-2`}>
+          <ButtonPeriod
+            onClick={() => {
+              setPeriod(1)
+            }}
+            radii="small"
+            isStroke
+            style={{
+              backgroundColor: period === 1 ? '#0973B937' : onSelect1(),
+              border: `1px solid ${period === 1 ? '#0973B9' : '#737375'}`,
+            }}
+          >
+            <BoxLevel className="col-4" color={period === 1 ? '#0973B9' : '#737375'}>
+              <Heading color="white" as="h1" fontSize="30px !important">
+                {item}x
+              </Heading>
+            </BoxLevel>
+            <BoxPeriod className="col-8">
+              <Text fontSize="14px !important" color={selectDay1()}>
+                90 days
+              </Text>
+            </BoxPeriod>
+          </ButtonPeriod>
+          <Text fontSize="12px !important" textAlign="center" className="mt-2" color={selectDay1()}>
+            Minimum {_minimum1} FINIX
+          </Text>
+        </div>
+      ))} */}
       <div className={`${isMobile ? 'col-12' : 'col-4'} w-100 mr-2`}>
         <ButtonPeriod
           onClick={() => {

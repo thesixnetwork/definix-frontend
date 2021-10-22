@@ -1,5 +1,12 @@
 export { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchFarmUnlockDate } from './farms'
-export { fetchIdData, fetchVaultFacet, fetchVaultIKIP7, fetchPrivateData, fetchPendingReward } from './longTermStake'
+export {
+  fetchIdData,
+  fetchVaultFacet,
+  fetchVaultIKIP7,
+  fetchPrivateData,
+  fetchPendingReward,
+  fetchAllLockPeriods,
+} from './longTermStake'
 export { clear, remove, push } from './toasts'
 export { fetchRebalances } from './rebalance'
 export { fetchBalances, setDeadline, setSlippage } from './wallet'

@@ -7,7 +7,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchPrivateData, fetchPendingReward } from '../state/actions'
+import { fetchPrivateData, fetchPendingReward, fetchAllLockPeriods } from '../state/actions'
 import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
@@ -158,6 +158,20 @@ export const usePrivateData = () => {
   const lockAmount = useSelector((state: State) => state.longTerm.userLockAmount)
   const finixEarn = useSelector((state: State) => state.longTerm.finixEarn)
   return { lockAmount, finixEarn }
+}
+
+export const useAllLock = () => {
+  const { slowRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const [balance, setBalanceOf] = useState(new BigNumber(0))
+
+
+  useEffect(() => {
+      dispatch(fetchAllLockPeriods())
+  }, [slowRefresh, dispatch])
+
+  const allLockPeriod = useSelector((state: State) => state.longTerm.allLockPeriods)
+  return { allLockPeriod }
 }
 
 export const usePendingReward = () => {

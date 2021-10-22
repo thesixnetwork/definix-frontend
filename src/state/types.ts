@@ -125,6 +125,7 @@ export interface LongTermState {
   finixLockMap: []
   userLockAmount: number
   finixEarn: number
+  allLockPeriods: []
 }
 export interface PoolsState {
   isFetched: boolean
