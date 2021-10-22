@@ -29,7 +29,7 @@ const initialState = {
   userLockAmount: 0,
   finixEarn: 0,
   allLockPeriods: [],
-  totalSupplyAllTimeMint: 0
+  totalSupplyAllTimeMint: 0,
 }
 
 export const longTermSlice = createSlice({
@@ -84,7 +84,7 @@ export const longTermSlice = createSlice({
     setTotalSupplyAllTimeMint: (state, action) => {
       const { totalSupplyAllTimeMint } = action.payload
       state.totalSupplyAllTimeMint = totalSupplyAllTimeMint
-    }
+    },
   },
 })
 
@@ -96,7 +96,7 @@ export const {
   setUserLockAmount,
   setPendingReward,
   setAllLockPeriods,
-  setTotalSupplyAllTimeMint
+  setTotalSupplyAllTimeMint,
 } = longTermSlice.actions
 
 export const fetchIdData =

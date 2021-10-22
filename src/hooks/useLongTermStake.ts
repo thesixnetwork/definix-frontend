@@ -504,7 +504,7 @@ export const useUnstakeId = () => {
     totalFinixLock,
     totalvFinixSupply,
     finixLockMap,
-    totalSupplyAllTimeMint
+    totalSupplyAllTimeMint,
     // lockAmount
   }
 }

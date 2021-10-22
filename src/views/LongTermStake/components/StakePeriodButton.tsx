@@ -148,7 +148,7 @@ const StakePeriodButton = ({ period, setPeriod }) => {
               90 days
             </Text>
             <Text fontSize="10px !important" color={selectDay1()}>
-              APR {`${numeral(apr*1 || 0).format('0,0.[00]')}%`}
+              APR {`${numeral(apr * 1 || 0).format('0,0.[00]')}%`}
             </Text>
           </BoxPeriod>
         </ButtonPeriod>
@@ -178,7 +178,7 @@ const StakePeriodButton = ({ period, setPeriod }) => {
               180 days
             </Text>
             <Text fontSize="10px !important" color={selectDay2()}>
-              APR {`${numeral(apr*2 || 0).format('0,0.[00]')}%`}
+              APR {`${numeral(apr * 2 || 0).format('0,0.[00]')}%`}
             </Text>
           </BoxPeriod>
         </ButtonPeriod>
@@ -208,7 +208,7 @@ const StakePeriodButton = ({ period, setPeriod }) => {
               365 days
             </Text>
             <Text fontSize="10px !important" color={selectDay3()}>
-              APR {`${numeral(apr*4 || 0).format('0,0.[00]')}%`}
+              APR {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
             </Text>
           </BoxPeriod>
         </ButtonPeriod>
