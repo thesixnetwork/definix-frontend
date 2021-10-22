@@ -165,9 +165,8 @@ export const useAllLock = () => {
   const dispatch = useDispatch()
   const [balance, setBalanceOf] = useState(new BigNumber(0))
 
-
   useEffect(() => {
-      dispatch(fetchAllLockPeriods())
+    dispatch(fetchAllLockPeriods())
   }, [slowRefresh, dispatch])
 
   const allLockPeriod = useSelector((state: State) => state.longTerm.allLockPeriods)

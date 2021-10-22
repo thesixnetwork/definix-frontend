@@ -188,11 +188,21 @@ const getAllLockPeriods = async ({ vFinix }) => {
     const [lockPeriods] = await multicall(VaultFacet.abi, calls)
     for (let i = 0; i < 3; i++) {
       _.set(periodMap, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_period${i + 1}._hex`)).toNumber())
-      _.set(minimum, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_minimum${i + 1}._hex`)).dividedBy(new BigNumber(10).pow(18)).toNumber())
+      _.set(
+        minimum,
+        `${i}`,
+        new BigNumber(_.get(lockPeriods.param_, `_minimum${i + 1}._hex`))
+          .dividedBy(new BigNumber(10).pow(18))
+          .toNumber(),
+      )
       _.set(multiplier, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_multiplier${i + 1}._hex`)).toNumber() / 10)
       _.set(penaltyPeriod, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyPeriod${i + 1}._hex`)).toNumber())
       _.set(penaltyRate, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyRate${i + 1}._hex`)).toNumber())
-      _.set(penaltyRateDecimal, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`)).toNumber())
+      _.set(
+        penaltyRateDecimal,
+        `${i}`,
+        new BigNumber(_.get(lockPeriods.param_, `_penaltyRateDecimal${i + 1}._hex`)).toNumber(),
+      )
       _.set(
         realPenaltyRate,
         `${i}`,
