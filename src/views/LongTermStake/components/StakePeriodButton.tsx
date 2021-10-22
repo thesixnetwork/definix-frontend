@@ -94,7 +94,6 @@ const StakePeriodButton = ({ period, setPeriod }) => {
 
   return (
     <div className={`${!isMobile && 'flex align-center justify-space-between'} mt-2`}>
-      ww
       {/* {multiplier.map((item) => (
         <div className={`${isMobile ? 'col-12' : 'col-4'} w-100 mr-2`}>
           <ButtonPeriod
