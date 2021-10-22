@@ -1,11 +1,13 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import moment from 'moment'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import _ from 'lodash'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { fetchPrivateData, fetchPendingReward } from '../state/actions'
 import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
@@ -60,7 +62,17 @@ export const useTotalFinixLock = () => {
     async function fetchTotalFinixLock() {
       const finixLock = getContract(VaultFacet.abi, getVFinix())
       const supply = await finixLock.methods.getTotalFinixLock().call()
-      setTotalFinixLock(supply)
+      const finixLockMap = []
+      for (let i = 0; i < 3; i++) {
+        _.set(
+          finixLockMap,
+          `${i}`,
+          numeral(
+            new BigNumber(_.get(supply, `totalFinixLockAtLevel${i + 1}_`)).dividedBy(new BigNumber(10).pow(18)),
+          ).format('0'),
+        )
+      }
+      setTotalFinixLock(finixLockMap)
     }
 
     fetchTotalFinixLock()
@@ -128,6 +140,24 @@ export const useLockAmount = () => {
   }, [slowRefresh, account])
 
   return balance
+}
+
+export const usePrivateData = () => {
+  const { slowRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const [balance, setBalanceOf] = useState(new BigNumber(0))
+  const { account } = useWallet()
+
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchPrivateData(account))
+      dispatch(fetchPendingReward(account))
+    }
+  }, [slowRefresh, account, dispatch])
+
+  const lockAmount = useSelector((state: State) => state.longTerm.userLockAmount)
+  const finixEarn = useSelector((state: State) => state.longTerm.finixEarn)
+  return { lockAmount, finixEarn }
 }
 
 export const usePendingReward = () => {
@@ -221,6 +251,10 @@ export const useLocks = (startIndex) => {
           unLockTime.setMinutes(unLockTime.getMinutes() + asPenaltyMinutes)
           unLockTime = new Date(unLockTime)
 
+          let penaltyTimestamp = new Date(value.penaltyUnlockTimestamp * 1000)
+          penaltyTimestamp.setMinutes(penaltyTimestamp.getMinutes() + asPenaltyMinutes)
+          penaltyTimestamp = new Date(penaltyTimestamp)
+
           let claim
           if (canBeClaim) {
             if (value.penaltyUnlockTimestamp !== 0) {
@@ -237,6 +271,7 @@ export const useLocks = (startIndex) => {
             isUnlocked: value.isUnlocked,
             isPenalty: value.isPenalty,
             penaltyFinixAmount: value.penaltyFinixAmount,
+            penaltyUnlockTimestamp: moment(penaltyTimestamp).format('DD-MM-YYYY HH:mm:ss'),
             // penaltyUnlockTimestamp: moment(unLockTime).format('DD-MM-YYYY HH:mm:ss'),
             canBeUnlock: canBeUnlock_,
             canBeClaim: claim,
@@ -282,7 +317,7 @@ export const useAllLockPeriods = () => {
           period3_: allLockPeriod._period3,
           _minimum1: allLockPeriod._minimum1,
           _minimum2: allLockPeriod._minimum2,
-          _minimum3: allLockPeriod._minimum3
+          _minimum3: allLockPeriod._minimum3,
         })
         setLocks(arrLocks)
       } catch (e) {
@@ -433,7 +468,31 @@ export const useUnstakeId = () => {
     return state.longTerm.totalFinixLock
   })
 
-  return { id, level, amount, isPenalty, canBeUnlock, penaltyRate, periodPenalty, totalFinixLock }
+  const totalvFinixSupply = useSelector((state: State) => {
+    return state.longTerm.totalvFinixSupply
+  })
+
+  const finixLockMap = useSelector((state: State) => {
+    return state.longTerm.finixLockMap
+  })
+
+  // const lockAmount = useSelector((state: State) => {
+  //   return state.longTerm.lockAmount
+  // })
+
+  return {
+    id,
+    level,
+    amount,
+    isPenalty,
+    canBeUnlock,
+    penaltyRate,
+    periodPenalty,
+    totalFinixLock,
+    totalvFinixSupply,
+    finixLockMap,
+    // lockAmount
+  }
 }
 
 export const useClaim = () => {

@@ -19,6 +19,7 @@ import {
   fetchTVL,
   fetchRebalances,
   fetchVaultFacet,
+  fetchVaultIKIP7,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
@@ -44,6 +45,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchDefinixKlayPrice())
     dispatch(fetchRebalances())
     dispatch(fetchVaultFacet())
+    dispatch(fetchVaultIKIP7())
   }, [dispatch, slowRefresh])
 }
 

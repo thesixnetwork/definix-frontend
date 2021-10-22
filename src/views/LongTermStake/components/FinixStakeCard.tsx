@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import _ from 'lodash'
 import { Card, Text, useMatchBreakpoints } from '../../../uikit-dev'
-import { useTotalFinixLock, useTotalSupply } from '../../../hooks/useLongTermStake'
+import { useTotalFinixLock, useTotalSupply, useUnstakeId } from '../../../hooks/useLongTermStake'
 import CardBarChart from './CardBarChart'
 
 const CardFinixStake = styled(Card)`
@@ -97,20 +97,9 @@ const FinixStakeCard = () => {
   const { isDark } = useTheme()
   const totalSupply = useTotalSupply()
   const getTotalFinixLock = useTotalFinixLock()
+  const { totalFinixLock, totalvFinixSupply } = useUnstakeId()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg && !isMd
-
-  const level = [
-    numeral(
-      new BigNumber(_.get(getTotalFinixLock, 'totalFinixLockAtLevel1_')).dividedBy(new BigNumber(10).pow(18)),
-    ).format('0'),
-    numeral(
-      new BigNumber(_.get(getTotalFinixLock, 'totalFinixLockAtLevel2_')).dividedBy(new BigNumber(10).pow(18)),
-    ).format('0'),
-    numeral(
-      new BigNumber(_.get(getTotalFinixLock, 'totalFinixLockAtLevel3_')).dividedBy(new BigNumber(10).pow(18)),
-    ).format('0'),
-  ]
 
   const textColor = () => {
     return isDark ? 'white' : '#737375'
@@ -124,9 +113,7 @@ const FinixStakeCard = () => {
             <Text color="#737375">Total FINIX staked</Text>
             <div className="flex align-items-center">
               <Text color={isDark ? 'white' : '#000000'} className="mr-2">
-                {numeral(
-                  new BigNumber(_.get(getTotalFinixLock, 'totalFinixLock_')).dividedBy(new BigNumber(10).pow(18)),
-                ).format('0,0')}{' '}
+                {numeral(totalFinixLock).format('0,0')}{' '}
               </Text>
               <Text color={isDark ? 'white' : '#000000'}>FINIX</Text>
             </div>
@@ -138,23 +125,23 @@ const FinixStakeCard = () => {
             <Text color="#737375">Total vFINIX minted</Text>
             <div className="flex align-items-center">
               <Text color={isDark ? 'white' : '#000000'} className="mr-2">
-                {numeral(totalSupply).format('0,0')}
+                {numeral(totalvFinixSupply).format('0,0')}
               </Text>
               <Text color={isDark ? 'white' : '#000000'}>vFINIX</Text>
             </div>
           </div>
         </div>
         <div className={`flex align-items-center ${isMobile ? 'col-12 pa-3' : 'col-7 pa-3 pt-1 pb-0'}`}>
-          <CardBarChart className="col-6" lock={level} />
+          <CardBarChart className="col-6" lock={getTotalFinixLock} />
           <TextStyled className="col-6">
             <TextStyled color={textColor()} className="text-value">
-              {numeral(level[0]).format('0,0')} FINIX
+              {numeral(getTotalFinixLock[0]).format('0,0')} FINIX
             </TextStyled>
             <TextStyled color={textColor()} className="text-value">
-              {numeral(level[1]).format('0,0')} FINIX
+              {numeral(getTotalFinixLock[1]).format('0,0')} FINIX
             </TextStyled>
             <TextStyled color={textColor()} className="text-value">
-              {numeral(level[2]).format('0,0')} FINIX
+              {numeral(getTotalFinixLock[2]).format('0,0')} FINIX
             </TextStyled>
           </TextStyled>
         </div>

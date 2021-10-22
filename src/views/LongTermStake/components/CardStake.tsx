@@ -18,6 +18,8 @@ import {
   useAllLockPeriods,
   useLock,
   useApprove,
+  usePrivateData,
+  useUnstakeId,
 } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
 
@@ -40,7 +42,7 @@ const Balance = styled(Card)`
   flex-flow: row nowrap;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0.75rem 0.75rem 0.75rem 0.75rem;
   background-color: ${'#E4E4E425'};
   background-size: cover;
@@ -145,9 +147,19 @@ const CardStake = () => {
   const [transactionHash, setTransactionHash] = useState('')
   const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
   const { onApprove } = useApprove(MAX_INT)
+  const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
+  function escapeRegExp(string: string): string {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  }
+
+  const enforcer = (nextUserInput: string) => {
+    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+      setValue(nextUserInput)
+    }
+  }
   const handleChange = (e) => {
-    setValue(e.target.value.replace(/[^\d]/g, ''))
+    enforcer(e.target.value.replace(/,/g, '.'))
   }
 
   const _minimum1 = new BigNumber(_.get(allLock, '0._minimum1')).dividedBy(new BigNumber(10).pow(18)).toNumber()
@@ -178,7 +190,7 @@ const CardStake = () => {
       setDate(moment(now).format('DD-MM-YYYY HH:mm:ss'))
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
-    setLockFinix(new BigNumber(parseInt(value)).times(new BigNumber(10).pow(18)).toFixed())
+    setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
   }, [period, allLock, value])
 
   const { onStake, status } = useLock(letvel, lockFinix, click)
@@ -227,7 +239,7 @@ const CardStake = () => {
   useEffect(() => {
     const percentOf = percent * Number(balanceOf)
     if (percentOf) {
-      setValue(numeral(percentOf).format('0,0.00'))
+      setValue(percentOf.toString())
     }
   }, [percent, balanceOf])
 
@@ -242,6 +254,14 @@ const CardStake = () => {
       console.error(e)
     }
   }, [onApprove, setRequestedApproval])
+
+  const handleCol = () => {
+    return percent === 1 ? 'col-6' : 'col-4'
+  }
+
+  const handlePercent = () => {
+    return percent === 1 ? 'col-4' : 'col-8'
+  }
 
   return (
     <div className={`align-stretch mt-5 ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
@@ -259,25 +279,27 @@ const CardStake = () => {
               Deposit
             </Text>
             <Text className="col-6 text-right" color="textSubtle">
-              Balance: {numeral(balanceOf).format('0,0.0000')}
+              Balance: {numeral(balanceOf).format('0,0.00000')}
             </Text>
           </div>
           <Balance>
-            <div className={`${isMobileOrTablet ? 'col-12' : 'col-4'}`}>
-              <NumberInput placeholder="0.00" value={value} onChange={handleChange} pattern="^[0-9]*[.,]?[0-9]*$" />
+            <div className={`${isMobileOrTablet ? 'col-12' : handleCol()}`}>
+              <NumberInput placeholder="0.00" value={value} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
             </div>
-            <Input className={`${isMobileOrTablet ? 'col-12' : 'col-8'}`}>
-              <div className="flex align-center justify-end" style={{ width: isMobileOrTablet ? '100%' : 'auto' }}>
-                <StylesButton size="sm" onClick={() => setPercent(0.25)}>
-                  25%
-                </StylesButton>
-                <StylesButton size="sm" onClick={() => setPercent(0.5)}>
-                  50%
-                </StylesButton>
-                <StylesButton size="sm" onClick={() => setPercent(1)}>
-                  MAX
-                </StylesButton>
-              </div>
+            <Input className={`${isMobileOrTablet ? 'col-12' : handlePercent()}`}>
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: isMobileOrTablet ? '100%' : 'auto' }}>
+                  <StylesButton size="sm" onClick={() => setPercent(0.25)}>
+                    25%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(0.5)}>
+                    50%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
+                  </StylesButton>
+                </div>
+              )}
               <Coin>
                 <img src={`/images/coins/${'FINIX'}.png`} alt="" />
               </Coin>
@@ -308,7 +330,7 @@ const CardStake = () => {
             </div>
           </div>
           {!isDisabled && (
-            <Text fontSize="8px !important" color={isDark ? 'white' : 'textSubtle'}>
+            <Text className="mt-2" fontSize="10px !important" color={isDark ? 'white' : 'textSubtle'}>
               x vFINIX will be received and the staking period will end in {date}. Unstaking before the period ends your
               FINIX amount will be locked x days and x% will be deducted from total balance.
             </Text>

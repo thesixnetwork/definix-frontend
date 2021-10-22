@@ -4,7 +4,7 @@ import styled, { useTheme } from 'styled-components'
 import numeral from 'numeral'
 import _ from 'lodash'
 import { Card, Text, useMatchBreakpoints, Button } from '../../../uikit-dev'
-import { useLockAmount, usePendingReward, useHarvest } from '../../../hooks/useLongTermStake'
+import { useLockAmount, useHarvest, usePrivateData } from '../../../hooks/useLongTermStake'
 
 const Harvest = styled(Card)`
   position: relative;
@@ -22,13 +22,14 @@ const Harvest = styled(Card)`
 const CardHarvest = () => {
   // @ts-ignore
   const { isDark } = useTheme()
-  const lockAmount = useLockAmount()
-  const pendingReward = usePendingReward()
+//   const lockAmount = useLockAmount()
+//   const pendingReward = usePendingReward()
+  const { lockAmount, finixEarn } = usePrivateData()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg && !isMd
   const { handleHarvest } = useHarvest()
   const [status, setStatus] = useState(false)
-  const valueReward = pendingReward.toNumber() > 0
+  const valueReward = finixEarn > 0
 
   const onHarvest = useCallback(async () => {
     try {
@@ -62,7 +63,7 @@ const CardHarvest = () => {
           </Text>
           <div className="flex">
             <Text fontWeight="800" fontSize="16px" color="success">
-              {numeral(pendingReward).format('0,0.00')}
+              {numeral(finixEarn).format('0,0.00')}
             </Text>
             <Text fontWeight="800" fontSize="16px" color={textColor()} paddingRight="2" paddingLeft="2">
               FINIX

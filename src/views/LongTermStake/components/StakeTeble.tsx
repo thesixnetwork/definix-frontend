@@ -178,12 +178,15 @@ const TransactionTable = ({ rows, setAlldata, isLoading, id, unlock, isDark, tot
                   </TD>
                   <TD>
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
-                      {numeral(_.get(item, 'lockAmount')).format('0,0')}
+                      {_.get(item, 'lockAmount').toLocaleString()}
                     </Text>
                   </TD>
                   <TD>
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
-                      {_.get(item, 'lockTimestamp')}
+                      {_.get(item, 'isPenalty')? 'Penalty ended' : 'Period will end'}
+                    </Text>
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
+                      {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}
                     </Text>
                   </TD>
                   <TD className="text-right pr-5">

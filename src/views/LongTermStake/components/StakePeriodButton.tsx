@@ -1,7 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import { Button, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
+import _ from 'lodash'
+import {
+  useBalances,
+  useAllowance,
+  useApr,
+  useTotalSupply,
+  useAllLockPeriods,
+  useLock,
+  useApprove,
+  usePrivateData,
+  useUnstakeId
+} from '../../../hooks/useLongTermStake'
+
 
 const BoxLevel = styled.div`
   height: 100%;
@@ -30,7 +45,18 @@ const ButtonPeriod = styled(Button)`
 const StakePeriodButton = ({ period, setPeriod }) => {
   const { isDark } = useTheme()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
+  const allLock = useAllLockPeriods()
   const isMobile = !isXl && !isLg && !isMd
+  const [_minimum1, setMinimum1] = useState(0)
+  const [_minimum2, setMinimum2] = useState(0)
+  const [_minimum3, setMinimum3] = useState(0)
+
+  useEffect(()=>{
+    setMinimum1(new BigNumber(_.get(allLock, '0._minimum1')).dividedBy(new BigNumber(10).pow(18)).toNumber())
+    setMinimum2(new BigNumber(_.get(allLock, '0._minimum2')).dividedBy(new BigNumber(10).pow(18)).toNumber())
+    setMinimum3(new BigNumber(_.get(allLock, '0._minimum3')).dividedBy(new BigNumber(10).pow(18)).toNumber())
+
+  },[_minimum1, _minimum2, _minimum3, allLock])
 
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'
@@ -91,7 +117,7 @@ const StakePeriodButton = ({ period, setPeriod }) => {
           </BoxPeriod>
         </ButtonPeriod>
         <Text fontSize="12px !important" textAlign="center" className="mt-2" color={selectDay1()}>
-          Minimum 1,000 FINIX
+          Minimum {_minimum1} FINIX
         </Text>
       </div>
       <div className={`${isMobile ? 'col-12' : 'col-4'} w-100 mr-2`}>
@@ -118,7 +144,7 @@ const StakePeriodButton = ({ period, setPeriod }) => {
           </BoxPeriod>
         </ButtonPeriod>
         <Text fontSize="12px !important" textAlign="center" className="mt-2" color={selectDay2()}>
-          Minimum 10,000 FINIX
+          Minimum {_minimum2} FINIX
         </Text>
       </div>
       <div className={`${isMobile ? 'col-12' : 'col-4'} w-100`}>
@@ -145,7 +171,7 @@ const StakePeriodButton = ({ period, setPeriod }) => {
           </BoxPeriod>
         </ButtonPeriod>
         <Text fontSize="12px !important" textAlign="center" className="mt-2" color={selectDay3()}>
-          Minimum 30,000 FINIX
+          Minimum {_minimum3} FINIX
         </Text>
       </div>
     </div>
