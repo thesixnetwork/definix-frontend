@@ -126,6 +126,7 @@ export interface LongTermState {
   userLockAmount: number
   finixEarn: number
   allLockPeriods: []
+  totalSupplyAllTimeMint: number
 }
 export interface PoolsState {
   isFetched: boolean

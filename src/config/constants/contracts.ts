@@ -107,6 +107,6 @@ export default {
   },
   vFinix: {
     8217: '',
-    1001: '0xDD3F8597FA8F68fCDEf328748163e558e4D44d5A',
+    1001: '0xDab7d4940f20F246A9454cBa1573D854aDcAcC59',
   },
 }

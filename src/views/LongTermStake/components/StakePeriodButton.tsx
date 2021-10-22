@@ -52,6 +52,9 @@ const StakePeriodButton = ({ period, setPeriod }) => {
   const [_minimum2, setMinimum2] = useState(0)
   const [_minimum3, setMinimum3] = useState(0)
   const multiplier = [_.get(allLockPeriod, '0.multiplier')]
+  const rewardperblock = useApr()
+  const totalSupply = useTotalSupply()
+  const apr = ((rewardperblock * 86400 * 365) / Number(totalSupply)) * 100
 
   useEffect(() => {
     setMinimum1(_.get(allLockPeriod, '0.minimum.0') || 0)
@@ -144,6 +147,9 @@ const StakePeriodButton = ({ period, setPeriod }) => {
             <Text fontSize="14px !important" color={selectDay1()}>
               90 days
             </Text>
+            <Text fontSize="10px !important" color={selectDay1()}>
+              APR {`${numeral(apr*1 || 0).format('0,0.[00]')}%`}
+            </Text>
           </BoxPeriod>
         </ButtonPeriod>
         <Text fontSize="12px !important" textAlign="center" className="mt-2" color={selectDay1()}>
@@ -171,6 +177,9 @@ const StakePeriodButton = ({ period, setPeriod }) => {
             <Text fontSize="14px !important" color={selectDay2()}>
               180 days
             </Text>
+            <Text fontSize="10px !important" color={selectDay2()}>
+              APR {`${numeral(apr*2 || 0).format('0,0.[00]')}%`}
+            </Text>
           </BoxPeriod>
         </ButtonPeriod>
         <Text fontSize="12px !important" textAlign="center" className="mt-2" color={selectDay2()}>
@@ -197,6 +206,9 @@ const StakePeriodButton = ({ period, setPeriod }) => {
           <BoxPeriod className="col-8">
             <Text fontSize="14px !important" color={selectDay3()}>
               365 days
+            </Text>
+            <Text fontSize="10px !important" color={selectDay3()}>
+              APR {`${numeral(apr*4 || 0).format('0,0.[00]')}%`}
             </Text>
           </BoxPeriod>
         </ButtonPeriod>

@@ -489,9 +489,9 @@ export const useUnstakeId = () => {
     return state.longTerm.finixLockMap
   })
 
-  // const lockAmount = useSelector((state: State) => {
-  //   return state.longTerm.lockAmount
-  // })
+  const totalSupplyAllTimeMint = useSelector((state: State) => {
+    return state.longTerm.totalSupplyAllTimeMint
+  })
 
   return {
     id,
@@ -504,6 +504,7 @@ export const useUnstakeId = () => {
     totalFinixLock,
     totalvFinixSupply,
     finixLockMap,
+    totalSupplyAllTimeMint
     // lockAmount
   }
 }

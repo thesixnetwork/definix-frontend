@@ -6,6 +6,7 @@ export {
   fetchPrivateData,
   fetchPendingReward,
   fetchAllLockPeriods,
+  fetchTotalSupplyAllTimeMint
 } from './longTermStake'
 export { clear, remove, push } from './toasts'
 export { fetchRebalances } from './rebalance'

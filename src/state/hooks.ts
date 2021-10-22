@@ -20,6 +20,7 @@ import {
   fetchRebalances,
   fetchVaultFacet,
   fetchVaultIKIP7,
+  fetchTotalSupplyAllTimeMint,
   push as pushToast,
   remove as removeToast,
   clear as clearToast,
@@ -46,6 +47,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchRebalances())
     dispatch(fetchVaultFacet())
     dispatch(fetchVaultIKIP7())
+    dispatch(fetchTotalSupplyAllTimeMint())
   }, [dispatch, slowRefresh])
 }
 

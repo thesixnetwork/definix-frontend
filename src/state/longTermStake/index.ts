@@ -6,6 +6,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import VaultFacet from 'config/abi/VaultFacet.json'
 import IKIP7 from 'config/abi/IKIP7.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
+import TokenFacet from 'config/abi/TokenFacet.json'
 import multicall from 'utils/multicall'
 import { getFinixAddress, getVFinix } from 'utils/addressHelpers'
 import _ from 'lodash'
@@ -28,6 +29,7 @@ const initialState = {
   userLockAmount: 0,
   finixEarn: 0,
   allLockPeriods: [],
+  totalSupplyAllTimeMint: 0
 }
 
 export const longTermSlice = createSlice({
@@ -79,6 +81,10 @@ export const longTermSlice = createSlice({
       const { allLockPeriods } = action.payload
       state.allLockPeriods = allLockPeriods
     },
+    setTotalSupplyAllTimeMint: (state, action) => {
+      const { totalSupplyAllTimeMint } = action.payload
+      state.totalSupplyAllTimeMint = totalSupplyAllTimeMint
+    }
   },
 })
 
@@ -90,6 +96,7 @@ export const {
   setUserLockAmount,
   setPendingReward,
   setAllLockPeriods,
+  setTotalSupplyAllTimeMint
 } = longTermSlice.actions
 
 export const fetchIdData =
@@ -135,6 +142,23 @@ const getVaultFacet = async ({ vFinix }) => {
     totalFinixLock = 0
   }
   return [totalFinixLock, finixLockMap]
+}
+
+const getTotalSupplyAllTimeMint = async ({ vFinix }) => {
+  let totalFinixLock = 0
+  try {
+    const calls = [
+      {
+        address: vFinix,
+        name: 'totalSupplyAllTimeMint',
+      },
+    ]
+    const [finixLock] = await multicall(TokenFacet.abi, calls)
+    totalFinixLock = new BigNumber(finixLock).dividedBy(new BigNumber(10).pow(18)).toNumber()
+  } catch (error) {
+    totalFinixLock = 0
+  }
+  return [totalFinixLock]
 }
 
 const getPrivateData = async ({ vFinix, account }) => {
@@ -272,6 +296,17 @@ export const fetchVaultFacet = () => async (dispatch) => {
   )
   const [[totalFinix, finixMap]] = await Promise.all(fetchPromise)
   dispatch(setTotalFinixLock({ totalFinixLock: totalFinix, finixLockMap: finixMap }))
+}
+
+export const fetchTotalSupplyAllTimeMint = () => async (dispatch) => {
+  const fetchPromise = []
+  fetchPromise.push(
+    getTotalSupplyAllTimeMint({
+      vFinix: getVFinix(),
+    }),
+  )
+  const [[totalSupply]] = await Promise.all(fetchPromise)
+  dispatch(setTotalSupplyAllTimeMint({ totalSupplyAllTimeMint: totalSupply }))
 }
 
 export const fetchPrivateData = (account) => async (dispatch) => {

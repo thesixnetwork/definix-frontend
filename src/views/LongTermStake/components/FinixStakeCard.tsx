@@ -97,7 +97,7 @@ const FinixStakeCard = () => {
   const { isDark } = useTheme()
   const totalSupply = useTotalSupply()
   const getTotalFinixLock = useTotalFinixLock()
-  const { totalFinixLock, totalvFinixSupply } = useUnstakeId()
+  const { totalFinixLock, totalvFinixSupply, totalSupplyAllTimeMint } = useUnstakeId()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg && !isMd
 
@@ -122,10 +122,10 @@ const FinixStakeCard = () => {
             <Text color="#ffffff00">( 36% of FINIX supply )</Text>
           </div>
           <div className={`flex justify-space-between ${isMobile ? 'mt-2' : ' mt-7'}`}>
-            <Text color="#737375">Total vFINIX minted</Text>
+            <Text color="#737375">Total vFINIX supply</Text>
             <div className="flex align-items-center">
               <Text color={isDark ? 'white' : '#000000'} className="mr-2">
-                {numeral(totalvFinixSupply).format('0,0')}
+                {numeral(totalSupplyAllTimeMint).format('0,0')}
               </Text>
               <Text color={isDark ? 'white' : '#000000'}>vFINIX</Text>
             </div>
