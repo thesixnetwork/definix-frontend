@@ -166,6 +166,14 @@ const config: MenuEntry[] = [
     notHighlight: true,
     newTab: true,
   },
+  {
+    label: 'MyInvestments',
+    icon: mutualBlack,
+    iconActive: mutualWhite,
+    href: '/myinvestments',
+    notHighlight: false,
+    newTab: false,
+  },
 ]
 
 // const config: MenuEntry[] = [
