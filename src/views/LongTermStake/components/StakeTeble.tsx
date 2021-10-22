@@ -95,7 +95,7 @@ const LoadingData = () => (
 )
 
 const TransactionTable = ({ rows, setAlldata, isLoading, id, unlock, isDark, total }) => {
-  const [cols] = useState(['Stake Period', 'Amount', 'Period End', ''])
+  const [cols] = useState(['Stake Period', 'Amount', 'Status', ''])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const statuu = false
@@ -182,10 +182,10 @@ const TransactionTable = ({ rows, setAlldata, isLoading, id, unlock, isDark, tot
                     </Text>
                   </TD>
                   <TD>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
                       {_.get(item, 'isPenalty') ? 'Penalty ended' : 'Period will end'}
                     </Text>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                       {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}
                     </Text>
                   </TD>

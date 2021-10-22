@@ -240,7 +240,7 @@ const Unstake: React.FC = () => {
                       Unstake
                     </Text>
                     <Balance className="flex align-center">
-                      <NumberInput fontSize="18px !important">{amount}</NumberInput>
+                      <NumberInput fontSize="18px !important">{amount.toLocaleString()}</NumberInput>
                       <Input>
                         <Finix>
                           <img src={`/images/coins/${'FINIX'}.png`} alt="" />
