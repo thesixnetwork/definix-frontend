@@ -106,7 +106,7 @@ const TransactionTable = ({ rows, setAlldata, isLoading, id, unlock, isDark, tot
 
   const onUnStake = useCallback(
     (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty) => {
-      dispatch(fetchIdData(Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate * Amount, PeriodPenalty))
+      dispatch(fetchIdData(Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty))
     },
     [dispatch],
   )

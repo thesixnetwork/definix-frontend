@@ -240,7 +240,7 @@ const Unstake: React.FC = () => {
                       Unstake
                     </Text>
                     <Balance className="flex align-center">
-                      <NumberInput fontSize="18px !important">{amount.toLocaleString()}</NumberInput>
+                      <NumberInput fontSize="18px !important">{amount}</NumberInput>
                       <Input>
                         <Finix>
                           <img src={`/images/coins/${'FINIX'}.png`} alt="" />
@@ -262,13 +262,13 @@ const Unstake: React.FC = () => {
                       <div className="flex mt-4">
                         <Text className="col-6">Early unstake fee</Text>
                         <Text className="col-6 text-right" color="#30ADFF">
-                          {penaltyRate / 100}%
+                          {penaltyRate}%
                         </Text>
                       </div>
                       <div className="flex mt-4 mb-6">
                         <Text className="col-8">You will received (after {periodPenalty})</Text>
                         <Text className="col-4 text-right" color="#30ADFF">
-                          {penaltyRate} FINIX
+                          {penaltyRate * 100} FINIX
                         </Text>
                       </div>
                     </>
