@@ -14,9 +14,8 @@ import {
   useLock,
   useApprove,
   usePrivateData,
-  useUnstakeId
+  useUnstakeId,
 } from '../../../hooks/useLongTermStake'
-
 
 const BoxLevel = styled.div`
   height: 100%;
@@ -51,12 +50,11 @@ const StakePeriodButton = ({ period, setPeriod }) => {
   const [_minimum2, setMinimum2] = useState(0)
   const [_minimum3, setMinimum3] = useState(0)
 
-  useEffect(()=>{
+  useEffect(() => {
     setMinimum1(new BigNumber(_.get(allLock, '0._minimum1')).dividedBy(new BigNumber(10).pow(18)).toNumber())
     setMinimum2(new BigNumber(_.get(allLock, '0._minimum2')).dividedBy(new BigNumber(10).pow(18)).toNumber())
     setMinimum3(new BigNumber(_.get(allLock, '0._minimum3')).dividedBy(new BigNumber(10).pow(18)).toNumber())
-
-  },[_minimum1, _minimum2, _minimum3, allLock])
+  }, [_minimum1, _minimum2, _minimum3, allLock])
 
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'

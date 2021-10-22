@@ -22,8 +22,8 @@ const Harvest = styled(Card)`
 const CardHarvest = () => {
   // @ts-ignore
   const { isDark } = useTheme()
-//   const lockAmount = useLockAmount()
-//   const pendingReward = usePendingReward()
+  //   const lockAmount = useLockAmount()
+  //   const pendingReward = usePendingReward()
   const { lockAmount, finixEarn } = usePrivateData()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg && !isMd

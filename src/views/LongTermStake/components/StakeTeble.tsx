@@ -183,7 +183,7 @@ const TransactionTable = ({ rows, setAlldata, isLoading, id, unlock, isDark, tot
                   </TD>
                   <TD>
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
-                      {_.get(item, 'isPenalty')? 'Penalty ended' : 'Period will end'}
+                      {_.get(item, 'isPenalty') ? 'Penalty ended' : 'Period will end'}
                     </Text>
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
                       {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}
