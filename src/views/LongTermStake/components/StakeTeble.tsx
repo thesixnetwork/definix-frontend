@@ -160,16 +160,16 @@ const TransactionTable = ({ rows, setAlldata, isLoading, id, unlock, isDark, tot
                   <TD>
                     <Text color="textSubtle">
                       {_.get(item, 'level') === '0' ? (
-                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
+                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                           1x 90 days
                         </Text>
                       ) : _.get(item, 'level') === '1' ? (
-                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
+                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                           2x 180 days
                         </Text>
                       ) : (
                         _.get(item, 'level') === '2' && (
-                          <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
+                          <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                             4x 365 days
                           </Text>
                         )
@@ -177,7 +177,7 @@ const TransactionTable = ({ rows, setAlldata, isLoading, id, unlock, isDark, tot
                     </Text>
                   </TD>
                   <TD>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="800">
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                       {_.get(item, 'lockAmount').toLocaleString()}
                     </Text>
                   </TD>
