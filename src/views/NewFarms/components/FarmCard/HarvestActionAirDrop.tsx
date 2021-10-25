@@ -13,9 +13,9 @@ import AirDropHarvestModal from './AirDropHarvestModal'
 import { FarmWithStakedValue } from './types'
 
 interface FarmCardActionsProps {
-  pendingRewards?: any
+  // pendingRewards?: any
   bundleRewardLength?: BigNumber
-  bundleRewards?: any
+  // bundleRewards?: any
   earnings?: BigNumber
   pid?: number
   className?: string
@@ -31,14 +31,7 @@ const MiniLogo = styled.img`
   flex-shrink: 0;
 `
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({
-  pendingRewards,
-  bundleRewards,
-  pid,
-  className = '',
-  isHorizontal,
-  farm,
-}) => {
+const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, className = '', isHorizontal, farm }) => {
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
   const { onReward } = useHarvest(pid)

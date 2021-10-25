@@ -270,7 +270,6 @@ const Farms: React.FC = () => {
                 <Route exact path={`${path}`}>
                   {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
                 </Route>
-                {/* // history 는 무엇??? */}
                 {/* <Route exact path={`${path}/history`}>
                   {farmsList(inactiveFarms, true)}
                 </Route> */}

@@ -45,6 +45,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 }) => {
   console.groupCollapsed('FARM')
   console.log('farm: ', farm)
+  console.groupEnd()
   const [requestedApproval, setRequestedApproval] = useState(false)
 
   const TranslateString = useI18n()

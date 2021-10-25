@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
@@ -8,6 +9,12 @@ export interface ExpandableSectionProps {
   totalValueFormated?: string
   isHorizontal?: boolean
   className?: string
+  tokenBalanceLP: number | BigNumber
+  quoteTokenBalanceLP: number | BigNumber
+}
+
+const formated = (value: any) => {
+  return value ? `$${Number(value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'
 }
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
@@ -22,7 +29,10 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   totalValueFormated,
   isHorizontal = false,
   className = '',
+  tokenBalanceLP,
+  quoteTokenBalanceLP,
 }) => {
+  console.log('tokenBalanceLP: ')
   const TranslateString = useI18n()
 
   return (
@@ -33,6 +43,9 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
           <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
             {totalValueFormated}
           </Heading>
+
+          <p>tokenBalanceLP: {tokenBalanceLP.toLocaleString()}</p>
+          <p>quoteTokenBalanceLP: {quoteTokenBalanceLP.toLocaleString()}</p>
         </>
       )}
     </Wrapper>

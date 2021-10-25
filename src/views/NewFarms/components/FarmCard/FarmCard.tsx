@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { QuoteToken } from 'config/constants/types'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
@@ -197,18 +198,58 @@ const FarmCard: React.FC<FarmCardProps> = ({
     (className?: string, isHor?: boolean) => (
       <HarvestActionAirDrop
         farm={farm}
-        pendingRewards={pendingRewards}
+        // pendingRewards={pendingRewards}
         bundleRewardLength={bundleRewardLength}
-        bundleRewards={bundleRewards}
+        // bundleRewards={bundleRewards}
         earnings={earnings}
         pid={pid}
         className={className}
         isHorizontal={isHor}
       />
     ),
-    [earnings, pid, pendingRewards, bundleRewardLength, bundleRewards, farm],
+    [earnings, pid, bundleRewardLength, farm],
   )
 
+  const tokenBalanceLP = useMemo(() => {
+    const balance = farm.tokenBalanceLP
+    if (!balance) {
+      return new BigNumber(0)
+    }
+    let value
+    if (farm.tokenSymbol === QuoteToken.KLAY) {
+      value = klayPrice.times(balance)
+    }
+    if (farm.tokenSymbol === QuoteToken.FINIX) {
+      value = finixPrice.times(balance)
+    }
+    if (farm.tokenSymbol === QuoteToken.KETH) {
+      value = kethPrice.times(balance)
+    }
+    if (farm.tokenSymbol === QuoteToken.SIX) {
+      value = sixPrice.times(balance)
+    }
+    return getBalanceNumber(value, farm.tokenDecimals[0])
+  }, [farm, klayPrice, finixPrice, kethPrice, sixPrice])
+  const quoteTokenBalanceLP = useMemo(() => {
+    const balance = farm.quoteTokenBlanceLP
+    if (!balance) {
+      return new BigNumber(0)
+    }
+    let value
+    if (farm.tokenSymbol === QuoteToken.KLAY) {
+      value = klayPrice.times(balance)
+    }
+    if (farm.tokenSymbol === QuoteToken.FINIX) {
+      value = finixPrice.times(balance)
+    }
+    if (farm.tokenSymbol === QuoteToken.KETH) {
+      value = kethPrice.times(balance)
+    }
+    if (farm.tokenSymbol === QuoteToken.SIX) {
+      value = sixPrice.times(balance)
+    }
+    return getBalanceNumber(value, farm.tokenDecimals[0])
+  }, [farm, klayPrice, finixPrice, kethPrice, sixPrice])
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection
@@ -216,9 +257,11 @@ const FarmCard: React.FC<FarmCardProps> = ({
         totalValueFormated={totalValueFormated}
         isHorizontal={isHor}
         className={className}
+        tokenBalanceLP={tokenBalanceLP}
+        quoteTokenBalanceLP={quoteTokenBalanceLP}
       />
     ),
-    [removed, totalValueFormated],
+    [removed, totalValueFormated, tokenBalanceLP, quoteTokenBalanceLP],
   )
 
   useEffect(() => {
