@@ -13,13 +13,10 @@ import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
 import {
   useBalances,
   useAllowance,
-  useApr,
-  useTotalSupply,
-  useAllLockPeriods,
   useLock,
   useApprove,
-  usePrivateData,
   useUnstakeId,
+  useAllLock,
 } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
 
@@ -37,21 +34,18 @@ const FinixStake = styled(Card)`
   }
 `
 
-const Balance = styled(Card)`
+const Balance = styled.div`
   display: flex;
   flex-flow: row nowrap;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0.75rem 0.75rem 0.75rem 0.75rem;
   background-color: ${'#E4E4E425'};
-  background-size: cover;
-  background-repeat: no-repeat;
   margin-top: 0.5rem !important;
-  right: 0;
-  position: relative;
   border: ${({ theme }) => !theme.isDark && '1px solid #ECECEC'};
   box-shadow: unset;
+  border-radius: ${({ theme }) => theme.radii.default};
 
   a {
     display: block;
@@ -59,20 +53,31 @@ const Balance = styled(Card)`
 `
 
 const Coin = styled.div`
-  justify-content: flex-end;
+  min-width: 80px;
+  display: flex;
   align-items: center;
+  margin: 4px 0;
+  justify-content: end;
 
   img {
-    width: auto;
+    flex-shrink: 0;
+    width: 24px;
     height: 24px;
-    margin-right: 4px;
+    border-radius: ${({ theme }) => theme.radii.circle};
+    margin-right: 6px;
   }
 `
 
-const Input = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+const Centered = styled.div`
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+const APRBOX = styled.div`
+  position: relative;
+  text-align: center;
 `
 
 const StylesButton = styled(Button)`
@@ -82,7 +87,7 @@ const StylesButton = styled(Button)`
   font-size: 12px;
   background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
   height: 38;
-  margin-right: 6px;
+  width: auto;
   color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
 
   &:hover:not(:disabled):not(.button--disabled):not(:active) {
@@ -109,35 +114,79 @@ const NumberInput = styled.input`
   font-size: 22px;
   outline: none;
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
-  width: 100%;
+  width: 45%;
+  -webkit-flex: 1 1 auto;
+  padding: 0px;
 `
 
 const Apr = styled(Text)`
-  position: relative;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   line-height: 1;
-  text-align-last: center;
   font-weight: 500;
-  font-size: 28px;
+  // font-size: 28px;
   text-shadow: #00000050 0px 2px 4px;
+`
+
+const AprValue = styled(Text)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  font-weight: 600;
+  text-shadow: #00000050 0px 2px 4px;
+`
+
+const AprBox = styled(Card)`
+  padding: 0.5rem;
+  background: linear-gradient(90deg, #0973b9, #5cc096);
+  opacity: 1;
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin-left: 0.5rem !important;
+  right: 0;
+  color: #30adff;
+  position: relative;
+  box-shadow: unset;
+  border-radius: 4px;
+
+  a {
+    display: block;
+  }
 `
 
 const CardStake = () => {
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
-  const { isXl } = useMatchBreakpoints()
-  const isMobileOrTablet = !isXl
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl && !isMd && !isLg
   const { connect, account } = useWallet()
-  const [date, setDate] = useState(moment(new Date()).format('DD-MM-YYYY HH:mm:ss'))
+  const [monthNames, setMonth] = useState([
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sept',
+    'Oct',
+    'Nov',
+    'Dec',
+  ])
+  const [date, setDate] = useState(moment(new Date()).format(`DD-${monthNames[new Date().getMonth()]}-YY HH:mm:ss`))
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
-  const totalSupply = useTotalSupply()
-  const rewardperblock = useApr()
-  const allLock = useAllLockPeriods()
+  const { vFinixPrice } = useUnstakeId()
+  const { allLockPeriod } = useAllLock()
   const [value, setValue] = useState('')
   const [letvel, setLevel] = useState(0)
-  const apr = ((rewardperblock * 86400 * 365) / Number(totalSupply)) * 100
   const [vFINIX, setVFINIX] = useState(0)
   const [lockFinix, setLockFinix] = useState('')
   const [click, setClick] = useState(false)
@@ -148,6 +197,8 @@ const CardStake = () => {
   const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
   const { onApprove } = useApprove(MAX_INT)
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
+  const minimum = _.get(allLockPeriod, '0.minimum')
+  const periodEnd = _.get(allLockPeriod, '0.periodMap')
 
   function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -162,36 +213,27 @@ const CardStake = () => {
     enforcer(e.target.value.replace(/,/g, '.'))
   }
 
-  const _minimum1 = new BigNumber(_.get(allLock, '0._minimum1')).dividedBy(new BigNumber(10).pow(18)).toNumber()
-  const _minimum2 = new BigNumber(_.get(allLock, '0._minimum2')).dividedBy(new BigNumber(10).pow(18)).toNumber()
-  const _minimum3 = new BigNumber(_.get(allLock, '0._minimum3')).dividedBy(new BigNumber(10).pow(18)).toNumber()
-
   useEffect(() => {
+    let now = new Date()
     if (period === 1) {
-      const asMinutes = moment.duration({ seconds: _.get(allLock, '0.period1_') }).asMinutes()
-      let now = new Date()
-      now.setMinutes(now.getMinutes() + asMinutes)
+      now.setMinutes(now.getMinutes() + _.get(periodEnd, '0'))
       now = new Date(now)
       setLevel(0)
-      setDate(moment(now).format('DD-MM-YYYY HH:mm:ss'))
+      setDate(moment(now).format(`DD-${monthNames[now.getMonth()]}-YYYY HH:mm:ss`))
     } else if (period === 2) {
-      const asMinutes = moment.duration({ seconds: _.get(allLock, '0.period2_') }).asMinutes()
-      let now = new Date()
-      now.setMinutes(now.getMinutes() + asMinutes)
+      now.setMinutes(now.getMinutes() + _.get(periodEnd, '1'))
       now = new Date(now)
       setLevel(1)
-      setDate(moment(now).format('DD-MM-YYYY HH:mm:ss'))
+      setDate(moment(now).format(`DD-${monthNames[now.getMonth()]}-YYYY HH:mm:ss`))
     } else if (period === 4) {
-      const asMinutes = moment.duration({ seconds: _.get(allLock, '0.period3_') }).asMinutes()
-      let now = new Date()
-      now.setMinutes(now.getMinutes() + asMinutes)
+      now.setMinutes(now.getMinutes() + _.get(periodEnd, '2'))
       now = new Date(now)
       setLevel(2)
-      setDate(moment(now).format('DD-MM-YYYY HH:mm:ss'))
+      setDate(moment(now).format(`DD-${monthNames[now.getMonth()]}-YYYY HH:mm:ss`))
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
-  }, [period, allLock, value])
+  }, [period, value, periodEnd, monthNames])
 
   const { onStake, status } = useLock(letvel, lockFinix, click)
 
@@ -213,16 +255,16 @@ const CardStake = () => {
       setIsDisabled(true)
     } else if (period === 0) {
       setIsDisabled(true)
-    } else if (period === 1 && Number(value) < _minimum1) {
+    } else if (period === 1 && Number(value) < _.get(minimum, '0')) {
       setIsDisabled(true)
-    } else if (period === 2 && Number(value) < _minimum2) {
+    } else if (period === 2 && Number(value) < _.get(minimum, '1')) {
       setIsDisabled(true)
-    } else if (period === 4 && Number(value) < _minimum3) {
+    } else if (period === 4 && Number(value) < _.get(minimum, '2')) {
       setIsDisabled(true)
     } else {
       setIsDisabled(false)
     }
-  }, [value, period, balanceOf, _minimum1, _minimum2, _minimum3])
+  }, [value, period, balanceOf, minimum])
 
   const renderApprovalOrStakeButton = () => {
     return isApproved || transactionHash !== '' ? (
@@ -255,25 +297,28 @@ const CardStake = () => {
     }
   }, [onApprove, setRequestedApproval])
 
-  const handleCol = () => {
-    return percent === 1 ? 'col-6' : 'col-6'
-  }
-
-  const handlePercent = () => {
-    return percent === 1 ? 'col-6' : 'col-6'
-  }
-
   return (
-    <div className={`align-stretch mt-5 ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
+    <div className="align-stretch mt-5">
       <FinixStake className="flex">
-        <div className={`pa-5 ${isMobileOrTablet ? 'col-12' : 'col-8 pr-0'}`}>
-          <Heading as="h1" fontSize="20px !important" className="mb-4">
-            Stake FINIX get vFINIX
-          </Heading>
-          <Text className="mt-4" color="textSubtle">
-            Please select duration
-          </Text>
-          <StakePeriodButton period={period} setPeriod={setPeriod} />
+        <div className={`${!isMobileOrTablet ? 'col-8' : 'col-12 pr-5'} py-5 pl-5`}>
+          <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center mb-3'}`}>
+            <Heading
+              as="h1"
+              fontSize={`${isMobileOrTablet ? '16px !important' : '20px !important'}`}
+              className={`${!isMobileOrTablet ? 'mb-4' : 'flex align-center'}`}
+            >
+              Stake FINIX get vFINIX
+            </Heading>
+            {isMobileOrTablet && (
+              <AprBox>
+                <Text color="white" bold fontSize="12px !important">
+                  APR {`${numeral(vFinixPrice || 0).format('0,0.[00]')}%`}
+                </Text>
+              </AprBox>
+            )}
+          </div>
+          <Text color="textSubtle">Please select duration</Text>
+          <StakePeriodButton setPeriod={setPeriod} />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
@@ -283,37 +328,33 @@ const CardStake = () => {
             </Text>
           </div>
           <Balance>
-            <div className={`${isMobileOrTablet ? 'col-12' : handleCol()}`}>
-              <NumberInput placeholder="0.00" value={value} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
-            </div>
-            <Input className={`${isMobileOrTablet ? 'col-12' : handlePercent()}`}>
-              {percent !== 1 && (
-                <div className="flex align-center justify-end" style={{ width: isMobileOrTablet ? '100%' : 'auto' }}>
-                  <StylesButton size="sm" onClick={() => setPercent(0.25)}>
-                    25%
-                  </StylesButton>
-                  <StylesButton size="sm" onClick={() => setPercent(0.5)}>
-                    50%
-                  </StylesButton>
-                  <StylesButton size="sm" onClick={() => setPercent(1)}>
-                    MAX
-                  </StylesButton>
-                </div>
-              )}
-              <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-              </Coin>
+            <NumberInput placeholder="0.00" value={value} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
+            {percent !== 1 && (
+              <div className="flex align-center justify-end" style={{ width: isMobileOrTablet ? '100%' : 'auto' }}>
+                <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                  25%
+                </StylesButton>
+                <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                  50%
+                </StylesButton>
+                <StylesButton size="sm" onClick={() => setPercent(1)}>
+                  MAX
+                </StylesButton>
+              </div>
+            )}
+            <Coin>
+              <img src={`/images/coins/${'FINIX'}.png`} alt="" />
               <Heading as="h1" fontSize="16px !important">
                 FINIX
               </Heading>
-            </Input>
+            </Coin>
           </Balance>
           <div className="flex mt-4">
             <Text className="col-6" color={isDark ? 'white' : '#000000'}>
               Estimated Period End
             </Text>
             <Text className="col-6 text-right" color="#30ADFF">
-              {date}
+              {date} GMT+9
             </Text>
           </div>
           <div className="flex mt-2">
@@ -331,8 +372,8 @@ const CardStake = () => {
           </div>
           {!isDisabled && (
             <Text className="mt-2" fontSize="10px !important" color={isDark ? 'white' : 'textSubtle'}>
-              x vFINIX will be received and the staking period will end in {date}. Unstaking before the period ends your
-              FINIX amount will be locked x days and x% will be deducted from total balance.
+              x vFINIX will be received and the staking period will end in {date} GMT+9. Unstaking before the period
+              ends your FINIX amount will be locked x days and x% will be deducted from total balance.
             </Text>
           )}
           <div className="flex mt-4">
@@ -353,30 +394,17 @@ const CardStake = () => {
           </div>
         </div>
         {!isMobileOrTablet && (
-          <div className="col-4 pb-4">
-            <img
-              src={badgeLock}
-              alt=""
-              className="px-4"
-              style={{ position: 'absolute', width: 'auto', height: '136px' }}
-            />
-            <div className="mt-4">
-              <Apr color="white">APR</Apr>
-              <Heading
-                as="h1"
-                style={{
-                  position: 'relative',
-                  textAlignLast: 'center',
-                  textShadow: '#00000050 0px 2px 4px',
-                }}
-                color="white"
-                fontSize="36px !important"
-              >
-                {`${numeral(apr || 0).format('0,0.[00]')}%`}
-              </Heading>
-            </div>
-
-            <img src={definixLongTerm} alt="" className="pl-3 mt-8" />
+          <div className="col-4 flex flex-column">
+            <APRBOX className="px-5 mb-2">
+              <img src={badgeLock} alt="" />
+              <Apr fontSize="28px !important" color="white">
+                APR
+              </Apr>
+              <AprValue fontSize="36px !important" color="white">{`${numeral(vFinixPrice || 0).format(
+                '0,0.[00]',
+              )}%`}</AprValue>
+            </APRBOX>
+            <img src={definixLongTerm} alt="" className="pl-3" />
           </div>
         )}
       </FinixStake>

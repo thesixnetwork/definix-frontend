@@ -38,7 +38,7 @@ const useLongTermStake = (tokenAddress: string) => {
 }
 
 export const useTotalSupply = () => {
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const [totalSupply, setTotalSupply] = useState<string>()
 
   useEffect(() => {
@@ -49,13 +49,13 @@ export const useTotalSupply = () => {
     }
 
     fetchTotalSupply()
-  }, [slowRefresh])
+  }, [fastRefresh])
 
   return totalSupply
 }
 
 export const useTotalFinixLock = () => {
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const [totalFinixLock, setTotalFinixLock] = useState([])
 
   useEffect(() => {
@@ -76,30 +76,13 @@ export const useTotalFinixLock = () => {
     }
 
     fetchTotalFinixLock()
-  }, [slowRefresh])
+  }, [fastRefresh])
 
   return totalFinixLock
 }
 
-export const useApr = () => {
-  const { slowRefresh } = useRefresh()
-  const [apr, setApr] = useState<number>()
-
-  useEffect(() => {
-    async function fetchApr() {
-      const finixLock = getContract(RewardFacet.abi, getVFinix())
-      const supply = await finixLock.methods.rewardPerBlock().call()
-      setApr(new BigNumber(supply).dividedBy(new BigNumber(10).pow(18)).toNumber())
-    }
-
-    fetchApr()
-  }, [slowRefresh])
-
-  return apr
-}
-
 export const useBalances = () => {
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const [balance, setBalanceOf] = useState(new BigNumber(0))
   const { account } = useWallet()
 
@@ -115,59 +98,42 @@ export const useBalances = () => {
     }
 
     fetchBalance()
-  }, [slowRefresh, account])
-
-  return balance
-}
-
-export const useLockAmount = () => {
-  const { slowRefresh } = useRefresh()
-  const [balance, setBalanceOf] = useState(new BigNumber(0))
-  const { account } = useWallet()
-
-  useEffect(() => {
-    async function fetchBalance() {
-      const finixBalance = getContract(VaultFacet.abi, getVFinix())
-      try {
-        const res = await finixBalance.methods.getUserLockAmount(account).call()
-        setBalanceOf(new BigNumber(res).dividedBy(new BigNumber(10).pow(18)))
-      } catch (e) {
-        setBalanceOf(null)
-      }
-    }
-
-    fetchBalance()
-  }, [slowRefresh, account])
+  }, [fastRefresh, account])
 
   return balance
 }
 
 export const usePrivateData = () => {
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
   const [balance, setBalanceOf] = useState(new BigNumber(0))
   const { account } = useWallet()
+  const startIndex = useSelector((state: State) => state.longTerm.startIndex)
+  const allLockPeriod = useSelector((state: State) => state.longTerm.allLockPeriods)
 
   useEffect(() => {
     if (account) {
-      dispatch(fetchPrivateData(account))
+      dispatch(fetchPrivateData(account, startIndex, allLockPeriod))
       dispatch(fetchPendingReward(account))
     }
-  }, [slowRefresh, account, dispatch])
+  }, [fastRefresh, account, dispatch, startIndex, allLockPeriod])
 
   const lockAmount = useSelector((state: State) => state.longTerm.userLockAmount)
   const finixEarn = useSelector((state: State) => state.longTerm.finixEarn)
-  return { lockAmount, finixEarn }
+  const allDataLock = useSelector((state: State) => state.longTerm.allDataLock)
+  const balancefinix = useSelector((state: State) => state.longTerm.balanceFinix)
+  const balancevfinix = useSelector((state: State) => state.longTerm.balancevFinix)
+  return { lockAmount, finixEarn, startIndex, allDataLock, balancefinix, balancevfinix }
 }
 
 export const useAllLock = () => {
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
   const [balance, setBalanceOf] = useState(new BigNumber(0))
 
   useEffect(() => {
     dispatch(fetchAllLockPeriods())
-  }, [slowRefresh, dispatch])
+  }, [fastRefresh, dispatch])
 
   const allLockPeriod = useSelector((state: State) => state.longTerm.allLockPeriods)
   return { allLockPeriod }
@@ -215,133 +181,6 @@ export const useAllowance = () => {
   }, [slowRefresh, account])
 
   return allowance
-}
-
-export const useLocks = (startIndex) => {
-  const { slowRefresh } = useRefresh()
-  const [locks, setLocks] = useState([])
-  const { account } = useWallet()
-
-  const fetchBalance = useCallback(async () => {
-    const lock = getContract(VaultFacet.abi, getVFinix())
-    try {
-      const allLockPeriod = await lock.methods.getAllLockPeriods().call()
-      const res = await lock.methods.locks(account, startIndex, 10).call()
-
-      const periodMap = {}
-      let asMinutes = 0
-      let asPenaltyMinutes = 0
-      const penaltyRate = {}
-      const periodMapPenalty = {}
-      const lockss = []
-      for (let i = 0; i < 3; i++) {
-        _.set(periodMap, `${i}`, _.get(allLockPeriod, `_period${i + 1}`) * 1)
-        _.set(periodMapPenalty, `${i}`, _.get(allLockPeriod, `_penaltyPeriod${i + 1}`) * 1)
-        _.set(
-          penaltyRate,
-          `${i}`,
-          Number(
-            new BigNumber(_.get(allLockPeriod, `_penaltyRate${i + 1}`))
-              .dividedBy(_.get(allLockPeriod, `_penaltyRateDecimal${i + 1}`))
-              .toFixed(),
-          ),
-        )
-      }
-      if (periodMap) {
-        res.map((value) => {
-          const canBeUnlock_ = Math.floor(new Date().getTime() / 1000) - periodMap[value.level] > value.lockTimestamp
-          const canBeClaim =
-            Math.floor(new Date().getTime() / 1000) - periodMap[value.level] > value.penaltyUnlockTimestamp
-
-          asMinutes = moment.duration({ seconds: periodMap[value.level] }).asMinutes()
-          asPenaltyMinutes = moment.duration({ seconds: periodMapPenalty[value.level] }).asMinutes()
-
-          let now = new Date(value.lockTimestamp * 1000)
-          now.setMinutes(now.getMinutes() + asMinutes)
-          now = new Date(now)
-
-          let unLockTime = new Date(value.lockTimestamp * 1000)
-          unLockTime.setMinutes(unLockTime.getMinutes() + asPenaltyMinutes)
-          unLockTime = new Date(unLockTime)
-
-          let penaltyTimestamp = new Date(value.penaltyUnlockTimestamp * 1000)
-          penaltyTimestamp.setMinutes(penaltyTimestamp.getMinutes() + asPenaltyMinutes)
-          penaltyTimestamp = new Date(penaltyTimestamp)
-
-          let claim
-          if (canBeClaim) {
-            if (value.penaltyUnlockTimestamp !== 0) {
-              claim = canBeClaim
-            } else {
-              claim = false
-            }
-          } else {
-            claim = false
-          }
-          lockss.push({
-            id: value.id,
-            level: value.level,
-            isUnlocked: value.isUnlocked,
-            isPenalty: value.isPenalty,
-            penaltyFinixAmount: value.penaltyFinixAmount,
-            penaltyUnlockTimestamp: moment(penaltyTimestamp).format('DD-MM-YYYY HH:mm:ss'),
-            // penaltyUnlockTimestamp: moment(unLockTime).format('DD-MM-YYYY HH:mm:ss'),
-            canBeUnlock: canBeUnlock_,
-            canBeClaim: claim,
-            penaltyRate: penaltyRate[value.level],
-            lockAmount: new BigNumber(value.lockAmount).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-            voteAmount: new BigNumber(value.lockAmount).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-            lockTimestamp: moment(now).format('DD-MM-YYYY HH:mm:ss'),
-            periodPenalty: moment(unLockTime).format('DD-MM-YYYY HH:mm:ss'),
-          })
-          return lockss
-        })
-      }
-      setLocks(lockss)
-    } catch (e) {
-      setLocks(null)
-    }
-  }, [account, startIndex])
-
-  useEffect(() => {
-    fetchBalance()
-  }, [slowRefresh, account, fetchBalance])
-
-  return { locks, fetchBalance }
-}
-
-export const useAllLockPeriods = () => {
-  const { slowRefresh } = useRefresh()
-  const [locks, setLocks] = useState([])
-  const { account } = useWallet()
-
-  useEffect(() => {
-    async function fetchBalance() {
-      const lock = getContract(VaultFacet.abi, getVFinix())
-      try {
-        const allLockPeriod = await lock.methods.getAllLockPeriods().call()
-        const arrLocks = []
-        arrLocks.push({
-          multiplier1_: allLockPeriod._multiplier1 / 10,
-          multiplier2_: allLockPeriod._multiplier2 / 10,
-          multiplier3_: allLockPeriod._multiplier3 / 10,
-          period1_: allLockPeriod._period1,
-          period2_: allLockPeriod._period2,
-          period3_: allLockPeriod._period3,
-          _minimum1: allLockPeriod._minimum1,
-          _minimum2: allLockPeriod._minimum2,
-          _minimum3: allLockPeriod._minimum3,
-        })
-        setLocks(arrLocks)
-      } catch (e) {
-        setLocks(null)
-      }
-    }
-
-    fetchBalance()
-  }, [slowRefresh, account])
-
-  return locks
 }
 
 const handleContractExecute = (_executeFunction, _account) => {
@@ -492,6 +331,20 @@ export const useUnstakeId = () => {
   const totalSupplyAllTimeMint = useSelector((state: State) => {
     return state.longTerm.totalSupplyAllTimeMint
   })
+  const multiplier = useSelector((state: State) => {
+    return state.longTerm.multiplier
+  })
+  const days = useSelector((state: State) => {
+    return state.longTerm.days
+  })
+
+  const vFinixPrice = useSelector((state: State) => {
+    return state.longTerm.vFinixPrice
+  })
+
+  const lockCount = useSelector((state: State) => {
+    return state.longTerm.lockCount
+  })
 
   return {
     id,
@@ -505,6 +358,10 @@ export const useUnstakeId = () => {
     totalvFinixSupply,
     finixLockMap,
     totalSupplyAllTimeMint,
+    multiplier,
+    days,
+    vFinixPrice,
+    lockCount,
     // lockAmount
   }
 }

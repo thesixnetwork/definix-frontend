@@ -1,12 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
 import styled, { useTheme } from 'styled-components'
-import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import _ from 'lodash'
-import { Card, Text, useMatchBreakpoints } from '../../../uikit-dev'
+import { Card, Text, useMatchBreakpoints, Heading } from '../../../uikit-dev'
 import { useTotalFinixLock, useTotalSupply, useUnstakeId } from '../../../hooks/useLongTermStake'
 import CardBarChart from './CardBarChart'
+import vFinix from '../../../uikit-dev/images/for-ui-v2/vFinix.png'
 
 const CardFinixStake = styled(Card)`
   position: relative;
@@ -15,7 +15,6 @@ const CardFinixStake = styled(Card)`
   background-size: cover;
   background-repeat: no-repeat;
   right: 0;
-  //   align-items: center;
 
   a {
     display: block;
@@ -61,6 +60,7 @@ export const TD = styled.td<{ align?: string }>`
 
 const TextStyled = styled.div`
   align-self: center;
+  width: 100%;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     .text-value {
@@ -92,12 +92,19 @@ const TextStyled = styled.div`
   }
 `
 
+const Coin = styled.div`
+  align-self: center img {
+    width: 63px;
+    height: 63px;
+  }
+`
+
 const FinixStakeCard = () => {
   // @ts-ignore
   const { isDark } = useTheme()
   const totalSupply = useTotalSupply()
   const getTotalFinixLock = useTotalFinixLock()
-  const { totalFinixLock, totalvFinixSupply, totalSupplyAllTimeMint } = useUnstakeId()
+  const { totalFinixLock, totalvFinixSupply, totalSupplyAllTimeMint, finixLockMap } = useUnstakeId()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg && !isMd
 
@@ -107,33 +114,48 @@ const FinixStakeCard = () => {
 
   return (
     <>
-      <CardFinixStake className={`mt-5 ${isMobile ? '' : 'flex'}`}>
-        <div className={`${isMobile ? 'col-12 mt-2 px-5 pt-4' : 'col-5 my-2 py-3 px-5 bd-r'}`}>
-          <div className="flex justify-space-between">
-            <Text color="#737375">Total FINIX staked</Text>
-            <div className="flex align-items-center">
-              <Text color={isDark ? 'white' : '#000000'} className="mr-2">
+      <CardFinixStake className="mt-5">
+        <Heading className="bd-b pa-5">vFINIX Pool Status</Heading>
+        <div className="flex">
+          <div
+            className={`${
+              isMobile
+                ? 'py-6 px-2 col-6 justify-center align-center'
+                : 'flex py-6 px-2 col-6 justify-center align-center'
+            }`}
+          >
+            <Coin className={`${isMobile ? 'flex justify-center align-center mb-2' : ''}`}>
+              <img src={`/images/coins/${'FINIX'}.png`} alt="" width="63px" height="63px" />
+            </Coin>
+            <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
+              <Text color="textSubtle" fontWeight="inherit">Total FINIX staked</Text>
+              <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
                 {numeral(totalFinixLock).format('0,0')}{' '}
-              </Text>
-              <Text color={isDark ? 'white' : '#000000'}>FINIX</Text>
+              </Heading>
             </div>
           </div>
-          <div className={`${isMobile ? 'text-left' : 'text-center'}`}>
-            <Text color="#ffffff00">( 36% of FINIX supply )</Text>
-          </div>
-          <div className={`flex justify-space-between ${isMobile ? 'mt-2' : ' mt-7'}`}>
-            <Text color="#737375">Total vFINIX supply</Text>
-            <div className="flex align-items-center">
-              <Text color={isDark ? 'white' : '#000000'} className="mr-2">
+          <div className="mt-3 bd-r" />
+          <div
+            className={`${
+              isMobile
+                ? 'py-6 px-2 col-6 justify-center align-center'
+                : 'flex py-6 px-2 col-6 justify-center align-center'
+            }`}
+          >
+            <Coin className={`${isMobile ? 'flex justify-center align-center mb-2' : ''}`}>
+              <img src={vFinix} alt="vfinix" width="63px" height="63px" />
+            </Coin>
+            <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
+              <Text color="textSubtle" fontWeight="inherit">Total vFINIX supply</Text>
+              <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
                 {numeral(totalSupplyAllTimeMint).format('0,0')}
-              </Text>
-              <Text color={isDark ? 'white' : '#000000'}>vFINIX</Text>
+              </Heading>
             </div>
           </div>
         </div>
         <div className={`flex align-items-center ${isMobile ? 'col-12 pa-3' : 'col-7 pa-3 pt-1 pb-0'}`}>
-          <CardBarChart className="col-6" lock={getTotalFinixLock} />
-          <TextStyled className="col-6">
+          <CardBarChart className="" lock={getTotalFinixLock} />
+          <TextStyled>
             <TextStyled color={textColor()} className="text-value">
               {numeral(getTotalFinixLock[0]).format('0,0')} FINIX
             </TextStyled>

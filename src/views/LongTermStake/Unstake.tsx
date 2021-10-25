@@ -1,16 +1,14 @@
 /* eslint-disable no-nested-ternary */
-import Checkbox from '@material-ui/core/Checkbox'
 import _ from 'lodash'
 import numeral from 'numeral'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { ArrowBackIcon, Button, Card, Link as UiLink, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
 import { Link, useHistory } from 'react-router-dom'
 import { Redirect } from 'react-router'
 import styled from 'styled-components'
-import { useUnstakeId, useUnLock, useTotalSupply, useApr } from 'hooks/useLongTermStake'
-import { useSelector } from 'react-redux'
+import { useUnstakeId, useUnLock } from 'hooks/useLongTermStake'
 import warning from '../../uikit-dev/images/for-ui-v2/warning.png'
 
 const MaxWidth = styled.div`
@@ -21,7 +19,6 @@ const MaxWidth = styled.div`
 `
 
 const Coin = styled.div`
-  //   display: flex;
   justify-content: flex-end;
   align-items: center;
 
@@ -105,6 +102,8 @@ const Apr = styled(Card)`
   position: relative;
   box-shadow: unset;
   border-radius: 4px;
+  align-items: center;
+  display: flex;
 
   a {
     display: block;
@@ -147,14 +146,10 @@ const Input = styled.div`
 `
 
 const Unstake: React.FC = () => {
-  const [tx, setTx] = useState({})
   const { isXl } = useMatchBreakpoints()
-  const { id, level, amount, canBeUnlock, penaltyRate, periodPenalty } = useUnstakeId()
+  const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
   const isMobileOrTablet = !isXl
   const { unnLock } = useUnLock()
-  const totalSupply = useTotalSupply()
-  const rewardperblock = useApr()
-  const apr = ((rewardperblock * 86400 * 365) / Number(totalSupply)) * 100
   const navigate = useHistory()
 
   const handleUnLock = useCallback(
@@ -163,7 +158,6 @@ const Unstake: React.FC = () => {
         const res = unnLock(id)
         res
           .then((r) => {
-            console.log('d')
             navigate.push('/long-term-stake')
             return <Redirect to="/long-term-stake" />
           })
@@ -212,25 +206,13 @@ const Unstake: React.FC = () => {
                     </Heading>
                     <div className="flex justify-center mb-6">
                       <Period>
-                        {level === '0' && (
-                          <Text color="#30adff" bold fontSize="16px !important">
-                            1X 90 days
-                          </Text>
-                        )}
-                        {level === '1' && (
-                          <Text color="#30adff" bold fontSize="16px !important">
-                            2X 180 days
-                          </Text>
-                        )}
-                        {level === '2' && (
-                          <Text color="#30adff" bold fontSize="16px !important">
-                            4X 365 days
-                          </Text>
-                        )}
+                        <Text color="#30adff" bold fontSize="16px !important">
+                          {multiplier}X {days} days
+                        </Text>
                       </Period>
                       <Apr>
                         <Text color="white" bold fontSize="10px !important">
-                          APR {`${numeral(apr || 0).format('0,0.[00]')}%`}
+                          APR {`${numeral(vFinixPrice || 0).format('0,0.[00]')}%`}
                         </Text>
                       </Apr>
                     </div>
@@ -240,7 +222,7 @@ const Unstake: React.FC = () => {
                       Unstake
                     </Text>
                     <Balance className="flex align-center">
-                      <NumberInput fontSize="18px !important">{amount.toLocaleString()}</NumberInput>
+                      <NumberInput fontSize="18px !important">{(amount && amount.toLocaleString()) || 0}</NumberInput>
                       <Input>
                         <Finix>
                           <img src={`/images/coins/${'FINIX'}.png`} alt="" />
@@ -262,7 +244,7 @@ const Unstake: React.FC = () => {
                       <div className="flex mt-4">
                         <Text className="col-6">Early unstake fee</Text>
                         <Text className="col-6 text-right" color="#30ADFF">
-                          {penaltyRate}%
+                          {penaltyRate * 100}%
                         </Text>
                       </div>
                       <div className="flex mt-4 mb-6">

@@ -5,24 +5,24 @@ import { HorizontalBar } from 'react-chartjs-2'
 
 const Box = styled.div`
   width: 100% !important;
-  height: 156px !important;
+  height: 100% !important;
 
-  ${({ theme }) => theme.mediaQueries.xs} {
-    width: 100% !important;
-    height: 116px !important;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 100% !important;
-    height: 156px !important;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 100% !important;
-    height: 156px !important;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 100% !important;
-    height: 156px !important;
-  }
+    ${({ theme }) => theme.mediaQueries.xs} {
+      width: 100% !important;
+      height: 116px !important;
+    }
+    ${({ theme }) => theme.mediaQueries.sm} {
+      width: 100% !important;
+      height: 156px !important;
+    }
+    ${({ theme }) => theme.mediaQueries.md} {
+      width: 100% !important;
+      height: 156px !important;
+    }
+    ${({ theme }) => theme.mediaQueries.lg} {
+      width: 100% !important;
+      height: 156px !important;
+    }
 `
 
 const traparent = '#ffffff00'
@@ -38,6 +38,11 @@ const options = {
   responsive: true,
   responsiveAnimationDuration: 100,
   type: 'bar',
+  layout: {
+    padding: {
+      right: 0,
+    },
+  },
 
   scales: {
     xAxes: [
@@ -69,8 +74,9 @@ const options = {
         scaleLabel: {
           display: false,
         },
-        categoryPercentage: 0.6,
-        barPercentage: 0.6,
+        barPercentage: 1,
+        categoryPercentage: 1,
+        barThickness: 15,
         ticks: {
           fontColor: '#737375',
           fontSize: 14,
@@ -91,10 +97,10 @@ const CardBarChart = ({ lock, className }) => {
     const ctx2 = canvas.getContext('2d')
     const ctx3 = canvas.getContext('2d')
     const primary = ctx1.createLinearGradient(150, 0, 90, 0)
-    primary.addColorStop(0, '#30ADFF')
+    primary.addColorStop(0, '#F5C858')
     primary.addColorStop(1, '#D8D8D800')
     const success = ctx2.createLinearGradient(150, 0, 90, 0)
-    success.addColorStop(0, '#F5C858')
+    success.addColorStop(0, '#30ADFF')
     success.addColorStop(1, '#D8D8D800')
     const warning = ctx3.createLinearGradient(150, 0, 90, 0)
     warning.addColorStop(0, '#2A9D8F')

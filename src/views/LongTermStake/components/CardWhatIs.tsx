@@ -3,9 +3,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Card, Heading, Text, MinusIcon, AddIcon } from '../../../uikit-dev'
+import { Card, Heading, Text } from '../../../uikit-dev'
 import finixLocks from '../../../uikit-dev/images/for-ui-v2/finix-lock.png'
 import vFinix from '../../../uikit-dev/images/for-ui-v2/vFinix.png'
+import arrowWhite from '../../../uikit-dev/images/for-ui-v2/arrow-white.png'
+import arrowBlack from '../../../uikit-dev/images/for-ui-v2/arrow-black.png'
+import plusBlack from '../../../uikit-dev/images/for-ui-v2/plus-black.png'
+import plusWhite from '../../../uikit-dev/images/for-ui-v2/plus-white.png'
 
 const StyledBanner = styled(Card)`
   width: 100%;
@@ -74,9 +78,9 @@ const Element = () => {
   return (
     <ElementsLock className="mt-6">
       <img src={finixLocks} alt="" width="80px" height="76px" className="pos-relative" />
-      <MinusIcon color={isDark ? 'white' : 'textSubtle'} width="20%" />
+      <img src={isDark ? arrowWhite : arrowBlack} alt="" width="20%" className="mx-1"/>
       <img src={`/images/coins/${'FINIX'}.png`} alt="" width="40px" height="40px" className="pos-relative" />
-      <AddIcon color={isDark ? 'white' : 'textSubtle'} width="10%" />
+      <img src={isDark ? plusWhite : plusBlack} alt="" width="5%" className="mx-1"/>
       <img src={vFinix} alt="finixLocks" width="40px" height="40px" className="pos-relative" />
     </ElementsLock>
   )

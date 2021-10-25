@@ -1,10 +1,10 @@
 /* eslint-disable no-nested-ternary */
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
 import numeral from 'numeral'
 import _ from 'lodash'
-import { Card, Text, useMatchBreakpoints, Button } from '../../../uikit-dev'
-import { useLockAmount, useHarvest, usePrivateData } from '../../../hooks/useLongTermStake'
+import { Card, Text, useMatchBreakpoints, Button, Heading } from '../../../uikit-dev'
+import { useHarvest, usePrivateData } from '../../../hooks/useLongTermStake'
 
 const Harvest = styled(Card)`
   position: relative;
@@ -22,9 +22,7 @@ const Harvest = styled(Card)`
 const CardHarvest = () => {
   // @ts-ignore
   const { isDark } = useTheme()
-  //   const lockAmount = useLockAmount()
-  //   const pendingReward = usePendingReward()
-  const { lockAmount, finixEarn } = usePrivateData()
+  const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg && !isMd
   const { handleHarvest } = useHarvest()
@@ -47,41 +45,42 @@ const CardHarvest = () => {
   }
 
   return (
-    <Harvest className={`mt-5 pa-5 ${isMobile ? '' : 'flex'}`}>
-      <div className={`${isMobile ? 'col-12' : 'col-8'}`}>
-        <div className="flex justify-space-between">
-          <Text fontSize="16px" color="#737375">
-            Your total FINIX stake
-          </Text>
-          <Text fontWeight="800" fontSize="16px" color={textColor()} paddingRight="2" paddingLeft="2">
-            {numeral(lockAmount).format('0,0.[000]')} FINIX
-          </Text>
+    <>
+      <Heading className="bd-b pa-5">My Asset</Heading>
+      <div className={`${isMobile ? 'col-12 pa-4' : 'col-12 flex bd-b py-4 px-2 '}`}>
+        <div className={`${isMobile ? 'col-12 mb-4' : 'col-3 pa-2'}`}>
+          <Text color="textSubtle">Your vFINIX balance</Text>
+          <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important">
+            {numeral(balancevfinix).format('0,0.[000]')} vFINIX
+          </Heading>
         </div>
-        <div className="flex mt-2 justify-space-between">
-          <Text fontSize="16px" color="#737375">
-            Your FINIX earned
-          </Text>
-          <div className="flex">
-            <Text fontWeight="800" fontSize="16px" color="success">
-              {numeral(finixEarn).format('0,0.00')}
-            </Text>
-            <Text fontWeight="800" fontSize="16px" color={textColor()} paddingRight="2" paddingLeft="2">
+        <div className="bd-r" />
+        <div className={`${isMobile ? 'col-12 mb-4' : 'col-3 py-2 pl-4 '}`}>
+          <Text color="textSubtle">Your total FINIX stake</Text>
+          <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important">
+            {numeral(lockAmount).format('0,0.[000]')} FINIX
+          </Heading>
+        </div>
+        <div className="bd-r" />
+        <div className={`${isMobile ? 'col-12' : 'col-3 pa-2 pl-4'}`}>
+          <Text color="textSubtle">Your FINIX earned</Text>
+          <div className={`${isMobile ? 'flex' : 'flex'}`}>
+            <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important" color="success">
+              {`${numeral(finixEarn).format('0,0.00')}`}
+            </Heading>
+            &nbsp;
+            <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important" color={textColor()}>
               FINIX
-            </Text>
+            </Heading>
           </div>
         </div>
+        <div className={`${isMobile ? 'col-12' : 'col-3 pa-2 align-self-center'}`}>
+          <Button variant="success" radii="small" disabled={!valueReward} onClick={onHarvest} fullWidth>
+            Harvest
+          </Button>
+        </div>
       </div>
-      <Button
-        variant="success"
-        fullWidth
-        radii="small"
-        disabled={!valueReward}
-        onClick={onHarvest}
-        className={`${isMobile ? 'col-12 mt-3' : 'col-4 text-right ml-8 mr-6'}`}
-      >
-        Harvest
-      </Button>
-    </Harvest>
+    </>
   )
 }
 
