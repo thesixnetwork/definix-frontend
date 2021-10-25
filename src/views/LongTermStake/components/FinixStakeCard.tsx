@@ -128,7 +128,9 @@ const FinixStakeCard = () => {
               <img src={`/images/coins/${'FINIX'}.png`} alt="" width="63px" height="63px" />
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
-              <Text color="textSubtle" fontWeight="inherit">Total FINIX staked</Text>
+              <Text color="textSubtle" fontWeight="inherit">
+                Total FINIX staked
+              </Text>
               <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
                 {numeral(totalFinixLock).format('0,0')}{' '}
               </Heading>
@@ -146,7 +148,9 @@ const FinixStakeCard = () => {
               <img src={vFinix} alt="vfinix" width="63px" height="63px" />
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
-              <Text color="textSubtle" fontWeight="inherit">Total vFINIX supply</Text>
+              <Text color="textSubtle" fontWeight="inherit">
+                Total vFINIX supply
+              </Text>
               <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
                 {numeral(totalSupplyAllTimeMint).format('0,0')}
               </Heading>

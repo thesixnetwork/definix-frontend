@@ -7,7 +7,7 @@ export {
   fetchPendingReward,
   fetchAllLockPeriods,
   fetchTotalSupplyAllTimeMint,
-  fetchStartIndex
+  fetchStartIndex,
 } from './longTermStake'
 export { clear, remove, push } from './toasts'
 export { fetchRebalances } from './rebalance'

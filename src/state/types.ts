@@ -128,13 +128,13 @@ export interface LongTermState {
   allLockPeriods: []
   totalSupplyAllTimeMint: number
   startIndex: number
-  allDataLock: [],
-  multiplier: number,
-  days: number,
-  vFinixPrice: number,
-  lockCount: number,
-  balanceFinix: number,
-  balancevFinix: number,
+  allDataLock: []
+  multiplier: number
+  days: number
+  vFinixPrice: number
+  lockCount: number
+  balanceFinix: number
+  balancevFinix: number
 }
 export interface PoolsState {
   isFetched: boolean
