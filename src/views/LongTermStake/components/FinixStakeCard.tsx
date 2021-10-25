@@ -115,7 +115,7 @@ const FinixStakeCard = () => {
   return (
     <>
       <CardFinixStake className="mt-5">
-        <Heading className="bd-b pa-5">vFINIX Pool Status</Heading>
+        <Heading fontSize="18px !important" className="bd-b pa-5">vFINIX Pool Status</Heading>
         <div className="flex">
           <div
             className={`${

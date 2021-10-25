@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import numeral from 'numeral'
 import { Button, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
 import _ from 'lodash'
-import { useUnstakeId, useAllLock } from '../../../hooks/useLongTermStake'
+import { useAllLock, useApr } from '../../../hooks/useLongTermStake'
 
 const BoxLevel = styled.div`
   height: 100%;
@@ -90,8 +90,7 @@ const StakePeriodButton = ({ setPeriod }) => {
   const [_minimum1, setMinimum1] = useState(0)
   const [_minimum2, setMinimum2] = useState(0)
   const [_minimum4, setMinimum3] = useState(0)
-  const multiplier = _.get(allLockPeriod, '0.multiplier')
-  const { vFinixPrice } = useUnstakeId()
+  const apr = useApr()
   const [test, setTest] = useState(0)
 
   useEffect(() => {
@@ -114,7 +113,7 @@ const StakePeriodButton = ({ setPeriod }) => {
         days={90}
         period={test}
         minimum={_minimum1}
-        vFinixPrice={vFinixPrice}
+        vFinixPrice={apr}
         mr="mr-2"
       />
       <CustomButton
@@ -125,7 +124,7 @@ const StakePeriodButton = ({ setPeriod }) => {
         days={180}
         period={test}
         minimum={_minimum2}
-        vFinixPrice={vFinixPrice}
+        vFinixPrice={apr}
         mr="mr-2"
       />
       <CustomButton
@@ -136,7 +135,7 @@ const StakePeriodButton = ({ setPeriod }) => {
         days={365}
         period={test}
         minimum={_minimum4}
-        vFinixPrice={vFinixPrice}
+        vFinixPrice={apr}
         mr=""
       />
     </div>

@@ -12,6 +12,7 @@ import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
 import VaultPenaltyFacet from '../config/abi/VaultPenaltyFacet.json'
+import multicall from '../utils/multicall'
 import { getContract } from '../utils/caver'
 import { getTokenBalance } from '../utils/erc20'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
@@ -263,6 +264,27 @@ export const useApprove = (max) => {
   }, [account, max])
 
   return { onApprove }
+}
+
+export const useApr = () => {
+  const { slowRefresh } = useRefresh()
+  const [apr, setApr] = useState<number>()
+
+  useEffect(() => {
+    async function fetchApr() {
+      const finixLock = getContract(RewardFacet.abi, getVFinix())
+      const finixContract = getContract(IKIP7.abi, getVFinix())
+      const supply = await finixLock.methods.rewardPerBlock().call()
+      const total = await finixContract.methods.totalSupply().call()
+      const totalSupply = new BigNumber(total).dividedBy(new BigNumber(10).pow(18)).toNumber()
+      const reward = new BigNumber(supply).dividedBy(new BigNumber(10).pow(18)).toNumber()
+      setApr(((reward * 86400 * 365) / Number(totalSupply)) * 100)
+    }
+
+    fetchApr()
+  }, [slowRefresh])
+
+  return apr
 }
 
 export const useLockCount = () => {

@@ -15,8 +15,8 @@ import {
   useAllowance,
   useLock,
   useApprove,
-  useUnstakeId,
   useAllLock,
+  useApr
 } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
 
@@ -183,7 +183,7 @@ const CardStake = () => {
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
-  const { vFinixPrice } = useUnstakeId()
+  // const { vFinixPrice } = useUnstakeId()
   const { allLockPeriod } = useAllLock()
   const [value, setValue] = useState('')
   const [letvel, setLevel] = useState(0)
@@ -199,6 +199,7 @@ const CardStake = () => {
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
   const minimum = _.get(allLockPeriod, '0.minimum')
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
+  const apr = useApr()
 
   function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -304,7 +305,7 @@ const CardStake = () => {
           <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center mb-3'}`}>
             <Heading
               as="h1"
-              fontSize={`${isMobileOrTablet ? '16px !important' : '20px !important'}`}
+              fontSize={`${isMobileOrTablet ? '16px !important' : '18px !important'}`}
               className={`${!isMobileOrTablet ? 'mb-4' : 'flex align-center'}`}
             >
               Stake FINIX get vFINIX
@@ -312,7 +313,7 @@ const CardStake = () => {
             {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="12px !important">
-                  APR {`${numeral(vFinixPrice || 0).format('0,0.[00]')}%`}
+                  APR {`${numeral(apr || 0).format('0,0.[00]')}%`}
                 </Text>
               </AprBox>
             )}
@@ -400,7 +401,7 @@ const CardStake = () => {
               <Apr fontSize="28px !important" color="white">
                 APR
               </Apr>
-              <AprValue fontSize="36px !important" color="white">{`${numeral(vFinixPrice || 0).format(
+              <AprValue fontSize="36px !important" color="white">{`${numeral(apr || 0).format(
                 '0,0.[00]',
               )}%`}</AprValue>
             </APRBOX>

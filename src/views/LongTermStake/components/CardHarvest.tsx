@@ -46,7 +46,7 @@ const CardHarvest = () => {
 
   return (
     <>
-      <Heading className="bd-b pa-5">My Asset</Heading>
+      <Heading fontSize="18px !important" className="bd-b pa-5">My Asset</Heading>
       <div className={`${isMobile ? 'col-12 pa-4' : 'col-12 flex bd-b py-4 px-2 '}`}>
         <div className={`${isMobile ? 'col-12 mb-4' : 'col-3 pa-2'}`}>
           <Text color="textSubtle">Your vFINIX balance</Text>
