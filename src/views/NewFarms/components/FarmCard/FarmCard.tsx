@@ -1,9 +1,9 @@
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
@@ -90,7 +90,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
-  const { pendingRewards, earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
+  const { pendingRewards, earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
 
   const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
   const stakedTotalInQuoteToken = new BigNumber(farm.quoteTokenBlanceLP)
@@ -174,9 +174,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
     )
   }, [lpLabel, onPresent, onUnstake, renderCardHeading, stakedBalance])
 
+  const isApproved = useMemo(() => {
+    return account && allowance && allowance.isGreaterThan(0)
+  }, [account, allowance])
   const renderStakeAction = useCallback(
     (className?: string) => (
       <StakeAction
+        isApproved={isApproved}
+        stakedBalance={stakedBalance}
         farm={farm}
         klaytn={klaytn}
         account={account}
@@ -185,7 +190,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         onPresentWithdraw={renderWithdrawModal}
       />
     ),
-    [account, klaytn, farm, renderDepositModal, renderWithdrawModal],
+    [account, klaytn, farm, renderDepositModal, renderWithdrawModal, isApproved, stakedBalance],
   )
 
   const renderHarvestActionAirDrop = useCallback(
@@ -246,13 +251,16 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
     return (
       <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-        {renderCardHeading('col-3 pos-static')}
+        {renderCardHeading('col-4 pos-static')}
 
-        {renderDetailsSection('col-3 bd-x', true)}
+        {renderDetailsSection('col-4 bd-x pa-3', true)}
 
-        {renderStakeAction('col-2 pa-5')}
+        <div className="flex col-4">
+          {renderStakeAction(`pa-3 ${isApproved || 'col-12'}`)}
+          {isApproved && renderHarvestActionAirDrop('col-6 pa-3')}
+        </div>
 
-        {/* renderHarvestAction('col-5 pl-5 flex-grow') */}
+        {/*  */}
         {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', isHorizontal)} */}
       </HorizontalStyle>
     )

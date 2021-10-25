@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
+import { Text, Heading } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   removed?: boolean
@@ -30,9 +30,9 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       {!removed && (
         <>
           <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
-          <Text bold className="flex-shrink">
+          <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
             {totalValueFormated}
-          </Text>
+          </Heading>
         </>
       )}
     </Wrapper>

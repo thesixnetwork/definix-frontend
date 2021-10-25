@@ -3,7 +3,7 @@ import UnlockButton from 'components/UnlockButton'
 import { useApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useFarmFromSymbol, useFarmUnlockDate, useFarmUser } from 'state/hooks'
+import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
 import styled from 'styled-components'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
@@ -21,6 +21,8 @@ interface FarmStakeActionProps {
   className?: string
   onPresentDeposit?: any
   onPresentWithdraw?: any
+  isApproved: boolean
+  stakedBalance: BigNumber
 }
 
 const IconButtonWrapper = styled.div`
@@ -32,6 +34,8 @@ const IconButtonWrapper = styled.div`
 `
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
+  isApproved,
+  stakedBalance,
   farm,
   klaytn,
   account,
@@ -45,21 +49,21 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   const TranslateString = useI18n()
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
-  console.log('pid: ', pid)
-  const { allowance, stakedBalance } = useFarmUser(pid)
-  console.log('stakedBalance: ', stakedBalance)
-  // console.log('- farm stakedBalance: ', stakedBalance);
   const lpAddress = getAddress(lpAddresses)
   const lpName = farm.lpSymbol.toUpperCase()
-  const isApproved = account && allowance && allowance.isGreaterThan(0)
-
   const farmUnlockDate = useFarmUnlockDate()
 
-  const rawStakedBalance = getBalanceNumber(stakedBalance)
-  console.log('rawStakedBalance: ', rawStakedBalance)
-  const displayBalance = numeral(rawStakedBalance || 0).format('0,0.0[0000000000]')
-  console.log('displayBalance: ', displayBalance)
-  console.groupEnd()
+  const balanceValue = useMemo(() => {
+    try {
+      return numeral(getBalanceNumber(stakedBalance) || 0).format('0,0.0[0000000000]')
+    } catch (error) {
+      // TODO
+      console.groupCollapsed('balance value')
+      console.log(error)
+      console.groupEnd()
+      return '-'
+    }
+  }, [stakedBalance])
 
   const lpContract = useMemo(() => {
     return getContract(klaytn as provider, lpAddress)
@@ -98,35 +102,30 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     )
   }
 
-  const renderApprovalOrStakeButton = () => {
-    if (!isApproved) {
-      return (
-        <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
-          {TranslateString(758, 'Approve Contract')}
-        </Button>
-      )
-    }
-
-    return (
-      <div className="flex align-center">
-        <Heading
-          fontSize="20px !important"
-          textAlign="left"
-          color={rawStakedBalance === 0 ? 'textDisabled' : 'text'}
-          className="col-6 pr-3"
-        >
-          {displayBalance}
-        </Heading>
-
-        <div className="col-6">{renderStakingButtons()}</div>
-      </div>
-    )
-  }
-
   return (
     <div className={className}>
-      <Text textAlign="left" className="mb-2" color="textSubtle">{`${lpName} ${TranslateString(1074, 'Staked')}`}</Text>
-      {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
+      {account ? (
+        <>
+          {isApproved ? (
+            <div>
+              <Text textAlign="left" className="mb-2" color="textSubtle">
+                My Liquidity
+              </Text>
+              <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
+                {balanceValue}
+              </Heading>
+
+              <div className="col-6">{renderStakingButtons()}</div>
+            </div>
+          ) : (
+            <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>
+              {TranslateString(758, 'Approve Contract')}
+            </Button>
+          )}
+        </>
+      ) : (
+        <UnlockButton fullWidth radii="small" />
+      )}
     </div>
   )
 }
