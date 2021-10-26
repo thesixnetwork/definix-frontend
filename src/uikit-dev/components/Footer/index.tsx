@@ -127,7 +127,7 @@ function Footer() {
       imgDarkMode: telegramWhite,
     },
     {
-      url: 'https://open.kakao.com/o/gQNRT5K',
+      url: 'https://open.kakao.com/o/gsh5pWGd',
       img: kakao,
       imgDarkMode: kakaoWhite,
     },
