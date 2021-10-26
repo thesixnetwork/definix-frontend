@@ -212,7 +212,7 @@ const Unstake: React.FC = () => {
                       </Period>
                       <Apr>
                         <Text color="white" bold fontSize="10px !important">
-                          APR {`${numeral(vFinixPrice || 0).format('0,0.[00]')}%`}
+                          APR {`${numeral(vFinixPrice * multiplier || 0).format('0,0.[00]')}%`}
                         </Text>
                       </Apr>
                     </div>

@@ -166,7 +166,7 @@ const AprBox = styled(Card)`
   }
 `
 
-const CardStake = () => {
+const CardStake = (isShowRightPanel) => {
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
