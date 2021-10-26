@@ -207,11 +207,13 @@ export const useUnLock = () => {
 
 export const useLock = (level, lockFinix, focus) => {
   const [status, setStatus] = useState(false)
+  const [loadings, setLoading] = useState('')
   const { account } = useWallet()
 
-  const stake = async () => {
+  const stake = useCallback(async () => {
     const lock = getContract(VaultFacet.abi, getVFinix())
     setStatus(false)
+    setLoading('loading')
     if (lockFinix) {
       try {
         await lock.methods
@@ -222,7 +224,10 @@ export const useLock = (level, lockFinix, focus) => {
               .lock(level, lockFinix)
               .send({ from: account, gas: estimatedGasLimit })
               .then((resolve) => {
-                setStatus(resolve.status)
+                setLoading('success')
+                setStatus(true)
+                setInterval(() => setLoading(''), 5000)
+                setInterval(() => setStatus(false), 5000)
               })
               .catch((e) => {
                 console.log(e)
@@ -235,9 +240,9 @@ export const useLock = (level, lockFinix, focus) => {
       setStatus(false)
     }
     return status
-  }
+  }, [account, level, lockFinix, status])
 
-  return { onStake: stake, status }
+  return { onStake: stake, status, loadings }
 }
 
 export const useHarvest = () => {

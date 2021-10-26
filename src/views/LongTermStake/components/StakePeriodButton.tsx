@@ -28,6 +28,311 @@ const ButtonPeriod = styled(Button)`
   display: flex;
   padding: 0;
   width: 100%;
+  // position: absolute;
+  // li:before {
+  //   list-style: none;
+  //   width: 40px;
+  //   height: 40px;
+  //   background: #fff;
+  //   border-radius: 50%;
+  //   animation: animate 1.6s ease-in-out infinite;
+  // }
+  // @keyframes animate {
+  //   0%,
+  //   40%,
+  //   100% {
+  //     transform: scale(0.2);
+  //   }
+  //   20% {
+  //     transform: scale(1);
+  //   }
+  // }
+  // li:nth-child(1) {
+  //   animation-delay: -1.4s;
+  //   background: #ffff00;
+  //   box-shadow: 0 0 50px #ffff00;
+  // }
+  // li:nth-child(2) {
+  //   animation-delay: -1.2s;
+  //   background: #76ff03;
+  //   box-shadow: 0 0 50px #76ff03;
+  // }
+`
+
+const GlowingAnimation = styled.ul`
+  position: absolute;
+  top: 26%;
+  left: 57%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  // background-color: #eee;
+
+  li {
+    list-style: none;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    animation: animate 1.6s ease-in-out infinite;
+  }
+  @keyframes animate {
+    0%,
+    40%,
+    100% {
+      transform: scale(0.2);
+    }
+    20% {
+      transform: scale(1);
+    }
+  }
+  li:nth-child(1) {
+    animation-delay: -1.5s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(2) {
+    animation-delay: -1.49s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(3) {
+    animation-delay: -1.48s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(4) {
+    animation-delay: -1.47s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(5) {
+    animation-delay: -1.46s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(6) {
+    animation-delay: -1.45s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(7) {
+    animation-delay: -1.44s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(8) {
+    animation-delay: -1.43s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(9) {
+    animation-delay: -1.42s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(10) {
+    animation-delay: -1.41s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(11) {
+    animation-delay: -1.41s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(12) {
+    animation-delay: -1.40s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(13) {
+    animation-delay: -1.39s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(14) {
+    animation-delay: -1.38s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(15) {
+    animation-delay: -1.37s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+`
+
+const GlowingUnderAnimation = styled.ul`
+  position: absolute;
+  top: 32%;
+  left: 57%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  // background-color: #eee;
+
+  li {
+    list-style: none;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    animation: animate 1.6s ease-in-out infinite;
+  }
+  @keyframes animate {
+    0%,
+    40%,
+    100% {
+      transform: scale(0.2);
+    }
+    20% {
+      transform: scale(1);
+    }
+  }
+  li:nth-child(1) {
+    animation-delay: -1.36s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(2) {
+    animation-delay: -1.35s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(3) {
+    animation-delay: -1.34s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(4) {
+    animation-delay: -1.33s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(5) {
+    animation-delay: -1.32s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(6) {
+    animation-delay: -1.31s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(7) {
+    animation-delay: -1.30s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(8) {
+    animation-delay: -1.28s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(9) {
+    animation-delay: -1.27s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(10) {
+    animation-delay: -1.26s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(11) {
+    animation-delay: -0.09s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+`
+
+const GlowingLeftAnimation = styled.ul`
+  position: absolute;
+  top: 28%;
+  left: 46%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  // background-color: #eee;
+
+  li {
+    list-style: none;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    animation: animate 1.6s ease-in-out infinite;
+  }
+  @keyframes animate {
+    0%,
+    40%,
+    100% {
+      transform: scale(0.2);
+    }
+    20% {
+      transform: scale(1);
+    }
+  }
+  li:nth-child(1) {
+    animation-delay: -1.4s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(2) {
+    animation-delay: -1.2s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(3) {
+    animation-delay: -1s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(4) {
+    animation-delay: -0.8s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(5) {
+    animation-delay: -0.6s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(6) {
+    animation-delay: -0.4s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(7) {
+    animation-delay: -0.2s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(8) {
+    animation-delay: -0.1s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(9) {
+    animation-delay: -0.09s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(10) {
+    animation-delay: -0.1s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
+  li:nth-child(11) {
+    animation-delay: -0.09s;
+    background: #ffff00;
+    box-shadow: 0 0 50px #ffff00;
+  }
 `
 
 const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, vFinixPrice, isDark, mr }) => {
@@ -81,7 +386,7 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
   )
 }
 
-const StakePeriodButton = ({ setPeriod }) => {
+const StakePeriodButton = ({ setPeriod, status }) => {
   const { isDark } = useTheme()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
@@ -100,8 +405,13 @@ const StakePeriodButton = ({ setPeriod }) => {
   }, [_minimum1, _minimum2, _minimum4, minimum])
 
   useEffect(() => {
-    setPeriod(test)
-  }, [test, setPeriod])
+    if (status) {
+      setPeriod(0)
+      setTest(0)
+    } else {
+      setPeriod(test)
+    }
+  }, [test, setPeriod, status])
 
   return (
     <div className={`${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import Lottie from 'react-lottie'
 import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -7,18 +8,25 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
 import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from 'uikit-dev'
+import success from 'uikit-dev/animation/complete.json'
+import loading from 'uikit-dev/animation/farmPool.json'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
 import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
-import {
-  useBalances,
-  useAllowance,
-  useLock,
-  useApprove,
-  useAllLock,
-  useApr
-} from '../../../hooks/useLongTermStake'
+import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
+
+const SuccessOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: success,
+}
+
+const options = {
+  loop: true,
+  autoplay: true,
+  animationData: loading,
+}
 
 const FinixStake = styled(Card)`
   width: 100%;
@@ -236,8 +244,7 @@ const CardStake = () => {
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
   }, [period, value, periodEnd, monthNames])
 
-  const { onStake, status } = useLock(letvel, lockFinix, click)
-
+  const { onStake, status, loadings } = useLock(letvel, lockFinix, click)
   useEffect(() => {
     if (status) {
       setVFINIX(0)
@@ -301,7 +308,22 @@ const CardStake = () => {
   return (
     <div className="align-stretch mt-5">
       <FinixStake className="flex">
-        <div className={`${!isMobileOrTablet ? 'col-8' : 'col-12 pr-5'} py-5 pl-5`}>
+        {loadings !== '' && (
+          <div
+            style={{
+              position: 'absolute',
+              left: '20%',
+              top: '18%',
+              zIndex: 1,
+            }}
+          >
+            <Lottie options={loadings === 'loading' ? options : SuccessOptions} height={300} width={444} />
+          </div>
+        )}
+        <div
+          style={{ opacity: loadings !== '' ? 0.1 : 1 }}
+          className={`${!isMobileOrTablet ? 'col-8' : 'col-12 pr-5'} py-5 pl-5`}
+        >
           <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center mb-3'}`}>
             <Heading
               as="h1"
@@ -313,13 +335,13 @@ const CardStake = () => {
             {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="12px !important">
-                  APR {`${numeral(apr || 0).format('0,0.[00]')}%`}
+                  APR up to {`${numeral(apr || 0).format('0,0.[00]')}%`}
                 </Text>
               </AprBox>
             )}
           </div>
           <Text color="textSubtle">Please select duration</Text>
-          <StakePeriodButton setPeriod={setPeriod} />
+          <StakePeriodButton setPeriod={setPeriod}  status={status}/>
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
@@ -395,15 +417,13 @@ const CardStake = () => {
           </div>
         </div>
         {!isMobileOrTablet && (
-          <div className="col-4 flex flex-column">
+          <div style={{ opacity: loadings !== '' ? 0.1 : 1 }} className="col-4 flex flex-column">
             <APRBOX className="px-5 mb-2">
               <img src={badgeLock} alt="" />
-              <Apr fontSize="28px !important" color="white">
-                APR
+              <Apr fontSize="26px !important" color="white">
+                APR up to
               </Apr>
-              <AprValue fontSize="36px !important" color="white">{`${numeral(apr || 0).format(
-                '0,0.[00]',
-              )}%`}</AprValue>
+              <AprValue fontSize="36px !important" color="white">{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
             <img src={definixLongTerm} alt="" className="pl-3" />
           </div>

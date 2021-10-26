@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import moment from 'moment'
 import VaultFacet from 'config/abi/VaultFacet.json'
+import VaultInfoFacet from 'config/abi/VaultInfoFacet.json'
 import IKIP7 from 'config/abi/IKIP7.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import TokenFacet from 'config/abi/TokenFacet.json'
@@ -205,6 +206,23 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
   let lockss = []
   try {
     const calls = [
+      // {
+      //   address: vFinix,
+      //   name: 'getUserLockAmount',
+      //   params: [account],
+      // },
+      // {
+      //   address: vFinix,
+      //   name: 'locks',
+      //   params: [account, index, 10],
+      // },
+      {
+        address: vFinix,
+        name: 'lockCount',
+        params: [account],
+      },
+    ]
+    const callInfoFacet = [
       {
         address: vFinix,
         name: 'getUserLockAmount',
@@ -212,14 +230,9 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       },
       {
         address: vFinix,
-        name: 'locks',
+        name: 'locksDesc',
         params: [account, index, 10],
-      },
-      {
-        address: vFinix,
-        name: 'lockCount',
-        params: [account],
-      },
+      }
     ]
     const calBalance = [
       {
@@ -233,11 +246,12 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         params: [account],
       },
     ]
-    const [lockAmount, locksTable, count] = await multicall(VaultFacet.abi, calls)
+    const [count] = await multicall(VaultFacet.abi, calls)
+    const [lockAmount,infoFacet] = await multicall(VaultInfoFacet.abi, callInfoFacet)
     const [balanceOfFinix, balanceOfvFinix] = await multicall(IKIP7.abi, calBalance)
     balanceFinix = new BigNumber(balanceOfFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     balancevFinix = new BigNumber(balanceOfvFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
-    const result = _.get(locksTable, 'locks_')
+    const result = _.get(infoFacet, 'locks_')
     let canBeUnlock_
     let canBeClaim_
     let asMinutes = 0

@@ -46,18 +46,20 @@ const CardHarvest = () => {
 
   return (
     <>
-      <Heading fontSize="18px !important" className="bd-b pa-5">My Asset</Heading>
-      <div className={`${isMobile ? 'col-12 pa-4' : 'col-12 flex bd-b py-4 px-2 '}`}>
+      <Heading fontSize="18px !important" className="bd-b pa-5">
+        My Asset
+      </Heading>
+      <div className={`${isMobile ? 'col-12 pa-4' : 'col-12 flex bd-b py-4 px-3 '}`}>
         <div className={`${isMobile ? 'col-12 mb-4' : 'col-3 pa-2'}`}>
           <Text color="textSubtle">Your vFINIX balance</Text>
-          <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important">
+          <Heading as="h1" style={{ lineHeight: 2 }} fontSize="18px !important">
             {numeral(balancevfinix).format('0,0.[000]')} vFINIX
           </Heading>
         </div>
         <div className="bd-r" />
         <div className={`${isMobile ? 'col-12 mb-4' : 'col-3 py-2 pl-4 '}`}>
           <Text color="textSubtle">Your total FINIX stake</Text>
-          <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important">
+          <Heading as="h1" style={{ lineHeight: 2 }} fontSize="18px !important">
             {numeral(lockAmount).format('0,0.[000]')} FINIX
           </Heading>
         </div>
@@ -65,11 +67,11 @@ const CardHarvest = () => {
         <div className={`${isMobile ? 'col-12' : 'col-3 pa-2 pl-4'}`}>
           <Text color="textSubtle">Your FINIX earned</Text>
           <div className={`${isMobile ? 'flex' : 'flex'}`}>
-            <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important" color="success">
+            <Heading as="h1" style={{ lineHeight: 2 }} fontSize="18px !important" color="success">
               {`${numeral(finixEarn).format('0,0.00')}`}
             </Heading>
             &nbsp;
-            <Heading as="h1" style={{ lineHeight: 2 }} fontSize="20px !important" color={textColor()}>
+            <Heading as="h1" style={{ lineHeight: 2 }} fontSize="18px !important" color={textColor()}>
               FINIX
             </Heading>
           </div>

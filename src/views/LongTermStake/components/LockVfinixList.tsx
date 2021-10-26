@@ -36,7 +36,7 @@ export const TR = styled.tr`
   align-items: stretch;
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 20px;
+  padding: 24px;
 
   th {
     border-top: 1px solid${({ theme }) => theme.colors.border};

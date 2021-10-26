@@ -115,7 +115,9 @@ const FinixStakeCard = () => {
   return (
     <>
       <CardFinixStake className="mt-5">
-        <Heading fontSize="18px !important" className="bd-b pa-5">vFINIX Pool Status</Heading>
+        <Heading fontSize="18px !important" className="bd-b pa-5">
+          vFINIX Pool Status
+        </Heading>
         <div className="flex">
           <div
             className={`${
@@ -157,7 +159,7 @@ const FinixStakeCard = () => {
             </div>
           </div>
         </div>
-        <div className={`flex align-items-center ${isMobile ? 'col-12 pa-3' : 'col-7 pa-3 pt-1 pb-0'}`}>
+        <div className={`flex align-items-center ${isMobile ? 'col-12 pa-3' : 'col-7 py-3 pl-3 pr-5 pt-1 pb-0'}`}>
           <CardBarChart className="" lock={getTotalFinixLock} />
           <TextStyled>
             <TextStyled color={textColor()} className="text-value">
