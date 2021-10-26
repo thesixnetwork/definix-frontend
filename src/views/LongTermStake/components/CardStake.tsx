@@ -341,7 +341,7 @@ const CardStake = () => {
             )}
           </div>
           <Text color="textSubtle">Please select duration</Text>
-          <StakePeriodButton setPeriod={setPeriod}  status={status}/>
+          <StakePeriodButton setPeriod={setPeriod} status={status} />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
@@ -423,7 +423,9 @@ const CardStake = () => {
               <Apr fontSize="26px !important" color="white">
                 APR up to
               </Apr>
-              <AprValue fontSize="36px !important" color="white">{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
+              <AprValue fontSize="36px !important" color="white">{`${numeral(apr * 4 || 0).format(
+                '0,0.[00]',
+              )}%`}</AprValue>
             </APRBOX>
             <img src={definixLongTerm} alt="" className="pl-3" />
           </div>

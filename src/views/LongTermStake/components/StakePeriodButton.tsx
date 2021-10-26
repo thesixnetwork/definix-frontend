@@ -143,7 +143,7 @@ const GlowingAnimation = styled.ul`
     box-shadow: 0 0 50px #ffff00;
   }
   li:nth-child(12) {
-    animation-delay: -1.40s;
+    animation-delay: -1.4s;
     background: #ffff00;
     box-shadow: 0 0 50px #ffff00;
   }
@@ -223,7 +223,7 @@ const GlowingUnderAnimation = styled.ul`
     box-shadow: 0 0 50px #ffff00;
   }
   li:nth-child(7) {
-    animation-delay: -1.30s;
+    animation-delay: -1.3s;
     background: #ffff00;
     box-shadow: 0 0 50px #ffff00;
   }

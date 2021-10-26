@@ -232,7 +232,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         address: vFinix,
         name: 'locksDesc',
         params: [account, index, 10],
-      }
+      },
     ]
     const calBalance = [
       {
@@ -247,7 +247,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       },
     ]
     const [count] = await multicall(VaultFacet.abi, calls)
-    const [lockAmount,infoFacet] = await multicall(VaultInfoFacet.abi, callInfoFacet)
+    const [lockAmount, infoFacet] = await multicall(VaultInfoFacet.abi, callInfoFacet)
     const [balanceOfFinix, balanceOfvFinix] = await multicall(IKIP7.abi, calBalance)
     balanceFinix = new BigNumber(balanceOfFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     balancevFinix = new BigNumber(balanceOfvFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
