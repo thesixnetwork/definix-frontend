@@ -66,24 +66,28 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
+  const getTokenValue = useCallback((token) => {
+    if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+      return klayPrice.times(token)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+      return finixPrice.times(token)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+      return kethPrice.times(token)
+    }
+    if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+      return sixPrice.times(token)
+    }
+    return token
+  }, [farm.quoteTokenSymbol, klayPrice, finixPrice, kethPrice, sixPrice]);
+
   const totalValue: BigNumber = useMemo(() => {
     if (!farm.lpTotalInQuoteToken) {
       return null
     }
-    if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
-      return klayPrice.times(farm.lpTotalInQuoteToken)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-      return finixPrice.times(farm.lpTotalInQuoteToken)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-      return kethPrice.times(farm.lpTotalInQuoteToken)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.SIX) {
-      return sixPrice.times(farm.lpTotalInQuoteToken)
-    }
-    return farm.lpTotalInQuoteToken
-  }, [sixPrice, klayPrice, finixPrice, kethPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol])
+    return getTokenValue(farm.lpTotalInQuoteToken);
+  }, [farm.lpTotalInQuoteToken, getTokenValue])
 
   const totalValueFormated = totalValue
     ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
@@ -91,7 +95,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
-  const { pendingRewards, earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
+  const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
 
   const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
   const stakedTotalInQuoteToken = new BigNumber(farm.quoteTokenBlanceLP)
@@ -102,34 +106,18 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (!farm.lpTotalInQuoteToken) {
       return new BigNumber(0)
     }
-    if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
-      return klayPrice.times(stakedTotalInQuoteToken)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-      return finixPrice.times(stakedTotalInQuoteToken)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-      return kethPrice.times(stakedTotalInQuoteToken)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.SIX) {
-      return sixPrice.times(stakedTotalInQuoteToken)
-    }
-    return stakedTotalInQuoteToken
+    return getTokenValue(stakedTotalInQuoteToken);
   }, [
-    sixPrice,
-    klayPrice,
-    finixPrice,
-    kethPrice,
     farm.lpTotalInQuoteToken,
-    farm.quoteTokenSymbol,
     stakedTotalInQuoteToken,
+    getTokenValue
   ])
 
   const stakedBalanceValueFormated = stakedBalanceValue
     ? `$${Number(stakedBalanceValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
     : '-'
 
-  const { bundleRewardLength, bundleRewards, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+  const { bundleRewardLength, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
 
@@ -183,6 +171,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       <StakeAction
         isApproved={isApproved}
         stakedBalance={stakedBalance}
+        stakedBalanceValueFormated={stakedBalanceValueFormated}
         farm={farm}
         klaytn={klaytn}
         account={account}
@@ -191,7 +180,16 @@ const FarmCard: React.FC<FarmCardProps> = ({
         onPresentWithdraw={renderWithdrawModal}
       />
     ),
-    [account, klaytn, farm, renderDepositModal, renderWithdrawModal, isApproved, stakedBalance],
+    [
+      account,
+      klaytn,
+      farm,
+      renderDepositModal,
+      renderWithdrawModal,
+      isApproved,
+      stakedBalance,
+      stakedBalanceValueFormated
+    ],
   )
 
   const renderHarvestActionAirDrop = useCallback(
@@ -210,46 +208,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [earnings, pid, bundleRewardLength, farm],
   )
 
-  const tokenBalanceLP = useMemo(() => {
-    const balance = farm.tokenBalanceLP
-    if (!balance) {
-      return new BigNumber(0)
-    }
-    let value
-    if (farm.tokenSymbol === QuoteToken.KLAY) {
-      value = klayPrice.times(balance)
-    }
-    if (farm.tokenSymbol === QuoteToken.FINIX) {
-      value = finixPrice.times(balance)
-    }
-    if (farm.tokenSymbol === QuoteToken.KETH) {
-      value = kethPrice.times(balance)
-    }
-    if (farm.tokenSymbol === QuoteToken.SIX) {
-      value = sixPrice.times(balance)
-    }
-    return getBalanceNumber(value, farm.tokenDecimals[0])
-  }, [farm, klayPrice, finixPrice, kethPrice, sixPrice])
-  const quoteTokenBalanceLP = useMemo(() => {
-    const balance = farm.quoteTokenBlanceLP
-    if (!balance) {
-      return new BigNumber(0)
-    }
-    let value
-    if (farm.tokenSymbol === QuoteToken.KLAY) {
-      value = klayPrice.times(balance)
-    }
-    if (farm.tokenSymbol === QuoteToken.FINIX) {
-      value = finixPrice.times(balance)
-    }
-    if (farm.tokenSymbol === QuoteToken.KETH) {
-      value = kethPrice.times(balance)
-    }
-    if (farm.tokenSymbol === QuoteToken.SIX) {
-      value = sixPrice.times(balance)
-    }
-    return getBalanceNumber(value, farm.tokenDecimals[0])
-  }, [farm, klayPrice, finixPrice, kethPrice, sixPrice])
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection
@@ -257,11 +215,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
         totalValueFormated={totalValueFormated}
         isHorizontal={isHor}
         className={className}
-        tokenBalanceLP={tokenBalanceLP}
-        quoteTokenBalanceLP={quoteTokenBalanceLP}
       />
     ),
-    [removed, totalValueFormated, tokenBalanceLP, quoteTokenBalanceLP],
+    [removed, totalValueFormated],
   )
 
   useEffect(() => {

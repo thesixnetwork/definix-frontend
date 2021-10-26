@@ -23,6 +23,7 @@ interface FarmStakeActionProps {
   onPresentWithdraw?: any
   isApproved: boolean
   stakedBalance: BigNumber
+  stakedBalanceValueFormated: any;
 }
 
 const IconButtonWrapper = styled.div`
@@ -36,6 +37,7 @@ const IconButtonWrapper = styled.div`
 const StakeAction: React.FC<FarmStakeActionProps> = ({
   isApproved,
   stakedBalance,
+  stakedBalanceValueFormated,
   farm,
   klaytn,
   account,
@@ -64,7 +66,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       console.groupEnd()
       return '-'
     }
-  }, [stakedBalance])
+  }, [stakedBalance]);
 
   const lpContract = useMemo(() => {
     return getContract(klaytn as provider, lpAddress)
@@ -95,7 +97,11 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
         </Button>
         {(typeof farmUnlockDate === 'undefined' ||
           (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
-          <Button variant="secondary" onClick={onPresentDeposit} className="btn-secondary-disable col-6 ml-1">
+          <Button
+            variant="secondary"
+            className="btn-secondary-disable col-6 ml-1"
+            onClick={onPresentDeposit}
+          >
             <AddIcon color="primary" />
           </Button>
         )}
@@ -109,13 +115,16 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
         <>
           {isApproved ? (
             <div>
-              <Text textAlign="left" className="mb-2" color="textSubtle">
+              <Text color="textSubtle">
                 My Liquidity
               </Text>
               <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
                 {balanceValue}
               </Heading>
-
+              <Text color="textSubtle">
+                {stakedBalanceValueFormated}
+              </Text>
+              
               <div className="col-6">{renderStakingButtons()}</div>
             </div>
           ) : (

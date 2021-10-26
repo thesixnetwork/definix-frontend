@@ -239,12 +239,11 @@ const Farms: React.FC = () => {
                   Farm
                 </Heading>
                 <div className="mt-2 flex align-center justify-center">
-                  <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
                     href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
                     target="_blank"
                   >
-                    How to stake.
+                    Learn to stake.
                   </TutorailsLink>
                 </div>
 
@@ -252,11 +251,7 @@ const Farms: React.FC = () => {
                   Help
                 </HelpButton> */}
               </div>
-              <Text>
-                Farm is a place you can stake your LP tokens in order to generate high returns in the form of FINIX.
-                <br />
-                The amount of returns will be calculated by the annual percentage rate (APR).
-              </Text>
+              <Text>LP를 예치하여 FINIX를 얻으세요.</Text>
             </div>
 
             <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
