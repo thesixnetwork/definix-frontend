@@ -57,7 +57,7 @@ const LongTermStake: React.FC = () => {
                     Long-term Stake
                   </Heading>
                 </div>
-                <CardStake isShowRightPanel={isShowRightPanel}/>
+                <CardStake isShowRightPanel={isShowRightPanel} />
                 <StakeTable />
               </div>
             </MaxWidthLeft>
