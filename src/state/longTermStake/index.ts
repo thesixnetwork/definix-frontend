@@ -279,7 +279,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       let unLockTime = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
       unLockTime.setMinutes(unLockTime.getMinutes() + asPenaltyMinutes)
       unLockTime = new Date(unLockTime)
-      
+
       const offset = 2
       const utc = now.getTime()
       const utcPenalty = penaltyTimestamp.getTime()
@@ -294,11 +294,11 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         nd = new Date()
       }
 
-      if(dateTimePenalty === -9){
+      if (dateTimePenalty === -9) {
         pt = new Date()
       }
 
-      if(dateTimeUnLock === -9){
+      if (dateTimeUnLock === -9) {
         ul = new Date()
       }
 
@@ -328,9 +328,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         penaltyFinixAmount: new BigNumber(_.get(value, 'penaltyFinixAmount._hex'))
           .dividedBy(new BigNumber(10).pow(18))
           .toNumber(),
-        penaltyUnlockTimestamp: moment(pt).format(
-          `DD-${monthNames[pt.getMonth()]}-YY HH:mm:ss`,
-        ),
+        penaltyUnlockTimestamp: moment(pt).format(`DD-${monthNames[pt.getMonth()]}-YY HH:mm:ss`),
         canBeUnlock: Unlock,
         canBeClaim: claim,
         lockTimestamp: moment(nd).format(`DD-${monthNames[nd.getMonth()]}-YY HH:mm:ss`),
