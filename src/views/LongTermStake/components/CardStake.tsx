@@ -160,6 +160,7 @@ const AprBox = styled(Card)`
   position: relative;
   box-shadow: unset;
   border-radius: 4px;
+  text-align: center;
 
   a {
     display: block;
