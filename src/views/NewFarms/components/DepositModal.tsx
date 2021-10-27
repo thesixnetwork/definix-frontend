@@ -5,7 +5,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import Lottie from 'react-lottie'
 import { Button, Modal } from 'uikit-dev'
 import loading from 'uikit-dev/animation/farmPool.json'
-import { getFullDisplayBalance, getBalanceFormat } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 
 const options = {
   loop: true,
@@ -67,7 +67,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
       {pendingTx ? <Lottie options={options} height={164} width={164} /> : renderCardHeading('mb-5', true)}
 
       <p>totalLiquidity: {totalLiquidity}</p>
-      <p>myLiquidity: {getBalanceFormat(myLiquidity)}</p>
+      <p>myLiquidity: {getFullDisplayBalance(myLiquidity)}</p>
       <p>myLiquidityUSDPrice: {myLiquidityUSDPrice}</p>
 
       <ModalInput

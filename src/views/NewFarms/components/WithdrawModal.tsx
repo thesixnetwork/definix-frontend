@@ -6,26 +6,28 @@ import { Button, Modal } from 'uikit-dev'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 
 interface WithdrawModalProps {
-  max: BigNumber
   onConfirm: (amount: string) => void
   onDismiss?: () => void
   tokenName?: string
   renderCardHeading?: (className?: string, inlineMultiplier?: boolean) => JSX.Element
+  totalLiquidity: string
+  myLiquidity: BigNumber
+  myLiquidityUSDPrice: string
 }
 
 const WithdrawModal: React.FC<WithdrawModalProps> = ({
   onConfirm,
   onDismiss,
-  max,
   tokenName = '',
   renderCardHeading,
+  totalLiquidity,
+  myLiquidity,
+  myLiquidityUSDPrice,
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
-  const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max)
-  }, [max])
+  const fullBalance = useMemo(() => getFullDisplayBalance(myLiquidity), [myLiquidity])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -49,6 +51,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
       classHeader="bd-b-n"
     >
       {renderCardHeading('mb-5', true)}
+
+      <p>totalLiquidity: {totalLiquidity}</p>
+      <p>myLiquidity: {fullBalance}</p>
+      <p>myLiquidityUSDPrice: {myLiquidityUSDPrice}</p>
 
       <ModalInput
         onSelectMax={handleSelectMax}

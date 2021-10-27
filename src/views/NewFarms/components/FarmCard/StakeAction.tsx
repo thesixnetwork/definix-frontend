@@ -2,14 +2,13 @@ import React, { useCallback, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { provider } from 'web3-core'
-import numeral from 'numeral'
 import styled from 'styled-components'
 import { useApprove } from 'hooks/useApprove'
 import useI18n from 'hooks/useI18n'
 import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
-import { getBalanceNumber, getBalanceFormat } from 'utils/formatBalance'
+import { getFullDisplayBalance } from 'utils/formatBalance'
 import UnlockButton from 'components/UnlockButton'
 import { FarmWithStakedValue } from './types'
 
@@ -57,7 +56,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   const balanceValue = useMemo(() => {
     try {
-      return getBalanceFormat(myLiquidity)
+      return getFullDisplayBalance(myLiquidity, { fixed: 10 })
     } catch (error) {
       // TODO
       console.groupCollapsed('balance value error')

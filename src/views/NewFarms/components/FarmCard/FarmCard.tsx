@@ -167,13 +167,23 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderWithdrawModal = useCallback(() => {
     onPresent(
       <WithdrawModal
-        max={stakedBalance}
         onConfirm={onUnstake}
         tokenName={lpLabel}
         renderCardHeading={renderCardHeading}
+        totalLiquidity={totalValueFormated}
+        myLiquidity={stakedBalance}
+        myLiquidityUSDPrice={myLiquidityUSDPrice}
       />,
     )
-  }, [lpLabel, onPresent, onUnstake, renderCardHeading, stakedBalance])
+  }, [
+    lpLabel,
+    onPresent,
+    onUnstake,
+    renderCardHeading,
+    totalValueFormated,
+    stakedBalance,
+    myLiquidityUSDPrice,
+  ])
 
   /**
    * detail section
