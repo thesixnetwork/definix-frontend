@@ -60,9 +60,9 @@ export const allLanguages = [
   VI,
 ]
 
-export const allLanguagesCode = allLanguages.map(({ code }) => code);
+export const allLanguagesCode = allLanguages.map(({ code }) => code)
 export const allLanguagesByCode = allLanguages.reduce<Record<string, string>>((prev, { code, language }) => {
-  const temp = prev;
-  temp[code] = language;
-  return temp;
-}, {});
+  const temp = prev
+  temp[code] = language
+  return temp
+}, {})
