@@ -95,7 +95,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const [cols] = useState(['Stake Period', 'Amount', 'Status', ''])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  let statuu = false
+  const [statuu, setStatuu] = useState(false)
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
 
@@ -112,7 +112,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         const res = onClaim(Id)
         res
           .then((r) => {
-            statuu = true
+            setStatuu(true)
           })
           .catch((e) => {
             console.log(e)
@@ -121,7 +121,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         console.error(e)
       }
     },
-    [onClaim],
+    [onClaim, setStatuu],
   )
 
   const onPageChange = (e, page) => {
