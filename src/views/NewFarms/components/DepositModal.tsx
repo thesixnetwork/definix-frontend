@@ -64,11 +64,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
       hideCloseButton
       classHeader="bd-b-n"
     >
-      {
-        pendingTx ? (
-          <Lottie options={options} height={164} width={164} />
-        ) : renderCardHeading('mb-5', true)
-      }
+      {pendingTx ? <Lottie options={options} height={164} width={164} /> : renderCardHeading('mb-5', true)}
 
       <p>totalLiquidity: {totalLiquidity}</p>
       <p>myLiquidity: {getBalanceFormat(myLiquidity)}</p>

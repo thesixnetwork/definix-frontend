@@ -105,19 +105,12 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                   >
                     <MinusIcon color="primary" />
                   </Button>
-                  {
-                    (typeof farmUnlockDate === 'undefined' ||
-                      (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())
-                    ) && (
-                      <Button
-                        variant="secondary"
-                        className="btn-secondary-disable col-6 ml-1"
-                        onClick={onPresentDeposit}
-                      >
-                        <AddIcon color="primary" />
-                      </Button>
-                    )
-                  }
+                  {(typeof farmUnlockDate === 'undefined' ||
+                    (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
+                    <Button variant="secondary" className="btn-secondary-disable col-6 ml-1" onClick={onPresentDeposit}>
+                      <AddIcon color="primary" />
+                    </Button>
+                  )}
                 </IconButtonWrapper>
               </div>
             </div>
