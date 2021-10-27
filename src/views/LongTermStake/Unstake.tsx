@@ -250,7 +250,7 @@ const Unstake: React.FC = () => {
                       <div className="flex mt-4 mb-6">
                         <Text className="col-8">You will received (after {periodPenalty} GMT+9)</Text>
                         <Text className="col-4 text-right" color="#30ADFF">
-                          {(penaltyRate * amount) / 100} FINIX
+                          {amount - (penaltyRate * amount) / 100} FINIX
                         </Text>
                       </div>
                     </>
