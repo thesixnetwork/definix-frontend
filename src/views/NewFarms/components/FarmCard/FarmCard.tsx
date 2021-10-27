@@ -153,8 +153,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
       />,
       {
         title: 'Deposit LP',
-        description: 'Farm에 LP를 예치하세요'
-      }
+        description: 'Farm에 LP를 예치하세요',
+      },
     )
   }, [
     addLiquidityUrl,
@@ -180,18 +180,10 @@ const FarmCard: React.FC<FarmCardProps> = ({
       />,
       {
         title: 'Remove LP',
-        description: 'Farm 예치한 LP를 제거하세요'
-      }
+        description: 'Farm 예치한 LP를 제거하세요',
+      },
     )
-  }, [
-    lpLabel,
-    onPresent,
-    onUnstake,
-    renderCardHeading,
-    totalValueFormated,
-    stakedBalance,
-    myLiquidityUSDPrice
-  ])
+  }, [lpLabel, onPresent, onUnstake, renderCardHeading, totalValueFormated, stakedBalance, myLiquidityUSDPrice])
 
   /**
    * detail section

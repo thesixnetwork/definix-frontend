@@ -61,11 +61,12 @@ const Farms: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [modal, setModal] = useState<{
-    node: React.ReactNode,
-    title: string,
-    description: string
-  }>()
+  const [modal, setModal] =
+    useState<{
+      node: React.ReactNode
+      title: string
+      description: string
+    }>()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -190,7 +191,7 @@ const Farms: React.FC = () => {
   const handlePresent = useCallback((node: React.ReactNode, options) => {
     setModal({
       node,
-      ...options
+      ...options,
     })
     setIsOpenModal(true)
     window.scrollTo(0, 0)
