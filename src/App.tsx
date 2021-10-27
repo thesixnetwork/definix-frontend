@@ -37,6 +37,7 @@ TagManager.initialize(tagManagerArgs)
 const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
 const Farms = lazy(() => import('./views/Farms'))
+const NewFarms = lazy(() => import('./views/NewFarms'))
 const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
@@ -78,6 +79,7 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
+    console.log(`%c App.tsx/useEffect fired`, 'background: coral')
     if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
       connect('injected')
     } else if (
@@ -123,6 +125,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/AirdropKlay">
               <AirdropKlay />
+            </Route>
+            <Route path="/newFarm">
+              <NewFarms />
             </Route>
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />

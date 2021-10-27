@@ -166,6 +166,14 @@ const config: MenuEntry[] = [
     notHighlight: true,
     newTab: true,
   },
+  {
+    label: 'New Farming',
+    icon: farmBlack,
+    iconActive: farmWhite,
+    href: '/newFarm',
+    notHighlight: true,
+    newTab: false,
+  },
 ]
 
 // const config: MenuEntry[] = [

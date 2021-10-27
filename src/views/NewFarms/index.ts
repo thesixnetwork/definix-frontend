@@ -1,1 +1,1 @@
-// test
+export { default } from './NewFarms'
