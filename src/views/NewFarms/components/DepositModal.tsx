@@ -5,7 +5,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import Lottie from 'react-lottie'
 import { Button, Modal } from 'uikit-dev'
 import loading from 'uikit-dev/animation/farmPool.json'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance, getBalanceFormat } from 'utils/formatBalance'
 
 const options = {
   loop: true,
@@ -20,6 +20,9 @@ interface DepositModalProps {
   tokenName?: string
   addLiquidityUrl?: string
   renderCardHeading?: (className?: string, inlineMultiplier?: boolean) => JSX.Element
+  totalLiquidity: string
+  myLiquidity: BigNumber
+  myLiquidityUSDPrice: string
 }
 
 const DepositModal: React.FC<DepositModalProps> = ({
@@ -29,6 +32,9 @@ const DepositModal: React.FC<DepositModalProps> = ({
   tokenName = '',
   addLiquidityUrl,
   renderCardHeading,
+  totalLiquidity,
+  myLiquidity,
+  myLiquidityUSDPrice,
 }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
@@ -58,7 +64,15 @@ const DepositModal: React.FC<DepositModalProps> = ({
       hideCloseButton
       classHeader="bd-b-n"
     >
-      {pendingTx ? <Lottie options={options} height={164} width={164} /> : renderCardHeading('mb-5', true)}
+      {
+        pendingTx ? (
+          <Lottie options={options} height={164} width={164} />
+        ) : renderCardHeading('mb-5', true)
+      }
+
+      <p>totalLiquidity: {totalLiquidity}</p>
+      <p>myLiquidity: {getBalanceFormat(myLiquidity)}</p>
+      <p>myLiquidityUSDPrice: {myLiquidityUSDPrice}</p>
 
       <ModalInput
         value={val}

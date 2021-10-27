@@ -1,16 +1,16 @@
-import BigNumber from 'bignumber.js'
-import UnlockButton from 'components/UnlockButton'
-import { useApprove } from 'hooks/useApprove'
-import useI18n from 'hooks/useI18n'
 import React, { useCallback, useMemo, useState } from 'react'
-import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
-import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
-import { getAddress } from 'utils/addressHelpers'
-import { getContract } from 'utils/erc20'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
 import numeral from 'numeral'
+import styled from 'styled-components'
+import { useApprove } from 'hooks/useApprove'
+import useI18n from 'hooks/useI18n'
+import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
+import { getAddress } from 'utils/addressHelpers'
+import { getContract } from 'utils/erc20'
+import { getBalanceNumber, getBalanceFormat } from 'utils/formatBalance'
+import UnlockButton from 'components/UnlockButton'
 import { FarmWithStakedValue } from './types'
 
 interface FarmStakeActionProps {
@@ -22,8 +22,8 @@ interface FarmStakeActionProps {
   onPresentDeposit?: any
   onPresentWithdraw?: any
   isApproved: boolean
-  stakedBalance: BigNumber
-  stakedBalanceValueFormated: any
+  myLiquidity: BigNumber
+  myLiquidityUSDPrice: any
 }
 
 const IconButtonWrapper = styled.div`
@@ -36,8 +36,8 @@ const IconButtonWrapper = styled.div`
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
   isApproved,
-  stakedBalance,
-  stakedBalanceValueFormated,
+  myLiquidity,
+  myLiquidityUSDPrice,
   farm,
   klaytn,
   account,
@@ -57,7 +57,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   const balanceValue = useMemo(() => {
     try {
-      return numeral(getBalanceNumber(stakedBalance) || 0).format('0,0.0[0000000000]')
+      return getBalanceFormat(myLiquidity)
     } catch (error) {
       // TODO
       console.groupCollapsed('balance value error')
@@ -65,7 +65,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       console.groupEnd()
       return '-'
     }
-  }, [stakedBalance])
+  }, [myLiquidity])
 
   const lpContract = useMemo(() => {
     return getContract(klaytn as provider, lpAddress)
@@ -83,27 +83,6 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     }
   }, [onApprove])
 
-  const renderStakingButtons = () => {
-    return (
-      <IconButtonWrapper>
-        <Button
-          variant="secondary"
-          disabled={stakedBalance.eq(new BigNumber(0))}
-          onClick={onPresentWithdraw}
-          className="btn-secondary-disable col-6 mr-1"
-        >
-          <MinusIcon color="primary" />
-        </Button>
-        {(typeof farmUnlockDate === 'undefined' ||
-          (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
-          <Button variant="secondary" className="btn-secondary-disable col-6 ml-1" onClick={onPresentDeposit}>
-            <AddIcon color="primary" />
-          </Button>
-        )}
-      </IconButtonWrapper>
-    )
-  }
-
   return (
     <div className={className}>
       {account ? (
@@ -114,9 +93,33 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
               <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
                 {balanceValue}
               </Heading>
-              <Text color="textSubtle">= {stakedBalanceValueFormated}</Text>
+              <Text color="textSubtle">= {myLiquidityUSDPrice}</Text>
 
-              <div className="col-6">{renderStakingButtons()}</div>
+              <div className="col-6">
+                <IconButtonWrapper>
+                  <Button
+                    variant="secondary"
+                    disabled={myLiquidity.eq(new BigNumber(0))}
+                    onClick={onPresentWithdraw}
+                    className="btn-secondary-disable col-6 mr-1"
+                  >
+                    <MinusIcon color="primary" />
+                  </Button>
+                  {
+                    (typeof farmUnlockDate === 'undefined' ||
+                      (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())
+                    ) && (
+                      <Button
+                        variant="secondary"
+                        className="btn-secondary-disable col-6 ml-1"
+                        onClick={onPresentDeposit}
+                      >
+                        <AddIcon color="primary" />
+                      </Button>
+                    )
+                  }
+                </IconButtonWrapper>
+              </div>
             </div>
           ) : (
             <Button fullWidth radii="small" disabled={requestedApproval} onClick={handleApprove}>

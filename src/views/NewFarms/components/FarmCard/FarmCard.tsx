@@ -108,16 +108,31 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const { onStake } = useStake(pid)
   const { onUnstake } = useUnstake(pid)
 
+  /**
+   * totalValue in 
+   */
+  const totalValue: BigNumber = useMemo(() => {
+    if (!farm.lpTotalInQuoteToken) return null;
+    return getTokenValue(farm.lpTotalInQuoteToken)
+  }, [farm.lpTotalInQuoteToken, getTokenValue])
+  const totalValueFormated = useMemo(() => convertToUsd(totalValue), [totalValue])
+  /**
+   * my liquidity
+   */
+  const myLiquidityUSDPrice = useMemo(() => {
+    return convertToUsd(stakedBalanceValue)
+  }, [stakedBalanceValue])
+
   const renderCardHeading = useCallback(
     (className?: string, inlineMultiplier?: boolean) => (
       <CardHeading
+        isHorizontal={isHorizontal}
+        className={className}
         farm={farm}
         lpLabel={lpLabel}
         removed={removed}
         addLiquidityUrl={addLiquidityUrl}
         finixPrice={finixPrice}
-        isHorizontal={isHorizontal}
-        className={className}
         inlineMultiplier={inlineMultiplier || false}
       />
     ),
@@ -127,14 +142,28 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderDepositModal = useCallback(() => {
     onPresent(
       <DepositModal
+        tokenName={lpLabel}
         max={tokenBalance}
         onConfirm={onStake}
-        tokenName={lpLabel}
         addLiquidityUrl={addLiquidityUrl}
         renderCardHeading={renderCardHeading}
+        totalLiquidity={totalValueFormated}
+        myLiquidity={stakedBalance}
+        myLiquidityUSDPrice={myLiquidityUSDPrice}
+        
       />,
     )
-  }, [addLiquidityUrl, lpLabel, onPresent, onStake, renderCardHeading, tokenBalance])
+  }, [
+    addLiquidityUrl,
+    lpLabel,
+    onPresent,
+    onStake,
+    renderCardHeading,
+    tokenBalance,
+    totalValueFormated,
+    stakedBalance,
+    myLiquidityUSDPrice
+  ])
 
   const renderWithdrawModal = useCallback(() => {
     onPresent(
@@ -147,72 +176,59 @@ const FarmCard: React.FC<FarmCardProps> = ({
     )
   }, [lpLabel, onPresent, onUnstake, renderCardHeading, stakedBalance])
 
+  /**
+   * detail section
+   */
+  const renderDetailsSection = useCallback((className?: string, isHor?: boolean) => (
+    <DetailsSection
+      removed={removed}
+      totalValueFormated={totalValueFormated}
+      isHorizontal={isHor}
+      className={className}
+    />
+  ), [removed, totalValueFormated])
+
+  /**
+   * stake action
+   */
   const isApproved = useMemo(() => {
     return account && allowance && allowance.isGreaterThan(0)
   }, [account, allowance])
-  const stakedBalanceValueFormated = useMemo(() => {
-    return convertToUsd(stakedBalanceValue)
-  }, [stakedBalanceValue])
+  const renderStakeAction = useCallback((className?: string) => (
+    <StakeAction
+      isApproved={isApproved}
+      myLiquidity={stakedBalance}
+      myLiquidityUSDPrice={myLiquidityUSDPrice}
+      farm={farm}
+      klaytn={klaytn}
+      account={account}
+      className={className}
+      onPresentDeposit={renderDepositModal}
+      onPresentWithdraw={renderWithdrawModal}
+    />
+  ), [
+    account,
+    klaytn,
+    farm,
+    renderDepositModal,
+    renderWithdrawModal,
+    isApproved,
+    stakedBalance,
+    myLiquidityUSDPrice,
+  ])
 
-  const renderStakeAction = useCallback(
-    (className?: string) => (
-      <StakeAction
-        isApproved={isApproved}
-        stakedBalance={stakedBalance}
-        stakedBalanceValueFormated={stakedBalanceValueFormated}
-        farm={farm}
-        klaytn={klaytn}
-        account={account}
-        className={className}
-        onPresentDeposit={renderDepositModal}
-        onPresentWithdraw={renderWithdrawModal}
-      />
-    ),
-    [
-      account,
-      klaytn,
-      farm,
-      renderDepositModal,
-      renderWithdrawModal,
-      isApproved,
-      stakedBalance,
-      stakedBalanceValueFormated,
-    ],
-  )
-
-  const renderHarvestActionAirDrop = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop
-        isHorizontal={isHor}
-        className={className}
-        pid={pid}
-        bundleRewardLength={bundleRewardLength}
-        earnings={earnings}
-      />
-    ),
-    [earnings, pid, bundleRewardLength],
-  )
-
-  const totalValue: BigNumber = useMemo(() => {
-    if (!farm.lpTotalInQuoteToken) {
-      return null
-    }
-    return getTokenValue(farm.lpTotalInQuoteToken)
-  }, [farm.lpTotalInQuoteToken, getTokenValue])
-  const totalValueFormated = useMemo(() => {
-    return convertToUsd(totalValue)
-  }, [totalValue])
-  const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <DetailsSection
-        removed={removed}
-        totalValueFormated={totalValueFormated}
-        isHorizontal={isHor}
-        className={className}
-      />
-    ),
-    [removed, totalValueFormated],
-  )
+  /**
+   * harvest action
+   */
+  const renderHarvestActionAirDrop = useCallback((className?: string, isHor?: boolean) => (
+    <HarvestActionAirDrop
+      isHorizontal={isHor}
+      className={className}
+      pid={pid}
+      bundleRewardLength={bundleRewardLength}
+      earnings={earnings}
+    />
+  ), [earnings, pid, bundleRewardLength])
 
   useEffect(() => {
     setIsOpenAccordion(false)
