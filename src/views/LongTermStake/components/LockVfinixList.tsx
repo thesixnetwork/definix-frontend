@@ -180,11 +180,11 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         as={Link}
         radii="small"
         style={{
-          backgroundColor: 'transparent',
+          backgroundColor: '#2A9D8F',
           border: `1px solid #2A9D8F`,
           display: 'unset',
           padding: '6px',
-          color: '#2A9D8F',
+          color: '#fff',
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
@@ -223,11 +223,11 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         to="/long-term-stake/unstake"
         radii="small"
         style={{
-          backgroundColor: 'transparent',
-          border: `1px solid #30ADFF`,
+          backgroundColor: '#0973B9',
+          border: `1px solid #0973B9`,
           display: 'unset',
           padding: '6px',
-          color: '#30ADFF',
+          color: '#fff',
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
@@ -255,11 +255,11 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         to="/long-term-stake/unstake"
         radii="small"
         style={{
-          backgroundColor: 'transparent',
-          border: `1px solid #30ADFF`,
+          backgroundColor: '#0973B9',
+          border: `1px solid #0973B9`,
           display: 'unset',
           padding: '6px',
-          color: '#30ADFF',
+          color: '#fff',
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
@@ -285,6 +285,20 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
 
   const handleNotIsunlocked = (item) => {
     return _.get(item, 'isPenalty') ? handleClaimed(item) : handleCanUnlock(item)
+  }
+
+  const handleStatusNormal = (item) => {
+    return _.get(item, 'isUnlocked') ? 'Period ended' : 'Period will end'
+  }
+
+  const handleStatusPenalty = (item) => {
+    let status
+    if (_.get(item, 'isPenalty') && _.get(item, 'canBeClaim')) {
+      status = 'Penalty ended'
+    } else {
+      status = 'Penalty will end'
+    }
+    return status
   }
 
   return (
@@ -324,7 +338,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                   </TD>
                   <TD>
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
-                      {_.get(item, 'isPenalty') ? 'Penalty ended' : 'Period will end'}
+                      {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
                     </Text>
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                       {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}

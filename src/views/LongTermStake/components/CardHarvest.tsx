@@ -68,7 +68,7 @@ const CardHarvest = () => {
           <Text color="textSubtle">Your FINIX earned</Text>
           <div className={`${isMobile ? 'flex' : 'flex'}`}>
             <Heading as="h1" style={{ lineHeight: 2 }} fontSize="18px !important" color="success">
-              {`${numeral(finixEarn).format('0,0.00')}`}
+              {`${numeral(finixEarn).format('0,0.0000')}`}
             </Heading>
             &nbsp;
             <Heading as="h1" style={{ lineHeight: 2 }} fontSize="18px !important" color={textColor()}>

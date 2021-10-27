@@ -4,25 +4,25 @@ import styled from 'styled-components'
 import { HorizontalBar } from 'react-chartjs-2'
 
 const Box = styled.div`
-  width: 100% !important;
-  height: 100% !important;
+  // width: 100% !important;
+  // height: 100% !important;
 
-  ${({ theme }) => theme.mediaQueries.xs} {
-    width: 100% !important;
-    height: 116px !important;
-  }
-  ${({ theme }) => theme.mediaQueries.sm} {
-    width: 100% !important;
-    height: 156px !important;
-  }
-  ${({ theme }) => theme.mediaQueries.md} {
-    width: 100% !important;
-    height: 156px !important;
-  }
-  ${({ theme }) => theme.mediaQueries.lg} {
-    width: 100% !important;
-    height: 156px !important;
-  }
+  // ${({ theme }) => theme.mediaQueries.xs} {
+  //   width: 100% !important;
+  //   height: 116px !important;
+  // }
+  // ${({ theme }) => theme.mediaQueries.sm} {
+  //   width: 100% !important;
+  //   height: 156px !important;
+  // }
+  // ${({ theme }) => theme.mediaQueries.md} {
+  //   width: 100% !important;
+  //   height: 156px !important;
+  // }
+  // ${({ theme }) => theme.mediaQueries.lg} {
+  //   width: 100% !important;
+  //   height: 156px !important;
+  // }
 `
 
 const traparent = '#ffffff00'

@@ -140,7 +140,7 @@ const Apr = styled(Text)`
 
 const AprValue = styled(Text)`
   position: absolute;
-  top: 50%;
+  top: 46%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1;
@@ -186,7 +186,7 @@ const CardStake = (isShowRightPanel) => {
     'Nov',
     'Dec',
   ])
-  const [date, setDate] = useState(moment(new Date()).format(`DD-${monthNames[new Date().getMonth()]}-YY HH:mm:ss`))
+  const [date, setDate] = useState('-')
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const balanceOf = useBalances()
   const allowance = useAllowance()
@@ -219,26 +219,35 @@ const CardStake = (isShowRightPanel) => {
     }
   }
   const handleChange = (e) => {
+    setPercent(0)
     enforcer(e.target.value.replace(/,/g, '.'))
   }
 
   useEffect(() => {
-    let now = new Date()
+    const offset = 2
+    const now = new Date()
+    const utc = now.getTime()
+    let nd = new Date(utc + 3600000 * offset)
+    const dateTime = now.getTimezoneOffset() / 60
+    if (dateTime === -9) {
+      nd = new Date()
+    }
+
     if (period === 1) {
-      now.setMinutes(now.getMinutes() + _.get(periodEnd, '0'))
-      now = new Date(now)
+      nd.setDate(nd.getDate() + 90)
+      nd = new Date(nd)
       setLevel(0)
-      setDate(moment(now).format(`DD-${monthNames[now.getMonth()]}-YYYY HH:mm:ss`))
+      setDate(moment(nd).format(`DD-MM-YYYY HH:mm:ss`))
     } else if (period === 2) {
-      now.setMinutes(now.getMinutes() + _.get(periodEnd, '1'))
-      now = new Date(now)
+      nd.setDate(nd.getDate() + 180)
+      nd = new Date(nd)
       setLevel(1)
-      setDate(moment(now).format(`DD-${monthNames[now.getMonth()]}-YYYY HH:mm:ss`))
+      setDate(moment(nd).format(`DD-MM-YYYY HH:mm:ss`))
     } else if (period === 4) {
-      now.setMinutes(now.getMinutes() + _.get(periodEnd, '2'))
-      now = new Date(now)
+      nd.setDate(nd.getDate() + 365)
+      nd = new Date(nd)
       setLevel(2)
-      setDate(moment(now).format(`DD-${monthNames[now.getMonth()]}-YYYY HH:mm:ss`))
+      setDate(moment(nd).format(`DD-MM-YYYY HH:mm:ss`))
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
@@ -288,7 +297,7 @@ const CardStake = (isShowRightPanel) => {
 
   useEffect(() => {
     const percentOf = percent * Number(balanceOf)
-    if (percentOf) {
+    if (percent !== 0) {
       setValue(percentOf.toString())
     }
   }, [percent, balanceOf])
@@ -312,12 +321,16 @@ const CardStake = (isShowRightPanel) => {
           <div
             style={{
               position: 'absolute',
-              left: '20%',
-              top: '18%',
+              left: loadings === 'loading' ? '20%' : '38%',
+              top: loadings === 'loading' ? '18%' : '32%',
               zIndex: 1,
             }}
           >
-            <Lottie options={loadings === 'loading' ? options : SuccessOptions} height={300} width={444} />
+            <Lottie
+              options={loadings === 'loading' ? options : SuccessOptions}
+              height={loadings === 'loading' ? 300 : 155}
+              width={loadings === 'loading' ? 444 : 185}
+            />
           </div>
         )}
         <div
@@ -377,7 +390,7 @@ const CardStake = (isShowRightPanel) => {
               Estimated Period End
             </Text>
             <Text className="col-6 text-right" color="#30ADFF">
-              {date} GMT+9
+              {date} {date !== '-' && 'GMT+9'}
             </Text>
           </div>
           <div className="flex mt-2">
@@ -420,7 +433,7 @@ const CardStake = (isShowRightPanel) => {
           <div style={{ opacity: loadings !== '' ? 0.1 : 1 }} className="col-4 flex flex-column">
             <APRBOX className="px-5 mb-2">
               <img src={badgeLock} alt="" />
-              <Apr fontSize="26px !important" color="white">
+              <Apr fontSize="18px !important" color="white">
                 APR up to
               </Apr>
               <AprValue fontSize="36px !important" color="white">{`${numeral(apr * 4 || 0).format(

@@ -160,8 +160,9 @@ const FinixStakeCard = () => {
           </div>
         </div>
         <div className={`flex align-items-center ${isMobile ? 'col-12 pa-3' : 'col-7 py-3 pl-3 pr-5 pt-1 pb-0'}`}>
-          <CardBarChart className="" lock={getTotalFinixLock} />
-          <TextStyled>
+          <CardBarChart className="col-10" lock={getTotalFinixLock} />
+          <div className="col-2" >
+          <TextStyled style={{ position:'absolute', left:'63%' ,top:'59%'}} className="col-4">
             <TextStyled color={textColor()} className="text-value">
               {numeral(getTotalFinixLock[0]).format('0,0')} FINIX
             </TextStyled>
@@ -171,7 +172,7 @@ const FinixStakeCard = () => {
             <TextStyled color={textColor()} className="text-value">
               {numeral(getTotalFinixLock[2]).format('0,0')} FINIX
             </TextStyled>
-          </TextStyled>
+          </TextStyled></div>
         </div>
       </CardFinixStake>
     </>

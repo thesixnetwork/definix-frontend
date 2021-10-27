@@ -396,7 +396,7 @@ const StakePeriodButton = ({ setPeriod, status }) => {
   const [_minimum2, setMinimum2] = useState(0)
   const [_minimum4, setMinimum3] = useState(0)
   const apr = useApr()
-  const [test, setTest] = useState(0)
+  const [test, setTest] = useState(4)
 
   useEffect(() => {
     setMinimum1(_.get(minimum, '0') || 0)

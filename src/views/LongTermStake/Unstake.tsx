@@ -238,7 +238,7 @@ const Unstake: React.FC = () => {
                       <Warning className="flex mb-6">
                         <img src={warning} alt="" />
                         <Text className="ml-2" bold fontSize="14px !important" lineHeight="1" fontWeight="initial">
-                          Do you want to unstake? You will be locked for {periodPenalty} to receive staked amount.
+                          Do you want to unstake? You will be locked for {periodPenalty} GMT+9 to receive staked amount.
                         </Text>
                       </Warning>
                       <div className="flex mt-4">
@@ -248,7 +248,7 @@ const Unstake: React.FC = () => {
                         </Text>
                       </div>
                       <div className="flex mt-4 mb-6">
-                        <Text className="col-8">You will received (after {periodPenalty})</Text>
+                        <Text className="col-8">You will received (after {periodPenalty} GMT+9)</Text>
                         <Text className="col-4 text-right" color="#30ADFF">
                           {(penaltyRate * amount) / 100} FINIX
                         </Text>

@@ -279,6 +279,28 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       let unLockTime = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
       unLockTime.setMinutes(unLockTime.getMinutes() + asPenaltyMinutes)
       unLockTime = new Date(unLockTime)
+      
+      const offset = 2
+      const utc = now.getTime()
+      const utcPenalty = penaltyTimestamp.getTime()
+      const utcUnLock = unLockTime.getTime()
+      let nd = new Date(utc + 3600000 * offset)
+      let pt = new Date(utcPenalty + 3600000 * offset)
+      let ul = new Date(utcUnLock + 3600000 * offset)
+      const dateTime = now.getTimezoneOffset() / 60
+      const dateTimePenalty = penaltyTimestamp.getTimezoneOffset() / 60
+      const dateTimeUnLock = unLockTime.getTimezoneOffset() / 60
+      if (dateTime === -9) {
+        nd = new Date()
+      }
+
+      if(dateTimePenalty === -9){
+        pt = new Date()
+      }
+
+      if(dateTimeUnLock === -9){
+        ul = new Date()
+      }
 
       let claim
       if (canBeClaim_) {
@@ -306,16 +328,16 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         penaltyFinixAmount: new BigNumber(_.get(value, 'penaltyFinixAmount._hex'))
           .dividedBy(new BigNumber(10).pow(18))
           .toNumber(),
-        penaltyUnlockTimestamp: moment(penaltyTimestamp).format(
-          `DD-${monthNames[penaltyTimestamp.getMonth()]}-YY HH:mm:ss`,
+        penaltyUnlockTimestamp: moment(pt).format(
+          `DD-${monthNames[pt.getMonth()]}-YY HH:mm:ss`,
         ),
         canBeUnlock: Unlock,
         canBeClaim: claim,
-        lockTimestamp: moment(now).format(`DD-${monthNames[now.getMonth()]}-YY HH:mm:ss`),
+        lockTimestamp: moment(nd).format(`DD-${monthNames[nd.getMonth()]}-YY HH:mm:ss`),
         penaltyRate: _.get(period, '0.realPenaltyRate')[value.level] * 100,
         lockAmount: new BigNumber(_.get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         voteAmount: new BigNumber(_.get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-        periodPenalty: moment(unLockTime).format(`DD-${monthNames[unLockTime.getMonth()]}-YY HH:mm:ss`),
+        periodPenalty: moment(ul).format(`DD-${monthNames[ul.getMonth()]}-YY HH:mm:ss`),
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
       })

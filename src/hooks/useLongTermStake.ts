@@ -230,7 +230,10 @@ export const useLock = (level, lockFinix, focus) => {
                 setInterval(() => setStatus(false), 5000)
               })
               .catch((e) => {
-                console.log(e)
+                setLoading('success')
+                setStatus(true)
+                setInterval(() => setLoading(''), 5000)
+                setInterval(() => setStatus(false), 5000)
               })
           })
       } catch (e) {
