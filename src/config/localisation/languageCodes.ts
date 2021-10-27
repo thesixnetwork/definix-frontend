@@ -59,3 +59,10 @@ export const allLanguages = [
   UK,
   VI,
 ]
+
+export const allLanguagesCode = allLanguages.map(({ code }) => code);
+export const allLanguagesByCode = allLanguages.reduce<Record<string, string>>((prev, { code, language }) => {
+  const temp = prev;
+  temp[code] = language;
+  return temp;
+}, {});
