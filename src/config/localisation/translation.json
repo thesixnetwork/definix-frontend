@@ -1,0 +1,4 @@
+{
+  "test": "test default",
+  "replacetest": "replace {{id}} test"
+}
