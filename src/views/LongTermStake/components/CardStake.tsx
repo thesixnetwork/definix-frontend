@@ -122,7 +122,7 @@ const NumberInput = styled.input`
   font-size: 22px;
   outline: none;
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
-  width: 45%;
+  // width: 45%;
   -webkit-flex: 1 1 auto;
   padding: 0px;
 `
@@ -166,7 +166,7 @@ const AprBox = styled(Card)`
   }
 `
 
-const CardStake = (isShowRightPanel) => {
+const CardStake = ({ isShowRightPanel }) => {
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
@@ -360,13 +360,19 @@ const CardStake = (isShowRightPanel) => {
               Deposit
             </Text>
             <Text className="col-6 text-right" color="textSubtle">
-              Balance: {numeral(balanceOf).format('0,0.00000')}
+              Balance: {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'}
             </Text>
           </div>
           <Balance>
-            <NumberInput placeholder="0.00" value={value} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
+            <NumberInput
+              style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+              placeholder="0.00"
+              value={value}
+              onChange={handleChange}
+              pattern="^[0-9]*[,]?[0-9]*$"
+            />
             {percent !== 1 && (
-              <div className="flex align-center justify-end" style={{ width: isMobileOrTablet ? '100%' : 'auto' }}>
+              <div className="flex align-center justify-end" style={{ width: 'auto' }}>
                 <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
                   25%
                 </StylesButton>
