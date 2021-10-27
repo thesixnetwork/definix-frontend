@@ -406,8 +406,10 @@ const StakePeriodButton = ({ setPeriod, status }) => {
 
   useEffect(() => {
     if (status) {
-      setPeriod(0)
-      setTest(0)
+      // setPeriod(0)
+      // setTest(0)
+      setPeriod(4)
+      setTest(4)
     } else {
       setPeriod(test)
     }

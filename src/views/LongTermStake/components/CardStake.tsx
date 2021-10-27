@@ -258,8 +258,8 @@ const CardStake = ({ isShowRightPanel }) => {
     if (status) {
       setVFINIX(0)
       setValue('')
-      setDate('00-00-00 00:00:00')
-      setPeriod(0)
+      setDate('-')
+      // setPeriod(0)
     }
   }, [status])
 
