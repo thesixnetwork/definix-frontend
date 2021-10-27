@@ -93,8 +93,8 @@ const BeforeStart = () => {
       <Heading color="primary">Stake FINIX</Heading>
       <Heading color="primary">Earn vFINIX</Heading>
       <Text className="mt-4" color={isDark ? 'white' : 'textSubtle'}>
-        You can earn additional FINIX rewards and transaction fee benefits by contributing to the ecosystem through
-        FINIX staking and pool voting.
+        You can earn additional FINIX rewards and other benefits by contributing to the ecosystem through FINIX staking
+        and pool voting.
       </Text>
       <Element />
       <Text color={isDark ? 'white' : 'textSubtle'} style={{ marginTop: 164 }}>

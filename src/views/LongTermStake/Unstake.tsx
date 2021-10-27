@@ -238,7 +238,8 @@ const Unstake: React.FC = () => {
                       <Warning className="flex mb-6">
                         <img src={warning} alt="" />
                         <Text className="ml-2" bold fontSize="14px !important" lineHeight="1" fontWeight="initial">
-                          Do you want to unstake? You will be locked for {periodPenalty} GMT+9 to receive staked amount.
+                          Do you want to unstake? Your FINIX will be locked for {periodPenalty} GMT+9 to receive staked
+                          amount.
                         </Text>
                       </Warning>
                       <div className="flex mt-4">

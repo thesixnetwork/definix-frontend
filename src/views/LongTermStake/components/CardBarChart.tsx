@@ -81,6 +81,8 @@ const options = {
           fontColor: '#737375',
           fontSize: 14,
           padding: 20,
+          suggestedMin: 0,
+          beginAtZero: true 
         },
       },
     ],

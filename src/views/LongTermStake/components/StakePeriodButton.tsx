@@ -347,6 +347,30 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
     return isDark ? 'textSubtle' : 'textSubtle'
   }
 
+  const handleBackgroud = (x, y) => {
+    let color = '#0973B9'
+    if (x === 4) {
+      color = 'linear-gradient(#F3D36C, #E27D3A)'
+    }
+    return color
+  }
+
+  const handleBackgroud4 = (x, y) => {
+    let color = '#0973B937'
+    if (x === 4) {
+      color = 'linear-gradient(#F3D36C37, #E27D3A37)'
+    }
+    return color
+  }
+
+  const themeGold = (x, y) => {
+    let color = '#0973B9'
+    if (x === 4) {
+      color = '#70707030'
+    }
+    return color
+  }
+
   return (
     <div className={`col-4 ${mr} ${!isMobile ? 'w-100' : ''}`}>
       <ButtonPeriod
@@ -356,11 +380,11 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
         radii="small"
         isStroke
         style={{
-          backgroundColor: period === level ? '#0973B937' : onSelect1(),
-          border: `1px solid ${period === level ? '#0973B9' : '#737375'}`,
+          background: period === level ? handleBackgroud4(period, level) : onSelect1(),
+          border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
         }}
       >
-        <BoxLevel className="col-4" color={period === level ? '#0973B9' : '#737375'}>
+        <BoxLevel className="col-4" style={{ background: period === level ? handleBackgroud(period, level) : '#737375' }}>
           <Heading color="white" as="h1" fontSize={`${isMobile ? '20px !important' : '30px !important'}`}>
             {level}x
           </Heading>
