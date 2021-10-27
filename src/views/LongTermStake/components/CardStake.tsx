@@ -237,17 +237,17 @@ const CardStake = (isShowRightPanel) => {
       nd.setDate(nd.getDate() + 90)
       nd = new Date(nd)
       setLevel(0)
-      setDate(moment(nd).format(`DD-MM-YYYY HH:mm:ss`))
+      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 2) {
       nd.setDate(nd.getDate() + 180)
       nd = new Date(nd)
       setLevel(1)
-      setDate(moment(nd).format(`DD-MM-YYYY HH:mm:ss`))
+      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 4) {
       nd.setDate(nd.getDate() + 365)
       nd = new Date(nd)
       setLevel(2)
-      setDate(moment(nd).format(`DD-MM-YYYY HH:mm:ss`))
+      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())

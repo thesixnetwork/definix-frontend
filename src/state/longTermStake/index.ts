@@ -328,14 +328,14 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         penaltyFinixAmount: new BigNumber(_.get(value, 'penaltyFinixAmount._hex'))
           .dividedBy(new BigNumber(10).pow(18))
           .toNumber(),
-        penaltyUnlockTimestamp: moment(pt).format(`DD-${monthNames[pt.getMonth()]}-YY HH:mm:ss`),
+        penaltyUnlockTimestamp: moment(pt).format(`DD-MMM-YY HH:mm:ss`),
         canBeUnlock: Unlock,
         canBeClaim: claim,
-        lockTimestamp: moment(nd).format(`DD-${monthNames[nd.getMonth()]}-YY HH:mm:ss`),
+        lockTimestamp: moment(nd).format(`DD-MMM-YY HH:mm:ss`),
         penaltyRate: _.get(period, '0.realPenaltyRate')[value.level] * 100,
         lockAmount: new BigNumber(_.get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         voteAmount: new BigNumber(_.get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-        periodPenalty: moment(ul).format(`DD-${monthNames[ul.getMonth()]}-YY HH:mm:ss`),
+        periodPenalty: moment(ul).format(`DD-MMM-YY HH:mm:ss`),
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
       })
