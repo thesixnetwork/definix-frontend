@@ -51,9 +51,8 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const [requestedApproval, setRequestedApproval] = useState(false)
 
   const TranslateString = useI18n()
-  const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
+  const { lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const lpAddress = getAddress(lpAddresses)
-  const lpName = farm.lpSymbol.toUpperCase()
   const farmUnlockDate = useFarmUnlockDate()
 
   const balanceValue = useMemo(() => {
@@ -61,7 +60,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       return numeral(getBalanceNumber(stakedBalance) || 0).format('0,0.0[0000000000]')
     } catch (error) {
       // TODO
-      console.groupCollapsed('balance value')
+      console.groupCollapsed('balance value error')
       console.log(error)
       console.groupEnd()
       return '-'
@@ -118,11 +117,16 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
               <Text color="textSubtle">
                 My Liquidity
               </Text>
-              <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
+              <Heading
+                fontSize="20px !important"
+                textAlign="left"
+                color="text"
+                className="col-6 pr-3"
+              >
                 {balanceValue}
               </Heading>
               <Text color="textSubtle">
-                {stakedBalanceValueFormated}
+                = {stakedBalanceValueFormated}
               </Text>
               
               <div className="col-6">{renderStakingButtons()}</div>

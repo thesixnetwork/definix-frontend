@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { convertToUsd } from 'utils/formatPrice'
 import { QuoteToken } from 'config/constants/types'
 import useStake from 'hooks/useStake'
 import useUnstake from 'hooks/useUnstake'
@@ -82,17 +82,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     return token
   }, [farm.quoteTokenSymbol, klayPrice, finixPrice, kethPrice, sixPrice]);
 
-  const totalValue: BigNumber = useMemo(() => {
-    if (!farm.lpTotalInQuoteToken) {
-      return null
-    }
-    return getTokenValue(farm.lpTotalInQuoteToken);
-  }, [farm.lpTotalInQuoteToken, getTokenValue])
-
-  const totalValueFormated = totalValue
-    ? `$${Number(totalValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-    : '-'
-
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
@@ -112,10 +101,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     stakedTotalInQuoteToken,
     getTokenValue
   ])
-
-  const stakedBalanceValueFormated = stakedBalanceValue
-    ? `$${Number(stakedBalanceValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-    : '-'
 
   const { bundleRewardLength, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
@@ -165,7 +150,11 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const isApproved = useMemo(() => {
     return account && allowance && allowance.isGreaterThan(0)
-  }, [account, allowance])
+  }, [account, allowance]);
+  const stakedBalanceValueFormated = useMemo(() => {
+    return convertToUsd(stakedBalanceValue);
+  }, [stakedBalanceValue]);
+
   const renderStakeAction = useCallback(
     (className?: string) => (
       <StakeAction
@@ -195,19 +184,25 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderHarvestActionAirDrop = useCallback(
     (className?: string, isHor?: boolean) => (
       <HarvestActionAirDrop
-        farm={farm}
-        // pendingRewards={pendingRewards}
-        bundleRewardLength={bundleRewardLength}
-        // bundleRewards={bundleRewards}
-        earnings={earnings}
-        pid={pid}
-        className={className}
         isHorizontal={isHor}
+        className={className}
+        pid={pid}
+        bundleRewardLength={bundleRewardLength}
+        earnings={earnings}
       />
     ),
-    [earnings, pid, bundleRewardLength, farm],
+    [earnings, pid, bundleRewardLength],
   )
 
+  const totalValue: BigNumber = useMemo(() => {
+    if (!farm.lpTotalInQuoteToken) {
+      return null
+    }
+    return getTokenValue(farm.lpTotalInQuoteToken);
+  }, [farm.lpTotalInQuoteToken, getTokenValue])
+  const totalValueFormated = useMemo(() => {
+    return convertToUsd(totalValue);
+  }, [totalValue]);
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection
