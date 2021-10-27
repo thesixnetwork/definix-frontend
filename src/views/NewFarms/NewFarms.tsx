@@ -61,7 +61,11 @@ const Farms: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isPhrase2, setIsPhrase2] = useState(false)
   const [isOpenModal, setIsOpenModal] = useState(false)
-  const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const [modal, setModal] = useState<{
+    node: React.ReactNode,
+    title: string,
+    description: string
+  }>()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -183,14 +187,17 @@ const Farms: React.FC = () => {
     [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView],
   )
 
-  const handlePresent = useCallback((node: React.ReactNode) => {
-    setModalNode(node)
+  const handlePresent = useCallback((node: React.ReactNode, options) => {
+    setModal({
+      node,
+      ...options
+    })
     setIsOpenModal(true)
     window.scrollTo(0, 0)
   }, [])
 
   const handleDismiss = useCallback(() => {
-    setModalNode(undefined)
+    setModal(undefined)
     setIsOpenModal(false)
   }, [])
 
@@ -215,7 +222,7 @@ const Farms: React.FC = () => {
       setStackedOnly(false)
       setListView(true)
       setIsPhrase2(false)
-      setModalNode(undefined)
+      setModal(undefined)
       setIsOpenModal(false)
     }
   }, [])
@@ -274,9 +281,11 @@ const Farms: React.FC = () => {
         </LeftPanel>
       </TwoPanelLayout>
 
-      {isOpenModal && React.isValidElement(modalNode) && (
+      {isOpenModal && React.isValidElement(modal.node) && (
         <ModalWrapper>
-          {React.cloneElement(modalNode, {
+          <h1>{modal.title}</h1>
+          <p>{modal.description}</p>
+          {React.cloneElement(modal.node, {
             onDismiss: handleDismiss,
           })}
         </ModalWrapper>
