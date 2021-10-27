@@ -17,7 +17,7 @@ const fetchLanguage = (langCode: string) => {
 const translationsMap = new Map()
 translationsMap.set(EN.code, defaultTranslation)
 
-export const LanguageProvider: React.FC = ({ children }) => {
+export const LanguageContextProvider: React.FC = ({ children }) => {
   const [selectedLangCode, setSelectedLangCode] = useState(EN.code)
 
   const setLanguage = useCallback(

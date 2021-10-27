@@ -1,8 +1,9 @@
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { BlockContextProvider } from 'contexts/BlockContext'
-import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
+import { LanguageContextProvider } from 'contexts/Localisation/Provider';
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
+
 import injected, { UseWalletProvider, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import React from 'react'
 import { Provider } from 'react-redux'
