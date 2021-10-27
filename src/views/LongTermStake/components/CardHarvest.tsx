@@ -76,7 +76,7 @@ const CardHarvest = () => {
             </Heading>
           </div>
         </div>
-        <div className={`${isMobile ? 'col-12' : 'col-3 pa-2 align-self-center'}`}>
+        <div className={`${isMobile ? 'col-12 pt-5' : 'col-3 pa-2 align-self-center'}`}>
           <Button variant="success" radii="small" disabled={!valueReward} onClick={onHarvest} fullWidth>
             Harvest
           </Button>
