@@ -66,21 +66,24 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
-  const getTokenValue = useCallback((token) => {
-    if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
-      return klayPrice.times(token)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-      return finixPrice.times(token)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-      return kethPrice.times(token)
-    }
-    if (farm.quoteTokenSymbol === QuoteToken.SIX) {
-      return sixPrice.times(token)
-    }
-    return token
-  }, [farm.quoteTokenSymbol, klayPrice, finixPrice, kethPrice, sixPrice]);
+  const getTokenValue = useCallback(
+    (token) => {
+      if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+        return klayPrice.times(token)
+      }
+      if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+        return finixPrice.times(token)
+      }
+      if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+        return kethPrice.times(token)
+      }
+      if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+        return sixPrice.times(token)
+      }
+      return token
+    },
+    [farm.quoteTokenSymbol, klayPrice, finixPrice, kethPrice, sixPrice],
+  )
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
@@ -95,12 +98,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (!farm.lpTotalInQuoteToken) {
       return new BigNumber(0)
     }
-    return getTokenValue(stakedTotalInQuoteToken);
-  }, [
-    farm.lpTotalInQuoteToken,
-    stakedTotalInQuoteToken,
-    getTokenValue
-  ])
+    return getTokenValue(stakedTotalInQuoteToken)
+  }, [farm.lpTotalInQuoteToken, stakedTotalInQuoteToken, getTokenValue])
 
   const { bundleRewardLength, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
@@ -150,10 +149,10 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const isApproved = useMemo(() => {
     return account && allowance && allowance.isGreaterThan(0)
-  }, [account, allowance]);
+  }, [account, allowance])
   const stakedBalanceValueFormated = useMemo(() => {
-    return convertToUsd(stakedBalanceValue);
-  }, [stakedBalanceValue]);
+    return convertToUsd(stakedBalanceValue)
+  }, [stakedBalanceValue])
 
   const renderStakeAction = useCallback(
     (className?: string) => (
@@ -177,7 +176,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       renderWithdrawModal,
       isApproved,
       stakedBalance,
-      stakedBalanceValueFormated
+      stakedBalanceValueFormated,
     ],
   )
 
@@ -198,11 +197,11 @@ const FarmCard: React.FC<FarmCardProps> = ({
     if (!farm.lpTotalInQuoteToken) {
       return null
     }
-    return getTokenValue(farm.lpTotalInQuoteToken);
+    return getTokenValue(farm.lpTotalInQuoteToken)
   }, [farm.lpTotalInQuoteToken, getTokenValue])
   const totalValueFormated = useMemo(() => {
-    return convertToUsd(totalValue);
-  }, [totalValue]);
+    return convertToUsd(totalValue)
+  }, [totalValue])
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection

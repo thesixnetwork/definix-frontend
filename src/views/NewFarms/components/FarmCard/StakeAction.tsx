@@ -23,7 +23,7 @@ interface FarmStakeActionProps {
   onPresentWithdraw?: any
   isApproved: boolean
   stakedBalance: BigNumber
-  stakedBalanceValueFormated: any;
+  stakedBalanceValueFormated: any
 }
 
 const IconButtonWrapper = styled.div`
@@ -65,7 +65,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       console.groupEnd()
       return '-'
     }
-  }, [stakedBalance]);
+  }, [stakedBalance])
 
   const lpContract = useMemo(() => {
     return getContract(klaytn as provider, lpAddress)
@@ -96,11 +96,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
         </Button>
         {(typeof farmUnlockDate === 'undefined' ||
           (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())) && (
-          <Button
-            variant="secondary"
-            className="btn-secondary-disable col-6 ml-1"
-            onClick={onPresentDeposit}
-          >
+          <Button variant="secondary" className="btn-secondary-disable col-6 ml-1" onClick={onPresentDeposit}>
             <AddIcon color="primary" />
           </Button>
         )}
@@ -114,21 +110,12 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
         <>
           {isApproved ? (
             <div>
-              <Text color="textSubtle">
-                My Liquidity
-              </Text>
-              <Heading
-                fontSize="20px !important"
-                textAlign="left"
-                color="text"
-                className="col-6 pr-3"
-              >
+              <Text color="textSubtle">My Liquidity</Text>
+              <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
                 {balanceValue}
               </Heading>
-              <Text color="textSubtle">
-                = {stakedBalanceValueFormated}
-              </Text>
-              
+              <Text color="textSubtle">= {stakedBalanceValueFormated}</Text>
+
               <div className="col-6">{renderStakingButtons()}</div>
             </div>
           ) : (

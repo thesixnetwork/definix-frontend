@@ -30,12 +30,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       {!removed && (
         <>
           <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
-          <Heading
-            fontSize="20px !important"
-            textAlign="left"
-            color="text"
-            className="col-6 pr-3"
-          >
+          <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
             {totalValueFormated}
           </Heading>
         </>

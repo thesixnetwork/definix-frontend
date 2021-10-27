@@ -16,42 +16,30 @@ interface FarmCardActionsProps {
   earnings: BigNumber
 }
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({
-  className = '',
-  isHorizontal,
-  pid,
-  earnings,
-}) => {
+const HarvestAction: React.FC<FarmCardActionsProps> = ({ className = '', isHorizontal, pid, earnings }) => {
   const TranslateString = useI18n()
-  const [ pendingTx, setPendingTx ] = useState(false)
-  const [ onPresentAirDropHarvestModal ] = useModal(<AirDropHarvestModal />)
+  const [pendingTx, setPendingTx] = useState(false)
+  const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
-  
-  const finixUsdPrice = usePriceFinixUsd();
+
+  const finixUsdPrice = usePriceFinixUsd()
   const earningsBalance = useMemo(() => {
-    return getBalanceNumber(earnings);
-  }, [earnings]);
+    return getBalanceNumber(earnings)
+  }, [earnings])
   const earningsValueFormated = useMemo(() => {
-    return new BigNumber(earningsBalance).multipliedBy(finixUsdPrice).toNumber();
-  }, [earningsBalance, finixUsdPrice]);
-  
+    return new BigNumber(earningsBalance).multipliedBy(finixUsdPrice).toNumber()
+  }, [earningsBalance, finixUsdPrice])
+
   return (
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
       <div className={isHorizontal ? 'col-8 pr-4' : ''}>
         <Text textAlign="left" className="flex align-center mb-3" color="textSubtle">
           Finix Earned
         </Text>
-        <Heading
-          fontSize="20px !important"
-          textAlign="left"
-          color="text"
-          className="col-6 pr-3"
-        >
+        <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
           {earningsBalance.toLocaleString()}
         </Heading>
-        <Text color="textSubtle">
-          = {convertToUsd(earningsValueFormated, 2)}
-        </Text>
+        <Text color="textSubtle">= {convertToUsd(earningsValueFormated, 2)}</Text>
 
         {false && (
           <div className="flex align-center justify-space-between">
