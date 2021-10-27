@@ -59,6 +59,7 @@ const options = {
         },
         ticks: {
           display: false,
+          suggestedMin: 0,
         },
       },
     ],
@@ -80,9 +81,9 @@ const options = {
         ticks: {
           fontColor: '#737375',
           fontSize: 14,
-          padding: 20,
           suggestedMin: 0,
-          beginAtZero: true 
+          beginAtZero: true,
+          padding: 20,
         },
       },
     ],
