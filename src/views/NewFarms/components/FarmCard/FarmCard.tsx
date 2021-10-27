@@ -175,15 +175,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         myLiquidityUSDPrice={myLiquidityUSDPrice}
       />,
     )
-  }, [
-    lpLabel,
-    onPresent,
-    onUnstake,
-    renderCardHeading,
-    totalValueFormated,
-    stakedBalance,
-    myLiquidityUSDPrice,
-  ])
+  }, [lpLabel, onPresent, onUnstake, renderCardHeading, totalValueFormated, stakedBalance, myLiquidityUSDPrice])
 
   /**
    * detail section
