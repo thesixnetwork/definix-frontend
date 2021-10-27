@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Text, useMatchBreakpoints } from 'uikit-dev'
 import { Ratio } from 'config/constants/types'
 
 interface FullAssetRatioType {
@@ -38,25 +38,19 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
   const isMobile = !isXl
 
   return (
-    <Card className={`pa-4 ${className}`}>
-      <Text bold className="mb-2">
-        ASSET RATIO
-      </Text>
-
-      <div className="flex">
-        {ratio
-          .filter((r) => r.value)
-          .map((m) => (
-            <Coin width={`${m.value}%`} isMobile={isMobile}>
-              <Bar color={m.color} />
-              <div className="name">
-                <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
-                <Text fontSize="16px">{m.value}%</Text>
-              </div>
-            </Coin>
-          ))}
-      </div>
-    </Card>
+    <div className={`flex ${className}`}>
+      {ratio
+        .filter((r) => r.value)
+        .map((m) => (
+          <Coin width={`${m.value}%`} isMobile={isMobile}>
+            <Bar color={m.color} />
+            <div className="name">
+              <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
+              <Text fontSize="16px">{m.value}%</Text>
+            </div>
+          </Coin>
+        ))}
+    </div>
   )
 }
 

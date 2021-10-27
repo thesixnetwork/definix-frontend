@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import styled from 'styled-components'
 import { Card, Text } from 'uikit-dev'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import _ from 'lodash'
-import { Table, TD, TH, TR } from './Table'
-import CardTab from './CardTab'
+
 import { Rebalance } from '../../../state/types'
+
+import { Table, TD, TH, TR } from './Table'
+import FullAssetRatio from './FullAssetRatio'
 
 interface FundDetailType {
   rebalance?: Rebalance | any
@@ -15,9 +15,6 @@ interface FundDetailType {
   className?: string
 }
 
-const Overflow = styled.div`
-  overflow: auto;
-`
 const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
   let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
@@ -108,63 +105,16 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
     </Table>
   )
 }
-const FactRow = ({ name, value, isCopy }) => {
-  return (
-    <TR>
-      <TD>
-        <Text bold>{name}</Text>
-      </TD>
-      <TD>
-        <div className="flex">
-          <Text fontSize="14px" className={isCopy ? 'mr-2' : ''}>
-            {value}
-          </Text>
-          {isCopy && <CopyToClipboard toCopy={isCopy} iconWidth="16px" noText />}
-        </div>
-      </TD>
-    </TR>
-  )
-}
-
-const FactSheet = ({ rebalance }) => {
-  return (
-    <Table>
-      <FactRow name="Name" value={rebalance.factsheet.name} isCopy={false} />
-      <FactRow name="Inception date" value={rebalance.factsheet.inceptionDate} isCopy={false} />
-      <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy={rebalance.factsheet.manager} />
-      <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy={rebalance.factsheet.vault} />
-      <FactRow name="Management fee" value={rebalance.factsheet.management} isCopy={rebalance.factsheet.management} />
-      <FactRow
-        name="FINIX Buy back fee"
-        value={rebalance.factsheet.finixBuyBackFee}
-        isCopy={rebalance.factsheet.finixBuyBackFee}
-      />
-      <FactRow name="Ecosystem fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} />
-    </Table>
-  )
-}
 
 const FundDetail: React.FC<FundDetailType> = ({ rebalance, periodPriceTokens, className = '' }) => {
-  const [currentTab, setCurrentTab] = useState(0)
-
-  useEffect(
-    () => () => {
-      setCurrentTab(0)
-    },
-    [],
-  )
-
+  const { ratio } = rebalance
   return (
-    <Card className={className}>
-      <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
-      <div style={{ height: '42px' }} />
-      <Overflow className="pa-4 pt-0">
-        {currentTab === 0 ? (
-          <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
-        ) : (
-          <FactSheet rebalance={rebalance} />
-        )}
-      </Overflow>
+    <Card className={`pa-4 ${className}`}>
+      <Text bold className="mb-2">
+        Asset ratio
+      </Text>
+      <FullAssetRatio className="mb-2" ratio={ratio} />
+      <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
     </Card>
   )
 }
