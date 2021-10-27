@@ -7,10 +7,9 @@ import moment from 'moment'
 import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { AddIcon, Card, LinkExternal, MinusIcon, Text } from 'uikit-dev'
+import { AddIcon, Card, LinkExternal, MinusIcon, Text, Toggle } from 'uikit-dev'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import { getAddress } from 'utils/addressHelpers'
-import CardTab from './CardTab'
 import PaginationCustom from './Pagination'
 import { Table, TD, TH, TR } from './Table'
 
@@ -47,7 +46,7 @@ const Overflow = styled.div`
 `
 
 const TransactionTable = ({ rows, empText, isLoading }) => {
-  const [cols] = useState(['INVESTORS', 'ACTION', 'SHARES', 'TOTAL AMOUNT', 'DATE'])
+  const [cols] = useState(['Investors', 'Action', 'Shares', 'Total Amount', 'Date', 'Scope'])
 
   return (
     <Overflow className="pa-4 pt-0">
@@ -60,7 +59,6 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
               </Text>
             </TH>
           ))}
-          <TH />
         </TR>
 
         {isLoading ? (
@@ -120,22 +118,22 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   const { account } = useWallet()
 
   const [isLoading, setIsLoading] = useState(false)
-  const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
+  const [myOnly, setMyOnly] = useState(false)
 
   const [transactions, setTransactions] = useState([])
   const [total, setTotal] = useState(0)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
 
-  const setDefault = (tab) => {
-    setCurrentTab(tab)
+  const setDefault = () => {
+    setMyOnly(false)
     setCurrentPage(1)
     setTransactions([])
     setTotal(0)
   }
 
   const fetchTransaction = useCallback(async () => {
-    if (currentTab === 1 && !account) {
+    if (myOnly && !account) {
       return
     }
 
@@ -145,18 +143,15 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
       params: {
         pool: (address || '').toLowerCase(),
         limit: 10,
-        address: currentTab === 0 ? '' : account,
+        address: myOnly ? account : '',
         page: currentPage,
       },
     })
     setIsLoading(false)
     setTotal(response.data.total)
     setTransactions(response.data.result)
-  }, [account, address, currentPage, currentTab])
+  }, [account, address, currentPage, myOnly])
 
-  const onTabChange = (tab) => {
-    setDefault(tab)
-  }
   const onPageChange = (e, page) => {
     setCurrentPage(page)
   }
@@ -167,13 +162,16 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
 
   useEffect(() => {
     return () => {
-      setDefault(0)
+      setDefault()
     }
   }, [])
 
   return (
     <Card className={className}>
-      <CardTab menus={['ALL TRANSACTIONS', 'MY TRANSACTIONS']} current={currentTab} setCurrent={onTabChange} />
+      <div className="flex justify-end align-center px-4 py-2">
+        <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
+        <Text className="ml-2">My Transaction Only</Text>
+      </div>
 
       <PaginationCustom
         page={currentPage}
@@ -189,9 +187,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         rows={transactions}
         isLoading={isLoading}
         empText={
-          currentTab === 0
-            ? 'Don`t have any transactions in this farm.'
-            : 'You haven`t made any transactions in this farm.'
+          myOnly ? 'You haven`t made any transactions in this farm.' : 'Don`t have any transactions in this farm.'
         }
       />
     </Card>
