@@ -98,7 +98,6 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const [statuu, setStatuu] = useState(false)
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
-  console.log('rows', rows)
   // penaltyFinixAmount
   const onUnStake = useCallback(
     (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days) => {
