@@ -28,9 +28,7 @@ const StakeTable: React.FC = () => {
 
   return (
     <>
-      {showMyAsset && (
-        <LockVfinixList total={total} rows={allDataLock} isLoading={isLoading} isDark={isDark} />
-      )}
+      {showMyAsset && <LockVfinixList total={total} rows={allDataLock} isLoading={isLoading} isDark={isDark} />}
       <FinixStakeCard />
     </>
   )
