@@ -41,6 +41,15 @@ const Row = styled.div`
   }
 `
 
+const Dot = styled.span`
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: ${({ theme }) => theme.radii.circle};
+  background: ${({ theme }) => theme.colors.primary};
+  margin-right: 8px;
+`
+
 const CardTVL = ({ className = '' }) => {
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
@@ -51,6 +60,8 @@ const CardTVL = ({ className = '' }) => {
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = getBalanceNumber(totalSupply)
+  const transfer = 500000
+  const actualBurn = burnedBalance-transfer
 
   useEffect(() => {
     fetchTVL()
@@ -101,7 +112,37 @@ const CardTVL = ({ className = '' }) => {
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={ 0} value={burnedBalance} />
+        </Row>
+        <Row>
+          <div className="flex align-center">
+            <Dot />
+            <Text color="textSubtle" fontSize="12px">
+              Actual Burn
+            </Text>
+          </div>
+          <CardValue
+            fontSize="16px"
+            color="primary"
+            fontWeight="bold"
+            decimals={0}
+            value={actualBurn}
+          />
+        </Row>
+        <Row>
+          <div className="flex align-center">
+            <Dot />
+            <Text color="textSubtle" fontSize="12px">
+              FINIX transferred to Klaytn
+            </Text>
+          </div>
+          <CardValue
+            fontSize="16px"
+            color="primary"
+            fontWeight="bold"
+            decimals={0}
+            value={transfer}
+          />
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
