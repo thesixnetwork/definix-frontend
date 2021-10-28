@@ -240,21 +240,21 @@ const CardStake = ({ isShowRightPanel }) => {
     if (period === 1) {
       nd.setDate(nd.getDate() + 90)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate,'0') * 100)
+      setPercentPenalty(_.get(realPenaltyRate, '0') * 100)
       setLevel(0)
       setdays(7)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 2) {
       nd.setDate(nd.getDate() + 180)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate,'1') * 100)
+      setPercentPenalty(_.get(realPenaltyRate, '1') * 100)
       setLevel(1)
       setdays(14)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 4) {
       nd.setDate(nd.getDate() + 365)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate,'2') * 100)
+      setPercentPenalty(_.get(realPenaltyRate, '2') * 100)
       setLevel(2)
       setdays(28)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
@@ -425,7 +425,8 @@ const CardStake = ({ isShowRightPanel }) => {
           {!isDisabled && (
             <Text className="mt-2" fontSize="10px !important" color={isDark ? 'white' : 'textSubtle'}>
               {vFINIX} vFINIX will be received and the staking period will end in {date} GMT+9. Unstaking before the
-              period ends your FINIX amount will be locked {days} days and {percentPenalty}% will be deducted from total balance.
+              period ends your FINIX amount will be locked {days} days and {percentPenalty}% will be deducted from total
+              balance.
             </Text>
           )}
           <div className="flex mt-4">
