@@ -98,7 +98,8 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const [statuu, setStatuu] = useState(false)
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
-
+  console.log('rows', rows)
+  // penaltyFinixAmount
   const onUnStake = useCallback(
     (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days) => {
       dispatch(fetchIdData(Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days))
@@ -333,7 +334,9 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                   </TD>
                   <TD className="col-3">
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                      {_.get(item, 'lockAmount').toLocaleString()}
+                      {_.get(item, 'isPenalty')
+                        ? _.get(item, 'lockAmount') - (_.get(item, 'penaltyRate') / 100) * _.get(item, 'lockAmount')
+                        : _.get(item, 'lockAmount').toLocaleString()}
                     </Text>
                   </TD>
                   <TD>

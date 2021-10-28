@@ -443,7 +443,7 @@ const CardStake = ({ isShowRightPanel }) => {
               <Apr fontSize="18px !important" color="white">
                 APR up to
               </Apr>
-              <AprValue fontSize="36px !important" color="white">{`${numeral(apr * 4 || 0).format(
+              <AprValue fontSize="1.6vw !important" color="white">{`${numeral(apr * 4 || 0).format(
                 '0,0.[00]',
               )}%`}</AprValue>
             </APRBOX>
