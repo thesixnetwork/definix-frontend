@@ -118,7 +118,7 @@ const StakePeriodButton = ({ setPeriod, status }) => {
   const [_minimum2, setMinimum2] = useState(0)
   const [_minimum4, setMinimum3] = useState(0)
   const apr = useApr()
-  const [test, setTest] = useState(4)
+  const [periodSelect, setPeriodSelect] = useState(4)
 
   useEffect(() => {
     setMinimum1(_.get(minimum, '0') || 0)
@@ -129,23 +129,23 @@ const StakePeriodButton = ({ setPeriod, status }) => {
   useEffect(() => {
     if (status) {
       // setPeriod(0)
-      // setTest(0)
+      // setPeriodSelect(0)
       setPeriod(4)
-      setTest(4)
+      setPeriodSelect(4)
     } else {
-      setPeriod(test)
+      setPeriod(periodSelect)
     }
-  }, [test, setPeriod, status])
+  }, [periodSelect, setPeriod, status])
 
   return (
     <div className={`${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
       <CustomButton
         isDark={isDark}
         isMobile={isMobile}
-        setPeriod={setTest}
+        setPeriod={setPeriodSelect}
         level={1}
         days={90}
-        period={test}
+        period={periodSelect}
         minimum={_minimum1}
         vFinixPrice={apr}
         mr="mr-2"
@@ -153,10 +153,10 @@ const StakePeriodButton = ({ setPeriod, status }) => {
       <CustomButton
         isDark={isDark}
         isMobile={isMobile}
-        setPeriod={setTest}
+        setPeriod={setPeriodSelect}
         level={2}
         days={180}
-        period={test}
+        period={periodSelect}
         minimum={_minimum2}
         vFinixPrice={apr}
         mr="mr-2"
@@ -164,10 +164,10 @@ const StakePeriodButton = ({ setPeriod, status }) => {
       <CustomButton
         isDark={isDark}
         isMobile={isMobile}
-        setPeriod={setTest}
+        setPeriod={setPeriodSelect}
         level={4}
         days={365}
-        period={test}
+        period={periodSelect}
         minimum={_minimum4}
         vFinixPrice={apr}
         mr=""
