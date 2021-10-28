@@ -35,9 +35,24 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
     return isDark ? '#333333' : '#00000014'
   }
 
+  const onSelect4 = (x, y) => {
+    return x === 4 ? '#EA9D00' : '#0973B9'
+  }
+
+  const period4 = (x, y) => {
+    return x === 4 ? '#737375' : '#0973B9'
+  }
+
   const themeWhite = (x, y) => {
     if (x === y) {
-      return isDark ? 'white' : '#0973B9'
+      return isDark ? 'white' : onSelect4(x, y)
+    }
+    return isDark ? 'textSubtle' : 'textSubtle'
+  }
+
+  const themeWhitePeriod = (x, y) => {
+    if (x === y) {
+      return isDark ? 'white' : period4(x, y)
     }
     return isDark ? 'textSubtle' : 'textSubtle'
   }
@@ -88,10 +103,13 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
           </Heading>
         </BoxLevel>
         <BoxPeriod className="col-8">
-          <Text fontSize={`${isMobile ? '10px !important' : '14px !important'}`} color={themeWhite(period, level)}>
+          <Text
+            fontSize={`${isMobile ? '10px !important' : '14px !important'}`}
+            color={themeWhitePeriod(period, level)}
+          >
             {days} days
           </Text>
-          <Text fontSize={`${isMobile ? '8px !important' : '10px !important'}`} color={themeWhite(period, level)}>
+          <Text fontSize={`${isMobile ? '8px !important' : '10px !important'}`} color={themeWhitePeriod(period, level)}>
             APR {`${numeral(vFinixPrice * level || 0).format('0,0.[00]')}%`}
           </Text>
         </BoxPeriod>
