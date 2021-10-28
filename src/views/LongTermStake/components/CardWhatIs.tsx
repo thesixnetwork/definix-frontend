@@ -91,14 +91,14 @@ const BeforeStart = () => {
   return (
     <Overflow>
       <Heading color="primary">Stake FINIX</Heading>
-      <Heading color="primary">Earn vFINIX</Heading>
+      <Heading color="primary">Get vFINIX</Heading>
       <Text className="mt-4" color={isDark ? 'white' : 'textSubtle'}>
         You can earn additional FINIX rewards and other benefits by contributing to the ecosystem through FINIX staking
-        and pool voting.
+        and voting.
       </Text>
       <Element />
       <Text color={isDark ? 'white' : 'textSubtle'} style={{ marginTop: 164 }}>
-        You must first stake your FINIX with a lock duration of 90, 180, or 365 days. As a rewards, youll get FINIX and
+        You must first stake your FINIX with a lock duration of 90, 180, or 365 days. As a rewards, you&apos;ll get FINIX and
         vFINIX.
       </Text>
       <ElementVFinix>

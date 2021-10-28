@@ -331,8 +331,9 @@ const CardStake = ({ isShowRightPanel }) => {
 
   useEffect(() => {
     const percentOf = percent * Number(balanceOf)
+    const balance =  Math.floor(percentOf * 1000000) / 1000000
     if (percent !== 0) {
-      setValue(percentOf.toString())
+      setValue(balance.toString())
     }
   }, [percent, balanceOf])
 
