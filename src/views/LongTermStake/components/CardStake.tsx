@@ -174,7 +174,7 @@ const BoostValue = styled(Text)`
 
 const AprBox = styled(Card)`
   padding: 0.5rem;
-  background: linear-gradient(90deg, #0973b9, #5cc096);
+  background: linear-gradient(90deg, #f3d36c, #e27d3a);
   opacity: 1;
   background-size: cover;
   background-repeat: no-repeat;
@@ -383,7 +383,10 @@ const CardStake = ({ isShowRightPanel }) => {
             {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="12px !important">
-                  APR up to {`${numeral(apr || 0).format('0,0.[00]')}%`}
+                  Boosting Period
+                </Text>
+                <Text color="white" bold fontSize="12px !important">
+                  APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
                 </Text>
               </AprBox>
             )}
