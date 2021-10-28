@@ -9,6 +9,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import store from 'state'
 import { ModalProvider } from 'uikit-dev'
+// import { ModalProvider } from 'definixswap-uikit'
 
 const Providers: React.FC = ({ children }) => {
   const muiTheme = createTheme({

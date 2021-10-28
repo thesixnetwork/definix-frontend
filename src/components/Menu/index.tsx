@@ -5,6 +5,7 @@ import useTheme from 'hooks/useTheme'
 import React, { useContext } from 'react'
 import numeral from 'numeral'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
+// import { Menu as UikitMenu } from 'definixswap-uikit'
 import { Menu as UikitMenu } from 'uikit-dev'
 import config from './config'
 
