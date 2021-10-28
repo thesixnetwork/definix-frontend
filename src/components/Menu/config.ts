@@ -103,12 +103,12 @@ const config: MenuEntry[] = [
         notHighlight: true,
         newTab: false,
       },
-      {
-        label: 'Network Monitor',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
+      // {
+      //   label: 'Network Monitor',
+      //   href: '/info',
+      //   notHighlight: true,
+      //   newTab: false,
+      // },
     ],
   },
   {

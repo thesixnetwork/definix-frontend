@@ -60,8 +60,8 @@ const CardTVL = ({ className = '' }) => {
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = getBalanceNumber(totalSupply)
-  const transfer = 500000
-  const actualBurn = burnedBalance - transfer
+  // const transfer = 500000
+  // const actualBurn = burnedBalance - transfer
 
   useEffect(() => {
     fetchTVL()
@@ -111,10 +111,10 @@ const CardTVL = ({ className = '' }) => {
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
         </Row>
         <Row>
-          <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
+          <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned on BSC')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
-        <Row>
+        {/* <Row>
           <div className="flex align-center">
             <Dot />
             <Text color="textSubtle" fontSize="12px">
@@ -131,7 +131,7 @@ const CardTVL = ({ className = '' }) => {
             </Text>
           </div>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={transfer} />
-        </Row>
+        </Row> */}
         <Row>
           <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} valueString="1" />
