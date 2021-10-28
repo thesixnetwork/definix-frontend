@@ -99,21 +99,20 @@ export interface FarmConfig {
 }
 
 export interface LongTermStakeConfig {
-  lsId: number
   lpSymbol: string
   tokenSymbol: string
   tokenAddresses: any
-  lockTokenSymbol: QuoteToken
-  lockTokenName: QuoteToken
+  lockTokenSymbol?: QuoteToken
   multiplier?: string
   isCommunity?: boolean
+  pendingRewards?: number
+  balanceOf?: number
+  allowances?: number
   dual?: {
     rewardPerBlock: number
     earnLabel: string
     endBlock: number
   }
-  firstToken?: any
-  secondToken?: any
 }
 
 export interface PoolConfig {

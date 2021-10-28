@@ -474,18 +474,22 @@ const CardStake = ({ isShowRightPanel }) => {
           <div style={{ opacity: loadings !== '' ? 0.1 : 1 }} className="col-4 flex flex-column">
             <APRBOX className="px-5 mb-2">
               <img src={badgeBoost} alt="" />
-              <BoostValue fontSize="1vw !important" color="white">
+              <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.4vw !important'} color="white">
                 Boosting Period
               </BoostValue>
-              <Apr fontSize="0.7vw !important" color="white">
+              <Apr fontSize={isShowRightPanel ? '0.7vw !important' : '1vw !important'} color="white">
                 APR up to
               </Apr>
-              <AprDecoration style={{ left: '31%', top: '62%' }} fontSize="0.7vw !important" color="white">{`${numeral(
-                (apr * 4) / 1.5 || 0,
-              ).format('0,0.[00]')}%`}</AprDecoration>
-              <AprValue style={{ left: '64%', top: '61%' }} fontSize="1.1vw !important" color="white">{`${numeral(
-                apr * 4 || 0,
-              ).format('0,0.[00]')}%`}</AprValue>
+              <AprDecoration
+                style={{ left: isShowRightPanel ? '32%' : '29%', top: isShowRightPanel ? '61%' : '62%' }}
+                fontSize={isShowRightPanel ? '0.7vw !important' : '1.2vw !important'}
+                color="white"
+              >{`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}</AprDecoration>
+              <AprValue
+                style={{ left: isShowRightPanel ? '62%' : '64%', top: isShowRightPanel ? '60%' : '60%' }}
+                fontSize={isShowRightPanel ? '1.1vw !important' : '1.8vw !important'}
+                color="white"
+              >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
             <img src={definixLongTerm} alt="" className="pl-3" />
           </div>

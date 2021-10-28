@@ -10,10 +10,6 @@ import RewardFacet from 'config/abi/RewardFacet.json'
 import TokenFacet from 'config/abi/TokenFacet.json'
 import multicall from 'utils/multicall'
 import { getFinixAddress, getVFinix, getAddress } from 'utils/addressHelpers'
-// import longTermConfig from 'config/constants/longTerm'
-// import {
-//   fetchLongTermsAllowance
-// } from './fetchLongTermStakeUser'
 import _ from 'lodash'
 
 const initialState = {
@@ -154,25 +150,6 @@ export const fetchStartIndex = (index) => async (dispatch) => {
     }),
   )
 }
-
-// const fetchLongTerm = async () => {
-//   const data = await Promise.all(
-//     longTermConfig.map(async (longTerm) => {
-//       try {
-//         const calls = [
-//           {
-//             address: getAddress(longTerm.tokenAddresses),
-//             name: 'balanceOf',
-//             params: []
-//           }
-//         ]
-
-//       } catch {
-//         return undefined
-//       }
-//     })
-//   )
-// }
 
 const getVaultFacet = async ({ vFinix }) => {
   let totalFinixLock = 0
@@ -554,10 +531,5 @@ export const fetchVaultIKIP7 = () => async (dispatch) => {
   const [[totalSupplyVFinix, vFinix]] = await Promise.all(fetchPromise)
   dispatch(setTotalVFinixSupply({ totalvFinixSupply: totalSupplyVFinix, vFinixPrice: vFinix }))
 }
-
-// export const updateUserAllowance = (sousId: string, account: string) => async (dispatch) => {
-// const allowances = await fetchLongTermsAllowance(account)
-// dispatch(updatePoolsUserData({ sousId, field: 'allowance', value: allowances[sousId] }))
-// }
 
 export default longTermSlice.reducer

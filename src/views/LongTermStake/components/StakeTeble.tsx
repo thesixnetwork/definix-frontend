@@ -15,9 +15,10 @@ const StakeTable: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { account } = useWallet()
   const allowance = useAllowance()
-  const { allDataLock } = usePrivateData()
+  const { allDataLock, balancevfinix } = usePrivateData()
   useAllLock()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
+  const showMyAsset = Number(lockCount) !== 0 || balancevfinix > 0
 
   useEffect(() => {
     if (allDataLock.length !== 0) {
@@ -27,7 +28,7 @@ const StakeTable: React.FC = () => {
 
   return (
     <>
-      {isApproved && Number(lockCount) !== 0 && (
+      {showMyAsset && (
         <LockVfinixList total={total} rows={allDataLock} isLoading={isLoading} isDark={isDark} />
       )}
       <FinixStakeCard />
