@@ -46,7 +46,7 @@ const FinixStake = styled(Card)`
 const Balance = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   padding: 0.75rem 0.75rem 0.75rem 0.75rem;
