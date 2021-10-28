@@ -28,6 +28,7 @@ const ButtonPeriod = styled(Button)`
   display: flex;
   padding: 0;
   width: 100%;
+  height: 60px;
 `
 
 const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, vFinixPrice, isDark, mr }) => {
@@ -54,7 +55,7 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
     if (x === y) {
       return isDark ? 'white' : period4(x, y)
     }
-    return isDark ? 'textSubtle' : 'textSubtle'
+    return isDark ? 'white' : 'textSubtle'
   }
 
   const handleBackgroud = (x, y) => {
@@ -104,10 +105,19 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
         </BoxLevel>
         <BoxPeriod className="col-8">
           <Text
+            fontWeight="600"
             fontSize={`${isMobile ? '10px !important' : '14px !important'}`}
             color={themeWhitePeriod(period, level)}
+            lineHeight="1"
           >
             {days} days
+          </Text>
+          <Text
+            style={{ textDecorationLine: 'line-through', textDecorationColor: isDark ? '#FFFFFF' : '#57575B' }}
+            fontSize={`${isMobile ? '6px !important' : '8px !important'}`}
+            color={themeWhitePeriod(period, level)}
+          >
+            APR {`${numeral((vFinixPrice * level) / 1.5 || 0).format('0,0.[00]')}%`}
           </Text>
           <Text fontSize={`${isMobile ? '8px !important' : '10px !important'}`} color={themeWhitePeriod(period, level)}>
             APR {`${numeral(vFinixPrice * level || 0).format('0,0.[00]')}%`}

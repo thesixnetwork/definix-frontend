@@ -13,6 +13,7 @@ import loading from 'uikit-dev/animation/farmPool.json'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
 import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
+import badgeBoost from 'uikit-dev/images/for-ui-v2/badge-boost.png'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
 
@@ -129,7 +130,7 @@ const NumberInput = styled.input`
 
 const Apr = styled(Text)`
   position: absolute;
-  top: 25%;
+  top: 39%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1;
@@ -140,10 +141,33 @@ const Apr = styled(Text)`
 
 const AprValue = styled(Text)`
   position: absolute;
-  top: 46%;
-  left: 50%;
+  // top: 56%;
+  // left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1;
+  font-weight: 600;
+  text-shadow: #00000050 0px 2px 4px;
+`
+
+const AprDecoration = styled(Text)`
+  position: absolute;
+  // top: 56%;
+  // left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  font-weight: 600;
+  text-shadow: #00000050 0px 2px 4px;
+  text-decoration: line-through;
+  text-decoration-color: red;
+`
+
+const BoostValue = styled(Text)`
+  position: absolute;
+  top: 21%;
+  left: 50%;
+  width: 100%;
+  transform: translate(-50%, -50%);
+  // line-height: 1;
   font-weight: 600;
   text-shadow: #00000050 0px 2px 4px;
 `
@@ -449,13 +473,19 @@ const CardStake = ({ isShowRightPanel }) => {
         {!isMobileOrTablet && (
           <div style={{ opacity: loadings !== '' ? 0.1 : 1 }} className="col-4 flex flex-column">
             <APRBOX className="px-5 mb-2">
-              <img src={badgeLock} alt="" />
-              <Apr fontSize="18px !important" color="white">
+              <img src={badgeBoost} alt="" />
+              <BoostValue fontSize="1vw !important" color="white">
+                Boosting Period
+              </BoostValue>
+              <Apr fontSize="0.7vw !important" color="white">
                 APR up to
               </Apr>
-              <AprValue fontSize="1.6vw !important" color="white">{`${numeral(apr * 4 || 0).format(
-                '0,0.[00]',
-              )}%`}</AprValue>
+              <AprDecoration style={{ left: '31%', top: '62%' }} fontSize="0.7vw !important" color="white">{`${numeral(
+                (apr * 4) / 1.5 || 0,
+              ).format('0,0.[00]')}%`}</AprDecoration>
+              <AprValue style={{ left: '64%', top: '61%' }} fontSize="1.1vw !important" color="white">{`${numeral(
+                apr * 4 || 0,
+              ).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
             <img src={definixLongTerm} alt="" className="pl-3" />
           </div>
