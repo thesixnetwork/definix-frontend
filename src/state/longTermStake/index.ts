@@ -556,8 +556,8 @@ export const fetchVaultIKIP7 = () => async (dispatch) => {
 }
 
 // export const updateUserAllowance = (sousId: string, account: string) => async (dispatch) => {
-  // const allowances = await fetchLongTermsAllowance(account)
-  // dispatch(updatePoolsUserData({ sousId, field: 'allowance', value: allowances[sousId] }))
+// const allowances = await fetchLongTermsAllowance(account)
+// dispatch(updatePoolsUserData({ sousId, field: 'allowance', value: allowances[sousId] }))
 // }
 
 export default longTermSlice.reducer
