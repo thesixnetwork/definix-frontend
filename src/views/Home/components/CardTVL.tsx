@@ -61,7 +61,7 @@ const CardTVL = ({ className = '' }) => {
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = getBalanceNumber(totalSupply)
   const transfer = 500000
-  const actualBurn = burnedBalance-transfer
+  const actualBurn = burnedBalance - transfer
 
   useEffect(() => {
     fetchTVL()
@@ -112,7 +112,7 @@ const CardTVL = ({ className = '' }) => {
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
-          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={ 0} value={burnedBalance} />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
         <Row>
           <div className="flex align-center">
@@ -121,13 +121,7 @@ const CardTVL = ({ className = '' }) => {
               Actual Burn
             </Text>
           </div>
-          <CardValue
-            fontSize="16px"
-            color="primary"
-            fontWeight="bold"
-            decimals={0}
-            value={actualBurn}
-          />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={actualBurn} />
         </Row>
         <Row>
           <div className="flex align-center">
@@ -136,13 +130,7 @@ const CardTVL = ({ className = '' }) => {
               FINIX transferred to Klaytn
             </Text>
           </div>
-          <CardValue
-            fontSize="16px"
-            color="primary"
-            fontWeight="bold"
-            decimals={0}
-            value={transfer}
-          />
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={transfer} />
         </Row>
         <Row>
           <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
