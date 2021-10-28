@@ -216,7 +216,6 @@ const CardStake = ({ isShowRightPanel }) => {
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
-  // const { vFinixPrice } = useUnstakeId()
   const { allLockPeriod } = useAllLock()
   const [value, setValue] = useState('')
   const [letvel, setLevel] = useState(0)
