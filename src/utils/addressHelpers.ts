@@ -132,3 +132,6 @@ export const getPointCenterIfoAddress = () => {
 export const getBunnySpecialAddress = () => {
   return getAddress(addresses.bunnySpecial)
 }
+export const getVFinix = () => {
+  return getAddress(addresses.vFinix)
+}
