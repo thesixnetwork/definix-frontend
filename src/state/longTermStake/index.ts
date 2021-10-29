@@ -39,6 +39,7 @@ const initialState = {
   lockCount: 0,
   balanceFinix: 0,
   balancevFinix: 0,
+  rewardPerBlock: 0,
 }
 
 export const longTermSlice = createSlice({
@@ -79,9 +80,10 @@ export const longTermSlice = createSlice({
       state.finixLockMap = finixLockMap
     },
     setTotalVFinixSupply: (state, action) => {
-      const { totalvFinixSupply, vFinixPrice } = action.payload
+      const { totalvFinixSupply, vFinixPrice, rewardPerBlock } = action.payload
       state.totalvFinixSupply = totalvFinixSupply
       state.vFinixPrice = vFinixPrice
+      state.rewardPerBlock = rewardPerBlock
     },
     setUserLockAmount: (state, action) => {
       const { userLockAmount, lockCount, balanceFinix, balancevFinix } = action.payload
@@ -432,6 +434,7 @@ const getContactIKIP7 = async ({ vFinix }) => {
   let totalSupply = 0
   let reward = 0
   let vFinixPrice = 0
+  let rewardPerBlock = 0
   try {
     const calls = [
       {
@@ -446,15 +449,17 @@ const getContactIKIP7 = async ({ vFinix }) => {
       },
     ]
     const [totalvfinixSupply] = await multicall(IKIP7.abi, calls)
-    const [rewardPerBlock] = await multicall(RewardFacet.abi, callrewardPerBlock)
+    const [rewardPerBlockResponse] = await multicall(RewardFacet.abi, callrewardPerBlock)
+    rewardPerBlock = rewardPerBlockResponse
     totalSupply = new BigNumber(totalvfinixSupply).dividedBy(new BigNumber(10).pow(18)).toNumber()
     reward = new BigNumber(rewardPerBlock).dividedBy(new BigNumber(10).pow(18)).toNumber()
     vFinixPrice = ((reward * 86400 * 365) / Number(totalSupply)) * 100
   } catch (error) {
     vFinixPrice = 0
     totalSupply = 0
+    rewardPerBlock = 0
   }
-  return [totalSupply, vFinixPrice]
+  return [totalSupply, vFinixPrice, rewardPerBlock]
 }
 
 export const fetchVaultFacet = () => async (dispatch) => {
@@ -528,8 +533,8 @@ export const fetchVaultIKIP7 = () => async (dispatch) => {
       vFinix: getVFinix(),
     }),
   )
-  const [[totalSupplyVFinix, vFinix]] = await Promise.all(fetchPromise)
-  dispatch(setTotalVFinixSupply({ totalvFinixSupply: totalSupplyVFinix, vFinixPrice: vFinix }))
+  const [[totalSupplyVFinix, vFinix, rewardPerBlock]] = await Promise.all(fetchPromise)
+  dispatch(setTotalVFinixSupply({ totalvFinixSupply: totalSupplyVFinix, vFinixPrice: vFinix, rewardPerBlock }))
 }
 
 export default longTermSlice.reducer
