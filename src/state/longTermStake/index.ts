@@ -259,7 +259,6 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     let asMinutes = 0
     let asPenaltyMinutes = 0
     const days = [90, 180, 365]
-    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
     result.map((value) => {
       canBeUnlock_ =
         Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
@@ -267,19 +266,19 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       canBeClaim_ =
         Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
         new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber()
-      asMinutes = moment.duration({ seconds: _.get(period, '0.periodMap')[value.level] }).asMinutes()
-      asPenaltyMinutes = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asMinutes()
+      asMinutes = moment.duration({ seconds: _.get(period, '0.periodMap')[value.level] }).asDays()
+      asPenaltyMinutes = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
       let now = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
-      now.setMinutes(now.getMinutes() + asMinutes)
+      now.setDate(now.getDate() + asMinutes)
       now = new Date(now)
 
       let penaltyTimestamp = new Date(new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() * 1000)
-      penaltyTimestamp.setMinutes(penaltyTimestamp.getMinutes() + asPenaltyMinutes)
+      penaltyTimestamp.setDate(penaltyTimestamp.getDate() + asPenaltyMinutes)
       penaltyTimestamp = new Date(penaltyTimestamp)
 
       let unLockTime = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
-      unLockTime.setMinutes(unLockTime.getMinutes() + asPenaltyMinutes)
+      unLockTime.setDate(unLockTime.getDate() + asPenaltyMinutes)
       unLockTime = new Date(unLockTime)
 
       const offset = 2
