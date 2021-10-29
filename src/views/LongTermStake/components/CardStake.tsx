@@ -596,7 +596,10 @@ const CardStake = ({ isShowRightPanel }) => {
           </div>
         </div>
         {!isMobileOrTablet && (
-          <div style={{ opacity: loadings !== '' ? 0.1 : 1 , justifyContent: 'space-between'}} className="col-4 flex flex-column">
+          <div
+            style={{ opacity: loadings !== '' ? 0.1 : 1, justifyContent: 'space-between' }}
+            className="col-4 flex flex-column"
+          >
             <APRBOX className="px-5 mb-2">
               <img src={badgeBoost} alt="" />
               <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.4vw !important'} color="white">
