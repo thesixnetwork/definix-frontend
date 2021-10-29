@@ -39,7 +39,7 @@ const LongTermStake: React.FC = () => {
     <>
       <Route exact path={path}>
         <Helmet>
-          <title>Long - term Stake - Definix - Advance Your Crypto Assets</title>
+          <title>Long-term Stake - Definix - Advance Your Crypto Assets</title>
         </Helmet>
         <TwoPanelLayout>
           <LeftPanel isShowRightPanel={isShowRightPanel}>
