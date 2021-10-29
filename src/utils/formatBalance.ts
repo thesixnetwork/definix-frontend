@@ -13,7 +13,10 @@ export const getFullDisplayBalance = (
   },
 ) => {
   const decimals = options && typeof options.decimals === 'number' ? options.decimals : 18
-  const fixed = options && typeof options.fixed === 'number' && options.fixed
   if (balance.eq(new BigNumber(0))) return '0'
-  return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed(fixed)
+  const balanceNumber = balance.dividedBy(new BigNumber(10).pow(decimals));
+  if (options && typeof options.fixed === 'number') {
+    return balanceNumber.toFixed(options.fixed)
+  }
+  return balanceNumber.toString()
 }

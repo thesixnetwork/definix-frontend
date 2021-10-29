@@ -6,12 +6,12 @@ import useI18n from '../../hooks/useI18n'
 interface ModalInputProps {
   max: string
   symbol: string
-  onSelectMax?: () => void
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void
   placeholder?: string
   value: string
   addLiquidityUrl?: string
   inputTitle?: string
+  onChange: (e: React.FormEvent<HTMLInputElement>) => void
+  onSelectBalanceRateButton: (rate: number) => void
 }
 
 const StyledTokenInput = styled.div<InputProps>`
@@ -50,10 +50,10 @@ const ModalInput: React.FC<ModalInputProps> = ({
   max,
   symbol,
   onChange,
-  onSelectMax,
   value,
   addLiquidityUrl,
   inputTitle,
+  onSelectBalanceRateButton,
 }) => {
   const TranslateString = useI18n()
   const isBalanceZero = max === '0' || !max
@@ -73,19 +73,40 @@ const ModalInput: React.FC<ModalInputProps> = ({
       <StyledTokenInput isWarning={isBalanceZero}>
         <StyledInput onChange={onChange} placeholder="0" value={value} />
 
-        <Button
-          size="sm"
-          onClick={onSelectMax}
-          mr="8px"
-          padding="0 12px"
-          variant="tertiary"
-          style={{ borderRadius: '6px' }}
-        >
-          {TranslateString(452, 'Max')}
-        </Button>
-
-        <Text fontSize="16px">{symbol}</Text>
+        {/* <Text fontSize="16px">{symbol}</Text> */}
       </StyledTokenInput>
+
+      <Button
+        size="sm"
+        onClick={() => onSelectBalanceRateButton(25)}
+        mr="8px"
+        padding="0 12px"
+        variant="tertiary"
+        style={{ borderRadius: '6px' }}
+      >
+        25%
+      </Button>
+      <Button
+        size="sm"
+        onClick={() => onSelectBalanceRateButton(50)}
+        mr="8px"
+        padding="0 12px"
+        variant="tertiary"
+        style={{ borderRadius: '6px' }}
+      >
+        50%
+      </Button>
+      <Button
+        size="sm"
+        onClick={() => onSelectBalanceRateButton(100)}
+        mr="8px"
+        padding="0 12px"
+        variant="tertiary"
+        style={{ borderRadius: '6px' }}
+      >
+        {TranslateString(452, 'Max')}
+      </Button>
+      
 
       {isBalanceZero && (
         <div className="flex align-center justify-center mt-5">

@@ -143,7 +143,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
     onPresent(
       <DepositModal
         tokenName={lpLabel}
-        max={tokenBalance}
+        tokenBalance={tokenBalance}
         onConfirm={onStake}
         addLiquidityUrl={addLiquidityUrl}
         renderCardHeading={renderCardHeading}

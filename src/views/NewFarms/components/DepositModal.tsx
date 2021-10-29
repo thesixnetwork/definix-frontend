@@ -14,19 +14,19 @@ const options = {
 }
 
 interface DepositModalProps {
-  max: BigNumber
-  onConfirm: (amount: string) => void
-  onDismiss?: () => void
   tokenName?: string
-  addLiquidityUrl?: string
-  renderCardHeading?: (className?: string, inlineMultiplier?: boolean) => JSX.Element
+  tokenBalance: BigNumber
   totalLiquidity: string
   myLiquidity: BigNumber
   myLiquidityUSDPrice: string
+  addLiquidityUrl?: string
+  onConfirm: (amount: string) => void
+  onDismiss?: () => void
+  renderCardHeading?: (className?: string, inlineMultiplier?: boolean) => JSX.Element
 }
 
 const DepositModal: React.FC<DepositModalProps> = ({
-  max,
+  tokenBalance,
   onConfirm,
   onDismiss,
   tokenName = '',
@@ -40,8 +40,8 @@ const DepositModal: React.FC<DepositModalProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max)
-  }, [max])
+    return getFullDisplayBalance(tokenBalance)
+  }, [tokenBalance])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -50,9 +50,13 @@ const DepositModal: React.FC<DepositModalProps> = ({
     [setVal],
   )
 
-  const handleSelectMax = useCallback(() => {
-    setVal(fullBalance)
-  }, [fullBalance, setVal])
+  const handleSelectBalanceRate = useCallback(
+    (rate: number) => {
+      const balance = tokenBalance.times(rate / 100);
+      setVal(getFullDisplayBalance(balance))
+    },
+    [tokenBalance, setVal]
+  )
 
   return (
     <Modal
@@ -72,7 +76,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
       <ModalInput
         value={val}
-        onSelectMax={handleSelectMax}
+        onSelectBalanceRateButton={handleSelectBalanceRate}
         onChange={handleChange}
         max={fullBalance}
         symbol={tokenName}
@@ -92,7 +96,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         className="mt-5"
         radii="card"
       >
-        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Deposit ${tokenName}`)}
+        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Deposit`)}
       </Button>
     </Modal>
   )
