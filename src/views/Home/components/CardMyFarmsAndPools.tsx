@@ -555,8 +555,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const dataLongtermStake = [
     {
       lpSymbol: 'Long-term stake',
-      value: Number(finixPrice.times(lockAmount))
-    }
+      value: Number(finixPrice.times(lockAmount)),
+    },
   ]
 
   const isGrouping =
@@ -1007,84 +1007,80 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           )
         })}
 
-        {balancefinix && (() => {
-
-          return (
-            <FarmsAndPools key="VFINIX">
-              <Coins>
-                {isLoading ? (
-                  <>
-                    <div className="flex">
-                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                    </div>
-                    <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
-                  </>
-                ) : (
-                  <>
-                    <div className="flex">
-                      <img src={vFinix} alt="" />
-                    </div>
-                    <Text bold style={{ fontSize: '10px' }}>LONG-TERM STAKE</Text>
-                  </>
-                )}
-              </Coins>
-              <Summary>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    APR
-                  </Text>
+        {balancefinix &&
+          (() => {
+            return (
+              <FarmsAndPools key="VFINIX">
+                <Coins>
                   {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    <>
+                      <div className="flex">
+                        <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                        <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      </div>
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                    </>
                   ) : (
-                    <Text bold color="success">
-                      {`${numeral(longtermApr || 0).format('0,0.[00]')}`}%
-                    </Text>
+                    <>
+                      <div className="flex">
+                        <img src={vFinix} alt="" />
+                      </div>
+                      <Text bold style={{ fontSize: '10px' }}>
+                        LONG-TERM STAKE
+                      </Text>
+                    </>
                   )}
-                </div>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    FINIX Staked
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" />
-                  ) : (
-                    <Text bold>
-                      {`${numeral(lockAmount || 0).format('0,0.[00]')}`}
+                </Coins>
+                <Summary>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      APR
                     </Text>
-                  )}
-                </div>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    vFINIX Earned
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" />
-                  ) : (
-                    <Text bold>
-                      {`${numeral(balancevfinix || 0).format('0,0.[00]')}`}
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    ) : (
+                      <Text bold color="success">
+                        {`${numeral(longtermApr || 0).format('0,0.[00]')}`}%
+                      </Text>
+                    )}
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      FINIX Staked
                     </Text>
-                  )}
-                </div>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    FINIX Earned
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" />
-                  ) : (
-                    <Text bold>
-                      {`${numeral(finixEarn).format('0,0.[00]')}`}
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>{`${numeral(lockAmount || 0).format('0,0.[00]')}`}</Text>
+                    )}
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      vFINIX Earned
                     </Text>
-                  )}
-                </div>
-              </Summary>
-              <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
-                <ChevronRightIcon color="textDisabled" width="28" />
-              </IconButton>
-            </FarmsAndPools>
-          )
-        })()}
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>{`${numeral(balancevfinix || 0).format('0,0.[00]')}`}</Text>
+                    )}
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      FINIX Earned
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>{`${numeral(finixEarn).format('0,0.[00]')}`}</Text>
+                    )}
+                  </div>
+                </Summary>
+                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+                  <ChevronRightIcon color="textDisabled" width="28" />
+                </IconButton>
+              </FarmsAndPools>
+            )
+          })()}
       </List>
     </Container>
   )
