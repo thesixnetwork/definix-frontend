@@ -130,7 +130,7 @@ const NumberInput = styled.input`
 
 const Apr = styled(Text)`
   position: absolute;
-  top: 39%;
+  top: 36%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1;
@@ -441,10 +441,6 @@ const CardStake = ({ isShowRightPanel }) => {
     return text
   }
 
-  const handleWrap = () => {
-    return 'wrap'
-  }
-
   return (
     <div className="align-stretch mt-5">
       <FinixStake className="flex">
@@ -478,10 +474,13 @@ const CardStake = ({ isShowRightPanel }) => {
             </Heading>
             {isMobileOrTablet && (
               <AprBox>
-                <Text color="white" bold fontSize="12px !important">
+                <Text color="white" bold fontSize="8px !important">
                   Boosting Period
                 </Text>
-                <Text color="white" bold fontSize="12px !important">
+                <Text style={{ textDecoration: 'line-through' }} color="white" bold fontSize="8px !important">
+                  {`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}
+                </Text>
+                <Text color="white" bold fontSize="8px !important">
                   APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
                 </Text>
               </AprBox>
@@ -602,20 +601,20 @@ const CardStake = ({ isShowRightPanel }) => {
           >
             <APRBOX className="px-5 mb-2">
               <img src={badgeBoost} alt="" />
-              <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.4vw !important'} color="white">
+              <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.2vw !important'} color="white">
                 Boosting Period
               </BoostValue>
-              <Apr fontSize={isShowRightPanel ? '0.7vw !important' : '1vw !important'} color="white">
+              <Apr fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'} color="white">
                 APR up to
               </Apr>
               <AprDecoration
-                style={{ left: isShowRightPanel ? '32%' : '29%', top: isShowRightPanel ? '61%' : '62%' }}
-                fontSize={isShowRightPanel ? '0.7vw !important' : '1.2vw !important'}
+                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '50%' : '50%' }}
+                fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'}
                 color="white"
               >{`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}</AprDecoration>
               <AprValue
-                style={{ left: isShowRightPanel ? '62%' : '64%', top: isShowRightPanel ? '60%' : '60%' }}
-                fontSize={isShowRightPanel ? '1.1vw !important' : '1.8vw !important'}
+                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '67%' : '67%' }}
+                fontSize={isShowRightPanel ? '1.1vw !important' : '1.6vw !important'}
                 color="white"
               >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
