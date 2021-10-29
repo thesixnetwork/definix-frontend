@@ -5,12 +5,10 @@ import App from './App'
 import Providers from './Providers'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <KlipModalProvider>
-      <Providers>
-        <App />
-      </Providers>
-    </KlipModalProvider>
-  </React.StrictMode>,
+  <KlipModalProvider>
+    <Providers>
+      <App />
+    </Providers>
+  </KlipModalProvider>,
   document.getElementById('root'),
 )

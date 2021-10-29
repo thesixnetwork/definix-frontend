@@ -8606,8 +8606,9 @@ definixswap-sdk@1.0.0:
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-definixswap-uikit@../definix-uikit/:
+definixswap-uikit@../definix-uikit/definixswap-uikit-0.15.0.tgz:
   version "0.15.0"
+  resolved "../definix-uikit/definixswap-uikit-0.15.0.tgz#defc2c352e9c4058f14fbeabf7754364f627ae0d"
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"

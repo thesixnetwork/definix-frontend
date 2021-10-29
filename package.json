@@ -15,8 +15,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "generate:config": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/generateConfig",
-    "uikit": "yarn remove definixswap-uikit && yarn add ../definix-uikit/"
+    "generate:config": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/generateConfig"
   },
   "husky": {
     "hooks": {
@@ -59,7 +58,7 @@
     "chart.js": "^2.9.4",
     "date-fns": "^2.17.0",
     "definixswap-sdk": "1.0.0",
-    "definixswap-uikit": "../definix-uikit/",
+    "definixswap-uikit": "../definix-uikit/definixswap-uikit-0.15.0.tgz",
     "jest-styled-components": "^7.0.5",
     "klaytn-use-wallet": "^1.0.1",
     "lodash": "^4.17.20",
