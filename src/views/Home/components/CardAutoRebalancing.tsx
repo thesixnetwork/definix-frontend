@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick-theme.css'
 
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/definix-long-term-stake-with-voting-system.png'
+import definixVoting from 'uikit-dev/images/for-ui-v2/voting-banner.png'
 
 const StyledBannerLady = styled(Card)`
   width: 100%;
@@ -100,6 +101,55 @@ const StyledBannerLongTerm = styled(Card)`
 
     h2 {
       font-size: 32px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const StyledBannerVoting = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: url(${definixVoting});
+    background-size: contain;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 68px 40% 48px 24px;
+    border-radius: unset;
+    height: 327px;
+
+    &:before {
+      width: 40%;
+      opacity: 1;
+    }
+
+    h2 {
+      font-size: 28px !important;
     }
     h3 {
       font-size: 16px !important;
@@ -288,6 +338,24 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </div>
             </div>
           </StyledBannerLongTerm>
+        </div>
+        <div>
+          <StyledBannerVoting className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                Community Proposal is a great way to say your words and to reflects the community feeling about your
+                ideas.{' '}
+              </Text>
+              <div className="mt-6">
+                <SpecialOutline as={Link} to="/">
+                  <span>Coming soon!</span>
+                </SpecialOutline>
+              </div>
+            </div>
+          </StyledBannerVoting>
         </div>
       </StyledSlider>
     </div>

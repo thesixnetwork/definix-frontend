@@ -172,7 +172,7 @@ const config: MenuEntry[] = [
     label: 'Gitbook',
     icon: gitbookBlack,
     iconActive: gitbookWhite,
-    href: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
+    href: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
     notHighlight: true,
     newTab: true,
   },
