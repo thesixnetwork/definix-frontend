@@ -57,15 +57,15 @@ const FarmCard: React.FC<FarmCardProps> = ({
   account,
   isHorizontal = false,
   onSelectAddLP,
-  onSelectRemoveLP
+  onSelectRemoveLP,
 }) => {
   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const [ isOpenAccordion, setIsOpenAccordion ] = useState(false)
+  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
-  
+
   const getTokenValue = useCallback(
     (token) => {
       if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
@@ -86,7 +86,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   )
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
-  
+
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
 
   const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
@@ -204,7 +204,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       totalValueFormated,
       myLiquidityUSDPrice,
       onSelectAddLP,
-      onSelectRemoveLP
+      onSelectRemoveLP,
     ],
   )
 

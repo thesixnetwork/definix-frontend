@@ -57,14 +57,10 @@ const Withdraw: React.FC<WithdrawProps> = ({
     [myLiquidity, setVal],
   )
 
-  const [ onPresentConfirmModal ] = useModal((
-    <ConfirmModal
-      type="remove"
-      tokenName={tokenName}
-      stakedBalance={val}
-      onOK={() => onUnstake(val)}
-    />
-  ), false)
+  const [onPresentConfirmModal] = useModal(
+    <ConfirmModal type="remove" tokenName={tokenName} stakedBalance={val} onOK={() => onUnstake(val)} />,
+    false,
+  )
 
   return (
     <>
@@ -81,12 +77,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
         inputTitle={TranslateString(588, 'Unstake')}
       />
 
-      <Button
-        onClick={() => onPresentConfirmModal()}
-        fullWidth
-        radii="card"
-        className="mt-5"
-      >
+      <Button onClick={() => onPresentConfirmModal()} fullWidth radii="card" className="mt-5">
         Remove LP
       </Button>
     </>

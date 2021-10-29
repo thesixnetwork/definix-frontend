@@ -70,23 +70,14 @@ const Deposit: React.FC<DepositProps> = ({
   /**
    * confirm modal
    */
-  const [ onPresentConfirmModal ] = useModal((
-    <ConfirmModal
-      type="deposit"
-      tokenName={tokenName}
-      stakedBalance={val}
-      onOK={() => onStake(val)}
-    />
-  ), false)
+  const [onPresentConfirmModal] = useModal(
+    <ConfirmModal type="deposit" tokenName={tokenName} stakedBalance={val} onOK={() => onStake(val)} />,
+    false,
+  )
 
   return (
     <>
-      <Button
-        onClick={onBack}
-        fullWidth
-        className="mt-5"
-        radii="card"
-      >
+      <Button onClick={onBack} fullWidth className="mt-5" radii="card">
         Back
       </Button>
 
@@ -103,12 +94,7 @@ const Deposit: React.FC<DepositProps> = ({
         addLiquidityUrl={addLiquidityUrl}
         inputTitle={TranslateString(1070, 'Stake')}
       />
-      <Button
-        onClick={() => onPresentConfirmModal()}
-        fullWidth
-        className="mt-5"
-        radii="card"
-      >
+      <Button onClick={() => onPresentConfirmModal()} fullWidth className="mt-5" radii="card">
         Deposit
       </Button>
     </>
@@ -122,8 +108,6 @@ const Deposit: React.FC<DepositProps> = ({
     //   classHeader="bd-b-n"
     // >
     //   {/* {pendingTx ? <Lottie options={options} height={164} width={164} /> : renderCardHeading('mb-5', true)} */}
-
-      
 
     //   <ModalInput
     //     value={val}

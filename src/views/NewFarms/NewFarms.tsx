@@ -64,12 +64,12 @@ const Farms: React.FC = () => {
   const [isPhrase2, setIsPhrase2] = useState(false)
   // const [isOpenModal, setIsOpenModal] = useState(false)
   const [pageState, setPageState] = useState<{
-    state: string,
+    state: string
     data: any
   }>({
     state: 'list',
-    data: null
-  }) // 'list', 'deposit', 'remove', 
+    data: null,
+  }) // 'list', 'deposit', 'remove',
   // const [modal, setModal] =
   //   useState<{
   //     node: React.ReactNode
@@ -88,21 +88,20 @@ const Farms: React.FC = () => {
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
-
   const onSelectAddLP = useCallback((props: any) => {
     console.log('onSelectAddLP', props)
     setPageState({
       state: 'deposit',
-      data: props
-    });
-  }, []);
+      data: props,
+    })
+  }, [])
   const onSelectRemoveLP = useCallback((props: any) => {
     console.log('onSelectRemoveLP', props)
     setPageState({
       state: 'withdraw',
-      data: props
-    });
-  }, []);
+      data: props,
+    })
+  }, [])
 
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
@@ -263,7 +262,6 @@ const Farms: React.FC = () => {
     //     onDismiss: handleDismiss,
     //   }}
     // >
-      
 
     //   {isOpenModal && React.isValidElement(modal.node) && (
     //     <ModalWrapper>
@@ -282,88 +280,84 @@ const Farms: React.FC = () => {
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
-            {
-              pageState.state === 'list' && (
-                <>
-                  <div className="mb-5">
-                    <div className="flex align-center mb-2">
-                      <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                        Farm
-                      </Heading>
-                      <div className="mt-2 flex align-center justify-center">
-                        <TutorailsLink
-                          href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
-                          target="_blank"
-                        >
-                          Learn to stake.
-                        </TutorailsLink>
-                      </div>
+            {pageState.state === 'list' && (
+              <>
+                <div className="mb-5">
+                  <div className="flex align-center mb-2">
+                    <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                      Farm
+                    </Heading>
+                    <div className="mt-2 flex align-center justify-center">
+                      <TutorailsLink
+                        href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
+                        target="_blank"
+                      >
+                        Learn to stake.
+                      </TutorailsLink>
+                    </div>
 
-                      {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                    {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                         Help
                       </HelpButton> */}
-                    </div>
-                    <Text>LP를 예치하여 FINIX를 얻으세요.</Text>
                   </div>
+                  <Text>LP를 예치하여 FINIX를 얻으세요.</Text>
+                </div>
 
-                  <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-                    <FarmTabButtons
-                      stackedOnly={stackedOnly}
-                      setStackedOnly={setStackedOnly}
-                      listView={listView}
-                      setListView={setListView}
-                    />
-                    <FlexLayout cols={listView ? 1 : 3}>
-                      <Route exact path={`${path}`}>
-                        {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
-                      </Route>
-                      {/* <Route exact path={`${path}/history`}>
+                <TimerWrapper
+                  isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)}
+                  date={phrase2TimeStamp}
+                >
+                  <FarmTabButtons
+                    stackedOnly={stackedOnly}
+                    setStackedOnly={setStackedOnly}
+                    listView={listView}
+                    setListView={setListView}
+                  />
+                  <FlexLayout cols={listView ? 1 : 3}>
+                    <Route exact path={`${path}`}>
+                      {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+                    </Route>
+                    {/* <Route exact path={`${path}/history`}>
                         {farmsList(inactiveFarms, true)}
                       </Route> */}
-                    </FlexLayout>
-                  </TimerWrapper>
-                </>
-              )
-            }
-            {
-              pageState.state === 'deposit' && (
-                <Deposit
-                  pid={pageState.data.pid}
-                  tokenName={pageState.data.tokenName}
-                  tokenBalance={pageState.data.tokenBalance}
-                  addLiquidityUrl={pageState.data.addLiquidityUrl}
-                  totalLiquidity={pageState.data.totalLiquidity}
-                  myLiquidity={pageState.data.myLiquidity}
-                  myLiquidityUSDPrice={pageState.data.myLiquidityUSDPrice}
-                  onBack={() => {
-                    setPageState({
-                      state: 'list',
-                      data: null
-                    })
-                  }}
-                />
-              )
-            }
-            {
-              pageState.state === 'withdraw' && (
-                <Withdraw
-                  pid={pageState.data.pid}
-                  tokenName={pageState.data.tokenName}
-                  tokenBalance={pageState.data.tokenBalance}
-                  addLiquidityUrl={pageState.data.addLiquidityUrl}
-                  totalLiquidity={pageState.data.totalLiquidity}
-                  myLiquidity={pageState.data.myLiquidity}
-                  myLiquidityUSDPrice={pageState.data.myLiquidityUSDPrice}
-                  onBack={() => {
-                    setPageState({
-                      state: 'list',
-                      data: null
-                    })
-                  }}
-                />
-              )
-            }
-            
+                  </FlexLayout>
+                </TimerWrapper>
+              </>
+            )}
+            {pageState.state === 'deposit' && (
+              <Deposit
+                pid={pageState.data.pid}
+                tokenName={pageState.data.tokenName}
+                tokenBalance={pageState.data.tokenBalance}
+                addLiquidityUrl={pageState.data.addLiquidityUrl}
+                totalLiquidity={pageState.data.totalLiquidity}
+                myLiquidity={pageState.data.myLiquidity}
+                myLiquidityUSDPrice={pageState.data.myLiquidityUSDPrice}
+                onBack={() => {
+                  setPageState({
+                    state: 'list',
+                    data: null,
+                  })
+                }}
+              />
+            )}
+            {pageState.state === 'withdraw' && (
+              <Withdraw
+                pid={pageState.data.pid}
+                tokenName={pageState.data.tokenName}
+                tokenBalance={pageState.data.tokenBalance}
+                addLiquidityUrl={pageState.data.addLiquidityUrl}
+                totalLiquidity={pageState.data.totalLiquidity}
+                myLiquidity={pageState.data.myLiquidity}
+                myLiquidityUSDPrice={pageState.data.myLiquidityUSDPrice}
+                onBack={() => {
+                  setPageState({
+                    state: 'list',
+                    data: null,
+                  })
+                }}
+              />
+            )}
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout>

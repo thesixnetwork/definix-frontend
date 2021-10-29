@@ -1,13 +1,7 @@
 import React from 'react'
 import { Button, Modal } from 'uikit-dev'
 
- const ConfirmModal = ({
-  type,
-  tokenName,
-  stakedBalance,
-  onOK = () => null,
-  onDismiss = () => null
-}) => {
+const ConfirmModal = ({ type, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   return (
     <Modal
       title={`Confirm ${type}`}
@@ -20,8 +14,8 @@ import { Button, Modal } from 'uikit-dev'
       <p>stakedBalance: {stakedBalance}</p>
       <Button
         onClick={() => {
-          onOK();
-          onDismiss();
+          onOK()
+          onDismiss()
         }}
         fullWidth
         className="mt-5"
