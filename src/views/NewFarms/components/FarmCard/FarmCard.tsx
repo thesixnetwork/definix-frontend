@@ -3,15 +3,11 @@ import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { convertToUsd } from 'utils/formatPrice'
 import { QuoteToken } from 'config/constants/types'
-import useStake from 'hooks/useStake'
-import useUnstake from 'hooks/useUnstake'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import FarmContext from '../../FarmContext'
-import DepositModal from '../DepositModal'
-import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
@@ -60,12 +56,16 @@ const FarmCard: React.FC<FarmCardProps> = ({
   kethPrice,
   account,
   isHorizontal = false,
+  onSelectAddLP,
+  onSelectRemoveLP
 }) => {
   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
+  const [ isOpenAccordion, setIsOpenAccordion ] = useState(false)
 
+  const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  
   const getTokenValue = useCallback(
     (token) => {
       if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
@@ -86,7 +86,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   )
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
-  const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
 
   const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
@@ -104,9 +104,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const { bundleRewardLength, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-
-  const { onStake } = useStake(pid)
-  const { onUnstake } = useUnstake(pid)
 
   /**
    * totalValue in
@@ -139,52 +136,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [addLiquidityUrl, farm, finixPrice, isHorizontal, lpLabel, removed],
   )
 
-  const renderDepositModal = useCallback(() => {
-    onPresent(
-      <DepositModal
-        tokenName={lpLabel}
-        tokenBalance={tokenBalance}
-        onConfirm={onStake}
-        addLiquidityUrl={addLiquidityUrl}
-        renderCardHeading={renderCardHeading}
-        totalLiquidity={totalValueFormated}
-        myLiquidity={stakedBalance}
-        myLiquidityUSDPrice={myLiquidityUSDPrice}
-      />,
-      {
-        title: 'Deposit LP',
-        description: 'Farm에 LP를 예치하세요',
-      },
-    )
-  }, [
-    addLiquidityUrl,
-    lpLabel,
-    onPresent,
-    onStake,
-    renderCardHeading,
-    tokenBalance,
-    totalValueFormated,
-    stakedBalance,
-    myLiquidityUSDPrice,
-  ])
-
-  const renderWithdrawModal = useCallback(() => {
-    onPresent(
-      <WithdrawModal
-        onConfirm={onUnstake}
-        tokenName={lpLabel}
-        renderCardHeading={renderCardHeading}
-        totalLiquidity={totalValueFormated}
-        myLiquidity={stakedBalance}
-        myLiquidityUSDPrice={myLiquidityUSDPrice}
-      />,
-      {
-        title: 'Remove LP',
-        description: 'Farm 예치한 LP를 제거하세요',
-      },
-    )
-  }, [lpLabel, onPresent, onUnstake, renderCardHeading, totalValueFormated, stakedBalance, myLiquidityUSDPrice])
-
   /**
    * detail section
    */
@@ -216,11 +167,45 @@ const FarmCard: React.FC<FarmCardProps> = ({
         klaytn={klaytn}
         account={account}
         className={className}
-        onPresentDeposit={renderDepositModal}
-        onPresentWithdraw={renderWithdrawModal}
+        onPresentDeposit={() => {
+          onSelectAddLP({
+            pid,
+            tokenName: lpLabel,
+            tokenBalance,
+            addLiquidityUrl,
+            totalLiquidity: totalValueFormated,
+            myLiquidity: stakedBalance,
+            myLiquidityUSDPrice,
+          })
+        }}
+        onPresentWithdraw={() => {
+          onSelectRemoveLP({
+            pid,
+            tokenName: lpLabel,
+            tokenBalance,
+            addLiquidityUrl,
+            totalLiquidity: totalValueFormated,
+            myLiquidity: stakedBalance,
+            myLiquidityUSDPrice,
+          })
+        }}
       />
     ),
-    [account, klaytn, farm, renderDepositModal, renderWithdrawModal, isApproved, stakedBalance, myLiquidityUSDPrice],
+    [
+      account,
+      klaytn,
+      farm,
+      isApproved,
+      stakedBalance,
+      lpLabel,
+      pid,
+      tokenBalance,
+      addLiquidityUrl,
+      totalValueFormated,
+      myLiquidityUSDPrice,
+      onSelectAddLP,
+      onSelectRemoveLP
+    ],
   )
 
   /**

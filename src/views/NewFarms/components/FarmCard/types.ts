@@ -18,4 +18,6 @@ export interface FarmCardProps {
   klaytn?: provider
   account?: string
   isHorizontal?: boolean
+  onSelectAddLP: (props: any) => void
+  onSelectRemoveLP: (props: any) => void
 }

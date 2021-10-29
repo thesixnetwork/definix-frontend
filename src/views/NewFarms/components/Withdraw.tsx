@@ -1,32 +1,45 @@
 import BigNumber from 'bignumber.js'
 import ModalInput from 'components/ModalInput'
 import useI18n from 'hooks/useI18n'
+import useUnstake from 'hooks/useUnstake'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Modal } from 'uikit-dev'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import useModal from 'uikit-dev/widgets/Modal/useModal'
+import ConfirmModal from './ConfirmModal'
 
-interface WithdrawModalProps {
-  tokenName?: string
+interface WithdrawProps {
+  pid: number
+  tokenName: string
+  tokenBalance: BigNumber
   totalLiquidity: string
   myLiquidity: BigNumber
   myLiquidityUSDPrice: string
-  onConfirm: (amount: string) => void
-  onDismiss?: () => void
-  renderCardHeading?: (className?: string, inlineMultiplier?: boolean) => JSX.Element
+  addLiquidityUrl: string
+  onBack: () => void
 }
 
-const WithdrawModal: React.FC<WithdrawModalProps> = ({
-  onConfirm,
-  onDismiss,
+const Withdraw: React.FC<WithdrawProps> = ({
+  pid,
+  tokenBalance,
   tokenName = '',
-  renderCardHeading,
+  addLiquidityUrl,
   totalLiquidity,
   myLiquidity,
   myLiquidityUSDPrice,
+  onBack,
 }) => {
+  console.groupCollapsed('Remove data: ')
+  console.log('tokenBalance: ', tokenBalance)
+  console.log('tokenName: ', tokenName)
+  console.log('addLiquidityUrl: ', addLiquidityUrl)
+  console.log('totalLiquidity: ', totalLiquidity)
+  console.log('myLiquidity: ', myLiquidity)
+  console.log('myLiquidityUSDPrice: ', myLiquidityUSDPrice)
+  console.groupEnd()
   const [val, setVal] = useState('')
-  const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()
+  const { onUnstake } = useUnstake(pid)
   const fullBalance = useMemo(() => getFullDisplayBalance(myLiquidity), [myLiquidity])
 
   const handleChange = useCallback(
@@ -44,18 +57,17 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
     [myLiquidity, setVal],
   )
 
-  return (
-    <Modal
-      title=""
-      onBack={onDismiss}
-      onDismiss={onDismiss}
-      isRainbow={false}
-      bodyPadding="0 32px 32px 32px"
-      hideCloseButton
-      classHeader="bd-b-n"
-    >
-      {renderCardHeading('mb-5', true)}
+  const [ onPresentConfirmModal ] = useModal((
+    <ConfirmModal
+      type="remove"
+      tokenName={tokenName}
+      stakedBalance={val}
+      onOK={() => onUnstake(val)}
+    />
+  ), false)
 
+  return (
+    <>
       <p>totalLiquidity: {totalLiquidity}</p>
       <p>myLiquidity: {fullBalance}</p>
       <p>myLiquidityUSDPrice: {myLiquidityUSDPrice}</p>
@@ -70,21 +82,15 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
       />
 
       <Button
-        disabled={pendingTx}
-        onClick={async () => {
-          setPendingTx(true)
-          await onConfirm(val)
-          setPendingTx(false)
-          onDismiss()
-        }}
+        onClick={() => onPresentConfirmModal()}
         fullWidth
         radii="card"
         className="mt-5"
       >
-        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, 'Remove LP')}
+        Remove LP
       </Button>
-    </Modal>
+    </>
   )
 }
 
-export default WithdrawModal
+export default Withdraw
