@@ -2,9 +2,8 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
-import { useUnstakeId } from 'hooks/useLongTermStake'
 import React, { useEffect } from 'react'
-import { usePriceTVL, usePriceWeb3TVL, usePriceFinixUsd } from 'state/hooks'
+import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, Heading, Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
@@ -52,10 +51,7 @@ const Dot = styled.span`
 
 const CardTVL = ({ className = '' }) => {
   const { fastRefresh } = useRefresh()
-  const { totalFinixLock } = useUnstakeId()
-  const finixPriceUsd = usePriceFinixUsd()
-  const totalFinixLockUsd = finixPriceUsd.toNumber() * totalFinixLock
-  const totalTVL = usePriceTVL().toNumber() + totalFinixLockUsd
+  const totalTVL = usePriceTVL().toNumber()
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
   const TranslateString = useI18n()
   // const data = useGetStats()
