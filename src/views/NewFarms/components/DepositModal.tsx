@@ -52,10 +52,10 @@ const DepositModal: React.FC<DepositModalProps> = ({
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      const balance = tokenBalance.times(rate / 100);
+      const balance = tokenBalance.times(rate / 100)
       setVal(getFullDisplayBalance(balance))
     },
-    [tokenBalance, setVal]
+    [tokenBalance, setVal],
   )
 
   return (

@@ -106,7 +106,6 @@ const ModalInput: React.FC<ModalInputProps> = ({
       >
         {TranslateString(452, 'Max')}
       </Button>
-      
 
       {isBalanceZero && (
         <div className="flex align-center justify-center mt-5">

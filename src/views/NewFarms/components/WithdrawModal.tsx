@@ -38,10 +38,10 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      const balance = myLiquidity.times(rate / 100);
+      const balance = myLiquidity.times(rate / 100)
       setVal(getFullDisplayBalance(balance))
     },
-    [myLiquidity, setVal]
+    [myLiquidity, setVal],
   )
 
   return (
