@@ -158,7 +158,7 @@ const AprDecoration = styled(Text)`
   font-weight: 600;
   text-shadow: #00000050 0px 2px 4px;
   text-decoration: line-through;
-  text-decoration-color: red;
+  text-decoration-color: white;
 `
 
 const BoostValue = styled(Text)`
@@ -227,6 +227,8 @@ const CardStake = ({ isShowRightPanel }) => {
   const [click, setClick] = useState(false)
   const [percent, setPercent] = useState(0)
   const [isDisabled, setIsDisabled] = useState(false)
+  const [flgTextWarning, setFlgTextWarning] = useState('')
+  const [flgButton, setFlgButton] = useState('')
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
   const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
@@ -297,31 +299,101 @@ const CardStake = ({ isShowRightPanel }) => {
     }
   }, [status])
 
-  useEffect(() => {
-    if (value === '0.00') {
-      setIsDisabled(true)
-    } else if (value === '') {
-      setIsDisabled(true)
-    } else if (Number(value) > Number(balanceOf)) {
-      setIsDisabled(true)
-    } else if (period === 0) {
-      setIsDisabled(true)
-    } else if (period === 1 && Number(value) < _.get(minimum, '0')) {
-      setIsDisabled(true)
-    } else if (period === 2 && Number(value) < _.get(minimum, '1')) {
-      setIsDisabled(true)
-    } else if (period === 4 && Number(value) < _.get(minimum, '2')) {
-      setIsDisabled(true)
-    } else {
-      setIsDisabled(false)
+  const hadleTxtWarning = useCallback(() => {
+    setFlgTextWarning('')
+    if (period === 1 && Number(value) < _.get(minimum, '0') && value !== '') {
+      setFlgTextWarning('minimum')
     }
-  }, [value, period, balanceOf, minimum])
+    if (period === 2 && Number(value) < _.get(minimum, '1') && value !== '') {
+      setFlgTextWarning('minimum')
+    }
+    if (period === 4 && Number(value) < _.get(minimum, '2') && value !== '') {
+      setFlgTextWarning('minimum')
+    }
 
-  const renderApprovalOrStakeButton = () => {
-    return isApproved || transactionHash !== '' ? (
+    if (period === 1 && Number(value) >= _.get(minimum, '0') && value !== '') {
+      setFlgTextWarning('stake')
+    }
+
+    if (period === 2 && Number(value) >= _.get(minimum, '1') && value !== '') {
+      setFlgTextWarning('stake')
+    }
+    if (period === 4 && Number(value) >= _.get(minimum, '2') && value !== '') {
+      setFlgTextWarning('stake')
+    }
+  }, [period, value, minimum])
+
+  const hadleStakeButton = useCallback(() => {
+    setFlgButton('enter amount')
+    setIsDisabled(true)
+    if (Number(value) > Number(balanceOf)) {
+      setFlgButton('insufficient')
+      setIsDisabled(false)
+    } else if (period === 1 && Number(value) >= _.get(minimum, '0') && value !== '') {
+      setFlgButton('')
+      setIsDisabled(false)
+    } else if (period === 2 && Number(value) >= _.get(minimum, '1') && value !== '') {
+      setFlgButton('')
+      setIsDisabled(false)
+    } else if (period === 4 && Number(value) >= _.get(minimum, '2') && value !== '') {
+      setFlgButton('')
+      setIsDisabled(false)
+    } else if (period === 1 && Number(value) < _.get(minimum, '0') && value !== '') {
+      setFlgButton('')
+      setIsDisabled(true)
+    } else if (period === 2 && Number(value) < _.get(minimum, '1') && value !== '') {
+      setFlgButton('')
+      setIsDisabled(true)
+    } else if (period === 4 && Number(value) < _.get(minimum, '2') && value !== '') {
+      setFlgButton('')
+      setIsDisabled(true)
+    }
+  }, [value, period, minimum, balanceOf])
+
+  const hadleInsufficient = useCallback(() => {
+    setFlgButton('insufficient')
+  }, [])
+
+  useEffect(() => {
+    hadleTxtWarning()
+    if (Number(balanceOf) <= 0) {
+      hadleInsufficient()
+    } else {
+      hadleStakeButton()
+    }
+  }, [value, period, balanceOf, minimum, hadleTxtWarning, hadleStakeButton, hadleInsufficient])
+
+  const renderStakeDOrStake = () => {
+    return (
       <Button fullWidth disabled={isDisabled} className="align-self-center" radii="small" onClick={onStake}>
         Stake
       </Button>
+    )
+  }
+
+  const renderStakeOrEnter = () => {
+    return flgButton === 'enter amount' ? (
+      <Button fullWidth disabled className="align-self-center" radii="small">
+        Enter an amount
+      </Button>
+    ) : (
+      renderStakeDOrStake()
+    )
+  }
+
+  const renderStakeOrInsufficient = () => {
+    return flgButton === 'insufficient' ? (
+      <Button fullWidth disabled className="align-self-center" radii="small">
+        Insufficient Balance
+      </Button>
+    ) : (
+      renderStakeOrEnter()
+    )
+  }
+
+  const renderApprovalOrStakeButton = () => {
+    return isApproved || transactionHash !== '' ? (
+      renderStakeOrInsufficient()
     ) : (
       <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
         Approve Contract
@@ -348,6 +420,30 @@ const CardStake = ({ isShowRightPanel }) => {
       console.error(e)
     }
   }, [onApprove, setRequestedApproval])
+
+  const handleBalance = () => {
+    let text
+    if (flgTextWarning === 'stake') {
+      text = (
+        <Text className="mt-2" fontSize="10px !important" color={isDark ? 'white' : 'textSubtle'}>
+          {vFINIX} vFINIX will be received and the staking period will end in {date} GMT+9. Unstaking before the period
+          ends your FINIX amount will be locked {days} days and {percentPenalty}% will be deducted from total balance.
+        </Text>
+      )
+    }
+    if (flgTextWarning === 'minimum') {
+      text = (
+        <Text className="mt-2" fontSize="10px !important" color="red">
+          The amount of FINIX you are about to stake doesn&apos;t reach the minimum requirement.
+        </Text>
+      )
+    }
+    return text
+  }
+
+  const handleWrap = () => {
+    return 'wrap'
+  }
 
   return (
     <div className="align-stretch mt-5">
@@ -401,34 +497,65 @@ const CardStake = ({ isShowRightPanel }) => {
               Balance: {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'}
             </Text>
           </div>
-          <Balance>
-            <NumberInput
-              style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-              placeholder="0.00"
-              value={value}
-              onChange={handleChange}
-              pattern="^[0-9]*[,]?[0-9]*$"
-            />
-            {percent !== 1 && (
-              <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                  25%
-                </StylesButton>
-                <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                  50%
-                </StylesButton>
-                <StylesButton size="sm" onClick={() => setPercent(1)}>
-                  MAX
-                </StylesButton>
-              </div>
-            )}
-            <Coin>
-              <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-              <Heading as="h1" fontSize="16px !important">
-                FINIX
-              </Heading>
-            </Coin>
-          </Balance>
+          {isMobileOrTablet ? (
+            <Balance style={{ flexWrap: 'wrap' }}>
+              <NumberInput
+                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                pattern="^[0-9]*[,]?[0-9]*$"
+              />
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
+                  </StylesButton>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
+                  </StylesButton>
+                </div>
+              )}
+              <Coin>
+                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <Heading as="h1" fontSize="16px !important">
+                  FINIX
+                </Heading>
+              </Coin>
+            </Balance>
+          ) : (
+            <Balance>
+              <NumberInput
+                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                pattern="^[0-9]*[,]?[0-9]*$"
+              />
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
+                  </StylesButton>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
+                  </StylesButton>
+                </div>
+              )}
+              <Coin>
+                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <Heading as="h1" fontSize="16px !important">
+                  FINIX
+                </Heading>
+              </Coin>
+            </Balance>
+          )}
           <div className="flex mt-4">
             <Text className="col-6" color={isDark ? 'white' : '#000000'}>
               Estimated Period End
@@ -450,13 +577,7 @@ const CardStake = ({ isShowRightPanel }) => {
               </Text>
             </div>
           </div>
-          {!isDisabled && (
-            <Text className="mt-2" fontSize="10px !important" color={isDark ? 'white' : 'textSubtle'}>
-              {vFINIX} vFINIX will be received and the staking period will end in {date} GMT+9. Unstaking before the
-              period ends your FINIX amount will be locked {days} days and {percentPenalty}% will be deducted from total
-              balance.
-            </Text>
-          )}
+          {handleBalance()}
           <div className="flex mt-4">
             {!account ? (
               <Button
@@ -475,7 +596,7 @@ const CardStake = ({ isShowRightPanel }) => {
           </div>
         </div>
         {!isMobileOrTablet && (
-          <div style={{ opacity: loadings !== '' ? 0.1 : 1 }} className="col-4 flex flex-column">
+          <div style={{ opacity: loadings !== '' ? 0.1 : 1 , justifyContent: 'space-between'}} className="col-4 flex flex-column">
             <APRBOX className="px-5 mb-2">
               <img src={badgeBoost} alt="" />
               <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.4vw !important'} color="white">
@@ -495,7 +616,7 @@ const CardStake = ({ isShowRightPanel }) => {
                 color="white"
               >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
-            <img src={definixLongTerm} alt="" className="pl-3" />
+            <img src={definixLongTerm} alt="" className="pl-3 pb-5" />
           </div>
         )}
       </FinixStake>

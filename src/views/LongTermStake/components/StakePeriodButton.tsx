@@ -7,7 +7,7 @@ import _ from 'lodash'
 import { useAllLock, useApr } from '../../../hooks/useLongTermStake'
 
 const BoxLevel = styled.div`
-  height: 100%;
+  height: 60px;
   width: 100%;
   display: flex;
   border-radius: 6px;
@@ -130,7 +130,7 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
         className="mt-2"
         color={themeWhite(period, level)}
       >
-        Minimum {minimum} FINIX
+        Minimum {numeral(minimum).format('0,0')} FINIX
       </Text>
     </div>
   )

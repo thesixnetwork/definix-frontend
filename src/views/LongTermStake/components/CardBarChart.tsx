@@ -83,7 +83,7 @@ const options = {
           fontSize: 14,
           suggestedMin: 0,
           beginAtZero: true,
-          padding: 20,
+          padding: 14,
         },
       },
     ],
