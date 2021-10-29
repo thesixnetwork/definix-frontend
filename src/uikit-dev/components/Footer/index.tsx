@@ -163,12 +163,12 @@ const Social = () => {
       imgDarkMode: telegramWhite,
     },
     {
-      url: 'https://open.kakao.com/o/gQNRT5K',
+      url: 'https://open.kakao.com/o/gsh5pWGd',
       img: kakao,
       imgDarkMode: kakaoWhite,
     },
     {
-      url: 'https://app.gitbook.com/@sixnetwork/s/definix-on-klaytn-en/',
+      url: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
       img: gitbook,
       imgDarkMode: gitbookWhite,
     },
