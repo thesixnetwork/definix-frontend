@@ -54,8 +54,8 @@ const CardTVL = ({ className = '' }) => {
   const { fastRefresh } = useRefresh()
   const { totalFinixLock } = useUnstakeId()
   const finixPriceUsd = usePriceFinixUsd()
-  const totalFinixLockUsd = finixPriceUsd.toNumber() * totalFinixLock;
-  const totalTVL = usePriceTVL().toNumber() + totalFinixLockUsd;
+  const totalFinixLockUsd = finixPriceUsd.toNumber() * totalFinixLock
+  const totalTVL = usePriceTVL().toNumber() + totalFinixLockUsd
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
   const TranslateString = useI18n()
   // const data = useGetStats()
@@ -65,7 +65,6 @@ const CardTVL = ({ className = '' }) => {
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = totalSupply && getBalanceNumber(totalSupply)
   const finixTransfered = totalTransferFromBsc ? getBalanceNumber(totalTransferFromBsc) : 0
-
 
   useEffect(() => {
     fetchTVL()
