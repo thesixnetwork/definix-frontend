@@ -270,15 +270,15 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       asPenaltyMinutes = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
       let now = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
-      now.setMinutes(now.getMinutes() + asMinutes)
+      now.setDate(now.getDate() + asMinutes)
       now = new Date(now)
 
       let penaltyTimestamp = new Date(new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() * 1000)
-      penaltyTimestamp.setMinutes(penaltyTimestamp.getMinutes() + asPenaltyMinutes)
+      penaltyTimestamp.setDate(penaltyTimestamp.getDate() + asPenaltyMinutes)
       penaltyTimestamp = new Date(penaltyTimestamp)
 
       let unLockTime = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
-      unLockTime.setMinutes(unLockTime.getMinutes() + asPenaltyMinutes)
+      unLockTime.setDate(unLockTime.getDate() + asPenaltyMinutes)
       unLockTime = new Date(unLockTime)
 
       const offset = 2
