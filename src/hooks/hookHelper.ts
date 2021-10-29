@@ -20,5 +20,5 @@ export const getAbiVaultFacetByName = (methodName: string) =>
 export const getAbiRewardFacetByName = (methodName: string) =>
   RewardFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
 
-  export const getAbiVaultPenaltyFacetByName = (methodName: string) =>
+export const getAbiVaultPenaltyFacetByName = (methodName: string) =>
   VaultPenaltyFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)

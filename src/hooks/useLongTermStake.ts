@@ -1,12 +1,17 @@
 /* eslint-disable no-shadow */
-import { useEffect, useState, useCallback ,useContext} from 'react'
+import { useEffect, useState, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import moment from 'moment'
-import { useWallet,KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import { getAddress } from 'utils/addressHelpers'
-import { getAbiERC20ByName ,getAbiVaultPenaltyFacetByName,getAbiVaultFacetByName,getAbiRewardFacetByName} from 'hooks/hookHelper'
+import {
+  getAbiERC20ByName,
+  getAbiVaultPenaltyFacetByName,
+  getAbiVaultFacetByName,
+  getAbiRewardFacetByName,
+} from 'hooks/hookHelper'
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
 import * as klipProvider from 'hooks/klipProvider'
@@ -24,7 +29,7 @@ import { State } from '../state/types'
 
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, klaytn}: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
@@ -196,11 +201,11 @@ const handleContractExecute = (_executeFunction, _account) => {
 }
 
 export const useUnLock = () => {
-  const { account ,connector} = useWallet()
+  const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
 
   const onUnLock = async (id) => {
-    if(connector === "klip"){
+    if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
         getVFinix(),
         JSON.stringify(getAbiVaultFacetByName('unlock')),
@@ -210,14 +215,13 @@ export const useUnLock = () => {
       await klipProvider.checkResponse()
       setShowModal(false)
       return new Promise((resolve, reject) => {
-        resolve("")
+        resolve('')
       })
     }
-      const lock = getContract(VaultFacet.abi, getVFinix())
-      return new Promise((resolve, reject) => {
-        handleContractExecute(lock.methods.unlock(id), account).then(resolve).catch(reject)
-      })
-    
+    const lock = getContract(VaultFacet.abi, getVFinix())
+    return new Promise((resolve, reject) => {
+      handleContractExecute(lock.methods.unlock(id), account).then(resolve).catch(reject)
+    })
   }
 
   return { unnLock: onUnLock }
@@ -226,30 +230,28 @@ export const useUnLock = () => {
 export const useLock = (level, lockFinix, focus) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
-  const { account ,connector} = useWallet()
+  const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
 
   const stake = useCallback(async () => {
-    
-      
-      setStatus(false)
-      setLoading('loading')
-      if (lockFinix) {
-        try {
-          if(connector === "klip"){
-            klipProvider.genQRcodeContactInteract(
-              getVFinix(),
-              JSON.stringify(getAbiVaultFacetByName('lock')),
-              JSON.stringify([level, lockFinix]),
-              setShowModal,
-            )
-            await klipProvider.checkResponse()
-            setShowModal(false)
-            setLoading('success')
-            setStatus(true)
-            setInterval(() => setLoading(''), 5000)
-            setInterval(() => setStatus(false), 5000)
-          }else{
+    setStatus(false)
+    setLoading('loading')
+    if (lockFinix) {
+      try {
+        if (connector === 'klip') {
+          klipProvider.genQRcodeContactInteract(
+            getVFinix(),
+            JSON.stringify(getAbiVaultFacetByName('lock')),
+            JSON.stringify([level, lockFinix]),
+            setShowModal,
+          )
+          await klipProvider.checkResponse()
+          setShowModal(false)
+          setLoading('success')
+          setStatus(true)
+          setInterval(() => setLoading(''), 5000)
+          setInterval(() => setStatus(false), 5000)
+        } else {
           const lock = getContract(VaultFacet.abi, getVFinix())
           await lock.methods
             .lock(level, lockFinix)
@@ -269,26 +271,26 @@ export const useLock = (level, lockFinix, focus) => {
                   setStatus(false)
                 })
             })
-          }
-        } catch (e) {
-          setStatus(false)
         }
-      } else {
+      } catch (e) {
         setStatus(false)
       }
-    
+    } else {
+      setStatus(false)
+    }
+
     return status
-  }, [account, level, lockFinix, status,connector,setShowModal])
+  }, [account, level, lockFinix, status, connector, setShowModal])
 
   return { onStake: stake, status, loadings }
 }
 
 export const useHarvest = () => {
-  const { account ,connector} = useWallet()
+  const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
-    if(connector === "klip"){
+    if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
         getVFinix(),
         JSON.stringify(getAbiRewardFacetByName('harvest')),
@@ -298,25 +300,24 @@ export const useHarvest = () => {
       await klipProvider.checkResponse()
       setShowModal(false)
       return new Promise((resolve, reject) => {
-        resolve("ok")
+        resolve('ok')
       })
     }
-      const reward = getContract(RewardFacet.abi, getVFinix())
-      return new Promise((resolve, reject) => {
-        handleContractExecute(reward.methods.harvest(account), account).then(resolve).catch(reject)
-      })
-    
-  }, [account,connector,setShowModal])
+    const reward = getContract(RewardFacet.abi, getVFinix())
+    return new Promise((resolve, reject) => {
+      handleContractExecute(reward.methods.harvest(account), account).then(resolve).catch(reject)
+    })
+  }, [account, connector, setShowModal])
 
   return { handleHarvest }
 }
 
 export const useApprove = (max) => {
-  const { account ,connector} = useWallet()
+  const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
 
   const onApprove = useCallback(async () => {
-    if(connector === "klip"){
+    if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
         getFinixAddress(),
         JSON.stringify(getAbiERC20ByName('approve')),
@@ -329,12 +330,11 @@ export const useApprove = (max) => {
         resolve(txHash)
       })
     }
-      const reward = getContract(IKIP7.abi, getFinixAddress())
-      return new Promise((resolve, reject) => {
-        handleContractExecute(reward.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
-      })
-    
-  }, [account, max,connector,setShowModal])
+    const reward = getContract(IKIP7.abi, getFinixAddress())
+    return new Promise((resolve, reject) => {
+      handleContractExecute(reward.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
+    })
+  }, [account, max, connector, setShowModal])
 
   return { onApprove }
 }
@@ -462,11 +462,11 @@ export const useUnstakeId = () => {
 }
 
 export const useClaim = () => {
-  const { account ,connector} = useWallet()
+  const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleClaim = async (id) => {
-    if(connector === "klip"){
+    if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
         getVFinix(),
         JSON.stringify(getAbiVaultPenaltyFacetByName('claimWithPenalty')),
@@ -479,11 +479,10 @@ export const useClaim = () => {
         resolve(txHash)
       })
     }
-      const lock = getContract(VaultPenaltyFacet.abi, getVFinix())
-      return new Promise((resolve, reject) => {
-        handleContractExecute(lock.methods.claimWithPenalty(id), account).then(resolve).catch(reject)
-      })
-    
+    const lock = getContract(VaultPenaltyFacet.abi, getVFinix())
+    return new Promise((resolve, reject) => {
+      handleContractExecute(lock.methods.claimWithPenalty(id), account).then(resolve).catch(reject)
+    })
   }
 
   return { onClaim: handleClaim }
