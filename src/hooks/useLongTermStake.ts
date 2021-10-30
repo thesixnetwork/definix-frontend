@@ -16,7 +16,7 @@ import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
 import * as klipProvider from 'hooks/klipProvider'
 import { fetchPrivateData, fetchPendingReward, fetchAllLockPeriods } from '../state/actions'
-import VaultInfoFacet  from '../config/abi/VaultInfoFacet.json'
+import VaultInfoFacet from '../config/abi/VaultInfoFacet.json'
 import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
@@ -351,32 +351,35 @@ export const useApr = () => {
       const finixContract = getContract(IKIP7.abi, getVFinix())
       const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
 
-      
-      const [rewardPerBlockNumber,totalSupplyNumber,userVfinixAmount] = await Promise.all([
+      const [rewardPerBlockNumber, totalSupplyNumber, userVfinixAmount] = await Promise.all([
         await rewardFacetContract.methods.rewardPerBlock().call(),
         await finixContract.methods.totalSupply().call(),
-        await userVfinixInfoContract.methods.locks(account,0,0).call()
+        await userVfinixInfoContract.methods.locks(account, 0, 0).call(),
       ])
       const rewardPerBlock = new BigNumber(rewardPerBlockNumber).multipliedBy(86400).multipliedBy(365)
       const totalSupply = new BigNumber(totalSupplyNumber)
-      
+
       let totalVfinixUser = new BigNumber(0)
       let totalfinixUser = new BigNumber(0)
-      for(let i = 0 ;i<userVfinixAmount.length ; i++){
+      for (let i = 0; i < userVfinixAmount.length; i++) {
         const selector = userVfinixAmount[i]
-        if(selector.isUnlocked === false && selector.isPenalty === false){
+        if (selector.isUnlocked === false && selector.isPenalty === false) {
           totalVfinixUser = totalVfinixUser.plus(selector.voteAmount)
           totalfinixUser = totalfinixUser.plus(selector.lockAmount)
         }
       }
-     
-      const aprUser = (totalVfinixUser.dividedBy(totalSupply)).multipliedBy(rewardPerBlock).dividedBy(totalfinixUser).multipliedBy(100)
+
+      const aprUser = totalVfinixUser
+        .dividedBy(totalSupply)
+        .multipliedBy(rewardPerBlock)
+        .dividedBy(totalfinixUser)
+        .multipliedBy(100)
       // locks
       setApr(aprUser.toNumber())
     }
 
     fetchApr()
-  }, [slowRefresh,account])
+  }, [slowRefresh, account])
 
   return apr
 }
