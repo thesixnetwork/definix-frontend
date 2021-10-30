@@ -63,8 +63,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const lpTokenName = useMemo(() => {
-    return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '');
-  }, [farm.lpSymbol]);
+    return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
+  }, [farm.lpSymbol])
 
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
@@ -86,38 +86,23 @@ const FarmCard: React.FC<FarmCardProps> = ({
     },
     [farm.quoteTokenSymbol, klayPrice, finixPrice, kethPrice, sixPrice],
   )
-  const stakedBalanceValue: BigNumber = useMemo(
-    () => {
-      const {
-        lpTotalInQuoteToken,
-        lpTotalSupply,
-        quoteTokenBlanceLP,
-        quoteTokenDecimals,
-      } = farm
-      if (!lpTotalInQuoteToken) {
-        return new BigNumber(0)
-      }
-      const ratio = new BigNumber(stakedBalance).div(new BigNumber(lpTotalSupply))
-      const stakedTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
-        .div(new BigNumber(10).pow(quoteTokenDecimals))
-        .times(ratio)
-        .times(new BigNumber(2))
-      return getTokenValue(stakedTotalInQuoteToken)
-    },
-    [
-      farm,
-      stakedBalance,
-      getTokenValue
-    ]
-  )
-  const addLiquidityUrl = useMemo(
-    () => {
-      const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
-      const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
-      return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-    },
-    [farm]
-  )
+  const stakedBalanceValue: BigNumber = useMemo(() => {
+    const { lpTotalInQuoteToken, lpTotalSupply, quoteTokenBlanceLP, quoteTokenDecimals } = farm
+    if (!lpTotalInQuoteToken) {
+      return new BigNumber(0)
+    }
+    const ratio = new BigNumber(stakedBalance).div(new BigNumber(lpTotalSupply))
+    const stakedTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
+      .div(new BigNumber(10).pow(quoteTokenDecimals))
+      .times(ratio)
+      .times(new BigNumber(2))
+    return getTokenValue(stakedTotalInQuoteToken)
+  }, [farm, stakedBalance, getTokenValue])
+  const addLiquidityUrl = useMemo(() => {
+    const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+    const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+    return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  }, [farm])
 
   /**
    * total liquidity
@@ -226,12 +211,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
    */
   const renderHarvestActionAirDrop = useCallback(
     (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop
-        isHorizontal={isHor}
-        className={className}
-        pid={pid}
-        earnings={earnings}
-      />
+      <HarvestActionAirDrop isHorizontal={isHor} className={className} pid={pid} earnings={earnings} />
     ),
     [earnings, pid],
   )
