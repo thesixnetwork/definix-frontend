@@ -12,7 +12,6 @@ interface FarmCardActionsProps {
   isHorizontal?: boolean
   className?: string
   pid?: number
-  bundleRewardLength?: BigNumber
   earnings: BigNumber
 }
 

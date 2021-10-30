@@ -1,13 +1,18 @@
+import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
 import { Text, Heading } from 'uikit-dev'
+import useTokenBalance from 'hooks/useTokenBalance'
+import { getFinixAddress, getWklayAddress } from 'utils/addressHelpers'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { usePriceFinixKusdt } from 'state/hooks'
 
 export interface ExpandableSectionProps {
-  removed?: boolean
-  totalValueFormated?: string
   isHorizontal?: boolean
   className?: string
+  removed?: boolean
+  totalLiquidityUSD?: string
 }
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
@@ -19,11 +24,15 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
   removed,
-  totalValueFormated,
+  totalLiquidityUSD,
   isHorizontal = false,
   className = '',
 }) => {
   const TranslateString = useI18n()
+  // const finixBalance = useTokenBalance(getFinixAddress())
+  // const klayBalance = useTokenBalance(getWklayAddress())
+  // console.log('finix balance: ', finixBalance, new BigNumber(getBalanceNumber(finixBalance)).multipliedBy(usePriceFinixKusdt()).toNumber());
+  // console.log('klay balance: ', klayBalance);
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
@@ -31,7 +40,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         <>
           <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text>
           <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
-            {totalValueFormated}
+            {totalLiquidityUSD}
           </Heading>
         </>
       )}

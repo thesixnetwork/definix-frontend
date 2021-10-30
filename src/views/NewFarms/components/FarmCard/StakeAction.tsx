@@ -22,7 +22,7 @@ interface FarmStakeActionProps {
   onPresentWithdraw?: any
   isApproved: boolean
   myLiquidity: BigNumber
-  myLiquidityUSDPrice: any
+  myLiquidityUSD: any
 }
 
 const IconButtonWrapper = styled.div`
@@ -36,7 +36,7 @@ const IconButtonWrapper = styled.div`
 const StakeAction: React.FC<FarmStakeActionProps> = ({
   isApproved,
   myLiquidity,
-  myLiquidityUSDPrice,
+  myLiquidityUSD,
   farm,
   klaytn,
   account,
@@ -92,7 +92,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
               <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
                 {balanceValue}
               </Heading>
-              <Text color="textSubtle">= {myLiquidityUSDPrice}</Text>
+              <Text color="textSubtle">= {myLiquidityUSD}</Text>
 
               <div className="col-6">
                 <IconButtonWrapper>

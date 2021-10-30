@@ -1,13 +1,12 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { convertToUsd } from 'utils/formatPrice'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import FarmContext from '../../FarmContext'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
@@ -21,13 +20,13 @@ const CardStyle = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
 
-const VerticalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-`
+// const VerticalStyle = styled(CardStyle)`
+//   display: flex;
+//   position: relative;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   text-align: center;
+// `
 
 const HorizontalStyle = styled(CardStyle)`
   display: flex;
@@ -59,13 +58,16 @@ const FarmCard: React.FC<FarmCardProps> = ({
   onSelectAddLP,
   onSelectRemoveLP,
 }) => {
-  const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
-  const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  const lpTokenName = useMemo(() => {
+    return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '');
+  }, [farm.lpSymbol]);
 
+  const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
   const getTokenValue = useCallback(
     (token) => {
       if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
@@ -84,39 +86,51 @@ const FarmCard: React.FC<FarmCardProps> = ({
     },
     [farm.quoteTokenSymbol, klayPrice, finixPrice, kethPrice, sixPrice],
   )
-
-  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
-
-  const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
-
-  const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
-  const stakedTotalInQuoteToken = new BigNumber(farm.quoteTokenBlanceLP)
-    .div(new BigNumber(10).pow(farm.quoteTokenDecimals))
-    .times(ratio)
-    .times(new BigNumber(2))
-  const stakedBalanceValue: BigNumber = useMemo(() => {
-    if (!farm.lpTotalInQuoteToken) {
-      return new BigNumber(0)
-    }
-    return getTokenValue(stakedTotalInQuoteToken)
-  }, [farm.lpTotalInQuoteToken, stakedTotalInQuoteToken, getTokenValue])
-
-  const { bundleRewardLength, quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
-  const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
-  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  const stakedBalanceValue: BigNumber = useMemo(
+    () => {
+      const {
+        lpTotalInQuoteToken,
+        lpTotalSupply,
+        quoteTokenBlanceLP,
+        quoteTokenDecimals,
+      } = farm
+      if (!lpTotalInQuoteToken) {
+        return new BigNumber(0)
+      }
+      const ratio = new BigNumber(stakedBalance).div(new BigNumber(lpTotalSupply))
+      const stakedTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
+        .div(new BigNumber(10).pow(quoteTokenDecimals))
+        .times(ratio)
+        .times(new BigNumber(2))
+      return getTokenValue(stakedTotalInQuoteToken)
+    },
+    [
+      farm,
+      stakedBalance,
+      getTokenValue
+    ]
+  )
+  const addLiquidityUrl = useMemo(
+    () => {
+      const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+      const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+      return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+    },
+    [farm]
+  )
 
   /**
-   * totalValue in
+   * total liquidity
    */
-  const totalValue: BigNumber = useMemo(() => {
+  const totalLiquidity: BigNumber = useMemo(() => {
     if (!farm.lpTotalInQuoteToken) return null
     return getTokenValue(farm.lpTotalInQuoteToken)
   }, [farm.lpTotalInQuoteToken, getTokenValue])
-  const totalValueFormated = useMemo(() => convertToUsd(totalValue), [totalValue])
+  const totalLiquidityUSD = useMemo(() => convertToUsd(totalLiquidity), [totalLiquidity])
   /**
    * my liquidity
    */
-  const myLiquidityUSDPrice = useMemo(() => {
+  const myLiquidityUSD = useMemo(() => {
     return convertToUsd(stakedBalanceValue)
   }, [stakedBalanceValue])
 
@@ -126,14 +140,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
         isHorizontal={isHorizontal}
         className={className}
         farm={farm}
-        lpLabel={lpLabel}
+        lpLabel={lpTokenName}
         removed={removed}
         addLiquidityUrl={addLiquidityUrl}
         finixPrice={finixPrice}
         inlineMultiplier={inlineMultiplier || false}
       />
     ),
-    [addLiquidityUrl, farm, finixPrice, isHorizontal, lpLabel, removed],
+    [addLiquidityUrl, farm, finixPrice, isHorizontal, lpTokenName, removed],
   )
 
   /**
@@ -142,13 +156,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection
-        removed={removed}
-        totalValueFormated={totalValueFormated}
         isHorizontal={isHor}
         className={className}
+        removed={removed}
+        totalLiquidityUSD={totalLiquidityUSD}
       />
     ),
-    [removed, totalValueFormated],
+    [removed, totalLiquidityUSD],
   )
 
   /**
@@ -162,7 +176,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       <StakeAction
         isApproved={isApproved}
         myLiquidity={stakedBalance}
-        myLiquidityUSDPrice={myLiquidityUSDPrice}
+        myLiquidityUSD={myLiquidityUSD}
         farm={farm}
         klaytn={klaytn}
         account={account}
@@ -170,23 +184,23 @@ const FarmCard: React.FC<FarmCardProps> = ({
         onPresentDeposit={() => {
           onSelectAddLP({
             pid,
-            tokenName: lpLabel,
+            tokenName: lpTokenName,
             tokenBalance,
             addLiquidityUrl,
-            totalLiquidity: totalValueFormated,
+            totalLiquidity: totalLiquidityUSD,
             myLiquidity: stakedBalance,
-            myLiquidityUSDPrice,
+            myLiquidityUSD,
           })
         }}
         onPresentWithdraw={() => {
           onSelectRemoveLP({
             pid,
-            tokenName: lpLabel,
+            tokenName: lpTokenName,
             tokenBalance,
             addLiquidityUrl,
-            totalLiquidity: totalValueFormated,
+            totalLiquidity: totalLiquidityUSD,
             myLiquidity: stakedBalance,
-            myLiquidityUSDPrice,
+            myLiquidityUSD,
           })
         }}
       />
@@ -197,17 +211,16 @@ const FarmCard: React.FC<FarmCardProps> = ({
       farm,
       isApproved,
       stakedBalance,
-      lpLabel,
+      lpTokenName,
       pid,
       tokenBalance,
       addLiquidityUrl,
-      totalValueFormated,
-      myLiquidityUSDPrice,
+      totalLiquidityUSD,
+      myLiquidityUSD,
       onSelectAddLP,
       onSelectRemoveLP,
     ],
   )
-
   /**
    * harvest action
    */
@@ -217,69 +230,68 @@ const FarmCard: React.FC<FarmCardProps> = ({
         isHorizontal={isHor}
         className={className}
         pid={pid}
-        bundleRewardLength={bundleRewardLength}
         earnings={earnings}
       />
     ),
-    [earnings, pid, bundleRewardLength],
+    [earnings, pid],
   )
 
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
 
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <HorizontalMobileStyle className="mb-3">
-          <CardHeadingAccordion
-            farm={farm}
-            lpLabel={lpLabel}
-            removed={removed}
-            addLiquidityUrl={addLiquidityUrl}
-            finixPrice={finixPrice}
-            className=""
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-          />
-          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-            {renderStakeAction('pa-5')}
-            {/* renderHarvestAction('pa-5') */}
-            {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-            {renderDetailsSection('px-5 py-3', false)}
-          </div>
-        </HorizontalMobileStyle>
-      )
-    }
-
+  if (isMobile) {
     return (
-      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-        {renderCardHeading('col-4 pos-static')}
-
-        {renderDetailsSection('col-4 bd-x pa-3', true)}
-
-        <div className="flex col-4">
-          {renderStakeAction(`pa-3 ${isApproved || 'col-12'}`)}
-          {isApproved && renderHarvestActionAirDrop('col-6 pa-3')}
+      <HorizontalMobileStyle className="mb-3">
+        <CardHeadingAccordion
+          farm={farm}
+          lpLabel={lpTokenName}
+          removed={removed}
+          addLiquidityUrl={addLiquidityUrl}
+          finixPrice={finixPrice}
+          className=""
+          isOpenAccordion={isOpenAccordion}
+          setIsOpenAccordion={setIsOpenAccordion}
+        />
+        <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+          {renderStakeAction('pa-5')}
+          {/* renderHarvestAction('pa-5') */}
+          {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+          {renderDetailsSection('px-5 py-3', false)}
         </div>
-
-        {/*  */}
-        {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', isHorizontal)} */}
-      </HorizontalStyle>
+      </HorizontalMobileStyle>
     )
   }
 
   return (
-    <VerticalStyle className="mb-7">
-      <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-7')}
-        {renderStakeAction('pa-5')}
-        {/* renderHarvestAction('pa-5') */}
-        {renderHarvestActionAirDrop('pa-5 pt-0', isHorizontal)}
+    <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
+      {renderCardHeading('col-4 pos-static')}
+
+      {renderDetailsSection('col-4 bd-x pa-3', true)}
+
+      <div className="flex col-4">
+        {renderStakeAction(`pa-3 ${isApproved || 'col-12'}`)}
+        {isApproved && renderHarvestActionAirDrop('col-6 pa-3')}
       </div>
-      {renderDetailsSection('px-5 py-3', false)}
-    </VerticalStyle>
+
+      {/*  */}
+      {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', isHorizontal)} */}
+    </HorizontalStyle>
   )
+  // if (isHorizontal) {
+  // }
+
+  // return (
+  //   <VerticalStyle className="mb-7">
+  //     <div className="flex flex-column flex-grow">
+  //       {renderCardHeading('pt-7')}
+  //       {renderStakeAction('pa-5')}
+  //       {/* renderHarvestAction('pa-5') */}
+  //       {renderHarvestActionAirDrop('pa-5 pt-0', isHorizontal)}
+  //     </div>
+  //     {renderDetailsSection('px-5 py-3', false)}
+  //   </VerticalStyle>
+  // )
 }
 
 export default FarmCard
