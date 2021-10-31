@@ -9,6 +9,12 @@ import { BlockContextProvider } from 'contexts/BlockContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 
+import { NetworkContextName } from 'config/constants'
+import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
+import getLibrary from './utils/getLibrary'
+
+const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
+
 const Providers: React.FC = ({ children }) => {
   const rpcUrl = getRpcUrl()
 
@@ -25,7 +31,13 @@ const Providers: React.FC = ({ children }) => {
           >
             <BlockContextProvider>
               <RefreshContextProvider>
-                <ModalProvider>{children}</ModalProvider>
+                <ModalProvider>
+                  <Web3ReactProvider getLibrary={getLibrary}>
+                    <Web3ProviderNetwork getLibrary={getLibrary}>
+                      {children}
+                    </Web3ProviderNetwork>
+                  </Web3ReactProvider>
+                </ModalProvider>
               </RefreshContextProvider>
             </BlockContextProvider>
           </UseWalletProvider>

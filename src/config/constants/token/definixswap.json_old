@@ -1,0 +1,62 @@
+{
+  "name": "definixswap",
+  "timestamp": "2020-08-25T15:41:29.665Z",
+  "version": {
+    "major": 1,
+    "minor": 3,
+    "patch": 1
+  },
+  "tags": {},
+  "logoURI": "/images/coins/wbnb.png",
+  "keywords": ["definix", "default"],
+  "tokens": [
+    {
+      "name": "FINIX Token",
+      "symbol": "FINIX",
+      "address": "0x2ee2CEa14F245b0Bdb32EE3E4251fA50B6fc811b",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "/images/coins/FINIX.png"
+    },
+    {
+      "name": "SIX Token",
+      "symbol": "SIX",
+      "address": "0x1FD5a30570b384f03230595E31a4214C9bEdC964",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "/images/coins/SIX.png"
+    },
+    {
+      "name": "BUSD Token",
+      "symbol": "BUSD",
+      "address": "0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee",
+      "chainId": 97,
+      "decimals": 18,
+      "logoURI": "/images/coins/BTC.png"
+    },
+    {
+      "name": "FINIX Token",
+      "symbol": "FINIX",
+      "address": "0x136aF56aA2E2bF6114DA5F659B24456c60dDCB8e",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/coins/FINIX.png"
+    },
+    {
+      "name": "SIX Token",
+      "symbol": "SIX",
+      "address": "0x1FD5a30570b384f03230595E31a4214C9bEdC964",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/coins/SIX.png"
+    },
+    {
+      "name": "BUSD Token",
+      "symbol": "BUSD",
+      "address": "0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee",
+      "chainId": 56,
+      "decimals": 18,
+      "logoURI": "/images/coins/BTC.png"
+    }
+  ]
+}

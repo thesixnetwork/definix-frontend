@@ -1,3 +1,4 @@
+/* eslint-disable react/default-props-match-prop-types */
 import React from 'react'
 import styled from 'styled-components'
 import { ChevronDownIcon, ChevronUpIcon, Text } from 'uikit-dev'

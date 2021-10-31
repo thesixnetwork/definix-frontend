@@ -1,6 +1,6 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
-import React, { lazy, Suspense, useEffect } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
 import { Redirect, Route, Router, Switch } from 'react-router-dom'
@@ -9,14 +9,31 @@ import { Modal, ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
-import Menu from './components/Menu'
-import PageLoader from './components/PageLoader'
-import ToastListener from './components/ToastListener'
-import history from './routerHistory'
-import GlobalStyle from './style/Global'
-import Flip from './uikit-dev/components/Flip'
 // import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
+
+
+import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
+import { useWeb3React } from '@web3-react/core'
+import { injected } from 'connectors'
+import { TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import Popups from 'components/Popups'
+import Web3ReactManager from 'components/Web3ReactManager'
+import { allLanguages, EN } from 'config/constants/localisation/languageCodes'
+import { LanguageContext } from 'hooks/LanguageContext'
+import { TranslationsContext } from 'hooks/TranslationsContext'
+import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from 'views/AddLiquidity/redirects'
+import { RedirectOldRemoveLiquidityPathStructure } from 'views/RemoveLiquidity/redirects'
+import { RedirectPathToSwapOnly, RedirectToSwap } from 'views/Swap/redirects'
+import Flip from './uikit-dev/components/Flip'
+import GlobalStyle from './style/Global'
+import history from './routerHistory'
+import ToastListener from './components/ToastListener'
+import PageLoader from './components/PageLoader'
+import Menu from './components/Menu'
+// import WaitingPage from 'uikit-dev/components/WaitingPage'
+
+
 
 ReactGA.initialize('G-L997LXLF8F')
 
@@ -45,6 +62,12 @@ const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 // const Team = lazy(() => import('./views/Teams/Team'))
 // const Profile = lazy(() => import('./views/Profile'))
 
+const AddLiquidity = lazy(() => import('./views/AddLiquidity'))
+const Pool = lazy(() => import('./views/Pool'))
+const PoolFinder = lazy(() => import('./views/PoolFinder'))
+const RemoveLiquidity = lazy(() => import('./views/RemoveLiquidity'))
+const Swap = lazy(() => import('./views/Swap'))
+
 // This config is required for number formating
 BigNumber.config({
   EXPONENTIAL_AT: 1000,
@@ -53,6 +76,7 @@ BigNumber.config({
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
+  const { activate } = useWeb3React()
 
   // const [isPhrase1, setIsPhrase1] = useState(false)
   // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
@@ -71,6 +95,10 @@ const App: React.FC = () => {
 
   // Monkey patch warn() because of web3 flood
   // To be removed when web3 1.3.5 is released
+
+  
+
+
   useEffect(() => {
     console.warn = () => null
   }, [])
@@ -83,6 +111,69 @@ const App: React.FC = () => {
 
   useFetchPublicData()
   useFetchProfile()
+
+  // swap-interface
+  const [selectedLanguage, setSelectedLanguage] = useState<any>(undefined)
+  const [translatedLanguage, setTranslatedLanguage] = useState<any>(undefined)
+  const [translations, setTranslations] = useState<Array<any>>([])
+  const apiKey = `${process.env.REACT_APP_CROWDIN_APIKEY}`
+  const projectId = parseInt(`${process.env.REACT_APP_CROWDIN_PROJECTID}`)
+  const fileId = 6
+
+  const credentials: Credentials = {
+    token: apiKey,
+  }
+
+  const stringTranslationsApi = new StringTranslations(credentials)
+
+  const getStoredLang = (storedLangCode: string) => {
+    return allLanguages.filter((language) => {
+      return language.code === storedLangCode
+    })[0]
+  }
+
+  useEffect(() => {
+    const storedLangCode = localStorage.getItem('definixSwapLanguage')
+    if (storedLangCode) {
+      const storedLang = getStoredLang(storedLangCode)
+      setSelectedLanguage(storedLang)
+    } else {
+      setSelectedLanguage(EN)
+    }
+  }, [])
+
+  const fetchTranslationsForSelectedLanguage = async () => {
+    stringTranslationsApi
+      .listLanguageTranslations(projectId, selectedLanguage.code, undefined, fileId, 200)
+      .then((translationApiResponse) => {
+        if (translationApiResponse.data.length < 1) {
+          setTranslations(['error'])
+        } else {
+          setTranslations(translationApiResponse.data)
+        }
+      })
+      .then(() => setTranslatedLanguage(selectedLanguage))
+      .catch((error) => {
+        setTranslations(['error'])
+        console.error(error)
+      })
+  }
+
+
+  useEffect(() => {
+    if (!account && window.localStorage.getItem('accountStatus')) {
+      activate(injected)
+    }
+  }, [account, activate])
+
+  useEffect(() => {
+    if (selectedLanguage) {
+      fetchTranslationsForSelectedLanguage()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLanguage])
+
+
 
   return (
     <Router history={history}>
@@ -112,6 +203,27 @@ const App: React.FC = () => {
             <Route path="/AirdropKlay">
               <AirdropKlay />
             </Route>
+
+
+            {/* swap-interface */}
+            <Route exact strict path="/swap" component={Swap} />
+            <Route exact path="/swap/:currencyIdA/:currencyIdB" component={RedirectToSwap} />
+            <Route exact path="/swap/:currencyIdA" component={RedirectToSwap} />
+            <Route exact strict path="/find" component={PoolFinder} />
+            <Route exact strict path="/liquidity" component={Pool} />
+            <Route exact path="/add" component={AddLiquidity} />
+            <Route exact strict path="/remove/:currencyIdA/:currencyIdB" component={RemoveLiquidity} />
+
+            {/* <Route path="/xxx">
+              <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
+            </Route> */}
+
+            {/* Redirection: These old routes are still used in the code base */}
+            <Route exact path="/add/:currencyIdA" component={RedirectOldAddLiquidityPathStructure} />
+            <Route exact path="/add/:currencyIdA/:currencyIdB" component={RedirectDuplicateTokenIds} />
+            <Route exact strict path="/remove/:tokens" component={RedirectOldRemoveLiquidityPathStructure} />
+
+            <Route component={RedirectPathToSwapOnly} />
 
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
@@ -208,3 +320,5 @@ const DateModal = ({ date }) => {
 }
 
 export default React.memo(App)
+
+
