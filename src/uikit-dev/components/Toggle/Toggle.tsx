@@ -1,3 +1,4 @@
+/* eslint-disable react/default-props-match-prop-types */
 import React from 'react'
 import StyledToggle, { Input, Handle } from './StyledToggle'
 import { ToggleProps, scales } from './types'

@@ -1,3 +1,4 @@
+/* eslint-disable react/default-props-match-prop-types */
 import React from 'react'
 import { TagProps } from './types'
 import { StyledTag } from './StyledTag'

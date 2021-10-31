@@ -17,7 +17,7 @@ interface FarmStakeActionProps {
   farm: FarmWithStakedValue
   klaytn?: provider
   account?: string
-  addLiquidityUrl?: string
+  // addLiquidityUrl?: string
   className?: string
   onPresentDeposit?: any
   onPresentWithdraw?: any

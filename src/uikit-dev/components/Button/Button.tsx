@@ -1,3 +1,4 @@
+/* eslint-disable react/default-props-match-prop-types */
 import React from 'react'
 import getExternalLinkProps from '../../util/getExternalLinkProps'
 import StyledButton from './StyledButton'

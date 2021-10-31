@@ -39,3 +39,18 @@ const getWeb3Contract = (abi: any, address: string, contractOptions?: ContractOp
 }
 
 export { getWeb3Contract, getWeb3, getCaver, getContract, httpProvider }
+
+// swap-interface
+
+// eslint-disable-next-line
+declare const window: any;
+const baseCaver = new Caver(window.klaytn)
+const Contract = baseCaver.contract
+
+const getCaverContract = (address: string, abi: any, contractOptions?: ContractOptions) => {
+  const caver = getCaver()
+  // eslint-disable-next-line
+  return new caver.klay.Contract(abi as unknown as AbiItem, address, contractOptions)
+}
+
+export { getCaverContract, Contract }

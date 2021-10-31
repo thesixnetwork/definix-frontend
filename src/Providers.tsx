@@ -35,28 +35,32 @@ const Providers: React.FC = ({ children }) => {
       onHiddenModal()
     }
   }
+
+
   return (
-    <Provider store={store}>
-      <ThemeContextProvider>
-        <LanguageContextProvider>
-          <UseWalletProvider
-            chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
-            connectors={{
-              injected,
-              klip: { showModal: onPresent, closeModal: onHiddenModal },
-            }}
-          >
-            <BlockContextProvider>
-              <RefreshContextProvider>
-                <ModalProvider>
-                  <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
-                </ModalProvider>
-              </RefreshContextProvider>
-            </BlockContextProvider>
-          </UseWalletProvider>
-        </LanguageContextProvider>
-      </ThemeContextProvider>
-    </Provider>
+    <>
+      <Provider store={store}>
+        <ThemeContextProvider>
+          <LanguageContextProvider>
+            <UseWalletProvider
+              chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
+              connectors={{
+                injected,
+                klip: { showModal: onPresent, closeModal: onHiddenModal },
+              }}
+            >
+              <BlockContextProvider>
+                <RefreshContextProvider>
+                  <ModalProvider>
+                    <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
+                  </ModalProvider>
+                </RefreshContextProvider>
+              </BlockContextProvider>
+            </UseWalletProvider>
+          </LanguageContextProvider>
+        </ThemeContextProvider>
+      </Provider>
+    </>
   )
 }
 

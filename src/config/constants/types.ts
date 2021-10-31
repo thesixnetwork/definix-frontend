@@ -39,6 +39,8 @@ export enum QuoteToken {
   'FINIXKLAY' = 'FINIX-KLAY',
   'SIXKUSDT' = 'SIX-KUSDT',
   'KDAIKUSDT' = 'KDAI-KUSDT',
+  // swap-interface
+  'KSP' = 'KSP',
 }
 
 export enum PoolCategory {
@@ -95,6 +97,10 @@ export interface FarmConfig {
   }
   firstToken?: any
   secondToken?: any
+
+  // swap-interface
+  firstSymbol?: string
+  secondSymbol?: string
 }
 
 export interface PoolConfig {

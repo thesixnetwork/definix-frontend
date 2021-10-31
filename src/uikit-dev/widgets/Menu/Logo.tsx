@@ -10,8 +10,8 @@ import { HamburgerIcon } from './icons'
 import MenuButton from './MenuButton'
 
 interface Props {
-  isPushed: boolean
-  isDark: boolean
+  isPushed?: boolean
+  isDark?: boolean
   togglePush: () => void
   href: string
 }
@@ -40,7 +40,7 @@ const StyledTogglePanel = styled(MenuButton)`
   margin-right: 16px;
 `
 
-const Logo: React.FC<Props> = ({ togglePush, href }) => {
+const Logo: React.FC<Props> = ({ isPushed, isDark: isDarkProps, togglePush, href }) => {
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isLg
   const { isDark } = useTheme()

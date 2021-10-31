@@ -12,7 +12,7 @@ const ThemeContext = React.createContext({
   },
 })
 
-const ThemeContextProvider = ({ children }) => {
+const ThemeContextProvider: React.FC = ({ children }) => {
   const [isDark, setIsDark] = useState(() => {
     const isDarkUserSetting = localStorage.getItem(CACHE_KEY)
     return isDarkUserSetting ? JSON.parse(isDarkUserSetting) : false

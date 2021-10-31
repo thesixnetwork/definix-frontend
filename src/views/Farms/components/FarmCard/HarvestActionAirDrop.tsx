@@ -32,6 +32,8 @@ const MiniLogo = styled.img`
 `
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({
+  bundleRewardLength,
+  earnings: earningsProps,
   pendingRewards,
   bundleRewards,
   pid,

@@ -31,7 +31,14 @@
     "radix": 0,
     "import/no-extraneous-dependencies": 0,
     "jsx-a11y/media-has-caption": 0,
-    "import/no-cycle": 0
+    "import/no-cycle": 0,
     // End temporary rules
+    // swap-interface
+    "no-nested-ternary": 0,
+    "react/require-default-props": 0,
+    "no-param-reassign": 0,
+    "sort-imports": 0,
+    "no-duplicate-imports": 0,
+    "no-await-in-loop": 0
   }
 }

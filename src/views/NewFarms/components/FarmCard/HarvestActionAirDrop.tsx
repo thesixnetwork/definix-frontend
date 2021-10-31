@@ -16,7 +16,7 @@ interface FarmCardActionsProps {
   earnings: BigNumber
 }
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ className = '', isHorizontal, pid, earnings }) => {
+const HarvestAction: React.FC<FarmCardActionsProps> = ({ className = '', isHorizontal, pid, earnings, bundleRewardLength }) => {
   const TranslateString = useI18n()
   const [pendingTx, setPendingTx] = useState(false)
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
