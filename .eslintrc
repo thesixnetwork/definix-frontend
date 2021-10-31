@@ -39,5 +39,6 @@
     "default-case": 0,
     "react/require-default-props": 0,
     "class-methods-use-this": 0,
+    "no-extra-semi": 0
   }
 }

@@ -26,7 +26,7 @@ TagManager.initialize(tagManagerArgs)
 // TagManager.initialize(tagManagerArgs);
 
 if ('ethereum' in window) {
-  ;(window.ethereum as any).autoRefreshOnNetworkChange = false
+  (window.ethereum as any).autoRefreshOnNetworkChange = false
 }
 
 window.addEventListener('error', () => {
