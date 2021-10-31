@@ -33,7 +33,7 @@ const tagManagerArgs = {
 TagManager.initialize(tagManagerArgs)
 
 if ('klaytn' in window) {
-  ;(window.klaytn as any).autoRefreshOnNetworkChange = false
+  (window.klaytn as any).autoRefreshOnNetworkChange = false
 }
 
 window.addEventListener('error', () => {

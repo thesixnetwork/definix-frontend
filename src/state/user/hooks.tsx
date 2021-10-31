@@ -243,8 +243,8 @@ export function useTrackedTokenPairs(): [Token, Token][] {
     })
   }, [savedSerializedPairs, chainId])
 
-  // @ts-ignore
   const combinedList = useMemo(
+    // @ts-ignore
     () => userPairs.concat(generatedPairs).concat(pinnedPairs),
     [generatedPairs, pinnedPairs, userPairs],
   )
