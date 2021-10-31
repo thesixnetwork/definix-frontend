@@ -50,7 +50,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   pool,
   bundleRewardLength,
   tokenDecimals,
-  farm
+  farm,
 }) => {
   const TranslateString = useI18n()
 

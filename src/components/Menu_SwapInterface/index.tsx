@@ -1,12 +1,12 @@
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
-import { injected,klip } from 'connectors'
+import { injected, klip } from 'connectors'
 import { allLanguages } from 'config/constants/localisation/languageCodes'
 import { LanguageContext } from 'hooks/LanguageContext'
 import useGetLocalProfile from 'hooks/useGetLocalProfile'
 import useGetPriceData from 'hooks/useGetPriceData'
 import useTheme from 'hooks/useTheme'
 import React, { useContext } from 'react'
-import { KlipModalContext } from "@sixnetwork/klaytn-use-wallet"
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { ConnectorId, Menu as UikitMenu } from 'uikit-dev'
 import numeral from 'numeral'
 import links from './config'
@@ -32,11 +32,11 @@ const Menu: React.FC = (props) => {
       links={links}
       account={account as string}
       login={(connectorId: ConnectorId) => {
-        if (connectorId === "klip") {   
-          window.localStorage.setItem("connector","klip")
+        if (connectorId === 'klip') {
+          window.localStorage.setItem('connector', 'klip')
           return activate(klip(showModalKlip, closeModalKlip))
-        } 
-        window.localStorage.setItem("connector","injected")
+        }
+        window.localStorage.setItem('connector', 'injected')
         return activate(injected)
       }}
       logout={deactivate}

@@ -240,7 +240,7 @@ export function ListSelect({ onDismiss, onBack }: { onDismiss: () => void; onBac
         handleAddList()
       }
     },
-    [handleAddList, validUrl]
+    [handleAddList, validUrl],
   )
 
   const sortedLists = useMemo(() => {

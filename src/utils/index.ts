@@ -19,7 +19,7 @@ export function isAddress(value: any): string | false {
 
 const BSCSCAN_PREFIXES: { [chainId: number]: string } = {
   1001: 'baobab.',
-  8217: ''
+  8217: '',
 }
 
 export function getBscScanLink(chainId: number, data: string, type: 'transaction' | 'token' | 'address'): string {
@@ -64,7 +64,7 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
   }
   return [
     JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 - slippage)), JSBI.BigInt(10000)),
-    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), JSBI.BigInt(10000))
+    JSBI.divide(JSBI.multiply(value.raw, JSBI.BigInt(10000 + slippage)), JSBI.BigInt(10000)),
   ]
 }
 

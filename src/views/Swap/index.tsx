@@ -17,7 +17,8 @@ import TradePrice from 'components/swap/TradePrice'
 import SyrupWarningModal from 'components/SyrupWarningModal'
 import TokenWarningModal from 'components/TokenWarningModal'
 import TransactionHistoryBox from 'components/TransactionHistoryBox'
-import { INITIAL_ALLOWED_SLIPPAGE ,
+import {
+  INITIAL_ALLOWED_SLIPPAGE,
   SIX_ADDRESS,
   FINIX_ADDRESS,
   KSP_ADDRESS,
@@ -133,7 +134,7 @@ export default function Swap({
   const [syrupTransactionType, setSyrupTransactionType] = useState<string>('')
   const urlLoadedTokens: Token[] = useMemo(
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
-    [loadedInputCurrency, loadedOutputCurrency]
+    [loadedInputCurrency, loadedOutputCurrency],
   )
   const handleConfirmTokenWarning = useCallback(() => {
     setDismissTokenWarning(true)
@@ -165,7 +166,7 @@ export default function Swap({
     WKLAY_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
     18,
     'WKLAY',
-    'Wrapped KLAY'
+    'Wrapped KLAY',
   )
   const theme = useContext(ThemeContext)
 
@@ -178,11 +179,11 @@ export default function Swap({
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
-  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
-    currencies[Field.INPUT],
-    currencies[Field.OUTPUT],
-    typedValue
-  )
+  const {
+    wrapType,
+    execute: onWrap,
+    inputError: wrapInputError,
+  } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = v2Trade
 
@@ -204,13 +205,13 @@ export default function Swap({
     (value: string) => {
       onUserInput(Field.INPUT, value)
     },
-    [onUserInput]
+    [onUserInput],
   )
   const handleTypeOutput = useCallback(
     (value: string) => {
       onUserInput(Field.OUTPUT, value)
     },
-    [onUserInput]
+    [onUserInput],
   )
 
   // modal and loading
@@ -237,7 +238,7 @@ export default function Swap({
 
   const route = trade?.route
   const userHasSpecifiedInputOutput = Boolean(
-    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
+    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
   )
   const noRoute = !route
   const [onPresentSettings] = useModal(
@@ -245,7 +246,7 @@ export default function Swap({
       <a href="https://google.com" rel="noreferrer" target="_blank">
         <button type="button">klip login</button>
       </a>
-    </Modal>
+    </Modal>,
   )
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(chainId, trade, allowedSlippage)
@@ -268,7 +269,7 @@ export default function Swap({
     trade,
     allowedSlippage,
     deadline,
-    recipient
+    recipient,
   )
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
@@ -341,7 +342,7 @@ export default function Swap({
         setSyrupTransactionType(purchaseType)
       }
     },
-    [setIsSyrup, setSyrupTransactionType]
+    [setIsSyrup, setSyrupTransactionType],
   )
 
   const handleInputSelect = useCallback(
@@ -352,7 +353,7 @@ export default function Swap({
         checkForSyrup(inputCurrency.symbol.toLowerCase(), 'Selling')
       }
     },
-    [onCurrencySelection, setApprovalSubmitted, checkForSyrup]
+    [onCurrencySelection, setApprovalSubmitted, checkForSyrup],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -387,7 +388,7 @@ export default function Swap({
         checkForSyrup(outputCurrency.symbol.toLowerCase(), 'Buying')
       }
     },
-    [onCurrencySelection, checkForSyrup]
+    [onCurrencySelection, checkForSyrup],
   )
 
   useEffect(() => {
@@ -736,7 +737,7 @@ export default function Swap({
               x.address.toLowerCase() !== KBNB_ADDRESS[chainId].toLowerCase() &&
               x.address.toLowerCase() !== KXRP_ADDRESS[chainId].toLowerCase() &&
               x.address.toLowerCase() !== KETH_ADDRESS[chainId].toLowerCase() &&
-              x.address.toLowerCase() !== KWBTC_ADDRESS[chainId].toLowerCase()
+              x.address.toLowerCase() !== KWBTC_ADDRESS[chainId].toLowerCase(),
           ).length > 0 && !dismissTokenWarning
         }
         tokens={urlLoadedTokens}

@@ -15,15 +15,15 @@ import { MinimalPositionCard } from 'components/PositionCard'
 import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import { RowBetween, RowFixed } from 'components/Row'
-import { KlipConnector } from "@sixnetwork/klip-connector"
+import { KlipConnector } from '@sixnetwork/klip-connector'
 import { Dots } from 'components/swap/styleds'
 import tp from 'tp-js-sdk'
-import {sendAnalyticsData} from 'utils/definixAnalytics'
+import { sendAnalyticsData } from 'utils/definixAnalytics'
 // import { Transaction } from "@ethersproject/transactios";
 import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
-  TransactionSubmittedContent
+  TransactionSubmittedContent,
 } from 'components/TransactionConfirmationModal'
 import { PairState } from 'data/Reserves'
 import { Currency, currencyEquals, ETHER, TokenAmount, WETH } from 'definixswap-sdk'
@@ -60,9 +60,9 @@ import * as klipProvider from '../../hooks/klipProvider'
 
 export default function AddLiquidity({
   match: {
-    params: { currencyIdA, currencyIdB }
+    params: { currencyIdA, currencyIdB },
   },
-  history
+  history,
 }: RouteComponentProps<{ currencyIdA?: string; currencyIdB?: string }>) {
   const { account, chainId, library } = useActiveWeb3React()
   const { connector } = useCaverJsReact()
@@ -75,8 +75,8 @@ export default function AddLiquidity({
 
   const oneCurrencyIsWETH = Boolean(
     chainId &&
-    ((currencyA && currencyEquals(currencyA, WETH(chainId))) ||
-      (currencyB && currencyEquals(currencyB, WETH(chainId))))
+      ((currencyA && currencyEquals(currencyA, WETH(chainId))) ||
+        (currencyB && currencyEquals(currencyB, WETH(chainId)))),
   )
   const expertMode = useIsExpertMode()
 
@@ -93,7 +93,7 @@ export default function AddLiquidity({
     noLiquidity,
     liquidityMinted,
     poolTokenPercentage,
-    error
+    error,
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
 
@@ -112,7 +112,7 @@ export default function AddLiquidity({
   // get formatted amounts
   const formattedAmounts = {
     [independentField]: typedValue,
-    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? ''
+    [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
   // get the max amounts user can add
@@ -120,44 +120,49 @@ export default function AddLiquidity({
     (accumulator, field) => {
       return {
         ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field])
+        [field]: maxAmountSpend(currencyBalances[field]),
       }
     },
-    {}
+    {},
   )
 
   const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
       return {
         ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0')
+        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
       }
     },
-    {}
+    {},
   )
 
   // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')])
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')])
+  const [approvalA, approveACallback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_A],
+    ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
+  )
+  const [approvalB, approveBCallback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_B],
+    ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
+  )
   const [approvalLP, approveLPCallback] = useApproveCallback(liquidityMinted, herodotusAddress)
 
   const addTransaction = useTransactionAdder()
-  const sendDefinixAnalytics = () =>{
+  const sendDefinixAnalytics = () => {
     if (tp.isConnected()) {
       const firstToken = currencies[Field.CURRENCY_A]
       const secondToken = currencies[Field.CURRENCY_B]
       const farm = farms.find(
-        x =>
+        (x) =>
           x.pid !== 0 &&
           x.pid !== 1 &&
           ((x.tokenSymbol === firstToken?.symbol && x.quoteTokenSymbol === secondToken?.symbol) ||
-            (x.tokenSymbol === secondToken?.symbol && x.quoteTokenSymbol === firstToken?.symbol))
+            (x.tokenSymbol === secondToken?.symbol && x.quoteTokenSymbol === firstToken?.symbol)),
       )
-      if(farm && account ){
-        tp.getDeviceId().then(res=>{
-          sendAnalyticsData(farm.pid,account,res.device_id)
+      if (farm && account) {
+        tp.getDeviceId().then((res) => {
+          sendAnalyticsData(farm.pid, account, res.device_id)
         })
-        
       }
     }
   }
@@ -172,7 +177,7 @@ export default function AddLiquidity({
 
     const amountsMin = {
       [Field.CURRENCY_A]: calculateSlippageAmount(parsedAmountA, noLiquidity ? 0 : allowedSlippage)[0],
-      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0]
+      [Field.CURRENCY_B]: calculateSlippageAmount(parsedAmountB, noLiquidity ? 0 : allowedSlippage)[0],
     }
 
     const deadlineFromNow = Math.ceil(Date.now() / 1000) + deadline
@@ -187,20 +192,20 @@ export default function AddLiquidity({
       const tokenBIsETH = currencyB === ETHER
       estimate = router.estimateGas.addLiquidityETH
       method = router.addLiquidityETH
-      methodName = "addLiquidityETH"
+      methodName = 'addLiquidityETH'
       args = [
         wrappedCurrency(tokenBIsETH ? currencyA : currencyB, chainId)?.address ?? '', // token
         (tokenBIsETH ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
         amountsMin[tokenBIsETH ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
         amountsMin[tokenBIsETH ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
         account,
-        deadlineFromNow
+        deadlineFromNow,
       ]
       value = BigNumber.from((tokenBIsETH ? parsedAmountB : parsedAmountA).raw.toString())
     } else {
       estimate = router.estimateGas.addLiquidity
       method = router.addLiquidity
-      methodName = "addLiquidity"
+      methodName = 'addLiquidity'
       args = [
         wrappedCurrency(currencyA, chainId)?.address ?? '',
         wrappedCurrency(currencyB, chainId)?.address ?? '',
@@ -209,13 +214,13 @@ export default function AddLiquidity({
         amountsMin[Field.CURRENCY_A].toString(),
         amountsMin[Field.CURRENCY_B].toString(),
         account,
-        deadlineFromNow
+        deadlineFromNow,
       ]
       value = null
     }
 
     setAttemptingTxn(true)
-    const valueNumber = (Number(value ? (+value).toString() : "0") / (10 ** 18)).toString()
+    const valueNumber = (Number(value ? (+value).toString() : '0') / 10 ** 18).toString()
     const valueklip = Number.parseFloat(valueNumber).toFixed(6)
     // let expectValue = (`${(Number(valueklip) + 0.00001) / (10 ** 18)}`)
     // expectValue = expectValue.slice(0, -13)
@@ -229,14 +234,14 @@ export default function AddLiquidity({
         JSON.stringify(getAbiByName(methodName)),
         JSON.stringify(args),
         // @ts-ignore
-        +valueklip !==0 ? `${Math.ceil(+valueklip)}000000000000000000` : "0",
-        setShowModal
+        +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
+        setShowModal,
       )
       const tx = await klipProvider.checkResponse()
       setTxHash(tx)
       setAttemptingTxn(false)
       setShowModal(false)
-     
+
       addTransaction(undefined, {
         type: 'removeLiquidity',
         klipTx: tx,
@@ -244,15 +249,15 @@ export default function AddLiquidity({
           firstToken: currencyA?.symbol,
           firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
           secondToken: currencyB?.symbol,
-          secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+          secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
         },
-        summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${currencyA?.symbol
-          } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`
+        summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${currencyA?.symbol} and ${parsedAmounts[
+          Field.CURRENCY_B
+        ]?.toSignificant(3)} ${currencyB?.symbol}`,
       })
-
     } else {
       const iface = new ethers.utils.Interface(IUniswapV2Router02ABI)
-      
+
       // swap-interface
       const flagFeeDelegate = await UseDeParam(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
       const flagDefinixAnalaytics = await UseDeParam(chainId, 'GA_TP', 'N')
@@ -260,21 +265,22 @@ export default function AddLiquidity({
       // const flagDefinixAnalaytics = await UseDeParam(chainId, 'GA_TP')
 
       await estimate(...args, value ? { value } : {})
-        .then(estimatedGasLimit => {
-          if (flagFeeDelegate === "Y") {
+        .then((estimatedGasLimit) => {
+          if (flagFeeDelegate === 'Y') {
             const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
             const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
             // @ts-ignore
             const caver = new Caver(window.caver)
-            caver.klay.signTransaction({
-              type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
-              from: account,
-              to: ROUTER_ADDRESS[chainId],
-              gas: calculateGasMargin(estimatedGasLimit),
-              value,
-              data: iface.encodeFunctionData(methodName, [...args]),
-            })
+            caver.klay
+              .signTransaction({
+                type: 'FEE_DELEGATED_SMART_CONTRACT_EXECUTION',
+                from: account,
+                to: ROUTER_ADDRESS[chainId],
+                gas: calculateGasMargin(estimatedGasLimit),
+                value,
+                data: iface.encodeFunctionData(methodName, [...args]),
+              })
               .then(function (userSignTx) {
                 // console.log('userSignTx tx = ', userSignTx)
                 const userSigned = caver.transaction.decode(userSignTx.rawTransaction)
@@ -284,43 +290,45 @@ export default function AddLiquidity({
 
                 caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
                   // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-                  if(flagDefinixAnalaytics==='Y'){
+                  if (flagDefinixAnalaytics === 'Y') {
                     sendDefinixAnalytics()
                   }
-                  
+
                   // console.log("feePayerSigningResult",flagDefinixAnalaytics)
-                  caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).then((response: KlaytnTransactionResponse) => {
-                    // document.write(JSON.stringify(response.transactionHash))
+                  caver.rpc.klay
+                    .sendRawTransaction(feePayerSigningResult.raw)
+                    .then((response: KlaytnTransactionResponse) => {
+                      // document.write(JSON.stringify(response.transactionHash))
 
-                    // console.log(methodName, ' tx = ', response)
-                    setAttemptingTxn(false)
-                    setTxHash(response.transactionHash)
-                    addTransaction(response, {
-                      type: 'addLiquidity',
-                      data: {
-                        firstToken: currencies[Field.CURRENCY_A]?.symbol,
-                        firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
-                        secondToken: currencies[Field.CURRENCY_B]?.symbol,
-                        secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
-                      },
-                      summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${currencies[Field.CURRENCY_A]?.symbol
-                        } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`
+                      // console.log(methodName, ' tx = ', response)
+                      setAttemptingTxn(false)
+                      setTxHash(response.transactionHash)
+                      addTransaction(response, {
+                        type: 'addLiquidity',
+                        data: {
+                          firstToken: currencies[Field.CURRENCY_A]?.symbol,
+                          firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
+                          secondToken: currencies[Field.CURRENCY_B]?.symbol,
+                          secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
+                        },
+                        summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
+                          currencies[Field.CURRENCY_A]?.symbol
+                        } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${
+                          currencies[Field.CURRENCY_B]?.symbol
+                        }`,
+                      })
                     })
-
-                  }).catch(e => {
-                    setAttemptingTxn(false)
-                    // we only care if the error is something _other_ than the user rejected the tx
-                    if (e?.code !== 4001) {
-                      console.error(e)
-                      setErrorMsg(e)
-                    }
-                  })
-                  
-                  
+                    .catch((e) => {
+                      setAttemptingTxn(false)
+                      // we only care if the error is something _other_ than the user rejected the tx
+                      if (e?.code !== 4001) {
+                        console.error(e)
+                        setErrorMsg(e)
+                      }
+                    })
                 })
-                
               })
-              .catch(e => {
+              .catch((e) => {
                 setAttemptingTxn(false)
                 alert(`err ${e}`)
                 // we only care if the error is something _other_ than the user rejected the tx
@@ -330,15 +338,14 @@ export default function AddLiquidity({
                 }
               })
           } else {
-            
             method(...args, {
               ...(value ? { value } : {}),
-              gasLimit: calculateGasMargin(estimatedGasLimit)
-            }).then(response => {
-              if(flagDefinixAnalaytics==='Y'){
+              gasLimit: calculateGasMargin(estimatedGasLimit),
+            }).then((response) => {
+              if (flagDefinixAnalaytics === 'Y') {
                 sendDefinixAnalytics()
               }
-              
+
               setAttemptingTxn(false)
 
               addTransaction(response, {
@@ -347,17 +354,18 @@ export default function AddLiquidity({
                   firstToken: currencies[Field.CURRENCY_A]?.symbol,
                   firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
                   secondToken: currencies[Field.CURRENCY_B]?.symbol,
-                  secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+                  secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
                 },
-                summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${currencies[Field.CURRENCY_A]?.symbol
-                  } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`
+                summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
+                  currencies[Field.CURRENCY_A]?.symbol
+                } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
               })
               console.log('~~~response', response)
               setTxHash(response?.hash)
             })
           }
         })
-        .catch(e => {
+        .catch((e) => {
           setAttemptingTxn(false)
 
           // we only care if the error is something _other_ than the user rejected the tx
@@ -434,7 +442,7 @@ export default function AddLiquidity({
         history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
       }
     },
-    [currencyIdB, history, currencyIdA]
+    [currencyIdB, history, currencyIdA],
   )
   const handleCurrencyBSelect = useCallback(
     (currB: Currency) => {
@@ -449,14 +457,14 @@ export default function AddLiquidity({
         history.push(`/add/${currencyIdA || 'KLAY'}/${newCurrencyIdB}`)
       }
     },
-    [currencyIdA, history, currencyIdB]
+    [currencyIdA, history, currencyIdB],
   )
 
   const submittedContent = useCallback(
     () => (
       <TransactionSubmittedContent
         title="Add Liquidity Complete"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeader}
@@ -466,11 +474,11 @@ export default function AddLiquidity({
               const firstToken = currencies[Field.CURRENCY_A]
               const secondToken = currencies[Field.CURRENCY_B]
               const farm = farms.find(
-                x =>
+                (x) =>
                   x.pid !== 0 &&
                   x.pid !== 1 &&
                   ((x.firstSymbol === firstToken?.symbol && x.secondSymbol === secondToken?.symbol) ||
-                    (x.firstSymbol === secondToken?.symbol && x.secondSymbol === firstToken?.symbol))
+                    (x.firstSymbol === secondToken?.symbol && x.secondSymbol === firstToken?.symbol)),
               )
 
               if (farm && farm.pid !== 1 && farm.pid !== 0 && liquidityMinted) {
@@ -481,7 +489,7 @@ export default function AddLiquidity({
                       .then(() => {
                         resolve(true)
                       })
-                      .catch(err => {
+                      .catch((err) => {
                         reject(err)
                       })
                   } else {
@@ -491,15 +499,15 @@ export default function AddLiquidity({
                   .then(() => {
                     const args = [
                       farm.pid,
-                      new BigNumberJs(liquidityMinted.toExact()).times(new BigNumberJs(10).pow(18)).toString()
+                      new BigNumberJs(liquidityMinted.toExact()).times(new BigNumberJs(10).pow(18)).toString(),
                     ]
                     return herodotusContract?.estimateGas.deposit(...args)
                   })
-                  .then(estimatedGasLimit => {
+                  .then((estimatedGasLimit) => {
                     if (estimatedGasLimit) {
                       const args = [
                         farm.pid,
-                        new BigNumberJs(liquidityMinted.toExact()).times(new BigNumberJs(10).pow(18)).toString()
+                        new BigNumberJs(liquidityMinted.toExact()).times(new BigNumberJs(10).pow(18)).toString(),
                       ]
 
                       const iface = new ethers.utils.Interface(HERODOTUS_ABI)
@@ -548,7 +556,7 @@ export default function AddLiquidity({
                         }
 
                         return herodotusContract?.deposit(...args, {
-                          gasLimit: calculateGasMargin(estimatedGasLimit)
+                          gasLimit: calculateGasMargin(estimatedGasLimit),
                         })
                       })
                     }
@@ -577,14 +585,26 @@ export default function AddLiquidity({
         }
       />
     ),
-    [chainId, modalHeader, txHash, currencies, herodotusContract, herodotusAddress, liquidityMinted, approvalLP, approveLPCallback, account, history]
+    [
+      chainId,
+      modalHeader,
+      txHash,
+      currencies,
+      herodotusContract,
+      herodotusAddress,
+      liquidityMinted,
+      approvalLP,
+      approveLPCallback,
+      account,
+      history,
+    ],
   )
 
   const errorContent = useCallback(
     () => (
       <TransactionErrorContent
         title="Add Liquidity Failed"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeader}
@@ -601,7 +621,7 @@ export default function AddLiquidity({
         }
       />
     ),
-    [chainId, modalHeader, txHash]
+    [chainId, modalHeader, txHash],
   )
 
   const handleDismissConfirmation = useCallback(() => {
@@ -643,12 +663,12 @@ export default function AddLiquidity({
                       }}
                       onQuarter={() => {
                         onFieldAInput(
-                          numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 4).format('0.00') ?? ''
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 4).format('0.00') ?? '',
                         )
                       }}
                       onHalf={() => {
                         onFieldAInput(
-                          numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 2).format('0.00') ?? ''
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 2).format('0.00') ?? '',
                         )
                       }}
                       onCurrencySelect={handleCurrencyASelect}
@@ -672,12 +692,12 @@ export default function AddLiquidity({
                       }}
                       onQuarter={() => {
                         onFieldBInput(
-                          numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 4).format('0.00') ?? ''
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 4).format('0.00') ?? '',
                         )
                       }}
                       onHalf={() => {
                         onFieldBInput(
-                          numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 2).format('0.00') ?? ''
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 2).format('0.00') ?? '',
                         )
                       }}
                       showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}

@@ -26,7 +26,7 @@ const TransactionHistoryBox = ({
   secondCoinAmount,
   withText,
   date,
-  isFailed = false
+  isFailed = false,
 }) => {
   return (
     <Box>

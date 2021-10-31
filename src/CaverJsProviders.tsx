@@ -6,14 +6,12 @@ import getLibrary from 'utils/getLibrary'
 // swap-interface
 const Web3ProviderNetwork = createCaverJsReactRoot(NetworkContextName)
 
-const CaverJsProviders = ({children}) => {
+const CaverJsProviders = ({ children }) => {
   return (
     <CaverJsReactProvider getLibrary={getLibrary}>
-      <Web3ProviderNetwork getLibrary={getLibrary}>
-        {children}
-      </Web3ProviderNetwork>
+      <Web3ProviderNetwork getLibrary={getLibrary}>{children}</Web3ProviderNetwork>
     </CaverJsReactProvider>
   )
 }
 
-export default CaverJsProviders;
+export default CaverJsProviders

@@ -137,7 +137,7 @@ export default createReducer(initialState, (builder) =>
       } else if (state.lastInitializedDefaultListOfLists) {
         const lastInitializedSet = state.lastInitializedDefaultListOfLists.reduce<Set<string>>(
           (s, l) => s.add(l),
-          new Set()
+          new Set(),
         )
         const newListOfListsSet = DEFAULT_LIST_OF_LISTS.reduce<Set<string>>((s, l) => s.add(l), new Set())
 
@@ -155,5 +155,5 @@ export default createReducer(initialState, (builder) =>
       }
 
       state.lastInitializedDefaultListOfLists = DEFAULT_LIST_OF_LISTS
-    })
+    }),
 )

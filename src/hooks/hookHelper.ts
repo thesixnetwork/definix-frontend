@@ -13,6 +13,6 @@ export const getAbiERC20ByName = (methodName: string) =>
 export const getAbiRebalanceByName = (methodName: string) =>
   rebalance.find((abi) => abi.type === 'function' && abi.name === methodName)
 
-export const getApproveAbi = () => erc20.find(abi => abi.type === 'function' && abi.name === 'approve')
-export const getAbiByName = (methodName) => IUniswapV2Router02ABI.find(abi => abi.type === 'function' && abi.name === methodName)
-
+export const getApproveAbi = () => erc20.find((abi) => abi.type === 'function' && abi.name === 'approve')
+export const getAbiByName = (methodName) =>
+  IUniswapV2Router02ABI.find((abi) => abi.type === 'function' && abi.name === methodName)

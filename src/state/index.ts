@@ -1,4 +1,4 @@
-import { configureStore , getDefaultMiddleware } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { save, load } from 'redux-localstorage-simple'
 import farmsReducer from './farms'
 import finixPriceReducer from './finixPrice'
@@ -36,7 +36,7 @@ if (loadedState.user) {
   loadedState.user.userDarkMode = getThemeCache()
 }
 
-const store =  configureStore({
+const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
   reducer: {
     finixPrice: finixPriceReducer,
@@ -49,7 +49,7 @@ const store =  configureStore({
     rebalances: rebalanceReducer,
     wallet: walletReducer,
 
-  // swap-interface
+    // swap-interface
     application,
     user,
     transactions,

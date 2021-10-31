@@ -79,7 +79,7 @@ export default function Pool() {
     WKLAY_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
     18,
     'WKLAY',
-    'Wrapped KLAY'
+    'Wrapped KLAY',
   )
 
   // Logic taken from Web3Status/index.tsx line 175
@@ -95,14 +95,15 @@ export default function Pool() {
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
-    [trackedTokenPairs]
+    [trackedTokenPairs],
   )
-  const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken), [
-    tokenPairsWithLiquidityTokens,
-  ])
+  const liquidityTokens = useMemo(
+    () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
+    [tokenPairsWithLiquidityTokens],
+  )
   const [v2PairsBalances, fetchingV2PairBalances] = useTokenBalancesWithLoadingIndicator(
     account ?? undefined,
-    liquidityTokens
+    liquidityTokens,
   )
 
   const [isPhrase2, setIsPhrase2] = useState(false)
@@ -124,9 +125,9 @@ export default function Pool() {
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
-        v2PairsBalances[liquidityToken.address]?.greaterThan('0')
+        v2PairsBalances[liquidityToken.address]?.greaterThan('0'),
       ),
-    [tokenPairsWithLiquidityTokens, v2PairsBalances]
+    [tokenPairsWithLiquidityTokens, v2PairsBalances],
   )
 
   const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
@@ -201,7 +202,7 @@ export default function Pool() {
                 <Question
                   text={TranslateString(
                     130,
-                    'When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below.'
+                    'When you add liquidity, you are given pool tokens that represent your share. If you don’t see a pool you joined in this list, try importing a pool below.',
                   )}
                 />
               </div>

@@ -1,9 +1,6 @@
 import multicall from 'utils/multicall'
 import DEPARAM_ABI from 'config/abi/deParam.json'
-import {
-  MULTICALL_ADDRESS,
-  DEPARAM_ADDRESS,
-} from 'config/constants'
+import { MULTICALL_ADDRESS, DEPARAM_ADDRESS } from 'config/constants'
 
 const UseDeParam = async (chainId, key, defaultValue = '') => {
   const multicallContractAddress = MULTICALL_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')]
@@ -13,7 +10,7 @@ const UseDeParam = async (chainId, key, defaultValue = '') => {
     {
       address: deParamContractAddress,
       name: 'deParam',
-      params: [key]
+      params: [key],
     },
   ]
 

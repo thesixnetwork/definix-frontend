@@ -15,7 +15,7 @@ import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
 // swap-interface
 import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
-import { injected,klip } from 'connectors'
+import { injected, klip } from 'connectors'
 import { allLanguages, EN } from 'config/constants/localisation/languageCodes'
 import AddLiquidity from 'views/AddLiquidity'
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from 'views/AddLiquidity/redirects'
@@ -80,7 +80,7 @@ const AppWrapper = styled.div`
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
-  
+
   // const [isPhrase1, setIsPhrase1] = useState(false)
   // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
   //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -171,15 +171,28 @@ const App: React.FC = () => {
   // const { account, activate } = useCaverJsReact()
   const { activate } = useCaverJsReact()
   const { setShowModal, showModal } = React.useContext(KlipModalContext())
- 
-  useEffect(() => {
-    if (!account && window.localStorage.getItem('accountStatus') && checkConnector("injected")) {
-      activate(injected)
-    }else if (!account && window.localStorage.getItem('accountStatus') && window.localStorage.getItem('userAccount') && checkConnector("klip")){
-      activate(klip(()=>{setShowModal(true)}, ()=>{setShowModal(false)}))
-    }
 
-  }, [account, activate,setShowModal])
+  useEffect(() => {
+    if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
+      activate(injected)
+    } else if (
+      !account &&
+      window.localStorage.getItem('accountStatus') &&
+      window.localStorage.getItem('userAccount') &&
+      checkConnector('klip')
+    ) {
+      activate(
+        klip(
+          () => {
+            setShowModal(true)
+          },
+          () => {
+            setShowModal(false)
+          },
+        ),
+      )
+    }
+  }, [account, activate, setShowModal])
   // const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
 
   useEffect(() => {

@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { KlipModalProvider } from '@sixnetwork/klaytn-use-wallet'
-import ReactGA from 'react-ga';
-import TagManager from 'react-gtm-module';
+import ReactGA from 'react-ga'
+import TagManager from 'react-gtm-module'
 import { Config } from 'definixswap-sdk'
 import sdkConfig from 'sdkconfig'
-import CaverJsProviders from 'CaverJsProviders';
+import CaverJsProviders from 'CaverJsProviders'
 import App from './App'
 import Providers from './Providers'
 
@@ -18,22 +18,22 @@ import 'inter-ui'
 import './i18n'
 
 // ReactGA.initialize(process.env.REACT_APP_GANALYTIC || "");
-// 
+//
 // const tagManagerArgs = {
 //   gtmId: process.env.REACT_APP_GTAG || "",
 // };
 // TagManager.initialize(tagManagerArgs);
 
 Config.configure(sdkConfig)
-ReactGA.initialize('G-L997LXLF8F');
+ReactGA.initialize('G-L997LXLF8F')
 
 const tagManagerArgs = {
   gtmId: 'GTM-WVFPW42',
-};
-TagManager.initialize(tagManagerArgs);
+}
+TagManager.initialize(tagManagerArgs)
 
 if ('klaytn' in window) {
-  (window.klaytn as any).autoRefreshOnNetworkChange = false
+  ;(window.klaytn as any).autoRefreshOnNetworkChange = false
 }
 
 window.addEventListener('error', () => {
@@ -50,7 +50,6 @@ function Updaters() {
     </>
   )
 }
-
 
 ReactDOM.render(
   <React.StrictMode>

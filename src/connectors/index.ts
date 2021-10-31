@@ -33,13 +33,14 @@ export function getNetworkLibrary(): CaverProvider {
 export const injected = new InjectedConnector({
   supportedChainIds: [8217, 1001],
 })
-export const klip =(showModal,closeModal)=> new KlipConnector({
-  supportedChainIds: [8217],
-  showModal,
-  closeModal
-})
+export const klip = (showModal, closeModal) =>
+  new KlipConnector({
+    supportedChainIds: [8217],
+    showModal,
+    closeModal,
+  })
 // export const bsc = new BscConnector({ supportedChainIds: [56] })
-// 
+//
 // // mainnet only
 // export const walletconnect = new WalletConnectConnector({
 //   rpc: { 1: NETWORK_URL },
@@ -47,19 +48,19 @@ export const klip =(showModal,closeModal)=> new KlipConnector({
 //   qrcode: true,
 //   pollingInterval: 15000,
 // })
-// 
+//
 // // mainnet only
 // export const fortmatic = new FortmaticConnector({
 //   apiKey: FORMATIC_KEY ?? '',
 //   chainId: 1,
 // })
-// 
+//
 // // mainnet only
 // export const portis = new PortisConnector({
 //   dAppId: PORTIS_ID ?? '',
 //   networks: [1],
 // })
-// 
+//
 // // mainnet only
 // export const walletlink = new WalletLinkConnector({
 //   url: NETWORK_URL,

@@ -27,7 +27,7 @@ export function useAllTokens(): { [address: string]: Token } {
           },
           // must make a copy because reduce modifies the map, and we do not
           // want to make a copy in every iteration
-          { ...allTokens[chainId] }
+          { ...allTokens[chainId] },
         )
     )
   }, [chainId, userAddedTokens, allTokens])
@@ -67,7 +67,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
     token ? undefined : tokenContractBytes32,
     'name',
     undefined,
-    NEVER_RELOAD
+    NEVER_RELOAD,
   )
   const symbol = useSingleCallResult(token ? undefined : tokenContract, 'symbol', undefined, NEVER_RELOAD)
   const symbolBytes32 = useSingleCallResult(token ? undefined : tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
@@ -83,7 +83,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
         address,
         decimals.result[0],
         parseStringOrBytes32(symbol.result?.[0], symbolBytes32.result?.[0], 'UNKNOWN'),
-        parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token')
+        parseStringOrBytes32(tokenName.result?.[0], tokenNameBytes32.result?.[0], 'Unknown Token'),
       )
     }
     return undefined

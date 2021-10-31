@@ -6,8 +6,8 @@ import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUnisw
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'definixswap-sdk'
 import { useMemo, useContext, useEffect } from 'react'
 import UseDeParam from 'hooks/useDeParamSwapInterface'
-import { KlipModalContext } from "@sixnetwork/klaytn-use-wallet"
-import { KlipConnector } from "@sixnetwork/klip-connector"
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipConnector } from '@sixnetwork/klip-connector'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE, ROUTER_ADDRESS } from 'config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -53,7 +53,7 @@ function useSwapCallArguments(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
-  recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
   const { account, chainId, library } = useActiveWeb3React()
 
@@ -77,7 +77,7 @@ function useSwapCallArguments(
         allowedSlippage: new Percent(JSBI.BigInt(Math.floor(allowedSlippage)), BIPS_BASE),
         recipient,
         ttl: deadline,
-      })
+      }),
     )
 
     if (trade.tradeType === TradeType.EXACT_INPUT) {
@@ -88,7 +88,7 @@ function useSwapCallArguments(
           allowedSlippage: new Percent(JSBI.BigInt(Math.floor(allowedSlippage)), BIPS_BASE),
           recipient,
           ttl: deadline,
-        })
+        }),
       )
     }
 
@@ -102,7 +102,7 @@ export function useSwapCallback(
   trade: Trade | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
-  recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
+  recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React()
   const { connector } = useCaverJsReact()
@@ -127,7 +127,6 @@ export function useSwapCallback(
     return {
       state: SwapCallbackState.VALID,
       callback: async function onSwap(): Promise<string> {
-
         const estimatedCalls: EstimatedSwapCall[] = await Promise.all(
           await swapCalls.map(async (call) => {
             const {
@@ -166,14 +165,13 @@ export function useSwapCallback(
                     return { call, error: new Error(errorMessage) }
                   })
               })
-
-          })
+          }),
         )
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         const successfulEstimation = estimatedCalls.find(
           (el, ix, list): el is SuccessfulCall =>
-            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1])
+            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
         if (!successfulEstimation) {
@@ -192,7 +190,7 @@ export function useSwapCallback(
 
         if (isKlipConnector(connector)) {
           // console.log("swapCalls", successfulEstimation)
-          const valueNumber = (Number(value ? (+value).toString() : "0") / (10 ** 18)).toString()
+          const valueNumber = (Number(value ? (+value).toString() : '0') / 10 ** 18).toString()
           const valueklip = Number.parseFloat(valueNumber).toFixed(6)
           const abi = JSON.stringify(getAbiByName(methodName))
           const input = JSON.stringify(convertArgKlip(args, abi))
@@ -203,12 +201,12 @@ export function useSwapCallback(
               abi,
               input,
               // @ts-ignore
-              (+valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : "0"),
-              setShowModal
+              +valueklip !== 0 ? `${Math.ceil(+valueklip)}000000000000000000` : '0',
+              setShowModal,
             )
             // console.log("status ss", statusCallKlip)
             // @ts-ignore
-            if (statusCallKlip === "success") {
+            if (statusCallKlip === 'success') {
               const klipTx = await klipProvider.checkResponse()
               setShowModal(false)
               return klipTx
@@ -223,7 +221,7 @@ export function useSwapCallback(
         const flagFeeDelegate = await UseDeParam(chainId, 'KLAYTN_FEE_DELEGATE', 'N')
         // const flagFeeDelegate = await UseDeParam(chainId, 'KLAYTN_FEE_DELEGATE')
 
-        if (flagFeeDelegate === "Y") {
+        if (flagFeeDelegate === 'Y') {
           const caverFeeDelegate = new Caver(process.env.REACT_APP_SIX_KLAYTN_EN_URL)
           const feePayerAddress = process.env.REACT_APP_FEE_PAYER_ADDRESS
 
@@ -246,53 +244,61 @@ export function useSwapCallback(
               userSigned.feePayer = feePayerAddress
               // console.log('userSigned After add feePayer tx = ', userSigned)
 
-              return caverFeeDelegate.rpc.klay.signTransactionAsFeePayer(userSigned).then(function (feePayerSigningResult) {
-                // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
-                return caver.rpc.klay.sendRawTransaction(feePayerSigningResult.raw).then((response: KlaytnTransactionResponse) => {
-                  // console.log('swap tx = ', response)
-                  const inputSymbol = trade.inputAmount.currency.symbol
-                  const outputSymbol = trade.outputAmount.currency.symbol
-                  const inputAmount = trade.inputAmount.toSignificant(3)
-                  const outputAmount = trade.outputAmount.toSignificant(3)
+              return caverFeeDelegate.rpc.klay
+                .signTransactionAsFeePayer(userSigned)
+                .then(function (feePayerSigningResult) {
+                  // console.log('feePayerSigningResult tx = ', feePayerSigningResult)
+                  return caver.rpc.klay
+                    .sendRawTransaction(feePayerSigningResult.raw)
+                    .then((response: KlaytnTransactionResponse) => {
+                      // console.log('swap tx = ', response)
+                      const inputSymbol = trade.inputAmount.currency.symbol
+                      const outputSymbol = trade.outputAmount.currency.symbol
+                      const inputAmount = trade.inputAmount.toSignificant(3)
+                      const outputAmount = trade.outputAmount.toSignificant(3)
 
-                  const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
-                  const withRecipient =
-                    recipient === account
-                      ? base
-                      : `${base} to ${recipientAddressOrName && isAddress(recipientAddressOrName)
-                        ? shortenAddress(recipientAddressOrName)
-                        : recipientAddressOrName
-                      }`
+                      const base = `Swap ${inputAmount} ${inputSymbol} for ${outputAmount} ${outputSymbol}`
+                      const withRecipient =
+                        recipient === account
+                          ? base
+                          : `${base} to ${
+                              recipientAddressOrName && isAddress(recipientAddressOrName)
+                                ? shortenAddress(recipientAddressOrName)
+                                : recipientAddressOrName
+                            }`
 
-                  addTransaction(response, {
-                    type: 'swap',
-                    data: {
-                      firstToken: inputSymbol,
-                      firstTokenAmount: inputAmount,
-                      secondToken: outputSymbol,
-                      secondTokenAmount: outputAmount,
-                    },
-                    summary: withRecipient,
-                  })
+                      addTransaction(response, {
+                        type: 'swap',
+                        data: {
+                          firstToken: inputSymbol,
+                          firstTokenAmount: inputAmount,
+                          secondToken: outputSymbol,
+                          secondTokenAmount: outputAmount,
+                        },
+                        summary: withRecipient,
+                      })
 
-                  return response.transactionHash
+                      return response.transactionHash
+                    })
+                    .catch((error: any) => {
+                      // if the user rejected the tx, pass this along
+                      if (error?.code === 4001) {
+                        throw new Error('Transaction rejected.')
+                      } else {
+                        // otherwise, the error was unexpected and we need to convey that
+                        console.error(`Swap failed`, error, methodName, args, value)
+                        throw new Error(`Swap failed: ${error.message}`)
+                      }
+                    })
                 })
-                  .catch((error: any) => {
-                    // if the user rejected the tx, pass this along
-                    if (error?.code === 4001) {
-                      throw new Error('Transaction rejected.')
-                    } else {
-                      // otherwise, the error was unexpected and we need to convey that
-                      console.error(`Swap failed`, error, methodName, args, value)
-                      throw new Error(`Swap failed: ${error.message}`)
-                    }
-                  })
-              })
             })
         }
 
         // eslint-disable-next-line consistent-return
-        return contract[methodName](...args, { gasLimit: calculateGasMargin(gasEstimate), ...(value && !isZero(value) ? { value, from: account } : { from: account }), })
+        return contract[methodName](...args, {
+          gasLimit: calculateGasMargin(gasEstimate),
+          ...(value && !isZero(value) ? { value, from: account } : { from: account }),
+        })
           .then((response: any) => {
             const inputSymbol = trade.inputAmount.currency.symbol
             const outputSymbol = trade.outputAmount.currency.symbol
@@ -303,10 +309,11 @@ export function useSwapCallback(
             const withRecipient =
               recipient === account
                 ? base
-                : `${base} to ${recipientAddressOrName && isAddress(recipientAddressOrName)
-                  ? shortenAddress(recipientAddressOrName)
-                  : recipientAddressOrName
-                }`
+                : `${base} to ${
+                    recipientAddressOrName && isAddress(recipientAddressOrName)
+                      ? shortenAddress(recipientAddressOrName)
+                      : recipientAddressOrName
+                  }`
 
             addTransaction(response, {
               type: 'swap',
@@ -331,18 +338,27 @@ export function useSwapCallback(
               throw new Error(`Swap failed: ${error.message}`)
             }
           })
-      }
-      ,
+      },
       error: null,
     }
-  }, [trade, library, account, connector, chainId, recipient, recipientAddressOrName, swapCalls, addTransaction, setShowModal])
+  }, [
+    trade,
+    library,
+    account,
+    connector,
+    chainId,
+    recipient,
+    recipientAddressOrName,
+    swapCalls,
+    addTransaction,
+    setShowModal,
+  ])
 }
 
 export default useSwapCallback
 
 const isKlipConnector = (connector) => connector instanceof KlipConnector
 const convertArgKlip = (args: (string[] | string)[], abi) => {
-
   const argToString: (string[] | string)[] = []
   const abiArr = JSON.parse(abi)
   try {
@@ -350,20 +366,17 @@ const convertArgKlip = (args: (string[] | string)[], abi) => {
       const element = args[i]
       const abiType = abiArr.inputs[i].type
 
-      if (abiType === "uint256" && typeof element === 'string') {
+      if (abiType === 'uint256' && typeof element === 'string') {
         argToString.push(BigInt(+element).toString())
         // argToString.push((+element).toString())
-      }
-      else {
+      } else {
         argToString.push(element)
       }
-
     }
 
     return argToString
   } catch (error) {
     // console.log("ee,", error)
-    throw new Error("convertArgKlip has error")
+    throw new Error('convertArgKlip has error')
   }
-
 }

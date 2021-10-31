@@ -4,7 +4,7 @@ export default {
   version: {
     major: 1,
     minor: 3,
-    patch: 1
+    patch: 1,
   },
   tags: {},
   logoURI: '/images/coins/wbnb.png',
@@ -16,7 +16,7 @@ export default {
       address: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/finix.png'
+      logoURI: '/images/coins/finix.png',
     },
     {
       name: 'SIX',
@@ -24,7 +24,7 @@ export default {
       address: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/six.png'
+      logoURI: '/images/coins/six.png',
     },
     {
       name: 'KUSDT',
@@ -32,7 +32,7 @@ export default {
       address: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KUSDT.png'
+      logoURI: '/images/coins/KUSDT.png',
     },
     {
       name: 'KDAI',
@@ -40,7 +40,7 @@ export default {
       address: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KDAI.png'
+      logoURI: '/images/coins/KDAI.png',
     },
     {
       name: 'KETH',
@@ -48,7 +48,7 @@ export default {
       address: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KETH.png'
+      logoURI: '/images/coins/KETH.png',
     },
     {
       name: 'KWBTC',
@@ -56,7 +56,7 @@ export default {
       address: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KWBTC.png'
+      logoURI: '/images/coins/KWBTC.png',
     },
     {
       name: 'KXRP',
@@ -64,7 +64,7 @@ export default {
       address: process.env.REACT_APP_KXRP_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KXRP.png'
+      logoURI: '/images/coins/KXRP.png',
     },
     {
       name: 'KBNB',
@@ -72,7 +72,7 @@ export default {
       address: process.env.REACT_APP_KBNB_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/BNB.png'
+      logoURI: '/images/coins/BNB.png',
     },
     {
       name: 'KSP',
@@ -80,7 +80,7 @@ export default {
       address: process.env.REACT_APP_KSP_ADDRESS_TESTNET,
       chainId: 1001,
       decimals: 18,
-      logoURI: '/images/coins/KSP.png'
+      logoURI: '/images/coins/KSP.png',
     },
     {
       name: 'FINIX',
@@ -88,7 +88,7 @@ export default {
       address: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/FINIX.png'
+      logoURI: '/images/coins/FINIX.png',
     },
     {
       name: 'SIX',
@@ -96,7 +96,7 @@ export default {
       address: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/SIX.png'
+      logoURI: '/images/coins/SIX.png',
     },
     {
       name: 'KUSDT',
@@ -104,7 +104,7 @@ export default {
       address: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 6,
-      logoURI: '/images/coins/KUSDT.png'
+      logoURI: '/images/coins/KUSDT.png',
     },
     {
       name: 'KDAI',
@@ -112,7 +112,7 @@ export default {
       address: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/KDAI.png'
+      logoURI: '/images/coins/KDAI.png',
     },
     {
       name: 'KETH',
@@ -120,7 +120,7 @@ export default {
       address: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/KETH.png'
+      logoURI: '/images/coins/KETH.png',
     },
     {
       name: 'KWBTC',
@@ -128,7 +128,7 @@ export default {
       address: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 8,
-      logoURI: '/images/coins/KWBTC.png'
+      logoURI: '/images/coins/KWBTC.png',
     },
     {
       name: 'KXRP',
@@ -136,7 +136,7 @@ export default {
       address: process.env.REACT_APP_KXRP_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 6,
-      logoURI: '/images/coins/KXRP.png'
+      logoURI: '/images/coins/KXRP.png',
     },
     {
       name: 'KBNB',
@@ -144,7 +144,7 @@ export default {
       address: process.env.REACT_APP_KBNB_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/BNB.png'
+      logoURI: '/images/coins/BNB.png',
     },
     {
       name: 'KSP',
@@ -152,7 +152,7 @@ export default {
       address: process.env.REACT_APP_KSP_ADDRESS_MAINNET,
       chainId: 8217,
       decimals: 18,
-      logoURI: '/images/coins/KSP.png'
+      logoURI: '/images/coins/KSP.png',
     },
-  ]
+  ],
 }

@@ -43,7 +43,7 @@ export { getWeb3Contract, getWeb3, getCaver, getContract, httpProvider }
 // swap-interface
 
 // eslint-disable-next-line
-declare const window: any;
+declare const window: any
 const baseCaver = new Caver(window.klaytn)
 const Contract = baseCaver.contract
 

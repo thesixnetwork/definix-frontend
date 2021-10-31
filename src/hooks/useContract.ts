@@ -1,4 +1,4 @@
-import { useEffect, useState , useMemo } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { AbiItem } from 'web3-utils'
 import { ContractOptions } from 'web3-eth-contract'
 import Caver from 'caver-js'
@@ -15,7 +15,7 @@ import {
   getBunnySpecialAddress,
   getTradingCompetRegisAddress,
 } from 'utils/addressHelpers'
-import { poolsConfig , HERODOTUS_ADDRESS } from 'config/constants'
+import { poolsConfig, HERODOTUS_ADDRESS } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
@@ -143,7 +143,11 @@ const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
 const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
 
 // returns null on errors
-function useSwapInterfaceContract(address: string | 0 | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
+function useSwapInterfaceContract(
+  address: string | 0 | undefined,
+  ABI: any,
+  withSignerIfPossible = true,
+): Contract | null {
   const { library, account } = useActiveWeb3React()
 
   return useMemo(() => {
@@ -174,7 +178,7 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
       case intMainnetId:
       case intTestnetId:
       default:
-        break;
+        break
     }
   }
   return useSwapInterfaceContract(address, ENS_ABI, withSignerIfPossible)
