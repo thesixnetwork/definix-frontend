@@ -7,7 +7,7 @@ import { checkedTransaction, finalizeTransaction } from './actions'
 
 export function shouldCheck(
   lastBlockNumber: number,
-  tx: { addedTime: number; receipt?: any; lastCheckedBlockNumber?: number }
+  tx: { addedTime: number; receipt?: any; lastCheckedBlockNumber?: number },
 ): boolean {
   if (tx.receipt) return false
   if (!tx.lastCheckedBlockNumber) return true
@@ -64,7 +64,7 @@ export default function Updater(): null {
                     transactionHash: receipt.transactionHash,
                     transactionIndex: receipt.transactionIndex,
                   },
-                })
+                }),
               )
 
               addPopup(
@@ -75,7 +75,7 @@ export default function Updater(): null {
                     summary: transactions[hash]?.summary,
                   },
                 },
-                hash
+                hash,
               )
             } else {
               dispatch(checkedTransaction({ chainId, hash, blockNumber: lastBlockNumber }))

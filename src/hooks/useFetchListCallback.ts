@@ -27,7 +27,7 @@ export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> 
       }
       return resolveENSContentHash(ensName, library)
     },
-    [chainId, library]
+    [chainId, library],
   )
 
   return useCallback(
@@ -45,7 +45,7 @@ export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> 
           throw error
         })
     },
-    [dispatch, ensResolver]
+    [dispatch, ensResolver],
   )
 }
 

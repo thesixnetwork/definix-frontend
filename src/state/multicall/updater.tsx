@@ -28,13 +28,13 @@ const CALL_CHUNK_SIZE = 500
 async function fetchChunk(
   multicallContract: Contract,
   chunk: Call[],
-  minBlockNumber: number
+  minBlockNumber: number,
 ): Promise<{ results: string[]; blockNumber: number }> {
   let resultsBlockNumber
   let returnData
   try {
-    [resultsBlockNumber, returnData] = await multicallContract.aggregate(
-      chunk.map((obj) => [obj.address, obj.callData])
+    ;[resultsBlockNumber, returnData] = await multicallContract.aggregate(
+      chunk.map((obj) => [obj.address, obj.callData]),
     )
   } catch (error) {
     console.info('Failed to fetch chunk inside retry', error)
@@ -54,7 +54,7 @@ async function fetchChunk(
  */
 export function activeListeningKeys(
   allListeners: AppState['multicall']['callListeners'],
-  chainId?: number
+  chainId?: number,
 ): { [callKey: string]: number } {
   if (!allListeners || !chainId) return {}
   const listeners = allListeners[chainId]
@@ -87,7 +87,7 @@ export function outdatedListeningKeys(
   callResults: AppState['multicall']['callResults'],
   listeningKeys: { [callKey: string]: number },
   chainId: number | undefined,
-  latestBlockNumber: number | undefined
+  latestBlockNumber: number | undefined,
 ): string[] {
   if (!chainId || !latestBlockNumber) return []
   const results = callResults[chainId]
@@ -129,9 +129,10 @@ export default function Updater(): null {
     return outdatedListeningKeys(state.callResults, listeningKeys, chainId, latestBlockNumber)
   }, [chainId, state.callResults, listeningKeys, latestBlockNumber])
 
-  const serializedOutdatedCallKeys = useMemo(() => JSON.stringify(unserializedOutdatedCallKeys.sort()), [
-    unserializedOutdatedCallKeys,
-  ])
+  const serializedOutdatedCallKeys = useMemo(
+    () => JSON.stringify(unserializedOutdatedCallKeys.sort()),
+    [unserializedOutdatedCallKeys],
+  )
 
   useEffect(() => {
     if (!latestBlockNumber || !chainId || !multicallContract) return
@@ -152,7 +153,7 @@ export default function Updater(): null {
         calls,
         chainId,
         fetchingBlockNumber: latestBlockNumber,
-      })
+      }),
     )
 
     cancellations.current = {
@@ -181,7 +182,7 @@ export default function Updater(): null {
                     return memo
                   }, {}),
                 blockNumber: fetchBlockNumber,
-              })
+              }),
             )
           })
           .catch((error: any) => {
@@ -195,7 +196,7 @@ export default function Updater(): null {
                 calls: chunk,
                 chainId,
                 fetchingBlockNumber: latestBlockNumber,
-              })
+              }),
             )
           })
         return cancel

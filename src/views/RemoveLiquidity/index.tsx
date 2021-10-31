@@ -51,11 +51,10 @@ export default function RemoveLiquidity({
 }: RouteComponentProps<{ currencyIdA: string; currencyIdB: string }>) {
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
   const { account, chainId, library } = useActiveWeb3React()
-  const [tokenA, tokenB] = useMemo(() => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)], [
-    currencyA,
-    currencyB,
-    chainId,
-  ])
+  const [tokenA, tokenB] = useMemo(
+    () => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)],
+    [currencyA, currencyB, chainId],
+  )
 
   const theme = useContext(ThemeContext)
 
@@ -168,7 +167,7 @@ export default function RemoveLiquidity({
       setSignatureData(null)
       return _onUserInput(field, val)
     },
-    [_onUserInput]
+    [_onUserInput],
   )
 
   const onLiquidityInput = useCallback((val: string): void => onUserInput(Field.LIQUIDITY, val), [onUserInput])
@@ -275,12 +274,12 @@ export default function RemoveLiquidity({
           .catch((e) => {
             console.error(`estimateGas failed`, index, methodName, args, e)
             return undefined
-          })
-      )
+          }),
+      ),
     )
 
     const indexOfSuccessfulEstimation = safeGasEstimates.findIndex((safeGasEstimate) =>
-      BigNumber.isBigNumber(safeGasEstimate)
+      BigNumber.isBigNumber(safeGasEstimate),
     )
 
     // all estimations failed...
@@ -401,14 +400,14 @@ export default function RemoveLiquidity({
     (value: number) => {
       onUserInput(Field.LIQUIDITY_PERCENT, value.toString())
     },
-    [onUserInput]
+    [onUserInput],
   )
 
   const oneCurrencyIsETH = currencyA === ETHER || currencyB === ETHER
   const oneCurrencyIsWETH = Boolean(
     chainId &&
       ((currencyA && currencyEquals(WETH[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WETH[chainId], currencyB)))
+        (currencyB && currencyEquals(WETH[chainId], currencyB))),
   )
 
   const handleSelectCurrencyA = useCallback(
@@ -419,7 +418,7 @@ export default function RemoveLiquidity({
         history.push(`/remove/${currencyId(currency)}/${currencyIdB}`)
       }
     },
-    [currencyIdA, currencyIdB, history]
+    [currencyIdA, currencyIdB, history],
   )
   const handleSelectCurrencyB = useCallback(
     (currency: Currency) => {
@@ -429,7 +428,7 @@ export default function RemoveLiquidity({
         history.push(`/remove/${currencyIdA}/${currencyId(currency)}`)
       }
     },
-    [currencyIdA, currencyIdB, history]
+    [currencyIdA, currencyIdB, history],
   )
 
   const handleDismissConfirmation = useCallback(() => {
@@ -447,7 +446,7 @@ export default function RemoveLiquidity({
     () => (
       <TransactionSubmittedContent
         title="Remove Liquidity Complete"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeader}
@@ -464,14 +463,14 @@ export default function RemoveLiquidity({
         }
       />
     ),
-    [chainId, modalHeader, txHash]
+    [chainId, modalHeader, txHash],
   )
 
   const errorContent = useCallback(
     () => (
       <TransactionErrorContent
         title="Remove Liquidity Failed"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeader}
@@ -488,12 +487,12 @@ export default function RemoveLiquidity({
         }
       />
     ),
-    [chainId, modalHeader, txHash]
+    [chainId, modalHeader, txHash],
   )
 
   const [innerLiquidityPercentage, setInnerLiquidityPercentage] = useDebouncedChangeHandler(
     Number.parseInt(parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0)),
-    liquidityPercentChangeCallback
+    liquidityPercentChangeCallback,
   )
 
   return (

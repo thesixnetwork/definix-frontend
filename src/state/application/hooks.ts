@@ -36,7 +36,7 @@ export function useAddPopup(): (content: PopupContent, key?: string) => void {
     (content: PopupContent, key?: string) => {
       dispatch(addPopup({ content, key }))
     },
-    [dispatch]
+    [dispatch],
   )
 }
 
@@ -47,12 +47,12 @@ export function useRemovePopup(): (key: string) => void {
     (key: string) => {
       dispatch(removePopup({ key }))
     },
-    [dispatch]
+    [dispatch],
   )
 }
 
 // get the list of active popups
 export function useActivePopups(): AppState['application']['popupList'] {
   const list = useSelector((state: AppState) => state.application.popupList)
-  return useMemo(() => list.filter(item => item.show), [list])
+  return useMemo(() => list.filter((item) => item.show), [list])
 }

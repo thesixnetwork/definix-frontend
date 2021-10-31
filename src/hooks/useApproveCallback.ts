@@ -21,7 +21,7 @@ export enum ApprovalState {
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
-  spender?: string
+  spender?: string,
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React()
   const token = amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined
@@ -102,7 +102,7 @@ export function useApproveCallback(
 export function useApproveCallbackFromTrade(trade?: Trade, allowedSlippage = 0) {
   const amountToApprove = useMemo(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
-    [trade, allowedSlippage]
+    [trade, allowedSlippage],
   )
   return useApproveCallback(amountToApprove, ROUTER_ADDRESS)
 }

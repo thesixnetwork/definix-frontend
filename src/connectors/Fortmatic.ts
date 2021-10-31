@@ -7,7 +7,7 @@ type FormaticSupportedChains = Extract<ChainId, ChainId.MAINNET | ChainId.BSCTES
 
 const CHAIN_ID_NETWORK_ARGUMENT: { readonly [chainId in FormaticSupportedChains]: string | undefined } = {
   [ChainId.MAINNET]: undefined,
-  [ChainId.BSCTESTNET]: 'Bsc-testnet'
+  [ChainId.BSCTESTNET]: 'Bsc-testnet',
 }
 
 export class FortmaticConnector extends FortmaticConnectorCore {
@@ -25,7 +25,7 @@ export class FortmaticConnector extends FortmaticConnectorCore {
 
     const provider = this.fortmatic.getProvider()
 
-    const pollForOverlayReady: Promise<void> = new Promise(resolve => {
+    const pollForOverlayReady: Promise<void> = new Promise((resolve) => {
       const interval = setInterval(() => {
         if (provider.overlayReady) {
           clearInterval(interval)
@@ -37,7 +37,7 @@ export class FortmaticConnector extends FortmaticConnectorCore {
 
     const [account] = await Promise.all([
       provider.enable().then((accounts: string[]) => accounts[0]),
-      pollForOverlayReady
+      pollForOverlayReady,
     ])
 
     return { provider: this.fortmatic.getProvider(), chainId: (this as any).chainId, account }

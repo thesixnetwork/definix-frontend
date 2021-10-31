@@ -12,7 +12,7 @@ import {
   WBNB_ADDRESS,
   BUSD_ADDRESS,
   HERODOTUS_ADDRESS,
-  PANCAKE_MASTER_CHEF_ADDRESS
+  PANCAKE_MASTER_CHEF_ADDRESS,
 } from 'config/constants'
 import erc20 from 'config/constants/abis/erc20.json'
 import { useActiveWeb3React } from './index'
@@ -27,27 +27,27 @@ const getTotalBalanceLp = async (input) => {
       {
         address: pair1,
         name: 'balanceOf',
-        params: [lpAddress]
+        params: [lpAddress],
       },
       {
         address: pair2,
         name: 'balanceOf',
-        params: [lpAddress]
+        params: [lpAddress],
       },
       {
         address: pair1,
-        name: 'decimals'
+        name: 'decimals',
       },
       {
         address: pair2,
-        name: 'decimals'
-      }
+        name: 'decimals',
+      },
     ]
 
     const [pair1BalanceLP, pair2BalanceLP, pair1Decimals, pair2Decimals] = await multicall(
       // multicallAddress,
       erc20,
-      calls
+      calls,
     )
 
     pair1Amount = new BigNumber(pair1BalanceLP).div(new BigNumber(10).pow(pair1Decimals)).toNumber()
@@ -70,44 +70,44 @@ export default function useFinixPrice(): number {
         pair1: FINIX_ADDRESS[chainId],
         pair2: SIX_ADDRESS[chainId],
         masterChefAddress: HERODOTUS_ADDRESS[chainId],
-        multicallAddress: multicallContractAddress
+        multicallAddress: multicallContractAddress,
       }),
       getTotalBalanceLp({
         lpAddress: FINIX_BUSD_LP[chainId],
         pair1: FINIX_ADDRESS[chainId],
         pair2: BUSD_ADDRESS[chainId],
         masterChefAddress: HERODOTUS_ADDRESS[chainId],
-        multicallAddress: multicallContractAddress
+        multicallAddress: multicallContractAddress,
       }),
       getTotalBalanceLp({
         lpAddress: FINIX_BNB_LP[chainId],
         pair1: FINIX_ADDRESS[chainId],
         pair2: WBNB_ADDRESS[chainId],
         masterChefAddress: HERODOTUS_ADDRESS[chainId],
-        multicallAddress: multicallContractAddress
+        multicallAddress: multicallContractAddress,
       }),
       getTotalBalanceLp({
         lpAddress: SIX_BUSD_LP[chainId],
         pair1: SIX_ADDRESS[chainId],
         pair2: BUSD_ADDRESS[chainId],
         masterChefAddress: HERODOTUS_ADDRESS[chainId],
-        multicallAddress: multicallContractAddress
+        multicallAddress: multicallContractAddress,
       }),
       getTotalBalanceLp({
         lpAddress: PANCAKE_BNB_BUSD_LP[chainId],
         pair1: WBNB_ADDRESS[chainId],
         pair2: BUSD_ADDRESS[chainId],
         masterChefAddress: PANCAKE_MASTER_CHEF_ADDRESS[chainId],
-        multicallAddress: multicallContractAddress
-      })
+        multicallAddress: multicallContractAddress,
+      }),
     ]
-    Promise.all(fetchPromise).then(response => {
+    Promise.all(fetchPromise).then((response) => {
       const [
         [totalFinixDefinixFinixSixPair, totalSixDefinixFinixSixPair],
         [totalFinixDefinixFinixBusdPair, totalBusdDefinixFinixBusdPair],
         [totalFinixDefinixFinixBnbPair, totalBnbDefinixFinixBnbPair],
         [totalSixDefinixSixBusdPair, totalBnbDefinixSixBusdPair],
-        [totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]
+        [totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair],
       ] = response
       // const totalFinixDefinixFinixSixPair = 10000000.0
       // const totalSixDefinixFinixSixPair = 12820512.82

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { X } from 'react-feather'
-import { useSpring , animated } from 'react-spring/web'
+import { useSpring, animated } from 'react-spring/web'
 import styled, { ThemeContext } from 'styled-components'
 import { PopupContent } from '../../state/application/actions'
 import { useRemovePopup } from '../../state/application/hooks'

@@ -161,7 +161,7 @@ export default function CurrencyInputPanel({
                   {(currency && currency.symbol && currency.symbol.length > 20
                     ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
                         currency.symbol.length - 5,
-                        currency.symbol.length
+                        currency.symbol.length,
                       )}`
                     : currency?.symbol) || <TranslatedText translationId={82}>Select Token</TranslatedText>}
                 </Text>

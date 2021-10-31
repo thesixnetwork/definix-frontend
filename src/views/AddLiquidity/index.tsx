@@ -53,7 +53,7 @@ export default function AddLiquidity({
   const oneCurrencyIsWETH = Boolean(
     chainId &&
       ((currencyA && currencyEquals(currencyA, WETH[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WETH[chainId])))
+        (currencyB && currencyEquals(currencyB, WETH[chainId]))),
   )
   const expertMode = useIsExpertMode()
 
@@ -100,7 +100,7 @@ export default function AddLiquidity({
         [field]: maxAmountSpend(currencyBalances[field]),
       }
     },
-    {}
+    {},
   )
 
   const atMaxAmounts: { [field in Field]?: TokenAmount } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
@@ -110,7 +110,7 @@ export default function AddLiquidity({
         [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
       }
     },
-    {}
+    {},
   )
 
   // check whether the user has approved the router on the tokens
@@ -184,7 +184,7 @@ export default function AddLiquidity({
               firstToken: currencies[Field.CURRENCY_A]?.symbol,
               firstTokenAmount: parsedAmounts[Field.CURRENCY_A]?.toSignificant(3),
               secondToken: currencies[Field.CURRENCY_B]?.symbol,
-              secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+              secondTokenAmount: parsedAmounts[Field.CURRENCY_B]?.toSignificant(3),
             },
             summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
               currencies[Field.CURRENCY_A]?.symbol
@@ -192,7 +192,7 @@ export default function AddLiquidity({
           })
 
           setTxHash(response.hash)
-        })
+        }),
       )
       .catch((e) => {
         setAttemptingTxn(false)
@@ -270,7 +270,7 @@ export default function AddLiquidity({
         history.push(`/add/${newCurrencyIdA}/${currencyIdB}`)
       }
     },
-    [currencyIdB, history, currencyIdA]
+    [currencyIdB, history, currencyIdA],
   )
   const handleCurrencyBSelect = useCallback(
     (currB: Currency) => {
@@ -285,14 +285,14 @@ export default function AddLiquidity({
         history.push(`/add/${currencyIdA || 'ETH'}/${newCurrencyIdB}`)
       }
     },
-    [currencyIdA, history, currencyIdB]
+    [currencyIdA, history, currencyIdB],
   )
 
   const submittedContent = useCallback(
     () => (
       <TransactionSubmittedContent
         title="Add Liquidity Complete"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeader}
@@ -309,14 +309,14 @@ export default function AddLiquidity({
         }
       />
     ),
-    [chainId, modalHeader, txHash]
+    [chainId, modalHeader, txHash],
   )
 
   const errorContent = useCallback(
     () => (
       <TransactionErrorContent
         title="Add Liquidity Failed"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeader}
@@ -333,7 +333,7 @@ export default function AddLiquidity({
         }
       />
     ),
-    [chainId, modalHeader, txHash]
+    [chainId, modalHeader, txHash],
   )
 
   const handleDismissConfirmation = useCallback(() => {
@@ -374,10 +374,14 @@ export default function AddLiquidity({
                         onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                       }}
                       onQuarter={() => {
-                        onFieldAInput(numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || "") / 4).format("0.00") ?? '')
+                        onFieldAInput(
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 4).format('0.00') ?? '',
+                        )
                       }}
                       onHalf={() => {
-                        onFieldAInput(numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || "") / 2).format("0.00") ?? '')
+                        onFieldAInput(
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_A]?.toExact() || '') / 2).format('0.00') ?? '',
+                        )
                       }}
                       onCurrencySelect={handleCurrencyASelect}
                       showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
@@ -399,10 +403,14 @@ export default function AddLiquidity({
                         onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                       }}
                       onQuarter={() => {
-                        onFieldBInput(numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || "") / 4).format("0.00") ?? '')
+                        onFieldBInput(
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 4).format('0.00') ?? '',
+                        )
                       }}
                       onHalf={() => {
-                        onFieldBInput(numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || "") / 2).format("0.00") ?? '')
+                        onFieldBInput(
+                          numeral(parseFloat(maxAmounts[Field.CURRENCY_B]?.toExact() || '') / 2).format('0.00') ?? '',
+                        )
                       }}
                       showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
                       currency={currencies[Field.CURRENCY_B]}

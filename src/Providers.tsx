@@ -33,9 +33,7 @@ const Providers: React.FC = ({ children }) => {
               <RefreshContextProvider>
                 <ModalProvider>
                   <Web3ReactProvider getLibrary={getLibrary}>
-                    <Web3ProviderNetwork getLibrary={getLibrary}>
-                      {children}
-                    </Web3ProviderNetwork>
+                    <Web3ProviderNetwork getLibrary={getLibrary}>{children}</Web3ProviderNetwork>
                   </Web3ReactProvider>
                 </ModalProvider>
               </RefreshContextProvider>

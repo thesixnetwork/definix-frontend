@@ -17,7 +17,14 @@ import TradePrice from 'components/swap/TradePrice'
 import SyrupWarningModal from 'components/SyrupWarningModal'
 import TokenWarningModal from 'components/TokenWarningModal'
 import TransactionHistoryBox from 'components/TransactionHistoryBox'
-import { INITIAL_ALLOWED_SLIPPAGE, SIX_ADDRESS, FINIX_ADDRESS, WBNB_ADDRESS, USDT_ADDRESS, BUSD_ADDRESS  } from 'config/constants'
+import {
+  INITIAL_ALLOWED_SLIPPAGE,
+  SIX_ADDRESS,
+  FINIX_ADDRESS,
+  WBNB_ADDRESS,
+  USDT_ADDRESS,
+  BUSD_ADDRESS,
+} from 'config/constants'
 import { CurrencyAmount, JSBI, Token, Trade } from 'definixswap-sdk'
 import { useActiveWeb3React } from 'hooks'
 import { useCurrency, useAllTokens } from 'hooks/Tokens'
@@ -111,7 +118,7 @@ export default function Swap({
   const [syrupTransactionType, setSyrupTransactionType] = useState<string>('')
   const urlLoadedTokens: Token[] = useMemo(
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
-    [loadedInputCurrency, loadedOutputCurrency]
+    [loadedInputCurrency, loadedOutputCurrency],
   )
   const handleConfirmTokenWarning = useCallback(() => {
     setDismissTokenWarning(true)
@@ -149,11 +156,11 @@ export default function Swap({
   // swap state
   const { independentField, typedValue, recipient } = useSwapState()
   const { v2Trade, currencyBalances, parsedAmount, currencies, inputError: swapInputError } = useDerivedSwapInfo()
-  const { wrapType, execute: onWrap, inputError: wrapInputError } = useWrapCallback(
-    currencies[Field.INPUT],
-    currencies[Field.OUTPUT],
-    typedValue
-  )
+  const {
+    wrapType,
+    execute: onWrap,
+    inputError: wrapInputError,
+  } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = v2Trade
 
@@ -175,13 +182,13 @@ export default function Swap({
     (value: string) => {
       onUserInput(Field.INPUT, value)
     },
-    [onUserInput]
+    [onUserInput],
   )
   const handleTypeOutput = useCallback(
     (value: string) => {
       onUserInput(Field.OUTPUT, value)
     },
-    [onUserInput]
+    [onUserInput],
   )
 
   // modal and loading
@@ -208,7 +215,7 @@ export default function Swap({
 
   const route = trade?.route
   const userHasSpecifiedInputOutput = Boolean(
-    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0))
+    currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedAmounts[independentField]?.greaterThan(JSBI.BigInt(0)),
   )
   const noRoute = !route
 
@@ -233,7 +240,7 @@ export default function Swap({
     trade,
     allowedSlippage,
     deadline,
-    recipient
+    recipient,
   )
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
@@ -302,7 +309,7 @@ export default function Swap({
         setSyrupTransactionType(purchaseType)
       }
     },
-    [setIsSyrup, setSyrupTransactionType]
+    [setIsSyrup, setSyrupTransactionType],
   )
 
   const handleInputSelect = useCallback(
@@ -313,7 +320,7 @@ export default function Swap({
         checkForSyrup(inputCurrency.symbol.toLowerCase(), 'Selling')
       }
     },
-    [onCurrencySelection, setApprovalSubmitted, checkForSyrup]
+    [onCurrencySelection, setApprovalSubmitted, checkForSyrup],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -341,7 +348,7 @@ export default function Swap({
         checkForSyrup(outputCurrency.symbol.toLowerCase(), 'Buying')
       }
     },
-    [onCurrencySelection, checkForSyrup]
+    [onCurrencySelection, checkForSyrup],
   )
 
   useEffect(() => {
@@ -681,7 +688,7 @@ export default function Swap({
               x.address.toLowerCase() !== FINIX_ADDRESS[chainId].toLowerCase() &&
               x.address.toLowerCase() !== WBNB_ADDRESS[chainId].toLowerCase() &&
               x.address.toLowerCase() !== BUSD_ADDRESS[chainId].toLowerCase() &&
-              x.address.toLowerCase() !== USDT_ADDRESS[chainId].toLowerCase()
+              x.address.toLowerCase() !== USDT_ADDRESS[chainId].toLowerCase(),
           ).length > 0 && !dismissTokenWarning
         }
         tokens={urlLoadedTokens}

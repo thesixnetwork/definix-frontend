@@ -55,7 +55,7 @@ export default function ConfirmSwapModal({
 
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
-    [originalTrade, trade]
+    [originalTrade, trade],
   )
 
   const modalHeader = useCallback(() => {
@@ -95,14 +95,14 @@ export default function ConfirmSwapModal({
         bottomContent={modalBottom}
       />
     ),
-    [modalBottom, modalHeader]
+    [modalBottom, modalHeader],
   )
 
   const submittedContent = useCallback(
     () => (
       <TransactionSubmittedContent
         title="Swap Complete"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeaderWithoutAction}
@@ -113,14 +113,14 @@ export default function ConfirmSwapModal({
         }
       />
     ),
-    [chainId, modalHeaderWithoutAction, onDismiss, txHash]
+    [chainId, modalHeaderWithoutAction, onDismiss, txHash],
   )
 
   const errorContent = useCallback(
     () => (
       <TransactionErrorContent
         title="Swap Failed"
-        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(" ")[0]}`}
+        date={`${new Date().toDateString()}, ${new Date().toTimeString().split(' ')[0]}`}
         chainId={chainId}
         hash={txHash}
         content={modalHeaderWithoutAction}
@@ -131,7 +131,7 @@ export default function ConfirmSwapModal({
         }
       />
     ),
-    [chainId, modalHeaderWithoutAction, onDismiss, txHash]
+    [chainId, modalHeaderWithoutAction, onDismiss, txHash],
   )
 
   return (

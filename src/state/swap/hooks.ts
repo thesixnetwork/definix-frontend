@@ -35,10 +35,10 @@ export function useSwapActionHandlers(): {
         selectCurrency({
           field,
           currencyId: currency instanceof Token ? currency.address : currency === ETHER ? 'ETH' : '',
-        })
+        }),
       )
     },
-    [dispatch]
+    [dispatch],
   )
 
   const onSwitchTokens = useCallback(() => {
@@ -49,14 +49,14 @@ export function useSwapActionHandlers(): {
     (field: Field, typedValue: string) => {
       dispatch(typeInput({ field, typedValue }))
     },
-    [dispatch]
+    [dispatch],
   )
 
   const onChangeRecipient = useCallback(
     (recipient: string | null) => {
       dispatch(setRecipient({ recipient }))
     },
-    [dispatch]
+    [dispatch],
   )
 
   return {
@@ -262,9 +262,8 @@ export function useDefaultsFromURLSearch():
   const { chainId = process.env.REACT_APP_CHAIN_ID || '56' } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
   const parsedQs = useParsedQueryString()
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
+  const [result, setResult] =
+    useState<{ inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined>()
 
   useEffect(() => {
     if (!chainId) return
@@ -277,7 +276,7 @@ export function useDefaultsFromURLSearch():
         inputCurrencyId: parsed[Field.INPUT].currencyId,
         outputCurrencyId: parsed[Field.OUTPUT].currencyId,
         recipient: parsed.recipient,
-      })
+      }),
     )
 
     setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })

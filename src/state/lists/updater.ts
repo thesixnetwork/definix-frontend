@@ -21,7 +21,7 @@ export default function Updater(): null {
   const fetchAllListsCallback = useCallback(() => {
     if (!isWindowVisible) return
     Object.keys(lists).forEach((url) =>
-      fetchList(url).catch((error) => console.error('interval list fetching error', error))
+      fetchList(url).catch((error) => console.error('interval list fetching error', error)),
     )
   }, [fetchList, isWindowVisible, lists])
 
@@ -65,11 +65,11 @@ export default function Updater(): null {
                       auto: true,
                     },
                   },
-                })
+                }),
               )
             } else {
               console.error(
-                `List at url ${listUrl} could not automatically update because the version bump was only PATCH/MINOR while the update had breaking changes and should have been MAJOR`
+                `List at url ${listUrl} could not automatically update because the version bump was only PATCH/MINOR while the update had breaking changes and should have been MAJOR`,
               )
             }
             break
@@ -87,7 +87,7 @@ export default function Updater(): null {
                   },
                 },
                 removeAfterMs: null,
-              })
+              }),
             )
         }
       }

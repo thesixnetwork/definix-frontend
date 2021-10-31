@@ -19,7 +19,6 @@ import burn from './burn/reducer'
 import multicall from './multicall/reducer'
 import { getThemeCache } from '../utils/theme'
 
-
 type MergedState = {
   user: {
     [key: string]: any
@@ -60,7 +59,7 @@ const store = configureStore({
 })
 
 store.dispatch(updateVersion())
-export default store;
+export default store
 
 export type AppState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch

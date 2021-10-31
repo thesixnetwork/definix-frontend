@@ -6,7 +6,7 @@ const nodes = [
   process.env.REACT_APP_NODE_2,
   process.env.REACT_APP_NODE_3,
   // swap-interface
-  process.env.REACT_APP_NETWORK_URL
+  process.env.REACT_APP_NETWORK_URL,
 ]
 
 const getNodeUrl = () => {

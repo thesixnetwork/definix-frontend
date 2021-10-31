@@ -12,7 +12,6 @@ import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
 // import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 
-
 import { Credentials, StringTranslations } from '@crowdin/crowdin-api-client'
 import { useWeb3React } from '@web3-react/core'
 import { injected } from 'connectors'
@@ -32,8 +31,6 @@ import ToastListener from './components/ToastListener'
 import PageLoader from './components/PageLoader'
 import Menu from './components/Menu'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
-
-
 
 ReactGA.initialize('G-L997LXLF8F')
 
@@ -96,9 +93,6 @@ const App: React.FC = () => {
   // Monkey patch warn() because of web3 flood
   // To be removed when web3 1.3.5 is released
 
-  
-
-
   useEffect(() => {
     console.warn = () => null
   }, [])
@@ -159,7 +153,6 @@ const App: React.FC = () => {
       })
   }
 
-
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus')) {
       activate(injected)
@@ -172,8 +165,6 @@ const App: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLanguage])
-
-
 
   return (
     <Router history={history}>
@@ -203,7 +194,6 @@ const App: React.FC = () => {
             <Route path="/AirdropKlay">
               <AirdropKlay />
             </Route>
-
 
             {/* swap-interface */}
             <Route exact strict path="/swap" component={Swap} />
@@ -320,5 +310,3 @@ const DateModal = ({ date }) => {
 }
 
 export default React.memo(App)
-
-

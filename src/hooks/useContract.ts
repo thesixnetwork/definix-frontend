@@ -45,7 +45,6 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
 import { getContract } from '../utils'
 import { useActiveWeb3React } from './index'
 
-
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
   const [contract, setContract] = useState(new web3.eth.Contract(abi, address, contractOptions))
@@ -130,7 +129,11 @@ export const useBunnySpecialContract = () => {
 export default useContract
 
 // swap-interface
-function useContractWithSwapInterface(address: string | undefined, ABI: any, withSignerIfPossible = true): Contract | null {
+function useContractWithSwapInterface(
+  address: string | undefined,
+  ABI: any,
+  withSignerIfPossible = true,
+): Contract | null {
   const { library, account } = useActiveWeb3React()
 
   return useMemo(() => {

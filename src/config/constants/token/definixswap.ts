@@ -4,7 +4,7 @@ export default {
   version: {
     major: 1,
     minor: 3,
-    patch: 1
+    patch: 1,
   },
   tags: {},
   logoURI: '/images/coins/wbnb.png',
@@ -16,7 +16,7 @@ export default {
       address: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/FINIX.png'
+      logoURI: '/images/coins/FINIX.png',
     },
     {
       name: 'SIX Token',
@@ -24,7 +24,7 @@ export default {
       address: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/SIX.png'
+      logoURI: '/images/coins/SIX.png',
     },
     {
       name: 'BUSD Token',
@@ -32,7 +32,7 @@ export default {
       address: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/BTC.png'
+      logoURI: '/images/coins/BTC.png',
     },
     {
       name: 'USDT Token',
@@ -40,7 +40,7 @@ export default {
       address: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/USDT.png'
+      logoURI: '/images/coins/USDT.png',
     },
     {
       name: 'BTCB Token',
@@ -48,7 +48,7 @@ export default {
       address: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/BTCB.png'
+      logoURI: '/images/coins/BTCB.png',
     },
     {
       name: 'ETH Token',
@@ -56,7 +56,7 @@ export default {
       address: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/ETH.png'
+      logoURI: '/images/coins/ETH.png',
     },
     {
       name: 'XRP Token',
@@ -64,7 +64,7 @@ export default {
       address: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/XRP.png'
+      logoURI: '/images/coins/XRP.png',
     },
     {
       name: 'ADA Token',
@@ -72,7 +72,7 @@ export default {
       address: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
       chainId: 97,
       decimals: 18,
-      logoURI: '/images/coins/ada.png'
+      logoURI: '/images/coins/ada.png',
     },
     {
       name: 'FINIX Token',
@@ -80,7 +80,7 @@ export default {
       address: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/FINIX.png'
+      logoURI: '/images/coins/FINIX.png',
     },
     {
       name: 'SIX Token',
@@ -88,7 +88,7 @@ export default {
       address: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/SIX.png'
+      logoURI: '/images/coins/SIX.png',
     },
     {
       name: 'BUSD Token',
@@ -96,7 +96,7 @@ export default {
       address: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/BTC.png'
+      logoURI: '/images/coins/BTC.png',
     },
     {
       name: 'USDT Token',
@@ -104,7 +104,7 @@ export default {
       address: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/USDT.png'
+      logoURI: '/images/coins/USDT.png',
     },
     {
       name: 'BTCB Token',
@@ -112,7 +112,7 @@ export default {
       address: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/BTCB.png'
+      logoURI: '/images/coins/BTCB.png',
     },
     {
       name: 'ETH Token',
@@ -120,7 +120,7 @@ export default {
       address: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/ETH.png'
+      logoURI: '/images/coins/ETH.png',
     },
     {
       name: 'XRP Token',
@@ -128,7 +128,7 @@ export default {
       address: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/XRP.png'
+      logoURI: '/images/coins/XRP.png',
     },
     {
       name: 'ADA Token',
@@ -136,7 +136,7 @@ export default {
       address: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
       chainId: 56,
       decimals: 18,
-      logoURI: '/images/coins/ada.png'
+      logoURI: '/images/coins/ada.png',
     },
-  ]
+  ],
 }

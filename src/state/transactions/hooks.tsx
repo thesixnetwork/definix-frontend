@@ -15,7 +15,7 @@ export function useTransactionAdder(): (
     data?: { firstToken?: string; firstTokenAmount?: string; secondToken?: string; secondTokenAmount?: string }
     summary?: string
     approval?: { tokenAddress: string; spender: string }
-  }
+  },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
@@ -27,13 +27,13 @@ export function useTransactionAdder(): (
         type,
         data,
         summary,
-        approval
+        approval,
       }: {
         type?: string
         data?: { firstToken?: string; firstTokenAmount?: string; secondToken?: string; secondTokenAmount?: string }
         summary?: string
         approval?: { tokenAddress: string; spender: string }
-      } = {}
+      } = {},
     ) => {
       if (!account) return
       if (!chainId) return
@@ -44,7 +44,7 @@ export function useTransactionAdder(): (
       }
       dispatch(addTransaction({ type, data, hash, from: account, chainId, approval, summary }))
     },
-    [dispatch, chainId, account]
+    [dispatch, chainId, account],
   )
 }
 
@@ -90,6 +90,6 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
         if (!approval) return false
         return approval.spender === spender && approval.tokenAddress === tokenAddress && isTransactionRecent(tx)
       }),
-    [allTransactions, spender, tokenAddress]
+    [allTransactions, spender, tokenAddress],
   )
 }

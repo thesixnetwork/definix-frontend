@@ -46,7 +46,7 @@ export default function PoolFinder() {
       pairState === PairState.EXISTS &&
         pair &&
         JSBI.equal(pair.reserve0.raw, JSBI.BigInt(0)) &&
-        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0))
+        JSBI.equal(pair.reserve1.raw, JSBI.BigInt(0)),
     )
 
   const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)
@@ -60,7 +60,7 @@ export default function PoolFinder() {
         setCurrency1(currency)
       }
     },
-    [activeField]
+    [activeField],
   )
 
   const handleSearchDismiss = useCallback(() => {
