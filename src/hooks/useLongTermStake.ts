@@ -334,7 +334,49 @@ export const useApprove = (max) => {
 
   return { onApprove }
 }
+export const useAprCardFarmHome = () => {
+  const { account } = useWallet()
+  const { slowRefresh } = useRefresh()
+  const [apr, setApr] = useState<number>()
 
+  useEffect(() => {
+    async function fetchApr() {
+      const rewardFacetContract = getContract(RewardFacet.abi, getVFinix())
+      const finixContract = getContract(IKIP7.abi, getVFinix())
+      const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
+
+      const [rewardPerBlockNumber, totalSupplyNumber, userVfinixAmount] = await Promise.all([
+        await rewardFacetContract.methods.rewardPerBlock().call(),
+        await finixContract.methods.totalSupply().call(),
+        await userVfinixInfoContract.methods.locks(account, 0, 0).call(),
+      ])
+      const rewardPerBlock = new BigNumber(rewardPerBlockNumber).multipliedBy(86400).multipliedBy(365)
+      const totalSupply = new BigNumber(totalSupplyNumber)
+
+      let totalVfinixUser = new BigNumber(0)
+      let totalfinixUser = new BigNumber(0)
+      for (let i = 0; i < userVfinixAmount.length; i++) {
+        const selector = userVfinixAmount[i]
+        if (selector.isUnlocked === false && selector.isPenalty === false) {
+          totalVfinixUser = totalVfinixUser.plus(selector.voteAmount)
+          totalfinixUser = totalfinixUser.plus(selector.lockAmount)
+        }
+      }
+
+      const aprUser = totalVfinixUser
+        .dividedBy(totalSupply)
+        .multipliedBy(rewardPerBlock)
+        .dividedBy(totalfinixUser)
+        .multipliedBy(100)
+      // locks
+      setApr(aprUser.toNumber())
+    }
+
+    fetchApr()
+  }, [slowRefresh, account])
+
+  return apr
+}
 export const useApr = () => {
   // const { account } = useWallet()
   const { slowRefresh } = useRefresh()
