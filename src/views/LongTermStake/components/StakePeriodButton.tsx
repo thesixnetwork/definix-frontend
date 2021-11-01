@@ -125,7 +125,7 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
         </BoxPeriod>
       </ButtonPeriod>
       <Text
-        fontSize={`${isMobile ? '8px !important' : '12px !important'}`}
+        fontSize={`${isMobile ? '8px !important' : '10px !important'}`}
         textAlign="center"
         className="mt-2"
         color={themeWhite(period, level)}

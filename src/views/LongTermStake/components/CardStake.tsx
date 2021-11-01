@@ -12,8 +12,8 @@ import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
-import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
 import badgeBoost from 'uikit-dev/images/for-ui-v2/badge-boost.png'
+import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
 
@@ -197,20 +197,6 @@ const CardStake = ({ isShowRightPanel }) => {
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isMd && !isLg
   const { connect, account } = useWallet()
-  const [monthNames, setMonth] = useState([
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'June',
-    'July',
-    'Aug',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dec',
-  ])
   const [date, setDate] = useState('-')
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const balanceOf = useBalances()
@@ -230,8 +216,7 @@ const CardStake = ({ isShowRightPanel }) => {
   const [flgButton, setFlgButton] = useState('')
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
-  const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
-  const { onApprove } = useApprove(MAX_INT)
+  const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
   const minimum = _.get(allLockPeriod, '0.minimum')
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
@@ -286,7 +271,7 @@ const CardStake = ({ isShowRightPanel }) => {
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
-  }, [period, value, periodEnd, monthNames, allLockPeriod, realPenaltyRate])
+  }, [period, value, periodEnd, allLockPeriod, realPenaltyRate])
 
   const { onStake, status, loadings } = useLock(letvel, lockFinix, click)
   useEffect(() => {

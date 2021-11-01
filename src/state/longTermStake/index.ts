@@ -201,11 +201,11 @@ const getTotalSupplyAllTimeMint = async ({ vFinix }) => {
 }
 
 const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
-  let ulockAmount = 0
+  let amount = 0
   let lockCount = 0
   let balancevFinix = 0
   let balanceFinix = 0
-  let lockss = []
+  let locksData = []
   try {
     const calls = [
       // {
@@ -256,8 +256,8 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     const result = _.get(infoFacet, 'locks_')
     let canBeUnlock_
     let canBeClaim_
-    let asMinutes = 0
-    let asPenaltyMinutes = 0
+    let asDays = 0
+    let asPenaltyDays = 0
     const days = [90, 180, 365]
     result.map((value) => {
       canBeUnlock_ =
@@ -266,29 +266,29 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       canBeClaim_ =
         Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
         new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber()
-      asMinutes = moment.duration({ seconds: _.get(period, '0.periodMap')[value.level] }).asDays()
-      asPenaltyMinutes = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asDays()
+      asDays = moment.duration({ seconds: _.get(period, '0.periodMap')[value.level] }).asDays()
+      asPenaltyDays = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
-      let now = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
-      now.setDate(now.getDate() + asMinutes)
-      now = new Date(now)
+      let lockTimes = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
+      lockTimes.setDate(lockTimes.getDate() + asDays)
+      lockTimes = new Date(lockTimes)
 
       let penaltyTimestamp = new Date(new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() * 1000)
-      penaltyTimestamp.setDate(penaltyTimestamp.getDate() + asPenaltyMinutes)
+      penaltyTimestamp.setDate(penaltyTimestamp.getDate() + asPenaltyDays)
       penaltyTimestamp = new Date(penaltyTimestamp)
 
       let unLockTime = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
-      unLockTime.setDate(unLockTime.getDate() + asPenaltyMinutes)
+      unLockTime.setDate(unLockTime.getDate() + asPenaltyDays)
       unLockTime = new Date(unLockTime)
 
       const offset = 2
-      const utc = now.getTime()
+      const utcLock = lockTimes.getTime()
       const utcPenalty = penaltyTimestamp.getTime()
       const utcUnLock = unLockTime.getTime()
-      let nd = new Date(utc + 3600000 * offset)
+      let nd = new Date(utcLock + 3600000 * offset)
       let pt = new Date(utcPenalty + 3600000 * offset)
       let ul = new Date(utcUnLock + 3600000 * offset)
-      const dateTime = now.getTimezoneOffset() / 60
+      const dateTime = lockTimes.getTimezoneOffset() / 60
       const dateTimePenalty = penaltyTimestamp.getTimezoneOffset() / 60
       const dateTimeUnLock = unLockTime.getTimezoneOffset() / 60
       if (dateTime === -9) {
@@ -320,7 +320,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       } else {
         Unlock = false
       }
-      lockss.push({
+      locksData.push({
         id: new BigNumber(_.get(value, 'id._hex')).toNumber(),
         level: value.level * 1 + 1,
         isUnlocked: value.isUnlocked,
@@ -340,16 +340,16 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
       })
-      return lockss
+      return locksData
     })
-    ulockAmount = new BigNumber(lockAmount).dividedBy(new BigNumber(10).pow(18)).toNumber()
+    amount = new BigNumber(lockAmount).dividedBy(new BigNumber(10).pow(18)).toNumber()
     lockCount = new BigNumber(count).toNumber()
   } catch (error) {
-    ulockAmount = 0
+    amount = 0
     lockCount = 0
-    lockss = []
+    locksData = []
   }
-  return [ulockAmount, lockss, lockCount, balanceFinix, balancevFinix]
+  return [amount, locksData, lockCount, balanceFinix, balancevFinix]
 }
 
 const getAllLockPeriods = async ({ vFinix }) => {
