@@ -75,7 +75,7 @@ const NetWorth = styled.div`
 const RankCard = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   background: ${({ theme }) => theme.colors.backgroundBlueGradient};
-  background-size: auto 100%;
+  background-size: cover;
   align-items: center;
 
   .sum {
