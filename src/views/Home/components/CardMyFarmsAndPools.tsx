@@ -86,7 +86,7 @@ const RankCard = styled.div`
 const InnerRankCard = styled.div`
   padding: 15px 10px 15px 10px;
   display: flex;
-  
+
   align-items: center;
 `
 
@@ -750,7 +750,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Text fontSize="12px" color="#303030">
                 Your vFINIX Balance
               </Text>
-              <Text bold>{numeral(balancevfinix||0).format('0,0.[00]')}</Text>
+              <Text bold>{numeral(balancevfinix || 0).format('0,0.[00]')}</Text>
             </div>
             {/* </div> */}
             {/* <Text className="col-12 flex" color="white"></Text> */}
@@ -846,7 +846,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         <Text bold textAlign="center" className="ready">
           FINIX ready to harvest
         </Text>
-        <div className="harvest" style={{ background: getBgMiddleComponentRank(longtermLocksRank)}}>
+        <div className="harvest" style={{ background: getBgMiddleComponentRank(longtermLocksRank) }}>
           <div className="flex justify-center">
             <StatAll>
               <Text textAlign="center" color="textSubtle">
