@@ -144,7 +144,7 @@ const StyledBannerVoting = styled(Card)`
     height: 327px;
 
     &:before {
-      width: 40%;
+      width: 46%;
       opacity: 1;
     }
 
