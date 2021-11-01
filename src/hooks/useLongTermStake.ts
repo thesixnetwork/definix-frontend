@@ -113,7 +113,6 @@ export const useBalances = () => {
   return balance
 }
 
-
 export const usePrivateData = () => {
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
@@ -413,16 +412,13 @@ export const useRank = () => {
   useEffect(() => {
     async function fetchRank() {
       const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
-      const [ userVfinixLocks] = await Promise.all([
-        await userVfinixInfoContract.methods.locks(account, 0, 0).call(),
-      ])
-      let maxRank = -1;
+      const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
+      let maxRank = -1
       for (let i = 0; i < userVfinixLocks.length; i++) {
         const selector = userVfinixLocks[i]
-        
+
         if (selector.isUnlocked === false && selector.isPenalty === false) {
-          if(maxRank < selector.level)
-            maxRank = selector.level
+          if (maxRank < selector.level) maxRank = selector.level
         }
       }
       setRank(maxRank)
@@ -433,7 +429,6 @@ export const useRank = () => {
 
   return rank
 }
-
 
 export const useLockCount = () => {
   const { slowRefresh } = useRefresh()

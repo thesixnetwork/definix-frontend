@@ -6,7 +6,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
-import { useAprCardFarmHome, useAllLock, usePrivateData,useRank } from 'hooks/useLongTermStake'
+import { useAprCardFarmHome, useAllLock, usePrivateData, useRank } from 'hooks/useLongTermStake'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
@@ -84,10 +84,10 @@ const RankCard = styled.div`
 `
 
 const InnerRankCard = styled.div`
-padding: 15px 10px 15px 10px;
-display: flex;
-align-items: center;
-
+  padding: 15px 10px 15px 10px;
+  display: flex;
+  
+  align-items: center;
 `
 
 const Legend = styled.div`
@@ -123,6 +123,7 @@ const HarvestAll = styled.div`
   .harvest {
     padding: 16px 24px;
     background: ${({ theme }) => theme.colors.backgroundBlueGradient};
+    background-size: cover;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -240,7 +241,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
-  
+
   const rebalances = useRebalances()
   const balances = useBalances(account) || {}
   const rebalanceBalances = useRebalanceBalances(account) || {}
@@ -685,64 +686,79 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       responsive: true,
     },
   }
-  const getRankTopCardBg = (rank)=>{
-    switch(rank){
-      case "0": return BgHeadCardRankSliver; 
-      case "1": return BgHeadCardRankGold; 
-      case "2": return BgHeadCardRankDiamond; 
-      default: return "";
+  const getRankTopCardBg = (rank) => {
+    switch (rank) {
+      case '0':
+        return BgHeadCardRankSliver
+      case '1':
+        return BgHeadCardRankGold
+      case '2':
+        return BgHeadCardRankDiamond
+      default:
+        return ''
     }
   }
-  const getRanklogo = (rank)=>{
-    switch(rank){
-      case "0": return LogoRankSliver; 
-      case "1": return LogoRankGold; 
-      case "2": return LogoRankDiamond; 
-      default: return "";
+  const getRanklogo = (rank) => {
+    switch (rank) {
+      case '0':
+        return LogoRankSliver
+      case '1':
+        return LogoRankGold
+      case '2':
+        return LogoRankDiamond
+      default:
+        return ''
     }
   }
-  const getTextRank = (rank)=>{
-    switch(rank){
-      case "0": return "Sliver HOLD"; 
-      case "1": return "Gold HOLD"; 
-      case "2": return "Diamond HOLD"; 
-      default: return "";
+  const getTextRank = (rank) => {
+    switch (rank) {
+      case '0':
+        return 'Sliver HOLD'
+      case '1':
+        return 'Gold HOLD'
+      case '2':
+        return 'Diamond HOLD'
+      default:
+        return ''
     }
   }
-  const getBgMiddleComponentRank = (rank)=>{
-    switch(rank){
-      case "0": return BgMiddleComponentRankSliver
-      case "1": return BgMiddleComponentRankGold
-      case "2": return BgMiddleComponentRankDiamond;
-      default: return "";
+  const getBgMiddleComponentRank = (rank) => {
+    switch (rank) {
+      case '0':
+        return `url(${BgMiddleComponentRankSliver})`
+      case '1':
+        return `url(${BgMiddleComponentRankGold})`
+      case '2':
+        return `url(${BgMiddleComponentRankDiamond})`
+      default:
+        return 'linear-gradient(#0D418E, #349BE7)'
     }
   }
   return (
     <Container className={className}>
       {longtermLocksRank !== -1 ? (
-       <RankCard style={{backgroundImage:`url(${getRankTopCardBg(longtermLocksRank)})`}}>
-        <InnerRankCard>
-            <span  style={{ paddingLeft: '7%'}}>
-              <img width="30px" height="30px"  src={getRanklogo(longtermLocksRank)} alt="" />
+        <RankCard style={{ backgroundImage: `url(${getRankTopCardBg(longtermLocksRank)})` }}>
+          <InnerRankCard>
+            <span style={{ paddingLeft: '4%' }}>
+              <img width="30px" height="30px" src={getRanklogo(longtermLocksRank)} alt="" />
             </span>
-            <Text className="col-12 flex"  bold style={{ paddingLeft: '10px',paddingRight: '20px' }} color="black">        
+            <Text className="col-12 flex" bold style={{ paddingLeft: '10px', paddingRight: '30px' }} color="black">
               {getTextRank(longtermLocksRank)}
             </Text>
-            <img width="20px" height="20px"  src={vFinix} alt="" />
+            <img width="20px" height="20px" src={vFinix} alt="" />
             <div className="col-12 " style={{ paddingLeft: '7px' }}>
-            <Text  fontSize="12px"  color="#303030" >
-              Your vFINIX Balance
-            </Text>
-            <Text bold> 
-                {balancevfinix}
-            </Text>
+              <Text fontSize="12px" color="#303030">
+                Your vFINIX Balance
+              </Text>
+              <Text bold>{numeral(balancevfinix||0).format('0,0.[00]')}</Text>
             </div>
-          {/* </div> */}
+            {/* </div> */}
             {/* <Text className="col-12 flex" color="white"></Text> */}
-        </InnerRankCard>       
-      
+          </InnerRankCard>
         </RankCard>
-        ):""}
+      ) : (
+        ''
+      )}
       <NetWorth>
         <div className="col-12 flex" style={{ position: 'relative' }}>
           {isLoading ? <Loading /> : <Doughnut data={chart.data} options={chart.options} height={150} width={150} />}
@@ -830,7 +846,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         <Text bold textAlign="center" className="ready">
           FINIX ready to harvest
         </Text>
-        <div className="harvest" style={{backgroundImage:`url(${getBgMiddleComponentRank(longtermLocksRank)})`}}>
+        <div className="harvest" style={{ background: getBgMiddleComponentRank(longtermLocksRank)}}>
           <div className="flex justify-center">
             <StatAll>
               <Text textAlign="center" color="textSubtle">
