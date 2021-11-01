@@ -660,7 +660,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <Heading fontSize="24px !important">
               {(() => {
-                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances, ...dataLongtermStake].map((f) => {
+                const allNetWorth = [
+                  ...stackedOnlyFarms,
+                  ...stackedOnlyPools,
+                  ...stakedRebalances,
+                  ...dataLongtermStake,
+                ].map((f) => {
                   return getNetWorth(f)
                 })
                 // eslint-disable-next-line
