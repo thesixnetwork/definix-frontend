@@ -4,7 +4,8 @@ import { LanguageContext } from 'contexts/Localisation/languageContext'
 import useTheme from 'hooks/useTheme'
 import React, { useContext } from 'react'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
-import { Menu as UikitMenu } from 'uikit-dev'
+// import { Menu as UikitMenu } from 'uikit-dev'
+import { Menu as UikitMenu } from 'definixswap-uikit'
 import config from './config'
 
 const Menu = (props) => {
@@ -24,9 +25,9 @@ const Menu = (props) => {
       currentLang={selectedLanguage && selectedLanguage.code}
       langs={allLanguages}
       setLang={setSelectedLanguage}
-      finixPriceUsd={finixPriceUsd.toNumber()}
-      price={finixPriceUsd.toNumber()}
-      links={config}
+      // finixPriceUsd={finixPriceUsd.toNumber()}
+      // price={finixPriceUsd.toNumber()}
+      // links={config}
       profile={{
         username: profile?.username,
         image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,

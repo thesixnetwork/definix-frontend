@@ -1,5 +1,6 @@
 import React from 'react'
-import { ModalProvider } from 'uikit-dev'
+import { ModalProvider as OldModalProvider } from 'uikit-dev'
+import { ModalProvider } from 'definixswap-uikit'
 import bsc, { UseWalletProvider } from '@binance-chain/bsc-use-wallet'
 import { Provider } from 'react-redux'
 import getRpcUrl from 'utils/getRpcUrl'
@@ -25,7 +26,9 @@ const Providers: React.FC = ({ children }) => {
           >
             <BlockContextProvider>
               <RefreshContextProvider>
-                <ModalProvider>{children}</ModalProvider>
+                <OldModalProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </OldModalProvider>
               </RefreshContextProvider>
             </BlockContextProvider>
           </UseWalletProvider>
