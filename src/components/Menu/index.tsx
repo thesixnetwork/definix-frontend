@@ -27,16 +27,16 @@ const Menu = (props) => {
         currentLang={selectedLanguage && selectedLanguage.code}
         langs={allLanguages}
         setLang={setSelectedLanguage}
-        // cakePriceUsd={finixPriceUsd.toNumber()}
+        // finixPriceUsd={finixPriceUsd.toNumber()}
         // price={finixPriceUsd.toNumber() <= 0 ? 'N/A' : numeral(finixPriceUsd.toNumber()).format('0,0.0000')}
         // links={config}
-        // profile={{
-        //   username: profile?.username,
-        //   image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
-        //   profileLink: '/profile',
-        //   noProfileLink: '/profile',
-        //   showPip: !profile?.username,
-        // }}
+        profile={{
+          username: profile?.username,
+          image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
+          profileLink: '/profile',
+          noProfileLink: '/profile',
+          showPip: !profile?.username,
+        }}
         {...props}
       />
   )
