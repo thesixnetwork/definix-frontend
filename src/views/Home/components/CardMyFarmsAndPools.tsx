@@ -122,7 +122,7 @@ const HarvestAll = styled.div`
 
   .harvest {
     padding: 16px 24px;
-    
+
     background-size: cover !important;
     display: flex;
     flex-direction: column;
