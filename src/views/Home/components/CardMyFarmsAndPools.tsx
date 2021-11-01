@@ -475,6 +475,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   // Net Worth
   const getNetWorth = (d) => {
+    if (typeof d.lpSymbol === 'string' && d.lpSymbol === 'Long-term stake') {
+      return d.value
+    }
     if (typeof d.ratio === 'object') {
       const thisBalance = d.enableAutoCompound ? rebalanceBalances : balances
       const currentBalance = _.get(thisBalance, getAddress(d.address), new BigNumber(0))
@@ -657,7 +660,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <Heading fontSize="24px !important">
               {(() => {
-                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances].map((f) => {
+                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances, ...dataLongtermStake].map((f) => {
                   return getNetWorth(f)
                 })
                 // eslint-disable-next-line
