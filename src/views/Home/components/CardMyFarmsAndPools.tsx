@@ -6,7 +6,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
-import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
+import { useAprCardFarmHome, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
@@ -203,7 +203,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   // Long term
   const { allLockPeriod } = useAllLock()
   const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
-  const longtermApr = useApr()
+  const longtermApr = useAprCardFarmHome()
 
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
