@@ -475,7 +475,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   // Net Worth
   const getNetWorth = (d) => {
-    if (typeof d.lpSymbol === 'string' && d.lpSymbol === 'Long-term stake') {
+    if (typeof d.lpSymbol === 'string' && d.lpSymbol === 'Long-term') {
       return d.value
     }
     if (typeof d.ratio === 'object') {
@@ -557,13 +557,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   const dataLongtermStake = [
     {
-      lpSymbol: 'Long-term stake',
+      lpSymbol: 'Long-term',
       value: Number(finixPrice.times(lockAmount)),
     },
   ]
 
   const isGrouping =
-    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0
+    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0 && dataLongtermStake.length > 0
   let arrayData = [...dataFarms, ...dataPools, ...dataRebalances, ...dataLongtermStake]
   if (isGrouping) {
     const groupRebalance = {
@@ -593,11 +593,16 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         ),
       ),
     }
+    const groupVFinix = {
+      lpSymbol: 'Long-term',
+      value: Number(finixPrice.times(lockAmount)),
+    }
     arrayData = []
-    if (groupRebalance.value > 0 || groupFarm.value > 0 || groupPool.value > 0) {
+    if (groupRebalance.value > 0 || groupFarm.value > 0 || groupPool.value > 0 || groupVFinix.value > 0) {
       if (groupRebalance.value > 0) arrayData.push(groupRebalance)
       if (groupFarm.value > 0) arrayData.push(groupFarm)
       if (groupPool.value > 0) arrayData.push(groupPool)
+      if (groupVFinix.value > 0) arrayData.push(groupVFinix)
     }
   }
   const sorted = arrayData.sort((a, b) => b.value - a.value)
@@ -605,7 +610,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const topThree = sorted.splice(0, 3)
 
   // OTHER
-  const result = sorted.map((i) => Number(i))
+  const result = sorted.map((i) => Number(i.value))
   const other = result.reduce((a, b) => a + b, 0)
 
   // CHART
@@ -615,7 +620,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     chartColors.push(c)
   })
   const otherColor = '#8C90A5'
-  if (other > 0 && !isGrouping) chartColors.push(otherColor)
+  if (other > 0 && isGrouping) chartColors.push(otherColor)
   const chart = {
     data: {
       labels: stackedOnlyFarms.map((d) => d.lpSymbol),
@@ -794,7 +799,210 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       </HarvestAll>
 
       <List>
-        <>
+        <>  
+          {!!balancefinix && (
+            <FarmsAndPools key="VFINIX">
+              <Coins>
+                {isLoading ? (
+                  <>
+                    <div className="flex">
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                    </div>
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                  </>
+                ) : (
+                  <>
+                    <div className="flex">
+                      <img src={vFinix} alt="" />
+                    </div>
+                    <Text bold style={{ fontSize: '10px' }}>
+                      LONG-TERM STAKE
+                    </Text>
+                  </>
+                )}
+              </Coins>
+              <Summary>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    APR
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                  ) : (
+                    <Text bold color="success">
+                      {`${numeral(longtermApr || 0).format('0,0.[00]')}`}%
+                    </Text>
+                  )}
+                </div>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    FINIX Staked
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{`${numeral(lockAmount || 0).format('0,0.[00]')}`}</Text>
+                  )}
+                </div>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    vFINIX Earned
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{`${numeral(balancevfinix || 0).format('0,0.[00]')}`}</Text>
+                  )}
+                </div>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    FINIX Earned
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{`${numeral(finixEarn).format('0,0.[00]')}`}</Text>
+                  )}
+                </div>
+              </Summary>
+              <IconButton size="sm" as={Link} to="/long-term-stake" className="flex flex-shrink">
+                <ChevronRightIcon color="textDisabled" width="28" />
+              </IconButton>
+            </FarmsAndPools>
+          )}
+
+          {farmsList(stackedOnlyFarms, false).map((d) => {
+            const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
+            return (
+              <FarmsAndPools key={d.props.farm.lpSymbol}>
+                <Coins>
+                  {isLoading ? (
+                    <>
+                      <div className="flex">
+                        <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                        <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      </div>
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex">
+                        {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                        {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                      </div>
+                      <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
+                    </>
+                  )}
+                </Coins>
+                <Summary>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      APR
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    ) : (
+                      <Text bold color="success">
+                        {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
+                      </Text>
+                    )}
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      LP Staked
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>
+                        {new BigNumber(d.props.farm.userData.stakedBalance)
+                          .div(new BigNumber(10).pow(18))
+                          .toNumber()
+                          .toFixed(2)}
+                      </Text>
+                    )}
+                  </div>
+                  {false && (
+                    <div>
+                      <Text fontSize="12px" color="textSubtle">
+                        Multiplier
+                      </Text>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                      ) : (
+                        <Text bold color="warning">
+                          {d.props.farm.multiplier}
+                        </Text>
+                      )}
+                    </div>
+                  )}
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      FINIX Earned
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>
+                        {new BigNumber(d.props.farm.userData.earnings)
+                          .div(new BigNumber(10).pow(18))
+                          .toNumber()
+                          .toFixed(2)}
+                      </Text>
+                    )}
+                  </div>
+                </Summary>
+                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+                  <ChevronRightIcon color="textDisabled" width="28" />
+                </IconButton>
+              </FarmsAndPools>
+            )
+          })}
+
+          {stackedOnlyPools.map((d) => {
+            const imgs = d.tokenName.split(' ')[0].split('-')
+            return (
+              <FarmsAndPools key={d.tokenName}>
+                <Coins>
+                  <div className="flex">
+                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                  </div>
+                  <Text bold>{d.tokenName}</Text>
+                </Coins>
+                <Summary>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      APR
+                    </Text>
+                    <Text bold color="success">
+                      {new BigNumber(d.apy).toNumber().toFixed(2)}%
+                    </Text>
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      LP Staked
+                    </Text>
+                    <Text bold>
+                      {new BigNumber(d.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                    </Text>
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      FINIX Earned
+                    </Text>
+                    <Text bold>
+                      {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                    </Text>
+                  </div>
+                </Summary>
+                <IconButton size="sm" as={Link} to="/pool" className="flex flex-shrink">
+                  <ChevronRightIcon color="textDisabled" width="28" />
+                </IconButton>
+              </FarmsAndPools>
+            )
+          })}
+
           {stakedRebalances.map((r) => {
             const thisBalance = r.enableAutoCompound ? rebalanceBalances : balances
             const currentBalance = _.get(thisBalance, getAddress(r.address), new BigNumber(0))
@@ -876,216 +1084,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </div>
                   </div>
                 </Summary>
-                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
-                  <ChevronRightIcon color="textDisabled" width="28" />
-                </IconButton>
-              </FarmsAndPools>
-            )
-          })}
-
-          {stackedOnlyPools.map((d) => {
-            const imgs = d.tokenName.split(' ')[0].split('-')
-            return (
-              <FarmsAndPools key={d.tokenName}>
-                <Coins>
-                  <div className="flex">
-                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
-                  </div>
-                  <Text bold>{d.tokenName}</Text>
-                </Coins>
-                <Summary>
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      APR
-                    </Text>
-                    <Text bold color="success">
-                      {new BigNumber(d.apy).toNumber().toFixed(2)}%
-                    </Text>
-                  </div>
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      LP Staked
-                    </Text>
-                    <Text bold>
-                      {new BigNumber(d.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
-                    </Text>
-                  </div>
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      FINIX Earned
-                    </Text>
-                    <Text bold>
-                      {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
-                    </Text>
-                  </div>
-                </Summary>
-                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+                <IconButton size="sm" as={Link} to="/rebalancing" className="flex flex-shrink">
                   <ChevronRightIcon color="textDisabled" width="28" />
                 </IconButton>
               </FarmsAndPools>
             )
           })}
         </>
-
-        {farmsList(stackedOnlyFarms, false).map((d) => {
-          const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
-          return (
-            <FarmsAndPools key={d.props.farm.lpSymbol}>
-              <Coins>
-                {isLoading ? (
-                  <>
-                    <div className="flex">
-                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                    </div>
-                    <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
-                  </>
-                ) : (
-                  <>
-                    <div className="flex">
-                      {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
-                      {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
-                    </div>
-                    <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
-                  </>
-                )}
-              </Coins>
-              <Summary>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    APR
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
-                  ) : (
-                    <Text bold color="success">
-                      {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
-                    </Text>
-                  )}
-                </div>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    LP Staked
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" />
-                  ) : (
-                    <Text bold>
-                      {new BigNumber(d.props.farm.userData.stakedBalance)
-                        .div(new BigNumber(10).pow(18))
-                        .toNumber()
-                        .toFixed(2)}
-                    </Text>
-                  )}
-                </div>
-                {false && (
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      Multiplier
-                    </Text>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
-                    ) : (
-                      <Text bold color="warning">
-                        {d.props.farm.multiplier}
-                      </Text>
-                    )}
-                  </div>
-                )}
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    FINIX Earned
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" />
-                  ) : (
-                    <Text bold>
-                      {new BigNumber(d.props.farm.userData.earnings)
-                        .div(new BigNumber(10).pow(18))
-                        .toNumber()
-                        .toFixed(2)}
-                    </Text>
-                  )}
-                </div>
-              </Summary>
-              <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
-                <ChevronRightIcon color="textDisabled" width="28" />
-              </IconButton>
-            </FarmsAndPools>
-          )
-        })}
-
-        {!!balancefinix && (
-          <FarmsAndPools key="VFINIX">
-            <Coins>
-              {isLoading ? (
-                <>
-                  <div className="flex">
-                    <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                    <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                  </div>
-                  <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
-                </>
-              ) : (
-                <>
-                  <div className="flex">
-                    <img src={vFinix} alt="" />
-                  </div>
-                  <Text bold style={{ fontSize: '10px' }}>
-                    LONG-TERM STAKE
-                  </Text>
-                </>
-              )}
-            </Coins>
-            <Summary>
-              <div>
-                <Text fontSize="12px" color="textSubtle">
-                  APR
-                </Text>
-                {isLoading ? (
-                  <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
-                ) : (
-                  <Text bold color="success">
-                    {`${numeral(longtermApr || 0).format('0,0.[00]')}`}%
-                  </Text>
-                )}
-              </div>
-              <div>
-                <Text fontSize="12px" color="textSubtle">
-                  FINIX Staked
-                </Text>
-                {isLoading ? (
-                  <Skeleton animation="pulse" variant="rect" height="21px" />
-                ) : (
-                  <Text bold>{`${numeral(lockAmount || 0).format('0,0.[00]')}`}</Text>
-                )}
-              </div>
-              <div>
-                <Text fontSize="12px" color="textSubtle">
-                  vFINIX Earned
-                </Text>
-                {isLoading ? (
-                  <Skeleton animation="pulse" variant="rect" height="21px" />
-                ) : (
-                  <Text bold>{`${numeral(balancevfinix || 0).format('0,0.[00]')}`}</Text>
-                )}
-              </div>
-              <div>
-                <Text fontSize="12px" color="textSubtle">
-                  FINIX Earned
-                </Text>
-                {isLoading ? (
-                  <Skeleton animation="pulse" variant="rect" height="21px" />
-                ) : (
-                  <Text bold>{`${numeral(finixEarn).format('0,0.[00]')}`}</Text>
-                )}
-              </div>
-            </Summary>
-            <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
-              <ChevronRightIcon color="textDisabled" width="28" />
-            </IconButton>
-          </FarmsAndPools>
-        )}
       </List>
     </Container>
   )
