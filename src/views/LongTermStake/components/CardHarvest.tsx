@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useMemo } from 'react'
 import styled, { useTheme } from 'styled-components'
 import numeral from 'numeral'
 import _ from 'lodash'
@@ -27,7 +27,7 @@ const CardHarvest = () => {
   const isMobile = !isXl && !isLg && !isMd
   const { handleHarvest } = useHarvest()
   const [status, setStatus] = useState(false)
-  const valueReward = finixEarn > 0
+  const valueReward = useMemo(() => finixEarn > 0, [finixEarn])
 
   const onHarvest = useCallback(async () => {
     try {

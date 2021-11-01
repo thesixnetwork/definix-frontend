@@ -13,6 +13,7 @@ import loading from 'uikit-dev/animation/farmPool.json'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
 import badgeBoost from 'uikit-dev/images/for-ui-v2/badge-boost.png'
+import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
 
@@ -215,8 +216,7 @@ const CardStake = ({ isShowRightPanel }) => {
   const [flgButton, setFlgButton] = useState('')
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
-  const MAX_INT = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
-  const { onApprove } = useApprove(MAX_INT)
+  const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
   const minimum = _.get(allLockPeriod, '0.minimum')
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
