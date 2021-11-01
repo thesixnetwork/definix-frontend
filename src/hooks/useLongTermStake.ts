@@ -2,10 +2,8 @@
 import { useEffect, useState, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import moment from 'moment'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
-import { getAddress } from 'utils/addressHelpers'
 import {
   getAbiERC20ByName,
   getAbiVaultPenaltyFacetByName,
@@ -20,7 +18,6 @@ import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
 import VaultPenaltyFacet from '../config/abi/VaultPenaltyFacet.json'
-import multicall from '../utils/multicall'
 import { getContract } from '../utils/caver'
 import { getTokenBalance } from '../utils/erc20'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
@@ -52,9 +49,9 @@ export const useTotalSupply = () => {
 
   useEffect(() => {
     async function fetchTotalSupply() {
-      const finixContract = getContract(IKIP7.abi, getVFinix())
-      const supply = await finixContract.methods.totalSupply().call()
-      setTotalSupply(new BigNumber(supply).dividedBy(new BigNumber(10).pow(18)).toString())
+      const callContract = getContract(IKIP7.abi, getVFinix())
+      const total = await callContract.methods.totalSupply().call()
+      setTotalSupply(new BigNumber(total).dividedBy(new BigNumber(10).pow(18)).toString())
     }
 
     fetchTotalSupply()
@@ -69,15 +66,15 @@ export const useTotalFinixLock = () => {
 
   useEffect(() => {
     async function fetchTotalFinixLock() {
-      const finixLock = getContract(VaultFacet.abi, getVFinix())
-      const supply = await finixLock.methods.getTotalFinixLock().call()
+      const callContract = getContract(VaultFacet.abi, getVFinix())
+      const finixLock = await callContract.methods.getTotalFinixLock().call()
       const finixLockMap = []
       for (let i = 0; i < 3; i++) {
         _.set(
           finixLockMap,
           `${i}`,
           numeral(
-            new BigNumber(_.get(supply, `totalFinixLockAtLevel${i + 1}_`)).dividedBy(new BigNumber(10).pow(18)),
+            new BigNumber(_.get(finixLock, `totalFinixLockAtLevel${i + 1}_`)).dividedBy(new BigNumber(10).pow(18)),
           ).format('0'),
         )
       }
@@ -97,10 +94,10 @@ export const useBalances = () => {
 
   useEffect(() => {
     async function fetchBalance() {
-      const finixBalance = getContract(IKIP7.abi, getFinixAddress())
+      const callContract = getContract(IKIP7.abi, getFinixAddress())
       try {
-        const res = await finixBalance.methods.balanceOf(account).call()
-        setBalanceOf(new BigNumber(res).dividedBy(new BigNumber(10).pow(18)))
+        const balanceOf = await callContract.methods.balanceOf(account).call()
+        setBalanceOf(new BigNumber(balanceOf).dividedBy(new BigNumber(10).pow(18)))
       } catch (e) {
         setBalanceOf(null)
       }
@@ -115,7 +112,6 @@ export const useBalances = () => {
 export const usePrivateData = () => {
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
-  const [balance, setBalanceOf] = useState(new BigNumber(0))
   const { account } = useWallet()
   const startIndex = useSelector((state: State) => state.longTerm.startIndex)
   const allLockPeriod = useSelector((state: State) => state.longTerm.allLockPeriods)
@@ -138,7 +134,6 @@ export const usePrivateData = () => {
 export const useAllLock = () => {
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
-  const [balance, setBalanceOf] = useState(new BigNumber(0))
 
   useEffect(() => {
     dispatch(fetchAllLockPeriods())
@@ -154,17 +149,17 @@ export const usePendingReward = () => {
   const { account } = useWallet()
 
   useEffect(() => {
-    async function fetchBalance() {
-      const vfinixearn = getContract(RewardFacet.abi, getVFinix())
+    async function fetchReward() {
+      const callContract = getContract(RewardFacet.abi, getVFinix())
       try {
-        const res = await vfinixearn.methods.pendingReward(account).call()
-        setPendingReward(new BigNumber(res).dividedBy(new BigNumber(10).pow(18)))
+        const reward = await callContract.methods.pendingReward(account).call()
+        setPendingReward(new BigNumber(reward).dividedBy(new BigNumber(10).pow(18)))
       } catch (e) {
         setPendingReward(null)
       }
     }
 
-    fetchBalance()
+    fetchReward()
   }, [slowRefresh, account])
 
   return pendingReward
@@ -176,17 +171,17 @@ export const useAllowance = () => {
   const { account } = useWallet()
 
   useEffect(() => {
-    async function fetchBalance() {
-      const vfinixearn = getContract(IKIP7.abi, getFinixAddress())
+    async function fetchAllowance() {
+      const callContract = getContract(IKIP7.abi, getFinixAddress())
       try {
-        const res = await vfinixearn.methods.allowance(account, getVFinix()).call()
+        const res = await callContract.methods.allowance(account, getVFinix()).call()
         setAllowance(new BigNumber(res).dividedBy(new BigNumber(10).pow(18)))
       } catch (e) {
         setAllowance(null)
       }
     }
 
-    fetchBalance()
+    fetchAllowance()
   }, [slowRefresh, account])
 
   return allowance
@@ -218,13 +213,13 @@ export const useUnLock = () => {
         resolve('')
       })
     }
-    const lock = getContract(VaultFacet.abi, getVFinix())
+    const callContract = getContract(VaultFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(lock.methods.unlock(id), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.unlock(id), account).then(resolve).catch(reject)
     })
   }
 
-  return { unnLock: onUnLock }
+  return { unLock: onUnLock }
 }
 
 export const useLock = (level, lockFinix, focus) => {
@@ -252,12 +247,12 @@ export const useLock = (level, lockFinix, focus) => {
           setInterval(() => setLoading(''), 5000)
           setInterval(() => setStatus(false), 5000)
         } else {
-          const lock = getContract(VaultFacet.abi, getVFinix())
-          await lock.methods
+          const callContract = getContract(VaultFacet.abi, getVFinix())
+          await callContract.methods
             .lock(level, lockFinix)
             .estimateGas({ from: account })
             .then((estimatedGasLimit) => {
-              lock.methods
+              callContract.methods
                 .lock(level, lockFinix)
                 .send({ from: account, gas: estimatedGasLimit })
                 .then((resolve) => {
@@ -303,9 +298,9 @@ export const useHarvest = () => {
         resolve('ok')
       })
     }
-    const reward = getContract(RewardFacet.abi, getVFinix())
+    const callContract = getContract(RewardFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(reward.methods.harvest(account), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.harvest(account), account).then(resolve).catch(reject)
     })
   }, [account, connector, setShowModal])
 
@@ -330,9 +325,9 @@ export const useApprove = (max) => {
         resolve(txHash)
       })
     }
-    const reward = getContract(IKIP7.abi, getFinixAddress())
+    const callContract = getContract(IKIP7.abi, getFinixAddress())
     return new Promise((resolve, reject) => {
-      handleContractExecute(reward.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.approve(getVFinix(), max), account).then(resolve).catch(reject)
     })
   }, [account, max, connector, setShowModal])
 
@@ -347,10 +342,10 @@ export const useApr = () => {
     async function fetchApr() {
       const finixLock = getContract(RewardFacet.abi, getVFinix())
       const finixContract = getContract(IKIP7.abi, getVFinix())
-      const supply = await finixLock.methods.rewardPerBlock().call()
+      const rewardPerBlock = await finixLock.methods.rewardPerBlock().call()
       const total = await finixContract.methods.totalSupply().call()
       const totalSupply = new BigNumber(total).dividedBy(new BigNumber(10).pow(18)).toNumber()
-      const reward = new BigNumber(supply).dividedBy(new BigNumber(10).pow(18)).toNumber()
+      const reward = new BigNumber(rewardPerBlock).dividedBy(new BigNumber(10).pow(18)).toNumber()
       setApr(((reward * 86400 * 365) / Number(totalSupply)) * 100)
     }
 
@@ -362,24 +357,24 @@ export const useApr = () => {
 
 export const useLockCount = () => {
   const { slowRefresh } = useRefresh()
-  const [balance, setBalanceOf] = useState(0)
+  const [lockCount, setLockCount] = useState(0)
   const { account } = useWallet()
 
   useEffect(() => {
     async function fetchLockCount() {
-      const finixBalance = getContract(VaultFacet.abi, getVFinix())
+      const callContract = getContract(VaultFacet.abi, getVFinix())
       try {
-        const res = await finixBalance.methods.lockCount(account).call()
-        setBalanceOf(res)
+        const res = await callContract.methods.lockCount(account).call()
+        setLockCount(res)
       } catch (e) {
-        setBalanceOf(null)
+        setLockCount(null)
       }
     }
 
     fetchLockCount()
   }, [slowRefresh, account])
 
-  return balance
+  return lockCount
 }
 
 export const useUnstakeId = () => {
@@ -479,9 +474,9 @@ export const useClaim = () => {
         resolve(txHash)
       })
     }
-    const lock = getContract(VaultPenaltyFacet.abi, getVFinix())
+    const callContract = getContract(VaultPenaltyFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(lock.methods.claimWithPenalty(id), account).then(resolve).catch(reject)
+      handleContractExecute(callContract.methods.claimWithPenalty(id), account).then(resolve).catch(reject)
     })
   }
 

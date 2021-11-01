@@ -149,13 +149,13 @@ const Unstake: React.FC = () => {
   const { isXl } = useMatchBreakpoints()
   const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
   const isMobileOrTablet = !isXl
-  const { unnLock } = useUnLock()
+  const { unLock } = useUnLock()
   const navigate = useHistory()
 
   const handleUnLock = useCallback(
     async (Id) => {
       try {
-        const res = unnLock(id)
+        const res = unLock(id)
         res
           .then((r) => {
             navigate.push('/long-term-stake')
@@ -168,7 +168,7 @@ const Unstake: React.FC = () => {
         console.error(e)
       }
     },
-    [unnLock, id, navigate],
+    [unLock, id, navigate],
   )
 
   return (

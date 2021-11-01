@@ -2,99 +2,85 @@ import React from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import { HorizontalBar } from 'react-chartjs-2'
-
-const Box = styled.div`
-  // width: 100% !important;
-  // height: 100% !important;
-
-  // ${({ theme }) => theme.mediaQueries.xs} {
-  //   width: 100% !important;
-  //   height: 116px !important;
-  // }
-  // ${({ theme }) => theme.mediaQueries.sm} {
-  //   width: 100% !important;
-  //   height: 156px !important;
-  // }
-  // ${({ theme }) => theme.mediaQueries.md} {
-  //   width: 100% !important;
-  //   height: 156px !important;
-  // }
-  // ${({ theme }) => theme.mediaQueries.lg} {
-  //   width: 100% !important;
-  //   height: 156px !important;
-  // }
-`
+import numeral from 'numeral'
 
 const traparent = '#ffffff00'
 
-const options = {
-  cornerRadius: 20,
-  elements: {
-    rectangle: {
-      borderWidth: 2,
-      borderSkipped: 'left',
+const CardBarChart = ({ lock, className, totalFinixLock }) => {
+  const options = {
+    cornerRadius: 20,
+    elements: {
+      rectangle: {
+        borderWidth: 2,
+        borderSkipped: 'left',
+      },
     },
-  },
-  responsive: true,
-  responsiveAnimationDuration: 100,
-  type: 'bar',
-  layout: {
-    padding: {
-      right: 0,
+    responsive: true,
+    responsiveAnimationDuration: 100,
+    type: 'bar',
+    layout: {
+      padding: {
+        right: 0,
+      },
     },
-  },
-
-  scales: {
-    xAxes: [
-      {
-        color: traparent,
-        label: '',
-        gridLines: {
-          color: traparent,
-          drawBorder: false,
-          zeroLineColor: 'transparent',
-        },
-        scaleLabel: {
-          display: false,
-        },
-        ticks: {
-          display: false,
-          suggestedMin: 0,
+    tooltips: {
+      callbacks: {
+        label: (tooltipItems, data) => {
+          return `${numeral((tooltipItems.value / totalFinixLock) * 100).format('0,0')}%`
         },
       },
-    ],
-    yAxes: [
-      {
-        color: traparent,
-        gridLines: {
-          color: traparent,
-          drawBorder: false,
-          zeroLineColor: 'transparent',
-        },
-        label: '',
-        scaleLabel: {
-          display: false,
-        },
-        barPercentage: 1,
-        categoryPercentage: 1,
-        barThickness: 15,
-        ticks: {
-          fontColor: '#737375',
-          fontSize: 14,
-          suggestedMin: 0,
-          beginAtZero: true,
-          padding: 14,
-        },
-      },
-    ],
-  },
-  maintainAspectRatio: false,
-  legend: {
-    display: false,
-  },
-}
+    },
 
-const CardBarChart = ({ lock, className }) => {
+    scales: {
+      xAxes: [
+        {
+          color: traparent,
+          label: '',
+          gridLines: {
+            color: traparent,
+            drawBorder: false,
+            zeroLineColor: 'transparent',
+          },
+          scaleLabel: {
+            display: false,
+          },
+          ticks: {
+            display: false,
+            suggestedMin: 0,
+          },
+        },
+      ],
+      yAxes: [
+        {
+          color: traparent,
+          gridLines: {
+            color: traparent,
+            drawBorder: false,
+            zeroLineColor: 'transparent',
+          },
+          label: '',
+          scaleLabel: {
+            display: false,
+          },
+          barPercentage: 1,
+          categoryPercentage: 1,
+          barThickness: 15,
+          ticks: {
+            fontColor: '#737375',
+            fontSize: 14,
+            suggestedMin: 0,
+            beginAtZero: true,
+            padding: 14,
+          },
+        },
+      ],
+    },
+    maintainAspectRatio: false,
+    legend: {
+      display: false,
+    },
+  }
+
   const data = (canvas) => {
     const ctx1 = canvas.getContext('2d')
     const ctx2 = canvas.getContext('2d')
@@ -127,9 +113,9 @@ const CardBarChart = ({ lock, className }) => {
   }
 
   return (
-    <Box className={className}>
+    <div className={className}>
       <HorizontalBar data={data} options={options} />
-    </Box>
+    </div>
   )
 }
 
