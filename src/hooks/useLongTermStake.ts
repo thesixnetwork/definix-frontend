@@ -354,7 +354,7 @@ export const useApr = () => {
       const total = await finixContract.methods.totalSupply().call()
       const totalSupply = new BigNumber(total).dividedBy(new BigNumber(10).pow(18)).toNumber()
       const reward = new BigNumber(supply).dividedBy(new BigNumber(10).pow(18)).toNumber()
-      setApr(((reward * 86400 *365)/Number(totalSupply))*100)
+      setApr(((reward * 86400 * 365) / Number(totalSupply)) * 100)
       // const [rewardPerBlockNumber, totalSupplyNumber, userVfinixAmount] = await Promise.all([
       //   await rewardFacetContract.methods.rewardPerBlock().call(),
       //   await finixContract.methods.totalSupply().call(),
