@@ -122,8 +122,8 @@ const HarvestAll = styled.div`
 
   .harvest {
     padding: 16px 24px;
-    background: ${({ theme }) => theme.colors.backgroundBlueGradient};
-    background-size: cover;
+    
+    background-size: cover !important;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -713,11 +713,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const getTextRank = (rank) => {
     switch (rank) {
       case '0':
-        return 'Sliver HOLD'
+        return 'Sliver HODL'
       case '1':
-        return 'Gold HOLD'
+        return 'Gold HODL'
       case '2':
-        return 'Diamond HOLD'
+        return 'Diamond HODL'
       default:
         return ''
     }
@@ -750,7 +750,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Text fontSize="12px" color="#303030">
                 Your vFINIX Balance
               </Text>
-              <Text bold>{numeral(balancevfinix || 0).format('0,0.[00]')}</Text>
+              <Text bold>{numeral(balancevfinix || 0).format('0,0.[00]')} vFINIX</Text>
             </div>
             {/* </div> */}
             {/* <Text className="col-12 flex" color="white"></Text> */}
