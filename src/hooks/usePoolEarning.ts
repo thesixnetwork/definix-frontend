@@ -14,7 +14,7 @@ const usePoolEarning = () => {
   useEffect(() => {
     const fetchAllBalances = async () => {
       const calls = farmsConfig
-        .filter((farm) => farm.pid <= 0)
+        .filter((farm) => farm.pid <= 1)
         .map((farm) => ({
           address: getHerodotusAddress(),
           name: 'pendingFinix',
