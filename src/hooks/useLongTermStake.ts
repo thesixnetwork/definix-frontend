@@ -113,6 +113,7 @@ export const useBalances = () => {
   return balance
 }
 
+
 export const usePrivateData = () => {
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
@@ -391,37 +392,11 @@ export const useApr = () => {
     async function fetchApr() {
       const finixLock = getContract(RewardFacet.abi, getVFinix())
       const finixContract = getContract(IKIP7.abi, getVFinix())
-      // const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
       const supply = await finixLock.methods.rewardPerBlock().call()
       const total = await finixContract.methods.totalSupply().call()
       const totalSupply = new BigNumber(total).dividedBy(new BigNumber(10).pow(18)).toNumber()
       const reward = new BigNumber(supply).dividedBy(new BigNumber(10).pow(18)).toNumber()
       setApr(((reward * 86400 * 365) / Number(totalSupply)) * 100)
-      // const [rewardPerBlockNumber, totalSupplyNumber, userVfinixAmount] = await Promise.all([
-      //   await rewardFacetContract.methods.rewardPerBlock().call(),
-      //   await finixContract.methods.totalSupply().call(),
-      //   await userVfinixInfoContract.methods.locks(account, 0, 0).call(),
-      // ])
-      // const rewardPerBlock = new BigNumber(rewardPerBlockNumber).multipliedBy(86400).multipliedBy(365)
-      // const totalSupply = new BigNumber(totalSupplyNumber)
-
-      // let totalVfinixUser = new BigNumber(0)
-      // let totalfinixUser = new BigNumber(0)
-      // for (let i = 0; i < userVfinixAmount.length; i++) {
-      //   const selector = userVfinixAmount[i]
-      //   if (selector.isUnlocked === false && selector.isPenalty === false) {
-      //     totalVfinixUser = totalVfinixUser.plus(selector.voteAmount)
-      //     totalfinixUser = totalfinixUser.plus(selector.lockAmount)
-      //   }
-      // }
-
-      // const aprUser = totalVfinixUser
-      //   .dividedBy(totalSupply)
-      //   .multipliedBy(rewardPerBlock)
-      //   .dividedBy(totalfinixUser)
-      //   .multipliedBy(100)
-      // // locks
-      // setApr(aprUser.toNumber())
     }
 
     fetchApr()
@@ -429,6 +404,36 @@ export const useApr = () => {
 
   return apr
 }
+
+export const useRank = () => {
+  const { account } = useWallet()
+  const { slowRefresh } = useRefresh()
+  const [rank, setRank] = useState<number>()
+
+  useEffect(() => {
+    async function fetchRank() {
+      const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
+      const [ userVfinixLocks] = await Promise.all([
+        await userVfinixInfoContract.methods.locks(account, 0, 0).call(),
+      ])
+      let maxRank = -1;
+      for (let i = 0; i < userVfinixLocks.length; i++) {
+        const selector = userVfinixLocks[i]
+        
+        if (selector.isUnlocked === false && selector.isPenalty === false) {
+          if(maxRank < selector.level)
+            maxRank = selector.level
+        }
+      }
+      setRank(maxRank)
+    }
+
+    fetchRank()
+  }, [slowRefresh, account])
+
+  return rank
+}
+
 
 export const useLockCount = () => {
   const { slowRefresh } = useRefresh()

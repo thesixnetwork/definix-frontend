@@ -6,7 +6,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
-import { useAprCardFarmHome, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
+import { useAprCardFarmHome, useAllLock, usePrivateData,useRank } from 'hooks/useLongTermStake'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
@@ -36,6 +36,19 @@ import {
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text } from 'uikit-dev'
+
+import LogoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
+import LogoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
+import LogoRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-11.png'
+
+import BgHeadCardRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-05.png'
+import BgHeadCardRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-06.png'
+import BgHeadCardRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-07.png'
+
+import BgMiddleComponentRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-08.png'
+import BgMiddleComponentRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-09.png'
+import BgMiddleComponentRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-10.png'
+
 import Loading from 'uikit-dev/components/Loading'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
@@ -58,6 +71,23 @@ const NetWorth = styled.div`
   .sum {
     flex-grow: 1;
   }
+`
+const RankCard = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.backgroundBlueGradient};
+  background-size: auto 100%;
+  align-items: center;
+
+  .sum {
+    flex-grow: 1;
+  }
+`
+
+const InnerRankCard = styled.div`
+padding: 15px 10px 15px 10px;
+display: flex;
+align-items: center;
+
 `
 
 const Legend = styled.div`
@@ -204,12 +234,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const { allLockPeriod } = useAllLock()
   const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
   const longtermApr = useAprCardFarmHome()
-
+  const longtermLocksRank = useRank()
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
+  
   const rebalances = useRebalances()
   const balances = useBalances(account) || {}
   const rebalanceBalances = useRebalanceBalances(account) || {}
@@ -654,15 +685,70 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       responsive: true,
     },
   }
-
+  const getRankTopCardBg = (rank)=>{
+    switch(rank){
+      case "0": return BgHeadCardRankSliver; 
+      case "1": return BgHeadCardRankGold; 
+      case "2": return BgHeadCardRankDiamond; 
+      default: return "";
+    }
+  }
+  const getRanklogo = (rank)=>{
+    switch(rank){
+      case "0": return LogoRankSliver; 
+      case "1": return LogoRankGold; 
+      case "2": return LogoRankDiamond; 
+      default: return "";
+    }
+  }
+  const getTextRank = (rank)=>{
+    switch(rank){
+      case "0": return "Sliver HOLD"; 
+      case "1": return "Gold HOLD"; 
+      case "2": return "Diamond HOLD"; 
+      default: return "";
+    }
+  }
+  const getBgMiddleComponentRank = (rank)=>{
+    switch(rank){
+      case "0": return BgMiddleComponentRankSliver
+      case "1": return BgMiddleComponentRankGold
+      case "2": return BgMiddleComponentRankDiamond;
+      default: return "";
+    }
+  }
   return (
     <Container className={className}>
+      {longtermLocksRank !== -1 ? (
+       <RankCard style={{backgroundImage:`url(${getRankTopCardBg(longtermLocksRank)})`}}>
+        <InnerRankCard>
+            <span  style={{ paddingLeft: '7%'}}>
+              <img width="30px" height="30px"  src={getRanklogo(longtermLocksRank)} alt="" />
+            </span>
+            <Text className="col-12 flex"  bold style={{ paddingLeft: '10px',paddingRight: '20px' }} color="black">        
+              {getTextRank(longtermLocksRank)}
+            </Text>
+            <img width="20px" height="20px"  src={vFinix} alt="" />
+            <div className="col-12 " style={{ paddingLeft: '7px' }}>
+            <Text  fontSize="12px"  color="#303030" >
+              Your vFINIX Balance
+            </Text>
+            <Text bold> 
+                {balancevfinix}
+            </Text>
+            </div>
+          {/* </div> */}
+            {/* <Text className="col-12 flex" color="white"></Text> */}
+        </InnerRankCard>       
+      
+        </RankCard>
+        ):""}
       <NetWorth>
         <div className="col-12 flex" style={{ position: 'relative' }}>
           {isLoading ? <Loading /> : <Doughnut data={chart.data} options={chart.options} height={150} width={150} />}
         </div>
         <div className="sum col-7 pa-3 pl-0">
-          <Text color="textSubtle">Net Worth</Text>
+          <Text color="textSubtle">Net Worth </Text>
           {isLoading ? (
             <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
           ) : (
@@ -744,7 +830,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         <Text bold textAlign="center" className="ready">
           FINIX ready to harvest
         </Text>
-        <div className="harvest">
+        <div className="harvest" style={{backgroundImage:`url(${getBgMiddleComponentRank(longtermLocksRank)})`}}>
           <div className="flex justify-center">
             <StatAll>
               <Text textAlign="center" color="textSubtle">
