@@ -563,7 +563,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   ]
 
   const isGrouping =
-    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0 && dataLongtermStake.length > 0
+    stackedOnlyPools.length > 0 &&
+    stakedRebalances.length > 0 &&
+    farmsList(stackedOnlyFarms, false).length > 0 &&
+    dataLongtermStake.length > 0
   let arrayData = [...dataFarms, ...dataPools, ...dataRebalances, ...dataLongtermStake]
   if (isGrouping) {
     const groupRebalance = {
@@ -799,7 +802,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       </HarvestAll>
 
       <List>
-        <>  
+        <>
           {!!balancefinix && (
             <FarmsAndPools key="VFINIX">
               <Coins>
