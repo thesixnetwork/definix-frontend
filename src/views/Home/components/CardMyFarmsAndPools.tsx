@@ -750,7 +750,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Text fontSize="12px" color="#303030">
                 Your vFINIX Balance
               </Text>
-              <Text bold>{numeral(balancevfinix || 0).format('0,0.[00]')} vFINIX</Text>
+              <Text bold color="#303030">{numeral(balancevfinix || 0).format('0,0.[00]')} vFINIX</Text>
             </div>
             {/* </div> */}
             {/* <Text className="col-12 flex" color="white"></Text> */}
