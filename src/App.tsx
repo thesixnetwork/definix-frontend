@@ -1,12 +1,14 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
+
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
 import { Route, Router, Switch } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import { ResetCSS } from 'uikit-dev'
+import { GlobalStyle } from 'definixswap-uikit'
+// import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
@@ -14,7 +16,7 @@ import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
-import GlobalStyle from './style/Global'
+// import GlobalStyle from './style/Global'
 import sdkConfig from './sdkconfig'
 
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
@@ -97,7 +99,6 @@ const App: React.FC = () => {
 
   return (
     <Router history={history}>
-      <ResetCSS />
       <GlobalStyle />
       <Menu>
         <Suspense fallback={<PageLoader />}>

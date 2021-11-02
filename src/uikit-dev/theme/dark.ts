@@ -21,5 +21,4 @@ const darkTheme: DefaultTheme = {
   modal: darkModal,
   radio: darkRadio,
 }
-
 export default darkTheme
