@@ -1,9 +1,8 @@
-import useI18n from 'hooks/useI18n'
-import numeral from 'numeral'
 import React, { useMemo } from 'react'
 import { Flex, ChevronRightIcon, Link, Text } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import usePrice from 'hooks/usePrice'
+import useI18n from 'hooks/useI18n'
+import useConverter from 'hooks/useConverter'
 import { DetailsSectionProps } from './types'
 
 const DetailsSection: React.FC<DetailsSectionProps> = ({
@@ -14,11 +13,11 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
   klaytnScopeAddress,
 }) => {
   const TranslateString = useI18n()
-  const { convertToUSD, getPrice } = usePrice()
+  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
 
   const price = useMemo(() => {
-    return getPrice(tokenName)
-  }, [getPrice, tokenName])
+    return convertToPriceFromSymbol(tokenName)
+  }, [convertToPriceFromSymbol, tokenName])
 
   const totalStakedValue = useMemo(() => {
     return getBalanceNumber(totalStaked)

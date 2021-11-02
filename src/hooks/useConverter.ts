@@ -1,9 +1,8 @@
 import BigNumber from 'bignumber.js'
 import { QuoteToken } from 'config/constants/types'
 import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
-import { convertToUsd } from 'utils/formatPrice'
 
-export default function usePrice() {
+export default function useConverter() {
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
@@ -34,25 +33,23 @@ export default function usePrice() {
     return `$${Number(value).toLocaleString(undefined, { maximumFractionDigits: fixed || 0 })}`
   }
 
-  const getPrice = (symbol) => {
+  const convertToPriceFromSymbol = (symbol: QuoteToken | string = QuoteToken.FINIX): number => {
+    let price = finixPrice
     if (symbol === QuoteToken.KLAY) {
-      return klayPrice
-    }
-    if (symbol === QuoteToken.FINIX) {
-      return finixPrice
+      price = klayPrice
     }
     if (symbol === QuoteToken.KETH) {
-      return kethPrice
+      price = kethPrice
     }
     if (symbol === QuoteToken.SIX) {
-      return sixPrice
+      price = sixPrice
     }
-    return symbol
+    return price.toNumber()
   }
 
   return {
     convertToPriceFromToken,
     convertToUSD,
-    getPrice,
+    convertToPriceFromSymbol,
   }
 }

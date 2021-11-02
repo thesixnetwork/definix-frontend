@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
-import usePrice from 'hooks/usePrice'
+import useConverter from 'hooks/useConverter'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -66,7 +66,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
     return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   }, [farm.lpSymbol])
 
-  const { convertToPriceFromToken, convertToUSD } = usePrice()
+  const { convertToPriceFromToken, convertToUSD } = useConverter()
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
   const getTokenPrice = useCallback(
