@@ -16,6 +16,7 @@ import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
+import LinkListSection from './LinkListSection'
 import { PoolCardProps } from './types'
 
 const CardStyle = styled.div`
@@ -198,6 +199,16 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     [isMobile, tokenName, totalStaked, stakedBalance, earnings],
   )
 
+  const renderLinkSection = useCallback(
+    () => (
+      <LinkListSection
+        isMobile={isMobile}
+        klaytnScopeAddress=""
+      />
+    ),
+    [isMobile, ]
+  )
+
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
@@ -219,6 +230,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
           {/* {renderHarvestAction('pa-5')} */}
           {renderHarvestActionAirDrop('pa-5 pt-0', false)}
           {renderDetailsSection()}
+          {renderLinkSection()}
         </div>
       </HorizontalMobileStyle>
     )
@@ -240,8 +252,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
       </Flex>
       {isOpenAccordion && (
         <Flex>
+          {renderLinkSection()}
+          {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
           {renderStakeAction('pb-4')}
-          {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
         </Flex>
       )}
     </>

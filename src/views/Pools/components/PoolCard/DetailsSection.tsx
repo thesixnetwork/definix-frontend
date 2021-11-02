@@ -1,5 +1,6 @@
+import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
-import { Flex, ChevronRightIcon, Link, Text } from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import useConverter from 'hooks/useConverter'
@@ -10,7 +11,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
   totalStaked,
   balance,
   earnings,
-  klaytnScopeAddress,
 }) => {
   const TranslateString = useI18n()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
@@ -24,7 +24,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
   }, [totalStaked])
 
   const totalStakedPrice = useMemo(() => {
-    return convertToUSD(totalStakedValue * price, 0)
+    return convertToUSD(new BigNumber(totalStakedValue).multipliedBy(price), 0)
   }, [convertToUSD, totalStakedValue, price])
 
   const balanceValue = useMemo(() => {
@@ -35,19 +35,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
     return getBalanceNumber(earnings)
   }, [earnings])
 
-  const LinkView = ({ linkClassName = '' }) => (
-    <Link
-      external
-      href={`https://scope.klaytn.com/account/${klaytnScopeAddress}`}
-      bold={false}
-      className={`flex-shrink ${linkClassName}`}
-      color="textSubtle"
-      fontSize="12px"
-    >
-      {TranslateString(356, 'View on KlaytnScope')}
-      <ChevronRightIcon color="textSubtle" />
-    </Link>
-  )
+  const earningsPrice = useMemo(() => {
+    return convertToUSD(new BigNumber(earningsValue).multipliedBy(price), 0)
+  }, [earningsValue, price, convertToUSD])
 
   return (
     <Flex justifyContent="space-between">
@@ -60,14 +50,8 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
         <Text color="textSubtle">Balance: {balanceValue}</Text>
       </div>
       <div>
-        <Text color="textSubtle">Earned: {earningsValue.toLocaleString()}</Text>
+        <Text color="textSubtle">Earned: {earningsValue.toLocaleString()} = {earningsPrice}</Text>
       </div>
-
-      {/* {false && (
-        <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
-          <LinkView />
-        </div>
-      )} */}
     </Flex>
   )
 }

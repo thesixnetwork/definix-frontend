@@ -107,38 +107,40 @@ const StakeAction: React.FC<StakeActionProps> = ({
     )
   }
 
-  const renderApprovalOrStakeButton = () => {
-    if (needsApproval && !isOldSyrup) {
-      return (
-        <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
-          {TranslateString(758, 'Approve Contract')}
-        </Button>
-      )
-    }
-
-    return (
-      <div className="flex align-center">
-        <Heading
-          fontSize="20px !important"
-          textAlign="left"
-          color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
-          className="col-6 pr-3"
-        >
-          {displayBalance}
-        </Heading>
-
-        <div className="col-6">{renderStakingButtons()}</div>
-      </div>
-    )
-  }
-
   return (
     <div className={className}>
       <Text textAlign="left" className="mb-2" color="textSubtle">{`${tokenName} ${TranslateString(
         1074,
         'Staked',
       )}`}</Text>
-      {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
+      {
+        account ? (
+          <>
+            {
+              needsApproval && !isOldSyrup ? (
+                <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
+                  Approve Contract
+                </Button>
+              ) : (
+                <div className="flex align-center">
+                  <Heading
+                    fontSize="20px !important"
+                    textAlign="left"
+                    color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
+                    className="col-6 pr-3"
+                  >
+                    {displayBalance}
+                  </Heading>
+
+                  <div className="col-6">{renderStakingButtons()}</div>
+                </div>
+              )
+            }
+          </>
+        ) : (
+          <UnlockButton fullWidth radii="small" />
+        )
+      }
     </div>
   )
 }
