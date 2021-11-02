@@ -713,7 +713,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const getTextRank = (rank) => {
     switch (rank) {
       case '0':
-        return 'Sliver HODL'
+        return 'Silver HODL'
       case '1':
         return 'Gold HODL'
       case '2':
