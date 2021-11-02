@@ -113,34 +113,30 @@ const StakeAction: React.FC<StakeActionProps> = ({
         1074,
         'Staked',
       )}`}</Text>
-      {
-        account ? (
-          <>
-            {
-              needsApproval && !isOldSyrup ? (
-                <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
-                  Approve Contract
-                </Button>
-              ) : (
-                <div className="flex align-center">
-                  <Heading
-                    fontSize="20px !important"
-                    textAlign="left"
-                    color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
-                    className="col-6 pr-3"
-                  >
-                    {displayBalance}
-                  </Heading>
+      {account ? (
+        <>
+          {needsApproval && !isOldSyrup ? (
+            <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
+              Approve Contract
+            </Button>
+          ) : (
+            <div className="flex align-center">
+              <Heading
+                fontSize="20px !important"
+                textAlign="left"
+                color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
+                className="col-6 pr-3"
+              >
+                {displayBalance}
+              </Heading>
 
-                  <div className="col-6">{renderStakingButtons()}</div>
-                </div>
-              )
-            }
-          </>
-        ) : (
-          <UnlockButton fullWidth radii="small" />
-        )
-      }
+              <div className="col-6">{renderStakingButtons()}</div>
+            </div>
+          )}
+        </>
+      ) : (
+        <UnlockButton fullWidth radii="small" />
+      )}
     </div>
   )
 }

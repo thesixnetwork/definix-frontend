@@ -199,15 +199,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     [isMobile, tokenName, totalStaked, stakedBalance, earnings],
   )
 
-  const renderLinkSection = useCallback(
-    () => (
-      <LinkListSection
-        isMobile={isMobile}
-        klaytnScopeAddress=""
-      />
-    ),
-    [isMobile, ]
-  )
+  const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
   useEffect(() => {
     setIsOpenAccordion(false)

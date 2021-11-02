@@ -6,12 +6,7 @@ import useI18n from 'hooks/useI18n'
 import useConverter from 'hooks/useConverter'
 import { DetailsSectionProps } from './types'
 
-const DetailsSection: React.FC<DetailsSectionProps> = ({
-  tokenName,
-  totalStaked,
-  balance,
-  earnings,
-}) => {
+const DetailsSection: React.FC<DetailsSectionProps> = ({ tokenName, totalStaked, balance, earnings }) => {
   const TranslateString = useI18n()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
 
@@ -50,7 +45,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
         <Text color="textSubtle">Balance: {balanceValue}</Text>
       </div>
       <div>
-        <Text color="textSubtle">Earned: {earningsValue.toLocaleString()} = {earningsPrice}</Text>
+        <Text color="textSubtle">
+          Earned: {earningsValue.toLocaleString()} = {earningsPrice}
+        </Text>
       </div>
     </Flex>
   )
