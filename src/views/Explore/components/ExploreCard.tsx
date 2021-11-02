@@ -7,6 +7,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, useMatchBreakpoints } from 'uikit-dev'
+import { Card } from 'definixswap-uikit'
 import numeral from 'numeral'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -23,24 +24,18 @@ interface ExploreCardType {
   onClickViewDetail: () => void
 }
 
-const CardStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
-`
-
-const VerticalStyle = styled(CardStyle)`
+const VerticalStyle = styled(Card)`
   display: flex;
   position: relative;
   flex-direction: column;
 `
 
-const HorizontalStyle = styled(CardStyle)`
+const HorizontalStyle = styled(Card)`
   display: flex;
   position: relative;
 `
 
-const HorizontalMobileStyle = styled(CardStyle)`
+const HorizontalMobileStyle = styled(Card)`
   .accordion-content {
     &.hide {
       display: none;
@@ -187,7 +182,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               />
             </div>
 
-            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
+            {/* <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} /> */}
 
             <div className="pa-4">
               <div className="flex align-end justify-space-between mb-3">
