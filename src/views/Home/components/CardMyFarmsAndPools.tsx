@@ -907,7 +907,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
       <List>
         <>
-          {!!balancefinix && (
+          {!!balancevfinix && balancevfinix > 0 && (
             <FarmsAndPools key="VFINIX">
               <Coins>
                 {isLoading ? (
