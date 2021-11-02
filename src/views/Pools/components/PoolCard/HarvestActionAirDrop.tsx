@@ -1,9 +1,9 @@
+import React, { useState, useMemo } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
-import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
@@ -27,7 +27,7 @@ interface HarvestActionAirdropProps {
   bundleRewards?: any
   sousId?: number
   isBnbPool?: boolean
-  earnings?: BigNumber
+  earnings: BigNumber
   tokenDecimals?: number
   needsApproval?: boolean
   isOldSyrup?: boolean
@@ -58,8 +58,10 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   const { onReward } = useSousHarvest(sousId, isBnbPool)
 
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
-  const rawEarningsBalance = getBalanceNumber(earnings)
-  const displayBalance = rawEarningsBalance.toLocaleString()
+
+  const displayEarnings = useMemo(() => {
+    return getBalanceNumber(earnings).toLocaleString()
+  }, [earnings])
   const finixApy = pool.finixApy || new BigNumber(0)
 
   const AirDrop = ({ logo, title, percent, value, name }) => (
@@ -100,7 +102,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           logo={miniLogo}
           title="APR"
           percent={`${numeral(finixApy.toNumber() || 0).format('0,0')}%`}
-          value={displayBalance}
+          value={displayEarnings}
           name="FINIX"
         />
         {(bundleRewards || []).map((br, bundleId) => {

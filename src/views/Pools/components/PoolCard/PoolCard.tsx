@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
+import { Flex, ChevronDownIcon, ChevronUpIcon } from 'definixswap-uikit'
 import PoolContext from 'views/Pools/PoolContext'
 import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
@@ -23,20 +24,6 @@ const CardStyle = styled.div`
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
 
-const VerticalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-  align-self: baseline;
-  flex-direction: column;
-  justify-content: space-around;
-  text-align: center;
-`
-
-const HorizontalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-`
-
 const HorizontalMobileStyle = styled(CardStyle)`
   position: relative;
 
@@ -51,7 +38,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
+const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const {
     sousId,
     tokenName,
@@ -107,15 +94,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
 
   const renderCardHeading = useCallback(
     (className?: string) => (
-      <CardHeading
-        tokenName={tokenName}
-        isOldSyrup={isOldSyrup}
-        apy={apy}
-        isHorizontal={isHorizontal}
-        className={className}
-      />
+      <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} className={className} />
     ),
-    [apy, isHorizontal, isOldSyrup, tokenName],
+    [apy, isOldSyrup, tokenName],
   )
 
   const renderDepositModal = useCallback(() => {
@@ -204,72 +185,66 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => (
+    () => (
       <DetailsSection
+        isMobile={isMobile}
         tokenName={tokenName}
-        klaytnScopeAddress=""
         totalStaked={totalStaked}
-        isHorizontal={isHor}
-        className={className}
+        balance={stakedBalance}
+        earnings={earnings}
+        klaytnScopeAddress=""
       />
     ),
-    [tokenName, totalStaked],
+    [isMobile, tokenName, totalStaked, stakedBalance, earnings],
   )
 
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
 
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <HorizontalMobileStyle className="mb-3">
-          {renderSash()}
-          <CardHeadingAccordion
-            tokenName={tokenName}
-            isOldSyrup={isOldSyrup}
-            apy={apy}
-            className=""
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-          />
-          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-            {renderStakeAction('pa-5')}
-            {/* {renderHarvestAction('pa-5')} */}
-            {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-            {renderDetailsSection('px-5 py-3', false)}
-          </div>
-        </HorizontalMobileStyle>
-      )
-    }
-
+  if (isMobile) {
     return (
-      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
+      <HorizontalMobileStyle className="mb-3">
         {renderSash()}
-        {renderCardHeading('col-3 pos-static')}
-
-        <div className="col-4 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-4')}
-          {renderDetailsSection('', true)}
+        {/* <CardHeadingAccordion
+          tokenName={tokenName}
+          isOldSyrup={isOldSyrup}
+          apy={apy}
+          className=""
+          isOpenAccordion={isOpenAccordion}
+          setIsOpenAccordion={setIsOpenAccordion}
+        /> */}
+        <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+          {renderStakeAction('pa-5')}
+          {/* {renderHarvestAction('pa-5')} */}
+          {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+          {renderDetailsSection()}
         </div>
-
-        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
-        {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
-      </HorizontalStyle>
+      </HorizontalMobileStyle>
     )
   }
 
   return (
-    <VerticalStyle className="mb-7">
-      {renderSash()}
-      <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-7')}
-        {renderStakeAction('pa-5')}
-        {/* {renderHarvestAction('pa-5')} */}
-        {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-      </div>
-      {renderDetailsSection('px-5 py-3', false)}
-    </VerticalStyle>
+    <>
+      <Flex justifyContent="space-between" style={{ backgroundColor: 'coral', marginBottom: '10px' }}>
+        {renderSash()}
+        {renderCardHeading('col-3 pos-static')}
+
+        <Flex>{renderDetailsSection()}</Flex>
+
+        <button type="button" onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
+          {isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}
+        </button>
+
+        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
+      </Flex>
+      {isOpenAccordion && (
+        <Flex>
+          {renderStakeAction('pb-4')}
+          {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
+        </Flex>
+      )}
+    </>
   )
 }
 

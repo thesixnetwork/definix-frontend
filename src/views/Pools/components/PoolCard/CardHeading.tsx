@@ -35,18 +35,12 @@ const Apr = styled(Text)`
   align-items: center;
 `
 
-const CardHeading: React.FC<CardHeadingProps> = ({
-  tokenName,
-  isOldSyrup,
-  apy,
-  className = '',
-  isHorizontal = false,
-}) => {
+const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy, className = '' }) => {
   const TranslateString = useI18n()
 
   const finixPrice = usePriceFinixUsd()
 
-  const imgSize = isHorizontal ? 48 : 56
+  const imgSize = 48
 
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
@@ -54,7 +48,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({
         <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={imgSize} height={imgSize} />
       </StyledFarmImages>
 
-      <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
+      <Heading fontSize="20px !important" fontWeight="500 !important">
         {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
       </Heading>
 

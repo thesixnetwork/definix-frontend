@@ -1,26 +1,40 @@
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
-import React from 'react'
-import styled from 'styled-components'
-import { ChevronRightIcon, Link, Text } from 'uikit-dev'
-import { getBalanceNumber } from 'utils/formatBalance'
+import React, { useMemo } from 'react'
+import { Flex, ChevronRightIcon, Link, Text } from 'definixswap-uikit'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import usePrice from 'hooks/usePrice'
 import { DetailsSectionProps } from './types'
-
-const Wrapper = styled.div<{ isHorizontal?: boolean }>`
-  background: ${({ isHorizontal, theme }) => (!isHorizontal ? theme.colors.cardFooter : 'transparent')};
-  border-top: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
-  border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
-  border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
-`
 
 const DetailsSection: React.FC<DetailsSectionProps> = ({
   tokenName,
   totalStaked,
+  balance,
+  earnings,
   klaytnScopeAddress,
-  isHorizontal = false,
-  className = '',
 }) => {
   const TranslateString = useI18n()
+  const { convertToUSD, getPrice } = usePrice()
+
+  const price = useMemo(() => {
+    return getPrice(tokenName)
+  }, [getPrice, tokenName])
+
+  const totalStakedValue = useMemo(() => {
+    return getBalanceNumber(totalStaked)
+  }, [totalStaked])
+
+  const totalStakedPrice = useMemo(() => {
+    return convertToUSD(totalStakedValue * price, 0)
+  }, [convertToUSD, totalStakedValue, price])
+
+  const balanceValue = useMemo(() => {
+    return getFullDisplayBalance(balance)
+  }, [balance])
+
+  const earningsValue = useMemo(() => {
+    return getBalanceNumber(earnings)
+  }, [earnings])
 
   const LinkView = ({ linkClassName = '' }) => (
     <Link
@@ -37,21 +51,25 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
   )
 
   return (
-    <Wrapper isHorizontal={isHorizontal} className={className}>
-      <div className="flex align-baseline flex-wrap justify-space-between">
-        <Text color="textSubtle">Total {tokenName} Staked</Text>
-
-        <Text bold className="flex-shrink">
-          {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
+    <Flex justifyContent="space-between">
+      <div style={{ marginRight: '30px' }}>
+        <Text color="textSubtle">
+          Total Staked: {totalStakedValue.toLocaleString()} = {totalStakedPrice}
         </Text>
       </div>
+      <div style={{ marginRight: '30px' }}>
+        <Text color="textSubtle">Balance: {balanceValue}</Text>
+      </div>
+      <div>
+        <Text color="textSubtle">Earned: {earningsValue.toLocaleString()}</Text>
+      </div>
 
-      {false && (
+      {/* {false && (
         <div className="flex justify-end mt-1" style={{ marginRight: '-6px' }}>
           <LinkView />
         </div>
-      )}
-    </Wrapper>
+      )} */}
+    </Flex>
   )
 }
 

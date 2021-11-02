@@ -27,7 +27,7 @@ import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
-import PoolContext from './PoolContext'
+// import PoolContext from './PoolContext'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -70,8 +70,8 @@ const Farm: React.FC = () => {
   const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
   const [listView, setListView] = useState(true)
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [modalNode, setModalNode] = useState<React.ReactNode>()
+  // const [isOpenModal, setIsOpenModal] = useState(false)
+  // const [modalNode, setModalNode] = useState<React.ReactNode>()
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -234,6 +234,17 @@ const Farm: React.FC = () => {
     }
     const finixApy = apy
     const sumApy = BigNumber.sum(finixApy, klayApy)
+    console.groupCollapsed('Pool')
+    console.log({
+      ...pool,
+      isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
+      apy: sumApy,
+      finixApy,
+      klayApy,
+      estimatePrice,
+      farm: stakingTokenFarm,
+    })
+    console.groupEnd()
     return {
       ...pool,
       isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
@@ -250,16 +261,16 @@ const Farm: React.FC = () => {
   const filterStackedOnlyPools = (poolsForFilter) =>
     poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
-  const handlePresent = useCallback((node: React.ReactNode) => {
-    setModalNode(node)
-    setIsOpenModal(true)
-    window.scrollTo(0, 0)
-  }, [])
+  // const handlePresent = useCallback((node: React.ReactNode) => {
+  //   // setModalNode(node)
+  //   // setIsOpenModal(true)
+  //   window.scrollTo(0, 0)
+  // }, [])
 
-  const handleDismiss = useCallback(() => {
-    setModalNode(undefined)
-    setIsOpenModal(false)
-  }, [])
+  // const handleDismiss = useCallback(() => {
+  //   // setModalNode(undefined)
+  //   // setIsOpenModal(false)
+  // }, [])
 
   useEffect(() => {
     if (currentTime < phrase1TimeStamp) {
@@ -274,22 +285,32 @@ const Farm: React.FC = () => {
   useEffect(() => {
     return () => {
       setListView(true)
-      setModalNode(undefined)
-      setIsOpenModal(false)
+      // setModalNode(undefined)
+      // setIsOpenModal(false)
     }
   }, [])
 
   return (
-    <PoolContext.Provider
-      value={{
-        onPresent: handlePresent,
-        onDismiss: handleDismiss,
-      }}
-    >
+    // <PoolContext.Provider
+    //   value={{
+    //     onPresent: handlePresent,
+    //     onDismiss: handleDismiss,
+    //   }}
+    // >
+
+    //   {isOpenModal && React.isValidElement(modalNode) && (
+    //     <ModalWrapper>
+    //       {React.cloneElement(modalNode, {
+    //         onDismiss: handleDismiss,
+    //       })}
+    //     </ModalWrapper>
+    //   )}
+    // </PoolContext.Provider>
+    <>
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
+      <TwoPanelLayout>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
             <div className="mb-5">
@@ -298,23 +319,18 @@ const Farm: React.FC = () => {
                   Pool
                 </Heading>
                 <div className="mt-2 flex align-center justify-center">
-                  <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
                     href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
                     target="_blank"
                   >
-                    How to stake.
+                    Learn to stake.
                   </TutorailsLink>
                 </div>
                 {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
                 </HelpButton> */}
               </div>
-              <Text>
-                Pool is a place you can stake your single tokens in order to generate high returns in the form of FINIX.
-                <br />
-                The amount of returns will be calculated by the annual percentage rate (APR).
-              </Text>
+              <Text>단일 토큰을 예치하여 FINIX를 얻으세요.</Text>
             </div>
 
             <PoolTabButtons
@@ -322,8 +338,6 @@ const Farm: React.FC = () => {
               setStackedOnly={setStackedOnly}
               liveOnly={liveOnly}
               setLiveOnly={setLiveOnly}
-              listView={listView}
-              setListView={setListView}
             />
 
             <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
@@ -343,32 +357,24 @@ const Farm: React.FC = () => {
                   <Route exact path={`${path}`}>
                     {liveOnly
                       ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                          (pool) => <PoolCard key={pool.sousId} pool={pool} />,
                         )
                       : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
+                          (pool) => <PoolCard key={pool.sousId} pool={pool} />,
                         )}
                   </Route>
-                  <Route path={`${path}/history`}>
+                  {/* <Route path={`${path}/history`}>
                     {orderBy(finishedPools, ['sortOrder']).map((pool) => (
                       <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                     ))}
-                  </Route>
+                  </Route> */}
                 </FlexLayout>
               )}
             </TimerWrapper>
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout>
-
-      {isOpenModal && React.isValidElement(modalNode) && (
-        <ModalWrapper>
-          {React.cloneElement(modalNode, {
-            onDismiss: handleDismiss,
-          })}
-        </ModalWrapper>
-      )}
-    </PoolContext.Provider>
+    </>
   )
 }
 
