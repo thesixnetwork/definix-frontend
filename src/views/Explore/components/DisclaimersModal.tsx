@@ -2,7 +2,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import Button from 'uikit-dev/components/Button/Button'
+import { Button } from 'definixswap-uikit'
 import Heading from 'uikit-dev/components/Heading/Heading'
 import CheckmarkIcon from 'uikit-dev/components/Svg/Icons/Checkmark'
 import Text from 'uikit-dev/components/Text/Text'
@@ -137,14 +137,14 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
             }
           />
           {renderCheckBox()}
-          <Button fullWidth onClick={onExit} radii="card" className="mt-5" disabled={!isAccept}>
+          <Button onClick={onExit} className="mt-5" disabled={!isAccept}>
             Confirm
           </Button>
         </div>
       ) : (
         <>
           {renderCheckBox()}
-          <Button fullWidth onClick={onDismiss} radii="card" className="mt-5">
+          <Button onClick={onDismiss} className="mt-5">
             Close
           </Button>
         </>

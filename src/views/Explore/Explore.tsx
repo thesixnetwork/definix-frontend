@@ -32,7 +32,6 @@ const TutorailsLink = styled(Link)`
 
 const Explore: React.FC = () => {
   const { path } = useRouteMatch()
-  const [listView, setListView] = useState(true)
   const [isInvested, setIsInvested] = useState(false)
   const [selectedRebalance, setSelectedRebalance] = useState<Rebalance | undefined>()
   const rebalances = useRebalances()
@@ -104,14 +103,9 @@ const Explore: React.FC = () => {
                 </Text> */}
               </div>
 
-              <ExploreTabButtons
-                listView={listView}
-                setListView={setListView}
-                isInvested={isInvested}
-                setIsInvested={setIsInvested}
-              />
+              <ExploreTabButtons isInvested={isInvested} setIsInvested={setIsInvested} />
 
-              <FlexLayout cols={listView ? 1 : 3}>
+              <FlexLayout cols={1}>
                 {(rebalances || [])
                   .filter((r) =>
                     !isInvested ? true : (rebalanceBalances[getAddress(r.address)] || new BigNumber(0)).toNumber() > 0,
@@ -120,7 +114,7 @@ const Explore: React.FC = () => {
                     return (
                       <ExploreCard
                         key={rebalance.title}
-                        isHorizontal={listView}
+                        isHorizontal
                         rebalance={rebalance}
                         balance={rebalanceBalances[getAddress(rebalance.address)] || new BigNumber(0)}
                         onClickViewDetail={() => {

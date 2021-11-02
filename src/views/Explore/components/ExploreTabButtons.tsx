@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   } ;
 `
 
-const ExploreTabButtons = ({ listView, setListView, isInvested, setIsInvested }) => {
+const ExploreTabButtons = ({ isInvested, setIsInvested }) => {
   const { isDark } = useTheme()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -19,60 +19,6 @@ const ExploreTabButtons = ({ listView, setListView, isInvested, setIsInvested })
   return (
     <Wrapper>
       <div className="flex align-center justify-space-between">
-        <div className="flex">
-          {isMobile ? (
-            <>
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setListView(true)
-                }}
-                variant="text"
-                className="mr-1"
-                isStroke
-              >
-                <ListViewIcon isStroke color={listView || isDark ? 'primary' : 'textSubtle'} />
-              </IconButton>
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setListView(false)
-                }}
-                variant="text"
-                isStroke
-              >
-                <CardViewIcon isStroke color={!listView || isDark ? 'primary' : 'textSubtle'} />
-              </IconButton>
-            </>
-          ) : (
-            <>
-              <Button
-                size="sm"
-                onClick={() => {
-                  setListView(true)
-                }}
-                isStroke
-                startIcon={<ListViewIcon isStroke color={listView || isDark ? 'white' : 'primary'} />}
-                variant={listView ? 'primary' : 'secondary'}
-                className="mr-2"
-              >
-                List View
-              </Button>
-              <Button
-                size="sm"
-                onClick={() => {
-                  setListView(false)
-                }}
-                isStroke
-                variant={!listView ? 'primary' : 'secondary'}
-                startIcon={<CardViewIcon isStroke color={!listView || isDark ? 'white' : 'primary'} />}
-              >
-                Card View
-              </Button>
-            </>
-          )}
-        </div>
-
         <div className="flex">
           <Button
             size="sm"
