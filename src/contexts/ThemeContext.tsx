@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { ThemeProvider as SCThemeProvider, DefaultTheme } from 'styled-components'
-import { light, dark } from 'definixswap-uikit';
-import oldLight from 'uikit-dev/theme/light';
-import oldDark from 'uikit-dev/theme/dark';
+import { light, dark } from 'definixswap-uikit'
+import oldLight from 'uikit-dev/theme/light'
+import oldDark from 'uikit-dev/theme/dark'
 
 const CACHE_KEY = 'IS_DARK'
 
@@ -28,21 +28,29 @@ const ThemeContextProvider = ({ children }) => {
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      <SCThemeProvider theme={(isDark ? {
-        ...oldDark,
-        ...dark,
-        colors: {
-          ...oldDark.colors,
-          ...(dark as DefaultTheme).colors,
+      <SCThemeProvider
+        theme={
+          (isDark
+            ? {
+                ...oldDark,
+                ...dark,
+                colors: {
+                  ...oldDark.colors,
+                  ...(dark as DefaultTheme).colors,
+                },
+              }
+            : {
+                ...oldLight,
+                ...light,
+                colors: {
+                  ...oldLight.colors,
+                  ...(light as DefaultTheme).colors,
+                },
+              }) as DefaultTheme
         }
-      } : {
-        ...oldLight,
-        ...light,
-        colors: {
-          ...oldLight.colors,
-          ...(light as DefaultTheme).colors,
-        }
-      }) as DefaultTheme}>{children}</SCThemeProvider>
+      >
+        {children}
+      </SCThemeProvider>
     </ThemeContext.Provider>
   )
 }

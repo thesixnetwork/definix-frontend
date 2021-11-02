@@ -1,6 +1,6 @@
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { BlockContextProvider } from 'contexts/BlockContext'
-import { LanguageContextProvider } from 'contexts/Localisation/Provider';
+import { LanguageContextProvider } from 'contexts/Localisation/Provider'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 

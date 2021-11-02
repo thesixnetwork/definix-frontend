@@ -307,10 +307,7 @@ const Farms: React.FC = () => {
                   isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)}
                   date={phrase2TimeStamp}
                 >
-                  <FarmTabButtons
-                    stackedOnly={stackedOnly}
-                    setStackedOnly={setStackedOnly}
-                  />
+                  <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
                   <FlexLayout cols={listView ? 1 : 3}>
                     <Route exact path={`${path}`}>
                       {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
