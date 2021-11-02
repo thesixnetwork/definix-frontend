@@ -310,8 +310,6 @@ const Farms: React.FC = () => {
                   <FarmTabButtons
                     stackedOnly={stackedOnly}
                     setStackedOnly={setStackedOnly}
-                    listView={listView}
-                    setListView={setListView}
                   />
                   <FlexLayout cols={listView ? 1 : 3}>
                     <Route exact path={`${path}`}>

@@ -1,7 +1,6 @@
-import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
-import { Button, CardViewIcon, IconButton, ListViewIcon, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Button, Text } from 'uikit-dev'
 
 const Wrapper = styled.div`
   margin-bottom: 1.5rem;
@@ -11,11 +10,7 @@ const Wrapper = styled.div`
   } ;
 `
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, listView, setListView }) => {
-  const { isDark } = useTheme()
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
-
+const FarmTabButtons = ({ stackedOnly, setStackedOnly }) => {
   return (
     <Wrapper>
       <div className="flex align-center justify-space-between">

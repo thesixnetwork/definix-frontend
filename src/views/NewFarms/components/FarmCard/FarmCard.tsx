@@ -1,9 +1,9 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { convertToUsd } from 'utils/formatPrice'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
+import usePrice from 'hooks/usePrice'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -66,25 +66,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
     return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   }, [farm.lpSymbol])
 
+  const { convertToPriceFromToken, convertToUSD } = usePrice()
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
-  const getTokenValue = useCallback(
+  const getTokenPrice = useCallback(
     (token) => {
-      if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
-        return klayPrice.times(token)
-      }
-      if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-        return finixPrice.times(token)
-      }
-      if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-        return kethPrice.times(token)
-      }
-      if (farm.quoteTokenSymbol === QuoteToken.SIX) {
-        return sixPrice.times(token)
-      }
-      return token
+      return convertToPriceFromToken(token, farm.quoteTokenSymbol)
     },
-    [farm.quoteTokenSymbol, klayPrice, finixPrice, kethPrice, sixPrice],
+    [farm.quoteTokenSymbol, convertToPriceFromToken],
   )
   const stakedBalanceValue: BigNumber = useMemo(() => {
     const { lpTotalInQuoteToken, lpTotalSupply, quoteTokenBlanceLP, quoteTokenDecimals } = farm
@@ -96,8 +85,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
       .div(new BigNumber(10).pow(quoteTokenDecimals))
       .times(ratio)
       .times(new BigNumber(2))
-    return getTokenValue(stakedTotalInQuoteToken)
-  }, [farm, stakedBalance, getTokenValue])
+    return getTokenPrice(stakedTotalInQuoteToken)
+  }, [farm, stakedBalance, getTokenPrice])
   const addLiquidityUrl = useMemo(() => {
     const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
     const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
@@ -109,15 +98,15 @@ const FarmCard: React.FC<FarmCardProps> = ({
    */
   const totalLiquidity: BigNumber = useMemo(() => {
     if (!farm.lpTotalInQuoteToken) return null
-    return getTokenValue(farm.lpTotalInQuoteToken)
-  }, [farm.lpTotalInQuoteToken, getTokenValue])
-  const totalLiquidityUSD = useMemo(() => convertToUsd(totalLiquidity), [totalLiquidity])
+    return getTokenPrice(farm.lpTotalInQuoteToken)
+  }, [farm.lpTotalInQuoteToken, getTokenPrice])
+  const totalLiquidityUSD = useMemo(() => convertToUSD(totalLiquidity), [totalLiquidity, convertToUSD])
   /**
    * my liquidity
    */
   const myLiquidityUSD = useMemo(() => {
-    return convertToUsd(stakedBalanceValue)
-  }, [stakedBalanceValue])
+    return convertToUSD(stakedBalanceValue)
+  }, [convertToUSD, stakedBalanceValue])
 
   const renderCardHeading = useCallback(
     (className?: string, inlineMultiplier?: boolean) => (
