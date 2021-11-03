@@ -2,11 +2,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import styled from 'styled-components'
-import { Text, ChevronUpIcon, ChevronDownIcon } from 'uikit-dev'
+import { Text } from 'definixswap-uikit'
+import { ChevronUpIcon, ChevronDownIcon } from 'uikit-dev'
 import { Rebalance } from '../../../state/types'
 
 interface CardHeadingType {
-  isSkew?: boolean
   isHorizontal?: boolean
   showAccordion?: boolean
   isOpenAccordion?: boolean
@@ -15,28 +15,15 @@ interface CardHeadingType {
   rebalance: Rebalance | any
 }
 
-const CardHeadingStyle = styled.div<{ isSkew?: boolean }>`
-  padding-left: ${({ isSkew }) => (isSkew ? '116px !important' : '0')};
-`
-
 const FocusImg = styled.img<{ isHorizontal: boolean }>`
-  width: 120px;
+  width: 160px;
   height: auto;
   margin-right: ${({ isHorizontal }) => (isHorizontal ? '' : '16px')};
-  margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '8px' : '')};
+  margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '20px' : '')};
   background: ${({ theme }) => theme.colors.backgroundBox};
 `
 
-const SkewImg = styled.img`
-  width: 106px;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-`
-
 const CardHeading: React.FC<CardHeadingType> = ({
-  isSkew = false,
   isHorizontal = false,
   className = '',
   showAccordion = false,
@@ -45,7 +32,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
   rebalance = {},
 }) => {
   return (
-    <CardHeadingStyle
+    <div
       className={`${className} flex justify-space-between pos-relative`}
       onClick={
         showAccordion
@@ -54,27 +41,22 @@ const CardHeading: React.FC<CardHeadingType> = ({
             }
           : undefined
       }
-      isSkew={isSkew}
     >
-      <div className={`flex ${isHorizontal ? 'flex-column justify-center' : 'align-center'}`}>
-        {!isSkew ? (
-          <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} />
-        ) : (
-          <SkewImg src={rebalance.icon[1]} alt="" />
-        )}
+      <div className={`flex ${isHorizontal ? 'flex-column justify-center' : ''}`}>
+        <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} />
 
         <div>
-          <Text color="primary" bold fontSize="16px" textTransform="uppercase">
+          <Text textStyle="R_16B" textTransform="uppercase" className="mb-1">
             {rebalance.title}
           </Text>
-          <Text fontSize="10px">{rebalance.description}</Text>
+          <Text textStyle="R_12R">{rebalance.description}</Text>
         </div>
       </div>
 
       {showAccordion && (
         <>{isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}</>
       )}
-    </CardHeadingStyle>
+    </div>
   )
 }
 

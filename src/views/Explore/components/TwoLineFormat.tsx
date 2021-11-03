@@ -47,7 +47,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
         </Text>
 
         {subTitle && (
-          <Text fontSize={subTitleFontSize || (large ? '14px' : '12px')} className="ml-1">
+          <Text fontSize={subTitleFontSize || (large ? '14px' : '12px')} className="ml-1" as="span">
             {subTitle}
           </Text>
         )}

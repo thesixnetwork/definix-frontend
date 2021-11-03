@@ -2,11 +2,9 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from 'definixswap-uikit'
-import Heading from 'uikit-dev/components/Heading/Heading'
+import { Button, Modal } from 'definixswap-uikit'
 import CheckmarkIcon from 'uikit-dev/components/Svg/Icons/Checkmark'
 import Text from 'uikit-dev/components/Text/Text'
-import Modal from 'uikit-dev/widgets/Modal/Modal'
 
 const Box = styled.div`
   padding: 16px;
@@ -64,18 +62,12 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
   }
   return (
     <Modal
-      title=""
-      isRainbow={false}
+      title="Disclaimers"
       hideCloseButton
-      classHeader="pa-0"
-      maxWidth="500px"
-      maxHeight="calc(100vh - 48px)"
+      // maxWidth="500px"
+      // maxHeight="calc(100vh - 48px)"
       onDismiss={onDismiss}
     >
-      <Heading as="h1" fontSize="28px !important" className="mb-4">
-        Disclaimers
-      </Heading>
-
       <Box>
         <Text className="mb-3">
           Definix is solely a marketplace (the “Marketplace”) which provides a tool. The Rebalancing Farm (the “Farm”)
@@ -137,7 +129,7 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
             }
           />
           {renderCheckBox()}
-          <Button onClick={onExit} className="mt-5" disabled={!isAccept}>
+          <Button scale="36" onClick={onExit} className="mt-5" disabled={!isAccept}>
             Confirm
           </Button>
         </div>
