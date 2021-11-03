@@ -27,7 +27,6 @@ const StakeAction: React.FC<StakeActionProps> = ({
   stakedBalance,
   needsApproval,
   isFinished,
-  onUnstake,
   onPresentDeposit,
   onPresentWithdraw,
   className = '',
@@ -98,15 +97,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
                     <Button
                       variant="secondary"
                       disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                      onClick={
-                        isOldSyrup
-                          ? async () => {
-                              setPendingTx(true)
-                              await onUnstake('0')
-                              setPendingTx(false)
-                            }
-                          : onPresentWithdraw
-                      }
+                      onClick={onPresentWithdraw}
                       className="btn-secondary-disable col-6 mr-1"
                     >
                       <MinusIcon color="primary" />

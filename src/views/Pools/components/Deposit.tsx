@@ -7,7 +7,7 @@ import { Button } from 'uikit-dev'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalInput from 'components/ModalInput'
-// import ConfirmModal from './ConfirmModal'
+import ConfirmModal from './ConfirmModal'
 
 interface DepositProps {
   sousId: number
@@ -69,10 +69,10 @@ const Deposit: React.FC<DepositProps> = ({ sousId, isBnbPool, tokenName, totalSt
   /**
    * confirm modal
    */
-  // const [onPresentConfirmModal] = useModal(
-  //   <ConfirmModal type="deposit" tokenName={tokenName} stakedBalance={val} onOK={() => onStake(val)} />,
-  //   false,
-  // )
+  const [onPresentConfirmModal] = useModal(
+    <ConfirmModal type="deposit" tokenName={tokenName} stakedBalance={val} onOK={() => onStake(val)} />,
+    false,
+  )
 
   return (
     <>
@@ -92,9 +92,9 @@ const Deposit: React.FC<DepositProps> = ({ sousId, isBnbPool, tokenName, totalSt
         symbol={tokenName}
         inputTitle={TranslateString(1070, 'Stake')}
       />
-      {/* <Button onClick={() => onPresentConfirmModal()} fullWidth className="mt-5" radii="card">
+      <Button onClick={() => onPresentConfirmModal()} fullWidth className="mt-5" radii="card">
         Deposit
-      </Button> */}
+      </Button>
     </>
   )
 }

@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 
-import { useSousUnstake } from 'hooks/useUnstake'
 import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
@@ -37,7 +36,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAddLP, onSelectRemoveLP }) => {
+const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }) => {
   const {
     sousId,
     tokenName,
@@ -74,8 +73,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAddLP, onSelectRemove
 
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
-
-  const { onUnstake } = useSousUnstake(sousId)
 
   const renderSash = () => {
     if (tokenName === 'FINIX-SIX' && !isFinished) {
@@ -116,9 +113,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAddLP, onSelectRemove
         stakedBalance={stakedBalance}
         needsApproval={needsApproval}
         isFinished={isFinished}
-        onUnstake={onUnstake}
         onPresentDeposit={() => {
-          onSelectAddLP({
+          onSelectAdd({
             sousId,
             isBnbPool,
             tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
@@ -129,7 +125,14 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAddLP, onSelectRemove
           })
         }}
         onPresentWithdraw={() => {
-          // onPresentWithdraw
+          onSelectRemove({
+            sousId,
+            isOldSyrup,
+            tokenName: stakingTokenName,
+            totalStaked,
+            myStaked: stakedBalance,
+            max: stakedBalance,
+          })
         }}
         className={className}
       />
@@ -138,7 +141,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAddLP, onSelectRemove
       isFinished,
       isOldSyrup,
       needsApproval,
-      onUnstake,
       sousId,
       stakedBalance,
       stakingTokenAddress,
@@ -147,7 +149,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAddLP, onSelectRemove
       stakingTokenName,
       stakingTokenBalance,
       convertedLimit,
-      onSelectAddLP,
+      onSelectAdd,
+      onSelectRemove,
       isBnbPool,
       totalStaked,
     ],

@@ -254,15 +254,15 @@ const Farm: React.FC = () => {
   const filterStackedOnlyPools = (poolsForFilter) =>
     poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
-  const onSelectAddLP = useCallback((props: any) => {
-    console.log('onSelectAddLP', props)
+  const onSelectAdd = useCallback((props: any) => {
+    console.log('onSelectAdd', props)
     setPageState({
       state: 'deposit',
       data: props,
     })
   }, [])
-  const onSelectRemoveLP = useCallback((props: any) => {
-    console.log('onSelectRemoveLP', props)
+  const onSelectRemove = useCallback((props: any) => {
+    console.log('onSelectRemove', props)
     setPageState({
       state: 'withdraw',
       data: props,
@@ -345,8 +345,8 @@ const Farm: React.FC = () => {
                             <PoolCard
                               key={pool.sousId}
                               pool={pool}
-                              onSelectAddLP={onSelectAddLP}
-                              onSelectRemoveLP={onSelectRemoveLP}
+                              onSelectAdd={onSelectAdd}
+                              onSelectRemove={onSelectRemove}
                             />
                           ),
                         )}
@@ -369,7 +369,6 @@ const Farm: React.FC = () => {
                   tokenName={pageState.data.tokenName}
                   totalStaked={pageState.data.totalStaked}
                   myStaked={pageState.data.myStaked}
-                  // myStakedPrice={pageState.data.myStakedPrice}
                   max={pageState.data.max}
                   onBack={() => {
                     setPageState({
@@ -381,16 +380,24 @@ const Farm: React.FC = () => {
                 ,
               </>
             )}
-            {/* {pageState.state === 'withdraw' && (
+            {pageState.state === 'withdraw' && (
               <>
                 <Withdraw
-                  max={stakedBalance}
-                  onConfirm={onUnstake}
-                  tokenName={stakingTokenName}
-                  renderCardHeading={renderCardHeading}
+                  sousId={pageState.data.sousId}
+                  isOldSyrup={pageState.data.isOldSyrup}
+                  tokenName={pageState.data.tokenName}
+                  totalStaked={pageState.data.totalStaked}
+                  myStaked={pageState.data.myStaked}
+                  max={pageState.data.max}
+                  onBack={() => {
+                    setPageState({
+                      state: 'list',
+                      data: null,
+                    })
+                  }}
                 />,
               </>
-            )} */}
+            )}
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout>
