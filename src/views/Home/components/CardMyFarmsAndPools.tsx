@@ -6,7 +6,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
-import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
+import { useHarvest, useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
@@ -204,6 +204,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const { allLockPeriod } = useAllLock()
   const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
   const longtermApr = useApr()
+  const { handleHarvest } = useHarvest()
 
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
@@ -238,12 +239,15 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     setPendingTx(true)
     try {
       await onReward()
+      if (balancefinix) {
+        await handleHarvest()
+      }
     } catch (error) {
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
       setPendingTx(false)
     }
-  }, [onReward])
+  }, [handleHarvest, onReward, balancefinix])
 
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
@@ -772,12 +776,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               variant="tertiary"
               className="mt-3"
               style={{ background: 'white' }}
-              disabled={balancesWithValue.length <= 0 || pendingTx}
+              disabled={(balancesWithValue.length + (balancefinix ? 1 : 0)) <= 0 || pendingTx}
               onClick={harvestAllFarms}
             >
               {pendingTx
                 ? TranslateString(548, 'Collecting FINIX')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length})`)}
+                : TranslateString(532, `Harvest all (${balancesWithValue.length + (balancefinix ? 1 : 0)})`)}
             </Button>
           ) : (
             <UnlockButton />
