@@ -10,11 +10,16 @@ import {
   MaxWidthLeft,
 } from 'uikit-dev/components/TwoPanelLayout'
 import { Overlay } from 'uikit-dev/components/Overlay'
-import { Heading, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
+import styled from 'styled-components'
 import StakeTable from './components/StakeTeble'
 import CardStake from './components/CardStake'
 import CardWhatIs from './components/CardWhatIs'
 import Unstake from './Unstake'
+
+const TutorailsLink = styled(Link)`
+  text-decoration-line: underline;
+`
 
 const LongTermStake: React.FC = () => {
   const { path } = useRouteMatch()
@@ -56,6 +61,15 @@ const LongTermStake: React.FC = () => {
                   <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
                     Long-term Stake
                   </Heading>
+                  <div className="mt-2 flex align-center justify-center">
+                    <Text paddingRight="1">I’m new to this,</Text>
+                    <TutorailsLink
+                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
+                      target="_blank"
+                    >
+                      How to stake.
+                    </TutorailsLink>
+                  </div>
                 </div>
                 <CardStake isShowRightPanel={isShowRightPanel} />
                 <StakeTable />
