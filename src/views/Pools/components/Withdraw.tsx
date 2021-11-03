@@ -1,7 +1,5 @@
 const Withdraw: React.FC<{}> = () => {
-  return (
-    <div></div>
-  )
+  return <div></div>
 }
 
 export default Withdraw

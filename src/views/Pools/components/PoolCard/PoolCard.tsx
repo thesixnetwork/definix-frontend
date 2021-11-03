@@ -37,11 +37,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({
-  pool,
-  onSelectAddLP,
-  onSelectRemoveLP,
-}) => {
+const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAddLP, onSelectRemoveLP }) => {
   const {
     sousId,
     tokenName,
@@ -54,7 +50,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
     totalStaked,
     isFinished,
     userData,
-    stakingLimit
+    stakingLimit,
   } = pool
 
   const { pendingRewards } = useFarmUser(farm.pid)
@@ -128,7 +124,8 @@ const PoolCard: React.FC<PoolCardProps> = ({
             tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
             totalStaked,
             myStaked: stakedBalance,
-            max: stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
+            max:
+              stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
           })
         }}
         onPresentWithdraw={() => {
@@ -152,7 +149,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
       convertedLimit,
       onSelectAddLP,
       isBnbPool,
-      totalStaked
+      totalStaked,
     ],
   )
 

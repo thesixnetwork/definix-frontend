@@ -83,49 +83,47 @@ const StakeAction: React.FC<StakeActionProps> = ({
               </Heading>
 
               <div className="col-6">
-                {
-                  !readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished ? (
+                {!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished ? (
+                  <Button
+                    onClick={() => {
+                      setReadyToStake(true)
+                    }}
+                    fullWidth
+                    radii="small"
+                  >
+                    {TranslateString(999, 'Stake LP')}
+                  </Button>
+                ) : (
+                  <IconButtonWrapper>
                     <Button
-                      onClick={() => {
-                        setReadyToStake(true)
-                      }}
-                      fullWidth
-                      radii="small"
+                      variant="secondary"
+                      disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                      onClick={
+                        isOldSyrup
+                          ? async () => {
+                              setPendingTx(true)
+                              await onUnstake('0')
+                              setPendingTx(false)
+                            }
+                          : onPresentWithdraw
+                      }
+                      className="btn-secondary-disable col-6 mr-1"
                     >
-                      {TranslateString(999, 'Stake LP')}
+                      <MinusIcon color="primary" />
                     </Button>
-                  ) : (
-                    <IconButtonWrapper>
+
+                    {!isOldSyrup && !isFinished && (
                       <Button
                         variant="secondary"
-                        disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                        onClick={
-                          isOldSyrup
-                            ? async () => {
-                                setPendingTx(true)
-                                await onUnstake('0')
-                                setPendingTx(false)
-                              }
-                            : onPresentWithdraw
-                        }
-                        className="btn-secondary-disable col-6 mr-1"
+                        disabled={isFinished && sousId !== 0}
+                        onClick={onPresentDeposit}
+                        className="btn-secondary-disable col-6 ml-1"
                       >
-                        <MinusIcon color="primary" />
+                        <AddIcon color="primary" />
                       </Button>
-
-                      {!isOldSyrup && !isFinished && (
-                        <Button
-                          variant="secondary"
-                          disabled={isFinished && sousId !== 0}
-                          onClick={onPresentDeposit}
-                          className="btn-secondary-disable col-6 ml-1"
-                        >
-                          <AddIcon color="primary" />
-                        </Button>
-                      )}
-                    </IconButtonWrapper>
-                  )
-                }
+                    )}
+                  </IconButtonWrapper>
+                )}
               </div>
             </div>
           )}

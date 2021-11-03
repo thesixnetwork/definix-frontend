@@ -248,7 +248,7 @@ const Farm: React.FC = () => {
 
   const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
   const targetPools = useMemo(() => {
-    return liveOnly ? openPools : finishedPools;
+    return liveOnly ? openPools : finishedPools
   }, [liveOnly, openPools, finishedPools])
 
   const filterStackedOnlyPools = (poolsForFilter) =>
@@ -322,7 +322,10 @@ const Farm: React.FC = () => {
                   setLiveOnly={setLiveOnly}
                 />
 
-                <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+                <TimerWrapper
+                  isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)}
+                  date={phrase1TimeStamp}
+                >
                   {IS_GENESIS ? (
                     <div>
                       <Route exact path={`${path}`}>
@@ -337,11 +340,16 @@ const Farm: React.FC = () => {
                   ) : (
                     <FlexLayout cols={listView ? 1 : 3}>
                       <Route exact path={`${path}`}>
-                        {
-                          orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
-                            (pool) => <PoolCard key={pool.sousId} pool={pool} onSelectAddLP={onSelectAddLP} onSelectRemoveLP={onSelectRemoveLP}/>,
-                          )
-                        }
+                        {orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
+                          (pool) => (
+                            <PoolCard
+                              key={pool.sousId}
+                              pool={pool}
+                              onSelectAddLP={onSelectAddLP}
+                              onSelectRemoveLP={onSelectRemoveLP}
+                            />
+                          ),
+                        )}
                       </Route>
                       {/* <Route path={`${path}/history`}>
                         {orderBy(finishedPools, ['sortOrder']).map((pool) => (
@@ -369,7 +377,8 @@ const Farm: React.FC = () => {
                       data: null,
                     })
                   }}
-                />,
+                />
+                ,
               </>
             )}
             {/* {pageState.state === 'withdraw' && (
@@ -382,7 +391,6 @@ const Farm: React.FC = () => {
                 />,
               </>
             )} */}
-            
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout>

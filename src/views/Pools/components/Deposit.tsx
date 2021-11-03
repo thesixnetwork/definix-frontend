@@ -19,15 +19,7 @@ interface DepositProps {
   onBack: () => void
 }
 
-const Deposit: React.FC<DepositProps> = ({
-  sousId,
-  isBnbPool,
-  tokenName,
-  totalStaked,
-  myStaked,
-  max,
-  onBack,
-}) => {
+const Deposit: React.FC<DepositProps> = ({ sousId, isBnbPool, tokenName, totalStaked, myStaked, max, onBack }) => {
   console.groupCollapsed('Deposit data: ')
   console.log('tokenName: ', tokenName)
   console.log('totalStakedPrice: ', totalStaked)
@@ -38,7 +30,7 @@ const Deposit: React.FC<DepositProps> = ({
   const TranslateString = useI18n()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onStake } = useSousStake(sousId, isBnbPool)
-  
+
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
   }, [max])
