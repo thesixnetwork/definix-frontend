@@ -1,7 +1,7 @@
 import { Ratio } from 'config/constants/types'
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
+import { Text } from 'definixswap-uikit'
 
 interface AssetRatioType {
   isHorizontal: boolean
@@ -18,8 +18,8 @@ const Coin = styled.div<{ isHorizontal?: boolean }>`
 
   img {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     border-radius: ${({ theme }) => theme.radii.circle};
     margin-right: 6px;
   }
@@ -29,8 +29,8 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
   return (
     <div className={className}>
       <Text
-        fontSize="14px"
-        color="textSubtle"
+        textStyle="R_12R"
+        color="mediumgrey"
         className={!isHorizontal ? 'mb-2' : ''}
         textAlign={isHorizontal ? 'left' : 'center'}
       >
@@ -42,7 +42,7 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
           .map((m) => (
             <Coin isHorizontal={isHorizontal}>
               <img src={`/images/coins/${m.symbol || ''}.png`} alt={m.symbol} />
-              <Text fontSize="16px">{m.value}%</Text>
+              <Text textStyle="R_14R">{m.value}%</Text>
             </Coin>
           ))}
       </div>

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import _ from 'lodash'
-import { Card, Text } from 'uikit-dev'
+import { Text } from 'definixswap-uikit'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import Helper from 'uikit-dev/components/Helper'
 
@@ -55,7 +55,7 @@ interface KeyFactsType {
 
 const KeyFacts: React.FC<KeyFactsType> = ({ className, rebalance }) => {
   return (
-    <Card className={`pa-4 ${className}`}>
+    <>
       <Text bold className="mb-2">
         Key facts
       </Text>
@@ -84,7 +84,7 @@ const KeyFacts: React.FC<KeyFactsType> = ({ className, rebalance }) => {
           helper="Reservation fee for further development of the ecosystem."
         />
       </Table>
-    </Card>
+    </>
   )
 }
 

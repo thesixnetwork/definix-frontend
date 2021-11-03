@@ -1,8 +1,8 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { Card, Text } from 'uikit-dev'
 import _ from 'lodash'
+import { Text } from 'definixswap-uikit'
 
 import { Rebalance } from '../../../state/types'
 
@@ -109,13 +109,13 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
 const FundDetail: React.FC<FundDetailType> = ({ rebalance, periodPriceTokens, className = '' }) => {
   const { ratio } = rebalance
   return (
-    <Card className={`pa-4 ${className}`}>
+    <>
       <Text bold className="mb-2">
         Asset ratio
       </Text>
       <FullAssetRatio className="mb-2" ratio={ratio} />
       <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
-    </Card>
+    </>
   )
 }
 

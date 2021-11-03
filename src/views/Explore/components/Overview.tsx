@@ -1,4 +1,5 @@
 import React from 'react'
+import { CardBody } from 'definixswap-uikit'
 
 import { Rebalance } from '../../../state/types'
 import KeyFacts from './KeyFacts'
@@ -12,8 +13,12 @@ interface OverviewType {
 const Overview: React.FC<OverviewType> = ({ rebalance, periodPriceTokens }) => {
   return (
     <>
-      <FundDetail className="mb-4" rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
-      <KeyFacts rebalance={rebalance} />
+      <CardBody>
+        <FundDetail className="mb-4" rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
+      </CardBody>
+      <CardBody>
+        <KeyFacts rebalance={rebalance} />
+      </CardBody>
     </>
   )
 }
