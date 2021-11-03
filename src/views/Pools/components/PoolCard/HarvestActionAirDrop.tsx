@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
+import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
-import numeral from 'numeral'
-import { usePriceFinixUsd } from 'state/hooks'
+import useConverter from 'hooks/useConverter'
 import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
@@ -50,21 +51,26 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   pool,
 }) => {
   const TranslateString = useI18n()
-
-  const [pendingTx, setPendingTx] = useState(false)
-
-  const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
   const { onReward } = useSousHarvest(sousId, isBnbPool)
-
+  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
+  const [pendingTx, setPendingTx] = useState(false)
 
-  const displayEarnings = useMemo(() => {
-    return getBalanceNumber(earnings).toLocaleString()
+  const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
+  const finixEarningsValue = useMemo(() => {
+    return getBalanceNumber(earnings)
   }, [earnings])
+  const earningsPrice = useCallback(
+    (value) => {
+      return convertToUSD(new BigNumber(value).multipliedBy(finixPrice), 0)
+    },
+    [finixPrice, convertToUSD]
+  )
+
   const finixApy = pool.finixApy || new BigNumber(0)
 
-  const AirDrop = ({ logo, title, percent, value, name }) => (
+  const AirDrop = ({ logo, title, percent, value, name, price }) => (
     <div className="flex justify-space-between align-baseline mb-2">
       <div className="flex align-baseline flex-shrink" style={{ width: '150px' }}>
         <MiniLogo src={logo} alt="" className="align-self-center" />
@@ -82,7 +88,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
 
       <div className="flex align-baseline flex-grow">
         <Text fontSize="14px !important" bold className="mr-2" textAlign="left">
-          {value}
+          {value} = {price}
         </Text>
         <Text color="textSubtle" textAlign="left">
           {name}
@@ -102,8 +108,9 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           logo={miniLogo}
           title="APR"
           percent={`${numeral(finixApy.toNumber() || 0).format('0,0')}%`}
-          value={displayEarnings}
+          value={finixEarningsValue}
           name="FINIX"
+          price={earningsPrice(finixEarningsValue)}
         />
         {(bundleRewards || []).map((br, bundleId) => {
           // let apy = new BigNumber(0)
@@ -119,6 +126,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
               title="AAPR"
               percent="0.0%"
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}
+              price={earningsPrice(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0)}
               name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
             />
           ) : (
@@ -157,7 +165,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
 
         {false && (
           <Text color="textSubtle" textAlign="right" fontSize="12px" className="mb-4 mt-2">
-            = ${numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')}
+            = ${numeral(earnings.toNumber() * finixPrice).format('0,0.0000')}
           </Text>
         )}
       </div>
