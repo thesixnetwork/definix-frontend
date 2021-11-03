@@ -65,7 +65,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     (value) => {
       return convertToUSD(new BigNumber(value).multipliedBy(finixPrice), 0)
     },
-    [finixPrice, convertToUSD]
+    [finixPrice, convertToUSD],
   )
 
   const finixApy = pool.finixApy || new BigNumber(0)
