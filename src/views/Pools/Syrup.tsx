@@ -1,14 +1,13 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import FlexLayout from 'components/layout/FlexLayout'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import useBlock from 'hooks/useBlock'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
+import useBlock from 'hooks/useBlock'
 import {
   useFarms,
   usePools,
@@ -22,28 +21,14 @@ import styled from 'styled-components'
 import { Heading, Text, Link } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
+import FlexLayout from 'components/layout/FlexLayout'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
-// import PoolContext from './PoolContext'
-
-const ModalWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: ${({ theme }) => theme.zIndices.modal - 1};
-  background: url(${({ theme }) => theme.colors.backgroundPolygon});
-  background-size: cover;
-  background-repeat: no-repeat;
-`
+import Deposit from './components/Deposit'
+import Withdraw from './components/Withdraw'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
@@ -70,8 +55,13 @@ const Farm: React.FC = () => {
   const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
   const [listView, setListView] = useState(true)
-  // const [isOpenModal, setIsOpenModal] = useState(false)
-  // const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const [pageState, setPageState] = useState<{
+    state: string
+    data: any
+  }>({
+    state: 'list',
+    data: null,
+  }) // 'list', 'deposit', 'remove',
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -257,20 +247,27 @@ const Farm: React.FC = () => {
   })
 
   const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
+  const targetPools = useMemo(() => {
+    return liveOnly ? openPools : finishedPools;
+  }, [liveOnly, openPools, finishedPools])
 
   const filterStackedOnlyPools = (poolsForFilter) =>
     poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
-  // const handlePresent = useCallback((node: React.ReactNode) => {
-  //   // setModalNode(node)
-  //   // setIsOpenModal(true)
-  //   window.scrollTo(0, 0)
-  // }, [])
-
-  // const handleDismiss = useCallback(() => {
-  //   // setModalNode(undefined)
-  //   // setIsOpenModal(false)
-  // }, [])
+  const onSelectAddLP = useCallback((props: any) => {
+    console.log('onSelectAddLP', props)
+    setPageState({
+      state: 'deposit',
+      data: props,
+    })
+  }, [])
+  const onSelectRemoveLP = useCallback((props: any) => {
+    console.log('onSelectRemoveLP', props)
+    setPageState({
+      state: 'withdraw',
+      data: props,
+    })
+  }, [])
 
   useEffect(() => {
     if (currentTime < phrase1TimeStamp) {
@@ -285,27 +282,10 @@ const Farm: React.FC = () => {
   useEffect(() => {
     return () => {
       setListView(true)
-      // setModalNode(undefined)
-      // setIsOpenModal(false)
     }
   }, [])
 
   return (
-    // <PoolContext.Provider
-    //   value={{
-    //     onPresent: handlePresent,
-    //     onDismiss: handleDismiss,
-    //   }}
-    // >
-
-    //   {isOpenModal && React.isValidElement(modalNode) && (
-    //     <ModalWrapper>
-    //       {React.cloneElement(modalNode, {
-    //         onDismiss: handleDismiss,
-    //       })}
-    //     </ModalWrapper>
-    //   )}
-    // </PoolContext.Provider>
     <>
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
@@ -313,64 +293,96 @@ const Farm: React.FC = () => {
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
-            <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  Pool
-                </Heading>
-                <div className="mt-2 flex align-center justify-center">
-                  <TutorailsLink
-                    href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
-                    target="_blank"
-                  >
-                    Learn to stake.
-                  </TutorailsLink>
+            {pageState.state === 'list' && (
+              <>
+                <div className="mb-5">
+                  <div className="flex align-center mb-2">
+                    <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                      Pool
+                    </Heading>
+                    <div className="mt-2 flex align-center justify-center">
+                      <TutorailsLink
+                        href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
+                        target="_blank"
+                      >
+                        Learn to stake.
+                      </TutorailsLink>
+                    </div>
+                    {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                      Help
+                    </HelpButton> */}
+                  </div>
+                  <Text>단일 토큰을 예치하여 FINIX를 얻으세요.</Text>
                 </div>
-                {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-                  Help
-                </HelpButton> */}
-              </div>
-              <Text>단일 토큰을 예치하여 FINIX를 얻으세요.</Text>
-            </div>
 
-            <PoolTabButtons
-              stackedOnly={stackedOnly}
-              setStackedOnly={setStackedOnly}
-              liveOnly={liveOnly}
-              setLiveOnly={setLiveOnly}
-            />
+                <PoolTabButtons
+                  stackedOnly={stackedOnly}
+                  setStackedOnly={setStackedOnly}
+                  liveOnly={liveOnly}
+                  setLiveOnly={setLiveOnly}
+                />
 
-            <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-              {IS_GENESIS ? (
-                <div>
-                  <Route exact path={`${path}`}>
-                    <>
-                      {poolsWithApy.map((pool) => (
-                        <PoolCardGenesis key={pool.sousId} pool={pool} />
-                      ))}
-                      {/* <Coming /> */}
-                    </>
-                  </Route>
-                </div>
-              ) : (
-                <FlexLayout cols={listView ? 1 : 3}>
-                  <Route exact path={`${path}`}>
-                    {liveOnly
-                      ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} />,
-                        )
-                      : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                          (pool) => <PoolCard key={pool.sousId} pool={pool} />,
-                        )}
-                  </Route>
-                  {/* <Route path={`${path}/history`}>
-                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                    ))}
-                  </Route> */}
-                </FlexLayout>
-              )}
-            </TimerWrapper>
+                <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+                  {IS_GENESIS ? (
+                    <div>
+                      <Route exact path={`${path}`}>
+                        <>
+                          {poolsWithApy.map((pool) => (
+                            <PoolCardGenesis key={pool.sousId} pool={pool} />
+                          ))}
+                          {/* <Coming /> */}
+                        </>
+                      </Route>
+                    </div>
+                  ) : (
+                    <FlexLayout cols={listView ? 1 : 3}>
+                      <Route exact path={`${path}`}>
+                        {
+                          orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
+                            (pool) => <PoolCard key={pool.sousId} pool={pool} onSelectAddLP={onSelectAddLP} onSelectRemoveLP={onSelectRemoveLP}/>,
+                          )
+                        }
+                      </Route>
+                      {/* <Route path={`${path}/history`}>
+                        {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                          <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                        ))}
+                      </Route> */}
+                    </FlexLayout>
+                  )}
+                </TimerWrapper>
+              </>
+            )}
+            {pageState.state === 'deposit' && (
+              <>
+                <Deposit
+                  sousId={pageState.data.sousId}
+                  isBnbPool={pageState.data.isBnbPool}
+                  tokenName={pageState.data.tokenName}
+                  totalStaked={pageState.data.totalStaked}
+                  myStaked={pageState.data.myStaked}
+                  // myStakedPrice={pageState.data.myStakedPrice}
+                  max={pageState.data.max}
+                  onBack={() => {
+                    setPageState({
+                      state: 'list',
+                      data: null,
+                    })
+                  }}
+                />,
+              </>
+            )}
+            {/* {pageState.state === 'withdraw' && (
+              <>
+                <Withdraw
+                  max={stakedBalance}
+                  onConfirm={onUnstake}
+                  tokenName={stakingTokenName}
+                  renderCardHeading={renderCardHeading}
+                />,
+              </>
+            )} */}
+            
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout>

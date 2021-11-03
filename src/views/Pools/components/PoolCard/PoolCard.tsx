@@ -1,16 +1,14 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import { useSousStake } from 'hooks/useStake'
+
 import { useSousUnstake } from 'hooks/useUnstake'
 import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
 import { Flex, ChevronDownIcon, ChevronUpIcon } from 'definixswap-uikit'
 import PoolContext from 'views/Pools/PoolContext'
-import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
-import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
@@ -39,7 +37,11 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
+const PoolCard: React.FC<PoolCardProps> = ({
+  pool,
+  onSelectAddLP,
+  onSelectRemoveLP,
+}) => {
   const {
     sousId,
     tokenName,
@@ -52,7 +54,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     totalStaked,
     isFinished,
     userData,
-    stakingLimit,
+    stakingLimit
   } = pool
 
   const { pendingRewards } = useFarmUser(farm.pid)
@@ -77,9 +79,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
 
-  const { onPresent } = useContext(PoolContext)
-
-  const { onStake } = useSousStake(sousId, isBnbPool)
   const { onUnstake } = useSousUnstake(sousId)
 
   const renderSash = () => {
@@ -100,27 +99,16 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
     [apy, isOldSyrup, tokenName],
   )
 
-  const renderDepositModal = useCallback(() => {
-    onPresent(
-      <DepositModal
-        max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
-        onConfirm={onStake}
-        tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
-        renderCardHeading={renderCardHeading}
-      />,
-    )
-  }, [convertedLimit, onPresent, onStake, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
-
-  const renderWithdrawModal = useCallback(() => {
-    onPresent(
-      <WithdrawModal
-        max={stakedBalance}
-        onConfirm={onUnstake}
-        tokenName={stakingTokenName}
-        renderCardHeading={renderCardHeading}
-      />,
-    )
-  }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
+  // const renderWithdrawModal = useCallback(() => {
+  //   onPresent(
+  //     <WithdrawModal
+  //       max={stakedBalance}
+  //       onConfirm={onUnstake}
+  //       tokenName={stakingTokenName}
+  //       renderCardHeading={renderCardHeading}
+  //     />,
+  //   )
+  // }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
 
   const renderStakeAction = useCallback(
     (className?: string) => (
@@ -133,8 +121,19 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
         needsApproval={needsApproval}
         isFinished={isFinished}
         onUnstake={onUnstake}
-        onPresentDeposit={renderDepositModal}
-        onPresentWithdraw={renderWithdrawModal}
+        onPresentDeposit={() => {
+          onSelectAddLP({
+            sousId,
+            isBnbPool,
+            tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
+            totalStaked,
+            myStaked: stakedBalance,
+            max: stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
+          })
+        }}
+        onPresentWithdraw={() => {
+          // onPresentWithdraw
+        }}
         className={className}
       />
     ),
@@ -143,12 +142,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool }) => {
       isOldSyrup,
       needsApproval,
       onUnstake,
-      renderDepositModal,
-      renderWithdrawModal,
       sousId,
       stakedBalance,
       stakingTokenAddress,
       tokenName,
+      stakingLimit,
+      stakingTokenName,
+      stakingTokenBalance,
+      convertedLimit,
+      onSelectAddLP,
+      isBnbPool,
+      totalStaked
     ],
   )
 

@@ -13,6 +13,8 @@ export interface PoolWithApy extends Pool {
 export interface PoolCardProps {
   pool: PoolWithApy
   isHorizontal?: boolean
+  onSelectAddLP: (props: any) => void
+  onSelectRemoveLP: (props: any) => void
 }
 
 export interface CardHeadingProps {
