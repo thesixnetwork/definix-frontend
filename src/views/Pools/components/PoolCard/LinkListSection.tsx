@@ -1,5 +1,5 @@
 import React from 'react'
-import { ChevronRightIcon, Link } from 'definixswap-uikit'
+import { Link } from 'definixswap-uikit'
 
 const LinkListSection: React.FC<{
   isMobile: boolean
@@ -17,7 +17,7 @@ const LinkListSection: React.FC<{
           fontSize="12px"
         >
           KlaytnScope
-          <ChevronRightIcon color="textSubtle" />
+          {/* <ChevronRightIcon color="textSubtle" /> */}
         </Link>
       )}
     </>

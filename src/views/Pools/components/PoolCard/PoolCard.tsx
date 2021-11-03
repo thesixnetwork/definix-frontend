@@ -5,8 +5,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
-import { Flex, ChevronDownIcon, ChevronUpIcon } from 'definixswap-uikit'
-import PoolContext from 'views/Pools/PoolContext'
+import { Flex, Card, CardBody, CardRibbon, IconButton, Box, ArrowBottomGIcon, ArrowTopGIcon, Text, ColorStyles } from 'definixswap-uikit'
 import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
@@ -74,34 +73,25 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
 
-  const renderSash = () => {
-    if (tokenName === 'FINIX-SIX' && !isFinished) {
-      return <PoolSash type="special" />
-    }
-    if (isFinished && sousId !== 0 && sousId !== 1) {
-      return <PoolSash type="finish" />
-    }
+  // const renderSash = () => {
+  //   if (tokenName === 'FINIX-SIX' && !isFinished) {
+  //     return <PoolSash type="special" />
+  //   }
+  //   if (isFinished && sousId !== 0 && sousId !== 1) {
+  //     return <PoolSash type="finish" />
+  //   }
 
-    return null
-  }
+  //   return null
+  // }
 
   const renderCardHeading = useCallback(
     (className?: string) => (
-      <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} className={className} />
+      <Box style={{width: '30%'}}>
+        <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} className={className} />
+      </Box>
     ),
     [apy, isOldSyrup, tokenName],
   )
-
-  // const renderWithdrawModal = useCallback(() => {
-  //   onPresent(
-  //     <WithdrawModal
-  //       max={stakedBalance}
-  //       onConfirm={onUnstake}
-  //       tokenName={stakingTokenName}
-  //       renderCardHeading={renderCardHeading}
-  //     />,
-  //   )
-  // }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
 
   const renderStakeAction = useCallback(
     (className?: string) => (
@@ -191,14 +181,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   const renderDetailsSection = useCallback(
     () => (
-      <DetailsSection
-        isMobile={isMobile}
-        tokenName={tokenName}
-        totalStaked={totalStaked}
-        balance={stakedBalance}
-        earnings={earnings}
-        klaytnScopeAddress=""
-      />
+      <Box style={{width: '70%'}}>
+        <DetailsSection
+          isMobile={isMobile}
+          tokenName={tokenName}
+          totalStaked={totalStaked}
+          balance={stakedBalance}
+          earnings={earnings}
+          klaytnScopeAddress=""
+        />
+
+      </Box>
     ),
     [isMobile, tokenName, totalStaked, stakedBalance, earnings],
   )
@@ -212,7 +205,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
   if (isMobile) {
     return (
       <HorizontalMobileStyle className="mb-3">
-        {renderSash()}
         {/* <CardHeadingAccordion
           tokenName={tokenName}
           isOldSyrup={isOldSyrup}
@@ -234,25 +226,37 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   return (
     <>
-      <Flex justifyContent="space-between" style={{ backgroundColor: 'coral', marginBottom: '10px' }}>
-        {renderSash()}
-        {renderCardHeading('col-3 pos-static')}
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
+        <CardBody>
+          <Flex justifyContent="space-between">
+            {renderCardHeading()}
 
-        <Flex>{renderDetailsSection()}</Flex>
+            {renderDetailsSection()}
 
-        <button type="button" onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
-          {isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}
-        </button>
+            <IconButton
+              variant="transparent"
+              startIcon={isOpenAccordion ? <ArrowTopGIcon/> : <ArrowBottomGIcon/>}
+              onClick={() => setIsOpenAccordion(!isOpenAccordion)}/>
+            
+            {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
+          </Flex>
 
-        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
-      </Flex>
-      {isOpenAccordion && (
-        <Flex>
-          {renderLinkSection()}
-          {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
-          {renderStakeAction('pb-4')}
-        </Flex>
-      )}
+        </CardBody>
+        {isOpenAccordion && (
+          <Box p={24} backgroundColor={ColorStyles.LIGHTGREY_20}>
+            {/* <Box bg="lightGrey20">sdf</Box>
+            <Text color="lightGrey20">dddddd</Text> */}
+            <Flex>
+
+              {renderLinkSection()}
+              {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
+              {renderStakeAction('pb-4')}
+            </Flex>
+
+          </Box>
+        )}
+        
+      </Card>
     </>
   )
 }

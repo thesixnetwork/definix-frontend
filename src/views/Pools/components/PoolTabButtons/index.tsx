@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Text, Toggle } from 'uikit-dev'
+import { Button, Text, Toggle } from 'definixswap-uikit'
 
 const Wrapper = styled.div`
   display: flex;
