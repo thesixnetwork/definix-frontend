@@ -5,7 +5,18 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
-import { Flex, Card, CardBody, CardRibbon, IconButton, Box, ArrowBottomGIcon, ArrowTopGIcon, Text, ColorStyles } from 'definixswap-uikit'
+import {
+  Flex,
+  Card,
+  CardBody,
+  CardRibbon,
+  IconButton,
+  Box,
+  ArrowBottomGIcon,
+  ArrowTopGIcon,
+  Text,
+  ColorStyles,
+} from 'definixswap-uikit'
 import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
@@ -86,7 +97,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   const renderCardHeading = useCallback(
     (className?: string) => (
-      <Box style={{width: '30%'}}>
+      <Box style={{ width: '30%' }}>
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} className={className} />
       </Box>
     ),
@@ -181,7 +192,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   const renderDetailsSection = useCallback(
     () => (
-      <Box style={{width: '70%'}}>
+      <Box style={{ width: '70%' }}>
         <DetailsSection
           isMobile={isMobile}
           tokenName={tokenName}
@@ -190,7 +201,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
           earnings={earnings}
           klaytnScopeAddress=""
         />
-
       </Box>
     ),
     [isMobile, tokenName, totalStaked, stakedBalance, earnings],
@@ -235,27 +245,24 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
             <IconButton
               variant="transparent"
-              startIcon={isOpenAccordion ? <ArrowTopGIcon/> : <ArrowBottomGIcon/>}
-              onClick={() => setIsOpenAccordion(!isOpenAccordion)}/>
-            
+              startIcon={isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+              onClick={() => setIsOpenAccordion(!isOpenAccordion)}
+            />
+
             {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
           </Flex>
-
         </CardBody>
         {isOpenAccordion && (
           <Box p={24} backgroundColor={ColorStyles.LIGHTGREY_20}>
             {/* <Box bg="lightGrey20">sdf</Box>
             <Text color="lightGrey20">dddddd</Text> */}
             <Flex>
-
               {renderLinkSection()}
               {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
               {renderStakeAction('pb-4')}
             </Flex>
-
           </Box>
         )}
-        
       </Card>
     </>
   )

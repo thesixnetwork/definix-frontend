@@ -18,7 +18,6 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy, c
     return `${apy.toNumber().toFixed(2)}%`
   }, [apy])
 
-
   return (
     <Flex position="relative">
       <Box width={48} mr={12}>
@@ -31,7 +30,9 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy, c
         </Text>
 
         <Flex>
-          <Text textStyle="R_14M" color={ColorStyles.RED}>APR</Text>
+          <Text textStyle="R_14M" color={ColorStyles.RED}>
+            APR
+          </Text>
           <Text textStyle="R_20B" color={ColorStyles.RED}>
             {displayApy}
           </Text>

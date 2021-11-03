@@ -36,7 +36,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ tokenName, totalStaked,
 
   return (
     <Flex justifyContent="space-between">
-      <Box style={{width: '30%'}}>
+      <Box style={{ width: '30%' }}>
         <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
           Total Staked
         </Text>
@@ -47,15 +47,15 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({ tokenName, totalStaked,
           {totalStakedPrice}
         </Text>
       </Box>
-      <Box mx={24} style={{width: '35%'}}>
+      <Box mx={24} style={{ width: '35%' }}>
         <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
-        Balance
+          Balance
         </Text>
         <Text color={ColorStyles.BLACK} textStyle="R_18M">
           {balanceValue}
         </Text>
       </Box>
-      <Box style={{width: '35%'}}>
+      <Box style={{ width: '35%' }}>
         <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
           Total Staked
         </Text>
