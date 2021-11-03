@@ -27,18 +27,15 @@ import Overview from './components/Overview'
 import Performance from './components/Performance'
 
 const MaxWidth = styled.div`
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
   position: relative;
 `
 
 const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
+  // position: absolute;
+  // top: 0;
+  // left: 0;
   width: 100%;
-  height: 100%;
+  // height: 100%;
   overflow: auto;
   padding-bottom: 24px;
 `
