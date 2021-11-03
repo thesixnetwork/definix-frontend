@@ -68,7 +68,7 @@ const LongTermStake: React.FC = () => {
                       target="_blank"
                     >
                       How to stake.
-                  </TutorailsLink>
+                    </TutorailsLink>
                   </div>
                 </div>
                 <CardStake isShowRightPanel={isShowRightPanel} />
