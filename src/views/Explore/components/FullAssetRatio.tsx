@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, useMatchBreakpoints } from 'uikit-dev'
+import Color from 'color'
+import { Text, useMatchBreakpoints } from 'definixswap-uikit'
+import useTheme from 'hooks/useTheme'
 import { Ratio } from 'config/constants/types'
 
 interface FullAssetRatioType {
@@ -35,21 +37,31 @@ const Bar = styled.div<{ color: string }>`
 
 const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = '' }) => {
   const { isXl } = useMatchBreakpoints()
+  const { isDark } = useTheme()
   const isMobile = !isXl
 
   return (
     <div className={`flex ${className}`}>
       {ratio
         .filter((r) => r.value)
-        .map((m) => (
-          <Coin width={`${m.value}%`} isMobile={isMobile}>
-            <Bar color={m.color} />
-            <div className="name">
-              <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
-              <Text fontSize="16px">{m.value}%</Text>
-            </div>
-          </Coin>
-        ))}
+        .map((m) => {
+          const color = Color(m.color);
+          const displayColor = ((dark, c) => {
+            if (dark) {
+              return c.isDark() ? c.lighten(0.1): c.hex();
+            }
+            return c.isLight() ? c.darken(0.1): c.hex();
+          })(isDark, color);
+          return (
+            <Coin width={`${m.value}%`} isMobile={isMobile}>
+              <Bar color={displayColor} />
+              <div className="name">
+                <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
+                <Text fontSize="16px">{m.value}%</Text>
+              </div>
+            </Coin>
+          )
+        })}
     </div>
   )
 }
