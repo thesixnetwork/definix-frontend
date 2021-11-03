@@ -38,7 +38,6 @@ TagManager.initialize(tagManagerArgs)
 // Only pool is included in the main bundle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
-const Farms = lazy(() => import('./views/Farms'))
 const NewFarms = lazy(() => import('./views/NewFarms'))
 const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
@@ -116,7 +115,7 @@ const App: React.FC = () => {
               <Pools />
             </Route>
             <Route path="/farm">
-              <Farms />
+              <NewFarms />
             </Route>
             <Route path="/info">
               <Info />
@@ -126,9 +125,6 @@ const App: React.FC = () => {
             </Route>
             <Route path="/AirdropKlay">
               <AirdropKlay />
-            </Route>
-            <Route path="/newFarm">
-              <NewFarms />
             </Route>
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
