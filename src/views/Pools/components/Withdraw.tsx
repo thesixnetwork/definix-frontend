@@ -66,12 +66,9 @@ const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, tota
     [max, setVal],
   )
 
-  const handleUnstake = useCallback(
-    () => {
-      onUnstake(isOldSyrup ? '0' : val)
-    },
-    [isOldSyrup, onUnstake, val]
-  )
+  const handleUnstake = useCallback(() => {
+    onUnstake(isOldSyrup ? '0' : val)
+  }, [isOldSyrup, onUnstake, val])
 
   /**
    * confirm modal

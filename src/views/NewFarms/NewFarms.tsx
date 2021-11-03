@@ -70,12 +70,6 @@ const Farms: React.FC = () => {
     state: 'list',
     data: null,
   }) // 'list', 'deposit', 'remove',
-  // const [modal, setModal] =
-  //   useState<{
-  //     node: React.ReactNode
-  //     title: string
-  //     description: string
-  //   }>()
 
   const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -250,29 +244,10 @@ const Farms: React.FC = () => {
       setStackedOnly(false)
       setListView(true)
       setIsPhrase2(false)
-      // setModal(undefined)
-      // setIsOpenModal(false)
     }
   }, [])
 
   return (
-    // <FarmContext.Provider
-    //   value={{
-    //     onPresent: handlePresent,
-    //     onDismiss: handleDismiss,
-    //   }}
-    // >
-
-    //   {isOpenModal && React.isValidElement(modal.node) && (
-    //     <ModalWrapper>
-    //       <h1>{modal.title}</h1>
-    //       <p>{modal.description}</p>
-    //       {React.cloneElement(modal.node, {
-    //         onDismiss: handleDismiss,
-    //       })}
-    //     </ModalWrapper>
-    //   )}
-    // </FarmContext.Provider>
     <>
       <Helmet>
         <title>Farm - Definix - Advance Your Crypto Assets</title>

@@ -395,7 +395,8 @@ const Farm: React.FC = () => {
                       data: null,
                     })
                   }}
-                />,
+                />
+                ,
               </>
             )}
           </MaxWidth>
