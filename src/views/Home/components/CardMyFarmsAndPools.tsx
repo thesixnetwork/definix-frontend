@@ -271,7 +271,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     setPendingTx(true)
     try {
       await onReward()
-      if (balancefinix) {
+      if (finixEarn) {
         await handleHarvest()
       }
     } catch (error) {
@@ -279,7 +279,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     } finally {
       setPendingTx(false)
     }
-  }, [handleHarvest, onReward, balancefinix])
+  }, [handleHarvest, onReward, finixEarn])
 
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
@@ -896,12 +896,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               variant="tertiary"
               className="mt-3"
               style={{ background: 'white' }}
-              disabled={balancesWithValue.length + (balancefinix ? 1 : 0) <= 0 || pendingTx}
+              disabled={balancesWithValue.length + (finixEarn ? 1 : 0) <= 0 || pendingTx}
               onClick={harvestAllFarms}
             >
               {pendingTx
                 ? TranslateString(548, 'Collecting FINIX')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length + (balancefinix ? 1 : 0)})`)}
+                : TranslateString(532, `Harvest all (${balancesWithValue.length + (finixEarn ? 1 : 0)})`)}
             </Button>
           ) : (
             <UnlockButton />
