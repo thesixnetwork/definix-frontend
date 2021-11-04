@@ -105,7 +105,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
   )
 
   const renderStakeAction = useCallback(
-    (className?: string) => (
+    () => (
       <StakeAction
         sousId={sousId}
         isOldSyrup={isOldSyrup}
@@ -135,7 +135,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
             max: stakedBalance,
           })
         }}
-        className={className}
       />
     ),
     [
@@ -225,7 +224,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
           setIsOpenAccordion={setIsOpenAccordion}
         /> */}
         <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-          {renderStakeAction('pa-5')}
+          {renderStakeAction()}
           {/* {renderHarvestAction('pa-5')} */}
           {renderHarvestActionAirDrop('pa-5 pt-0', false)}
           {renderDetailsSection()}
@@ -237,7 +236,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   return (
     <>
-      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} mb={16}>
         <CardBody>
           <Flex justifyContent="space-between">
             {renderCardHeading()}
@@ -249,18 +248,20 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
               startIcon={isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
               onClick={() => setIsOpenAccordion(!isOpenAccordion)}
             />
-
-            {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
           </Flex>
         </CardBody>
         {isOpenAccordion && (
           <Box p={24} backgroundColor={ColorStyles.LIGHTGREY_20}>
-            {/* <Box bg="lightGrey20">sdf</Box>
-            <Text color="lightGrey20">dddddd</Text> */}
-            <Flex>
-              {renderLinkSection()}
-              {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
-              {renderStakeAction('pb-4')}
+            <Flex justifyContent="space-between">
+              <Box style={{ width: '20%' }}>
+                {renderLinkSection()}
+              </Box>
+              <Box mx={24} style={{ width: '40%' }}>
+                {renderHarvestActionAirDrop('', true)}
+              </Box>
+              <Box style={{ width: '30%' }}>
+                {renderStakeAction()}
+              </Box>
             </Flex>
           </Box>
         )}

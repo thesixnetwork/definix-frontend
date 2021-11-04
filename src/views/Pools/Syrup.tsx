@@ -338,7 +338,7 @@ const Farm: React.FC = () => {
                       </Route>
                     </div>
                   ) : (
-                    <FlexLayout cols={listView ? 1 : 3}>
+                    <>
                       <Route exact path={`${path}`}>
                         {orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
                           (pool) => (
@@ -356,7 +356,7 @@ const Farm: React.FC = () => {
                           <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                         ))}
                       </Route> */}
-                    </FlexLayout>
+                    </>
                   )}
                 </TimerWrapper>
               </>

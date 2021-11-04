@@ -30,7 +30,7 @@ const TotalStakedSection: React.FC<{
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
         {title}
       </Text>
-      <Flex alignItems="center">
+      <Flex alignItems="end">
         <Text color={ColorStyles.BLACK} textStyle="R_18M">
           {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
         </Text>
@@ -93,7 +93,7 @@ const EarningsSection: React.FC<{
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
         {title}
       </Text>
-      <Flex alignItems="center">
+      <Flex alignItems="end">
         <Text color={ColorStyles.BLACK} textStyle="R_18M">
           {earningsValue.toLocaleString()}
         </Text>
