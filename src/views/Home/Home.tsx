@@ -1,5 +1,6 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import axios from 'axios'
+import useTranslation from 'contexts/Localisation/useTranslation'
 import useTheme from 'hooks/useTheme'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
@@ -58,6 +59,7 @@ const CustomTab = styled.div`
 `
 
 const Home: React.FC = () => {
+  const { t } = useTranslation();
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   const [isLoading, setIsLoading] = useState(false)
@@ -128,7 +130,10 @@ const Home: React.FC = () => {
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                Home
+                {t("Home")}
+                {t("FINIX Transferred from {{BSC}}", {
+                  BSC: 'bsc test'
+                })}
               </Heading>
               {isLoading ? (
                 <Skeleton
