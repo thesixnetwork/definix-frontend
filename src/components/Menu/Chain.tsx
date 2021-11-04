@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { ChainToggle, ChainToggleItem, ChainBscIcon, ChainKlaytnIcon } from "definixswap-uikit";
+import React, { useState } from 'react'
+import { ChainToggle, ChainToggleItem, ChainBscIcon, ChainKlaytnIcon } from 'definixswap-uikit'
 
 interface Props {
-  toggleScale?: "sm" | "md";
+  toggleScale?: 'sm' | 'md'
 }
 
 const Chain: React.FC<Props> = ({ toggleScale }) => {
-  const [chainIndex, setChainIndex] = useState(0);
+  const [chainIndex, setChainIndex] = useState(0)
   return (
     <div>
       <ChainToggle toggleScale={toggleScale} activeIndex={chainIndex} onItemClick={setChainIndex}>
@@ -14,12 +14,12 @@ const Chain: React.FC<Props> = ({ toggleScale }) => {
           as="a"
           href="#d"
           startIcon={<ChainBscIcon />}
-          label={toggleScale === "sm" ? "bsc" : "Binance smart chain"}
+          label={toggleScale === 'sm' ? 'bsc' : 'Binance smart chain'}
         />
         <ChainToggleItem as="a" href="#a" startIcon={<ChainKlaytnIcon />} label="Klaytn chain" />
       </ChainToggle>
     </div>
-  );
-};
+  )
+}
 
-export default React.memo(Chain);
+export default React.memo(Chain)

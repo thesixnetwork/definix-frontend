@@ -12,7 +12,7 @@ import Chain from './Chain'
 
 const Menu = (props) => {
   const { account, connect, reset } = useWallet()
-  const { setLangCode, selectedLangCode, t } = useTranslation();
+  const { setLangCode, selectedLangCode, t } = useTranslation()
   const { isDark, toggleTheme } = useTheme()
   const finixPriceUsd = usePriceFinixUsd()
   const { profile } = useProfile()
@@ -30,7 +30,6 @@ const Menu = (props) => {
       currentLang={selectedLangCode}
       langs={supportedLanguages}
       setLang={({ code }) => setLangCode(code)}
-
       // finixPriceUsd={finixPriceUsd.toNumber()}
       // price={finixPriceUsd.toNumber() <= 0 ? 'N/A' : numeral(finixPriceUsd.toNumber()).format('0,0.0000')}
       links={links}

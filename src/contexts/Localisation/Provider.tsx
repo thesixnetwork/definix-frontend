@@ -9,7 +9,7 @@ export interface LangType {
 }
 
 const LANG_KEY = 'lang'
-const DEFAULT_LANG_CODE = EN.code;
+const DEFAULT_LANG_CODE = EN.code
 
 interface ProviderState {
   t: (key: string, replaceTxt?: Record<string, string>) => string
@@ -24,23 +24,23 @@ const fetchLanguage = (langCode: string) => {
 
 const changeKeyLowerCase = (translation: Record<string, string>) => {
   return mapKeys(translation, (value, key) => key.toLowerCase())
-};
+}
 
 const translationsMap = new Map()
 translationsMap.set(EN.code, changeKeyLowerCase(defaultTranslation))
 
 const fetchLanguageCode = async (code: string) => {
-  const langCode = code;
+  const langCode = code
   if (!translationsMap.has(langCode)) {
     const translation = await fetchLanguage(langCode)
     translationsMap.set(langCode, changeKeyLowerCase(translation))
   }
-  localStorage.setItem(LANG_KEY, langCode);
-  return langCode;
+  localStorage.setItem(LANG_KEY, langCode)
+  return langCode
 }
 
 export const LanguageContextProvider: React.FC = ({ children }) => {
-  const [selectedLangCode, setSelectedLangCode] = useState<string>(localStorage.getItem(LANG_KEY) || DEFAULT_LANG_CODE);
+  const [selectedLangCode, setSelectedLangCode] = useState<string>(localStorage.getItem(LANG_KEY) || DEFAULT_LANG_CODE)
 
   const setLanguageCode = useCallback(
     async (langCode: string) => {
@@ -87,10 +87,10 @@ export const LanguageContextProvider: React.FC = ({ children }) => {
       value={{
         t,
         setLangCode: setLanguageCode,
-        selectedLangCode
+        selectedLangCode,
       }}
     >
-        {children}
+      {children}
     </LanguageContext.Provider>
   )
 }
