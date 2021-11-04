@@ -108,4 +108,4 @@ const EarningsSection: React.FC<{
   )
 }
 
-export default { TotalStakedSection, MyBalanceSection, EarningsSection }
+export { TotalStakedSection, MyBalanceSection, EarningsSection }
