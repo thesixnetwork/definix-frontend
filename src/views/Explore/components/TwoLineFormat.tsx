@@ -39,15 +39,17 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   currentInvestPercentDiff,
   diffAmounts,
 }) => {
-  const size = large ? {
-    emphasize: '24px',
-    subTitleFont: '14px',
-    text: '16px',
-  } : {
-    emphasize: '16px',
-    subTitleFont: '12px',
-    text: '14px',
-  }
+  const size = large
+    ? {
+        emphasize: '24px',
+        subTitleFont: '14px',
+        text: '16px',
+      }
+    : {
+        emphasize: '16px',
+        subTitleFont: '12px',
+        text: '14px',
+      }
   return (
     <div className={className}>
       <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>

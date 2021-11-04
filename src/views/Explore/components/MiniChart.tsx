@@ -132,7 +132,7 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', color, height = 1
   }, [fetchGraphData])
 
   const data = (canvas) => {
-    const graphColor = color || '#30ADFF';
+    const graphColor = color || '#30ADFF'
     const colorObj = Color(graphColor)
 
     const ctx = canvas.getContext('2d')

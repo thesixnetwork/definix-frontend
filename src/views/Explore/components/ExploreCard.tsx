@@ -44,12 +44,20 @@ const HorizontalMobileStyle = styled(Card)`
   }
 `
 
-const BtnViewDetail: React.FC<{onClick: () => void}> = ({
-  onClick
-}) => {
-  return (<Button minWidth="auto" scale="40" variant="lightbrown" as={Link} to="/rebalancing/detail" onClick={onClick} className="w-100">
-    View Details
-  </Button>)
+const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  return (
+    <Button
+      minWidth="auto"
+      scale="40"
+      variant="lightbrown"
+      as={Link}
+      to="/rebalancing/detail"
+      onClick={onClick}
+      className="w-100"
+    >
+      View Details
+    </Button>
+  )
 }
 
 const ExploreCard: React.FC<ExploreCardType> = ({
@@ -127,7 +135,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const renderSash = () => {
     if (rebalance.rebalace?.toUpperCase() === 'NEW') {
-      return <CardRibbon text={rebalance.rebalace} />;
+      return <CardRibbon text={rebalance.rebalace} />
     }
 
     return null
@@ -137,11 +145,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   if (isMobile) {
     return (
       <HorizontalMobileStyle className="mb-3" ribbon={renderSash()}>
-        <CardHeading
-          className="pa-4 pb-6"
-          isHorizontal
-          rebalance={rebalance}
-        />
+        <CardHeading className="pa-4 pb-6" isHorizontal rebalance={rebalance} />
 
         <div>
           <div className="flex px-4 pb-5">
@@ -210,7 +214,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       <CardBody>
         <CardHeading rebalance={rebalance} className="bd-b pb-5" />
         <div className="flex pt-5">
-          <div className="flex flex-column justify-space-between px-0 bd-r" style={{width: '45.7%'}} >
+          <div className="flex flex-column justify-space-between px-0 bd-r" style={{ width: '45.7%' }}>
             <div className="flex justify-space-between mb-4">
               <TwoLineFormat
                 className="col-5"
@@ -249,7 +253,12 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   return ''
                 })()}
               />
-              <MiniChart color={rebalance.sharedPricePercentDiff >= 0 ? '#02a1a1' : '#ff5532'} tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={60} />
+              <MiniChart
+                color={rebalance.sharedPricePercentDiff >= 0 ? '#02a1a1' : '#ff5532'}
+                tokens={allCurrentTokens}
+                rebalanceAddress={getAddress(rebalance.address)}
+                height={60}
+              />
             </div>
 
             <div className="col-6 flex flex-column justify-space-between pl-6">

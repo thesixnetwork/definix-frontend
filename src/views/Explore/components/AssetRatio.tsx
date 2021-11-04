@@ -2,6 +2,7 @@ import { Ratio } from 'config/constants/types'
 import React from 'react'
 import styled from 'styled-components'
 import { Text } from 'definixswap-uikit'
+import useTranslation from 'contexts/Localisation/useTranslation'
 
 interface AssetRatioType {
   isHorizontal: boolean
@@ -26,6 +27,8 @@ const Coin = styled.div<{ isHorizontal?: boolean }>`
 `
 
 const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className = '', ratio = [] }) => {
+  const { t } = useTranslation()
+
   return (
     <div className={className}>
       <Text
@@ -34,7 +37,7 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
         className={!isHorizontal ? 'mb-2' : ''}
         textAlign={isHorizontal ? 'left' : 'center'}
       >
-        Asset ratio
+        {t('Asset Ratio')}
       </Text>
       <div className="flex flex-wrap" style={{ marginLeft: isHorizontal ? '-8px' : '' }}>
         {ratio

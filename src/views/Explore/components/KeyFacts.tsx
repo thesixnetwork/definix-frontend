@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react'
-import _ from 'lodash'
+import { get } from 'lodash'
 import { Text } from 'definixswap-uikit'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import Helper from 'uikit-dev/components/Helper'
 
+import useTranslation from 'contexts/Localisation/useTranslation'
 import { Rebalance } from '../../../state/types'
 
-import { Table, TD, TR } from './Table'
+import { Table, TD, TH, TR } from './Table'
 
 interface FactRowType {
   name: string
@@ -19,23 +20,25 @@ const FactRow: React.FC<FactRowType> = ({ name, helper, value, toCopy }) => {
   const isCopy = useMemo(() => Boolean(toCopy), [toCopy])
   return (
     <TR>
-      <TD>
+      <TH>
         <div className="flex align-center">
-          <Text bold>{name}</Text>
+          <Text textStyle="R_12M" color="mediumgrey">
+            {name}
+          </Text>
           {helper && <Helper text={helper} className="mx-2" position="top" />}
         </div>
-      </TD>
+      </TH>
       <TD>
         <div className="flex">
           {typeof value === 'string' ? (
-            <Text fontSize="14px" className={isCopy ? 'mr-2' : ''}>
+            <Text textStyle="R_14R" className={isCopy ? 'mr-2' : ''}>
               {value}
             </Text>
           ) : (
             value.map((item, index) => {
               const classNames = [index > 0 || isCopy ? 'mr-2' : '', index < value.length - 1 ? 'bd-r pr-2' : '']
               return (
-                <Text fontSize="14px" className={classNames.join(' ')}>
+                <Text textStyle="R_14R" className={classNames.join(' ')}>
                   {item}
                 </Text>
               )
@@ -49,37 +52,39 @@ const FactRow: React.FC<FactRowType> = ({ name, helper, value, toCopy }) => {
 }
 
 interface KeyFactsType {
-  className?: string
   rebalance: Rebalance | any
 }
 
-const KeyFacts: React.FC<KeyFactsType> = ({ className, rebalance }) => {
+const KeyFacts: React.FC<KeyFactsType> = ({ rebalance }) => {
+  const { t } = useTranslation()
   return (
     <>
-      <Text bold className="mb-2">
-        Key facts
+      <Text textStyle="R_16M" color="deepgrey" className="mb-s20">
+        {t('Key Facts')}
       </Text>
-      <Text fontSize="14px">{rebalance.description}</Text>
-      <Table>
-        <FactRow name="Name" value={rebalance.factsheet.name} />
-        <FactRow name="Inception date" value={rebalance.factsheet.inceptionDate} />
-        <FactRow name="Manager" value={rebalance.factsheet.manager} toCopy={rebalance.factsheet.manager} />
-        <FactRow name="Vault" value={rebalance.factsheet.vault} toCopy={rebalance.factsheet.vault} />
+      <Text textStyle="R_14R" color="mediumgrey">
+        {rebalance.description}
+      </Text>
+      <Table className="mt-s20">
+        <FactRow name={t('Name')} value={rebalance.factsheet.name} />
+        <FactRow name={t('Inception Date')} value={rebalance.factsheet.inceptionDate} />
+        <FactRow name={t('Manager')} value={rebalance.factsheet.manager} toCopy={rebalance.factsheet.manager} />
+        <FactRow name={t('Vault')} value={rebalance.factsheet.vault} toCopy={rebalance.factsheet.vault} />
         <FactRow
-          name="Management fee"
-          value={[_.get(rebalance, 'fee.management', 0.2), rebalance.factsheet.management]}
+          name={t('Management Fee')}
+          value={[get(rebalance, 'fee.management', 0.2), rebalance.factsheet.management]}
           toCopy={rebalance.factsheet.management}
           helper="Fee collected for vault management."
         />
         <FactRow
-          name="FINIX Buy back fee"
-          value={[_.get(rebalance, 'fee.buyback', 1.5), rebalance.factsheet.finixBuyBackFee]}
+          name={t('Finix Buyback Fee')}
+          value={[get(rebalance, 'fee.buyback', 1.5), rebalance.factsheet.finixBuyBackFee]}
           toCopy={rebalance.factsheet.finixBuyBackFee}
           helper="Fee collected for buyback and burn of FINIX as deflationary purpose."
         />
         <FactRow
-          name="Ecosystem fee"
-          value={[_.get(rebalance, 'fee.bounty', 0.3), rebalance.factsheet.bountyFee]}
+          name={t('Ecosystem Fee')}
+          value={[get(rebalance, 'fee.bounty', 0.3), rebalance.factsheet.bountyFee]}
           toCopy={rebalance.factsheet.bountyFee}
           helper="Reservation fee for further development of the ecosystem."
         />

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Button, Card, Text } from 'definixswap-uikit'
-// import { Button, Card, Text } from 'uikit-dev'
+import useTranslation from 'contexts/Localisation/useTranslation'
 import { getAddress } from 'utils/addressHelpers'
 import { useRebalanceBalances, useBalances } from '../../../state/hooks'
 import TwoLineFormat from './TwoLineFormat'
@@ -30,6 +30,7 @@ const CardStyled = styled(Card)`
 `
 
 const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVertical = false }) => {
+  const { t } = useTranslation()
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
@@ -93,13 +94,11 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVer
   }, [combinedAmount])
 
   return (
-    <CardStyled
-      className={`flex flex-wrap justify-space-between pa-4 mt-4 ${className}`}
-    >
+    <CardStyled className={`flex flex-wrap justify-space-between pa-4 mt-4 ${className}`}>
       {isVertical ? (
         <div className="pa-4">
           <Text fontSize="14px" color="textSubtle">
-            Current investment
+            {t('Current Investment')}
           </Text>
           <Text fontSize="14px">{`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}</Text>
           <div className="flex align-baseline">
@@ -168,13 +167,8 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVer
         />
       )}
 
-      
-      <div
-        className={`flex col-12 pt-2 ${
-          isVertical ? 'flex-column bd-t pa-4' : ''
-        }`}
-      >
-        { account ?
+      <div className={`flex col-12 pt-2 ${isVertical ? 'flex-column bd-t pa-4' : ''}`}>
+        {account ? (
           <>
             <Button
               scale="40"
@@ -189,8 +183,9 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVer
               WITHDRAW
             </Button>
           </>
-        : 
-          <UnlockButton scale="40" /> }
+        ) : (
+          <UnlockButton scale="40" />
+        )}
       </div>
     </CardStyled>
   )

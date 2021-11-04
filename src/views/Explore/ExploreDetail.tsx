@@ -1,18 +1,20 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react'
+import React, { useRef, useCallback, useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import moment from 'moment'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
 import { useDispatch } from 'react-redux'
 import numeral from 'numeral'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Box, Button, Card, CardBody, TabBox, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import Color from 'color'
+import { Box, Button, Card, CardBody, Flex, TabBox, Text, useMatchBreakpoints } from 'definixswap-uikit'
 import { ArrowBackIcon } from 'uikit-dev'
 
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useTheme from 'hooks/useTheme'
 import { getAddress } from 'utils/addressHelpers'
+import useTranslation from 'contexts/Localisation/useTranslation'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { usePriceFinixUsd } from '../../state/hooks'
 import { Rebalance } from '../../state/types'
@@ -24,10 +26,6 @@ import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
 import Overview from './components/Overview'
 import Performance from './components/Performance'
-
-const Overflow = styled.div`
-  overflow: auto;
-`
 
 interface ExploreDetailType {
   rebalance: Rebalance | any
@@ -57,18 +55,37 @@ const usePrevious = (value, initialValue) => {
   return ref.current
 }
 
-const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
+const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [timeframe, setTimeframe] = useState('1D')
   const [chartName, setChartName] = useState<TypeChartName>('Normalize')
   const [returnPercent, setReturnPercent] = useState(0)
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
+  const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const finixPrice = usePriceFinixUsd()
   const isMobile = !isXl && !isLg
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const { t } = useTranslation()
+  // for adjust color
+  const rebalance = useMemo(() => {
+    if (!rawData?.ratio) return rawData
+    console.log(rawData)
+    const ratio = rawData?.ratio.map((coin) => {
+      const colorObj = Color(coin.color)
+      const color = ((dark, c) => {
+        const hex = c.hex()
+        if (dark) {
+          return hex === '#000000' ? c.lighten(0.1) : hex
+        }
+        return hex === '#FFFFFF' ? c.darken(0.1) : hex
+      })(isDark, colorObj)
+      return { ...coin, color }
+    })
+    return { ...rawData, ratio }
+  }, [rawData, isDark])
   const prevRebalance = usePrevious(rebalance, {})
   const prevTimeframe = usePrevious(timeframe, '')
   const [periodPriceTokens, setPeriodPriceTokens] = useState([])
@@ -573,87 +590,69 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       fetchNormalizeGraphData()
     }
   }, [fetchPriceGraphData, fetchNormalizeGraphData, fetchReturnData, chartName, fetchMaxDrawDown])
-  
+
   if (!rebalance) return <Redirect to="/rebalancing" />
-  
+
   const tabs = [
     {
-      name: "Overview",
+      name: t('Overview'),
       component: <Overview rebalance={rebalance} periodPriceTokens={periodPriceTokens} />,
     },
     {
-      name: "Performance",
-      component: <Performance
-        rebalance={rebalance}
-        isLoading={isLoading}
-        returnPercent={returnPercent}
-        graphData={graphData}
-        timeframe={timeframe}
-        setTimeframe={setTimeframe}
-        chartName={chartName}
-        maxDrawDown={maxDrawDown}
-        setChartName={setChartName}
-        sharpRatio={sharpRatio}
-      />,
+      name: t('Performance'),
+      component: (
+        <Performance
+          rebalance={rebalance}
+          isLoading={isLoading}
+          returnPercent={returnPercent}
+          graphData={graphData}
+          timeframe={timeframe}
+          setTimeframe={setTimeframe}
+          chartName={chartName}
+          maxDrawDown={maxDrawDown}
+          setChartName={setChartName}
+          sharpRatio={sharpRatio}
+        />
+      ),
     },
     {
-      name: "Transaction",
+      name: t('Transaction'),
       component: <Transaction rbAddress={rebalance.address} />,
     },
-  ];
+  ]
 
   return (
     <>
       <Helmet>
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box paddingBottom="32px">
+      <Box pb="32px">
         <div>
-          <Text textStyle="R_16R" mb="12px">
+          <Flex className="mb-s40">
             <Button
               variant="text"
               as={Link}
               to="/rebalancing"
-              ml="-12px"
-              padding="0 12px"
               size="sm"
               startIcon={<ArrowBackIcon color="textSubtle" />}
             />
-            {rebalance.title}
-          </Text>
-          <Card className="mb-4">
+            <Text textStyle="R_16R" color="mediumgrey">
+              {rebalance.title}
+            </Text>
+          </Flex>
+
+          <Card className="mb-s16">
             <CardBody>
-              <div className="flex justify-space-between align-end mb-3">
-                <CardHeading rebalance={rebalance} className="pr-4" />
-              </div>
+              <CardHeading rebalance={rebalance} className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`} />
 
               <div className="flex flex-wrap">
                 <TwoLineFormat
-                  className={isMobile ? 'col-6 my-2' : 'col-3'}
+                  className={isMobile ? 'col-6 mb-s20' : 'col-3'}
                   title="Total asset value"
                   value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
                 />
-                {isMobile && (
-                  <TwoLineFormat
-                    className={isMobile ? 'col-6 my-2' : 'col-3'}
-                    title="Share price"
-                    subTitle="(Since inception)"
-                    subTitleFontSize="11px"
-                    value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                    percent={`${
-                      rebalance.sharedPricePercentDiff >= 0
-                        ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                    }%`}
-                    percentClass={(() => {
-                      if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                      if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                      return ''
-                    })()}
-                  />
-                )}
                 <TwoLineFormat
-                  className={isMobile ? 'col-6' : 'col-3'}
+                  className={isMobile ? 'col-6 mb-s20' : 'col-3 bd-l pl-s32'}
                   title="Yield APR"
                   value={`${numeral(
                     finixPrice
@@ -666,10 +665,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                 />
 
                 <TwoLineFormat
-                  className={isMobile ? 'col-6' : 'col-3'}
-                  title="Share price"
-                  subTitle="(Since inception)"
-                  subTitleFontSize="11px"
+                  className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
+                  title="Share price (Since inception)"
                   value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                   percent={`${
                     rebalance.sharedPricePercentDiff >= 0
@@ -687,7 +684,11 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   title="Investors"
                   value={numeral(rebalance.activeUserCountNumber).format('0,0')}
                 /> */}
-                <TwoLineFormat className={isMobile ? 'col-6' : 'col-3'} title="Risk-O-Meter" value="Medium" />
+                <TwoLineFormat
+                  className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
+                  title="Risk-O-Meter"
+                  value="Medium"
+                />
               </div>
             </CardBody>
           </Card>

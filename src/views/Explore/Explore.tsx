@@ -96,7 +96,9 @@ const Explore: React.FC = () => {
           </div>
 
           <Flex alignItems="center" className="mb-5">
-            <Text textStyle="R_14R" paddingRight="2">Staked only</Text>
+            <Text textStyle="R_14R" paddingRight="2">
+              Staked only
+            </Text>
             <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
           </Flex>
 
