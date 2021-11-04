@@ -20,7 +20,7 @@ import {
 import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
-import DetailsSection from './DetailsSection'
+import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
@@ -97,7 +97,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   const renderCardHeading = useCallback(
     (className?: string) => (
-      <Box style={{ width: '30%' }}>
+      <Box style={{ width: '26%' }}>
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} className={className} />
       </Box>
     ),
@@ -192,18 +192,19 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   const renderDetailsSection = useCallback(
     () => (
-      <Box style={{ width: '70%' }}>
-        <DetailsSection
-          isMobile={isMobile}
-          tokenName={tokenName}
-          totalStaked={totalStaked}
-          balance={stakedBalance}
-          earnings={earnings}
-          klaytnScopeAddress=""
-        />
-      </Box>
+      <>
+        <Box style={{ width: '16%' }}>
+          <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked}/>
+        </Box>
+        <Box mx={24} style={{ width: '26%' }}>
+          <MyBalanceSection title="Balance" tokenName={tokenName} balance={stakedBalance}/>
+        </Box>
+        <Box style={{ width: '24%' }}>
+          <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings}/>
+        </Box>
+      </>
     ),
-    [isMobile, tokenName, totalStaked, stakedBalance, earnings],
+    [tokenName, totalStaked, stakedBalance, earnings],
   )
 
   const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
