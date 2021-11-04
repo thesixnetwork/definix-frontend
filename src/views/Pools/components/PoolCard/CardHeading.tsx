@@ -23,7 +23,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy })
         <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={48} height={48} />
       </Box>
 
-      <Flex flexDirection="column" >
+      <Flex flexDirection="column">
         <Text textStyle="R_20M">
           {isOldSyrup && '[OLD]'} {tokenName}
         </Text>
