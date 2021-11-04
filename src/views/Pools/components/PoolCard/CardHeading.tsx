@@ -29,7 +29,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy, c
           {isOldSyrup && '[OLD]'} {tokenName}
         </Text>
 
-        <Flex>
+        <Flex alignItems="center">
           <Text textStyle="R_14M" color={ColorStyles.RED}>
             APR
           </Text>

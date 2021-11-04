@@ -20,7 +20,7 @@ import {
 import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
-import DetailsSection from './DetailsSection'
+import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
@@ -97,7 +97,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   const renderCardHeading = useCallback(
     (className?: string) => (
-      <Box style={{ width: '30%' }}>
+      <Box style={{ width: '26%' }}>
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} className={className} />
       </Box>
     ),
@@ -105,7 +105,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
   )
 
   const renderStakeAction = useCallback(
-    (className?: string) => (
+    () => (
       <StakeAction
         sousId={sousId}
         isOldSyrup={isOldSyrup}
@@ -135,7 +135,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
             max: stakedBalance,
           })
         }}
-        className={className}
       />
     ),
     [
@@ -192,18 +191,19 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   const renderDetailsSection = useCallback(
     () => (
-      <Box style={{ width: '70%' }}>
-        <DetailsSection
-          isMobile={isMobile}
-          tokenName={tokenName}
-          totalStaked={totalStaked}
-          balance={stakedBalance}
-          earnings={earnings}
-          klaytnScopeAddress=""
-        />
-      </Box>
+      <>
+        <Box style={{ width: '16%' }}>
+          <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked} />
+        </Box>
+        <Box mx={24} style={{ width: '26%' }}>
+          <MyBalanceSection title="Balance" tokenName={tokenName} balance={stakedBalance} />
+        </Box>
+        <Box style={{ width: '24%' }}>
+          <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings} />
+        </Box>
+      </>
     ),
-    [isMobile, tokenName, totalStaked, stakedBalance, earnings],
+    [tokenName, totalStaked, stakedBalance, earnings],
   )
 
   const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
@@ -224,7 +224,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
           setIsOpenAccordion={setIsOpenAccordion}
         /> */}
         <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-          {renderStakeAction('pa-5')}
+          {renderStakeAction()}
           {/* {renderHarvestAction('pa-5')} */}
           {renderHarvestActionAirDrop('pa-5 pt-0', false)}
           {renderDetailsSection()}
@@ -236,7 +236,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   return (
     <>
-      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} mb={16}>
         <CardBody>
           <Flex justifyContent="space-between">
             {renderCardHeading()}
@@ -248,18 +248,16 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
               startIcon={isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
               onClick={() => setIsOpenAccordion(!isOpenAccordion)}
             />
-
-            {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
           </Flex>
         </CardBody>
         {isOpenAccordion && (
           <Box p={24} backgroundColor={ColorStyles.LIGHTGREY_20}>
-            {/* <Box bg="lightGrey20">sdf</Box>
-            <Text color="lightGrey20">dddddd</Text> */}
-            <Flex>
-              {renderLinkSection()}
-              {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
-              {renderStakeAction('pb-4')}
+            <Flex justifyContent="space-between">
+              <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
+              <Box mx={24} style={{ width: '40%' }}>
+                {renderHarvestActionAirDrop('', true)}
+              </Box>
+              <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
             </Flex>
           </Box>
         )}
