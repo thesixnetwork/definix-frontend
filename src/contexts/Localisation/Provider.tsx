@@ -1,35 +1,47 @@
 import React, { createContext, useEffect, useState, useCallback } from 'react'
 import { allLanguagesCode, EN } from 'config/localisation/languageCodes'
-import defaultTranslation from 'config/localisation/translation.json'
+import defaultTranslation from 'config/localisation/en.json'
+
+export interface LangType {
+  code: string
+  language: string
+}
 
 const LANG_KEY = 'lang'
 
 interface ProviderState {
   t: (key: string, replaceTxt?: Record<string, string>) => string
-  setLanguage: (langCode: string) => void
+  setLangCode: (langCode: string) => void
+  selectedLangCode: string;
 }
 export const LanguageContext = createContext<ProviderState>(undefined)
 
 const fetchLanguage = (langCode: string) => {
-  return fetch(`${process.env.PUBLIC_URL}/locale/${langCode}.json`)
+  return fetch(`${process.env.PUBLIC_URL}/locales/${langCode}.json`).then((res) => res.json())
 }
 
 const translationsMap = new Map()
 translationsMap.set(EN.code, defaultTranslation)
 
-export const LanguageContextProvider: React.FC = ({ children }) => {
-  const [selectedLangCode, setSelectedLangCode] = useState(EN.code)
+const initLanguageCode = async (langCode: string) => {
+  if (!translationsMap.has(langCode)) {
+    translationsMap.set(langCode, defaultTranslation)
+    const translation = await fetchLanguage(langCode)
+    translationsMap.set(langCode, translation)
+  }
+};
 
-  const setLanguage = useCallback(
+export const LanguageContextProvider: React.FC = ({ children }) => {
+  const [selectedLangCode, setSelectedLangCode] = useState(localStorage.getItem(LANG_KEY) || EN.code)
+
+
+  const setLanguageCode = useCallback(
     async (langCode: string) => {
       if (langCode === selectedLangCode) return
 
       if (allLanguagesCode.includes(langCode)) {
-        if (!translationsMap.has(langCode)) {
-          const translation = await fetchLanguage(langCode)
-          translationsMap.set(langCode, translation)
-        }
-        setSelectedLangCode(langCode)
+        await initLanguageCode(langCode);
+        setSelectedLangCode(langCode);
       }
     },
     [selectedLangCode],
@@ -51,33 +63,22 @@ export const LanguageContextProvider: React.FC = ({ children }) => {
   )
 
   useEffect(() => {
-    let currentLangCode: string = selectedLangCode
+    localStorage.setItem(LANG_KEY, selectedLangCode);
+  }, [selectedLangCode]);
 
-    const langCodeLS = localStorage.getItem(LANG_KEY)
-    if (!langCodeLS) {
-      localStorage.setItem(LANG_KEY, currentLangCode)
-    } else if (langCodeLS && allLanguagesCode.includes(langCodeLS)) {
-      currentLangCode = langCodeLS
+  useEffect(() => {
+    if (selectedLangCode !== EN.code) {
+      initLanguageCode(selectedLangCode);
     }
 
-    setLanguage(currentLangCode)
-    // if (selectedLangCode !== currentLangCode) {
-    //   setSelectedLangCode(currentLangCode);
-
-    //   if (!translationsMap.has(currentLangCode)) {
-    //     fetchLanguage(currentLangCode).then((res) => {
-    //       console.log(res);
-    //       translationsMap.set(currentLangCode, res);
-    //     })
-    //   }
-    // }
-  }, [selectedLangCode, setLanguage])
+  }, [selectedLangCode])
 
   return (
     <LanguageContext.Provider
       value={{
         t,
-        setLanguage,
+        setLangCode: setLanguageCode,
+        selectedLangCode,
       }}
     >
       {children}
