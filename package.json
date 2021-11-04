@@ -58,7 +58,6 @@
     "chart.js": "^2.9.4",
     "date-fns": "^2.17.0",
     "definixswap-sdk": "1.0.0",
-    "definixswap-uikit": "../definix-uikit/definixswap-uikit-0.15.0.tgz",
     "jest-styled-components": "^7.0.5",
     "klaytn-use-wallet": "^1.0.1",
     "lodash": "^4.17.20",
@@ -82,7 +81,8 @@
     "react-twitter-widgets": "^1.10.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.1.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.1.5",
+    "use-async-resource": "^2.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
@@ -94,6 +94,7 @@
     "@types/react-redux": "^7.1.16",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
+    "definixswap-uikit": "../definix-uikit/definixswap-uikit-0.15.0.tgz",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.20.0",
     "eslint-plugin-unused-imports": "^1.1.2",
