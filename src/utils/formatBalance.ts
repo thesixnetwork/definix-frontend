@@ -5,6 +5,19 @@ export const getBalanceNumber = (balance: BigNumber, decimals = 18) => {
   return displayBalance.toNumber()
 }
 
-export const getFullDisplayBalance = (balance: BigNumber, decimals = 18) => {
-  return balance.dividedBy(new BigNumber(10).pow(decimals)).toFixed()
+export const getFullDisplayBalance = (
+  value: BigNumber,
+  options?: {
+    decimals?: number
+    fixed?: number
+  },
+) => {
+  const balance = new BigNumber(value)
+  const decimals = options && typeof options.decimals === 'number' ? options.decimals : 18
+  if (balance.eq(new BigNumber(0))) return '0'
+  const balanceNumber = balance.dividedBy(new BigNumber(10).pow(decimals))
+  if (options && typeof options.fixed === 'number') {
+    return balanceNumber.toFixed(options.fixed)
+  }
+  return balanceNumber.toString()
 }

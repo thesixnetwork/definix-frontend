@@ -1,7 +1,16 @@
 import React, { createContext } from 'react'
 
 interface ModalsContext {
-  onPresent: (node: React.ReactNode, key?: string) => void
+  onPresent: (
+    node: React.ReactNode,
+    {
+      title,
+      description,
+    }: {
+      title: string
+      description: string
+    },
+  ) => void
   onDismiss: () => void
 }
 

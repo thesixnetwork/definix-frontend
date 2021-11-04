@@ -27,7 +27,6 @@ const StakeAction: React.FC<StakeActionProps> = ({
   stakedBalance,
   needsApproval,
   isFinished,
-  onUnstake,
   onPresentDeposit,
   onPresentWithdraw,
   className = '',
@@ -59,86 +58,70 @@ const StakeAction: React.FC<StakeActionProps> = ({
     }
   }, [onApprove, setRequestedApproval])
 
-  const renderStakingButtons = () => {
-    if (!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished) {
-      return (
-        <Button
-          onClick={() => {
-            setReadyToStake(true)
-          }}
-          fullWidth
-          radii="small"
-        >
-          {TranslateString(999, 'Stake LP')}
-        </Button>
-      )
-    }
-
-    return (
-      <IconButtonWrapper>
-        <Button
-          variant="secondary"
-          disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-          onClick={
-            isOldSyrup
-              ? async () => {
-                  setPendingTx(true)
-                  await onUnstake('0')
-                  setPendingTx(false)
-                }
-              : onPresentWithdraw
-          }
-          className="btn-secondary-disable col-6 mr-1"
-        >
-          <MinusIcon color="primary" />
-        </Button>
-
-        {!isOldSyrup && !isFinished && (
-          <Button
-            variant="secondary"
-            disabled={isFinished && sousId !== 0}
-            onClick={onPresentDeposit}
-            className="btn-secondary-disable col-6 ml-1"
-          >
-            <AddIcon color="primary" />
-          </Button>
-        )}
-      </IconButtonWrapper>
-    )
-  }
-
-  const renderApprovalOrStakeButton = () => {
-    if (needsApproval && !isOldSyrup) {
-      return (
-        <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
-          {TranslateString(758, 'Approve Contract')}
-        </Button>
-      )
-    }
-
-    return (
-      <div className="flex align-center">
-        <Heading
-          fontSize="20px !important"
-          textAlign="left"
-          color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
-          className="col-6 pr-3"
-        >
-          {displayBalance}
-        </Heading>
-
-        <div className="col-6">{renderStakingButtons()}</div>
-      </div>
-    )
-  }
-
   return (
     <div className={className}>
       <Text textAlign="left" className="mb-2" color="textSubtle">{`${tokenName} ${TranslateString(
         1074,
         'Staked',
       )}`}</Text>
-      {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
+      {account ? (
+        <>
+          {needsApproval && !isOldSyrup ? (
+            <Button fullWidth radii="small" disabled={isFinished || requestedApproval} onClick={handleApprove}>
+              Approve Contract
+            </Button>
+          ) : (
+            <div className="flex align-center">
+              <Heading
+                fontSize="20px !important"
+                textAlign="left"
+                color={getBalanceNumber(stakedBalance) === 0 ? 'textDisabled' : 'text'}
+                className="col-6 pr-3"
+              >
+                {displayBalance}
+              </Heading>
+
+              <div className="col-6">
+                {!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished ? (
+                  <Button
+                    onClick={() => {
+                      setReadyToStake(true)
+                    }}
+                    fullWidth
+                    radii="small"
+                  >
+                    {TranslateString(999, 'Stake LP')}
+                  </Button>
+                ) : (
+                  <IconButtonWrapper>
+                    <Button
+                      variant="secondary"
+                      disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                      onClick={onPresentWithdraw}
+                      className="btn-secondary-disable col-6 mr-1"
+                    >
+                      <MinusIcon color="primary" />
+                    </Button>
+
+                    {!isOldSyrup && !isFinished && (
+                      <Button
+                        variant="secondary"
+                        disabled={isFinished && sousId !== 0}
+                        onClick={onPresentDeposit}
+                        className="btn-secondary-disable col-6 ml-1"
+                      >
+                        <AddIcon color="primary" />
+                      </Button>
+                    )}
+                  </IconButtonWrapper>
+                )}
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <UnlockButton fullWidth radii="small" />
+      )}
     </div>
   )
 }

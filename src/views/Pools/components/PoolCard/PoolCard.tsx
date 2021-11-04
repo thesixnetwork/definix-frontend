@@ -1,40 +1,35 @@
 import BigNumber from 'bignumber.js'
-import { PoolCategory, QuoteToken } from 'config/constants/types'
-import { useSousStake } from 'hooks/useStake'
-import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { PoolCategory, QuoteToken } from 'config/constants/types'
+
 import { useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
-import PoolContext from 'views/Pools/PoolContext'
-import DepositModal from '../DepositModal'
+import {
+  Flex,
+  Card,
+  CardBody,
+  CardRibbon,
+  IconButton,
+  Box,
+  ArrowBottomGIcon,
+  ArrowTopGIcon,
+  Text,
+  ColorStyles,
+} from 'definixswap-uikit'
 import PoolSash from '../PoolSash'
-import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
+import LinkListSection from './LinkListSection'
 import { PoolCardProps } from './types'
 
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
-`
-
-const VerticalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-  align-self: baseline;
-  flex-direction: column;
-  justify-content: space-around;
-  text-align: center;
-`
-
-const HorizontalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
 `
 
 const HorizontalMobileStyle = styled(CardStyle)`
@@ -51,7 +46,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
+const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }) => {
   const {
     sousId,
     tokenName,
@@ -89,56 +84,25 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
 
-  const { onPresent } = useContext(PoolContext)
+  // const renderSash = () => {
+  //   if (tokenName === 'FINIX-SIX' && !isFinished) {
+  //     return <PoolSash type="special" />
+  //   }
+  //   if (isFinished && sousId !== 0 && sousId !== 1) {
+  //     return <PoolSash type="finish" />
+  //   }
 
-  const { onStake } = useSousStake(sousId, isBnbPool)
-  const { onUnstake } = useSousUnstake(sousId)
-
-  const renderSash = () => {
-    if (tokenName === 'FINIX-SIX' && !isFinished) {
-      return <PoolSash type="special" />
-    }
-    if (isFinished && sousId !== 0 && sousId !== 1) {
-      return <PoolSash type="finish" />
-    }
-
-    return null
-  }
+  //   return null
+  // }
 
   const renderCardHeading = useCallback(
     (className?: string) => (
-      <CardHeading
-        tokenName={tokenName}
-        isOldSyrup={isOldSyrup}
-        apy={apy}
-        isHorizontal={isHorizontal}
-        className={className}
-      />
+      <Box style={{ width: '30%' }}>
+        <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} className={className} />
+      </Box>
     ),
-    [apy, isHorizontal, isOldSyrup, tokenName],
+    [apy, isOldSyrup, tokenName],
   )
-
-  const renderDepositModal = useCallback(() => {
-    onPresent(
-      <DepositModal
-        max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
-        onConfirm={onStake}
-        tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
-        renderCardHeading={renderCardHeading}
-      />,
-    )
-  }, [convertedLimit, onPresent, onStake, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
-
-  const renderWithdrawModal = useCallback(() => {
-    onPresent(
-      <WithdrawModal
-        max={stakedBalance}
-        onConfirm={onUnstake}
-        tokenName={stakingTokenName}
-        renderCardHeading={renderCardHeading}
-      />,
-    )
-  }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
 
   const renderStakeAction = useCallback(
     (className?: string) => (
@@ -150,9 +114,27 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         stakedBalance={stakedBalance}
         needsApproval={needsApproval}
         isFinished={isFinished}
-        onUnstake={onUnstake}
-        onPresentDeposit={renderDepositModal}
-        onPresentWithdraw={renderWithdrawModal}
+        onPresentDeposit={() => {
+          onSelectAdd({
+            sousId,
+            isBnbPool,
+            tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
+            totalStaked,
+            myStaked: stakedBalance,
+            max:
+              stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
+          })
+        }}
+        onPresentWithdraw={() => {
+          onSelectRemove({
+            sousId,
+            isOldSyrup,
+            tokenName: stakingTokenName,
+            totalStaked,
+            myStaked: stakedBalance,
+            max: stakedBalance,
+          })
+        }}
         className={className}
       />
     ),
@@ -160,13 +142,18 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
       isFinished,
       isOldSyrup,
       needsApproval,
-      onUnstake,
-      renderDepositModal,
-      renderWithdrawModal,
       sousId,
       stakedBalance,
       stakingTokenAddress,
       tokenName,
+      stakingLimit,
+      stakingTokenName,
+      stakingTokenBalance,
+      convertedLimit,
+      onSelectAdd,
+      onSelectRemove,
+      isBnbPool,
+      totalStaked,
     ],
   )
 
@@ -204,72 +191,80 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <DetailsSection
-        tokenName={tokenName}
-        klaytnScopeAddress=""
-        totalStaked={totalStaked}
-        isHorizontal={isHor}
-        className={className}
-      />
+    () => (
+      <Box style={{ width: '70%' }}>
+        <DetailsSection
+          isMobile={isMobile}
+          tokenName={tokenName}
+          totalStaked={totalStaked}
+          balance={stakedBalance}
+          earnings={earnings}
+          klaytnScopeAddress=""
+        />
+      </Box>
     ),
-    [tokenName, totalStaked],
+    [isMobile, tokenName, totalStaked, stakedBalance, earnings],
   )
+
+  const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
 
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <HorizontalMobileStyle className="mb-3">
-          {renderSash()}
-          <CardHeadingAccordion
-            tokenName={tokenName}
-            isOldSyrup={isOldSyrup}
-            apy={apy}
-            className=""
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-          />
-          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-            {renderStakeAction('pa-5')}
-            {/* {renderHarvestAction('pa-5')} */}
-            {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-            {renderDetailsSection('px-5 py-3', false)}
-          </div>
-        </HorizontalMobileStyle>
-      )
-    }
-
+  if (isMobile) {
     return (
-      <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-        {renderSash()}
-        {renderCardHeading('col-3 pos-static')}
-
-        <div className="col-4 bd-x flex flex-column justify-space-between px-5">
-          {renderStakeAction('pb-4')}
-          {renderDetailsSection('', true)}
+      <HorizontalMobileStyle className="mb-3">
+        {/* <CardHeadingAccordion
+          tokenName={tokenName}
+          isOldSyrup={isOldSyrup}
+          apy={apy}
+          className=""
+          isOpenAccordion={isOpenAccordion}
+          setIsOpenAccordion={setIsOpenAccordion}
+        /> */}
+        <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+          {renderStakeAction('pa-5')}
+          {/* {renderHarvestAction('pa-5')} */}
+          {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+          {renderDetailsSection()}
+          {renderLinkSection()}
         </div>
-
-        {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
-        {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
-      </HorizontalStyle>
+      </HorizontalMobileStyle>
     )
   }
 
   return (
-    <VerticalStyle className="mb-7">
-      {renderSash()}
-      <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-7')}
-        {renderStakeAction('pa-5')}
-        {/* {renderHarvestAction('pa-5')} */}
-        {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-      </div>
-      {renderDetailsSection('px-5 py-3', false)}
-    </VerticalStyle>
+    <>
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
+        <CardBody>
+          <Flex justifyContent="space-between">
+            {renderCardHeading()}
+
+            {renderDetailsSection()}
+
+            <IconButton
+              variant="transparent"
+              startIcon={isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+              onClick={() => setIsOpenAccordion(!isOpenAccordion)}
+            />
+
+            {/* {renderHarvestAction('col-5 pl-5 flex-grow')} */}
+          </Flex>
+        </CardBody>
+        {isOpenAccordion && (
+          <Box p={24} backgroundColor={ColorStyles.LIGHTGREY_20}>
+            {/* <Box bg="lightGrey20">sdf</Box>
+            <Text color="lightGrey20">dddddd</Text> */}
+            <Flex>
+              {renderLinkSection()}
+              {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)}
+              {renderStakeAction('pb-4')}
+            </Flex>
+          </Box>
+        )}
+      </Card>
+    </>
   )
 }
 

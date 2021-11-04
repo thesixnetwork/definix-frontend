@@ -28,6 +28,7 @@ const GlobalStyle = createGlobalStyle`
   .text-bold { font-weight: 600 !important; }
   .text-right { text-align: right; }
   .text-left { text-align: left; }
+  .text-center { text-align: center; }
 
   .color-primary { color: ${({ theme }) => theme.colors.primary} !important; }
   .color-text { color: ${({ theme }) => theme.colors.text} !important; }

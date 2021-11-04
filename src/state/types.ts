@@ -1,6 +1,14 @@
 import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
-import { CampaignType, FarmConfig, RebalanceConfig, Nft, PoolConfig, Team } from 'config/constants/types'
+import {
+  CampaignType,
+  FarmConfig,
+  LongTermStakeConfig,
+  RebalanceConfig,
+  Nft,
+  PoolConfig,
+  Team,
+} from 'config/constants/types'
 
 export type TranslatableText =
   | string
@@ -29,6 +37,30 @@ export interface Farm extends FarmConfig {
   quoteTokenDecimals?: BigNumber
   tokenBalanceLP?: BigNumber
   quoteTokenBlanceLP?: BigNumber
+  userData?: {
+    pendingRewards?: any
+    allowance: BigNumber
+    tokenBalance: BigNumber
+    stakedBalance: BigNumber
+    earnings: BigNumber
+  }
+}
+
+export interface LongTermStake extends LongTermStakeConfig {
+  tokenAmount?: BigNumber
+  quoteTokenAmount?: BigNumber
+  lpTotalInQuoteToken?: BigNumber
+  lpTokenRatio?: BigNumber
+  tokenPriceVsQuote?: BigNumber
+  poolWeight?: BigNumber
+  finixPerBlock?: BigNumber
+  BONUS_MULTIPLIER?: BigNumber
+  bundleRewardLength?: BigNumber
+  bundleRewards?: any
+  lpTotalSupply?: BigNumber
+  apy?: BigNumber
+  tokenDecimals?: BigNumber
+  tokenBalanceLP?: BigNumber
   userData?: {
     pendingRewards?: any
     allowance: BigNumber
@@ -108,6 +140,35 @@ export interface FarmsState {
   farmUnlockAt?: Date
 }
 
+export interface LongTermState {
+  data: LongTermStake[]
+  isFetched: boolean
+  id: string
+  level: string
+  amount: number
+  isPenalty: Boolean
+  periodPenalty: string
+  penaltyUnlockTimestamp: string
+  penaltyFinixAmount: string
+  voteAmount: BigNumber
+  canBeUnlock: boolean
+  penaltyRate: number
+  totalFinixLock: number
+  totalvFinixSupply: number
+  finixLockMap: []
+  userLockAmount: number
+  finixEarn: number
+  allLockPeriods: []
+  totalSupplyAllTimeMint: number
+  startIndex: number
+  allDataLock: []
+  multiplier: number
+  days: number
+  vFinixPrice: number
+  lockCount: number
+  balanceFinix: number
+  balancevFinix: number
+}
 export interface PoolsState {
   isFetched: boolean
   data: Pool[]
@@ -200,4 +261,5 @@ export interface State {
   achievements: AchievementState
   rebalances: RebalanceState
   wallet: WalletState
+  longTerm: LongTermState
 }

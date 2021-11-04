@@ -7,13 +7,14 @@ export interface PoolWithApy extends Pool {
   finixApy: BigNumber
   klayApy: BigNumber
   rewardPerBlock?: number
-  estimatePrice: BigNumber
   farm: FarmWithStakedValue
 }
 
 export interface PoolCardProps {
   pool: PoolWithApy
   isHorizontal?: boolean
+  onSelectAdd: (props: any) => void
+  onSelectRemove: (props: any) => void
 }
 
 export interface CardHeadingProps {
@@ -50,9 +51,10 @@ export interface HarvestActionProps {
 }
 
 export interface DetailsSectionProps {
+  isMobile: boolean
   tokenName: string
   totalStaked: BigNumber
+  balance: BigNumber
+  earnings: BigNumber
   klaytnScopeAddress: string
-  isHorizontal?: boolean
-  className?: string
 }

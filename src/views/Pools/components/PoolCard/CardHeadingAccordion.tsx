@@ -99,7 +99,6 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
             {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
           </Heading>
         </div>
-        {isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}
       </div>
 
       <div className="flex align-center mt-2">

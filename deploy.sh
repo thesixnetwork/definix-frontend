@@ -11,6 +11,7 @@ function _exit_if_fail
 . ./.env.${DEPLOY_ENV}
 
 echo "Web S3 : ${WEBS3}"
+echo "DISTRIBUTION ID : ${DISTRIBUTION_ID}"
 echo "Profile : ${2}"
 
 echo -e "Enter to continue...\c"

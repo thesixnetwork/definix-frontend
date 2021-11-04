@@ -6,6 +6,7 @@ import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
+import { useHarvest, useAprCardFarmHome, useAllLock, usePrivateData, useRank } from 'hooks/useLongTermStake'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
@@ -35,6 +36,19 @@ import {
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text } from 'uikit-dev'
+
+import LogoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
+import LogoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
+import LogoRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-11.png'
+
+import BgHeadCardRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-05.png'
+import BgHeadCardRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-06.png'
+import BgHeadCardRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-07.png'
+
+import BgMiddleComponentRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-08.png'
+import BgMiddleComponentRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-09.png'
+import BgMiddleComponentRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-10.png'
+
 import Loading from 'uikit-dev/components/Loading'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
@@ -43,6 +57,7 @@ import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { FarmWithStakedValue } from '../../Farms/components/FarmCard/types'
 import FinixHarvestBalance from './FinixHarvestBalance'
 import FinixHarvestPool from './FinixHarvestPool'
+import vFinix from '../../../uikit-dev/images/for-ui-v2/vFinix.png'
 
 const Container = styled(Card)`
   overflow: auto;
@@ -56,6 +71,23 @@ const NetWorth = styled.div`
   .sum {
     flex-grow: 1;
   }
+`
+const RankCard = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  background: ${({ theme }) => theme.colors.backgroundBlueGradient};
+  background-size: cover;
+  align-items: center;
+
+  .sum {
+    flex-grow: 1;
+  }
+`
+
+const InnerRankCard = styled.div`
+  padding: 15px 10px 15px 10px;
+  display: flex;
+
+  align-items: center;
 `
 
 const Legend = styled.div`
@@ -90,7 +122,8 @@ const HarvestAll = styled.div`
 
   .harvest {
     padding: 16px 24px;
-    background: ${({ theme }) => theme.colors.backgroundBlueGradient};
+
+    background-size: cover !important;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -198,11 +231,18 @@ const Dot = styled.span`
 
 const CardMyFarmsAndPools = ({ className = '' }) => {
   const [isLoading, setIsLoading] = useState(true)
+  // Long term
+  const { allLockPeriod } = useAllLock()
+  const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
+  const longtermApr = useAprCardFarmHome()
+  const longtermLocksRank = useRank()
+  const { handleHarvest } = useHarvest()
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
+
   const rebalances = useRebalances()
   const balances = useBalances(account) || {}
   const rebalanceBalances = useRebalanceBalances(account) || {}
@@ -231,12 +271,15 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     setPendingTx(true)
     try {
       await onReward()
+      if (finixEarn) {
+        await handleHarvest()
+      }
     } catch (error) {
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
       setPendingTx(false)
     }
-  }, [onReward])
+  }, [handleHarvest, onReward, finixEarn])
 
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
@@ -468,6 +511,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   // Net Worth
   const getNetWorth = (d) => {
+    if (typeof d.lpSymbol === 'string' && d.lpSymbol === 'Long-term') {
+      return d.value
+    }
     if (typeof d.ratio === 'object') {
       const thisBalance = d.enableAutoCompound ? rebalanceBalances : balances
       const currentBalance = _.get(thisBalance, getAddress(d.address), new BigNumber(0))
@@ -545,9 +591,19 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     value: Number(getNetWorth(r)),
   }))
 
+  const dataLongtermStake = [
+    {
+      lpSymbol: 'Long-term',
+      value: Number(finixPrice.times(lockAmount)),
+    },
+  ]
+
   const isGrouping =
-    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0
-  let arrayData = [...dataFarms, ...dataPools, ...dataRebalances]
+    stackedOnlyPools.length > 0 &&
+    stakedRebalances.length > 0 &&
+    farmsList(stackedOnlyFarms, false).length > 0 &&
+    dataLongtermStake.length > 0
+  let arrayData = [...dataFarms, ...dataPools, ...dataRebalances, ...dataLongtermStake]
   if (isGrouping) {
     const groupRebalance = {
       lpSymbol: 'Rebalancing',
@@ -576,11 +632,16 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         ),
       ),
     }
+    const groupVFinix = {
+      lpSymbol: 'Long-term',
+      value: Number(finixPrice.times(lockAmount)),
+    }
     arrayData = []
-    if (groupRebalance.value > 0 || groupFarm.value > 0 || groupPool.value > 0) {
+    if (groupRebalance.value > 0 || groupFarm.value > 0 || groupPool.value > 0 || groupVFinix.value > 0) {
       if (groupRebalance.value > 0) arrayData.push(groupRebalance)
       if (groupFarm.value > 0) arrayData.push(groupFarm)
       if (groupPool.value > 0) arrayData.push(groupPool)
+      if (groupVFinix.value > 0) arrayData.push(groupVFinix)
     }
   }
   const sorted = arrayData.sort((a, b) => b.value - a.value)
@@ -588,7 +649,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const topThree = sorted.splice(0, 3)
 
   // OTHER
-  const result = sorted.map((i) => Number(i))
+  const result = sorted.map((i) => Number(i.value))
   const other = result.reduce((a, b) => a + b, 0)
 
   // CHART
@@ -598,7 +659,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     chartColors.push(c)
   })
   const otherColor = '#8C90A5'
-  if (other > 0 && !isGrouping) chartColors.push(otherColor)
+  if (other > 0 && isGrouping) chartColors.push(otherColor)
   const chart = {
     data: {
       labels: stackedOnlyFarms.map((d) => d.lpSymbol),
@@ -629,21 +690,98 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       responsive: true,
     },
   }
-
+  const getRankTopCardBg = (rank) => {
+    switch (rank) {
+      case '0':
+        return BgHeadCardRankSliver
+      case '1':
+        return BgHeadCardRankGold
+      case '2':
+        return BgHeadCardRankDiamond
+      default:
+        return ''
+    }
+  }
+  const getRanklogo = (rank) => {
+    switch (rank) {
+      case '0':
+        return LogoRankSliver
+      case '1':
+        return LogoRankGold
+      case '2':
+        return LogoRankDiamond
+      default:
+        return ''
+    }
+  }
+  const getTextRank = (rank) => {
+    switch (rank) {
+      case '0':
+        return 'Silver HODL'
+      case '1':
+        return 'Gold HODL'
+      case '2':
+        return 'Diamond HODL'
+      default:
+        return ''
+    }
+  }
+  const getBgMiddleComponentRank = (rank) => {
+    switch (rank) {
+      case '0':
+        return `url(${BgMiddleComponentRankSliver})`
+      case '1':
+        return `url(${BgMiddleComponentRankGold})`
+      case '2':
+        return `url(${BgMiddleComponentRankDiamond})`
+      default:
+        return 'linear-gradient(#0D418E, #349BE7)'
+    }
+  }
   return (
     <Container className={className}>
+      {longtermLocksRank !== -1 ? (
+        <RankCard style={{ backgroundImage: `url(${getRankTopCardBg(longtermLocksRank)})` }}>
+          <InnerRankCard>
+            <span style={{ paddingLeft: '4%' }}>
+              <img width="30px" height="30px" src={getRanklogo(longtermLocksRank)} alt="" />
+            </span>
+            <Text className="col-12 flex" bold style={{ paddingLeft: '10px', paddingRight: '30px' }} color="black">
+              {getTextRank(longtermLocksRank)}
+            </Text>
+            <img width="20px" height="20px" src={vFinix} alt="" />
+            <div className="col-12 " style={{ paddingLeft: '7px' }}>
+              <Text fontSize="12px" color="#303030">
+                Your vFINIX Balance
+              </Text>
+              <Text bold color="#303030">
+                {numeral(balancevfinix || 0).format('0,0.[00]')} vFINIX
+              </Text>
+            </div>
+            {/* </div> */}
+            {/* <Text className="col-12 flex" color="white"></Text> */}
+          </InnerRankCard>
+        </RankCard>
+      ) : (
+        ''
+      )}
       <NetWorth>
         <div className="col-12 flex" style={{ position: 'relative' }}>
           {isLoading ? <Loading /> : <Doughnut data={chart.data} options={chart.options} height={150} width={150} />}
         </div>
         <div className="sum col-7 pa-3 pl-0">
-          <Text color="textSubtle">Net Worth</Text>
+          <Text color="textSubtle">Net Worth </Text>
           {isLoading ? (
             <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
           ) : (
             <Heading fontSize="24px !important">
               {(() => {
-                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances].map((f) => {
+                const allNetWorth = [
+                  ...stackedOnlyFarms,
+                  ...stackedOnlyPools,
+                  ...stakedRebalances,
+                  ...dataLongtermStake,
+                ].map((f) => {
                   return getNetWorth(f)
                 })
                 // eslint-disable-next-line
@@ -714,7 +852,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         <Text bold textAlign="center" className="ready">
           FINIX ready to harvest
         </Text>
-        <div className="harvest">
+        <div className="harvest" style={{ background: getBgMiddleComponentRank(longtermLocksRank) }}>
           <div className="flex justify-center">
             <StatAll>
               <Text textAlign="center" color="textSubtle">
@@ -758,12 +896,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               variant="tertiary"
               className="mt-3"
               style={{ background: 'white' }}
-              disabled={balancesWithValue.length <= 0 || pendingTx}
+              disabled={balancesWithValue.length + (finixEarn ? 1 : 0) <= 0 || pendingTx}
               onClick={harvestAllFarms}
             >
               {pendingTx
                 ? TranslateString(548, 'Collecting FINIX')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length})`)}
+                : TranslateString(532, `Harvest all (${balancesWithValue.length + (finixEarn ? 1 : 0)})`)}
             </Button>
           ) : (
             <UnlockButton />
@@ -773,6 +911,209 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
       <List>
         <>
+          {!!balancevfinix && balancevfinix > 0 && (
+            <FarmsAndPools key="VFINIX">
+              <Coins>
+                {isLoading ? (
+                  <>
+                    <div className="flex">
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                    </div>
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                  </>
+                ) : (
+                  <>
+                    <div className="flex">
+                      <img src={vFinix} alt="" />
+                    </div>
+                    <Text bold style={{ fontSize: '10px' }}>
+                      LONG-TERM STAKE
+                    </Text>
+                  </>
+                )}
+              </Coins>
+              <Summary>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    APR
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                  ) : (
+                    <Text bold color="success">
+                      {`${numeral(longtermApr || 0).format('0,0.[00]')}`}%
+                    </Text>
+                  )}
+                </div>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    FINIX Staked
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{`${numeral(lockAmount || 0).format('0,0.[00]')}`}</Text>
+                  )}
+                </div>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    vFINIX Earned
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{`${numeral(balancevfinix || 0).format('0,0.[00]')}`}</Text>
+                  )}
+                </div>
+                <div>
+                  <Text fontSize="12px" color="textSubtle">
+                    FINIX Earned
+                  </Text>
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="21px" />
+                  ) : (
+                    <Text bold>{`${numeral(finixEarn).format('0,0.[00]')}`}</Text>
+                  )}
+                </div>
+              </Summary>
+              <IconButton size="sm" as={Link} to="/long-term-stake" className="flex flex-shrink">
+                <ChevronRightIcon color="textDisabled" width="28" />
+              </IconButton>
+            </FarmsAndPools>
+          )}
+
+          {farmsList(stackedOnlyFarms, false).map((d) => {
+            const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
+            return (
+              <FarmsAndPools key={d.props.farm.lpSymbol}>
+                <Coins>
+                  {isLoading ? (
+                    <>
+                      <div className="flex">
+                        <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                        <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      </div>
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex">
+                        {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                        {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                      </div>
+                      <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
+                    </>
+                  )}
+                </Coins>
+                <Summary>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      APR
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    ) : (
+                      <Text bold color="success">
+                        {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
+                      </Text>
+                    )}
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      LP Staked
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>
+                        {new BigNumber(d.props.farm.userData.stakedBalance)
+                          .div(new BigNumber(10).pow(18))
+                          .toNumber()
+                          .toFixed(2)}
+                      </Text>
+                    )}
+                  </div>
+                  {false && (
+                    <div>
+                      <Text fontSize="12px" color="textSubtle">
+                        Multiplier
+                      </Text>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                      ) : (
+                        <Text bold color="warning">
+                          {d.props.farm.multiplier}
+                        </Text>
+                      )}
+                    </div>
+                  )}
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      FINIX Earned
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>
+                        {new BigNumber(d.props.farm.userData.earnings)
+                          .div(new BigNumber(10).pow(18))
+                          .toNumber()
+                          .toFixed(2)}
+                      </Text>
+                    )}
+                  </div>
+                </Summary>
+                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+                  <ChevronRightIcon color="textDisabled" width="28" />
+                </IconButton>
+              </FarmsAndPools>
+            )
+          })}
+
+          {stackedOnlyPools.map((d) => {
+            const imgs = d.tokenName.split(' ')[0].split('-')
+            return (
+              <FarmsAndPools key={d.tokenName}>
+                <Coins>
+                  <div className="flex">
+                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                  </div>
+                  <Text bold>{d.tokenName}</Text>
+                </Coins>
+                <Summary>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      APR
+                    </Text>
+                    <Text bold color="success">
+                      {new BigNumber(d.apy).toNumber().toFixed(2)}%
+                    </Text>
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      LP Staked
+                    </Text>
+                    <Text bold>
+                      {new BigNumber(d.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                    </Text>
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      FINIX Earned
+                    </Text>
+                    <Text bold>
+                      {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                    </Text>
+                  </div>
+                </Summary>
+                <IconButton size="sm" as={Link} to="/pool" className="flex flex-shrink">
+                  <ChevronRightIcon color="textDisabled" width="28" />
+                </IconButton>
+              </FarmsAndPools>
+            )
+          })}
+
           {stakedRebalances.map((r) => {
             const thisBalance = r.enableAutoCompound ? rebalanceBalances : balances
             const currentBalance = _.get(thisBalance, getAddress(r.address), new BigNumber(0))
@@ -854,144 +1195,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </div>
                   </div>
                 </Summary>
-                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
-                  <ChevronRightIcon color="textDisabled" width="28" />
-                </IconButton>
-              </FarmsAndPools>
-            )
-          })}
-
-          {stackedOnlyPools.map((d) => {
-            const imgs = d.tokenName.split(' ')[0].split('-')
-            return (
-              <FarmsAndPools key={d.tokenName}>
-                <Coins>
-                  <div className="flex">
-                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
-                  </div>
-                  <Text bold>{d.tokenName}</Text>
-                </Coins>
-                <Summary>
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      APR
-                    </Text>
-                    <Text bold color="success">
-                      {new BigNumber(d.apy).toNumber().toFixed(2)}%
-                    </Text>
-                  </div>
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      LP Staked
-                    </Text>
-                    <Text bold>
-                      {new BigNumber(d.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
-                    </Text>
-                  </div>
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      FINIX Earned
-                    </Text>
-                    <Text bold>
-                      {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
-                    </Text>
-                  </div>
-                </Summary>
-                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+                <IconButton size="sm" as={Link} to="/rebalancing" className="flex flex-shrink">
                   <ChevronRightIcon color="textDisabled" width="28" />
                 </IconButton>
               </FarmsAndPools>
             )
           })}
         </>
-
-        {farmsList(stackedOnlyFarms, false).map((d) => {
-          const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
-          return (
-            <FarmsAndPools key={d.props.farm.lpSymbol}>
-              <Coins>
-                {isLoading ? (
-                  <>
-                    <div className="flex">
-                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                      <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                    </div>
-                    <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
-                  </>
-                ) : (
-                  <>
-                    <div className="flex">
-                      {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
-                      {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
-                    </div>
-                    <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
-                  </>
-                )}
-              </Coins>
-              <Summary>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    APR
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
-                  ) : (
-                    <Text bold color="success">
-                      {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
-                    </Text>
-                  )}
-                </div>
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    LP Staked
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" />
-                  ) : (
-                    <Text bold>
-                      {new BigNumber(d.props.farm.userData.stakedBalance)
-                        .div(new BigNumber(10).pow(18))
-                        .toNumber()
-                        .toFixed(2)}
-                    </Text>
-                  )}
-                </div>
-                {false && (
-                  <div>
-                    <Text fontSize="12px" color="textSubtle">
-                      Multiplier
-                    </Text>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
-                    ) : (
-                      <Text bold color="warning">
-                        {d.props.farm.multiplier}
-                      </Text>
-                    )}
-                  </div>
-                )}
-                <div>
-                  <Text fontSize="12px" color="textSubtle">
-                    FINIX Earned
-                  </Text>
-                  {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="21px" />
-                  ) : (
-                    <Text bold>
-                      {new BigNumber(d.props.farm.userData.earnings)
-                        .div(new BigNumber(10).pow(18))
-                        .toNumber()
-                        .toFixed(2)}
-                    </Text>
-                  )}
-                </div>
-              </Summary>
-              <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
-                <ChevronRightIcon color="textDisabled" width="28" />
-              </IconButton>
-            </FarmsAndPools>
-          )
-        })}
       </List>
     </Container>
   )

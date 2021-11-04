@@ -34,6 +34,7 @@ export enum QuoteToken {
   'KBNB' = 'KBNB',
   'SIX' = 'SIX',
   'FINIX' = 'FINIX',
+  'VFINIX' = 'VFINIX',
   'SIXFINIX' = 'FINIX-SIX',
   'FINIXKUSDT' = 'FINIX-KUSDT',
   'FINIXKLAY' = 'FINIX-KLAY',
@@ -95,6 +96,23 @@ export interface FarmConfig {
   }
   firstToken?: any
   secondToken?: any
+}
+
+export interface LongTermStakeConfig {
+  lpSymbol: string
+  tokenSymbol: string
+  tokenAddresses: any
+  lockTokenSymbol?: QuoteToken
+  multiplier?: string
+  isCommunity?: boolean
+  pendingRewards?: number
+  balanceOf?: number
+  allowances?: number
+  dual?: {
+    rewardPerBlock: number
+    earnLabel: string
+    endBlock: number
+  }
 }
 
 export interface PoolConfig {

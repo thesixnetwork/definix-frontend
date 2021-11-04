@@ -3,16 +3,14 @@ import BigNumber from 'bignumber.js'
 import { Button, Text, useModal, Heading } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
 import { useHarvest } from 'hooks/useHarvest'
-import { usePriceFinixUsd } from 'state/hooks'
+import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { convertToUsd } from 'utils/formatPrice'
 import AirDropHarvestModal from './AirDropHarvestModal'
 
 interface FarmCardActionsProps {
   isHorizontal?: boolean
   className?: string
   pid?: number
-  bundleRewardLength?: BigNumber
   earnings: BigNumber
 }
 
@@ -21,14 +19,15 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ className = '', isHoriz
   const [pendingTx, setPendingTx] = useState(false)
   const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
+  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
 
-  const finixUsdPrice = usePriceFinixUsd()
   const earningsBalance = useMemo(() => {
     return getBalanceNumber(earnings)
   }, [earnings])
   const earningsValueFormated = useMemo(() => {
-    return new BigNumber(earningsBalance).multipliedBy(finixUsdPrice).toNumber()
-  }, [earningsBalance, finixUsdPrice])
+    const finixPrice = convertToPriceFromSymbol()
+    return new BigNumber(earningsBalance).multipliedBy(finixPrice).toNumber()
+  }, [earningsBalance, convertToPriceFromSymbol])
 
   return (
     <div className={`${className} flex flex-grow ${isHorizontal ? 'flex-row' : 'flex-column justify-space-between'}`}>
@@ -39,7 +38,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ className = '', isHoriz
         <Heading fontSize="20px !important" textAlign="left" color="text" className="col-6 pr-3">
           {earningsBalance.toLocaleString()}
         </Heading>
-        <Text color="textSubtle">= {convertToUsd(earningsValueFormated, 2)}</Text>
+        <Text color="textSubtle">= {convertToUSD(earningsValueFormated, 2)}</Text>
 
         {false && (
           <div className="flex align-center justify-space-between">
