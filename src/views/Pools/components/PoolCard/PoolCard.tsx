@@ -194,13 +194,13 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
     () => (
       <>
         <Box style={{ width: '16%' }}>
-          <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked}/>
+          <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked} />
         </Box>
         <Box mx={24} style={{ width: '26%' }}>
-          <MyBalanceSection title="Balance" tokenName={tokenName} balance={stakedBalance}/>
+          <MyBalanceSection title="Balance" tokenName={tokenName} balance={stakedBalance} />
         </Box>
         <Box style={{ width: '24%' }}>
-          <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings}/>
+          <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings} />
         </Box>
       </>
     ),

@@ -91,44 +91,21 @@ const EarningsSection: React.FC<{
   return (
     <>
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
-          {title}
+        {title}
+      </Text>
+      <Flex alignItems="center">
+        <Text color={ColorStyles.BLACK} textStyle="R_18M">
+          {earningsValue.toLocaleString()}
         </Text>
-        <Flex alignItems="center">
-          <Text color={ColorStyles.BLACK} textStyle="R_18M">
-            {earningsValue.toLocaleString()}
-          </Text>
-          <Text color={ColorStyles.DEEPGREY} textStyle="R_12M">
-            {tokenName}
-          </Text>
-        </Flex>
-        <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-          {earningsPrice}
+        <Text color={ColorStyles.DEEPGREY} textStyle="R_12M">
+          {tokenName}
         </Text>
+      </Flex>
+      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
+        {earningsPrice}
+      </Text>
     </>
   )
 }
 
-const DetailsSection: React.FC<DetailsSectionProps> = ({ tokenName, totalStaked, balance, earnings }) => {
-  const TranslateString = useI18n()
-
-  return (
-    <Flex justifyContent="space-between">
-      <Box style={{ width: '22%' }}>
-        <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked}/>
-      </Box>
-      <Box mx={24} style={{ width: '34%' }}>
-        <MyBalanceSection title="Balance" tokenName={tokenName} balance={balance}/>
-      </Box>
-      <Box style={{ width: '44%' }}>
-        <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings}/>
-      </Box>
-    </Flex>
-  )
-}
-
-export default DetailsSection
-export {
-  TotalStakedSection,
-  MyBalanceSection,
-  EarningsSection
-}
+export default { TotalStakedSection, MyBalanceSection, EarningsSection }
