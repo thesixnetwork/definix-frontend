@@ -178,7 +178,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   if (isMobile) {
     return (
-      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mb-s16">
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
         <CardBody>
           <Flex justifyContent="space-between">
             {renderCardHeading()}

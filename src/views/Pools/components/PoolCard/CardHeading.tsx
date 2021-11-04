@@ -23,16 +23,16 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy })
         <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={48} height={48} />
       </Box>
 
-      <Flex flexDirection="column">
+      <Flex flexDirection="column" >
         <Text textStyle="R_20M">
           {isOldSyrup && '[OLD]'} {tokenName}
         </Text>
 
-        <Flex alignItems="center">
-          <Text textStyle="R_14M" color={ColorStyles.RED}>
+        <Flex alignItems="end">
+          <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
             APR
           </Text>
-          <Text textStyle="R_20B" color={ColorStyles.RED}>
+          <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
             {displayApy}
           </Text>
           <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} />
