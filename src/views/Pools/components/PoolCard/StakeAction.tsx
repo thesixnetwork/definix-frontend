@@ -7,7 +7,15 @@ import { useERC20 } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import styled from 'styled-components'
 import {
-  PlusIcon, MinusIcon, Button, Text, ButtonVariants, ButtonScales, ColorStyles, Flex, Box
+  PlusIcon,
+  MinusIcon,
+  Button,
+  Text,
+  ButtonVariants,
+  ButtonScales,
+  ColorStyles,
+  Flex,
+  Box,
 } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import numeral from 'numeral'
@@ -62,7 +70,9 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">My Staked</Text>
+      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
+        My Staked
+      </Text>
       {account ? (
         <>
           {hasContract ? (
@@ -88,7 +98,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
                   disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
                   onClick={onPresentWithdraw}
                 >
-                  <MinusIcon/>
+                  <MinusIcon />
                 </Button>
                 {isEnableAddStake && (
                   <Button
@@ -98,7 +108,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
                     disabled={isFinished && sousId !== 0}
                     onClick={onPresentDeposit}
                   >
-                    <PlusIcon/>
+                    <PlusIcon />
                   </Button>
                 )}
               </Box>

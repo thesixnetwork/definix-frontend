@@ -67,12 +67,9 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     },
     [finixPrice, convertToUSD],
   )
-  const toLocaleString = useCallback(
-    (value: number) => {
-      return value.toLocaleString(undefined, { maximumFractionDigits: 6 })
-    },
-    []
-  )
+  const toLocaleString = useCallback((value: number) => {
+    return value.toLocaleString(undefined, { maximumFractionDigits: 6 })
+  }, [])
 
   const finixApy = pool.finixApy || new BigNumber(0)
 
@@ -142,7 +139,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
                 // logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
                 // title="AAPR"
                 // percent="0.0%"
-                value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0)}
+                value={getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0}
                 price={earningsPrice(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0)}
                 name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
               />

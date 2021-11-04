@@ -253,15 +253,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
         {isOpenAccordion && (
           <Box p={24} backgroundColor={ColorStyles.LIGHTGREY_20}>
             <Flex justifyContent="space-between">
-              <Box style={{ width: '20%' }}>
-                {renderLinkSection()}
-              </Box>
+              <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
               <Box mx={24} style={{ width: '40%' }}>
                 {renderHarvestActionAirDrop('', true)}
               </Box>
-              <Box style={{ width: '30%' }}>
-                {renderStakeAction()}
-              </Box>
+              <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
             </Flex>
           </Box>
         )}
