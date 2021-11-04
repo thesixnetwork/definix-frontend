@@ -13,7 +13,7 @@ const LANG_KEY = 'lang'
 interface ProviderState {
   t: (key: string, replaceTxt?: Record<string, string>) => string
   setLangCode: (langCode: string) => void
-  selectedLangCode: string;
+  selectedLangCode: string
 }
 export const LanguageContext = createContext<ProviderState>(undefined)
 
@@ -34,19 +34,18 @@ const initLanguageCode = async (langCode: string) => {
     const translation = await fetchLanguage(langCode)
     translationsMap.set(langCode, changeKeyLowerCase(translation))
   }
-};
+}
 
 export const LanguageContextProvider: React.FC = ({ children }) => {
   const [selectedLangCode, setSelectedLangCode] = useState(localStorage.getItem(LANG_KEY) || EN.code)
-
 
   const setLanguageCode = useCallback(
     async (langCode: string) => {
       if (langCode === selectedLangCode) return
 
       if (allLanguagesCode.includes(langCode)) {
-        await initLanguageCode(langCode);
-        setSelectedLangCode(langCode);
+        await initLanguageCode(langCode)
+        setSelectedLangCode(langCode)
       }
     },
     [selectedLangCode],
@@ -68,14 +67,13 @@ export const LanguageContextProvider: React.FC = ({ children }) => {
   )
 
   useEffect(() => {
-    localStorage.setItem(LANG_KEY, selectedLangCode);
-  }, [selectedLangCode]);
+    localStorage.setItem(LANG_KEY, selectedLangCode)
+  }, [selectedLangCode])
 
   useEffect(() => {
     if (selectedLangCode !== EN.code) {
-      initLanguageCode(selectedLangCode);
+      initLanguageCode(selectedLangCode)
     }
-
   }, [selectedLangCode])
 
   return (

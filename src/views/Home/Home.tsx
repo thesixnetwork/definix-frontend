@@ -59,7 +59,7 @@ const CustomTab = styled.div`
 `
 
 const Home: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   const [isLoading, setIsLoading] = useState(false)
@@ -130,9 +130,9 @@ const Home: React.FC = () => {
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                {t("Home")}
-                {t("FINIX Transferred from {{BSC}}", {
-                  BSC: 'bsc test'
+                {t('Home')}
+                {t('FINIX Transferred from {{BSC}}', {
+                  BSC: 'bsc test',
                 })}
               </Heading>
               {isLoading ? (

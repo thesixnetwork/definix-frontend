@@ -23,31 +23,29 @@ const MiniLogo = styled.img`
 `
 
 interface HarvestActionAirdropProps {
-  pendingRewards?: any
-  bundleRewardLength?: BigNumber
-  bundleRewards?: any
-  sousId?: number
-  isBnbPool?: boolean
-  earnings: BigNumber
-  tokenDecimals?: number
-  needsApproval?: boolean
+  isMobile: boolean
   isOldSyrup?: boolean
-  className?: string
-  isHorizontal?: boolean
-  farm?: FarmWithStakedValue
+  isBnbPool?: boolean
+  sousId?: number
+  pendingRewards?: any
+  // bundleRewardLength?: BigNumber
+  bundleRewards?: any
+  earnings: BigNumber
+  // tokenDecimals?: number
+  needsApproval?: boolean
+  // farm?: FarmWithStakedValue
   pool?: PoolWithApy
 }
 
 const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
+  isMobile,
+  isOldSyrup,
+  isBnbPool,
+  sousId,
   pendingRewards,
   bundleRewards,
-  sousId,
-  isBnbPool,
   earnings,
   needsApproval,
-  isOldSyrup,
-  className = '',
-  isHorizontal,
   pool,
 }) => {
   const TranslateString = useI18n()
@@ -71,12 +69,12 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     return value.toLocaleString(undefined, { maximumFractionDigits: 6 })
   }, [])
 
-  const finixApy = pool.finixApy || new BigNumber(0)
+  // const finixApy = pool.finixApy || new BigNumber(0)
 
   const AirDrop = ({ value, name, price }) => (
     <Flex>
       <Label type="token">{name}</Label>
-      <Box ml={16}>
+      <Box className="ml-s16">
         <Text textStyle="R_18M" color={ColorStyles.BLACK}>
           {toLocaleString(value)}
         </Text>
@@ -113,10 +111,10 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
 
   return (
     <Box>
-      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
         Earned Token
       </Text>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
         <Box>
           <AirDrop
             // logo={miniLogo}

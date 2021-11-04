@@ -18,7 +18,7 @@ import {
   usePriceKethKlay,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link } from 'definixswap-uikit'
+import { Text, Link, TitleSet } from 'definixswap-uikit'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import FlexLayout from 'components/layout/FlexLayout'
@@ -295,25 +295,15 @@ const Farm: React.FC = () => {
           <MaxWidth>
             {pageState.state === 'list' && (
               <>
-                <div className="mb-5">
-                  <div className="flex align-center mb-2">
-                    <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                      Pool
-                    </Heading>
-                    <div className="mt-2 flex align-center justify-center">
-                      <TutorailsLink
-                        href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
-                        target="_blank"
-                      >
-                        Learn to stake.
-                      </TutorailsLink>
-                    </div>
-                    {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-                      Help
-                    </HelpButton> */}
-                  </div>
-                  <Text>단일 토큰을 예치하여 FINIX를 얻으세요.</Text>
-                </div>
+                <TitleSet
+                  title="Pool"
+                  description="단일 토큰을 예치하여 FINIX를 얻으세요."
+                  linkLabel="Learn to stake."
+                  link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
+                />
+                {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+                  Help
+                </HelpButton> */}
 
                 <PoolTabButtons
                   stackedOnly={stackedOnly}

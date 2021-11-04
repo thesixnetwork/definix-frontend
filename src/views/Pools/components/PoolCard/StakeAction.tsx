@@ -4,8 +4,8 @@ import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
+import useConverter from 'hooks/useConverter'
 import useI18n from 'hooks/useI18n'
-import styled from 'styled-components'
 import {
   PlusIcon,
   MinusIcon,
@@ -34,6 +34,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   className = '',
 }) => {
   const TranslateString = useI18n()
+  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
 
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
@@ -44,6 +45,12 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const displayBalance = useMemo(() => {
     return getFullDisplayBalance(stakedBalance, { fixed: 6 })
   }, [stakedBalance])
+  const price = useMemo(() => {
+    return convertToPriceFromSymbol(tokenName)
+  }, [convertToPriceFromSymbol, tokenName])
+  const stakedBalancePrice = useMemo(() => {
+    return convertToUSD(new BigNumber(getBalanceNumber(stakedBalance)).multipliedBy(price), 2)
+  }, [stakedBalance, price, convertToUSD])
 
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
@@ -70,7 +77,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   return (
     <div className={className}>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
+      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         My Staked
       </Text>
       {account ? (
@@ -86,9 +93,14 @@ const StakeAction: React.FC<StakeActionProps> = ({
             </Button>
           ) : (
             <Flex justifyContent="space-between">
-              <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-                {displayBalance}
-              </Text>
+              <Box>
+                <Text textStyle="R_18M" color={ColorStyles.BLACK}>
+                  {displayBalance}
+                </Text>
+                <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
+                  = {stakedBalancePrice}
+                </Text>
+              </Box>
 
               <Box>
                 <Button
@@ -107,6 +119,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
                     variant={ButtonVariants.LINE}
                     disabled={isFinished && sousId !== 0}
                     onClick={onPresentDeposit}
+                    style={{ marginLeft: '4px' }}
                   >
                     <PlusIcon />
                   </Button>

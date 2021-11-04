@@ -4,7 +4,6 @@ import { Flex, Text, Box, ColorStyles, Label } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import useI18n from 'hooks/useI18n'
 import useConverter from 'hooks/useConverter'
-import { DetailsSectionProps } from './types'
 
 const TotalStakedSection: React.FC<{
   title: string
@@ -27,19 +26,19 @@ const TotalStakedSection: React.FC<{
 
   return (
     <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
+      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         {title}
       </Text>
       <Flex alignItems="end">
         <Text color={ColorStyles.BLACK} textStyle="R_18M">
           {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
         </Text>
-        <Text color={ColorStyles.DEEPGREY} textStyle="R_12M">
+        <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
           {tokenName}
         </Text>
       </Flex>
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-        {totalStakedPrice}
+        = {totalStakedPrice}
       </Text>
     </>
   )
@@ -56,12 +55,12 @@ const MyBalanceSection: React.FC<{
 
   return (
     <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
+      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         {title}
       </Text>
-      <Flex>
+      <Flex alignItems="center">
         <Label type="token">{tokenName}</Label>
-        <Text color={ColorStyles.BLACK} textStyle="R_18M">
+        <Text color={ColorStyles.BLACK} textStyle="R_18M" style={{ paddingLeft: '2px' }}>
           {balanceValue}
         </Text>
       </Flex>
@@ -90,19 +89,19 @@ const EarningsSection: React.FC<{
 
   return (
     <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R">
+      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         {title}
       </Text>
       <Flex alignItems="end">
         <Text color={ColorStyles.BLACK} textStyle="R_18M">
           {earningsValue.toLocaleString()}
         </Text>
-        <Text color={ColorStyles.DEEPGREY} textStyle="R_12M">
+        <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
           {tokenName}
         </Text>
       </Flex>
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-        {earningsPrice}
+        = {earningsPrice}
       </Text>
     </>
   )

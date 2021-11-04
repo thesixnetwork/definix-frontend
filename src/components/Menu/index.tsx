@@ -4,7 +4,7 @@ import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
 import { Menu as UikitMenu } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation';
+import useTranslation from 'contexts/Localisation/useTranslation'
 import { links } from './config'
 // import { Menu as UikitMenu } from 'uikit-dev'
 
@@ -23,7 +23,6 @@ const Menu = (props) => {
       isDark={isDark}
       toggleTheme={toggleTheme}
       t={t}
-
       currentLang={selectedLangCode}
       langs={supportedLanguages}
       setLang={({ code }) => setLangCode(code)}
