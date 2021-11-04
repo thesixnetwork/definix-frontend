@@ -54,6 +54,9 @@ export const LanguageContextProvider: React.FC = ({ children }) => {
   const t = useCallback(
     (key: string, replaceTxts: Record<string, string>) => {
       const translation = translationsMap.get(selectedLangCode)
+      if (!translation) {
+        return key;
+      }
       let translateTxt = translation[key.toLowerCase()] ? translation[key.toLowerCase()] : key
 
       if (replaceTxts && /{{.+}}/gi.test(translateTxt)) {
