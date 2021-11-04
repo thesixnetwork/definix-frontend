@@ -46,7 +46,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   bundleRewards,
   earnings,
   needsApproval,
-  pool
+  pool,
 }) => {
   const TranslateString = useI18n()
   const { account } = useWallet()

@@ -304,7 +304,7 @@ const Farm: React.FC = () => {
                 {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
                   Help
                 </HelpButton> */}
-                
+
                 <PoolTabButtons
                   stackedOnly={stackedOnly}
                   setStackedOnly={setStackedOnly}
