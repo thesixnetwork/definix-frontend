@@ -14,7 +14,7 @@ const Overview: React.FC<OverviewType> = ({ rebalance, periodPriceTokens }) => {
   return (
     <>
       <CardBody>
-        <FundDetail className="mb-4" rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
+        <FundDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
       </CardBody>
       <CardBody>
         <KeyFacts rebalance={rebalance} />

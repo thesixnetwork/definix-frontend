@@ -1,8 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import Color from 'color'
 import { Text, useMatchBreakpoints } from 'definixswap-uikit'
-import useTheme from 'hooks/useTheme'
 import { Ratio } from 'config/constants/types'
 
 interface FullAssetRatioType {
@@ -20,48 +18,38 @@ const Coin = styled.div<{ width: string; isMobile: boolean }>`
 
     img {
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: ${({ theme }) => theme.radii.circle};
-      margin-right: 6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 4px;
     }
   }
 `
 
 const Bar = styled.div<{ color: string }>`
   background: ${({ color }) => color};
-  height: 12px;
-  width: 100%;
-  margin-bottom: 8px;
+  height: 24px;
+  width: calc(100% - 1px);
+  margin-bottom: 12px;
 `
 
 const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = '' }) => {
   const { isXl } = useMatchBreakpoints()
-  const { isDark } = useTheme()
   const isMobile = !isXl
 
   return (
     <div className={`flex ${className}`}>
       {ratio
         .filter((r) => r.value)
-        .map((m) => {
-          const color = Color(m.color);
-          const displayColor = ((dark, c) => {
-            if (dark) {
-              return c.isDark() ? c.lighten(0.1): c.hex();
-            }
-            return c.isLight() ? c.darken(0.1): c.hex();
-          })(isDark, color);
-          return (
-            <Coin width={`${m.value}%`} isMobile={isMobile}>
-              <Bar color={displayColor} />
-              <div className="name">
-                <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
-                <Text fontSize="16px">{m.value}%</Text>
-              </div>
-            </Coin>
-          )
-        })}
+        .map((m) => (
+          <Coin width={`${m.value}%`} isMobile={isMobile}>
+            <Bar color={m.color} />
+            <div className="name">
+              <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
+              <Text textStyle="R_14R">{m.value}%</Text>
+            </div>
+          </Coin>
+        ))}
     </div>
   )
 }

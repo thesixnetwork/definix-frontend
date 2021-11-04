@@ -22,10 +22,10 @@ export const TR = styled.tr`
       border-top: 1px solid ${({ theme }) => theme.colors.border};
 
       &:first-child {
-        border-top-left-radius: ${({ theme }) => theme.radii.card};
+        border-top-left-radius: 8px;
       }
       &:last-child {
-        border-top-right-radius: ${({ theme }) => theme.radii.card};
+        border-top-right-radius: 8px;
       }
     }
   }
@@ -34,10 +34,10 @@ export const TR = styled.tr`
     td,
     th {
       &:first-child {
-        border-bottom-left-radius: ${({ theme }) => theme.radii.card};
+        border-bottom-left-radius: 8px;
       }
       &:last-child {
-        border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+        border-bottom-right-radius: 8px;
       }
     }
   }
@@ -46,15 +46,29 @@ export const TR = styled.tr`
 export const TH = styled.th<{ align?: string }>`
   background: ${({ theme }) => theme.colors.backgroundDisabled};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 8px 16px;
+  padding: 11px 24px;
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
 `
 
-export const TD = styled.td<{ align?: string }>`
+export const TD = styled.td<{ align?: string; sidecolor?: string }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 16px;
-  height: 64px;
+  padding: 18px 24px;
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
+
+  ${({ sidecolor }) =>
+    sidecolor &&
+    `
+    position: relative;
+    &:before {
+      content: "";
+      position: absolute;
+      background: ${sidecolor};
+      width: 4px;
+      left: 0;
+      top: 0;
+      height: 100%;
+    }
+  `};
 `
