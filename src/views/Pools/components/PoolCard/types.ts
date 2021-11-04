@@ -21,8 +21,6 @@ export interface CardHeadingProps {
   tokenName: string
   isOldSyrup: boolean
   apy: BigNumber
-  className?: string
-  isHorizontal?: boolean
 }
 
 export interface StakeActionProps {
@@ -48,13 +46,4 @@ export interface HarvestActionProps {
   isOldSyrup?: boolean
   className?: string
   pool?: PoolWithApy
-}
-
-export interface DetailsSectionProps {
-  isMobile: boolean
-  tokenName: string
-  totalStaked: BigNumber
-  balance: BigNumber
-  earnings: BigNumber
-  klaytnScopeAddress: string
 }
