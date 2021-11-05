@@ -100,4 +100,12 @@ export const socials = [
     icon: 'FooterRedditIcon',
     href: 'https://www.reddit.com/r/sixnetwork',
   },
+  {
+    label: 'MyInvestments',
+    icon: mutualBlack,
+    iconActive: mutualWhite,
+    href: '/myinvestments',
+    notHighlight: false,
+    newTab: false,
+  },
 ]
