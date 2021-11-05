@@ -121,7 +121,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
             myStaked: stakedBalance,
             max:
               stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
-            apy
+            apy,
           })
         }}
         onPresentWithdraw={() => {
@@ -152,7 +152,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
       onSelectRemove,
       isBnbPool,
       totalStaked,
-      apy
+      apy,
     ],
   )
 
@@ -181,10 +181,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
 
   if (isMobile) {
     return (
-      <Card
-        ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}
-        className="mt-s16"
-      >
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
         <CardBody>
           <Flex justifyContent="space-between">
             {renderCardHeading()}
@@ -196,7 +193,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
           <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
             {renderHarvestActionAirDrop()}
             <Box className="py-s24">{renderStakeAction()}</Box>
-            <Divider/>
+            <Divider />
             <Box className="pt-s24">{renderTotalStakedSection()}</Box>
             <Box className="pt-s16">{renderMyBalanceSection()}</Box>
             <Box className="py-s32">{renderLinkSection()}</Box>

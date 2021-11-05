@@ -3,7 +3,19 @@ import React, { useCallback, useMemo, useState } from 'react'
 import useI18n from 'hooks/useI18n'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
-import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, Button, ButtonScales, ButtonVariants, BackIcon } from 'definixswap-uikit'
+import {
+  ColorStyles,
+  Text,
+  Box,
+  TitleSet,
+  Card,
+  Flex,
+  Divider,
+  Button,
+  ButtonScales,
+  ButtonVariants,
+  BackIcon,
+} from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalInput from 'components/ModalInput'
@@ -22,7 +34,17 @@ interface DepositProps {
   onBack: () => void
 }
 
-const Deposit: React.FC<DepositProps> = ({ sousId, isOldSyrup, isBnbPool, tokenName, totalStaked, myStaked, max, apy, onBack }) => {
+const Deposit: React.FC<DepositProps> = ({
+  sousId,
+  isOldSyrup,
+  isBnbPool,
+  tokenName,
+  totalStaked,
+  myStaked,
+  max,
+  apy,
+  onBack,
+}) => {
   console.groupCollapsed('Deposit data: ')
   console.log('tokenName: ', tokenName)
   console.log('totalStakedPrice: ', totalStaked)
@@ -81,13 +103,13 @@ const Deposit: React.FC<DepositProps> = ({ sousId, isOldSyrup, isBnbPool, tokenN
     <>
       <Box className="mb-s20" style={{ cursor: 'pointer' }} display="inline-flex" onClick={onBack}>
         <Flex>
-          <BackIcon/>
+          <BackIcon />
           <Text textStyle="R_16M" color={ColorStyles.MEDIUMGREY} className="ml-s6">
             Back
           </Text>
         </Flex>
       </Box>
-      
+
       <TitleSet
         title="Deposit in the Pool"
         description="By depositing a single token in the pool to get FINIX with high interest."
@@ -97,7 +119,7 @@ const Deposit: React.FC<DepositProps> = ({ sousId, isOldSyrup, isBnbPool, tokenN
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} />
 
         <Flex justifyContent="space-between" className="mt-s20">
-          <Box style={{ width: '50% '}}>
+          <Box style={{ width: '50% ' }}>
             <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
               Total Staked
             </Text>
@@ -105,7 +127,7 @@ const Deposit: React.FC<DepositProps> = ({ sousId, isOldSyrup, isBnbPool, tokenN
               {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
             </Text>
           </Box>
-          <Box style={{ width: '50% '}}>
+          <Box style={{ width: '50% ' }}>
             <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
               My Staked
             </Text>
@@ -117,8 +139,8 @@ const Deposit: React.FC<DepositProps> = ({ sousId, isOldSyrup, isBnbPool, tokenN
             </Text>
           </Box>
         </Flex>
-        
-        <Divider className="mt-s20 mb-s28"/>
+
+        <Divider className="mt-s20 mb-s28" />
 
         <ModalInput
           value={val}
@@ -138,15 +160,11 @@ const Deposit: React.FC<DepositProps> = ({ sousId, isOldSyrup, isBnbPool, tokenN
           >
             Deposit
           </Button>
-
         </Box>
       </Card>
       {/* <p>totalStakedPrice: {totalStakedPrice}</p>
       <p>myStaked: {myStakedValue.toLocaleString()}</p>
       <p>myStakedPrice: {myStakedPrice}</p> */}
-
-      
-      
     </>
   )
 }

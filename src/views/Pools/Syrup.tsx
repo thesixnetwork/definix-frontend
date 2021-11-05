@@ -305,10 +305,7 @@ const Farm: React.FC = () => {
               setLiveOnly={setLiveOnly}
             />
 
-            <TimerWrapper
-              isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)}
-              date={phrase1TimeStamp}
-            >
+            <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
               {IS_GENESIS ? (
                 <div>
                   <Route exact path={`${path}`}>
