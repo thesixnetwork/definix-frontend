@@ -1,25 +1,30 @@
-import React, { useState } from 'react'
+import React, { useCallback } from 'react'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import useTranslation from 'contexts/Localisation/useTranslation'
 import {
   Text,
-  Button,
   Flex,
+  Button,
   IconButton,
   ButtonVariants,
   ButtonScales,
   useWalletModal,
-  useMatchBreakpoints,
+  Login,
   ArrowRightGIcon,
   MoreNIcon,
   GnbMySIcon,
+  CheckBIcon,
   ColorStyles,
   TextStyles,
   Dropdown,
   DropdownItem,
-  Login,
+  useMatchBreakpoints,
 } from 'definixswap-uikit'
+import useTranslation from 'contexts/Localisation/useTranslation'
+import { useHistory } from 'react-router'
+import WalletDropdown from './WalletDropdown'
+import NetWorth from './NetWorth'
+import { localStorageKey } from '../WalletModal/config'
 
 const Wrapper = styled.div`
   position: relative;
@@ -42,12 +47,20 @@ const StyledButton = styled.a`
 `
 
 const UserBlock: React.FC = () => {
+  const history = useHistory()
+  const { isMobile } = useMatchBreakpoints()
   const { account, connect, reset } = useWallet()
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const { onPresentConnectModal, onPresentAccountModal } = useWalletModal(connect as Login, reset, account)
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null
+
+  const logout = useCallback(() => {
+    reset()
+    window.localStorage.removeItem('userAccount')
+    window.localStorage.removeItem('connector')
+    window.localStorage.removeItem(localStorageKey)
+    window.location.reload()
+  }, [reset])
 
   if (account) {
     return isMobile ? (
@@ -60,27 +73,26 @@ const UserBlock: React.FC = () => {
             <Text mt="2px" mr="4px" textStyle={TextStyles.R_18M} color={ColorStyles.BLACK}>
               {accountEllipsis}
             </Text>
-            <Dropdown
-              scale="sm"
+            <WalletDropdown
+              width="188px"
               left="-105px"
-              isOpen={isDropdownOpen}
-              position="bottom"
-              target={<IconButton startIcon={<MoreNIcon />} onClick={() => setIsDropdownOpen(!isDropdownOpen)} />}
-              onItemClick={(index) => console.log(index)}
-            >
-              <DropdownItem>View on KlaytnscopeTH</DropdownItem>
-              <DropdownItem>Copy Address</DropdownItem>
-              <DropdownItem isDivide>Disconnect</DropdownItem>
-            </Dropdown>
+              target={<IconButton startIcon={<MoreNIcon />} />}
+              account={account}
+              logout={logout}
+            />
           </Flex>
         </Flex>
-        <StyledButton href="/farm">
+        <StyledButton
+          onClick={() => {
+            history.push('/myinvestments')
+          }}
+        >
           <Text textStyle={TextStyles.R_12M} color={ColorStyles.WHITE}>
             {t('Net Worth')}
           </Text>
           <Flex ml="12px" alignItems="center">
             <Text mr="7px" textStyle={TextStyles.R_12B} width="140px" color={ColorStyles.WHITE}>
-              $132123123
+              <NetWorth />
             </Text>
             <IconButton startIcon={<ArrowRightGIcon />} />
           </Flex>
@@ -88,16 +100,17 @@ const UserBlock: React.FC = () => {
       </Wrapper>
     ) : (
       <>
-        <Button
-          scale={ButtonScales.S32}
-          variant={ButtonVariants.LIGHTBROWN}
-          textStyle={TextStyles.R_12B}
-          onClick={() => {
-            onPresentAccountModal()
-          }}
-        >
-          {accountEllipsis}
-        </Button>
+        <Flex>
+          <WalletDropdown
+            target={
+              <Button scale={ButtonScales.S32} variant={ButtonVariants.LIGHTBROWN} textStyle={TextStyles.R_12B}>
+                {accountEllipsis}
+              </Button>
+            }
+            account={account}
+            logout={logout}
+          />
+        </Flex>
         <Button
           ml="8px"
           scale={ButtonScales.S32ICON}
@@ -105,7 +118,8 @@ const UserBlock: React.FC = () => {
           variant={ButtonVariants.DEEPBROWN}
           startIcon={<GnbMySIcon />}
           onClick={() => {
-            onPresentAccountModal()
+            // onPresentAccountModal();
+            history.push('/myinvestments')
           }}
         >
           <Text textStyle={TextStyles.R_12B} ml="6px">
@@ -115,6 +129,7 @@ const UserBlock: React.FC = () => {
       </>
     )
   }
+
   return (
     <Flex width="100%" height={isMobile ? '188px' : 'auto'} alignItems="center" justifyContent="center">
       <Button

@@ -18,10 +18,8 @@ import {
   usePriceKethKlay,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Text, Link, TitleSet } from 'definixswap-uikit'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+import { Link, TitleSet, Box } from 'definixswap-uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
-import FlexLayout from 'components/layout/FlexLayout'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
@@ -29,16 +27,6 @@ import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
-
-const MaxWidth = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-`
-
-const TutorailsLink = styled(Link)`
-  text-decoration-line: underline;
-`
 
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
@@ -290,108 +278,108 @@ const Farm: React.FC = () => {
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout>
+      {/* <TwoPanelLayout>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
-            {pageState.state === 'list' && (
-              <>
-                <TitleSet
-                  title="Pool"
-                  description="단일 토큰을 예치하여 FINIX를 얻으세요."
-                  linkLabel="Learn to stake."
-                  link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
-                />
-                {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-                  Help
-                </HelpButton> */}
-
-                <PoolTabButtons
-                  stackedOnly={stackedOnly}
-                  setStackedOnly={setStackedOnly}
-                  liveOnly={liveOnly}
-                  setLiveOnly={setLiveOnly}
-                />
-
-                <TimerWrapper
-                  isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)}
-                  date={phrase1TimeStamp}
-                >
-                  {IS_GENESIS ? (
-                    <div>
-                      <Route exact path={`${path}`}>
-                        <>
-                          {poolsWithApy.map((pool) => (
-                            <PoolCardGenesis key={pool.sousId} pool={pool} />
-                          ))}
-                          {/* <Coming /> */}
-                        </>
-                      </Route>
-                    </div>
-                  ) : (
-                    <>
-                      <Route exact path={`${path}`}>
-                        {orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
-                          (pool) => (
-                            <PoolCard
-                              key={pool.sousId}
-                              pool={pool}
-                              onSelectAdd={onSelectAdd}
-                              onSelectRemove={onSelectRemove}
-                            />
-                          ),
-                        )}
-                      </Route>
-                      {/* <Route path={`${path}/history`}>
-                        {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                          <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                        ))}
-                      </Route> */}
-                    </>
-                  )}
-                </TimerWrapper>
-              </>
-            )}
-            {pageState.state === 'deposit' && (
-              <>
-                <Deposit
-                  sousId={pageState.data.sousId}
-                  isBnbPool={pageState.data.isBnbPool}
-                  tokenName={pageState.data.tokenName}
-                  totalStaked={pageState.data.totalStaked}
-                  myStaked={pageState.data.myStaked}
-                  max={pageState.data.max}
-                  onBack={() => {
-                    setPageState({
-                      state: 'list',
-                      data: null,
-                    })
-                  }}
-                />
-                ,
-              </>
-            )}
-            {pageState.state === 'withdraw' && (
-              <>
-                <Withdraw
-                  sousId={pageState.data.sousId}
-                  isOldSyrup={pageState.data.isOldSyrup}
-                  tokenName={pageState.data.tokenName}
-                  totalStaked={pageState.data.totalStaked}
-                  myStaked={pageState.data.myStaked}
-                  max={pageState.data.max}
-                  onBack={() => {
-                    setPageState({
-                      state: 'list',
-                      data: null,
-                    })
-                  }}
-                />
-                ,
-              </>
-            )}
+            
           </MaxWidth>
         </LeftPanel>
-      </TwoPanelLayout>
+      </TwoPanelLayout> */}
+      <Box className="mt-s28">
+        {pageState.state === 'list' && (
+          <>
+            <TitleSet
+              title="Pool"
+              description="단일 토큰을 예치하여 FINIX를 얻으세요."
+              linkLabel="Learn to stake."
+              link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
+            />
+            {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
+              Help
+            </HelpButton> */}
+
+            <PoolTabButtons
+              stackedOnly={stackedOnly}
+              setStackedOnly={setStackedOnly}
+              liveOnly={liveOnly}
+              setLiveOnly={setLiveOnly}
+            />
+
+            <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+              {IS_GENESIS ? (
+                <div>
+                  <Route exact path={`${path}`}>
+                    <>
+                      {poolsWithApy.map((pool) => (
+                        <PoolCardGenesis key={pool.sousId} pool={pool} />
+                      ))}
+                      {/* <Coming /> */}
+                    </>
+                  </Route>
+                </div>
+              ) : (
+                <>
+                  <Route exact path={`${path}`}>
+                    {orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
+                      (pool) => (
+                        <PoolCard
+                          key={pool.sousId}
+                          pool={pool}
+                          onSelectAdd={onSelectAdd}
+                          onSelectRemove={onSelectRemove}
+                        />
+                      ),
+                    )}
+                  </Route>
+                  {/* <Route path={`${path}/history`}>
+                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                    ))}
+                  </Route> */}
+                </>
+              )}
+            </TimerWrapper>
+          </>
+        )}
+        {pageState.state === 'deposit' && (
+          <>
+            <Deposit
+              sousId={pageState.data.sousId}
+              isOldSyrup={pageState.data.isOldSyrup}
+              isBnbPool={pageState.data.isBnbPool}
+              tokenName={pageState.data.tokenName}
+              totalStaked={pageState.data.totalStaked}
+              myStaked={pageState.data.myStaked}
+              max={pageState.data.max}
+              apy={pageState.data.apy}
+              onBack={() => {
+                setPageState({
+                  state: 'list',
+                  data: null,
+                })
+              }}
+            />
+          </>
+        )}
+        {pageState.state === 'withdraw' && (
+          <>
+            <Withdraw
+              sousId={pageState.data.sousId}
+              isOldSyrup={pageState.data.isOldSyrup}
+              tokenName={pageState.data.tokenName}
+              totalStaked={pageState.data.totalStaked}
+              myStaked={pageState.data.myStaked}
+              max={pageState.data.max}
+              onBack={() => {
+                setPageState({
+                  state: 'list',
+                  data: null,
+                })
+              }}
+            />
+          </>
+        )}
+      </Box>
     </>
   )
 }

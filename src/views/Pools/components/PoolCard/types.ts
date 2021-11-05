@@ -4,8 +4,8 @@ import { FarmWithStakedValue } from '../../../Farms/components/FarmCard/types'
 
 export interface PoolWithApy extends Pool {
   apy: BigNumber
-  finixApy: BigNumber
-  klayApy: BigNumber
+  finixApy?: BigNumber
+  klayApy?: BigNumber
   rewardPerBlock?: number
   farm: FarmWithStakedValue
 }

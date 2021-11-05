@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState, useCallback, Suspense } from 'react'
+import React, { createContext, useEffect, useState, useCallback } from 'react'
 import { allLanguagesCode, EN } from 'config/localisation/languageCodes'
 import defaultTranslation from 'config/localisation/en.json'
 import { mapKeys } from 'lodash'
