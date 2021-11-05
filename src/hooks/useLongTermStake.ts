@@ -406,17 +406,19 @@ export const useRank = () => {
 
   useEffect(() => {
     async function fetchRank() {
-      const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
-      const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
-      let maxRank = -1
-      for (let i = 0; i < userVfinixLocks.length; i++) {
-        const selector = userVfinixLocks[i]
+      if (account) {
+        const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
+        const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
+        let maxRank = -1
+        for (let i = 0; i < userVfinixLocks.length; i++) {
+          const selector = userVfinixLocks[i]
 
-        if (selector.isUnlocked === false && selector.isPenalty === false) {
-          if (maxRank < selector.level) maxRank = selector.level
+          if (selector.isUnlocked === false && selector.isPenalty === false) {
+            if (maxRank < selector.level) maxRank = selector.level
+          }
         }
+        setRank(maxRank)
       }
-      setRank(maxRank)
     }
 
     fetchRank()
