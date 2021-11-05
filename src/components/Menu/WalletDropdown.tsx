@@ -4,7 +4,7 @@ import useTranslation from 'contexts/Localisation/useTranslation'
 
 interface Props extends Partial<DropdownProps> {
   account: string;
-  reset: () => void;
+  logout: () => void;
   target: React.ReactElement;
 }
 
@@ -28,7 +28,7 @@ function copyToClipboard(val: string) {
 
 let timeout: NodeJS.Timeout;
 
-const WalletDropdown: React.FC<Props> = ({ target, account, reset, ...props }) => {
+const WalletDropdown: React.FC<Props> = ({ target, account, logout, ...props }) => {
   const { t } = useTranslation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -40,9 +40,9 @@ const WalletDropdown: React.FC<Props> = ({ target, account, reset, ...props }) =
       copyToClipboard(account as string);
       setIsCopied(true);
     } else {
-      reset();
+      logout();
     }
-  }, [account, reset]);
+  }, [account, logout]);
 
   useEffect(() => {
     if (!isCopied) return;

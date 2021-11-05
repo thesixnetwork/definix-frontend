@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Text, Flex, Button, IconButton, ButtonVariants, ButtonScales, useWalletModal, Login, ArrowRightGIcon, MoreNIcon, GnbMySIcon, CheckBIcon, ColorStyles, TextStyles, Dropdown, DropdownItem, useMatchBreakpoints } from "definixswap-uikit";
@@ -6,6 +6,7 @@ import useTranslation from 'contexts/Localisation/useTranslation'
 import { useHistory } from "react-router";
 import WalletDropdown from "./WalletDropdown";
 import NetWorth from "./NetWorth";
+import { localStorageKey } from "../WalletModal/config";
 
 const Wrapper = styled.div`
   position: relative;
@@ -35,6 +36,14 @@ const UserBlock: React.FC = () => {
   const { onPresentConnectModal, onPresentAccountModal } = useWalletModal(connect as Login, reset, account);
   const accountEllipsis = account ? `${account.substring(0, 4)}...${account.substring(account.length - 4)}` : null;
 
+  const logout = useCallback(() => {
+    reset();
+    window.localStorage.removeItem('userAccount')
+    window.localStorage.removeItem('connector')
+    window.localStorage.removeItem(localStorageKey)
+    window.location.reload()
+  }, [reset]);
+
   if (account) {
     return isMobile ? (
       <Wrapper>
@@ -46,7 +55,7 @@ const UserBlock: React.FC = () => {
             <Text mt="2px" mr="4px" textStyle={TextStyles.R_18M} color={ColorStyles.BLACK}>
               {accountEllipsis}
             </Text>
-            <WalletDropdown width="188px" left="-105px" target={<IconButton startIcon={<MoreNIcon />} />} account={account} reset={reset} />
+            <WalletDropdown width="188px" left="-105px" target={<IconButton startIcon={<MoreNIcon />} />} account={account} logout={logout} />
           </Flex>
         </Flex>
         <StyledButton onClick={() => {
@@ -72,7 +81,7 @@ const UserBlock: React.FC = () => {
             textStyle={TextStyles.R_12B}
           >
             {accountEllipsis}
-          </Button>} account={account} reset={reset} />
+          </Button>} account={account} logout={logout} />
         </Flex>
         <Button
           ml="8px"

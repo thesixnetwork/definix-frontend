@@ -49,7 +49,7 @@ export const links = (t: (key: string) => string) => {
       href: '/bridge',
     },
     {
-      label: t('MyInvestments'),
+      label: t('My Investments'),
       icon: 'GnbBridgeNIcon',
       activeIcon: 'GnbBridgeSIcon',
       href: '/myinvestments',
