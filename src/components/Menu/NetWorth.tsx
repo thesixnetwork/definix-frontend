@@ -280,23 +280,27 @@ const NetWorth = () => {
     return new BigNumber(0)
   }
 
-  return isLoading ? <></> : <span>
-    {(() => {
-      const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances].map((f) => {
-        return getNetWorth(f)
-      })
-      // eslint-disable-next-line
-      const totalNetWorth =
-        _.compact(allNetWorth).length > 0
-          ? _.compact(allNetWorth).reduce((fv, sv) => {
-              return fv.plus(sv)
-            })
-          : new BigNumber(0)
-      return totalNetWorth && Number(totalNetWorth) !== 0
-        ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-        : '-'
-    })()}
-  </span>
+  return isLoading ? (
+    <></>
+  ) : (
+    <span>
+      {(() => {
+        const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances].map((f) => {
+          return getNetWorth(f)
+        })
+        // eslint-disable-next-line
+        const totalNetWorth =
+          _.compact(allNetWorth).length > 0
+            ? _.compact(allNetWorth).reduce((fv, sv) => {
+                return fv.plus(sv)
+              })
+            : new BigNumber(0)
+        return totalNetWorth && Number(totalNetWorth) !== 0
+          ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+          : '-'
+      })()}
+    </span>
+  )
 }
 
 export default NetWorth
