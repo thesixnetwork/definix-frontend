@@ -406,7 +406,7 @@ export const useRank = () => {
 
   useEffect(() => {
     async function fetchRank() {
-      if(account){
+      if (account) {
         const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
         const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
         let maxRank = -1

@@ -14,7 +14,7 @@ import { PanelProps, PushedProps } from './types'
 import UserBlock from './UserBlock'
 import FinixCoin from '../../images/finix-coin.png'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
-import RankMenuCard from "./RankMenuCard"
+import RankMenuCard from './RankMenuCard'
 
 interface Props extends PanelProps, PushedProps {
   isMobile: boolean
@@ -141,15 +141,15 @@ const PanelBody: React.FC<Props> = (props) => {
           <UserBlock account={account} login={login} logout={logout} className="mt-2 dis-in-block" />
         </div>
       )}
-     <div className="py-2 bd-b">
-          <RankMenuCard />
-        </div>
+      <div className="py-2 bd-b">
+        <RankMenuCard />
+      </div>
       {links.map((link) => (
         <div className="py-2 bd-b">
           <MenuItem menu={link} key={link.label} />
         </div>
       ))}
-    
+
       {isDark ? (
         <StyledDark>
           <img src={FinixCoin} alt="FinixCoin" width="24" />
