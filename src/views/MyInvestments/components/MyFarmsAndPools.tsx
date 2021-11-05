@@ -430,9 +430,9 @@ const MyFarmsAndPools = () => {
             )
           })}
 
-          {stackedOnlyPools.map((pool) => (
+          {/* {stackedOnlyPools.map((pool) => (
             <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-          ))}
+          ))} */}
         </>
 
         {farmsList(stackedOnlyFarms, false)}

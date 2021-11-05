@@ -48,6 +48,12 @@ export const links = [
     href: '/bridge',
   },
   {
+    label: 'MyInvestments',
+    icon: 'GnbBridgeNIcon',
+    activeIcon: 'GnbBridgeSIcon',
+    href: '/myinvestments',
+  },
+  {
     label: 'More',
     icon: 'GnbMoreNIcon',
     activeIcon: 'GnbMoreNIcon',
@@ -99,13 +105,5 @@ export const socials = [
     label: 'reddit',
     icon: 'FooterRedditIcon',
     href: 'https://www.reddit.com/r/sixnetwork',
-  },
-  {
-    label: 'MyInvestments',
-    icon: mutualBlack,
-    iconActive: mutualWhite,
-    href: '/myinvestments',
-    notHighlight: false,
-    newTab: false,
   },
 ]
