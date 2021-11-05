@@ -1,22 +1,23 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { useRouteMatch } from 'react-router-dom'
 import Lottie from 'react-lottie'
-import useTheme from 'hooks/useTheme'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
-import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from 'uikit-dev'
-import success from 'uikit-dev/animation/complete.json'
-import loading from 'uikit-dev/animation/farmPool.json'
-import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
-import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
-import badgeBoost from 'uikit-dev/images/for-ui-v2/badge-boost.png'
-import * as klipProvider from '../../../hooks/klipProvider'
-import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
-import StakePeriodButton from './StakePeriodButton'
-import LongTermTab from './LongTermTab'
+import useTheme from '../../hooks/useTheme'
+import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../../uikit-dev'
+import success from '../../uikit-dev/animation/complete.json'
+import loading from '../../uikit-dev/animation/farmPool.json'
+import ConnectModal from '../../uikit-dev/widgets/WalletModal/ConnectModal'
+// import definixLongTerm from '../../../uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
+import badgeBoost from '../../uikit-dev/images/for-ui-v2/badge-boost.png'
+import * as klipProvider from '../../hooks/klipProvider'
+import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../hooks/useLongTermStake'
+import StakePeriodButton from './components/StakePeriodButton'
+import LongTermTab from './components/LongTermTab'
 
 const SuccessOptions = {
   loop: true,
@@ -192,7 +193,8 @@ const AprBox = styled(Card)`
   }
 `
 
-const CardStake = ({ isShowRightPanel }) => {
+const CardSuperStake = () => {
+  const { path } = useRouteMatch()
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
@@ -428,7 +430,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   return (
     <div className="align-stretch mt-5">
-      <LongTermTab current="/long-term-stake" />
+      <LongTermTab current="/long-term-stake/top-up" />
       <FinixStake className="flex">
         {loadings !== '' && (
           <div
@@ -456,8 +458,12 @@ const CardStake = ({ isShowRightPanel }) => {
               fontSize={`${isMobileOrTablet ? '16px !important' : '18px !important'}`}
               className={`${!isMobileOrTablet ? 'mb-4' : 'flex align-center'}`}
             >
-              Stake FINIX get vFINIX
+              Super Stake
             </Heading>
+            <Text color="white">
+              Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no
+              minimum amount.
+            </Text>
             {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="8px !important">
@@ -472,7 +478,9 @@ const CardStake = ({ isShowRightPanel }) => {
               </AprBox>
             )}
           </div>
-          <Text color="textSubtle">Please select duration</Text>
+          <Text className="mt-4" color="textSubtle">
+            Please select available duration
+          </Text>
           <StakePeriodButton setPeriod={setPeriod} status={status} />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
@@ -580,36 +588,9 @@ const CardStake = ({ isShowRightPanel }) => {
             )}
           </div>
         </div>
-        {!isMobileOrTablet && (
-          <div
-            style={{ opacity: loadings !== '' ? 0.1 : 1, justifyContent: 'space-between' }}
-            className="col-4 flex flex-column"
-          >
-            <APRBOX className="px-5 mb-2">
-              <img src={badgeBoost} alt="" />
-              <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.2vw !important'} color="white">
-                Boosting Period
-              </BoostValue>
-              <Apr fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'} color="white">
-                APR up to
-              </Apr>
-              <AprDecoration
-                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '50%' : '50%' }}
-                fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'}
-                color="white"
-              >{`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}</AprDecoration>
-              <AprValue
-                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '67%' : '67%' }}
-                fontSize={isShowRightPanel ? '1.1vw !important' : '1.6vw !important'}
-                color="white"
-              >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
-            </APRBOX>
-            <img src={definixLongTerm} alt="" className="pl-3 pb-5" />
-          </div>
-        )}
       </FinixStake>
     </div>
   )
 }
 
-export default CardStake
+export default CardSuperStake

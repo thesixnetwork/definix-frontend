@@ -35,7 +35,9 @@ import {
   usePriceSixUsd,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text } from 'uikit-dev'
+import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text, useModal } from 'uikit-dev'
+
+import SuperStakeModal from 'uikit-dev/widgets/WalletModal/SuperStakeModal'
 
 import LogoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
 import LogoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
@@ -237,6 +239,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const longtermApr = useAprCardFarmHome()
   const longtermLocksRank = useRank()
   const { handleHarvest } = useHarvest()
+  // Super Stake
+  const [onPresentConnectModal] = useModal(<SuperStakeModal />)
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
@@ -889,23 +893,37 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               )}
             </StatAll>
           </div>
-          {account ? (
+          <div className="flex">
+            {account ? (
+              <Button
+                id="harvest-all"
+                size="sm"
+                variant="tertiary"
+                className="mt-3"
+                style={{ background: 'white' }}
+                disabled={balancesWithValue.length + (finixEarn ? 1 : 0) <= 0 || pendingTx}
+                onClick={harvestAllFarms}
+              >
+                {pendingTx
+                  ? TranslateString(548, 'Collecting FINIX')
+                  : TranslateString(532, `Harvest all (${balancesWithValue.length + (finixEarn ? 1 : 0)})`)}
+              </Button>
+            ) : (
+              <UnlockButton />
+            )}
             <Button
               id="harvest-all"
               size="sm"
               variant="tertiary"
-              className="mt-3"
-              style={{ background: 'white' }}
-              disabled={balancesWithValue.length + (finixEarn ? 1 : 0) <= 0 || pendingTx}
-              onClick={harvestAllFarms}
+              className="ml-2 mt-3"
+              style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
+              onClick={() => {
+                onPresentConnectModal()
+              }}
             >
-              {pendingTx
-                ? TranslateString(548, 'Collecting FINIX')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length + (finixEarn ? 1 : 0)})`)}
+              Super Stake
             </Button>
-          ) : (
-            <UnlockButton />
-          )}
+          </div>
         </div>
       </HarvestAll>
 

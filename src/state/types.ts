@@ -168,6 +168,7 @@ export interface LongTermState {
   lockCount: number
   balanceFinix: number
   balancevFinix: number
+  countTransactions: number
 }
 export interface PoolsState {
   isFetched: boolean

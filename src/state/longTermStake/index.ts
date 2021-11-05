@@ -40,6 +40,7 @@ const initialState = {
   balanceFinix: 0,
   balancevFinix: 0,
   rewardPerBlock: 0,
+  countTransactions: 0,
 }
 
 export const longTermSlice = createSlice({
@@ -112,6 +113,10 @@ export const longTermSlice = createSlice({
       const { allDataLock } = action.payload
       state.allDataLock = allDataLock
     },
+    setCountTransactions: (state, action) => {
+      const { countTransactions } = action.payload
+      state.countTransactions = countTransactions
+    },
   },
 })
 
@@ -126,6 +131,7 @@ export const {
   setTotalSupplyAllTimeMint,
   setStartIndex,
   setAllDataLock,
+  setCountTransactions,
 } = longTermSlice.actions
 
 export const fetchIdData =
@@ -149,6 +155,14 @@ export const fetchStartIndex = (index) => async (dispatch) => {
   dispatch(
     setStartIndex({
       startIndex: index,
+    }),
+  )
+}
+
+export const fetchCountTransactions = (count) => async (dispatch) => {
+  dispatch(
+    setCountTransactions({
+      countTransactions: count,
     }),
   )
 }
