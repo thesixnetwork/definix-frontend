@@ -25,7 +25,6 @@ import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
 import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
@@ -47,23 +46,6 @@ const SuccessOptions = {
   autoplay: true,
   animationData: success,
 }
-
-const MaxWidth = styled.div`
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-`
-
-const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 24px;
-`
 
 const Coin = styled.div`
   display: flex;
@@ -564,35 +546,31 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       <Helmet>
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout>
-        <LeftPanelAbsolute isShowRightPanel={false}>
-          <MaxWidth>
-            {isInputting && (
-              <CardInput
-                setTx={setTx}
-                isWithdrawing={isWithdrawing}
-                setIsWithdrawing={setIsWithdrawing}
-                selectedToken={selectedToken}
-                setSelectedToken={setSelectedToken}
-                rebalance={rebalance}
-                poolAmounts={poolAmounts}
-                isSimulating={isSimulating}
-                currentInput={currentInput}
-                setCurrentInput={setCurrentInput}
-                currentBalance={currentBalance}
-                currentBalanceNumber={currentBalanceNumber}
-                ratioType={ratioType}
-                setRatioType={setRatioType}
-                onNext={() => {
-                  setIsInputting(false)
-                  setIsWithdrawn(true)
-                }}
-              />
-            )}{' '}
-            {isWithdrawn && <CardResponse currentInput={currentInput} tx={tx} rebalance={rebalance} />}
-          </MaxWidth>
-        </LeftPanelAbsolute>
-      </TwoPanelLayout>
+      <div>
+        {isInputting && (
+          <CardInput
+            setTx={setTx}
+            isWithdrawing={isWithdrawing}
+            setIsWithdrawing={setIsWithdrawing}
+            selectedToken={selectedToken}
+            setSelectedToken={setSelectedToken}
+            rebalance={rebalance}
+            poolAmounts={poolAmounts}
+            isSimulating={isSimulating}
+            currentInput={currentInput}
+            setCurrentInput={setCurrentInput}
+            currentBalance={currentBalance}
+            currentBalanceNumber={currentBalanceNumber}
+            ratioType={ratioType}
+            setRatioType={setRatioType}
+            onNext={() => {
+              setIsInputting(false)
+              setIsWithdrawn(true)
+            }}
+          />
+        )}{' '}
+        {isWithdrawn && <CardResponse currentInput={currentInput} tx={tx} rebalance={rebalance} />}
+      </div>
     </>
   )
 }

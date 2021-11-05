@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'uikit-dev'
+import { Text } from 'definixswap-uikit'
 import Helper from 'uikit-dev/components/Helper'
 
 interface TwoLineFormatType {
@@ -39,15 +39,26 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   currentInvestPercentDiff,
   diffAmounts,
 }) => {
+  const size = large
+    ? {
+        emphasize: '24px',
+        subTitleFont: '14px',
+        text: '16px',
+      }
+    : {
+        emphasize: '16px',
+        subTitleFont: '12px',
+        text: '14px',
+      }
   return (
     <div className={className}>
-      <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`} style={{ lineHeight: '0' }}>
-        <Text fontSize="14px" color={titleColor || 'textSubtle'}>
+      <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
+        <Text textStyle="R_12R" color={titleColor || 'mediumgrey'}>
           {title}
         </Text>
 
         {subTitle && (
-          <Text fontSize={subTitleFontSize || (large ? '14px' : '12px')} className="ml-1">
+          <Text fontSize={subTitleFontSize || size.subTitleFont} className="ml-1" as="span">
             {subTitle}
           </Text>
         )}
@@ -56,26 +67,26 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
       </div>
 
       <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
-        <Text fontSize={large ? '24px' : '16px'} bold color={valueClass} lineHeight={large ? '1.3' : '1.5'}>
+        <Text fontSize={size.emphasize} bold color={valueClass}>
           {value}
         </Text>
         {diffAmounts !== '0' && (
-          <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
+          <Text fontSize={size.text} bold color={percentClass} className="ml-1">
             {diffAmounts}
           </Text>
         )}
         {currentInvestPercentDiff !== '(0%)' && (
-          <Text fontSize={large ? '14px' : '12px'} bold color={percentClass} className="ml-1">
+          <Text fontSize={size.subTitleFont} bold color={percentClass} className="ml-1">
             {currentInvestPercentDiff}
           </Text>
         )}
         {percent && (
-          <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
+          <Text fontSize={size.text} bold color={percentClass} className="ml-1">
             {percent}
           </Text>
         )}
         {days && (
-          <Text fontSize={large ? '16px' : '14px'} className="ml-1">
+          <Text fontSize={size.text} className="ml-1">
             {days}
           </Text>
         )}

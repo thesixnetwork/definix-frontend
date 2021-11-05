@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import styled from 'styled-components'
-import { Card, Text } from 'uikit-dev'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
-import _ from 'lodash'
-import { Table, TD, TH, TR } from './Table'
-import CardTab from './CardTab'
+import { compact, get, find } from 'lodash'
+import { Text } from 'definixswap-uikit'
+
+import useTranslation from 'contexts/Localisation/useTranslation'
 import { Rebalance } from '../../../state/types'
+
+import { Table, TD, TH, TR } from './Table'
+import FullAssetRatio from './FullAssetRatio'
 
 interface FundDetailType {
   rebalance?: Rebalance | any
   periodPriceTokens?: number[]
-  className?: string
 }
 
-const Overflow = styled.div`
-  overflow: auto;
-`
 const AssetDetail = ({ rebalance, periodPriceTokens }) => {
-  const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
-  let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+  const { t } = useTranslation()
+  const cols = [t('Asset'), t('Balance'), t('Price'), t('Value'), t('Change (D)'), t('Ratio')]
+  let tokens = compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+
+  const colors = useMemo(() => {
+    return rebalance.ratio?.reduce((all, token) => {
+      return { ...all, [token.symbol]: token.color }
+    }, {})
+  }, [rebalance])
 
   if (tokens.length === 0) tokens = rebalance.ratio
   const selectClass = (inputNumber) => {
@@ -39,7 +43,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
       <TR>
         {cols.map((c, idx) => (
           <TH align={idx > 0 ? 'center' : null}>
-            <Text color="textSubtle" fontSize="12px" bold>
+            <Text color="mediumgrey" textStyle="R_12M">
               {c}
             </Text>
           </TH>
@@ -53,16 +57,16 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
           return r.symbol
         })()
 
-        const ratio = _.get(rebalance, `ratioCal`)
+        const ratio = get(rebalance, `ratioCal`)
         // Do not show record when ratio equal 0
         if (ratio && ratio[index] === 0) return <></>
 
         // @ts-ignore
-        const totalPriceNotDevDecimap = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)])
+        const totalPriceNotDevDecimap = new BigNumber([get(rebalance, `currentPoolUsdBalances.${index}`)])
         const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
 
         const tokenPrice = (totalPrice || new BigNumber(0)).div(
-          _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(_.get(r, 'decimals', 18))),
+          get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(get(r, 'decimals', 18))),
         )
 
         // const change = (priceCurrent - priceLast24) / (priceCurrent * 100)
@@ -72,26 +76,26 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
 
         return (
           <TR>
-            <TD>
+            <TD sidecolor={colors?.[r.symbol]}>
               <div className="flex align-center">
-                <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={32} height={32} className="mr-3" />
-                <Text bold>{thisName}</Text>
+                <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={24} height={24} className="mr-s6" />
+                <Text textStyle="R_14B">{thisName}</Text>
               </div>
             </TD>
             <TD align="center">
-              <Text>
+              <Text textStyle="R_14R">
                 {numeral(
-                  _.get(r, 'totalBalance', new BigNumber(0))
-                    .div(new BigNumber(10).pow(_.get(r, 'decimals', 18)))
+                  get(r, 'totalBalance', new BigNumber(0))
+                    .div(new BigNumber(10).pow(get(r, 'decimals', 18)))
                     .toNumber(),
                 ).format('0,0.[000]')}
               </Text>
             </TD>
             <TD align="center">
-              <Text>$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text>
+              <Text textStyle="R_14R">$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
             <TD align="center">
-              <Text>$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
+              <Text textStyle="R_14R">$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
             </TD>
             <TD align="center">
               <Text color={selectClass(changeNumber)}>
@@ -100,7 +104,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
               </Text>
             </TD>
             <TD align="center">
-              <Text>{ratio ? ratio[index] : 0} %</Text>
+              <Text textStyle="R_14R">{ratio ? ratio[index] : 0} %</Text>
             </TD>
           </TR>
         )
@@ -108,64 +112,19 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
     </Table>
   )
 }
-const FactRow = ({ name, value, isCopy }) => {
+
+const FundDetail: React.FC<FundDetailType> = ({ rebalance, periodPriceTokens }) => {
+  const { t } = useTranslation()
+
+  const { ratio } = rebalance
   return (
-    <TR>
-      <TD>
-        <Text bold>{name}</Text>
-      </TD>
-      <TD>
-        <div className="flex">
-          <Text fontSize="14px" className={isCopy ? 'mr-2' : ''}>
-            {value}
-          </Text>
-          {isCopy && <CopyToClipboard toCopy={isCopy} iconWidth="16px" noText />}
-        </div>
-      </TD>
-    </TR>
-  )
-}
-
-const FactSheet = ({ rebalance }) => {
-  return (
-    <Table>
-      <FactRow name="Name" value={rebalance.factsheet.name} isCopy={false} />
-      <FactRow name="Inception date" value={rebalance.factsheet.inceptionDate} isCopy={false} />
-      <FactRow name="Manager" value={rebalance.factsheet.manager} isCopy={rebalance.factsheet.manager} />
-      <FactRow name="Vault" value={rebalance.factsheet.vault} isCopy={rebalance.factsheet.vault} />
-      <FactRow name="Management fee" value={rebalance.factsheet.management} isCopy={rebalance.factsheet.management} />
-      <FactRow
-        name="FINIX Buy back fee"
-        value={rebalance.factsheet.finixBuyBackFee}
-        isCopy={rebalance.factsheet.finixBuyBackFee}
-      />
-      <FactRow name="Ecosystem fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} />
-    </Table>
-  )
-}
-
-const FundDetail: React.FC<FundDetailType> = ({ rebalance, periodPriceTokens, className = '' }) => {
-  const [currentTab, setCurrentTab] = useState(0)
-
-  useEffect(
-    () => () => {
-      setCurrentTab(0)
-    },
-    [],
-  )
-
-  return (
-    <Card className={className}>
-      <CardTab menus={['ASSET DETAILS', 'FACTSHEET']} current={currentTab} setCurrent={setCurrentTab} />
-      <div style={{ height: '42px' }} />
-      <Overflow className="pa-4 pt-0">
-        {currentTab === 0 ? (
-          <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
-        ) : (
-          <FactSheet rebalance={rebalance} />
-        )}
-      </Overflow>
-    </Card>
+    <>
+      <Text textStyle="R_16M" color="deepgrey" className="pb-s20">
+        {t('Asset Ratio')}
+      </Text>
+      <FullAssetRatio className="mb-s40" ratio={ratio} />
+      <AssetDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
+    </>
   )
 }
 

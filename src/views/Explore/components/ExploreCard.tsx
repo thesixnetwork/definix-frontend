@@ -6,7 +6,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, useMatchBreakpoints } from 'uikit-dev'
+import { Button, Card, CardBody, CardRibbon, useMatchBreakpoints } from 'definixswap-uikit'
 import numeral from 'numeral'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -14,7 +14,6 @@ import MiniChart from './MiniChart'
 import TwoLineFormat from './TwoLineFormat'
 import { Rebalance } from '../../../state/types'
 import { usePriceFinixUsd, useRebalanceBalances, useBalances } from '../../../state/hooks'
-import RebalanceSash from './RebalanceSash'
 
 interface ExploreCardType {
   isHorizontal: boolean
@@ -23,24 +22,17 @@ interface ExploreCardType {
   onClickViewDetail: () => void
 }
 
-const CardStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
-`
-
-const VerticalStyle = styled(CardStyle)`
+const VerticalStyle = styled(Card)`
   display: flex;
   position: relative;
   flex-direction: column;
 `
 
-const HorizontalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
+const HorizontalStyle = styled(Card)`
+  width: 100%;
 `
 
-const HorizontalMobileStyle = styled(CardStyle)`
+const HorizontalMobileStyle = styled(Card)`
   .accordion-content {
     &.hide {
       display: none;
@@ -52,23 +44,32 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
+const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  return (
+    <Button
+      minWidth="auto"
+      scale="40"
+      variant="lightbrown"
+      as={Link}
+      to="/rebalancing/detail"
+      onClick={onClick}
+      className="w-100"
+    >
+      View Details
+    </Button>
+  )
+}
+
 const ExploreCard: React.FC<ExploreCardType> = ({
   balance,
-  isHorizontal = false,
+  isHorizontal = true,
   rebalance = {},
   onClickViewDetail,
 }) => {
-  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { ratio } = rebalance
   const finixPrice = usePriceFinixUsd()
-
-  useEffect(() => {
-    return () => {
-      setIsOpenAccordion(false)
-    }
-  }, [])
 
   const { account } = useWallet()
   const balances = useBalances(account)
@@ -133,114 +134,88 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   }, [combinedAmount])
 
   const renderSash = () => {
-    if (isMobile && isHorizontal && rebalance.rebalace === 'New') {
-      return <RebalanceSash type="listCard" />
-    }
-
-    if (isHorizontal && rebalance.rebalace === 'New') {
-      return <RebalanceSash type="list" />
-    }
-
-    if (!isHorizontal && rebalance.rebalace === 'New') {
-      return <RebalanceSash type="card" />
+    if (rebalance.rebalace?.toUpperCase() === 'NEW') {
+      return <CardRibbon text={rebalance.rebalace} />
     }
 
     return null
   }
 
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
-  if (isHorizontal) {
-    if (isMobile) {
-      return (
-        <HorizontalMobileStyle className="mb-3">
-          {renderSash()}
-          <CardHeading
-            className="pa-4"
-            showAccordion
-            isHorizontal
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-            rebalance={rebalance}
-          />
-
-          <div style={{ display: isOpenAccordion ? 'block' : 'none' }}>
-            <div className="flex justify-space-between pa-4 pt-0">
-              <TwoLineFormat
-                title="Total asset value"
-                value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
-              />
-              <TwoLineFormat
-                title="Share price"
-                subTitle="(Since inception)"
-                subTitleFontSize="11px"
-                value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
-                percent={`${
-                  rebalance.sharedPricePercentDiff >= 0
-                    ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-                    : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-                }%`}
-                percentClass={(() => {
-                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
-                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
-                  return ''
-                })()}
-              />
-            </div>
-
-            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
-
-            <div className="pa-4">
-              <div className="flex align-end justify-space-between mb-3">
-                <TwoLineFormat
-                  title="Yield APR"
-                  value={`${numeral(
-                    finixPrice
-                      .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-                      .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-                      .times(100)
-                      .toFixed(2),
-                  ).format('0,0.[00]')}%`}
-                  hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                />
-                <TwoLineFormat
-                  title="Current investment"
-                  value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-                  currentInvestPercentDiff={`(${
-                    percentage > 0
-                      ? `+${numeral(percentage).format('0,0.[00]')}`
-                      : `${numeral(percentage).format('0,0.[00]')}`
-                  }%)`}
-                  diffAmounts={`${
-                    percentage > 0
-                      ? `+${numeral(diffAmount).format('0,0.[000]')}`
-                      : `${numeral(diffAmount).format('0,0.[000]')}`
-                  }`}
-                  percentClass={(() => {
-                    if (percentage < 0) return 'failure'
-                    if (percentage > 0) return 'success'
-                    return ''
-                  })()}
-                />
-              </div>
-              <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
-                View Details
-              </Button>
-            </div>
-
-            <AssetRatio ratio={ratio} isHorizontal={false} className="px-4 py-3 bd-t" />
-          </div>
-        </HorizontalMobileStyle>
-      )
-    }
-
+  if (isMobile) {
     return (
-      <HorizontalStyle className="flex align-strench mb-5 pa-5">
-        {renderSash()}
-        <CardHeading isHorizontal={isHorizontal} rebalance={rebalance} className="col-3 pr-4 bd-r" />
+      <HorizontalMobileStyle className="mb-3" ribbon={renderSash()}>
+        <CardHeading className="pa-4 pb-6" isHorizontal rebalance={rebalance} />
 
-        <div className="col-9 flex">
-          <div className="col-6 flex flex-column justify-space-between px-4 bd-r">
-            <div className="flex justify-space-between mb-2">
+        <div>
+          <div className="flex px-4 pb-5">
+            <TwoLineFormat
+              title="Total asset value"
+              value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
+            />
+            <TwoLineFormat
+              title="Yield APR"
+              value={`${numeral(
+                finixPrice
+                  .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+                  .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                  .times(100)
+                  .toFixed(2),
+              ).format('0,0.[00]')}%`}
+              hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+            />
+          </div>
+          <div className="px-4 pb-5">
+            <TwoLineFormat
+              title="Share price (Since inception)"
+              value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
+              percent={`${
+                rebalance.sharedPricePercentDiff >= 0
+                  ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+                  : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+              }%`}
+              percentClass={(() => {
+                if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
+                if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
+                return ''
+              })()}
+            />
+          </div>
+          <div className="px-4 py-3 bd-t">
+            <TwoLineFormat
+              className="pb-6"
+              title="Current investment"
+              value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
+              currentInvestPercentDiff={`(${
+                percentage > 0
+                  ? `+${numeral(percentage).format('0,0.[00]')}`
+                  : `${numeral(percentage).format('0,0.[00]')}`
+              }%)`}
+              diffAmounts={`${
+                percentage > 0
+                  ? `+${numeral(diffAmount).format('0,0.[000]')}`
+                  : `${numeral(diffAmount).format('0,0.[000]')}`
+              }`}
+              percentClass={(() => {
+                if (percentage < 0) return 'failure'
+                if (percentage > 0) return 'success'
+                return ''
+              })()}
+            />
+            <BtnViewDetail onClick={onClickViewDetail} />
+          </div>
+        </div>
+      </HorizontalMobileStyle>
+    )
+  }
+
+  return (
+    <HorizontalStyle className="mb-4" ribbon={renderSash()}>
+      <CardBody>
+        <CardHeading rebalance={rebalance} className="bd-b pb-5" />
+        <div className="flex pt-5">
+          <div className="flex flex-column justify-space-between px-0 bd-r" style={{ width: '45.7%' }}>
+            <div className="flex justify-space-between mb-4">
               <TwoLineFormat
                 className="col-5"
                 title="Total asset value"
@@ -262,125 +237,56 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
           </div>
 
-          <div className="col-3 pl-4 pr-2 flex flex-column justify-space-between">
-            <TwoLineFormat
-              title="Share price"
-              subTitle="(Since inception)"
-              subTitleFontSize="11px"
-              value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
-              percent={`${
-                rebalance.sharedPricePercentDiff >= 0
-                  ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-                  : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-              }%`}
-              percentClass={(() => {
-                if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
-                if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
-                return ''
-              })()}
-            />
-            <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} height={60} />
-          </div>
+          <div className="flex flex-grow">
+            <div className="col-6 flex flex-column justify-space-between bd-r px-6">
+              <TwoLineFormat
+                title="Share price (Since inception)"
+                value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
+                percent={`${
+                  rebalance.sharedPricePercentDiff >= 0
+                    ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+                    : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+                }%`}
+                percentClass={(() => {
+                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
+                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
+                  return ''
+                })()}
+              />
+              <MiniChart
+                color={rebalance.sharedPricePercentDiff >= 0 ? '#02a1a1' : '#ff5532'}
+                tokens={allCurrentTokens}
+                rebalanceAddress={getAddress(rebalance.address)}
+                height={60}
+              />
+            </div>
 
-          <div className="col-3 pl-2 flex flex-column justify-space-between">
-            <TwoLineFormat
-              title="Current investment"
-              value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-              currentInvestPercentDiff={`(${
-                percentage > 0
-                  ? `+${numeral(percentage).format('0,0.[00]')}`
-                  : `${numeral(percentage).format('0,0.[00]')}`
-              }%)`}
-              diffAmounts={`${
-                percentage > 0
-                  ? `+${numeral(diffAmount).format('0,0.[000]')}`
-                  : `${numeral(diffAmount).format('0,0.[000]')}`
-              }`}
-              percentClass={(() => {
-                if (percentage < 0) return 'failure'
-                if (percentage > 0) return 'success'
-                return ''
-              })()}
-            />
-            <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
-              View Details
-            </Button>
+            <div className="col-6 flex flex-column justify-space-between pl-6">
+              <TwoLineFormat
+                title="Current investment"
+                value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
+                currentInvestPercentDiff={`(${
+                  percentage > 0
+                    ? `+${numeral(percentage).format('0,0.[00]')}`
+                    : `${numeral(percentage).format('0,0.[00]')}`
+                }%)`}
+                diffAmounts={`${
+                  percentage > 0
+                    ? `+${numeral(diffAmount).format('0,0.[000]')}`
+                    : `${numeral(diffAmount).format('0,0.[000]')}`
+                }`}
+                percentClass={(() => {
+                  if (percentage < 0) return 'failure'
+                  if (percentage > 0) return 'success'
+                  return ''
+                })()}
+              />
+              <BtnViewDetail onClick={onClickViewDetail} />
+            </div>
           </div>
         </div>
-      </HorizontalStyle>
-    )
-  }
-
-  return (
-    <VerticalStyle className="mb-7">
-      {renderSash()}
-      <CardHeading className="pa-4" isSkew isHorizontal={isHorizontal} rebalance={rebalance} />
-
-      <div className="flex justify-space-between pa-4 pt-0">
-        <TwoLineFormat
-          title="Total asset value"
-          value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
-        />
-        <TwoLineFormat
-          title="Share price"
-          subTitle="(Since inception)"
-          subTitleFontSize="11px"
-          value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
-          percent={`${
-            rebalance.sharedPricePercentDiff >= 0
-              ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-              : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-          }%`}
-          percentClass={(() => {
-            if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
-            if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
-            return ''
-          })()}
-        />
-      </div>
-
-      <MiniChart tokens={allCurrentTokens} rebalanceAddress={getAddress(rebalance.address)} />
-
-      <div className="pa-4">
-        <div className="flex align-end justify-space-between mb-3">
-          <TwoLineFormat
-            title="Yield APR"
-            value={`${numeral(
-              finixPrice
-                .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-                .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-                .times(100)
-                .toFixed(2),
-            ).format('0,0.[00]')}%`}
-            hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-          />
-          <TwoLineFormat
-            title="Current investment"
-            value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
-            currentInvestPercentDiff={`(${
-              percentage > 0
-                ? `+${numeral(percentage).format('0,0.[00]')}`
-                : `${numeral(percentage).format('0,0.[00]')}`
-            }%)`}
-            diffAmounts={`${
-              percentage > 0
-                ? `+${numeral(diffAmount).format('0,0.[000]')}`
-                : `${numeral(diffAmount).format('0,0.[000]')}`
-            }`}
-            percentClass={(() => {
-              if (percentage < 0) return 'failure'
-              if (percentage > 0) return 'success'
-              return ''
-            })()}
-          />
-        </div>
-        <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
-          View Details
-        </Button>
-      </div>
-
-      <AssetRatio isHorizontal={isHorizontal} ratio={ratio} className="px-4 py-3 bd-t" />
-    </VerticalStyle>
+      </CardBody>
+    </HorizontalStyle>
   )
 }
 
