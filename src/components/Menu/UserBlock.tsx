@@ -5,6 +5,7 @@ import { Text, Flex, Button, IconButton, ButtonVariants, ButtonScales, useWallet
 import useTranslation from 'contexts/Localisation/useTranslation'
 import { useHistory } from "react-router";
 import WalletDropdown from "./WalletDropdown";
+import NetWorth from "./NetWorth";
 
 const Wrapper = styled.div`
   position: relative;
@@ -56,7 +57,7 @@ const UserBlock: React.FC = () => {
           </Text>
           <Flex ml="12px" alignItems="center">
             <Text mr="7px" textStyle={TextStyles.R_12B} width="140px" color={ColorStyles.WHITE}>
-              $132123123
+              <NetWorth />
             </Text>
             <IconButton startIcon={<ArrowRightGIcon />} />
           </Flex>

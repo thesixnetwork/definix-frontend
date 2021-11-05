@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { Flex, IconButton, MoreNIcon, CheckBIcon, ColorStyles, Dropdown, DropdownItem, DropdownProps } from "definixswap-uikit";
+import { Flex, CheckBIcon, ColorStyles, Dropdown, DropdownItem, DropdownProps } from "definixswap-uikit";
 import useTranslation from 'contexts/Localisation/useTranslation'
 
 interface Props extends Partial<DropdownProps> {

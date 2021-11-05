@@ -1,5 +1,5 @@
 import React from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
@@ -11,11 +11,11 @@ import Chain from './Chain'
 // import { Menu as UikitMenu } from 'uikit-dev'
 
 const Menu = (props) => {
-  const { account, connect, reset } = useWallet()
+  // const { account, connect, reset } = useWallet()
   const { setLangCode, selectedLangCode, t } = useTranslation()
   const { isDark, toggleTheme } = useTheme()
   const finixPriceUsd = usePriceFinixUsd()
-  const { profile } = useProfile()
+  // const { profile } = useProfile()
 
   return (
     <UikitMenu
