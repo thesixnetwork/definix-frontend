@@ -74,19 +74,19 @@ const KeyFacts: React.FC<KeyFactsType> = ({ rebalance }) => {
           name={t('Management Fee')}
           value={[get(rebalance, 'fee.management', 0.2), rebalance.factsheet.management]}
           toCopy={rebalance.factsheet.management}
-          helper="Fee collected for vault management."
+          helper={t('Fee collected for vault management.')}
         />
         <FactRow
           name={t('Finix Buyback Fee')}
           value={[get(rebalance, 'fee.buyback', 1.5), rebalance.factsheet.finixBuyBackFee]}
           toCopy={rebalance.factsheet.finixBuyBackFee}
-          helper="Fee collected for buyback and burn of FINIX as deflationary purpose."
+          helper={t('Fee collected for buyback and burn of FINIX as deflationary purpose.')}
         />
         <FactRow
           name={t('Ecosystem Fee')}
           value={[get(rebalance, 'fee.bounty', 0.3), rebalance.factsheet.bountyFee]}
           toCopy={rebalance.factsheet.bountyFee}
-          helper="Reservation fee for further development of the ecosystem."
+          helper={t('Reservation fee for further development of the ecosystem.')}
         />
       </Table>
     </>

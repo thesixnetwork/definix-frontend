@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit'
 import { ChevronUpIcon, ChevronDownIcon } from 'uikit-dev'
 import { Rebalance } from '../../../state/types'
 
@@ -16,10 +16,11 @@ interface CardHeadingType {
 }
 
 const FocusImg = styled.img<{ isHorizontal: boolean }>`
-  width: 160px;
+  width: ${({ isHorizontal }) => (isHorizontal ? '100%' : '160px')};;
   height: auto;
-  margin-right: ${({ isHorizontal }) => (isHorizontal ? '' : '16px')};
-  margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '20px' : '')};
+  object-fit: contain;
+  margin-right: ${({ isHorizontal }) => (isHorizontal ? '' : '32px')};
+  margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '24px' : '')};
   background: ${({ theme }) => theme.colors.backgroundBox};
 `
 
@@ -32,8 +33,9 @@ const CardHeading: React.FC<CardHeadingType> = ({
   rebalance = {},
 }) => {
   return (
-    <div
-      className={`${className} flex justify-space-between pos-relative`}
+    <Flex
+      justifyContent="space-between"
+      className={className}
       onClick={
         showAccordion
           ? () => {
@@ -42,7 +44,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
           : undefined
       }
     >
-      <div className={`flex ${isHorizontal ? 'flex-column justify-center' : ''}`}>
+      <div className={`flex ${isHorizontal ? 'flex-column justify-center' : 'align-start'}`}>
         <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} />
 
         <div>
@@ -56,7 +58,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
       {showAccordion && (
         <>{isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}</>
       )}
-    </div>
+    </Flex>
   )
 }
 

@@ -17,7 +17,7 @@ interface FundDetailType {
 
 const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   const { t } = useTranslation()
-  const cols = [t('Asset'), t('Balance'), t('Price'), t('Value'), t('Change (D)'), t('Ratio')]
+  const cols = [t('Asset'), t('Balance'), t('Price'), t('Value'), t('Change'), t('Weight')]
   let tokens = compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
   const colors = useMemo(() => {

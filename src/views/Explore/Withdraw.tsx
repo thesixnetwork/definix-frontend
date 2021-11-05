@@ -25,6 +25,7 @@ import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
+import useTranslation from 'contexts/Localisation/useTranslation'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
 import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
@@ -110,6 +111,7 @@ const CardInput = ({
   selectedToken,
   setSelectedToken,
 }) => {
+  const { t } = useTranslation()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { setShowModal } = React.useContext(KlipModalContext())
@@ -219,7 +221,7 @@ const CardInput = ({
           <SettingButton />
         </div>
         <TwoLineFormat
-          title="Current investment"
+          title={t('Current Investment')}
           titleColor={isDark ? '#ADB4C2' : ''}
           value={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
           subTitle={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}

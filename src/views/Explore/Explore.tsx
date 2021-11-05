@@ -7,11 +7,13 @@ import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
 import styled from 'styled-components'
-import { Flex, Link, Text, Toggle, useModal } from 'definixswap-uikit'
-import Heading from 'uikit-dev/components/Heading/Heading'
+import { Box, Flex, Link, Text, TitleSet, Toggle, useModal } from 'definixswap-uikit'
+import useTranslation from 'contexts/Localisation/useTranslation'
 import { getAddress } from 'utils/addressHelpers'
+
 import { Rebalance } from '../../state/types'
 import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+
 import DisclaimersModal from './components/DisclaimersModal'
 import ExploreCard from './components/ExploreCard'
 import ExploreDetail from './ExploreDetail'
@@ -24,6 +26,7 @@ const TutorailsLink = styled(Link)`
 
 const Explore: React.FC = () => {
   const { path } = useRouteMatch()
+  const { t } = useTranslation()
   const [isInvested, setIsInvested] = useState(false)
   const [selectedRebalance, setSelectedRebalance] = useState<Rebalance | undefined>()
   const rebalances = useRebalances()
@@ -64,34 +67,14 @@ const Explore: React.FC = () => {
           <title>Explore - Definix - Advance Your Crypto Assets</title>
         </Helmet>
         <>
-          <div className="mb-5">
-            <div className="flex align-center mb-2">
-              <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                Rebalancing Farm
-              </Heading>
-              <div className="mt-2 flex align-center justify-center">
-                <Text paddingRight="1">I’m new to this,</Text>
-                <TutorailsLink
-                  href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/rebalancing-farm/how-to-start-investing-in-rebalancing-farm"
-                  target="_blank"
-                >
-                  Learn to invest.
-                </TutorailsLink>
-              </div>
-              {/* <HelpButton
-                size="sm"
-                variant="secondary"
-                className="px-2"
-                startIcon={<HelpCircle className="mr-2" />}
-              >
-                Help
-              </HelpButton> */}
-            </div>
-            {/* <Text>
-              You can invest your tokens in our farms on this list. Every farms is administered by a
-              DEFINIX-certified farm manager.
-            </Text> */}
-          </div>
+          <Box marginBottom="48px">
+            <TitleSet
+              title={t('Rebalancing Farm')}
+              description={t('A Farm that automatically performs')}
+              linkLabel={t('Learn how to invest.')}
+              link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/rebalancing-farm/how-to-start-investing-in-rebalancing-farm"
+            />
+          </Box>
 
           <Flex alignItems="center" className="mb-5">
             <Text textStyle="R_14R" paddingRight="2">

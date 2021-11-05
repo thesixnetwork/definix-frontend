@@ -643,17 +643,17 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
 
           <Card className="mb-s16">
             <CardBody>
-              <CardHeading rebalance={rebalance} className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`} />
+              <CardHeading rebalance={rebalance} isHorizontal={isMobile} className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`} />
 
               <div className="flex flex-wrap">
                 <TwoLineFormat
                   className={isMobile ? 'col-6 mb-s20' : 'col-3'}
-                  title="Total asset value"
+                  title={t('Total Asset Value')}
                   value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
                 />
                 <TwoLineFormat
                   className={isMobile ? 'col-6 mb-s20' : 'col-3 bd-l pl-s32'}
-                  title="Yield APR"
+                  title={t('Yield APR')}
                   value={`${numeral(
                     finixPrice
                       .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
@@ -666,7 +666,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
 
                 <TwoLineFormat
                   className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
-                  title="Share price (Since inception)"
+                  title={t('Share Price(Since Inception)')}
                   value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                   percent={`${
                     rebalance.sharedPricePercentDiff >= 0
@@ -686,7 +686,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                 /> */}
                 <TwoLineFormat
                   className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
-                  title="Risk-O-Meter"
+                  title={t('Risk-0-Meter')}
                   value="Medium"
                 />
               </div>
@@ -698,7 +698,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           </Card>
         </div>
 
-        <FundAction rebalance={rebalance} isVertical={!isMobile} />
+        <FundAction rebalance={rebalance} isMobile={isMobile} />
       </Box>
     </>
   )
