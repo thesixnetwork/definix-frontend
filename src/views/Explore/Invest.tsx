@@ -6,20 +6,18 @@ import React, { useRef, useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
-import styled from 'styled-components'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { AbiItem } from 'web3-utils'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName, getAbiERC20ByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
-import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import _ from 'lodash'
+import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
 import rebalanceAbi from 'config/abi/rebalance.json'
 import { getContract, getCustomContract } from 'utils/erc20'
 import success from 'uikit-dev/animation/complete.json'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useDispatch } from 'react-redux'
 import useTheme from 'hooks/useTheme'
 import { Rebalance } from '../../state/types'
@@ -45,23 +43,6 @@ const SuccessOptions = {
   autoplay: true,
   animationData: success,
 }
-
-const MaxWidth = styled.div`
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-`
-
-const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 24px;
-`
 
 const CardInput = ({
   isSimulating,
@@ -713,53 +694,49 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
 
-      <TwoPanelLayout>
-        <LeftPanelAbsolute isShowRightPanel={false}>
-          <MaxWidth>
-            {isInputting && (
-              <CardInput
-                rebalance={rebalance}
-                currentInput={currentInput}
-                setCurrentInput={setCurrentInput}
-                balances={balances}
-                allowances={allowances}
-                onNext={() => {
-                  setIsInputting(false)
-                  setIsCalculating(true)
-                }}
-                // totalUSDAmount={totalUSDAmount}
-                isSimulating={isSimulating}
-                sumPoolAmount={sumPoolAmount}
-              />
-            )}{' '}
-            {isCalculating && (
-              <CardCalculate
-                setTx={setTx}
-                currentInput={currentInput}
-                isInvesting={isInvesting}
-                setIsInvesting={setIsInvesting}
-                isSimulating={isSimulating}
-                recalculate={fetchData}
-                poolUSDBalances={poolUSDBalancesState}
-                poolAmounts={poolAmounts}
-                rebalance={rebalance}
-                onBack={() => {
-                  setIsCalculating(false)
-                  setIsInputting(true)
-                }}
-                sumPoolAmount={sumPoolAmount}
-                onNext={() => {
-                  setIsCalculating(false)
-                  fetchData()
-                  setIsInvested(true)
-                }}
-                calNewImpact={calNewImpact}
-              />
-            )}
-            {isInvested && <CardResponse poolUSDBalances={poolUSDBalancesState} tx={tx} rebalance={rebalance} />}
-          </MaxWidth>
-        </LeftPanelAbsolute>
-      </TwoPanelLayout>
+      <div>
+        {isInputting && (
+          <CardInput
+            rebalance={rebalance}
+            currentInput={currentInput}
+            setCurrentInput={setCurrentInput}
+            balances={balances}
+            allowances={allowances}
+            onNext={() => {
+              setIsInputting(false)
+              setIsCalculating(true)
+            }}
+            // totalUSDAmount={totalUSDAmount}
+            isSimulating={isSimulating}
+            sumPoolAmount={sumPoolAmount}
+          />
+        )}{' '}
+        {isCalculating && (
+          <CardCalculate
+            setTx={setTx}
+            currentInput={currentInput}
+            isInvesting={isInvesting}
+            setIsInvesting={setIsInvesting}
+            isSimulating={isSimulating}
+            recalculate={fetchData}
+            poolUSDBalances={poolUSDBalancesState}
+            poolAmounts={poolAmounts}
+            rebalance={rebalance}
+            onBack={() => {
+              setIsCalculating(false)
+              setIsInputting(true)
+            }}
+            sumPoolAmount={sumPoolAmount}
+            onNext={() => {
+              setIsCalculating(false)
+              fetchData()
+              setIsInvested(true)
+            }}
+            calNewImpact={calNewImpact}
+          />
+        )}
+        {isInvested && <CardResponse poolUSDBalances={poolUSDBalancesState} tx={tx} rebalance={rebalance} />}
+      </div>
     </>
   )
 }

@@ -3,6 +3,8 @@ import BigNumber from 'bignumber.js'
 import moment from 'moment'
 import _ from 'lodash'
 import { Line } from 'react-chartjs-2'
+import Color from 'color'
+
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import axios from 'axios'
@@ -48,7 +50,7 @@ const formatter = {
   '1D': 'HH:mm',
 }
 
-const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) => {
+const MiniChart = ({ rebalanceAddress, tokens, className = '', color, height = 100 }) => {
   const { isDark } = useTheme()
   const [graphData, setGraphData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
@@ -130,13 +132,14 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
   }, [fetchGraphData])
 
   const data = (canvas) => {
-    const color = '#30ADFF'
+    const graphColor = color || '#30ADFF'
+    const colorObj = Color(graphColor)
 
     const ctx = canvas.getContext('2d')
 
-    const gradient = ctx.createLinearGradient(0, 0, 0, 140)
-    gradient.addColorStop(0, color)
-    gradient.addColorStop(0.5, isDark ? 'transparent' : 'white')
+    const gradient = ctx.createLinearGradient(0, 0, 0, height)
+    gradient.addColorStop(0, colorObj.mix(Color(isDark ? 'transparent' : 'white'), 0.7))
+    gradient.addColorStop(1, isDark ? 'transparent' : 'white')
 
     return {
       labels: _.get(graphData, 'labels', []),
@@ -148,10 +151,11 @@ const MiniChart = ({ rebalanceAddress, tokens, className = '', height = 100 }) =
           data: thisData.values || [],
           fill: true,
           borderColor: thisData.color,
+          borderWidth: 2,
           tension: 0,
           ...(thisName === 'Rebalance'
             ? {
-                borderColor: color,
+                borderColor: graphColor,
                 backgroundColor: gradient,
                 pointBackgroundColor: 'transparent',
                 pointBorderColor: 'transparent',

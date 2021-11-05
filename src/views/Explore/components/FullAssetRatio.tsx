@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Text, useMatchBreakpoints } from 'definixswap-uikit'
 import { Ratio } from 'config/constants/types'
 
 interface FullAssetRatioType {
@@ -18,19 +18,19 @@ const Coin = styled.div<{ width: string; isMobile: boolean }>`
 
     img {
       flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: ${({ theme }) => theme.radii.circle};
-      margin-right: 6px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 4px;
     }
   }
 `
 
 const Bar = styled.div<{ color: string }>`
   background: ${({ color }) => color};
-  height: 12px;
-  width: 100%;
-  margin-bottom: 8px;
+  height: 24px;
+  width: calc(100% - 1px);
+  margin-bottom: 12px;
 `
 
 const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = '' }) => {
@@ -38,25 +38,19 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
   const isMobile = !isXl
 
   return (
-    <Card className={`pa-4 ${className}`}>
-      <Text bold className="mb-2">
-        ASSET RATIO
-      </Text>
-
-      <div className="flex">
-        {ratio
-          .filter((r) => r.value)
-          .map((m) => (
-            <Coin width={`${m.value}%`} isMobile={isMobile}>
-              <Bar color={m.color} />
-              <div className="name">
-                <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
-                <Text fontSize="16px">{m.value}%</Text>
-              </div>
-            </Coin>
-          ))}
-      </div>
-    </Card>
+    <div className={`flex ${className}`}>
+      {ratio
+        .filter((r) => r.value)
+        .map((m) => (
+          <Coin width={`${m.value}%`} isMobile={isMobile}>
+            <Bar color={m.color} />
+            <div className="name">
+              <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
+              <Text textStyle="R_14R">{m.value}%</Text>
+            </div>
+          </Coin>
+        ))}
+    </div>
   )
 }
 
