@@ -4,10 +4,8 @@ import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
 import { Menu as UikitMenu } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import useTranslation, { Trans } from 'contexts/Localisation/useTranslation'
 import { links } from './config'
-import UserBlock from './UserBlock'
-import Chain from './Chain'
 // import { Menu as UikitMenu } from 'uikit-dev'
 
 const Menu = (props) => {
@@ -19,14 +17,13 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
-      userBlock={<UserBlock />}
-      chain={<Chain />}
+      t={t}
+      Trans={Trans}
       account={account}
       login={connect}
       logout={reset}
       isDark={isDark}
       toggleTheme={toggleTheme}
-      t={t}
       currentLang={selectedLangCode}
       langs={supportedLanguages}
       setLang={({ code }) => setLangCode(code)}

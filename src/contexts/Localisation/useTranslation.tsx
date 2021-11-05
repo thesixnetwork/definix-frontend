@@ -1,5 +1,9 @@
-import { useContext } from 'react'
+import React, { useContext } from 'react'
 import { LanguageContext } from './Provider'
+
+interface Props {
+  label: string;
+}
 
 const useTranslation = () => {
   const languageContext = useContext(LanguageContext)
@@ -9,6 +13,11 @@ const useTranslation = () => {
   }
 
   return languageContext
+}
+
+export const Trans: React.FC<Props> = ({ label }) => {
+  const { t } = useContext(LanguageContext);
+  return <span>{t(label)}</span>
 }
 
 export default useTranslation
