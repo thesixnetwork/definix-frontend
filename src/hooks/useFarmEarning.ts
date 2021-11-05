@@ -14,7 +14,7 @@ const useFarmEarning = () => {
   useEffect(() => {
     const fetchAllBalances = async () => {
       const calls = farmsConfig
-        .filter((farm) => farm.tokenSymbol !== farm.quoteTokenSymbol)
+        .filter((farm) => farm.tokenSymbol === farm.quoteTokenSymbol && farm.pid > 1)
         .map((farm) => ({
           address: getHerodotusAddress(),
           name: 'pendingFinix',
