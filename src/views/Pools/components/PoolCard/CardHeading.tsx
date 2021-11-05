@@ -28,11 +28,11 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy })
           {isOldSyrup && '[OLD]'} {tokenName}
         </Text>
 
-        <Flex alignItems="center">
-          <Text textStyle="R_14M" color={ColorStyles.RED}>
+        <Flex alignItems="end">
+          <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
             APR
           </Text>
-          <Text textStyle="R_20B" color={ColorStyles.RED}>
+          <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
             {displayApy}
           </Text>
           <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} />
