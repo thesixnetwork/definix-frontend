@@ -8,24 +8,6 @@ interface Props extends Partial<DropdownProps> {
   target: React.ReactElement
 }
 
-function copyToClipboard(val: string) {
-  return new Promise((resolve, reject) => {
-    const element = document.createElement('textarea')
-    element.value = val
-    element.setAttribute('readonly', '')
-    element.style.position = 'absolute'
-    element.style.left = '-9999px'
-    document.body.appendChild(element)
-    element.select()
-    const returnValue = document.execCommand('copy')
-    document.body.removeChild(element)
-    resolve(true)
-    if (!returnValue) {
-      reject()
-    }
-  })
-}
-
 let timeout: NodeJS.Timeout
 
 const WalletDropdown: React.FC<Props> = ({ target, account, logout, ...props }) => {
@@ -38,7 +20,9 @@ const WalletDropdown: React.FC<Props> = ({ target, account, logout, ...props }) 
       if (index === 0) {
         window.open(`https://scope.klaytn.com/account/${account}?tabId=txList`, '_blank')
       } else if (index === 1) {
-        copyToClipboard(account as string)
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(account);
+        }
         setIsCopied(true)
       } else {
         logout()
