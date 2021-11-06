@@ -21,7 +21,7 @@ const WalletDropdown: React.FC<Props> = ({ target, account, logout, ...props }) 
         window.open(`https://scope.klaytn.com/account/${account}?tabId=txList`, '_blank')
       } else if (index === 1) {
         if (navigator.clipboard) {
-          navigator.clipboard.writeText(account);
+          navigator.clipboard.writeText(account)
         }
         setIsCopied(true)
       } else {
