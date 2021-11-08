@@ -166,7 +166,7 @@ const StakePeriodButton = ({ setPeriod, status }) => {
   }, [periodSelect, setPeriod, status])
 
   return (
-    <div className={`${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
+    <div className={`w-100 ${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
       <CustomButton
         isDark={isDark}
         isMobile={isMobile}

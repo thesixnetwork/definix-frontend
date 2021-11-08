@@ -1,10 +1,13 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import _ from 'lodash'
+import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR } from 'config'
 import styled from 'styled-components'
-import { Link, Button } from 'uikit-dev'
+import { Link, Button, Card, Skeleton, IconButton, ChevronRightIcon, Image } from 'uikit-dev'
 import Checkbox from '@material-ui/core/Checkbox'
+import { getVFinix } from 'utils/addressHelpers'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {
   useBalances,
@@ -28,16 +31,27 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import { useAllHarvest } from 'hooks/useHarvest'
+import { useAllHarvest, useSousHarvest, useHarvest } from 'hooks/useHarvest'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { useHarvest, useAprCardFarmHome, useAllLock, usePrivateData, useRank } from 'hooks/useLongTermStake'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/types'
+import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
+import {
+  useHarvest as useHarvestLongterm,
+  useAprCardFarmHome,
+  useAllLock,
+  usePrivateData,
+  useRank,
+} from 'hooks/useLongTermStake'
 import { State } from 'state/types'
 import { fetchCountTransactions } from 'state/longTermStake'
-import { Modal } from '../Modal'
+import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
+import exclusive from 'uikit-dev/images/for-ui-v2/exclusive-holder.png'
+import ModalStake from '../Modal/ModalStake'
 import WalletCard from './WalletCard'
 import config from './config'
 import { Login } from './types'
 import { Text } from '../../components/Text'
+import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
 
 interface Props {
   //   login: Login
@@ -64,15 +78,236 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
+const CardList = styled(Card)`
+  width: 100%;
+  //   height: 48px;
+  background-color: '#FCFCFC';
+  border-radius: 24px;
+  align-items: center;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+`
+
+const StyledFarmImages = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  > * {
+    flex-shrink: 0;
+
+    &:nth-child(01) {
+      position: relative;
+      z-index: 1;
+    }
+    &:nth-child(02) {
+      margin-left: -8px;
+    }
+  }
+`
+
+const Balance = styled.div`
+  display: flex;
+  width: 100%;
+  flex-flow: row nowrap;
+  // flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0.75rem 0.75rem 0.75rem 0.75rem;
+  background-color: ${'#E4E4E425'};
+  margin-top: 0.5rem !important;
+  border: ${({ theme }) => !theme.isDark && '1px solid #ECECEC'};
+  box-shadow: unset;
+  border-radius: ${({ theme }) => theme.radii.default};
+
+  a {
+    display: block;
+  }
+`
+
+const Coins = styled.div`
+  padding: 4px;
+  //   width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  img {
+    width: 37px;
+    flex-shrink: 0;
+  }
+
+  > * {
+    flex-shrink: 0;
+
+    &:nth-child(01) {
+      position: relative;
+      z-index: 1;
+    }
+    &:nth-child(02) {
+      margin-left: -8px;
+    }
+  }
+`
+
+const FarmsAndPools = styled.div`
+  display: flex;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+
+  .icon {
+    padding-right: 8px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &:last-child {
+    border: none;
+  }
+`
+
+const Coin = styled.div`
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  justify-content: end;
+
+  img {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: ${({ theme }) => theme.radii.circle};
+    margin-right: 6px;
+  }
+`
+
+// const Coins = styled.div`
+//   padding: 16px;
+//   width: 40%;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: space-between;
+
+//   img {
+//     width: 48px;
+//     flex-shrink: 0;
+//   }
+// `
+
+const Summary = styled.div`
+  padding: 12px 0;
+  width: 60%;
+  display: flex;
+  flex-wrap: wrap;
+
+  > div {
+    width: 50%;
+    padding: 4px;
+  }
+`
+
+const NumberInput = styled.input`
+  border: none;
+  background-color: #ffffff00;
+  font-size: 22px;
+  outline: none;
+  color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
+  // width: 45%;
+  -webkit-flex: 1 1 auto;
+  padding: 0px;
+`
+
 const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
+  const [isLoading, setIsLoading] = useState(true)
   const [selectedToken, setSelectedToken] = useState({})
   const [selectedTokenCount, setSelectedTokenCount] = useState(0)
+  const [sousId, setSousId] = useState(0)
+  const [pid, setPid] = useState(0)
+  const [isBnbPool, setIsBnbPool] = useState(false)
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  //   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  //   const { onReward } = useSousHarvest(sousId, isBnbPool)
   // Farms
+  const farmsLP = useFarms()
+  const klayPrice = usePriceKlayKusdt()
+  const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
+  const ethPriceUsd = usePriceKethKusdt()
+  const [listView, setListView] = useState(false)
+  const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 1 && farms.multiplier !== '0X')
+  //   const stackedOnlyFarms = activeFarms.filter(
+  //     (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
+  //   )
+  const stackedOnlyFarms = activeFarms
+
+  console.log('stackedOnlyFarms::', stackedOnlyFarms)
+
+  const farmsList = useCallback(
+    (farmsToDisplay, removed: boolean) => {
+      const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+        if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
+          return farm
+        }
+        const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
+          .times(farm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+        const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+        // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
+        let apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+
+        if (farm.quoteTokenSymbol === QuoteToken.KUSDT) {
+          apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(klayPrice)
+        } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+          apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+          apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+          apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+          apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.dual) {
+          const finixApy =
+            farm && finixPriceVsBNB.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
+          const dualApy =
+            farm.tokenPriceVsQuote &&
+            new BigNumber(farm.tokenPriceVsQuote)
+              .times(farm.dual.rewardPerBlock)
+              .times(BLOCKS_PER_YEAR)
+              .div(farm.lpTotalInQuoteToken)
+
+          apy = finixApy && dualApy && finixApy.plus(dualApy)
+        }
+
+        return { ...farm, apy }
+      })
+
+      return farmsToDisplayWithAPY.map((farm) => (
+        <FarmCard
+          key={farm.pid}
+          farm={farm}
+          removed={removed}
+          klayPrice={klayPrice}
+          kethPrice={ethPriceUsd}
+          sixPrice={sixPrice}
+          finixPrice={finixPrice}
+          klaytn={klaytn}
+          account={account}
+          isHorizontal={listView}
+        />
+      ))
+    },
+    [sixPrice, klayPrice, ethPriceUsd, finixPrice, klaytn, account, listView],
+  )
 
   // Pools
   const pools = usePools(account)
@@ -84,7 +319,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
 
   // LongTerm
   const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
-  const { handleHarvest } = useHarvest()
+  const { handleHarvest } = useHarvestLongterm()
+  const longtermApr = useAprCardFarmHome()
 
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
@@ -203,72 +439,277 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
   const dispatch = useDispatch()
+  const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const onharvestFarms = useHarvest(pid)
   const countTransactions = useSelector((state: State) => state.longTerm.countTransactions)
-  console.log('countTransactions', countTransactions)
   const selectHarvestfarms = useCallback(async () => {
     setPendingTx(true)
     try {
-      await onReward()
-      if (finixEarn) {
-        await handleHarvest()
-          .then((r) => {
-            dispatch(fetchCountTransactions(countTransactions + 1))
-          })
-          .catch((e) => {
-            console.log('e')
-          })
-      }
+      setPendingTx(true)
+      Object.values(selectedToken).map(async (c) => {
+        if (_.get(c, 'checked')) {
+          if (!_.get(c, 'pools')) {
+            if (_.get(c, 'farms')) {
+              setPid(_.get(c, 'pid'))
+              await onharvestFarms
+                .onReward()
+                .then((r) => {
+                  setSelectedTokenCount(selectedTokenCount + 1)
+                })
+                .catch((e) => {
+                  console.log(e)
+                })
+            } else {
+              await handleHarvest()
+                .then((r) => {
+                  setSelectedTokenCount(selectedTokenCount + 1)
+                })
+                .catch((e) => {
+                  console.log(e)
+                })
+            }
+          } else {
+            setSousId(_.get(c, 'sousId'))
+            await onReward()
+              .then((r) => {
+                setSelectedTokenCount(selectedTokenCount + 1)
+              })
+              .catch((e) => {
+                console.log(e)
+              })
+          }
+        }
+        return c
+      })
     } catch (error) {
       // TODO: find a way to handle when the user rejects transaction or it fails
-    } finally {
-      setPendingTx(false)
     }
-  }, [handleHarvest, finixEarn, dispatch, onReward, countTransactions])
+  }, [handleHarvest, onReward, selectedToken, onharvestFarms, selectedTokenCount])
 
-  // เอาไว้get length
-  //   const countTransactions = useSelector((state: State) => state.longTerm.countTransactions)
-  //   console.log('countTransactions::', countTransactions)
+  const [period, setPeriod] = useState(0)
 
   return (
-    <Modal title="Exclusive for vFINIX holder" onDismiss={onDismiss} isRainbow={false}>
-      <Text paddingRight="1">Choose farm you want to harvest reward</Text>
+    <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss}>
+      <div className="flex flex-column w-100">
+        <Text fontSize="20px" fontWeight="bold">
+          Super Stake
+        </Text>
+        <Text paddingTop="2" color="#737375">
+          Super Stake is a feature that can harvest all of your FINIX reward to stake in <b> Long-term stake </b> with
+          no minimum amount.
+        </Text>
+        <Text paddingTop="2" color="#737375">
+          You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock period{' '}
+          <b>will not be extended.</b>
+        </Text>
+      </div>
+      <Text paddingTop="3" color="#737375">
+        Choose farm/pool you want to harvest reward
+      </Text>
 
-      <div className="mt-3 flex flex-column align-center justify-center">
-        {stackedOnlyPools.map((d) => {
-          return (
-            <div className="flex justify-center">
+      <div className="flex flex-column align-center justify-center">
+        {!!balancevfinix && balancevfinix > 0 && (
+          <CardList key="VFINIX" className="px-4">
+            <div className="flex align-center">
               <FormControlLabelCustom
                 control={
                   <Checkbox
                     size="small"
-                    color="primary"
-                    checked={!!selectedToken[d.stakingTokenAddress]}
+                    color="secondary"
+                    checked={!!_.get(selectedToken, `${18}.checked`)}
                     onChange={(event) => {
-                      setSelectedToken({ ...selectedToken, [d.stakingTokenAddress]: event.target.checked })
+                      setSelectedToken({
+                        ...selectedToken,
+                        18: { checked: event.target.checked, pools: false, farms: false, status: false },
+                      })
                     }}
                   />
                 }
-                label={d.tokenName}
+                label=""
               />
-              {/* <Text>{d.tokenName}</Text> */}
+              <Coins>
+                <div className="flex">
+                  <img src={vFinix} alt="" />
+                </div>
+              </Coins>
+              <Text className="align-center ml-2">VFINIX</Text>
             </div>
+            <Text bold>{`${numeral(finixEarn).format('0,0.[00]')}`} FINIX</Text>
+          </CardList>
+        )}
+
+        {farmsList(stackedOnlyFarms, false).map((d) => {
+          const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
+          return (
+            <CardList className="px-4">
+              <div className="flex align-center">
+                <FormControlLabelCustom
+                  control={
+                    <Checkbox
+                      size="small"
+                      color="primary"
+                      checked={!!_.get(selectedToken, `${d.props.farm.pid}.checked`)}
+                      onChange={(event) => {
+                        setSelectedToken({
+                          ...selectedToken,
+                          [d.props.farm.pid]: {
+                            checked: event.target.checked,
+                            pools: false,
+                            farms: true,
+                            pid: d.props.farm.pid,
+                            status: false,
+                          },
+                        })
+                      }}
+                    />
+                  }
+                  label=""
+                />
+                <Coins>
+                  <div className="flex">
+                    {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                    {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                  </div>
+                </Coins>
+                <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
+              </div>
+              {/* <Text bold>
+                {new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}{' '}
+                FINIX
+              </Text> */}
+            </CardList>
           )
         })}
-        <Button
-          id="harvest-all"
-          size="sm"
-          variant="tertiary"
-          className="ml-2 mt-3"
-          style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
-          //   disabled={balancesWithValue.length + (finixEarn ? 1 : 0) <= 0 || pendingTx}
-          onClick={() => {
-            selectHarvestfarms()
-          }}
-        >
-          Stake
-        </Button>
+        {stackedOnlyPools.map((d, i) => {
+          const imgs = d.tokenName.split(' ')[0].split('-')
+          return (
+            <CardList className="px-4">
+              <div className="flex align-center">
+                <FormControlLabelCustom
+                  control={
+                    <Checkbox
+                      size="small"
+                      color="primary"
+                      checked={!!_.get(selectedToken, `${d.sousId}.checked`)}
+                      onChange={(event) => {
+                        setSelectedToken({
+                          ...selectedToken,
+                          [i]: {
+                            checked: event.target.checked,
+                            pools: true,
+                            sousId: d.sousId,
+                            farms: false,
+                            status: false,
+                          },
+                        })
+                      }}
+                    />
+                  }
+                  label=""
+                />
+                <Coins>
+                  <div className="flex">
+                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                  </div>
+                </Coins>
+                <Text className="align-center ml-2">{d.tokenName}</Text>
+              </div>
+              <Text bold>
+                {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)} FINIX
+              </Text>
+            </CardList>
+          )
+        })}
+        <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle">
+          Please select duration
+        </Text>
+        <StakePeriodButton setPeriod={setPeriod} status={false} />
+        <div className="flex mt-4 w-100">
+          <Text className="col-6" color="textSubtle">
+            Deposit
+          </Text>
+          <Text className="col-6 text-right" color="textSubtle">
+            Balance: 1000
+          </Text>
+        </div>
+        <Balance>
+          <NumberInput
+            style={{ width: '45%' }}
+            placeholder="0.00"
+            value=""
+            // onChange={handleChange}
+            pattern="^[0-9]*[,]?[0-9]*$"
+          />
+          {/* {percent !== 1 && (
+            <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+              <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                25%
+              </StylesButton>
+              <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                50%
+              </StylesButton>
+              <StylesButton size="sm" onClick={() => setPercent(1)}>
+                MAX
+              </StylesButton>
+            </div>
+          )} */}
+          <Coin>
+            <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+            {/* <Heading as="h1" fontSize="16px !important">
+              FINIX
+            </Heading> */}
+          </Coin>
+        </Balance>
+        <div className="flex mt-4 w-100">
+          <Text className="col-6" color="#000000">
+            Estimated Period End
+          </Text>
+          <Text className="col-6 text-right" color="#30ADFF">
+            -
+          </Text>
+        </div>
+        <div className="flex mt-2 w-100">
+          <Text className="col-6" color="#000000">
+            vFINIX earn
+          </Text>
+          <div className="flex flex-row justify-end w-100">
+            <Text className="text-right" color="#30ADFF">
+              1000
+            </Text>
+            <Text className="text-right ml-1" color="#000000">
+              vFINIX
+            </Text>
+          </div>
+        </div>
+        {pendingTx ? (
+          <Button
+            fullWidth
+            id="harvest-all"
+            radii="small"
+            className="ml-2 mt-3"
+            disabled
+            onClick={() => {
+              selectHarvestfarms()
+            }}
+          >
+            {`Harvesting...(${selectedTokenCount} /${Object.keys(selectedToken).length})`}
+          </Button>
+        ) : (
+          <Button
+            fullWidth
+            id="harvest-all"
+            radii="small"
+            className="ml-2 mt-3"
+            //   disabled={balancesWithValue.length + (finixEarn ? 1 : 0) <= 0 || pendingTx}
+            onClick={() => {
+              selectHarvestfarms()
+            }}
+          >
+            Stake
+          </Button>
+        )}
       </div>
-    </Modal>
+    </ModalStake>
   )
 }
 

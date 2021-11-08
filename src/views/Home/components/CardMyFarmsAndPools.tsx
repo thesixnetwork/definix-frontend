@@ -38,6 +38,7 @@ import styled from 'styled-components'
 import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text, useModal } from 'uikit-dev'
 
 import SuperStakeModal from 'uikit-dev/widgets/WalletModal/SuperStakeModal'
+import StartLongTermStakeModal from 'uikit-dev/widgets/WalletModal/StartLongTermStakeModal'
 
 import LogoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
 import LogoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
@@ -240,7 +241,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const longtermLocksRank = useRank()
   const { handleHarvest } = useHarvest()
   // Super Stake
-  const [onPresentConnectModal] = useModal(<SuperStakeModal />)
+  const [onPresentConnectModal] = useModal(!!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal/>)
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
