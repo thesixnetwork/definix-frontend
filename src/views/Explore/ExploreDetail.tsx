@@ -72,15 +72,14 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   // for adjust color
   const rebalance = useMemo(() => {
     if (!rawData?.ratio) return rawData
-    console.log(rawData)
     const ratio = rawData?.ratio.map((coin) => {
       const colorObj = Color(coin.color)
       const color = ((dark, c) => {
         const hex = c.hex()
         if (dark) {
-          return hex === '#000000' ? c.lighten(0.1) : hex
+          return hex === '#000000' ? c.lighten(0.1).hex() : hex
         }
-        return hex === '#FFFFFF' ? c.darken(0.1) : hex
+        return hex === '#FFFFFF' ? c.darken(0.1).hex() : hex
       })(isDark, colorObj)
       return { ...coin, color }
     })
