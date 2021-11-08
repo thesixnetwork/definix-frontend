@@ -27,7 +27,7 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
           onDismiss()
         }}
         variant={ButtonVariants.RED}
-        scale={ButtonScales.S_48}
+        lg
       >
         {buttonName}
       </Button>

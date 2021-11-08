@@ -13,7 +13,7 @@ const UnlockButton = (props) => {
     <Button
       width="100%"
       variant={ButtonVariants.BROWN}
-      scale={ButtonScales.S_40}
+      md
       onClick={onPresentConnectModal}
       {...props}
     >
