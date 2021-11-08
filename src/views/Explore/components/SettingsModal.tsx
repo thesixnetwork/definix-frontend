@@ -4,7 +4,7 @@ import SlippageToleranceSetting from './SlippageToleranceSettings'
 import TransactionDeadlineSetting from './TransactionDeadlineSetting'
 
 type SettingsModalProps = {
-  onDismiss?: () => void;
+  onDismiss?: () => void
 }
 
 const defaultOnDismiss = () => null

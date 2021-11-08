@@ -1,6 +1,17 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Input, InputProps, Link, Text, BalanceInput, Box, ColorStyles, Flex, AnountButton } from 'definixswap-uikit'
+import {
+  Button,
+  Input,
+  InputProps,
+  Link,
+  Text,
+  BalanceInput,
+  Box,
+  ColorStyles,
+  Flex,
+  AnountButton,
+} from 'definixswap-uikit'
 // import { Button, Input, InputProps, Link, Text } from 'uikit-dev'
 import useI18n from '../../hooks/useI18n'
 
@@ -31,9 +42,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
   return (
     <div>
       <Flex color={ColorStyles.DEEPGREY}>
-        <Text textStyle="R_14R">
-          Balance
-        </Text>
+        <Text textStyle="R_14R">Balance</Text>
         <Text textStyle="R_14B" className="ml-s6">
           {displayBalance.toLocaleString()}
         </Text>
@@ -45,8 +54,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
       </StyledTokenInput> */}
 
       <Box className="mb-s8" style={{ marginTop: '4px' }}>
-        <BalanceInput onChange={onChange} placeholder="0" value={value}/>
-
+        <BalanceInput onChange={onChange} placeholder="0" value={value} />
       </Box>
 
       <Flex>
