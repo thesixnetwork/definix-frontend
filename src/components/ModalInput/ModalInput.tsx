@@ -1,12 +1,5 @@
 import React from 'react'
-import {
-  Text,
-  BalanceInput,
-  Box,
-  ColorStyles,
-  Flex,
-  AnountButton,
-} from 'definixswap-uikit'
+import { Text, BalanceInput, Box, ColorStyles, Flex, AnountButton } from 'definixswap-uikit'
 // import { Button, Input, InputProps, Link, Text } from 'uikit-dev'
 import useI18n from '../../hooks/useI18n'
 

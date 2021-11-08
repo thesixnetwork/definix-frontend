@@ -116,10 +116,7 @@ const Deposit: React.FC<DepositProps> = ({
         </Flex>
       </Box>
 
-      <TitleSet
-        title={t('Deposit in the Pool')}
-        description={t('By depositing a single token')}
-      />
+      <TitleSet title={t('Deposit in the Pool')} description={t('By depositing a single token')} />
 
       <Card className="mt-s40 pa-s40">
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} />
