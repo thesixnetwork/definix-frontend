@@ -132,6 +132,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
             totalStaked,
             myStaked: stakedBalance,
             max: stakedBalance,
+            apy,
           })
         }}
       />

@@ -370,6 +370,7 @@ const Farm: React.FC = () => {
               totalStaked={pageState.data.totalStaked}
               myStaked={pageState.data.myStaked}
               max={pageState.data.max}
+              apy={pageState.data.apy}
               onBack={() => {
                 setPageState({
                   state: 'list',

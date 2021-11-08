@@ -1,27 +1,35 @@
 import React from 'react'
-import { Button, Modal } from 'uikit-dev'
+import { Button, Modal, ButtonVariants, ButtonScales, Box, Flex, Text, ColorStyles } from 'definixswap-uikit'
 
-const ConfirmModal = ({ type, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
+const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   return (
     <Modal
-      title={`Confirm ${type}`}
+      title={title}
+      mobileFull
       onDismiss={onDismiss}
-      isRainbow={false}
-      bodyPadding="0 32px 32px 32px"
-      classHeader="bd-b-n"
+      // isRainbow={false}
+      // bodyPadding="0 32px 32px 32px"
+      // classHeader="bd-b-n"
     >
-      <p>tokenName: {tokenName}</p>
-      <p>stakedBalance: {stakedBalance}</p>
+      <Box width="464px" className="mt-s16 mb-s40">
+        <Flex justifyContent="space-between">
+          <Text textStyle="R_16M" color={ColorStyles.BLACK}>
+            {tokenName}
+          </Text>
+          <Text textStyle="R_16R" color={ColorStyles.BLACK}>
+            {stakedBalance}
+          </Text>
+        </Flex>
+      </Box>
       <Button
         onClick={() => {
           onOK()
           onDismiss()
         }}
-        fullWidth
-        className="mt-5"
-        radii="card"
+        variant={ButtonVariants.RED}
+        scale={ButtonScales.S_48}
       >
-        {type}
+        {buttonName}
       </Button>
     </Modal>
   )

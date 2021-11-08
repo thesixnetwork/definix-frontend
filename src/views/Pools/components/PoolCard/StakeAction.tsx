@@ -84,6 +84,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
         <>
           {hasContract ? (
             <Button
+              width="100%"
               md
               variant={ButtonVariants.BROWN}
               disabled={isFinished || requestedApproval}
