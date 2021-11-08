@@ -34,7 +34,16 @@ interface WithdrawProps {
   onBack: () => void
 }
 
-const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, totalStaked, myStaked, max, onBack, apy }) => {
+const Withdraw: React.FC<WithdrawProps> = ({
+  sousId,
+  isOldSyrup,
+  tokenName,
+  totalStaked,
+  myStaked,
+  max,
+  onBack,
+  apy,
+}) => {
   const { t } = useTranslation()
   console.groupCollapsed('Withdraw data: ')
   console.log('tokenName: ', tokenName)
