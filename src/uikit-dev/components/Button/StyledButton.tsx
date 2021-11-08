@@ -44,7 +44,7 @@ const getButtonVariantProp =
   (prop: keyof ButtonThemeVariant) =>
   ({ theme, variant = variants.PRIMARY }: ThemedProps) => {
     // return theme.button[variant][prop]
-    return '';
+    return ''
   }
 
 const StyledButton = styled.button<ButtonProps>`

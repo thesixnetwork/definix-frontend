@@ -130,9 +130,7 @@ const UserBlock: React.FC = () => {
   return (
     <Flex width="100%" height={isMobile ? '188px' : 'auto'} alignItems="center" justifyContent="center">
       <Button
-        {
-          ...(isMobile ? { md: true } : { xs: true })
-        }
+        {...(isMobile ? { md: true } : { xs: true })}
         variant={ButtonVariants.RED}
         onClick={() => {
           onPresentConnectModal()

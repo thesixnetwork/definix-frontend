@@ -158,12 +158,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
         />
 
         <Box className="mt-s40">
-          <Button
-            variant={ButtonVariants.RED}
-            lg
-            onClick={() => onPresentConfirmModal()}
-            width="100%"
-          >
+          <Button variant={ButtonVariants.RED} lg onClick={() => onPresentConfirmModal()} width="100%">
             Remove
           </Button>
         </Box>

@@ -156,12 +156,7 @@ const Deposit: React.FC<DepositProps> = ({
         />
 
         <Box className="mt-s40">
-          <Button
-            variant={ButtonVariants.RED}
-            lg
-            onClick={() => onPresentConfirmModal()}
-            width="100%"
-          >
+          <Button variant={ButtonVariants.RED} lg onClick={() => onPresentConfirmModal()} width="100%">
             Deposit
           </Button>
         </Box>
