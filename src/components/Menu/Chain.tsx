@@ -1,6 +1,6 @@
 import React from 'react'
 import { useMatchBreakpoints, ChainToggle, ChainToggleItem, ChainBscIcon, ChainKlaytnIcon } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 
 const Chain: React.FC = () => {
   const { t } = useTranslation()

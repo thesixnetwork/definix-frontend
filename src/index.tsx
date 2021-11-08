@@ -4,11 +4,15 @@ import { KlipModalProvider } from '@sixnetwork/klaytn-use-wallet'
 import App from './App'
 import Providers from './Providers'
 
+import './i18n'
+
 ReactDOM.render(
-  <KlipModalProvider>
-    <Providers>
-      <App />
-    </Providers>
-  </KlipModalProvider>,
+  <React.StrictMode>
+    <KlipModalProvider>
+      <Providers>
+        <App />
+      </Providers>
+    </KlipModalProvider>
+  </React.StrictMode>,
   document.getElementById('root'),
 )

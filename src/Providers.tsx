@@ -1,6 +1,5 @@
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { BlockContextProvider } from 'contexts/BlockContext'
-import { LanguageContextProvider } from 'contexts/Localisation/Provider'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 
@@ -39,25 +38,23 @@ const Providers: React.FC = ({ children }) => {
   return (
     <Provider store={store}>
       <ThemeContextProvider>
-        <LanguageContextProvider>
-          <UseWalletProvider
-            chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
-            connectors={{
-              injected,
-              klip: { showModal: onPresent, closeModal: onHiddenModal },
-            }}
-          >
-            <BlockContextProvider>
-              <RefreshContextProvider>
-                <ModalProvider>
-                  <OldModalProvider>
-                    <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
-                  </OldModalProvider>
-                </ModalProvider>
-              </RefreshContextProvider>
-            </BlockContextProvider>
-          </UseWalletProvider>
-        </LanguageContextProvider>
+        <UseWalletProvider
+          chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
+          connectors={{
+            injected,
+            klip: { showModal: onPresent, closeModal: onHiddenModal },
+          }}
+        >
+          <BlockContextProvider>
+            <RefreshContextProvider>
+              <ModalProvider>
+                <OldModalProvider>
+                  <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
+                </OldModalProvider>
+              </ModalProvider>
+            </RefreshContextProvider>
+          </BlockContextProvider>
+        </UseWalletProvider>
       </ThemeContextProvider>
     </Provider>
   )

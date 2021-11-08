@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { Flex, CheckBIcon, ColorStyles, Dropdown, DropdownItem, DropdownProps } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 
 interface Props extends Partial<DropdownProps> {
   account: string

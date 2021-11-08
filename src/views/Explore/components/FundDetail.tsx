@@ -4,7 +4,7 @@ import numeral from 'numeral'
 import { compact, get, find } from 'lodash'
 import { Text } from 'definixswap-uikit'
 
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 import { Rebalance } from '../../../state/types'
 
 import { Table, TD, TH, TR } from './Table'

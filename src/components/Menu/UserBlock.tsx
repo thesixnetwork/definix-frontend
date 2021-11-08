@@ -17,7 +17,7 @@ import {
   TextStyles,
   useMatchBreakpoints,
 } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import WalletDropdown from './WalletDropdown'
 import NetWorth from './NetWorth'

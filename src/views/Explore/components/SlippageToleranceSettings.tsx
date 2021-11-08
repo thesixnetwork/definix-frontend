@@ -1,8 +1,9 @@
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Flex, Input, Text } from 'uikit-dev'
+import { Button, ButtonScales, ColorStyles, Flex, Input, SettingIcon, Text, TextStyles } from 'definixswap-uikit'
 import Helper from 'uikit-dev/components/Helper'
+import { useTranslation } from 'react-i18next'
 
 const MAX_SLIPPAGE = 5000
 const RISKY_SLIPPAGE_LOW = 50
@@ -45,7 +46,7 @@ const Options = styled.div`
 const Label = styled.div`
   align-items: center;
   display: flex;
-  margin-bottom: 8px;
+  margin: 16px 0;
 `
 
 const predefinedValues = [
@@ -55,6 +56,7 @@ const predefinedValues = [
 ]
 
 const SlippageToleranceSettings = () => {
+  const { t } = useTranslation();
   const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
   const [value, setValue] = useState(userSlippageTolerance / 100)
   const [error, setError] = useState<string | null>(null)
@@ -91,14 +93,8 @@ const SlippageToleranceSettings = () => {
   return (
     <StyledSlippageToleranceSettings>
       <Label>
-        <Text small style={{ fontWeight: 600 }}>
-          Slippage tolerance
-        </Text>
-        <Helper
-          text="Your transaction will revert if the price changes unfavorably by more than this percentage."
-          className="ml-2"
-          position="right"
-        />
+        <Text textStyle={TextStyles.R_16M} color={ColorStyles.DEEPGREY} mr="S_6">{t("Slippage tolerance")}</Text>
+        <Helper text={t("Your transaction will revert if the price changes unfavorably by more than this percentage.")} />
       </Label>
       <Options>
         <Flex mb={['8px', 0]} mr={[0, '8px']}>
@@ -108,9 +104,10 @@ const SlippageToleranceSettings = () => {
             return (
               <Option key={predefinedValue}>
                 <Button
-                  variant={value === predefinedValue ? 'primary' : 'secondary'}
+                  width="88px"
+                  scale={ButtonScales.S_40}
+                  variant={value === predefinedValue ? 'red' : 'lightbrown'}
                   onClick={handleClick}
-                  radii="card"
                 >
                   {label}
                 </Button>
@@ -119,27 +116,26 @@ const SlippageToleranceSettings = () => {
           })}
         </Flex>
         <Flex alignItems="center">
-          <Option>
-            <Input
-              type="number"
-              scale="lg"
-              step={0.1}
-              min={0.1}
-              placeholder="5%"
-              value={value}
-              onChange={handleChange}
-              isWarning={error !== null}
-            />
-          </Option>
-          <Option>
-            <Text fontSize="16px">%</Text>
-          </Option>
+          <Input
+            type="number"
+            step={0.1}
+            min={0.1}
+            placeholder="5%"
+            value={value}
+            onChange={handleChange}
+            isWarning={error !== null}
+            width="154px"
+            endIcon={<Text fontSize="16px">%</Text>}
+          />
         </Flex>
       </Options>
       {error && (
-        <Text small mt="8px" color="failure">
-          {error}
-        </Text>
+        <Flex mt="S_12">
+          <SettingIcon />
+          <Text ml="5px" textStyle={TextStyles.R_14R} color={ColorStyles.RED}>
+            {error}
+          </Text>
+        </Flex>
       )}
     </StyledSlippageToleranceSettings>
   )
