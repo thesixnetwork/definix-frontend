@@ -154,7 +154,7 @@ const Deposit: React.FC<DepositProps> = ({
         <Box className="mt-s40">
           <Button
             variant={ButtonVariants.RED}
-            scale={ButtonScales.S48}
+            scale={ButtonScales.S_48}
             onClick={() => onPresentConfirmModal()}
             width="100%"
           >
