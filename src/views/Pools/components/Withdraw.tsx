@@ -1,14 +1,27 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import useI18n from 'hooks/useI18n'
 import { useTranslation } from 'react-i18next'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
-import { Button } from 'uikit-dev'
+import {
+  ColorStyles,
+  Text,
+  Box,
+  TitleSet,
+  Card,
+  Flex,
+  Divider,
+  Button,
+  ButtonScales,
+  ButtonVariants,
+  BackIcon,
+  useModal,
+} from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import useModal from 'uikit-dev/widgets/Modal/useModal'
+// import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalInput from 'components/ModalInput'
 import ConfirmModal from './ConfirmModal'
+import CardHeading from './PoolCard/CardHeading'
 
 interface WithdrawProps {
   sousId: number
@@ -17,10 +30,11 @@ interface WithdrawProps {
   totalStaked: BigNumber
   myStaked: BigNumber
   max: BigNumber
+  apy: BigNumber
   onBack: () => void
 }
 
-const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, totalStaked, myStaked, max, onBack }) => {
+const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, totalStaked, myStaked, max, onBack, apy }) => {
   const { t } = useTranslation()
   console.groupCollapsed('Withdraw data: ')
   console.log('tokenName: ', tokenName)
@@ -29,7 +43,6 @@ const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, tota
   console.log('max: ', max)
   console.groupEnd()
   const [val, setVal] = useState('')
-  const TranslateString = useI18n()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onUnstake } = useSousUnstake(sousId)
 
@@ -41,9 +54,9 @@ const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, tota
     return convertToPriceFromSymbol(tokenName)
   }, [convertToPriceFromSymbol, tokenName])
 
-  const totalStakedPrice = useMemo(() => {
-    return convertToUSD(new BigNumber(getBalanceNumber(totalStaked)).multipliedBy(price), 0)
-  }, [convertToUSD, totalStaked, price])
+  const totalStakedValue = useMemo(() => {
+    return getBalanceNumber(totalStaked)
+  }, [totalStaked])
 
   const myStakedValue = useMemo(() => {
     return getBalanceNumber(myStaked)
@@ -78,7 +91,7 @@ const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, tota
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
       title={t('Confirm Remove')}
-      buttonName={t('Remove')}
+      buttonName="Remove"
       tokenName={tokenName}
       stakedBalance={val}
       onOK={handleUnstake}
@@ -88,25 +101,64 @@ const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, tota
 
   return (
     <>
-      <Button onClick={onBack} fullWidth className="mt-5" radii="card">
-        Back
-      </Button>
+      <Box className="mb-s20" style={{ cursor: 'pointer' }} display="inline-flex" onClick={onBack}>
+        <Flex>
+          <BackIcon />
+          <Text textStyle="R_16M" color={ColorStyles.MEDIUMGREY} className="ml-s6">
+            Back
+          </Text>
+        </Flex>
+      </Box>
 
-      <p>totalStakedPrice: {totalStakedPrice}</p>
-      <p>myStaked: {myStakedValue.toLocaleString()}</p>
-      <p>myStakedPrice: {myStakedPrice}</p>
+      <TitleSet title={t('Remove from the Pool')} description={t('Remove tokens from the pool')} />
 
-      <ModalInput
-        value={val}
-        onSelectBalanceRateButton={handleSelectBalanceRate}
-        onChange={handleChange}
-        max={fullBalance}
-        symbol={tokenName}
-        inputTitle={TranslateString(1070, 'Stake')}
-      />
-      <Button onClick={() => onPresentConfirmModal()} fullWidth className="mt-5" radii="card">
-        Withdraw
-      </Button>
+      <Card className="mt-s40 pa-s40">
+        <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} />
+
+        <Flex justifyContent="space-between" className="mt-s20">
+          <Box style={{ width: '50%' }}>
+            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
+              {t('Total staked')}
+            </Text>
+            <Text color={ColorStyles.BLACK} textStyle="R_18M">
+              {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+            </Text>
+          </Box>
+          <Box style={{ width: '50%' }}>
+            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
+              {t('My Staked')}
+            </Text>
+            <Text textStyle="R_18M" color={ColorStyles.BLACK}>
+              {myStakedValue.toLocaleString()}
+            </Text>
+            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
+              = {myStakedPrice}
+            </Text>
+          </Box>
+        </Flex>
+
+        <Divider className="mt-s20 mb-s28" />
+
+        <ModalInput
+          value={val}
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onChange={handleChange}
+          max={fullBalance}
+          symbol={tokenName}
+          inputTitle="stake"
+        />
+
+        <Box className="mt-s40">
+          <Button
+            variant={ButtonVariants.RED}
+            scale={ButtonScales.S_48}
+            onClick={() => onPresentConfirmModal()}
+            width="100%"
+          >
+            Remove
+          </Button>
+        </Box>
+      </Card>
     </>
   )
 }

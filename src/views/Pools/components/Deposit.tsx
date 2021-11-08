@@ -15,9 +15,10 @@ import {
   ButtonScales,
   ButtonVariants,
   BackIcon,
+  useModal,
 } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import useModal from 'uikit-dev/widgets/Modal/useModal'
+// import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalInput from 'components/ModalInput'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './PoolCard/CardHeading'
