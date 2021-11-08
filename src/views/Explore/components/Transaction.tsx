@@ -80,7 +80,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
                 </div>
               </TD>
               <TD align="center">
-                <div className="flex align-center">
+                <div className="flex align-center justify-center">
                   {r.event_name === 'AddFundAmount' ? (
                     <>
                       <AddIcon color="success" className="mr-1" />

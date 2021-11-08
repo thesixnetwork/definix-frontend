@@ -20,10 +20,6 @@ import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
 
-const TutorailsLink = styled(Link)`
-  text-decoration-line: underline;
-`
-
 const Explore: React.FC = () => {
   const { path } = useRouteMatch()
   const { t } = useTranslation()

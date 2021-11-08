@@ -1,16 +1,13 @@
-import Checkbox from '@material-ui/core/Checkbox'
-import _ from 'lodash'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
-import React, { useState } from 'react'
+import { get } from 'lodash'
+import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
-import { Text, useMatchBreakpoints } from 'uikit-dev'
+import { Checkbox, CheckboxLabel, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
 import { TypeChartName } from './SelectChart'
 
-const rebalanceColor = '#30ADFF'
+const rebalanceColor = '#ff6828'
 
 const Box = styled.div`
   canvas {
@@ -18,29 +15,23 @@ const Box = styled.div`
   }
 `
 
-const FormControlLabelCustom = styled(FormControlLabel)`
-  .MuiCheckbox-root {
-    padding: 6px;
-  }
-`
-
 const LegendItem = styled.div`
   display: flex;
   align-items: center;
+  min-width: 106px;
 
   .rebalancing {
-    width: 24px;
-    height: 6px;
-    border-radius: ${({ theme }) => theme.radii.small};
+    width: 20px;
+    height: 4px;
     background: ${rebalanceColor};
-    margin-right: 8px;
+    margin-right: 10px;
   }
 
   img {
     flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    border-radius: ${({ theme }) => theme.radii.circle};
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
     margin-right: 6px;
   }
 `
@@ -72,10 +63,7 @@ const LoadingData = () => (
   </div>
 )
 
-const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
-  const { isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isMd && !isLg
-
+const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
   const onCheck = (token) => (event) => {
     setSelectedTokens({ ...selectedTokens, [token.symbol]: event.target.checked })
   }
@@ -87,88 +75,89 @@ const Legend = ({ selectedTokens, setSelectedTokens, tokens }) => {
     }
     setSelectedTokens(selectAllToken)
   }
+  const AllChecked = useMemo(() => tokens.every(({symbol}) => selectedTokens[symbol]), [tokens, selectedTokens])
 
   return (
-    <FormGroup row className="flex flex-wrap mb-5">
-      <LegendItem className={isMobile ? 'col-6' : 'mr-6'}>
-        <div className="rebalancing" />
-        <Text fontSize="14px" bold>
-          Rebalancing
-        </Text>
-      </LegendItem>
-
-      {tokens.map((c) => {
-        const thisName = (() => {
-          if (c.symbol === 'WKLAY') return 'KLAY'
-          if (c.symbol === 'WBNB') return 'BNB'
-          return c.symbol
-        })()
-        return (
-          <FormControlLabelCustom
-            className={isMobile ? 'col-6 ma-0' : ' mr-6'}
-            control={
-              <Checkbox size="small" color="primary" checked={!!selectedTokens[c.symbol]} onChange={onCheck(c)} />
-            }
-            label={
+    <Flex className="flex mb-5">
+      <div>
+        <LegendItem className="mr-s24" style={{minWidth: '160px'}}>
+          <div className="rebalancing" />
+          <Text textStyle="R_14R">{fundName}</Text>
+        </LegendItem>
+      </div>
+      <Flex flexWrap="wrap">
+        {tokens.map((c) => {
+          const thisName = (() => {
+            if (c.symbol === 'WKLAY') return 'KLAY'
+            if (c.symbol === 'WBNB') return 'BNB'
+            return c.symbol
+          })()
+          return (
+            <CheckboxLabel
+              className="mr-s24 mb-s16 flex align-center"
+              control={
+                <Checkbox scale="sm" variantColor="brown" checked={!!selectedTokens[c.symbol]} onChange={onCheck(c)} />
+            }>
               <LegendItem>
                 <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-                <Text fontSize="14px" bold>
+                <Text textStyle="R_14R">
                   {thisName}
                 </Text>
               </LegendItem>
-            }
-          />
-        )
-      })}
-      <FormControlLabelCustom
-        className={isMobile ? 'col-6 ma-0' : ' mr-6'}
-        control={<Checkbox size="small" color="primary" onChange={onCheckAll()} />}
-        label={
+            </CheckboxLabel>
+          )
+        })}
+        <CheckboxLabel
+          className="mx-r24 mb-s16 flex align-center"
+          control={<Checkbox scale="sm" variantColor="brown" checked={AllChecked} onChange={onCheckAll()} />}
+        >
           <LegendItem>
             {/* <img src={`/images/coins/${c.symbol || ''}.png`} alt="" /> */}
-            <Text fontSize="14px" bold>
+            <Text textStyle="R_14R">
               ALL
             </Text>
           </LegendItem>
-        }
-      />
-    </FormGroup>
+        </CheckboxLabel>
+      </Flex>
+    </Flex>
   )
 }
 
-const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
+const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
   const { isDark } = useTheme()
+  const { isSm, isMd } = useMatchBreakpoints()
+  const isMobile = isSm || isMd;
   const [selectedTokens, setSelectedTokens] = useState({})
   const data = (canvas) => {
-    const ctx = canvas.getContext('2d')
-
-    const gradient = ctx.createLinearGradient(0, 0, 0, 320)
-    gradient.addColorStop(0, rebalanceColor)
-    gradient.addColorStop(0.7, isDark ? 'transparent' : 'white')
-    // eslint-disable-next-line
-    // debugger
     return {
-      labels: _.get(graphData, 'labels', []),
-      datasets: Object.keys(_.get(graphData, 'graph', {}))
+      labels: get(graphData, 'labels', []),
+      datasets: Object.keys(get(graphData, 'graph', {}))
         .filter((key) => selectedTokens[key] || key === 'rebalance')
         .map((key) => {
-          const thisData = _.get(graphData, `graph.${key}`, {})
+          const thisData = get(graphData, `graph.${key}`, {})
           const thisName = thisData.name || ''
 
           return {
             label: thisName,
-            chartName: _.get(graphData, `chartName`, ''),
+            chartName: get(graphData, `chartName`, ''),
             data: thisData.values || [],
             dataPrice: thisData.valuesPrice || [],
             fill: true,
             borderColor: thisData.color,
+            pointBackgroundColor: thisData.color,
+            pointBorderColor: thisData.color,
+            borderWidth: 3,
+            pointRadius: 1,
+            pointHoverRadius: 4,
+            pointHoverBorderWidth: 3,
+            pointHoverBackgroundColor: 'white',
             tension: 0,
+            backgroundColor: 'transparent',
             ...(thisName === 'Rebalance'
               ? {
                   borderColor: rebalanceColor,
-                  backgroundColor: gradient,
-                  pointBackgroundColor: 'transparent',
-                  pointBorderColor: 'transparent',
+                  pointBackgroundColor: rebalanceColor,
+                  pointBorderColor: rebalanceColor,
                 }
               : {}),
           }
@@ -202,22 +191,32 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
       ],
     },
     tooltips: {
-      mode: 'index',
+      mode: 'nearest',
       displayColors: false,
+  		interaction: {
+        intersect: true
+      },
       callbacks: {
+        title: (tooltipItem, dataTooltip, ...props) => {
+          const index = tooltipItem[0].datasetIndex
+          const curGraph = dataTooltip.datasets[index]
+          return curGraph?.label;
+        },
+        beforeLabel: (tooltipItem) => {
+          return tooltipItem.xLabel
+        },
         label: (tooltipItem, dataTooltip) => {
           const index = tooltipItem.datasetIndex
-          // eslint-disable-next-line
-          // debugger
-          if ((dataTooltip.datasets[index].chartName as TypeChartName) === 'Price') {
-            const price = dataTooltip.datasets[index].dataPrice[tooltipItem.index]
-
-            if (dataTooltip.datasets[index].label === 'rebalance') {
-              return `${dataTooltip.datasets[index].label}: ${price.toFixed(2)}`
-            }
-            return `${dataTooltip.datasets[index].label}: $ ${price.toFixed(2)}`
-          }
-          return `${dataTooltip.datasets[index].label}: ${(+tooltipItem.value).toFixed(2)}`
+          const curGraph = dataTooltip.datasets[index]
+          return `Price: $${Number(curGraph.dataPrice[tooltipItem.index].toFixed(2)).toLocaleString()}`
+        },
+        afterLabel: (tooltipItem, dataTooltip) => {
+          const index = tooltipItem.datasetIndex
+          const curGraph = dataTooltip.datasets[index]
+          const diff = (tooltipItem.value - curGraph.data[0]);
+          const same = diff === 0;
+          const sign = diff < 0 ? '-' : '+';
+          return `Change: ${same ? '' : sign}${diff.toFixed(2)}%`
         },
       },
     },
@@ -225,7 +224,7 @@ const FullChart = ({ tokens, isLoading, graphData = {}, className = '', height =
 
   return (
     <div className={className}>
-      <Legend tokens={tokens} selectedTokens={selectedTokens} setSelectedTokens={setSelectedTokens} />
+      {isMobile || <Legend fundName={fundName} tokens={tokens} selectedTokens={selectedTokens} setSelectedTokens={setSelectedTokens} />}
       <RelativeDiv>
         <Box>
           <Line data={data} options={options} height={height} legend={{ display: false }} />
