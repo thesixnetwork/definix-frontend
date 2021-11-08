@@ -84,6 +84,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
         <>
           {hasContract ? (
             <Button
+              width="100%"
               scale={ButtonScales.S_40}
               variant={ButtonVariants.BROWN}
               disabled={isFinished || requestedApproval}
