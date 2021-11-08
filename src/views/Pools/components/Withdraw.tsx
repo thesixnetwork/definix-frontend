@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'react-i18next'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
 import { Button } from 'uikit-dev'
@@ -20,6 +21,7 @@ interface WithdrawProps {
 }
 
 const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, totalStaked, myStaked, max, onBack }) => {
+  const { t } = useTranslation()
   console.groupCollapsed('Withdraw data: ')
   console.log('tokenName: ', tokenName)
   console.log('totalStakedPrice: ', totalStaked)
@@ -74,7 +76,13 @@ const Withdraw: React.FC<WithdrawProps> = ({ sousId, isOldSyrup, tokenName, tota
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
-    <ConfirmModal type="Withdraw" tokenName={tokenName} stakedBalance={val} onOK={handleUnstake} />,
+    <ConfirmModal
+      title={t('Confirm Remove')}
+      buttonName={t('Remove')}
+      tokenName={tokenName}
+      stakedBalance={val}
+      onOK={handleUnstake}
+    />,
     false,
   )
 

@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import useI18n from 'hooks/useI18n'
+import { useTranslation } from 'react-i18next'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import {
@@ -45,6 +45,7 @@ const Deposit: React.FC<DepositProps> = ({
   apy,
   onBack,
 }) => {
+  const { t } = useTranslation()
   console.groupCollapsed('Deposit data: ')
   console.log('tokenName: ', tokenName)
   console.log('totalStakedPrice: ', totalStaked)
@@ -52,7 +53,6 @@ const Deposit: React.FC<DepositProps> = ({
   console.log('max: ', max)
   console.groupEnd()
   const [val, setVal] = useState('')
-  const TranslateString = useI18n()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onStake } = useSousStake(sousId, isBnbPool)
 
@@ -95,7 +95,13 @@ const Deposit: React.FC<DepositProps> = ({
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
-    <ConfirmModal type="deposit" tokenName={tokenName} stakedBalance={val} onOK={() => onStake(val)} />,
+    <ConfirmModal
+      title={t('Confirm Deposit')}
+      buttonName={t('Deposit')}
+      tokenName={tokenName}
+      stakedBalance={val}
+      onOK={() => onStake(val)}
+    />,
     false,
   )
 
@@ -111,8 +117,8 @@ const Deposit: React.FC<DepositProps> = ({
       </Box>
 
       <TitleSet
-        title="Deposit in the Pool"
-        description="By depositing a single token in the pool to get FINIX with high interest."
+        title={t('Deposit in the Pool')}
+        description={t('By depositing a single token')}
       />
 
       <Card className="mt-s40 pa-s40">
@@ -121,7 +127,7 @@ const Deposit: React.FC<DepositProps> = ({
         <Flex justifyContent="space-between" className="mt-s20">
           <Box style={{ width: '50% ' }}>
             <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-              Total Staked
+              {t('Total staked')}
             </Text>
             <Text color={ColorStyles.BLACK} textStyle="R_18M">
               {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
@@ -129,7 +135,7 @@ const Deposit: React.FC<DepositProps> = ({
           </Box>
           <Box style={{ width: '50% ' }}>
             <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-              My Staked
+              {t('My Staked')}
             </Text>
             <Text textStyle="R_18M" color={ColorStyles.BLACK}>
               {myStakedValue.toLocaleString()}
@@ -148,7 +154,7 @@ const Deposit: React.FC<DepositProps> = ({
           onChange={handleChange}
           max={fullBalance}
           symbol={tokenName}
-          inputTitle={TranslateString(1070, 'Stake')}
+          inputTitle="stake"
         />
 
         <Box className="mt-s40">
