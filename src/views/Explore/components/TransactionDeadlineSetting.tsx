@@ -1,34 +1,22 @@
 import useUserDeadline from 'hooks/useUserDeadline'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Input, Text } from 'uikit-dev'
+import { Input, Text, TextStyles, ColorStyles, Flex, SettingIcon } from 'definixswap-uikit'
 import Helper from 'uikit-dev/components/Helper'
 
 const StyledTransactionDeadlineSetting = styled.div`
-  margin-bottom: 16px;
+  margin-top: 4px;
 `
 
 const Label = styled.div`
   align-items: center;
   display: flex;
-  margin-bottom: 8px;
-`
-
-const Field = styled.div`
-  align-items: center;
-  display: inline-flex;
-
-  & > ${Input} {
-    max-width: 100px;
-  }
-
-  & > ${Text} {
-    font-size: 14px;
-    margin-left: 8px;
-  }
+  margin: 16px 0;
 `
 
 const TransactionDeadlineSetting = () => {
+  const { t } = useTranslation();
   const [deadline, setDeadline] = useUserDeadline()
   const [value, setValue] = useState(deadline / 60) // deadline in minutes
   const [error, setError] = useState<string | null>(null)
@@ -56,23 +44,23 @@ const TransactionDeadlineSetting = () => {
   return (
     <StyledTransactionDeadlineSetting>
       <Label>
-        <Text small style={{ fontWeight: 600 }}>
-          Transaction deadline
-        </Text>
-        <Helper
-          text="Your transaction will revert if it is pending for more than this long."
-          className="ml-2"
-          position="right"
-        />
+        <Text textStyle={TextStyles.R_16M} color={ColorStyles.DEEPGREY} mr="S_6">{t("Transaction deadline")}</Text>
+        <Helper text={t("Your transaction will revert if it is pending for more than this long.")} />
       </Label>
-      <Field>
-        <Input type="number" scale="lg" step="1" min="1" value={value} onChange={handleChange} />
-        <Text>Minutes</Text>
-      </Field>
+      <Flex alignItems="center">
+        <Input
+          type="number" step="1" min="1" value={value} onChange={handleChange}
+          width="184px"
+          endIcon={<Text fontSize="16px">Minutes</Text>}
+        />
+      </Flex>
       {error && (
-        <Text small mt="8px" color="failure">
+        <Flex mt="S_12">
+        <SettingIcon />
+        <Text ml="5px" textStyle={TextStyles.R_14R} color={ColorStyles.RED}>
           {error}
         </Text>
+      </Flex>
       )}
     </StyledTransactionDeadlineSetting>
   )

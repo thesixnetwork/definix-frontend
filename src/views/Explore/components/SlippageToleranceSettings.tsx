@@ -105,7 +105,7 @@ const SlippageToleranceSettings = () => {
               <Option key={predefinedValue}>
                 <Button
                   width="88px"
-                  scale={ButtonScales.S_40}
+                  md
                   variant={value === predefinedValue ? 'red' : 'lightbrown'}
                   onClick={handleClick}
                 >

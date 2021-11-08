@@ -156,7 +156,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
         </Box>
         <Button
           variant={ButtonVariants.RED}
-          scale={ButtonScales.S_40}
+          md
           minWidth="100px"
           mr="8px"
           disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}

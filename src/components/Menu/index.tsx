@@ -5,6 +5,7 @@ import useTheme from 'hooks/useTheme'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
 import { Menu as UikitMenu } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
+import SettingsModal from 'views/Explore/components/SettingsModal'
 import { links } from './config'
 import UserBlock from './UserBlock'
 import Chain from './Chain'
@@ -21,6 +22,7 @@ const Menu = (props) => {
     <UikitMenu
       userBlock={<UserBlock />}
       chain={<Chain />}
+      settingModal={<SettingsModal />}
       // account={account}
       // login={connect}
       // logout={reset}
