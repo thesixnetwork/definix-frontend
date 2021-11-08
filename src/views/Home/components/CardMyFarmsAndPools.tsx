@@ -241,7 +241,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const longtermLocksRank = useRank()
   const { handleHarvest } = useHarvest()
   // Super Stake
-  const [onPresentConnectModal] = useModal(!!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal/>)
+  const [onPresentConnectModal] = useModal(
+    !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
+  )
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
