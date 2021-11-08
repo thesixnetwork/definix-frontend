@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { compact, get, find } from 'lodash'
+import { compact, get } from 'lodash'
 import { Text } from 'definixswap-uikit'
 
 import useTranslation from 'contexts/Localisation/useTranslation'

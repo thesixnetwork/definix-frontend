@@ -46,6 +46,7 @@ const HorizontalMobileStyle = styled(Card)`
 `
 
 const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  const { t } = useTranslation()
   return (
     <Button
       minWidth="auto"
@@ -56,7 +57,7 @@ const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
       onClick={onClick}
       className="w-100"
     >
-      View Details
+      {t('View Details')}
     </Button>
   )
 }
