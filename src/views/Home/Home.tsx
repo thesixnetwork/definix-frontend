@@ -1,6 +1,6 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import axios from 'axios'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 import useTheme from 'hooks/useTheme'
 import _ from 'lodash'
 import React, { useEffect, useState } from 'react'

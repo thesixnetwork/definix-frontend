@@ -4,7 +4,7 @@ import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 import { usePriceFinixUsd, useProfile } from 'state/hooks'
 import { Menu as UikitMenu } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 import { links } from './config'
 import UserBlock from './UserBlock'
 import Chain from './Chain'
@@ -12,7 +12,7 @@ import Chain from './Chain'
 
 const Menu = (props) => {
   // const { account, connect, reset } = useWallet()
-  const { setLangCode, selectedLangCode, t } = useTranslation()
+  const { i18n, t } = useTranslation()
   const { isDark, toggleTheme } = useTheme()
   const finixPriceUsd = usePriceFinixUsd()
   // const { profile } = useProfile()
@@ -26,9 +26,9 @@ const Menu = (props) => {
       // logout={reset}
       isDark={isDark}
       toggleTheme={toggleTheme}
-      currentLang={selectedLangCode}
+      currentLang={i18n.language}
       langs={supportedLanguages}
-      setLang={({ code }) => setLangCode(code)}
+      setLang={({ code }) => i18n.changeLanguage(code)}
       // finixPriceUsd={finixPriceUsd.toNumber()}
       // price={finixPriceUsd.toNumber() <= 0 ? 'N/A' : numeral(finixPriceUsd.toNumber()).format('0,0.0000')}
       links={links(t)}

@@ -8,7 +8,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
 import styled from 'styled-components'
 import { Box, Flex, Link, Text, TitleSet, Toggle, useModal } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 
 import { Rebalance } from '../../state/types'

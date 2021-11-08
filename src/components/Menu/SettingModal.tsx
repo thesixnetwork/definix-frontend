@@ -1,6 +1,6 @@
 import React from 'react'
 import { Modal, Box } from 'definixswap-uikit'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 
 const SettingModal = ({ onDismiss = () => null, isConfirm = false }) => {
   const { t } = useTranslation()

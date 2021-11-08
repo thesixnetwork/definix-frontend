@@ -4,7 +4,7 @@ import { Text } from 'definixswap-uikit'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import Helper from 'uikit-dev/components/Helper'
 
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 import { Rebalance } from '../../../state/types'
 
 import { Table, TD, TH, TR } from './Table'

@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'definixswap-uikit'
 import { useWalletModal } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import useTranslation from 'contexts/Localisation/useTranslation'
+import { useTranslation } from 'react-i18next'
 
 const UnlockButton = (props) => {
   const { t } = useTranslation()

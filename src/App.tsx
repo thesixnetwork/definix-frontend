@@ -101,8 +101,8 @@ const App: React.FC = () => {
   return (
     <Router history={history}>
       <GlobalStyle />
-      <Menu>
-        <Suspense fallback={<PageLoader />}>
+      <Suspense fallback={<PageLoader />}>
+        <Menu>
           <Switch>
             <Route path="/" exact>
               <Home />
@@ -171,8 +171,8 @@ const App: React.FC = () => {
             {/* 404 */}
             <Route component={NotFound} />
           </Switch>
-        </Suspense>
-      </Menu>
+        </Menu>
+      </Suspense>
       <ToastListener />
       {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (
