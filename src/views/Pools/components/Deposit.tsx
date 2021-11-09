@@ -12,13 +12,12 @@ import {
   Flex,
   Divider,
   Button,
-  ButtonScales,
   ButtonVariants,
   BackIcon,
   useModal,
+  useMatchBreakpoints,
 } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-// import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalInput from 'components/ModalInput'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './PoolCard/CardHeading'
@@ -47,15 +46,11 @@ const Deposit: React.FC<DepositProps> = ({
   onBack,
 }) => {
   const { t } = useTranslation()
-  console.groupCollapsed('Deposit data: ')
-  console.log('tokenName: ', tokenName)
-  console.log('totalStakedPrice: ', totalStaked)
-  console.log('myStaked: ', myStaked)
-  console.log('max: ', max)
-  console.groupEnd()
-  const [val, setVal] = useState('')
+  const { isMobile } = useMatchBreakpoints()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onStake } = useSousStake(sousId, isBnbPool)
+  const [isPendingTX, setIsPendingTX] = useState(false)
+  const [val, setVal] = useState('')
 
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
@@ -92,6 +87,20 @@ const Deposit: React.FC<DepositProps> = ({
     [max, setVal],
   )
 
+  const handleStake = useCallback(async () => {
+    if (isPendingTX) return
+    try {
+      setIsPendingTX(true)
+      await onStake(val)
+      // toast
+      onBack()
+    } catch (error) {
+      // toast
+    } finally {
+      setIsPendingTX(false)
+    }
+  }, [onStake, val, onBack, isPendingTX])
+
   /**
    * confirm modal
    */
@@ -101,10 +110,38 @@ const Deposit: React.FC<DepositProps> = ({
       buttonName={t('Deposit')}
       tokenName={tokenName}
       stakedBalance={val}
-      onOK={() => onStake(val)}
+      onOK={handleStake}
     />,
     false,
   )
+
+  const cardStyle = useMemo((): {
+    flexDirection: 'column' | 'row'
+    margin: string
+    padding: string
+  } => {
+    return {
+      flexDirection: isMobile ? 'column' : 'row',
+      margin: `my-s${isMobile ? '28' : '40'}`,
+      padding: `pa-s${isMobile ? '20' : '40'}`,
+    }
+  }, [isMobile])
+
+  const columnStyle = useMemo((): {
+    flexDirection: 'column' | 'row'
+    width: string
+    justifyContent: 'space-between' | 'normal'
+    valueTextSize: string
+    valueTextWidth: string
+  } => {
+    return {
+      flexDirection: isMobile ? 'row' : 'column',
+      width: isMobile ? '100%' : '50%',
+      justifyContent: isMobile ? 'space-between' : 'normal',
+      valueTextSize: isMobile ? 'R_16M' : 'R_18M',
+      valueTextWidth: isMobile ? '65%' : '100%',
+    }
+  }, [isMobile])
 
   return (
     <>
@@ -119,29 +156,40 @@ const Deposit: React.FC<DepositProps> = ({
 
       <TitleSet title={t('Deposit in the Pool')} description={t('By depositing a single token')} />
 
-      <Card className="mt-s40 pa-s40">
+      <Card className={`${cardStyle.margin} ${cardStyle.padding}`}>
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} />
 
-        <Flex justifyContent="space-between" className="mt-s20">
-          <Box style={{ width: '50% ' }}>
+        <Flex justifyContent="space-between" flexDirection={cardStyle.flexDirection} className="mt-s20">
+          <Flex
+            flexDirection={columnStyle.flexDirection}
+            justifyContent={columnStyle.justifyContent}
+            style={{ width: columnStyle.width }}
+          >
             <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
               {t('Total staked')}
             </Text>
-            <Text color={ColorStyles.BLACK} textStyle="R_18M">
+            <Text width={columnStyle.valueTextWidth} color={ColorStyles.BLACK} textStyle={columnStyle.valueTextSize}>
               {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
             </Text>
-          </Box>
-          <Box style={{ width: '50% ' }}>
+          </Flex>
+
+          <Flex
+            flexDirection={columnStyle.flexDirection}
+            justifyContent={columnStyle.justifyContent}
+            style={{ width: columnStyle.width }}
+          >
             <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
               {t('My Staked')}
             </Text>
-            <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-              {myStakedValue.toLocaleString()}
-            </Text>
-            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-              = {myStakedPrice}
-            </Text>
-          </Box>
+            <Box width={columnStyle.valueTextWidth}>
+              <Text textStyle={columnStyle.valueTextSize} color={ColorStyles.BLACK}>
+                {myStakedValue.toLocaleString()}
+              </Text>
+              <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
+                = {myStakedPrice}
+              </Text>
+            </Box>
+          </Flex>
         </Flex>
 
         <Divider className="mt-s20 mb-s28" />
