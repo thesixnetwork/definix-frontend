@@ -1,14 +1,7 @@
 import React from 'react'
 import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image } from 'definixswap-uikit'
 
-const ConfirmModal = ({
-  title,
-  buttonName,
-  tokenName,
-  stakedBalance,
-  onOK = () => null,
-  onDismiss = () => null
-}) => {
+const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   return (
     <Modal
       title={title}
