@@ -1,49 +1,65 @@
-import useTheme from 'hooks/useTheme'
 import React from 'react'
-import styled from 'styled-components'
-import { Card, Text } from 'uikit-dev'
-import certikWhite from 'uikit-dev/images/Audit/certik-white.png'
-import certik from 'uikit-dev/images/Audit/certik.png'
-import techRateWhite from 'uikit-dev/images/Audit/techrate-white.png'
-import techRate from 'uikit-dev/images/Audit/techrate.png'
-import audit from 'uikit-dev/images/for-ui-v2/audit.png'
+import styled, { css } from 'styled-components'
+import { Card, CardBody, Text, textStyle, ColorStyles, Flex, HomeProtectionFinixIcon } from 'definixswap-uikit'
+import { useTranslation } from 'react-i18next'
 
-const Audit = styled(Card)`
-  padding: 24px 40% 24px 24px;
-  position: relative;
+const AuditList = [{
+  img: '/images/audit/logo_protection_certik.png',
+  description: 'Fundamental Protection and Assessment',
+  result: 'Verified',
+  color: ColorStyles.BLACK,
+}, {
+  img: '/images/audit/logo_protection_techrate.png',
+  description: 'Smart Contract Security Audit',
+  result: 'All Pass',
+  color: ColorStyles.GREEN,
+}]
 
-  &:before {
-    content: '';
-    width: 40%;
-    height: calc(100% + 40px);
-    background: url(${audit});
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: absolute;
-    bottom: -32px;
-    right: 0;
+const Title = styled(Text)`
+  ${css(textStyle.R_26B)}
+  color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
+`
+
+const StyledFlex = styled(Flex)`
+  flex-direction: column;
+  align-items: flex-start;
+
+  :first-child {
+    width: 45%;
   }
 
-  a {
-    display: block;
+  :nth-child(2) {
+    padding-left: 30px;
+    border-left: 1px solid ${({ theme }) => theme.colors[ColorStyles.LIGHTGREY]};
   }
 `
 
-const CardAudit = ({ className = '' }) => {
-  const { isDark } = useTheme()
+const StyledImg = styled.img`
+  object-fit: contain;
+  height: 20px;
+`
 
+const Character = styled(Flex)`
+`
+
+const CardAudit = () => {
+  const { t } = useTranslation();
   return (
-    <Audit className={className}>
-      <Text className="mb-2" color="textSubtle">
-        Audited by
-      </Text>
-      <a className="mb-1" href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
-        <img src={isDark ? certikWhite : certik} width="120" alt="" />
-      </a>
-      <a href="https://github.com/thesixnetwork/definix-audit/tree/main/Techrate" target="_blank" rel="noreferrer">
-        <img src={isDark ? techRateWhite : techRate} width="100" alt="" />
-      </a>
-    </Audit>
+    <Card>
+      <CardBody p="S_40">
+        <Title>{t("Reliability of Definix is proved through external audits.")}</Title>
+        <Flex mt="S_40">
+          {AuditList.map(({ img, description, result, color }) => <StyledFlex>
+            <StyledImg src={img} alt={t(description)} />
+            <Text mt="S_16" textStyle="R_14R" minHeight="40px" color={ColorStyles.DEEPGREY}>{t(description)}</Text>
+            <Text mt="S_6" textStyle="R_28B" minHeight="40px" color={color}>{t(result)}</Text>
+          </StyledFlex>)}
+          <Character mr="-40px">
+            <HomeProtectionFinixIcon />
+          </Character>
+        </Flex>
+      </CardBody>
+    </Card>
   )
 }
 
