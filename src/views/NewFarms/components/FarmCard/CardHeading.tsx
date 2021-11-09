@@ -1,9 +1,10 @@
 import BigNumber from 'bignumber.js'
-import useI18n from 'hooks/useI18n'
+// import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
 import styled from 'styled-components'
-import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
+// import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
@@ -63,76 +64,104 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   // const firstCoin = farm.tokenSymbol.toLocaleLowerCase()
   const secondCoin = farmImage.split('-')[1].toLocaleLowerCase()
   // const secondCoin = farm.quoteTokenSymbol.toLocaleLowerCase()
-  const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
+  // const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
-  const TranslateString = useI18n()
+  const displayApy = useMemo(() => {
+    return farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
+  }, [farm.apy])
 
-  const LinkView = ({ linkClassName = '' }) => (
-    <Link
-      external
-      href={`${process.env.REACT_APP_KLAYTN_URL}/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-      bold={false}
-      className={`flex-shrink ${linkClassName} ml-2`}
-      color="textSubtle"
-      fontSize="12px"
-    >
-      {TranslateString(356, 'KlaytnScope')}
-      <ChevronRightIcon color="textSubtle" />
-    </Link>
-  )
-
-  const imgSize = isHorizontal ? 48 : 56
+  // const LinkView = ({ linkClassName = '' }) => (
+  //   <Link
+  //     external
+  //     href={`${process.env.REACT_APP_KLAYTN_URL}/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+  //     bold={false}
+  //     className={`flex-shrink ${linkClassName} ml-2`}
+  //     color="textSubtle"
+  //     fontSize="12px"
+  //   >
+  //     {TranslateString(356, 'KlaytnScope')}
+  //     <ChevronRightIcon color="textSubtle" />
+  //   </Link>
+  // )
 
   return (
-    <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
-      <Flex className="w-100" justifyContent="space-evenly">
-        <StyledFarmImages>
-          <a
-            href={
-              firstCoin === 'klay'
-                ? `${process.env.REACT_APP_KLAYTN_URL}`
-                : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.firstToken[process.env.REACT_APP_CHAIN_ID]}`
-            }
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-          </a>
-          <a
-            href={
-              secondCoin === 'klay'
-                ? `${process.env.REACT_APP_KLAYTN_URL}`
-                : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.secondToken[process.env.REACT_APP_CHAIN_ID]}`
-            }
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
-          </a>
-        </StyledFarmImages>
-        <div>
-          {!removed && (
-            <div className="flex align-center justify-center mt-2">
-              <Apr color="success" bold>
-                {TranslateString(736, 'APR')}
-                <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
-              </Apr>
-              <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
-            </div>
-          )}
-          <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
-            {lpLabel}
-          </Heading>
-        </div>
+    // <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
+    //   <Flex className="w-100" justifyContent="space-evenly">
+    //     <StyledFarmImages>
+    //       <a
+    //         href={
+    //           firstCoin === 'klay'
+    //             ? `${process.env.REACT_APP_KLAYTN_URL}`
+    //             : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.firstToken[process.env.REACT_APP_CHAIN_ID]}`
+    //         }
+    //         target="_blank"
+    //         rel="noreferrer"
+    //       >
+    //         <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+    //       </a>
+    //       <a
+    //         href={
+    //           secondCoin === 'klay'
+    //             ? `${process.env.REACT_APP_KLAYTN_URL}`
+    //             : `${process.env.REACT_APP_KLAYTN_URL}/account/${farm.secondToken[process.env.REACT_APP_CHAIN_ID]}`
+    //         }
+    //         target="_blank"
+    //         rel="noreferrer"
+    //       >
+    //         <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+    //       </a>
+    //     </StyledFarmImages>
+    //     <div>
+    //       {!removed && (
+    //         <div className="flex align-center justify-center mt-2">
+    //           <Apr color="success" bold>
+    //             {TranslateString(736, 'APR')}
+    //             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
+    //           </Apr>
+    //           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+    //         </div>
+    //       )}
+    //       <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
+    //         {lpLabel}
+    //       </Heading>
+    //     </div>
+    //   </Flex>
+
+    //   {/* <LinkView /> */}
+
+    //   {/* <Flex justifyContent="center">
+    //     {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
+    //     <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+    //   </Flex> */}
+    // </Flex>
+    <Flex position="relative">
+      <Flex className="mr-s12">
+        <Box width={48}>
+          <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={48} height={48} />
+        </Box>
+        <Box width={48}>
+          <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={48} height={48} />
+        </Box>
       </Flex>
+      
 
-      {/* <LinkView /> */}
+      <Flex flexDirection="column">
+        <Text textStyle="R_20M">
+          {lpLabel}
+        </Text>
 
-      {/* <Flex justifyContent="center">
-        {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-        <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-      </Flex> */}
+        <Flex alignItems="end">
+          <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
+            APR
+          </Text>
+          <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
+            {displayApy}
+          </Text>
+          {/* <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} /> */}
+          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+        </Flex>
+      </Flex>
     </Flex>
   )
 }
