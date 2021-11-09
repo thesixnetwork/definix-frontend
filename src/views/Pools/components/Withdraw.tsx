@@ -47,8 +47,8 @@ const Withdraw: React.FC<WithdrawProps> = ({
   const { isMobile } = useMatchBreakpoints()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onUnstake } = useSousUnstake(sousId)
-  const [ isPendingTX, setIsPendingTX ] = useState(false)
-  const [ val, setVal ] = useState('')
+  const [isPendingTX, setIsPendingTX] = useState(false)
+  const [val, setVal] = useState('')
 
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max)
@@ -86,7 +86,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
   )
 
   const handleUnstake = useCallback(async () => {
-    if (isPendingTX) return;
+    if (isPendingTX) return
     try {
       setIsPendingTX(true)
       await onUnstake(isOldSyrup ? '0' : val)
@@ -114,20 +114,20 @@ const Withdraw: React.FC<WithdrawProps> = ({
   )
 
   const cardStyle = useMemo((): {
-    flexDirection: 'column' | 'row';
-    margin: string;
-    padding: string;
+    flexDirection: 'column' | 'row'
+    margin: string
+    padding: string
   } => {
     return {
       flexDirection: isMobile ? 'column' : 'row',
       margin: `my-s${isMobile ? '28' : '40'}`,
-      padding: `pa-s${isMobile ? '20' : '40'}`
+      padding: `pa-s${isMobile ? '20' : '40'}`,
     }
   }, [isMobile])
 
   const columnStyle = useMemo((): {
-    flexDirection: 'column' | 'row';
-    width: string;
+    flexDirection: 'column' | 'row'
+    width: string
     justifyContent: 'space-between' | 'normal'
     valueTextSize: string
     valueTextWidth: string
@@ -137,7 +137,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
       width: isMobile ? '100%' : '50%',
       justifyContent: isMobile ? 'space-between' : 'normal',
       valueTextSize: isMobile ? 'R_16M' : 'R_18M',
-      valueTextWidth: isMobile ? '65%' : '100%'
+      valueTextWidth: isMobile ? '65%' : '100%',
     }
   }, [isMobile])
 
@@ -166,11 +166,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
             <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
               {t('Total staked')}
             </Text>
-            <Text
-              width={columnStyle.valueTextWidth}
-              color={ColorStyles.BLACK}
-              textStyle={columnStyle.valueTextSize}
-            >
+            <Text width={columnStyle.valueTextWidth} color={ColorStyles.BLACK} textStyle={columnStyle.valueTextSize}>
               {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
             </Text>
           </Flex>

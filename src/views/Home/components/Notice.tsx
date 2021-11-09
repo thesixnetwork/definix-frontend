@@ -30,7 +30,8 @@ const StyledSlider = styled(Slider)`
     justify-content: flex-start;
   }
 
-  .slick-list, .slick-slide {
+  .slick-list,
+  .slick-slide {
     min-height: 60px;
   }
   .slick-list {
@@ -61,8 +62,7 @@ const Notice = styled(Text)`
   color: black;
 `
 
-const PaginationNotice = styled(Box)`
-`
+const PaginationNotice = styled(Box)``
 
 const Character = styled.div`
   position: absolute;
@@ -82,18 +82,20 @@ const SliderOptions = {
 
 const HomeNotice: React.FC = () => {
   const { t } = useTranslation()
-  const [notices, setNotices] = useState([]);
+  const [notices, setNotices] = useState([])
 
   useEffect(() => {
     async function fetchNotice() {
       const captionTextAPI = process.env.REACT_APP_API_CAPTION_TEXT_KLAYTN
       const response = await axios.get(captionTextAPI)
       if (response.data.data) {
-        setNotices(new Array(3).fill(true).map((val, index) => ({
-          id: index,
-          model: index,
-          text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. What a number!',
-        })))
+        setNotices(
+          new Array(3).fill(true).map((val, index) => ({
+            id: index,
+            model: index,
+            text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. What a number!',
+          })),
+        )
         // setNotice(response.data.data?.data?.map(({ id, model, text}) => ({
         //   id, model, text
         // })))
@@ -104,10 +106,8 @@ const HomeNotice: React.FC = () => {
 
   return (
     <FullColumnGrid pt="S_30" pb="S_42">
-      <Label type="noti">{t("NOTICE")}</Label>
-      <StyledSlider {...SliderOptions}>
-        {notices && notices.map(({ text }) => <Notice>{text}</Notice>)}
-      </StyledSlider>
+      <Label type="noti">{t('NOTICE')}</Label>
+      <StyledSlider {...SliderOptions}>{notices && notices.map(({ text }) => <Notice>{text}</Notice>)}</StyledSlider>
       <PaginationNotice mt="S_28" />
       <Character>
         <ImgHomeTopFinixIcon />

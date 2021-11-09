@@ -57,7 +57,7 @@ const Title = styled(Text)`
 `
 
 const CardTVL = ({ className = '' }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
@@ -77,9 +77,8 @@ const CardTVL = ({ className = '' }) => {
   return (
     <Card>
       <CardBody>
-        <Title mb="S_8">{t("Total Value Locked (TVL)")}</Title>
+        <Title mb="S_8">{t('Total Value Locked (TVL)')}</Title>
       </CardBody>
-
 
       <Total>
         <Text color="inherit" className="mb-2" textAlign="center">

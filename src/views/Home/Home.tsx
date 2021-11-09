@@ -92,7 +92,6 @@ const CustomTab = styled.div`
 const Home: React.FC = () => {
   const { t } = useTranslation()
 
-
   const [captionText, setCaptionText] = useState()
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
@@ -149,7 +148,6 @@ const Home: React.FC = () => {
           </Card>
         </RightColumnGrid>
       </WrapGrid>
-
 
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
