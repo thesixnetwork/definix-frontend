@@ -144,12 +144,9 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
           <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={48} height={48} />
         </Box>
       </Flex>
-      
 
       <Flex flexDirection="column">
-        <Text textStyle="R_20M">
-          {lpLabel}
-        </Text>
+        <Text textStyle="R_20M">{lpLabel}</Text>
 
         <Flex alignItems="end">
           <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>

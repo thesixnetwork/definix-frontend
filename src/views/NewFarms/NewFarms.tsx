@@ -220,10 +220,7 @@ const Farms: React.FC = () => {
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
               Help
             </HelpButton> */}
-            <TimerWrapper
-              isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)}
-              date={phrase2TimeStamp}
-            >
+            <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
               <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
               <Route exact path={`${path}`}>
                 {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
