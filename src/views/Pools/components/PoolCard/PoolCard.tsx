@@ -1,9 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-
 import { useFarmUser } from 'state/hooks'
-import { useMatchBreakpoints } from 'uikit-dev'
 import {
   Flex,
   Card,
@@ -15,6 +13,7 @@ import {
   ArrowTopGIcon,
   Divider,
   ColorStyles,
+  useMatchBreakpoints,
 } from 'definixswap-uikit'
 // import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
@@ -26,6 +25,8 @@ import LinkListSection from './LinkListSection'
 import { PoolCardProps } from './types'
 
 const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }) => {
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
   const {
     sousId,
     tokenName,
@@ -40,15 +41,12 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
     userData,
     stakingLimit,
   } = pool
-
   const { pendingRewards } = useFarmUser(farm.pid)
   const { bundleRewardLength, bundleRewards } = farm
 
   const isBnbPool = poolCategory === PoolCategory.KLAYTN
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
 
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const allowance = new BigNumber(userData?.allowance || 0)
