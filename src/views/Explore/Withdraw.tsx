@@ -259,7 +259,6 @@ const CardInput = ({
           showMaxButton
           hideBalance
           value={currentInput}
-          label=""
           onUserInput={setCurrentInput}
           onMax={() => {
             setCurrentInput(new BigNumber(currentBalance).toJSON())
