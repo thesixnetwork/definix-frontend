@@ -1,11 +1,13 @@
+import { useTranslation } from 'react-i18next'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
 import React, { useEffect } from 'react'
 import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
-import styled from 'styled-components'
-import { Card, Heading, Text } from 'uikit-dev'
+import styled, { css } from 'styled-components'
+import { Heading } from 'uikit-dev'
+import { Card, CardBody, ColorStyles, Text, textStyle } from 'definixswap-uikit'
 import Helper from 'uikit-dev/components/Helper'
 import bscWhite from 'uikit-dev/images/bsc-white.png'
 import klaytnWhite from 'uikit-dev/images/klaytn-white.png'
@@ -49,7 +51,13 @@ const Dot = styled.span`
   margin-right: 8px;
 `
 
+const Title = styled(Text)`
+  ${css(textStyle.R_18M)}
+  color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
+`
+
 const CardTVL = ({ className = '' }) => {
+  const { t } = useTranslation();
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
@@ -67,7 +75,12 @@ const CardTVL = ({ className = '' }) => {
   }, [fastRefresh])
 
   return (
-    <Card className={className}>
+    <Card>
+      <CardBody>
+        <Title mb="S_8">{t("Total Value Locked (TVL)")}</Title>
+      </CardBody>
+
+
       <Total>
         <Text color="inherit" className="mb-2" textAlign="center">
           {TranslateString(762, 'Total Value Locked (TVL)')}

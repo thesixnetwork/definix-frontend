@@ -6,9 +6,10 @@ import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
-import styled from 'styled-components'
-import { Heading, Skeleton, Text, useMatchBreakpoints } from 'uikit-dev'
+import styled, { css } from 'styled-components'
+import { Heading, Skeleton, useMatchBreakpoints } from 'uikit-dev'
 import CountDownBanner from 'uikit-dev/components/CountDownBanner'
+import { Card, CardBody, CardHeader, Flex, Text, textStyle, Box, ImgHomeTopFinixIcon } from 'definixswap-uikit'
 import { Overlay } from 'uikit-dev/components/Overlay'
 import {
   LeftPanel,
@@ -24,6 +25,36 @@ import CardGetStarted from './components/CardGetStarted/CardGetStarted'
 import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
+import HomeNotice from './components/Notice'
+
+const WrapGrid = styled.div`
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 32px;
+`
+
+const LeftColumnGrid = styled.div`
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 7;
+`
+
+const RightColumnGrid = styled.div`
+  position: relative;
+  grid-column-start: 7;
+  grid-column-end: 13;
+`
+
+const FullColumnGrid = styled(Box)`
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 13;
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 32px;
+`
 
 const Caption = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
@@ -60,6 +91,9 @@ const CustomTab = styled.div`
 
 const Home: React.FC = () => {
   const { t } = useTranslation()
+
+
+  const [captionText, setCaptionText] = useState()
   const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   const [isLoading, setIsLoading] = useState(false)
@@ -99,24 +133,24 @@ const Home: React.FC = () => {
     }
   }, [])
 
-  const [captionText, setCaptionText] = React.useState()
-  useEffect(() => {
-    async function fetchCaptionText() {
-      const captionTextAPI = process.env.REACT_APP_API_CAPTION_TEXT_KLAYTN
-      const response = await axios.get(`${captionTextAPI}`)
-      if (response.data.data) {
-        const caption = _.get(response.data.data, 'data.0.text', '')
-        setCaptionText(caption)
-      }
-    }
-    fetchCaptionText()
-  }, [])
-
   return (
     <>
       <Helmet>
         <title>Home - Definix - Advance Your Crypto Assets</title>
       </Helmet>
+      <WrapGrid>
+        <HomeNotice />
+        <LeftColumnGrid>
+          <CardTVL />
+        </LeftColumnGrid>
+        <RightColumnGrid>
+          <Card>
+            <CardBody>Body</CardBody>
+          </Card>
+        </RightColumnGrid>
+      </WrapGrid>
+
+
       <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
       <TwoPanelLayout>
         <LeftPanel isShowRightPanel={isShowRightPanel}>
@@ -148,7 +182,7 @@ const Home: React.FC = () => {
               )}
             </div>
 
-            <CardAutoRebalancing />
+            {/* <CardAutoRebalancing /> */}
 
             <div className={`flex align-stretch mt-5 ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
               <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>
