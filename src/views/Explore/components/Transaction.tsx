@@ -8,8 +8,7 @@ import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { AddIcon, LinkExternal, MinusIcon } from 'uikit-dev'
-import { Card, Text, Toggle } from 'definixswap-uikit'
+import { LinkExternal, Text, Toggle } from 'definixswap-uikit'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import { getAddress } from 'utils/addressHelpers'
 import PaginationCustom from './Pagination'
@@ -80,19 +79,9 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
                 </div>
               </TD>
               <TD align="center">
-                <div className="flex align-center justify-center">
-                  {r.event_name === 'AddFundAmount' ? (
-                    <>
-                      <AddIcon color="success" className="mr-1" />
-                      <Text textStyle="R_14R">Invest</Text>
-                    </>
-                  ) : (
-                    <>
-                      <MinusIcon color="failure" className="mr-1" />
-                      <Text textStyle="R_14R">Withdraw</Text>
-                    </>
-                  )}
-                </div>
+                <Text textStyle="R_14R">
+                  {r.event_name === 'AddFundAmount' ? `+ ${t('Invest')}` : `- ${t('Withdraw')}`}
+                </Text>
               </TD>
               <TD align="center">
                 <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
@@ -104,7 +93,11 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
                 <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
               </TD>
               <TD align="center">
-                <LinkExternal noIcon href={`https://scope.klaytn.com/tx/${r.transaction_hash}`} fontSize="12px">
+                <LinkExternal
+                  textStyle="R_14R"
+                  color="mediumgrey"
+                  href={`https://scope.klaytn.com/tx/${r.transaction_hash}`}
+                >
                   KlaytnScope
                 </LinkExternal>
               </TD>
@@ -171,9 +164,11 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   }, [])
 
   return (
-    <Card className={className}>
+    <div className={className}>
       <div className="flex justify-end align-center px-s32 py-s24">
-        <Text className="mr-s8" color="deepgrey" textStyle="R_14R">{t('My Transaction only')}</Text>
+        <Text className="mr-s8" color="deepgrey" textStyle="R_14R">
+          {t('My Transaction only')}
+        </Text>
         <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
       </div>
 
@@ -194,7 +189,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
           myOnly ? 'You haven`t made any transactions in this farm.' : 'Don`t have any transactions in this farm.'
         }
       />
-    </Card>
+    </div>
   )
 }
 

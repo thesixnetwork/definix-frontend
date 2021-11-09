@@ -1,14 +1,13 @@
 import React from 'react'
-import _ from 'lodash'
+import { compact } from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
+import { Flex, Text } from 'definixswap-uikit'
 
 const Coin = styled.div`
   display: flex;
   align-items: center;
-  margin: 4px 16px 4px 0;
 
   img {
     flex-shrink: 0;
@@ -21,8 +20,8 @@ const Coin = styled.div`
 
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
-    <div className={className}>
-      {_.compact([
+    <Flex flexDirection="column" className={className}>
+      {compact([
         ...((rebalance || ({} as any)).tokens || []),
         ...(((rebalance || ({} as any)).usdTokenRatioPoint || 0).toString() === '0'
           ? []
@@ -34,22 +33,22 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
           return c.symbol
         })()
         return (
-          <div className="flex justify-space-between align-center">
+          <Flex textStyle="R_14R" justifyContent="space-between" alignItems="center" className="py-s12">
             <Coin>
               <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-              <Text bold>
-                {numeral(
-                  (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals)).toNumber(),
-                ).format('0,0.[0000000000]')}
+              <Text textStyle="R_14B" style={{ width: '56px' }}>
+                {thisName}
               </Text>
             </Coin>
-            <Text bold className="pl-3" style={{ width: '56px' }} textAlign="left">
-              {thisName}
+            <Text>
+              {numeral(
+                (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals)).toNumber(),
+              ).format('0,0.[0000000000]')}
             </Text>
-          </div>
+          </Flex>
         )
       })}
-    </div>
+    </Flex>
   )
 }
 

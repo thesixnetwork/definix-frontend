@@ -23,12 +23,6 @@ interface ExploreCardType {
   onClickViewDetail: () => void
 }
 
-const VerticalStyle = styled(Card)`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-`
-
 const HorizontalStyle = styled(Card)`
   width: 100%;
 `
@@ -50,7 +44,7 @@ const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
     <Button
       minWidth="auto"
-      scale="40"
+      scale="md"
       variant="lightbrown"
       as={Link}
       to="/rebalancing/detail"

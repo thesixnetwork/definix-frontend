@@ -75,12 +75,12 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
     }
     setSelectedTokens(selectAllToken)
   }
-  const AllChecked = useMemo(() => tokens.every(({symbol}) => selectedTokens[symbol]), [tokens, selectedTokens])
+  const AllChecked = useMemo(() => tokens.every(({ symbol }) => selectedTokens[symbol]), [tokens, selectedTokens])
 
   return (
     <Flex className="flex mb-5">
       <div>
-        <LegendItem className="mr-s24" style={{minWidth: '160px'}}>
+        <LegendItem className="mr-s24" style={{ minWidth: '160px' }}>
           <div className="rebalancing" />
           <Text textStyle="R_14R">{fundName}</Text>
         </LegendItem>
@@ -97,12 +97,11 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
               className="mr-s24 mb-s16 flex align-center"
               control={
                 <Checkbox scale="sm" variantColor="brown" checked={!!selectedTokens[c.symbol]} onChange={onCheck(c)} />
-            }>
+              }
+            >
               <LegendItem>
                 <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
-                <Text textStyle="R_14R">
-                  {thisName}
-                </Text>
+                <Text textStyle="R_14R">{thisName}</Text>
               </LegendItem>
             </CheckboxLabel>
           )
@@ -113,9 +112,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
         >
           <LegendItem>
             {/* <img src={`/images/coins/${c.symbol || ''}.png`} alt="" /> */}
-            <Text textStyle="R_14R">
-              ALL
-            </Text>
+            <Text textStyle="R_14R">ALL</Text>
           </LegendItem>
         </CheckboxLabel>
       </Flex>
@@ -126,7 +123,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
 const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
   const { isDark } = useTheme()
   const { isSm, isMd } = useMatchBreakpoints()
-  const isMobile = isSm || isMd;
+  const isMobile = isSm || isMd
   const [selectedTokens, setSelectedTokens] = useState({})
   const data = (canvas) => {
     return {
@@ -193,14 +190,14 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
     tooltips: {
       mode: 'nearest',
       displayColors: false,
-  		interaction: {
-        intersect: true
+      interaction: {
+        intersect: true,
       },
       callbacks: {
         title: (tooltipItem, dataTooltip, ...props) => {
           const index = tooltipItem[0].datasetIndex
           const curGraph = dataTooltip.datasets[index]
-          return curGraph?.label;
+          return curGraph?.label
         },
         beforeLabel: (tooltipItem) => {
           return tooltipItem.xLabel
@@ -213,9 +210,9 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
         afterLabel: (tooltipItem, dataTooltip) => {
           const index = tooltipItem.datasetIndex
           const curGraph = dataTooltip.datasets[index]
-          const diff = (tooltipItem.value - curGraph.data[0]);
-          const same = diff === 0;
-          const sign = diff < 0 ? '-' : '+';
+          const diff = tooltipItem.value - curGraph.data[0]
+          const same = diff === 0
+          const sign = diff < 0 ? '-' : '+'
           return `Change: ${same ? '' : sign}${diff.toFixed(2)}%`
         },
       },
@@ -224,7 +221,14 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
 
   return (
     <div className={className}>
-      {isMobile || <Legend fundName={fundName} tokens={tokens} selectedTokens={selectedTokens} setSelectedTokens={setSelectedTokens} />}
+      {isMobile || (
+        <Legend
+          fundName={fundName}
+          tokens={tokens}
+          selectedTokens={selectedTokens}
+          setSelectedTokens={setSelectedTokens}
+        />
+      )}
       <RelativeDiv>
         <Box>
           <Line data={data} options={options} height={height} legend={{ display: false }} />

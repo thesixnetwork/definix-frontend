@@ -632,17 +632,23 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               variant="text"
               as={Link}
               to="/rebalancing"
-              size="sm"
+              height="24px"
+              p="0"
               startIcon={<ArrowBackIcon color="textSubtle" />}
-            />
-            <Text textStyle="R_16R" color="mediumgrey">
-              {rebalance.title}
-            </Text>
+            >
+              <Text textStyle="R_16R" color="textSubtle">
+                {rebalance.title}
+              </Text>
+            </Button>
           </Flex>
 
           <Card className="mb-s16">
             <CardBody>
-              <CardHeading rebalance={rebalance} isHorizontal={isMobile} className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`} />
+              <CardHeading
+                rebalance={rebalance}
+                isHorizontal={isMobile}
+                className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`}
+              />
 
               <div className="flex flex-wrap">
                 <TwoLineFormat

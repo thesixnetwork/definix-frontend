@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { Card, useMatchBreakpoints } from 'uikit-dev'
+import { useMatchBreakpoints } from 'definixswap-uikit'
 
 import { Rebalance } from '../../../state/types'
 
@@ -41,7 +41,7 @@ const Performance: React.FC<PerformanceType> = ({
   const isMobile = !isXl && !isLg
 
   return (
-    <Card>
+    <>
       <div className="pa-4 pt-5">
         <div className="flex flex-wrap align-center justify-space-between mb-3">
           <div className="flex flex-wrap align-center justify-space-between mb-3">
@@ -68,7 +68,12 @@ const Performance: React.FC<PerformanceType> = ({
           </div>
         </div>
 
-        <FullChart fundName={rebalance.title} isLoading={isLoading} graphData={graphData} tokens={[...rebalance.ratio.filter((rt) => rt.value)]} />
+        <FullChart
+          fundName={rebalance.title}
+          isLoading={isLoading}
+          graphData={graphData}
+          tokens={[...rebalance.ratio.filter((rt) => rt.value)]}
+        />
       </div>
 
       <div className="flex bd-t">
@@ -91,7 +96,7 @@ const Performance: React.FC<PerformanceType> = ({
           hint="Estimated return on investment measures approximately over a period of time."
         />
       </div>
-    </Card>
+    </>
   )
 }
 

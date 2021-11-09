@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import UnlockButton from 'components/UnlockButton'
-import { findIndex, get} from 'lodash'
+import { findIndex, get } from 'lodash'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
@@ -38,7 +38,7 @@ const Overlay = styled(Flex)`
   height: 100%;
   background-color: rgb(180 169 168 / 90%);
   pointer-events: initial;
-`;
+`
 
 const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMobile = false }) => {
   const { t } = useTranslation()
@@ -104,29 +104,24 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
     return numeral(currentBalanceNumber).format('0,0.[00]')
   }, [currentBalanceNumber])
 
-  const Action = () => <>
-    <Button
-      scale="40"
-      width="100%"
-      minWidth="auto"
-      as={Link}
-      to="/rebalancing/invest"
-      className={isMobile ? 'mr-s12' : 'mb-s12'}
-      variant="red"
-    >
-      {t('Invest')}
-    </Button>
-    <Button
-      scale="40"
-      width="100%"
-      minWidth="auto"
-      as={Link}
-      variant="lightbrown"
-      to="/rebalancing/withdraw"
-    >
-      {t('Withdraw')}
-    </Button>
-  </>
+  const Action = () => (
+    <>
+      <Button
+        scale="md"
+        width="100%"
+        minWidth="auto"
+        as={Link}
+        to="/rebalancing/invest"
+        className={isMobile ? 'mr-s12' : 'mb-s12'}
+        variant="red"
+      >
+        {t('Invest')}
+      </Button>
+      <Button scale="md" width="100%" minWidth="auto" as={Link} variant="lightbrown" to="/rebalancing/withdraw">
+        {t('Withdraw')}
+      </Button>
+    </>
+  )
 
   useEffect(() => {
     combinedAmount()
@@ -137,19 +132,28 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
       {isMobile ? (
         <>
           <Flex alignItems="center" justifyContent="space-between" flex="1 1 0" className="mb-s16">
-            <Text textStyle="R_14M">
-              {t('Current Investment')}
-            </Text>
+            <Text textStyle="R_14M">{t('Current Investment')}</Text>
             <LabelAndValue label={t('Shares')} value={shares} />
           </Flex>
           <Text textStyle="R_18B" marginBottom="2px">
             {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
           </Text>
           <Text className="mb-s20">
-            {diffAmount !== 0 && <SignNumber textStyle="R_12M" value={diffAmount}>{numeral(diffAmount).format('0,0.[00]')}</SignNumber>}
-            {percentage !== 0 && (<SignNumber textStyle="R_12M" value={percentage}> ({numeral(percentage).format('0,0.[00]')}%)</SignNumber>)}
+            {diffAmount !== 0 && (
+              <SignNumber textStyle="R_12M" value={diffAmount}>
+                {numeral(diffAmount).format('0,0.[00]')}
+              </SignNumber>
+            )}
+            {percentage !== 0 && (
+              <SignNumber textStyle="R_12M" value={percentage}>
+                {' '}
+                ({numeral(percentage).format('0,0.[00]')}%)
+              </SignNumber>
+            )}
           </Text>
-          <Flex><Action /></Flex>
+          <Flex>
+            <Action />
+          </Flex>
         </>
       ) : (
         <Flex justifyContent="space-between">
@@ -183,11 +187,16 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
               {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
             </Text>
           </Flex>
-          <Flex minWidth="160px" flexDirection="column"><Action /></Flex>
+          <Flex minWidth="160px" flexDirection="column">
+            <Action />
+          </Flex>
         </Flex>
       )}
-      {!account && 
-        <Overlay justifyContent="center" alignItems="center"><UnlockButton scale="40" /></Overlay>}
+      {!account && (
+        <Overlay justifyContent="center" alignItems="center">
+          <UnlockButton scale="sm" variant="red" maxWidth="160px" />
+        </Overlay>
+      )}
     </CardStyled>
   )
 }
