@@ -22,7 +22,7 @@ const StyledTVL = styled(Flex)`
 `
 
 const CardTVL = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
@@ -34,9 +34,10 @@ const CardTVL = () => {
   return (
     <Card>
       <CardBody p="S_40">
-        <Title>{t("Total Value Locked")}</Title>
+        <Title>{t('Total Value Locked')}</Title>
         <Text mt="S_8" textStyle="R_32B" color="black">
-          $ {(totalTVL || 0) + (totalWeb3TVL || 0) <= 0
+          ${' '}
+          {(totalTVL || 0) + (totalWeb3TVL || 0) <= 0
             ? 'N/A'
             : ((totalTVL || 0) + (totalWeb3TVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </Text>
@@ -45,23 +46,33 @@ const CardTVL = () => {
             <Flex alignItems="center">
               <ChainBscIcon viewBox="0 0 32 32" width="24" height="24" />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
-                <Trans i18nKey="TVL in <bold>BSC</bold>" components={{
-                  bold: <strong />
-                }}/>
+                <Trans
+                  i18nKey="TVL in <bold>BSC</bold>"
+                  components={{
+                    bold: <strong />,
+                  }}
+                />
               </Text>
             </Flex>
-            <Text mt="S_8" textStyle="R_23B">$ {totalWeb3TVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}</Text>
+            <Text mt="S_8" textStyle="R_23B">
+              $ {totalWeb3TVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+            </Text>
           </StyledTVL>
           <StyledTVL>
             <Flex alignItems="center">
               <ChainKlaytnIcon viewBox="0 0 22 22" width="24" height="24" />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
-                <Trans i18nKey="TVL in <bold>Klaytn</bold>" components={{
-                  bold: <strong />
-                }}/>
+                <Trans
+                  i18nKey="TVL in <bold>Klaytn</bold>"
+                  components={{
+                    bold: <strong />,
+                  }}
+                />
               </Text>
             </Flex>
-            <Text mt="S_8" textStyle="R_23B">$ {totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}</Text>
+            <Text mt="S_8" textStyle="R_23B">
+              $ {totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+            </Text>
           </StyledTVL>
         </Flex>
       </CardBody>

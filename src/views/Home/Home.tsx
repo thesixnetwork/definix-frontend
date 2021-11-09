@@ -78,7 +78,6 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
 `
 
 const Home: React.FC = () => {
-
   return (
     <>
       <Helmet>
@@ -88,7 +87,7 @@ const Home: React.FC = () => {
         <FullColumnGrid pt="S_30" area="notice">
           <HomeNotice />
         </FullColumnGrid>
-        <LeftColumnGrid area="tvl"> 
+        <LeftColumnGrid area="tvl">
           <CardTVL />
         </LeftColumnGrid>
         <RightColumnGrid area="finix">

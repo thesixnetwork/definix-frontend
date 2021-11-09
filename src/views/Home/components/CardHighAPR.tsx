@@ -15,17 +15,15 @@ const InnerFlex = styled(Flex)`
   background-color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
 `
 
-const Character = styled(Flex)`
-`
-
+const Character = styled(Flex)``
 
 const CardHighAPR = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <Card bg={ColorStyles.ORANGE}>
       <CardBody p="S_40">
         <Flex alignItems="flex-end">
-          <Title pb="S_24">{t("Stake Farms with high APR")}</Title>
+          <Title pb="S_24">{t('Stake Farms with high APR')}</Title>
           <Character>
             <HomeFarmFinixIcon />
           </Character>
@@ -34,11 +32,9 @@ const CardHighAPR = () => {
           <FarmHighAPR />
         </InnerFlex>
         <Flex position="relative" pt="S_40" pb="S_24">
-          <Title>{t("Meet Rebalancing with Definix unique differentiation.")}</Title>
+          <Title>{t('Meet Rebalancing with Definix unique differentiation.')}</Title>
         </Flex>
-        <InnerFlex>
-          P
-        </InnerFlex>
+        <InnerFlex>P</InnerFlex>
       </CardBody>
     </Card>
   )

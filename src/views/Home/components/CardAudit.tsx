@@ -3,17 +3,20 @@ import styled, { css } from 'styled-components'
 import { Card, CardBody, Text, textStyle, ColorStyles, Flex, HomeProtectionFinixIcon } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 
-const AuditList = [{
-  img: '/images/audit/logo_protection_certik.png',
-  description: 'Fundamental Protection and Assessment',
-  result: 'Verified',
-  color: ColorStyles.BLACK,
-}, {
-  img: '/images/audit/logo_protection_techrate.png',
-  description: 'Smart Contract Security Audit',
-  result: 'All Pass',
-  color: ColorStyles.GREEN,
-}]
+const AuditList = [
+  {
+    img: '/images/audit/logo_protection_certik.png',
+    description: 'Fundamental Protection and Assessment',
+    result: 'Verified',
+    color: ColorStyles.BLACK,
+  },
+  {
+    img: '/images/audit/logo_protection_techrate.png',
+    description: 'Smart Contract Security Audit',
+    result: 'All Pass',
+    color: ColorStyles.GREEN,
+  },
+]
 
 const Title = styled(Text)`
   ${css(textStyle.R_26B)}
@@ -39,21 +42,26 @@ const StyledImg = styled.img`
   height: 20px;
 `
 
-const Character = styled(Flex)`
-`
+const Character = styled(Flex)``
 
 const CardAudit = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <Card>
       <CardBody p="S_40">
-        <Title>{t("Reliability of Definix is proved through external audits.")}</Title>
+        <Title>{t('Reliability of Definix is proved through external audits.')}</Title>
         <Flex mt="S_40">
-          {AuditList.map(({ img, description, result, color }) => <StyledFlex>
-            <StyledImg src={img} alt={t(description)} />
-            <Text mt="S_16" textStyle="R_14R" minHeight="40px" color={ColorStyles.DEEPGREY}>{t(description)}</Text>
-            <Text mt="S_6" textStyle="R_28B" minHeight="40px" color={color}>{t(result)}</Text>
-          </StyledFlex>)}
+          {AuditList.map(({ img, description, result, color }) => (
+            <StyledFlex>
+              <StyledImg src={img} alt={t(description)} />
+              <Text mt="S_16" textStyle="R_14R" minHeight="40px" color={ColorStyles.DEEPGREY}>
+                {t(description)}
+              </Text>
+              <Text mt="S_6" textStyle="R_28B" minHeight="40px" color={color}>
+                {t(result)}
+              </Text>
+            </StyledFlex>
+          ))}
           <Character mr="-40px">
             <HomeProtectionFinixIcon />
           </Character>

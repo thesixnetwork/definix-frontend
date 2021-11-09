@@ -16,7 +16,6 @@ const StyledFlex = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
   }
-
 `
 
 const StyledSlider = styled(Slider)`
@@ -77,7 +76,6 @@ const Character = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 45%;
   }
-
 `
 
 const SliderOptions = {
@@ -117,10 +115,8 @@ const HomeNotice: React.FC = () => {
   return (
     <StyledFlex>
       <StyledBox>
-        <Label type="noti">{t("NOTICE")}</Label>
-        <StyledSlider {...SliderOptions}>
-          {notices && notices.map(({ text }) => <Notice>{text}</Notice>)}
-        </StyledSlider>
+        <Label type="noti">{t('NOTICE')}</Label>
+        <StyledSlider {...SliderOptions}>{notices && notices.map(({ text }) => <Notice>{text}</Notice>)}</StyledSlider>
       </StyledBox>
       <Character>
         <ImgHomeTopFinixIcon viewBox="0 0 434 200" width="100%" height="100%" />

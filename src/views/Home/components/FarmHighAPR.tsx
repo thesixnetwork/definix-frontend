@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { useFarms, usePriceFinixUsd, usePriceKethKusdt, usePriceKlayKusdt, usePriceSixUsd } from "state/hooks";
+import { useFarms, usePriceFinixUsd, usePriceKethKusdt, usePriceKlayKusdt, usePriceSixUsd } from 'state/hooks'
 import { QuoteToken } from 'config/constants/types'
-import { BLOCKS_PER_YEAR } from "config";
-import { ColorStyles, Flex, Text } from "definixswap-uikit"
-import { useTranslation } from "react-i18next";
-import { Farm } from "state/types";
+import { BLOCKS_PER_YEAR } from 'config'
+import { ColorStyles, Flex, Text } from 'definixswap-uikit'
+import { useTranslation } from 'react-i18next'
+import { Farm } from 'state/types'
 
 interface FarmState extends Farm {
-  farmAPY: string;
+  farmAPY: string
 }
 
 const ColumnFlex = styled(Flex)`
@@ -18,8 +18,8 @@ const ColumnFlex = styled(Flex)`
 `
 
 const FarmHighAPR = () => {
-  const { t } = useTranslation();
-  const [highAprFarm, setHighAprFarm] = useState<FarmState>();
+  const { t } = useTranslation()
+  const [highAprFarm, setHighAprFarm] = useState<FarmState>()
 
   const farmsLP = useFarms()
   const finixPrice = usePriceFinixUsd()
@@ -28,9 +28,9 @@ const FarmHighAPR = () => {
   const kethPriceUsd = usePriceKethKusdt()
 
   useEffect(() => {
-    if (highAprFarm) return;
+    if (highAprFarm) return
     if (finixPrice.isZero() || sixPrice.isZero() || klayPrice.isZero() || kethPriceUsd.isZero()) {
-      return;
+      return
     }
     const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
     const getFarmHighAPR = (farmsToDisplay) => {
@@ -39,7 +39,7 @@ const FarmHighAPR = () => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
         }
-        const klayApy = new BigNumber(0);
+        const klayApy = new BigNumber(0)
         const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
           .times(farm.BONUS_MULTIPLIER)
           .div(new BigNumber(10).pow(18))
@@ -71,32 +71,51 @@ const FarmHighAPR = () => {
           apy = finixApy && dualApy && finixApy.plus(dualApy)
         }
 
-        return { ...farm, apy, finixApy: apy, klayApy, farmAPY: apy && numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0') }
+        return {
+          ...farm,
+          apy,
+          finixApy: apy,
+          klayApy,
+          farmAPY: apy && numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0'),
+        }
       })
-    };
+    }
 
-    const farmData = getFarmHighAPR(activeFarms);
-    const sortedFarmData = farmData.sort((a, b) => +a.farmAPY - +b.farmAPY).reverse();
-    setHighAprFarm(sortedFarmData[0]);
+    const farmData = getFarmHighAPR(activeFarms)
+    const sortedFarmData = farmData.sort((a, b) => +a.farmAPY - +b.farmAPY).reverse()
+    setHighAprFarm(sortedFarmData[0])
+  }, [farmsLP, finixPrice, highAprFarm, kethPriceUsd, klayPrice, sixPrice])
 
-  }, [farmsLP, finixPrice, highAprFarm, kethPriceUsd, klayPrice, sixPrice]);
-
-  return highAprFarm ? <ColumnFlex width="100%">
-    <Flex>image</Flex>
-    <Flex mt="S_20" justifyContent="space-between" width="100%">
-      <ColumnFlex justifyContent="flex-end">
-        <Text textStyle="R_18B" color={ColorStyles.BLACK}>{highAprFarm.lpSymbol}</Text>
-        <Flex mt="S_4">
-          <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>{t("Total Liquidity")}</Text>
-          <Text mr="S_8" textStyle="R_14B" color={ColorStyles.MEDIUMGREY}>$</Text>
-        </Flex>
-      </ColumnFlex>
-      <ColumnFlex alignItems="flex-end">
-        <Text textStyle="R_12M" color={ColorStyles.ORANGE}>{t("APR")}</Text>
-        <Text textStyle="R_28B" color={ColorStyles.BLACK}>{highAprFarm.farmAPY} %</Text>
-      </ColumnFlex>
-    </Flex>
-  </ColumnFlex> : <></>
+  return highAprFarm ? (
+    <ColumnFlex width="100%">
+      <Flex>image</Flex>
+      <Flex mt="S_20" justifyContent="space-between" width="100%">
+        <ColumnFlex justifyContent="flex-end">
+          <Text textStyle="R_18B" color={ColorStyles.BLACK}>
+            {highAprFarm.lpSymbol}
+          </Text>
+          <Flex mt="S_4">
+            <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+              {t('Total Liquidity')}
+            </Text>
+            <Text mr="S_8" textStyle="R_14B" color={ColorStyles.MEDIUMGREY}>
+              $
+            </Text>
+          </Flex>
+        </ColumnFlex>
+        <ColumnFlex alignItems="flex-end">
+          <Text textStyle="R_12M" color={ColorStyles.ORANGE}>
+            {t('APR')}
+          </Text>
+          <Text textStyle="R_28B" color={ColorStyles.BLACK}>
+            {highAprFarm.farmAPY} %
+          </Text>
+        </ColumnFlex>
+      </Flex>
+    </ColumnFlex>
+  ) : (
+    <></>
+  )
 }
 
-export default FarmHighAPR;
+export default FarmHighAPR
