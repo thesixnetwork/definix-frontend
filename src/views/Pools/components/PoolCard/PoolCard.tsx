@@ -98,7 +98,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
     () => <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings} />,
     [tokenName, earnings],
   )
-
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
@@ -154,7 +153,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
       apy,
     ],
   )
-
   const renderHarvestActionAirDrop = useCallback(
     () => (
       <HarvestActionAirDrop
@@ -171,7 +169,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
     ),
     [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, pool, pendingRewards, bundleRewards, isMobile],
   )
-
   const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
   useEffect(() => {

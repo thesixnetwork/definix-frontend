@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
@@ -17,8 +18,7 @@ import {
   usePriceKlayKusdt,
   usePriceKethKlay,
 } from 'state/hooks'
-import styled from 'styled-components'
-import { Link, TitleSet, Box } from 'definixswap-uikit'
+import { TitleSet, Box } from 'definixswap-uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
@@ -29,6 +29,7 @@ import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
 
 const Farm: React.FC = () => {
+  const { t } = useTranslation()
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const farms = useFarms()
@@ -42,7 +43,6 @@ const Farm: React.FC = () => {
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
   const [isPhrase1, setIsPhrase1] = useState(false)
-  const [listView, setListView] = useState(true)
   const [pageState, setPageState] = useState<{
     state: string
     data: any
@@ -232,14 +232,12 @@ const Farm: React.FC = () => {
     poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
   const onSelectAdd = useCallback((props: any) => {
-    console.log('onSelectAdd', props)
     setPageState({
       state: 'deposit',
       data: props,
     })
   }, [])
   const onSelectRemove = useCallback((props: any) => {
-    console.log('onSelectRemove', props)
     setPageState({
       state: 'withdraw',
       data: props,
@@ -255,12 +253,6 @@ const Farm: React.FC = () => {
       setIsPhrase1(true)
     }
   }, [currentTime, phrase1TimeStamp])
-
-  useEffect(() => {
-    return () => {
-      setListView(true)
-    }
-  }, [])
 
   return (
     <>
@@ -279,8 +271,8 @@ const Farm: React.FC = () => {
           <>
             <TitleSet
               title="Pool"
-              description="단일 토큰을 예치하여 FINIX를 얻으세요."
-              linkLabel="Learn to stake."
+              description={t('Deposit a single token')}
+              linkLabel={t('Learn how to stake')}
               link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
             />
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>

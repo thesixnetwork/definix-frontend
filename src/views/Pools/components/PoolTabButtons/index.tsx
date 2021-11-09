@@ -1,14 +1,16 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Box, Text, Toggle, Flex, ColorStyles } from 'definixswap-uikit'
 
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly }) => {
+  const { t } = useTranslation()
   return (
     <Box className="mt-s40">
       <Flex justifyContent="space-between" alignItems="center">
         <Flex>
           <Flex alignItems="center">
             <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
-              Staked Only
+              {t('Staked only')}
             </Text>
             <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
           </Flex>
