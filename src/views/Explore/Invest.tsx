@@ -2,7 +2,7 @@
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
-import React, { useRef, useCallback, useEffect, useState } from 'react'
+import React, { useRef, useCallback, useEffect, useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { useTranslation } from 'react-i18next'
@@ -11,7 +11,18 @@ import { get, isEqual, compact } from 'lodash'
 import { provider } from 'web3-core'
 
 import { ArrowBackIcon, ChevronRightIcon } from 'uikit-dev'
-import { Button, Card, Flex, Link as UiLink, Text, useMatchBreakpoints, useModal } from 'definixswap-uikit'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CheckBIcon,
+  Flex,
+  Link as UiLink,
+  Text,
+  useMatchBreakpoints,
+  useModal,
+} from 'definixswap-uikit'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
@@ -21,9 +32,8 @@ import { approveOther } from 'utils/callHelpers'
 import { getContract } from 'utils/erc20'
 import success from 'uikit-dev/animation/complete.json'
 import { useDispatch } from 'react-redux'
-import useTheme from 'hooks/useTheme'
 import { Rebalance } from '../../state/types'
-import { useBalances, useAllowances } from '../../state/hooks'
+import { useBalances, useAllowances, usePriceFinixUsd } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -56,15 +66,17 @@ const CardInput = ({
 }) => {
   const { t } = useTranslation()
   const [isApproving, setIsApproving] = useState(false)
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const dispatch = useDispatch()
   const { account, klaytn, connector } = useWallet()
-  const { isDark } = useTheme()
+  const finixPrice = usePriceFinixUsd()
   const { setShowModal } = React.useContext(KlipModalContext())
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
+    // eslint-disable-next-line
+    // debugger;
     setIsApproving(true)
     try {
       if (connector === 'klip') {
@@ -93,91 +105,137 @@ const CardInput = ({
     if (token.symbol === 'WKLAY' || token.symbol === 'WBNB') return 'main'
     return getAddress(token.address)
   }
+
   function toFixedCustom(num) {
     return num.toString().match(/^-?\d+(?:\.\d{0,7})?/)[0]
   }
+
+  const coins = useMemo(
+    () =>
+      rebalance.ratio
+        .filter((coin) => coin.value)
+        .map((c) => {
+          const balance = get(balances, findAddress(c))
+          return {
+            ...c,
+            cMax: balance || new BigNumber(0),
+            cAddress: getAddress(c.address),
+            cBalance: balance,
+          }
+        }),
+    [balances, rebalance],
+  )
+
+  const needsApprovalCoins = useMemo(
+    () =>
+      coins
+        .map((c) => {
+          const currentValue = parseFloat(currentInput[c.cAddress])
+          const currentAllowance = (get(allowances, c.cAddress) || new BigNumber(0)).toNumber()
+          const needsApproval = currentAllowance < currentValue && c.symbol !== 'WKLAY' && c.symbol !== 'WBNB'
+          return {
+            ...c,
+            currentValue,
+            needsApproval,
+          }
+        })
+        .filter(({ currentValue }) => currentValue > 0),
+    [currentInput, coins, allowances],
+  )
+
+  const allApproved = useMemo(
+    () => needsApprovalCoins.every(({ needsApproval }) => !needsApproval),
+    [needsApprovalCoins],
+  )
+
   return (
     <>
-      <Card className={`mb-s16 ${isMobile ? 'pa-s20' : 'mb-s16 pa-s40'}`}>
-        <TwoLineFormat
-          title="Share price"
-          subTitle="(Since inception)"
-          subTitleFontSize="11px"
-          titleColor={isDark ? '#ADB4C2' : ''}
-          value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-          percent={`${
-            rebalance.sharedPricePercentDiff >= 0
-              ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-              : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-          }%`}
-          percentClass={(() => {
-            if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-            if (rebalance.sharedPricePercentDiff > 0) return 'success'
-            return ''
-          })()}
-          large
-          className="mb-4"
-        />
+      <Card className="mb-s16">
+        <CardBody>
+          <CardHeading
+            rebalance={rebalance}
+            isHorizontal={isMobile}
+            className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`}
+          />
+
+          <Flex justifyContent="space-between" flexWrap="wrap">
+            <TwoLineFormat
+              className={isMobile ? 'col-6 mb-s20' : 'col-4'}
+              title={t('Yield APR')}
+              value={`${numeral(
+                finixPrice
+                  .times(get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+                  .div(get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                  .times(100)
+                  .toFixed(2),
+              ).format('0,0.[00]')}%`}
+              hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+            />
+
+            <TwoLineFormat
+              className={isMobile ? 'col-6' : 'col-4 bd-l pl-s32'}
+              title={t('Share Price(Since Inception)')}
+              value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+              percent={`${
+                rebalance.sharedPricePercentDiff >= 0
+                  ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                  : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+              }%`}
+              percentClass={(() => {
+                if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                return ''
+              })()}
+            />
+            <TwoLineFormat
+              className={isMobile ? 'col-6' : 'col-4 bd-l pl-s32'}
+              title={t('Risk-0-Meter')}
+              value="Medium"
+            />
+          </Flex>
+        </CardBody>
       </Card>
+
       <Card className={isMobile ? 'pa-s20' : 'pa-s40'}>
-        <div className="mb-4">
-          {rebalance.ratio
-            .filter((r) => r.value)
-            .map((c) => (
-              <CurrencyInputPanel
-                currency={c}
-                balance={get(balances, findAddress(c))}
-                id={`invest-${c.symbol}`}
-                key={`invest-${c.symbol}`}
-                showMaxButton={
-                  String((get(balances, findAddress(c)) || new BigNumber(0)).toNumber()) !==
-                  currentInput[getAddress(c.address)]
-                }
-                className="mb-s24"
-                value={currentInput[getAddress(c.address)]}
-                onMax={() => {
-                  const max = String((get(balances, findAddress(c)) || new BigNumber(0)).toNumber())
+        <Box mb="S_40">
+          {coins.map((c) => (
+            <CurrencyInputPanel
+              currency={c}
+              balance={c.cBalance}
+              id={`invest-${c.symbol}`}
+              key={`invest-${c.symbol}`}
+              showMaxButton={String(c.cMax.toNumber()) !== currentInput[c.cAddress]}
+              className="mb-s24"
+              value={currentInput[c.cAddress]}
+              onMax={() => {
+                const max = String(c.cMax.toNumber())
 
-                  const testMax = toFixedCustom(max)
-                  setCurrentInput({
-                    ...currentInput,
-                    [getAddress(c.address)]: testMax,
-                  })
-                }}
-                onQuarter={() => {
-                  setCurrentInput({
-                    ...currentInput,
-                    [getAddress(c.address)]: String(
-                      (get(balances, findAddress(c)) || new BigNumber(0)).times(0.25).toNumber(),
-                    ),
-                  })
-                }}
-                onHalf={() => {
-                  setCurrentInput({
-                    ...currentInput,
-                    [getAddress(c.address)]: String(
-                      (get(balances, findAddress(c)) || new BigNumber(0)).times(0.5).toNumber(),
-                    ),
-                  })
-                }}
-                onUserInput={(value) => {
-                  setCurrentInput({ ...currentInput, [getAddress(c.address)]: value })
-                }}
-              />
-            ))}
-        </div>
-
-        <SpaceBetweenFormat
-          className="mb-4"
-          title={t('Total Value')}
-          value={`$${numeral(sumPoolAmount).format('0,0.[0000]')}`}
-        />
+                const testMax = toFixedCustom(max)
+                setCurrentInput({
+                  ...currentInput,
+                  [c.cAddress]: testMax,
+                })
+              }}
+              onQuarter={() => {
+                setCurrentInput({
+                  ...currentInput,
+                  [c.cAddress]: String(c.cMax.times(0.25).toNumber()),
+                })
+              }}
+              onHalf={() => {
+                setCurrentInput({
+                  ...currentInput,
+                  [c.cAddress]: String(c.cMax.times(0.5).toNumber()),
+                })
+              }}
+              onUserInput={(value) => {
+                setCurrentInput({ ...currentInput, [c.cAddress]: value })
+              }}
+            />
+          ))}
+        </Box>
 
         {(() => {
-          const totalInput = rebalance.ratio
-            .filter((r) => r.value)
-            .map((c) => currentInput[getAddress(c.address)])
-            .join('')
           const needsApproval = rebalance.ratio.find((c) => {
             const currentValue = parseFloat(currentInput[getAddress(c.address)])
             const currentAllowance = (get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()
@@ -190,20 +248,67 @@ const CardInput = ({
               </Button>
             )
           }
-          return (
-            <Button scale="lg" width="100%" disabled={isSimulating || totalInput.length === 0} onClick={onNext}>
-              {t('Calculate invest amount')}
-            </Button>
-          )
+          return null
         })()}
+
+        <Box className="bd-b" pb="S_32" mb="S_32">
+          <Text textStyle="R_16M" mb="S_12" color="textSubtle">
+            {t('Total Amount')}
+          </Text>
+          {needsApprovalCoins.length ? (
+            needsApprovalCoins.map((coin) => (
+              <Flex textStyle="R_16M" mb="S_8" alignItems="center">
+                <Flex alignItems="center" className="col-9">
+                  <img width="32px" src={`/images/coins/${coin.symbol}.png`} alt="" />
+                  <Text mr="S_8" ml="S_12">
+                    {0.2264627858327316}
+                  </Text>
+                  <Text color="textSubtle">{coin.symbol}</Text>
+                </Flex>
+                <Button
+                  ml="auto"
+                  width="200px"
+                  variant="brown"
+                  disabled={isApproving || !coin.needsApproval || !coin.currentValue}
+                  onClick={onApprove(coin)}
+                >
+                  {coin.needsApproval || <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />} Approve{' '}
+                  {coin.symbol}
+                </Button>
+              </Flex>
+            ))
+          ) : (
+            <Flex py="S_28" justifyContent="center">
+              <Text textStyle="R_14R" color="textSubtle">
+                {t('Please input the investment amount.')}
+              </Text>
+            </Flex>
+          )}
+        </Box>
+
+        <Box mb="S_40">
+          <Text textStyle="R_16M" mb="S_8" color="textSubtle">
+            {t('Total Value')}
+          </Text>
+          <Text textStyle="R_23M">$ {numeral(sumPoolAmount).format('0,0.[0000]')}</Text>
+        </Box>
+
+        <Button
+          scale="lg"
+          width="100%"
+          disabled={isSimulating || !allApproved || !needsApprovalCoins.length}
+          onClick={onNext}
+        >
+          {t('Calculate invest amount')}
+        </Button>
       </Card>
     </>
   )
 }
 
 const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const { transactionHash } = tx
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}

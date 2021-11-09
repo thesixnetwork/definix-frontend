@@ -112,8 +112,8 @@ const CardInput = ({
   setSelectedToken,
 }) => {
   const { t } = useTranslation()
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const { setShowModal } = React.useContext(KlipModalContext())
   const { account, klaytn, connector } = useWallet()
   const dispatch = useDispatch()
@@ -391,8 +391,8 @@ const CardInput = ({
 }
 
 const CardResponse = ({ tx, currentInput, rebalance }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
   const { transactionHash } = tx
 

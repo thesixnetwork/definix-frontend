@@ -7,7 +7,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, Card, CardBody, CardRibbon, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, Button, Card, CardBody, CardRibbon, Flex, useMatchBreakpoints } from 'definixswap-uikit'
 import numeral from 'numeral'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -63,8 +63,8 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   onClickViewDetail,
 }) => {
   const { t } = useTranslation()
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const { ratio } = rebalance
   const finixPrice = usePriceFinixUsd()
 
@@ -145,12 +145,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         <CardHeading className="pa-4 pb-6" isHorizontal rebalance={rebalance} />
 
         <div>
-          <div className="flex px-4 pb-5">
+          <Flex flexWrap="wrap" className="flex px-4 pb-5" justifyContent="space-between">
             <TwoLineFormat
+              className="col-6"
               title={t('Total Asset Value')}
               value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
             />
             <TwoLineFormat
+              className="col-6"
               title={t('Yield APR')}
               value={`${numeral(
                 finixPrice
@@ -161,8 +163,8 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               ).format('0,0.[00]')}%`}
               hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
             />
-          </div>
-          <div className="px-4 pb-5">
+          </Flex>
+          <Box px="S_20" pb="S_20">
             <TwoLineFormat
               title={t('Share Price(Since Inception)')}
               value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
@@ -177,8 +179,8 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 return ''
               })()}
             />
-          </div>
-          <div className="px-4 py-3 bd-t">
+          </Box>
+          <Box p="S_20" pb="S_20" className="bd-t">
             <TwoLineFormat
               className="pb-6"
               title={t('Current Investment')}
@@ -200,7 +202,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               })()}
             />
             <BtnViewDetail onClick={onClickViewDetail} />
-          </div>
+          </Box>
         </div>
       </HorizontalMobileStyle>
     )

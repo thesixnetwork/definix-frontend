@@ -34,8 +34,8 @@ const Bar = styled.div<{ color: string }>`
 `
 
 const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = '' }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
 
   return (
     <div className={`flex ${className}`}>

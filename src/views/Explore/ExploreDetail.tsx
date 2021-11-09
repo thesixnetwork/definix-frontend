@@ -63,9 +63,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
   const { isDark } = useTheme()
-  const { isXl, isLg } = useMatchBreakpoints()
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const finixPrice = usePriceFinixUsd()
-  const isMobile = !isXl && !isLg
   const dispatch = useDispatch()
   const { account } = useWallet()
   const { t } = useTranslation()

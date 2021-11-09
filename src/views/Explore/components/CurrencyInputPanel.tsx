@@ -73,8 +73,8 @@ const CurrencyInputPanel = ({
 }: CurrencyInputPanelProps) => {
   const { t } = useTranslation()
   const { account } = useWallet()
-  const { isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isMd && !isLg
+  const { isXxl, isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobile = !isXxl && !isXl && !isMd && !isLg
 
   const thisName = (() => {
     if (currency.symbol === 'WKLAY') return 'KLAY'

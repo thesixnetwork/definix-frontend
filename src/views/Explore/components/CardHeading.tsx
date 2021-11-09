@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { Flex, Text } from 'definixswap-uikit'
-import { ChevronUpIcon, ChevronDownIcon } from 'uikit-dev'
 import { Rebalance } from '../../../state/types'
 
 interface CardHeadingType {
@@ -30,6 +30,8 @@ const CardHeading: React.FC<CardHeadingType> = ({
   onlyTitle = false,
   rebalance = {},
 }) => {
+  const { t } = useTranslation()
+
   return (
     <Flex justifyContent="space-between" className={className}>
       <Flex
@@ -42,15 +44,15 @@ const CardHeading: React.FC<CardHeadingType> = ({
         {onlyTitle ? (
           <div>
             <Text textStyle="R_20B" textTransform="uppercase" className="mb-1">
-              {rebalance.title}
+              {t(rebalance.title)}
             </Text>
           </div>
         ) : (
           <div>
             <Text textStyle="R_16B" textTransform="uppercase" className="mb-1">
-              {rebalance.title}
+              {t(rebalance.title)}
             </Text>
-            <Text textStyle="R_12R">{rebalance.description}</Text>
+            <Text textStyle="R_12R">{t(rebalance.description)}</Text>
           </div>
         )}
       </Flex>

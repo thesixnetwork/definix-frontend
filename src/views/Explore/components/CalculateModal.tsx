@@ -37,8 +37,8 @@ const CardCalculate = ({
   calNewImpact,
 }) => {
   const { t } = useTranslation()
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   // const slippage = useSlippage()
   const { setShowModal } = React.useContext(KlipModalContext())
   const { account, klaytn, connector } = useWallet()

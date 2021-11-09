@@ -37,8 +37,8 @@ const Performance: React.FC<PerformanceType> = ({
   sharpRatio,
 }) => {
   const { t } = useTranslation()
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
 
   return (
     <>
