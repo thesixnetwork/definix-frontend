@@ -56,7 +56,7 @@ const predefinedValues = [
 ]
 
 const SlippageToleranceSettings = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
   const [value, setValue] = useState(userSlippageTolerance / 100)
   const [error, setError] = useState<string | null>(null)
@@ -93,8 +93,12 @@ const SlippageToleranceSettings = () => {
   return (
     <StyledSlippageToleranceSettings>
       <Label>
-        <Text textStyle={TextStyles.R_16M} color={ColorStyles.DEEPGREY} mr="S_6">{t("Slippage tolerance")}</Text>
-        <Helper text={t("Your transaction will revert if the price changes unfavorably by more than this percentage.")} />
+        <Text textStyle={TextStyles.R_16M} color={ColorStyles.DEEPGREY} mr="S_6">
+          {t('Slippage tolerance')}
+        </Text>
+        <Helper
+          text={t('Your transaction will revert if the price changes unfavorably by more than this percentage.')}
+        />
       </Label>
       <Options>
         <Flex mb={['8px', 0]} mr={[0, '8px']}>
@@ -105,7 +109,7 @@ const SlippageToleranceSettings = () => {
               <Option key={predefinedValue}>
                 <Button
                   width="88px"
-                  scale={ButtonScales.S_40}
+                  md
                   variant={value === predefinedValue ? 'red' : 'lightbrown'}
                   onClick={handleClick}
                 >

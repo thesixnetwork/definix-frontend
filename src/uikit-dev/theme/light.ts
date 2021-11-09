@@ -9,7 +9,7 @@ import { light as lightModal } from '../widgets/Modal/theme'
 import base from './base'
 import { lightColors } from './colors'
 
-const lightTheme: DefaultTheme = {
+const lightTheme: any = {
   ...base,
   isDark: false,
   alert: lightAlert,

@@ -257,7 +257,7 @@
   "Vault": "Vault",
   "Management Fee": "Management Fee",
   "Finix Buyback Fee": "Finix Buyback Fee",
-  "Ecosystem": "Ecosystem",
+  "Ecosystem Fee": "Ecosystem Fee",
   "Shares": "Shares",
   "Total Value": "Total Value",
   "Yield": "Yield",
@@ -306,5 +306,9 @@
   "Transaction Submitted": "Transaction Submitted",
   "{{Action}} Complete": "{{Action}} Complete",
   "{{Action}} Failed": "{{Action}} Failed",
-  "-": "Cross-chain Arbitrage"
+  "-": "Cross-chain Arbitrage",
+  "Ecosystem fee": "Ecosystem fee",
+  "Approve to {{Token}}": "Approve to {{Token}}",
+  "Approved to {{Token}}": "Approved to {{Token}}",
+  "This trade has a price": "This trade has a price impact of at least 10%. Please type the word \"confirm\" to continue with this swap."
 }

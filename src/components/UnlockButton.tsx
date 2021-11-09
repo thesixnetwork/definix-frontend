@@ -1,8 +1,8 @@
 import React from 'react'
-import { Button } from 'definixswap-uikit'
+import { Button, ButtonVariants } from 'definixswap-uikit'
+import { useTranslation } from 'react-i18next'
 import { useWalletModal } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { useTranslation } from 'react-i18next'
 
 const UnlockButton = (props) => {
   const { t } = useTranslation()
@@ -10,7 +10,7 @@ const UnlockButton = (props) => {
   const { onPresentConnectModal } = useWalletModal(connect, reset)
 
   return (
-    <Button onClick={onPresentConnectModal} {...props}>
+    <Button width="100%" variant={ButtonVariants.BROWN} md onClick={onPresentConnectModal} {...props}>
       {t('Unlock Wallet')}
     </Button>
   )

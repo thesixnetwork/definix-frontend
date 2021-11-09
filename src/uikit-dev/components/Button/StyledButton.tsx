@@ -43,7 +43,8 @@ const removePointerEvents = ({ disabled, as }: ThemedProps) => {
 const getButtonVariantProp =
   (prop: keyof ButtonThemeVariant) =>
   ({ theme, variant = variants.PRIMARY }: ThemedProps) => {
-    return theme.button[variant][prop]
+    // return theme.button[variant][prop]
+    return ''
   }
 
 const StyledButton = styled.button<ButtonProps>`

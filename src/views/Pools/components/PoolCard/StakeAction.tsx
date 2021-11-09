@@ -84,7 +84,8 @@ const StakeAction: React.FC<StakeActionProps> = ({
         <>
           {hasContract ? (
             <Button
-              scale={ButtonScales.S_40}
+              width="100%"
+              md
               variant={ButtonVariants.BROWN}
               disabled={isFinished || requestedApproval}
               onClick={handleApprove}
@@ -105,7 +106,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
               <Box>
                 <Button
                   minWidth="40px"
-                  scale={ButtonScales.S_40}
+                  md
                   variant={ButtonVariants.LINE}
                   disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
                   onClick={onPresentWithdraw}
@@ -115,7 +116,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
                 {isEnableAddStake && (
                   <Button
                     minWidth="40px"
-                    scale={ButtonScales.S_40}
+                    md
                     variant={ButtonVariants.LINE}
                     disabled={isFinished && sousId !== 0}
                     onClick={onPresentDeposit}

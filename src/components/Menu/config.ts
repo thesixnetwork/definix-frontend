@@ -7,7 +7,7 @@ export const links = (t: (key: string) => string) => {
       href: '/',
     },
     {
-      label: t('ExChange'),
+      label: t('Exchange'),
       icon: 'GnbExchangeNIcon',
       activeIcon: 'GnbExchangeSIcon',
       items: [
