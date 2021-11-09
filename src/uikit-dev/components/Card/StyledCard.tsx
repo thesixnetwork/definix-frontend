@@ -22,10 +22,6 @@ const getBoxShadow = ({ isActive, isSuccess, isWarning, isRainbow, theme }: Styl
     return theme.card.boxShadowActive
   }
 
-  if (isRainbow) {
-    return theme.shadows.elevation2
-  }
-
   return theme.shadows.elevation1
 }
 

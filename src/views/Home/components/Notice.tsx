@@ -9,16 +9,6 @@ import { useTranslation } from 'react-i18next'
 
 import { Label, Text, textStyle, Box, ImgHomeTopFinixIcon } from 'definixswap-uikit'
 
-const FullColumnGrid = styled(Box)`
-  position: relative;
-  grid-column-start: 1;
-  grid-column-end: 13;
-
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 32px;
-`
-
 const StyledSlider = styled(Slider)`
   grid-column-start: 1;
   grid-column-end: 8;
@@ -103,7 +93,7 @@ const HomeNotice: React.FC = () => {
   }, [])
 
   return (
-    <FullColumnGrid pt="S_30" pb="S_42">
+    <>
       <Label type="noti">{t("NOTICE")}</Label>
       <StyledSlider {...SliderOptions}>
         {notices && notices.map(({ text }) => <Notice>{text}</Notice>)}
@@ -112,7 +102,7 @@ const HomeNotice: React.FC = () => {
       <Character>
         <ImgHomeTopFinixIcon />
       </Character>
-    </FullColumnGrid>
+    </>
   )
 }
 
