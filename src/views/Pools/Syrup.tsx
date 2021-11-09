@@ -212,17 +212,6 @@ const Farm: React.FC = () => {
     }
     const finixApy = apy
     const sumApy = BigNumber.sum(finixApy, klayApy)
-    console.groupCollapsed('Pool')
-    console.log({
-      ...pool,
-      isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
-      apy: sumApy,
-      finixApy,
-      klayApy,
-      estimatePrice,
-      farm: stakingTokenFarm,
-    })
-    console.groupEnd()
     return {
       ...pool,
       isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
