@@ -1,38 +1,48 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Card } from 'uikit-dev'
+import { useTranslation } from 'react-i18next'
+import styled, { css } from 'styled-components'
+import { Card, CardBody, Text, ColorStyles, textStyle } from 'definixswap-uikit'
 import { Timeline } from 'react-twitter-widgets'
 
-const Tweet = styled(Card)`
-  padding: 16px;
-  height: 100%;
-  max-height: 461px;
+const Title = styled(Text)`
+  ${css(textStyle.R_26B)}
+  color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
 `
 
 const Inner = styled.div`
-  overflow: scroll;
+  margin-top: 24px;
+  height: 400px;
   border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.radii.card};
-  height: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+
+  > div {
+    margin-top: -1px;
+  }
 `
 
-const CardTweet = ({ className = '' }) => {
+const CardTweet = () => {
+  const { t } = useTranslation();
   return (
-    <Tweet className={className}>
-      <Inner>
-        <Timeline
-          dataSource={{
-            sourceType: 'profile',
-            screenName: 'DefinixOfficial',
-          }}
-          options={{
-            id: 'profile:DefinixOfficial',
-            chrome: 'noheader, nofooter',
-            height: '400',
-          }}
-        />
-      </Inner>
-    </Tweet>
+    <Card>
+      <CardBody p="S_40">
+        <Title>{t("Check out the latest information of Definix")}</Title>
+        <Inner>
+          <Timeline
+            dataSource={{
+              sourceType: 'profile',
+              screenName: 'DefinixOfficial',
+            }}
+            options={{
+              id: 'profile:DefinixOfficial',
+              chrome: 'noheader, nofooter',
+              height: '402',
+              borderColor: 'transparent'
+            }}
+          />
+        </Inner>
+      </CardBody>
+    </Card>
   )
 }
 

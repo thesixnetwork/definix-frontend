@@ -1,136 +1,83 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import useTheme from 'hooks/useTheme'
-import _ from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useProfile } from 'state/hooks'
-import styled, { css } from 'styled-components'
-import { Heading, Skeleton, useMatchBreakpoints } from 'uikit-dev'
-import CountDownBanner from 'uikit-dev/components/CountDownBanner'
-import { Card, CardBody, CardHeader, Flex, Text, textStyle, Box, ImgHomeTopFinixIcon } from 'definixswap-uikit'
-import { Overlay } from 'uikit-dev/components/Overlay'
-import {
-  LeftPanel,
-  MaxWidthLeft,
-  MaxWidthRight,
-  RightPanel,
-  ShowHideButton,
-  TwoPanelLayout,
-} from 'uikit-dev/components/TwoPanelLayout'
-import CardAudit from './components/CardAudit'
-import CardAutoRebalancing from './components/CardAutoRebalancing'
-import CardGetStarted from './components/CardGetStarted/CardGetStarted'
-import CardMyFarmsAndPools from './components/CardMyFarmsAndPools'
+import styled from 'styled-components'
+import { useMatchBreakpoints, Box } from 'definixswap-uikit'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
 import HomeNotice from './components/Notice'
+import CardFinix from './components/CardFinix'
+import CardHighAPR from './components/CardHighAPR'
+import CardAudit from './components/CardAudit'
 
 const WrapGrid = styled.div`
   position: relative;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 32px;
-`
+  grid-template-areas: 
+    "notice notice"
+    "tvl finix"
+    "apr finix"
+    "apr tweet"
+    "audit tweet";
+    "audit";
 
-const LeftColumnGrid = styled.div`
-  position: relative;
-  grid-column-start: 1;
-  grid-column-end: 7;
-`
-
-const RightColumnGrid = styled.div`
-  position: relative;
-  grid-column-start: 7;
-  grid-column-end: 13;
-`
-
-const FullColumnGrid = styled(Box)`
-  position: relative;
-  grid-column-start: 1;
-  grid-column-end: 13;
-
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 32px;
-`
-
-const Caption = styled(Text)`
-  color: ${({ theme }) => theme.colors.white};
-  background: ${({ theme }) => theme.colors.primary};
-  padding: 4px 16px;
-  border-radius: ${({ theme }) => theme.radii.card};
-  display: inline-block;
-`
-
-const CustomTab = styled.div`
-  display: flex;
-
-  h2 {
-    cursor: pointer;
-    position: relative;
-
-    &:before {
-      content: '';
-      width: 100%;
-      height: 2px;
-      background: ${({ theme }) => theme.colors.primary};
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      opacity: 0;
-      transition: 0.2s;
-    }
-
-    &.current:before {
-      opacity: 1;
-    }
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    column-gap: 16px;
+    grid-template-areas: 
+      "notice"
+      "tvl"
+      "finix"
+      "apr"
+      "tweet"
+      "audit";
   }
 `
 
+const LeftColumnGrid = styled.div<{ area: string }>`
+  grid-area: ${({ area }) => area};
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 7;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    grid-column-start: 1;
+    grid-column-end: 13;
+  }
+
+  > div {
+    margin-bottom: 32px;
+  }
+`
+
+const RightColumnGrid = styled.div<{ area: string }>`
+  grid-area: ${({ area }) => area};
+  position: relative;
+  grid-column-start: 7;
+  grid-column-end: 13;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    grid-column-start: 1;
+    grid-column-end: 13;
+  }
+
+  > div {
+    margin-bottom: 32px;
+  }
+`
+
+const FullColumnGrid = styled(Box)<{ area: string }>`
+  grid-area: ${({ area }) => area};
+  position: relative;
+  grid-column-start: 1;
+  grid-column-end: 13;
+`
+
 const Home: React.FC = () => {
-  const { t } = useTranslation()
-
-  const [captionText, setCaptionText] = useState()
-  const { isXl } = useMatchBreakpoints()
-  const isMobileOrTablet = !isXl
-  const [isLoading, setIsLoading] = useState(false)
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 2500)
-  }, [setIsLoading])
-  const [isViewTurial, setIsViewTurial] = useState(false)
-  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
-  const themes = useTheme()
-
-  const { account } = useWallet()
-  const { hasProfile } = useProfile()
-  // const TranslateString = useI18n()
-
-  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-    : new Date().getTime()
-
-  useEffect(() => {
-    if (isMobileOrTablet) {
-      setIsShowRightPanel(false)
-    }
-  }, [isMobileOrTablet])
-
-  useEffect(() => {
-    if (!account) {
-      setIsViewTurial(true)
-    }
-  }, [account])
-
-  useEffect(() => {
-    return () => {
-      setIsShowRightPanel(true)
-      setIsViewTurial(false)
-    }
-  }, [])
 
   return (
     <>
@@ -138,103 +85,25 @@ const Home: React.FC = () => {
         <title>Home - Definix - Advance Your Crypto Assets</title>
       </Helmet>
       <WrapGrid>
-        <HomeNotice />
-        <LeftColumnGrid>
+        <FullColumnGrid pt="S_30" area="notice">
+          <HomeNotice />
+        </FullColumnGrid>
+        <LeftColumnGrid area="tvl"> 
           <CardTVL />
         </LeftColumnGrid>
-        <RightColumnGrid>
-          <Card>
-            <CardBody>Body</CardBody>
-          </Card>
+        <RightColumnGrid area="finix">
+          <CardFinix />
         </RightColumnGrid>
+        <LeftColumnGrid area="apr">
+          <CardHighAPR />
+        </LeftColumnGrid>
+        <RightColumnGrid area="tweet">
+          <CardTweet />
+        </RightColumnGrid>
+        <LeftColumnGrid area="audit">
+          <CardAudit />
+        </LeftColumnGrid>
       </WrapGrid>
-
-      <CountDownBanner title="Definix Farms will be available in" endTime={phrase2TimeStamp} />
-      <TwoPanelLayout>
-        <LeftPanel isShowRightPanel={isShowRightPanel}>
-          <Overlay
-            show={isShowRightPanel && isMobileOrTablet}
-            style={{ position: 'absolute', zIndex: 2 }}
-            onClick={() => {
-              setIsShowRightPanel(false)
-            }}
-          />
-          <MaxWidthLeft>
-            <div className="mb-5">
-              <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                {t('Home')}
-                {t('FINIX Transferred from {{BSC}}', {
-                  BSC: 'bsc test',
-                })}
-              </Heading>
-              {isLoading ? (
-                <Skeleton
-                  animation="pulse"
-                  variant="rect"
-                  height="29px"
-                  width="60%"
-                  style={{ background: themes.theme.colors.primary, borderRadius: themes.theme.radii.card }}
-                />
-              ) : (
-                <Caption>{captionText}</Caption>
-              )}
-            </div>
-
-            {/* <CardAutoRebalancing /> */}
-
-            <div className={`flex align-stretch mt-5 ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
-              <div className={isMobileOrTablet ? 'col-12' : 'col-6 mr-2'}>
-                <CardTVL className="mb-5 mt-6" />
-                <CardAudit />
-              </div>
-              <div className={isMobileOrTablet ? 'col-12 mt-5' : 'col-6 ml-3'}>
-                <CardTweet className="mb-5 mt-6" />
-              </div>
-            </div>
-          </MaxWidthLeft>
-        </LeftPanel>
-
-        <RightPanel isShowRightPanel={isShowRightPanel}>
-          <ShowHideButton
-            isShow={isShowRightPanel}
-            action={() => {
-              setIsShowRightPanel(!isShowRightPanel)
-            }}
-          />
-
-          {isShowRightPanel && (
-            <MaxWidthRight>
-              <CustomTab className="mb-4">
-                {account && !hasProfile && (
-                  <Heading
-                    fontSize="18px !important"
-                    textTransform="uppercase"
-                    className={`mr-3 ${!isViewTurial ? 'current' : ''}`}
-                    onClick={() => {
-                      setIsViewTurial(false)
-                    }}
-                  >
-                    My investments
-                  </Heading>
-                )}
-
-                <Heading
-                  fontSize="18px !important"
-                  textTransform="uppercase"
-                  className={isViewTurial || !account ? 'current' : ''}
-                  onClick={() => {
-                    setIsViewTurial(true)
-                  }}
-                >
-                  TUTORIALS
-                </Heading>
-              </CustomTab>
-
-              {account && !hasProfile && !isViewTurial ? <CardMyFarmsAndPools /> : <CardGetStarted />}
-            </MaxWidthRight>
-          )}
-        </RightPanel>
-      </TwoPanelLayout>
     </>
   )
 }

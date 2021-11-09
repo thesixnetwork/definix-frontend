@@ -7,16 +7,16 @@ import axios from 'axios'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
 
-import { Label, Text, textStyle, Box, ImgHomeTopFinixIcon } from 'definixswap-uikit'
+import { Label, Text, textStyle, Box, ImgHomeTopFinixIcon, Flex } from 'definixswap-uikit'
 
-const FullColumnGrid = styled(Box)`
-  position: relative;
-  grid-column-start: 1;
-  grid-column-end: 13;
+const StyledFlex = styled(Flex)`
+  width: 100%;
+  flex-direction: column;
 
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 32px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    flex-direction: row;
+  }
+
 `
 
 const StyledSlider = styled(Slider)`
@@ -65,9 +65,11 @@ const Notice = styled(Text)`
 const PaginationNotice = styled(Box)``
 
 const Character = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  height: 120px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    height: auto;
+  }
+
 `
 
 const SliderOptions = {
@@ -105,14 +107,18 @@ const HomeNotice: React.FC = () => {
   }, [])
 
   return (
-    <FullColumnGrid pt="S_30" pb="S_42">
-      <Label type="noti">{t('NOTICE')}</Label>
-      <StyledSlider {...SliderOptions}>{notices && notices.map(({ text }) => <Notice>{text}</Notice>)}</StyledSlider>
-      <PaginationNotice mt="S_28" />
+    <StyledFlex>
+      <Box>
+        <Label type="noti">{t("NOTICE")}</Label>
+        <StyledSlider {...SliderOptions}>
+          {notices && notices.map(({ text }) => <Notice>{text}</Notice>)}
+        </StyledSlider>
+        <PaginationNotice mt="S_28" />
+      </Box>
       <Character>
-        <ImgHomeTopFinixIcon />
+        <ImgHomeTopFinixIcon viewBox="0 0 200 434" />
       </Character>
-    </FullColumnGrid>
+    </StyledFlex>
   )
 }
 
