@@ -64,10 +64,18 @@ const Notice = styled(Text)`
 
 const PaginationNotice = styled(Box)``
 
-const Character = styled.div`
-  height: 120px;
+const StyledBox = styled(Box)`
+  width: 100%;
   ${({ theme }) => theme.mediaQueries.lg} {
-    height: auto;
+    width: 55%;
+  }
+`
+
+const Character = styled(Flex)`
+  width: 81%;
+  align-self: flex-end;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    width: 45%;
   }
 
 `
@@ -108,15 +116,14 @@ const HomeNotice: React.FC = () => {
 
   return (
     <StyledFlex>
-      <Box>
+      <StyledBox>
         <Label type="noti">{t("NOTICE")}</Label>
         <StyledSlider {...SliderOptions}>
           {notices && notices.map(({ text }) => <Notice>{text}</Notice>)}
         </StyledSlider>
-        <PaginationNotice mt="S_28" />
-      </Box>
+      </StyledBox>
       <Character>
-        <ImgHomeTopFinixIcon viewBox="0 0 200 434" />
+        <ImgHomeTopFinixIcon viewBox="0 0 434 200" width="100%" height="100%" />
       </Character>
     </StyledFlex>
   )
