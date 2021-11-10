@@ -15,13 +15,7 @@ export interface ExpandableSectionProps {
   // inlineMultiplier?: boolean
 }
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({
-  farm,
-  lpLabel,
-  removed,
-  addLiquidityUrl,
-  finixPrice,
-}) => {
+const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed, addLiquidityUrl, finixPrice }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
@@ -99,7 +93,6 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
     // </Flex>
 
-    
     <Flex position="relative">
       <Flex className="mr-s12">
         <Box width={48} style={{ zIndex: 1 }}>
@@ -113,19 +106,17 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       <Flex flexDirection="column">
         <Text textStyle="R_20M">{lpLabel}</Text>
 
-        {
-          !removed && (
-            <Flex alignItems="end">
-              <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
-                APR
-              </Text>
-              <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
-                {displayApy}
-              </Text>
-              <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
-            </Flex>
-          )
-        }
+        {!removed && (
+          <Flex alignItems="end">
+            <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
+              APR
+            </Text>
+            <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
+              {displayApy}
+            </Text>
+            <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+          </Flex>
+        )}
       </Flex>
     </Flex>
 

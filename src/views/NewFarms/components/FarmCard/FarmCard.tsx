@@ -43,7 +43,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const lpTokenName = useMemo(() => {
-    return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace(/(DEFINIX)|(LP)/g, '').trim()
+    return (
+      farm.lpSymbol &&
+      farm.lpSymbol
+        .toUpperCase()
+        .replace(/(DEFINIX)|(LP)/g, '')
+        .trim()
+    )
   }, [farm.lpSymbol])
 
   const { convertToPriceFromToken, convertToUSD } = useConverter()
@@ -222,7 +228,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   return (
     <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
       <CardBody>
-        <Flex justifyContent="space-between" >
+        <Flex justifyContent="space-between">
           <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
           <Box style={{ width: '13%' }}>{renderTotalLiquiditySection()}</Box>
           <Box style={{ width: '26%' }} className="mx-s24">
