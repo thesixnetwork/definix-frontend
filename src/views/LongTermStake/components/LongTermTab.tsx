@@ -12,15 +12,7 @@ const Tabs = styled.div`
   height: 48px;
   border-radius: 8px;
 `
-// const renderApprovalOrStakeButton = () => {
-//   return isDark  ? (
-//     renderStakeOrInsufficient()
-//   ) : (
-//       <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
-//         Approve Contract
-//       </Button>
-//     )
-// }
+
 
 const Tab = styled(NavLink)<{ active: boolean }>`
   position: relative;
