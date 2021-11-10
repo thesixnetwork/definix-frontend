@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
+import useConverter from 'hooks/useConverter'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex } from 'uikit-dev'
-import useI18n from 'hooks/useI18n'
+import { Modal, Text, LinkExternal, Flex, ColorStyles, Divider, Box } from 'definixswap-uikit'
 import { calculateFinixEarnedPerThousandDollarsOfPool, apyModalRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
   lpLabel?: string
-  finixPrice?: BigNumber
   apy?: BigNumber
   addLiquidityUrl?: string
 }
@@ -16,131 +16,78 @@ interface ApyCalculatorModalProps {
 const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(4, auto);
-  margin-bottom: 16px;
-`
-
-const GridItem = styled.div`
-  margin-bottom: 8px;
-`
-
-const Description = styled(Text)`
-  max-width: 400px;
-  margin-bottom: 28px;
 `
 
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
   lpLabel,
-  finixPrice,
   apy,
   addLiquidityUrl,
 }) => {
-  const TranslateString = useI18n()
+  const { t } = useTranslation()
+  const { convertToPriceFromSymbol } = useConverter()
+  const finixPrice = convertToPriceFromSymbol()
   const poolApy = apy.times(new BigNumber(1)).toNumber()
 
-  const oneThousandDollarsWorthOfFinix = 1000 / finixPrice.toNumber()
+  const getEarnedPerThousand = useCallback((day: number) => {
+    return calculateFinixEarnedPerThousandDollarsOfPool({ numberOfDays: day, poolApy, finixPrice })
+  }, [poolApy, finixPrice])
 
-  const finixEarnedPerThousand1D = calculateFinixEarnedPerThousandDollarsOfPool({
-    numberOfDays: 1,
-    poolApy,
-    finixPrice,
-  })
-  const finixEarnedPerThousand7D = calculateFinixEarnedPerThousandDollarsOfPool({
-    numberOfDays: 7,
-    poolApy,
-    finixPrice,
-  })
-  const finixEarnedPerThousand30D = calculateFinixEarnedPerThousandDollarsOfPool({
-    numberOfDays: 30,
-    poolApy,
-    finixPrice,
-  })
-  const finixEarnedPerThousand365D = calculateFinixEarnedPerThousandDollarsOfPool({
-    numberOfDays: 365,
-    poolApy,
-    finixPrice,
-  })
+  const headerData = ['Timeframe', 'ROI', 'FINIX per $1000']
+  const bodyData = useMemo(() => {
+    return [{
+      timeFrame: '1d',
+      earned: getEarnedPerThousand(1)
+    }, {
+      timeFrame: '7d',
+      earned: getEarnedPerThousand(7)
+    }, {
+      timeFrame: '30d',
+      earned: getEarnedPerThousand(30)
+    }, {
+      timeFrame: '365d(APY)',
+      earned: getEarnedPerThousand(365)
+    }]
+  }, [getEarnedPerThousand])
 
   return (
-    <Modal title="ROI" onDismiss={onDismiss} isRainbow={false}>
-      <Grid>
-        <GridItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
-            {TranslateString(860, 'Timeframe')}
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
-            {TranslateString(858, 'ROI')}
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
-            {TranslateString(864, 'FINIX per $1000')}
-          </Text>
-        </GridItem>
-        {/* 1 day row */}
-        <GridItem>
-          <Text>1d</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand1D, amountInvested: oneThousandDollarsWorthOfFinix })} %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{finixEarnedPerThousand1D}</Text>
-        </GridItem>
-        {/* 7 day row */}
-        <GridItem>
-          <Text>7d</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand7D, amountInvested: oneThousandDollarsWorthOfFinix })} %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{finixEarnedPerThousand7D}</Text>
-        </GridItem>
-        {/* 30 day row */}
-        <GridItem>
-          <Text>30d</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand30D, amountInvested: oneThousandDollarsWorthOfFinix })} %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{finixEarnedPerThousand30D}</Text>
-        </GridItem>
-        {/* 365 day / APY row */}
-        <GridItem>
-          <Text>365d(APY)</Text>
-        </GridItem>
-        <GridItem>
-          <Text>
-            {apyModalRoi({ amountEarned: finixEarnedPerThousand365D, amountInvested: oneThousandDollarsWorthOfFinix })}{' '}
-            %
-          </Text>
-        </GridItem>
-        <GridItem>
-          <Text>{finixEarnedPerThousand365D}</Text>
-        </GridItem>
-      </Grid>
-      <Description fontSize="12px" color="textSubtle">
-        {TranslateString(
-          866,
-          'Calculated based on current rates. Compounding once daily. Rates are estimates provided for your convenience only, and by no means represent guaranteed returns.',
+    <Modal title="ROI" onDismiss={onDismiss} mobileFull>
+      <Box style={{ maxWidth: '416px' }}>
+        <Grid className="mt-s16 mb-s20">
+          {headerData.map((header) => (
+            <Box>
+              <Text textStyle="R_12M" color={ColorStyles.MEDIUMGREY}>
+                {t(header)}
+              </Text>
+            </Box>
+          ))}
+          
+        </Grid>
+        {bodyData.map((row, index) => (
+          <Grid className={index === bodyData.length - 1 ? 'mb-s20' : 'mb-s12'}>
+            <Box>
+              <Text textStyle="R_14M" color={ColorStyles.BLACK}>{row.timeFrame}</Text>
+            </Box>
+            <Box>
+              <Text textStyle="R_14M" color={ColorStyles.BLACK}>
+                {apyModalRoi({ amountEarned: row.earned, amountInvested: 1000 / finixPrice })} %
+              </Text>
+            </Box>
+            <Box>
+              <Text textStyle="R_14M" color={ColorStyles.BLACK}>{row.earned}</Text>
+            </Box>
+          </Grid>
+        ))}
+        <Divider/>
+        <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="my-s20">{t('Calculated based on current rates')}</Text>
+        {addLiquidityUrl && (
+          <Flex justifyContent="center">
+            <LinkExternal href={addLiquidityUrl} textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+              {t('Get {{FINIX-KLAY}}', {'FINIX-KLAY': lpLabel})}
+            </LinkExternal>
+          </Flex>
         )}
-      </Description>
-      <Flex justifyContent="center">
-        <LinkExternal href={addLiquidityUrl}>
-          {TranslateString(999, 'Get')} {lpLabel}
-        </LinkExternal>
-      </Flex>
+      </Box>
     </Modal>
   )
 }

@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React from 'react'
-import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { ChevronDownIcon, ChevronUpIcon, Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
 import ApyButton from './ApyButton'
@@ -76,8 +75,6 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
 }) => {
   const TranslateString = useI18n()
 
-  const finixPrice = usePriceFinixUsd()
-
   const imgSize = 24
 
   return (
@@ -108,7 +105,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
             {apy ? `${numeral(apy?.toNumber()).format('0,0.00')}%` : <Skeleton height={24} width={80} />}
           </div>
         </Apr>
-        <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} />
+        <ApyButton lpLabel={tokenName} apy={apy} />
       </div>
     </CardHeadingStyle>
   )
