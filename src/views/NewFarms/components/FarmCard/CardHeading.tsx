@@ -19,7 +19,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed,
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-  const [ firstCoinImageUrl, secondCoinImageUrl ] = getLpImageUrls(lpLabel)
+  const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpLabel)
 
   const displayApy = useMemo(() => {
     try {
