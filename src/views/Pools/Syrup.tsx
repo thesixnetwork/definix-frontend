@@ -2,6 +2,10 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+
+import { getFinixAddress, getSixAddress, getWklayAddress } from 'utils/addressHelpers'
+import useTokenBalance from 'hooks/useTokenBalance'
+
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import orderBy from 'lodash/orderBy'
@@ -17,6 +21,7 @@ import {
   usePriceSixUsd,
   usePriceKlayKusdt,
   usePriceKethKlay,
+  usePriceFinixKusdt,
 } from 'state/hooks'
 import { TitleSet, Box } from 'definixswap-uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -27,6 +32,8 @@ import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
+
+
 
 const Farm: React.FC = () => {
   const { t } = useTranslation()
@@ -50,6 +57,27 @@ const Farm: React.FC = () => {
     state: 'list',
     data: null,
   }) // 'list', 'deposit', 'remove',
+
+
+  // const getTokenAddress = useCallback((tokenName: string) => {
+  //   switch (tokenName) {
+  //     case 'klay':
+  //       return getWklayAddress()
+  //     case 'six': 
+  //       return getSixAddress()
+  //     default:
+  //       return getFinixAddress()
+  //   }
+  // }, [])
+  // const finixBalance = useTokenBalance(getTokenAddress('finix'))
+  // const sixBalance = useTokenBalance(getTokenAddress('six'))
+  // const wklayBalance = useTokenBalance(getWklayAddress())
+  // console.log('------- finix ', new BigNumber(getBalanceNumber(finixBalance)).toNumber())
+  // console.log('------- six ', new BigNumber(getBalanceNumber(sixBalance)).toNumber())
+  // console.log('------- klay ', new BigNumber(getBalanceNumber(wklayBalance)).toNumber())
+
+
+
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
