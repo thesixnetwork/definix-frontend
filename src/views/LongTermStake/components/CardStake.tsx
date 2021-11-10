@@ -458,7 +458,20 @@ const CardStake = ({ isShowRightPanel }) => {
             >
               Stake FINIX get vFINIX
             </Heading>
-            {isMobileOrTablet && (
+            {/* {isMobileOrTablet && (
+              <AprBox>
+                <Text color="white" bold fontSize="8px !important">
+                  Boosting Period
+                </Text>
+                <Text style={{ textDecoration: 'line-through' }} color="white" bold fontSize="8px !important">
+                  {`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}
+                </Text>
+                <Text color="white" bold fontSize="8px !important">
+                  APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
+                </Text>
+              </AprBox>
+            )} */}
+             {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="8px !important">
                   Boosting Period

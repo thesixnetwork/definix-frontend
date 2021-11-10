@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
+import useTheme from 'hooks/useTheme'
 import { CogIcon, IconButton, useModal } from '../../../uikit-dev'
 
 const Tabs = styled.div`
@@ -11,8 +12,17 @@ const Tabs = styled.div`
   height: 48px;
   border-radius: 8px;
 `
+// const renderApprovalOrStakeButton = () => {
+//   return isDark  ? (
+//     renderStakeOrInsufficient()
+//   ) : (
+//       <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+//         Approve Contract
+//       </Button>
+//     )
+// }
 
-const Tab = styled(NavLink)<{ active: boolean }>`
+const Tab = styled(NavLink) <{ active: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -21,13 +31,24 @@ const Tab = styled(NavLink)<{ active: boolean }>`
   padding: 12px;
   font-size: 14px;
   font-weight: 600;
-  background: ${({ theme, active }) => (active ? theme.colors.primary : '#979797')};
-  color: ${({ theme, active }) => (active ? theme.colors.white : '#737375')};
-  border-right: 1px solid ${({ theme }) => theme.colors.textDisabled};
+  background: ${({ theme, active }) =>
+    // eslint-disable-next-line no-nested-ternary
+    active && theme.isDark ? theme.colors.primary : active && !theme.isDark ? theme.colors.primary : !active && !theme.isDark ? '#fff' : '#2E2F30'};
+  color: ${({ theme, active }) =>
+    // eslint-disable-next-line no-nested-ternary
+    active && theme.isDark ? theme.colors.white : active && !theme.isDark ? theme.colors.white : !active && !theme.isDark ? '#2E2F30' : '#737375'};
   width: 23.333%;
   height: 100%;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+
+  &.bg-primary {
+    background: ${({ theme }) => theme.colors.primary};
+  }
+  
+  &.bg-secondary {
+    background: #2E2F30;
+  }
 
   &:before {
     content: '';
@@ -50,27 +71,8 @@ const Tab = styled(NavLink)<{ active: boolean }>`
   }
 `
 
-const StyleButton = styled(IconButton)`
-  padding: 0 20px !important;
-  width: auto;
-  background: transparent !important;
-  height: 56px;
-  width: 56px !important;
-  border-radius: 0;
-  flex-shrink: 0;
-
-  svg {
-    stroke: ${({ theme }) => theme.colors.textSubtle} !important;
-  }
-
-  &:hover {
-    svg {
-      stroke: ${({ theme }) => theme.colors.primary} !important;
-    }
-  }
-`
-
 const LongTermTab = ({ current }) => {
+  console.log('current ==', current)
   return (
     <Tabs>
       <Tab className="ml-2" to="/long-term-stake" active={current === '/long-term-stake'}>

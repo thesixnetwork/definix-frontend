@@ -25,8 +25,9 @@ const TutorailsLink = styled(Link)`
 
 const LongTermStake: React.FC = () => {
   const { path } = useRouteMatch()
-  const { isXl } = useMatchBreakpoints()
+  const { isXl, isMd } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
+  const isMobile = !isXl && !isMd
   const [isViewTurial, setIsViewTurial] = useState(false)
   const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
   const [isOpenModal, setIsOpenModal] = useState(false)
@@ -76,11 +77,11 @@ const LongTermStake: React.FC = () => {
           />
           <MaxWidthLeft>
             <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+              <div className={`${!isMobile ? "flex align-center mb-2" : 'mb-2'}`}>
+                <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Long-term Stake
                 </Heading>
-                <div className="mt-2 flex align-center justify-center">
+                <div className="mt-2 flex align-center">
                   <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
                     href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
@@ -94,7 +95,7 @@ const LongTermStake: React.FC = () => {
                 <CardStake isShowRightPanel={isShowRightPanel} />
               </Route>
               <Route exact path="/long-term-stake/top-up">
-                <CardSuperStake />
+                <CardSuperStake isShowRightPanel={isShowRightPanel} />
               </Route>
               <StakeTable />
             </div>
