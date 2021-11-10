@@ -684,7 +684,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle">
           Please select duration
         </Text>
-        <StakePeriodButton setPeriod={setPeriod} status={false} levelStake={[]} isTopUp/>
+        <StakePeriodButton setPeriod={setPeriod} status={false} levelStake={[]} isTopUp />
         <div className="flex mt-4 w-100">
           <Text className="col-6" color="textSubtle">
             From your wallet: {balanceOf ? numeral(balanceOf).format('0,0') : '-'}

@@ -428,7 +428,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   return (
     <div className="align-stretch mt-5">
-      {/* <LongTermTab current="/long-term-stake" /> */}
+      <LongTermTab current="/long-term-stake" />
       <FinixStake className="flex">
         {loadings !== '' && (
           <div
