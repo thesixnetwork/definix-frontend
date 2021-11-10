@@ -65,7 +65,6 @@ const CardList = styled(Card)`
   align-self: center;
 `
 
-
 const Balance = styled.div`
   display: flex;
   width: 100%;
@@ -111,8 +110,6 @@ const Coins = styled.div`
   }
 `
 
-
-
 const Coin = styled.div`
   min-width: 80px;
   display: flex;
@@ -128,7 +125,6 @@ const Coin = styled.div`
     margin-right: 6px;
   }
 `
-
 
 const NumberInput = styled.input`
   border: none;
@@ -642,10 +638,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             {`Harvesting...(${harvestProgress} /${Object.keys(selectedToken).length})`}
           </Button>
         ) : (
-            <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" onClick={() => setHarvestProgress(0)}>
-              Stake
-            </Button>
-          )}
+          <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" onClick={() => setHarvestProgress(0)}>
+            Stake
+          </Button>
+        )}
       </div>
     </ModalStake>
   )
