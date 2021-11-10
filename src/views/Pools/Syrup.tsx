@@ -34,6 +34,7 @@ import PoolContext from './PoolContext'
 import SuperStakeModal from '../../uikit-dev/widgets/WalletModal/SuperStakeModal'
 import StartLongTermStakeModal from '../../uikit-dev/widgets/WalletModal/StartLongTermStakeModal'
 import bannerTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup.png'
+import bannerMobile from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup-mobile.png'
 import logoFinixTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
 
 const ModalWrapper = styled.div`
@@ -65,21 +66,14 @@ const TutorailsLink = styled(Link)`
 const BannerTopup = styled(Card)`
   width: 100%;
   background: url(${bannerTopup});
-  padding: 13px 20px 20px;
+  margin: 20px 0px 30px;
 
-  h2 {
-    font-size: 24px;
-  }
-  h3 {
-    font-size: 12px !important;
-    margin-bottom: 4px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin: 20px 0px 30px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    &:before {
-      width: 30%;
-      opacity: 1;
-    }
+    margin: 20px 0px 30px;
 
     h2 {
       font-size: 28px !important;
@@ -90,14 +84,77 @@ const BannerTopup = styled(Card)`
   }
 `
 
-const BoxValue = styled(Card)`
+const BannerTopupMobile = styled(Card)`
+  width: 100%;
+  background: url(${bannerMobile});
+  margin: 20px 0px 30px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin: 20px 0px 30px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: 20px 0px 30px;
+
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const BoxValueMobile = styled(Card)`
   background: #fff;
-  width: 20%;
+  width: 100%;
   height: 50%;
-  padding: 20px;
-  margin: 0px 28px;
+  padding: 10px;
+  margin: 0px 16px 0px 0px;
   box-shadow: ${({ theme }) => theme.shadows.elevation};
   border-radius: 12px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 22%;
+    margin: 0px 46px;
+  }
+`
+
+const BoxValue = styled(Card)`
+  background: #fff;
+  width: 100%;
+  height: 50%;
+  padding: 24px;
+  margin: 0px 16px;
+  box-shadow: ${({ theme }) => theme.shadows.elevation};
+  border-radius: 12px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 24%;
+    margin: 0px 44px;
+  }
+`
+const HeaderBanner = styled(Text)`
+  width: 100%;
+  color: #222331;
+  font-weight: bold;
+  font-size: 24px !important;
+  line-height: 1.7rem;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 40%;
+    font-size: 28px !important;
+  }
+`
+
+const SuperHarvestButton = styled(Button)`
+  background: linear-gradient(#fad961, #f76b1c);
+  color: #fff;
+  padding: 0px 16px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 0px 30px;
+  }
 `
 
 const Farm: React.FC = () => {
@@ -119,6 +176,7 @@ const Farm: React.FC = () => {
   const [modalNode, setModalNode] = useState<React.ReactNode>()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
+  const isMobileOrTablet = !isXl
 
   // Super Stake
   const farmEarnings = useFarmEarning()
@@ -378,7 +436,7 @@ const Farm: React.FC = () => {
                 The amount of returns will be calculated by the annual percentage rate (APR).
               </Text>
             </div>
-            {earningsSum <= 0 && (
+            {/* {earningsSum <= 0 && (
               <BannerTopup>
                 <div className="flex align-center" style={{ zIndex: 1 }}>
                   <Heading className="pl-5" color="black" style={{ width: '40%' }}>
@@ -407,7 +465,76 @@ const Farm: React.FC = () => {
                     Super Stake
                   </Button>
                 </div>
-              </BannerTopup>
+              </BannerTopup> */}
+
+            {isMobileOrTablet ? (
+              <>
+                {earningsSum <= 0 && (
+                  <BannerTopupMobile>
+                    <div className="pa-4 pos-relative" style={{ zIndex: 1 }}>
+                      <div className="flex align-center">
+                        <HeaderBanner color="text">
+                          Harvest all of reward and stake in Long-term Stake for earn more!
+                        </HeaderBanner>
+                        <img src={logoFinixTopup} alt="logoFinixTopup" width="100" />
+                      </div>
+                      <div className="flex align-center mt-3">
+                        <BoxValueMobile>
+                          <Text color="textSubtle" fontSize="12px">
+                            FINIX ready to harvest
+                          </Text>
+                          <div className="flex align-center">
+                            <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                            <Text color="primary" fontSize="14px" fontWeight="bold" paddingLeft="4px">
+                              {totalAllMyFarms} FINIX
+                            </Text>
+                          </div>
+                        </BoxValueMobile>
+                        <SuperHarvestButton
+                          radii="small"
+                          onClick={() => {
+                            onPresentConnectModal()
+                          }}
+                        >
+                          Super Stake
+                        </SuperHarvestButton>
+                      </div>
+                    </div>
+                  </BannerTopupMobile>
+                )}
+              </>
+            ) : (
+              <>
+                {earningsSum <= 0 && (
+                  <BannerTopup>
+                    <div className="flex align-center px-6 pos-relative" style={{ zIndex: 1 }}>
+                      <HeaderBanner color="text">
+                        Harvest all of reward and stake in Long-term Stake for earn more!
+                      </HeaderBanner>
+                      <img src={logoFinixTopup} alt="logoFinixTopup" width="130" className="ml-7 mr-5" />
+                      <BoxValue>
+                        <Text color="textSubtle" fontSize="16px">
+                          FINIX ready to harvest
+                        </Text>
+                        <div className="flex align-center">
+                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                          <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
+                            {totalAllMyFarms} FINIX
+                          </Text>
+                        </div>
+                      </BoxValue>
+                      <SuperHarvestButton
+                        radii="small"
+                        onClick={() => {
+                          onPresentConnectModal()
+                        }}
+                      >
+                        Super Stake
+                      </SuperHarvestButton>
+                    </div>
+                  </BannerTopup>
+                )}
+              </>
             )}
 
             <PoolTabButtons
