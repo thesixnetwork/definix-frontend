@@ -417,7 +417,6 @@ const Farm: React.FC = () => {
               </Text>
             </div>
 
-          
             {isMobileOrTablet ? (
               <>
                 <BannerTopupMobile>
