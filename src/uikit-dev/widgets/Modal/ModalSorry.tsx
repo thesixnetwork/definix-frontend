@@ -38,7 +38,7 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
     min-width: 360px;
   }
   position: relative;
-  padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
+  // padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
 
   .color-stroke {
     position: absolute;
@@ -54,11 +54,7 @@ const ModalHeader = styled.div<{ className?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  // margin-left: 10%;
-  // margin-bottom: 20px;
-  padding: 0px 0px 10px 24px;
-  //   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  margin: 8px 0px 0px 20px;
 `
 
 const ModalTitle = styled(Flex)`
@@ -66,7 +62,7 @@ const ModalTitle = styled(Flex)`
   flex: 1;
 `
 
-const ModalStake: React.FC<Props> = ({
+const ModalSorry: React.FC<Props> = ({
   title,
   onDismiss,
   onBack,
@@ -105,4 +101,4 @@ const ModalStake: React.FC<Props> = ({
   </StyledModal>
 )
 
-export default ModalStake
+export default ModalSorry

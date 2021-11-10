@@ -36,18 +36,14 @@ import {
 } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
-import exclusive from 'uikit-dev/images/for-ui-v2/exclusive-holder.png'
+import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
 import { Text } from '../../components/Text'
 import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
 
 interface Props {
-  //   login: Login
   onDismiss?: () => void
 }
-const TutorailsLink = styled(Link)`
-  text-decoration-line: underline;
-`
 
 const FormControlLabelCustom = styled(FormControlLabel)`
   height: 40px;
@@ -60,7 +56,6 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 
 const CardList = styled(Card)`
   width: 100%;
-  //   height: 48px;
   background-color: '#FCFCFC';
   border-radius: 24px;
   align-items: center;
@@ -70,23 +65,6 @@ const CardList = styled(Card)`
   align-self: center;
 `
 
-const StyledFarmImages = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-
-  > * {
-    flex-shrink: 0;
-
-    &:nth-child(01) {
-      position: relative;
-      z-index: 1;
-    }
-    &:nth-child(02) {
-      margin-left: -8px;
-    }
-  }
-`
 
 const Balance = styled.div`
   display: flex;
@@ -133,21 +111,7 @@ const Coins = styled.div`
   }
 `
 
-const FarmsAndPools = styled.div`
-  display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
-  .icon {
-    padding-right: 8px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  &:last-child {
-    border: none;
-  }
-`
 
 const Coin = styled.div`
   min-width: 80px;
@@ -165,17 +129,6 @@ const Coin = styled.div`
   }
 `
 
-const Summary = styled.div`
-  padding: 12px 0;
-  width: 60%;
-  display: flex;
-  flex-wrap: wrap;
-
-  > div {
-    width: 50%;
-    padding: 4px;
-  }
-`
 
 const NumberInput = styled.input`
   border: none;
@@ -189,11 +142,8 @@ const NumberInput = styled.input`
 `
 
 const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
-  const [isLoading, setIsLoading] = useState(true)
   const [selectedToken, setSelectedToken] = useState({})
-  const [selectedTokenCount, setSelectedTokenCount] = useState(0)
   const [sousId, setSousId] = useState(0)
-  const [pid, setPid] = useState(0)
   const [isBnbPool, setIsBnbPool] = useState(false)
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
@@ -504,9 +454,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [harvestProgress, selectedToken, _superHarvest, onStake])
 
   return (
-    <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss}>
+    <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss} className="">
       <div className="flex flex-column w-100">
-        <Text fontSize="20px" fontWeight="bold">
+        <Text fontSize="20px" fontWeight="600">
           Super Stake
         </Text>
         <Text paddingTop="2" color="#737375">
@@ -639,14 +589,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 </Coins>
                 <Text className="align-center ml-2">{d.tokenName}</Text>
               </div>
-              <Text bold>
-                {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)} FINIX
-              </Text>
             </CardList>
           )
         })}
         <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle">
-          Please select duration
+          Please select available duration
         </Text>
         <StakePeriodButton setPeriod={setPeriod} status={false} />
         <div className="flex mt-4 w-100">
@@ -667,9 +614,6 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           />
           <Coin>
             <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-            {/* <Heading as="h1" fontSize="16px !important">
-              FINIX
-            </Heading> */}
           </Coin>
         </Balance>
         <div className="flex mt-4 w-100">
@@ -698,10 +642,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             {`Harvesting...(${harvestProgress} /${Object.keys(selectedToken).length})`}
           </Button>
         ) : (
-          <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" onClick={() => setHarvestProgress(0)}>
-            Stake
-          </Button>
-        )}
+            <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" onClick={() => setHarvestProgress(0)}>
+              Stake
+            </Button>
+          )}
       </div>
     </ModalStake>
   )
