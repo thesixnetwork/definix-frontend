@@ -83,7 +83,7 @@ export const finixPriceSlice = createSlice({
 })
 
 // Actions
-export const { setTVL, setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice  } = finixPriceSlice.actions
+export const { setTVL, setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
   let pair1Amount = 0

@@ -18,8 +18,8 @@ const useUnstake = (pid: number) => {
   const handleUnstake = useCallback(
     async (amount: string) => {
       const txHash = await unstake(herodotusContract, pid, amount, account)
-       dispatch(fetchFarmUserDataAsync(account))
-       console.info(txHash)
+      dispatch(fetchFarmUserDataAsync(account))
+      console.info(txHash)
     },
     [account, dispatch, herodotusContract, pid],
   )

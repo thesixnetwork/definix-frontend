@@ -197,7 +197,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   )
 
-
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (
       <DetailsSection

@@ -10,7 +10,7 @@ import { useHerodotus, useFinix, useSousChef, useLottery } from './useContract'
 // Approve a Farm
 export const useApprove = (lpContract: Contract) => {
   const dispatch = useDispatch()
-  const { account }: { account: string; } = useWallet()
+  const { account }: { account: string } = useWallet()
   const herodotusContract = useHerodotus()
 
   const handleApprove = useCallback(async () => {
@@ -28,7 +28,7 @@ export const useApprove = (lpContract: Contract) => {
 // Approve a Pool
 export const useSousApprove = (lpContract: Contract, sousId) => {
   const dispatch = useDispatch()
-  const { account }: { account: string; } = useWallet()
+  const { account }: { account: string } = useWallet()
   const sousChefContract = useSousChef(sousId)
 
   const handleApprove = useCallback(async () => {

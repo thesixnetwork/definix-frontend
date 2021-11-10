@@ -114,7 +114,15 @@ const FarmCard: React.FC<FarmCardProps> = ({
       return sixPrice.times(stakedTotalInQuoteToken)
     }
     return stakedTotalInQuoteToken
-  }, [sixPrice, finixPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol, stakedTotalInQuoteToken, bnbPrice, ethPrice])
+  }, [
+    sixPrice,
+    finixPrice,
+    farm.lpTotalInQuoteToken,
+    farm.quoteTokenSymbol,
+    stakedTotalInQuoteToken,
+    bnbPrice,
+    ethPrice,
+  ])
 
   const stakedBalanceValueFormated = stakedBalanceValue
     ? `$${Number(stakedBalanceValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
