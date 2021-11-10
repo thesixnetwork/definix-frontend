@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { useDispatch } from 'react-redux'
@@ -6,6 +6,7 @@ import { get } from 'lodash'
 import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router'
 import rebalanceAbi from 'config/abi/rebalance.json'
 import { Box, Button, Text, Modal, useMatchBreakpoints, Flex } from 'definixswap-uikit'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
@@ -35,8 +36,11 @@ const CardCalculate = ({
   rebalance,
   sumPoolAmount,
   calNewImpact,
+  onDismiss = () => null,
 }) => {
   const { t } = useTranslation()
+  const history = useHistory();
+
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
   // const slippage = useSlippage()
@@ -139,6 +143,7 @@ const CardCalculate = ({
       dispatch(fetchRebalanceBalances(account, [rebalance]))
       dispatch(fetchRebalances())
       onNext()
+      onDismiss()
       setIsInvesting(false)
     } catch {
       setIsInvesting(false)
@@ -248,6 +253,7 @@ const CalculateModal = ({
         sumPoolAmount={sumPoolAmount}
         onNext={onNext}
         calNewImpact={calNewImpact}
+        onDismiss={onDismiss}
       />
     </Modal>
   )

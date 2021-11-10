@@ -1,16 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import moment from 'moment'
 import React, { useRef, useCallback, useEffect, useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
-import Lottie from 'react-lottie'
 import { useTranslation } from 'react-i18next'
 import { Link, Redirect } from 'react-router-dom'
 import { get, isEqual, compact } from 'lodash'
 import { provider } from 'web3-core'
 
-import { ArrowBackIcon, ChevronRightIcon } from 'uikit-dev'
+import { ArrowBackIcon } from 'uikit-dev'
 import {
   Box,
   Button,
@@ -18,8 +16,8 @@ import {
   CardBody,
   CheckBIcon,
   Flex,
-  Link as UiLink,
   Text,
+  ToastContainer,
   useMatchBreakpoints,
   useModal,
 } from 'definixswap-uikit'
@@ -30,28 +28,18 @@ import { getAbiERC20ByName } from 'hooks/hookHelper'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
 import { getContract } from 'utils/erc20'
-import success from 'uikit-dev/animation/complete.json'
 import { useDispatch } from 'react-redux'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances, usePriceFinixUsd } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
-import Share from './components/Share'
-import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
-import VerticalAssetRatio from './components/VerticalAssetRatio'
 import { simulateInvest, getReserves } from '../../offline-pool'
 import CalculateModal from './components/CalculateModal'
 
 interface InvestType {
   rebalance: Rebalance | any
-}
-
-const SuccessOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: success,
 }
 
 const CardInput = ({
@@ -75,8 +63,6 @@ const CardInput = ({
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
-    // eslint-disable-next-line
-    // debugger;
     setIsApproving(true)
     try {
       if (connector === 'klip') {
@@ -316,6 +302,11 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const prevBalances = usePrevious(balances, {})
   const prevCurrentInput = usePrevious(currentInput, {})
   const [calNewImpact, setCalNewImpact] = useState(0)
+  const [toasts, setToasts] = useState([]);
+
+  const handleRemove = (id: string) => {
+    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
+  };
 
   useEffect(() => {
     if (account && rebalance) {
@@ -486,9 +477,11 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       rebalance={rebalance}
       sumPoolAmount={sumPoolAmount}
       onNext={() => {
-        fetchData()
-        console.log('~~~');
-        // @TODO showmodal
+        // fetchData()
+        setToasts((prevToasts) => [{
+          title: t('Invest Complete'),
+          type: "success",
+        }, ...prevToasts]);
       }}
       calNewImpact={calNewImpact}
     />,
@@ -544,6 +537,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
           />
         )}{' '}
       </div>
+      <ToastContainer toasts={toasts} onRemove={handleRemove} />
     </>
   )
 }

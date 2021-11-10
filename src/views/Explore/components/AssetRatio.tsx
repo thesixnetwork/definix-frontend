@@ -1,6 +1,5 @@
 import { Ratio } from 'config/constants/types'
 import React from 'react'
-import styled from 'styled-components'
 import { Text } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 import Coin from './Coin'
