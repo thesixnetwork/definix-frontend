@@ -3,12 +3,13 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Modal, Text, LinkExternal, Flex } from 'uikit-dev'
 import useI18n from 'hooks/useI18n'
+import useConverter from 'hooks/useConverter'
 import { calculateFinixEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
   onDismiss?: () => void
   lpLabel?: string
-  finixPrice?: BigNumber
+  // finixPrice?: BigNumber
   apy?: BigNumber
   addLiquidityUrl?: string
 }
@@ -32,14 +33,16 @@ const Description = styled(Text)`
 const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
   onDismiss,
   lpLabel,
-  finixPrice,
+  // finixPrice,
   apy,
   addLiquidityUrl,
 }) => {
+  const { convertToPriceFromSymbol } = useConverter()
+  const finixPrice = convertToPriceFromSymbol()
   const TranslateString = useI18n()
   const farmApy = apy.times(new BigNumber(100)).toNumber()
 
-  const oneThousandDollarsWorthOfFinix = 1000 / finixPrice.toNumber()
+  const oneThousandDollarsWorthOfFinix = 1000 / finixPrice
 
   const finixEarnedPerThousand1D = calculateFinixEarnedPerThousandDollars({ numberOfDays: 1, farmApy, finixPrice })
   const finixEarnedPerThousand7D = calculateFinixEarnedPerThousandDollars({ numberOfDays: 7, farmApy, finixPrice })

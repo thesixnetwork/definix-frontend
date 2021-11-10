@@ -5,7 +5,6 @@ import UnlockButton from 'components/UnlockButton'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useConverter from 'hooks/useConverter'
-import useI18n from 'hooks/useI18n'
 import {
   PlusIcon,
   MinusIcon,
@@ -18,7 +17,6 @@ import {
   Box,
 } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import numeral from 'numeral'
 import { StakeActionProps } from './types'
 
 const StakeAction: React.FC<StakeActionProps> = ({
@@ -31,9 +29,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   isFinished,
   onPresentDeposit,
   onPresentWithdraw,
-  className = '',
 }) => {
-  const TranslateString = useI18n()
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
 
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -56,6 +52,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   const handleApprove = useCallback(async () => {
     try {
+      setPendingTx(true)
       setRequestedApproval(true)
       const txHash = await onApprove()
       // user rejected tx or didn't go thru
@@ -64,10 +61,12 @@ const StakeAction: React.FC<StakeActionProps> = ({
       }
     } catch (e) {
       console.error(e)
+    } finally {
+      setPendingTx(false)
     }
   }, [onApprove, setRequestedApproval])
 
-  const hasContract = useMemo(() => {
+  const needApproveContract = useMemo(() => {
     return needsApproval && !isOldSyrup
   }, [needsApproval, isOldSyrup])
 
@@ -76,13 +75,13 @@ const StakeAction: React.FC<StakeActionProps> = ({
   }, [isOldSyrup, isFinished])
 
   return (
-    <div className={className}>
+    <>
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         My Staked
       </Text>
       {account ? (
         <>
-          {hasContract ? (
+          {needApproveContract ? (
             <Button
               width="100%"
               md
@@ -132,7 +131,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
       ) : (
         <UnlockButton fullWidth radii="small" />
       )}
-    </div>
+    </>
   )
 }
 

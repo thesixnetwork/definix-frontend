@@ -157,8 +157,6 @@ const Farms: React.FC = () => {
         return { ...farm, apy: finixApy, finixApy, klayApy }
       })
 
-      console.log('>>> farmsToDisplayWithAPY', farmsToDisplayWithAPY)
-
       return farmsToDisplayWithAPY.map((farm) => (
         <FarmCard
           key={farm.pid}
@@ -233,13 +231,14 @@ const Farms: React.FC = () => {
         )}
         {pageState.state === 'deposit' && (
           <Deposit
-            pid={pageState.data.pid}
-            tokenName={pageState.data.tokenName}
-            tokenBalance={pageState.data.tokenBalance}
-            addLiquidityUrl={pageState.data.addLiquidityUrl}
-            totalLiquidity={pageState.data.totalLiquidity}
-            myLiquidity={pageState.data.myLiquidity}
-            myLiquidityUSDPrice={pageState.data.myLiquidityUSDPrice}
+            // pid={pageState.data.pid}
+            // tokenName={pageState.data.tokenName}
+            // tokenBalance={pageState.data.tokenBalance}
+            // addLiquidityUrl={pageState.data.addLiquidityUrl}
+            // totalLiquidity={pageState.data.totalLiquidity}
+            // myLiquidity={pageState.data.myLiquidity}
+            // myLiquidityUSDPrice={pageState.data.myLiquidityUSDPrice}
+            {...pageState.data}
             onBack={() => {
               setPageState({
                 state: 'list',

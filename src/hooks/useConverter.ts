@@ -13,14 +13,12 @@ export default function useConverter() {
       return klayPrice.times(token)
     }
     if (symbol === QuoteToken.FINIX) {
-      console.log('>>>> convert finix', symbol, token, finixPrice)
       return finixPrice.times(token)
     }
     if (symbol === QuoteToken.KETH) {
       return kethPrice.times(token)
     }
     if (symbol === QuoteToken.SIX) {
-      console.log('>>>> convert six', symbol, token, sixPrice)
       return sixPrice.times(token)
     }
     return token

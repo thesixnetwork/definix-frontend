@@ -1,26 +1,15 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
-import useI18n from 'hooks/useI18n'
 import useConverter from 'hooks/useConverter'
-import styled from 'styled-components'
-import { Button, Text, ButtonVariants, ButtonScales, Flex, Box, Label, ColorStyles } from 'definixswap-uikit'
+import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from 'definixswap-uikit'
 import { useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import AirDropHarvestModal from './AirDropHarvestModal'
-import { FarmWithStakedValue } from '../../../Farms/components/FarmCard/types'
 import { PoolWithApy } from './types'
-
-const MiniLogo = styled.img`
-  width: 20px;
-  height: auto;
-  margin-right: 8px;
-  display: inline-block;
-`
 
 interface HarvestActionAirdropProps {
   isMobile: boolean
@@ -48,7 +37,6 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   needsApproval,
   pool,
 }) => {
-  const TranslateString = useI18n()
   const { account } = useWallet()
   const { onReward } = useSousHarvest(sousId, isBnbPool)
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
