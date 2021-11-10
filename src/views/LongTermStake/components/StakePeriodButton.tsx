@@ -31,7 +31,20 @@ const ButtonPeriod = styled(Button)`
   height: 60px;
 `
 
-const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, vFinixPrice, isDark, mr }) => {
+const CustomButton = ({
+  isMobile,
+  days,
+  period,
+  setPeriod,
+  level = 0,
+  minimum,
+  vFinixPrice,
+  isDark,
+  mr,
+  levelStake,
+  isTopUp,
+  disableLevel,
+}) => {
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'
   }
@@ -90,6 +103,7 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
         }}
         radii="small"
         isStroke
+        disabled={isTopUp ? !disableLevel : false}
         style={{
           background: period === level ? handleBackgroud4(period, level) : onSelect1(),
           border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
@@ -112,31 +126,35 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
           >
             {days} days
           </Text>
-          <Text
-            style={{ textDecorationLine: 'line-through', textDecorationColor: isDark ? '#FFFFFF' : '#57575B' }}
-            fontSize={`${isMobile ? '6px !important' : '8px !important'}`}
-            color={themeWhitePeriod(period, level)}
-          >
-            APR {`${numeral((vFinixPrice * level) / 1.5 || 0).format('0,0.[00]')}%`}
-          </Text>
+          {!isTopUp && (
+            <Text
+              style={{ textDecorationLine: 'line-through', textDecorationColor: isDark ? '#FFFFFF' : '#57575B' }}
+              fontSize={`${isMobile ? '6px !important' : '8px !important'}`}
+              color={themeWhitePeriod(period, level)}
+            >
+              APR {`${numeral((vFinixPrice * level) / 1.5 || 0).format('0,0.[00]')}%`}
+            </Text>
+          )}
           <Text fontSize={`${isMobile ? '8px !important' : '10px !important'}`} color={themeWhitePeriod(period, level)}>
             APR {`${numeral(vFinixPrice * level || 0).format('0,0.[00]')}%`}
           </Text>
         </BoxPeriod>
       </ButtonPeriod>
-      <Text
-        fontSize={`${isMobile ? '8px !important' : '10px !important'}`}
-        textAlign="center"
-        className="mt-2"
-        color={themeWhite(period, level)}
-      >
-        Minimum {numeral(minimum).format('0,0')} FINIX
-      </Text>
+      {!isTopUp && (
+        <Text
+          fontSize={`${isMobile ? '8px !important' : '10px !important'}`}
+          textAlign="center"
+          className="mt-2"
+          color={themeWhite(period, level)}
+        >
+          Minimum {numeral(minimum).format('0,0')} FINIX
+        </Text>
+      )}
     </div>
   )
 }
 
-const StakePeriodButton = ({ setPeriod, status }) => {
+const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   const { isDark } = useTheme()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
@@ -147,6 +165,21 @@ const StakePeriodButton = ({ setPeriod, status }) => {
   const [_minimum4, setMinimum3] = useState(0)
   const apr = useApr()
   const [periodSelect, setPeriodSelect] = useState(4)
+  let disableLevel0 = []
+  let disableLevel1 = []
+  let disableLevel2 = []
+
+  if (levelStake) {
+    disableLevel0 = levelStake.filter((val) => {
+      return !!(val === '0')
+    })
+    disableLevel1 = levelStake.filter((val) => {
+      return !!(val === '1')
+    })
+    disableLevel2 = levelStake.filter((val) => {
+      return !!(val === '2')
+    })
+  }
 
   useEffect(() => {
     setMinimum1(_.get(minimum, '0') || 0)
@@ -177,6 +210,9 @@ const StakePeriodButton = ({ setPeriod, status }) => {
         minimum={_minimum1}
         vFinixPrice={apr}
         mr="mr-2"
+        levelStake={levelStake}
+        isTopUp={isTopUp}
+        disableLevel={disableLevel0[0] === '0'}
       />
       <CustomButton
         isDark={isDark}
@@ -188,6 +224,9 @@ const StakePeriodButton = ({ setPeriod, status }) => {
         minimum={_minimum2}
         vFinixPrice={apr}
         mr="mr-2"
+        levelStake={levelStake}
+        isTopUp={isTopUp}
+        disableLevel={disableLevel1[0] === '1'}
       />
       <CustomButton
         isDark={isDark}
@@ -199,6 +238,9 @@ const StakePeriodButton = ({ setPeriod, status }) => {
         minimum={_minimum4}
         vFinixPrice={apr}
         mr=""
+        levelStake={levelStake}
+        isTopUp={isTopUp}
+        disableLevel={disableLevel2[0] === '2'}
       />
     </div>
   )

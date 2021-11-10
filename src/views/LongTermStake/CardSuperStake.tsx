@@ -7,6 +7,7 @@ import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
+// import useTopUp from '../../hooks/useTopUp'
 import useTheme from '../../hooks/useTheme'
 import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../../uikit-dev'
 import success from '../../uikit-dev/animation/complete.json'
@@ -15,7 +16,18 @@ import ConnectModal from '../../uikit-dev/widgets/WalletModal/ConnectModal'
 import logoExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/logo-exclusive-vfinix.png'
 import badgeExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/badge-exclusive.png'
 import * as klipProvider from '../../hooks/klipProvider'
-import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../hooks/useLongTermStake'
+import {
+  useBalances,
+  useAllowance,
+  useLock,
+  useApprove,
+  useAllLock,
+  useApr,
+  usePrivateData,
+  useLockTopup,
+  useAllDataLock,
+} from '../../hooks/useLongTermStake'
+import { useLockPlus } from '../../hooks/useTopUp'
 import StakePeriodButton from './components/StakePeriodButton'
 import LongTermTab from './components/LongTermTab'
 
@@ -187,11 +199,14 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const balanceOf = useBalances()
   const allowance = useAllowance()
+  const lockTopUp = useLockTopup()
+  const { lockAmount, finixEarn, balancefinix, balancevfinix, allDataLock } = usePrivateData()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const { allLockPeriod } = useAllLock()
   const [value, setValue] = useState('')
   const [letvel, setLevel] = useState(0)
   const [vFINIX, setVFINIX] = useState(0)
+  const [idLast, setIdLast] = useState(0)
   const [days, setdays] = useState(28)
   const [percentPenalty, setPercentPenalty] = useState(0)
   const [lockFinix, setLockFinix] = useState('')
@@ -208,6 +223,33 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
   const apr = useApr()
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
+  const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, 0, lockFinix, true)
+
+  useEffect(() => {
+    // const arrStr = lockTopUp.map((i) => Number(i))
+    if (lockTopUp && lockTopUp.length > 1) {
+      const arrStr = lockTopUp.map((i) => Number(i))
+      const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
+    } else {
+      let max = 0
+      for (let i = 0; i < allDataLock.length; i++) {
+        const selector = allDataLock[i]
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === period &&
+          _.get(selector, 'id') > max
+        ) {
+          max = _.get(selector, 'id')
+        }
+      }
+      setIdLast(max)
+    }
+  }, [lockTopUp, allDataLock, period])
+
+  // Super Stake
+  const levelStake = useAllDataLock()
+  console.log('allDataLock', levelStake)
 
   function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -461,7 +503,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           <Text className="mt-4" color="textSubtle">
             Please select available duration
           </Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} />
+          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit

@@ -81,7 +81,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix, flg) => {
     return status
   }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv, flg])
 
-  return { onStake: stake, status, loadings }
+  return { onLockPlus: stake, status, loadings }
 }
 
 export default useTopUp

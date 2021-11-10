@@ -210,7 +210,7 @@ export const useLockTopup = () => {
     async function fetchTopUp() {
       const callContract = getContract(VaultInfoFacet.abi, getVFinix())
       try {
-        const res = await callContract.methods.locksDesc(account, startIndex, 10).call()
+        const res = await callContract.methods.locksDesc(account, 0, 0).call()
         setTopUp(res.locksTopup)
       } catch (e) {
         setTopUp(null)
@@ -691,6 +691,38 @@ export const useSuperHarvest = () => {
   )
 
   return { onSuperHarvest: handleHarvest }
+}
+
+export const useAllDataLock = () => {
+  const { account } = useWallet()
+  const { slowRefresh } = useRefresh()
+  const [apr, setApr] = useState([])
+
+  useEffect(() => {
+    async function fetchApr() {
+      if (account) {
+        const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
+        const [userVfinixAmount] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
+        const level = _.get(userVfinixAmount, 'locks_')
+        const countLevel = []
+        for (let i = 0; i < level.length; i++) {
+          const selector = level[i]
+          if (selector.isUnlocked === false && selector.isPenalty === false) {
+            countLevel.push(_.get(selector, 'level'))
+          }
+        }
+
+        const dup = countLevel.filter((val, i) => {
+          return countLevel.indexOf(val) === i
+        })
+        setApr(dup)
+      }
+    }
+
+    fetchApr()
+  }, [slowRefresh, account])
+
+  return apr
 }
 
 export default useLongTermStake

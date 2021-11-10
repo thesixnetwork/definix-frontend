@@ -4,6 +4,9 @@ import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
+import useFarmEarning from 'hooks/useFarmEarning'
+import usePoolEarning from 'hooks/usePoolEarning'
+import { usePrivateData } from 'hooks/useLongTermStake'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
@@ -11,7 +14,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link, useMatchBreakpoints, Button, Card } from 'uikit-dev'
+import { Heading, Text, Link, useMatchBreakpoints, Button, Card, useModal } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
@@ -19,6 +22,8 @@ import FarmCard from './components/FarmCard/FarmCard'
 import { FarmWithStakedValue } from './components/FarmCard/types'
 import FarmTabButtons from './components/FarmTabButtons'
 import FarmContext from './FarmContext'
+import SuperStakeModal from '../../uikit-dev/widgets/WalletModal/SuperStakeModal'
+import StartLongTermStakeModal from '../../uikit-dev/widgets/WalletModal/StartLongTermStakeModal'
 import bannerTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup.png'
 import logoFinixTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
 
@@ -95,6 +100,21 @@ const Farms: React.FC = () => {
   const kethPriceUsd = usePriceKethKusdt()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
+
+  // Super Stake
+  const farmEarnings = useFarmEarning()
+  const poolEarnings = usePoolEarning()
+  const { balancevfinix, finixEarn } = usePrivateData()
+  const earningsSum = farmEarnings.reduce((accum, earning) => {
+    return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
+  }, 0)
+  const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
+    return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
+  }, 0)
+  const totalAllMyFarms = Math.round(earningsSum + earningsPoolSum + finixEarn * 100) / 100
+  const [onPresentConnectModal] = useModal(
+    !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
+  )
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -299,32 +319,37 @@ const Farms: React.FC = () => {
               </Text>
             </div>
 
-            <BannerTopup>
-              <div className="flex align-center" style={{ zIndex: 1 }}>
-                <Heading className="pl-5" color="black" style={{ width: '40%' }}>
-                  Harvest all of reward and stake in Long-term Stake for earn more!
-                </Heading>
-                <img src={logoFinixTopup} alt="logoFinixTopup" width="160" />
-                <BoxValue>
-                  <Text color="textSubtle" fontSize="16px">
-                    FINIX ready to harvest
-                  </Text>
-                  <div className="flex align-center">
-                    <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
-                    <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
-                      999,999,999 FINIX
+            {earningsSum <= 0 && (
+              <BannerTopup>
+                <div className="flex align-center" style={{ zIndex: 1 }}>
+                  <Heading className="pl-5" color="black" style={{ width: '40%' }}>
+                    Harvest all of reward and stake in Long-term Stake for earn more!
+                  </Heading>
+                  <img src={logoFinixTopup} alt="logoFinixTopup" width="160" />
+                  <BoxValue>
+                    <Text color="textSubtle" fontSize="16px">
+                      FINIX ready to harvest
                     </Text>
-                  </div>
-                </BoxValue>
-                <Button
-                  radii="small"
-                  className="ml-6"
-                  style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
-                >
-                  Super Stake
-                </Button>
-              </div>
-            </BannerTopup>
+                    <div className="flex align-center">
+                      <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                      <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
+                        {totalAllMyFarms} FINIX
+                      </Text>
+                    </div>
+                  </BoxValue>
+                  <Button
+                    radii="small"
+                    className="ml-6"
+                    style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
+                    onClick={() => {
+                      onPresentConnectModal()
+                    }}
+                  >
+                    Super Stake
+                  </Button>
+                </div>
+              </BannerTopup>
+            )}
 
             <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
               <FarmTabButtons

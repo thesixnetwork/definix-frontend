@@ -5,7 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
 import numeral from 'numeral'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import _ from 'lodash'
 import { fetchIdData, fetchStartIndex } from '../../../state/longTermStake'
 import { Card, Button, Text, Heading } from '../../../uikit-dev'
@@ -98,6 +98,8 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const [statuu, setStatuu] = useState(false)
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
+  const location = useLocation()
+  console.log('location::', location.pathname === '/long-term-stake')
   // penaltyFinixAmount
   const onUnStake = useCallback(
     (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days) => {
@@ -220,7 +222,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
       <Button
         fullWidth
         as={Link}
-        to="/long-term-stake/unstake"
+        to={location.pathname === '/long-term-stake' ? '/long-term-stake/unstake' : '/long-term-stake/top-up/unstake'}
         radii="small"
         style={{
           backgroundColor: '#0973B9',
@@ -252,7 +254,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
       <Button
         fullWidth
         as={Link}
-        to="/long-term-stake/unstake"
+        to={location.pathname === '/long-term-stake' ? '/long-term-stake/unstake' : '/long-term-stake/top-up/unstake'}
         radii="small"
         style={{
           backgroundColor: '#0973B9',

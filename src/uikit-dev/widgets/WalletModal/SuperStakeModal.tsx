@@ -208,7 +208,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [pendingReward, setPendingReward] = useState('0')
   const [sumpendingReward, setSumPendingReward] = useState('0')
 
-  const { onStake } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
+  const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
 
   // Farms
   const farmsLP = useFarms()
@@ -491,15 +491,15 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
 
   const handleHar = useCallback(async () => {
-    await onStake()
-  }, [onStake])
+    await onLockPlus()
+  }, [onLockPlus])
 
   useEffect(() => {
     if (harvestProgress !== -1 && harvestProgress === Object.values(selectedToken).length) {
       setAmount('10000000000000000000000')
       setFlg(true)
       if (Object.values(selectedToken)[0]) {
-        onStake()
+        onLockPlus()
           .then((d) => {
             if (d === true) {
               setFlg(true)
@@ -521,7 +521,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     harvestProgress,
     selectedToken,
     _superHarvest,
-    onStake,
+    onLockPlus,
     handleHar,
     sumpendingReward,
     value,
@@ -684,7 +684,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle">
           Please select duration
         </Text>
-        <StakePeriodButton setPeriod={setPeriod} status={false} />
+        <StakePeriodButton setPeriod={setPeriod} status={false} levelStake={[]} isTopUp/>
         <div className="flex mt-4 w-100">
           <Text className="col-6" color="textSubtle">
             From your wallet: {balanceOf ? numeral(balanceOf).format('0,0') : '-'}
