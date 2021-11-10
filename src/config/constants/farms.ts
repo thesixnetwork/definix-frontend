@@ -1,19 +1,6 @@
 import contracts from './contracts'
 import { FarmConfig, QuoteToken } from './types'
-import {
-  SIX,
-  FINIX,
-  WKLAY,
-  KUSDT,
-  KDAI,
-  KETH,
-  KWBTC,
-  KXRP,
-  KBNB,
-  KSP,
-  getLpNetwork,
-  getSingleLpNetwork,
-} from './tokens'
+import { SIX, FINIX, BNB, USDT, BUSD, BTCB, ETH, XRP, ADA, getLpNetwork, getSingleLpNetwork } from './tokens'
 
 const farms: FarmConfig[] = [
   {
@@ -24,6 +11,7 @@ const farms: FarmConfig[] = [
     tokenAddresses: FINIX,
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+  },
   {
     pid: 1,
     lpSymbol: 'FINIX-SIX LP',

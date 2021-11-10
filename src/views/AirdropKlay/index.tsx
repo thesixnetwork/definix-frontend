@@ -1,7 +1,7 @@
 import Page from 'components/layout/Page'
 import React from 'react'
 import styled from 'styled-components'
-import { Card } from 'uikit-dev'
+import { Text, Button, Card } from 'uikit-dev'
 import BannerAirdrop from './components/BannerAirdrop'
 import CardContentAirdrop from './components/CardContentAirdrop'
 import CustomModal from './components/CustomModal'

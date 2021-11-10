@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Flex from 'uikit-dev/components/Box/Flex'
 import { IconButton } from 'uikit-dev/components/Button'
 import Heading from 'uikit-dev/components/Heading/Heading'
-import { ArrowBackIcon, CloseIcon } from 'uikit-dev/components/Svg'
+import { ArrowBackIcon } from 'uikit-dev/components/Svg'
 import colorStroke from 'uikit-dev/images/Color-stroke.png'
 import { InjectedProps } from 'uikit-dev/widgets/Modal/types'
 import collectImg from 'uikit-dev/images/Airdrop/collect.png'
@@ -78,10 +78,8 @@ const RenderInCollectImg = () => {
 }
 const CustomModal: React.FC<Props> = ({
   title,
-  onDismiss,
   onBack,
   children,
-  hideCloseButton = false,
   bodyPadding = '24px',
   isRainbow = true,
   hidden = false,

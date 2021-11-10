@@ -6,14 +6,7 @@ import multicall from 'utils/multicall'
 import _ from 'lodash'
 import axios from 'axios'
 
-import {
-  getAddress,
-  getWklayAddress,
-  getSixAddress,
-  getKusdtAddress,
-  getSixKusdtLPAddress,
-  getDefinixKlayKusdtLPAddress,
-} from 'utils/addressHelpers'
+import { getAddress, getSixAddress } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
 

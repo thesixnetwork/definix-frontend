@@ -13,7 +13,6 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
-  fetchPancakeBnbPrice,
   fetchSixPrice,
   fetchTVL,
   fetchRebalances,

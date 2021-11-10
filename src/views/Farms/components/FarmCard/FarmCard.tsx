@@ -14,7 +14,6 @@ import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
-import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
 
@@ -90,7 +89,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
-  const { earnings, tokenBalance, stakedBalance } = useFarmUser(pid)
+  const { tokenBalance, stakedBalance } = useFarmUser(pid)
 
   const ratio = new BigNumber(stakedBalance).div(new BigNumber(farm.lpTotalSupply))
   const stakedTotalInQuoteToken = new BigNumber(farm.quoteTokenBlanceLP)
@@ -114,15 +113,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       return sixPrice.times(stakedTotalInQuoteToken)
     }
     return stakedTotalInQuoteToken
-  }, [
-    sixPrice,
-    klayPrice,
-    finixPrice,
-    kethPrice,
-    farm.lpTotalInQuoteToken,
-    farm.quoteTokenSymbol,
-    stakedTotalInQuoteToken,
-  ])
+  }, [sixPrice, finixPrice, farm.lpTotalInQuoteToken, farm.quoteTokenSymbol, stakedTotalInQuoteToken])
 
   const stakedBalanceValueFormated = stakedBalanceValue
     ? `$${Number(stakedBalanceValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
@@ -188,12 +179,12 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [account, ethereum, farm, renderDepositModal, renderWithdrawModal],
   )
 
-  const renderHarvestActionAirDrop = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop earnings={earnings} pid={pid} className={className} isHorizontal={isHor} />
-    ),
-    [earnings, pid],
-  )
+  // const renderHarvestActionAirDrop = useCallback(
+  //   (className?: string, isHor?: boolean) => (
+  //     <HarvestActionAirDrop earnings={earnings} pid={pid} className={className} isHorizontal={isHor} />
+  //   ),
+  //   [earnings, pid],
+  // )
 
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (

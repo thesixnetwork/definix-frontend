@@ -2,7 +2,6 @@ import Metamask from './icons/Metamask'
 import Dcent from './icons/Dcent'
 import TokenPocket from './icons/TokenPocket'
 import { Config } from './types'
-import KlipConnect from './icons/KlipConnect'
 
 const connectors: Config[] = [
   {

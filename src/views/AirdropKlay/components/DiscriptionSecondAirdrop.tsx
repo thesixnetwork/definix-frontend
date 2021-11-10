@@ -1,17 +1,14 @@
-import React, { ReactElement, useState } from 'react'
-import Collapsible from 'react-collapsible'
-import { Button, Text, ChevronDownIcon, ChevronUpIcon, Link } from 'uikit-dev'
-import Airdrop2img from 'uikit-dev/images/Airdrop/Definix-on-KLAYTN-12.png'
+import React, { ReactElement } from 'react'
+import { Text } from 'uikit-dev'
 
 const TriggerElement = (): ReactElement => {
   return (
     <div style={{ width: '100%', cursor: 'pointer' }}>
       <div style={{ fontSize: '20px' }}>
         Criteria for 2nd airdrop claim
-        <img src={Airdrop2img} style={{ width: '50px', marginLeft: '15px' }} alt="" />
+        {/* <img src={Airdrop2img} style={{ width: '50px', marginLeft: '15px' }} alt="" /> */}
         <div style={{ float: 'right' }}>
-          {console.log('isdown ', isDown)}
-          <div style={{ marginTop: '15px' }}>{isDown ? <ChevronDownIcon /> : <ChevronUpIcon />}</div>
+          {/* <div style={{ marginTop: '15px' }}>{isDown ? <ChevronDownIcon /> : <ChevronUpIcon />}</div> */}
         </div>
       </div>
 
@@ -19,6 +16,7 @@ const TriggerElement = (): ReactElement => {
     </div>
   )
 }
+
 export default function DiscriptionSecondAirdrop(): ReactElement {
   return (
     // <Collapsible trigger={} open={open} disabled={disable}>
@@ -26,8 +24,8 @@ export default function DiscriptionSecondAirdrop(): ReactElement {
       <TriggerElement />
       <div>
         <Text lineHeight="2">
-          1. Must have LP staked on Definix Klaytn during 21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59
-          a.m.(GMT +7).
+          1. Must have LP staked on Definix Klaytn-based during{' '}
+          <b>21st June 2021 3:00:00 p.m. — 20th August 2021 9:59:59 a.m.(GMT +7).</b>
         </Text>
         <Text lineHeight="2">
           2. The airdrop will be automatically distributed 30 KLAY within 48 hours to the wallet address that used on{' '}
@@ -42,15 +40,7 @@ export default function DiscriptionSecondAirdrop(): ReactElement {
         <Text lineHeight="2">
           3. Users must connect the same wallet used in claiming the airdrop from the first campaign.
         </Text>
-        <Text lineHeight="2">4. Input the destination Klaytn wallet (KIP-7 supported) on the claiming page</Text>
-
         <Text lineHeight="2">4. Airdrop is limited and distributed in a first come first serve method.</Text>
-        <Text lineHeight="2">
-          4.2. In case you use hardware wallet, please create new Kaikas wallet.
-          {/* <a style={{ color: '#528FA9' }} href="/" target="#">
-  Create Kaikas wallet
-</a> */}
-        </Text>
 
         <Text lineHeight="2">
           5. All the airdrop activity is performed and triggered by the action of a smart contract. In case the user
@@ -64,18 +54,6 @@ export default function DiscriptionSecondAirdrop(): ReactElement {
       </div>
       <br />
       <br />
-
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <a href="https://klaytn.definix.com">
-          <Button fullWidth>Supply your liquidity at Definix on Klaytn</Button>
-        </a>
-      </div>
-    </Collapsible>
+    </div>
   )
 }

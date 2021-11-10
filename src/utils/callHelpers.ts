@@ -12,7 +12,7 @@ export const approveOther = async (lpContract, spender, account) => {
 }
 
 export const stake = async (herodotusContract, pid, amount, account) => {
-  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
+  // const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
     return herodotusContract.methods
@@ -104,7 +104,7 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 }
 
 export const harvest = async (herodotusContract, pid, account) => {
-  const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
+  // const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
 
   if (pid === 0) {
     return herodotusContract.methods

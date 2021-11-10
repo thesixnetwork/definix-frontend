@@ -13,7 +13,6 @@ const TriggerElement = ({ isDown }): ReactElement => {
       <div style={{ fontSize: '20px' }}>
         Criteria for 1st airdrop claim
         <div style={{ float: 'right' }}>
-          {console.log('isdown ', isDown)}
           <div style={{ marginTop: '15px' }}>{isDown ? <ChevronDownIcon /> : <ChevronUpIcon />}</div>
         </div>
       </div>

@@ -18,50 +18,47 @@ export const FINIX = {
   [intMainnetId]: process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_FINIX_ADDRESS_TESTNET,
 }
-export const WKLAY = {
-  [intMainnetId]: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET,
+export const WBNB = {
+  [intMainnetId]: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
 }
-export const KUSDT = {
-  [intMainnetId]: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET,
+export const BNB = WBNB
+export const BUSD = {
+  [intMainnetId]: process.env.REACT_APP_BUSD_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_BUSD_ADDRESS_TESTNET,
 }
-export const KDAI = {
-  [intMainnetId]: process.env.REACT_APP_KDAI_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KDAI_ADDRESS_TESTNET,
+export const USDT = {
+  [intMainnetId]: process.env.REACT_APP_USDT_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_USDT_ADDRESS_TESTNET,
 }
-export const KETH = {
-  [intMainnetId]: process.env.REACT_APP_KETH_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KETH_ADDRESS_TESTNET,
+export const BTCB = {
+  [intMainnetId]: process.env.REACT_APP_BTCB_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_BTCB_ADDRESS_TESTNET,
 }
-export const KWBTC = {
-  [intMainnetId]: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET,
+export const ETH = {
+  [intMainnetId]: process.env.REACT_APP_ETH_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_ETH_ADDRESS_TESTNET,
 }
-export const KXRP = {
-  [intMainnetId]: process.env.REACT_APP_KXRP_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KXRP_ADDRESS_TESTNET,
+export const XRP = {
+  [intMainnetId]: process.env.REACT_APP_XRP_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_XRP_ADDRESS_TESTNET,
 }
-export const KBNB = {
-  [intMainnetId]: process.env.REACT_APP_KBNB_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KBNB_ADDRESS_TESTNET,
-}
-export const KSP = {
-  [intMainnetId]: process.env.REACT_APP_KSP_ADDRESS_MAINNET,
-  [intTestnetId]: process.env.REACT_APP_KSP_ADDRESS_TESTNET,
+export const ADA = {
+  [intMainnetId]: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
 }
 
 export const allTokens = {
   SIX,
   FINIX,
-  WKLAY,
-  KUSDT,
-  KDAI,
-  KETH,
-  KWBTC,
-  KXRP,
-  KBNB,
-  KSP,
+  WBNB,
+  BNB,
+  USDT,
+  BUSD,
+  BTCB,
+  ETH,
+  XRP,
+  ADA,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {

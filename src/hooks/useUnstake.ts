@@ -16,9 +16,8 @@ import * as klipProvider from './klipProvider'
 const jsonConvert = (data: any) => JSON.stringify(data)
 const useUnstake = (pid: number) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
-  const { setShowModal } = useContext(KlipModalContext())
 
   const handleUnstake = useCallback(
     async (amount: string) => {
@@ -50,7 +49,7 @@ const useUnstake = (pid: number) => {
         console.info(txHash)
       }
     },
-    [account, dispatch, herodotusContract, pid, setShowModal, connector],
+    [account, dispatch, herodotusContract, pid],
   )
 
   return { onUnstake: handleUnstake }
@@ -60,11 +59,10 @@ const SYRUPIDS = []
 
 export const useSousUnstake = (sousId) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
   const isOldSyrup = SYRUPIDS.includes(sousId)
-  const { setShowModal } = useContext(KlipModalContext())
 
   const handleUnstake = useCallback(
     async (amount: string) => {
@@ -74,26 +72,24 @@ export const useSousUnstake = (sousId) => {
       } else if (isOldSyrup) {
         const txHash = await sousEmegencyUnstake(sousChefContract, amount, account)
         console.info(txHash)
+      } else if (sousId === 0) {
+        const txHash = await unstake(herodotusContract, 0, amount, account)
+        console.info(txHash)
+      } else if (sousId === 1) {
+        const txHash = await unstake(herodotusContract, 1, amount, account)
+        console.info(txHash)
+      } else if (isOldSyrup) {
+        const txHash = await sousEmegencyUnstake(sousChefContract, amount, account)
+        console.info(txHash)
       } else {
-        if (sousId === 0) {
-          const txHash = await unstake(herodotusContract, 0, amount, account)
-          console.info(txHash)
-        } else if (sousId === 1) {
-          const txHash = await unstake(herodotusContract, 1, amount, account)
-          console.info(txHash)
-        } else if (isOldSyrup) {
-          const txHash = await sousEmegencyUnstake(sousChefContract, amount, account)
-          console.info(txHash)
-        } else {
-          const txHash = await sousUnstake(sousChefContract, amount, account)
-          console.info(txHash)
-        }
+        const txHash = await sousUnstake(sousChefContract, amount, account)
+        console.info(txHash)
       }
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserBalance(sousId, account))
       dispatch(updateUserPendingReward(sousId, account))
     },
-    [account, dispatch, isOldSyrup, herodotusContract, sousChefContract, sousId, setShowModal, connector],
+    [account, dispatch, isOldSyrup, herodotusContract, sousChefContract, sousId],
   )
 
   return { onUnstake: handleUnstake }

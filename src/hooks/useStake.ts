@@ -53,10 +53,9 @@ const useStake = (pid: number) => {
 
 export const useSousStake = (sousId, isUsingBnb = false) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const herodotusContract = useHerodotus()
   const sousChefContract = useSousChef(sousId)
-  const { setShowModal } = useContext(KlipModalContext())
 
   const handleStake = useCallback(
     async (amount: string) => {
@@ -64,21 +63,19 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
         await stake(herodotusContract, 0, amount, account)
       } else if (isUsingBnb) {
         await sousStakeBnb(sousChefContract, amount, account)
+      } else if (sousId === 0) {
+        await stake(herodotusContract, 0, amount, account)
+      } else if (sousId === 1) {
+        await stake(herodotusContract, 1, amount, account)
+      } else if (isUsingBnb) {
+        await sousStakeBnb(sousChefContract, amount, account)
       } else {
-        if (sousId === 0) {
-          await stake(herodotusContract, 0, amount, account)
-        } else if (sousId === 1) {
-          await stake(herodotusContract, 1, amount, account)
-        } else if (isUsingBnb) {
-          await sousStakeBnb(sousChefContract, amount, account)
-        } else {
-          await sousStake(sousChefContract, amount, account)
-        }
+        await sousStake(sousChefContract, amount, account)
       }
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserBalance(sousId, account))
     },
-    [account, dispatch, isUsingBnb, herodotusContract, sousChefContract, sousId, setShowModal, connector],
+    [account, dispatch, isUsingBnb, herodotusContract, sousChefContract, sousId],
   )
 
   return { onStake: handleStake }

@@ -12,7 +12,6 @@ import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
-import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { PoolCardProps } from './types'
 
@@ -57,7 +56,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     stakingTokenName,
     stakingTokenAddress,
     apy,
-    farm,
     tokenDecimals,
     poolCategory,
     totalStaked,
@@ -74,7 +72,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const allowance = new BigNumber(userData?.allowance || 0)
-  const earnings = useMemo(() => new BigNumber(userData?.pendingReward || 0), [userData?.pendingReward])
   const stakedBalance = useMemo(() => new BigNumber(userData?.stakedBalance || 0), [userData?.stakedBalance])
   const stakingTokenBalance = useMemo(
     () => new BigNumber(userData?.stakingTokenBalance || 0),
@@ -164,22 +161,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
       stakingTokenAddress,
       tokenName,
     ],
-  )
-
-  const renderHarvestActionAirDrop = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop
-        sousId={sousId}
-        isBnbPool={isBnbPool}
-        earnings={earnings}
-        tokenDecimals={tokenDecimals}
-        needsApproval={needsApproval}
-        isOldSyrup={isOldSyrup}
-        className={className}
-        isHorizontal={isHor}
-      />
-    ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   )
 
   const renderDetailsSection = useCallback(

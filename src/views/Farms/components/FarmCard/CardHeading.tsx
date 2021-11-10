@@ -21,6 +21,41 @@ export interface ExpandableSectionProps {
   inlineMultiplier?: boolean
 }
 
+const MultiplierTag = styled.div`
+  position: absolute;
+  top: -1px;
+  left: 16px;
+  width: 52px;
+  height: 36px;
+  background: url(${ribbin});
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  p {
+    color: ${({ theme }) => theme.colors.white};
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+  }
+`
+
+const InlineMultiplierTag = styled.div`
+  background: linear-gradient(#f3d36c, #e27d3a);
+
+  border-radius: ${({ theme }) => theme.radii.small};
+  margin-left: 4px;
+
+  p {
+    padding: 0 8px;
+    line-height: 26px;
+    color: ${({ theme }) => theme.colors.white};
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+  }
+`
+
 const StyledFarmImages = styled.div`
   display: flex;
   justify-content: center;

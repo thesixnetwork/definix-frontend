@@ -3,7 +3,7 @@ import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import numeral from 'numeral'
 import React from 'react'
-import { useFarms, usePriceBnbBusd, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import { useFarms, usePriceEthBusd, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Card, Heading } from 'uikit-dev'
 import el06 from 'uikit-dev/images/for-Farm-Elements/06.png'
@@ -66,9 +66,7 @@ const CardStyled = styled(Card)`
 
 const CardUpcomingFarms: React.FC = () => {
   const farmsLP = useFarms()
-  const bnbPrice = usePriceBnbBusd()
   const sixPrice = usePriceSixUsd()
-  const klayPrice = usePriceKlayKusdt()
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceEthBusd()
   const farmToDisplay = farmsLP.filter((farm) => farm.pid !== 0)

@@ -67,26 +67,23 @@ export const useAllHarvest = (farmPids: number[]) => {
 
 export const useSousHarvest = (sousId, isUsingBnb = false) => {
   const dispatch = useDispatch()
-  const { account, connector } = useWallet()
+  const { account } = useWallet()
   const sousChefContract = useSousChef(sousId)
   const herodotusContract = useHerodotus()
-  const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
     if (sousId === 0) {
       await harvest(herodotusContract, 0, account)
     } else if (isUsingBnb) {
       await soushHarvestBnb(sousChefContract, account)
+    } else if (sousId === 0) {
+      await harvest(herodotusContract, 0, account)
+    } else if (sousId === 1) {
+      await harvest(herodotusContract, 1, account)
+    } else if (isUsingKlay) {
+      await soushHarvestBnb(sousChefContract, account)
     } else {
-      if (sousId === 0) {
-        await harvest(herodotusContract, 0, account)
-      } else if (sousId === 1) {
-        await harvest(herodotusContract, 1, account)
-      } else if (isUsingKlay) {
-        await soushHarvestBnb(sousChefContract, account)
-      } else {
-        await soushHarvest(sousChefContract, account)
-      }
+      await soushHarvest(sousChefContract, account)
     }
     dispatch(updateUserPendingReward(sousId, account))
     dispatch(updateUserBalance(sousId, account))

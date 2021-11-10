@@ -114,7 +114,6 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   }, [beforeStart, endStart, beforeStartDate, currentBlockNumber, endBlockDate])
   // Pools using native BNB behave differently than pools using a token
   const isBnbPool = poolCategory === PoolCategory.BINANCE
-  const TranslateString = useI18n()
   const stakingTokenContract = useERC20(stakingTokenAddress)
   const { account } = useWallet()
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)

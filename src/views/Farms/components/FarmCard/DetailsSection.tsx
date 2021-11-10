@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
+import { Link, ChevronRightIcon, Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string

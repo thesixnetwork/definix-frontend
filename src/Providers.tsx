@@ -3,7 +3,7 @@ import { BlockContextProvider } from 'contexts/BlockContext'
 import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
-import injected, { UseWalletProvider, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { UseWalletProvider, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from 'state'
@@ -23,9 +23,6 @@ const Providers: React.FC = ({ children }) => {
   })
   const { setShowModal } = React.useContext(KlipModalContext())
 
-  const onPresent = () => {
-    setShowModal(true)
-  }
   const onHiddenModal = () => {
     setShowModal(false)
   }

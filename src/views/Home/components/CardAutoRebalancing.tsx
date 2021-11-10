@@ -68,11 +68,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
           Sound complicated? Don’t worry we will take care your investment automatically with our investment partner
         </Text>
 
-<<<<<<< Updated upstream
-        <Button radii="card" className="mt-4" as="a" href="https://klaytn.definix.com/rebalancing">
-=======
         <Button radii="card" as={Link} to="/rebalancing" className="mt-4">
->>>>>>> Stashed changes
           Go to Rebalancing Farm now
         </Button>
       </div>
