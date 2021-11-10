@@ -204,8 +204,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [amount, setAmount] = useState('0')
   const lockTopUp = useLockTopup()
   const [harvestProgress, setHarvestProgress] = useState(-1)
+  const [flg, setFlg] = useState(false)
+  const [pendingReward, setPendingReward] = useState('0')
+  const [sumpendingReward, setSumPendingReward] = useState('0')
 
-  const { onStake } = useLockPlus(period - 1, idLast, amount)
+  const { onStake } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
 
   // Farms
   const farmsLP = useFarms()
@@ -325,11 +328,12 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     }
     return tokenPriceKLAYTN
   }
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(numeral(balanceOf).format('0'))
+
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
   function escapeRegExp(string: string): string {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    return string.replace(/[.*?^${}()|[\]\\]/g, '\\$&')
   }
 
   const enforcer = (nextUserInput: string) => {
@@ -486,22 +490,54 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     }
   }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
 
+  const handleHar = useCallback(async () => {
+    await onStake()
+  }, [onStake])
+
   useEffect(() => {
     if (harvestProgress !== -1 && harvestProgress === Object.values(selectedToken).length) {
       setAmount('10000000000000000000000')
-      onStake()
-        .then((data) => {
-          console.log('data', data)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-      setPendingTx(false)
+      setFlg(true)
+      if (Object.values(selectedToken)[0]) {
+        onStake()
+          .then((d) => {
+            if (d === true) {
+              setFlg(true)
+              setPendingTx(false)
+              onDismiss()
+              setSelectedToken({})
+            }
+          })
+          .catch((e) => {
+            setFlg(true)
+            console.log('e')
+          })
+      }
     } else if (harvestProgress !== -1) {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onStake])
+  }, [
+    harvestProgress,
+    selectedToken,
+    _superHarvest,
+    onStake,
+    handleHar,
+    sumpendingReward,
+    value,
+    onDismiss,
+    flg,
+    pendingTx,
+  ])
+
+  // useEffect(() => {
+  //   if (Object.values(selectedToken).length > 0) {
+  //     const result = Object.values(selectedToken).map((a) => _.get(a, 'pendingReward'))
+
+  //     const sum = result.reduce((r, n) => r + n)
+  //     setSumPendingReward(parseFloat(sum).toFixed(2))
+  //   }
+  // }, [selectedToken])
 
   return (
     <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss}>
@@ -651,27 +687,37 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         <StakePeriodButton setPeriod={setPeriod} status={false} />
         <div className="flex mt-4 w-100">
           <Text className="col-6" color="textSubtle">
-            Deposit
+            From your wallet: {balanceOf ? numeral(balanceOf).format('0,0') : '-'}
           </Text>
-          <Text className="col-6 text-right" color="textSubtle">
-            Balance: {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'}
+          <Text className="col-6" color="textSubtle">
+            Pending rewards
           </Text>
         </div>
-        <Balance>
-          <NumberInput
-            style={{ width: '45%' }}
-            placeholder="0.00"
-            value={value}
-            onChange={handleChange}
-            pattern="^[0-9]*[,]?[0-9]*$"
-          />
-          <Coin>
-            <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-            {/* <Heading as="h1" fontSize="16px !important">
-              FINIX
-            </Heading> */}
-          </Coin>
-        </Balance>
+        <div className="flex w-100 align-center">
+          <Balance className="mr-2">
+            <NumberInput
+              style={{ width: '45%' }}
+              placeholder="0.00"
+              value={value}
+              onChange={handleChange}
+              className="text-right"
+              pattern="^[0-9]*[,]?[0-9]*$"
+            />
+          </Balance>
+          <Text className="align-center" bold fontSize="36" color="#2A9D8F">
+            +
+          </Text>
+          <Balance className="ml-2">
+            <NumberInput
+              style={{ width: '45%' }}
+              placeholder="0.00"
+              value={pendingReward}
+              disabled
+              className="text-right"
+              pattern="^[0-9]*[,]?[0-9]*$"
+            />
+          </Balance>
+        </div>
         <div className="flex mt-4 w-100">
           <Text className="col-6" color="#000000">
             Estimated Period End
@@ -682,11 +728,24 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         </div>
         <div className="flex mt-2 w-100">
           <Text className="col-6" color="#000000">
+            Total FINIX stake
+          </Text>
+          <div className="flex flex-row justify-end w-100">
+            <Text className="text-right" color="#30ADFF">
+              {value}
+            </Text>
+            <Text className="text-right ml-1" color="#000000">
+              vFINIX
+            </Text>
+          </div>
+        </div>
+        <div className="flex mt-2 w-100">
+          <Text className="col-6" color="#000000">
             vFINIX earn
           </Text>
           <div className="flex flex-row justify-end w-100">
             <Text className="text-right" color="#30ADFF">
-              1000
+              {Number(value) * period}
             </Text>
             <Text className="text-right ml-1" color="#000000">
               vFINIX
