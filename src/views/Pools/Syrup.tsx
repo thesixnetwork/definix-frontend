@@ -33,8 +33,6 @@ import PoolTabButtons from './components/PoolTabButtons'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
 
-
-
 const Farm: React.FC = () => {
   const { t } = useTranslation()
   const { path } = useRouteMatch()
@@ -58,12 +56,11 @@ const Farm: React.FC = () => {
     data: null,
   }) // 'list', 'deposit', 'remove',
 
-
   // const getTokenAddress = useCallback((tokenName: string) => {
   //   switch (tokenName) {
   //     case 'klay':
   //       return getWklayAddress()
-  //     case 'six': 
+  //     case 'six':
   //       return getSixAddress()
   //     default:
   //       return getFinixAddress()
@@ -75,9 +72,6 @@ const Farm: React.FC = () => {
   // console.log('------- finix ', new BigNumber(getBalanceNumber(finixBalance)).toNumber())
   // console.log('------- six ', new BigNumber(getBalanceNumber(sixBalance)).toNumber())
   // console.log('------- klay ', new BigNumber(getBalanceNumber(wklayBalance)).toNumber())
-
-
-
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
