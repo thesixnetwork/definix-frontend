@@ -35,8 +35,8 @@ const Tab = styled(NavLink)<{ active: boolean }>`
     // eslint-disable-next-line no-nested-ternary
     active && theme.isDark
       ? theme.colors.primary
-      // eslint-disable-next-line no-nested-ternary
-      : active && !theme.isDark
+      : // eslint-disable-next-line no-nested-ternary
+      active && !theme.isDark
       ? theme.colors.primary
       : !active && !theme.isDark
       ? '#fff'
@@ -45,8 +45,8 @@ const Tab = styled(NavLink)<{ active: boolean }>`
     // eslint-disable-next-line no-nested-ternary
     active && theme.isDark
       ? theme.colors.white
-      // eslint-disable-next-line no-nested-ternary
-      : active && !theme.isDark
+      : // eslint-disable-next-line no-nested-ternary
+      active && !theme.isDark
       ? theme.colors.white
       : !active && !theme.isDark
       ? '#2E2F30'
