@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import _ from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
@@ -10,16 +9,8 @@ import Checkbox from '@material-ui/core/Checkbox'
 import { getVFinix } from 'utils/addressHelpers'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {
-  useBalances,
-  useRebalances,
-  useRebalanceBalances,
   useFarms,
-  useFarmsIsFetched,
-  useRebalancesIsFetched,
-  useWalletFetched,
-  useWalletRebalanceFetched,
   usePools,
-  usePoolsIsFetched,
   usePriceFinixUsd,
   usePriceKethKlay,
   usePriceKethKusdt,
@@ -31,25 +22,22 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import { useAllHarvest, useSousHarvest, useHarvest } from 'hooks/useHarvest'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/types'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import {
   useHarvest as useHarvestLongterm,
   useAprCardFarmHome,
-  useAllLock,
   usePrivateData,
-  useRank,
+  useSuperHarvest,
+  useSousHarvest,
+  useBalances,
+  useLockTopup,
 } from 'hooks/useLongTermStake'
-import { State } from 'state/types'
-import { fetchCountTransactions } from 'state/longTermStake'
+import { useLockPlus } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import exclusive from 'uikit-dev/images/for-ui-v2/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
-import WalletCard from './WalletCard'
-import config from './config'
-import { Login } from './types'
 import { Text } from '../../components/Text'
 import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
 
@@ -57,14 +45,6 @@ interface Props {
   //   login: Login
   onDismiss?: () => void
 }
-
-// const HelpLink = styled(Link)`
-//   display: flex;
-//   align-self: center;
-//   align-items: center;
-//   margin-top: 24px;
-// `
-
 const TutorailsLink = styled(Link)`
   text-decoration-line: underline;
 `
@@ -185,20 +165,6 @@ const Coin = styled.div`
   }
 `
 
-// const Coins = styled.div`
-//   padding: 16px;
-//   width: 40%;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: space-between;
-
-//   img {
-//     width: 48px;
-//     flex-shrink: 0;
-//   }
-// `
-
 const Summary = styled.div`
   padding: 12px 0;
   width: 60%;
@@ -231,9 +197,16 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [isBnbPool, setIsBnbPool] = useState(false)
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-  //   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
-  //   const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const balanceOf = useBalances()
+  const [period, setPeriod] = useState(0)
+  const [idLast, setIdLast] = useState(0)
+  const [amount, setAmount] = useState('0')
+  const lockTopUp = useLockTopup()
+  const [harvestProgress, setHarvestProgress] = useState(-1)
+
+  const { onStake } = useLockPlus(period - 1, idLast, amount)
+
   // Farms
   const farmsLP = useFarms()
   const klayPrice = usePriceKlayKusdt()
@@ -242,12 +215,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const ethPriceUsd = usePriceKethKusdt()
   const [listView, setListView] = useState(false)
   const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 1 && farms.multiplier !== '0X')
-  //   const stackedOnlyFarms = activeFarms.filter(
-  //     (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
-  //   )
-  const stackedOnlyFarms = activeFarms
-
-  console.log('stackedOnlyFarms::', stackedOnlyFarms)
+  const stackedOnlyFarms = activeFarms.filter(
+    (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
+  )
 
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
@@ -318,9 +288,29 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const block = useBlock()
 
   // LongTerm
-  const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
+  const { lockAmount, finixEarn, balancefinix, balancevfinix, allDataLock } = usePrivateData()
   const { handleHarvest } = useHarvestLongterm()
   const longtermApr = useAprCardFarmHome()
+
+  useEffect(() => {
+    const arrStr = lockTopUp.map((i) => Number(i))
+    const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
+    const initialValue = 9
+    Object.values(selectedToken).map((d, i) => {
+      console.log('Object.keys(selectedToken)', _.get(d, 'checked'))
+      return d
+    })
+
+    let max = 0
+    removeTopUpId.forEach((character) => {
+      if (_.get(character, 'level') === period) {
+        if (_.get(character, 'id') > max) {
+          max = _.get(character, 'id')
+        }
+      }
+    })
+    setIdLast(max)
+  }, [allDataLock, period, lockTopUp, selectedToken, harvestProgress])
 
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
@@ -334,6 +324,22 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       return tokenPriceKLAYTN.div(klayPriceUSD)
     }
     return tokenPriceKLAYTN
+  }
+  const [value, setValue] = useState('')
+  const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
+
+  function escapeRegExp(string: string): string {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  }
+
+  const enforcer = (nextUserInput: string) => {
+    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+      setValue(nextUserInput)
+    }
+  }
+
+  const handleChange = (e) => {
+    enforcer(e.target.value.replace(/,/g, '.'))
   }
 
   const poolsWithApy = pools.map((pool) => {
@@ -438,55 +444,64 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const stackedOnlyPools = poolsWithApy.filter(
     (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
-  const dispatch = useDispatch()
+
   const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const onharvestFarms = useHarvest(pid)
-  const countTransactions = useSelector((state: State) => state.longTerm.countTransactions)
-  const selectHarvestfarms = useCallback(async () => {
-    setPendingTx(true)
-    try {
-      setPendingTx(true)
-      Object.values(selectedToken).map(async (c) => {
-        if (_.get(c, 'checked')) {
-          if (!_.get(c, 'pools')) {
-            if (_.get(c, 'farms')) {
-              setPid(_.get(c, 'pid'))
-              await onharvestFarms
-                .onReward()
-                .then((r) => {
-                  setSelectedTokenCount(selectedTokenCount + 1)
-                })
-                .catch((e) => {
-                  console.log(e)
-                })
-            } else {
-              await handleHarvest()
-                .then((r) => {
-                  setSelectedTokenCount(selectedTokenCount + 1)
-                })
-                .catch((e) => {
-                  console.log(e)
-                })
-            }
-          } else {
-            setSousId(_.get(c, 'sousId'))
-            await onReward()
+  // FARMS
+  const { onSuperHarvest } = useSuperHarvest()
+
+  // const [harvestProgress, setHarvestProgress] = useState(-1)
+
+  const _superHarvest = useCallback(() => {
+    if (harvestProgress !== -1 && harvestProgress <= Object.values(selectedToken).length) {
+      if (_.get(Object.values(selectedToken)[harvestProgress], 'checked')) {
+        if (!_.get(Object.values(selectedToken)[harvestProgress], 'pools')) {
+          if (_.get(Object.values(selectedToken)[harvestProgress], 'farms')) {
+            onSuperHarvest(_.get(Object.values(selectedToken)[harvestProgress], 'pid'))
               .then((r) => {
-                setSelectedTokenCount(selectedTokenCount + 1)
+                setHarvestProgress(harvestProgress + 1)
+              })
+              .catch((e) => {
+                console.log(e)
+              })
+          } else {
+            handleHarvest()
+              .then((r) => {
+                setHarvestProgress(harvestProgress + 1)
               })
               .catch((e) => {
                 console.log(e)
               })
           }
+        } else {
+          onReward()
+            .then((r) => {
+              setSousId(_.get(Object.values(selectedToken)[harvestProgress], 'sousId'))
+              setHarvestProgress(harvestProgress + 1)
+            })
+            .catch((e) => {
+              console.log(e)
+            })
         }
-        return c
-      })
-    } catch (error) {
-      // TODO: find a way to handle when the user rejects transaction or it fails
+      }
     }
-  }, [handleHarvest, onReward, selectedToken, onharvestFarms, selectedTokenCount])
+  }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
 
-  const [period, setPeriod] = useState(0)
+  useEffect(() => {
+    if (harvestProgress !== -1 && harvestProgress === Object.values(selectedToken).length) {
+      setAmount('10000000000000000000000')
+      onStake()
+        .then((data) => {
+          console.log('data', data)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+      setPendingTx(false)
+    } else if (harvestProgress !== -1) {
+      setPendingTx(true)
+      _superHarvest()
+    }
+  }, [harvestProgress, selectedToken, _superHarvest, onStake])
 
   return (
     <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss}>
@@ -515,12 +530,18 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 control={
                   <Checkbox
                     size="small"
-                    color="secondary"
+                    color="primary"
                     checked={!!_.get(selectedToken, `${18}.checked`)}
                     onChange={(event) => {
                       setSelectedToken({
                         ...selectedToken,
-                        18: { checked: event.target.checked, pools: false, farms: false, status: false },
+                        18: {
+                          checked: event.target.checked,
+                          pools: false,
+                          farms: false,
+                          status: false,
+                          pendingReward: finixEarn,
+                        },
                       })
                     }}
                   />
@@ -558,6 +579,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                             farms: true,
                             pid: d.props.farm.pid,
                             status: false,
+                            pendingReward: d.props.farm.userData.earnings,
                           },
                         })
                       }}
@@ -600,6 +622,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                             sousId: d.sousId,
                             farms: false,
                             status: false,
+                            pendingReward: new BigNumber(d.userData.pendingReward)
+                              .div(new BigNumber(10).pow(18))
+                              .toNumber(),
                           },
                         })
                       }}
@@ -629,30 +654,17 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             Deposit
           </Text>
           <Text className="col-6 text-right" color="textSubtle">
-            Balance: 1000
+            Balance: {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'}
           </Text>
         </div>
         <Balance>
           <NumberInput
             style={{ width: '45%' }}
             placeholder="0.00"
-            value=""
-            // onChange={handleChange}
+            value={value}
+            onChange={handleChange}
             pattern="^[0-9]*[,]?[0-9]*$"
           />
-          {/* {percent !== 1 && (
-            <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-              <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                25%
-              </StylesButton>
-              <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                50%
-              </StylesButton>
-              <StylesButton size="sm" onClick={() => setPercent(1)}>
-                MAX
-              </StylesButton>
-            </div>
-          )} */}
           <Coin>
             <img src={`/images/coins/${'FINIX'}.png`} alt="" />
             {/* <Heading as="h1" fontSize="16px !important">
@@ -682,29 +694,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </div>
         </div>
         {pendingTx ? (
-          <Button
-            fullWidth
-            id="harvest-all"
-            radii="small"
-            className="ml-2 mt-3"
-            disabled
-            onClick={() => {
-              selectHarvestfarms()
-            }}
-          >
-            {`Harvesting...(${selectedTokenCount} /${Object.keys(selectedToken).length})`}
+          <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" disabled>
+            {`Harvesting...(${harvestProgress} /${Object.keys(selectedToken).length})`}
           </Button>
         ) : (
-          <Button
-            fullWidth
-            id="harvest-all"
-            radii="small"
-            className="ml-2 mt-3"
-            //   disabled={balancesWithValue.length + (finixEarn ? 1 : 0) <= 0 || pendingTx}
-            onClick={() => {
-              selectHarvestfarms()
-            }}
-          >
+          <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" onClick={() => setHarvestProgress(0)}>
             Stake
           </Button>
         )}
