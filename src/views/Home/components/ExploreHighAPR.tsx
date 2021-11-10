@@ -8,7 +8,7 @@ import { usePriceFinixUsdToNumber, useRebalances } from 'state/hooks'
 import { Rebalance } from 'state/types'
 
 interface ExtendRebalance extends Rebalance {
-  apr: number;
+  apr: number
 }
 
 const ColumnFlex = styled(Flex)`
@@ -17,32 +17,32 @@ const ColumnFlex = styled(Flex)`
 
 const ExploreHighAPR: React.FC = () => {
   const { t } = useTranslation()
-  const [highAprRebalance, setHighAprRebalance] = useState<ExtendRebalance>();
+  const [highAprRebalance, setHighAprRebalance] = useState<ExtendRebalance>()
   const rebalances = useRebalances()
   const finixPrice = usePriceFinixUsdToNumber()
 
   useEffect(() => {
-    if (finixPrice === 0) return;
+    if (finixPrice === 0) return
     const maxAprRebalance = rebalances.reduce<ExtendRebalance>((acc, rebalance) => {
       const temp = {
         ...rebalance,
-        apr: (new BigNumber(finixPrice))
+        apr: new BigNumber(finixPrice)
           .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
           .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
           .times(100)
-          .toNumber()
+          .toNumber(),
       }
 
       if (!acc.apr || acc.apr < temp.apr) {
         // eslint-disable-next-line no-param-reassign
-        acc = temp;
+        acc = temp
       }
 
-      return acc;
-    }, {} as ExtendRebalance);
+      return acc
+    }, {} as ExtendRebalance)
 
-    setHighAprRebalance(maxAprRebalance);
-  }, [finixPrice, rebalances]);
+    setHighAprRebalance(maxAprRebalance)
+  }, [finixPrice, rebalances])
 
   return highAprRebalance ? (
     <ColumnFlex width="100%">
@@ -54,7 +54,7 @@ const ExploreHighAPR: React.FC = () => {
           </Text>
           <Flex mt="S_4">
             <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-              {t("Total Asset Value")}
+              {t('Total Asset Value')}
             </Text>
             <Text mr="S_8" textStyle="R_14B" color={ColorStyles.MEDIUMGREY}>
               $
@@ -63,7 +63,7 @@ const ExploreHighAPR: React.FC = () => {
         </ColumnFlex>
         <ColumnFlex alignItems="flex-end">
           <Text textStyle="R_12M" color={ColorStyles.ORANGE}>
-            {t("APR")}
+            {t('APR')}
           </Text>
           <Text textStyle="R_28B" color={ColorStyles.BLACK}>
             {highAprRebalance.apr} %

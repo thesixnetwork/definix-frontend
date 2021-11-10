@@ -44,7 +44,7 @@ const UsdText = styled(Text)`
 const Balance = () => {
   const farmEarnings = useFarmEarning()
   const poolEarnings = usePoolEarning()
-  
+
   const earningsFarmSum = farmEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)

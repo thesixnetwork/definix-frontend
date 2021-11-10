@@ -5,7 +5,17 @@ import { fetchTVL } from 'state/actions'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled, { css } from 'styled-components'
-import { Card, CardBody, ColorStyles, Text, textStyle, Flex, Button, TokenFinixIcon, useMatchBreakpoints } from 'definixswap-uikit'
+import {
+  Card,
+  CardBody,
+  ColorStyles,
+  Text,
+  textStyle,
+  Flex,
+  Button,
+  TokenFinixIcon,
+  useMatchBreakpoints,
+} from 'definixswap-uikit'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
@@ -13,7 +23,7 @@ const Title = styled(Text)`
   ${css(textStyle.R_18M)}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
   margin-left: 14px;
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${css(textStyle.R_16M)}
     margin-left: 8px;
@@ -24,7 +34,7 @@ const FinixValue = styled(Text)`
   margin-top: 8px;
   ${css(textStyle.R_32B)}
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: 6px;
     ${css(textStyle.R_26B)}
@@ -33,7 +43,7 @@ const FinixValue = styled(Text)`
 
 const WrapCardBody = styled(CardBody)`
   padding: 40px;
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding: 20px;
   }
@@ -83,7 +93,7 @@ const WrapInfo = styled(Flex)`
 `
 
 const CardFinix = () => {
-  const { isXxl } = useMatchBreakpoints();
+  const { isXxl } = useMatchBreakpoints()
   const { t } = useTranslation()
   const finixPriceUsd = usePriceFinixUsd()
   const { fastRefresh } = useRefresh()
@@ -101,12 +111,10 @@ const CardFinix = () => {
     <Card>
       <WrapCardBody>
         <Flex>
-          <TokenFinixIcon viewBox="0 0 24 24" width={isXxl ? "24" : "20"} />
+          <TokenFinixIcon viewBox="0 0 24 24" width={isXxl ? '24' : '20'} />
           <Title>{t('FINIX')}</Title>
         </Flex>
-        <FinixValue>
-          $ {finixPriceUsd.toFixed(2)}
-        </FinixValue>
+        <FinixValue>$ {finixPriceUsd.toFixed(2)}</FinixValue>
         <WrapButton>
           <Button xs variant="lightbrown" width="50%" mr="S_6">
             {t('Price Chart')}
@@ -117,20 +125,12 @@ const CardFinix = () => {
         </WrapButton>
         <WrapInfo>
           <InfoValues>
-            <InfoTitleBold>
-              {t('Total FINIX Supply')}
-            </InfoTitleBold>
-            <InfoValueBold>
-              {finixSupply}
-            </InfoValueBold>
+            <InfoTitleBold>{t('Total FINIX Supply')}</InfoTitleBold>
+            <InfoValueBold>{finixSupply}</InfoValueBold>
           </InfoValues>
           <InfoValues mt="S_12">
-            <InfoTitle>
-              {t('FINIX Generated')}
-            </InfoTitle>
-            <InfoValue>
-              {finixSupply && finixTransfered ? finixSupply - finixTransfered : 0}
-            </InfoValue>
+            <InfoTitle>{t('FINIX Generated')}</InfoTitle>
+            <InfoValue>{finixSupply && finixTransfered ? finixSupply - finixTransfered : 0}</InfoValue>
           </InfoValues>
           <InfoValues mt="S_4">
             <InfoTitle>
@@ -138,33 +138,19 @@ const CardFinix = () => {
                 BSC: 'BSC',
               })}
             </InfoTitle>
-            <InfoValue>
-              {finixTransfered ? finixTransfered - 600000 : 0}
-            </InfoValue>
+            <InfoValue>{finixTransfered ? finixTransfered - 600000 : 0}</InfoValue>
           </InfoValues>
           <InfoValues mt="S_4">
-            <InfoTitle>
-              {t('FINIX Reserved for Bridge')}
-            </InfoTitle>
-            <InfoValue>
-              {finixTransfered ? 600000 : 0}
-            </InfoValue>
+            <InfoTitle>{t('FINIX Reserved for Bridge')}</InfoTitle>
+            <InfoValue>{finixTransfered ? 600000 : 0}</InfoValue>
           </InfoValues>
           <InfoValues mt="S_16">
-            <InfoTitleBold>
-              {t('Total FINIX Burned')}
-            </InfoTitleBold>
-            <InfoValueBold>
-              {burnedBalance}
-            </InfoValueBold>
+            <InfoTitleBold>{t('Total FINIX Burned')}</InfoTitleBold>
+            <InfoValueBold>{burnedBalance}</InfoValueBold>
           </InfoValues>
           <InfoValues mt="S_12">
-            <InfoTitleBold>
-              {t('New FINIX / sec')}
-            </InfoTitleBold>
-            <InfoValueBold>
-              1
-            </InfoValueBold>
+            <InfoTitleBold>{t('New FINIX / sec')}</InfoTitleBold>
+            <InfoValueBold>1</InfoValueBold>
           </InfoValues>
         </WrapInfo>
       </WrapCardBody>

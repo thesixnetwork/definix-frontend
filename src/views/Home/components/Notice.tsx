@@ -10,7 +10,6 @@ import { useTranslation } from 'react-i18next'
 import { Label, Text, textStyle, Box, ImgHomeTopFinixIcon, Flex } from 'definixswap-uikit'
 
 const Wrap = styled(Flex)`
-
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     width: 100%;
     flex-direction: column;

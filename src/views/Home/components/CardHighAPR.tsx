@@ -8,7 +8,7 @@ import ExploreHighAPR from './ExploreHighAPR'
 const Title = styled(Text)`
   ${css(textStyle.R_26B)}
   color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${css(textStyle.R_20B)}
   }
@@ -18,7 +18,7 @@ const InnerBox = styled(Flex)`
   padding: 24px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding: 20px;
   }
@@ -26,7 +26,7 @@ const InnerBox = styled(Flex)`
 
 const WrapCardBody = styled(CardBody)`
   padding: 40px;
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding: 20px;
   }
@@ -36,7 +36,7 @@ const StyledRebalanceTitle = styled(Flex)`
   position: relative;
   padding-top: 40px;
   padding-bottom: 24px;
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding-top: 28px;
     padding-bottom: 20px;

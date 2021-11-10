@@ -312,11 +312,10 @@ export const useAchievements = () => {
   return achievements
 }
 
-
 /**
  * new
  */
- export const usePriceFinixUsdToNumber = (): number => {
+export const usePriceFinixUsdToNumber = (): number => {
   const finixPrice = useSelector((state: State) => state.finixPrice.price)
   return finixPrice
 }
@@ -331,7 +330,7 @@ export const usePriceKlayKusdtToNumber = (): number => {
   const pid = parseInt(process.env.REACT_APP_KLAY_KUSDT_PID || '14') // KLAY-KUSDT LP
   const farm = useFarmFromPid(pid)
   if (!farm || !farm.tokenPriceVsQuote) return 0
-  
+
   return farm.tokenPriceVsQuote.toNumber ? farm.tokenPriceVsQuote.toNumber() : +farm.tokenPriceVsQuote
 }
 

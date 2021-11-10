@@ -4,12 +4,22 @@ import { useTranslation, Trans } from 'react-i18next'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
-import { Card, CardBody, ColorStyles, Text, textStyle, Flex, ChainBscIcon, ChainKlaytnIcon, useMatchBreakpoints } from 'definixswap-uikit'
+import {
+  Card,
+  CardBody,
+  ColorStyles,
+  Text,
+  textStyle,
+  Flex,
+  ChainBscIcon,
+  ChainKlaytnIcon,
+  useMatchBreakpoints,
+} from 'definixswap-uikit'
 
 const Title = styled(Text)`
   ${css(textStyle.R_18M)}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${css(textStyle.R_14M)}
   }
@@ -19,7 +29,7 @@ const TotalTvlValue = styled(Text)`
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
   ${css(textStyle.R_32B)}
   margin-top: 8px;
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${css(textStyle.R_26B)}
     margin-top: 6px;
@@ -28,7 +38,7 @@ const TotalTvlValue = styled(Text)`
 
 const WrapTvl = styled(Flex)`
   margin-top: 40px;
-  
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: 30px;
     flex-direction: column;
@@ -77,7 +87,7 @@ const WrapCardBody = styled(CardBody)`
 `
 
 const CardTVL = () => {
-  const { isXxl } = useMatchBreakpoints();
+  const { isXxl } = useMatchBreakpoints()
   const { t } = useTranslation()
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
@@ -100,7 +110,7 @@ const CardTVL = () => {
         <WrapTvl>
           <TvlItem>
             <Flex alignItems="center">
-              <ChainBscIcon viewBox="0 0 32 32" width={isXxl ? "24" : "22"} />
+              <ChainBscIcon viewBox="0 0 32 32" width={isXxl ? '24' : '22'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
                   i18nKey="TVL in <bold>BSC</bold>"
@@ -110,13 +120,11 @@ const CardTVL = () => {
                 />
               </Text>
             </Flex>
-            <TvlValue>
-              $ {totalWeb3TVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
-            </TvlValue>
+            <TvlValue>$ {totalWeb3TVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}</TvlValue>
           </TvlItem>
           <TvlItem>
             <Flex alignItems="center">
-              <ChainKlaytnIcon viewBox="0 0 22 22" width={isXxl ? "24" : "22"} />
+              <ChainKlaytnIcon viewBox="0 0 22 22" width={isXxl ? '24' : '22'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
                   i18nKey="TVL in <bold>Klaytn</bold>"
@@ -126,9 +134,7 @@ const CardTVL = () => {
                 />
               </Text>
             </Flex>
-            <TvlValue>
-              $ {totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
-            </TvlValue>
+            <TvlValue>$ {totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}</TvlValue>
           </TvlItem>
         </WrapTvl>
       </WrapCardBody>

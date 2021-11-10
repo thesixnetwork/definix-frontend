@@ -122,23 +122,15 @@ const CardAudit = () => {
           <AuditItem>
             <AuditItemImg src={AuditList[0].img} alt={t(AuditList[0].description)} />
             <WrapAuditItemInfo>
-              <AuditItemDesc>
-                {t(AuditList[0].description)}
-              </AuditItemDesc>
-              <AuditItemResult color={AuditList[0].color}>
-                {t(AuditList[0].result)}
-              </AuditItemResult>
+              <AuditItemDesc>{t(AuditList[0].description)}</AuditItemDesc>
+              <AuditItemResult color={AuditList[0].color}>{t(AuditList[0].result)}</AuditItemResult>
             </WrapAuditItemInfo>
           </AuditItem>
           <AuditItem>
             <AuditItemImg src={AuditList[1].img} alt={t(AuditList[1].description)} />
             <WrapAuditItemInfo>
-              <AuditItemDesc>
-                {t(AuditList[1].description)}
-              </AuditItemDesc>
-              <AuditItemResult color={AuditList[1].color}>
-                {t(AuditList[1].result)}
-              </AuditItemResult>
+              <AuditItemDesc>{t(AuditList[1].description)}</AuditItemDesc>
+              <AuditItemResult color={AuditList[1].color}>{t(AuditList[1].result)}</AuditItemResult>
             </WrapAuditItemInfo>
           </AuditItem>
           <Character>

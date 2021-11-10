@@ -1,7 +1,17 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
-import { Card, CardBody, ColorStyles, Text, textStyle, Flex, Button, FireIcon, useMatchBreakpoints } from 'definixswap-uikit'
+import {
+  Card,
+  CardBody,
+  ColorStyles,
+  Text,
+  textStyle,
+  Flex,
+  Button,
+  FireIcon,
+  useMatchBreakpoints,
+} from 'definixswap-uikit'
 import FinixHarvestTotalBalance from 'views/MyInvestments/components/FinixHarvestTotalBalance'
 import FinixHarvestPool from 'views/MyInvestments/components/FinixHarvestPool'
 import FinixHarvestBalance from 'views/MyInvestments/components/FinixHarvestBalance'
@@ -138,7 +148,7 @@ const EarnedItem = styled(Flex)`
 `
 
 const EarnedItemValue = styled(Flex)`
-${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: column;
   }
 `
@@ -168,7 +178,7 @@ const Pagination = styled(Flex)`
 `
 
 const CardInvestment = () => {
-  const { isXxl } = useMatchBreakpoints();
+  const { isXxl } = useMatchBreakpoints()
   const { t } = useTranslation()
 
   return (
@@ -177,7 +187,7 @@ const CardInvestment = () => {
         <TopFlex>
           <TotalEarnedFlex>
             <TotalEarnedTitle>
-              <FireIcon viewBox="0 0 44 44" width={isXxl ? "44" : "24"} />
+              <FireIcon viewBox="0 0 44 44" width={isXxl ? '44' : '24'} />
               <Title ml="S_14">{t('Total Finix Earned')}</Title>
             </TotalEarnedTitle>
             <FinixHarvestTotalBalance />

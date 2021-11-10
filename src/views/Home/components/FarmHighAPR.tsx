@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { useFarms, usePriceFinixUsdToNumber, usePriceKethKusdtToNumber, usePriceKlayKusdtToNumber, usePriceSixUsdToNumber } from 'state/hooks'
+import {
+  useFarms,
+  usePriceFinixUsdToNumber,
+  usePriceKethKusdtToNumber,
+  usePriceKlayKusdtToNumber,
+  usePriceSixUsdToNumber,
+} from 'state/hooks'
 import { QuoteToken } from 'config/constants/types'
 import { BLOCKS_PER_YEAR } from 'config'
 import { ColorStyles, Flex, Text } from 'definixswap-uikit'

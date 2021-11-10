@@ -79,7 +79,7 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
 `
 
 const Home: React.FC = () => {
-  const { account } = useWallet();
+  const { account } = useWallet()
   return (
     <>
       <Helmet>
@@ -89,9 +89,11 @@ const Home: React.FC = () => {
         <FullColumnGrid pt="S_30" area="notice">
           <HomeNotice />
         </FullColumnGrid>
-        {account && <FullColumnGrid mb="S_40" area="investment">
-          <CardInvestment />
-        </FullColumnGrid>}
+        {account && (
+          <FullColumnGrid mb="S_40" area="investment">
+            <CardInvestment />
+          </FullColumnGrid>
+        )}
         <LeftColumnGrid area="tvl">
           <CardTVL />
         </LeftColumnGrid>
