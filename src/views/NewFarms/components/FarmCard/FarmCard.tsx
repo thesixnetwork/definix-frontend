@@ -98,16 +98,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   }, [convertToUSD, myLiquidity])
 
   const renderCardHeading = useCallback(
-    () => (
-      <CardHeading
-        farm={farm}
-        lpLabel={lpTokenName}
-        removed={removed}
-        addLiquidityUrl={addLiquidityUrl}
-        finixPrice={finixPrice}
-      />
-    ),
-    [addLiquidityUrl, farm, finixPrice, lpTokenName, removed],
+    () => <CardHeading farm={farm} lpLabel={lpTokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />,
+    [addLiquidityUrl, farm, lpTokenName, removed],
   )
 
   const renderIconButton = useCallback(
@@ -158,7 +150,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
             addLiquidityUrl,
             totalLiquidity: totalLiquidityUSD,
             myLiquidity: stakedBalance,
-            myLiquidityUSD,
+            farm,
+            removed,
           })
         }}
         onPresentWithdraw={() => {
@@ -188,6 +181,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       myLiquidityUSD,
       onSelectAddLP,
       onSelectRemoveLP,
+      removed,
     ],
   )
   /**
@@ -227,7 +221,25 @@ const FarmCard: React.FC<FarmCardProps> = ({
       //     {renderDetailsSection('px-5 py-3', false)}
       //   </div>
       // </HorizontalMobileStyle>
-      <div>d</div>
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
+        <CardBody>
+          <Flex justifyContent="space-between">
+            {renderCardHeading()}
+            {renderIconButton()}
+          </Flex>
+          {renderEarningsSection()}
+        </CardBody>
+        {isOpenAccordion && (
+          <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
+            {renderHarvestActionAirDrop()}
+            <Box className="py-s24">{renderStakeAction()}</Box>
+            <Divider />
+            <Box className="pt-s24">{renderTotalLiquiditySection()}</Box>
+            <Box className="pt-s16">{renderMyBalanceSection()}</Box>
+            <Box className="py-s32">{renderLinkSection()}</Box>
+          </Box>
+        )}
+      </Card>
     )
   }
 

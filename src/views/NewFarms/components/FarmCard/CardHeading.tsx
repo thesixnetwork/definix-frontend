@@ -18,7 +18,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed,
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-  
+
   const farmImage = useMemo(() => farm.lpSymbol.split(' ')[0].toLocaleLowerCase(), [farm.lpSymbol])
   const firstCoin = useMemo(() => farmImage.split('-')[0].toLocaleLowerCase(), [farmImage])
   const secondCoin = useMemo(() => farmImage.split('-')[1].toLocaleLowerCase(), [farmImage])
