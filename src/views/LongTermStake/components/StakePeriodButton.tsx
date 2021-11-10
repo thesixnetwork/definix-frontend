@@ -188,7 +188,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   }, [_minimum1, _minimum2, _minimum4, minimum])
 
   useEffect(() => {
-    if (status) {
+    if (status && !isTopUp) {
       // setPeriod(0)
       // setPeriodSelect(0)
       setPeriod(4)
@@ -196,7 +196,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
     } else {
       setPeriod(periodSelect)
     }
-  }, [periodSelect, setPeriod, status])
+  }, [periodSelect, setPeriod, status, isTopUp])
 
   return (
     <div className={`w-100 ${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>

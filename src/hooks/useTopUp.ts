@@ -51,21 +51,19 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix, flg) => {
         } else {
           const callContract = getContract(VaultTopUpFeatureFacet.abi, getVFinix())
           await callContract.methods
-            .lockPlus(level, idLastMaxLv, '100000000000000000000')
+            .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })
             .then((estimatedGasLimit) => {
               callContract.methods
-                .lockPlus(level, idLastMaxLv, '100000000000000000000')
+                .lockPlus(level, idLastMaxLv, lockFinix)
                 .send({ from: account, gas: estimatedGasLimit })
                 .then((resolve) => {
-                  console.log('2::')
                   setLoading('success')
                   setStatus(true)
                   setInterval(() => setLoading(''), 5000)
                   // setInterval(() => setStatus(false), 5000)
                 })
                 .catch((e) => {
-                  console.log('3::')
                   setLoading('')
                   setStatus(false)
                 })

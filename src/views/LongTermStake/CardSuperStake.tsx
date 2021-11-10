@@ -91,18 +91,6 @@ const Coin = styled.div`
   }
 `
 
-const Centered = styled.div`
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`
-
-const APRBOX = styled.div`
-  position: relative;
-  text-align: center;
-`
-
 const StylesButton = styled(Button)`
   padding: 11px 12px 11px 12px;
   border: ${({ theme }) => theme.isDark && '1px solid #707070'};
@@ -119,18 +107,6 @@ const StylesButton = styled(Button)`
     color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
   }
 `
-const InputBox = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-  background: ${({ theme }) => theme.colors.backgroundBox};
-  border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-`
-
 const NumberInput = styled.input`
   border: none;
   background-color: #ffffff00;
@@ -140,39 +116,6 @@ const NumberInput = styled.input`
   // width: 45%;
   -webkit-flex: 1 1 auto;
   padding: 0px;
-`
-
-const Apr = styled(Text)`
-  position: absolute;
-  top: 36%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-  font-weight: 500;
-  // font-size: 28px;
-  text-shadow: #00000050 0px 2px 4px;
-`
-
-const AprValue = styled(Text)`
-  position: absolute;
-  // top: 56%;
-  // left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
-`
-
-const AprDecoration = styled(Text)`
-  position: absolute;
-  // top: 56%;
-  // left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
-  text-decoration: line-through;
-  text-decoration-color: white;
 `
 
 const ExclusiveCard = styled.div<{ isDark: boolean }>`
@@ -200,7 +143,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const lockTopUp = useLockTopup()
-  const { lockAmount, finixEarn, balancefinix, balancevfinix, allDataLock } = usePrivateData()
+  const { allDataLock } = usePrivateData()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const { allLockPeriod } = useAllLock()
   const [value, setValue] = useState('')
@@ -221,16 +164,30 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
   const minimum = _.get(allLockPeriod, '0.minimum')
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
-  const apr = useApr()
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
-  const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, 0, lockFinix, true)
+  const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
+  const [isTopUp, setIsTopUp] = useState(false)
 
   useEffect(() => {
-    // const arrStr = lockTopUp.map((i) => Number(i))
-    if (lockTopUp && lockTopUp.length > 1) {
+    if (lockTopUp !== null && lockTopUp.length > 0) {
+      setIsTopUp(true)
       const arrStr = lockTopUp.map((i) => Number(i))
       const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
+      let max = 0
+      for (let i = 0; i < removeTopUpId.length; i++) {
+        const selector = removeTopUpId[i]
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === period &&
+          _.get(selector, 'id') > max
+        ) {
+          max = _.get(selector, 'id')
+          setIdLast(max)
+        }
+      }
     } else {
+      setIsTopUp(false)
       let max = 0
       for (let i = 0; i < allDataLock.length; i++) {
         const selector = allDataLock[i]
@@ -241,15 +198,14 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           _.get(selector, 'id') > max
         ) {
           max = _.get(selector, 'id')
+          setIdLast(max)
         }
       }
-      setIdLast(max)
     }
   }, [lockTopUp, allDataLock, period])
 
   // Super Stake
   const levelStake = useAllDataLock()
-  console.log('allDataLock', levelStake)
 
   function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -311,73 +267,39 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     }
   }, [status])
 
-  const hadleTxtWarning = useCallback(() => {
-    setFlgTextWarning('')
-    if (period === 1 && Number(value) < _.get(minimum, '0') && value !== '') {
-      setFlgTextWarning('minimum')
-    }
-    if (period === 2 && Number(value) < _.get(minimum, '1') && value !== '') {
-      setFlgTextWarning('minimum')
-    }
-    if (period === 4 && Number(value) < _.get(minimum, '2') && value !== '') {
-      setFlgTextWarning('minimum')
-    }
-
-    if (period === 1 && Number(value) >= _.get(minimum, '0') && value !== '') {
-      setFlgTextWarning('stake')
-    }
-
-    if (period === 2 && Number(value) >= _.get(minimum, '1') && value !== '') {
-      setFlgTextWarning('stake')
-    }
-    if (period === 4 && Number(value) >= _.get(minimum, '2') && value !== '') {
-      setFlgTextWarning('stake')
-    }
-  }, [period, value, minimum])
-
   const hadleStakeButton = useCallback(() => {
     setFlgButton('enter amount')
     setIsDisabled(true)
     if (Number(value) > Number(balanceOf)) {
       setFlgButton('insufficient')
       setIsDisabled(false)
-    } else if (period === 1 && Number(value) >= _.get(minimum, '0') && value !== '') {
+    } else if (period === 1 && value !== '' && Number(value) > 0) {
       setFlgButton('')
       setIsDisabled(false)
-    } else if (period === 2 && Number(value) >= _.get(minimum, '1') && value !== '') {
+    } else if (period === 2 && value !== '' && Number(value) > 0) {
       setFlgButton('')
       setIsDisabled(false)
-    } else if (period === 4 && Number(value) >= _.get(minimum, '2') && value !== '') {
+    } else if (period === 4 && value !== '' && Number(value) > 0) {
       setFlgButton('')
       setIsDisabled(false)
-    } else if (period === 1 && Number(value) < _.get(minimum, '0') && value !== '') {
-      setFlgButton('')
-      setIsDisabled(true)
-    } else if (period === 2 && Number(value) < _.get(minimum, '1') && value !== '') {
-      setFlgButton('')
-      setIsDisabled(true)
-    } else if (period === 4 && Number(value) < _.get(minimum, '2') && value !== '') {
-      setFlgButton('')
-      setIsDisabled(true)
     }
-  }, [value, period, minimum, balanceOf])
+  }, [value, period, balanceOf])
 
   const hadleInsufficient = useCallback(() => {
     setFlgButton('insufficient')
   }, [])
 
   useEffect(() => {
-    hadleTxtWarning()
     if (Number(balanceOf) <= 0) {
       hadleInsufficient()
     } else {
       hadleStakeButton()
     }
-  }, [value, period, balanceOf, minimum, hadleTxtWarning, hadleStakeButton, hadleInsufficient])
+  }, [value, period, balanceOf, minimum, hadleStakeButton, hadleInsufficient])
 
   const renderStakeDOrStake = () => {
     return (
-      <Button fullWidth disabled={isDisabled} className="align-self-center" radii="small" onClick={onStake}>
+      <Button fullWidth disabled={isDisabled} className="align-self-center" radii="small" onClick={onLockPlus}>
         Stake
       </Button>
     )
@@ -457,7 +379,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     <div className="align-stretch mt-5">
       <LongTermTab current="/long-term-stake/top-up" />
       <FinixStake className="flex">
-        {loadings !== '' && (
+        {!isTopUp && (
           <div
             style={{
               position: 'absolute',
@@ -503,7 +425,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           <Text className="mt-4" color="textSubtle">
             Please select available duration
           </Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
+          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp={isTopUp} />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit

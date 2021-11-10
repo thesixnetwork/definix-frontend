@@ -222,7 +222,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
       <Button
         fullWidth
         as={Link}
-        to={location.pathname === '/long-term-stake' ? '/long-term-stake/unstake' : '/long-term-stake/top-up/unstake'}
+        to='/long-term-stake/unstake'
         radii="small"
         style={{
           backgroundColor: '#0973B9',
@@ -254,7 +254,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
       <Button
         fullWidth
         as={Link}
-        to={location.pathname === '/long-term-stake' ? '/long-term-stake/unstake' : '/long-term-stake/top-up/unstake'}
+        to='/long-term-stake/unstake'
         radii="small"
         style={{
           backgroundColor: '#0973B9',
