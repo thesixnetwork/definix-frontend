@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR } from 'config'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Button, Card  } from 'uikit-dev'
+import { Button, Card } from 'uikit-dev'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {
@@ -635,7 +635,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         <div className="flex mt-4 w-100">
           <Text className="col-6" color="textSubtle" fontWeight="500">
             From your wallet:
-            <span style={{ color: "#0973B9" }} className="pl-2">{balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX</span>
+            <span style={{ color: '#0973B9' }} className="pl-2">
+              {balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX
+            </span>
           </Text>
           <Text className="col-6 pl-2" color="textSubtle" fontWeight="500">
             Pending rewards
@@ -693,7 +695,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Text>
           <div className="flex flex-row justify-end w-100">
             <Text className="text-right" color="#0973B9" fontWeight="500">
-            {numeral(value* period).format('0,0')}
+              {numeral(value * period).format('0,0')}
             </Text>
             <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
               vFINIX
@@ -705,10 +707,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             {`Harvesting...(${harvestProgress} /${Object.keys(selectedToken).length})`}
           </Button>
         ) : (
-            <Button fullWidth id="harvest-all" radii="small" className="mt-3" onClick={() => setHarvestProgress(0)}>
-              Stake
-            </Button>
-          )}
+          <Button fullWidth id="harvest-all" radii="small" className="mt-3" onClick={() => setHarvestProgress(0)}>
+            Stake
+          </Button>
+        )}
       </div>
     </ModalStake>
   )
