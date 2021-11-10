@@ -79,7 +79,7 @@ const Explore: React.FC = () => {
           <LeftPanel isShowRightPanel={false}>
             <MaxWidth>
               <div className="mb-5">
-                <div className={`${!isMobile ? "flex align-center mb-2" : 'mb-2'}`}>
+                <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
                   <Heading as="h1" fontSize="32px !important" className="mr-3">
                     Rebalancing Farm
                   </Heading>

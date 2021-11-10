@@ -77,7 +77,7 @@ const LongTermStake: React.FC = () => {
           />
           <MaxWidthLeft>
             <div className="mb-5">
-              <div className={`${!isMobile ? "flex align-center mb-2" : 'mb-2'}`}>
+              <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
                 <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Long-term Stake
                 </Heading>

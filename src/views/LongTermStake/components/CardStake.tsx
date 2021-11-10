@@ -471,7 +471,7 @@ const CardStake = ({ isShowRightPanel }) => {
                 </Text>
               </AprBox>
             )} */}
-             {isMobileOrTablet && (
+            {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="8px !important">
                   Boosting Period

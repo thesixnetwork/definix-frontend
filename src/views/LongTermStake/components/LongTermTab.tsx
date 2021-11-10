@@ -22,7 +22,7 @@ const Tabs = styled.div`
 //     )
 // }
 
-const Tab = styled(NavLink) <{ active: boolean }>`
+const Tab = styled(NavLink)<{ active: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -33,10 +33,24 @@ const Tab = styled(NavLink) <{ active: boolean }>`
   font-weight: 600;
   background: ${({ theme, active }) =>
     // eslint-disable-next-line no-nested-ternary
-    active && theme.isDark ? theme.colors.primary : active && !theme.isDark ? theme.colors.primary : !active && !theme.isDark ? '#fff' : '#2E2F30'};
+    active && theme.isDark
+      ? theme.colors.primary
+      // eslint-disable-next-line no-nested-ternary
+      : active && !theme.isDark
+      ? theme.colors.primary
+      : !active && !theme.isDark
+      ? '#fff'
+      : '#2E2F30'};
   color: ${({ theme, active }) =>
     // eslint-disable-next-line no-nested-ternary
-    active && theme.isDark ? theme.colors.white : active && !theme.isDark ? theme.colors.white : !active && !theme.isDark ? '#2E2F30' : '#737375'};
+    active && theme.isDark
+      ? theme.colors.white
+      // eslint-disable-next-line no-nested-ternary
+      : active && !theme.isDark
+      ? theme.colors.white
+      : !active && !theme.isDark
+      ? '#2E2F30'
+      : '#737375'};
   width: 23.333%;
   height: 100%;
   border-top-left-radius: 8px;
@@ -45,9 +59,9 @@ const Tab = styled(NavLink) <{ active: boolean }>`
   &.bg-primary {
     background: ${({ theme }) => theme.colors.primary};
   }
-  
+
   &.bg-secondary {
-    background: #2E2F30;
+    background: #2e2f30;
   }
 
   &:before {

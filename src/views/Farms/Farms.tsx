@@ -11,7 +11,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link, useMatchBreakpoints} from 'uikit-dev'
+import { Heading, Text, Link, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
@@ -234,7 +234,7 @@ const Farms: React.FC = () => {
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
             <div className="mb-5">
-              <div className={`${!isMobile ? "flex align-center mb-2" : 'mb-2'}`}>
+              <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
                 <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Farm
                 </Heading>
@@ -295,29 +295,29 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
   return isPhrase2 ? (
     children
   ) : (
-      <>
-        <div>
-          <br />
-          <Flip date={date} />
-          <br />
-          <br />
-          <br />
-        </div>
-        <div
-          tabIndex={0}
-          role="button"
-          style={{ opacity: 0.4, pointerEvents: 'none' }}
-          onClick={(e) => {
-            e.preventDefault()
-          }}
-          onKeyDown={(e) => {
-            e.preventDefault()
-          }}
-        >
-          {children}
-        </div>
-      </>
-    )
+    <>
+      <div>
+        <br />
+        <Flip date={date} />
+        <br />
+        <br />
+        <br />
+      </div>
+      <div
+        tabIndex={0}
+        role="button"
+        style={{ opacity: 0.4, pointerEvents: 'none' }}
+        onClick={(e) => {
+          e.preventDefault()
+        }}
+        onKeyDown={(e) => {
+          e.preventDefault()
+        }}
+      >
+        {children}
+      </div>
+    </>
+  )
 }
 
 export default Farms

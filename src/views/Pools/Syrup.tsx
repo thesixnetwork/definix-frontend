@@ -295,7 +295,7 @@ const Farm: React.FC = () => {
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
             <div className="mb-5">
-              <div className={`${!isMobile ? "flex align-center mb-2" : 'mb-2'}`}>
+              <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
                 <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Pool
                 </Heading>
@@ -341,23 +341,23 @@ const Farm: React.FC = () => {
                   </Route>
                 </div>
               ) : (
-                  <FlexLayout cols={listView ? 1 : 3}>
-                    <Route exact path={`${path}`}>
-                      {liveOnly
-                        ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
+                <FlexLayout cols={listView ? 1 : 3}>
+                  <Route exact path={`${path}`}>
+                    {liveOnly
+                      ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
                           (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )
-                        : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                      : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
                           (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )}
-                    </Route>
-                    <Route path={`${path}/history`}>
-                      {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                        <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                      ))}
-                    </Route>
-                  </FlexLayout>
-                )}
+                  </Route>
+                  <Route path={`${path}/history`}>
+                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                    ))}
+                  </Route>
+                </FlexLayout>
+              )}
             </TimerWrapper>
           </MaxWidth>
         </LeftPanel>
@@ -378,17 +378,17 @@ const TimerWrapper = ({ isPhrase1, date, children }) => {
   return isPhrase1 ? (
     children
   ) : (
-      <>
-        <div>
-          <br />
-          <Flip date={date} />
-          <br />
-          <br />
-          <br />
-        </div>
-        {children}
-      </>
-    )
+    <>
+      <div>
+        <br />
+        <Flip date={date} />
+        <br />
+        <br />
+        <br />
+      </div>
+      {children}
+    </>
+  )
 }
 
 export default Farm

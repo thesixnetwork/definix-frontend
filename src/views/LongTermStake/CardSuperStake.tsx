@@ -167,7 +167,7 @@ const ExclusiveCard = styled.div<{ isDark: boolean }>`
   width: 110px;
   align-items: start;
   display: flex;
-  box-shadow: ${({ isDark }) => (!isDark && 'unset')}
+  box-shadow: ${({ isDark }) => !isDark && 'unset'};
 `
 
 const BadgeExclusive = styled.div`
@@ -347,8 +347,8 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         Enter an amount
       </Button>
     ) : (
-        renderStakeDOrStake()
-      )
+      renderStakeDOrStake()
+    )
   }
 
   const renderStakeOrInsufficient = () => {
@@ -357,18 +357,18 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         Insufficient Balance
       </Button>
     ) : (
-        renderStakeOrEnter()
-      )
+      renderStakeOrEnter()
+    )
   }
 
   const renderApprovalOrStakeButton = () => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-        <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
-          Approve Contract
-        </Button>
-      )
+      <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+        Approve Contract
+      </Button>
+    )
   }
 
   useEffect(() => {
@@ -442,7 +442,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
               className={`${!isMobileOrTablet ? 'mb-4' : 'flex align-center'}`}
             >
               Super Stake
-              </Heading>
+            </Heading>
             {isMobileOrTablet && (
               <ExclusiveCard isDark={isDark}>
                 <img src={badgeExclusive} alt="" />
@@ -452,7 +452,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
             Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no
             minimum amount.
-            </Text>
+          </Text>
           <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
             You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock period{' '}
             <b>will not be extended.</b>
@@ -500,35 +500,35 @@ const CardSuperStake = ({ isShowRightPanel }) => {
               </Coin>
             </Balance>
           ) : (
-              <Balance>
-                <NumberInput
-                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                  placeholder="0.00"
-                  value={value}
-                  onChange={handleChange}
-                  pattern="^[0-9]*[,]?[0-9]*$"
-                />
-                {percent !== 1 && (
-                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                      25%
+            <Balance>
+              <NumberInput
+                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                pattern="^[0-9]*[,]?[0-9]*$"
+              />
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
                   </StylesButton>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                      50%
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
                   </StylesButton>
-                    <StylesButton size="sm" onClick={() => setPercent(1)}>
-                      MAX
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
                   </StylesButton>
-                  </div>
-                )}
-                <Coin>
-                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                  <Heading as="h1" fontSize="16px !important">
-                    FINIX
+                </div>
+              )}
+              <Coin>
+                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <Heading as="h1" fontSize="16px !important">
+                  FINIX
                 </Heading>
-                </Coin>
-              </Balance>
-            )}
+              </Coin>
+            </Balance>
+          )}
           <div className="flex mt-4">
             <Text className="col-6" color={isDark ? 'white' : '#000000'}>
               Estimated Period End
@@ -564,14 +564,14 @@ const CardSuperStake = ({ isShowRightPanel }) => {
                 Connect Wallet
               </Button>
             ) : (
-                renderApprovalOrStakeButton()
-              )}
+              renderApprovalOrStakeButton()
+            )}
           </div>
         </div>
         {!isMobileOrTablet && (
           <BadgeExclusive className="col-4 flex flex-column">
             <img src={badgeExclusive} alt="" />
-            <img src={logoExclusive} alt="" className="px-2" style={{opacity: "0.6"}} />
+            <img src={logoExclusive} alt="" className="px-2" style={{ opacity: '0.6' }} />
           </BadgeExclusive>
         )}
       </FinixStake>
