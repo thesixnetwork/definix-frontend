@@ -44,7 +44,8 @@ const Withdraw: React.FC<WithdrawProps> = ({
   apy,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onUnstake } = useSousUnstake(sousId)
   const [isPendingTX, setIsPendingTX] = useState(false)
@@ -202,7 +203,13 @@ const Withdraw: React.FC<WithdrawProps> = ({
         />
 
         <Box className="mt-s40">
-          <Button variant={ButtonVariants.RED} lg onClick={() => onPresentConfirmModal()} width="100%">
+          <Button
+            variant={ButtonVariants.RED}
+            lg
+            onClick={() => onPresentConfirmModal()}
+            width="100%"
+            disabled={!val || val === '0'}
+          >
             Remove
           </Button>
         </Box>

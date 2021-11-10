@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { css } from 'styled-components'
 import { Card, CardBody, ColorStyles, Text, textStyle, Flex, HomeFarmFinixIcon } from 'definixswap-uikit'
+import FarmHighAPR from './FarmHighAPR'
 
 const Title = styled(Text)`
   ${css(textStyle.R_26B)}
@@ -14,33 +15,26 @@ const InnerFlex = styled(Flex)`
   background-color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
 `
 
-const Character = styled.div`
-  position: absolute;
-  right: 0;
-  bottom: 0;
-`
-
+const Character = styled(Flex)``
 
 const CardHighAPR = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <Card bg={ColorStyles.ORANGE}>
       <CardBody p="S_40">
-        <Flex position="relative" pb="S_24">
-          <Title>{t("Stake Farms with high APR")}</Title>
+        <Flex alignItems="flex-end">
+          <Title pb="S_24">{t('Stake Farms with high APR')}</Title>
           <Character>
             <HomeFarmFinixIcon />
           </Character>
         </Flex>
         <InnerFlex>
-          P
+          <FarmHighAPR />
         </InnerFlex>
         <Flex position="relative" pt="S_40" pb="S_24">
-          <Title>{t("Meet Rebalancing with Definix unique differentiation.")}</Title>
+          <Title>{t('Meet Rebalancing with Definix unique differentiation.')}</Title>
         </Flex>
-        <InnerFlex>
-          P
-        </InnerFlex>
+        <InnerFlex>P</InnerFlex>
       </CardBody>
     </Card>
   )

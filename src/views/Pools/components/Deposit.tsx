@@ -46,7 +46,8 @@ const Deposit: React.FC<DepositProps> = ({
   onBack,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onStake } = useSousStake(sousId, isBnbPool)
   const [isPendingTX, setIsPendingTX] = useState(false)
@@ -204,7 +205,13 @@ const Deposit: React.FC<DepositProps> = ({
         />
 
         <Box className="mt-s40">
-          <Button variant={ButtonVariants.RED} lg onClick={() => onPresentConfirmModal()} width="100%">
+          <Button
+            variant={ButtonVariants.RED}
+            lg
+            onClick={() => onPresentConfirmModal()}
+            width="100%"
+            disabled={!val || val === '0'}
+          >
             Deposit
           </Button>
         </Box>

@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { CalculateIcon, IconButton, useModal } from 'uikit-dev'
+import { CalculatorIcon, IconButton, useModal } from 'definixswap-uikit'
 import ApyCalculatorModal from './ApyCalculatorModal'
 
 export interface ApyButtonProps {
@@ -16,8 +16,8 @@ const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, finixPrice, apy, addLiqu
   )
 
   return (
-    <IconButton onClick={onPresentApyModal} size="sm" variant="text" color="primary" className="ml-1">
-      <CalculateIcon color="primary" />
+    <IconButton onClick={onPresentApyModal} size="sm" variant="text" className="ml-1">
+      <CalculatorIcon />
     </IconButton>
   )
 }

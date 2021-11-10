@@ -22,11 +22,11 @@ const Inner = styled.div`
 `
 
 const CardTweet = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   return (
     <Card>
       <CardBody p="S_40">
-        <Title>{t("Check out the latest information of Definix")}</Title>
+        <Title>{t('Check out the latest information of Definix')}</Title>
         <Inner>
           <Timeline
             dataSource={{
@@ -37,7 +37,7 @@ const CardTweet = () => {
               id: 'profile:DefinixOfficial',
               chrome: 'noheader, nofooter',
               height: '402',
-              borderColor: 'transparent'
+              borderColor: 'transparent',
             }}
           />
         </Inner>

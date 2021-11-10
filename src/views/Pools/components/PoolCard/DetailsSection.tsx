@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
-import { Flex, Text, Box, ColorStyles, Label } from 'definixswap-uikit'
+import { Flex, Text, ColorStyles, Label } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import useI18n from 'hooks/useI18n'
 import useConverter from 'hooks/useConverter'
 
 const TotalStakedSection: React.FC<{

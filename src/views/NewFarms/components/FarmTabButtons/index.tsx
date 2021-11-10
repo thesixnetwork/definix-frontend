@@ -1,46 +1,25 @@
 import React from 'react'
-import styled from 'styled-components'
-import { Button, Text } from 'uikit-dev'
-
-const Wrapper = styled.div`
-  margin-bottom: 1.5rem;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    margin-bottom: 2rem;
-  } ;
-`
+import { useTranslation } from 'react-i18next'
+import { Box, Text, Toggle, Flex, ColorStyles } from 'definixswap-uikit'
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly }) => {
+  const { t } = useTranslation()
   return (
-    <Wrapper>
-      <div className="flex align-center justify-space-between">
-        <div className="flex">
-          <Button
-            size="sm"
-            onClick={() => {
-              setStackedOnly(false)
-            }}
-            variant={!stackedOnly ? 'primary' : 'secondary'}
-            className="mr-2"
-          >
-            All Farm
-          </Button>
-          <Button
-            size="sm"
-            onClick={() => {
-              setStackedOnly(true)
-            }}
-            variant={stackedOnly ? 'primary' : 'secondary'}
-          >
-            Staked
-          </Button>
-        </div>
-      </div>
-
-      <Text fontSize="12px" color="textSubtle" className="mt-4">
-        *AAPR = Airdrop APR supported by our partners
-      </Text>
-    </Wrapper>
+    //     *AAPR = Airdrop APR supported by our partners
+    <Box className="mt-s40">
+      <Flex justifyContent="space-between" alignItems="center">
+        <Flex alignItems="center">
+          <Flex alignItems="center">
+            <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+              {t('Staked only')}
+            </Text>
+            <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
+          </Flex>
+          <Box>filter box</Box>
+        </Flex>
+        <Box>search box</Box>
+      </Flex>
+    </Box>
   )
 }
 

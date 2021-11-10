@@ -1,49 +1,29 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { QuoteToken } from 'config/constants/types'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useConverter from 'hooks/useConverter'
 import styled from 'styled-components'
-import { useMatchBreakpoints } from 'uikit-dev'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import {
+  Flex,
+  Card,
+  CardBody,
+  CardRibbon,
+  IconButton,
+  Box,
+  ArrowBottomGIcon,
+  ArrowTopGIcon,
+  Divider,
+  ColorStyles,
+  useMatchBreakpoints,
+} from 'definixswap-uikit'
 import CardHeading from './CardHeading'
-import CardHeadingAccordion from './CardHeadingAccordion'
-import DetailsSection from './DetailsSection'
+// import CardHeadingAccordion from './CardHeadingAccordion'
+import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { FarmCardProps } from './types'
-
-const CardStyle = styled.div`
-  background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
-`
-
-// const VerticalStyle = styled(CardStyle)`
-//   display: flex;
-//   position: relative;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   text-align: center;
-// `
-
-const HorizontalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-`
-
-const HorizontalMobileStyle = styled(CardStyle)`
-  .accordion-content {
-    &.hide {
-      display: none;
-    }
-
-    &.show {
-      display: block;
-    }
-  }
-`
 
 const FarmCard: React.FC<FarmCardProps> = ({
   farm,
@@ -58,8 +38,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   onSelectAddLP,
   onSelectRemoveLP,
 }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const lpTokenName = useMemo(() => {
@@ -123,21 +103,33 @@ const FarmCard: React.FC<FarmCardProps> = ({
     ),
     [addLiquidityUrl, farm, finixPrice, isHorizontal, lpTokenName, removed],
   )
-
-  /**
-   * detail section
-   */
-  const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <DetailsSection
-        isHorizontal={isHor}
-        className={className}
-        removed={removed}
-        totalLiquidityUSD={totalLiquidityUSD}
-      />
-    ),
-    [removed, totalLiquidityUSD],
+  const renderTotalLiquiditySection = useCallback(
+    () => <TotalLiquiditySection title="Total Staked" tokenName={lpTokenName} totalLiquidity={totalLiquidity} />,
+    [lpTokenName, totalLiquidity],
   )
+  const renderMyBalanceSection = useCallback(
+    () => <MyBalanceSection title="Balance" tokenName={lpTokenName} balance={stakedBalance} />,
+    [lpTokenName, stakedBalance],
+  )
+  const renderEarningsSection = useCallback(
+    () => <EarningsSection title="Earned" tokenName={lpTokenName} earnings={earnings} />,
+    [lpTokenName, earnings],
+  )
+
+  // /**
+  //  * detail section
+  //  */
+  // const renderDetailsSection = useCallback(
+  //   (className?: string, isHor?: boolean) => (
+  //     <DetailsSection
+  //       isHorizontal={isHor}
+  //       className={className}
+  //       removed={removed}
+  //       totalLiquidityUSD={totalLiquidityUSD}
+  //     />
+  //   ),
+  //   [removed, totalLiquidityUSD],
+  // )
 
   /**
    * stake action
@@ -211,41 +203,66 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   if (isMobile) {
     return (
-      <HorizontalMobileStyle className="mb-3">
-        <CardHeadingAccordion
-          farm={farm}
-          lpLabel={lpTokenName}
-          removed={removed}
-          addLiquidityUrl={addLiquidityUrl}
-          finixPrice={finixPrice}
-          className=""
-          isOpenAccordion={isOpenAccordion}
-          setIsOpenAccordion={setIsOpenAccordion}
-        />
-        <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-          {renderStakeAction('pa-5')}
-          {/* renderHarvestAction('pa-5') */}
-          {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-          {renderDetailsSection('px-5 py-3', false)}
-        </div>
-      </HorizontalMobileStyle>
+      // <HorizontalMobileStyle className="mb-3">
+      //   <CardHeadingAccordion
+      //     farm={farm}
+      //     lpLabel={lpTokenName}
+      //     removed={removed}
+      //     addLiquidityUrl={addLiquidityUrl}
+      //     finixPrice={finixPrice}
+      //     className=""
+      //     isOpenAccordion={isOpenAccordion}
+      //     setIsOpenAccordion={setIsOpenAccordion}
+      //   />
+      //   <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+      //     {renderStakeAction('pa-5')}
+      //     {/* renderHarvestAction('pa-5') */}
+      //     {renderHarvestActionAirDrop('pa-5 pt-0', false)}
+      //     {renderDetailsSection('px-5 py-3', false)}
+      //   </div>
+      // </HorizontalMobileStyle>
+      <div>d</div>
     )
   }
 
   return (
-    <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-      {renderCardHeading('col-4 pos-static')}
+    // <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
+    //   {renderCardHeading('col-4 pos-static')}
 
-      {renderDetailsSection('col-4 bd-x pa-3', true)}
+    //   {renderDetailsSection('col-4 bd-x pa-3', true)}
 
-      <div className="flex col-4">
-        {renderStakeAction(`pa-3 ${isApproved || 'col-12'}`)}
-        {isApproved && renderHarvestActionAirDrop('col-6 pa-3')}
-      </div>
+    //   <div className="flex col-4">
+    //     {renderStakeAction(`pa-3 ${isApproved || 'col-12'}`)}
+    //     {isApproved && renderHarvestActionAirDrop('col-6 pa-3')}
+    //   </div>
 
-      {/*  */}
-      {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', isHorizontal)} */}
-    </HorizontalStyle>
+    //   {/*  */}
+    //   {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', isHorizontal)} */}
+    // </HorizontalStyle>
+    <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
+      <CardBody>
+        <Flex justifyContent="space-between">
+          <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
+          <Box style={{ width: '16%' }}>{renderTotalLiquiditySection()}</Box>
+          <Box style={{ width: '26%' }} className="mx-s24">
+            {renderMyBalanceSection()}
+          </Box>
+          <Box style={{ width: '24%' }}>{renderEarningsSection()}</Box>
+          {/* {renderIconButton()} */}
+        </Flex>
+      </CardBody>
+      {isOpenAccordion && (
+        <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
+          <Flex justifyContent="space-between">
+            {/* <Box style={{ width: '20%' }}>{renderLinkSection()}</Box> */}
+            <Box style={{ width: '40%' }} className="mx-s24">
+              {renderHarvestActionAirDrop()}
+            </Box>
+            <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
+          </Flex>
+        </Box>
+      )}
+    </Card>
   )
   // if (isHorizontal) {
   // }

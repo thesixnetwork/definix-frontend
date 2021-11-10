@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Modal, ButtonVariants, ButtonScales, Box, Flex, Text, ColorStyles } from 'definixswap-uikit'
+import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image } from 'definixswap-uikit'
 
 const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   return (
@@ -12,10 +12,15 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
       // classHeader="bd-b-n"
     >
       <Box width="464px" className="mt-s16 mb-s40">
-        <Flex justifyContent="space-between">
-          <Text textStyle="R_16M" color={ColorStyles.BLACK}>
-            {tokenName}
-          </Text>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Flex alignItems="center">
+            <Box width={48} className="mr-s12">
+              <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={48} height={48} />
+            </Box>
+            <Text textStyle="R_16M" color={ColorStyles.BLACK}>
+              {tokenName}
+            </Text>
+          </Flex>
           <Text textStyle="R_16R" color={ColorStyles.BLACK}>
             {stakedBalance}
           </Text>

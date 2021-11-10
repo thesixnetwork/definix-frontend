@@ -75,24 +75,19 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
   position: relative;
   grid-column-start: 1;
   grid-column-end: 13;
-
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: 32px;
 `
 
 const Home: React.FC = () => {
-
   return (
     <>
       <Helmet>
         <title>Home - Definix - Advance Your Crypto Assets</title>
       </Helmet>
       <WrapGrid>
-        <FullColumnGrid pt="S_30" pb="S_42" area="notice">
+        <FullColumnGrid pt="S_30" area="notice">
           <HomeNotice />
         </FullColumnGrid>
-        <LeftColumnGrid area="tvl"> 
+        <LeftColumnGrid area="tvl">
           <CardTVL />
         </LeftColumnGrid>
         <RightColumnGrid area="finix">
