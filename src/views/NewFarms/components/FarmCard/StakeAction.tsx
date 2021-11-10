@@ -80,7 +80,10 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
 
   const farmUnlockDate = useFarmUnlockDate()
   const isEnableAddStake = useMemo(() => {
-    return typeof farmUnlockDate === 'undefined' || (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())
+    return (
+      typeof farmUnlockDate === 'undefined' ||
+      (farmUnlockDate instanceof Date && new Date().getTime() > farmUnlockDate.getTime())
+    )
   }, [farmUnlockDate])
 
   const myLiquidityValue = useMemo(() => {
@@ -136,61 +139,51 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         My Liquidity
       </Text>
-      {
-        account ? (
-          <>
-            {
-              needApproveContract ? (
-                <Button
-                  width="100%"
-                  md
-                  variant={ButtonVariants.BROWN}
-                  disabled={requestedApproval}
-                  onClick={handleApprove}
-                >
-                  Approve Contract
-                </Button>
-              ) : (
-                <Flex justifyContent="space-between">
-                  <Box>
-                    <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-                      {myLiquidityValue}
-                    </Text>
-                    <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                      = {myLiquidityUSD}
-                    </Text>
-                  </Box>
+      {account ? (
+        <>
+          {needApproveContract ? (
+            <Button width="100%" md variant={ButtonVariants.BROWN} disabled={requestedApproval} onClick={handleApprove}>
+              Approve Contract
+            </Button>
+          ) : (
+            <Flex justifyContent="space-between">
+              <Box>
+                <Text textStyle="R_18M" color={ColorStyles.BLACK}>
+                  {myLiquidityValue}
+                </Text>
+                <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
+                  = {myLiquidityUSD}
+                </Text>
+              </Box>
 
-                  <Box>
-                    <Button
-                      minWidth="40px"
-                      md
-                      variant={ButtonVariants.LINE}
-                      disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
-                      onClick={onPresentWithdraw}
-                    >
-                      <MinusIcon />
-                    </Button>
-                    {isEnableAddStake && (
-                      <Button
-                        minWidth="40px"
-                        md
-                        variant={ButtonVariants.LINE}
-                        onClick={onPresentDeposit}
-                        style={{ marginLeft: '4px' }}
-                      >
-                        <PlusIcon />
-                      </Button>
-                    )}
-                  </Box>
-                </Flex>
-              )
-            }
-          </>
-        ) : (
-          <UnlockButton />
-        )
-      }
+              <Box>
+                <Button
+                  minWidth="40px"
+                  md
+                  variant={ButtonVariants.LINE}
+                  disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
+                  onClick={onPresentWithdraw}
+                >
+                  <MinusIcon />
+                </Button>
+                {isEnableAddStake && (
+                  <Button
+                    minWidth="40px"
+                    md
+                    variant={ButtonVariants.LINE}
+                    onClick={onPresentDeposit}
+                    style={{ marginLeft: '4px' }}
+                  >
+                    <PlusIcon />
+                  </Button>
+                )}
+              </Box>
+            </Flex>
+          )}
+        </>
+      ) : (
+        <UnlockButton />
+      )}
     </>
   )
 }

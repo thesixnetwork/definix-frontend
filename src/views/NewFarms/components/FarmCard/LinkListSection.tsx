@@ -3,7 +3,7 @@ import { LinkExternal, ColorStyles } from 'definixswap-uikit'
 
 const LinkListSection: React.FC<{
   isMobile: boolean
-  lpAddresses: {[key: number]: string}
+  lpAddresses: { [key: number]: string }
 }> = ({ isMobile, lpAddresses }) => {
   return (
     <>

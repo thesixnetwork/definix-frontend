@@ -4,7 +4,17 @@ import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles, alertVariants, ToastContainer } from 'definixswap-uikit'
+import {
+  Button,
+  Text,
+  ButtonVariants,
+  Flex,
+  Box,
+  Label,
+  ColorStyles,
+  alertVariants,
+  ToastContainer,
+} from 'definixswap-uikit'
 // import AirDropHarvestModal from './AirDropHarvestModal'
 
 interface FarmCardActionsProps {
@@ -15,7 +25,7 @@ interface FarmCardActionsProps {
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings }) => {
   const [pendingTx, setPendingTx] = useState(false)
-  const [toasts, setToasts] = useState([]);
+  const [toasts, setToasts] = useState([])
 
   // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
@@ -34,16 +44,19 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
   }, [])
 
   const showToast = useCallback((type: string, title: string) => {
-    setToasts((prevToasts) => [{
-      id: 'harvest_result',
-      title,
-      type
-    }, ...prevToasts]);
+    setToasts((prevToasts) => [
+      {
+        id: 'harvest_result',
+        title,
+        type,
+      },
+      ...prevToasts,
+    ])
   }, [])
 
   const hideToast = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id));
-  };
+    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
+  }
 
   const handleHarvest = useCallback(async () => {
     try {
@@ -79,11 +92,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
         </Text>
         <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
           <Box>
-            <AirDrop
-              value={finixEarningsValue}
-              name="FINIX"
-              price={earningsPrice(finixEarningsValue)}
-            />
+            <AirDrop value={finixEarningsValue} name="FINIX" price={earningsPrice(finixEarningsValue)} />
             {/* {false && (
               <div className="flex align-center justify-space-between">
                 <Text color="textSubtle">Claim Ended Bonus</Text>

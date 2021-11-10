@@ -54,7 +54,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     )
   }, [farm.lpSymbol])
 
-  
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
 
@@ -82,7 +81,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
       .times(new BigNumber(2))
     return getTokenPrice(stakedTotalInQuoteToken)
   }, [farm, stakedBalance, getTokenPrice])
-  
 
   /**
    * total liquidity
@@ -196,13 +194,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
    * harvest action
    */
   const renderHarvestActionAirDrop = useCallback(
-    () => (
-      <HarvestActionAirDrop isMobile={isMobile} pid={pid} earnings={earnings} />
-    ),
+    () => <HarvestActionAirDrop isMobile={isMobile} pid={pid} earnings={earnings} />,
     [isMobile, earnings, pid],
   )
 
-  const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} lpAddresses={farm.lpAddresses} />, [isMobile, farm.lpAddresses])
+  const renderLinkSection = useCallback(
+    () => <LinkListSection isMobile={isMobile} lpAddresses={farm.lpAddresses} />,
+    [isMobile, farm.lpAddresses],
+  )
 
   useEffect(() => {
     setIsOpenAccordion(false)
