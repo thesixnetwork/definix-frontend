@@ -87,7 +87,7 @@ const BannerTopup = styled(Card)`
 
 const BoxValue = styled(Card)`
   background: #fff;
-  width: 20%; 
+  width: 20%;
   height: 50%;
   padding: 20px;
   margin: 0px 28px;
@@ -361,14 +361,14 @@ const Farm: React.FC = () => {
 
             <BannerTopup>
               <div className="flex align-center" style={{ zIndex: 1 }}>
-                <Heading className="pl-5" color="black" style={{ width: "40%" }}>
+                <Heading className="pl-5" color="black" style={{ width: '40%' }}>
                   Harvest all of reward and stake in Long-term Stake for earn more!
-                  </Heading>
+                </Heading>
                 <img src={logoFinixTopup} alt="logoFinixTopup" width="160" />
                 <BoxValue>
                   <Text color="textSubtle" fontSize="16px">
                     FINIX ready to harvest
-                    </Text>
+                  </Text>
                   <div className="flex align-center">
                     <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
                     <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
@@ -379,7 +379,10 @@ const Farm: React.FC = () => {
                 <Button
                   radii="small"
                   className="ml-6"
-                  style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}>Super Stake</Button>
+                  style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
+                >
+                  Super Stake
+                </Button>
               </div>
             </BannerTopup>
 
@@ -405,23 +408,23 @@ const Farm: React.FC = () => {
                   </Route>
                 </div>
               ) : (
-                  <FlexLayout cols={listView ? 1 : 3}>
-                    <Route exact path={`${path}`}>
-                      {liveOnly
-                        ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
+                <FlexLayout cols={listView ? 1 : 3}>
+                  <Route exact path={`${path}`}>
+                    {liveOnly
+                      ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
                           (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )
-                        : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
+                      : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
                           (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
                         )}
-                    </Route>
-                    <Route path={`${path}/history`}>
-                      {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                        <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-                      ))}
-                    </Route>
-                  </FlexLayout>
-                )}
+                  </Route>
+                  <Route path={`${path}/history`}>
+                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                    ))}
+                  </Route>
+                </FlexLayout>
+              )}
             </TimerWrapper>
           </MaxWidth>
         </LeftPanel>
@@ -442,17 +445,17 @@ const TimerWrapper = ({ isPhrase1, date, children }) => {
   return isPhrase1 ? (
     children
   ) : (
-      <>
-        <div>
-          <br />
-          <Flip date={date} />
-          <br />
-          <br />
-          <br />
-        </div>
-        {children}
-      </>
-    )
+    <>
+      <div>
+        <br />
+        <Flip date={date} />
+        <br />
+        <br />
+        <br />
+      </div>
+      {children}
+    </>
+  )
 }
 
 export default Farm

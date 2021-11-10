@@ -77,7 +77,7 @@ const BannerTopup = styled(Card)`
 
 const BoxValue = styled(Card)`
   background: #fff;
-  width: 20%; 
+  width: 20%;
   height: 50%;
   padding: 20px;
   margin: 0px 28px;
@@ -301,14 +301,14 @@ const Farms: React.FC = () => {
 
             <BannerTopup>
               <div className="flex align-center" style={{ zIndex: 1 }}>
-                <Heading className="pl-5" color="black" style={{ width: "40%" }}>
+                <Heading className="pl-5" color="black" style={{ width: '40%' }}>
                   Harvest all of reward and stake in Long-term Stake for earn more!
-                  </Heading>
+                </Heading>
                 <img src={logoFinixTopup} alt="logoFinixTopup" width="160" />
                 <BoxValue>
                   <Text color="textSubtle" fontSize="16px">
                     FINIX ready to harvest
-                    </Text>
+                  </Text>
                   <div className="flex align-center">
                     <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
                     <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
@@ -319,10 +319,12 @@ const Farms: React.FC = () => {
                 <Button
                   radii="small"
                   className="ml-6"
-                  style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}>Super Stake</Button>
+                  style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
+                >
+                  Super Stake
+                </Button>
               </div>
             </BannerTopup>
-
 
             <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
               <FarmTabButtons
@@ -360,29 +362,29 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
   return isPhrase2 ? (
     children
   ) : (
-      <>
-        <div>
-          <br />
-          <Flip date={date} />
-          <br />
-          <br />
-          <br />
-        </div>
-        <div
-          tabIndex={0}
-          role="button"
-          style={{ opacity: 0.4, pointerEvents: 'none' }}
-          onClick={(e) => {
-            e.preventDefault()
-          }}
-          onKeyDown={(e) => {
-            e.preventDefault()
-          }}
-        >
-          {children}
-        </div>
-      </>
-    )
+    <>
+      <div>
+        <br />
+        <Flip date={date} />
+        <br />
+        <br />
+        <br />
+      </div>
+      <div
+        tabIndex={0}
+        role="button"
+        style={{ opacity: 0.4, pointerEvents: 'none' }}
+        onClick={(e) => {
+          e.preventDefault()
+        }}
+        onKeyDown={(e) => {
+          e.preventDefault()
+        }}
+      >
+        {children}
+      </div>
+    </>
+  )
 }
 
 export default Farms

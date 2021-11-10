@@ -13,7 +13,6 @@ const Tabs = styled.div`
   border-radius: 8px;
 `
 
-
 const Tab = styled(NavLink)<{ active: boolean }>`
   position: relative;
   display: flex;
