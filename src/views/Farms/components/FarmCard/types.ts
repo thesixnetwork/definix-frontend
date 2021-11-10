@@ -4,6 +4,8 @@ import { provider } from 'web3-core'
 
 export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
+  finixApy?: BigNumber
+  klayApy?: BigNumber
 }
 
 export interface FarmCardProps {

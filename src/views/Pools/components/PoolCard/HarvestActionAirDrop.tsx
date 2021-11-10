@@ -8,6 +8,7 @@ import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
+import klay from 'uikit-dev/images/Logo-Klaytn.png'
 import AirDropHarvestModal from './AirDropHarvestModal'
 
 const MiniLogo = styled.img`

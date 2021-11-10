@@ -9,12 +9,17 @@ import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
 import AirDropHarvestModal from './AirDropHarvestModal'
+import { FarmWithStakedValue } from './types'
 
 interface FarmCardActionsProps {
+  pendingRewards?: any
+  bundleRewardLength?: BigNumber
+  bundleRewards?: any
   earnings?: BigNumber
   pid?: number
   className?: string
   isHorizontal?: boolean
+  farm?: FarmWithStakedValue
 }
 
 const MiniLogo = styled.img`

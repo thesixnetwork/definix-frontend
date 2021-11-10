@@ -10,6 +10,6 @@ export {
   updateUserPendingReward,
   updateUserStakedBalance,
 } from './pools'
-export { fetchSixPrice, fetchTVL, fetchFinixPrice } from './finixPrice'
+export { fetchSixPrice, fetchTVL, fetchFinixPrice, fetchPancakeBnbPrice } from './finixPrice'
 export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
 export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'

@@ -142,8 +142,19 @@ export interface FinixPriceState {
   web3TVL: number
   price: number
   sixPrice: number
-  klayswapKlayPrice: number
-  definixKlayPrice: number
+  pancakeBnbPrice: number
+  sixFinixQuote: number
+  sixBusdQuote: number
+  sixUsdtQuote: number
+  sixWbnbQuote: number
+  finixBusdQuote: number
+  finixUsdtQuote: number
+  finixWbnbQuote: number
+  wbnbBusdQuote: number
+  wbnbUsdtQuote: number
+  busdUsdtQuote: number
+  bnbBtcbQuote: number
+  ethBnbQuote: number
 }
 export interface ProfileState {
   isInitialized: boolean

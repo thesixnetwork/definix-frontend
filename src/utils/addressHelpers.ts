@@ -55,7 +55,7 @@ export const getSixBusdLPAddress = () => {
   return getAddress(addresses.sixBusdLP)
 }
 export const getDefinixBnbBusdLPAddress = () => {
-  return getAddress(addresses.definixBnbBusdLP)
+  return getAddress(addresses.pancakeBnbBusdLP)
 }
 export const getTradingCompetRegisAddress = () => {
   return getAddress(addresses.tradingCompetRegis)

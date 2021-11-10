@@ -6,7 +6,7 @@ import multicall from 'utils/multicall'
 import _ from 'lodash'
 import axios from 'axios'
 
-import { getAddress, getSixAddress } from 'utils/addressHelpers'
+import { getAddress, getWbnbAddress, getBusdAddress, getDefinixBnbBusdLPAddress } from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
 
@@ -15,8 +15,19 @@ const initialState: FinixPriceState = {
   web3TVL: 0,
   price: 0,
   sixPrice: 0,
-  definixKlayPrice: 0,
-  klayswapKlayPrice: 0,
+  pancakeBnbPrice: 0,
+  sixFinixQuote: 0,
+  sixBusdQuote: 0,
+  sixUsdtQuote: 0,
+  sixWbnbQuote: 0,
+  finixBusdQuote: 0,
+  finixUsdtQuote: 0,
+  finixWbnbQuote: 0,
+  wbnbBusdQuote: 0,
+  wbnbUsdtQuote: 0,
+  busdUsdtQuote: 0,
+  bnbBtcbQuote: 0,
+  ethBnbQuote: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -40,11 +51,39 @@ export const finixPriceSlice = createSlice({
       state.caverTVL = caverTVL
       state.web3TVL = web3TVL
     },
+    setQuote: (state, action) => {
+      const {
+        sixFinixQuote,
+        sixBusdQuote,
+        sixUsdtQuote,
+        sixWbnbQuote,
+        finixBusdQuote,
+        finixUsdtQuote,
+        finixWbnbQuote,
+        wbnbBusdQuote,
+        wbnbUsdtQuote,
+        busdUsdtQuote,
+        bnbBtcbQuote,
+        ethBnbQuote,
+      } = action.payload
+      state.sixFinixQuote = sixFinixQuote
+      state.sixBusdQuote = sixBusdQuote
+      state.sixUsdtQuote = sixUsdtQuote
+      state.sixWbnbQuote = sixWbnbQuote
+      state.finixBusdQuote = finixBusdQuote
+      state.finixUsdtQuote = finixUsdtQuote
+      state.finixWbnbQuote = finixWbnbQuote
+      state.wbnbBusdQuote = wbnbBusdQuote
+      state.wbnbUsdtQuote = wbnbUsdtQuote
+      state.busdUsdtQuote = busdUsdtQuote
+      state.bnbBtcbQuote = bnbBtcbQuote
+      state.ethBnbQuote = ethBnbQuote
+    },
   },
 })
 
 // Actions
-export const { setTVL, setSixPrice, setFinixPrice, setDefinixKlayPrice, setKlayswapKlayPrice } = finixPriceSlice.actions
+export const { setTVL, setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice  } = finixPriceSlice.actions
 
 const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
   let pair1Amount = 0
@@ -84,14 +123,8 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
 
 // Thunks
 export const fetchSixPrice = () => async (dispatch) => {
-  const fetchPromise = []
-
-  fetchPromise.push(
-    getTotalBalanceLp({
-      lpAddress: getSixKusdtLPAddress(),
-      pair1: getSixAddress(),
-      pair2: getKusdtAddress(),
-    }),
+  const response = await axios.get(
+    'https://s3-ap-southeast-1.amazonaws.com/database-s3public-g8ignhbbbk6e/prices/Current.json',
   )
   const usdPrice = _.get(response, 'data.assets.six.usd')
   dispatch(
@@ -119,9 +152,9 @@ export const fetchPancakeBnbPrice = () => async (dispatch) => {
 
   fetchPromise.push(
     getTotalBalanceLp({
-      lpAddress: getDefinixKlayKusdtLPAddress(),
-      pair1: getWklayAddress(),
-      pair2: getKusdtAddress(),
+      lpAddress: getDefinixBnbBusdLPAddress(),
+      pair1: getWbnbAddress(),
+      pair2: getBusdAddress(),
     }),
   )
   const [[totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]] = await Promise.all(fetchPromise)
@@ -222,4 +255,5 @@ export const fetchFinixPrice = () => async (dispatch) => {
     }),
   )
 }
+
 export default finixPriceSlice.reducer

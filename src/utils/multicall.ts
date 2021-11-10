@@ -23,8 +23,8 @@ const multicall = async (abi: any[], calls: Call[]) => {
 }
 
 export const multicallEth = async (account: string) => {
-  const caver = getCaver()
-  const multi = new caver.klay.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
+  const web3 = getWeb3()
+  const multi = new web3.eth.Contract(MultiCallAbi as unknown as AbiItem, getMulticallAddress())
   const response = await multi.methods.getEthBalance(account).call()
   return response
 }

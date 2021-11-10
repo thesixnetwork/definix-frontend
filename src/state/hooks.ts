@@ -13,6 +13,7 @@ import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchFinixPrice,
+  fetchPancakeBnbPrice,
   fetchSixPrice,
   fetchTVL,
   fetchRebalances,
@@ -37,8 +38,7 @@ export const useFetchPublicData = () => {
     dispatch(fetchFinixPrice())
     dispatch(fetchSixPrice())
     dispatch(fetchTVL())
-    dispatch(fetchKlayPriceFromKlayswap())
-    dispatch(fetchDefinixKlayPrice())
+    dispatch(fetchPancakeBnbPrice())
     dispatch(fetchRebalances())
   }, [dispatch, slowRefresh])
 }

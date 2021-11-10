@@ -8,6 +8,11 @@ import styled from 'styled-components'
 import { Button, Card, Heading } from 'uikit-dev'
 import el06 from 'uikit-dev/images/for-Farm-Elements/06.png'
 import el07 from 'uikit-dev/images/for-Farm-Elements/07.png'
+import el08 from 'uikit-dev/images/for-Farm-Elements/08.png'
+import el09 from 'uikit-dev/images/for-Farm-Elements/09.png'
+import el10 from 'uikit-dev/images/for-Farm-Elements/10.png'
+import el12 from 'uikit-dev/images/for-Farm-Elements/12.png'
+import el13 from 'uikit-dev/images/for-Farm-Elements/13.png'
 import bg from 'uikit-dev/images/for-Farm-Elements/bg.jpg'
 
 const CardStyled = styled(Card)`
@@ -110,6 +115,11 @@ const CardUpcomingFarms: React.FC = () => {
   })
   const pid1Farm = farms.find((fa) => fa.pid === 1)
   const pid2Farm = farms.find((fa) => fa.pid === 2)
+  const pid3Farm = farms.find((fa) => fa.pid === 3)
+  const pid4Farm = farms.find((fa) => fa.pid === 4)
+  const pid5Farm = farms.find((fa) => fa.pid === 5)
+  const pid6Farm = farms.find((fa) => fa.pid === 6)
+  const pid7Farm = farms.find((fa) => fa.pid === 7)
   const data = [
     {
       img: el06,

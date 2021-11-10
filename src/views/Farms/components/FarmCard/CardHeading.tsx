@@ -4,6 +4,7 @@ import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
 import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
+import ribbin from 'uikit-dev/images/for-ui-v2/ribbin.png'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
@@ -92,6 +93,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   finixPrice,
   className = '',
   isHorizontal = false,
+  inlineMultiplier = false,
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
