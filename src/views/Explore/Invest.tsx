@@ -136,7 +136,7 @@ const CardInput = ({
 
   return (
     <>
-      <Card className="mb-s16">
+      <Card mb="S_16">
         <CardBody>
           <CardHeading
             rebalance={rebalance}
@@ -182,7 +182,7 @@ const CardInput = ({
         </CardBody>
       </Card>
 
-      <Card className={isMobile ? 'pa-s20' : 'pa-s40'}>
+      <Card p={isMobile ?  'S_20' : 'S_40'}>
         <Box mb="S_40">
           {coins.map((c) => (
             <CurrencyInputPanel
@@ -291,7 +291,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [poolAmounts, setPoolAmounts] = useState([])
   const [sumPoolAmount, setSumPoolAmount] = useState(0)
   const [isSimulating, setIsSimulating] = useState(true)
-  const [isInputting, setIsInputting] = useState(true)
   const [isInvesting, setIsInvesting] = useState(false)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
   const dispatch = useDispatch()
@@ -319,7 +318,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
 
   useEffect(() => {
     return () => {
-      setIsInputting(true)
       setTx({})
     }
   }, [])
@@ -477,7 +475,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       rebalance={rebalance}
       sumPoolAmount={sumPoolAmount}
       onNext={() => {
-        // fetchData()
+        fetchData()
         setToasts((prevToasts) => [{
           title: t('Invest Complete'),
           type: "success",
@@ -496,7 +494,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   if (!rebalance) return <Redirect to="/rebalancing" />
 
   return (
-    <>
+    <Box maxWidth="630px" mx="auto">
       <Helmet>
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
@@ -519,26 +517,21 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
         {t('Invest')}
       </Text>
 
-      <div>
-        {isInputting && (
-          <CardInput
-            rebalance={rebalance}
-            currentInput={currentInput}
-            setCurrentInput={setCurrentInput}
-            balances={balances}
-            allowances={allowances}
-            onNext={() => {
-              // setIsInputting(false)
-              onPresentCalcModal()
-            }}
-            // totalUSDAmount={totalUSDAmount}
-            isSimulating={isSimulating}
-            sumPoolAmount={sumPoolAmount}
-          />
-        )}{' '}
-      </div>
+      <CardInput
+        rebalance={rebalance}
+        currentInput={currentInput}
+        setCurrentInput={setCurrentInput}
+        balances={balances}
+        allowances={allowances}
+        onNext={() => {
+          onPresentCalcModal()
+        }}
+        // totalUSDAmount={totalUSDAmount}
+        isSimulating={isSimulating}
+        sumPoolAmount={sumPoolAmount}
+      />
       <ToastContainer toasts={toasts} onRemove={handleRemove} />
-    </>
+    </Box>
   )
 }
 

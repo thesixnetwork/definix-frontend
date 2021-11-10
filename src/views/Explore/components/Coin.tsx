@@ -4,7 +4,8 @@ import styled from "styled-components"
 
 const Size = {
   sm: '20px',
-  md: '24px'
+  md: '24px',
+  lg: '32px',
 }
 
 interface CoinType extends FlexProps {

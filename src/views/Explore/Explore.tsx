@@ -71,11 +71,13 @@ const Explore: React.FC = () => {
             />
           </Box>
 
-          <Flex alignItems="center" className="mb-5">
-            <Text textStyle="R_14R" paddingRight="2">
-              Staked only
-            </Text>
-            <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
+          <Flex alignItems="center" mb="S_28">
+            <Flex alignItems="center">
+              <Text textStyle="R_14R" color="deepgrey" mr="S_8">
+                {t('Staked only')}
+              </Text>
+              <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
+            </Flex>
           </Flex>
 
           <FlexLayout cols={1}>
