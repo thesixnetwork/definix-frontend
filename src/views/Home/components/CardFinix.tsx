@@ -10,56 +10,75 @@ import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const Title = styled(Text)`
-  ${css(textStyle.R_16M)}
+  ${css(textStyle.R_18M)}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
-  margin-left: 8px;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    ${css(textStyle.R_18M)}
-    margin-left: 14px;
+  margin-left: 14px;
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${css(textStyle.R_16M)}
+    margin-left: 8px;
   }
 `
 
 const FinixValue = styled(Text)`
-  margin-top: 6px;
-  ${css(textStyle.R_26B)}
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin-top: 8px;
-    ${css(textStyle.R_32B)}
-    color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
+  margin-top: 8px;
+  ${css(textStyle.R_32B)}
+  color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 6px;
+    ${css(textStyle.R_26B)}
   }
 `
 
-const StyledCardBody = styled(CardBody)`
-  padding: 20px;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 40px;
+const WrapCardBody = styled(CardBody)`
+  padding: 40px;
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: 20px;
   }
 `
 
-const StyledValues = styled(Flex)`
+const InfoValues = styled(Flex)`
   width: 100%;
   justify-content: space-between;
 `
 
-const ButtonWrap = styled(Flex)`
-  margin-top: 20px;
-  padding-bottom: 20px;
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin-top: 28px;
-    padding-bottom: 0;
+const InfoTitle = styled(Text)`
+  ${css(textStyle.R_14R)}
+  color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
+`
+
+const InfoValue = styled(Text)`
+  ${css(textStyle.R_14B)}
+  color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
+`
+
+const InfoTitleBold = styled(Text)`
+  ${css(textStyle.R_14M)}
+  color: ${({ theme }) => theme.colors[ColorStyles.DEEPGREY]};
+`
+
+const InfoValueBold = styled(Text)`
+  ${css(textStyle.R_16B)}
+  color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
+`
+
+const WrapButton = styled(Flex)`
+  margin-top: 28px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 20px;
+    padding-bottom: 20px;
   }
 `
 
-const InfoWrap = styled(Flex)`
-  border-top: 1px solid ${({ theme }) => theme.colors.border};
+const WrapInfo = styled(Flex)`
   flex-direction: column;
-  padding-top: 22px;
-  ${({ theme }) => theme.mediaQueries.xl} {
-    border-top: none;
-    margin-top: 42px;
+  margin-top: 42px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 0;
+    border-top: 1px solid ${({ theme }) => theme.colors.border};
+    padding-top: 22px;
   }
 `
 
@@ -80,7 +99,7 @@ const CardFinix = () => {
 
   return (
     <Card>
-      <StyledCardBody>
+      <WrapCardBody>
         <Flex>
           <TokenFinixIcon viewBox="0 0 24 24" width={isXxl ? "24" : "20"} />
           <Title>{t('FINIX')}</Title>
@@ -88,67 +107,67 @@ const CardFinix = () => {
         <FinixValue>
           $ {finixPriceUsd.toFixed(2)}
         </FinixValue>
-        <ButtonWrap>
+        <WrapButton>
           <Button xs variant="lightbrown" width="50%" mr="S_6">
             {t('Price Chart')}
           </Button>
           <Button xs variant="line" width="50%" ml="S_6">
             {t('Transactions')}
           </Button>
-        </ButtonWrap>
-        <InfoWrap>
-          <StyledValues>
-            <Text textStyle="R_14M" color="deepgrey">
+        </WrapButton>
+        <WrapInfo>
+          <InfoValues>
+            <InfoTitleBold>
               {t('Total FINIX Supply')}
-            </Text>
-            <Text textStyle="R_16B" color="black">
+            </InfoTitleBold>
+            <InfoValueBold>
               {finixSupply}
-            </Text>
-          </StyledValues>
-          <StyledValues mt="S_12">
-            <Text textStyle="R_14R" color="mediumgrey">
+            </InfoValueBold>
+          </InfoValues>
+          <InfoValues mt="S_12">
+            <InfoTitle>
               {t('FINIX Generated')}
-            </Text>
-            <Text textStyle="R_14B" color="mediumgrey">
+            </InfoTitle>
+            <InfoValue>
               {finixSupply && finixTransfered ? finixSupply - finixTransfered : 0}
-            </Text>
-          </StyledValues>
-          <StyledValues mt="S_4">
-            <Text textStyle="R_14R" color="mediumgrey">
+            </InfoValue>
+          </InfoValues>
+          <InfoValues mt="S_4">
+            <InfoTitle>
               {t('FINIX Transferred from {{BSC}}', {
                 BSC: 'BSC',
               })}
-            </Text>
-            <Text textStyle="R_14B" color="mediumgrey">
+            </InfoTitle>
+            <InfoValue>
               {finixTransfered ? finixTransfered - 600000 : 0}
-            </Text>
-          </StyledValues>
-          <StyledValues mt="S_4">
-            <Text textStyle="R_14R" color="mediumgrey">
+            </InfoValue>
+          </InfoValues>
+          <InfoValues mt="S_4">
+            <InfoTitle>
               {t('FINIX Reserved for Bridge')}
-            </Text>
-            <Text textStyle="R_14B" color="mediumgrey">
+            </InfoTitle>
+            <InfoValue>
               {finixTransfered ? 600000 : 0}
-            </Text>
-          </StyledValues>
-          <StyledValues mt="S_16">
-            <Text textStyle="R_14M" color="deepgrey">
+            </InfoValue>
+          </InfoValues>
+          <InfoValues mt="S_16">
+            <InfoTitleBold>
               {t('Total FINIX Burned')}
-            </Text>
-            <Text textStyle="R_16B" color="black">
+            </InfoTitleBold>
+            <InfoValueBold>
               {burnedBalance}
-            </Text>
-          </StyledValues>
-          <StyledValues mt="S_12">
-            <Text textStyle="R_14M" color="deepgrey">
+            </InfoValueBold>
+          </InfoValues>
+          <InfoValues mt="S_12">
+            <InfoTitleBold>
               {t('New FINIX / sec')}
-            </Text>
-            <Text textStyle="R_16B" color="black">
+            </InfoTitleBold>
+            <InfoValueBold>
               1
-            </Text>
-          </StyledValues>
-        </InfoWrap>
-      </StyledCardBody>
+            </InfoValueBold>
+          </InfoValues>
+        </WrapInfo>
+      </WrapCardBody>
     </Card>
   )
 }

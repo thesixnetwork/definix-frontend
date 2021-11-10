@@ -6,40 +6,40 @@ import FarmHighAPR from './FarmHighAPR'
 import ExploreHighAPR from './ExploreHighAPR'
 
 const Title = styled(Text)`
-  ${css(textStyle.R_20B)}
+  ${css(textStyle.R_26B)}
   color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    ${css(textStyle.R_26B)}
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${css(textStyle.R_20B)}
   }
 `
 
-const InnerFlex = styled(Flex)`
-  padding: 20px;
+const InnerBox = styled(Flex)`
+  padding: 24px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 24px;
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: 20px;
   }
 `
 
-const StyledCardBody = styled(CardBody)`
-  padding: 20px;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    padding: 40px;
+const WrapCardBody = styled(CardBody)`
+  padding: 40px;
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: 20px;
   }
 `
 
 const StyledRebalanceTitle = styled(Flex)`
-  padding-top: 28px;
-  padding-bottom: 20px;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    position: relative;
-    padding-top: 40px;
-    padding-bottom: 24px;
+  position: relative;
+  padding-top: 40px;
+  padding-bottom: 24px;
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding-top: 28px;
+    padding-bottom: 20px;
   }
 `
 
@@ -49,23 +49,23 @@ const CardHighAPR = () => {
   const { t } = useTranslation()
   return (
     <Card bg={ColorStyles.ORANGE}>
-      <StyledCardBody>
-        <Flex alignItems="flex-end">
+      <WrapCardBody>
+        <Flex alignItems="flex-end" justifyContent="space-between">
           <Title pb="S_24">{t('Stake Farms with high APR')}</Title>
           <Character>
             <HomeFarmFinixIcon />
           </Character>
         </Flex>
-        <InnerFlex>
+        <InnerBox>
           <FarmHighAPR />
-        </InnerFlex>
+        </InnerBox>
         <StyledRebalanceTitle>
           <Title>{t('Meet Rebalancing with Definix unique differentiation.')}</Title>
         </StyledRebalanceTitle>
-        <InnerFlex>
+        <InnerBox>
           <ExploreHighAPR />
-        </InnerFlex>
-      </StyledCardBody>
+        </InnerBox>
+      </WrapCardBody>
     </Card>
   )
 }

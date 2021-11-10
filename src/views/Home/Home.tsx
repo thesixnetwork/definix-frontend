@@ -26,7 +26,7 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
     "audit tweet";
     "audit";
 
-  ${({ theme }) => theme.mediaQueries.mobile} {
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
     column-gap: 16px;
     grid-template-areas: 
       "notice"
@@ -34,8 +34,8 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
       "tvl"
       "finix"
       "apr"
-      "tweet"
-      "audit";
+      "audit"
+      "tweet";
   }
 `
 
@@ -45,7 +45,7 @@ const LeftColumnGrid = styled.div<{ area: string }>`
   grid-column-start: 1;
   grid-column-end: 7;
 
-  ${({ theme }) => theme.mediaQueries.mobile} {
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
     grid-column-start: 1;
     grid-column-end: 13;
   }
@@ -61,7 +61,7 @@ const RightColumnGrid = styled.div<{ area: string }>`
   grid-column-start: 7;
   grid-column-end: 13;
 
-  ${({ theme }) => theme.mediaQueries.mobile} {
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
     grid-column-start: 1;
     grid-column-end: 13;
   }

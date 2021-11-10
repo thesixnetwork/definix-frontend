@@ -7,71 +7,72 @@ import { usePriceTVL, usePriceWeb3TVL } from 'state/hooks'
 import { Card, CardBody, ColorStyles, Text, textStyle, Flex, ChainBscIcon, ChainKlaytnIcon, useMatchBreakpoints } from 'definixswap-uikit'
 
 const Title = styled(Text)`
-  ${css(textStyle.R_14M)}
+  ${css(textStyle.R_18M)}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    ${css(textStyle.R_18M)}
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${css(textStyle.R_14M)}
   }
 `
 
 const TotalTvlValue = styled(Text)`
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
-  ${css(textStyle.R_26B)}
-  margin-top: 6px;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    ${css(textStyle.R_32B)}
-    margin-top: 8px;
+  ${css(textStyle.R_32B)}
+  margin-top: 8px;
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${css(textStyle.R_26B)}
+    margin-top: 6px;
   }
 `
 
-const StyledWrap = styled(Flex)`
-  margin-top: 30px;
+const WrapTvl = styled(Flex)`
+  margin-top: 40px;
+  
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 30px;
+    flex-direction: column;
+  }
+`
+
+const TvlItem = styled(Flex)`
   flex-direction: column;
-
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin-top: 40px;
-    flex-direction: row;
-  }
-`
-
-const StyledTVL = styled(Flex)`
-  width: 100%;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  width: 50%;
 
   :last-child {
-    margin-bottom: 0;
+    border-left: 1px solid ${({ theme }) => theme.colors.lightgrey};
+    padding-left: 40px;
   }
 
-  ${({ theme }) => theme.mediaQueries.xl} {
-    flex-direction: column;
-    width: 50%;
-    margin-bottom: 0;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 
-    :nth-child(2) {
-      border-left: 1px solid ${({ theme }) => theme.colors.lightgrey};
-      padding-left: 40px;
+    :last-child {
+      margin-bottom: 0;
+      padding-left: 0;
     }
   }
 `
 
 const TvlValue = styled(Text)`
-  ${css(textStyle.R_16B)}
+  ${css(textStyle.R_23B)}
 
-${({ theme }) => theme.mediaQueries.xl} {
-    ${css(textStyle.R_23B)}
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${css(textStyle.R_16B)}
   }
 `
 
-const StyledCardBody = styled(CardBody)`
-  padding: 24px;
+const WrapCardBody = styled(CardBody)`
+  margin-top: 8px;
+  padding: 40px;
 
-  ${({ theme }) => theme.mediaQueries.xl} {
-    margin-top: 8px;
-    padding: 40px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 0;
+    padding: 24px;
   }
 `
 
@@ -88,7 +89,7 @@ const CardTVL = () => {
 
   return (
     <Card>
-      <StyledCardBody>
+      <WrapCardBody>
         <Title>{t('Total Value Locked')}</Title>
         <TotalTvlValue>
           ${' '}
@@ -96,8 +97,8 @@ const CardTVL = () => {
             ? 'N/A'
             : ((totalTVL || 0) + (totalWeb3TVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
         </TotalTvlValue>
-        <StyledWrap>
-          <StyledTVL>
+        <WrapTvl>
+          <TvlItem>
             <Flex alignItems="center">
               <ChainBscIcon viewBox="0 0 32 32" width={isXxl ? "24" : "22"} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
@@ -112,8 +113,8 @@ const CardTVL = () => {
             <TvlValue>
               $ {totalWeb3TVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </TvlValue>
-          </StyledTVL>
-          <StyledTVL>
+          </TvlItem>
+          <TvlItem>
             <Flex alignItems="center">
               <ChainKlaytnIcon viewBox="0 0 22 22" width={isXxl ? "24" : "22"} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
@@ -128,9 +129,9 @@ const CardTVL = () => {
             <TvlValue>
               $ {totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </TvlValue>
-          </StyledTVL>
-        </StyledWrap>
-      </StyledCardBody>
+          </TvlItem>
+        </WrapTvl>
+      </WrapCardBody>
     </Card>
   )
 }

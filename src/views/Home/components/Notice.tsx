@@ -9,16 +9,15 @@ import { useTranslation } from 'react-i18next'
 
 import { Label, Text, textStyle, Box, ImgHomeTopFinixIcon, Flex } from 'definixswap-uikit'
 
-const StyledFlex = styled(Flex)`
-  width: 100%;
-  flex-direction: column;
+const Wrap = styled(Flex)`
 
-  ${({ theme }) => theme.mediaQueries.xl} {
-    flex-direction: row;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 100%;
+    flex-direction: column;
   }
 `
 
-const StyledSlider = styled(Slider)`
+const NoticeSlider = styled(Slider)`
   grid-column-start: 1;
   grid-column-end: 8;
   margin-top: ${({ theme }) => theme.space.S_20}px;
@@ -61,18 +60,18 @@ const Notice = styled(Text)`
   color: black;
 `
 
-const StyledBox = styled(Box)`
-  width: 100%;
-  ${({ theme }) => theme.mediaQueries.xl} {
-    width: 55%;
+const NoticeBox = styled(Box)`
+  width: 55%;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 100%;
   }
 `
 
 const Character = styled(Flex)`
-  width: 81%;
-  align-self: flex-end;
-  ${({ theme }) => theme.mediaQueries.xl} {
-    width: 45%;
+  width: 45%;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    align-self: flex-end;
+    width: 81%;
   }
 `
 
@@ -111,15 +110,15 @@ const HomeNotice: React.FC = () => {
   }, [])
 
   return (
-    <StyledFlex>
-      <StyledBox>
+    <Wrap>
+      <NoticeBox>
         <Label type="noti">{t('NOTICE')}</Label>
-        <StyledSlider {...SliderOptions}>{notices && notices.map(({ text }) => <Notice>{text}</Notice>)}</StyledSlider>
-      </StyledBox>
+        <NoticeSlider {...SliderOptions}>{notices && notices.map(({ text }) => <Notice>{text}</Notice>)}</NoticeSlider>
+      </NoticeBox>
       <Character>
         <ImgHomeTopFinixIcon viewBox="0 0 434 200" width="100%" height="100%" />
       </Character>
-    </StyledFlex>
+    </Wrap>
   )
 }
 
