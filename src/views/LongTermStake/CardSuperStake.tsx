@@ -12,8 +12,8 @@ import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../.
 import success from '../../uikit-dev/animation/complete.json'
 import loading from '../../uikit-dev/animation/farmPool.json'
 import ConnectModal from '../../uikit-dev/widgets/WalletModal/ConnectModal'
-// import definixLongTerm from '../../../uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
-import badgeBoost from '../../uikit-dev/images/for-ui-v2/badge-boost.png'
+import logoExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/logo-exclusive-vfinix.png'
+import badgeExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/badge-exclusive.png'
 import * as klipProvider from '../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../hooks/useLongTermStake'
 import StakePeriodButton from './components/StakePeriodButton'
@@ -163,37 +163,20 @@ const AprDecoration = styled(Text)`
   text-decoration-color: white;
 `
 
-const BoostValue = styled(Text)`
-  position: absolute;
-  top: 21%;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, -50%);
-  // line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
+const ExclusiveCard = styled.div<{ isDark: boolean }>`
+  width: 110px;
+  align-items: start;
+  display: flex;
+  box-shadow: ${({ isDark }) => !isDark && 'unset'};
 `
 
-const AprBox = styled(Card)`
-  padding: 0.5rem;
-  background: linear-gradient(90deg, #f3d36c, #e27d3a);
-  opacity: 1;
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin-left: 0.5rem !important;
-  right: 0;
-  color: #30adff;
+const BadgeExclusive = styled.div`
   position: relative;
-  box-shadow: unset;
-  border-radius: 4px;
   text-align: center;
-
-  a {
-    display: block;
-  }
+  justify-content: space-between;
+  display: contents;
 `
-
-const CardSuperStake = () => {
+const CardSuperStake = ({ isShowRightPanel }) => {
   const { path } = useRouteMatch()
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
@@ -450,9 +433,9 @@ const CardSuperStake = () => {
         )}
         <div
           style={{ opacity: loadings !== '' ? 0.1 : 1 }}
-          className={`${!isMobileOrTablet ? 'col-8' : 'col-12 pr-5'} py-5 pl-5`}
+          className={`${!isMobileOrTablet ? 'col-8 pt-5' : 'col-12 pr-5'} pb-5 pl-5`}
         >
-          <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center mb-3'}`}>
+          <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center justify-space-between'}`}>
             <Heading
               as="h1"
               fontSize={`${isMobileOrTablet ? '16px !important' : '18px !important'}`}
@@ -460,24 +443,21 @@ const CardSuperStake = () => {
             >
               Super Stake
             </Heading>
-            <Text color="white">
-              Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no
-              minimum amount.
-            </Text>
             {isMobileOrTablet && (
-              <AprBox>
-                <Text color="white" bold fontSize="8px !important">
-                  Boosting Period
-                </Text>
-                <Text style={{ textDecoration: 'line-through' }} color="white" bold fontSize="8px !important">
-                  {`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}
-                </Text>
-                <Text color="white" bold fontSize="8px !important">
-                  APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
-                </Text>
-              </AprBox>
+              <ExclusiveCard isDark={isDark}>
+                <img src={badgeExclusive} alt="" />
+              </ExclusiveCard>
             )}
           </div>
+          <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+            Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no
+            minimum amount.
+          </Text>
+          <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+            You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock period{' '}
+            <b>will not be extended.</b>
+          </Text>
+
           <Text className="mt-4" color="textSubtle">
             Please select available duration
           </Text>
@@ -588,6 +568,12 @@ const CardSuperStake = () => {
             )}
           </div>
         </div>
+        {!isMobileOrTablet && (
+          <BadgeExclusive className="col-4 flex flex-column">
+            <img src={badgeExclusive} alt="" />
+            <img src={logoExclusive} alt="" className="px-2" style={{ opacity: '0.6' }} />
+          </BadgeExclusive>
+        )}
       </FinixStake>
     </div>
   )

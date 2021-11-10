@@ -19,7 +19,7 @@ import {
   usePriceKethKlay,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link } from 'uikit-dev'
+import { Heading, Text, Link, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -72,6 +72,8 @@ const Farm: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isXl && !isMd
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -293,11 +295,11 @@ const Farm: React.FC = () => {
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
             <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+              <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
+                <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Pool
                 </Heading>
-                <div className="mt-2 flex align-center justify-center">
+                <div className="mt-2 flex align-center">
                   <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
                     href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"

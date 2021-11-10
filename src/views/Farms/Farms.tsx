@@ -11,7 +11,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link } from 'uikit-dev'
+import { Heading, Text, Link, useMatchBreakpoints } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { provider } from 'web3-core'
 import Flip from '../../uikit-dev/components/Flip'
@@ -53,6 +53,8 @@ const Farms: React.FC = () => {
   const finixPrice = usePriceFinixUsd()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const kethPriceUsd = usePriceKethKusdt()
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isXl && !isMd
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -232,11 +234,11 @@ const Farms: React.FC = () => {
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
             <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+              <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
+                <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Farm
                 </Heading>
-                <div className="mt-2 flex align-center justify-center">
+                <div className="mt-2 flex align-center">
                   <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
                     href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"

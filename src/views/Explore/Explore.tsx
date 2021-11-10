@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
 import styled from 'styled-components'
-import { Text, Link } from 'uikit-dev'
+import { Text, Link, useMatchBreakpoints } from 'uikit-dev'
 import Heading from 'uikit-dev/components/Heading/Heading'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
@@ -41,6 +41,9 @@ const Explore: React.FC = () => {
   const { account } = useWallet()
   const rebalanceBalances = useRebalanceBalances(account) || {}
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isXl && !isMd
+
   useEffect(() => {
     if (account) {
       const addressObject = {}
@@ -76,11 +79,11 @@ const Explore: React.FC = () => {
           <LeftPanel isShowRightPanel={false}>
             <MaxWidth>
               <div className="mb-5">
-                <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
+                  <Heading as="h1" fontSize="32px !important" className="mr-3">
                     Rebalancing Farm
                   </Heading>
-                  <div className="mt-2 flex align-center justify-center">
+                  <div className="mt-2 flex align-center">
                     <Text paddingRight="1">I’m new to this,</Text>
                     <TutorailsLink
                       href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/rebalancing-farm/how-to-start-investing-in-rebalancing-farm"
