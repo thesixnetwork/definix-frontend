@@ -19,7 +19,7 @@ import {
   usePriceKethKlay,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link, useMatchBreakpoints } from 'uikit-dev'
+import { Heading, Text, Link, useMatchBreakpoints, Button, Card } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -28,6 +28,8 @@ import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolContext from './PoolContext'
+import bannerTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup.png'
+import logoFinixTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -53,6 +55,44 @@ const MaxWidth = styled.div`
 
 const TutorailsLink = styled(Link)`
   text-decoration-line: underline;
+`
+
+const BannerTopup = styled(Card)`
+  width: 100%;
+  background: url(${bannerTopup});
+  padding: 13px 20px 20px;
+
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    &:before {
+      width: 30%;
+      opacity: 1;
+    }
+
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const BoxValue = styled(Card)`
+  background: #fff;
+  width: 20%;
+  height: 50%;
+  padding: 20px;
+  margin: 0px 28px;
+  box-shadow: ${({ theme }) => theme.shadows.elevation};
+  border-radius: 12px;
 `
 
 const Farm: React.FC = () => {
@@ -294,7 +334,7 @@ const Farm: React.FC = () => {
       <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
-            <div className="mb-5">
+            <div className="mb-1">
               <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
                 <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Pool
@@ -318,6 +358,33 @@ const Farm: React.FC = () => {
                 The amount of returns will be calculated by the annual percentage rate (APR).
               </Text>
             </div>
+
+            <BannerTopup>
+              <div className="flex align-center" style={{ zIndex: 1 }}>
+                <Heading className="pl-5" color="black" style={{ width: '40%' }}>
+                  Harvest all of reward and stake in Long-term Stake for earn more!
+                </Heading>
+                <img src={logoFinixTopup} alt="logoFinixTopup" width="160" />
+                <BoxValue>
+                  <Text color="textSubtle" fontSize="16px">
+                    FINIX ready to harvest
+                  </Text>
+                  <div className="flex align-center">
+                    <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                    <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
+                      999,999,999 FINIX
+                    </Text>
+                  </div>
+                </BoxValue>
+                <Button
+                  radii="small"
+                  className="ml-6"
+                  style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
+                >
+                  Super Stake
+                </Button>
+              </div>
+            </BannerTopup>
 
             <PoolTabButtons
               stackedOnly={stackedOnly}
