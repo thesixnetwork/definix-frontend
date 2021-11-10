@@ -1,20 +1,36 @@
 import BigNumber from 'bignumber.js'
-import ModalInput from 'components/ModalInput'
-import useI18n from 'hooks/useI18n'
-import useUnstake from 'hooks/useUnstake'
 import React, { useCallback, useMemo, useState } from 'react'
-import { Button } from 'uikit-dev'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import useModal from 'uikit-dev/widgets/Modal/useModal'
+import { useTranslation } from 'react-i18next'
+import useUnstake from 'hooks/useUnstake'
+import {
+  ColorStyles,
+  Text,
+  Box,
+  TitleSet,
+  Card,
+  Flex,
+  Divider,
+  Button,
+  ButtonVariants,
+  BackIcon,
+  useModal,
+  useMatchBreakpoints,
+} from 'definixswap-uikit'
+import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
+import ModalInput from 'components/ModalInput'
 import ConfirmModal from './ConfirmModal'
+import CardHeading from './FarmCard/CardHeading'
+import { FarmWithStakedValue } from './FarmCard/types'
 
 interface WithdrawProps {
+  farm: FarmWithStakedValue
+  removed: boolean
   pid: number
   tokenName: string
   tokenBalance: BigNumber
   totalLiquidity: string
   myLiquidity: BigNumber
-  myLiquidityUSDPrice: string
+  myLiquidityUSD: number
   addLiquidityUrl: string
   onBack: () => void
 }
@@ -26,21 +42,20 @@ const Withdraw: React.FC<WithdrawProps> = ({
   addLiquidityUrl,
   totalLiquidity,
   myLiquidity,
-  myLiquidityUSDPrice,
+  myLiquidityUSD,
+  farm,
+  removed,
   onBack,
 }) => {
-  console.groupCollapsed('Remove data: ')
-  console.log('tokenBalance: ', tokenBalance)
-  console.log('tokenName: ', tokenName)
-  console.log('addLiquidityUrl: ', addLiquidityUrl)
-  console.log('totalLiquidity: ', totalLiquidity)
-  console.log('myLiquidity: ', myLiquidity)
-  console.log('myLiquidityUSDPrice: ', myLiquidityUSDPrice)
-  console.groupEnd()
+  const { t } = useTranslation()
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
+
   const [val, setVal] = useState('')
-  const TranslateString = useI18n()
   const { onUnstake } = useUnstake(pid)
+  
   const fullBalance = useMemo(() => getFullDisplayBalance(myLiquidity), [myLiquidity])
+  const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -62,9 +77,37 @@ const Withdraw: React.FC<WithdrawProps> = ({
     false,
   )
 
+  const cardStyle = useMemo((): {
+    flexDirection: 'column' | 'row'
+    margin: string
+    padding: string
+  } => {
+    return {
+      flexDirection: isMobile ? 'column' : 'row',
+      margin: `my-s${isMobile ? '28' : '40'}`,
+      padding: `pa-s${isMobile ? '20' : '40'}`,
+    }
+  }, [isMobile])
+
+  const columnStyle = useMemo((): {
+    flexDirection: 'column' | 'row'
+    width: string
+    justifyContent: 'space-between' | 'normal'
+    valueTextSize: string
+    valueTextWidth: string
+  } => {
+    return {
+      flexDirection: isMobile ? 'row' : 'column',
+      width: isMobile ? '100%' : '50%',
+      justifyContent: isMobile ? 'space-between' : 'normal',
+      valueTextSize: isMobile ? 'R_16M' : 'R_18M',
+      valueTextWidth: isMobile ? '65%' : '100%',
+    }
+  }, [isMobile])
+
   return (
     <>
-      <p>totalLiquidity: {totalLiquidity}</p>
+      {/* <p>totalLiquidity: {totalLiquidity}</p>
       <p>myLiquidity: {fullBalance}</p>
       <p>myLiquidityUSDPrice: {myLiquidityUSDPrice}</p>
 
@@ -79,7 +122,77 @@ const Withdraw: React.FC<WithdrawProps> = ({
 
       <Button onClick={() => onPresentConfirmModal()} fullWidth radii="card" className="mt-5">
         Remove LP
-      </Button>
+      </Button> */}
+      <Box className="mb-s20" style={{ cursor: 'pointer' }} display="inline-flex" onClick={onBack}>
+        <Flex>
+          <BackIcon />
+          <Text textStyle="R_16M" color={ColorStyles.MEDIUMGREY} className="ml-s6">
+            Back
+          </Text>
+        </Flex>
+      </Box>
+
+      <TitleSet title='Remove LP' description={t('Remove LPs from the farm.')} />
+
+      <Card className={`${cardStyle.margin} ${cardStyle.padding}`}>
+        <CardHeading farm={farm} lpLabel={tokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />
+
+        <Flex justifyContent="space-between" flexDirection={cardStyle.flexDirection} className="mt-s20">
+          <Flex
+            flexDirection={columnStyle.flexDirection}
+            justifyContent={columnStyle.justifyContent}
+            style={{ width: columnStyle.width }}
+          >
+            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
+              {t('Total staked')}
+            </Text>
+            <Text width={columnStyle.valueTextWidth} color={ColorStyles.BLACK} textStyle={columnStyle.valueTextSize}>
+              {totalLiquidity}
+            </Text>
+          </Flex>
+
+          <Flex
+            flexDirection={columnStyle.flexDirection}
+            justifyContent={columnStyle.justifyContent}
+            style={{ width: columnStyle.width }}
+          >
+            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
+              {t('My Staked')}
+            </Text>
+            <Box width={columnStyle.valueTextWidth}>
+              <Text textStyle={columnStyle.valueTextSize} color={ColorStyles.BLACK}>
+                {myLiquidityValue.toFixed(6)}
+              </Text>
+              <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
+                = {myLiquidityUSD}
+              </Text>
+            </Box>
+          </Flex>
+        </Flex>
+
+        <Divider className="mt-s20 mb-s28" />
+
+        <ModalInput
+          value={val}
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onChange={handleChange}
+          max={fullBalance}
+          symbol={tokenName}
+          inputTitle="stake"
+        />
+
+        <Box className="mt-s40">
+          <Button
+            variant={ButtonVariants.RED}
+            lg
+            onClick={() => onPresentConfirmModal()}
+            width="100%"
+            disabled={!val || val === '0'}
+          >
+            Remove
+          </Button>
+        </Box>
+      </Card>
     </>
   )
 }

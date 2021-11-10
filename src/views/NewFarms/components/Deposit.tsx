@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import useStake from 'hooks/useStake'
-import useConverter from 'hooks/useConverter'
 // import Lottie from 'react-lottie'
 // import { Button } from 'uikit-dev'
 // import useModal from 'uikit-dev/widgets/Modal/useModal'
@@ -32,13 +31,12 @@ import { FarmWithStakedValue } from './FarmCard/types'
 interface DepositProps {
   farm: FarmWithStakedValue
   removed: boolean
-
   pid: number
   tokenName: string
   tokenBalance: BigNumber
   totalLiquidity: BigNumber
   myLiquidity: BigNumber
-  myLiquidityUSDPrice: string
+  myLiquidityUSD: number
   addLiquidityUrl: string
   onBack: () => void
 }
@@ -52,32 +50,19 @@ const Deposit: React.FC<DepositProps> = ({
   addLiquidityUrl,
   totalLiquidity,
   myLiquidity,
+  myLiquidityUSD,
   onBack,
 }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
   const { onStake } = useStake(pid)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
   const [toasts, setToasts] = useState([])
 
-  const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(tokenBalance)
-  }, [tokenBalance])
-
-  const price = useMemo(() => {
-    return convertToPriceFromSymbol(tokenName)
-  }, [convertToPriceFromSymbol, tokenName])
-
-  const myLiquidityValue = useMemo(() => {
-    return getBalanceNumber(myLiquidity)
-  }, [myLiquidity])
-
-  const myLiquidityPrice = useMemo(() => {
-    return convertToUSD(new BigNumber(myLiquidityValue).multipliedBy(price), 0)
-  }, [convertToUSD, myLiquidityValue, price])
+  const fullBalance = useMemo(() => getFullDisplayBalance(tokenBalance), [tokenBalance])
+  const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -202,7 +187,7 @@ const Deposit: React.FC<DepositProps> = ({
                 {myLiquidityValue.toFixed(6)}
               </Text>
               <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                = {myLiquidityPrice}
+                = {myLiquidityUSD}
               </Text>
             </Box>
           </Flex>

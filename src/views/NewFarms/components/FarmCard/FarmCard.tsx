@@ -69,6 +69,17 @@ const FarmCard: React.FC<FarmCardProps> = ({
     },
     [farm.quoteTokenSymbol, convertToPriceFromToken],
   )
+  /**
+   * total liquidity
+   */
+  const totalLiquidity: BigNumber = useMemo(() => {
+    if (!farm.lpTotalInQuoteToken) return null
+    return getTokenPrice(farm.lpTotalInQuoteToken)
+  }, [farm.lpTotalInQuoteToken, getTokenPrice])
+  const totalLiquidityUSD = useMemo(() => convertToUSD(totalLiquidity), [totalLiquidity, convertToUSD])
+  /**
+   * my liquidity
+   */
   const myLiquidity: BigNumber = useMemo(() => {
     const { lpTotalInQuoteToken, lpTotalSupply, quoteTokenBlanceLP, quoteTokenDecimals } = farm
     if (!lpTotalInQuoteToken) {
@@ -81,18 +92,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
       .times(new BigNumber(2))
     return getTokenPrice(stakedTotalInQuoteToken)
   }, [farm, stakedBalance, getTokenPrice])
-
-  /**
-   * total liquidity
-   */
-  const totalLiquidity: BigNumber = useMemo(() => {
-    if (!farm.lpTotalInQuoteToken) return null
-    return getTokenPrice(farm.lpTotalInQuoteToken)
-  }, [farm.lpTotalInQuoteToken, getTokenPrice])
-  const totalLiquidityUSD = useMemo(() => convertToUSD(totalLiquidity), [totalLiquidity, convertToUSD])
-  /**
-   * my liquidity
-   */
   const myLiquidityUSD = useMemo(() => {
     return convertToUSD(myLiquidity)
   }, [convertToUSD, myLiquidity])
@@ -150,6 +149,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             addLiquidityUrl,
             totalLiquidity: totalLiquidityUSD,
             myLiquidity: stakedBalance,
+            myLiquidityUSD,
             farm,
             removed,
           })
@@ -163,6 +163,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
             totalLiquidity: totalLiquidityUSD,
             myLiquidity: stakedBalance,
             myLiquidityUSD,
+            farm,
+            removed,
           })
         }}
       />
