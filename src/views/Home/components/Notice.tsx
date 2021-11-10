@@ -13,7 +13,7 @@ const StyledFlex = styled(Flex)`
   width: 100%;
   flex-direction: column;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: row;
   }
 `
@@ -61,11 +61,9 @@ const Notice = styled(Text)`
   color: black;
 `
 
-const PaginationNotice = styled(Box)``
-
 const StyledBox = styled(Box)`
   width: 100%;
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     width: 55%;
   }
 `
@@ -73,7 +71,7 @@ const StyledBox = styled(Box)`
 const Character = styled(Flex)`
   width: 81%;
   align-self: flex-end;
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.xl} {
     width: 45%;
   }
 `

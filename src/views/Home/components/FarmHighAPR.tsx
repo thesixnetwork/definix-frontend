@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { useFarms, usePriceFinixUsd, usePriceKethKusdt, usePriceKlayKusdt, usePriceSixUsd } from 'state/hooks'
+import { useFarms, usePriceFinixUsdToNumber, usePriceKethKusdtToNumber, usePriceKlayKusdtToNumber, usePriceSixUsdToNumber } from 'state/hooks'
 import { QuoteToken } from 'config/constants/types'
 import { BLOCKS_PER_YEAR } from 'config'
 import { ColorStyles, Flex, Text } from 'definixswap-uikit'
@@ -22,19 +22,18 @@ const FarmHighAPR = () => {
   const [highAprFarm, setHighAprFarm] = useState<FarmState>()
 
   const farmsLP = useFarms()
-  const finixPrice = usePriceFinixUsd()
-  const sixPrice = usePriceSixUsd()
-  const klayPrice = usePriceKlayKusdt()
-  const kethPriceUsd = usePriceKethKusdt()
+  const finixPrice = usePriceFinixUsdToNumber()
+  const sixPrice = usePriceSixUsdToNumber()
+  const klayPrice = usePriceKlayKusdtToNumber()
+  const kethPriceUsd = usePriceKethKusdtToNumber()
 
   useEffect(() => {
-    if (highAprFarm) return
-    if (finixPrice.isZero() || sixPrice.isZero() || klayPrice.isZero() || kethPriceUsd.isZero()) {
+    if (finixPrice === 0 || sixPrice === 0 || klayPrice === 0 || kethPriceUsd === 0) {
       return
     }
     const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
     const getFarmHighAPR = (farmsToDisplay) => {
-      const finixPriceVsKlay = finixPrice
+      const finixPriceVsKlay = new BigNumber(finixPrice)
       return farmsToDisplay.map((farm) => {
         if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
           return farm
@@ -51,13 +50,13 @@ const FarmHighAPR = () => {
         if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
           apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
         } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
-          apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+          apy = finixPriceVsKlay.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-          apy = finixPrice.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+          apy = finixPriceVsKlay.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
           apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
         } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
-          apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+          apy = finixPriceVsKlay.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
         } else if (farm.dual) {
           const finixApy =
             farm && finixPriceVsKlay.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
@@ -84,7 +83,7 @@ const FarmHighAPR = () => {
     const farmData = getFarmHighAPR(activeFarms)
     const sortedFarmData = farmData.sort((a, b) => +a.farmAPY - +b.farmAPY).reverse()
     setHighAprFarm(sortedFarmData[0])
-  }, [farmsLP, finixPrice, highAprFarm, kethPriceUsd, klayPrice, sixPrice])
+  }, [farmsLP, finixPrice, kethPriceUsd, klayPrice, sixPrice])
 
   return highAprFarm ? (
     <ColumnFlex width="100%">

@@ -3,15 +3,8 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import styled from 'styled-components'
-import CardValue from './CardValue'
-import CardBusdValue from './CardBusdValue'
+import { Text, ColorStyles } from 'definixswap-uikit'
 import Locked from './Locked'
-
-const Block = styled.div`
-  margin-bottom: 24px;
-}
-`
 
 const Balance = () => {
   const poolEarnings = usePoolEarning()
@@ -23,10 +16,12 @@ const Balance = () => {
   const earningsBusd = new BigNumber(earningsPoolSum).multipliedBy(usePriceFinixUsd()).toNumber()
 
   return (
-    <Block>
-      <CardValue value={earningsPoolSum} lineHeight="1.5" color="textInvert" />
-      <CardBusdValue value={earningsBusd} />
-    </Block>
+    <>
+      <Text className="sum">{earningsPoolSum}</Text>
+      <Text className="usd">= ${earningsBusd}</Text>
+      {/* <CardValue value={earningsPoolSum} lineHeight="1.5" color="textInvert" />
+      <CardBusdValue value={earningsBusd} /> */}
+    </>
   )
 }
 

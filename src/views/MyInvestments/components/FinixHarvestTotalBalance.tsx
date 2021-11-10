@@ -1,22 +1,50 @@
 import React from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import styled, { css } from 'styled-components'
 import BigNumber from 'bignumber.js'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { Flex, Text, textStyle } from 'definixswap-uikit'
 import useFarmEarning from 'hooks/useFarmEarning'
 import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import styled from 'styled-components'
-import CardValue from './CardValue'
-import CardBusdValue from './CardBusdValue'
 import Locked from './Locked'
 
-const Block = styled.div`
-  margin-bottom: 24px;
+const StyledFlex = styled(Flex)`
+  flex-direction: column;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    flex-direction: row;
+    margin-bottom: 24px;
+    align-items: flex-end;
+  }
 }
+`
+
+const SumText = styled(Text)`
+  color: ${({ theme }) => theme.colors.white};
+  ${css(textStyle.R_23B)}
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    ${css(textStyle.R_32B)}
+  }
+`
+
+const UsdText = styled(Text)`
+  margin-top: 4px;
+  color: ${({ theme }) => theme.colors.white};
+  ${css(textStyle.R_14M)}
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-top: 0;
+    margin-left: 16px;
+    margin-bottom: 4px;
+    ${css(textStyle.R_16M)}
+  }
 `
 
 const Balance = () => {
   const farmEarnings = useFarmEarning()
   const poolEarnings = usePoolEarning()
+  
   const earningsFarmSum = farmEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
@@ -32,10 +60,12 @@ const Balance = () => {
   const earningsBusd = earningsFarmBusd + earningsPoolBusd
 
   return (
-    <Block>
-      <CardValue value={earningsSum} lineHeight="1.5" color="textInvert" />
-      <CardBusdValue value={earningsBusd} />
-    </Block>
+    <StyledFlex>
+      <SumText>{earningsSum}</SumText>
+      <UsdText>= ${earningsBusd}</UsdText>
+      {/* <CardValue value={earningsSum} lineHeight="1.5" color="textInvert" />
+      <CardBusdValue value={earningsBusd} /> */}
+    </StyledFlex>
   )
 }
 

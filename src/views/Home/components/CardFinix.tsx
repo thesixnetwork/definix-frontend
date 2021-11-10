@@ -5,13 +5,38 @@ import { fetchTVL } from 'state/actions'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled, { css } from 'styled-components'
-import { Card, CardBody, ColorStyles, Text, textStyle, Flex, Button, TokenFinixIcon } from 'definixswap-uikit'
+import { Card, CardBody, ColorStyles, Text, textStyle, Flex, Button, TokenFinixIcon, useMatchBreakpoints } from 'definixswap-uikit'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const Title = styled(Text)`
-  ${css(textStyle.R_18M)}
+  ${css(textStyle.R_16M)}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
+  margin-left: 8px;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    ${css(textStyle.R_18M)}
+    margin-left: 14px;
+  }
+`
+
+const FinixValue = styled(Text)`
+  margin-top: 6px;
+  ${css(textStyle.R_26B)}
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-top: 8px;
+    ${css(textStyle.R_32B)}
+    color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
+  }
+`
+
+const StyledCardBody = styled(CardBody)`
+  padding: 20px;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    padding: 40px;
+  }
 `
 
 const StyledValues = styled(Flex)`
@@ -19,7 +44,27 @@ const StyledValues = styled(Flex)`
   justify-content: space-between;
 `
 
+const ButtonWrap = styled(Flex)`
+  margin-top: 20px;
+  padding-bottom: 20px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-top: 28px;
+    padding-bottom: 0;
+  }
+`
+
+const InfoWrap = styled(Flex)`
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  flex-direction: column;
+  padding-top: 22px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    border-top: none;
+    margin-top: 42px;
+  }
+`
+
 const CardFinix = () => {
+  const { isXxl } = useMatchBreakpoints();
   const { t } = useTranslation()
   const finixPriceUsd = usePriceFinixUsd()
   const { fastRefresh } = useRefresh()
@@ -35,23 +80,23 @@ const CardFinix = () => {
 
   return (
     <Card>
-      <CardBody p="S_40">
+      <StyledCardBody>
         <Flex>
-          <TokenFinixIcon />
-          <Title ml="S_14">{t('FINIX')}</Title>
+          <TokenFinixIcon viewBox="0 0 24 24" width={isXxl ? "24" : "20"} />
+          <Title>{t('FINIX')}</Title>
         </Flex>
-        <Text mt="S_8" textStyle="R_32B" color="black">
+        <FinixValue>
           $ {finixPriceUsd.toFixed(2)}
-        </Text>
-        <Flex mt="S_28">
-          <Button md variant="lightbrown" width="50%" mr="S_6">
+        </FinixValue>
+        <ButtonWrap>
+          <Button xs variant="lightbrown" width="50%" mr="S_6">
             {t('Price Chart')}
           </Button>
-          <Button md variant="line" width="50%" ml="S_6">
+          <Button xs variant="line" width="50%" ml="S_6">
             {t('Transactions')}
           </Button>
-        </Flex>
-        <Flex mt="S_42" flexDirection="column">
+        </ButtonWrap>
+        <InfoWrap>
           <StyledValues>
             <Text textStyle="R_14M" color="deepgrey">
               {t('Total FINIX Supply')}
@@ -61,7 +106,7 @@ const CardFinix = () => {
             </Text>
           </StyledValues>
           <StyledValues mt="S_12">
-            <Text textStyle="R_14M" color="mediumgrey">
+            <Text textStyle="R_14R" color="mediumgrey">
               {t('FINIX Generated')}
             </Text>
             <Text textStyle="R_14B" color="mediumgrey">
@@ -69,7 +114,7 @@ const CardFinix = () => {
             </Text>
           </StyledValues>
           <StyledValues mt="S_4">
-            <Text textStyle="R_14M" color="mediumgrey">
+            <Text textStyle="R_14R" color="mediumgrey">
               {t('FINIX Transferred from {{BSC}}', {
                 BSC: 'BSC',
               })}
@@ -79,7 +124,7 @@ const CardFinix = () => {
             </Text>
           </StyledValues>
           <StyledValues mt="S_4">
-            <Text textStyle="R_14M" color="mediumgrey">
+            <Text textStyle="R_14R" color="mediumgrey">
               {t('FINIX Reserved for Bridge')}
             </Text>
             <Text textStyle="R_14B" color="mediumgrey">
@@ -102,8 +147,8 @@ const CardFinix = () => {
               1
             </Text>
           </StyledValues>
-        </Flex>
-      </CardBody>
+        </InfoWrap>
+      </StyledCardBody>
     </Card>
   )
 }
