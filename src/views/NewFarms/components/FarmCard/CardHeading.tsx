@@ -11,15 +11,14 @@ export interface ExpandableSectionProps {
   multiplier?: string
   removed?: boolean
   addLiquidityUrl?: string
-  finixPrice?: BigNumber
   // inlineMultiplier?: boolean
 }
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed, addLiquidityUrl, finixPrice }) => {
+const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed, addLiquidityUrl }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-
+  
   const farmImage = useMemo(() => farm.lpSymbol.split(' ')[0].toLocaleLowerCase(), [farm.lpSymbol])
   const firstCoin = useMemo(() => farmImage.split('-')[0].toLocaleLowerCase(), [farmImage])
   const secondCoin = useMemo(() => farmImage.split('-')[1].toLocaleLowerCase(), [farmImage])
@@ -54,7 +53,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed,
             <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
               {displayApy}
             </Text>
-            <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+            <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={farm.apy} />
           </Flex>
         )}
       </Flex>
