@@ -144,7 +144,7 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
             {TranslateString(736, 'APR')}
             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
-          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={farm.apy} />
         </div>
       )}
 

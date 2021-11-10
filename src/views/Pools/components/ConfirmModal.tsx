@@ -1,4 +1,5 @@
 import React from 'react'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image } from 'definixswap-uikit'
 
 const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
@@ -15,7 +16,7 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Box width={48} className="mr-s12">
-              <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={48} height={48} />
+              <Image src={getTokenImageUrl(tokenName)} width={48} height={48} />
             </Box>
             <Text textStyle="R_16M" color={ColorStyles.BLACK}>
               {tokenName}
