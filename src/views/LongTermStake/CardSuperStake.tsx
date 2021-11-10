@@ -143,7 +143,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const lockTopUp = useLockTopup()
-  const { allDataLock } = usePrivateData()
+  const { allDataLock, lockAmount } = usePrivateData()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
   const { allLockPeriod } = useAllLock()
   const [value, setValue] = useState('')
@@ -166,11 +166,10 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
-  const [isTopUp, setIsTopUp] = useState(false)
+  const [isStake, setIsStake] = useState(lockAmount > 0)
 
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
-      setIsTopUp(true)
       const arrStr = lockTopUp.map((i) => Number(i))
       const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
       let max = 0
@@ -187,7 +186,6 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         }
       }
     } else {
-      setIsTopUp(false)
       let max = 0
       for (let i = 0; i < allDataLock.length; i++) {
         const selector = allDataLock[i]
@@ -379,7 +377,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     <div className="align-stretch mt-5">
       <LongTermTab current="/long-term-stake/top-up" />
       <FinixStake className="flex">
-        {!isTopUp && (
+        {!isStake && (
           <div
             style={{
               position: 'absolute',
@@ -425,7 +423,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           <Text className="mt-4" color="textSubtle">
             Please select available duration
           </Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp={isTopUp} />
+          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
