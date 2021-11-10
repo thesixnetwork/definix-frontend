@@ -23,6 +23,7 @@ import CardHeading from './CardHeading'
 import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
+import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
 
 const FarmCard: React.FC<FarmCardProps> = ({
@@ -38,6 +39,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   onSelectAddLP,
   onSelectRemoveLP,
 }) => {
+  const { convertToPriceFromToken, convertToUSD } = useConverter()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
@@ -52,16 +54,23 @@ const FarmCard: React.FC<FarmCardProps> = ({
     )
   }, [farm.lpSymbol])
 
-  const { convertToPriceFromToken, convertToUSD } = useConverter()
+  
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
+
+  const addLiquidityUrl = useMemo(() => {
+    const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+    const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+    return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  }, [farm])
+
   const getTokenPrice = useCallback(
     (token) => {
       return convertToPriceFromToken(token, farm.quoteTokenSymbol)
     },
     [farm.quoteTokenSymbol, convertToPriceFromToken],
   )
-  const stakedBalanceValue: BigNumber = useMemo(() => {
+  const myLiquidity: BigNumber = useMemo(() => {
     const { lpTotalInQuoteToken, lpTotalSupply, quoteTokenBlanceLP, quoteTokenDecimals } = farm
     if (!lpTotalInQuoteToken) {
       return new BigNumber(0)
@@ -73,11 +82,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       .times(new BigNumber(2))
     return getTokenPrice(stakedTotalInQuoteToken)
   }, [farm, stakedBalance, getTokenPrice])
-  const addLiquidityUrl = useMemo(() => {
-    const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
-    const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
-    return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  }, [farm])
+  
 
   /**
    * total liquidity
@@ -91,8 +96,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
    * my liquidity
    */
   const myLiquidityUSD = useMemo(() => {
-    return convertToUSD(stakedBalanceValue)
-  }, [convertToUSD, stakedBalanceValue])
+    return convertToUSD(myLiquidity)
+  }, [convertToUSD, myLiquidity])
 
   const renderCardHeading = useCallback(
     () => (
@@ -191,11 +196,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
    * harvest action
    */
   const renderHarvestActionAirDrop = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop isHorizontal={isHor} className={className} pid={pid} earnings={earnings} />
+    () => (
+      <HarvestActionAirDrop isMobile={isMobile} pid={pid} earnings={earnings} />
     ),
-    [earnings, pid],
+    [isMobile, earnings, pid],
   )
+
+  const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} lpAddresses={farm.lpAddresses} />, [isMobile, farm.lpAddresses])
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -241,7 +248,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       {isOpenAccordion && (
         <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
           <Flex justifyContent="space-between">
-            {/* <Box style={{ width: '20%' }}>{renderLinkSection()}</Box> */}
+            <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
             <Box style={{ width: '40%' }} className="mx-s24">
               {isApproved && renderHarvestActionAirDrop()}
             </Box>

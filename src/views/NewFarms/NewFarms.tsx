@@ -157,8 +157,6 @@ const Farms: React.FC = () => {
         return { ...farm, apy: finixApy, finixApy, klayApy }
       })
 
-      console.log('>>> farmsToDisplayWithAPY', farmsToDisplayWithAPY)
-
       return farmsToDisplayWithAPY.map((farm) => (
         <FarmCard
           key={farm.pid}
