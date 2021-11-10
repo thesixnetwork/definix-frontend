@@ -21,6 +21,7 @@ import FarmTabButtons from './components/FarmTabButtons'
 import FarmContext from './FarmContext'
 import bannerTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup.png'
 import logoFinixTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
+import bannerMobile from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup-mobile.png'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -50,21 +51,14 @@ const TutorailsLink = styled(Link)`
 const BannerTopup = styled(Card)`
   width: 100%;
   background: url(${bannerTopup});
-  padding: 13px 20px 20px;
+  margin: 20px 0px 30px;
 
-  h2 {
-    font-size: 24px;
-  }
-  h3 {
-    font-size: 12px !important;
-    margin-bottom: 4px;
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin: 20px 0px 30px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    &:before {
-      width: 30%;
-      opacity: 1;
-    }
+    margin: 20px 0px 30px;
 
     h2 {
       font-size: 28px !important;
@@ -75,15 +69,80 @@ const BannerTopup = styled(Card)`
   }
 `
 
-const BoxValue = styled(Card)`
+const BannerTopupMobile = styled(Card)`
+  width: 100%;
+  background: url(${bannerMobile});
+  margin: 20px 0px 30px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin: 20px 0px 30px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: 20px 0px 30px;
+
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const BoxValueMobile = styled(Card)`
   background: #fff;
-  width: 20%;
+  width: 100%; 
   height: 50%;
-  padding: 20px;
-  margin: 0px 28px;
+  padding: 10px;
+  margin: 0px 16px 0px 0px;
   box-shadow: ${({ theme }) => theme.shadows.elevation};
   border-radius: 12px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 22%; 
+    margin: 0px 46px;
+  }
 `
+
+const BoxValue = styled(Card)`
+  background: #fff;
+  width: 100%; 
+  height: 50%;
+  padding: 24px;
+  margin: 0px 16px;
+  box-shadow: ${({ theme }) => theme.shadows.elevation};
+  border-radius: 12px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 24%; 
+    margin: 0px 44px;
+  }
+`
+const HeaderBanner = styled(Text)`
+  width: 100%; 
+  color: #222331;
+  font-weight: bold;
+  font-size: 24px !important;
+  line-height: 1.7rem;
+ 
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 40%; 
+    font-size: 28px !important;
+  }
+`
+
+const SuperHarvestButton = styled(Button)`
+  background: linear-gradient(#FAD961, #F76B1C);
+  color: #fff;
+  padding: 0px 16px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 0px 30px;
+  }
+`
+
+
 
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
@@ -95,6 +154,7 @@ const Farms: React.FC = () => {
   const kethPriceUsd = usePriceKethKusdt()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
+  const isMobileOrTablet = !isXl 
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -118,7 +178,7 @@ const Farms: React.FC = () => {
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
   // to retrieve assets prices against USD
-  // console.log('--------------------------------')
+
   const farmsList = useCallback(
     (farmsToDisplay, removed: boolean) => {
       const finixPriceVsKlay = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
@@ -299,33 +359,85 @@ const Farms: React.FC = () => {
               </Text>
             </div>
 
-            <BannerTopup>
-              <div className="flex align-center" style={{ zIndex: 1 }}>
-                <Heading className="pl-5" color="black" style={{ width: '40%' }}>
-                  Harvest all of reward and stake in Long-term Stake for earn more!
-                </Heading>
-                <img src={logoFinixTopup} alt="logoFinixTopup" width="160" />
-                <BoxValue>
-                  <Text color="textSubtle" fontSize="16px">
-                    FINIX ready to harvest
-                  </Text>
-                  <div className="flex align-center">
-                    <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
-                    <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
-                      999,999,999 FINIX
-                    </Text>
+            {isMobileOrTablet ? (
+              <>
+                <BannerTopupMobile>
+                  <div className="pa-4 pos-relative" style={{ zIndex: 1 }}>
+                    <div className="flex align-center">
+                      <HeaderBanner color="text">
+                        Harvest all of reward and stake in Long-term Stake for earn more!
+                      </HeaderBanner>
+                      <img src={logoFinixTopup} alt="logoFinixTopup" width="100"/>
+                    </div>
+                    <div className="flex align-center mt-3">
+                      <BoxValueMobile>
+                        <Text color="textSubtle" fontSize="12px">
+                          FINIX ready to harvest
+                        </Text>
+                        <div className="flex align-center">
+                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                          <Text color="primary" fontSize="14px" fontWeight="bold" paddingLeft="4px">
+                            999,999,999 FINIX
+                          </Text>
+                        </div>
+                      </BoxValueMobile>
+                      <SuperHarvestButton radii="small">
+                        Super Stake
+                      </SuperHarvestButton>
+                    </div>
                   </div>
-                </BoxValue>
-                <Button
-                  radii="small"
-                  className="ml-6"
-                  style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
-                >
-                  Super Stake
-                </Button>
-              </div>
-            </BannerTopup>
-
+                </BannerTopupMobile>
+              </>
+            ) : (
+                <>
+                  <BannerTopup>
+                    <div className="flex align-center px-6 pos-relative" style={{ zIndex: 1 }}>
+                      <HeaderBanner color="text">
+                        Harvest all of reward and stake in Long-term Stake for earn more!
+                      </HeaderBanner>
+                      <img src={logoFinixTopup} alt="logoFinixTopup" width="130" className="ml-7 mr-5" />
+                      <BoxValue>
+                        <Text color="textSubtle" fontSize="16px">
+                          FINIX ready to harvest
+                        </Text>
+                        <div className="flex align-center">
+                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                          <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
+                            999,999,999 FINIX
+                          </Text>
+                        </div>
+                      </BoxValue>
+                      <SuperHarvestButton radii="small">
+                        Super Stake
+                      </SuperHarvestButton>
+                    </div>
+                  </BannerTopup>
+                  {/* <BannerTopup>
+                    <div className={`${!isMobile ? "flex align-center px-6 pos-relative" : "pa-4 pos-relative"}`} style={{ zIndex: 1 }}>
+                      <div className={`${!isMobile ? "flex align-center" : ""}`}>
+                        <HeaderBanner color="text">
+                          Harvest all of reward and stake in Long-term Stake for earn more!
+                  </HeaderBanner>
+                        <img src={logoFinixTopup} alt="logoFinixTopup" width={`${!isMobile ? "130" : "100"}`} className={`${!isMobile ? "ml-7 mr-5" : "mx-2"}`} />
+                        <BoxValue>
+                          <Text color="textSubtle" fontSize="16px">
+                            FINIX ready to harvest
+                      </Text>
+                          <div className="flex align-center">
+                            <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                            <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
+                              999,999,999 FINIX
+                         </Text>
+                          </div>
+                        </BoxValue>
+                        <SuperHarvestButton radii="small">
+                          Super Stake
+                  </SuperHarvestButton>
+                      </div>
+                    </div>
+                  </BannerTopup> */}
+                </>
+              )}
             <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
               <FarmTabButtons
                 stackedOnly={stackedOnly}
@@ -362,29 +474,29 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
   return isPhrase2 ? (
     children
   ) : (
-    <>
-      <div>
-        <br />
-        <Flip date={date} />
-        <br />
-        <br />
-        <br />
-      </div>
-      <div
-        tabIndex={0}
-        role="button"
-        style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={(e) => {
-          e.preventDefault()
-        }}
-        onKeyDown={(e) => {
-          e.preventDefault()
-        }}
-      >
-        {children}
-      </div>
-    </>
-  )
+      <>
+        <div>
+          <br />
+          <Flip date={date} />
+          <br />
+          <br />
+          <br />
+        </div>
+        <div
+          tabIndex={0}
+          role="button"
+          style={{ opacity: 0.4, pointerEvents: 'none' }}
+          onClick={(e) => {
+            e.preventDefault()
+          }}
+          onKeyDown={(e) => {
+            e.preventDefault()
+          }}
+        >
+          {children}
+        </div>
+      </>
+    )
 }
 
 export default Farms
