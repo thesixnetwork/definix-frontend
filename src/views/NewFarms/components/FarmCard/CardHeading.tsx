@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
+import { getLpImageUrls } from 'utils/getTokenImage'
 import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
@@ -18,10 +19,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed,
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
-
-  const farmImage = useMemo(() => farm.lpSymbol.split(' ')[0].toLocaleLowerCase(), [farm.lpSymbol])
-  const firstCoin = useMemo(() => farmImage.split('-')[0].toLocaleLowerCase(), [farmImage])
-  const secondCoin = useMemo(() => farmImage.split('-')[1].toLocaleLowerCase(), [farmImage])
+  const [ firstCoinImageUrl, secondCoinImageUrl ] = getLpImageUrls(lpLabel)
 
   const displayApy = useMemo(() => {
     try {
@@ -35,10 +33,10 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed,
     <Flex position="relative">
       <Flex className="mr-s12">
         <Box width={40} style={{ zIndex: 1 }}>
-          <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={40} height={40} />
+          <Image src={firstCoinImageUrl} alt={farm.tokenSymbol} width={40} height={40} />
         </Box>
         <Box width={40} style={{ marginLeft: '-10px' }}>
-          <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={40} height={40} />
+          <Image src={secondCoinImageUrl} alt={farm.tokenSymbol} width={40} height={40} />
         </Box>
       </Flex>
 

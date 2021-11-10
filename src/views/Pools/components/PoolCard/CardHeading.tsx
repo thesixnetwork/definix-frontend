@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
 import ApyButton from './ApyButton'
 import { CardHeadingProps } from './types'
@@ -17,7 +18,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy })
   return (
     <Flex position="relative">
       <Box width={48} className="mr-s12">
-        <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={48} height={48} />
+        <Image src={getTokenImageUrl(tokenName)} width={48} height={48} />
       </Box>
 
       <Flex flexDirection="column">
