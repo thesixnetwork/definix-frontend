@@ -3,15 +3,8 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import useFarmEarning from 'hooks/useFarmEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import styled from 'styled-components'
-import CardValue from './CardValue'
-import CardBusdValue from './CardBusdValue'
+import { Text } from 'definixswap-uikit'
 import Locked from './Locked'
-
-const Block = styled.div`
-  margin-bottom: 24px;
-}
-`
 
 const Balance = () => {
   const farmEarnings = useFarmEarning()
@@ -21,10 +14,12 @@ const Balance = () => {
   const earningsBusd = new BigNumber(earningsSum).multipliedBy(usePriceFinixUsd()).toNumber()
 
   return (
-    <Block>
-      <CardValue value={earningsSum} lineHeight="1.5" color="textInvert" />
-      <CardBusdValue value={earningsBusd} />
-    </Block>
+    <>
+      <Text className="sum">{earningsSum}</Text>
+      <Text className="usd">= ${earningsBusd}</Text>
+      {/* <CardValue value={earningsSum} lineHeight="1.5" color="textInvert" />
+      <CardBusdValue value={earningsBusd} /> */}
+    </>
   )
 }
 

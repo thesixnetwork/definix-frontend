@@ -4,7 +4,7 @@ import { kebabCase } from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Toast, toastTypes } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 import { Team } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
 import {
@@ -109,7 +109,7 @@ export const useRebalanceAddress = (address): Rebalance => {
 }
 
 export const useRebalances = (): Rebalance[] => {
-  const rebalances = useSelector((state: State) => state.rebalances.data)
+  const rebalances = useSelector((state: State) => state.rebalances.data, shallowEqual)
   return rebalances
 }
 
@@ -310,4 +310,35 @@ export const useFetchAchievements = () => {
 export const useAchievements = () => {
   const achievements: AchievementState['data'] = useSelector((state: State) => state.achievements.data)
   return achievements
+}
+
+
+/**
+ * new
+ */
+ export const usePriceFinixUsdToNumber = (): number => {
+  const finixPrice = useSelector((state: State) => state.finixPrice.price)
+  return finixPrice
+}
+
+export const usePriceSixUsdToNumber = (): number => {
+  const sixPrice = useSelector((state: State) => state.finixPrice.sixPrice)
+  return sixPrice
+}
+
+export const usePriceKlayKusdtToNumber = (): number => {
+  // const pid = 5 // KLAY-KUSDT LP
+  const pid = parseInt(process.env.REACT_APP_KLAY_KUSDT_PID || '14') // KLAY-KUSDT LP
+  const farm = useFarmFromPid(pid)
+  if (!farm || !farm.tokenPriceVsQuote) return 0
+  
+  return farm.tokenPriceVsQuote.toNumber ? farm.tokenPriceVsQuote.toNumber() : +farm.tokenPriceVsQuote
+}
+
+export const usePriceKethKusdtToNumber = (): number => {
+  // const pid = 6 // ETH-KUSDT LP
+  const pid = parseInt(process.env.REACT_APP_KETH_KUSDT_PID || '11') // KETH-KUSDT LP
+  const farm = useFarmFromPid(pid)
+  if (!farm || !farm.tokenPriceVsQuote) return 0
+  return farm.tokenPriceVsQuote.toNumber ? farm.tokenPriceVsQuote.toNumber() : +farm.tokenPriceVsQuote
 }

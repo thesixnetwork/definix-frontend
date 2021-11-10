@@ -48,7 +48,7 @@ const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
     <Button
       minWidth="auto"
-      scale="40"
+      scale="lg"
       variant="lightbrown"
       as={Link}
       to="/rebalancing/detail"

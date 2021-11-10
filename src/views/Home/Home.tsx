@@ -1,27 +1,27 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { useTranslation } from 'react-i18next'
-import useTheme from 'hooks/useTheme'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Helmet } from 'react-helmet'
-import { useProfile } from 'state/hooks'
 import styled from 'styled-components'
-import { useMatchBreakpoints, Box } from 'definixswap-uikit'
+import { Box } from 'definixswap-uikit'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
 import HomeNotice from './components/Notice'
 import CardFinix from './components/CardFinix'
 import CardHighAPR from './components/CardHighAPR'
 import CardAudit from './components/CardAudit'
+import CardInvestment from './components/CardInvestment'
 
-const WrapGrid = styled.div`
+const WrapGrid = styled.div<{ isAccount: boolean }>`
   position: relative;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 32px;
   grid-template-areas: 
     "notice notice"
+    ${({ isAccount }) => isAccount && `"investment investment"`}
     "tvl finix"
     "apr finix"
+    "apr tweet"
     "apr tweet"
     "audit tweet";
     "audit";
@@ -30,6 +30,7 @@ const WrapGrid = styled.div`
     column-gap: 16px;
     grid-template-areas: 
       "notice"
+      ${({ isAccount }) => isAccount && `"investment"`}
       "tvl"
       "finix"
       "apr"
@@ -78,15 +79,19 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
 `
 
 const Home: React.FC = () => {
+  const { account } = useWallet();
   return (
     <>
       <Helmet>
         <title>Home - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <WrapGrid>
+      <WrapGrid isAccount={!!account}>
         <FullColumnGrid pt="S_30" area="notice">
           <HomeNotice />
         </FullColumnGrid>
+        {account && <FullColumnGrid mb="S_40" area="investment">
+          <CardInvestment />
+        </FullColumnGrid>}
         <LeftColumnGrid area="tvl">
           <CardTVL />
         </LeftColumnGrid>
