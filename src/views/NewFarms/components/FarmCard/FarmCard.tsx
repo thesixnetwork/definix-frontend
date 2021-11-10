@@ -43,7 +43,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const lpTokenName = useMemo(() => {
-    return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('DEFINIX', '')
+    return farm.lpSymbol && farm.lpSymbol.toUpperCase().replace(/(DEFINIX)|(LP)/g, '').trim()
   }, [farm.lpSymbol])
 
   const { convertToPriceFromToken, convertToUSD } = useConverter()
@@ -89,20 +89,29 @@ const FarmCard: React.FC<FarmCardProps> = ({
   }, [convertToUSD, stakedBalanceValue])
 
   const renderCardHeading = useCallback(
-    (className?: string, inlineMultiplier?: boolean) => (
+    () => (
       <CardHeading
-        isHorizontal={isHorizontal}
-        className={className}
         farm={farm}
         lpLabel={lpTokenName}
         removed={removed}
         addLiquidityUrl={addLiquidityUrl}
         finixPrice={finixPrice}
-        inlineMultiplier={inlineMultiplier || false}
       />
     ),
-    [addLiquidityUrl, farm, finixPrice, isHorizontal, lpTokenName, removed],
+    [addLiquidityUrl, farm, finixPrice, lpTokenName, removed],
   )
+
+  const renderIconButton = useCallback(
+    () => (
+      <IconButton
+        variant="transparent"
+        startIcon={isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+        onClick={() => setIsOpenAccordion(!isOpenAccordion)}
+      />
+    ),
+    [isOpenAccordion],
+  )
+
   const renderTotalLiquiditySection = useCallback(
     () => <TotalLiquiditySection title="Total Staked" tokenName={lpTokenName} totalLiquidity={totalLiquidity} />,
     [lpTokenName, totalLiquidity],
@@ -115,21 +124,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     () => <EarningsSection title="Earned" tokenName={lpTokenName} earnings={earnings} />,
     [lpTokenName, earnings],
   )
-
-  // /**
-  //  * detail section
-  //  */
-  // const renderDetailsSection = useCallback(
-  //   (className?: string, isHor?: boolean) => (
-  //     <DetailsSection
-  //       isHorizontal={isHor}
-  //       className={className}
-  //       removed={removed}
-  //       totalLiquidityUSD={totalLiquidityUSD}
-  //     />
-  //   ),
-  //   [removed, totalLiquidityUSD],
-  // )
 
   /**
    * stake action
@@ -226,29 +220,16 @@ const FarmCard: React.FC<FarmCardProps> = ({
   }
 
   return (
-    // <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-    //   {renderCardHeading('col-4 pos-static')}
-
-    //   {renderDetailsSection('col-4 bd-x pa-3', true)}
-
-    //   <div className="flex col-4">
-    //     {renderStakeAction(`pa-3 ${isApproved || 'col-12'}`)}
-    //     {isApproved && renderHarvestActionAirDrop('col-6 pa-3')}
-    //   </div>
-
-    //   {/*  */}
-    //   {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', isHorizontal)} */}
-    // </HorizontalStyle>
     <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
       <CardBody>
-        <Flex justifyContent="space-between">
+        <Flex justifyContent="space-between" >
           <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
-          <Box style={{ width: '16%' }}>{renderTotalLiquiditySection()}</Box>
+          <Box style={{ width: '13%' }}>{renderTotalLiquiditySection()}</Box>
           <Box style={{ width: '26%' }} className="mx-s24">
             {renderMyBalanceSection()}
           </Box>
-          <Box style={{ width: '24%' }}>{renderEarningsSection()}</Box>
-          {/* {renderIconButton()} */}
+          <Box style={{ width: '22%' }}>{renderEarningsSection()}</Box>
+          {renderIconButton()}
         </Flex>
       </CardBody>
       {isOpenAccordion && (
@@ -256,7 +237,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
           <Flex justifyContent="space-between">
             {/* <Box style={{ width: '20%' }}>{renderLinkSection()}</Box> */}
             <Box style={{ width: '40%' }} className="mx-s24">
-              {renderHarvestActionAirDrop()}
+              {isApproved && renderHarvestActionAirDrop()}
             </Box>
             <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
           </Flex>
@@ -264,20 +245,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
       )}
     </Card>
   )
-  // if (isHorizontal) {
-  // }
-
-  // return (
-  //   <VerticalStyle className="mb-7">
-  //     <div className="flex flex-column flex-grow">
-  //       {renderCardHeading('pt-7')}
-  //       {renderStakeAction('pa-5')}
-  //       {/* renderHarvestAction('pa-5') */}
-  //       {renderHarvestActionAirDrop('pa-5 pt-0', isHorizontal)}
-  //     </div>
-  //     {renderDetailsSection('px-5 py-3', false)}
-  //   </VerticalStyle>
-  // )
 }
 
 export default FarmCard

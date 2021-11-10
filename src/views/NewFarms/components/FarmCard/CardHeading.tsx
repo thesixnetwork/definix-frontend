@@ -1,10 +1,6 @@
 import BigNumber from 'bignumber.js'
-// import useI18n from 'hooks/useI18n'
-import numeral from 'numeral'
 import React, { useMemo } from 'react'
 import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
-import styled from 'styled-components'
-// import { Flex, Heading, Image, Skeleton, Text, ChevronRightIcon, Link } from 'uikit-dev'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
@@ -13,40 +9,11 @@ export interface ExpandableSectionProps {
   farm: FarmWithStakedValue
   lpLabel?: string
   multiplier?: string
-  tokenSymbol?: string
   removed?: boolean
   addLiquidityUrl?: string
   finixPrice?: BigNumber
-  className?: string
-  isHorizontal?: boolean
-  inlineMultiplier?: boolean
+  // inlineMultiplier?: boolean
 }
-
-const StyledFarmImages = styled.div`
-  display: flex;
-  align-items: center;
-
-  > * {
-    flex-shrink: 0;
-
-    &:nth-child(01) {
-      position: relative;
-      z-index: 1;
-    }
-    &:nth-child(02) {
-      margin-left: -8px;
-    }
-  }
-`
-
-const Apr = styled(Text)`
-  padding: 4px 8px;
-  background: ${({ theme }) => theme.colors.successAlpha};
-  font-size: 12px;
-  border-radius: ${({ theme }) => theme.radii.small};
-  display: flex;
-  align-items: center;
-`
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   farm,
@@ -54,21 +21,21 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   removed,
   addLiquidityUrl,
   finixPrice,
-  className = '',
-  isHorizontal = false,
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
-  const farmImage = farm.lpSymbol.split(' ')[0].toLocaleLowerCase()
-  const firstCoin = farmImage.split('-')[0].toLocaleLowerCase()
-  // const firstCoin = farm.tokenSymbol.toLocaleLowerCase()
-  const secondCoin = farmImage.split('-')[1].toLocaleLowerCase()
-  // const secondCoin = farm.quoteTokenSymbol.toLocaleLowerCase()
-  // const farmAPY = farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
 
+  const farmImage = useMemo(() => farm.lpSymbol.split(' ')[0].toLocaleLowerCase(), [farm.lpSymbol])
+  const firstCoin = useMemo(() => farmImage.split('-')[0].toLocaleLowerCase(), [farmImage])
+  const secondCoin = useMemo(() => farmImage.split('-')[1].toLocaleLowerCase(), [farmImage])
+
   const displayApy = useMemo(() => {
-    return farm.apy && numeral(farm.apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')
+    try {
+      return farm.apy && `${farm.apy.times(new BigNumber(100)).toNumber().toFixed(2)}%`
+    } catch (error) {
+      return '-'
+    }
   }, [farm.apy])
 
   // const LinkView = ({ linkClassName = '' }) => (
@@ -130,17 +97,15 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
     //   {/* <LinkView /> */}
 
-    //   {/* <Flex justifyContent="center">
-    //     {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-    //     <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-    //   </Flex> */}
     // </Flex>
+
+    
     <Flex position="relative">
       <Flex className="mr-s12">
-        <Box width={48}>
+        <Box width={48} style={{ zIndex: 1 }}>
           <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={48} height={48} />
         </Box>
-        <Box width={48}>
+        <Box width={48} style={{ marginLeft: '-10px' }}>
           <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={48} height={48} />
         </Box>
       </Flex>
@@ -148,18 +113,26 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       <Flex flexDirection="column">
         <Text textStyle="R_20M">{lpLabel}</Text>
 
-        <Flex alignItems="end">
-          <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
-            APR
-          </Text>
-          <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
-            {displayApy}
-          </Text>
-          {/* <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} /> */}
-          <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
-        </Flex>
+        {
+          !removed && (
+            <Flex alignItems="end">
+              <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
+                APR
+              </Text>
+              <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
+                {displayApy}
+              </Text>
+              <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+            </Flex>
+          )
+        }
       </Flex>
     </Flex>
+
+    // <Flex justifyContent="center">
+    //   {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
+    //   <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
+    // </Flex>
   )
 }
 
