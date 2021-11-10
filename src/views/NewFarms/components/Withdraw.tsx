@@ -53,7 +53,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
 
   const [val, setVal] = useState('')
   const { onUnstake } = useUnstake(pid)
-  
+
   const fullBalance = useMemo(() => getFullDisplayBalance(myLiquidity), [myLiquidity])
   const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
 
@@ -132,7 +132,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
         </Flex>
       </Box>
 
-      <TitleSet title='Remove LP' description={t('Remove LPs from the farm.')} />
+      <TitleSet title="Remove LP" description={t('Remove LPs from the farm.')} />
 
       <Card className={`${cardStyle.margin} ${cardStyle.padding}`}>
         <CardHeading farm={farm} lpLabel={tokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />
