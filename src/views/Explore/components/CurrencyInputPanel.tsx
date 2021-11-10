@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { AnountButton, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
 import { Input as NumericalInput } from './NumericalInput'
+import Coin from './Coin'
 
 interface CurrencyInputPanelProps {
   value: string
@@ -38,20 +39,7 @@ const InputBox = styled.div`
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.border};
 `
-const Coin = styled.div`
-  min-width: 80px;
-  display: flex;
-  align-items: center;
-  margin: 4px 0;
 
-  img {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
-`
 const StyledAnountButton = styled(AnountButton)`
   margin-left: ${({ theme }) => theme.spacing.S_6}px;
   background: ${({ theme }) => rgba(theme.colors.lightgrey, 0.5)};
@@ -87,8 +75,7 @@ const CurrencyInputPanel = ({
         {!hideInput && (
           <Flex justifyContent="space-between" alignItems="center" className="mb-s12">
             {!currency.hide && (
-              <Coin>
-                {currency.symbol && <img src={`/images/coins/${currency.symbol}.png`} alt="" />}
+              <Coin symbol={currency.symbol}>
                 <Text textStyle="R_16M">{thisName}</Text>
               </Coin>
             )}

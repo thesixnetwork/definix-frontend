@@ -2,13 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from 'definixswap-uikit'
 import { Ratio } from 'config/constants/types'
+import Coin from './Coin'
 
 interface FullAssetRatioType {
   className?: string
   ratio: Ratio[] | any
 }
 
-const Coin = styled.div<{ width: string; isMobile: boolean }>`
+const Asset = styled.div<{ width: string; isMobile: boolean }>`
   width: ${({ width }) => width};
 
   .name {
@@ -17,10 +18,6 @@ const Coin = styled.div<{ width: string; isMobile: boolean }>`
     align-items: ${({ isMobile }) => (isMobile ? 'flex-start' : 'center')};
 
     img {
-      flex-shrink: 0;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
       margin-right: 4px;
     }
   }
@@ -42,13 +39,12 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
       {ratio
         .filter((r) => r.value)
         .map((m) => (
-          <Coin width={`${m.value}%`} isMobile={isMobile}>
+          <Asset width={`${m.value}%`} isMobile={isMobile}>
             <Bar color={m.color} />
-            <div className="name">
-              <img src={`/images/coins/${m.symbol || ''}.png`} alt="" />
+            <Coin className="name" symbol={m.symbol || ''} size="sm">
               <Text textStyle="R_14R">{m.value}%</Text>
-            </div>
-          </Coin>
+            </Coin>
+          </Asset>
         ))}
     </div>
   )

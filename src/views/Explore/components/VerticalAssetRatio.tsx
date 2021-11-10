@@ -2,21 +2,8 @@ import React from 'react'
 import { compact } from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import styled from 'styled-components'
 import { Flex, Text } from 'definixswap-uikit'
-
-const Coin = styled.div`
-  display: flex;
-  align-items: center;
-
-  img {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
-`
+import Coin from './Coin'
 
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
@@ -34,8 +21,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
         })()
         return (
           <Flex textStyle="R_14R" justifyContent="space-between" alignItems="center" className="py-s12">
-            <Coin>
-              <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
+            <Coin size="sm" symbol={c.symbol || ''}>
               <Text textStyle="R_14B" style={{ width: '56px' }}>
                 {thisName}
               </Text>

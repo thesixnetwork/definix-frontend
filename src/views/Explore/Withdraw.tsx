@@ -37,6 +37,7 @@ import SpaceBetweenFormat from './components/SpaceBetweenFormat'
 import TwoLineFormat from './components/TwoLineFormat'
 import VerticalAssetRatio from './components/VerticalAssetRatio'
 import { simulateWithdraw } from '../../offline-pool'
+import Coin from './components/Coin'
 
 interface WithdrawType {
   rebalance: Rebalance | any
@@ -47,20 +48,6 @@ const SuccessOptions = {
   autoplay: true,
   animationData: success,
 }
-
-const Coin = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 4px 16px 4px 0;
-
-  img {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
-`
 
 const FormControlLabelCustom = styled(FormControlLabel)`
   height: 40px;
@@ -79,8 +66,7 @@ const InlineAssetRatioLabel = ({ coin, className = '' }) => {
   })()
   return (
     <div className={`flex justify-space-between align-center ${className}`}>
-      <Coin className="col-8">
-        <img src={`/images/coins/${coin.symbol}.png`} alt="" />
+      <Coin className="col-8" symbol={coin.symbol}>
         <Text className="col-3 mr-4" bold>
           {coin.amount ? numeral(coin.amount.toNumber()).format('0,0.[0000]') : '-'}
         </Text>

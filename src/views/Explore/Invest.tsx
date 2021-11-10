@@ -235,22 +235,6 @@ const CardInput = ({
           ))}
         </Box>
 
-        {(() => {
-          const needsApproval = rebalance.ratio.find((c) => {
-            const currentValue = parseFloat(currentInput[getAddress(c.address)])
-            const currentAllowance = (get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()
-            return currentAllowance < currentValue && c.symbol !== 'WKLAY' && c.symbol !== 'WBNB'
-          })
-          if (needsApproval) {
-            return (
-              <Button disabled={isApproving} onClick={onApprove(needsApproval)}>
-                Approve {needsApproval.symbol}
-              </Button>
-            )
-          }
-          return null
-        })()}
-
         <Box className="bd-b" pb="S_32" mb="S_32">
           <Text textStyle="R_16M" mb="S_12" color="textSubtle">
             {t('Total Amount')}
@@ -306,90 +290,6 @@ const CardInput = ({
   )
 }
 
-const CardResponse = ({ tx, rebalance, poolUSDBalances }) => {
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
-  const { transactionHash } = tx
-
-  const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
-  // @ts-ignore
-  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance])
-    .div(new BigNumber(10).pow(usdToken.decimals || 18))
-    .toNumber()
-  const totalUserUsdAmount = new BigNumber(get(poolUSDBalances, 1, '0'))
-    .div(new BigNumber(10).pow(usdToken.decimals || 18))
-    .toNumber()
-  // @ts-ignore
-  const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
-  const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
-
-  return (
-    <Card className="mb-4">
-      <div className={isMobile ? 'pa-4' : 'pa-6'}>
-        <div className="flex flex-column align-center justify-center mb-6">
-          <Lottie options={SuccessOptions} height={120} width={120} />
-          {/* <ErrorIcon width="80px" color="failure" className="mb-3" /> */}
-          <Text fontSize="24px" bold textAlign="center">
-            Invest Complete
-          </Text>
-          <Text color="textSubtle" textAlign="center" className="mt-1" fontSize="12px">
-            {moment(new Date()).format('DD MMM YYYY, HH:mm')}
-          </Text>
-
-          <CardHeading className="mt-6" rebalance={rebalance} />
-        </div>
-
-        <div className="flex align-center flex-wrap mb-6">
-          <VerticalAssetRatio className={isMobile ? 'col-12' : 'col-5'} />
-          <div className={`flex flex-column ${isMobile ? 'col-12 pt-4 align-center' : 'col-7 pl-4 align-end'}`}>
-            <Share
-              share={
-                currentShare <= 0 || Number.isNaN(currentShare)
-                  ? numeral(totalUserUsdAmount).format('0,0.[00]')
-                  : numeral(currentShare).format('0,0.[00]')
-              }
-              usd={`~${numeral(totalUserUsdAmount).format('0,0.[00]')}`}
-              textAlign={isMobile ? 'center' : 'left'}
-            />
-          </div>
-        </div>
-
-        <SpaceBetweenFormat
-          titleElm={
-            <div className="flex">
-              <Text fontSize="12px" color="textSubtle" className="mr-2">
-                Transaction Hash
-              </Text>
-              <Text fontSize="12px" color="primary" bold>
-                {`${transactionHash.slice(0, 4)}...${transactionHash.slice(
-                  transactionHash.length - 4,
-                  transactionHash.length,
-                )}`}
-              </Text>
-            </div>
-          }
-          valueElm={
-            <UiLink
-              href={`https://scope.klaytn.com/tx/${transactionHash}`}
-              fontSize="12px"
-              color="textSubtle"
-              style={{ marginRight: '-4px' }}
-            >
-              KlaytnScope
-              <ChevronRightIcon color="textSubtle" />
-            </UiLink>
-          }
-          className="mb-2"
-        />
-
-        <Button as={Link} to="/rebalancing/detail" className="mt-3">
-          Back to Rebalancing
-        </Button>
-      </div>
-    </Card>
-  )
-}
-
 const usePrevious = (value, initialValue) => {
   const ref = useRef(initialValue)
   useEffect(() => {
@@ -406,7 +306,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const [sumPoolAmount, setSumPoolAmount] = useState(0)
   const [isSimulating, setIsSimulating] = useState(true)
   const [isInputting, setIsInputting] = useState(true)
-  const [isInvested, setIsInvested] = useState(false)
   const [isInvesting, setIsInvesting] = useState(false)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
   const dispatch = useDispatch()
@@ -430,7 +329,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   useEffect(() => {
     return () => {
       setIsInputting(true)
-      setIsInvested(false)
       setTx({})
     }
   }, [])
@@ -589,7 +487,8 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       sumPoolAmount={sumPoolAmount}
       onNext={() => {
         fetchData()
-        setIsInvested(true)
+        console.log('~~~');
+        // @TODO showmodal
       }}
       calNewImpact={calNewImpact}
     />,
@@ -644,7 +543,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
             sumPoolAmount={sumPoolAmount}
           />
         )}{' '}
-        {isInvested && <CardResponse poolUSDBalances={poolUSDBalancesState} tx={tx} rebalance={rebalance} />}
       </div>
     </>
   )
