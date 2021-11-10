@@ -23,16 +23,17 @@ const useTopUp = (tokenAddress: string) => {
   return balance
 }
 
-export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
+export const useLockPlus = (level, idLastMaxLv, lockFinix, flg) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
 
   const stake = useCallback(async () => {
+    const checked = flg
     setStatus(false)
     setLoading('loading')
-    if (lockFinix) {
+    if (checked) {
       try {
         if (connector === 'klip') {
           klipProvider.genQRcodeContactInteract(
@@ -49,22 +50,20 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           setInterval(() => setStatus(false), 5000)
         } else {
           const callContract = getContract(VaultTopUpFeatureFacet.abi, getVFinix())
-          callContract.methods
-            .lockPlus(1, 1, '10000000000000000000000')
+          await callContract.methods
+            .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })
             .then((estimatedGasLimit) => {
               callContract.methods
-                .lockPlus(1, 1, '10000000000000000000000')
+                .lockPlus(level, idLastMaxLv, lockFinix)
                 .send({ from: account, gas: estimatedGasLimit })
                 .then((resolve) => {
-                  console.log('2::')
                   setLoading('success')
                   setStatus(true)
                   setInterval(() => setLoading(''), 5000)
-                  setInterval(() => setStatus(false), 5000)
+                  // setInterval(() => setStatus(false), 5000)
                 })
                 .catch((e) => {
-                  console.log('3::')
                   setLoading('')
                   setStatus(false)
                 })
@@ -78,9 +77,9 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
     }
 
     return status
-  }, [account, level, lockFinix, status, connector, setShowModal])
+  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv, flg])
 
-  return { onStake: stake, status, loadings }
+  return { onLockPlus: stake, status, loadings }
 }
 
 export default useTopUp

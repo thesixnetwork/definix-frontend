@@ -486,7 +486,7 @@ const CardStake = ({ isShowRightPanel }) => {
             )}
           </div>
           <Text color="textSubtle">Please select duration</Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} />
+          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={[]} isTopUp={false} />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit

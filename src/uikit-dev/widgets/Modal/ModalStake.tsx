@@ -57,7 +57,7 @@ const ModalHeader = styled.div<{ className?: string }>`
 
   // margin-left: 10%;
   // margin-bottom: 20px;
-  padding: 0px 0px 10px 24px;
+  padding: 0px 10px 10px 64px;
   //   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
