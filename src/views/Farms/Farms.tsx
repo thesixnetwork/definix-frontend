@@ -20,8 +20,8 @@ import { FarmWithStakedValue } from './components/FarmCard/types'
 import FarmTabButtons from './components/FarmTabButtons'
 import FarmContext from './FarmContext'
 import bannerTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup.png'
-import logoFinixTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
 import bannerMobile from '../../uikit-dev/images/for-ui-v2/topup-stake/banner-topup-mobile.png'
+import logoFinixTopup from '../../uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -92,7 +92,7 @@ const BannerTopupMobile = styled(Card)`
 
 const BoxValueMobile = styled(Card)`
   background: #fff;
-  width: 100%; 
+  width: 100%;
   height: 50%;
   padding: 10px;
   margin: 0px 16px 0px 0px;
@@ -100,14 +100,14 @@ const BoxValueMobile = styled(Card)`
   border-radius: 12px;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 22%; 
+    width: 22%;
     margin: 0px 46px;
   }
 `
 
 const BoxValue = styled(Card)`
   background: #fff;
-  width: 100%; 
+  width: 100%;
   height: 50%;
   padding: 24px;
   margin: 0px 16px;
@@ -115,25 +115,25 @@ const BoxValue = styled(Card)`
   border-radius: 12px;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 24%; 
+    width: 24%;
     margin: 0px 44px;
   }
 `
 const HeaderBanner = styled(Text)`
-  width: 100%; 
+  width: 100%;
   color: #222331;
   font-weight: bold;
   font-size: 24px !important;
   line-height: 1.7rem;
- 
+
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 40%; 
+    width: 40%;
     font-size: 28px !important;
   }
 `
 
 const SuperHarvestButton = styled(Button)`
-  background: linear-gradient(#FAD961, #F76B1C);
+  background: linear-gradient(#fad961, #f76b1c);
   color: #fff;
   padding: 0px 16px;
 
@@ -141,8 +141,6 @@ const SuperHarvestButton = styled(Button)`
     padding: 0px 30px;
   }
 `
-
-
 
 const Farms: React.FC = () => {
   const { path } = useRouteMatch()
@@ -154,7 +152,7 @@ const Farms: React.FC = () => {
   const kethPriceUsd = usePriceKethKusdt()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
-  const isMobileOrTablet = !isXl 
+  const isMobileOrTablet = !isXl
 
   const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
@@ -367,7 +365,7 @@ const Farms: React.FC = () => {
                       <HeaderBanner color="text">
                         Harvest all of reward and stake in Long-term Stake for earn more!
                       </HeaderBanner>
-                      <img src={logoFinixTopup} alt="logoFinixTopup" width="100"/>
+                      <img src={logoFinixTopup} alt="logoFinixTopup" width="100" />
                     </div>
                     <div className="flex align-center mt-3">
                       <BoxValueMobile>
@@ -381,63 +379,36 @@ const Farms: React.FC = () => {
                           </Text>
                         </div>
                       </BoxValueMobile>
-                      <SuperHarvestButton radii="small">
-                        Super Stake
-                      </SuperHarvestButton>
+                      <SuperHarvestButton radii="small">Super Stake</SuperHarvestButton>
                     </div>
                   </div>
                 </BannerTopupMobile>
               </>
             ) : (
-                <>
-                  <BannerTopup>
-                    <div className="flex align-center px-6 pos-relative" style={{ zIndex: 1 }}>
-                      <HeaderBanner color="text">
-                        Harvest all of reward and stake in Long-term Stake for earn more!
-                      </HeaderBanner>
-                      <img src={logoFinixTopup} alt="logoFinixTopup" width="130" className="ml-7 mr-5" />
-                      <BoxValue>
-                        <Text color="textSubtle" fontSize="16px">
-                          FINIX ready to harvest
-                        </Text>
-                        <div className="flex align-center">
-                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
-                          <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
-                            999,999,999 FINIX
-                          </Text>
-                        </div>
-                      </BoxValue>
-                      <SuperHarvestButton radii="small">
-                        Super Stake
-                      </SuperHarvestButton>
-                    </div>
-                  </BannerTopup>
-                  {/* <BannerTopup>
-                    <div className={`${!isMobile ? "flex align-center px-6 pos-relative" : "pa-4 pos-relative"}`} style={{ zIndex: 1 }}>
-                      <div className={`${!isMobile ? "flex align-center" : ""}`}>
-                        <HeaderBanner color="text">
-                          Harvest all of reward and stake in Long-term Stake for earn more!
-                  </HeaderBanner>
-                        <img src={logoFinixTopup} alt="logoFinixTopup" width={`${!isMobile ? "130" : "100"}`} className={`${!isMobile ? "ml-7 mr-5" : "mx-2"}`} />
-                        <BoxValue>
-                          <Text color="textSubtle" fontSize="16px">
-                            FINIX ready to harvest
+              <>
+                <BannerTopup>
+                  <div className="flex align-center px-6 pos-relative" style={{ zIndex: 1 }}>
+                    <HeaderBanner color="text">
+                      Harvest all of reward and stake in Long-term Stake for earn more!
+                    </HeaderBanner>
+                    <img src={logoFinixTopup} alt="logoFinixTopup" width="130" className="ml-7 mr-5" />
+                    <BoxValue>
+                      <Text color="textSubtle" fontSize="16px">
+                        FINIX ready to harvest
                       </Text>
-                          <div className="flex align-center">
-                            <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
-                            <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
-                              999,999,999 FINIX
-                         </Text>
-                          </div>
-                        </BoxValue>
-                        <SuperHarvestButton radii="small">
-                          Super Stake
-                  </SuperHarvestButton>
+                      <div className="flex align-center">
+                        <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                        <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
+                          999,999,999 FINIX
+                        </Text>
                       </div>
-                    </div>
-                  </BannerTopup> */}
-                </>
-              )}
+                    </BoxValue>
+                    <SuperHarvestButton radii="small">Super Stake</SuperHarvestButton>
+                  </div>
+                </BannerTopup>
+              </>
+            )}
+
             <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
               <FarmTabButtons
                 stackedOnly={stackedOnly}
@@ -474,29 +445,29 @@ const TimerWrapper = ({ isPhrase2, date, children }) => {
   return isPhrase2 ? (
     children
   ) : (
-      <>
-        <div>
-          <br />
-          <Flip date={date} />
-          <br />
-          <br />
-          <br />
-        </div>
-        <div
-          tabIndex={0}
-          role="button"
-          style={{ opacity: 0.4, pointerEvents: 'none' }}
-          onClick={(e) => {
-            e.preventDefault()
-          }}
-          onKeyDown={(e) => {
-            e.preventDefault()
-          }}
-        >
-          {children}
-        </div>
-      </>
-    )
+    <>
+      <div>
+        <br />
+        <Flip date={date} />
+        <br />
+        <br />
+        <br />
+      </div>
+      <div
+        tabIndex={0}
+        role="button"
+        style={{ opacity: 0.4, pointerEvents: 'none' }}
+        onClick={(e) => {
+          e.preventDefault()
+        }}
+        onKeyDown={(e) => {
+          e.preventDefault()
+        }}
+      >
+        {children}
+      </div>
+    </>
+  )
 }
 
 export default Farms
