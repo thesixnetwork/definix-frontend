@@ -57,6 +57,8 @@ const BannerTopup = styled(Card)`
   width: 100%;
   background: url(${bannerTopup});
   margin: 20px 0px 30px;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     margin: 20px 0px 30px;
@@ -64,13 +66,6 @@ const BannerTopup = styled(Card)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: 20px 0px 30px;
-
-    h2 {
-      font-size: 28px !important;
-    }
-    h3 {
-      font-size: 16px !important;
-    }
   }
 `
 
@@ -78,6 +73,8 @@ const BannerTopupMobile = styled(Card)`
   width: 100%;
   background: url(${bannerMobile});
   margin: 20px 0px 30px;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   ${({ theme }) => theme.mediaQueries.xs} {
     margin: 20px 0px 30px;
@@ -85,13 +82,6 @@ const BannerTopupMobile = styled(Card)`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     margin: 20px 0px 30px;
-
-    h2 {
-      font-size: 28px !important;
-    }
-    h3 {
-      font-size: 16px !important;
-    }
   }
 `
 
@@ -104,7 +94,7 @@ const BoxValueMobile = styled(Card)`
   box-shadow: ${({ theme }) => theme.shadows.elevation};
   border-radius: 12px;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: 22%;
     margin: 0px 46px;
   }
@@ -119,7 +109,7 @@ const BoxValue = styled(Card)`
   box-shadow: ${({ theme }) => theme.shadows.elevation};
   border-radius: 12px;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: 24%;
     margin: 0px 44px;
   }
@@ -131,7 +121,7 @@ const HeaderBanner = styled(Text)`
   font-size: 24px !important;
   line-height: 1.2;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     width: 40%;
     font-size: 28px !important;
   }
@@ -169,7 +159,8 @@ const Farms: React.FC = () => {
   const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
-  const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum + finixEarn) * 100) / 100
+  console.log('++++++++++++',earningsSum,earningsPoolSum,finixEarn)
+  const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum) * 100) / 100
   const [onPresentConnectModal] = useModal(
     !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
   )
@@ -377,42 +368,13 @@ const Farms: React.FC = () => {
               </Text>
             </div>
 
-            {/* {earningsSum <= 0 && (
-              <BannerTopup>
-                <div className="flex align-center" style={{ zIndex: 1 }}>
-                  <Heading className="pl-5" color="black" style={{ width: '40%' }}>
-                    Harvest all of reward and stake in Long-term Stake for earn more!
-                  </Heading>
-                  <img src={logoFinixTopup} alt="logoFinixTopup" width="160" />
-                  <BoxValue>
-                    <Text color="textSubtle" fontSize="16px">
-                      FINIX ready to harvest
-                    </Text>
-                    <div className="flex align-center">
-                      <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
-                      <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
-                        {totalAllMyFarms} FINIX
-                      </Text>
-                    </div>
-                  </BoxValue>
-                  <Button
-                    radii="small"
-                    className="ml-6"
-                    style={{ background: 'linear-gradient(#FAD961, #F76B1C)', color: 'white' }}
-                    onClick={() => {
-                      onPresentConnectModal()
-                    }}
-                  >
-                    Super Stake
-                  </Button>
-                </div>
-              </BannerTopup> */}
             {isMobileOrTablet ? (
               <>
                 {earningsSum <= 0 && (
                   <BannerTopupMobile>
                     <div className="pa-4 pos-relative" style={{ zIndex: 1 }}>
                       <div className="flex align-center">
+                      {console.log("----------------",isMobileOrTablet)}
                         <HeaderBanner color="text">
                           Harvest all of reward and stake in Long-term Stake for earn more!
                         </HeaderBanner>
