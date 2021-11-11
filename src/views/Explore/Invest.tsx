@@ -7,10 +7,8 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { AbiItem } from 'web3-utils'
-import * as klipProvider from 'hooks/klipProvider'
-import { getAbiRebalanceByName, getAbiERC20ByName } from 'hooks/hookHelper'
 import { provider } from 'web3-core'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import _ from 'lodash'
@@ -77,26 +75,15 @@ const CardInput = ({
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const dispatch = useDispatch()
-  const { account, klaytn, connector } = useWallet()
+  const { account, ethereum } = useWallet()
   const { isDark } = useTheme()
-  const { setShowModal } = React.useContext(KlipModalContext())
 
   const onApprove = (token) => async () => {
-    const tokenContract = getContract(klaytn as provider, getAddress(token.address))
+    const tokenContract = getContract(ethereum as provider, getAddress(token.address))
     setIsApproving(true)
     try {
-      if (connector === 'klip') {
-        klipProvider.genQRcodeContactInteract(
-          getAddress(token.address),
-          JSON.stringify(getAbiERC20ByName('approve')),
-          JSON.stringify([getAddress(rebalance.address), klipProvider.MAX_UINT_256_KLIP]),
-          setShowModal,
-        )
-        await klipProvider.checkResponse()
-        setShowModal(false)
-      } else {
-        await approveOther(tokenContract, getAddress(rebalance.address), account)
-      }
+      await approveOther(tokenContract, getAddress(rebalance.address), account)
+
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
@@ -253,8 +240,7 @@ const CardCalculate = ({
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const slippage = useSlippage()
-  const { setShowModal } = React.useContext(KlipModalContext())
-  const { account, klaytn, connector } = useWallet()
+  const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const dispatch = useDispatch()
 
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
@@ -277,7 +263,7 @@ const CardCalculate = ({
 
   const onInvest = async () => {
     const rebalanceContract = getCustomContract(
-      klaytn as provider,
+      ethereum as provider,
       rebalanceAbi as unknown as AbiItem,
       getAddress(rebalance.address),
     )
@@ -301,34 +287,12 @@ const CardCalculate = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       // const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-      if (connector === 'klip') {
-        const valueNumber = (Number(mainCoinValue) / 10 ** 18).toString()
-        const valueklip = Number.parseFloat(valueNumber).toFixed(6)
-        let expectValue = `${(Number(valueklip) + 0.00001) * 10 ** 18}`
-        expectValue = expectValue.slice(0, -13)
-        const valueKlipParam = mainCoinValue !== '0' ? `${expectValue}0000000000000` : '0'
+      const tx = await rebalanceContract.methods
+        // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
+        .addFund(arrayTokenAmount, usdTokenAmount, 0)
+        .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+      setTx(tx)
 
-        klipProvider.genQRcodeContactInteract(
-          getAddress(rebalance.address),
-          JSON.stringify(getAbiRebalanceByName('addFund')),
-          // JSON.stringify([arrayTokenAmount, usdTokenAmount, minUsdAmount]),
-          JSON.stringify([arrayTokenAmount, usdTokenAmount, 0]),
-          setShowModal,
-          valueKlipParam,
-        )
-
-        const tx = {
-          transactionHash: await klipProvider.checkResponse(),
-        }
-        setShowModal(false)
-        setTx(tx)
-      } else {
-        const tx = await rebalanceContract.methods
-          // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-          .addFund(arrayTokenAmount, usdTokenAmount, 0)
-          .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
-        setTx(tx)
-      }
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))

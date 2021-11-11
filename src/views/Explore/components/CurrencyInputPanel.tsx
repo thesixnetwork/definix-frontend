@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/require-default-props */
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import React from 'react'

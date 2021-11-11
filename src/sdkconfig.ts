@@ -2,6 +2,7 @@ const chainId = process.env.REACT_APP_CHAIN_ID || ''
 const mainnetId = process.env.REACT_APP_MAINNET_ID || ''
 const testnetId = process.env.REACT_APP_TESTNET_ID || ''
 const isMainnet = chainId === mainnetId
+
 // const config: ConfigInterface = {
 const config = {
   factoryAddress: isMainnet
