@@ -1,23 +1,24 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import UnlockButton from 'components/UnlockButton'
-import _ from 'lodash'
+import { findIndex, get } from 'lodash'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Button, Card, Text } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { Button, Card, Flex, Text } from 'definixswap-uikit'
 import { getAddress } from 'utils/addressHelpers'
 import { useRebalanceBalances, useBalances } from '../../../state/hooks'
-import TwoLineFormat from './TwoLineFormat'
+import LabelAndValue from './LabelAndValue'
 import { Rebalance } from '../../../state/types'
+import SignNumber from './SignNumber'
 
 interface FundActionType {
   className?: string
   rebalance?: Rebalance | any
-  isVertical?: boolean
+  isMobile?: boolean
 }
 
 const CardStyled = styled(Card)`
@@ -29,14 +30,24 @@ const CardStyled = styled(Card)`
   width: 100%;
 `
 
-const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVertical = false }) => {
+const Overlay = styled(Flex)`
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(180 169 168 / 90%);
+  pointer-events: initial;
+`
+
+const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMobile = false }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
 
   const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
-  const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
+  const currentBalance = get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
   const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
@@ -47,7 +58,7 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVer
 
   const combinedAmount = useCallback(async () => {
     if (account) {
-      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
+      const rebalanceAddress = getAddress(get(rebalance, 'address'))
 
       const myInvestTxnLocalStorage = JSON.parse(
         localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
@@ -56,11 +67,11 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVer
       const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
       const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
 
-      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
-      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-      const totalLps = _.get(resTotalTxn.data, 'total_lp_amount')
+      const latestTxns = get(resTotalTxn.data, 'latest_txn')
+      const totalUsds = get(resTotalTxn.data, 'total_usd_amount')
+      const totalLps = get(resTotalTxn.data, 'total_lp_amount')
 
-      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
+      const indexTx = findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
       const transactionsSlice = myInvestTxns.slice(indexTx + 1)
       myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
       localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
@@ -72,8 +83,8 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVer
       let lastTotalLp = 0
       if (transactionsSlice.length > 0) {
         const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-        lastTotalAmt = _.get(datas, 'total_usd_amount')
-        lastTotalLp = _.get(datas, 'total_lp_amount')
+        lastTotalAmt = get(datas, 'total_usd_amount')
+        lastTotalLp = get(datas, 'total_lp_amount')
       }
 
       const totalUsd = totalUsds
@@ -89,104 +100,103 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isVer
     }
   }, [sharedprice, rebalance, account, api])
 
+  const shares = useMemo(() => {
+    return numeral(currentBalanceNumber).format('0,0.[00]')
+  }, [currentBalanceNumber])
+
+  const Action = () => (
+    <>
+      <Button
+        scale="md"
+        width="100%"
+        minWidth="auto"
+        as={Link}
+        to="/rebalancing/invest"
+        className={isMobile ? 'mr-s12' : 'mb-s12'}
+        variant="red"
+      >
+        {t('Invest')}
+      </Button>
+      <Button scale="md" width="100%" minWidth="auto" as={Link} variant="lightbrown" to="/rebalancing/withdraw">
+        {t('Withdraw')}
+      </Button>
+    </>
+  )
+
   useEffect(() => {
     combinedAmount()
   }, [combinedAmount])
 
   return (
-    <CardStyled className={`flex flex-wrap justify-space-between pa-4 mt-4 ${className}`}>
-      {isVertical ? (
-        <div className="pa-4">
-          <Text fontSize="14px" color="textSubtle">
+    <CardStyled className={`pa-4 mt-4 ${className}`}>
+      {isMobile ? (
+        <>
+          <Flex alignItems="center" justifyContent="space-between" flex="1 1 0" className="mb-s16">
+            <Text textStyle="R_14M">{t('Current Investment')}</Text>
+            <LabelAndValue label={t('Shares')} value={shares} />
+          </Flex>
+          <Text textStyle="R_18B" marginBottom="2px">
+            {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
+          </Text>
+          <Text className="mb-s20">
+            {diffAmount !== 0 && (
+              <SignNumber textStyle="R_12M" value={diffAmount}>
+                {numeral(diffAmount).format('0,0.[00]')}
+              </SignNumber>
+            )}
+            {percentage !== 0 && (
+              <SignNumber textStyle="R_12M" value={percentage}>
+                {' '}
+                ({numeral(percentage).format('0,0.[00]')}%)
+              </SignNumber>
+            )}
+          </Text>
+          <Flex>
+            <Action />
+          </Flex>
+        </>
+      ) : (
+        <Flex justifyContent="space-between">
+          <Text textStyle="R_16M" minWidth="216px">
             {t('Current Investment')}
           </Text>
-          <Text fontSize="14px">{`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}</Text>
-          <div className="flex align-baseline">
-            <Text fontSize="24px" bold lineHeight="1.3">
-              {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-            </Text>
-            <div className="flex align-baseline">
+          <Flex flexDirection="column" flexGrow={1}>
+            <Flex className="mb-s16">
+              <LabelAndValue label={t('Shares')} value={shares} className="pr-s24" />
               {diffAmount !== 0 && (
-                <Text
-                  className="ml-1"
-                  fontSize="14px"
-                  bold
-                  color={(() => {
-                    if (percentage < 0) return 'failure'
-                    if (percentage > 0) return 'success'
-                    return ''
-                  })()}
-                >
-                  {`${
-                    percentage > 0
-                      ? `+${numeral(diffAmount).format('0,0.[000]')}`
-                      : `${numeral(diffAmount).format('0,0.[000]')}`
-                  }`}{' '}
-                </Text>
+                <LabelAndValue
+                  label={t('Change')}
+                  value={numeral(diffAmount).format('0,0.[000]')}
+                  signValue={diffAmount}
+                  className="bd-l px-s24"
+                />
               )}
               {percentage !== 0 && (
-                <Text
-                  className="ml-1"
-                  fontSize="12px"
-                  bold
-                  color={(() => {
-                    if (percentage < 0) return 'failure'
-                    if (percentage > 0) return 'success'
-                    return ''
-                  })()}
-                >
-                  {`(${
-                    percentage > 0
-                      ? `+${numeral(percentage).format('0,0.[00]')}`
-                      : `${numeral(percentage).format('0,0.[00]')}`
-                  }%)`}
-                </Text>
+                <LabelAndValue
+                  label={t('Yield')}
+                  value={`${numeral(percentage).format('0,0.[00]')}%`}
+                  signValue={percentage}
+                  className="bd-l px-s24"
+                />
               )}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <TwoLineFormat
-          title="Current investment"
-          subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
-          value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-          large
-          currentInvestPercentDiff={`(${
-            percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
-          }%)`}
-          diffAmounts={`${
-            percentage > 0
-              ? `+${numeral(diffAmount).format('0,0.[000]')}`
-              : `${numeral(diffAmount).format('0,0.[000]')}`
-          }`}
-          percentClass={(() => {
-            if (percentage < 0) return 'failure'
-            if (percentage > 0) return 'success'
-            return ''
-          })()}
-        />
+            </Flex>
+            <Text textStyle="R_14R" color="mediumgrey" marginBottom="4px">
+              {t('Total Value')}
+            </Text>
+            <Text textStyle="R_20B">
+              {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
+            </Text>
+          </Flex>
+          <Flex minWidth="160px" flexDirection="column">
+            <Action />
+          </Flex>
+        </Flex>
       )}
-
-      <div className={`flex col-12 pt-2 ${isVertical ? 'flex-column bd-t pa-4' : ''}`}>
-        {account ? (
-          <>
-            <Button
-              scale="lg"
-              as={Link}
-              to="/rebalancing/invest"
-              className={isVertical ? 'mb-2' : 'mr-2'}
-              variant="success"
-            >
-              INVEST
-            </Button>
-            <Button scale="lg" as={Link} to="/rebalancing/withdraw" className="flex flex-column">
-              WITHDRAW
-            </Button>
-          </>
-        ) : (
-          <UnlockButton scale="lg" />
-        )}
-      </div>
+      {!account && (
+        <Overlay justifyContent="center" alignItems="center">
+          <UnlockButton scale="sm" variant="red" maxWidth="160px" />
+        </Overlay>
+      )}
     </CardStyled>
   )
 }

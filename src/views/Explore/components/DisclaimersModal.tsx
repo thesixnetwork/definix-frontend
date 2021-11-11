@@ -83,12 +83,12 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
             >
               <Text textStyle="R_14R">I have read all the information above and agree to using the service.</Text>
             </CheckboxLabel>
-            <Button onClick={onExit} scale="36" className="mt-s24" disabled={!isAccept}>
+            <Button onClick={onExit} scale="lg" className="mt-s24" disabled={!isAccept}>
               Confirm
             </Button>
           </div>
         ) : (
-          <Button onClick={onDismiss} scale="36" className="mt-s24" width="100%">
+          <Button onClick={onDismiss} scale="lg" className="mt-s24" width="100%">
             Close
           </Button>
         )}

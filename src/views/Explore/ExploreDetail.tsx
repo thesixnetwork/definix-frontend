@@ -63,24 +63,23 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
   const { isDark } = useTheme()
-  const { isXl, isLg } = useMatchBreakpoints()
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const finixPrice = usePriceFinixUsd()
-  const isMobile = !isXl && !isLg
   const dispatch = useDispatch()
   const { account } = useWallet()
   const { t } = useTranslation()
   // for adjust color
   const rebalance = useMemo(() => {
     if (!rawData?.ratio) return rawData
-    console.log(rawData)
     const ratio = rawData?.ratio.map((coin) => {
       const colorObj = Color(coin.color)
       const color = ((dark, c) => {
         const hex = c.hex()
         if (dark) {
-          return hex === '#000000' ? c.lighten(0.1) : hex
+          return hex === '#000000' ? c.lighten(0.1).hex() : hex
         }
-        return hex === '#FFFFFF' ? c.darken(0.1) : hex
+        return hex === '#FFFFFF' ? c.darken(0.1).hex() : hex
       })(isDark, colorObj)
       return { ...coin, color }
     })
@@ -633,27 +632,33 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               variant="text"
               as={Link}
               to="/rebalancing"
-              size="sm"
+              height="24px"
+              p="0"
               startIcon={<ArrowBackIcon color="textSubtle" />}
-            />
-            <Text textStyle="R_16R" color="mediumgrey">
-              {rebalance.title}
-            </Text>
+            >
+              <Text textStyle="R_16R" color="textSubtle">
+                {rebalance.title}
+              </Text>
+            </Button>
           </Flex>
 
           <Card className="mb-s16">
             <CardBody>
-              <CardHeading rebalance={rebalance} className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`} />
+              <CardHeading
+                rebalance={rebalance}
+                isHorizontal={isMobile}
+                className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`}
+              />
 
               <div className="flex flex-wrap">
                 <TwoLineFormat
                   className={isMobile ? 'col-6 mb-s20' : 'col-3'}
-                  title="Total asset value"
+                  title={t('Total Asset Value')}
                   value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
                 />
                 <TwoLineFormat
                   className={isMobile ? 'col-6 mb-s20' : 'col-3 bd-l pl-s32'}
-                  title="Yield APR"
+                  title={t('Yield APR')}
                   value={`${numeral(
                     finixPrice
                       .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
@@ -666,7 +671,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
 
                 <TwoLineFormat
                   className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
-                  title="Share price (Since inception)"
+                  title={t('Share Price(Since Inception)')}
                   value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                   percent={`${
                     rebalance.sharedPricePercentDiff >= 0
@@ -686,7 +691,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                 /> */}
                 <TwoLineFormat
                   className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
-                  title="Risk-O-Meter"
+                  title={t('Risk-0-Meter')}
                   value="Medium"
                 />
               </div>
@@ -698,7 +703,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           </Card>
         </div>
 
-        <FundAction rebalance={rebalance} isVertical={!isMobile} />
+        <FundAction rebalance={rebalance} isMobile={isMobile} />
       </Box>
     </>
   )
