@@ -1,17 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import UnlockButton from 'components/UnlockButton'
-import _ from 'lodash'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
+import UnlockButton from 'components/UnlockButton'
+import _ from 'lodash'
 import numeral from 'numeral'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Button, Card, useMatchBreakpoints, Text } from 'uikit-dev'
+import { AddIcon, Button, Card, MinusIcon } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
-import { useRebalanceBalances, useBalances } from '../../../state/hooks'
-import TwoLineFormat from './TwoLineFormat'
+import { useBalances, useRebalanceBalances } from '../../../state/hooks'
 import { Rebalance } from '../../../state/types'
+import Harvest from './Harvest'
+import TwoLineFormat from './TwoLineFormat'
 
 interface FundActionType {
   className?: string
@@ -19,18 +20,17 @@ interface FundActionType {
   isVertical?: boolean
 }
 
-const CardStyled = styled(Card)<{ isVertical: boolean }>`
+const StickyBox = styled.div<{ isVertical: boolean }>`
   position: sticky;
   top: ${({ isVertical }) => (isVertical ? '0' : 'initial')};
-  bottom: ${({ isVertical }) => (!isVertical ? '0' : 'initial')};
+  bottom: ${({ isVertical }) => (isVertical ? 'initial' : '0')};
   align-self: start;
   left: 0;
-  width: 100%;
+  margin-left: ${({ isVertical }) => (isVertical ? '1.25rem' : 'initial')};
+  border-top: ${({ isVertical, theme }) => (isVertical ? '' : `1px solid ${theme.colors.border}`)};
 `
 
-const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical = false }) => {
-  const { isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isMd && !isLg
+const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => {
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
@@ -94,112 +94,93 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
   }, [combinedAmount])
 
   return (
-    <CardStyled
-      className={`flex flex-wrap justify-space-between ${className} ${isVertical ? 'flex-column ml-4' : 'pa-4 bd-t'}`}
-      isVertical={isVertical}
-    >
-      {isVertical ? (
-        <div className="pa-4">
-          <Text fontSize="14px" color="textSubtle">
-            Current investment
-          </Text>
-          <Text fontSize="14px">{`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}</Text>
-          <div className="flex align-baseline">
-            <Text fontSize="24px" bold lineHeight="1.3">
-              {`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-            </Text>
-            <div className="flex align-baseline">
-              {diffAmount !== 0 && (
-                <Text
-                  className="ml-1"
-                  fontSize="14px"
-                  bold
-                  color={(() => {
-                    if (percentage < 0) return 'failure'
-                    if (percentage > 0) return 'success'
-                    return ''
-                  })()}
-                >
-                  {`${
-                    percentage > 0
-                      ? `+${numeral(diffAmount).format('0,0.[000]')}`
-                      : `${numeral(diffAmount).format('0,0.[000]')}`
-                  }`}{' '}
-                </Text>
-              )}
-              {percentage !== 0 && (
-                <Text
-                  className="ml-1"
-                  fontSize="12px"
-                  bold
-                  color={(() => {
-                    if (percentage < 0) return 'failure'
-                    if (percentage > 0) return 'success'
-                    return ''
-                  })()}
-                >
-                  {`(${
-                    percentage > 0
-                      ? `+${numeral(percentage).format('0,0.[00]')}`
-                      : `${numeral(percentage).format('0,0.[00]')}`
-                  }%)`}
-                </Text>
-              )}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <TwoLineFormat
-          title="Current investment"
-          subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
-          value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-          large
-          currentInvestPercentDiff={`(${
-            percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
-          }%)`}
-          diffAmounts={`${
-            percentage > 0
-              ? `+${numeral(diffAmount).format('0,0.[000]')}`
-              : `${numeral(diffAmount).format('0,0.[000]')}`
-          }`}
-          percentClass={(() => {
-            if (percentage < 0) return 'failure'
-            if (percentage > 0) return 'success'
-            return ''
-          })()}
-        />
-      )}
+    <div className={isVertical ? '' : 'flex align-center'}>
+      <TwoLineFormat
+        title="Current investment"
+        subTitle={`${numeral(currentBalanceNumber).format('0,0.[00]')} Shares`}
+        value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
+        className={isVertical ? 'pa-3' : 'col-7'}
+        large={large}
+        currentInvestPercentDiff={`(${
+          percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
+        }%)`}
+        diffAmounts={`${
+          percentage > 0 ? `+${numeral(diffAmount).format('0,0.[000]')}` : `${numeral(diffAmount).format('0,0.[000]')}`
+        }`}
+        percentClass={(() => {
+          if (percentage < 0) return 'failure'
+          if (percentage > 0) return 'success'
+          return ''
+        })()}
+      />
 
       {account ? (
-        <div
-          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
-            isVertical ? 'flex-column bd-t pa-4' : ''
-          }`}
-        >
-          <Button
-            as={Link}
-            to="/rebalancing/invest"
-            fullWidth
-            radii="small"
-            className={isVertical ? 'mb-2' : 'mr-2'}
-            variant="success"
-          >
-            INVEST
-          </Button>
-          <Button as={Link} to="/rebalancing/withdraw" fullWidth radii="small" className="flex flex-column">
-            WITHDRAW
-          </Button>
-        </div>
+        <>
+          {isVertical ? (
+            <div className="bd-t pa-3">
+              <Button as={Link} to="/rebalancing/invest" fullWidth radii="small" className="mb-3" variant="primary">
+                INVEST
+              </Button>
+              <Button as={Link} to="/rebalancing/withdraw" variant="secondary" fullWidth radii="small">
+                WITHDRAW
+              </Button>
+            </div>
+          ) : (
+            <div className="flex col-5 pl-2 justify-end">
+              <Button
+                as={Link}
+                to="/rebalancing/invest"
+                size="md"
+                radii="small"
+                className="mr-2 px-3"
+                variant="primary"
+                fullWidth
+              >
+                <AddIcon color="white" />
+              </Button>
+              <Button
+                as={Link}
+                to="/rebalancing/withdraw"
+                variant="secondary"
+                size="md"
+                radii="small"
+                className="px-3"
+                fullWidth
+              >
+                <MinusIcon color="primary" />
+              </Button>
+            </div>
+          )}
+        </>
       ) : (
-        <div
-          className={`flex ${isMobile || isVertical ? 'col-12' : 'col-6'} ${isMobile ? 'pt-2' : ''} ${
-            isVertical ? 'flex-column bd-t pa-4' : ''
-          }`}
-        >
+        <div className={isVertical ? 'pa-3 bd-t' : 'col-5 pl-2'}>
           <UnlockButton fullWidth />
         </div>
       )}
-    </CardStyled>
+    </div>
+  )
+}
+
+const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical = false }) => {
+  return (
+    <StickyBox isVertical={isVertical} className={className}>
+      {isVertical ? (
+        <>
+          <Card className={isVertical ? 'mb-4' : 'pa-4 pb-0'}>
+            <Harvest value="12,300.75" subValue="$173,440.575" isVertical large />
+          </Card>
+
+          <Card>
+            <CurrentInvestment rebalance={rebalance} isVertical large />
+          </Card>
+        </>
+      ) : (
+        <Card className={isVertical ? 'mb-4' : 'pa-4'}>
+          <Harvest value="12,300.75" subValue="$173,440.575" />
+          <CurrentInvestment rebalance={rebalance} />
+        </Card>
+      )}
+    </StickyBox>
   )
 }
 

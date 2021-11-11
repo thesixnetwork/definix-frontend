@@ -1,6 +1,15 @@
 import React from 'react'
 import { Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
+import styled from 'styled-components'
+
+const Coin = styled.img`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  display: block;
+  flex-shrink: 0;
+`
 
 interface TwoLineFormatType {
   className?: string
@@ -8,7 +17,9 @@ interface TwoLineFormatType {
   subTitle?: string
   subTitleFontSize?: string
   titleColor?: string
+  coin?: any
   value: string
+  subValue?: string
   percent?: string
   hint?: string
   hintPosition?: string
@@ -27,7 +38,9 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   subTitle,
   subTitleFontSize,
   titleColor,
+  coin,
   value,
+  subValue,
   percent,
   hint,
   hintPosition = 'top',
@@ -41,7 +54,9 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
 }) => {
   return (
     <div className={className}>
-      <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`} style={{ lineHeight: '0' }}>
+      <div className={`flex flex-wrap align-baseline ${alignRight ? 'justify-end' : ''}`} style={{ lineHeight: '0' }}>
+        {coin && <Coin src={coin} alt="" className="align-self-center" />}
+
         <Text fontSize="14px" color={titleColor || 'textSubtle'}>
           {title}
         </Text>
@@ -52,19 +67,19 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
           </Text>
         )}
 
-        {hint && <Helper text={hint} className="ml-1" position={hintPosition} />}
+        {hint && <Helper text={hint} className="ml-1 align-self-center" position={hintPosition} />}
       </div>
 
-      <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
+      <div className={`flex flex-wrap align-baseline ${alignRight ? 'justify-end' : ''}`}>
         <Text fontSize={large ? '24px' : '16px'} bold color={valueClass} lineHeight={large ? '1.3' : '1.5'}>
           {value}
         </Text>
-        {diffAmounts !== '0' && (
+        {diffAmounts && diffAmounts !== '0' && (
           <Text fontSize={large ? '16px' : '14px'} bold color={percentClass} className="ml-1">
             {diffAmounts}
           </Text>
         )}
-        {currentInvestPercentDiff !== '(0%)' && (
+        {currentInvestPercentDiff && currentInvestPercentDiff !== '(0%)' && (
           <Text fontSize={large ? '14px' : '12px'} bold color={percentClass} className="ml-1">
             {currentInvestPercentDiff}
           </Text>
@@ -77,6 +92,11 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
         {days && (
           <Text fontSize={large ? '16px' : '14px'} className="ml-1">
             {days}
+          </Text>
+        )}
+        {subValue && (
+          <Text fontSize="12px" color="textSubtle" className="ml-1">
+            {subValue}
           </Text>
         )}
       </div>
