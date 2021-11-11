@@ -24,7 +24,7 @@ import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { PoolCardProps } from './types'
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }) => {
+const PoolCard: React.FC<PoolCardProps> = ({ pool, myBalanceInWallet, onSelectAdd, onSelectRemove }) => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const {
@@ -90,14 +90,29 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, onSelectAdd, onSelectRemove }
     () => <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked} />,
     [tokenName, totalStaked],
   )
+
   const renderMyBalanceSection = useCallback(
-    () => <MyBalanceSection title="Balance" tokenName={tokenName} balance={stakedBalance} />,
-    [tokenName, stakedBalance],
+    () => (
+      <>
+        {
+          !myBalanceInWallet || myBalanceInWallet === null
+            ? null
+            : <MyBalanceSection
+                title="Balance"
+                tokenName={tokenName}
+                myBalance={myBalanceInWallet}
+              />
+        }
+      </>
+    ),
+    [tokenName, myBalanceInWallet],
   )
   const renderEarningsSection = useCallback(
     () => <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings} />,
     [tokenName, earnings],
   )
+
+  console.log('pool: ', pool)
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
