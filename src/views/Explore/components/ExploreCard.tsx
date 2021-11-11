@@ -2,11 +2,12 @@ import React, { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, Card, CardBody, CardRibbon, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, Button, Card, CardBody, CardRibbon, Flex, useMatchBreakpoints } from 'definixswap-uikit'
 import numeral from 'numeral'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
@@ -21,12 +22,6 @@ interface ExploreCardType {
   balance: BigNumber
   onClickViewDetail: () => void
 }
-
-const VerticalStyle = styled(Card)`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-`
 
 const HorizontalStyle = styled(Card)`
   width: 100%;
@@ -45,6 +40,7 @@ const HorizontalMobileStyle = styled(Card)`
 `
 
 const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  const { t } = useTranslation()
   return (
     <Button
       minWidth="auto"
@@ -55,7 +51,7 @@ const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
       onClick={onClick}
       className="w-100"
     >
-      View Details
+      {t('View Details')}
     </Button>
   )
 }
@@ -66,8 +62,9 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   rebalance = {},
   onClickViewDetail,
 }) => {
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { t } = useTranslation()
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
   const { ratio } = rebalance
   const finixPrice = usePriceFinixUsd()
 
@@ -148,13 +145,15 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         <CardHeading className="pa-4 pb-6" isHorizontal rebalance={rebalance} />
 
         <div>
-          <div className="flex px-4 pb-5">
+          <Flex flexWrap="wrap" className="flex px-4 pb-5" justifyContent="space-between">
             <TwoLineFormat
-              title="Total asset value"
+              className="col-6"
+              title={t('Total Asset Value')}
               value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
             />
             <TwoLineFormat
-              title="Yield APR"
+              className="col-6"
+              title={t('Yield APR')}
               value={`${numeral(
                 finixPrice
                   .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
@@ -164,10 +163,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               ).format('0,0.[00]')}%`}
               hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
             />
-          </div>
-          <div className="px-4 pb-5">
+          </Flex>
+          <Box px="S_20" pb="S_20">
             <TwoLineFormat
-              title="Share price (Since inception)"
+              title={t('Share Price(Since Inception)')}
               value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
               percent={`${
                 rebalance.sharedPricePercentDiff >= 0
@@ -180,11 +179,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 return ''
               })()}
             />
-          </div>
-          <div className="px-4 py-3 bd-t">
+          </Box>
+          <Box p="S_20" pb="S_20" className="bd-t">
             <TwoLineFormat
               className="pb-6"
-              title="Current investment"
+              title={t('Current Investment')}
               value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
               currentInvestPercentDiff={`(${
                 percentage > 0
@@ -203,7 +202,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               })()}
             />
             <BtnViewDetail onClick={onClickViewDetail} />
-          </div>
+          </Box>
         </div>
       </HorizontalMobileStyle>
     )
@@ -218,12 +217,12 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             <div className="flex justify-space-between mb-4">
               <TwoLineFormat
                 className="col-5"
-                title="Total asset value"
+                title={t('Total Asset Value')}
                 value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
               />
               <TwoLineFormat
                 className="col-5"
-                title="Yield APR"
+                title={t('Yield APR')}
                 value={`${numeral(
                   finixPrice
                     .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
@@ -240,7 +239,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           <div className="flex flex-grow">
             <div className="col-6 flex flex-column justify-space-between bd-r px-6">
               <TwoLineFormat
-                title="Share price (Since inception)"
+                title={t('Share Price(Since Inception)')}
                 value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
                 percent={`${
                   rebalance.sharedPricePercentDiff >= 0
@@ -263,7 +262,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
             <div className="col-6 flex flex-column justify-space-between pl-6">
               <TwoLineFormat
-                title="Current investment"
+                title={t('Current Investment')}
                 value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
                 currentInvestPercentDiff={`(${
                   percentage > 0

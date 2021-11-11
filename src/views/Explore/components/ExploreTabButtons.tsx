@@ -13,8 +13,8 @@ const Wrapper = styled.div`
 
 const ExploreTabButtons = ({ isInvested, setIsInvested }) => {
   const { isDark } = useTheme()
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
+  const { isXl, isXxl } = useMatchBreakpoints()
+  const isMobile = !isXl && !isXxl
 
   return (
     <Wrapper>
