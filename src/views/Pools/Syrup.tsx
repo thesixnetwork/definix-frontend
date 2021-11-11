@@ -188,7 +188,7 @@ const Farm: React.FC = () => {
   const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
-  const totalAllMyFarms = Math.round(earningsSum + earningsPoolSum + finixEarn * 100) / 100
+  const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum + finixEarn) * 100) / 100
   const [onPresentConnectModal] = useModal(
     !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
   )
