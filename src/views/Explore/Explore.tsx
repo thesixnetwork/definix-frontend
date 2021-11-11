@@ -1,4 +1,4 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import React, { useEffect, useState } from 'react'

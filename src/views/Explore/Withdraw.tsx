@@ -6,8 +6,6 @@ import BigNumber from 'bignumber.js'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
 import Radio from '@material-ui/core/Radio'
-import { getAbiRebalanceByName } from 'hooks/hookHelper'
-import * as klipProvider from 'hooks/klipProvider'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
 import { AbiItem } from 'web3-utils'
@@ -15,7 +13,7 @@ import { provider } from 'web3-core'
 import rebalanceAbi from 'config/abi/rebalance.json'
 import { getCustomContract } from 'utils/erc20'
 import numeral from 'numeral'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import useTheme from 'hooks/useTheme'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -23,6 +21,7 @@ import { Helmet } from 'react-helmet'
 import Lottie from 'react-lottie'
 import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
+import { isExternalModule } from 'typescript'
 import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -129,16 +128,15 @@ const CardInput = ({
   setSelectedToken,
 }) => {
   const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
-  const { setShowModal } = React.useContext(KlipModalContext())
-  const { account, klaytn, connector } = useWallet()
+  const isMobile = !isExternalModule
+  const { account, ethereum } = useWallet()
   const dispatch = useDispatch()
   const { isDark } = useTheme()
 
   const usdToBeRecieve = parseFloat(currentInput) * rebalance.sharedPrice
   const onWithdraw = async () => {
     const rebalanceContract = getCustomContract(
-      klaytn as provider,
+      ethereum as provider,
       rebalanceAbi as unknown as AbiItem,
       getAddress(rebalance.address),
     )
@@ -148,45 +146,24 @@ const CardInput = ({
         ? currentBalance
         : new BigNumber(currentInput)
       const usdToken = _.get(rebalance, 'usdToken.0', {})
-      if (connector === 'klip') {
-        klipProvider.genQRcodeContactInteract(
-          getAddress(rebalance.address),
-          JSON.stringify(getAbiRebalanceByName('removeFund')),
-          JSON.stringify([
-            thisInput.times(new BigNumber(10).pow(18)).toJSON(),
-            ratioType === 'all',
-            ((rebalance || {}).tokens || []).map((token, index) => {
-              const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
-              return selectedToken[tokenAddress]
-                ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
-                : 0
-            }),
-            selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
-              ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
-              : 0,
-          ]),
-          setShowModal,
+
+      const tx = await rebalanceContract.methods
+        .removeFund(
+          thisInput.times(new BigNumber(10).pow(18)).toJSON(),
+          ratioType === 'all',
+          ((rebalance || {}).tokens || []).map((token, index) => {
+            const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
+            return selectedToken[tokenAddress]
+              ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
+              : 0
+          }),
+          selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
+            ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
+            : 0,
         )
-        const tx = await klipProvider.checkResponse()
-        setTx(tx)
-      } else {
-        const tx = await rebalanceContract.methods
-          .removeFund(
-            thisInput.times(new BigNumber(10).pow(18)).toJSON(),
-            ratioType === 'all',
-            ((rebalance || {}).tokens || []).map((token, index) => {
-              const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
-              return selectedToken[tokenAddress]
-                ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
-                : 0
-            }),
-            selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
-              ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
-              : 0,
-          )
-          .send({ from: account, gas: 5000000 })
-        setTx(tx)
-      }
+        .send({ from: account, gas: 5000000 })
+      setTx(tx)
+
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
