@@ -30,10 +30,9 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix, flg) => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const stake = useCallback(async () => {
-    const checked = flg
     setStatus(false)
     setLoading('loading')
-    if (checked) {
+    if (lockFinix !== '') {
       try {
         if (connector === 'klip') {
           klipProvider.genQRcodeContactInteract(
@@ -77,7 +76,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix, flg) => {
     }
 
     return status
-  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv, flg])
+  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv])
 
   return { onLockPlus: stake, status, loadings }
 }

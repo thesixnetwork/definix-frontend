@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import _ from 'lodash'
+import moment from 'moment'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR } from 'config'
@@ -33,6 +34,8 @@ import {
   useSousHarvest,
   useBalances,
   useLockTopup,
+  useAllDataLock,
+  useAllLock,
 } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
@@ -201,12 +204,21 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const balanceOf = useBalances()
   const [period, setPeriod] = useState(0)
   const [idLast, setIdLast] = useState(0)
-  const [amount, setAmount] = useState('0')
+  const [amount, setAmount] = useState('')
   const lockTopUp = useLockTopup()
   const [harvestProgress, setHarvestProgress] = useState(-1)
   const [flg, setFlg] = useState(false)
   const [pendingReward, setPendingReward] = useState('0')
   const [sumpendingReward, setSumPendingReward] = useState('0')
+  const levelStake = useAllDataLock()
+  const [allSelect, setAllSelect] = useState([])
+  const [lengthSelect, setLengthSelect] = useState(0)
+  const [date, setDate] = useState('-')
+  const { allLockPeriod } = useAllLock()
+  const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
+  const [percentPenalty, setPercentPenalty] = useState(0)
+  const [letvel, setLevel] = useState(0)
+  const [days, setdays] = useState(28)
 
   const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
 
@@ -296,24 +308,38 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const longtermApr = useAprCardFarmHome()
 
   useEffect(() => {
-    const arrStr = lockTopUp.map((i) => Number(i))
-    const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
-    const initialValue = 9
-    Object.values(selectedToken).map((d, i) => {
-      console.log('Object.keys(selectedToken)', _.get(d, 'checked'))
-      return d
-    })
-
-    let max = 0
-    removeTopUpId.forEach((character) => {
-      if (_.get(character, 'level') === period) {
-        if (_.get(character, 'id') > max) {
-          max = _.get(character, 'id')
+    if (lockTopUp !== null && lockTopUp.length > 0) {
+      const arrStr = lockTopUp.map((i) => Number(i))
+      const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
+      let max = 0
+      for (let i = 0; i < removeTopUpId.length; i++) {
+        const selector = removeTopUpId[i]
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === period &&
+          _.get(selector, 'id') > max
+        ) {
+          max = _.get(selector, 'id')
+          setIdLast(max)
         }
       }
-    })
-    setIdLast(max)
-  }, [allDataLock, period, lockTopUp, selectedToken, harvestProgress])
+    } else {
+      let max = 0
+      for (let i = 0; i < allDataLock.length; i++) {
+        const selector = allDataLock[i]
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === period &&
+          _.get(selector, 'id') > max
+        ) {
+          max = _.get(selector, 'id')
+          setIdLast(max)
+        }
+      }
+    }
+  }, [allDataLock, period, lockTopUp])
 
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
@@ -490,54 +516,87 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     }
   }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
 
-  const handleHar = useCallback(async () => {
-    await onLockPlus()
-  }, [onLockPlus])
-
   useEffect(() => {
-    if (harvestProgress !== -1 && harvestProgress === Object.values(selectedToken).length) {
-      setAmount('10000000000000000000000')
-      setFlg(true)
+    if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
       if (Object.values(selectedToken)[0]) {
         onLockPlus()
           .then((d) => {
+            setFlg(false)
+            setAmount('')
             if (d === true) {
-              setFlg(true)
-              setPendingTx(false)
-              onDismiss()
+              setHarvestProgress(-1)
+              setLengthSelect(0)
+              setAmount('')
               setSelectedToken({})
+              setFlg(false)
+              onDismiss()
             }
           })
           .catch((e) => {
-            setFlg(true)
-            console.log('e')
+            setAmount('')
+            setFlg(false)
           })
       }
     } else if (harvestProgress !== -1) {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [
-    harvestProgress,
-    selectedToken,
-    _superHarvest,
-    onLockPlus,
-    handleHar,
-    sumpendingReward,
-    value,
-    onDismiss,
-    flg,
-    pendingTx,
-  ])
+  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, onDismiss, lengthSelect, flg])
 
-  // useEffect(() => {
-  //   if (Object.values(selectedToken).length > 0) {
-  //     const result = Object.values(selectedToken).map((a) => _.get(a, 'pendingReward'))
+  useEffect(() => {
+    if (Object.values(selectedToken).length > 0) {
+      const dataArray = []
+      for (let i = 0; i < Object.values(selectedToken).length; i++) {
+        const selector = Object.values(selectedToken)[i]
+        if (_.get(selector, 'checked')) {
+          dataArray.push(_.get(selector, 'pendingReward'))
+        } else {
+          dataArray.splice(i)
+        }
+      }
+      const sum = dataArray.reduce((r, n) => r + n, 0)
+      setLengthSelect(dataArray.length)
+      setSumPendingReward(parseFloat(sum).toFixed(2))
+      const total = Number(value) + sum
+      setAmount(new BigNumber(parseFloat(total)).times(new BigNumber(10).pow(18)).toFixed())
+    } else {
+      setAmount('')
+    }
+  }, [selectedToken, value])
 
-  //     const sum = result.reduce((r, n) => r + n)
-  //     setSumPendingReward(parseFloat(sum).toFixed(2))
-  //   }
-  // }, [selectedToken])
+  useEffect(() => {
+    const offset = 2
+    const now = new Date()
+    const utc = now.getTime()
+    let nd = new Date(utc + 3600000 * offset)
+    const dateTime = now.getTimezoneOffset() / 60
+    if (dateTime === -9) {
+      nd = new Date()
+    }
+
+    if (period === 1) {
+      nd.setDate(nd.getDate() + 90)
+      nd = new Date(nd)
+      setPercentPenalty(_.get(realPenaltyRate, '0') * 100)
+      setLevel(0)
+      setdays(7)
+      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
+    } else if (period === 2) {
+      nd.setDate(nd.getDate() + 180)
+      nd = new Date(nd)
+      setPercentPenalty(_.get(realPenaltyRate, '1') * 100)
+      setLevel(1)
+      setdays(14)
+      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
+    } else if (period === 4) {
+      nd.setDate(nd.getDate() + 365)
+      nd = new Date(nd)
+      setPercentPenalty(_.get(realPenaltyRate, '2') * 100)
+      setLevel(2)
+      setdays(28)
+      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
+    }
+  }, [period, value, allLockPeriod, realPenaltyRate])
 
   return (
     <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss}>
@@ -684,7 +743,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle">
           Please select duration
         </Text>
-        <StakePeriodButton setPeriod={setPeriod} status={false} levelStake={[]} isTopUp />
+        <StakePeriodButton setPeriod={setPeriod} status={false} levelStake={levelStake} isTopUp />
         <div className="flex mt-4 w-100">
           <Text className="col-6" color="textSubtle">
             From your wallet: {balanceOf ? numeral(balanceOf).format('0,0') : '-'}
@@ -711,7 +770,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <NumberInput
               style={{ width: '45%' }}
               placeholder="0.00"
-              value={pendingReward}
+              value={sumpendingReward}
               disabled
               className="text-right"
               pattern="^[0-9]*[,]?[0-9]*$"
@@ -723,7 +782,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             Estimated Period End
           </Text>
           <Text className="col-6 text-right" color="#30ADFF">
-            -
+            {date} {date !== '-' && 'GMT+9'}
           </Text>
         </div>
         <div className="flex mt-2 w-100">
@@ -732,7 +791,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Text>
           <div className="flex flex-row justify-end w-100">
             <Text className="text-right" color="#30ADFF">
-              {value}
+              {Number(value) + Number(sumpendingReward)}
             </Text>
             <Text className="text-right ml-1" color="#000000">
               vFINIX
@@ -745,7 +804,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Text>
           <div className="flex flex-row justify-end w-100">
             <Text className="text-right" color="#30ADFF">
-              {Number(value) * period}
+              {Number(value) + Number(sumpendingReward) * period}
             </Text>
             <Text className="text-right ml-1" color="#000000">
               vFINIX
@@ -754,10 +813,17 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         </div>
         {pendingTx ? (
           <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" disabled>
-            {`Harvesting...(${harvestProgress} /${Object.keys(selectedToken).length})`}
+            {`Harvesting...(${harvestProgress} /${lengthSelect})`}
           </Button>
         ) : (
-          <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" onClick={() => setHarvestProgress(0)}>
+          <Button
+            fullWidth
+            disabled={lengthSelect <= 0}
+            id="harvest-all"
+            radii="small"
+            className="ml-2 mt-3"
+            onClick={() => setHarvestProgress(0)}
+          >
             Stake
           </Button>
         )}
