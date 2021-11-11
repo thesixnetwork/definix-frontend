@@ -294,6 +294,12 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }
   const [value, setValue] = useState('0')
 
+  useEffect(() => {
+    if (value === '0') {
+      setValue(numeral(balanceOf).format('0,0.[00]'))
+    }
+  }, [value, balanceOf])
+
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
   function escapeRegExp(string: string): string {
@@ -775,7 +781,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         ) : (
           <Button
             fullWidth
-            disabled={lengthSelect <= 0 && amount === ''}
+            disabled={lengthSelect <= 0 && value === '0'}
             id="harvest-all"
             radii="small"
             className="mt-3"
