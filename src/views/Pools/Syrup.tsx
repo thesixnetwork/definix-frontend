@@ -66,24 +66,30 @@ const Farm: React.FC = () => {
   //   : new Date().getTime()
   // const currentTime = new Date().getTime()
 
-  const priceToKlay = useCallback((tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
-    const tokenPriceKLAYTN = new BigNumber(tokenPrice)
-    if (tokenName === 'KLAY') {
-      return new BigNumber(1)
-    }
-    if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
-      return tokenPriceKLAYTN.div(klayPriceUSD)
-    }
-    return tokenPriceKLAYTN
-  }, [klayPriceUSD])
+  const priceToKlay = useCallback(
+    (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
+      const tokenPriceKLAYTN = new BigNumber(tokenPrice)
+      if (tokenName === 'KLAY') {
+        return new BigNumber(1)
+      }
+      if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
+        return tokenPriceKLAYTN.div(klayPriceUSD)
+      }
+      return tokenPriceKLAYTN
+    },
+    [klayPriceUSD],
+  )
 
-  const getStakingTokenFarm = useCallback((pool) => {
-    let stakingTokenFarm = farms.find((farm) => farm.tokenSymbol === pool.stakingTokenName)
-    if (pool.sousId >= 0 && pool.sousId <= 6) {
-      stakingTokenFarm = farms.find((farm) => farm.pid === pool.sousId)
-    }
-    return stakingTokenFarm
-  }, [farms])
+  const getStakingTokenFarm = useCallback(
+    (pool) => {
+      let stakingTokenFarm = farms.find((farm) => farm.tokenSymbol === pool.stakingTokenName)
+      if (pool.sousId >= 0 && pool.sousId <= 6) {
+        stakingTokenFarm = farms.find((farm) => farm.pid === pool.sousId)
+      }
+      return stakingTokenFarm
+    },
+    [farms],
+  )
 
   const getHighestToken = useCallback((stakingTokenFarm) => {
     let highestToken
@@ -100,27 +106,28 @@ const Farm: React.FC = () => {
   }, [])
 
   const getKlayBundle = useCallback((stakingTokenFarm) => {
-    return (stakingTokenFarm.bundleRewards || []).find(
-      (br) => br.rewardTokenInfo.name === QuoteToken.WKLAY
-    )
+    return (stakingTokenFarm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.WKLAY)
   }, [])
 
-  const getTotalValue = useCallback((currentTotalStaked, stakingTokenFarm) => {
-    let totalValue = new BigNumber(currentTotalStaked)
-    if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KLAY) {
-      totalValue = klayPriceUSD.times(new BigNumber(currentTotalStaked))
-    }
-    if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.FINIX) {
-      totalValue = finixPriceUSD.times(new BigNumber(currentTotalStaked))
-    }
-    if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KETH) {
-      totalValue = kethPriceUsd.times(new BigNumber(currentTotalStaked))
-    }
-    if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
-      totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))
-    }
-    return totalValue
-  }, [klayPriceUSD, finixPriceUSD, kethPriceUsd, sixPriceUSD])
+  const getTotalValue = useCallback(
+    (currentTotalStaked, stakingTokenFarm) => {
+      let totalValue = new BigNumber(currentTotalStaked)
+      if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KLAY) {
+        totalValue = klayPriceUSD.times(new BigNumber(currentTotalStaked))
+      }
+      if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.FINIX) {
+        totalValue = finixPriceUSD.times(new BigNumber(currentTotalStaked))
+      }
+      if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.KETH) {
+        totalValue = kethPriceUsd.times(new BigNumber(currentTotalStaked))
+      }
+      if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
+        totalValue = sixPriceUSD.times(new BigNumber(currentTotalStaked))
+      }
+      return totalValue
+    },
+    [klayPriceUSD, finixPriceUSD, kethPriceUsd, sixPriceUSD],
+  )
 
   const getPoolsWithApy = useCallback(() => {
     return pools.map((pool) => {
@@ -131,7 +138,7 @@ const Farm: React.FC = () => {
       // tmp mulitplier to support ETH farms
       // Will be removed after the price api
       const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
-  
+
       // /!\ Assume that the farm quote price is KLAY
       const stakingTokenPriceInKLAY = isKlayPool
         ? new BigNumber(1)
@@ -141,7 +148,7 @@ const Farm: React.FC = () => {
         rewardTokenFarm?.tokenPriceVsQuote,
         rewardTokenFarm?.quoteTokenSymbol,
       )
-  
+
       const totalRewardPricePerYear = rewardTokenPriceInKLAY.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
       const totalStakingTokenInPool = stakingTokenPriceInKLAY.times(getBalanceNumber(pool.totalStaked))
       let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
@@ -150,7 +157,7 @@ const Farm: React.FC = () => {
       const tokenPerLp = new BigNumber(totalLP).div(new BigNumber(highestToken))
       const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(sixPriceUSD))
       const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
-  
+
       let klayApy = new BigNumber(0)
       switch (pool.sousId) {
         case 0: {
@@ -228,7 +235,7 @@ const Farm: React.FC = () => {
     getTotalValue,
     klayPriceUSD,
     priceToKlay,
-    sixPriceUSD
+    sixPriceUSD,
   ])
 
   const poolsWithApy = useMemo(() => getPoolsWithApy(), [getPoolsWithApy])
@@ -340,17 +347,15 @@ const Farm: React.FC = () => {
             ) : (
               <>
                 <Route exact path={`${path}`}>
-                  {orderedPools.map(
-                    (pool) => (
-                      <PoolCard
-                        key={pool.sousId}
-                        pool={pool}
-                        myBalanceInWallet={getMyBalanceInWallet(pool.tokenName, pool.stakingTokenAddress)}
-                        onSelectAdd={onSelectAdd}
-                        onSelectRemove={onSelectRemove}
-                      />
-                    ),
-                  )}
+                  {orderedPools.map((pool) => (
+                    <PoolCard
+                      key={pool.sousId}
+                      pool={pool}
+                      myBalanceInWallet={getMyBalanceInWallet(pool.tokenName, pool.stakingTokenAddress)}
+                      onSelectAdd={onSelectAdd}
+                      onSelectRemove={onSelectRemove}
+                    />
+                  ))}
                 </Route>
                 {/* <Route path={`${path}/history`}>
                   {orderBy(finishedPools, ['sortOrder']).map((pool) => (

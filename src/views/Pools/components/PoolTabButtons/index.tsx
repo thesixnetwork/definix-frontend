@@ -5,14 +5,17 @@ import { Box, Text, Toggle, Flex, ColorStyles, Dropdown, DropdownButton, Dropdow
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderBy }) => {
   const { t } = useTranslation()
   const [isOpenDropdown, setIsOpenDropdown] = useState(false)
-   
-  const dropdownDataList = useRef([{
-    id: 'sortOrder',
-    label: 'Recommend'
-  },{
-    id: 'apy',
-    label: 'APR'
-  }])
+
+  const dropdownDataList = useRef([
+    {
+      id: 'sortOrder',
+      label: 'Recommend',
+    },
+    {
+      id: 'apy',
+      label: 'APR',
+    },
+  ])
   // {
   //   id: 'totalLiquidity',
   //   label: 'Total Liquidity'
@@ -45,7 +48,6 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, or
               <DropdownItem key={data.id}>{data.label}</DropdownItem>
             ))}
           </Dropdown>
-
         </Flex>
         <Box>search box</Box>
       </Flex>
