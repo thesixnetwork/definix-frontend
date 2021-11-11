@@ -129,7 +129,7 @@ const HeaderBanner = styled(Text)`
   color: #222331;
   font-weight: bold;
   font-size: 24px !important;
-  line-height: 1.7rem;
+  line-height: 1.2;
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: 40%;

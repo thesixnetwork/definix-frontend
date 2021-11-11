@@ -1,13 +1,13 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR } from 'config'
 import styled from 'styled-components'
-import { Link, Button, Card, Skeleton, IconButton, ChevronRightIcon, Image } from 'uikit-dev'
+import useTheme from 'hooks/useTheme'
+import { Button, Card } from 'uikit-dev'
 import Checkbox from '@material-ui/core/Checkbox'
-import { getVFinix } from 'utils/addressHelpers'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {
   useFarms,
@@ -39,18 +39,14 @@ import {
 } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
-import exclusive from 'uikit-dev/images/for-ui-v2/exclusive-holder.png'
+import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
 import { Text } from '../../components/Text'
 import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
 
 interface Props {
-  //   login: Login
   onDismiss?: () => void
 }
-const TutorailsLink = styled(Link)`
-  text-decoration-line: underline;
-`
 
 const FormControlLabelCustom = styled(FormControlLabel)`
   height: 40px;
@@ -63,7 +59,6 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 
 const CardList = styled(Card)`
   width: 100%;
-  //   height: 48px;
   background-color: '#FCFCFC';
   border-radius: 24px;
   align-items: center;
@@ -71,24 +66,6 @@ const CardList = styled(Card)`
   display: flex;
   justify-content: space-between;
   align-self: center;
-`
-
-const StyledFarmImages = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-
-  > * {
-    flex-shrink: 0;
-
-    &:nth-child(01) {
-      position: relative;
-      z-index: 1;
-    }
-    &:nth-child(02) {
-      margin-left: -8px;
-    }
-  }
 `
 
 const Balance = styled.div`
@@ -136,22 +113,6 @@ const Coins = styled.div`
   }
 `
 
-const FarmsAndPools = styled.div`
-  display: flex;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-
-  .icon {
-    padding-right: 8px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  &:last-child {
-    border: none;
-  }
-`
-
 const Coin = styled.div`
   min-width: 80px;
   display: flex;
@@ -168,35 +129,26 @@ const Coin = styled.div`
   }
 `
 
-const Summary = styled.div`
-  padding: 12px 0;
-  width: 60%;
-  display: flex;
-  flex-wrap: wrap;
-
-  > div {
-    width: 50%;
-    padding: 4px;
-  }
-`
-
 const NumberInput = styled.input`
   border: none;
   background-color: #ffffff00;
   font-size: 22px;
   outline: none;
-  color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
+  color: ${({ theme }) => (theme.isDark ? '#fff' : '#000')};
   // width: 45%;
   -webkit-flex: 1 1 auto;
   padding: 0px;
 `
 
+const CustomCheckbox = styled(Checkbox)`
+  &.Mui-checked {
+    color: ${({ theme }) => theme.colors.success} !important;
+  }
+`
+
 const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
-  const [isLoading, setIsLoading] = useState(true)
   const [selectedToken, setSelectedToken] = useState({})
-  const [selectedTokenCount, setSelectedTokenCount] = useState(0)
   const [sousId, setSousId] = useState(0)
-  const [pid, setPid] = useState(0)
   const [isBnbPool, setIsBnbPool] = useState(false)
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
@@ -219,6 +171,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [percentPenalty, setPercentPenalty] = useState(0)
   const [letvel, setLevel] = useState(0)
   const [days, setdays] = useState(28)
+  const { isDark } = useTheme()
 
   const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
 
@@ -354,7 +307,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     }
     return tokenPriceKLAYTN
   }
-  const [value, setValue] = useState(numeral(balanceOf).format('0'))
+  const [value, setValue] = useState(numeral(balanceOf).format('0,0') || 0)
 
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
@@ -599,21 +552,21 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [period, value, allLockPeriod, realPenaltyRate])
 
   return (
-    <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss}>
+    <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss} className="">
       <div className="flex flex-column w-100">
-        <Text fontSize="20px" fontWeight="bold">
+        <Text fontSize="20px" fontWeight="600">
           Super Stake
         </Text>
-        <Text paddingTop="2" color="#737375">
+        <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
           Super Stake is a feature that can harvest all of your FINIX reward to stake in <b> Long-term stake </b> with
           no minimum amount.
         </Text>
-        <Text paddingTop="2" color="#737375">
+        <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
           You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock period{' '}
           <b>will not be extended.</b>
         </Text>
       </div>
-      <Text paddingTop="3" color="#737375">
+      <Text paddingTop="3" color="#737375" fontWeight="500">
         Choose farm/pool you want to harvest reward
       </Text>
 
@@ -623,9 +576,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <div className="flex align-center">
               <FormControlLabelCustom
                 control={
-                  <Checkbox
+                  <CustomCheckbox
                     size="small"
-                    color="primary"
                     checked={!!_.get(selectedToken, `${18}.checked`)}
                     onChange={(event) => {
                       setSelectedToken({
@@ -661,9 +613,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <div className="flex align-center">
                 <FormControlLabelCustom
                   control={
-                    <Checkbox
+                    <CustomCheckbox
                       size="small"
-                      color="primary"
                       checked={!!_.get(selectedToken, `${d.props.farm.pid}.checked`)}
                       onChange={(event) => {
                         setSelectedToken({
@@ -690,10 +641,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 </Coins>
                 <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
               </div>
-              {/* <Text bold>
+              <Text bold>
                 {new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}{' '}
                 FINIX
-              </Text> */}
+              </Text>
             </CardList>
           )
         })}
@@ -704,9 +655,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <div className="flex align-center">
                 <FormControlLabelCustom
                   control={
-                    <Checkbox
+                    <CustomCheckbox
                       size="small"
-                      color="primary"
                       checked={!!_.get(selectedToken, `${d.sousId}.checked`)}
                       onChange={(event) => {
                         setSelectedToken({
@@ -740,15 +690,18 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             </CardList>
           )
         })}
-        <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle">
-          Please select duration
+        <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
+          Please select available duration
         </Text>
         <StakePeriodButton setPeriod={setPeriod} status={false} levelStake={levelStake} isTopUp />
         <div className="flex mt-4 w-100">
-          <Text className="col-6" color="textSubtle">
-            From your wallet: {balanceOf ? numeral(balanceOf).format('0,0') : '-'}
+          <Text className="col-6" color="textSubtle" fontWeight="500">
+            From your wallet:
+            <span style={{ color: '#0973B9' }} className="pl-2">
+              {balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX
+            </span>
           </Text>
-          <Text className="col-6" color="textSubtle">
+          <Text className="col-6 pl-2" color="textSubtle" fontWeight="500">
             Pending rewards
           </Text>
         </div>
@@ -757,13 +710,14 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <NumberInput
               style={{ width: '45%' }}
               placeholder="0.00"
+              defaultValue={numeral(balanceOf).format('0,0')}
               value={value}
-              onChange={handleChange}
+              onChange={() => handleChange}
               className="text-right"
               pattern="^[0-9]*[,]?[0-9]*$"
             />
           </Balance>
-          <Text className="align-center" bold fontSize="36" color="#2A9D8F">
+          <Text className="align-center" fontSize="40px" color="#2A9D8F">
             +
           </Text>
           <Balance className="ml-2">
@@ -778,50 +732,55 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Balance>
         </div>
         <div className="flex mt-4 w-100">
-          <Text className="col-6" color="#000000">
+          <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
             Estimated Period End
           </Text>
-          <Text className="col-6 text-right" color="#30ADFF">
+          <Text className="col-6 text-right" color="#0973B9" fontWeight="500">
             {date} {date !== '-' && 'GMT+9'}
           </Text>
         </div>
         <div className="flex mt-2 w-100">
-          <Text className="col-6" color="#000000">
+          <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
             Total FINIX stake
           </Text>
           <div className="flex flex-row justify-end w-100">
-            <Text className="text-right" color="#30ADFF">
+            <Text className="text-right" color="#0973B9" fontWeight="500">
               {Number(value) + Number(sumpendingReward)}
             </Text>
-            <Text className="text-right ml-1" color="#000000">
+            {/* <Text className="text-right" color="#0973B9" fontWeight="500">
+              {numeral(value).format('0,0')}
+            </Text> */}
+            <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
               vFINIX
             </Text>
           </div>
         </div>
         <div className="flex mt-2 w-100">
-          <Text className="col-6" color="#000000">
+          <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
             vFINIX earn
           </Text>
           <div className="flex flex-row justify-end w-100">
-            <Text className="text-right" color="#30ADFF">
+            <Text className="text-right" color="#0973B9" fontWeight="500">
               {Number(value) + Number(sumpendingReward) * period}
+              {/* <Text className="text-right" color="#0973B9" fontWeight="500">
+              {numeral(value * period).format('0,0')} */}
             </Text>
-            <Text className="text-right ml-1" color="#000000">
+            <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
               vFINIX
             </Text>
           </div>
         </div>
         {pendingTx ? (
-          <Button fullWidth id="harvest-all" radii="small" className="ml-2 mt-3" disabled>
+          <Button fullWidth id="harvest-all" radii="small" className="mt-3" disabled>
             {`Harvesting...(${harvestProgress} /${lengthSelect})`}
           </Button>
         ) : (
           <Button
             fullWidth
-            disabled={lengthSelect <= 0}
+            disabled={lengthSelect <= 0 && amount === ''}
             id="harvest-all"
             radii="small"
-            className="ml-2 mt-3"
+            className="mt-3"
             onClick={() => setHarvestProgress(0)}
           >
             Stake
