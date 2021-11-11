@@ -21,7 +21,7 @@ const AuditList = [
 const StyledCardBody = styled(CardBody)`
   padding: 40px 0;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    padding: 20px;
+    padding: 20px 0;
   }
 `
 
@@ -32,7 +32,7 @@ const Title = styled(Text)`
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${css(textStyle.R_20B)}
-    padding: 0;
+    padding: 0 20px;
   }
 `
 
@@ -46,18 +46,30 @@ const WrapAudit = styled(Flex)`
   }
 `
 
+const WrapAuditItemImg = styled.div`
+  object-fit: contain;
+  height: 20px;
+`
+
+const WrapAuditItemInfo = styled(Flex)`
+  flex-direction: column;
+`
+
 const AuditItem = styled(Flex)`
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
 
   :first-child {
-    width: 45%;
+    flex: 1;
     padding-left: 40px;
   }
 
   :nth-child(2) {
+    flex: 1.5;
+    flex-direction: row;
     padding-left: 30px;
-    border-left: 1px solid ${({ theme }) => theme.colors[ColorStyles.LIGHTGREY]};
+    border-left: 1px solid ${({ theme }) => theme.colors.border};
   }
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -66,31 +78,51 @@ const AuditItem = styled(Flex)`
 
     :first-child {
       width: 100%;
-      padding-left: 0;
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 16px;
+
+      ${WrapAuditItemImg} {
+        flex: 1.2;
+      }
+      ${WrapAuditItemInfo} {
+        flex: 2;
+      }
     }
 
     :nth-child(2) {
+      border-top: 1px solid ${({ theme }) => theme.colors.border};
+      flex: 1;
+      margin: 0 20px;
       padding-left: 0;
+      padding-top: 20px;
       border-left: none;
+      justify-content: space-between;
+
+      ${WrapAuditItemImg} {
+        flex: 2;
+      }
+      ${WrapAuditItemInfo} {
+        flex: 2;
+      }
     }
   }
 `
 
-const WrapAuditItemInfo = styled(Flex)`
+const WrapAuditItem = styled(Flex)`
+  height: 100%;
   flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    flex: 2;
+    position: relative;
+    flex-direction: row;
+    width: 100%;
   }
 `
 
 const AuditItemImg = styled.img`
-  object-fit: contain;
-  height: 20px;
-
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    flex: 1;
-  }
 `
 
 const AuditItemDesc = styled(Text)`
@@ -108,9 +140,19 @@ const AuditItemResult = styled(Text)`
   ${css(textStyle.R_28B)}
   min-height: 40px;
   margin-top: 6px;
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 8px;
+    ${css(textStyle.R_23B)}
+  }
 `
 
-const Character = styled(Flex)``
+const Character = styled(Flex)`
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-right: -20px;
+    margin-top: -40px;
+  }
+`
 
 const CardAudit = () => {
   const { t } = useTranslation()
@@ -120,22 +162,28 @@ const CardAudit = () => {
         <Title>{t('Reliability of Definix is proved through external audits.')}</Title>
         <WrapAudit>
           <AuditItem>
-            <AuditItemImg src={AuditList[0].img} alt={t(AuditList[0].description)} />
+            <WrapAuditItemImg>
+              <AuditItemImg src={AuditList[0].img} alt={t(AuditList[0].description)} />
+            </WrapAuditItemImg>
             <WrapAuditItemInfo>
               <AuditItemDesc>{t(AuditList[0].description)}</AuditItemDesc>
               <AuditItemResult color={AuditList[0].color}>{t(AuditList[0].result)}</AuditItemResult>
             </WrapAuditItemInfo>
           </AuditItem>
           <AuditItem>
-            <AuditItemImg src={AuditList[1].img} alt={t(AuditList[1].description)} />
-            <WrapAuditItemInfo>
-              <AuditItemDesc>{t(AuditList[1].description)}</AuditItemDesc>
-              <AuditItemResult color={AuditList[1].color}>{t(AuditList[1].result)}</AuditItemResult>
-            </WrapAuditItemInfo>
+            <WrapAuditItem>
+              <WrapAuditItemImg>
+                <AuditItemImg src={AuditList[1].img} alt={t(AuditList[1].description)} />
+              </WrapAuditItemImg>
+              <WrapAuditItemInfo>
+                <AuditItemDesc>{t(AuditList[1].description)}</AuditItemDesc>
+                <AuditItemResult color={AuditList[1].color}>{t(AuditList[1].result)}</AuditItemResult>
+              </WrapAuditItemInfo>
+            </WrapAuditItem>
+            <Character>
+              <HomeProtectionFinixIcon />
+            </Character>
           </AuditItem>
-          <Character>
-            <HomeProtectionFinixIcon />
-          </Character>
         </WrapAudit>
       </StyledCardBody>
     </Card>

@@ -23,7 +23,6 @@ const NoticeSlider = styled(Slider)`
 
   .slick-dots {
     position: relative;
-    height: 6px;
     justify-content: flex-start;
   }
 
@@ -37,14 +36,16 @@ const NoticeSlider = styled(Slider)`
 
   .slick-dots li {
     width: 20px;
-    height: 6px;
+    height: 100%;
     padding: 0;
   }
+
   .slick-dots li.slick-active {
     width: 28px;
   }
   .slick-dots li button:before {
     width: 12px;
+    height: 6px;
     border-radius: 3px;
     background: ${({ theme }) => theme.colors.pale};
   }
@@ -52,11 +53,21 @@ const NoticeSlider = styled(Slider)`
     width: 20px;
     background: ${({ theme }) => theme.colors.yellow};
   }
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    .slick-dots {
+      height: 4px;
+    }
+  }
 `
 
 const Notice = styled(Text)`
   ${css(textStyle.R_20M)}
   color: black;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${css(textStyle.R_14M)}
+  }
+
 `
 
 const NoticeBox = styled(Box)`

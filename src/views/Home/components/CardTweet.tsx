@@ -4,9 +4,21 @@ import styled, { css } from 'styled-components'
 import { Card, CardBody, Text, ColorStyles, textStyle } from 'definixswap-uikit'
 import { Timeline } from 'react-twitter-widgets'
 
+const WrapCardBody = styled(CardBody)`
+  padding: 40px;
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: 20px;
+  }
+`
+
 const Title = styled(Text)`
   ${css(textStyle.R_26B)}
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${css(textStyle.R_20B)}
+  }
 `
 
 const Inner = styled.div`
@@ -19,13 +31,17 @@ const Inner = styled.div`
   > div {
     margin-top: -1px;
   }
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 20px;
+  }
 `
 
 const CardTweet = () => {
   const { t } = useTranslation()
   return (
     <Card>
-      <CardBody p="S_40">
+      <WrapCardBody>
         <Title>{t('Check out the latest information of Definix')}</Title>
         <Inner>
           <Timeline
@@ -41,7 +57,7 @@ const CardTweet = () => {
             }}
           />
         </Inner>
-      </CardBody>
+      </WrapCardBody>
     </Card>
   )
 }

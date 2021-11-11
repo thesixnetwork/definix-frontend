@@ -64,6 +64,7 @@ const TvlItem = styled(Flex)`
     :last-child {
       margin-bottom: 0;
       padding-left: 0;
+      border-left: none;
     }
   }
 `
