@@ -1,7 +1,7 @@
+import React, { lazy, Suspense, useEffect } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 
-import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
 import { Route, Router, Switch } from 'react-router-dom'
@@ -101,76 +101,78 @@ const App: React.FC = () => {
   return (
     <Router history={history}>
       <GlobalStyle />
-      <Suspense fallback={<PageLoader />}>
+      <Suspense fallback={<></>}>
         <Menu>
-          <Switch>
-            <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/trading-challenge">
-              <TradingChallenge />
-            </Route>
-            <Route path="/leaderboard">
-              <Leaderboard />
-            </Route>
-            <Route path="/pool">
-              <Pools />
-            </Route>
-            <Route path="/farm">
-              <NewFarms />
-            </Route>
-            <Route path="/info">
-              <Info />
-            </Route>
-            <Route path="/rebalancing">
-              <Explore />
-            </Route>
-            <Route path="/myinvestments">
-              <MyInvestments />
-            </Route>
-            <Route path="/AirdropKlay">
-              <AirdropKlay />
-            </Route>
-            <Route path="/long-term-stake">
-              <LongTermStake />
-            </Route>
-            {/* <Route path="/xxx">
-              <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
-            </Route> */}
+          <Suspense fallback={<PageLoader />}>
+            <Switch>
+              <Route path="/" exact>
+                <Home />
+              </Route>
+              <Route path="/trading-challenge">
+                <TradingChallenge />
+              </Route>
+              <Route path="/leaderboard">
+                <Leaderboard />
+              </Route>
+              <Route path="/pool">
+                <Pools />
+              </Route>
+              <Route path="/farm">
+                <NewFarms />
+              </Route>
+              <Route path="/info">
+                <Info />
+              </Route>
+              <Route path="/rebalancing">
+                <Explore />
+              </Route>
+              <Route path="/myinvestments">
+                <MyInvestments />
+              </Route>
+              <Route path="/AirdropKlay">
+                <AirdropKlay />
+              </Route>
+              <Route path="/long-term-stake">
+                <LongTermStake />
+              </Route>
+              {/* <Route path="/xxx">
+                <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
+              </Route> */}
 
-            {/* <Route path="/lottery">
-              <Lottery />
-            </Route>
-            <Route path="/ifo">
-              <Ifos />
-            </Route>
-            <Route path="/collectibles">
-              <Collectibles />
-            </Route>
-            <Route exact path="/teams">
-              <Teams />
-            </Route>
-            <Route path="/teams/:id">
-              <Team />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route> */}
+              {/* <Route path="/lottery">
+                <Lottery />
+              </Route>
+              <Route path="/ifo">
+                <Ifos />
+              </Route>
+              <Route path="/collectibles">
+                <Collectibles />
+              </Route>
+              <Route exact path="/teams">
+                <Teams />
+              </Route>
+              <Route path="/teams/:id">
+                <Team />
+              </Route>
+              <Route path="/profile">
+                <Profile />
+              </Route> */}
 
-            {/* Redirect */}
-            {/* <Route path="/staking">
-              <Redirect to="/pools" />
-            </Route>
-            <Route path="/syrup">
-              <Redirect to="/pools" />
-            </Route>
-            <Route path="/nft">
-              <Redirect to="/collectibles" />
-            </Route> */}
+              {/* Redirect */}
+              {/* <Route path="/staking">
+                <Redirect to="/pools" />
+              </Route>
+              <Route path="/syrup">
+                <Redirect to="/pools" />
+              </Route>
+              <Route path="/nft">
+                <Redirect to="/collectibles" />
+              </Route> */}
 
-            {/* 404 */}
-            <Route component={NotFound} />
-          </Switch>
+              {/* 404 */}
+              <Route component={NotFound} />
+            </Switch>
+          </Suspense>
         </Menu>
       </Suspense>
       <ToastListener />
