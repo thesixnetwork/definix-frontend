@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import React, { useMemo } from 'react'
 // import styled from 'styled-components'
 // import { Text, Heading } from 'uikit-dev'
@@ -45,9 +46,8 @@ import useConverter from 'hooks/useConverter'
 
 const TotalLiquiditySection: React.FC<{
   title: string
-  tokenName: string
   totalLiquidity: BigNumber
-}> = ({ title, tokenName, totalLiquidity }) => {
+}> = ({ title, totalLiquidity }) => {
   const { convertToUSD } = useConverter()
 
   const totalLiquidityPrice = useMemo(() => {
@@ -68,24 +68,26 @@ const TotalLiquiditySection: React.FC<{
 
 const MyBalanceSection: React.FC<{
   title: string
-  tokenName: string
-  balance: BigNumber
-}> = ({ title, tokenName, balance }) => {
-  const balanceValue = useMemo(() => {
-    return getFullDisplayBalance(balance, { fixed: 6 })
-  }, [balance])
-
+  myBalances: {[key: string]: BigNumber | null}
+}> = ({ title, myBalances }) => {
   return (
     <>
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         {title}
       </Text>
-      {/* <Flex alignItems="center">
-        <Label type="token">{tokenName}</Label>
-        <Text color={ColorStyles.BLACK} textStyle="R_18M" style={{ paddingLeft: '2px' }}>
-          {balanceValue}
-        </Text>
-      </Flex> */}
+      {
+        Object.entries(myBalances).map(([ tokenName, balanceValue ]) => (
+          <Flex alignItems="center">
+            <Label type="token">{tokenName}</Label>
+            <Text color={ColorStyles.BLACK} textStyle="R_18M" style={{ paddingLeft: '2px' }}>
+              {
+                !balanceValue || balanceValue === null ? '-' : numeral(balanceValue.toNumber()).format('0,0.[000000]')
+              }
+            </Text>
+          </Flex>
+        ))
+      }
+      
     </>
   )
 }

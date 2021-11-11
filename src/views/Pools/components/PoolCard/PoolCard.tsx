@@ -106,7 +106,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, myBalanceInWallet, onSelectAd
     [tokenName, earnings],
   )
 
-  console.log('pool: ', pool)
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
