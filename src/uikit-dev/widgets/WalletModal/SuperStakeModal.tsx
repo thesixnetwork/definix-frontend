@@ -292,7 +292,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     }
     return tokenPriceKLAYTN
   }
-  const [value, setValue] = useState(numeral(balanceOf).format('0,0') || 0)
+  const [value, setValue] = useState('0')
 
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
@@ -709,9 +709,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <NumberInput
               style={{ width: '45%' }}
               placeholder="0.00"
-              defaultValue={numeral(balanceOf).format('0,0')}
               value={value}
-              onChange={() => handleChange}
+              onChange={handleChange}
               className="text-right"
               pattern="^[0-9]*[,]?[0-9]*$"
             />
