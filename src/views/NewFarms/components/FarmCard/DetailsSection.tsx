@@ -68,26 +68,21 @@ const TotalLiquiditySection: React.FC<{
 
 const MyBalanceSection: React.FC<{
   title: string
-  myBalances: {[key: string]: BigNumber | null}
+  myBalances: { [key: string]: BigNumber | null }
 }> = ({ title, myBalances }) => {
   return (
     <>
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
         {title}
       </Text>
-      {
-        Object.entries(myBalances).map(([ tokenName, balanceValue ]) => (
-          <Flex alignItems="center">
-            <Label type="token">{tokenName}</Label>
-            <Text color={ColorStyles.BLACK} textStyle="R_18M" style={{ paddingLeft: '2px' }}>
-              {
-                !balanceValue || balanceValue === null ? '-' : numeral(balanceValue.toNumber()).format('0,0.[000000]')
-              }
-            </Text>
-          </Flex>
-        ))
-      }
-      
+      {Object.entries(myBalances).map(([tokenName, balanceValue]) => (
+        <Flex alignItems="center">
+          <Label type="token">{tokenName}</Label>
+          <Text color={ColorStyles.BLACK} textStyle="R_18M" style={{ paddingLeft: '2px' }}>
+            {!balanceValue || balanceValue === null ? '-' : numeral(balanceValue.toNumber()).format('0,0.[000000]')}
+          </Text>
+        </Flex>
+      ))}
     </>
   )
 }

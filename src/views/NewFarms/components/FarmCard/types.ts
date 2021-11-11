@@ -10,7 +10,7 @@ export interface FarmWithStakedValue extends Farm {
 
 export interface FarmCardProps {
   farm: FarmWithStakedValue
-  myBalancesInWallet?: {[key: string]: BigNumber}
+  myBalancesInWallet?: { [key: string]: BigNumber }
   removed: boolean
   klaytn?: provider
   account?: string

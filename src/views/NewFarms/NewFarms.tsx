@@ -17,7 +17,7 @@ import {
   usePriceKethKusdt,
   usePriceFinixUsd,
   usePriceSixUsd,
-  useBalances
+  useBalances,
 } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 import { TitleSet, Box } from 'definixswap-uikit'
@@ -91,11 +91,7 @@ const Farms: React.FC = () => {
     if (balances) return
     if (account && activeFarms) {
       const allLPaddresses = activeFarms.reduce((addressArray, farm) => {
-        return [
-          ...addressArray,
-          getAddress(farm.quoteTokenAdresses),
-          getAddress(farm.tokenAddresses)
-        ]
+        return [...addressArray, getAddress(farm.quoteTokenAdresses), getAddress(farm.tokenAddresses)]
       }, [])
       dispatch(fetchBalances(account, _.uniq(allLPaddresses)))
     }
@@ -196,7 +192,7 @@ const Farms: React.FC = () => {
           farm={farm}
           myBalancesInWallet={{
             [farm.tokenSymbol]: getMyBalanceInWallet(farm.tokenSymbol, farm.tokenAddresses),
-            [farm.quoteTokenSymbol]: getMyBalanceInWallet(farm.quoteTokenSymbol, farm.quoteTokenAdresses)
+            [farm.quoteTokenSymbol]: getMyBalanceInWallet(farm.quoteTokenSymbol, farm.quoteTokenAdresses),
           }}
           removed={removed}
           klaytn={klaytn}
@@ -206,7 +202,17 @@ const Farms: React.FC = () => {
         />
       ))
     },
-    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, onSelectAddLP, onSelectRemoveLP, getMyBalanceInWallet],
+    [
+      sixPrice,
+      klayPrice,
+      kethPriceUsd,
+      finixPrice,
+      klaytn,
+      account,
+      onSelectAddLP,
+      onSelectRemoveLP,
+      getMyBalanceInWallet,
+    ],
   )
 
   // useEffect(() => {
