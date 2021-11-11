@@ -6,16 +6,24 @@ class RebalanceSwapper extends Address {
   //   super(_context)
   // }
 
-  rebalanceFund = (usdToken, tokens, routers, tokenRatioPoints, usdTokenRatioPoint, totalRatioPoint) => {
-    const [usdAmounts, totalUSDAmount] = this.getCurrentPoolUSDBalance(usdToken, tokens, routers)
+  rebalanceFund = (usdToken, WBNB, tokens, routers, tokenRatioPoints, totalRatioPoint) => {
+    const [usdAmounts, totalUSDAmount] = this.getCurrentPoolUSDBalance(usdToken, WBNB, routers)
     // debugger
     // sale first buy after
-    for (let i = 0; i < usdAmounts.length - 1; i++) {
+    let isContainBNB = false
+    let bnbRatioPoint = new BigNumber(0)
+    for (let i = 0; i < usdAmounts.length; i++) {
+      if (WBNB == tokens[i]) {
+        isContainBNB = true
+        bnbRatioPoint = tokenRatioPoints[i]
+        continue
+      }
+
       const usdEachValue = totalUSDAmount.multipliedBy(tokenRatioPoints[i]).dividedBy(totalRatioPoint)
       if (usdAmounts[i].isGreaterThan(usdEachValue)) {
         // sell
 
-        const paths = [tokens[i], usdToken]
+        const paths = [tokens[i], WBNB]
         if (tokenRatioPoints[i].isEqualTo(0)) {
           // Deplete balance of the token
           const sellingBalance = this.getBalance(tokens[i])
@@ -24,7 +32,17 @@ class RebalanceSwapper extends Address {
 
           routers[i].swapExactTokensForTokens(sellingBalance, amountOutMins[1], paths, this, this)
         } else {
-          const amountOut = usdAmounts[i].minus(usdEachValue)
+          let amountOut = usdAmounts[i].minus(usdEachValue)
+
+          const pair = this.context.getFactory().pairFor(WBNB, usdToken)
+          const _reserve0 = pair.reserve0
+          const _reserve1 = pair.reserve1
+          const token0 = pair.token0
+
+          amountOut =
+            token0 == WBNB
+              ? amountOut.multipliedBy(_reserve0).dividedBy(_reserve1)
+              : amountOut.multipliedBy(_reserve1).dividedBy(_reserve0)
 
           const amountInMaxs = routers[i].getAmountsIn(amountOut, paths)
           routers[i].swapTokensForExactTokens(amountOut, amountInMaxs[0], paths, this, this)
@@ -32,8 +50,8 @@ class RebalanceSwapper extends Address {
       }
     }
 
-    let lastTokenWithAllocationIndex = usdAmounts.length - 2
-    if (usdTokenRatioPoint.isEqualTo(0)) {
+    let lastTokenWithAllocationIndex = usdAmounts.length - 1
+    if (!isContainBNB || bnbRatioPoint.isEqualTo(0)) {
       for (let index = lastTokenWithAllocationIndex; index >= 0; index--) {
         if (tokenRatioPoints[index].isGreaterThan(0)) {
           lastTokenWithAllocationIndex = index
@@ -42,15 +60,33 @@ class RebalanceSwapper extends Address {
       }
     }
 
-    for (let i = 0; i < usdAmounts.length - 1; i++) {
+    for (let i = 0; i < usdAmounts.length; i++) {
+      if (WBNB == tokens[i]) {
+        continue
+      }
+      if (tokenRatioPoints[i].isEqualTo(0)) {
+        continue
+      }
+
       const usdEachValue = totalUSDAmount.multipliedBy(tokenRatioPoints[i]).dividedBy(totalRatioPoint)
 
-      const paths = [usdToken, tokens[i]]
+      const paths = [WBNB, tokens[i]]
 
       if (usdAmounts[i].isLessThan(usdEachValue)) {
         let amountIn = usdEachValue.minus(usdAmounts[i])
-        if (i === lastTokenWithAllocationIndex && usdTokenRatioPoint.isEqualTo(0)) {
-          amountIn = this.getBalance(usdToken)
+        if (i === lastTokenWithAllocationIndex && (!isContainBNB || bnbRatioPoint.isEqualTo(0))) {
+          amountIn = this.getBalance(WBNB)
+        } else {
+          const pair = this.context.getFactory().pairFor(WBNB, usdToken)
+          const _reserve0 = pair.reserve0
+          const _reserve1 = pair.reserve1
+
+          const token0 = pair.token0
+
+          amountIn =
+            token0 == WBNB
+              ? amountIn.multipliedBy(_reserve0).dividedBy(_reserve1)
+              : amountIn.multipliedBy(_reserve1).dividedBy(_reserve0)
         }
         // buy
 
@@ -62,45 +98,63 @@ class RebalanceSwapper extends Address {
 
   getCurrentPoolUSDBalance = (
     usdToken,
-    tokens,
-    routers, // public view returns (uint256[] memory, uint256)
+    WBNB,
+    tokens, // public view returns (uint256[] memory, uint256)
   ) => {
     const amounts = Array(tokens.length).fill(new BigNumber(0))
     for (let index = 0; index < tokens.length; index++) {
       amounts[index] = this.getBalance(tokens[index])
     }
-    const usdAmount = this.getBalance(usdToken)
-    return this.getUSDBalance(amounts, usdAmount, usdToken, tokens, routers)
+    return this.getUSDBalanceReserves(amounts, tokens, usdToken, WBNB)
   }
 
-  getUSDBalance = (
+  getUSDBalanceReserves = (
     amounts,
-    usdAmount,
-    usdToken,
     tokens,
-    // routers, // returns (uint256[] memory usdAmounts, uint256 totalUSDAmount)
+    usdToken,
+    WBNB, // returns (uint256[] memory usdAmounts, uint256 totalUSDAmount)
   ) => {
     let totalUSDAmount = new BigNumber(0)
-    const usdAmounts = Array(amounts.length + 1).fill(new BigNumber(0))
+    let usdAmounts = Array(amounts.length).fill(new BigNumber(0))
     for (let i = 0; i < amounts.length; i++) {
-      let tokenBalance = amounts[i]
+      let tokenBalance = new BigNumber(amounts[i])
+
       if (tokenBalance.isEqualTo(0)) {
-        tokenBalance = new BigNumber(0)
+        usdAmounts[i] = new BigNumber(0)
       } else {
-        const pair = this.context.getFactory().pairFor(tokens[i], usdToken)
+        if (WBNB != tokens[i] && usdToken != tokens[i]) {
+          const pair = this.context.getFactory().pairFor(WBNB, tokens[i])
 
-        const _reserve0 = pair.reserve0
-        const _reserve1 = pair.reserve1
+          const _reserve0 = new BigNumber(pair.reserve0)
+          const _reserve1 = new BigNumber(pair.reserve1)
 
-        const { token0 } = pair
+          const token0 = pair.token0
 
-        const amountInUSD =
-          token0 === tokens[i]
-            ? tokenBalance.multipliedBy(_reserve1).dividedBy(_reserve0)
-            : tokenBalance.multipliedBy(_reserve0).dividedBy(_reserve1)
+          tokenBalance =
+            token0 == WBNB
+              ? tokenBalance.multipliedBy(_reserve0).dividedBy(_reserve1)
+              : tokenBalance.multipliedBy(_reserve1).dividedBy(_reserve0)
+        }
 
-        totalUSDAmount = totalUSDAmount.plus(amountInUSD)
-        usdAmounts[i] = amountInUSD
+        if (usdToken != tokens[i]) {
+          const pair = this.context.getFactory().pairFor(WBNB, usdToken)
+
+          const _reserve0 = new BigNumber(pair.reserve0)
+          const _reserve1 = new BigNumber(pair.reserve1)
+
+          const token0 = pair.token0
+
+          const amountInUSD =
+            token0 == WBNB
+              ? tokenBalance.multipliedBy(_reserve1).dividedBy(_reserve0)
+              : tokenBalance.multipliedBy(_reserve0).dividedBy(_reserve1)
+
+          totalUSDAmount = totalUSDAmount.plus(amountInUSD)
+          usdAmounts[i] = amountInUSD
+        } else {
+          totalUSDAmount = totalUSDAmount.plus(tokenBalance)
+          usdAmounts[i] = tokenBalance
+        }
       }
     }
     usdAmounts[usdAmounts.length - 1] = usdAmount
@@ -109,20 +163,15 @@ class RebalanceSwapper extends Address {
     return [usdAmounts, totalUSDAmount]
   }
 
-  getCurrentPoolAmount = (
-    usdToken,
-    tokens, // public // view
-  ) =>
-    // returns (uint256[] memory poolAmounts)
-    {
-      const poolAmounts = Array(tokens.length + 1).fill(0)
-      for (let index = 0; index < tokens.length; index++) {
-        poolAmounts[index] = this.getBalance(tokens[index])
-      }
-      const usdAmount = this.getBalance(usdToken)
-      poolAmounts[poolAmounts.length - 1] = usdAmount
-      return poolAmounts
+  getCurrentPoolAmount(
+    tokens, // public // view // returns (uint256[] memory poolAmounts)
+  ) {
+    let poolAmounts = Array(tokens.length).fill(0)
+    for (let index = 0; index < tokens.length; index++) {
+      poolAmounts[index] = this.getBalance(tokens[index])
     }
+    return poolAmounts
+  }
 }
 
 export default RebalanceSwapper
