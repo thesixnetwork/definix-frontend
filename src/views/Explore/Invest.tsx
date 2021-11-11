@@ -287,11 +287,11 @@ const CardCalculate = ({
         .times(new BigNumber(10).pow(usdToken.decimals))
         .toJSON()
       // const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
-        const tx = await rebalanceContract.methods
-          // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-          .addFund(arrayTokenAmount, usdTokenAmount, 0)
-          .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
-        setTx(tx)
+      const tx = await rebalanceContract.methods
+        // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
+        .addFund(arrayTokenAmount, usdTokenAmount, 0)
+        .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+      setTx(tx)
 
       const assets = rebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
