@@ -159,7 +159,7 @@ const Farms: React.FC = () => {
   const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
-  console.log('++++++++++++',earningsSum,earningsPoolSum,finixEarn)
+  console.log('++++++++++++', earningsSum, earningsPoolSum, finixEarn)
   const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum) * 100) / 100
   const [onPresentConnectModal] = useModal(
     !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
@@ -374,7 +374,7 @@ const Farms: React.FC = () => {
                   <BannerTopupMobile>
                     <div className="pa-4 pos-relative" style={{ zIndex: 1 }}>
                       <div className="flex align-center">
-                      {console.log("----------------",isMobileOrTablet)}
+                        {console.log('----------------', isMobileOrTablet)}
                         <HeaderBanner color="text">
                           Harvest all of reward and stake in Long-term Stake for earn more!
                         </HeaderBanner>
