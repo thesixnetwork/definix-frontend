@@ -67,7 +67,6 @@ const Notice = styled(Text)`
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${css(textStyle.R_14M)}
   }
-
 `
 
 const NoticeBox = styled(Box)`

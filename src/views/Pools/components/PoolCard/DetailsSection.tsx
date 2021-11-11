@@ -51,7 +51,7 @@ const MyBalanceSection: React.FC<{
 }> = ({ title, tokenName, myBalance }) => {
   const myBalanceValue = useMemo(() => {
     return numeral(myBalance.toNumber()).format('0,0.[000000]')
-  }, [myBalance])  
+  }, [myBalance])
 
   return (
     <>

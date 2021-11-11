@@ -122,8 +122,7 @@ const WrapAuditItem = styled(Flex)`
   }
 `
 
-const AuditItemImg = styled.img`
-`
+const AuditItemImg = styled.img``
 
 const AuditItemDesc = styled(Text)`
   ${css(textStyle.R_14R)}

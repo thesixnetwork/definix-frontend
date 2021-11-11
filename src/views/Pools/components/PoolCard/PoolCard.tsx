@@ -94,15 +94,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, myBalanceInWallet, onSelectAd
   const renderMyBalanceSection = useCallback(
     () => (
       <>
-        {
-          !myBalanceInWallet || myBalanceInWallet === null
-            ? null
-            : <MyBalanceSection
-                title="Balance"
-                tokenName={tokenName}
-                myBalance={myBalanceInWallet}
-              />
-        }
+        {!myBalanceInWallet || myBalanceInWallet === null ? null : (
+          <MyBalanceSection title="Balance" tokenName={tokenName} myBalance={myBalanceInWallet} />
+        )}
       </>
     ),
     [tokenName, myBalanceInWallet],

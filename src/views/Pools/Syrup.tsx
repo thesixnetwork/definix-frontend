@@ -253,19 +253,22 @@ const Farm: React.FC = () => {
     })
   }, [])
 
-  const getMyBalanceInWallet = useCallback((tokenName: string, tokenAddress: string) => {
-    if (balances) {
-      const address = tokenName === 'WKLAY' ? 'main' : tokenAddress
-      return _.get(balances, address)
-    }
-    return null
-  }, [balances])
+  const getMyBalanceInWallet = useCallback(
+    (tokenName: string, tokenAddress: string) => {
+      if (balances) {
+        const address = tokenName === 'WKLAY' ? 'main' : tokenAddress
+        return _.get(balances, address)
+      }
+      return null
+    },
+    [balances],
+  )
 
   const fetchAllBalances = useCallback(() => {
     if (balances) return
     if (account && poolsWithApy) {
       const assetAddresses = poolsWithApy.map((pool) => {
-        return getAddress({[process.env.REACT_APP_CHAIN_ID]: pool.stakingTokenAddress})
+        return getAddress({ [process.env.REACT_APP_CHAIN_ID]: pool.stakingTokenAddress })
       })
       dispatch(fetchBalances(account, assetAddresses))
     }
