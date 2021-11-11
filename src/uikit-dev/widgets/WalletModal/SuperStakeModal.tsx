@@ -700,7 +700,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               {balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX
             </span>
           </Text>
-          <Text className="col-6 pl-2" color="textSubtle" fontWeight="500">
+          <Text className="col-6 pl-3" color="textSubtle" fontWeight="500">
             Pending rewards
           </Text>
         </div>
