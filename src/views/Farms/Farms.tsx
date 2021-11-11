@@ -152,14 +152,13 @@ const Farms: React.FC = () => {
   // Super Stake
   const farmEarnings = useFarmEarning()
   const poolEarnings = usePoolEarning()
-  const { balancevfinix, finixEarn } = usePrivateData()
+  const { balancevfinix } = usePrivateData()
   const earningsSum = farmEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
   const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
     return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
   }, 0)
-  console.log('++++++++++++', earningsSum, earningsPoolSum, finixEarn)
   const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum) * 100) / 100
   const [onPresentConnectModal] = useModal(
     !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
