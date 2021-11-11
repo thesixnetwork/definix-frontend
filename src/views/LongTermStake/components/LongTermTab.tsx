@@ -77,7 +77,6 @@ const Tab = styled(NavLink)<{ active: boolean }>`
 `
 
 const LongTermTab = ({ current }) => {
-  console.log('current ==', current)
   return (
     <Tabs>
       <Tab className="ml-2" to="/long-term-stake" active={current === '/long-term-stake'}>

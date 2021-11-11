@@ -113,22 +113,6 @@ const Coins = styled.div`
   }
 `
 
-const Coin = styled.div`
-  min-width: 80px;
-  display: flex;
-  align-items: center;
-  margin: 4px 0;
-  justify-content: end;
-
-  img {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
-`
-
 const NumberInput = styled.input`
   border: none;
   background-color: #ffffff00;
@@ -141,6 +125,7 @@ const NumberInput = styled.input`
 `
 
 const CustomCheckbox = styled(Checkbox)`
+  border: 1px solid red;
   &.Mui-checked {
     color: ${({ theme }) => theme.colors.success} !important;
   }
@@ -552,9 +537,23 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [period, value, allLockPeriod, realPenaltyRate])
 
   return (
-    <ModalStake title={<img src={exclusive} alt="" />} onDismiss={onDismiss} className="">
-      <div className="flex flex-column w-100">
-        <Text fontSize="20px" fontWeight="600">
+    <ModalStake
+      title={
+        <img
+          src={exclusive}
+          alt=""
+          style={{
+            borderBottomRightRadius: '60px',
+            borderBottomLeftRadius: '60px',
+            boxShadow: '0 3px 6px rgb(0, 0 ,0, 0.16)',
+          }}
+        />
+      }
+      onDismiss={onDismiss}
+      className=""
+    >
+      <div className="flex flex-column w-100 mt-2">
+        <Text fontSize="18px" fontWeight="600">
           Super Stake
         </Text>
         <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
@@ -722,7 +721,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Text>
           <Balance className="ml-2">
             <NumberInput
-              style={{ width: '45%' }}
+              style={{ width: '45%', color: '#2A9D8F' }}
               placeholder="0.00"
               value={sumpendingReward}
               disabled
