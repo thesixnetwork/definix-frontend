@@ -438,7 +438,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   color: ratioObject.color,
                 }
               }
-              if (token.symbol === 'KUSDT') {
+              if (token.symbol === 'USDT') {
                 graphTokenData[token.symbol].values.push(50)
                 graphTokenData[token.symbol].valuesPrice.push(1)
               } else {
