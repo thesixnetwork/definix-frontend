@@ -2,7 +2,7 @@ import React from 'react'
 import { useFarmUnlockDate } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Button, Card, Heading,useModal,useMatchBreakpoints,Text } from 'uikit-dev'
+import { Button, Card, Heading, useModal, useMatchBreakpoints, Text } from 'uikit-dev'
 import Flip from 'uikit-dev/components/Flip'
 import { usePrivateData } from 'hooks/useLongTermStake'
 import useRefresh from 'hooks/useRefresh'
@@ -173,92 +173,92 @@ const BannerTopup = () => {
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
   const isMobileOrTablet = !isXl
- // Super Stake
- const farmEarnings = useFarmEarning()
- const poolEarnings = usePoolEarning()
- const { balancevfinix } = usePrivateData()
- const earningsSum = farmEarnings.reduce((accum, earning) => {
-   return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
- }, 0)
- const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
-   return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
- }, 0)
- const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum) * 100) / 100
- const [onPresentConnectModal] = useModal(
-   !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
- )
+  // Super Stake
+  const farmEarnings = useFarmEarning()
+  const poolEarnings = usePoolEarning()
+  const { balancevfinix } = usePrivateData()
+  const earningsSum = farmEarnings.reduce((accum, earning) => {
+    return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
+  }, 0)
+  const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
+    return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
+  }, 0)
+  const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum) * 100) / 100
+  const [onPresentConnectModal] = useModal(
+    !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
+  )
   return (
-   <>
-    {isMobileOrTablet ? (
-              <>
-                {earningsSum <= 0 && (
-                  <BannerTopupMobile>
-                    <div className="pa-4 pos-relative" style={{ zIndex: 1 }}>
-                      <div className="flex align-center">
-                        <HeaderBanner color="text">
-                          Harvest all of reward and stake in Long-term Stake for earn more!
-                        </HeaderBanner>
-                        <img src={logoFinixTopup} alt="logoFinixTopup" width="100" />
-                      </div>
-                      <div className="flex align-center mt-3">
-                        <BoxValueMobile>
-                          <Text color="textSubtle" fontSize="12px">
-                            FINIX ready to harvest
-                          </Text>
-                          <div className="flex align-center">
-                            <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
-                            <Text color="primary" fontSize="14px" fontWeight="bold" paddingLeft="4px">
-                              {totalAllMyFarms} FINIX
-                            </Text>
-                          </div>
-                        </BoxValueMobile>
-                        <SuperHarvestButton
-                          radii="small"
-                          onClick={() => {
-                            onPresentConnectModal()
-                          }}
-                        >
-                          Super Stake
-                        </SuperHarvestButton>
-                      </div>
+    <>
+      {isMobileOrTablet ? (
+        <>
+          {earningsSum <= 0 && (
+            <BannerTopupMobile>
+              <div className="pa-4 pos-relative" style={{ zIndex: 1 }}>
+                <div className="flex align-center">
+                  <HeaderBanner color="text">
+                    Harvest all of reward and stake in Long-term Stake for earn more!
+                  </HeaderBanner>
+                  <img src={logoFinixTopup} alt="logoFinixTopup" width="100" />
+                </div>
+                <div className="flex align-center mt-3">
+                  <BoxValueMobile>
+                    <Text color="textSubtle" fontSize="12px">
+                      FINIX ready to harvest
+                    </Text>
+                    <div className="flex align-center">
+                      <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                      <Text color="primary" fontSize="14px" fontWeight="bold" paddingLeft="4px">
+                        {totalAllMyFarms} FINIX
+                      </Text>
                     </div>
-                  </BannerTopupMobile>
-                )}
-              </>
-            ) : (
-              <>
-                {earningsSum <= 0 && (
-                  <BannerTopupStyle>
-                    <div className="flex align-center px-6 pos-relative" style={{ zIndex: 1 }}>
-                      <HeaderBanner color="text">
-                        Harvest all of reward and stake in Long-term Stake for earn more!
-                      </HeaderBanner>
-                      <img src={logoFinixTopup} alt="logoFinixTopup" width="130" className="ml-7 mr-5" />
-                      <BoxValue>
-                        <Text color="textSubtle" fontSize="16px">
-                          FINIX ready to harvest
-                        </Text>
-                        <div className="flex align-center">
-                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
-                          <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
-                            {totalAllMyFarms} FINIX
-                          </Text>
-                        </div>
-                      </BoxValue>
-                      <SuperHarvestButton
-                        radii="small"
-                        onClick={() => {
-                          onPresentConnectModal()
-                        }}
-                      >
-                        Super Stake
-                      </SuperHarvestButton>
-                    </div>
-                  </BannerTopupStyle>
-                )}
-              </>
-            )}
-   </>
+                  </BoxValueMobile>
+                  <SuperHarvestButton
+                    radii="small"
+                    onClick={() => {
+                      onPresentConnectModal()
+                    }}
+                  >
+                    Super Stake
+                  </SuperHarvestButton>
+                </div>
+              </div>
+            </BannerTopupMobile>
+          )}
+        </>
+      ) : (
+        <>
+          {earningsSum <= 0 && (
+            <BannerTopupStyle>
+              <div className="flex align-center px-6 pos-relative" style={{ zIndex: 1 }}>
+                <HeaderBanner color="text">
+                  Harvest all of reward and stake in Long-term Stake for earn more!
+                </HeaderBanner>
+                <img src={logoFinixTopup} alt="logoFinixTopup" width="130" className="ml-7 mr-5" />
+                <BoxValue>
+                  <Text color="textSubtle" fontSize="16px">
+                    FINIX ready to harvest
+                  </Text>
+                  <div className="flex align-center">
+                    <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                    <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
+                      {totalAllMyFarms} FINIX
+                    </Text>
+                  </div>
+                </BoxValue>
+                <SuperHarvestButton
+                  radii="small"
+                  onClick={() => {
+                    onPresentConnectModal()
+                  }}
+                >
+                  Super Stake
+                </SuperHarvestButton>
+              </div>
+            </BannerTopupStyle>
+          )}
+        </>
+      )}
+    </>
   )
 }
 

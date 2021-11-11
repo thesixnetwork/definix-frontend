@@ -26,7 +26,7 @@ import { Heading, Text, Link, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
-import BannerTopup from '../../uikit-dev/widgets/Banner/BannerTopup';
+import BannerTopup from '../../uikit-dev/widgets/Banner/BannerTopup'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
@@ -340,9 +340,9 @@ const Farm: React.FC = () => {
                 The amount of returns will be calculated by the annual percentage rate (APR).
               </Text>
             </div>
-          
+
             <BannerTopup />
-          
+
             <PoolTabButtons
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}

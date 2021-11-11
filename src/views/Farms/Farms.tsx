@@ -281,7 +281,7 @@ const Farms: React.FC = () => {
               </Text>
             </div>
 
-           <BannerTopup />
+            <BannerTopup />
 
             <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
               <FarmTabButtons
