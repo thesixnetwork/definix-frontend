@@ -158,7 +158,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [days, setdays] = useState(28)
   const { isDark } = useTheme()
 
-  const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
+  const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
 
   // Farms
   const farmsLP = useFarms()
@@ -692,7 +692,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
           Please select available duration
         </Text>
-        <StakePeriodButton setPeriod={setPeriod} status={false} levelStake={levelStake} isTopUp />
+        <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
         <div className="flex mt-4 w-100">
           <Text className="col-6" color="textSubtle" fontWeight="500">
             From your wallet:
@@ -759,7 +759,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Text>
           <div className="flex flex-row justify-end w-100">
             <Text className="text-right" color="#0973B9" fontWeight="500">
-              {Number(value) + Number(sumpendingReward) * period}
+              {(Number(value) + Number(sumpendingReward)) * period}
               {/* <Text className="text-right" color="#0973B9" fontWeight="500">
               {numeral(value * period).format('0,0')} */}
             </Text>
