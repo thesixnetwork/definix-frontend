@@ -23,7 +23,7 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   background: ${({ theme }) => theme.modal.background};
   box-shadow: 0px 20px 36px -8px rgba(14, 30, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => (theme.isDark ? "#3D3D3D" : "#EFEFEF")};
+  border: 1px solid ${({ theme }) => (theme.isDark ? '#3D3D3D' : '#EFEFEF')};
   width: 480px;
   z-index: ${({ theme }) => theme.zIndices.modal};
   overflow-y: auto;

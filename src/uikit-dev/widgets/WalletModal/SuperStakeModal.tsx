@@ -110,7 +110,6 @@ const Coins = styled.div`
   }
 `
 
-
 const NumberInput = styled.input`
   border: none;
   background-color: #ffffff00;
@@ -123,7 +122,7 @@ const NumberInput = styled.input`
 `
 
 const CustomCheckbox = styled(Checkbox)`
-border: 1px solid red;
+  border: 1px solid red;
   &.Mui-checked {
     color: ${({ theme }) => theme.colors.success} !important;
   }
@@ -479,7 +478,21 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   // }, [selectedToken])
 
   return (
-    <ModalStake title={<img src={exclusive} alt="" style={{ borderBottomRightRadius: "60px", borderBottomLeftRadius: "60px", boxShadow: '0 3px 6px rgb(0, 0 ,0, 0.16)' }} />} onDismiss={onDismiss} className="">
+    <ModalStake
+      title={
+        <img
+          src={exclusive}
+          alt=""
+          style={{
+            borderBottomRightRadius: '60px',
+            borderBottomLeftRadius: '60px',
+            boxShadow: '0 3px 6px rgb(0, 0 ,0, 0.16)',
+          }}
+        />
+      }
+      onDismiss={onDismiss}
+      className=""
+    >
       <div className="flex flex-column w-100 mt-2">
         <Text fontSize="18px" fontWeight="600">
           Super Stake
@@ -693,10 +706,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             {`Harvesting...(${harvestProgress} /${Object.keys(selectedToken).length})`}
           </Button>
         ) : (
-            <Button fullWidth id="harvest-all" radii="small" className="mt-3" onClick={() => setHarvestProgress(0)}>
-              Stake
-            </Button>
-          )}
+          <Button fullWidth id="harvest-all" radii="small" className="mt-3" onClick={() => setHarvestProgress(0)}>
+            Stake
+          </Button>
+        )}
       </div>
     </ModalStake>
   )

@@ -151,7 +151,6 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
   const [isStake, setIsStake] = useState(lockAmount > 0)
 
-
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
@@ -293,8 +292,8 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         Enter an amount
       </Button>
     ) : (
-        renderStakeDOrStake()
-      )
+      renderStakeDOrStake()
+    )
   }
 
   const renderStakeOrInsufficient = () => {
@@ -303,18 +302,18 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         Insufficient Balance
       </Button>
     ) : (
-        renderStakeOrEnter()
-      )
+      renderStakeOrEnter()
+    )
   }
 
   const renderApprovalOrStakeButton = () => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-        <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
-          Approve Contract
-        </Button>
-      )
+      <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+        Approve Contract
+      </Button>
+    )
   }
 
   useEffect(() => {
@@ -373,8 +372,8 @@ const CardSuperStake = ({ isShowRightPanel }) => {
             <ModalSorry title="Sorry, this feature is only for vFINIX holder" hideCloseButton>
               <div className="flex flex-column w-100 mt-2">
                 <Text color={isDark ? 'white' : '#737375'}>
-                  You have never lock in Long-term Stake. Do you want to start staking in the Long-term Stake to get this
-                  exclusive feature?
+                  You have never lock in Long-term Stake. Do you want to start staking in the Long-term Stake to get
+                  this exclusive feature?
                 </Text>
               </div>
             </ModalSorry>
@@ -450,35 +449,35 @@ const CardSuperStake = ({ isShowRightPanel }) => {
               </Coin>
             </Balance>
           ) : (
-              <Balance>
-                <NumberInput
-                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                  placeholder="0.00"
-                  value={value}
-                  onChange={handleChange}
-                  pattern="^[0-9]*[,]?[0-9]*$"
-                />
-                {percent !== 1 && (
-                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                      25%
+            <Balance>
+              <NumberInput
+                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                pattern="^[0-9]*[,]?[0-9]*$"
+              />
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
                   </StylesButton>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                      50%
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
                   </StylesButton>
-                    <StylesButton size="sm" onClick={() => setPercent(1)}>
-                      MAX
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
                   </StylesButton>
-                  </div>
-                )}
-                <Coin>
-                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                  <Heading as="h1" fontSize="16px !important">
-                    FINIX
+                </div>
+              )}
+              <Coin>
+                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <Heading as="h1" fontSize="16px !important">
+                  FINIX
                 </Heading>
-                </Coin>
-              </Balance>
-            )}
+              </Coin>
+            </Balance>
+          )}
           <div className="flex mt-4">
             <Text className="col-6" color={isDark ? 'white' : '#000000'}>
               Estimated Period End
@@ -514,8 +513,8 @@ const CardSuperStake = ({ isShowRightPanel }) => {
                 Connect Wallet
               </Button>
             ) : (
-                renderApprovalOrStakeButton()
-              )}
+              renderApprovalOrStakeButton()
+            )}
           </div>
         </div>
         {!isMobileOrTablet && (
