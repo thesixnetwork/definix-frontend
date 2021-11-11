@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import _ from 'lodash'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { Helmet } from 'react-helmet'
+import { Route, useRouteMatch } from 'react-router-dom'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-
-import { getFinixAddress, getSixAddress, getWklayAddress } from 'utils/addressHelpers'
-import useTokenBalance from 'hooks/useTokenBalance'
+import orderBy from 'lodash/orderBy'
+import partition from 'lodash/partition'
 
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import orderBy from 'lodash/orderBy'
-import partition from 'lodash/partition'
-import { Helmet } from 'react-helmet'
-import { Route, useRouteMatch } from 'react-router-dom'
+
 import useBlock from 'hooks/useBlock'
 import {
   useFarms,
@@ -21,10 +21,12 @@ import {
   usePriceSixUsd,
   usePriceKlayKusdt,
   usePriceKethKlay,
-  usePriceFinixKusdt,
+  useBalances,
 } from 'state/hooks'
-import { TitleSet, Box } from 'definixswap-uikit'
+import { fetchBalances } from 'state/wallet'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getAddress } from 'utils/addressHelpers'
+import { TitleSet, Box } from 'definixswap-uikit'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
@@ -37,6 +39,7 @@ const Farm: React.FC = () => {
   const { t } = useTranslation()
   const { path } = useRouteMatch()
   const { account } = useWallet()
+  const dispatch = useDispatch()
   const farms = useFarms()
   const pools = usePools(account)
   const sixPriceUSD = usePriceSixUsd()
@@ -45,9 +48,10 @@ const Farm: React.FC = () => {
   const kethPriceUsd = usePriceKethKusdt()
   const ethPriceKlay = usePriceKethKlay()
   const block = useBlock()
+  const balances = useBalances(account)
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
-  const [isPhrase1, setIsPhrase1] = useState(false)
+  // const [isPhrase1, setIsPhrase1] = useState(false)
   const [pageState, setPageState] = useState<{
     state: string
     data: any
@@ -56,27 +60,10 @@ const Farm: React.FC = () => {
     data: null,
   }) // 'list', 'deposit', 'remove',
 
-  // const getTokenAddress = useCallback((tokenName: string) => {
-  //   switch (tokenName) {
-  //     case 'klay':
-  //       return getWklayAddress()
-  //     case 'six':
-  //       return getSixAddress()
-  //     default:
-  //       return getFinixAddress()
-  //   }
-  // }, [])
-  // const finixBalance = useTokenBalance(getTokenAddress('finix'))
-  // const sixBalance = useTokenBalance(getTokenAddress('six'))
-  // const wklayBalance = useTokenBalance(getWklayAddress())
-  // console.log('------- finix ', new BigNumber(getBalanceNumber(finixBalance)).toNumber())
-  // console.log('------- six ', new BigNumber(getBalanceNumber(sixBalance)).toNumber())
-  // console.log('------- klay ', new BigNumber(getBalanceNumber(wklayBalance)).toNumber())
-
-  const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
-    : new Date().getTime()
-  const currentTime = new Date().getTime()
+  // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
+  //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
+  //   : new Date().getTime()
+  // const currentTime = new Date().getTime()
 
   const priceToKlay = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceKLAYTN = new BigNumber(tokenPrice)
@@ -266,15 +253,40 @@ const Farm: React.FC = () => {
     })
   }, [])
 
-  useEffect(() => {
-    if (currentTime < phrase1TimeStamp) {
-      setTimeout(() => {
-        setIsPhrase1(true)
-      }, phrase1TimeStamp - currentTime)
-    } else {
-      setIsPhrase1(true)
+  const getMyBalanceInWallet = useCallback(
+    (tokenName: string, tokenAddress: string) => {
+      if (balances) {
+        const address = tokenName === 'WKLAY' ? 'main' : tokenAddress
+        return _.get(balances, address)
+      }
+      return null
+    },
+    [balances],
+  )
+
+  const fetchAllBalances = useCallback(() => {
+    if (balances) return
+    if (account && poolsWithApy) {
+      const assetAddresses = poolsWithApy.map((pool) => {
+        return getAddress({ [process.env.REACT_APP_CHAIN_ID]: pool.stakingTokenAddress })
+      })
+      dispatch(fetchBalances(account, assetAddresses))
     }
-  }, [currentTime, phrase1TimeStamp])
+  }, [dispatch, account, poolsWithApy, balances])
+
+  useEffect(() => {
+    fetchAllBalances()
+  }, [fetchAllBalances])
+
+  // useEffect(() => {
+  //   if (currentTime < phrase1TimeStamp) {
+  //     setTimeout(() => {
+  //       setIsPhrase1(true)
+  //     }, phrase1TimeStamp - currentTime)
+  //   } else {
+  //     setIsPhrase1(true)
+  //   }
+  // }, [currentTime, phrase1TimeStamp])
 
   return (
     <>
@@ -308,40 +320,41 @@ const Farm: React.FC = () => {
               setLiveOnly={setLiveOnly}
             />
 
-            <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-              {IS_GENESIS ? (
-                <div>
-                  <Route exact path={`${path}`}>
-                    <>
-                      {poolsWithApy.map((pool) => (
-                        <PoolCardGenesis key={pool.sousId} pool={pool} />
-                      ))}
-                      {/* <Coming /> */}
-                    </>
-                  </Route>
-                </div>
-              ) : (
-                <>
-                  <Route exact path={`${path}`}>
-                    {orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
-                      (pool) => (
-                        <PoolCard
-                          key={pool.sousId}
-                          pool={pool}
-                          onSelectAdd={onSelectAdd}
-                          onSelectRemove={onSelectRemove}
-                        />
-                      ),
-                    )}
-                  </Route>
-                  {/* <Route path={`${path}/history`}>
-                    {orderBy(finishedPools, ['sortOrder']).map((pool) => (
-                      <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+            {IS_GENESIS ? (
+              <div>
+                <Route exact path={`${path}`}>
+                  <>
+                    {poolsWithApy.map((pool) => (
+                      <PoolCardGenesis key={pool.sousId} pool={pool} />
                     ))}
-                  </Route> */}
-                </>
-              )}
-            </TimerWrapper>
+                    {/* <Coming /> */}
+                  </>
+                </Route>
+              </div>
+            ) : (
+              <>
+                <Route exact path={`${path}`}>
+                  {orderBy(stackedOnly ? filterStackedOnlyPools(targetPools) : targetPools, ['sortOrder']).map(
+                    (pool) => (
+                      <PoolCard
+                        key={pool.sousId}
+                        pool={pool}
+                        myBalanceInWallet={getMyBalanceInWallet(pool.tokenName, pool.stakingTokenAddress)}
+                        onSelectAdd={onSelectAdd}
+                        onSelectRemove={onSelectRemove}
+                      />
+                    ),
+                  )}
+                </Route>
+                {/* <Route path={`${path}/history`}>
+                  {orderBy(finishedPools, ['sortOrder']).map((pool) => (
+                    <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
+                  ))}
+                </Route> */}
+              </>
+            )}
+            {/* <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
+            </TimerWrapper> */}
           </>
         )}
         {pageState.state === 'deposit' && (
@@ -388,21 +401,21 @@ const Farm: React.FC = () => {
   )
 }
 
-const TimerWrapper = ({ isPhrase1, date, children }) => {
-  return isPhrase1 ? (
-    children
-  ) : (
-    <>
-      <div>
-        <br />
-        <Flip date={date} />
-        <br />
-        <br />
-        <br />
-      </div>
-      {children}
-    </>
-  )
-}
+// const TimerWrapper = ({ isPhrase1, date, children }) => {
+//   return isPhrase1 ? (
+//     children
+//   ) : (
+//     <>
+//       <div>
+//         <br />
+//         <Flip date={date} />
+//         <br />
+//         <br />
+//         <br />
+//       </div>
+//       {children}
+//     </>
+//   )
+// }
 
 export default Farm

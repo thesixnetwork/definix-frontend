@@ -28,14 +28,10 @@ import { FarmCardProps } from './types'
 
 const FarmCard: React.FC<FarmCardProps> = ({
   farm,
+  myBalancesInWallet,
   klaytn,
   removed,
-  sixPrice,
-  finixPrice,
-  klayPrice,
-  kethPrice,
   account,
-  isHorizontal = false,
   onSelectAddLP,
   onSelectRemoveLP,
 }) => {
@@ -113,12 +109,12 @@ const FarmCard: React.FC<FarmCardProps> = ({
   )
 
   const renderTotalLiquiditySection = useCallback(
-    () => <TotalLiquiditySection title="Total Staked" tokenName={lpTokenName} totalLiquidity={totalLiquidity} />,
-    [lpTokenName, totalLiquidity],
+    () => <TotalLiquiditySection title="Total Staked" totalLiquidity={totalLiquidity} />,
+    [totalLiquidity],
   )
   const renderMyBalanceSection = useCallback(
-    () => <MyBalanceSection title="Balance" tokenName={lpTokenName} balance={stakedBalance} />,
-    [lpTokenName, stakedBalance],
+    () => <MyBalanceSection title="Balance" myBalances={myBalancesInWallet} />,
+    [myBalancesInWallet],
   )
   const renderEarningsSection = useCallback(
     () => <EarningsSection title="Earned" tokenName={lpTokenName} earnings={earnings} />,

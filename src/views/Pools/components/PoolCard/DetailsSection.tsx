@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import React, { useMemo } from 'react'
 import { Flex, Text, ColorStyles, Label } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
@@ -46,11 +47,11 @@ const TotalStakedSection: React.FC<{
 const MyBalanceSection: React.FC<{
   title: string
   tokenName: string
-  balance: BigNumber
-}> = ({ title, tokenName, balance }) => {
-  const balanceValue = useMemo(() => {
-    return getFullDisplayBalance(balance, { fixed: 6 })
-  }, [balance])
+  myBalance: BigNumber
+}> = ({ title, tokenName, myBalance }) => {
+  const myBalanceValue = useMemo(() => {
+    return numeral(myBalance.toNumber()).format('0,0.[000000]')
+  }, [myBalance])
 
   return (
     <>
@@ -60,7 +61,7 @@ const MyBalanceSection: React.FC<{
       <Flex alignItems="center">
         <Label type="token">{tokenName}</Label>
         <Text color={ColorStyles.BLACK} textStyle="R_18M" style={{ paddingLeft: '2px' }}>
-          {balanceValue}
+          {myBalanceValue}
         </Text>
       </Flex>
     </>

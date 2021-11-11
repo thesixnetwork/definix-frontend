@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import { provider } from 'web3-core'
@@ -9,10 +10,18 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useRefresh from 'hooks/useRefresh'
-import { fetchFarmUserDataAsync } from 'state/actions'
-import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
+import { fetchFarmUserDataAsync, fetchBalances } from 'state/actions'
+import {
+  useFarms,
+  usePriceKlayKusdt,
+  usePriceKethKusdt,
+  usePriceFinixUsd,
+  usePriceSixUsd,
+  useBalances,
+} from 'state/hooks'
+import { getAddress } from 'utils/addressHelpers'
 import { TitleSet, Box } from 'definixswap-uikit'
-import Flip from '../../uikit-dev/components/Flip'
+// import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
 import { FarmWithStakedValue } from './components/FarmCard/types'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -22,19 +31,19 @@ import Withdraw from './components/Withdraw'
 const Farms: React.FC = () => {
   const { t } = useTranslation()
   const { path } = useRouteMatch()
+  const dispatch = useDispatch()
   const farmsLP = useFarms()
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const kethPriceUsd = usePriceKethKusdt()
-
-  const dispatch = useDispatch()
   const { fastRefresh } = useRefresh()
+  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const balances = useBalances(account)
 
+  // const [listView, setListView] = useState(true)
+  // const [isPhrase2, setIsPhrase2] = useState(false)
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [listView, setListView] = useState(true)
-  const [isPhrase2, setIsPhrase2] = useState(false)
   const [pageState, setPageState] = useState<{
     state: string
     data: any
@@ -43,10 +52,10 @@ const Farms: React.FC = () => {
     data: null,
   }) // 'list', 'deposit', 'remove',
 
-  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-    : new Date().getTime()
-  const currentTime = new Date().getTime()
+  // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+  //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+  //   : new Date().getTime()
+  // const currentTime = new Date().getTime()
 
   const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
   // const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier === '0X')
@@ -66,6 +75,27 @@ const Farms: React.FC = () => {
       data: props,
     })
   }, [])
+
+  const getMyBalanceInWallet = useCallback(
+    (tokenName: string, tokenAddress: string) => {
+      if (balances) {
+        const address = tokenName === 'WKLAY' ? 'main' : getAddress(tokenAddress)
+        return _.get(balances, address)
+      }
+      return null
+    },
+    [balances],
+  )
+
+  const fetchAllBalances = useCallback(() => {
+    if (balances) return
+    if (account && activeFarms) {
+      const allLPaddresses = activeFarms.reduce((addressArray, farm) => {
+        return [...addressArray, getAddress(farm.quoteTokenAdresses), getAddress(farm.tokenAddresses)]
+      }, [])
+      dispatch(fetchBalances(account, _.uniq(allLPaddresses)))
+    }
+  }, [account, activeFarms, balances, dispatch])
 
   // /!\ This function will be removed soon
   // This function compute the APY for each farm and will be replaced when we have a reliable API
@@ -156,36 +186,48 @@ const Farms: React.FC = () => {
 
         return { ...farm, apy: finixApy, finixApy, klayApy }
       })
-
       return farmsToDisplayWithAPY.map((farm) => (
         <FarmCard
           key={farm.pid}
           farm={farm}
+          myBalancesInWallet={{
+            [farm.tokenSymbol]: getMyBalanceInWallet(farm.tokenSymbol, farm.tokenAddresses),
+            [farm.quoteTokenSymbol]: getMyBalanceInWallet(farm.quoteTokenSymbol, farm.quoteTokenAdresses),
+          }}
           removed={removed}
-          klayPrice={klayPrice}
-          kethPrice={kethPriceUsd}
-          sixPrice={sixPrice}
-          finixPrice={finixPrice}
           klaytn={klaytn}
           account={account}
-          isHorizontal={listView}
           onSelectAddLP={onSelectAddLP}
           onSelectRemoveLP={onSelectRemoveLP}
         />
       ))
     },
-    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView, onSelectAddLP, onSelectRemoveLP],
+    [
+      sixPrice,
+      klayPrice,
+      kethPriceUsd,
+      finixPrice,
+      klaytn,
+      account,
+      onSelectAddLP,
+      onSelectRemoveLP,
+      getMyBalanceInWallet,
+    ],
   )
 
+  // useEffect(() => {
+  //   if (currentTime < phrase2TimeStamp) {
+  //     setTimeout(() => {
+  //       setIsPhrase2(true)
+  //     }, phrase2TimeStamp - currentTime)
+  //   } else {
+  //     setIsPhrase2(true)
+  //   }
+  // }, [currentTime, phrase2TimeStamp])
+
   useEffect(() => {
-    if (currentTime < phrase2TimeStamp) {
-      setTimeout(() => {
-        setIsPhrase2(true)
-      }, phrase2TimeStamp - currentTime)
-    } else {
-      setIsPhrase2(true)
-    }
-  }, [currentTime, phrase2TimeStamp])
+    fetchAllBalances()
+  }, [fetchAllBalances])
 
   useEffect(() => {
     if (account) {
@@ -196,8 +238,8 @@ const Farms: React.FC = () => {
   useEffect(() => {
     return () => {
       setStackedOnly(false)
-      setListView(true)
-      setIsPhrase2(false)
+      // setListView(true)
+      // setIsPhrase2(false)
     }
   }, [])
 
@@ -215,18 +257,18 @@ const Farms: React.FC = () => {
               linkLabel={t('Learn how to stake')}
               link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
             />
+            <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
+            <Route exact path={`${path}`}>
+              {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+            </Route>
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
               Help
             </HelpButton> */}
-            <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-              <FarmTabButtons stackedOnly={stackedOnly} setStackedOnly={setStackedOnly} />
-              <Route exact path={`${path}`}>
-                {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)}
+            {/* <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
+              <Route exact path={`${path}/history`}>
+                {farmsList(inactiveFarms, true)}
               </Route>
-              {/* <Route exact path={`${path}/history`}>
-                  {farmsList(inactiveFarms, true)}
-                </Route> */}
-            </TimerWrapper>
+            </TimerWrapper> */}
           </>
         )}
         {pageState.state === 'deposit' && (
@@ -256,33 +298,33 @@ const Farms: React.FC = () => {
   )
 }
 
-const TimerWrapper = ({ isPhrase2, date, children }) => {
-  return isPhrase2 ? (
-    children
-  ) : (
-    <>
-      <div>
-        <br />
-        <Flip date={date} />
-        <br />
-        <br />
-        <br />
-      </div>
-      <div
-        tabIndex={0}
-        role="button"
-        style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={(e) => {
-          e.preventDefault()
-        }}
-        onKeyDown={(e) => {
-          e.preventDefault()
-        }}
-      >
-        {children}
-      </div>
-    </>
-  )
-}
+// const TimerWrapper = ({ isPhrase2, date, children }) => {
+//   return isPhrase2 ? (
+//     children
+//   ) : (
+//     <>
+//       <div>
+//         <br />
+//         <Flip date={date} />
+//         <br />
+//         <br />
+//         <br />
+//       </div>
+//       <div
+//         tabIndex={0}
+//         role="button"
+//         style={{ opacity: 0.4, pointerEvents: 'none' }}
+//         onClick={(e) => {
+//           e.preventDefault()
+//         }}
+//         onKeyDown={(e) => {
+//           e.preventDefault()
+//         }}
+//       >
+//         {children}
+//       </div>
+//     </>
+//   )
+// }
 
 export default Farms

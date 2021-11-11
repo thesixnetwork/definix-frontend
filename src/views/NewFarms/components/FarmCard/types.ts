@@ -10,14 +10,10 @@ export interface FarmWithStakedValue extends Farm {
 
 export interface FarmCardProps {
   farm: FarmWithStakedValue
+  myBalancesInWallet?: { [key: string]: BigNumber }
   removed: boolean
-  klayPrice?: BigNumber
-  kethPrice?: BigNumber
-  sixPrice?: BigNumber
-  finixPrice?: BigNumber
   klaytn?: provider
   account?: string
-  isHorizontal?: boolean
   onSelectAddLP: (props: any) => void
   onSelectRemoveLP: (props: any) => void
 }

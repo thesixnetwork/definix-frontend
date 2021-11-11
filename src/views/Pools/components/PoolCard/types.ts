@@ -12,7 +12,7 @@ export interface PoolWithApy extends Pool {
 
 export interface PoolCardProps {
   pool: PoolWithApy
-  isHorizontal?: boolean
+  myBalanceInWallet?: BigNumber
   onSelectAdd: (props: any) => void
   onSelectRemove: (props: any) => void
 }
