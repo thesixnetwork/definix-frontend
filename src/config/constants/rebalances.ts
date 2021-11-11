@@ -25,7 +25,7 @@ export const customFactory = {
     56: process.env.REACT_APP_MAINNET_PANCAKEV2_FACTORY_ADDRESS,
     97: process.env.REACT_APP_TESTNET_PANCAKEV2_FACTORY_ADDRESS,
   },
-  definix: {
+  apeswap: {
     56: process.env.REACT_APP_MAINNET_APESWAP_FACTORY_ADDRESS,
     97: process.env.REACT_APP_TESTNET_APESWAP_FACTORY_ADDRESS,
   },
@@ -40,7 +40,7 @@ export const customInitCodeHash = {
     56: process.env.REACT_APP_MAINNET_PANCAKEV2_INIT_CODE_HASH,
     97: process.env.REACT_APP_TESTNET_PANCAKEV2_INIT_CODE_HASH,
   },
-  definix: {
+  apeswap: {
     56: process.env.REACT_APP_MAINNET_APESWAP_INIT_CODE_HASH,
     97: process.env.REACT_APP_TESTNET_APESWAP_INIT_CODE_HASH,
   },
@@ -56,6 +56,9 @@ const rebalances: RebalanceConfig[] = [
       56: '0xF71f0EA92957ef3916E9AE46e8DA295f437eACE9',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
     },
+    router: [customRouter.definix, customRouter.definix],
+    factory: [customFactory.definix, customFactory.definix],
+    initCodeHash: [customInitCodeHash.definix, customInitCodeHash.definix],
     fee: {
       management: 0.2,
       buyback: 1.5,

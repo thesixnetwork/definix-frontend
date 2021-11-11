@@ -1,19 +1,19 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
-import Caver from 'caver-js'
+import Web3 from 'web3'
 import DefinixPair from './contracts/DefinixPair.json'
 import IERC20 from './contracts/IERC20.json'
 import getRpcUrl from '../utils/getRpcUrl'
 
 const RPC_URL = getRpcUrl()
-const httpProvider = new Caver.providers.HttpProvider(RPC_URL)
+const httpProvider = new Web3.providers.HttpProvider(RPC_URL)
 
-const caver = window.caver || new Caver(httpProvider)
+const web3 = new Web3(httpProvider)
 
 class Utils {
   static getPairData = async (_pairAddress) => {
     // eslint-disable-next-line
-    const pairContract = new caver.klay.Contract(DefinixPair.abi, _pairAddress)
+    const pairContract = new web3.eth.Contract(DefinixPair.abi, _pairAddress)
 
     const pairResults = await Promise.all([
       pairContract.methods.token0().call(),
@@ -22,9 +22,9 @@ class Utils {
     ])
 
     // eslint-disable-next-line
-    const erc0 = new caver.klay.Contract(IERC20.abi, pairResults[0])
+    const erc0 = new web3.eth.Contract(IERC20.abi, pairResults[0])
     // eslint-disable-next-line
-    const erc1 = new caver.klay.Contract(IERC20.abi, pairResults[1])
+    const erc1 = new web3.eth.Contract(IERC20.abi, pairResults[1])
 
     const tokenResults = await Promise.all([
       erc0.methods.symbol().call(),

@@ -69,6 +69,9 @@ export interface RebalanceConfig {
   fullDescription: string
   icon: string[]
   address: any
+  router: any
+  factory: any
+  initCodeHash: any
   ratio: Ratio[]
   last24data?: any
   factsheet: any

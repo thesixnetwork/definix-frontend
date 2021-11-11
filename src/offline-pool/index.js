@@ -6,7 +6,7 @@ import RebalanceSwapper from './RebalanceSwapper'
 import Context from './Context'
 import Address from './Address'
 import DefinixLibrary from './DefinixLibrary'
-import { BNB, BUSD, getLpNetwork } from '../config/constants/tokens'
+import { BNB, BUSD, getCustomLpNetwork } from '../config/constants/tokens'
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < (array.length || array.size); index++) {
@@ -50,7 +50,9 @@ export const simulateInvest = async (tokens = []) => {
   context.setFactory(factory)
 
   await asyncForEach(notBnbToken, async (token) => {
-    await factory.loadPair(getLowerAddress(getLpNetwork(token.address, bnbTokenOnly.address)))
+    await factory.loadPair(
+      getLowerAddress(getCustomLpNetwork(token.address, bnbTokenOnly.address, token.factory, token.initCodeHash)),
+    )
   })
 
   const user = new Address(context)
@@ -65,7 +67,7 @@ export const simulateInvest = async (tokens = []) => {
   })
 
   let poolUSDBalances = swapper.getCurrentPoolUSDBalance(
-    getLowerAddress(BUSDToken),
+    getLowerAddress(BUSDToken.address),
     getLowerAddress(bnbTokenOnly.address),
     notBnbToken.map(() => router),
   )
@@ -109,7 +111,7 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
   context.setFactory(factory)
 
   await asyncForEach(notBnbToken, async (token) => {
-    await factory.loadPair(getLowerAddress(getLpNetwork(token.address, bnbTokenOnly.address)))
+    await factory.loadPair(getCustomLpNetwork(token.address, bnbTokenOnly.address, token.factory, token.initCodeHash))
   })
 
   const pebUnit = new BigNumber(10).pow(18)

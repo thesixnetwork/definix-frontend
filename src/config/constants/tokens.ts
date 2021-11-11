@@ -1,7 +1,31 @@
 import { Token, Config, Pair } from 'definixswap-sdk'
+import { getCreate2Address } from '@ethersproject/address'
+import { pack, keccak256 } from '@ethersproject/solidity'
 import sdkconfig from '../../sdkconfig'
 
 Config.configure(sdkconfig)
+
+const configChainId = process.env.REACT_APP_CHAIN_ID || ''
+const mainnetId = process.env.REACT_APP_MAINNET_ID || ''
+const isMainnet = configChainId === mainnetId
+
+const defaultFactoryAddress = isMainnet
+  ? process.env.REACT_APP_MAINNET_FACTORY_ADDRESS
+  : process.env.REACT_APP_TESTNET_FACTORY_ADDRESS
+const defaultInitCodeHash = isMainnet
+  ? process.env.REACT_APP_MAINNET_INIT_CODE_HASH
+  : process.env.REACT_APP_TESTNET_INIT_CODE_HASH
+
+export const getPairAddress = (tokenA: string, tokenB: string, factoryAddress?: string, initCodeHash?: string) => {
+  const currentFactoryAddress = factoryAddress || defaultFactoryAddress
+  const currentInitCodeHash = initCodeHash || defaultInitCodeHash
+  const tokens = tokenA.toLowerCase() < tokenB.toLowerCase() ? [tokenA, tokenB] : [tokenB, tokenA]
+  return getCreate2Address(
+    currentFactoryAddress,
+    keccak256(['bytes'], [pack(['address', 'address'], [tokens[0], tokens[1]])]),
+    currentInitCodeHash,
+  )
+}
 
 const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
 const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
@@ -138,6 +162,23 @@ export const getLpNetwork = (firstToken, secondToken) => {
   return {
     [intMainnetId]: getLpAddress(firstToken[intMainnetId], secondToken[intMainnetId], intMainnetId),
     [intTestnetId]: getLpAddress(firstToken[intTestnetId], secondToken[intTestnetId], intTestnetId),
+  }
+}
+
+export const getCustomLpNetwork = (firstToken, secondToken, factoryAddress, initCodeHash) => {
+  return {
+    [intMainnetId]: getPairAddress(
+      firstToken[intMainnetId],
+      secondToken[intMainnetId],
+      factoryAddress[intMainnetId],
+      initCodeHash[intMainnetId],
+    ),
+    [intTestnetId]: getPairAddress(
+      firstToken[intTestnetId],
+      secondToken[intTestnetId],
+      factoryAddress[intTestnetId],
+      initCodeHash[intTestnetId],
+    ),
   }
 }
 

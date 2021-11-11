@@ -1,8 +1,31 @@
 import addresses from 'config/constants/contracts'
+import { getCreate2Address } from '@ethersproject/address'
+import { pack, keccak256 } from '@ethersproject/solidity'
+
+const chainId = process.env.REACT_APP_CHAIN_ID || ''
+const mainnetId = process.env.REACT_APP_MAINNET_ID || ''
+const isMainnet = chainId === mainnetId
+
+const defaultFactoryAddress = isMainnet
+  ? process.env.REACT_APP_MAINNET_FACTORY_ADDRESS
+  : process.env.REACT_APP_TESTNET_FACTORY_ADDRESS
+const defaultInitCodeHash = isMainnet
+  ? process.env.REACT_APP_MAINNET_INIT_CODE_HASH
+  : process.env.REACT_APP_TESTNET_INIT_CODE_HASH
+
+export const getPairAddress = (tokenA: string, tokenB: string, factoryAddress?: string, initCodeHash?: string) => {
+  const currentFactoryAddress = factoryAddress || defaultFactoryAddress
+  const currentInitCodeHash = initCodeHash || defaultInitCodeHash
+  const tokens = tokenA.toLowerCase() < tokenB.toLowerCase() ? [tokenA, tokenB] : [tokenB, tokenA]
+  return getCreate2Address(
+    currentFactoryAddress,
+    keccak256(['bytes'], [pack(['address', 'address'], [tokens[0], tokens[1]])]),
+    currentInitCodeHash,
+  )
+}
 
 export const getAddress = (address: any): string => {
   const mainNetChainId = 56
-  const chainId = process.env.REACT_APP_CHAIN_ID
   return address[chainId] ? address[chainId] : address[mainNetChainId]
 }
 

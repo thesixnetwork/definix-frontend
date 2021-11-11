@@ -283,13 +283,10 @@ const CardCalculate = ({
           .toJSON()
       })
 
-      const usdTokenAmount = new BigNumber((currentInput[usdToken.address] || '0') as string)
-        .times(new BigNumber(10).pow(usdToken.decimals))
-        .toJSON()
       // const minUsdAmount = new BigNumber(minUserUsdAmount).times(new BigNumber(10).pow(usdToken.decimals)).toJSON()
       const tx = await rebalanceContract.methods
         // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
-        .addFund(arrayTokenAmount, usdTokenAmount, 0)
+        .addFund(arrayTokenAmount, 0)
         .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
       setTx(tx)
 
@@ -510,7 +507,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
     ) {
       setIsSimulating(true)
       const [poolUSDBalancesData, poolAmountsData] = await simulateInvest(
-        _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
+        _.compact([...((rebalance || {}).tokens || [])]).map((c, index) => {
           const ratioPoint = (
             ((rebalance || {}).tokenRatioPoints || [])[index] ||
             ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
@@ -525,6 +522,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
             ratioPoint,
             value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
             balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+            router: rebalance.router[index],
+            factory: rebalance.factory[index],
+            initCodeHash: rebalance.initCodeHash[index],
           }
         }),
       )

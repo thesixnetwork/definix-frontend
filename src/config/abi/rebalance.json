@@ -119,10 +119,6 @@
         "type": "uint256[]"
       },
       {
-        "name": "usdAmount",
-        "type": "uint256"
-      },
-      {
         "name": "minAmountUsdIn",
         "type": "uint256"
       }

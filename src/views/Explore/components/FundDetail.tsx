@@ -20,7 +20,7 @@ const Overflow = styled.div`
 `
 const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   const cols = ['ASSET', 'BALANCE', 'PRICE', 'VALUE', 'CHANGE (D)', 'RATIO']
-  let tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+  let tokens = _.compact([...((rebalance || {}).tokens || [])])
 
   if (tokens.length === 0) tokens = rebalance.ratio
   const selectClass = (inputNumber) => {
