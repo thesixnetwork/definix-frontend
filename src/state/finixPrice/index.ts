@@ -202,9 +202,7 @@ const findAndSelectPair = (pair) => {
 
 export const fetchFinixPrice = () => async (dispatch) => {
   const allTokenCombinationKeys = pairObjectCombination(allTokens)
-  const allFinixPair = allTokenCombinationKeys.filter(
-    (item) => item.indexOf('FINIX') >= 0 || item.indexOf('USDT') >= 0,
-  )
+  const allFinixPair = allTokenCombinationKeys.filter((item) => item.indexOf('FINIX') >= 0 || item.indexOf('USDT') >= 0)
   const sortedPair = _.compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
   const searchablePair = {}
   sortedPair.forEach((pair, index) => {
