@@ -3,7 +3,6 @@ import _ from 'lodash'
 import { Button } from 'uikit-dev'
 import ModalSorry from '../Modal/ModalSorry'
 import { Text } from '../../components/Text'
-import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
 
 interface Props {
   onDismiss?: () => void
@@ -18,8 +17,8 @@ const StartLongTermStakeModal: React.FC<Props> = ({ onDismiss = () => null }) =>
           exclusive feature?
         </Text>
       </div>
-      <Button as="a" fullWidth id="harvest-all" radii="small" className="mt-5" href="/long-term-stake">
-        Start staking
+      <Button as="a" fullWidth id="harvest-all" radii="small" className="mt-4 mb-3" href="/long-term-stake">
+        Start Long-term Stake
       </Button>
     </ModalSorry>
   )

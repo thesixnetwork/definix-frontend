@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react'
-import { useRouteMatch } from 'react-router-dom'
-import Lottie from 'react-lottie'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
-// import useTopUp from '../../hooks/useTopUp'
+import ModalSorry from '../../uikit-dev/widgets/Modal/ModalSorry'
 import useTheme from '../../hooks/useTheme'
 import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../../uikit-dev'
-import success from '../../uikit-dev/animation/complete.json'
-import loading from '../../uikit-dev/animation/farmPool.json'
 import ConnectModal from '../../uikit-dev/widgets/WalletModal/ConnectModal'
 import logoExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/logo-exclusive-vfinix.png'
 import badgeExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/badge-exclusive.png'
@@ -22,7 +18,6 @@ import {
   useLock,
   useApprove,
   useAllLock,
-  useApr,
   usePrivateData,
   useLockTopup,
   useAllDataLock,
@@ -30,18 +25,6 @@ import {
 import { useLockPlus } from '../../hooks/useTopUp'
 import StakePeriodButton from './components/StakePeriodButton'
 import LongTermTab from './components/LongTermTab'
-
-const SuccessOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: success,
-}
-
-const options = {
-  loop: true,
-  autoplay: true,
-  animationData: loading,
-}
 
 const FinixStake = styled(Card)`
   width: 100%;
@@ -132,7 +115,7 @@ const BadgeExclusive = styled.div`
   display: contents;
 `
 const CardSuperStake = ({ isShowRightPanel }) => {
-  const { path } = useRouteMatch()
+  /* eslint-enable no-unused-vars */
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
@@ -167,6 +150,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
   const [isStake, setIsStake] = useState(lockAmount > 0)
+
 
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
@@ -255,7 +239,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
   }, [period, value, periodEnd, allLockPeriod, realPenaltyRate])
 
-  const { onStake, status, loadings } = useLock(letvel, lockFinix, click)
+  const { status, loadings } = useLock(letvel, lockFinix, click)
   useEffect(() => {
     if (status) {
       setVFINIX(0)
@@ -309,8 +293,8 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         Enter an amount
       </Button>
     ) : (
-      renderStakeDOrStake()
-    )
+        renderStakeDOrStake()
+      )
   }
 
   const renderStakeOrInsufficient = () => {
@@ -319,18 +303,18 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         Insufficient Balance
       </Button>
     ) : (
-      renderStakeOrEnter()
-    )
+        renderStakeOrEnter()
+      )
   }
 
   const renderApprovalOrStakeButton = () => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-      <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
-        Approve Contract
-      </Button>
-    )
+        <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+          Approve Contract
+        </Button>
+      )
   }
 
   useEffect(() => {
@@ -381,20 +365,23 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           <div
             style={{
               position: 'absolute',
-              left: loadings === 'loading' ? '20%' : '38%',
-              top: loadings === 'loading' ? '18%' : '32%',
+              left: loadings === 'loading' ? '20%' : '20%',
+              top: loadings === 'loading' ? '18%' : '38%',
               zIndex: 1,
             }}
           >
-            <Lottie
-              options={loadings === 'loading' ? options : SuccessOptions}
-              height={loadings === 'loading' ? 300 : 155}
-              width={loadings === 'loading' ? 444 : 185}
-            />
+            <ModalSorry title="Sorry, this feature is only for vFINIX holder" hideCloseButton>
+              <div className="flex flex-column w-100 mt-2">
+                <Text color={isDark ? 'white' : '#737375'}>
+                  You have never lock in Long-term Stake. Do you want to start staking in the Long-term Stake to get this
+                  exclusive feature?
+                </Text>
+              </div>
+            </ModalSorry>
           </div>
         )}
         <div
-          style={{ opacity: loadings !== '' ? 0.1 : 1 }}
+          style={{ opacity: !isStake ? 0.1 : 1 }}
           className={`${!isMobileOrTablet ? 'col-8 pt-5' : 'col-12 pr-5'} pb-5 pl-5`}
         >
           <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center justify-space-between'}`}>
@@ -432,6 +419,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
               Balance: {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'}
             </Text>
           </div>
+
           {isMobileOrTablet ? (
             <Balance style={{ flexWrap: 'wrap' }}>
               <NumberInput
@@ -462,35 +450,35 @@ const CardSuperStake = ({ isShowRightPanel }) => {
               </Coin>
             </Balance>
           ) : (
-            <Balance>
-              <NumberInput
-                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                placeholder="0.00"
-                value={value}
-                onChange={handleChange}
-                pattern="^[0-9]*[,]?[0-9]*$"
-              />
-              {percent !== 1 && (
-                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                    25%
+              <Balance>
+                <NumberInput
+                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                  placeholder="0.00"
+                  value={value}
+                  onChange={handleChange}
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+                {percent !== 1 && (
+                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                      25%
                   </StylesButton>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                    50%
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                      50%
                   </StylesButton>
-                  <StylesButton size="sm" onClick={() => setPercent(1)}>
-                    MAX
+                    <StylesButton size="sm" onClick={() => setPercent(1)}>
+                      MAX
                   </StylesButton>
-                </div>
-              )}
-              <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                <Heading as="h1" fontSize="16px !important">
-                  FINIX
+                  </div>
+                )}
+                <Coin>
+                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                  <Heading as="h1" fontSize="16px !important">
+                    FINIX
                 </Heading>
-              </Coin>
-            </Balance>
-          )}
+                </Coin>
+              </Balance>
+            )}
           <div className="flex mt-4">
             <Text className="col-6" color={isDark ? 'white' : '#000000'}>
               Estimated Period End
@@ -526,8 +514,8 @@ const CardSuperStake = ({ isShowRightPanel }) => {
                 Connect Wallet
               </Button>
             ) : (
-              renderApprovalOrStakeButton()
-            )}
+                renderApprovalOrStakeButton()
+              )}
           </div>
         </div>
         {!isMobileOrTablet && (
