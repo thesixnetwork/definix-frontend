@@ -80,7 +80,6 @@ const Farm: React.FC = () => {
   const [modalNode, setModalNode] = useState<React.ReactNode>()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
-  const isMobileOrTablet = !isXl
 
   // Super Stake
   const farmEarnings = useFarmEarning()

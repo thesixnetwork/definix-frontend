@@ -61,7 +61,6 @@ const Farms: React.FC = () => {
   const kethPriceUsd = usePriceKethKusdt()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd
-  const isMobileOrTablet = !isXl
 
   // Super Stake
   const farmEarnings = useFarmEarning()

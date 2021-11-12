@@ -4,12 +4,12 @@ import { useDispatch } from 'react-redux'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
-import numeral from 'numeral'
 import { Link, useLocation } from 'react-router-dom'
 import _ from 'lodash'
+import { Star } from 'react-feather'
 import { fetchIdData, fetchStartIndex } from '../../../state/longTermStake'
 import { Card, Button, Text, Heading } from '../../../uikit-dev'
-import { useUnLock, useClaim } from '../../../hooks/useLongTermStake'
+import { useClaim, useLockTopup } from '../../../hooks/useLongTermStake'
 import PaginationCustom from './Pagination'
 import CardHarvest from './CardHarvest'
 
@@ -96,9 +96,11 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const [statuu, setStatuu] = useState(false)
+  const lockTopUp = useLockTopup()
+
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
-  const location = useLocation()
+
   // penaltyFinixAmount
   const onUnStake = useCallback(
     (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days) => {
@@ -152,26 +154,26 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         Claimed
       </Button>
     ) : (
-      <Button
-        fullWidth
-        as={Link}
-        to="/long-term-stake/unstake"
-        radii="small"
-        disabled
-        style={{
-          backgroundColor: 'transparent',
-          border: `1px solid #8C90A5`,
-          display: 'unset',
-          padding: '6px',
-          color: '#8C90A5',
-          fontStyle: 'italic',
-          fontWeight: 'normal',
-        }}
-        className="text-right mr-1"
-      >
-        Unstaked
-      </Button>
-    )
+        <Button
+          fullWidth
+          as={Link}
+          to="/long-term-stake/unstake"
+          radii="small"
+          disabled
+          style={{
+            backgroundColor: 'transparent',
+            border: `1px solid #8C90A5`,
+            display: 'unset',
+            padding: '6px',
+            color: '#8C90A5',
+            fontStyle: 'italic',
+            fontWeight: 'normal',
+          }}
+          className="text-right mr-1"
+        >
+          Unstaked
+        </Button>
+      )
   }
 
   const handleClaimed = (item) => {
@@ -195,25 +197,25 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         Claim
       </Button>
     ) : (
-      <Button
-        fullWidth
-        as={Link}
-        radii="small"
-        disabled
-        style={{
-          backgroundColor: 'transparent',
-          border: `1px solid #8C90A5`,
-          display: 'unset',
-          padding: '6px',
-          color: '#8C90A5',
-          fontStyle: 'italic',
-          fontWeight: 'normal',
-        }}
-        className="text-right mr-1"
-      >
-        Claim
-      </Button>
-    )
+        <Button
+          fullWidth
+          as={Link}
+          radii="small"
+          disabled
+          style={{
+            backgroundColor: 'transparent',
+            border: `1px solid #8C90A5`,
+            display: 'unset',
+            padding: '6px',
+            color: '#8C90A5',
+            fontStyle: 'italic',
+            fontWeight: 'normal',
+          }}
+          className="text-right mr-1"
+        >
+          Claim
+        </Button>
+      )
   }
 
   const handleCanUnlock = (item) => {
@@ -250,38 +252,38 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         Unstake
       </Button>
     ) : (
-      <Button
-        fullWidth
-        as={Link}
-        to="/long-term-stake/unstake"
-        radii="small"
-        style={{
-          backgroundColor: '#0973B9',
-          border: `1px solid #0973B9`,
-          display: 'unset',
-          padding: '6px',
-          color: '#fff',
-          fontStyle: 'italic',
-          fontWeight: 'normal',
-        }}
-        onClick={() =>
-          onUnStake(
-            _.get(item, 'id'),
-            _.get(item, 'level'),
-            _.get(item, 'lockAmount'),
-            _.get(item, 'isPenalty'),
-            !_.get(item, 'canBeUnlock'),
-            _.get(item, 'penaltyRate'),
-            _.get(item, 'periodPenalty'),
-            _.get(item, 'multiplier'),
-            _.get(item, 'days'),
-          )
-        }
-        className="text-right mr-1"
-      >
-        Early Unstake
-      </Button>
-    )
+        <Button
+          fullWidth
+          as={Link}
+          to="/long-term-stake/unstake"
+          radii="small"
+          style={{
+            backgroundColor: '#0973B9',
+            border: `1px solid #0973B9`,
+            display: 'unset',
+            padding: '6px',
+            color: '#fff',
+            fontStyle: 'italic',
+            fontWeight: 'normal',
+          }}
+          onClick={() =>
+            onUnStake(
+              _.get(item, 'id'),
+              _.get(item, 'level'),
+              _.get(item, 'lockAmount'),
+              _.get(item, 'isPenalty'),
+              !_.get(item, 'canBeUnlock'),
+              _.get(item, 'penaltyRate'),
+              _.get(item, 'periodPenalty'),
+              _.get(item, 'multiplier'),
+              _.get(item, 'days'),
+            )
+          }
+          className="text-right mr-1"
+        >
+          Early Unstake
+        </Button>
+      )
   }
 
   const handleNotIsunlocked = (item) => {
@@ -321,52 +323,55 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         ) : isEmpty(rows) ? (
           <EmptyData text="No data" />
         ) : (
-          <TBody>
-            {rows !== null &&
-              rows.map((item, idx) => (
-                <TR key={_.get(item, 'id')}>
-                  <TD>
-                    <Text color="textSubtle">
-                      <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                        {_.get(item, 'multiplier')}x {_.get(item, 'days')} days
-                      </Text>
-                    </Text>
-                  </TD>
-                  <TD className="col-3">
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                      {_.get(item, 'isPenalty')
-                        ? _.get(item, 'lockAmount') - (_.get(item, 'penaltyRate') / 100) * _.get(item, 'lockAmount')
-                        : _.get(item, 'lockAmount').toLocaleString()}
-                    </Text>
-                  </TD>
-                  <TD>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
-                      {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
-                    </Text>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                      {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}
+              <TBody>
+                {rows !== null &&
+                  rows.map((item, idx) => (
+                    <TR key={_.get(item, 'id')}>
+                      <TD>
+                        <Text color="textSubtle" className="flex align-center">
+                          {_.get(item, "topup").some((topup) => !!(Number(topup) === item.id)) && (
+                            <Star size={16} color="#FFAF5F" />
+                          )}&nbsp;
+                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                            {_.get(item, 'multiplier')}x {_.get(item, 'days')} days
+                        </Text>
+                        </Text>
+                      </TD>
+                      <TD className="col-3">
+                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                          {_.get(item, 'isPenalty')
+                            ? _.get(item, 'lockAmount') - (_.get(item, 'penaltyRate') / 100) * _.get(item, 'lockAmount')
+                            : _.get(item, 'lockAmount').toLocaleString()}
+                        </Text>
+                      </TD>
+                      <TD>
+                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
+                          {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
+                        </Text>
+                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                          {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}
                       GMT+9
                     </Text>
-                  </TD>
+                      </TD>
+                      <TD className="text-right">
+                        {_.get(item, 'isUnlocked') ? handleIsunlocked(item) : handleNotIsunlocked(item)}
+                      </TD>
+                    </TR>
+                  ))}
+                <TR>
                   <TD className="text-right">
-                    {_.get(item, 'isUnlocked') ? handleIsunlocked(item) : handleNotIsunlocked(item)}
+                    <PaginationCustom
+                      page={currentPage}
+                      count={pages}
+                      onChange={onPageChange}
+                      size="small"
+                      hidePrevButton
+                      hideNextButton
+                    />
                   </TD>
                 </TR>
-              ))}
-            <TR>
-              <TD className="text-right">
-                <PaginationCustom
-                  page={currentPage}
-                  count={pages}
-                  onChange={onPageChange}
-                  size="small"
-                  hidePrevButton
-                  hideNextButton
-                />
-              </TD>
-            </TR>
-          </TBody>
-        )}
+              </TBody>
+            )}
       </Table>
     </CardTable>
   )
