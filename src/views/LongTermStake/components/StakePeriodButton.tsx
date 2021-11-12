@@ -44,6 +44,7 @@ const CustomButton = ({
   levelStake,
   isTopUp,
   disableLevel,
+  setFlgIsTopup,
 }) => {
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'
@@ -100,6 +101,7 @@ const CustomButton = ({
       <ButtonPeriod
         onClick={() => {
           setPeriod(level)
+          setFlgIsTopup(true)
         }}
         radii="small"
         isStroke
@@ -107,7 +109,7 @@ const CustomButton = ({
         style={{
           background: period === level ? handleBackgroud4(period, level) : onSelect1(),
           border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
-          opacity: isTopUp && period !== level && !disableLevel && 0.3,
+          opacity: isTopUp && !disableLevel && 0.3,
         }}
       >
         <BoxLevel
@@ -166,18 +168,19 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   const [_minimum4, setMinimum3] = useState(0)
   const apr = useApr()
   const [periodSelect, setPeriodSelect] = useState(4)
-  let disableLevel0 = []
-  let disableLevel1 = []
-  let disableLevel2 = []
+  const [flgIsTopup, setFlgIsTopup] = useState(false)
+  let disableLevel0 = false
+  let disableLevel1 = false
+  let disableLevel2 = false
 
   if (levelStake) {
-    disableLevel0 = levelStake.filter((val) => {
+    disableLevel0 = levelStake.some((val) => {
       return !!(val === '0')
     })
-    disableLevel1 = levelStake.filter((val) => {
+    disableLevel1 = levelStake.some((val) => {
       return !!(val === '1')
     })
-    disableLevel2 = levelStake.filter((val) => {
+    disableLevel2 = levelStake.some((val) => {
       return !!(val === '2')
     })
   }
@@ -194,10 +197,17 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
       // setPeriodSelect(0)
       setPeriod(4)
       setPeriodSelect(4)
+    } else if (!status && isTopUp && !flgIsTopup) {
+      const max = levelStake.map((val) => {
+        return Number(val)
+      })
+      const staked = Math.max(...max) === 2 ? 4 : Math.max(...max) + 1
+      setPeriod(staked)
+      setPeriodSelect(staked)
     } else {
       setPeriod(periodSelect)
     }
-  }, [periodSelect, setPeriod, status, isTopUp])
+  }, [periodSelect, setPeriod, status, isTopUp, levelStake, flgIsTopup])
 
   return (
     <div className={`w-100 ${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
@@ -213,7 +223,8 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         mr="mr-2"
         levelStake={levelStake}
         isTopUp={isTopUp}
-        disableLevel={disableLevel0[0] === '0'}
+        disableLevel={disableLevel0}
+        setFlgIsTopup={setFlgIsTopup}
       />
       <CustomButton
         isDark={isDark}
@@ -227,7 +238,8 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         mr="mr-2"
         levelStake={levelStake}
         isTopUp={isTopUp}
-        disableLevel={disableLevel1[0] === '1'}
+        disableLevel={disableLevel1}
+        setFlgIsTopup={setFlgIsTopup}
       />
       <CustomButton
         isDark={isDark}
@@ -241,7 +253,8 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         mr=""
         levelStake={levelStake}
         isTopUp={isTopUp}
-        disableLevel={disableLevel2[0] === '2'}
+        disableLevel={disableLevel2}
+        setFlgIsTopup={setFlgIsTopup}
       />
     </div>
   )
