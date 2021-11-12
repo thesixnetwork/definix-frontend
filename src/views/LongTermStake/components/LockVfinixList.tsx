@@ -99,7 +99,6 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
   const location = useLocation()
-  console.log('location::', location.pathname === '/long-term-stake')
   // penaltyFinixAmount
   const onUnStake = useCallback(
     (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days) => {

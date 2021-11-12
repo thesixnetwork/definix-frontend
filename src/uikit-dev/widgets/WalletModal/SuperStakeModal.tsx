@@ -256,11 +256,12 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod &&
-          _.get(selector, 'id') > max
+          _.get(selector, 'level') === selectorPeriod
         ) {
-          max = _.get(selector, 'id')
-          setIdLast(max)
+          if (_.get(selector, 'id') > max) {
+            max = _.get(selector, 'id')
+            setIdLast(max)
+          }
         }
       }
     } else {
@@ -271,11 +272,12 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod &&
-          _.get(selector, 'id') > max
+          _.get(selector, 'level') === selectorPeriod
         ) {
-          max = _.get(selector, 'id')
-          setIdLast(max)
+          if (_.get(selector, 'id') > max) {
+            max = _.get(selector, 'id')
+            setIdLast(max)
+          }
         }
       }
     }
@@ -311,6 +313,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
       setValue(nextUserInput)
+      setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
     }
   }
 
@@ -482,33 +485,15 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             setAmount('')
             setFlg(false)
           })
-      } else if (Object.values(selectedToken).length <= 0) {
-        onLockPlus()
-          .then((d) => {
-            setFlg(false)
-            setAmount('')
-            if (d === true) {
-              setHarvestProgress(-1)
-              setLengthSelect(0)
-              setAmount('')
-              setSelectedToken({})
-              setFlg(false)
-              onDismiss()
-            }
-          })
-          .catch((e) => {
-            setAmount('')
-            setFlg(false)
-          })
       }
     } else if (harvestProgress !== -1) {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, onDismiss, lengthSelect, flg])
+  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, onDismiss, lengthSelect])
 
   useEffect(() => {
-    if (Object.values(selectedToken).length > 0) {
+    if (Object.values(selectedToken).length > 0 && value !== '' && value !== '0') {
       const dataArray = []
       for (let i = 0; i < Object.values(selectedToken).length; i++) {
         const selector = Object.values(selectedToken)[i]
@@ -521,10 +506,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       const sum = dataArray.reduce((r, n) => r + n, 0)
       setLengthSelect(dataArray.length)
       setSumPendingReward(parseFloat(sum).toFixed(2))
-      const total = Number(value) + sum
+      const total = Number(value.replace(',', '')) + sum
       setAmount(new BigNumber(parseFloat(total)).times(new BigNumber(10).pow(18)).toFixed())
-    } else if (Object.values(selectedToken).length <= 0) {
-      setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
     } else {
       setAmount('')
     }
@@ -803,7 +786,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         ) : (
           <Button
             fullWidth
-            disabled={(lengthSelect <= 0 && value === '0') || idLast === null}
+            disabled={idLast === null}
             id="harvest-all"
             radii="small"
             className="mt-3"
