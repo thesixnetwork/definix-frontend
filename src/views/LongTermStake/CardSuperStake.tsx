@@ -158,28 +158,32 @@ const CardSuperStake = ({ isShowRightPanel }) => {
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
+        const selectorPeriod = period === 4 ? 3 : period
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === period &&
-          _.get(selector, 'id') > max
+          _.get(selector, 'level') === selectorPeriod
         ) {
-          max = _.get(selector, 'id')
-          setIdLast(max)
+          if (_.get(selector, 'id') > max) {
+            max = _.get(selector, 'id')
+            setIdLast(max)
+          }
         }
       }
     } else {
       let max = 0
       for (let i = 0; i < allDataLock.length; i++) {
         const selector = allDataLock[i]
+        const selectorPeriod = period === 4 ? 3 : period
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === period &&
-          _.get(selector, 'id') > max
+          _.get(selector, 'level') === selectorPeriod
         ) {
-          max = _.get(selector, 'id')
-          setIdLast(max)
+          if (_.get(selector, 'id') > max) {
+            max = _.get(selector, 'id')
+            setIdLast(max)
+          }
         }
       }
     }
