@@ -140,7 +140,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balanceOf = useBalances()
   const [period, setPeriod] = useState(0)
-  const [idLast, setIdLast] = useState(0)
+  const [idLast, setIdLast] = useState(null)
   const [amount, setAmount] = useState('')
   const lockTopUp = useLockTopup()
   const [harvestProgress, setHarvestProgress] = useState(-1)
@@ -252,10 +252,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
+        const selectorPeriod = period === 4 ? 3 : period
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === period &&
+          _.get(selector, 'level') === selectorPeriod &&
           _.get(selector, 'id') > max
         ) {
           max = _.get(selector, 'id')
@@ -266,10 +267,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       let max = 0
       for (let i = 0; i < allDataLock.length; i++) {
         const selector = allDataLock[i]
+        const selectorPeriod = period === 4 ? 3 : period
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === period &&
+          _.get(selector, 'level') === selectorPeriod &&
           _.get(selector, 'id') > max
         ) {
           max = _.get(selector, 'id')
@@ -480,6 +482,24 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             setAmount('')
             setFlg(false)
           })
+      } else if (Object.values(selectedToken).length <= 0) {
+        onLockPlus()
+          .then((d) => {
+            setFlg(false)
+            setAmount('')
+            if (d === true) {
+              setHarvestProgress(-1)
+              setLengthSelect(0)
+              setAmount('')
+              setSelectedToken({})
+              setFlg(false)
+              onDismiss()
+            }
+          })
+          .catch((e) => {
+            setAmount('')
+            setFlg(false)
+          })
       }
     } else if (harvestProgress !== -1) {
       setPendingTx(true)
@@ -503,6 +523,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setSumPendingReward(parseFloat(sum).toFixed(2))
       const total = Number(value) + sum
       setAmount(new BigNumber(parseFloat(total)).times(new BigNumber(10).pow(18)).toFixed())
+    } else if (Object.values(selectedToken).length <= 0) {
+      setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
     } else {
       setAmount('')
     }
@@ -749,7 +771,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Text>
           <div className="flex flex-row justify-end w-100">
             <Text className="text-right" color="#0973B9" fontWeight="500">
-              {Number(value) + Number(sumpendingReward)}
+              {Number(value.replace(',', '')) + Number(sumpendingReward)}
             </Text>
             {/* <Text className="text-right" color="#0973B9" fontWeight="500">
               {numeral(value).format('0,0')}
@@ -765,7 +787,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           </Text>
           <div className="flex flex-row justify-end w-100">
             <Text className="text-right" color="#0973B9" fontWeight="500">
-              {(Number(value) + Number(sumpendingReward)) * period}
+              {(Number(value.replace(',', '')) + Number(sumpendingReward)) * period}
               {/* <Text className="text-right" color="#0973B9" fontWeight="500">
               {numeral(value * period).format('0,0')} */}
             </Text>
@@ -781,7 +803,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         ) : (
           <Button
             fullWidth
-            disabled={lengthSelect <= 0 && value === '0'}
+            disabled={(lengthSelect <= 0 && value === '0') || idLast === null}
             id="harvest-all"
             radii="small"
             className="mt-3"
