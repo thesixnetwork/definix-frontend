@@ -19,13 +19,13 @@ const rebalances: RebalanceConfig[] = [
     ratio: [
       {
         symbol: 'BTCB',
-        value: 40,
+        value: 70,
         color: '#ef9244',
         address: BTCB,
       },
       {
         symbol: 'ETH',
-        value: 20,
+        value: 30,
         color: '#6D6D6D',
         address: ETH,
       },
