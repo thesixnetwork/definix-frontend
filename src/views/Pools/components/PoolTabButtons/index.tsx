@@ -24,30 +24,29 @@ const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, or
     <Box className="mt-s40">
       <Flex justifyContent="space-between" alignItems="center">
         <Flex>
-          <Flex alignItems="center">
-            <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
-              {t('Staked only')}
-            </Text>
-            <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
-          </Flex>
-
-          <Flex alignItems="center" className="ml-s24">
-            <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
-              Finished
-            </Text>
-            <Toggle checked={!liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
-          </Flex>
-
           <Dropdown
             isOpen={isOpenDropdown}
             target={<DropdownButton onClick={() => setIsOpenDropdown(!isOpenDropdown)}>filter</DropdownButton>}
-            position="top"
             onItemClick={(index) => orderBy(dropdownDataList.current[index].id)}
           >
             {dropdownDataList.current.map((data) => (
               <DropdownItem key={data.id}>{data.label}</DropdownItem>
             ))}
           </Dropdown>
+
+          <Flex alignItems="center" className="mx-s24">
+            <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+              {t('Staked only')}
+            </Text>
+            <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
+          </Flex>
+
+          <Flex alignItems="center">
+            <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+              Finished
+            </Text>
+            <Toggle checked={!liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
+          </Flex>
         </Flex>
         <Box>search box</Box>
       </Flex>

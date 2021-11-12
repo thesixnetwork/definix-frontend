@@ -20,6 +20,7 @@ import {
   useBalances,
 } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
+import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { TitleSet, Box } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
@@ -76,13 +77,14 @@ const Farms: React.FC = () => {
     })
   }, [])
 
-  const getMyBalanceInWallet = useCallback(
-    (tokenName: string, tokenAddress: string) => {
-      if (balances) {
-        const address = tokenName === 'WKLAY' ? 'main' : getAddress(tokenAddress)
-        return _.get(balances, address)
-      }
-      return null
+  const getMyBalancesInWallet = useCallback(
+    (tokens: string[]) => {
+      return tokens.reduce((result, token) => {
+        const obj = {}
+        const realTokenAddress = getAddress(token)
+        obj[getTokenSymbol(realTokenAddress)] = (balances) ? _.get(balances, realTokenAddress) : null
+        return { ...result, ...obj }
+      }, {})
     },
     [balances],
   )
@@ -91,7 +93,7 @@ const Farms: React.FC = () => {
     if (balances) return
     if (account && activeFarms) {
       const allLPaddresses = activeFarms.reduce((addressArray, farm) => {
-        return [...addressArray, getAddress(farm.quoteTokenAdresses), getAddress(farm.tokenAddresses)]
+        return [...addressArray, getAddress(farm.firstToken), getAddress(farm.secondToken)]
       }, [])
       dispatch(fetchBalances(account, _.uniq(allLPaddresses)))
     }
@@ -190,10 +192,7 @@ const Farms: React.FC = () => {
         <FarmCard
           key={farm.pid}
           farm={farm}
-          myBalancesInWallet={{
-            [farm.tokenSymbol]: getMyBalanceInWallet(farm.tokenSymbol, farm.tokenAddresses),
-            [farm.quoteTokenSymbol]: getMyBalanceInWallet(farm.quoteTokenSymbol, farm.quoteTokenAdresses),
-          }}
+          myBalancesInWallet={getMyBalancesInWallet([farm.firstToken, farm.secondToken])}
           removed={removed}
           klaytn={klaytn}
           account={account}
@@ -211,7 +210,7 @@ const Farms: React.FC = () => {
       account,
       onSelectAddLP,
       onSelectRemoveLP,
-      getMyBalanceInWallet,
+      getMyBalancesInWallet,
     ],
   )
 
