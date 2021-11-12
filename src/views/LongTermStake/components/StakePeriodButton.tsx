@@ -107,7 +107,7 @@ const CustomButton = ({
         style={{
           background: period === level ? handleBackgroud4(period, level) : onSelect1(),
           border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
-          opacity: period !== level && !disableLevel && 0.3,
+          opacity: isTopUp && period !== level && !disableLevel && 0.3,
         }}
       >
         <BoxLevel
