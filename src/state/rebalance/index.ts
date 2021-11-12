@@ -8,6 +8,7 @@ import _ from 'lodash'
 import { BLOCKS_PER_YEAR } from 'config'
 import herodotusABI from 'config/abi/herodotus.json'
 import autoHerodotusABI from 'config/abi/autoHerodotus.json'
+import autoHerodotusV2ABI from 'config/abi/autoHerodotusV2.json'
 import { createSlice } from '@reduxjs/toolkit'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'
@@ -106,7 +107,6 @@ export const fetchRebalances = () => async (dispatch) => {
         [enableAutoCompound],
         [autoHerodotus],
       ] = await multicall(rebalance, rebalanceCalls)
-
         console.log('222222222222')
       const ratioCal = calculateRatio(currentPoolUsdBalances, sumCurrentPoolUsdBalance)
       const tokenCallers = []
@@ -198,12 +198,11 @@ export const fetchRebalances = () => async (dispatch) => {
       const autoHerodotusCalls = [
         {
           address: autoHerodotus,
-          name: 'rebalancePID',
-          params: [address],
+          name: 'farmId',
         },
       ]
         console.log('1010101010')
-      const [bigNumberPid] = await multicall(autoHerodotusABI, autoHerodotusCalls)
+      const [bigNumberPid] = await multicall(autoHerodotusV2ABI, autoHerodotusCalls)
         console.log('11 11 11 11 11 11')
       const pid = new BigNumber(bigNumberPid)
       const herodotusAddress = getHerodotusAddress()
@@ -260,8 +259,6 @@ export const fetchRebalances = () => async (dispatch) => {
       }
       } catch(error) {
         const gas = error
-        // eslint-disable-next-line
-        debugger
         return {}
       }
     }),
