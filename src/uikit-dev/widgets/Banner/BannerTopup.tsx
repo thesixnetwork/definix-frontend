@@ -11,7 +11,6 @@ import bannerTopup from 'uikit-dev/images/for-ui-v2/topup-stake/banner-topup.png
 import bannerMobile from 'uikit-dev/images/for-ui-v2/topup-stake/banner-topup-mobile.png'
 import logoFinixTopup from 'uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
 
-
 const BannerTopupStyle = styled(Card)`
   width: 100%;
   background: url(${bannerTopup});

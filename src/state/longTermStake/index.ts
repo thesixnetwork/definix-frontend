@@ -363,7 +363,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
         topup,
-        topupTimeStamp: moment(new Date(nd.setDate(nd.getDate()+28))).format(`DD-MMM-YY HH:mm:ss`),
+        topupTimeStamp: moment(new Date(nd.setDate(nd.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
       })
       return locksData
     })
