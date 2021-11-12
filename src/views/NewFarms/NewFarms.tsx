@@ -82,7 +82,7 @@ const Farms: React.FC = () => {
       return tokens.reduce((result, token) => {
         const obj = {}
         const realTokenAddress = getAddress(token)
-        obj[getTokenSymbol(realTokenAddress)] = (balances) ? _.get(balances, realTokenAddress) : null
+        obj[getTokenSymbol(realTokenAddress)] = balances ? _.get(balances, realTokenAddress) : null
         return { ...result, ...obj }
       }, {})
     },
