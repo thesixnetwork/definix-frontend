@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import numeral from 'numeral'
@@ -149,7 +149,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
-  const [isStake, setIsStake] = useState(lockAmount > 0)
+  const isStake = useMemo(() => lockAmount > 0, [lockAmount])
 
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
