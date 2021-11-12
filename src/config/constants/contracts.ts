@@ -47,6 +47,10 @@ export default {
     97: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
     56: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
   },
+  velo:{
+    97: "0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1",
+    56: "0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1",
+  },
   finixSixLP: {
     97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
     56: process.env.REACT_APP_FINIX_SIX_LP_MAINNET,
@@ -77,7 +81,7 @@ export default {
   },
   // configured =====================================================
   syrup: {
-    97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
+    97: '0x36101b46fD2C799420f32B2fE267736e72362778',
     56: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
   },
   sousChef: {

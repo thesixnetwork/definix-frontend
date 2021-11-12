@@ -4,6 +4,7 @@ import { CardTheme } from './types'
 
 export const light: CardTheme = {
   background: lightColors.card,
+  subBackground: lightColors.backgroundBox,
   boxShadow: '0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)',
   boxShadowActive: shadows.active,
   boxShadowSuccess: shadows.success,
@@ -13,6 +14,7 @@ export const light: CardTheme = {
 
 export const dark: CardTheme = {
   background: darkColors.card,
+  subBackground: darkColors.backgroundBox,
   boxShadow: '0px 2px 12px -8px rgba(25, 19, 38, 0.1), 0px 1px 1px rgba(25, 19, 38, 0.05)',
   boxShadowActive: shadows.active,
   boxShadowSuccess: shadows.success,
