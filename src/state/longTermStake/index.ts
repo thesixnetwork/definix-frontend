@@ -303,12 +303,17 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       const utcLock = lockTimes.getTime()
       const utcPenalty = penaltyTimestamp.getTime()
       const utcUnLock = unLockTime.getTime()
+
       let nd = new Date(utcLock + 3600000 * offset)
       let pt = new Date(utcPenalty + 3600000 * offset)
       let ul = new Date(utcUnLock + 3600000 * offset)
       const dateTime = lockTimes.getTimezoneOffset() / 60
       const dateTimePenalty = penaltyTimestamp.getTimezoneOffset() / 60
       const dateTimeUnLock = unLockTime.getTimezoneOffset() / 60
+      // console.log("nd >>>>>>>>>>>>",nd)
+      // const dateTopup = nd.setDate(nd.getDate()+28)
+      // console.log("---------------",new Date(dateTopup))
+
       if (dateTime === -9) {
         nd = new Date()
       }
@@ -358,6 +363,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
         topup,
+        topupTimeStamp: moment(new Date(nd.setDate(nd.getDate()+28))).format(`DD-MMM-YY HH:mm:ss`),
       })
       return locksData
     })

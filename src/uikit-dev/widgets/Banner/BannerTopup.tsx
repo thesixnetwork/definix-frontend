@@ -1,11 +1,8 @@
 import React from 'react'
-import { useFarmUnlockDate } from 'state/hooks'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Button, Card, Heading, useModal, useMatchBreakpoints, Text } from 'uikit-dev'
-import Flip from 'uikit-dev/components/Flip'
+import { Button, Card, useModal, useMatchBreakpoints, Text } from 'uikit-dev'
 import { usePrivateData } from 'hooks/useLongTermStake'
-import useRefresh from 'hooks/useRefresh'
 import useFarmEarning from 'hooks/useFarmEarning'
 import usePoolEarning from 'hooks/usePoolEarning'
 import SuperStakeModal from 'uikit-dev/widgets/WalletModal/SuperStakeModal'
@@ -13,78 +10,7 @@ import StartLongTermStakeModal from 'uikit-dev/widgets/WalletModal/StartLongTerm
 import bannerTopup from 'uikit-dev/images/for-ui-v2/topup-stake/banner-topup.png'
 import bannerMobile from 'uikit-dev/images/for-ui-v2/topup-stake/banner-topup-mobile.png'
 import logoFinixTopup from 'uikit-dev/images/for-ui-v2/topup-stake/logo-finix-topup.png'
-import man02 from 'uikit-dev/images/FINIX-Love-You/1557.png'
-import bgBlue from 'uikit-dev/images/FINIX-Love-You/bg.png'
 
-const MaxWidth = styled.div`
-  max-width: 960px;
-  margin: 0 auto;
-  width: 100%;
-`
-
-const CardSorry = styled(Card)`
-  padding: 24px;
-  width: 100%;
-  background: url(${bgBlue});
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-color: ${({ theme }) => theme.colors.white};
-  color: ${({ theme }) => theme.colors.white};
-
-  > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    > div {
-      text-align: center;
-    }
-  }
-
-  img {
-    width: 160px;
-    margin-bottom: 1rem;
-  }
-
-  p {
-    line-height: 1.5;
-  }
-
-  a {
-    flex-shrink: 0;
-    margin-top: 1rem;
-  }
-
-  strong {
-    padding: 8px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    justify-content: space-between;
-
-    > div {
-      flex-direction: row;
-
-      > div {
-        text-align: left;
-      }
-    }
-
-    img {
-      margin: 0;
-    }
-
-    a {
-      margin: 0 0 0 1rem;
-    }
-
-    strong {
-      padding: 0;
-    }
-  }
-`
 
 const BannerTopupStyle = styled(Card)`
   width: 100%;
