@@ -4,10 +4,8 @@ import { BTCB, ETH } from './tokens'
 const rebalances: RebalanceConfig[] = [
   {
     title: 'Bullish Giant',
-    description:
-      'xxxxxdescriptionxxxxxxxx',
-    fullDescription:
-      'xxxxxx full descriptionxxxxxxxx',
+    description: 'xxxxxdescriptionxxxxxxxx',
+    fullDescription: 'xxxxxx full descriptionxxxxxxxx',
     icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
     address: {
       56: '0xF71f0EA92957ef3916E9AE46e8DA295f437eACE9',

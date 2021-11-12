@@ -13,7 +13,7 @@ import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
-import HarvestActionAirDrop from './HarvestActionAirDrop'
+// import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { PoolCardProps } from './types'
 
@@ -181,21 +181,21 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   )
 
-  const renderHarvestActionAirDrop = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop
-        sousId={sousId}
-        isBnbPool={isBnbPool}
-        earnings={earnings}
-        tokenDecimals={tokenDecimals}
-        needsApproval={needsApproval}
-        isOldSyrup={isOldSyrup}
-        className={className}
-        isHorizontal={isHor}
-      />
-    ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
-  )
+  // const renderHarvestActionAirDrop = useCallback(
+  //   (className?: string, isHor?: boolean) => (
+  //     <HarvestActionAirDrop
+  //       sousId={sousId}
+  //       isBnbPool={isBnbPool}
+  //       earnings={earnings}
+  //       tokenDecimals={tokenDecimals}
+  //       needsApproval={needsApproval}
+  //       isOldSyrup={isOldSyrup}
+  //       className={className}
+  //       isHorizontal={isHor}
+  //     />
+  //   ),
+  //   [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
+  // )
 
   const renderDetailsSection = useCallback(
     (className?: string, isHor?: boolean) => (

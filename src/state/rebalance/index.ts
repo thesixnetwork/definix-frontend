@@ -57,6 +57,7 @@ const calculateRatio = (currentPriceUsd: BigNumber[], sumCurrentPoolUsdBalance: 
 export const fetchRebalances = () => async (dispatch) => {
   const data = await Promise.all(
     rebalancesConfig.map(async (rebalanceConfig) => {
+      try {
       const address = getAddress(rebalanceConfig.address)
       const rebalanceCalls = [
         {
@@ -95,6 +96,7 @@ export const fetchRebalances = () => async (dispatch) => {
         },
       ]
 
+        console.log('1111111111111')
       const [
         [currentPoolUsdBalances, sumCurrentPoolUsdBalance],
         activeUserCount,
@@ -104,6 +106,8 @@ export const fetchRebalances = () => async (dispatch) => {
         [enableAutoCompound],
         [autoHerodotus],
       ] = await multicall(rebalance, rebalanceCalls)
+
+        console.log('222222222222')
       const ratioCal = calculateRatio(currentPoolUsdBalances, sumCurrentPoolUsdBalance)
       const tokenCallers = []
       for (let i = 0; i < tokenLength; i++) {
@@ -113,8 +117,11 @@ export const fetchRebalances = () => async (dispatch) => {
       for (let i = 0; i < tokenLength; i++) {
         tokenRatioPointsCallers.push(multicall(rebalance, [{ address, name: 'tokenRatioPoints', params: [i] }]))
       }
+        console.log('33333333333')
       const tokenAddresss = _.flattenDeep(await Promise.all(tokenCallers))
+        console.log('44444444444')
       const tokenRatioPoints = _.flattenDeep(await Promise.all(tokenRatioPointsCallers))
+        console.log('55555555555')
       const makeTokenCallers = (inputArray) => {
         return inputArray.map((tokenAddress) => {
           return multicall(erc20, [
@@ -139,11 +146,15 @@ export const fetchRebalances = () => async (dispatch) => {
           })
         })
       }
+        console.log('666666666666666')
       const tokenInfoCallers = makeTokenCallers(tokenAddresss)
       const tokens = await Promise.all(tokenInfoCallers)
+        console.log('777777777777777')
       const usdTokenCallers = makeTokenCallers(usdTokenAddresses)
       const usdToken = await Promise.all(usdTokenCallers)
+        console.log('888888888888888')
       const [totalSupply] = await multicall(erc20, erc20Calls)
+        console.log('99999999999999')
 
       // @ts-ignore
       const activeUserCountNumber = new BigNumber([(activeUserCount || [])[0]]).toNumber()
@@ -191,9 +202,12 @@ export const fetchRebalances = () => async (dispatch) => {
           params: [address],
         },
       ]
+        console.log('1010101010')
       const [bigNumberPid] = await multicall(autoHerodotusABI, autoHerodotusCalls)
+        console.log('11 11 11 11 11 11')
       const pid = new BigNumber(bigNumberPid)
       const herodotusAddress = getHerodotusAddress()
+        console.log('12 12 12 12 12 12 ')
       const herodotusCalls = [
         {
           address: herodotusAddress,
@@ -243,6 +257,12 @@ export const fetchRebalances = () => async (dispatch) => {
         sharedPricePercentDiff,
         // twentyHperformance,
         ratioCal,
+      }
+      } catch(error) {
+        const gas = error
+        // eslint-disable-next-line
+        debugger
+        return {}
       }
     }),
   )

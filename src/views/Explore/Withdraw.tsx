@@ -127,7 +127,7 @@ const CardInput = ({
   selectedToken,
   setSelectedToken,
 }) => {
-  const { isXl } = useMatchBreakpoints()
+  // const { isXl } = useMatchBreakpoints()
   const isMobile = !isExternalModule
   const { account, ethereum } = useWallet()
   const dispatch = useDispatch()

@@ -1,6 +1,6 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement } from 'react'
 import Collapsible from 'react-collapsible'
-import { Button, Text, ChevronDownIcon, ChevronUpIcon, Link } from 'uikit-dev'
+import { Button, Text, ChevronDownIcon, ChevronUpIcon } from 'uikit-dev'
 import Airdrop2img from 'uikit-dev/images/Airdrop/Definix-on-KLAYTN-12.png'
 
 interface Props {
@@ -16,7 +16,6 @@ const TriggerElement = ({ isDown }): ReactElement => {
         Criteria for 2nd airdrop claim
         <img src={Airdrop2img} style={{ width: '50px', marginLeft: '15px' }} alt="" />
         <div style={{ float: 'right' }}>
-          {console.log('isdown ', isDown)}
           <div style={{ marginTop: '15px' }}>{isDown ? <ChevronDownIcon /> : <ChevronUpIcon />}</div>
         </div>
       </div>
