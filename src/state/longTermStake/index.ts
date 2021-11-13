@@ -261,8 +261,9 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     const days = [90, 180, 365]
     result.map((value) => {
       canBeUnlock_ =
-        Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
-        new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber()
+        Date.now() >
+        (new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() + _.get(period, '0.periodMap')[value.level]) *
+          1000
       canBeClaim_ =
         Date.now() >
         (new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
@@ -292,23 +293,6 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       const penaltyUnlock = new Date(utcPenalty + 3600000 * offset)
       const unLock = new Date(utcUnLock + 3600000 * offset)
 
-      let claim
-      if (canBeClaim_) {
-        if (new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() !== 0) {
-          claim = canBeClaim_
-        } else {
-          claim = false
-        }
-      } else {
-        claim = false
-      }
-
-      let Unlock
-      if (canBeUnlock_) {
-        Unlock = canBeUnlock_
-      } else {
-        Unlock = false
-      }
       locksData.push({
         id: new BigNumber(_.get(value, 'id._hex')).toNumber(),
         level: value.level * 1 + 1,
@@ -319,7 +303,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
           .dividedBy(new BigNumber(10).pow(18))
           .toNumber(),
         penaltyUnlockTimestamp: moment(penaltyUnlock).format(`DD-MMM-YY HH:mm:ss`),
-        canBeUnlock: Unlock,
+        canBeUnlock: canBeUnlock_,
         canBeClaim: canBeClaim_,
         lockTimestamp: moment(lock).format(`DD-MMM-YY HH:mm:ss`),
         penaltyRate: _.get(period, '0.realPenaltyRate')[value.level] * 100,
