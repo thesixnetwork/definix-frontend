@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Flex, Heading, Text } from 'uikit-dev'
-import miniLogo from 'uikit-dev/images/finix-coin.png'
+
 import Apollo from 'config/abi/Apollo.json'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getContract } from 'utils/web3'
@@ -43,8 +43,8 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   return (
     <div className={className}>
       <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
-        <MiniLogo src={miniLogo} alt="" />
-        {`FINIX ${TranslateString(1072, 'Earned')}`}
+        <MiniLogo src="/images/coins/velo.png" alt="" />
+        {`VELO ${TranslateString(1072, 'Earned')}`}
       </Text>
 
       <div className="flex align-center justify-space-between">
