@@ -305,7 +305,7 @@ const StyledSlider = styled(Slider)`
 const CardAutoRebalancing = ({ className = '' }) => {
   // const openDate = new Date(1628841600000)
   const { isDark } = useTheme()
-  
+
   const settings = {
     dots: true,
     infinite: true,
@@ -389,14 +389,12 @@ const CardAutoRebalancing = ({ className = '' }) => {
           <StyledBannerVelo className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
               <Heading className="mb-2" color="primary">
-                VELO POOL IS
-                NOW ON DEFINIX’S
-                PARTNERSHIP POOL
+                VELO POOL IS NOW ON DEFINIX’S PARTNERSHIP POOL
               </Heading>
               <Text color="textSubtle" fontSize="12px">
                 Get chance to earn maximum of 300,000 VELO by staking FINIX
               </Text>
-              <Text color={isDark ? 'white':'black'} fontSize="12px" bold>
+              <Text color={isDark ? 'white' : 'black'} fontSize="12px" bold>
                 Start Staking 15 November 2021 03:00 P.M. (GMT+7)
               </Text>
               <div className="mt-6">

@@ -67,7 +67,7 @@ const config: MenuEntry[] = [
         href: '/PartnershipPool',
         notHighlight: false,
         newTab: false,
-      }
+      },
     ],
   },
   // {

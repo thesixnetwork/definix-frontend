@@ -31,7 +31,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentDeposit,
   onPresentWithdraw,
   className = '',
-  apolloAddress
+  apolloAddress,
 }) => {
   const TranslateString = useI18n()
 
@@ -51,7 +51,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     try {
       setRequestedApproval(true)
 
-        console.log("stakingTokenAddress",stakingTokenAddress)
+      console.log('stakingTokenAddress', stakingTokenAddress)
       const txHash = await stakingTokenContract.methods
         .approve(apolloAddress, ethers.constants.MaxUint256)
         .send({ from: account })
@@ -62,7 +62,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     } catch (e) {
       console.error(e)
     }
-  }, [ setRequestedApproval,account,stakingTokenContract,apolloAddress,stakingTokenAddress])
+  }, [setRequestedApproval, account, stakingTokenContract, apolloAddress, stakingTokenAddress])
 
   const renderStakingButtons = () => {
     if (!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished) {
@@ -87,10 +87,10 @@ const StakeAction: React.FC<StakeActionProps> = ({
           onClick={
             isOldSyrup
               ? async () => {
-                setPendingTx(true)
-                await onUnstake('0')
-                setPendingTx(false)
-              }
+                  setPendingTx(true)
+                  await onUnstake('0')
+                  setPendingTx(false)
+                }
               : onPresentWithdraw
           }
           className="btn-secondary-disable col-6 mr-1"

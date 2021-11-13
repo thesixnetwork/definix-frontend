@@ -15,9 +15,8 @@ export interface PoolCardVeloProps {
   pool: PoolWithApy
   isHorizontal?: boolean
   veloAmount?: number
-  account?:string
+  account?: string
 }
-
 
 export interface CardHeadingProps {
   tokenName: string
@@ -51,7 +50,7 @@ export interface HarvestActionProps {
   isOldSyrup?: boolean
   className?: string
   veloAmount?: number
-  contractAddrss?:string
+  contractAddrss?: string
 }
 
 export interface DetailsSectionProps {

@@ -7,7 +7,7 @@ import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Flex, Heading, Text } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
-import Apollo from "config/abi/Apollo.json"
+import Apollo from 'config/abi/Apollo.json'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getContract } from 'utils/web3'
 import { HarvestActionProps } from './types'
@@ -28,10 +28,10 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   isOldSyrup,
   className = '',
   veloAmount,
-  contractAddrss
+  contractAddrss,
 }) => {
   const TranslateString = useI18n()
-  const contractApollo = getContract(Apollo.abi,contractAddrss)
+  const contractApollo = getContract(Apollo.abi, contractAddrss)
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
@@ -65,9 +65,9 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           radii="small"
           onClick={async () => {
             setPendingTx(true)
-           console.log("account",account)
-            if(account)
-            contractApollo.methods.deposit('0').send({ from: account }).then(console.log).catch(console.log)
+            console.log('account', account)
+            if (account)
+              contractApollo.methods.deposit('0').send({ from: account }).then(console.log).catch(console.log)
             setPendingTx(false)
           }}
         >
