@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Card, Heading, Text } from 'uikit-dev'
 import Slider from 'react-slick'
+import useTheme from 'hooks/useTheme'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
-import definixLongTerm from 'uikit-dev/images/for-ui-v2/definix-long-term-stake-with-voting-system.png'
-import definixVoting from 'uikit-dev/images/for-ui-v2/voting-banner.png'
+import lady from 'uikit-dev/images/for-ui-v2/banner/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
+import definixLongTerm from 'uikit-dev/images/for-ui-v2/banner/definix-long-term-stake-with-voting-system.png'
+import definixVoting from 'uikit-dev/images/for-ui-v2/banner/voting-banner.png'
+import velo from 'uikit-dev/images/for-ui-v2/banner/velo-banner.png'
 
 const StyledBannerLady = styled(Card)`
   width: 100%;
@@ -113,6 +115,50 @@ const StyledBannerVoting = styled(Card)`
     width: 70%;
     height: 100%;
     background: url(${definixVoting});
+    background-size: contain;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 68px 40% 48px 24px;
+    border-radius: unset;
+    height: 327px;
+    &:before {
+      width: 46%;
+      opacity: 1;
+    }
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const StyledBannerVelo = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: url(${velo});
     background-size: contain;
     background-position: right bottom;
     background-repeat: no-repeat;
@@ -258,7 +304,8 @@ const StyledSlider = styled(Slider)`
 `
 const CardAutoRebalancing = ({ className = '' }) => {
   // const openDate = new Date(1628841600000)
-
+  const { isDark } = useTheme()
+  
   const settings = {
     dots: true,
     infinite: true,
@@ -337,6 +384,28 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </div>
             </div>
           </StyledBannerVoting>
+        </div>
+        <div>
+          <StyledBannerVelo className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                VELO POOL IS
+                NOW ON DEFINIX’S
+                PARTNERSHIP POOL
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                Get chance to earn maximum of 300,000 VELO by staking FINIX
+              </Text>
+              <Text color={isDark ? 'white':'black'} fontSize="12px" bold>
+                Start Staking 15 November 2021 03:00 P.M. (GMT+7)
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as="a" href="/pool">
+                  <span>Interesting, I want to stake</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerVelo>
         </div>
       </StyledSlider>
     </div>
