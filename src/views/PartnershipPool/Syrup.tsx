@@ -152,28 +152,10 @@ const Farm: React.FC = () => {
   
 
   const pools = [
-    {
-      sousId: 0,
-      tokenName: 'VELO',
-      stakingTokenName: QuoteToken.VELO,
-      stakingTokenAddress:
-        process.env.REACT_APP_CHAIN_ID === '97'
-          ? '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
-          : '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46',
-      contractAddress: {
-        97: '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf',
-        56: '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf',
-      },
-      poolCategory: PoolCategory.PARTHNER,
-      projectLink: 'https://definix.com/',
-      harvest: true,
-      tokenPerBlock: '10',
-      sortOrder: 1,
-      isFinished: false,
-      tokenDecimals: 18,
-    },
+   
   ]
-  const poolsWithApy = pools
+  const poolsWithApy = 
+  pools
     .map((pool) => {
 
       // const userInfo = await contractApollo.methods.userInfo(account).call()
@@ -259,7 +241,7 @@ const Farm: React.FC = () => {
   }, [currentTime, phrase1TimeStamp])
 
   useEffect(() => {
-    setInterval(fetch,10000)
+    setInterval(fetch,7000)
     
     return () => {
       setListView(true)

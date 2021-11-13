@@ -55,7 +55,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({
       </StyledFarmImages>
 
       <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
-        {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
+        {isOldSyrup && '[OLD]'} VELO {TranslateString(348, 'Pool')}
       </Heading>
 
       <div className="flex align-center justify-center mt-2">
@@ -65,7 +65,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({
             {apy ? `${numeral(apy?.toNumber()).format('0,0.00')}%` : <Skeleton height={24} width={80} />}
           </div>
         </Apr>
-        <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} />
+        <ApyButton lpLabel="FINIX" finixPrice={finixPrice} apy={apy} />
       </div>
       <Text style={{ fontSize: '12px' }}>Stake Period 60 Days</Text>
     </Flex>

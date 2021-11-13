@@ -39,10 +39,10 @@ const DetailsSection: React.FC<DetailsSectionProps> = ({
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
       <div className="flex align-baseline flex-wrap justify-space-between">
-        <Text color="textSubtle">Total {tokenName} Staked</Text>
+        <Text color="textSubtle">Total FINIX Staked</Text>
 
         <Text bold className="flex-shrink">
-          {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} {tokenName}
+          {numeral(getBalanceNumber(totalStaked)).format('0,0.0000')} FINIX
         </Text>
       </div>
 

@@ -65,9 +65,9 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           radii="small"
           onClick={async () => {
             setPendingTx(true)
-           
-            console.log(account,contractAddrss)
-            await contractApollo.methods.deposit('0').send({ from: account })
+           console.log("account",account)
+            if(account)
+            contractApollo.methods.deposit('0').send({ from: account }).then(console.log).catch(console.log)
             setPendingTx(false)
           }}
         >

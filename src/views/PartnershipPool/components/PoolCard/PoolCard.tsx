@@ -123,7 +123,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
   )
 
   const renderDepositModal = useCallback(() => {
-    console.log(" mooo oo oo o")
+    console.log("mooo oo oo o")
     onPresent(
       <DepositModal
         max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
