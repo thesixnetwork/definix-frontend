@@ -12,7 +12,6 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { getContract } from 'utils/web3'
 import { HarvestActionProps } from './types'
 
-
 const MiniLogo = styled.img`
   width: 20px;
   height: auto;
@@ -66,9 +65,9 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           radii="small"
           onClick={async () => {
             setPendingTx(true)
-            
+
             await onReward()
-            
+
             setPendingTx(false)
           }}
         >

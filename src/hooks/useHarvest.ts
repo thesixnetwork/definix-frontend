@@ -3,9 +3,8 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useDispatch } from 'react-redux'
 import { fetchFarmUserDataAsync, updateUserBalance, updateUserPendingReward } from 'state/actions'
 import { soushHarvest, soushHarvestBnb, harvest } from 'utils/callHelpers'
-import { useHerodotus, useSousChef,useVeloPool } from './useContract'
+import { useHerodotus, useSousChef, useVeloPool } from './useContract'
 // import { VeloPool } from 'config/constants'
-
 
 export const useHarvest = (farmPid: number) => {
   const dispatch = useDispatch()
@@ -68,7 +67,7 @@ export const useVeloHarvest = () => {
     // } else if (isUsingBnb) {
     //   await soushHarvestBnb(sousChefContract, account)
     // } else {
-      await soushHarvest(sousChefContract, account)
+    await soushHarvest(sousChefContract, account)
     // }
     // dispatch(updateUserPendingReward(sousId, account))
     // dispatch(updateUserBalance(sousId, account))

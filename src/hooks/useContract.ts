@@ -15,7 +15,7 @@ import {
   getBunnySpecialAddress,
   getTradingCompetRegisAddress,
 } from 'utils/addressHelpers'
-import { poolsConfig ,VeloPool} from 'config/constants'
+import { poolsConfig, VeloPool } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
