@@ -6,7 +6,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { useMatchBreakpoints } from 'uikit-dev'
-import PoolContext from 'views/Pools/PoolContext'
+import PoolContext from 'views/PartnershipPool/PoolContext'
 import { getContract } from 'utils/web3'
 import ApolloAbi from 'config/abi/Apollo.json'
 import DepositModal from '../DepositModal'
