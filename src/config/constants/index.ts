@@ -5,3 +5,5 @@ const communityFarms = farmsConfig.filter((farm) => farm.isCommunity).map((farm)
 export { farmsConfig, communityFarms }
 export { default as poolsConfig } from './pools'
 export { default as ifosConfig } from './ifo'
+export { default as VeloPool } from './VeloPool'
+

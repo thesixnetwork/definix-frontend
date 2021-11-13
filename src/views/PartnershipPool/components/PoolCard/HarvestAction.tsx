@@ -1,5 +1,5 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import { useSousHarvest } from 'hooks/useHarvest'
+import { useVeloHarvest } from 'hooks/useHarvest'
 import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React, { useState } from 'react'
@@ -11,6 +11,7 @@ import Apollo from 'config/abi/Apollo.json'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getContract } from 'utils/web3'
 import { HarvestActionProps } from './types'
+
 
 const MiniLogo = styled.img`
   width: 20px;
@@ -35,7 +36,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const { onReward } = useVeloHarvest()
 
   const rawEarningsBalance = getBalanceNumber(earnings)
   const displayBalance = rawEarningsBalance.toLocaleString()
@@ -65,9 +66,9 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           radii="small"
           onClick={async () => {
             setPendingTx(true)
-            console.log('account', account)
-            if (account)
-              contractApollo.methods.deposit('0').send({ from: account }).then(console.log).catch(console.log)
+            
+            await onReward()
+            
             setPendingTx(false)
           }}
         >

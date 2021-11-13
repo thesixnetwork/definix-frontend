@@ -15,7 +15,7 @@ import {
   getBunnySpecialAddress,
   getTradingCompetRegisAddress,
 } from 'utils/addressHelpers'
-import { poolsConfig } from 'config/constants'
+import { poolsConfig ,VeloPool} from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
 import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
@@ -30,6 +30,7 @@ import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
+import ApolloABI from 'config/abi/Apollo.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -98,6 +99,12 @@ export const useTradingCompetRegisContract = () => {
 export const useSousChef = (id) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
   const rawAbi = config.poolCategory === PoolCategory.BINANCE ? sousChefBnb : sousChef
+  const abi = rawAbi as unknown as AbiItem
+  return useContract(abi, getAddress(config.contractAddress))
+}
+export const useVeloPool = () => {
+  const config = VeloPool
+  const rawAbi = ApolloABI.abi
   const abi = rawAbi as unknown as AbiItem
   return useContract(abi, getAddress(config.contractAddress))
 }
