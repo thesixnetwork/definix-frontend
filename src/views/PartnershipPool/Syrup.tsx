@@ -194,7 +194,6 @@ const Farm: React.FC = () => {
     }
   })
 
-
   const handlePresent = useCallback((node: React.ReactNode) => {
     console.log('present')
     setModalNode(node)
