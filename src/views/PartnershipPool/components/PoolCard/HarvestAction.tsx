@@ -7,7 +7,9 @@ import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Flex, Heading, Text } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
+import Apollo from "config/abi/Apollo.json"
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getContract } from 'utils/web3'
 import { HarvestActionProps } from './types'
 
 const MiniLogo = styled.img`
@@ -25,9 +27,11 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   needsApproval,
   isOldSyrup,
   className = '',
+  veloAmount,
+  contractAddrss
 }) => {
   const TranslateString = useI18n()
-
+  const contractApollo = getContract(Apollo.abi,contractAddrss)
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
@@ -61,7 +65,9 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           radii="small"
           onClick={async () => {
             setPendingTx(true)
-            await onReward()
+           
+            console.log(account,contractAddrss)
+            await contractApollo.methods.deposit('0').send({ from: account })
             setPendingTx(false)
           }}
         >
@@ -73,14 +79,14 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
         = ${numeral(rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')}
         {/* {numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')} */}
       </Text>
-      <br/>
-      <br/>
-      <div style={{display:"flex"}}>
+      <br />
+      <br />
+      <div style={{ display: 'flex' }}>
         <Text color="textSubtle" textAlign="left" className="col-6">
           Total VELO Rewards
         </Text>
         <Text color="textSubtle" textAlign="right" className="col-6">
-            300,000/300,000 VELO
+          {numeral(veloAmount).format('0,0.00')}/300,000 VELO
         </Text>
       </div>
     </div>

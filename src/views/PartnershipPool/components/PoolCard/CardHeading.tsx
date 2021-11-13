@@ -51,7 +51,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <StyledFarmImages>
-        <Image src={`/images/coins/${tokenName}.png`} width={imgSize} height={imgSize} />
+        <Image src="/images/coins/velo.png" width={imgSize} height={imgSize} />
       </StyledFarmImages>
 
       <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
@@ -66,9 +66,8 @@ const CardHeading: React.FC<CardHeadingProps> = ({
           </div>
         </Apr>
         <ApyButton lpLabel={tokenName} finixPrice={finixPrice} apy={apy} />
-        
       </div>
-      <Text style={{fontSize:"12px"}}>Stake Period 60 Days</Text>
+      <Text style={{ fontSize: '12px' }}>Stake Period 60 Days</Text>
     </Flex>
   )
 }

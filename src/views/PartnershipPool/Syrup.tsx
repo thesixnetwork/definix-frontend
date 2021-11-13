@@ -2,14 +2,18 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
-import { PoolCategory, QuoteToken } from 'config/constants/types'
+import { PoolCategory, QuoteToken, Address } from 'config/constants/types'
+
 import useBlock from 'hooks/useBlock'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
+import { getContract } from 'utils/web3'
+import Apollo from "config/abi/Apollo.json"
+import erc20 from 'config/abi/erc20.json'
+// import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -20,6 +24,7 @@ import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolContext from './PoolContext'
+import { PoolWithApy } from './components/PoolCard/types'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -50,11 +55,6 @@ const TutorailsLink = styled(Link)`
 const Farm: React.FC = () => {
   const { path } = useRouteMatch()
   const { account } = useWallet()
-  const farms = useFarms()
-  const pools = usePools(account)
-  const sixPriceUSD = usePriceSixUsd()
-  const bnbPriceUSD = usePriceBnbBusd()
-  const ethPriceBnb = usePriceEthBnb()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
@@ -62,8 +62,42 @@ const Farm: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
-
   
+  const addressVelo: Address = {
+    97: "0xABc47aaEF71A60b69Be40B6E192EB82212005fCf",
+    56: "0xABc47aaEF71A60b69Be40B6E192EB82212005fCf"
+
+  }
+
+  const [poolVelo, setPoolVelo] = useState<PoolWithApy>({
+    apy: new BigNumber(0),
+    rewardPerBlock: 10,
+    estimatePrice: new BigNumber(0),
+    totalStaked: new BigNumber(0),
+    startBlock: 13987420,
+    endBlock: 14563535,
+    userData: {
+      allowance: new BigNumber(0),
+      stakingTokenBalance: new BigNumber(0),
+      stakedBalance: new BigNumber(0),
+      pendingReward: new BigNumber(0)
+    },
+    sousId: 0,
+    image: "",
+    tokenName: "VELO",
+    stakingTokenName: QuoteToken.VELO,
+    stakingLimit: 0,
+    stakingTokenAddress: "0x8B8647cD820966293FCAd8d0faDf6877b39F2C46",
+    contractAddress: addressVelo,
+    poolCategory: PoolCategory.PARTHNER,
+    projectLink: "",
+    tokenPerBlock: "10",
+    sortOrder: 1,
+    harvest: true,
+    isFinished: false,
+    tokenDecimals: 18
+  })
+  const [amountVfinix,setAmountVfinix] = useState<number>(0)
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
@@ -75,164 +109,135 @@ const Farm: React.FC = () => {
       return new BigNumber(1)
     }
     if (tokenPrice && quoteToken === QuoteToken.BUSD) {
-      return tokenPriceBN.div(bnbPriceUSD)
+      return tokenPriceBN.div(1)
     }
     return tokenPriceBN
   }
+  const fetch = useCallback(async() => {
+    const veloAddress = "0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1"
+    const apolloAddress = "0xABc47aaEF71A60b69Be40B6E192EB82212005fCf"
+    const contractVelo = getContract(erc20, veloAddress)
+    const [veloBalance] = await Promise.all([
+      contractVelo.methods.balanceOf(apolloAddress).call()
+    ])
+    if (account) {
+      const finixAddress = "0x8B8647cD820966293FCAd8d0faDf6877b39F2C46"
+      
+      
+      const contractApollo = getContract(Apollo.abi, apolloAddress)
+      const contractFinix = getContract(erc20, finixAddress)
+      
 
-  const poolsWithApy = pools.filter((pool) => pool.poolCategory === PoolCategory.PARTHNER).map((pool) => {
-    console.log("pool",pool)
+      const [userInfo,totalStake,allowance,pendingReward] = await Promise.all([
+        contractApollo.methods.userInfo(account).call(),
+        contractFinix.methods.balanceOf(apolloAddress).call(),
+        contractFinix.methods.allowance(account,apolloAddress).call(),
+        contractApollo.methods.pendingReward(account).call(),
+      ])
+      
       // eslint-disable-next-line
-      debugger
-    const isBnbPool = pool.poolCategory === PoolCategory.BINANCE
-    let rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
-    let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
-    switch (pool.sousId) {
-      case 0:
-        stakingTokenFarm = farms.find((s) => s.pid === 0)
-        break
-      case 2:
-        stakingTokenFarm = farms.find((s) => s.pid === 1)
-        break
-      case 3:
-        stakingTokenFarm = farms.find((s) => s.pid === 2)
-        break
-      case 4:
-        stakingTokenFarm = farms.find((s) => s.pid === 3)
-        break
-      case 5:
-        stakingTokenFarm = farms.find((s) => s.pid === 4)
-        break
-      case 6:
-        stakingTokenFarm = farms.find((s) => s.pid === 5)
-        break
-      // case 7:
-      //   stakingTokenFarm = farms.find((s) => s.pid === 0)
-      //   break
-      default:
-        break
+      // debugger
+      poolVelo.totalStaked = new BigNumber(totalStake)
+      poolVelo.userData.allowance = allowance
+      poolVelo.userData.stakedBalance = userInfo.amount
+      poolVelo.userData.pendingReward = pendingReward
+      
+      setPoolVelo(poolVelo) 
     }
-    switch (pool.sousId) {
-      case 0:
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-        rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
-        break
-      // case 7:
-      //   rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'VELO')
-      //   // console.log("rewardTokenFarm",rewardTokenFarm)
-      //   break
-      default:
-        break
-    }
-    
+    const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
+    setAmountVfinix(veloBalanceReward)
 
-    // tmp mulitplier to support ETH farms
-    // Will be removed after the price api
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'ETH' ? ethPriceBnb : 1
+  },[account,poolVelo])
+ 
   
 
-    // /!\ Assume that the farm quote price is BNB
-    const stakingTokenPriceInBNB = isBnbPool
-      ? new BigNumber(1)
-      : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote).times(tempMultiplier)
-    const rewardTokenPriceInBNB = priceToBnb(
-      pool.tokenName,
-      rewardTokenFarm?.tokenPriceVsQuote,
-      rewardTokenFarm?.quoteTokenSymbol,
-    )
+  const pools = [
+    {
+      sousId: 0,
+      tokenName: 'VELO',
+      stakingTokenName: QuoteToken.VELO,
+      stakingTokenAddress:
+        process.env.REACT_APP_CHAIN_ID === '97'
+          ? '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
+          : '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46',
+      contractAddress: {
+        97: '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf',
+        56: '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf',
+      },
+      poolCategory: PoolCategory.PARTHNER,
+      projectLink: 'https://definix.com/',
+      harvest: true,
+      tokenPerBlock: '10',
+      sortOrder: 1,
+      isFinished: false,
+      tokenDecimals: 18,
+    },
+  ]
+  const poolsWithApy = pools
+    .map((pool) => {
 
-    const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
-    const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(pool.totalStaked))
-    let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
-    const totalLP = new BigNumber(stakingTokenFarm.lpTotalSupply).div(new BigNumber(10).pow(18))
-    let highestToken
-    if (stakingTokenFarm.tokenSymbol === QuoteToken.SIX) {
-      highestToken = stakingTokenFarm.tokenAmount
-    } else if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.VELO) {
-      highestToken = stakingTokenFarm.quoteTokenAmount
-    } else if (stakingTokenFarm.tokenAmount > stakingTokenFarm.quoteTokenAmount) {
-      highestToken = stakingTokenFarm.tokenAmount
-    } else {
-      highestToken = stakingTokenFarm.quoteTokenAmount
-    }
-    const tokenPerLp = new BigNumber(totalLP).div(new BigNumber(highestToken))
-    const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(sixPriceUSD))
-    const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
+      // const userInfo = await contractApollo.methods.userInfo(account).call()
 
-    switch (pool.sousId) {
-      case 0: {
-        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
-          .times(stakingTokenFarm.BONUS_MULTIPLIER)
-          .div(new BigNumber(10).pow(18))
-        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
-        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
-        apy = finixRewardPerYear.div(currentTotalStaked).times(100)
-        break
+      // tmp mulitplier to support ETH farms
+      // Will be removed after the price api
+      const tempMultiplier = 1
+
+      // /!\ Assume that the farm quote price is BNB
+      const stakingTokenPriceInBNB = new BigNumber(1)
+      // : new BigNumber(1).times(tempMultiplier)
+      const rewardTokenPriceInBNB = priceToBnb(
+        pool.tokenName,
+        new BigNumber(1),
+        QuoteToken.VELO,
+      )
+
+      const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
+      const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(new BigNumber(1)))
+      let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
+      const totalLP = new BigNumber(1100000000000000000000).div(new BigNumber(10).pow(18))
+      const highestToken = 1
+      // if (stakingTokenFarm.tokenSymbol === QuoteToken.SIX) {
+      //   highestToken = stakingTokenFarm.tokenAmount
+      // } else if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.VELO) {
+      //   highestToken = stakingTokenFarm.quoteTokenAmount
+      // } else if (stakingTokenFarm.tokenAmount > stakingTokenFarm.quoteTokenAmount) {
+      //   highestToken = stakingTokenFarm.tokenAmount
+      // } else {
+      //   highestToken = stakingTokenFarm.quoteTokenAmount
+      // }
+      const tokenPerLp = new BigNumber(totalLP).div(new BigNumber(highestToken))
+      const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(1))
+      const estimatePrice = priceUsdTemp.times(new BigNumber(1100000000000000000000).div(new BigNumber(10).pow(18)))
+
+      switch (pool.sousId) {
+        case 0: {
+          const totalRewardPerBlock = new BigNumber(4000000000000000)
+            .times(1)
+            .div(new BigNumber(10).pow(18))
+          const finixRewardPerBlock = totalRewardPerBlock.times(1)
+          const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+          const currentTotalStaked = getBalanceNumber(new BigNumber(1100000000000000000000))
+          apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+          break
+        }
+        default:
+          break
       }
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 7:
-      case 6: {
-        const { startBlock, endBlock, rewardPerBlock, totalStaked } = pool
-        const startBlockNumber = typeof startBlock === 'number' ? startBlock : parseInt(startBlock, 10)
-        const endBlockNumber = typeof endBlock === 'number' ? endBlock : parseInt(endBlock, 10)
-        const currentBlockNumber = typeof block === 'number' ? block : parseInt(block, 10)
-        const totalDiffBlock = endBlockNumber - startBlockNumber
-        const remainBlock = endBlockNumber - currentBlockNumber
-        const remainTimeSec = remainBlock * 3
-        const totalDiffBlockCeil =
-          totalDiffBlock % 1200 > 1100 ? totalDiffBlock + (1200 - (totalDiffBlock % 1200)) : totalDiffBlock
-        const currentDiffBlock = currentBlockNumber - startBlockNumber
-        const totalReward = totalDiffBlockCeil * (rewardPerBlock / 10 ** 18)
-        const alreadyRewarded = currentDiffBlock * (rewardPerBlock / 10 ** 18)
-        const remainReward = totalReward - alreadyRewarded
-
-        const B33 = remainReward
-        const B34 = sixPriceUSD
-
-        const E33 = stakingTokenFarm.lpTotalSupply
-        const E34 = totalStaked
-        const E35 = highestToken
-
-        const F34 = new BigNumber(E34).div(new BigNumber(E33))
-        const F35 = new BigNumber(E35).times(F34)
-
-        const B35 = F35.times(new BigNumber(B34)).times(2)
-        const B38 = 365 * 24 * 60 * 60
-
-        apy = new BigNumber(B33)
-          .times(new BigNumber(B34))
-          .div(B35)
-          .times(new BigNumber(B38))
-          .div(new BigNumber(remainTimeSec))
-          .times(100)
-
-        break
+      return {
+        ...pool,
+        isFinished: pool.sousId === 0 ? false : pool.isFinished || block > 14563535,
+        apy,
+        estimatePrice,
       }
-      default:
-        break
-    }
-    return {
-      ...pool,
-      isFinished: pool.sousId === 0 ? false : pool.isFinished || block > pool.endBlock,
-      apy,
-      estimatePrice,
-    }
-  })
-
+    })
+  
   const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
 
   const filterStackedOnlyPools = (poolsForFilter) =>
     poolsForFilter.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
 
   const handlePresent = useCallback((node: React.ReactNode) => {
+    console.log("present")
     setModalNode(node)
     setIsOpenModal(true)
     window.scrollTo(0, 0)
@@ -254,13 +259,15 @@ const Farm: React.FC = () => {
   }, [currentTime, phrase1TimeStamp])
 
   useEffect(() => {
+    setInterval(fetch,10000)
+    
     return () => {
       setListView(true)
       setModalNode(undefined)
       setIsOpenModal(false)
+      // inertvalFetch
     }
-  }, [])
-
+  }, [fetch,account])
 
   return (
     <PoolContext.Provider
@@ -294,7 +301,8 @@ const Farm: React.FC = () => {
                 </HelpButton> */}
               </div>
               <Text>
-                The Partnership Pool is a place you can stake your single tokens in order to generate high returns in the form of external partner assets.
+                The Partnership Pool is a place you can stake your single tokens in order to generate high returns in
+                the form of external partner assets.
                 <br />
                 The amount of returns will be calculated by the annual percentage rate (APR).
               </Text>
@@ -324,19 +332,13 @@ const Farm: React.FC = () => {
               ) : (
                 <FlexLayout cols={listView ? 1 : 3}>
                   <Route exact path={`${path}`}>
-                    {liveOnly
-                      ? orderBy(stackedOnly ? filterStackedOnlyPools(openPools) : openPools, ['sortOrder']).map(
-                        (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                      )
-                      : orderBy(stackedOnly ? filterStackedOnlyPools(finishedPools) : finishedPools, ['sortOrder']).map(
-                        (pool) => <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />,
-                      )}
+                    <PoolCard key={poolVelo.sousId} pool={poolVelo} isHorizontal={listView} veloAmount={amountVfinix} account={account}/>,
                   </Route>
-                  <Route path={`${path}/history`}>
+                  {/* <Route path={`${path}/history`}>
                     {orderBy(finishedPools, ['sortOrder']).map((pool) => (
                       <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
                     ))}
-                  </Route>
+                  </Route> */}
                 </FlexLayout>
               )}
             </TimerWrapper>

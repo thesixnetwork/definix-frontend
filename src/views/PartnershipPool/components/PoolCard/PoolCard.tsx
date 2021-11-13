@@ -4,8 +4,11 @@ import { useSousStake } from 'hooks/useStake'
 import { useSousUnstake } from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { getAddress } from 'utils/addressHelpers'
 import { useMatchBreakpoints } from 'uikit-dev'
 import PoolContext from 'views/Pools/PoolContext'
+import { getContract } from 'utils/web3'
+import ApolloAbi from "config/abi/Apollo.json"
 import DepositModal from '../DepositModal'
 import PoolSash from '../PoolSash'
 import WithdrawModal from '../WithdrawModal'
@@ -15,8 +18,9 @@ import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
-import { PoolCardProps } from './types'
+import { PoolCardVeloProps } from './types'
 import CountDown from './Countdown'
+
 
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
@@ -52,7 +56,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
+const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, veloAmount = 0 ,account}) => {
   const {
     sousId,
     tokenName,
@@ -65,8 +69,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     isFinished,
     userData,
     stakingLimit,
+    contractAddress
   } = pool
-  console.log("userData",userData)
+  
   const isBnbPool = poolCategory === PoolCategory.BINANCE
   const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
 
@@ -84,14 +89,15 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
 
   const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  console.log("allowance.toNumber()", allowance)
+  
   const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
 
-  const { onPresent } = useContext(PoolContext)
+  const {  onPresent } = useContext(PoolContext)
 
   const { onStake } = useSousStake(sousId, isBnbPool)
+  // const x = useContract()
   const { onUnstake } = useSousUnstake(sousId)
-
+  
   const renderSash = () => {
     if (tokenName === 'FINIX-SIX' && !isFinished) {
       return <PoolSash type="special" />
@@ -117,15 +123,16 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   )
 
   const renderDepositModal = useCallback(() => {
+    console.log(" mooo oo oo o")
     onPresent(
       <DepositModal
         max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
-        onConfirm={onStake}
+        onConfirm={(s:string)=>{console.log(s)}}
         tokenName={stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName}
         renderCardHeading={renderCardHeading}
       />,
     )
-  }, [convertedLimit, onPresent, onStake, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
+  }, [convertedLimit, onPresent, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
 
   const renderWithdrawModal = useCallback(() => {
     onPresent(
@@ -152,6 +159,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         onPresentDeposit={renderDepositModal}
         onPresentWithdraw={renderWithdrawModal}
         className={className}
+        apolloAddress={contractAddress[97]}
       />
     ),
     [
@@ -165,6 +173,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
       stakedBalance,
       stakingTokenAddress,
       tokenName,
+      contractAddress
     ],
   )
 
@@ -178,9 +187,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
         needsApproval={needsApproval}
         isOldSyrup={isOldSyrup}
         className={className}
+        veloAmount={veloAmount}
+        contractAddrss={getAddress(contractAddress)}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
+    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals,veloAmount,contractAddress],
   )
 
   const renderHarvestActionAirDrop = useCallback(
@@ -220,7 +231,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     if (isMobile) {
       return (
         <HorizontalMobileStyle className="mb-3">
-
           {renderSash()}
           <CardHeadingAccordion
             tokenName={tokenName}
@@ -243,11 +253,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     return (
       <div>
         <div style={{ display: 'flex' }}>
-
-          {/* <CountDown showCom={x} /> */}
+          <CountDown showCom={x} />
         </div>
         <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-
           {renderSash()}
           {renderCardHeading('col-3 pos-static')}
 
@@ -264,10 +272,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
   }
   const x = true
   return (
-    <div style={{margin:'auto'}}>
+    <div style={{ margin: 'auto' }}>
       <div style={{ display: 'flex' }}>
-
-        {/* <CountDown showCom={x} margin="auto"/> */}
+        <CountDown showCom={x} margin="auto" />
       </div>
       <VerticalStyle className="mb-7">
         {renderSash()}

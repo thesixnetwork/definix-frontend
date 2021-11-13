@@ -8,6 +8,7 @@ import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { ethers } from 'ethers'
 import { StakeActionProps } from './types'
 
 const IconButtonWrapper = styled.div`
@@ -30,6 +31,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentDeposit,
   onPresentWithdraw,
   className = '',
+  apolloAddress
 }) => {
   const TranslateString = useI18n()
 
@@ -43,12 +45,16 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const rawStakedBalance = getBalanceNumber(stakedBalance)
   const displayBalance = rawStakedBalance.toLocaleString()
 
-  const { onApprove } = useSousApprove(stakingTokenContract, sousId)
+  // const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
   const handleApprove = useCallback(async () => {
     try {
       setRequestedApproval(true)
-      const txHash = await onApprove()
+
+        console.log("stakingTokenAddress",stakingTokenAddress)
+      const txHash = await stakingTokenContract.methods
+        .approve(apolloAddress, ethers.constants.MaxUint256)
+        .send({ from: account })
       // user rejected tx or didn't go thru
       if (!txHash) {
         setRequestedApproval(false)
@@ -56,7 +62,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     } catch (e) {
       console.error(e)
     }
-  }, [onApprove, setRequestedApproval])
+  }, [ setRequestedApproval,account,stakingTokenContract,apolloAddress,stakingTokenAddress])
 
   const renderStakingButtons = () => {
     if (!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished) {
@@ -81,10 +87,10 @@ const StakeAction: React.FC<StakeActionProps> = ({
           onClick={
             isOldSyrup
               ? async () => {
-                  setPendingTx(true)
-                  await onUnstake('0')
-                  setPendingTx(false)
-                }
+                setPendingTx(true)
+                await onUnstake('0')
+                setPendingTx(false)
+              }
               : onPresentWithdraw
           }
           className="btn-secondary-disable col-6 mr-1"

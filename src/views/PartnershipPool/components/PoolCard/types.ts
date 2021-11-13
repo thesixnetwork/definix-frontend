@@ -11,6 +11,13 @@ export interface PoolCardProps {
   pool: PoolWithApy
   isHorizontal?: boolean
 }
+export interface PoolCardVeloProps {
+  pool: PoolWithApy
+  isHorizontal?: boolean
+  veloAmount?: number
+  account?:string
+}
+
 
 export interface CardHeadingProps {
   tokenName: string
@@ -32,6 +39,7 @@ export interface StakeActionProps {
   onUnstake?: any
   onPresentDeposit?: any
   onPresentWithdraw?: any
+  apolloAddress?: string
 }
 
 export interface HarvestActionProps {
@@ -42,6 +50,8 @@ export interface HarvestActionProps {
   needsApproval?: boolean
   isOldSyrup?: boolean
   className?: string
+  veloAmount?: number
+  contractAddrss?:string
 }
 
 export interface DetailsSectionProps {

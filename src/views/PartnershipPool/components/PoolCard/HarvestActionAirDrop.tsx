@@ -7,8 +7,10 @@ import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
+import ApolloAbi from "config/abi/Apollo.json"
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import klay from 'uikit-dev/images/Logo-Klaytn.png'
+import { getContract } from 'utils/web3'
 import { getBalanceNumber } from 'utils/formatBalance'
 import AirDropHarvestModal from './AirDropHarvestModal'
 
@@ -28,6 +30,7 @@ interface HarvestActionAirdropProps {
   isOldSyrup?: boolean
   className?: string
   isHorizontal?: boolean
+  
 }
 
 const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
@@ -107,6 +110,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           radii="small"
           onClick={async () => {
             setPendingTx(true)
+            // const apolloContract = getContract(ApolloAbi.abi)
             await onReward()
             setPendingTx(false)
           }}
