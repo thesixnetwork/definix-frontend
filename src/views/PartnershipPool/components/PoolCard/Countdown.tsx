@@ -10,12 +10,12 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
     minutes: 0,
     seconds: 0,
   })
-  //   const [isTimeUpAirdrop, setIsTimeUpAirdrop] = useState<boolean>(false)
 
   useEffect(() => {
     const countdownInterval = () => {
-      const endCountDown = new Date(2021, 12, 10, 9, 59, 59)
+      const endCountDown = new Date("2021-11-15 15:00:00")
       const timer = endCountDown.getTime() - Date.now()
+
       if (timer <= 0) {
         setCountdown({
           days: 0,
@@ -44,15 +44,12 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
   `
   const CountDownBox = styled.div`
     width: 45px;
-    // border: 1px solid #d3d3d3;
-    border-radius: 5px;
-    padding: 5px 1px 5px 5px;
-
-    background-color: #f8f8f8;
+    border-radius: 6px;
+    padding: 6px 0px;
+    background: ${({ theme }) => theme.isDark ? "#212121" : "#f8f8f8"};
   `
   const TextUnderBox = styled.div`
-    // margin-top: 5px;
-    font-size: 10px !important;
+    font-size: 9px !important;
     color: #9396a8;
     text-align: center;
   `
@@ -63,8 +60,7 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
   `
   const BackgroundCard = styled.div`
     display: float;
-    // background-color: #E3E6EC;
-    background: ${(props) => props.theme.card.subBackground};
+    background: ${({ theme }) => theme.isDark ? "black" : "white"};
     padding: 5px 5px 5px 5px;
     border-radius: 7px 7px 0px 0px;
   `
