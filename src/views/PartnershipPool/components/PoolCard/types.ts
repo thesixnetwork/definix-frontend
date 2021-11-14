@@ -5,6 +5,7 @@ export interface PoolWithApy extends Pool {
   apy: BigNumber
   rewardPerBlock?: number
   estimatePrice: BigNumber
+  pairPrice: BigNumber
 }
 
 export interface PoolCardProps {
@@ -51,6 +52,7 @@ export interface HarvestActionProps {
   className?: string
   veloAmount?: number
   contractAddrss?: string
+  pairPrice?: number
 }
 
 export interface DetailsSectionProps {

@@ -12,11 +12,14 @@ import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { getContract } from 'utils/web3'
 import Apollo from 'config/abi/Apollo.json'
+import PairAbi from 'config/abi/uni_v2_lp.json'
 import erc20 from 'config/abi/erc20.json'
 // import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link } from 'uikit-dev'
-import { poolsConfig ,VeloPool} from 'config/constants'
+import { VeloPool } from 'config/constants'
+import { getAddress } from 'utils/addressHelpers'
+import AddressTokens from 'config/constants/contracts'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -65,7 +68,6 @@ const Farm: React.FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
 
-
   const [poolVelo, setPoolVelo] = useState<PoolWithApy>({
     apy: new BigNumber(0),
     rewardPerBlock: 10,
@@ -93,7 +95,9 @@ const Farm: React.FC = () => {
     harvest: true,
     isFinished: false,
     tokenDecimals: 18,
+    pairPrice: new BigNumber(0)
   })
+ 
   const [amountVfinix, setAmountVfinix] = useState<number>(0)
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -110,40 +114,54 @@ const Farm: React.FC = () => {
     }
     return tokenPriceBN
   }
-  const fetch = useCallback(async () => {
-    const veloAddress = '0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1'
-    const apolloAddress = '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf'
-    const finixAddress = '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
 
+
+
+  const fetch = useCallback(async () => {
+    const pairContract = getContract(PairAbi,getAddress( AddressTokens.veloFinixLP))
+    const veloAddress = getAddress(AddressTokens.velo)
+    const apolloAddress = getAddress(poolVelo.contractAddress)
+    const finixAddress = '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
+  
     const contractApollo = getContract(Apollo.abi, apolloAddress)
     const contractFinix = getContract(erc20, finixAddress)
     const contractVelo = getContract(erc20, veloAddress)
-    const [veloBalance,totalStake] = await Promise.all([
+    const [veloBalance, totalStake, rewardPerBlock,reserveFinixVelo] = await Promise.all([
       contractVelo.methods.balanceOf(apolloAddress).call(),
-      contractFinix.methods.balanceOf(apolloAddress).call()
+      contractFinix.methods.balanceOf(apolloAddress).call(),
+      contractApollo.methods.rewardPerBlock().call(),
+      pairContract.methods.getReserves().call()
     ])
     if (account) {
-      const [userInfo, allowance, pendingReward, balanceFinixUser] = await Promise.all([
+      const [userInfo, allowance, pendingReward, balanceFinixUser,] = await Promise.all([
         contractApollo.methods.userInfo(account).call(),
         contractFinix.methods.allowance(account, apolloAddress).call(),
         contractApollo.methods.pendingReward(account).call(),
         contractFinix.methods.balanceOf(account).call(),
-        // contractApollo.methods.rewardPerBlock().call()
+
       ])
 
       // eslint-disable-next-line
       // debugger
-      
+
       poolVelo.userData.allowance = allowance
       poolVelo.userData.stakedBalance = userInfo.amount
       poolVelo.userData.pendingReward = pendingReward
+      poolVelo.estimatePrice = new BigNumber(20)
       poolVelo.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
       // poolVelo.stakingLimit = new BigNumber(balanceFinixUser)
-      
     }
     const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
     poolVelo.totalStaked = new BigNumber(totalStake)
-    poolVelo.apy = new BigNumber(1000*1e18).div(totalStake).times(100)
+    const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR)
+
+    const finixPervelo = new BigNumber(reserveFinixVelo._reserve1).dividedBy(reserveFinixVelo._reserve0)
+    poolVelo.pairPrice = finixPervelo
+    // eslint-disable-next-line
+      // debugger    
+    poolVelo.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR)).div(totalStake).times(100)
+
+    
     setPoolVelo(poolVelo)
     setAmountVfinix(veloBalanceReward)
   }, [account, poolVelo])

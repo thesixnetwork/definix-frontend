@@ -69,6 +69,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
     userData,
     stakingLimit,
     contractAddress,
+    pairPrice
   } = pool
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE
@@ -194,9 +195,10 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         className={className}
         veloAmount={veloAmount}
         contractAddrss={getAddress(contractAddress)}
+        pairPrice={pairPrice.toNumber()}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals, veloAmount, contractAddress],
+    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals, veloAmount, contractAddress,pairPrice],
   )
 
   const renderHarvestActionAirDrop = useCallback(

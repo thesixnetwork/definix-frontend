@@ -48,8 +48,8 @@ export default {
     56: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
   },
   velo: {
-    97: '0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1',
-    56: '0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1',
+    97: process.env.REACT_APP_VELO_TOKEN_TESTNET,
+    56: process.env.REACT_APP_VELO_TOKEN_MAINNET,
   },
   finixSixLP: {
     97: process.env.REACT_APP_FINIX_SIX_LP_TESTNET,
@@ -78,6 +78,10 @@ export default {
   airdropKlay: {
     97: process.env.REACT_APP_ARIDROP_KLAY_TESTNET,
     56: process.env.REACT_APP_ARIDROP_KLAY_MAINNET,
+  },
+  veloFinixLP:{
+    97:process.env.REACT_APP_LP_VELO_FINIX_TESTNET,
+    56:process.env.REACT_APP_LP_VELO_FINIX_MAINNET
   },
   // configured =====================================================
   syrup: {

@@ -5,12 +5,12 @@ import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constant
 export type TranslatableText =
   | string
   | {
-      id: number
-      fallback: string
-      data?: {
-        [key: string]: string | number
-      }
+    id: number
+    fallback: string
+    data?: {
+      [key: string]: string | number
     }
+  }
 
 export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
@@ -96,6 +96,7 @@ export interface FinixPriceState {
   busdUsdtQuote: number
   bnbBtcbQuote: number
   ethBnbQuote: number
+  veloBusdPrice: number
 }
 export interface ProfileState {
   isInitialized: boolean

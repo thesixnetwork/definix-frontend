@@ -57,12 +57,12 @@ export const useStakeVelo = () => {
       // if (sousId === 0) {
       //   await stake(veloContract, 0, amount, account)
       // } else{
-        await sousStake(veloContract, amount, account)
+      await sousStake(veloContract, amount, account)
       // }
       // dispatch(updateUserStakedBalance(sousId, account))
       // dispatch(updateUserBalance(sousId, account))
     },
-    [account,veloContract],
+    [account, veloContract],
   )
 
   return { onStake: handleStake }
