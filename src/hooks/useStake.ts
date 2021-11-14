@@ -3,7 +3,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useDispatch } from 'react-redux'
 import { fetchFarmUserDataAsync, updateUserStakedBalance, updateUserBalance } from 'state/actions'
 import { stake, sousStake, sousStakeBnb } from 'utils/callHelpers'
-import { useHerodotus, useSousChef } from './useContract'
+import { useHerodotus, useSousChef, useVeloPool } from './useContract'
 
 const useStake = (pid: number) => {
   const dispatch = useDispatch()
@@ -41,6 +41,28 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
       dispatch(updateUserBalance(sousId, account))
     },
     [account, dispatch, isUsingBnb, herodotusContract, sousChefContract, sousId],
+  )
+
+  return { onStake: handleStake }
+}
+
+export const useStakeVelo = () => {
+  // const dispatch = useDispatch()
+  const { account } = useWallet()
+  const veloContract = useVeloPool()
+  // const sousChefContract = useSousChef(sousId)
+
+  const handleStake = useCallback(
+    async (amount: string) => {
+      // if (sousId === 0) {
+      //   await stake(veloContract, 0, amount, account)
+      // } else{
+        await sousStake(veloContract, amount, account)
+      // }
+      // dispatch(updateUserStakedBalance(sousId, account))
+      // dispatch(updateUserBalance(sousId, account))
+    },
+    [account,veloContract],
   )
 
   return { onStake: handleStake }

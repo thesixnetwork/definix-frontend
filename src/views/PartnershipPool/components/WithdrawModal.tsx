@@ -55,7 +55,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         onChange={handleChange}
         value={val}
         max={fullBalance}
-        symbol={tokenName}
+        symbol="FINIX"
         inputTitle={TranslateString(1070, 'Unstake')}
       />
 
@@ -71,7 +71,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
           onDismiss()
         }}
       >
-        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Remove ${tokenName}`)}
+        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Remove FINIX`)}
       </Button>
     </Modal>
   )

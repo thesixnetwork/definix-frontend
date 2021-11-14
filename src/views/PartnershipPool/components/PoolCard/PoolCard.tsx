@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import { useSousStake } from 'hooks/useStake'
+import { useStakeVelo } from 'hooks/useStake'
 import { useSousUnstakeVelo } from 'hooks/useUnstake'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -93,7 +93,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
 
   const { onPresent } = useContext(PoolContext)
 
-  const { onStake } = useSousStake(sousId, isBnbPool)
+  const { onStake } = useStakeVelo()
   // const x = useContract()
   const { onUnstake } = useSousUnstakeVelo()
 
@@ -164,7 +164,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         onPresentDeposit={renderDepositModal}
         onPresentWithdraw={renderWithdrawModal}
         className={className}
-        apolloAddress={contractAddress[97]}
+        apolloAddress={getAddress(contractAddress)}
       />
     ),
     [

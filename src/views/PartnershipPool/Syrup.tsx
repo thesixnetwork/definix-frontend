@@ -16,6 +16,7 @@ import erc20 from 'config/abi/erc20.json'
 // import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link } from 'uikit-dev'
+import { poolsConfig ,VeloPool} from 'config/constants'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
@@ -25,6 +26,7 @@ import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolContext from './PoolContext'
 import { PoolWithApy } from './components/PoolCard/types'
+
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -63,10 +65,6 @@ const Farm: React.FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
 
-  const addressVelo: Address = {
-    97: '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf',
-    56: '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf',
-  }
 
   const [poolVelo, setPoolVelo] = useState<PoolWithApy>({
     apy: new BigNumber(0),
@@ -86,8 +84,8 @@ const Farm: React.FC = () => {
     tokenName: 'VELO',
     stakingTokenName: QuoteToken.VELO,
     stakingLimit: 0,
-    stakingTokenAddress: '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46',
-    contractAddress: addressVelo,
+    stakingTokenAddress: VeloPool.stakingTokenAddress,
+    contractAddress: VeloPool.contractAddress,
     poolCategory: PoolCategory.PARTHNER,
     projectLink: '',
     tokenPerBlock: '10',
@@ -115,31 +113,38 @@ const Farm: React.FC = () => {
   const fetch = useCallback(async () => {
     const veloAddress = '0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1'
     const apolloAddress = '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf'
+    const finixAddress = '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
+
+    const contractApollo = getContract(Apollo.abi, apolloAddress)
+    const contractFinix = getContract(erc20, finixAddress)
     const contractVelo = getContract(erc20, veloAddress)
-    const [veloBalance] = await Promise.all([contractVelo.methods.balanceOf(apolloAddress).call()])
+    const [veloBalance,totalStake] = await Promise.all([
+      contractVelo.methods.balanceOf(apolloAddress).call(),
+      contractFinix.methods.balanceOf(apolloAddress).call()
+    ])
     if (account) {
-      const finixAddress = '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
-
-      const contractApollo = getContract(Apollo.abi, apolloAddress)
-      const contractFinix = getContract(erc20, finixAddress)
-
-      const [userInfo, totalStake, allowance, pendingReward] = await Promise.all([
+      const [userInfo, allowance, pendingReward, balanceFinixUser] = await Promise.all([
         contractApollo.methods.userInfo(account).call(),
-        contractFinix.methods.balanceOf(apolloAddress).call(),
         contractFinix.methods.allowance(account, apolloAddress).call(),
         contractApollo.methods.pendingReward(account).call(),
+        contractFinix.methods.balanceOf(account).call(),
+        // contractApollo.methods.rewardPerBlock().call()
       ])
 
       // eslint-disable-next-line
       // debugger
-      poolVelo.totalStaked = new BigNumber(totalStake)
+      
       poolVelo.userData.allowance = allowance
       poolVelo.userData.stakedBalance = userInfo.amount
       poolVelo.userData.pendingReward = pendingReward
-
-      setPoolVelo(poolVelo)
+      poolVelo.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
+      // poolVelo.stakingLimit = new BigNumber(balanceFinixUser)
+      
     }
     const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
+    poolVelo.totalStaked = new BigNumber(totalStake)
+    poolVelo.apy = new BigNumber(1000*1e18).div(totalStake).times(100)
+    setPoolVelo(poolVelo)
     setAmountVfinix(veloBalanceReward)
   }, [account, poolVelo])
 
@@ -158,7 +163,7 @@ const Farm: React.FC = () => {
 
     const totalRewardPricePerYear = rewardTokenPriceInBNB.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
     const totalStakingTokenInPool = stakingTokenPriceInBNB.times(getBalanceNumber(new BigNumber(1)))
-    let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
+    const apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
     const totalLP = new BigNumber(1100000000000000000000).div(new BigNumber(10).pow(18))
     const highestToken = 1
     // if (stakingTokenFarm.tokenSymbol === QuoteToken.SIX) {
@@ -176,11 +181,11 @@ const Farm: React.FC = () => {
 
     switch (pool.sousId) {
       case 0: {
-        const totalRewardPerBlock = new BigNumber(4000000000000000).times(1).div(new BigNumber(10).pow(18))
-        const finixRewardPerBlock = totalRewardPerBlock.times(1)
-        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-        const currentTotalStaked = getBalanceNumber(new BigNumber(1100000000000000000000))
-        apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+        // const totalRewardPerBlock = new BigNumber(4000000000000000).times(1).div(new BigNumber(10).pow(18))
+        // const finixRewardPerBlock = totalRewardPerBlock.times(1)
+        // const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+        // const currentTotalStaked = getBalanceNumber(new BigNumber(1100000000000000000000))
+        // apy = finixRewardPerYear.div(currentTotalStaked).times(100)
         break
       }
       default:

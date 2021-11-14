@@ -79,7 +79,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
           onDismiss()
         }}
       >
-        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Deposit ${tokenName}`)}
+        {pendingTx ? TranslateString(488, 'Pending') : TranslateString(464, `Deposit FINIX`)}
       </Button>
     </Modal>
   )

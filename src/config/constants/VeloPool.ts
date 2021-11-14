@@ -6,11 +6,11 @@ const VeloPool: PoolConfig = {
   stakingTokenName: QuoteToken.FINIX,
   stakingTokenAddress:
     process.env.REACT_APP_CHAIN_ID === '97'
-      ? '0xD6F0Cad4d2c9a6716502CDa4fFC9227768F940A1'
+      ? process.env.REACT_APP_FINIX_ADDRESS_TESTNET
       : process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
   contractAddress: {
-    97: '0xABc47aaEF71A60b69Be40B6E192EB82212005fCf',
-    56: process.env.REACT_APP_HERODOTUS_MAINNET,
+    97: process.env.REACT_APP_VELO_APOLLO_TESTNET,
+    56: process.env.REACT_APP_VELO_APOLLO_MAINNET,
   },
   poolCategory: PoolCategory.CORE,
   projectLink: 'https://definix.com/',
