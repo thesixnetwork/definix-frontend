@@ -13,7 +13,7 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
 
   useEffect(() => {
     const countdownInterval = () => {
-      const endCountDown = new Date("2021-11-15 15:00:00")
+      const endCountDown = new Date('2021-11-15 15:00:00')
       const timer = endCountDown.getTime() - Date.now()
 
       if (timer <= 0) {
@@ -46,7 +46,7 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
     width: 45px;
     border-radius: 6px;
     padding: 6px 0px;
-    background: ${({ theme }) => theme.isDark ? "#212121" : "#f8f8f8"};
+    background: ${({ theme }) => (theme.isDark ? '#212121' : '#f8f8f8')};
   `
   const TextUnderBox = styled.div`
     font-size: 9px !important;
@@ -60,7 +60,7 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
   `
   const BackgroundCard = styled.div`
     display: float;
-    background: ${({ theme }) => theme.isDark ? "black" : "white"};
+    background: ${({ theme }) => (theme.isDark ? 'black' : 'white')};
     padding: 5px 5px 5px 5px;
     border-radius: 7px 7px 0px 0px;
   `
