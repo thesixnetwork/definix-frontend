@@ -30,7 +30,6 @@ import PoolTabButtons from './components/PoolTabButtons'
 import PoolContext from './PoolContext'
 import { PoolWithApy } from './components/PoolCard/types'
 
-
 const ModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -95,9 +94,9 @@ const Farm: React.FC = () => {
     harvest: true,
     isFinished: false,
     tokenDecimals: 18,
-    pairPrice: new BigNumber(0)
+    pairPrice: new BigNumber(0),
   })
- 
+
   const [amountVfinix, setAmountVfinix] = useState<number>(0)
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -115,30 +114,27 @@ const Farm: React.FC = () => {
     return tokenPriceBN
   }
 
-
-
   const fetch = useCallback(async () => {
-    const pairContract = getContract(PairAbi,getAddress( AddressTokens.veloFinixLP))
+    const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
     const veloAddress = getAddress(AddressTokens.velo)
     const apolloAddress = getAddress(poolVelo.contractAddress)
     const finixAddress = '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
-  
+
     const contractApollo = getContract(Apollo.abi, apolloAddress)
     const contractFinix = getContract(erc20, finixAddress)
     const contractVelo = getContract(erc20, veloAddress)
-    const [veloBalance, totalStake, rewardPerBlock,reserveFinixVelo] = await Promise.all([
+    const [veloBalance, totalStake, rewardPerBlock, reserveFinixVelo] = await Promise.all([
       contractVelo.methods.balanceOf(apolloAddress).call(),
       contractFinix.methods.balanceOf(apolloAddress).call(),
       contractApollo.methods.rewardPerBlock().call(),
-      pairContract.methods.getReserves().call()
+      pairContract.methods.getReserves().call(),
     ])
     if (account) {
-      const [userInfo, allowance, pendingReward, balanceFinixUser,] = await Promise.all([
+      const [userInfo, allowance, pendingReward, balanceFinixUser] = await Promise.all([
         contractApollo.methods.userInfo(account).call(),
         contractFinix.methods.allowance(account, apolloAddress).call(),
         contractApollo.methods.pendingReward(account).call(),
         contractFinix.methods.balanceOf(account).call(),
-
       ])
 
       // eslint-disable-next-line
@@ -158,10 +154,9 @@ const Farm: React.FC = () => {
     const finixPervelo = new BigNumber(reserveFinixVelo._reserve1).dividedBy(reserveFinixVelo._reserve0)
     poolVelo.pairPrice = finixPervelo
     // eslint-disable-next-line
-      // debugger    
+    // debugger
     poolVelo.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR)).div(totalStake).times(100)
 
-    
     setPoolVelo(poolVelo)
     setAmountVfinix(veloBalanceReward)
   }, [account, poolVelo])

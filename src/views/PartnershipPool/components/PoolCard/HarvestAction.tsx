@@ -29,7 +29,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   className = '',
   veloAmount,
   contractAddrss,
-  pairPrice
+  pairPrice,
 }) => {
   const TranslateString = useI18n()
   const contractApollo = getContract(Apollo.abi, contractAddrss)
@@ -77,7 +77,6 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
       </div>
 
       <Text color="textSubtle" textAlign="left" className="mt-1">
-   
         = ${numeral(pairPrice * rawEarningsBalance * finixPrice.toNumber()).format('0,0.0000')}
         {/* {numeral(earnings.toNumber() * finixPrice.toNumber()).format('0,0.0000')} */}
       </Text>

@@ -79,9 +79,9 @@ export default {
     97: process.env.REACT_APP_ARIDROP_KLAY_TESTNET,
     56: process.env.REACT_APP_ARIDROP_KLAY_MAINNET,
   },
-  veloFinixLP:{
-    97:process.env.REACT_APP_LP_VELO_FINIX_TESTNET,
-    56:process.env.REACT_APP_LP_VELO_FINIX_MAINNET
+  veloFinixLP: {
+    97: process.env.REACT_APP_LP_VELO_FINIX_TESTNET,
+    56: process.env.REACT_APP_LP_VELO_FINIX_MAINNET,
   },
   // configured =====================================================
   syrup: {
