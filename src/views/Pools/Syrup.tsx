@@ -59,26 +59,28 @@ const Farm: React.FC = () => {
     state: 'list',
     data: null,
   }) // 'list', 'deposit', 'remove',
-  const orderOptions = useRef<{
-    id: string
-    label: string
-    orderBy: 'asc' | 'desc'
-  }[]>([
+  const orderOptions = useRef<
+    {
+      id: string
+      label: string
+      orderBy: 'asc' | 'desc'
+    }[]
+  >([
     {
       id: 'sortOrder',
       label: 'sortOrder',
-      orderBy: 'asc'
+      orderBy: 'asc',
     },
     {
       id: 'apyValue',
       label: 'apr',
-      orderBy: 'desc'
+      orderBy: 'desc',
     },
     {
       id: 'totalStakedValue',
       label: 'totalStaked',
-      orderBy: 'desc'
-    }
+      orderBy: 'desc',
+    },
   ])
   const [selectedOrderOptions, setSelectedOrderOptions] = useState(orderOptions.current[0])
 
@@ -240,7 +242,7 @@ const Farm: React.FC = () => {
         apy: sumApy,
         farm: stakingTokenFarm,
         apyValue: getBalanceNumber(sumApy),
-        totalStakedValue: getBalanceNumber(pool.totalStaked)
+        totalStakedValue: getBalanceNumber(pool.totalStaked),
       }
     })
   }, [

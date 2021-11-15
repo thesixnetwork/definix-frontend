@@ -4,18 +4,18 @@ import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, DropdownItem } from 
 
 const PoolTabButtons = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderOptions, orderBy }) => {
   const { t } = useTranslation()
-  const handleClickOrderOption = useCallback((index: number) => {
-    orderBy(orderOptions[index])
-  }, [orderBy, orderOptions])
+  const handleClickOrderOption = useCallback(
+    (index: number) => {
+      orderBy(orderOptions[index])
+    },
+    [orderBy, orderOptions],
+  )
 
   return (
     <Box className="mt-s40">
       <Flex justifyContent="space-between" alignItems="center">
         <Flex>
-          <DropdownSet
-            options={orderOptions}
-            onItemClick={handleClickOrderOption}
-          />
+          <DropdownSet options={orderOptions} onItemClick={handleClickOrderOption} />
 
           <Flex alignItems="center" className="mx-s24">
             <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
