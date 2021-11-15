@@ -26,7 +26,7 @@ import {
 import { fetchBalances } from 'state/wallet'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getAddress } from 'utils/addressHelpers'
-import { TitleSet, Box } from 'definixswap-uikit'
+import { TitleSet, Box, DropdownOption } from 'definixswap-uikit'
 import { IS_GENESIS } from '../../config'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
@@ -59,30 +59,30 @@ const Farm: React.FC = () => {
     state: 'list',
     data: null,
   }) // 'list', 'deposit', 'remove',
-  const orderOptions = useRef<
-    {
-      id: string
-      label: string
-      orderBy: 'asc' | 'desc'
-    }[]
-  >([
-    {
-      id: 'sortOrder',
-      label: 'sortOrder',
-      orderBy: 'asc',
-    },
-    {
-      id: 'apyValue',
-      label: 'apr',
-      orderBy: 'desc',
-    },
-    {
-      id: 'totalStakedValue',
-      label: 'totalStaked',
-      orderBy: 'desc',
-    },
-  ])
-  const [selectedOrderOptions, setSelectedOrderOptions] = useState(orderOptions.current[0])
+  const orderFilter = useRef<{
+    defaultIndex: number
+    options: DropdownOption[]
+  }>({
+    defaultIndex: 0,
+    options: [
+      {
+        id: 'sortOrder',
+        label: 'sortOrder',
+        orderBy: 'asc',
+      },
+      {
+        id: 'apyValue',
+        label: 'apr',
+        orderBy: 'desc',
+      },
+      {
+        id: 'totalStakedValue',
+        label: 'totalStaked',
+        orderBy: 'desc',
+      },
+    ],
+  })
+  const [selectedOrderOptionIndex, setSelectedOrderOptionIndex] = useState<DropdownOption>()
 
   // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
   //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -259,23 +259,23 @@ const Farm: React.FC = () => {
     priceToKlay,
     sixPriceUSD,
   ])
-
   const poolsWithApy = useMemo(() => {
     if (!_.compact(pools.map((pool) => pool.totalStaked)).length) return []
     return getPoolsWithApy()
   }, [pools, getPoolsWithApy])
-  const partitionedPools = useMemo(() => partition(poolsWithApy, (pool) => pool.isFinished), [poolsWithApy])
   const targetPools = useMemo(() => {
-    const [finishedPools, openPools] = partitionedPools
+    const [finishedPools, openPools] = partition(poolsWithApy, (pool) => pool.isFinished)
     return liveOnly ? openPools : finishedPools
-  }, [liveOnly, partitionedPools])
-  const displayPools = useMemo(() => {
+  }, [liveOnly, poolsWithApy])
+  const filteredPools = useMemo(() => {
     if (!stackedOnly) return targetPools
     return targetPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
   }, [stackedOnly, targetPools])
   const orderedPools = useMemo(() => {
-    return orderBy(displayPools, [selectedOrderOptions.id], [selectedOrderOptions.orderBy])
-  }, [displayPools, selectedOrderOptions])
+    if (typeof selectedOrderOptionIndex !== 'number') return filteredPools
+    const currentOrder = orderFilter.current.options[selectedOrderOptionIndex]
+    return orderBy(filteredPools, currentOrder.id, currentOrder.orderBy)
+  }, [filteredPools, selectedOrderOptionIndex])
 
   const onSelectAdd = useCallback((props: any) => {
     setPageState({
@@ -355,8 +355,9 @@ const Farm: React.FC = () => {
               setStackedOnly={setStackedOnly}
               liveOnly={liveOnly}
               setLiveOnly={setLiveOnly}
-              orderOptions={orderOptions.current}
-              orderBy={(selectedOption) => setSelectedOrderOptions(selectedOption)}
+              defaultOptionIndex={orderFilter.current.defaultIndex}
+              orderOptions={orderFilter.current.options}
+              orderBy={(index) => setSelectedOrderOptionIndex(index)}
             />
 
             {IS_GENESIS ? (
