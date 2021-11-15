@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import Lottie from 'react-lottie'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import numeral from 'numeral'
@@ -11,11 +12,12 @@ import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../.
 import ConnectModal from '../../uikit-dev/widgets/WalletModal/ConnectModal'
 import logoExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/logo-exclusive-vfinix.png'
 import badgeExclusive from '../../uikit-dev/images/for-ui-v2/long-term-stake/badge-exclusive.png'
+import success from '../../uikit-dev/animation/complete.json'
+import loading from '../../uikit-dev/animation/farmPool.json'
 import * as klipProvider from '../../hooks/klipProvider'
 import {
   useBalances,
   useAllowance,
-  useLock,
   useApprove,
   useAllLock,
   usePrivateData,
@@ -25,6 +27,18 @@ import {
 import { useLockPlus } from '../../hooks/useTopUp'
 import StakePeriodButton from './components/StakePeriodButton'
 import LongTermTab from './components/LongTermTab'
+
+const SuccessOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: success,
+}
+
+const options = {
+  loop: true,
+  autoplay: true,
+  animationData: loading,
+}
 
 const FinixStake = styled(Card)`
   width: 100%;
@@ -148,13 +162,15 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const minimum = _.get(allLockPeriod, '0.minimum')
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
-  const { onLockPlus } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
+  const { onLockPlus, loadings, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
   const isStake = useMemo(() => lockAmount > 0, [lockAmount])
+  // Super Stake
+  const { levelStake, allLock } = useAllDataLock()
 
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
+      const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
@@ -164,33 +180,30 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           _.get(selector, 'isPenalty') === false &&
           _.get(selector, 'level') === selectorPeriod
         ) {
-          if (_.get(selector, 'id') > max) {
-            max = _.get(selector, 'id')
+          if (Number(_.get(selector, 'id')) >= max) {
+            max = Number(_.get(selector, 'id'))
             setIdLast(max)
           }
         }
       }
     } else {
       let max = 0
-      for (let i = 0; i < allDataLock.length; i++) {
-        const selector = allDataLock[i]
+      for (let i = 0; i < allLock.length; i++) {
+        const selector = allLock[i]
         const selectorPeriod = period === 4 ? 3 : period
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
           _.get(selector, 'level') === selectorPeriod
         ) {
-          if (_.get(selector, 'id') > max) {
-            max = _.get(selector, 'id')
+          if (Number(_.get(selector, 'id')) >= max) {
+            max = Number(_.get(selector, 'id'))
             setIdLast(max)
           }
         }
       }
     }
-  }, [lockTopUp, allDataLock, period])
-
-  // Super Stake
-  const levelStake = useAllDataLock()
+  }, [lockTopUp, allLock, period, allDataLock])
 
   function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -242,7 +255,6 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
   }, [period, value, periodEnd, allLockPeriod, realPenaltyRate])
 
-  const { status, loadings } = useLock(letvel, lockFinix, click)
   useEffect(() => {
     if (status) {
       setVFINIX(0)
@@ -383,8 +395,24 @@ const CardSuperStake = ({ isShowRightPanel }) => {
             </ModalSorry>
           </div>
         )}
+        {loadings !== '' && (
+          <div
+            style={{
+              position: 'absolute',
+              left: loadings === 'loading' ? '20%' : '38%',
+              top: loadings === 'loading' ? '18%' : '32%',
+              zIndex: 1,
+            }}
+          >
+            <Lottie
+              options={loadings === 'loading' ? options : SuccessOptions}
+              height={loadings === 'loading' ? 300 : 155}
+              width={loadings === 'loading' ? 444 : 185}
+            />
+          </div>
+        )}
         <div
-          style={{ opacity: !isStake ? 0.1 : 1 }}
+          style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}
           className={`${!isMobileOrTablet ? 'col-8 pt-5' : 'col-12 pr-5'} pb-5 pl-5`}
         >
           <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center justify-space-between'}`}>
@@ -522,7 +550,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           </div>
         </div>
         {!isMobileOrTablet && (
-          <BadgeExclusive className="col-4 flex flex-column" style={{ opacity: !isStake ? 0.1 : 1 }}>
+          <BadgeExclusive className="col-4 flex flex-column" style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}>
             <img src={badgeExclusive} alt="" />
             <img src={logoExclusive} alt="" className="px-2" style={{ opacity: '0.6' }} />
           </BadgeExclusive>

@@ -60,7 +60,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix, flg) => {
                   setLoading('success')
                   setStatus(true)
                   setInterval(() => setLoading(''), 5000)
-                  // setInterval(() => setStatus(false), 5000)
+                  setInterval(() => setStatus(false), 5000)
                 })
                 .catch((e) => {
                   setLoading('')

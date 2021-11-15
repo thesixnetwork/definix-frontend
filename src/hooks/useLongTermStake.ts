@@ -696,7 +696,8 @@ export const useSuperHarvest = () => {
 export const useAllDataLock = () => {
   const { account } = useWallet()
   const { slowRefresh } = useRefresh()
-  const [apr, setApr] = useState([])
+  const [levelStake, setLevelStake] = useState([])
+  const [allLock, setAllLock] = useState([])
 
   useEffect(() => {
     async function fetchApr() {
@@ -705,24 +706,32 @@ export const useAllDataLock = () => {
         const [userVfinixAmount] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
         const level = _.get(userVfinixAmount, 'locks_')
         const countLevel = []
+        const idNTopup = []
         for (let i = 0; i < level.length; i++) {
           const selector = level[i]
+          idNTopup.push({
+            id: _.get(selector, 'id'),
+            isUnlocked: _.get(selector, 'isUnlocked'),
+            isPenalty: _.get(selector, 'isPenalty'),
+            level: _.get(selector, 'level') * 1 + 1,
+          })
           if (selector.isUnlocked === false && selector.isPenalty === false) {
             countLevel.push(_.get(selector, 'level'))
           }
         }
+        setAllLock(idNTopup)
 
         const dup = countLevel.filter((val, i) => {
           return countLevel.indexOf(val) === i
         })
-        setApr(dup)
+        setLevelStake(dup)
       }
     }
 
     fetchApr()
   }, [slowRefresh, account])
 
-  return apr
+  return { levelStake, allLock }
 }
 
 export default useLongTermStake

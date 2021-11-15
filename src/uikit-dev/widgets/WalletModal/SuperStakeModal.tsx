@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import _ from 'lodash'
+import Lottie from 'react-lottie'
 import moment from 'moment'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
@@ -39,10 +40,17 @@ import {
 } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
+import success from 'uikit-dev/animation/complete.json'
 import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
 import { Text } from '../../components/Text'
 import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
+
+const SuccessOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: success,
+}
 
 interface Props {
   onDismiss?: () => void
@@ -136,27 +144,22 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [sousId, setSousId] = useState(0)
   const [isBnbPool, setIsBnbPool] = useState(false)
   const farmsWithBalance = useFarmsWithBalance()
-  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balanceOf = useBalances()
   const [period, setPeriod] = useState(0)
-  const [idLast, setIdLast] = useState(null)
+  const [idLast, setIdLast] = useState(0)
   const [amount, setAmount] = useState('')
   const lockTopUp = useLockTopup()
   const [harvestProgress, setHarvestProgress] = useState(-1)
   const [flg, setFlg] = useState(false)
-  const [pendingReward, setPendingReward] = useState('0')
   const [sumpendingReward, setSumPendingReward] = useState('0')
-  const levelStake = useAllDataLock()
-  const [allSelect, setAllSelect] = useState([])
+  const { levelStake, allLock } = useAllDataLock()
   const [lengthSelect, setLengthSelect] = useState(0)
   const [date, setDate] = useState('-')
   const { allLockPeriod } = useAllLock()
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
-  const [percentPenalty, setPercentPenalty] = useState(0)
-  const [letvel, setLevel] = useState(0)
-  const [days, setdays] = useState(28)
   const { isDark } = useTheme()
+  const [showLottie, setShowLottie] = useState(false)
 
   const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
 
@@ -241,14 +244,13 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const block = useBlock()
 
   // LongTerm
-  const { lockAmount, finixEarn, balancefinix, balancevfinix, allDataLock } = usePrivateData()
+  const { finixEarn, balancevfinix, allDataLock } = usePrivateData()
   const { handleHarvest } = useHarvestLongterm()
-  const longtermApr = useAprCardFarmHome()
 
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allDataLock.filter((item, index) => !arrStr.includes(_.get(item, 'id')))
+      const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
@@ -258,30 +260,30 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           _.get(selector, 'isPenalty') === false &&
           _.get(selector, 'level') === selectorPeriod
         ) {
-          if (_.get(selector, 'id') > max) {
-            max = _.get(selector, 'id')
+          if (Number(_.get(selector, 'id')) >= max) {
+            max = Number(_.get(selector, 'id'))
             setIdLast(max)
           }
         }
       }
     } else {
       let max = 0
-      for (let i = 0; i < allDataLock.length; i++) {
-        const selector = allDataLock[i]
+      for (let i = 0; i < allLock.length; i++) {
+        const selector = allLock[i]
         const selectorPeriod = period === 4 ? 3 : period
         if (
           _.get(selector, 'isUnlocked') === false &&
           _.get(selector, 'isPenalty') === false &&
           _.get(selector, 'level') === selectorPeriod
         ) {
-          if (_.get(selector, 'id') > max) {
-            max = _.get(selector, 'id')
+          if (Number(_.get(selector, 'id')) > max) {
+            max = Number(_.get(selector, 'id'))
             setIdLast(max)
           }
         }
       }
     }
-  }, [allDataLock, period, lockTopUp])
+  }, [lockTopUp, allLock, period])
 
   // Harvest
   const [pendingTx, setPendingTx] = useState(false)
@@ -428,8 +430,6 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   // FARMS
   const { onSuperHarvest } = useSuperHarvest()
 
-  // const [harvestProgress, setHarvestProgress] = useState(-1)
-
   const _superHarvest = useCallback(() => {
     if (harvestProgress !== -1 && harvestProgress <= Object.values(selectedToken).length) {
       if (_.get(Object.values(selectedToken)[harvestProgress], 'checked')) {
@@ -464,21 +464,54 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       }
     }
   }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
+  const [harvested, setHarvested] = useState(false)
 
   useEffect(() => {
     if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
+      setHarvested(true)
+      setPendingTx(true)
       if (Object.values(selectedToken)[0]) {
         onLockPlus()
           .then((d) => {
             setFlg(false)
             setAmount('')
+            // setInterval(() => setShowLottie(true), 5000)
             if (d === true) {
+              setHarvested(false)
               setHarvestProgress(-1)
               setLengthSelect(0)
               setAmount('')
+              setPendingTx(false)
+              setShowLottie(true)
+              setInterval(() => setShowLottie(false), 5000)
+              setInterval(() => onDismiss(), 5000)
               setSelectedToken({})
               setFlg(false)
-              onDismiss()
+              // onDismiss()
+            }
+          })
+          .catch((e) => {
+            setAmount('')
+            setFlg(false)
+          })
+      } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
+        onLockPlus()
+          .then((d) => {
+            setFlg(false)
+            setAmount('')
+            // setInterval(() => setShowLottie(true), 5000)
+            if (d === true) {
+              setHarvested(false)
+              setHarvestProgress(-1)
+              setLengthSelect(0)
+              setAmount('')
+              setPendingTx(false)
+              setShowLottie(true)
+              setInterval(() => setShowLottie(false), 5000)
+              setInterval(() => onDismiss(), 5000)
+              setSelectedToken({})
+              setFlg(false)
+              // onDismiss()
             }
           })
           .catch((e) => {
@@ -490,7 +523,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, onDismiss, lengthSelect])
+  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, onDismiss, lengthSelect, value])
 
   useEffect(() => {
     if (Object.values(selectedToken).length > 0 && value !== '' && value !== '0') {
@@ -508,6 +541,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setSumPendingReward(parseFloat(sum).toFixed(2))
       const total = Number(value.replace(',', '')) + sum
       setAmount(new BigNumber(parseFloat(total)).times(new BigNumber(10).pow(18)).toFixed())
+    } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
+      setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
     } else {
       setAmount('')
     }
@@ -526,277 +561,288 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     if (period === 1) {
       nd.setDate(nd.getDate() + 90)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate, '0') * 100)
-      setLevel(0)
-      setdays(7)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 2) {
       nd.setDate(nd.getDate() + 180)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate, '1') * 100)
-      setLevel(1)
-      setdays(14)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 4) {
       nd.setDate(nd.getDate() + 365)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate, '2') * 100)
-      setLevel(2)
-      setdays(28)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     }
   }, [period, value, allLockPeriod, realPenaltyRate])
 
+  const harvestOrStake = () => {
+    return harvested ? (
+      <Button fullWidth id="harvest-all" radii="small" className="mt-3" disabled>
+        Staking...
+      </Button>
+    ) : (
+      <Button fullWidth id="harvest-all" radii="small" className="mt-3" disabled>
+        {`Harvesting...(${harvestProgress} /${lengthSelect})`}
+      </Button>
+    )
+  }
+
+  const CardResponse = () => {
+    return (
+      <ModalStake title="" onDismiss={onDismiss} className="">
+        <div className="pb-6 pt-2">
+          <Lottie options={SuccessOptions} height={155} width={185} />
+        </div>
+      </ModalStake>
+    )
+  }
   return (
-    <ModalStake
-      title={
-        <img
-          src={exclusive}
-          alt=""
-          style={{
-            borderBottomRightRadius: '60px',
-            borderBottomLeftRadius: '60px',
-            boxShadow: '0 3px 6px rgb(0, 0 ,0, 0.16)',
-          }}
-        />
-      }
-      onDismiss={onDismiss}
-      className=""
-    >
-      <div className="flex flex-column w-100 mt-2">
-        <Text fontSize="18px" fontWeight="600">
-          Super Stake
-        </Text>
-        <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
-          Super Stake is a feature that can harvest all of your FINIX reward to stake in <b> Long-term stake </b> with
-          no minimum amount.
-        </Text>
-        <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
-          You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock period{' '}
-          <b>will not be extended.</b>
-        </Text>
-      </div>
-      <Text paddingTop="3" color="#737375" fontWeight="500">
-        Choose farm/pool you want to harvest reward
-      </Text>
+    <>
+      {showLottie ? (
+        <CardResponse />
+      ) : (
+        <ModalStake
+          title={
+            <img
+              src={exclusive}
+              alt=""
+              style={{
+                borderBottomRightRadius: '60px',
+                borderBottomLeftRadius: '60px',
+                boxShadow: '0 3px 6px rgb(0, 0 ,0, 0.16)',
+              }}
+            />
+          }
+          onDismiss={onDismiss}
+          className=""
+        >
+          <div className="flex flex-column w-100 mt-2">
+            <Text fontSize="18px" fontWeight="600">
+              Super Stake
+            </Text>
+            <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+              Super Stake is a feature that can harvest all of your FINIX reward to stake in <b> Long-term stake </b>{' '}
+              with no minimum amount.
+            </Text>
+            <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+              You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock
+              period <b>will not be extended.</b>
+            </Text>
+          </div>
+          <Text paddingTop="3" color="#737375" fontWeight="500">
+            Choose farm/pool you want to harvest reward
+          </Text>
 
-      <div className="flex flex-column align-center justify-center">
-        {!!balancevfinix && balancevfinix > 0 && (
-          <CardList key="VFINIX" className="px-4">
-            <div className="flex align-center">
-              <FormControlLabelCustom
-                control={
-                  <CustomCheckbox
-                    size="small"
-                    checked={!!_.get(selectedToken, `${18}.checked`)}
-                    onChange={(event) => {
-                      setSelectedToken({
-                        ...selectedToken,
-                        18: {
-                          checked: event.target.checked,
-                          pools: false,
-                          farms: false,
-                          status: false,
-                          pendingReward: finixEarn,
-                        },
-                      })
-                    }}
+          <div className="flex flex-column align-center justify-center">
+            {!!balancevfinix && balancevfinix > 0 && (
+              <CardList key="VFINIX" className="px-4">
+                <div className="flex align-center">
+                  <FormControlLabelCustom
+                    control={
+                      <CustomCheckbox
+                        size="small"
+                        checked={!!_.get(selectedToken, `${18}.checked`)}
+                        onChange={(event) => {
+                          setSelectedToken({
+                            ...selectedToken,
+                            18: {
+                              checked: event.target.checked,
+                              pools: false,
+                              farms: false,
+                              status: false,
+                              pendingReward: finixEarn,
+                            },
+                          })
+                        }}
+                      />
+                    }
+                    label=""
                   />
-                }
-                label=""
-              />
-              <Coins>
-                <div className="flex">
-                  <img src={vFinix} alt="" />
+                  <Coins>
+                    <div className="flex">
+                      <img src={vFinix} alt="" />
+                    </div>
+                  </Coins>
+                  <Text className="align-center ml-2">VFINIX</Text>
                 </div>
-              </Coins>
-              <Text className="align-center ml-2">VFINIX</Text>
-            </div>
-            <Text bold>{`${numeral(finixEarn).format('0,0.[00]')}`} FINIX</Text>
-          </CardList>
-        )}
+                <Text bold>{`${numeral(finixEarn).format('0,0.00')}`} FINIX</Text>
+              </CardList>
+            )}
 
-        {farmsList(stackedOnlyFarms, false).map((d) => {
-          const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
-          return (
-            <CardList className="px-4">
-              <div className="flex align-center">
-                <FormControlLabelCustom
-                  control={
-                    <CustomCheckbox
-                      size="small"
-                      checked={!!_.get(selectedToken, `${d.props.farm.pid}.checked`)}
-                      onChange={(event) => {
-                        setSelectedToken({
-                          ...selectedToken,
-                          [d.props.farm.pid]: {
-                            checked: event.target.checked,
-                            pools: false,
-                            farms: true,
-                            pid: d.props.farm.pid,
-                            status: false,
-                            pendingReward: d.props.farm.userData.earnings,
-                          },
-                        })
-                      }}
+            {farmsList(stackedOnlyFarms, false).map((d) => {
+              const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
+              return (
+                <CardList className="px-4">
+                  <div className="flex align-center">
+                    <FormControlLabelCustom
+                      control={
+                        <CustomCheckbox
+                          size="small"
+                          checked={!!_.get(selectedToken, `${d.props.farm.pid}.checked`)}
+                          onChange={(event) => {
+                            setSelectedToken({
+                              ...selectedToken,
+                              [d.props.farm.pid]: {
+                                checked: event.target.checked,
+                                pools: false,
+                                farms: true,
+                                pid: d.props.farm.pid,
+                                status: false,
+                                pendingReward: d.props.farm.userData.earnings,
+                              },
+                            })
+                          }}
+                        />
+                      }
+                      label=""
                     />
-                  }
-                  label=""
-                />
-                <Coins>
-                  <div className="flex">
-                    {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
-                    {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                    <Coins>
+                      <div className="flex">
+                        {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                        {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                      </div>
+                    </Coins>
+                    <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
                   </div>
-                </Coins>
-                <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
-              </div>
-              <Text bold>
-                {new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}{' '}
-                FINIX
-              </Text>
-            </CardList>
-          )
-        })}
-        {stackedOnlyPools.map((d, i) => {
-          const imgs = d.tokenName.split(' ')[0].split('-')
-          return (
-            <CardList className="px-4">
-              <div className="flex align-center">
-                <FormControlLabelCustom
-                  control={
-                    <CustomCheckbox
-                      size="small"
-                      checked={!!_.get(selectedToken, `${d.sousId}.checked`)}
-                      onChange={(event) => {
-                        setSelectedToken({
-                          ...selectedToken,
-                          [i]: {
-                            checked: event.target.checked,
-                            pools: true,
-                            sousId: d.sousId,
-                            farms: false,
-                            status: false,
-                            pendingReward: new BigNumber(d.userData.pendingReward)
-                              .div(new BigNumber(10).pow(18))
-                              .toNumber(),
-                          },
-                        })
-                      }}
+                  <Text bold>
+                    {new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}{' '}
+                    FINIX
+                  </Text>
+                </CardList>
+              )
+            })}
+            {stackedOnlyPools.map((d, i) => {
+              const imgs = d.tokenName.split(' ')[0].split('-')
+              return (
+                <CardList className="px-4">
+                  <div className="flex align-center">
+                    <FormControlLabelCustom
+                      control={
+                        <CustomCheckbox
+                          size="small"
+                          checked={!!_.get(selectedToken, `${d.sousId}.checked`)}
+                          onChange={(event) => {
+                            setSelectedToken({
+                              ...selectedToken,
+                              [i]: {
+                                checked: event.target.checked,
+                                pools: true,
+                                sousId: d.sousId,
+                                farms: false,
+                                status: false,
+                                pendingReward: new BigNumber(d.userData.pendingReward)
+                                  .div(new BigNumber(10).pow(18))
+                                  .toNumber(),
+                              },
+                            })
+                          }}
+                        />
+                      }
+                      label=""
                     />
-                  }
-                  label=""
-                />
-                <Coins>
-                  <div className="flex">
-                    <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                    <Coins>
+                      <div className="flex">
+                        <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                      </div>
+                    </Coins>
+                    <Text className="align-center ml-2">{d.tokenName}</Text>
                   </div>
-                </Coins>
-                <Text className="align-center ml-2">{d.tokenName}</Text>
-              </div>
-              <Text bold>
-                {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)} FINIX
+                  <Text bold>
+                    {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)} FINIX
+                  </Text>
+                </CardList>
+              )
+            })}
+            <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
+              Please select available duration
+            </Text>
+            <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
+            <div className="flex mt-4 w-100">
+              <Text className="col-6" color="textSubtle" fontWeight="500">
+                From your wallet:
+                <span style={{ color: '#0973B9' }} className="pl-2">
+                  {balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX
+                </span>
               </Text>
-            </CardList>
-          )
-        })}
-        <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
-          Please select available duration
-        </Text>
-        <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
-        <div className="flex mt-4 w-100">
-          <Text className="col-6" color="textSubtle" fontWeight="500">
-            From your wallet:
-            <span style={{ color: '#0973B9' }} className="pl-2">
-              {balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX
-            </span>
-          </Text>
-          <Text className="col-6 pl-3" color="textSubtle" fontWeight="500">
-            Pending rewards
-          </Text>
-        </div>
-        <div className="flex w-100 align-center">
-          <Balance className="mr-2">
-            <NumberInput
-              style={{ width: '45%' }}
-              placeholder="0.00"
-              value={value}
-              onChange={handleChange}
-              className="text-right"
-              pattern="^[0-9]*[,]?[0-9]*$"
-            />
-          </Balance>
-          <Text className="align-center" fontSize="40px" color="#2A9D8F">
-            +
-          </Text>
-          <Balance className="ml-2">
-            <NumberInput
-              style={{ width: '45%', color: '#2A9D8F' }}
-              placeholder="0.00"
-              value={sumpendingReward}
-              disabled
-              className="text-right"
-              pattern="^[0-9]*[,]?[0-9]*$"
-            />
-          </Balance>
-        </div>
-        <div className="flex mt-4 w-100">
-          <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
-            Estimated Period End
-          </Text>
-          <Text className="col-6 text-right" color="#0973B9" fontWeight="500">
-            {date} {date !== '-' && 'GMT+9'}
-          </Text>
-        </div>
-        <div className="flex mt-2 w-100">
-          <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
-            Total FINIX stake
-          </Text>
-          <div className="flex flex-row justify-end w-100">
-            <Text className="text-right" color="#0973B9" fontWeight="500">
-              {Number(value.replace(',', '')) + Number(sumpendingReward)}
-            </Text>
-            {/* <Text className="text-right" color="#0973B9" fontWeight="500">
-              {numeral(value).format('0,0')}
-            </Text> */}
-            <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
-              vFINIX
-            </Text>
+              <Text className="col-6 pl-3" color="textSubtle" fontWeight="500">
+                Pending rewards
+              </Text>
+            </div>
+            <div className="flex w-100 align-center">
+              <Balance className="mr-2">
+                <NumberInput
+                  style={{ width: '45%' }}
+                  placeholder="0.00"
+                  value={value}
+                  onChange={handleChange}
+                  className="text-right"
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+              </Balance>
+              <Text className="align-center" fontSize="40px" color="#2A9D8F">
+                +
+              </Text>
+              <Balance className="ml-2">
+                <NumberInput
+                  style={{ width: '45%', color: '#2A9D8F' }}
+                  placeholder="0.00"
+                  value={sumpendingReward}
+                  disabled
+                  className="text-right"
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+              </Balance>
+            </div>
+            <div className="flex mt-4 w-100">
+              <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
+                Estimated Period End
+              </Text>
+              <Text className="col-6 text-right" color="#0973B9" fontWeight="500">
+                {date} {date !== '-' && 'GMT+9'}
+              </Text>
+            </div>
+            <div className="flex mt-2 w-100">
+              <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
+                Total FINIX stake
+              </Text>
+              <div className="flex flex-row justify-end w-100">
+                <Text className="text-right" color="#0973B9" fontWeight="500">
+                  {Number(value.replace(',', '')) + Number(sumpendingReward)}
+                </Text>
+                <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
+                  vFINIX
+                </Text>
+              </div>
+            </div>
+            <div className="flex mt-2 w-100">
+              <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
+                vFINIX earn
+              </Text>
+              <div className="flex flex-row justify-end w-100">
+                <Text className="text-right" color="#0973B9" fontWeight="500">
+                  {(Number(value.replace(',', '')) + Number(sumpendingReward)) * period}
+                </Text>
+                <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
+                  vFINIX
+                </Text>
+              </div>
+            </div>
+            {pendingTx ? (
+              harvestOrStake()
+            ) : (
+              <Button
+                fullWidth
+                disabled={lengthSelect === 0 && value === ''}
+                id="harvest-all"
+                radii="small"
+                className="mt-3"
+                onClick={() => setHarvestProgress(0)}
+              >
+                Stake
+              </Button>
+            )}
           </div>
-        </div>
-        <div className="flex mt-2 w-100">
-          <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
-            vFINIX earn
-          </Text>
-          <div className="flex flex-row justify-end w-100">
-            <Text className="text-right" color="#0973B9" fontWeight="500">
-              {(Number(value.replace(',', '')) + Number(sumpendingReward)) * period}
-              {/* <Text className="text-right" color="#0973B9" fontWeight="500">
-              {numeral(value * period).format('0,0')} */}
-            </Text>
-            <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
-              vFINIX
-            </Text>
-          </div>
-        </div>
-        {pendingTx ? (
-          <Button fullWidth id="harvest-all" radii="small" className="mt-3" disabled>
-            {`Harvesting...(${harvestProgress} /${lengthSelect})`}
-          </Button>
-        ) : (
-          <Button
-            fullWidth
-            disabled={idLast === null}
-            id="harvest-all"
-            radii="small"
-            className="mt-3"
-            onClick={() => setHarvestProgress(0)}
-          >
-            Stake
-          </Button>
-        )}
-      </div>
-    </ModalStake>
+        </ModalStake>
+      )}
+    </>
   )
 }
 
