@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
+import React, { useCallback, useEffect, useState, useMemo, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
@@ -59,7 +59,28 @@ const Farm: React.FC = () => {
     state: 'list',
     data: null,
   }) // 'list', 'deposit', 'remove',
-  const [orderKey, setOrderKey] = useState('')
+  const orderOptions = useRef<{
+    id: string
+    label: string
+    orderBy: 'asc' | 'desc'
+  }[]>([
+    {
+      id: 'sortOrder',
+      label: 'sortOrder',
+      orderBy: 'asc'
+    },
+    {
+      id: 'apyValue',
+      label: 'apr',
+      orderBy: 'desc'
+    },
+    {
+      id: 'totalStakedValue',
+      label: 'totalStaked',
+      orderBy: 'desc'
+    }
+  ])
+  const [selectedOrderOptions, setSelectedOrderOptions] = useState(orderOptions.current[0])
 
   // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
   //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -217,10 +238,9 @@ const Farm: React.FC = () => {
         ...pool,
         isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
         apy: sumApy,
-        finixApy,
-        klayApy,
-        estimatePrice,
         farm: stakingTokenFarm,
+        apyValue: getBalanceNumber(sumApy),
+        totalStakedValue: getBalanceNumber(pool.totalStaked)
       }
     })
   }, [
@@ -238,7 +258,10 @@ const Farm: React.FC = () => {
     sixPriceUSD,
   ])
 
-  const poolsWithApy = useMemo(() => getPoolsWithApy(), [getPoolsWithApy])
+  const poolsWithApy = useMemo(() => {
+    if (!_.compact(pools.map((pool) => pool.totalStaked)).length) return []
+    return getPoolsWithApy()
+  }, [pools, getPoolsWithApy])
   const partitionedPools = useMemo(() => partition(poolsWithApy, (pool) => pool.isFinished), [poolsWithApy])
   const targetPools = useMemo(() => {
     const [finishedPools, openPools] = partitionedPools
@@ -249,8 +272,8 @@ const Farm: React.FC = () => {
     return targetPools.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
   }, [stackedOnly, targetPools])
   const orderedPools = useMemo(() => {
-    return orderBy(displayPools, [orderKey || 'sortOrder'])
-  }, [displayPools, orderKey])
+    return orderBy(displayPools, [selectedOrderOptions.id], [selectedOrderOptions.orderBy])
+  }, [displayPools, selectedOrderOptions])
 
   const onSelectAdd = useCallback((props: any) => {
     setPageState({
@@ -278,7 +301,7 @@ const Farm: React.FC = () => {
 
   const fetchAllBalances = useCallback(() => {
     if (balances) return
-    if (account && poolsWithApy) {
+    if (account && !!poolsWithApy.length) {
       const assetAddresses = poolsWithApy.map((pool) => {
         return getAddress({ [process.env.REACT_APP_CHAIN_ID]: pool.stakingTokenAddress })
       })
@@ -330,7 +353,8 @@ const Farm: React.FC = () => {
               setStackedOnly={setStackedOnly}
               liveOnly={liveOnly}
               setLiveOnly={setLiveOnly}
-              orderBy={(key) => setOrderKey(key)}
+              orderOptions={orderOptions.current}
+              orderBy={(selectedOption) => setSelectedOrderOptions(selectedOption)}
             />
 
             {IS_GENESIS ? (
