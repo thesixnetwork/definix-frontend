@@ -67,7 +67,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     }
   }, [])
 
-  const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+  const allCurrentTokens = _.compact([...((rebalance || {}).tokens || [])])
   if (isHorizontal) {
     if (isMobile) {
       return (
