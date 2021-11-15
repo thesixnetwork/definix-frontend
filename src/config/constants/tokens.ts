@@ -125,7 +125,6 @@ export const allTokens = {
   DOT,
   DOGE,
   LTC,
-
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
