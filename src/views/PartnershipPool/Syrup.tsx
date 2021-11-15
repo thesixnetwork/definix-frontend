@@ -72,8 +72,8 @@ const Farm: React.FC = () => {
     rewardPerBlock: 10,
     estimatePrice: new BigNumber(0),
     totalStaked: new BigNumber(0),
-    startBlock: 13987420,
-    endBlock: 14563535,
+    startBlock: 12664423,
+    endBlock: 14392426,
     userData: {
       allowance: new BigNumber(0),
       stakingTokenBalance: new BigNumber(0),
@@ -117,13 +117,13 @@ const Farm: React.FC = () => {
   const fetch = useCallback(async () => {
     const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
     const veloAddress = getAddress(AddressTokens.velo)
-    const apolloAddress = "0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f" // getAddress("poolVelo.contractAddress")
+    const apolloAddress = '0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f' // getAddress("poolVelo.contractAddress")
     const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
 
     const contractApollo = getContract(Apollo.abi, apolloAddress)
     const contractFinix = getContract(erc20, finixAddress)
     const contractVelo = getContract(erc20, veloAddress)
-    const [veloBalance, totalStake, rewardPerBlock,reserveFinixVelo] = await Promise.all([
+    const [veloBalance, totalStake, rewardPerBlock, reserveFinixVelo] = await Promise.all([
       contractVelo.methods.balanceOf(apolloAddress).call(),
       contractFinix.methods.balanceOf(apolloAddress).call(),
       contractApollo.methods.rewardPerBlock().call(),
@@ -137,8 +137,6 @@ const Farm: React.FC = () => {
         contractFinix.methods.balanceOf(account).call(),
       ])
 
-      
-
       poolVelo.userData.allowance = allowance
       poolVelo.userData.stakedBalance = userInfo.amount
       poolVelo.userData.pendingReward = pendingReward
@@ -150,14 +148,16 @@ const Farm: React.FC = () => {
     poolVelo.totalStaked = new BigNumber(totalStake)
     const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR)
 
-    const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve1).div(1e5)).dividedBy(new BigNumber(reserveFinixVelo._reserve0).div(1e18))
+    const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve1).div(1e5)).dividedBy(
+      new BigNumber(reserveFinixVelo._reserve0).div(1e18),
+    )
     poolVelo.pairPrice = new BigNumber(finixPervelo)
     // const x = finixPervelo.toFixed(3)
     // eslint-disable-next-line
     // debugger
     poolVelo.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR)).div(totalStake).times(100)
-// eslint-disable-next-line
-debugger
+    // eslint-disable-next-line
+    debugger
     setPoolVelo(poolVelo)
     setAmountVfinix(veloBalanceReward)
   }, [account, poolVelo])

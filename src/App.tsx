@@ -115,7 +115,7 @@ const App: React.FC = () => {
             <Route path="/AirdropKlay">
               <AirdropKlay />
             </Route>
-            <Route path="/PartnershipPool">
+            <Route path="/partnership-pool">
               <PartnershipPool />
             </Route>
 

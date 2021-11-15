@@ -398,7 +398,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 Start Staking 15 November 2021 03:00 P.M. (GMT+7)
               </Text>
               <div className="mt-6">
-                <SpecialButton as="a" href="/pool">
+                <SpecialButton as="a" href="/partnership-pool">
                   <span>Interesting, I want to stake</span>
                 </SpecialButton>
               </div>

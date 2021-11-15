@@ -5,9 +5,11 @@
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "NODE_ENV=development react-scripts start",
+    "start:staging": "NODE_ENV=staging CI=false react-scripts start",
     "start:prod": "NODE_ENV=production CI=false react-scripts start",
     "build": "CI=false react-scripts build",
     "build:development": "NODE_ENV=development CI=false react-scripts build",
+    "build:staging": "NODE_ENV=staging CI=false react-scripts build",
     "build:production": "NODE_ENV=production CI=false react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
