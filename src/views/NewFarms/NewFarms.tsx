@@ -238,7 +238,7 @@ const Farms: React.FC = () => {
 
   const fetchAllBalances = useCallback(() => {
     if (balances) return
-    if (account && targetFarms) {
+    if (account && !!targetFarms.length) {
       const allLPaddresses = targetFarms.reduce((addressArray, farm) => {
         return [...addressArray, getAddress(farm.firstToken), getAddress(farm.secondToken)]
       }, [])
