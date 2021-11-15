@@ -3,7 +3,6 @@ import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useConverter from 'hooks/useConverter'
-import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import {
   Flex,
@@ -68,10 +67,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   /**
    * total liquidity
    */
-  const totalLiquidity: BigNumber = useMemo(() => {
-    if (!farm.lpTotalInQuoteToken) return null
-    return getTokenPrice(farm.lpTotalInQuoteToken)
-  }, [farm.lpTotalInQuoteToken, getTokenPrice])
+  const totalLiquidity: number = useMemo(() => farm.totalLiquidityValue, [farm.totalLiquidityValue])
   const totalLiquidityUSD = useMemo(() => convertToUSD(totalLiquidity), [totalLiquidity, convertToUSD])
   /**
    * my liquidity
@@ -109,7 +105,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   )
 
   const renderTotalLiquiditySection = useCallback(
-    () => <TotalLiquiditySection title="Total Staked" totalLiquidity={totalLiquidity} />,
+    () => <TotalLiquiditySection title="Total Liquidity" totalLiquidity={totalLiquidity} />,
     [totalLiquidity],
   )
   const renderMyBalanceSection = useCallback(

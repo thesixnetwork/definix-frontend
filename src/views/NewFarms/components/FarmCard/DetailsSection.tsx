@@ -46,7 +46,7 @@ import useConverter from 'hooks/useConverter'
 
 const TotalLiquiditySection: React.FC<{
   title: string
-  totalLiquidity: BigNumber
+  totalLiquidity: number
 }> = ({ title, totalLiquidity }) => {
   const { convertToUSD } = useConverter()
 

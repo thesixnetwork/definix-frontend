@@ -6,6 +6,8 @@ export interface FarmWithStakedValue extends Farm {
   apy?: BigNumber
   finixApy?: BigNumber
   klayApy?: BigNumber
+  apyValue: number
+  totalLiquidityValue: number
 }
 
 export interface FarmCardProps {
