@@ -17,7 +17,6 @@ import CardStake from './components/CardStake'
 import CardWhatIs from './components/CardWhatIs'
 import Unstake from './Unstake'
 import CardSuperStake from './CardSuperStake'
-import LongTermStakeContext from './LongTermStakeContext'
 
 const TutorailsLink = styled(Link)`
   text-decoration-line: underline;
@@ -91,7 +90,7 @@ const LongTermStake: React.FC = () => {
                   <CardStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
-                  <CardSuperStake isShowRightPanel={isShowRightPanel} />
+                  <CardSuperStake />
                 </Route>
                 <StakeTable />
               </div>
@@ -158,7 +157,7 @@ const LongTermStake: React.FC = () => {
                   <CardStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
-                  <CardSuperStake isShowRightPanel={isShowRightPanel} />
+                  <CardSuperStake />
                 </Route>
                 <StakeTable />
               </div>

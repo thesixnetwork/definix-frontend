@@ -128,44 +128,37 @@ const BadgeExclusive = styled.div`
   justify-content: space-between;
   display: contents;
 `
-const CardSuperStake = ({ isShowRightPanel }) => {
+const CardSuperStake = () => {
   /* eslint-enable no-unused-vars */
-  const [period, setPeriod] = useState(0)
-  const { isDark } = useTheme()
-  const { isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobileOrTablet = !isXl && !isMd && !isLg
   const { connect, account } = useWallet()
-  const [date, setDate] = useState('-')
-  const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
+  const { isDark } = useTheme()
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const lockTopUp = useLockTopup()
-  const { allDataLock, lockAmount } = usePrivateData()
-  const isApproved = account && allowance && allowance.isGreaterThan(0)
   const { allLockPeriod } = useAllLock()
+  const { levelStake, allLock } = useAllDataLock()
+  const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
+  const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
+  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl && !isMd && !isLg
+  const { allDataLock, lockAmount } = usePrivateData()
+  const [period, setPeriod] = useState(0)
+  const [date, setDate] = useState('-')
   const [value, setValue] = useState('')
-  const [letvel, setLevel] = useState(0)
   const [vFINIX, setVFINIX] = useState(0)
   const [idLast, setIdLast] = useState(0)
-  const [days, setdays] = useState(28)
-  const [percentPenalty, setPercentPenalty] = useState(0)
   const [lockFinix, setLockFinix] = useState('')
-  const [click, setClick] = useState(false)
   const [percent, setPercent] = useState(0)
   const [isDisabled, setIsDisabled] = useState(false)
-  const [flgTextWarning, setFlgTextWarning] = useState('')
   const [flgButton, setFlgButton] = useState('')
-  const [requestedApproval, setRequestedApproval] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
-  const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
+  const isStake = useMemo(() => lockAmount > 0, [lockAmount])
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
   const minimum = _.get(allLockPeriod, '0.minimum')
   const periodEnd = _.get(allLockPeriod, '0.periodMap')
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
-  const { onLockPlus, loadings, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix, true)
-  const isStake = useMemo(() => lockAmount > 0, [lockAmount])
-  // Super Stake
-  const { levelStake, allLock } = useAllDataLock()
+  const { onLockPlus, loadings, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix)
+  const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
@@ -232,23 +225,14 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     if (period === 1) {
       nd.setDate(nd.getDate() + 90)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate, '0') * 100)
-      setLevel(0)
-      setdays(7)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 2) {
       nd.setDate(nd.getDate() + 180)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate, '1') * 100)
-      setLevel(1)
-      setdays(14)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 4) {
       nd.setDate(nd.getDate() + 365)
       nd = new Date(nd)
-      setPercentPenalty(_.get(realPenaltyRate, '2') * 100)
-      setLevel(2)
-      setdays(28)
       setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
@@ -342,35 +326,14 @@ const CardSuperStake = ({ isShowRightPanel }) => {
 
   const handleApprove = useCallback(async () => {
     try {
-      setRequestedApproval(true)
       const txHash = await onApprove()
       if (txHash) {
         setTransactionHash(_.get(txHash, 'transactionHash'))
       }
     } catch (e) {
-      console.error(e)
+      setTransactionHash('')
     }
-  }, [onApprove, setRequestedApproval])
-
-  const handleBalance = () => {
-    let text
-    if (flgTextWarning === 'stake') {
-      text = (
-        <Text className="mt-2" fontSize="10px !important" color={isDark ? 'white' : 'textSubtle'}>
-          {vFINIX} vFINIX will be received and the staking period will end in {date} GMT+9. Unstaking before the period
-          ends your FINIX amount will be locked {days} days and {percentPenalty}% will be deducted from total balance.
-        </Text>
-      )
-    }
-    if (flgTextWarning === 'minimum') {
-      text = (
-        <Text className="mt-2" fontSize="10px !important" color="red">
-          The amount of FINIX you are about to stake doesn&apos;t reach the minimum requirement.
-        </Text>
-      )
-    }
-    return text
-  }
+  }, [onApprove])
 
   return (
     <div className="align-stretch mt-5">
@@ -531,7 +494,6 @@ const CardSuperStake = ({ isShowRightPanel }) => {
               </Text>
             </div>
           </div>
-          {handleBalance()}
           <div className="flex mt-4">
             {!account ? (
               <Button

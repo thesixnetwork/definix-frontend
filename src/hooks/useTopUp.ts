@@ -23,7 +23,7 @@ const useTopUp = (tokenAddress: string) => {
   return balance
 }
 
-export const useLockPlus = (level, idLastMaxLv, lockFinix, flg) => {
+export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()

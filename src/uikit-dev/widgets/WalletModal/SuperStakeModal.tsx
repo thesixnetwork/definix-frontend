@@ -29,7 +29,6 @@ import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/types'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import {
   useHarvest as useHarvestLongterm,
-  useAprCardFarmHome,
   usePrivateData,
   useSuperHarvest,
   useSousHarvest,
@@ -80,7 +79,6 @@ const Balance = styled.div`
   display: flex;
   width: 100%;
   flex-flow: row nowrap;
-  // flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   padding: 0.75rem 0.75rem 0.75rem 0.75rem;
@@ -97,7 +95,6 @@ const Balance = styled.div`
 
 const Coins = styled.div`
   padding: 4px;
-  //   width: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -127,7 +124,6 @@ const NumberInput = styled.input`
   font-size: 22px;
   outline: none;
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000')};
-  // width: 45%;
   -webkit-flex: 1 1 auto;
   padding: 0px;
 `
@@ -140,28 +136,31 @@ const CustomCheckbox = styled(Checkbox)`
 `
 
 const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
+  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { allLockPeriod } = useAllLock()
+  const balanceOf = useBalances()
+  const { finixEarn, balancevfinix, allDataLock } = usePrivateData()
+  const { handleHarvest } = useHarvestLongterm()
+  const { isDark } = useTheme()
+  const { levelStake, allLock } = useAllDataLock()
+  const lockTopUp = useLockTopup()
   const [selectedToken, setSelectedToken] = useState({})
   const [sousId, setSousId] = useState(0)
-  const [isBnbPool, setIsBnbPool] = useState(false)
-  const farmsWithBalance = useFarmsWithBalance()
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
-  const balanceOf = useBalances()
   const [period, setPeriod] = useState(0)
   const [idLast, setIdLast] = useState(0)
-  const [amount, setAmount] = useState('')
-  const lockTopUp = useLockTopup()
-  const [harvestProgress, setHarvestProgress] = useState(-1)
-  const [flg, setFlg] = useState(false)
-  const [sumpendingReward, setSumPendingReward] = useState('0')
-  const { levelStake, allLock } = useAllDataLock()
   const [lengthSelect, setLengthSelect] = useState(0)
+  const [harvestProgress, setHarvestProgress] = useState(-1)
+  const [amount, setAmount] = useState('')
   const [date, setDate] = useState('-')
-  const { allLockPeriod } = useAllLock()
-  const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
-  const { isDark } = useTheme()
+  const [sumpendingReward, setSumPendingReward] = useState('0')
+  const [value, setValue] = useState('0')
+  const [isBnbPool, setIsBnbPool] = useState(false)
   const [showLottie, setShowLottie] = useState(false)
-
-  const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount, flg)
+  const [pendingTx, setPendingTx] = useState(false)
+  const [harvested, setHarvested] = useState(false)
+  const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
+  const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount)
+  const { onReward } = useSousHarvest(sousId, isBnbPool)
 
   // Farms
   const farmsLP = useFarms()
@@ -243,51 +242,6 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const ethPriceKlay = usePriceKethKlay()
   const block = useBlock()
 
-  // LongTerm
-  const { finixEarn, balancevfinix, allDataLock } = usePrivateData()
-  const { handleHarvest } = useHarvestLongterm()
-
-  useEffect(() => {
-    if (lockTopUp !== null && lockTopUp.length > 0) {
-      const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
-      let max = 0
-      for (let i = 0; i < removeTopUpId.length; i++) {
-        const selector = removeTopUpId[i]
-        const selectorPeriod = period === 4 ? 3 : period
-        if (
-          _.get(selector, 'isUnlocked') === false &&
-          _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod
-        ) {
-          if (Number(_.get(selector, 'id')) >= max) {
-            max = Number(_.get(selector, 'id'))
-            setIdLast(max)
-          }
-        }
-      }
-    } else {
-      let max = 0
-      for (let i = 0; i < allLock.length; i++) {
-        const selector = allLock[i]
-        const selectorPeriod = period === 4 ? 3 : period
-        if (
-          _.get(selector, 'isUnlocked') === false &&
-          _.get(selector, 'isPenalty') === false &&
-          _.get(selector, 'level') === selectorPeriod
-        ) {
-          if (Number(_.get(selector, 'id')) > max) {
-            max = Number(_.get(selector, 'id'))
-            setIdLast(max)
-          }
-        }
-      }
-    }
-  }, [lockTopUp, allLock, period])
-
-  // Harvest
-  const [pendingTx, setPendingTx] = useState(false)
-
   const priceToKlay = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
     const tokenPriceKLAYTN = new BigNumber(tokenPrice)
     if (tokenName === 'KLAY') {
@@ -297,30 +251,6 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       return tokenPriceKLAYTN.div(klayPriceUSD)
     }
     return tokenPriceKLAYTN
-  }
-  const [value, setValue] = useState('0')
-
-  useEffect(() => {
-    if (value === '0') {
-      setValue(numeral(balanceOf).format('0,0.[00]'))
-    }
-  }, [value, balanceOf])
-
-  const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
-
-  function escapeRegExp(string: string): string {
-    return string.replace(/[.*?^${}()|[\]\\]/g, '\\$&')
-  }
-
-  const enforcer = (nextUserInput: string) => {
-    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
-      setValue(nextUserInput)
-      setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
-    }
-  }
-
-  const handleChange = (e) => {
-    enforcer(e.target.value.replace(/,/g, '.'))
   }
 
   const poolsWithApy = pools.map((pool) => {
@@ -426,8 +356,68 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
   )
 
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
-  // FARMS
+  // LongTermStake
+  useEffect(() => {
+    if (lockTopUp !== null && lockTopUp.length > 0) {
+      const arrStr = lockTopUp.map((i) => Number(i))
+      const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
+      let max = 0
+      for (let i = 0; i < removeTopUpId.length; i++) {
+        const selector = removeTopUpId[i]
+        const selectorPeriod = period === 4 ? 3 : period
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === selectorPeriod
+        ) {
+          if (Number(_.get(selector, 'id')) >= max) {
+            max = Number(_.get(selector, 'id'))
+            setIdLast(max)
+          }
+        }
+      }
+    } else {
+      let max = 0
+      for (let i = 0; i < allLock.length; i++) {
+        const selector = allLock[i]
+        const selectorPeriod = period === 4 ? 3 : period
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === selectorPeriod
+        ) {
+          if (Number(_.get(selector, 'id')) > max) {
+            max = Number(_.get(selector, 'id'))
+            setIdLast(max)
+          }
+        }
+      }
+    }
+  }, [lockTopUp, allLock, period])
+
+  useEffect(() => {
+    if (value === '0') {
+      setValue(numeral(balanceOf).format('0,0.[00]'))
+    }
+  }, [value, balanceOf])
+
+  const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
+
+  function escapeRegExp(string: string): string {
+    return string.replace(/[.*?^${}()|[\]\\]/g, '\\$&')
+  }
+
+  const enforcer = (nextUserInput: string) => {
+    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+      setValue(nextUserInput)
+      setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
+    }
+  }
+
+  const handleChange = (e) => {
+    enforcer(e.target.value.replace(/,/g, '.'))
+  }
+
   const { onSuperHarvest } = useSuperHarvest()
 
   const _superHarvest = useCallback(() => {
@@ -436,35 +426,34 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         if (!_.get(Object.values(selectedToken)[harvestProgress], 'pools')) {
           if (_.get(Object.values(selectedToken)[harvestProgress], 'farms')) {
             onSuperHarvest(_.get(Object.values(selectedToken)[harvestProgress], 'pid'))
-              .then((r) => {
+              .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
               })
               .catch((e) => {
-                console.log(e)
+                setHarvestProgress(-1)
               })
           } else {
             handleHarvest()
-              .then((r) => {
+              .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
               })
               .catch((e) => {
-                console.log(e)
+                setHarvestProgress(-1)
               })
           }
         } else {
           onReward()
-            .then((r) => {
+            .then((res) => {
               setSousId(_.get(Object.values(selectedToken)[harvestProgress], 'sousId'))
               setHarvestProgress(harvestProgress + 1)
             })
             .catch((e) => {
-              console.log(e)
+              setHarvestProgress(-1)
             })
         }
       }
     }
   }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
-  const [harvested, setHarvested] = useState(false)
 
   useEffect(() => {
     if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
@@ -472,11 +461,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setPendingTx(true)
       if (Object.values(selectedToken)[0]) {
         onLockPlus()
-          .then((d) => {
-            setFlg(false)
+          .then((res) => {
             setAmount('')
-            // setInterval(() => setShowLottie(true), 5000)
-            if (d === true) {
+            if (res === true) {
               setHarvested(false)
               setHarvestProgress(-1)
               setLengthSelect(0)
@@ -486,21 +473,16 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               setInterval(() => setShowLottie(false), 5000)
               setInterval(() => onDismiss(), 5000)
               setSelectedToken({})
-              setFlg(false)
-              // onDismiss()
             }
           })
           .catch((e) => {
             setAmount('')
-            setFlg(false)
           })
       } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
         onLockPlus()
-          .then((d) => {
-            setFlg(false)
+          .then((res) => {
             setAmount('')
-            // setInterval(() => setShowLottie(true), 5000)
-            if (d === true) {
+            if (res === true) {
               setHarvested(false)
               setHarvestProgress(-1)
               setLengthSelect(0)
@@ -510,13 +492,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               setInterval(() => setShowLottie(false), 5000)
               setInterval(() => onDismiss(), 5000)
               setSelectedToken({})
-              setFlg(false)
-              // onDismiss()
             }
           })
           .catch((e) => {
             setAmount('')
-            setFlg(false)
           })
       }
     } else if (harvestProgress !== -1) {
@@ -552,24 +531,24 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     const offset = 2
     const now = new Date()
     const utc = now.getTime()
-    let nd = new Date(utc + 3600000 * offset)
+    let localDateTime = new Date(utc + 3600000 * offset)
     const dateTime = now.getTimezoneOffset() / 60
     if (dateTime === -9) {
-      nd = new Date()
+      localDateTime = new Date()
     }
 
     if (period === 1) {
-      nd.setDate(nd.getDate() + 90)
-      nd = new Date(nd)
-      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
+      localDateTime.setDate(localDateTime.getDate() + 90)
+      localDateTime = new Date(localDateTime)
+      setDate(moment(localDateTime).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 2) {
-      nd.setDate(nd.getDate() + 180)
-      nd = new Date(nd)
-      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
+      localDateTime.setDate(localDateTime.getDate() + 180)
+      localDateTime = new Date(localDateTime)
+      setDate(moment(localDateTime).format(`DD-MMM-YYYY HH:mm:ss`))
     } else if (period === 4) {
-      nd.setDate(nd.getDate() + 365)
-      nd = new Date(nd)
-      setDate(moment(nd).format(`DD-MMM-YYYY HH:mm:ss`))
+      localDateTime.setDate(localDateTime.getDate() + 365)
+      localDateTime = new Date(localDateTime)
+      setDate(moment(localDateTime).format(`DD-MMM-YYYY HH:mm:ss`))
     }
   }, [period, value, allLockPeriod, realPenaltyRate])
 

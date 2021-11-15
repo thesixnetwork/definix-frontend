@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import numeral from 'numeral'
 import { Button, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
 import _ from 'lodash'
-import { useAllLock, useApr } from '../../../hooks/useLongTermStake'
+import { useAllLock, useApr, useAllDataLock, useLockTopup } from '../../../hooks/useLongTermStake'
 
 const BoxLevel = styled.div`
   height: 60px;
@@ -159,6 +159,8 @@ const CustomButton = ({
 
 const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   const { isDark } = useTheme()
+  const { allLock } = useAllDataLock()
+  const lockTopUp = useLockTopup()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
   const { allLockPeriod } = useAllLock()
@@ -172,16 +174,29 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   let disableLevel0 = false
   let disableLevel1 = false
   let disableLevel2 = false
+  const array = []
+
+  if (lockTopUp !== null && lockTopUp.length > 0) {
+    const arrStr = lockTopUp.map((i) => Number(i))
+    const removeisUnlockedOrisPenalty = allLock.filter(
+      (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
+    )
+
+    const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+    removeTopUpId.map((r) => {
+      return array.push(_.get(r, 'level'))
+    })
+  }
 
   if (levelStake) {
-    disableLevel0 = levelStake.some((val) => {
-      return !!(val === '0')
+    disableLevel0 = array.some((val) => {
+      return !!(val === 1)
     })
-    disableLevel1 = levelStake.some((val) => {
-      return !!(val === '1')
+    disableLevel1 = array.some((val) => {
+      return !!(val === 2)
     })
-    disableLevel2 = levelStake.some((val) => {
-      return !!(val === '2')
+    disableLevel2 = array.some((val) => {
+      return !!(val === 3)
     })
   }
 
