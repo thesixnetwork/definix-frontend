@@ -144,12 +144,12 @@ const Farm: React.FC = () => {
       poolVelo.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
       // poolVelo.stakingLimit = new BigNumber(balanceFinixUser)
     }
-    const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
+    const veloBalanceReward = new BigNumber(veloBalance).div(1e5).toNumber()
     poolVelo.totalStaked = new BigNumber(totalStake)
     const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR)
 
-    const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve1).div(1e5)).dividedBy(
-      new BigNumber(reserveFinixVelo._reserve0).div(1e18),
+    const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
+      new BigNumber(reserveFinixVelo._reserve1).div(1e5),
     )
     poolVelo.pairPrice = new BigNumber(finixPervelo)
     // const x = finixPervelo.toFixed(3)
@@ -265,7 +265,7 @@ const Farm: React.FC = () => {
                   Partnership Pool
                 </Heading>
                 <div className="mt-2 flex align-center justify-center">
-                  <Text paddingRight="1">I’m new to this,</Text>
+                  {/* <Text paddingRight="1">I’m new to this,</Text> */}
                   {/* <TutorailsLink
                     href="https://sixnetwork.gitbook.io/definix/syrup-pools/how-to-stake-to-definix-pool"
                     target="_blank"

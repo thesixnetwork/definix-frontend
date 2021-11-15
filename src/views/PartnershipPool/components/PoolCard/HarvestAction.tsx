@@ -87,7 +87,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           Total VELO Rewards
         </Text>
         <Text color="textSubtle" textAlign="right" className="col-6">
-          {numeral(veloAmount).format('0,0.00')}/300,000 VELO
+          {numeral(veloAmount).format('0,0')}/300,000 VELO
         </Text>
       </div>
     </div>
