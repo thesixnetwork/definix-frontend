@@ -76,10 +76,9 @@ const Farms: React.FC = () => {
         label: 'totalLiquidity',
         orderBy: 'desc',
       },
-    ]
+    ],
   })
   const [selectedOrderOptionIndex, setSelectedOrderOptionIndex] = useState<DropdownOption>()
-
 
   // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
   //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -192,14 +191,7 @@ const Farms: React.FC = () => {
         }
       })
     },
-    [
-      sixPrice,
-      klayPrice,
-      kethPriceUsd,
-      finixPrice,
-      farmsLP,
-      convertToPriceFromToken,
-    ],
+    [sixPrice, klayPrice, kethPriceUsd, finixPrice, farmsLP, convertToPriceFromToken],
   )
   const farmsWithApy = useMemo(() => {
     if (!_.compact(farmsLP.map((farm) => farm.lpTotalInQuoteToken)).length) return []
@@ -209,9 +201,9 @@ const Farms: React.FC = () => {
     return farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
   }, [farmsWithApy])
   const filteredFarms = useMemo(() => {
-    return stackedOnly ? targetFarms.filter(
-      (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-    ) : targetFarms
+    return stackedOnly
+      ? targetFarms.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0))
+      : targetFarms
   }, [stackedOnly, targetFarms])
   const orderedFarms = useMemo(() => {
     if (typeof selectedOrderOptionIndex !== 'number') return filteredFarms
