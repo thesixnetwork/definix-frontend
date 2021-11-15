@@ -282,8 +282,10 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
         new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber()
       canBeClaim_ =
-        Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
-        new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber()
+        Date.now() >
+        (new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
+          _.get(period, '0.penaltyPeriod')[value.level]) *
+          1000
       asDays = moment.duration({ seconds: _.get(period, '0.periodMap')[value.level] }).asDays()
       asPenaltyDays = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
@@ -354,7 +356,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
           .toNumber(),
         penaltyUnlockTimestamp: moment(pt).format(`DD-MMM-YY HH:mm:ss`),
         canBeUnlock: Unlock,
-        canBeClaim: claim,
+        canBeClaim: canBeClaim_,
         lockTimestamp: moment(nd).format(`DD-MMM-YY HH:mm:ss`),
         penaltyRate: _.get(period, '0.realPenaltyRate')[value.level] * 100,
         lockAmount: new BigNumber(_.get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
