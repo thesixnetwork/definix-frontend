@@ -30,7 +30,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   veloAmount,
   contractAddrss,
   pairPrice,
-  veloId
+  veloId,
 }) => {
   const TranslateString = useI18n()
   const contractApollo = getContract(Apollo.abi, contractAddrss)
@@ -39,7 +39,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   const { account } = useWallet()
   const { onReward } = useVeloHarvest(veloId)
 
-  const rawEarningsBalance = getBalanceNumber(earnings,5)
+  const rawEarningsBalance = getBalanceNumber(earnings, 5)
   const displayBalance = rawEarningsBalance.toLocaleString()
   // eslint-disable-next-line
   debugger
@@ -58,7 +58,6 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           className="col-6 pr-3"
           textAlign="left"
         >
-          
           {/* {getBalanceNumber(earnings, tokenDecimals).toFixed(2)} */}
           {displayBalance}
         </Heading>

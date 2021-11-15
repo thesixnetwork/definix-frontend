@@ -26,6 +26,7 @@ export interface CardHeadingProps {
   apy: BigNumber
   className?: string
   isHorizontal?: boolean
+  veloId?: number
 }
 
 export interface StakeActionProps {

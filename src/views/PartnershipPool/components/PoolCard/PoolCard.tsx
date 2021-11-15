@@ -55,7 +55,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, veloAmount = 0, account ,veloId}) => {
+const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, veloAmount = 0, account, veloId }) => {
   const {
     sousId,
     tokenName,
@@ -70,7 +70,6 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
     stakingLimit,
     contractAddress,
     pairPrice,
-
   } = pool
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE
@@ -118,9 +117,10 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         apy={apy}
         isHorizontal={isHorizontal}
         className={className}
+        veloId={veloId}
       />
     ),
-    [apy, isHorizontal, isOldSyrup, tokenName],
+    [apy, isHorizontal, isOldSyrup, tokenName,veloId],
   )
 
   const renderDepositModal = useCallback(() => {
@@ -200,7 +200,18 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         veloId={veloId}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, veloId,needsApproval, sousId, tokenDecimals, veloAmount, contractAddress, pairPrice],
+    [
+      earnings,
+      isBnbPool,
+      isOldSyrup,
+      veloId,
+      needsApproval,
+      sousId,
+      tokenDecimals,
+      veloAmount,
+      contractAddress,
+      pairPrice,
+    ],
   )
 
   const renderHarvestActionAirDrop = useCallback(
@@ -254,6 +265,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
             {renderHarvestAction('pa-5')}
             {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
             {renderDetailsSection('px-5 py-3', false)}
+            
           </div>
         </HorizontalMobileStyle>
       )
@@ -275,6 +287,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
 
           {renderHarvestAction('col-5 pl-5 flex-grow')}
           {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
+          
         </HorizontalStyle>
       </div>
     )
@@ -294,6 +307,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
           {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
         </div>
         {renderDetailsSection('px-5 py-3', false)}
+
       </VerticalStyle>
     </div>
   )

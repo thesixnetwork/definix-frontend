@@ -102,7 +102,7 @@ export const useSousChef = (id) => {
   const abi = rawAbi as unknown as AbiItem
   return useContract(abi, getAddress(config.contractAddress))
 }
-export const useVeloPool = (veloId :number) => {
+export const useVeloPool = (veloId: number) => {
   const config = VeloPool
   const rawAbi = ApolloABI.abi
   const abi = rawAbi as unknown as AbiItem
