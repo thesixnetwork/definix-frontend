@@ -47,6 +47,62 @@ export const ADA = {
   [intMainnetId]: process.env.REACT_APP_ADA_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_ADA_ADDRESS_TESTNET,
 }
+export const MBOX = {
+  [intMainnetId]: process.env.REACT_APP_MBOX_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_MBOX_ADDRESS_TESTNET,
+}
+export const TLM = {
+  [intMainnetId]: process.env.REACT_APP_TLM_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_TLM_ADDRESS_TESTNET,
+}
+export const SUSHI = {
+  [intMainnetId]: process.env.REACT_APP_SUSHI_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_SUSHI_ADDRESS_TESTNET,
+}
+export const UNI = {
+  [intMainnetId]: process.env.REACT_APP_UNI_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_UNI_ADDRESS_TESTNET,
+}
+export const ALPHA = {
+  [intMainnetId]: process.env.REACT_APP_ALPHA_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_ALPHA_ADDRESS_TESTNET,
+}
+export const DODO = {
+  [intMainnetId]: process.env.REACT_APP_DODO_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_DODO_ADDRESS_TESTNET,
+}
+export const XVS = {
+  [intMainnetId]: process.env.REACT_APP_XVS_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_XVS_ADDRESS_TESTNET,
+}
+export const DOT = {
+  [intMainnetId]: process.env.REACT_APP_DOT_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_DOT_ADDRESS_TESTNET,
+}
+export const DOGE = {
+  [intMainnetId]: process.env.REACT_APP_DOGE_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_DOGE_ADDRESS_TESTNET,
+}
+export const LTC = {
+  [intMainnetId]: process.env.REACT_APP_LTC_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_LTC_ADDRESS_TESTNET,
+}
+export const AVAX = {
+  [intMainnetId]: process.env.REACT_APP_AVAX_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_AVAX_ADDRESS_TESTNET,
+}
+export const CAKE = {
+  [intMainnetId]: process.env.REACT_APP_CAKE_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_CAKE_ADDRESS_TESTNET,
+}
+export const THG = {
+  [intMainnetId]: process.env.REACT_APP_THG_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_THG_ADDRESS_TESTNET,
+}
+export const ALICE = {
+  [intMainnetId]: process.env.REACT_APP_ALICE_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_ALICE_ADDRESS_TESTNET,
+}
 
 export const allTokens = {
   SIX,
@@ -59,6 +115,17 @@ export const allTokens = {
   ETH,
   XRP,
   ADA,
+  MBOX,
+  TLM,
+  SUSHI,
+  UNI,
+  ALPHA,
+  DODO,
+  XVS,
+  DOT,
+  DOGE,
+  LTC,
+
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {

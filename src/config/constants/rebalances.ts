@@ -1,6 +1,51 @@
 import { RebalanceConfig } from './types'
 import { BTCB, ETH } from './tokens'
 
+export const customRouter = {
+  definix: {
+    56: process.env.REACT_APP_ROUTER_ADDRESS_MAINNET,
+    97: process.env.REACT_APP_ROUTER_ADDRESS_TESTNET,
+  },
+  pancake: {
+    56: process.env.REACT_APP_PANCAKEV2_ROUTER_ADDRESS_MAINNET,
+    97: process.env.REACT_APP_PANCAKEV2_ROUTER_ADDRESS_TESTNET,
+  },
+  apeswap: {
+    56: process.env.REACT_APP_APESWAP_ROUTER_ADDRESS_MAINNET,
+    97: process.env.REACT_APP_APESWAP_ROUTER_ADDRESS_TESTNET,
+  },
+}
+
+export const customFactory = {
+  definix: {
+    56: process.env.REACT_APP_MAINNET_FACTORY_ADDRESS,
+    97: process.env.REACT_APP_TESTNET_FACTORY_ADDRESS,
+  },
+  pancake: {
+    56: process.env.REACT_APP_MAINNET_PANCAKEV2_FACTORY_ADDRESS,
+    97: process.env.REACT_APP_TESTNET_PANCAKEV2_FACTORY_ADDRESS,
+  },
+  definix: {
+    56: process.env.REACT_APP_MAINNET_APESWAP_FACTORY_ADDRESS,
+    97: process.env.REACT_APP_TESTNET_APESWAP_FACTORY_ADDRESS,
+  },
+}
+
+export const customInitCodeHash = {
+  definix: {
+    56: process.env.REACT_APP_MAINNET_INIT_CODE_HASH,
+    97: process.env.REACT_APP_TESTNET_INIT_CODE_HASH,
+  },
+  pancake: {
+    56: process.env.REACT_APP_MAINNET_PANCAKEV2_INIT_CODE_HASH,
+    97: process.env.REACT_APP_TESTNET_PANCAKEV2_INIT_CODE_HASH,
+  },
+  definix: {
+    56: process.env.REACT_APP_MAINNET_APESWAP_INIT_CODE_HASH,
+    97: process.env.REACT_APP_TESTNET_APESWAP_INIT_CODE_HASH,
+  },
+}
+
 const rebalances: RebalanceConfig[] = [
   {
     title: 'Bullish Giant',
