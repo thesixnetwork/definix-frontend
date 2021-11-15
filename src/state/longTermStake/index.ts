@@ -310,7 +310,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       const lock = new Date(utcLock + 3600000 * offset)
       const penaltyUnlock = new Date(utcPenalty + 3600000 * offset)
       const unLock = new Date(utcUnLock + 3600000 * offset)
-     
+
       locksData.push({
         id: new BigNumber(_.get(value, 'id._hex')).toNumber(),
         level: value.level * 1 + 1,
