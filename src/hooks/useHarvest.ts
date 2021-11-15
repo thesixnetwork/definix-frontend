@@ -55,10 +55,10 @@ export const useSousHarvest = (sousId, isUsingBnb = false) => {
 
   return { onReward: handleHarvest }
 }
-export const useVeloHarvest = () => {
+export const useVeloHarvest = (veloId: number) => {
   // const dispatch = useDispatch()
   const { account } = useWallet()
-  const sousChefContract = useVeloPool()
+  const sousChefContract = useVeloPool(veloId)
   // const herodotusContract = useHerodotus()
 
   const handleHarvest = useCallback(async () => {

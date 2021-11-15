@@ -46,10 +46,10 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
   return { onStake: handleStake }
 }
 
-export const useStakeVelo = () => {
+export const useStakeVelo = (veloId: number) => {
   // const dispatch = useDispatch()
   const { account } = useWallet()
-  const veloContract = useVeloPool()
+  const veloContract = useVeloPool(veloId)
   // const sousChefContract = useSousChef(sousId)
 
   const handleStake = useCallback(

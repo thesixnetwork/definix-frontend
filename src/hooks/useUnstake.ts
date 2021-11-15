@@ -58,11 +58,11 @@ export const useSousUnstake = (sousId) => {
   return { onUnstake: handleUnstake }
 }
 
-export const useSousUnstakeVelo = () => {
+export const useSousUnstakeVelo = (veloId: number) => {
   // const dispatch = useDispatch()
   const { account } = useWallet()
 
-  const sousChefContract = useVeloPool()
+  const sousChefContract = useVeloPool(veloId)
 
   const handleUnstakeVelo = useCallback(
     async (amount: string) => {

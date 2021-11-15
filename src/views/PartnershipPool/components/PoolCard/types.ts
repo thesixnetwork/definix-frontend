@@ -17,6 +17,7 @@ export interface PoolCardVeloProps {
   isHorizontal?: boolean
   veloAmount?: number
   account?: string
+  veloId?: number
 }
 
 export interface CardHeadingProps {
@@ -53,6 +54,7 @@ export interface HarvestActionProps {
   veloAmount?: number
   contractAddrss?: string
   pairPrice?: number
+  veloId?: number
 }
 
 export interface DetailsSectionProps {

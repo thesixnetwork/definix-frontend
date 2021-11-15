@@ -55,7 +55,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, veloAmount = 0, account }) => {
+const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, veloAmount = 0, account ,veloId}) => {
   const {
     sousId,
     tokenName,
@@ -70,6 +70,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
     stakingLimit,
     contractAddress,
     pairPrice,
+
   } = pool
 
   const isBnbPool = poolCategory === PoolCategory.BINANCE
@@ -94,9 +95,9 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
 
   const { onPresent } = useContext(PoolContext)
 
-  const { onStake } = useStakeVelo()
+  const { onStake } = useStakeVelo(veloId)
   // const x = useContract()
-  const { onUnstake } = useSousUnstakeVelo()
+  const { onUnstake } = useSousUnstakeVelo(veloId)
 
   const renderSash = () => {
     if (tokenName === 'FINIX-SIX' && !isFinished) {
@@ -196,9 +197,10 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         veloAmount={veloAmount}
         contractAddrss={getAddress(contractAddress)}
         pairPrice={pairPrice.toNumber()}
+        veloId={veloId}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals, veloAmount, contractAddress, pairPrice],
+    [earnings, isBnbPool, isOldSyrup, veloId,needsApproval, sousId, tokenDecimals, veloAmount, contractAddress, pairPrice],
   )
 
   const renderHarvestActionAirDrop = useCallback(
