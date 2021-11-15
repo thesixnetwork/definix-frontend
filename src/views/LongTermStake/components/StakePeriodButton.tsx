@@ -174,28 +174,32 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   let disableLevel0 = false
   let disableLevel1 = false
   let disableLevel2 = false
-  const array = []
+  const [data, setData] = useState([])
 
-  if (lockTopUp !== null && lockTopUp.length > 0) {
-    const arrStr = lockTopUp.map((i) => Number(i))
-    const removeisUnlockedOrisPenalty = allLock.filter(
-      (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
-    )
+  useEffect(() => {
+    if (lockTopUp !== null && lockTopUp.length > 0) {
+      const array = []
+      const arrStr = lockTopUp.map((i) => Number(i))
+      const removeisUnlockedOrisPenalty = allLock.filter(
+        (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
+      )
 
-    const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
-    removeTopUpId.map((r) => {
-      return array.push(_.get(r, 'level'))
-    })
-  }
+      const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+      removeTopUpId.map((r) => {
+        return array.push(_.get(r, 'level'))
+      })
+      setData(array)
+    }
+  }, [lockTopUp, allLock])
 
   if (levelStake) {
-    disableLevel0 = array.some((val) => {
+    disableLevel0 = data.some((val) => {
       return !!(val === 1)
     })
-    disableLevel1 = array.some((val) => {
+    disableLevel1 = data.some((val) => {
       return !!(val === 2)
     })
-    disableLevel2 = array.some((val) => {
+    disableLevel2 = data.some((val) => {
       return !!(val === 3)
     })
   }
@@ -213,16 +217,31 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
       setPeriod(4)
       setPeriodSelect(4)
     } else if (!status && isTopUp && !flgIsTopup) {
-      const max = levelStake.map((val) => {
-        return Number(val)
+      let maxLast = 0
+      const max = data.map((val) => {
+        if (Number(val) >= maxLast) {
+          maxLast = Number(val)
+        }
+        return maxLast
       })
-      const staked = Math.max(...max) === 2 ? 4 : Math.max(...max) + 1
+      const staked = Math.max(...max) === 3 ? 4 : Math.max(...max)
+      setPeriod(staked)
+      setPeriodSelect(staked)
+    } else if (status && isTopUp) {
+      let maxLast = 0
+      const max = data.map((val) => {
+        if (Number(val) >= maxLast) {
+          maxLast = Number(val)
+        }
+        return maxLast
+      })
+      const staked = Math.max(...max) === 3 ? 4 : Math.max(...max)
       setPeriod(staked)
       setPeriodSelect(staked)
     } else {
       setPeriod(periodSelect)
     }
-  }, [periodSelect, setPeriod, status, isTopUp, levelStake, flgIsTopup])
+  }, [periodSelect, setPeriod, status, isTopUp, levelStake, flgIsTopup, data])
 
   return (
     <div className={`w-100 ${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
