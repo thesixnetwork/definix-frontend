@@ -1,7 +1,7 @@
 import { PoolConfig, QuoteToken, PoolCategory } from './types'
 
 const VeloPool: PoolConfig = {
-  sousId: 0,
+  sousId: 99,
   tokenName: 'FINIX',
   stakingTokenName: QuoteToken.FINIX,
   stakingTokenAddress:
@@ -9,8 +9,8 @@ const VeloPool: PoolConfig = {
       ? process.env.REACT_APP_FINIX_ADDRESS_TESTNET
       : process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
   contractAddress: {
-    97: process.env.REACT_APP_VELO_APOLLO_TESTNET,
-    56: process.env.REACT_APP_VELO_APOLLO_MAINNET,
+    97: "0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f",
+    56: "0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f",
   },
   poolCategory: PoolCategory.CORE,
   projectLink: 'https://definix.com/',
@@ -18,7 +18,7 @@ const VeloPool: PoolConfig = {
   tokenPerBlock: '10',
   sortOrder: 1,
   isFinished: false,
-  tokenDecimals: 18,
+  tokenDecimals: 5,
 }
 
 export default VeloPool
