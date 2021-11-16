@@ -66,6 +66,10 @@ const CardHeadingStyle = styled(Flex)`
     }
   }
 
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 16px 16px 16px 62px;
+  }
+
   ${({ theme }) => theme.mediaQueries.xs} {
     padding: 16px 16px 16px 50px;
   }

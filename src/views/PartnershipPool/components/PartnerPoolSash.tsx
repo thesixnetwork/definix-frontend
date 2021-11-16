@@ -5,8 +5,8 @@ const PartnerPoolSash = styled.div<{ type?: string }>`
   background-image: url(${listNewImg});
   background-repeat: no-repeat;
   background-size: contain;
-  height: 80px;
-  width: 80px;
+  height: 70px;
+  width: 70px;
   position: absolute;
   left: 0;
   top: 0;
@@ -18,8 +18,8 @@ const PartnerPoolSash = styled.div<{ type?: string }>`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    height: 80px;
-    width: 80px;
+    height: 70px;
+    width: 70px;
   }
 `
 

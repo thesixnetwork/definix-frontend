@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Text } from 'uikit-dev'
-import klaytnLogo from 'uikit-dev/images/Logo-Klaytn.png'
 
 const Box = styled.div`
   margin-left: 4px;
@@ -41,7 +39,7 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
 
   useEffect(() => {
     const countdownInterval = () => {
-      const endCountDown = new Date('2022-01-14 15:00:00')
+      const endCountDown = new Date('Jan 14, 2022 15:00:00')
       const timer = endCountDown.getTime() - Date.now()
 
       if (timer <= 0) {
@@ -51,7 +49,6 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
           minutes: 0,
           seconds: 0,
         })
-        // setIsTimeUpAirdrop(true)
       } else {
         setCountdown({
           days: Math.floor(timer / (1000 * 60 * 60 * 24)),
@@ -59,7 +56,6 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
           minutes: Math.floor((timer % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((timer % (1000 * 60)) / 1000),
         })
-        // setIsTimeUpAirdrop(false)
       }
     }
 
