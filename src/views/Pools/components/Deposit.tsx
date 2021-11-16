@@ -17,7 +17,7 @@ import {
   useModal,
   useMatchBreakpoints,
   NotiType,
-  Noti
+  Noti,
 } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import ModalInput from 'components/ModalInput'

@@ -11,7 +11,7 @@ import {
   Noti,
   NotiType,
   Button,
-  ButtonVariants
+  ButtonVariants,
 } from 'definixswap-uikit'
 
 interface ModalInputProps {
@@ -26,7 +26,14 @@ interface ModalInputProps {
   onClickButton?: () => void
 }
 
-const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, value, onSelectBalanceRateButton, onClickButton, buttonName }) => {
+const ModalInput: React.FC<ModalInputProps> = ({
+  max,
+  onChange,
+  value,
+  onSelectBalanceRateButton,
+  onClickButton,
+  buttonName,
+}) => {
   const { t } = useTranslation()
   const displayBalance = useMemo(() => {
     const isBalanceZero = max === '0' || !max
@@ -36,7 +43,6 @@ const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, value, onSelectB
   const isValidBalance = useMemo(() => {
     return new BigNumber(value).times(new BigNumber(10).pow(18)).isInteger()
   }, [value])
-
 
   return (
     <div>
@@ -82,13 +88,11 @@ const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, value, onSelectB
         >
           {buttonName}
         </Button>
-        {
-          !isValidBalance && (
-            <Box className="mt-s12">
-              <Noti type={NotiType.ALERT}>{t('Less than a certain amount')}</Noti>
-            </Box>
-          )
-        }
+        {!isValidBalance && (
+          <Box className="mt-s12">
+            <Noti type={NotiType.ALERT}>{t('Less than a certain amount')}</Noti>
+          </Box>
+        )}
       </Box>
 
       {/* {isBalanceZero && (
