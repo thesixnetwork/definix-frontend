@@ -12,12 +12,7 @@ interface ModalInputProps {
   onSelectBalanceRateButton: (rate: number) => void
 }
 
-const ModalInput: React.FC<ModalInputProps> = ({
-  max,
-  onChange,
-  value,
-  onSelectBalanceRateButton,
-}) => {
+const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, value, onSelectBalanceRateButton }) => {
   const isBalanceZero = max === '0' || !max
   const displayBalance = isBalanceZero ? '0' : parseFloat(max).toFixed(6)
 
@@ -51,13 +46,11 @@ const ModalInput: React.FC<ModalInputProps> = ({
         <AnountButton onClick={() => onSelectBalanceRateButton(100)}>MAX</AnountButton>
       </Flex>
 
-      {
-        isGreaterThanMyBalance && (
-          <Box className="mt-s20">
-            <Noti type={NotiType.ALERT}>Insufficient balance</Noti>
-          </Box>
-        )
-      }
+      {isGreaterThanMyBalance && (
+        <Box className="mt-s20">
+          <Noti type={NotiType.ALERT}>Insufficient balance</Noti>
+        </Box>
+      )}
 
       {/* {isBalanceZero && (
         <div className="flex align-center justify-center mt-5">
