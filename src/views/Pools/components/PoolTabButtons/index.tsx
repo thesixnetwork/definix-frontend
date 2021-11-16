@@ -10,7 +10,7 @@ const PoolTabButtons = ({
   defaultOptionIndex,
   orderOptions,
   orderBy,
-  search
+  search,
 }) => {
   const { t } = useTranslation()
   return (
