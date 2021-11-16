@@ -203,24 +203,13 @@ const Deposit: React.FC<DepositProps> = ({
 
         <ModalInput
           value={val}
-          onSelectBalanceRateButton={handleSelectBalanceRate}
-          onChange={handleChange}
           max={fullBalance}
           symbol={tokenName}
-          // addLiquidityUrl={addLiquidityUrl}
-          inputTitle="stake"
+          buttonName="deposit"
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onChange={handleChange}
+          onClickButton={() => onPresentConfirmModal()}
         />
-        <Box className="mt-s40">
-          <Button
-            variant={ButtonVariants.RED}
-            lg
-            onClick={() => onPresentConfirmModal()}
-            width="100%"
-            disabled={!val || val === '0'}
-          >
-            Deposit
-          </Button>
-        </Box>
       </Card>
       <ToastContainer toasts={toasts} onRemove={hideToast} />
       {/* 

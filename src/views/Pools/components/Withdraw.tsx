@@ -195,24 +195,13 @@ const Withdraw: React.FC<WithdrawProps> = ({
 
         <ModalInput
           value={val}
-          onSelectBalanceRateButton={handleSelectBalanceRate}
-          onChange={handleChange}
           max={fullBalance}
           symbol={tokenName}
-          inputTitle="stake"
+          buttonName="remove"
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onChange={handleChange}
+          onClickButton={() => onPresentConfirmModal()}
         />
-
-        <Box className="mt-s40">
-          <Button
-            variant={ButtonVariants.RED}
-            lg
-            onClick={() => onPresentConfirmModal()}
-            width="100%"
-            disabled={!val || val === '0'}
-          >
-            Remove
-          </Button>
-        </Box>
       </Card>
     </>
   )

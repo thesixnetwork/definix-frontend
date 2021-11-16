@@ -1,5 +1,18 @@
+import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
-import { Text, BalanceInput, Box, ColorStyles, Flex, AnountButton, Noti, NotiType } from 'definixswap-uikit'
+import { useTranslation } from 'react-i18next'
+import {
+  Text,
+  BalanceInput,
+  Box,
+  ColorStyles,
+  Flex,
+  AnountButton,
+  Noti,
+  NotiType,
+  Button,
+  ButtonVariants
+} from 'definixswap-uikit'
 
 interface ModalInputProps {
   max: string
@@ -7,16 +20,23 @@ interface ModalInputProps {
   placeholder?: string
   value: string
   addLiquidityUrl?: string
-  inputTitle?: string
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
   onSelectBalanceRateButton: (rate: number) => void
+  buttonName?: string
+  onClickButton?: () => void
 }
 
-const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, value, onSelectBalanceRateButton }) => {
-  const isBalanceZero = max === '0' || !max
-  const displayBalance = isBalanceZero ? '0' : parseFloat(max).toFixed(6)
-
+const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, value, onSelectBalanceRateButton, onClickButton, buttonName }) => {
+  const { t } = useTranslation()
+  const displayBalance = useMemo(() => {
+    const isBalanceZero = max === '0' || !max
+    return isBalanceZero ? '0' : parseFloat(max).toFixed(6)
+  }, [max])
   const isGreaterThanMyBalance = useMemo(() => value > max, [value, max])
+  const isValidBalance = useMemo(() => {
+    return new BigNumber(value).times(new BigNumber(10).pow(18)).isInteger()
+  }, [value])
+
 
   return (
     <div>
@@ -48,9 +68,28 @@ const ModalInput: React.FC<ModalInputProps> = ({ max, onChange, value, onSelectB
 
       {isGreaterThanMyBalance && (
         <Box className="mt-s20">
-          <Noti type={NotiType.ALERT}>Insufficient balance</Noti>
+          <Noti type={NotiType.ALERT}>{t('Insufficient balance')}</Noti>
         </Box>
       )}
+
+      <Box className="mt-s40">
+        <Button
+          variant={ButtonVariants.RED}
+          lg
+          onClick={() => onClickButton()}
+          width="100%"
+          disabled={!value || value === '0' || !isValidBalance}
+        >
+          {buttonName}
+        </Button>
+        {
+          !isValidBalance && (
+            <Box className="mt-s12">
+              <Noti type={NotiType.ALERT}>{t('Less than a certain amount')}</Noti>
+            </Box>
+          )
+        }
+      </Box>
 
       {/* {isBalanceZero && (
         <div className="flex align-center justify-center mt-5">

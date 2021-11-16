@@ -16,6 +16,8 @@ import {
   BackIcon,
   useModal,
   useMatchBreakpoints,
+  NotiType,
+  Noti
 } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import ModalInput from 'components/ModalInput'
@@ -197,24 +199,13 @@ const Deposit: React.FC<DepositProps> = ({
 
         <ModalInput
           value={val}
-          onSelectBalanceRateButton={handleSelectBalanceRate}
-          onChange={handleChange}
           max={fullBalance}
           symbol={tokenName}
-          inputTitle="stake"
+          buttonName="deposit"
+          onChange={handleChange}
+          onSelectBalanceRateButton={handleSelectBalanceRate}
+          onClickButton={() => onPresentConfirmModal()}
         />
-
-        <Box className="mt-s40">
-          <Button
-            variant={ButtonVariants.RED}
-            lg
-            onClick={() => onPresentConfirmModal()}
-            width="100%"
-            disabled={!val || val === '0'}
-          >
-            Deposit
-          </Button>
-        </Box>
       </Card>
       {/* <p>totalStakedPrice: {totalStakedPrice}</p>
       <p>myStaked: {myStakedValue.toLocaleString()}</p>

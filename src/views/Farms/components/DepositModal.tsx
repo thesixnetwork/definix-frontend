@@ -67,7 +67,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         max={fullBalance}
         symbol={tokenName}
         addLiquidityUrl={addLiquidityUrl}
-        inputTitle={TranslateString(1070, 'Stake')}
+        // inputTitle={TranslateString(1070, 'Stake')}
       />
 
       <Button

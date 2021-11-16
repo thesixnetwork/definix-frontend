@@ -184,20 +184,9 @@ const Withdraw: React.FC<WithdrawProps> = ({
           onChange={handleChange}
           max={fullBalance}
           symbol={tokenName}
-          inputTitle="stake"
+          buttonName="deposit"
+          onClickButton={() => onPresentConfirmModal()}
         />
-
-        <Box className="mt-s40">
-          <Button
-            variant={ButtonVariants.RED}
-            lg
-            onClick={() => onPresentConfirmModal()}
-            width="100%"
-            disabled={!val || val === '0'}
-          >
-            Remove
-          </Button>
-        </Box>
       </Card>
     </>
   )
