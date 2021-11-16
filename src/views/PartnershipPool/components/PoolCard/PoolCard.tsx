@@ -120,7 +120,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         veloId={veloId}
       />
     ),
-    [apy, isHorizontal, isOldSyrup, tokenName,veloId],
+    [apy, isHorizontal, isOldSyrup, tokenName, veloId],
   )
 
   const renderDepositModal = useCallback(() => {
@@ -265,16 +265,16 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
             {renderHarvestAction('pa-5')}
             {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
             {renderDetailsSection('px-5 py-3', false)}
-            
+
           </div>
         </HorizontalMobileStyle>
       )
     }
-    const x = true
+    const showCountdown = veloId === 1
     return (
       <div>
         <div style={{ display: 'flex' }}>
-          <CountDown showCom={x} />
+          <CountDown showCom={showCountdown} />
         </div>
         <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
           {renderSash()}
@@ -287,16 +287,16 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
 
           {renderHarvestAction('col-5 pl-5 flex-grow')}
           {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
-          
+
         </HorizontalStyle>
       </div>
     )
   }
-  const x = true
+  const showCountdown = veloId === 1
   return (
     <div style={{ margin: 'auto' }}>
       <div style={{ display: 'flex' }}>
-        <CountDown showCom={x} margin="auto" />
+        <CountDown showCom={showCountdown} margin="auto" />
       </div>
       <VerticalStyle className="mb-7">
         {renderSash()}

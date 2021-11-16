@@ -41,8 +41,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
 
   const rawEarningsBalance = getBalanceNumber(earnings, 5)
   const displayBalance = rawEarningsBalance.toLocaleString()
-  // eslint-disable-next-line
-  debugger
+  
 
   return (
     <div className={className}>
