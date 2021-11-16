@@ -148,7 +148,6 @@ const StakeAction: React.FC<StakeActionProps> = ({
       <Text textAlign="left" className="mb-2 flex align-center" color="textSubtle">
         <MiniLogo src="/images/coins/finix.png" alt="" />
         {`FINIX ${TranslateString(1074, 'Staked')}`}
-        
       </Text>
       {!account ? <UnlockButton fullWidth radii="small" /> : renderApprovalOrStakeButton()}
     </div>

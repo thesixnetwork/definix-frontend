@@ -41,7 +41,6 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
 
   const rawEarningsBalance = getBalanceNumber(earnings, 5)
   const displayBalance = rawEarningsBalance.toLocaleString()
-  
 
   return (
     <div className={className}>

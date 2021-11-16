@@ -148,7 +148,7 @@ const Farm: React.FC = () => {
   const fetch2 = useCallback(async () => {
     const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
     const veloAddress = getAddress(AddressTokens.velo)
-    
+
     const apolloAddress = '0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f' // getAddress("poolVelo.contractAddress")
     const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
 
@@ -235,7 +235,9 @@ const Farm: React.FC = () => {
     // const x = finixPervelo.toFixed(3)
     // eslint-disable-next-line
     // debugger
-    poolVelo1.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR)).div(new BigNumber(totalStake).div(1e18) ).times(100)
+    poolVelo1.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR))
+      .div(new BigNumber(totalStake).div(1e18))
+      .times(100)
     // eslint-disable-next-line
     // debugger
     setPoolVelo1(poolVelo1)

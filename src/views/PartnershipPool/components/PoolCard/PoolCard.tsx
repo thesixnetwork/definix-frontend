@@ -265,7 +265,6 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
             {renderHarvestAction('pa-5')}
             {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
             {renderDetailsSection('px-5 py-3', false)}
-
           </div>
         </HorizontalMobileStyle>
       )
@@ -287,7 +286,6 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
 
           {renderHarvestAction('col-5 pl-5 flex-grow')}
           {/* {renderHarvestActionAirDrop('col-5 pl-5 flex-grow', true)} */}
-
         </HorizontalStyle>
       </div>
     )
@@ -307,7 +305,6 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
           {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
         </div>
         {renderDetailsSection('px-5 py-3', false)}
-
       </VerticalStyle>
     </div>
   )
