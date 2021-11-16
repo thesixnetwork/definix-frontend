@@ -79,6 +79,7 @@ const Farms: React.FC = () => {
     ],
   })
   const [selectedOrderOptionIndex, setSelectedOrderOptionIndex] = useState<DropdownOption>()
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
   //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
@@ -210,6 +211,12 @@ const Farms: React.FC = () => {
     const currentOrder = orderFilter.current.options[selectedOrderOptionIndex]
     return _.orderBy(filteredFarms, currentOrder.id, currentOrder.orderBy)
   }, [filteredFarms, selectedOrderOptionIndex])
+  const displayFarms = useMemo(() => {
+    if (!searchKeyword.length) return orderedFarms
+    return orderedFarms.filter((farm) => {
+      return farm.lpSymbol.toLowerCase().includes(searchKeyword)
+    })
+  }, [searchKeyword, orderedFarms])
 
   const onSelectAddLP = useCallback((props: any) => {
     setPageState({
@@ -294,10 +301,11 @@ const Farms: React.FC = () => {
               defaultOptionIndex={orderFilter.current.defaultIndex}
               orderOptions={orderFilter.current.options}
               orderBy={(index) => setSelectedOrderOptionIndex(index)}
+              search={(keyword: string) => setSearchKeyword(keyword)}
             />
             <Route exact path={`${path}`}>
               {/* {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)} */}
-              {orderedFarms.map((farm) => (
+              {displayFarms.map((farm) => (
                 <FarmCard
                   key={farm.pid}
                   farm={farm}

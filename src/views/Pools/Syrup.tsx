@@ -83,6 +83,7 @@ const Farm: React.FC = () => {
     ],
   })
   const [selectedOrderOptionIndex, setSelectedOrderOptionIndex] = useState<DropdownOption>()
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
   //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -276,6 +277,12 @@ const Farm: React.FC = () => {
     const currentOrder = orderFilter.current.options[selectedOrderOptionIndex]
     return orderBy(filteredPools, currentOrder.id, currentOrder.orderBy)
   }, [filteredPools, selectedOrderOptionIndex])
+  const displayPools = useMemo(() => {
+    if (!searchKeyword.length) return orderedPools
+    return orderedPools.filter((pool) => {
+      return pool.tokenName.toLowerCase().includes(searchKeyword)
+    })
+  }, [searchKeyword, orderedPools])
 
   const onSelectAdd = useCallback((props: any) => {
     setPageState({
@@ -358,6 +365,7 @@ const Farm: React.FC = () => {
               defaultOptionIndex={orderFilter.current.defaultIndex}
               orderOptions={orderFilter.current.options}
               orderBy={(index) => setSelectedOrderOptionIndex(index)}
+              search={(keyword: string) => setSearchKeyword(keyword)}
             />
 
             {IS_GENESIS ? (
@@ -374,7 +382,7 @@ const Farm: React.FC = () => {
             ) : (
               <>
                 <Route exact path={`${path}`}>
-                  {orderedPools.map((pool) => (
+                  {displayPools.map((pool) => (
                     <PoolCard
                       key={pool.sousId}
                       pool={pool}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, DropdownItem } from 'definixswap-uikit'
+import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput } from 'definixswap-uikit'
 
 const PoolTabButtons = ({
   stackedOnly,
@@ -10,6 +10,7 @@ const PoolTabButtons = ({
   defaultOptionIndex,
   orderOptions,
   orderBy,
+  search
 }) => {
   const { t } = useTranslation()
   return (
@@ -36,7 +37,13 @@ const PoolTabButtons = ({
             <Toggle checked={!liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
           </Flex>
         </Flex>
-        <Box>search box</Box>
+        <Box>
+          <SearchInput
+            type="text"
+            placeholder="Token Name"
+            onSearch={(keyword) => search(keyword.trim().toLowerCase())}
+          />
+        </Box>
       </Flex>
     </Box>
   )

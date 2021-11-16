@@ -1,8 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet } from 'definixswap-uikit'
+import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput } from 'definixswap-uikit'
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, orderOptions, orderBy }) => {
+const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, orderOptions, orderBy, search }) => {
   const { t } = useTranslation()
   return (
     //     *AAPR = Airdrop APR supported by our partners
@@ -21,7 +21,13 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, order
             <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
           </Flex>
         </Flex>
-        <Box>search box</Box>
+        <Box>
+          <SearchInput
+            type="text"
+            placeholder="Token Name"
+            onSearch={(keyword) => search(keyword.trim().toLowerCase())}
+          />
+        </Box>
       </Flex>
     </Box>
   )
