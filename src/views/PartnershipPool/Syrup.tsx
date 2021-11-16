@@ -412,7 +412,6 @@ const Farm: React.FC = () => {
                         veloId={0}
                       />
                     </div>
-                    
                   </Route>
                   {/* <Route path={`${path}/history`}>
                     {orderBy(finishedPools, ['sortOrder']).map((pool) => (
