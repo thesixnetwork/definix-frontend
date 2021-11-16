@@ -14,6 +14,7 @@ interface CardHeadingAccordionProps {
   className?: string
   isOpenAccordion: boolean
   setIsOpenAccordion: (isOpen: boolean) => void
+  veloId: number
 }
 
 const StyledFarmImages = styled.div`
@@ -73,6 +74,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
   className = '',
   isOpenAccordion = false,
   setIsOpenAccordion,
+  veloId
 }) => {
   const TranslateString = useI18n()
 
@@ -96,7 +98,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
           </StyledFarmImages>
 
           <Heading fontSize="16px" fontWeight="500 !important">
-            {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
+            {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')} {veloId === 1 ? 'V2' : ''}
           </Heading>
         </div>
         {isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}

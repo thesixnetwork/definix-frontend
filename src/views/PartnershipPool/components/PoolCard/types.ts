@@ -42,6 +42,7 @@ export interface StakeActionProps {
   onPresentDeposit?: any
   onPresentWithdraw?: any
   apolloAddress?: string
+  veloId?: number
 }
 
 export interface HarvestActionProps {

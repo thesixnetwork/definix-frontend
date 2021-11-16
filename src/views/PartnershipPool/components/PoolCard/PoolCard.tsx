@@ -167,6 +167,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         onPresentWithdraw={renderWithdrawModal}
         className={className}
         apolloAddress={getAddress(contractAddress)}
+        veloId={veloId}
       />
     ),
     [
@@ -181,6 +182,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
       stakingTokenAddress,
       tokenName,
       contractAddress,
+      veloId
     ],
   )
 
@@ -259,6 +261,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
             className=""
             isOpenAccordion={isOpenAccordion}
             setIsOpenAccordion={setIsOpenAccordion}
+            veloId={veloId}
           />
           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
             {renderStakeAction('pa-5')}

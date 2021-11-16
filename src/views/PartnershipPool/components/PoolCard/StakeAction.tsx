@@ -38,6 +38,8 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentWithdraw,
   className = '',
   apolloAddress,
+  veloId
+
 }) => {
   const TranslateString = useI18n()
 
@@ -107,7 +109,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
         {!isOldSyrup && !isFinished && (
           <Button
             variant="secondary"
-            disabled={isFinished && sousId !== 0}
+            disabled={isFinished || veloId !== 1}
             onClick={onPresentDeposit}
             className="btn-secondary-disable col-6 ml-1"
           >
