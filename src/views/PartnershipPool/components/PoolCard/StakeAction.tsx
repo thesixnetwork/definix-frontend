@@ -81,7 +81,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
           fullWidth
           radii="small"
         >
-          {TranslateString(999, 'Stake LP')}
+          {TranslateString(999, 'Stake')}
         </Button>
       )
     }
