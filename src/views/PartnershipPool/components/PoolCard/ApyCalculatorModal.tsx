@@ -77,7 +77,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({
         </GridItem>
         <GridItem>
           <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase" mb="16px">
-            {TranslateString(864, 'FINIX per $1000')}
+            {TranslateString(864, 'VELO per $1000')}
           </Text>
         </GridItem>
         {/* 1 day row */}
