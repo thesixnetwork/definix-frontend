@@ -38,8 +38,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentWithdraw,
   className = '',
   apolloAddress,
-  veloId
-
+  veloId,
 }) => {
   const TranslateString = useI18n()
 

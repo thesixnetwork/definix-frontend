@@ -182,7 +182,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
       stakingTokenAddress,
       tokenName,
       contractAddress,
-      veloId
+      veloId,
     ],
   )
 

@@ -74,7 +74,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
   className = '',
   isOpenAccordion = false,
   setIsOpenAccordion,
-  veloId
+  veloId,
 }) => {
   const TranslateString = useI18n()
 
