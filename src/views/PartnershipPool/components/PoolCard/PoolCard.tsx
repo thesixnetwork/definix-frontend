@@ -243,7 +243,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
       return (
         <>
           <div style={{ display: 'flex' }}>
-            <CountDown showCom={veloId === 1} margin="auto"/>
+            <CountDown showCom={veloId === 1} margin="auto" />
           </div>
 
           <HorizontalMobileStyle className="mb-3">
