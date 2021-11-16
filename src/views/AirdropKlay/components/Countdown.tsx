@@ -40,7 +40,8 @@ const CountDown = ({ showCom = false }) => {
   }, [])
 
   const Box = styled.div`
-    margin-right: 10px;
+    margin-left: 4px;
+    margin-right: 4px;
   `
   const CountDownBox = styled.div`
     border: 1px solid #d3d3d3;
@@ -78,7 +79,7 @@ const CountDown = ({ showCom = false }) => {
             KLAY airdrop is available to claim in
           </Text>
         </div>
-        <div style={{ display: 'inherit', margin: 'auto' }}>
+        <div style={{ display: 'inherit', margin: '0px 20px' }}>
           {/* days */}
           <Box>
             <CountDownBox>

@@ -25,7 +25,7 @@ import bridge from '../../../uikit-dev/images/Menu-Icon/bridge.png'
 import Card from './Card'
 import CompoundModal from './CompoundModal'
 import DepositModal from './DepositModal'
-import PoolSash from './PoolSash'
+import PoolSash from './PartnerPoolSash'
 import WithdrawModal from './WithdrawModal'
 // import colorStroke from '../../../uikit-dev/images/Color-stroke.png'
 

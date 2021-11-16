@@ -3,6 +3,34 @@ import styled from 'styled-components'
 import { Text } from 'uikit-dev'
 import klaytnLogo from 'uikit-dev/images/Logo-Klaytn.png'
 
+const Box = styled.div`
+  margin-left: 4px;
+  margin-right: 4px;
+`
+const CountDownBox = styled.div`
+  width: 45px;
+  border-radius: 6px;
+  padding: 6px 4px;
+  background: ${({ theme }) => (theme.isDark ? '#212121' : '#f8f8f8')};
+`
+const TextUnderBox = styled.div`
+  font-size: 9px !important;
+  color: #9396a8;
+  text-align: center;
+`
+const TextCountDown = styled.div`
+  color: #2a9d8f;
+  font-size: 16px !important;
+  font-weight: 600;
+  text-align: center;
+`
+const BackgroundCard = styled.div`
+  display: float;
+  background: ${({ theme }) => (theme.isDark ? '#272727' : '#E3E6EC')};
+  padding: 5px;
+  border-radius: 7px 7px 0px 0px;
+`
+
 const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
   const [countdown, setCountdown] = useState({
     days: 0,
@@ -38,32 +66,6 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
     const interval = setInterval(countdownInterval, 1000)
     return () => clearInterval(interval)
   }, [])
-
-  const Box = styled.div`
-    margin-right: 7px;
-  `
-  const CountDownBox = styled.div`
-    width: 45px;
-    border-radius: 6px;
-    padding: 6px 0px;
-    background: ${({ theme }) => (theme.isDark ? '#212121' : '#f8f8f8')};
-  `
-  const TextUnderBox = styled.div`
-    font-size: 9px !important;
-    color: #9396a8;
-    text-align: center;
-  `
-  const TextCountDown = styled.div`
-    color: #2a9d8f;
-    font-size: 15px !important;
-    text-align: center;
-  `
-  const BackgroundCard = styled.div`
-    display: float;
-    background: ${({ theme }) => (theme.isDark ? 'black' : 'white')};
-    padding: 5px 5px 5px 5px;
-    border-radius: 7px 7px 0px 0px;
-  `
 
   return (
     showCom && (

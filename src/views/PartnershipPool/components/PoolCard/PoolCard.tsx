@@ -10,7 +10,7 @@ import PoolContext from 'views/PartnershipPool/PoolContext'
 import { getContract } from 'utils/web3'
 import ApolloAbi from 'config/abi/Apollo.json'
 import DepositModal from '../DepositModal'
-import PoolSash from '../PoolSash'
+import PartnerPoolSash from '../PartnerPoolSash'
 import WithdrawModal from '../WithdrawModal'
 import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
@@ -97,17 +97,6 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
   const { onStake } = useStakeVelo(veloId)
   // const x = useContract()
   const { onUnstake } = useSousUnstakeVelo(veloId)
-
-  const renderSash = () => {
-    if (tokenName === 'FINIX-SIX' && !isFinished) {
-      return <PoolSash type="special" />
-    }
-    if (isFinished && sousId !== 0) {
-      return <PoolSash type="finish" />
-    }
-
-    return null
-  }
 
   const renderCardHeading = useCallback(
     (className?: string) => (
@@ -253,7 +242,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
     if (isMobile) {
       return (
         <HorizontalMobileStyle className="mb-3">
-          {renderSash()}
+          {veloId === 1 && <PartnerPoolSash />}
           <CardHeadingAccordion
             tokenName={tokenName}
             isOldSyrup={isOldSyrup}
@@ -279,7 +268,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
           <CountDown showCom={showCountdown} />
         </div>
         <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-          {renderSash()}
+          {veloId === 1 && <PartnerPoolSash />}
           {renderCardHeading('col-3 pos-static')}
 
           <div className="col-4 bd-x flex flex-column justify-space-between px-5">
@@ -297,10 +286,10 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
   return (
     <div style={{ margin: 'auto' }}>
       <div style={{ display: 'flex' }}>
-        <CountDown showCom={showCountdown} margin="auto" />
+        <CountDown showCom={showCountdown} margin="0px 20px" />
       </div>
       <VerticalStyle className="mb-7">
-        {renderSash()}
+        {veloId === 1 && <PartnerPoolSash />}
         <div className="flex flex-column flex-grow">
           {renderCardHeading('pt-7')}
           {renderStakeAction('pa-5')}
