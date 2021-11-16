@@ -241,6 +241,11 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
   if (isHorizontal) {
     if (isMobile) {
       return (
+        <>
+         <div style={{ display: 'flex' }}>
+            <CountDown showCom={veloId === 1} />
+          </div>
+        
         <HorizontalMobileStyle className="mb-3">
           {veloId === 1 && <PartnerPoolSash />}
           <CardHeadingAccordion
@@ -259,6 +264,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
             {renderDetailsSection('px-5 py-3', false)}
           </div>
         </HorizontalMobileStyle>
+        </>
       )
     }
     const showCountdown = veloId === 1
@@ -286,7 +292,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
   return (
     <div style={{ margin: 'auto' }}>
       <div style={{ display: 'flex' }}>
-        <CountDown showCom={showCountdown} margin="0px 20px" />
+        <CountDown showCom={showCountdown} margin="auto" />
       </div>
       <VerticalStyle className="mb-7">
         {veloId === 1 && <PartnerPoolSash />}
