@@ -55,6 +55,11 @@ export const useRebalanceBalances = (account: string): Balances => {
   return rebalanceBalances
 }
 
+export const useRebalanceRewards = (account: string): Balances => {
+  const rebalanceReward = useSelector((state: State) => state.wallet.userRebalanceReward[account])
+  return rebalanceReward
+}
+
 export const useBalances = (account: string): Balances => {
   const balances = useSelector((state: State) => state.wallet.balances[account])
   return balances

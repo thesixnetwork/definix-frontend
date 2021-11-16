@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
-import rebalanceAbi from 'config/abi/rebalance.json'
+import rebalanceAbi from 'config/abi/fundRebalancer.json'
+import apolloAbi from 'config/abi/apolloV2.json'
 import multicall, { multicallEth } from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
 import _ from 'lodash'
@@ -10,6 +11,7 @@ import { WalletState, Rebalance } from '../types'
 
 const initialState: WalletState = {
   userRebalanceBalances: {},
+  userRebalanceReward: {},
   balances: {},
   allowances: {},
   decimals: {},
@@ -17,6 +19,7 @@ const initialState: WalletState = {
   userSlippage: 80,
   isFetched: false,
   isRebalanceFetched: false,
+  isRebalanceRewardFetched: false,
 }
 
 export const walletSlice = createSlice({
@@ -40,6 +43,14 @@ export const walletSlice = createSlice({
       }
       state.isRebalanceFetched = true
     },
+    setUserRabalancePendingReward: (state, action) => {
+      const { account, data } = action.payload
+      state.userRebalanceReward = {
+        ...state.userRebalanceReward,
+        [account]: { ..._.get(state, `userRebalanceReward.${account}`, {}), ...data },
+      }
+      state.isRebalanceRewardFetched = true
+    },
     setAllowance: (state, action) => {
       const { account, data, spender } = action.payload
       state.allowances = {
@@ -60,7 +71,7 @@ export const walletSlice = createSlice({
 })
 
 // Actions
-export const { setUserRabalanceBalance, setBalance, setAllowance, setUserDeadline, setUserSlippage, setDecimals } =
+export const { setUserRabalanceBalance, setUserRabalancePendingReward, setBalance, setAllowance, setUserDeadline, setUserSlippage, setDecimals } =
   walletSlice.actions
 
 export const setDeadline = (slippage: number) => async (dispatch) => {
@@ -92,12 +103,12 @@ export const fetchAllowances = (account: string, addresses: string[], spender: s
 
 export const fetchRebalanceBalances = (account, rebalances: Rebalance[]) => async (dispatch) => {
   const autoCompoundCalls = rebalances
-    .filter((r) => r.enableAutoCompound && r.autoHerodotus)
+    .filter((r) => r.enableAutoCompound && getAddress(r.address))
     .map((r) => {
       return {
-        address: r.autoHerodotus,
+        address: getAddress(r.address),
         name: 'rebalanceUserLPAmount',
-        params: [getAddress(r.address), account],
+        params: [account],
       }
     })
   const autoCompoundResponse = await multicall(rebalanceAbi, autoCompoundCalls)
@@ -115,6 +126,29 @@ export const fetchRebalanceBalances = (account, rebalances: Rebalance[]) => asyn
       return undefined
     })
   return dispatch(setUserRabalanceBalance({ account, data }))
+}
+
+export const fetchRebalanceRewards = (account, rebalances: Rebalance[]) => async (dispatch) => {
+  const apolloCalls = rebalances
+    .filter((r) => r.enableAutoCompound && r.apollo)
+    .map((r) => {
+      return {
+        address: r.apollo,
+        name: 'pendingReward',
+        params: [account],
+      }
+    })
+  const apolloResponse = await multicall(apolloAbi, apolloCalls)
+
+  const data = {}
+  rebalances
+    .filter((r) => r.enableAutoCompound && r.autoHerodotus)
+    .map((r, index) => {
+      if (!account || !getAddress(r.address)) return undefined
+      data[getAddress(r.address)] = new BigNumber(apolloResponse[index]).div(new BigNumber(10).pow(18))
+      return undefined
+    })
+  return dispatch(setUserRabalancePendingReward({ account, data }))
 }
 
 export const fetchBalances = (account, addresses: string[]) => async (dispatch) => {

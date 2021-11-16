@@ -2,7 +2,7 @@
 // import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import erc20 from 'config/abi/erc20.json'
-import rebalance from 'config/abi/rebalance.json'
+import rebalance from 'config/abi/fundRebalancer.json'
 import multicall from 'utils/multicall'
 import _ from 'lodash'
 import { BLOCKS_PER_YEAR } from 'config'
@@ -88,6 +88,10 @@ export const fetchRebalances = () => async (dispatch) => {
           address,
           name: 'autoHerodotus',
         },
+        {
+          address,
+          name: 'apollo',
+        },
       ]
       const erc20Calls = [
         {
@@ -104,6 +108,7 @@ export const fetchRebalances = () => async (dispatch) => {
         usdTokenRatioPoint,
         [enableAutoCompound],
         [autoHerodotus],
+        [apollo]
       ] = await multicall(rebalance, rebalanceCalls)
       const ratioCal = calculateRatio(currentPoolUsdBalances, sumCurrentPoolUsdBalance)
       const tokenCallers = []
@@ -240,6 +245,7 @@ export const fetchRebalances = () => async (dispatch) => {
         enableAutoCompound,
         finixRewardPerYear,
         autoHerodotus,
+        apollo,
         sharedPricePercentDiff,
         // twentyHperformance,
         ratioCal,

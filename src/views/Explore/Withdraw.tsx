@@ -26,7 +26,7 @@ import { ArrowBackIcon, Button, Card, ChevronRightIcon, Link as UiLink, Text, us
 import success from 'uikit-dev/animation/complete.json'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
-import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -156,10 +156,7 @@ const CardInput = ({
             return selectedToken[tokenAddress]
               ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
               : 0
-          }),
-          selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
-            ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
-            : 0,
+          })
         )
         .send({ from: account, gas: 5000000 })
       setTx(tx)
@@ -168,6 +165,7 @@ const CardInput = ({
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
+      dispatch(fetchRebalanceRewards(account, [rebalance]))
       onNext()
       setIsWithdrawing(false)
     } catch {

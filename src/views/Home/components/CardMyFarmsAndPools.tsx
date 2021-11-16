@@ -39,7 +39,7 @@ import Loading from 'uikit-dev/components/Loading'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
 import FarmCard from '../../Farms/components/FarmCard/FarmCard'
-import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
+import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
 import { FarmWithStakedValue } from '../../Farms/components/FarmCard/types'
 import FinixHarvestBalance from './FinixHarvestBalance'
 import FinixHarvestPool from './FinixHarvestPool'
@@ -262,6 +262,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         ]),
       )
       dispatch(fetchRebalanceBalances(account, rebalances))
+      dispatch(fetchRebalanceRewards(account, rebalances))
     }
   }, [dispatch, account, rebalances])
 

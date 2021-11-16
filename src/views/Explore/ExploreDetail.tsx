@@ -12,7 +12,7 @@ import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-de
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import numeral from 'numeral'
 import { getAddress } from 'utils/addressHelpers'
-import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import { usePriceFinixUsd } from '../../state/hooks'
 import CardHeading from './components/CardHeading'
 import FullAssetRatio from './components/FullAssetRatio'
@@ -96,6 +96,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
+      dispatch(fetchRebalanceRewards(account, [rebalance]))
     }
   }, [dispatch, account, rebalance])
 
@@ -106,6 +107,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
       dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
+      dispatch(fetchRebalanceRewards(account, [rebalance]))
     }
   }, [dispatch, account, rebalance])
 

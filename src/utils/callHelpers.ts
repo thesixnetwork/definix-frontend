@@ -140,3 +140,12 @@ export const soushHarvestBnb = async (sousChefContract, account) => {
       return tx.transactionHash
     })
 }
+
+export const rebalanceHarvest = async (apolloV2Contract, account) => {
+  return apolloV2Contract.methods
+    .harvest()
+    .send({ from: account, gas: 500000 })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}

@@ -22,7 +22,7 @@ import { useDispatch } from 'react-redux'
 import useTheme from 'hooks/useTheme'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances, useSlippage } from '../../state/hooks'
-import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { fetchAllowances, fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import { fetchRebalances } from '../../state/rebalance'
 import CardHeading from './components/CardHeading'
 import CurrencyInputPanel from './components/CurrencyInputPanel'
@@ -295,6 +295,7 @@ const CardCalculate = ({
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
+      dispatch(fetchRebalanceRewards(account, [rebalance]))
       dispatch(fetchRebalances())
       onNext()
       setIsInvesting(false)

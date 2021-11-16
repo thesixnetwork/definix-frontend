@@ -21,6 +21,7 @@ interface ExploreCardType {
   isHorizontal: boolean
   rebalance: Rebalance | any
   balance: BigNumber
+  pendingReward: BigNumber
   onClickViewDetail: () => void
 }
 
@@ -79,7 +80,7 @@ const TotalAssetValue = ({ rebalance, className = '' }) => {
   return (
     <TwoLineFormat
       title="Total asset value"
-      value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
+      value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.[00]')}`}
       className={className}
     />
   )
@@ -130,6 +131,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   isHorizontal = false,
   rebalance = {},
   onClickViewDetail,
+  pendingReward,
 }) => {
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const { isXl } = useMatchBreakpoints()
@@ -251,7 +253,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                   rebalance={rebalance}
                 />
               </div>
-              <Harvest value="12,300.75" subValue="$173,440.575" large />
+              <Harvest value={pendingReward} rebalance={rebalance} large />
 
               <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
                 View Details
@@ -288,7 +290,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           </div>
 
           <div className="col-6 pl-3">
-            <Harvest value="12,300.75" subValue="$173,440.575" large />
+            <Harvest value={pendingReward} rebalance={rebalance} large />
 
             <div className="flex align-center">
               <CurrentInvestment
@@ -334,7 +336,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           />
         </div>
 
-        <Harvest value="12,300.75" subValue="$173,440.575" large />
+        <Harvest value={pendingReward} rebalance={rebalance} large />
 
         <Button fullWidth radii="small" as={Link} to="/rebalancing/detail" onClick={onClickViewDetail}>
           View Details
