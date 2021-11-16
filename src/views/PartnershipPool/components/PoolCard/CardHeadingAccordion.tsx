@@ -65,6 +65,10 @@ const CardHeadingStyle = styled(Flex)`
       }
     }
   }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    padding: 16px 16px 16px 50px;
+  }
 `
 
 const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({

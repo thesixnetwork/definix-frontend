@@ -13,8 +13,8 @@ const PartnerPoolSash = styled.div<{ type?: string }>`
   z-index: 1;
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    height: 36px;
-    width: 36px;
+    height: 60px;
+    width: 60px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
