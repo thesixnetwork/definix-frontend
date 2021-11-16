@@ -242,28 +242,28 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
     if (isMobile) {
       return (
         <>
-         <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex' }}>
             <CountDown showCom={veloId === 1} />
           </div>
-        
-        <HorizontalMobileStyle className="mb-3">
-          {veloId === 1 && <PartnerPoolSash />}
-          <CardHeadingAccordion
-            tokenName={tokenName}
-            isOldSyrup={isOldSyrup}
-            apy={apy}
-            className=""
-            isOpenAccordion={isOpenAccordion}
-            setIsOpenAccordion={setIsOpenAccordion}
-            veloId={veloId}
-          />
-          <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-            {renderStakeAction('pa-5')}
-            {renderHarvestAction('pa-5')}
-            {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
-            {renderDetailsSection('px-5 py-3', false)}
-          </div>
-        </HorizontalMobileStyle>
+
+          <HorizontalMobileStyle className="mb-3">
+            {veloId === 1 && <PartnerPoolSash />}
+            <CardHeadingAccordion
+              tokenName={tokenName}
+              isOldSyrup={isOldSyrup}
+              apy={apy}
+              className=""
+              isOpenAccordion={isOpenAccordion}
+              setIsOpenAccordion={setIsOpenAccordion}
+              veloId={veloId}
+            />
+            <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
+              {renderStakeAction('pa-5')}
+              {renderHarvestAction('pa-5')}
+              {/* {renderHarvestActionAirDrop('pa-5 pt-0', false)} */}
+              {renderDetailsSection('px-5 py-3', false)}
+            </div>
+          </HorizontalMobileStyle>
         </>
       )
     }
