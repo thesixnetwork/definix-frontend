@@ -1,7 +1,5 @@
-import React from 'react'
-import { Text, BalanceInput, Box, ColorStyles, Flex, AnountButton } from 'definixswap-uikit'
-// import { Button, Input, InputProps, Link, Text } from 'uikit-dev'
-import useI18n from '../../hooks/useI18n'
+import React, { useMemo } from 'react'
+import { Text, BalanceInput, Box, ColorStyles, Flex, AnountButton, Noti, NotiType } from 'definixswap-uikit'
 
 interface ModalInputProps {
   max: string
@@ -16,16 +14,14 @@ interface ModalInputProps {
 
 const ModalInput: React.FC<ModalInputProps> = ({
   max,
-  symbol,
   onChange,
   value,
-  addLiquidityUrl,
-  inputTitle,
   onSelectBalanceRateButton,
 }) => {
-  const TranslateString = useI18n()
   const isBalanceZero = max === '0' || !max
   const displayBalance = isBalanceZero ? '0' : parseFloat(max).toFixed(6)
+
+  const isGreaterThanMyBalance = useMemo(() => value > max, [value, max])
 
   return (
     <div>
@@ -54,6 +50,14 @@ const ModalInput: React.FC<ModalInputProps> = ({
         </AnountButton>
         <AnountButton onClick={() => onSelectBalanceRateButton(100)}>MAX</AnountButton>
       </Flex>
+
+      {
+        isGreaterThanMyBalance && (
+          <Box className="mt-s20">
+            <Noti type={NotiType.ALERT}>Insufficient balance</Noti>
+          </Box>
+        )
+      }
 
       {/* {isBalanceZero && (
         <div className="flex align-center justify-center mt-5">
