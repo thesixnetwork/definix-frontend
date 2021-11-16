@@ -1,7 +1,12 @@
 import { useCallback } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useDispatch } from 'react-redux'
-import { fetchFarmUserDataAsync, updateUserBalance, updateUserPendingReward, fetchRebalanceRewards } from 'state/actions'
+import {
+  fetchFarmUserDataAsync,
+  updateUserBalance,
+  updateUserPendingReward,
+  fetchRebalanceRewards,
+} from 'state/actions'
 import { useRebalances } from 'state/hooks'
 import { soushHarvest, soushHarvestBnb, harvest, rebalanceHarvest } from 'utils/callHelpers'
 import { useHerodotus, useSousChef, useApolloV2 } from './useContract'
@@ -65,7 +70,7 @@ export const useRebalanceHarvest = (apolloAddress: string) => {
   const handleHarvest = useCallback(async () => {
     const txHash = await rebalanceHarvest(apolloV2Contract, account)
     dispatch(fetchRebalanceRewards(account, rebalances))
-    
+
     return txHash
   }, [account, dispatch, rebalances, apolloV2Contract])
 

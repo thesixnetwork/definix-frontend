@@ -108,7 +108,7 @@ export const fetchRebalances = () => async (dispatch) => {
         usdTokenRatioPoint,
         [enableAutoCompound],
         [autoHerodotus],
-        [apollo]
+        [apollo],
       ] = await multicall(rebalance, rebalanceCalls)
       const ratioCal = calculateRatio(currentPoolUsdBalances, sumCurrentPoolUsdBalance)
       const tokenCallers = []

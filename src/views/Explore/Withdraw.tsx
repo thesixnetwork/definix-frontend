@@ -156,7 +156,7 @@ const CardInput = ({
             return selectedToken[tokenAddress]
               ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
               : 0
-          })
+          }),
         )
         .send({ from: account, gas: 5000000 })
       setTx(tx)

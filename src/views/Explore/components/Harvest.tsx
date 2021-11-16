@@ -34,13 +34,17 @@ const Harvest: React.FC<HarvestType> = ({ value, isVertical = false, large = fal
       />
 
       <div className={isVertical ? 'pa-3 bd-t' : large ? 'col-6 pl-2' : 'col-5 pl-2'}>
-        <Button fullWidth radii="small" variant="success" 
-        disabled={value.toNumber() === 0 || pendingTx}
-        onClick={async () => {
-          setPendingTx(true)
-          await onReward()
-          setPendingTx(false)
-        }}>
+        <Button
+          fullWidth
+          radii="small"
+          variant="success"
+          disabled={value.toNumber() === 0 || pendingTx}
+          onClick={async () => {
+            setPendingTx(true)
+            await onReward()
+            setPendingTx(false)
+          }}
+        >
           Harvest
         </Button>
       </div>
