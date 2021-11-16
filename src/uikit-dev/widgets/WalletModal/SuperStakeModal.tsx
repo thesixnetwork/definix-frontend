@@ -158,6 +158,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [showLottie, setShowLottie] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
   const [harvested, setHarvested] = useState(false)
+  const [keyDown, setKeyDown] = useState(false)
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount)
   const { onReward } = useSousHarvest(sousId, isBnbPool)
@@ -396,10 +397,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [lockTopUp, allLock, period])
 
   useEffect(() => {
-    if (value === '0') {
-      setValue(numeral(balanceOf).format('0,0.[00]'))
+    if (keyDown === false) {
+      setValue(numeral(balanceOf).format('0.[00]'))
     }
-  }, [value, balanceOf])
+  }, [value, balanceOf, keyDown])
 
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
@@ -459,50 +460,63 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
       setHarvested(true)
       setPendingTx(true)
-      if (Object.values(selectedToken)[0]) {
-        onLockPlus()
-          .then((res) => {
-            setAmount('')
-            if (res === true) {
-              setHarvested(false)
-              setHarvestProgress(-1)
-              setLengthSelect(0)
+      if (period !== -Infinity) {
+        if (Object.values(selectedToken)[0]) {
+          onLockPlus()
+            .then((res) => {
               setAmount('')
-              setPendingTx(false)
-              setShowLottie(true)
-              setInterval(() => setShowLottie(false), 5000)
-              setInterval(() => onDismiss(), 5000)
-              setSelectedToken({})
-            }
-          })
-          .catch((e) => {
-            setAmount('')
-          })
-      } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
-        onLockPlus()
-          .then((res) => {
-            setAmount('')
-            if (res === true) {
-              setHarvested(false)
-              setHarvestProgress(-1)
-              setLengthSelect(0)
+              if (res === true) {
+                setHarvested(false)
+                setHarvestProgress(-1)
+                setLengthSelect(0)
+                setAmount('')
+                setPendingTx(false)
+                setShowLottie(true)
+                // setInterval(() => setShowLottie(false), 5000)
+                // setInterval(() => onDismiss(), 5000)
+                setSelectedToken({})
+              }
+            })
+            .catch((e) => {
               setAmount('')
-              setPendingTx(false)
-              setShowLottie(true)
-              setInterval(() => setShowLottie(false), 5000)
-              setInterval(() => onDismiss(), 5000)
-              setSelectedToken({})
-            }
-          })
-          .catch((e) => {
-            setAmount('')
-          })
+            })
+        } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
+          onLockPlus()
+            .then((res) => {
+              setAmount('')
+              if (res === true) {
+                setHarvested(false)
+                setHarvestProgress(-1)
+                setLengthSelect(0)
+                setAmount('')
+                setPendingTx(false)
+                setShowLottie(true)
+                // setInterval(() => onDismiss(), 5000)
+                setSelectedToken({})
+              }
+            })
+            .catch((e) => {
+              setAmount('')
+            })
+        }
       }
     } else if (harvestProgress !== -1) {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, onDismiss, lengthSelect, value])
+  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, lengthSelect, value, period])
+
+  useEffect(() => {
+    if (harvested === true) {
+      if (period === -Infinity) {
+        setHarvested(false)
+        setHarvestProgress(-1)
+        setLengthSelect(0)
+        setPendingTx(false)
+        setShowLottie(true)
+      }
+    }
+  }, [harvestProgress, period, harvested])
 
   useEffect(() => {
     if (Object.values(selectedToken).length > 0 && value !== '' && value !== '0') {
@@ -573,6 +587,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       </ModalStake>
     )
   }
+  const lenghtOrvalue = lengthSelect === 0 && value === ''
+
   return (
     <>
       {showLottie ? (
@@ -752,6 +768,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   placeholder="0.00"
                   value={value}
                   onChange={handleChange}
+                  onKeyDown={() => setKeyDown(true)}
                   className="text-right"
                   pattern="^[0-9]*[,]?[0-9]*$"
                 />
@@ -809,7 +826,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             ) : (
               <Button
                 fullWidth
-                disabled={lengthSelect === 0 && value === ''}
+                disabled={period === -Infinity && lengthSelect === 0 ? true : lenghtOrvalue}
                 id="harvest-all"
                 radii="small"
                 className="mt-3"
