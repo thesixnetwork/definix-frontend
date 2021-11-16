@@ -508,11 +508,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       setIsSimulating(true)
       const [poolUSDBalancesData, poolAmountsData] = await simulateInvest(
         _.compact([...((rebalance || {}).tokens || [])]).map((c, index) => {
-          const ratioPoint = (
-            ((rebalance || {}).tokenRatioPoints || [])[index] ||
-            ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
-            new BigNumber(0)
-          ).toNumber()
+          const ratioPoint = (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
           const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
           const decimal = c.decimals
           return {

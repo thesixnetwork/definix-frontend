@@ -8,6 +8,7 @@ import _ from 'lodash'
 import { BLOCKS_PER_YEAR } from 'config'
 import herodotusABI from 'config/abi/herodotus.json'
 import autoHerodotusABI from 'config/abi/autoHerodotus.json'
+import autoHerodotusV2ABI from 'config/abi/autoHerodotusV2.json'
 import { createSlice } from '@reduxjs/toolkit'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'
@@ -54,9 +55,9 @@ const calculateRatio = (currentPriceUsd: BigNumber[], sumCurrentPoolUsdBalance: 
   })
   return ratioCal
 }
-export const fetchRebalances = () => async (dispatch) => {
+export const fetchRebalances = () => async dispatch => {
   const data = await Promise.all(
-    rebalancesConfig.map(async (rebalanceConfig) => {
+    rebalancesConfig.map(async rebalanceConfig => {
       const address = getAddress(rebalanceConfig.address)
       const rebalanceCalls = [
         {
@@ -104,7 +105,6 @@ export const fetchRebalances = () => async (dispatch) => {
         [enableAutoCompound],
         [autoHerodotus],
       ] = await multicall(rebalance, rebalanceCalls)
-
       const ratioCal = calculateRatio(currentPoolUsdBalances, sumCurrentPoolUsdBalance)
       const tokenCallers = []
       for (let i = 0; i < tokenLength; i++) {
@@ -116,8 +116,8 @@ export const fetchRebalances = () => async (dispatch) => {
       }
       const tokenAddresss = _.flattenDeep(await Promise.all(tokenCallers))
       const tokenRatioPoints = _.flattenDeep(await Promise.all(tokenRatioPointsCallers))
-      const makeTokenCallers = (inputArray) => {
-        return inputArray.map((tokenAddress) => {
+      const makeTokenCallers = inputArray => {
+        return inputArray.map(tokenAddress => {
           return multicall(erc20, [
             { address: tokenAddress, name: 'name' },
             { address: tokenAddress, name: 'symbol' },
@@ -127,7 +127,7 @@ export const fetchRebalances = () => async (dispatch) => {
               name: 'balanceOf',
               params: [address],
             },
-          ]).then((calledTokenData) => {
+          ]).then(calledTokenData => {
             const [[name], [symbol], [decimals], [totalBalance]] = calledTokenData
             return {
               address: tokenAddress,
@@ -188,12 +188,10 @@ export const fetchRebalances = () => async (dispatch) => {
       const autoHerodotusCalls = [
         {
           address: autoHerodotus,
-          // name: 'rebalancePID',
           name: 'farmId',
-          // params: [address],
         },
       ]
-      const [bigNumberPid] = await multicall(autoHerodotusABI, autoHerodotusCalls)
+      const [bigNumberPid] = await multicall(autoHerodotusV2ABI, autoHerodotusCalls)
       const pid = new BigNumber(bigNumberPid)
       const herodotusAddress = getHerodotusAddress()
       const herodotusCalls = [
