@@ -61,7 +61,7 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
   const BackgroundCard = styled.div`
     display: float;
     background: ${({ theme }) => (theme.isDark ? 'black' : 'white')};
-    padding: 5px 5px 5px 5px;
+    padding: 5px 0px 5px 5px;
     border-radius: 7px 7px 0px 0px;
   `
 
