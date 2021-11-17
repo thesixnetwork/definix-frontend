@@ -11,6 +11,7 @@ import TokenFacet from 'config/abi/TokenFacet.json'
 import multicall from 'utils/multicall'
 import { getFinixAddress, getVFinix, getAddress } from 'utils/addressHelpers'
 import _ from 'lodash'
+import { getContract } from 'utils/caver'
 
 const initialState = {
   isFetched: false,
@@ -40,6 +41,7 @@ const initialState = {
   balanceFinix: 0,
   balancevFinix: 0,
   rewardPerBlock: 0,
+  countTransactions: 0,
 }
 
 export const longTermSlice = createSlice({
@@ -112,6 +114,10 @@ export const longTermSlice = createSlice({
       const { allDataLock } = action.payload
       state.allDataLock = allDataLock
     },
+    setCountTransactions: (state, action) => {
+      const { countTransactions } = action.payload
+      state.countTransactions = countTransactions
+    },
   },
 })
 
@@ -126,6 +132,7 @@ export const {
   setTotalSupplyAllTimeMint,
   setStartIndex,
   setAllDataLock,
+  setCountTransactions,
 } = longTermSlice.actions
 
 export const fetchIdData =
@@ -149,6 +156,14 @@ export const fetchStartIndex = (index) => async (dispatch) => {
   dispatch(
     setStartIndex({
       startIndex: index,
+    }),
+  )
+}
+
+export const fetchCountTransactions = (count) => async (dispatch) => {
+  dispatch(
+    setCountTransactions({
+      countTransactions: count,
     }),
   )
 }
@@ -251,9 +266,12 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     const [count] = await multicall(VaultFacet.abi, calls)
     const [lockAmount, infoFacet] = await multicall(VaultInfoFacet.abi, callInfoFacet)
     const [balanceOfFinix, balanceOfvFinix] = await multicall(IKIP7.abi, calBalance)
+    const callContract = getContract(VaultInfoFacet.abi, getVFinix())
+    const finixLock = await callContract.methods.locksDesc(account, index, 10).call()
     balanceFinix = new BigNumber(balanceOfFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     balancevFinix = new BigNumber(balanceOfvFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     const result = _.get(infoFacet, 'locks_')
+    const topup = _.get(finixLock, 'locksTopup')
     let canBeUnlock_
     let canBeClaim_
     let asDays = 0
@@ -312,6 +330,8 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         periodPenalty: moment(unLock).format(`DD-MMM-YY HH:mm:ss`),
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
+        topup,
+        topupTimeStamp: moment(new Date(lock.setDate(lock.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
       })
       return locksData
     })

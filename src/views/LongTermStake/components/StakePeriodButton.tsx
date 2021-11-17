@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import numeral from 'numeral'
 import { Button, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
 import _ from 'lodash'
-import { useAllLock, useApr } from '../../../hooks/useLongTermStake'
+import { useAllLock, useApr, useAllDataLock, useLockTopup } from '../../../hooks/useLongTermStake'
 
 const BoxLevel = styled.div`
   height: 60px;
@@ -31,7 +31,21 @@ const ButtonPeriod = styled(Button)`
   height: 60px;
 `
 
-const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, vFinixPrice, isDark, mr }) => {
+const CustomButton = ({
+  isMobile,
+  days,
+  period,
+  setPeriod,
+  level = 0,
+  minimum,
+  vFinixPrice,
+  isDark,
+  mr,
+  levelStake,
+  isTopUp,
+  disableLevel,
+  setFlgIsTopup,
+}) => {
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'
   }
@@ -87,12 +101,15 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
       <ButtonPeriod
         onClick={() => {
           setPeriod(level)
+          setFlgIsTopup(true)
         }}
         radii="small"
         isStroke
+        disabled={isTopUp ? !disableLevel : false}
         style={{
           background: period === level ? handleBackgroud4(period, level) : onSelect1(),
           border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
+          opacity: isTopUp && !disableLevel && 0.3,
         }}
       >
         <BoxLevel
@@ -112,32 +129,38 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
           >
             {days} days
           </Text>
-          <Text
-            style={{ textDecorationLine: 'line-through', textDecorationColor: isDark ? '#FFFFFF' : '#57575B' }}
-            fontSize={`${isMobile ? '6px !important' : '8px !important'}`}
-            color={themeWhitePeriod(period, level)}
-          >
-            APR {`${numeral((vFinixPrice * level) / 1.5 || 0).format('0,0.[00]')}%`}
-          </Text>
+          {!isTopUp && (
+            <Text
+              style={{ textDecorationLine: 'line-through', textDecorationColor: isDark ? '#FFFFFF' : '#57575B' }}
+              fontSize={`${isMobile ? '6px !important' : '8px !important'}`}
+              color={themeWhitePeriod(period, level)}
+            >
+              APR {`${numeral((vFinixPrice * level) / 1.5 || 0).format('0,0.[00]')}%`}
+            </Text>
+          )}
           <Text fontSize={`${isMobile ? '8px !important' : '10px !important'}`} color={themeWhitePeriod(period, level)}>
             APR {`${numeral(vFinixPrice * level || 0).format('0,0.[00]')}%`}
           </Text>
         </BoxPeriod>
       </ButtonPeriod>
-      <Text
-        fontSize={`${isMobile ? '8px !important' : '10px !important'}`}
-        textAlign="center"
-        className="mt-2"
-        color={themeWhite(period, level)}
-      >
-        Minimum {numeral(minimum).format('0,0')} FINIX
-      </Text>
+      {!isTopUp && (
+        <Text
+          fontSize={`${isMobile ? '8px !important' : '10px !important'}`}
+          textAlign="center"
+          className="mt-2"
+          color={themeWhite(period, level)}
+        >
+          Minimum {numeral(minimum).format('0,0')} FINIX
+        </Text>
+      )}
     </div>
   )
 }
 
-const StakePeriodButton = ({ setPeriod, status }) => {
+const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   const { isDark } = useTheme()
+  const { allLock } = useAllDataLock()
+  const lockTopUp = useLockTopup()
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd && !isLg
   const { allLockPeriod } = useAllLock()
@@ -147,6 +170,39 @@ const StakePeriodButton = ({ setPeriod, status }) => {
   const [_minimum4, setMinimum3] = useState(0)
   const apr = useApr()
   const [periodSelect, setPeriodSelect] = useState(4)
+  const [flgIsTopup, setFlgIsTopup] = useState(false)
+  let disableLevel0 = false
+  let disableLevel1 = false
+  let disableLevel2 = false
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    if (lockTopUp !== null && lockTopUp.length > 0) {
+      const array = []
+      const arrStr = lockTopUp.map((i) => Number(i))
+      const removeisUnlockedOrisPenalty = allLock.filter(
+        (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
+      )
+
+      const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+      removeTopUpId.map((r) => {
+        return array.push(_.get(r, 'level'))
+      })
+      setData(array)
+    }
+  }, [lockTopUp, allLock])
+
+  if (levelStake) {
+    disableLevel0 = data.some((val) => {
+      return !!(val === 1)
+    })
+    disableLevel1 = data.some((val) => {
+      return !!(val === 2)
+    })
+    disableLevel2 = data.some((val) => {
+      return !!(val === 3)
+    })
+  }
 
   useEffect(() => {
     setMinimum1(_.get(minimum, '0') || 0)
@@ -155,18 +211,40 @@ const StakePeriodButton = ({ setPeriod, status }) => {
   }, [_minimum1, _minimum2, _minimum4, minimum])
 
   useEffect(() => {
-    if (status) {
+    if (status && !isTopUp) {
       // setPeriod(0)
       // setPeriodSelect(0)
       setPeriod(4)
       setPeriodSelect(4)
+    } else if (!status && isTopUp && !flgIsTopup) {
+      let maxLast = 0
+      const max = data.map((val) => {
+        if (Number(val) >= maxLast) {
+          maxLast = Number(val)
+        }
+        return maxLast
+      })
+      const staked = Math.max(...max) === 3 ? 4 : Math.max(...max)
+      setPeriod(staked)
+      setPeriodSelect(staked)
+    } else if (status && isTopUp) {
+      let maxLast = 0
+      const max = data.map((val) => {
+        if (Number(val) >= maxLast) {
+          maxLast = Number(val)
+        }
+        return maxLast
+      })
+      const staked = Math.max(...max) === 3 ? 4 : Math.max(...max)
+      setPeriod(staked)
+      setPeriodSelect(staked)
     } else {
       setPeriod(periodSelect)
     }
-  }, [periodSelect, setPeriod, status])
+  }, [periodSelect, setPeriod, status, isTopUp, levelStake, flgIsTopup, data])
 
   return (
-    <div className={`${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
+    <div className={`w-100 ${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
       <CustomButton
         isDark={isDark}
         isMobile={isMobile}
@@ -177,6 +255,10 @@ const StakePeriodButton = ({ setPeriod, status }) => {
         minimum={_minimum1}
         vFinixPrice={apr}
         mr="mr-2"
+        levelStake={levelStake}
+        isTopUp={isTopUp}
+        disableLevel={disableLevel0}
+        setFlgIsTopup={setFlgIsTopup}
       />
       <CustomButton
         isDark={isDark}
@@ -188,6 +270,10 @@ const StakePeriodButton = ({ setPeriod, status }) => {
         minimum={_minimum2}
         vFinixPrice={apr}
         mr="mr-2"
+        levelStake={levelStake}
+        isTopUp={isTopUp}
+        disableLevel={disableLevel1}
+        setFlgIsTopup={setFlgIsTopup}
       />
       <CustomButton
         isDark={isDark}
@@ -199,6 +285,10 @@ const StakePeriodButton = ({ setPeriod, status }) => {
         minimum={_minimum4}
         vFinixPrice={apr}
         mr=""
+        levelStake={levelStake}
+        isTopUp={isTopUp}
+        disableLevel={disableLevel2}
+        setFlgIsTopup={setFlgIsTopup}
       />
     </div>
   )
