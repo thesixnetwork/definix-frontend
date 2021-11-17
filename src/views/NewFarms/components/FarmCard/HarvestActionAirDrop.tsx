@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react'
+import { useHistory } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
 import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
@@ -15,15 +16,18 @@ import {
   alertVariants,
   ToastContainer,
 } from 'definixswap-uikit'
+import { repeat } from 'lodash'
 // import AirDropHarvestModal from './AirDropHarvestModal'
 
 interface FarmCardActionsProps {
   isMobile: boolean
   pid?: number
   earnings: BigNumber
+  hideDetailButton: boolean
 }
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings }) => {
+const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings, hideDetailButton = true }) => {
+  const navigate = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
   const [toasts, setToasts] = useState([])
 
@@ -70,6 +74,10 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     }
   }, [onReward, showToast])
 
+  const handleGoToDetail = useCallback(() => {
+    navigate.push('/farm')
+  }, [navigate])
+
   const AirDrop = ({ value, name, price }) => (
     <Flex>
       <Label type="token">{name}</Label>
@@ -93,27 +101,42 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
         <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
           <Box>
             <AirDrop value={finixEarningsValue} name="FINIX" price={earningsPrice(finixEarningsValue)} />
-            {/* {false && (
-              <div className="flex align-center justify-space-between">
-                <Text color="textSubtle">Claim Ended Bonus</Text>
-
-                <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-                  Claim
-                </Button>
-              </div>
-            )} */}
+            
           </Box>
-          <Button
-            variant={ButtonVariants.RED}
-            md
-            minWidth="100px"
-            mr="8px"
-            disabled={finixEarningsValue === 0 || pendingTx}
-            onClick={handleHarvest}
-          >
-            Harvest
-          </Button>
+          <Flex flexDirection="column" alignItems="space-between">
+            <Button
+              variant={ButtonVariants.RED}
+              md
+              minWidth="100px"
+              disabled={finixEarningsValue === 0 || pendingTx}
+              onClick={handleHarvest}
+            >
+              Harvest
+            </Button>
+            {
+              !hideDetailButton && (
+                <Button
+                  variant={ButtonVariants.BROWN}
+                  md
+                  minWidth="100px"
+                  onClick={handleGoToDetail}
+                  className="mt-s8"
+                >
+                  Detail
+                </Button>
+              )
+            }
+          </Flex>
         </Flex>
+        {/* {false && (
+          <div className="flex align-center justify-space-between">
+            <Text color="textSubtle">Claim Ended Bonus</Text>
+
+            <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
+              Claim
+            </Button>
+          </div>
+        )} */}
       </Box>
       <ToastContainer toasts={toasts} onRemove={hideToast} />
     </>

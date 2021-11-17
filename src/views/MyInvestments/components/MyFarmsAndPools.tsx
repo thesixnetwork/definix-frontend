@@ -216,6 +216,7 @@ const MyFarmsAndPools = () => {
           if (product.type === 'farm') {
             return (
               <FarmCard
+                importFrom="myInvestment"
                 key={product.data.pid}
                 farm={product.data}
                 myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}

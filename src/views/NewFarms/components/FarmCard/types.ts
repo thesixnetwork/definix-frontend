@@ -11,6 +11,7 @@ export interface FarmWithStakedValue extends Farm {
 }
 
 export interface FarmCardProps {
+  importFrom?: string
   farm: FarmWithStakedValue
   myBalancesInWallet?: { [key: string]: BigNumber }
   removed: boolean

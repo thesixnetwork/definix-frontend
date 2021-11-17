@@ -22,6 +22,7 @@ import {
 import UnlockButton from 'components/UnlockButton'
 
 interface FarmStakeActionProps {
+  useStakeAction?: boolean
   klaytn?: provider
   account?: string
   onPresentDeposit?: any
@@ -34,6 +35,7 @@ interface FarmStakeActionProps {
 }
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
+  useStakeAction = true,
   isApproved,
   hasAllowance,
   myLiquidity,
@@ -154,29 +156,33 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                       = {myLiquidityUSD}
                     </Text>
                   </Box>
-
-                  <Box>
-                    <Button
-                      minWidth="40px"
-                      md
-                      variant={ButtonVariants.LINE}
-                      disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
-                      onClick={onPresentWithdraw}
-                    >
-                      <MinusIcon />
-                    </Button>
-                    {isEnableAddStake && (
-                      <Button
-                        minWidth="40px"
-                        md
-                        variant={ButtonVariants.LINE}
-                        onClick={onPresentDeposit}
-                        style={{ marginLeft: '4px' }}
-                      >
-                        <PlusIcon />
-                      </Button>
-                    )}
-                  </Box>
+                  
+                  {
+                    useStakeAction && (
+                      <Box>
+                        <Button
+                          minWidth="40px"
+                          md
+                          variant={ButtonVariants.LINE}
+                          disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
+                          onClick={onPresentWithdraw}
+                        >
+                          <MinusIcon />
+                        </Button>
+                        {isEnableAddStake && (
+                          <Button
+                            minWidth="40px"
+                            md
+                            variant={ButtonVariants.LINE}
+                            onClick={onPresentDeposit}
+                            style={{ marginLeft: '4px' }}
+                          >
+                            <PlusIcon />
+                          </Button>
+                        )}
+                      </Box>
+                    )
+                  }
                 </Flex>
               )}
             </>
