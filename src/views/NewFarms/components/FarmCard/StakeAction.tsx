@@ -156,33 +156,31 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                       = {myLiquidityUSD}
                     </Text>
                   </Box>
-                  
-                  {
-                    useStakeAction && (
-                      <Box>
+
+                  {useStakeAction && (
+                    <Box>
+                      <Button
+                        minWidth="40px"
+                        md
+                        variant={ButtonVariants.LINE}
+                        disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
+                        onClick={onPresentWithdraw}
+                      >
+                        <MinusIcon />
+                      </Button>
+                      {isEnableAddStake && (
                         <Button
                           minWidth="40px"
                           md
                           variant={ButtonVariants.LINE}
-                          disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
-                          onClick={onPresentWithdraw}
+                          onClick={onPresentDeposit}
+                          style={{ marginLeft: '4px' }}
                         >
-                          <MinusIcon />
+                          <PlusIcon />
                         </Button>
-                        {isEnableAddStake && (
-                          <Button
-                            minWidth="40px"
-                            md
-                            variant={ButtonVariants.LINE}
-                            onClick={onPresentDeposit}
-                            style={{ marginLeft: '4px' }}
-                          >
-                            <PlusIcon />
-                          </Button>
-                        )}
-                      </Box>
-                    )
-                  }
+                      )}
+                    </Box>
+                  )}
                 </Flex>
               )}
             </>

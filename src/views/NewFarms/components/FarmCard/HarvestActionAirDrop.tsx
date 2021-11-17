@@ -101,7 +101,6 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
         <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
           <Box>
             <AirDrop value={finixEarningsValue} name="FINIX" price={earningsPrice(finixEarningsValue)} />
-            
           </Box>
           <Flex flexDirection="column" alignItems="space-between">
             <Button
@@ -113,19 +112,11 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
             >
               Harvest
             </Button>
-            {
-              !hideDetailButton && (
-                <Button
-                  variant={ButtonVariants.BROWN}
-                  md
-                  minWidth="100px"
-                  onClick={handleGoToDetail}
-                  className="mt-s8"
-                >
-                  Detail
-                </Button>
-              )
-            }
+            {!hideDetailButton && (
+              <Button variant={ButtonVariants.BROWN} md minWidth="100px" onClick={handleGoToDetail} className="mt-s8">
+                Detail
+              </Button>
+            )}
           </Flex>
         </Flex>
         {/* {false && (

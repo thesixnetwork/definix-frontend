@@ -181,14 +181,21 @@ const FarmCard: React.FC<FarmCardProps> = ({
       onSelectAddLP,
       onSelectRemoveLP,
       removed,
-      importFrom
+      importFrom,
     ],
   )
   /**
    * harvest action
    */
   const renderHarvestActionAirDrop = useCallback(
-    () => <HarvestActionAirDrop isMobile={isMobile} pid={pid} earnings={earnings} hideDetailButton={importFrom !== 'myInvestment'}/>,
+    () => (
+      <HarvestActionAirDrop
+        isMobile={isMobile}
+        pid={pid}
+        earnings={earnings}
+        hideDetailButton={importFrom !== 'myInvestment'}
+      />
+    ),
     [isMobile, earnings, pid, importFrom],
   )
 
@@ -204,76 +211,72 @@ const FarmCard: React.FC<FarmCardProps> = ({
   if (importFrom === 'myInvestment') {
     return (
       <>
-        {
-          isMobile ? null : (
-            <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-              <CardBody>
-                <Flex justifyContent="space-between">
-                  <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
-                  <Box style={{ width: '26%' }} className="mx-s24">
-                    {renderStakeAction()}
-                  </Box>
-                  <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
-                  {/* {renderIconButton()} */}
-                </Flex>
-              </CardBody>
-            </Card>
-          )
-        }
+        {isMobile ? null : (
+          <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
+            <CardBody>
+              <Flex justifyContent="space-between">
+                <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
+                <Box style={{ width: '26%' }} className="mx-s24">
+                  {renderStakeAction()}
+                </Box>
+                <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
+                {/* {renderIconButton()} */}
+              </Flex>
+            </CardBody>
+          </Card>
+        )}
       </>
     )
   }
 
   return (
     <>
-      {
-        isMobile ? (
-          <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-            <CardBody>
-              <Flex justifyContent="space-between">
-                {renderCardHeading()}
-                {renderIconButton()}
-              </Flex>
-              {renderEarningsSection()}
-            </CardBody>
-            {isOpenAccordion && (
-              <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
-                {renderHarvestActionAirDrop()}
-                <Box className="py-s24">{renderStakeAction()}</Box>
-                <Divider />
-                <Box className="pt-s24">{renderTotalLiquiditySection()}</Box>
-                <Box className="pt-s16">{renderMyBalanceSection()}</Box>
-                <Box className="py-s32">{renderLinkSection()}</Box>
+      {isMobile ? (
+        <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
+          <CardBody>
+            <Flex justifyContent="space-between">
+              {renderCardHeading()}
+              {renderIconButton()}
+            </Flex>
+            {renderEarningsSection()}
+          </CardBody>
+          {isOpenAccordion && (
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
+              {renderHarvestActionAirDrop()}
+              <Box className="py-s24">{renderStakeAction()}</Box>
+              <Divider />
+              <Box className="pt-s24">{renderTotalLiquiditySection()}</Box>
+              <Box className="pt-s16">{renderMyBalanceSection()}</Box>
+              <Box className="py-s32">{renderLinkSection()}</Box>
+            </Box>
+          )}
+        </Card>
+      ) : (
+        <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
+          <CardBody>
+            <Flex justifyContent="space-between">
+              <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
+              <Box style={{ width: '13%' }}>{renderTotalLiquiditySection()}</Box>
+              <Box style={{ width: '26%' }} className="mx-s24">
+                {renderMyBalanceSection()}
               </Box>
-            )}
-          </Card>
-        ) : (
-          <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-            <CardBody>
+              <Box style={{ width: '22%' }}>{renderEarningsSection()}</Box>
+              {renderIconButton()}
+            </Flex>
+          </CardBody>
+          {isOpenAccordion && (
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
               <Flex justifyContent="space-between">
-                <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
-                <Box style={{ width: '13%' }}>{renderTotalLiquiditySection()}</Box>
-                <Box style={{ width: '26%' }} className="mx-s24">
-                  {renderMyBalanceSection()}
+                <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
+                <Box style={{ width: '40%' }} className="mx-s24">
+                  {isApproved && renderHarvestActionAirDrop()}
                 </Box>
-                <Box style={{ width: '22%' }}>{renderEarningsSection()}</Box>
-                {renderIconButton()}
+                <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
               </Flex>
-            </CardBody>
-            {isOpenAccordion && (
-              <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
-                <Flex justifyContent="space-between">
-                  <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
-                  <Box style={{ width: '40%' }} className="mx-s24">
-                    {isApproved && renderHarvestActionAirDrop()}
-                  </Box>
-                  <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
-                </Flex>
-              </Box>
-            )}
-          </Card>
-        )
-      }
+            </Box>
+          )}
+        </Card>
+      )}
     </>
   )
 }
