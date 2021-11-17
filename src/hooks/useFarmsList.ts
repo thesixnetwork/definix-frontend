@@ -4,12 +4,7 @@ import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import {
-  usePriceKlayKusdt,
-  usePriceKethKusdt,
-  usePriceFinixUsd,
-  usePriceSixUsd,
-} from 'state/hooks'
+import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import { Farm } from 'state/types'
 import { useCallback } from 'react'
 
@@ -37,7 +32,7 @@ const useFarmsList = (farms: Farm[]) => {
       // const totalKlayRewardPerBlock = new BigNumber(KLAY_PER_BLOCK)
       const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
       const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-  
+
       /*
       // DO NOT DELETE THIS CODE 
       // DESCRIPTION THIS CODE CALCULATE BUNDLE APR 
@@ -69,9 +64,9 @@ const useFarmsList = (farms: Farm[]) => {
       }
       // END FN CAL APR BUNDLE
       */
-  
+
       // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
-  
+
       let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
       if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
         apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
@@ -92,10 +87,10 @@ const useFarmsList = (farms: Farm[]) => {
             .times(farm.dual.rewardPerBlock)
             .times(BLOCKS_PER_YEAR)
             .div(farm.lpTotalInQuoteToken)
-  
+
         apy = finixApy && dualApy && finixApy.plus(dualApy)
       }
-  
+
       const finixApy = apy
       /* 
       // DO NOT DELETE THIS CODE 
@@ -105,12 +100,12 @@ const useFarmsList = (farms: Farm[]) => {
   
       const sumApy = BigNumber.sum(finixApy, klayApy)
       */
-  
+
       let totalLiquidityValue = null
       if (farm.lpTotalInQuoteToken) {
         totalLiquidityValue = convertToPriceFromToken(farm.lpTotalInQuoteToken, farm.quoteTokenSymbol)
       }
-  
+
       return {
         ...farm,
         apy: finixApy,
@@ -120,22 +115,14 @@ const useFarmsList = (farms: Farm[]) => {
         totalLiquidityValue: Number(totalLiquidityValue),
       }
     })
-  }, [
-    convertToPriceFromToken,
-    farms,
-    finixPrice,
-    finixPriceVsKlay,
-    kethPriceUsd,
-    klayPrice,
-    sixPrice
-  ])
+  }, [convertToPriceFromToken, farms, finixPrice, finixPriceVsKlay, kethPriceUsd, klayPrice, sixPrice])
 
   const getFilteredFarms = useCallback(() => {
     const farmsWithApy = getFarmsList()
     const filteredFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
-    return (!_.compact(filteredFarms.map((farm) => farm.lpTotalInQuoteToken)).length) ? [] : filteredFarms
+    return !_.compact(filteredFarms.map((farm) => farm.lpTotalInQuoteToken)).length ? [] : filteredFarms
   }, [getFarmsList])
-  
+
   return getFilteredFarms()
 }
 

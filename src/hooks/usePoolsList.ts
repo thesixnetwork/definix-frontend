@@ -1,18 +1,11 @@
-import BigNumber from "bignumber.js"
+import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import { useCallback } from 'react'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import {
-  usePriceFinixUsd,
-  usePriceKethKusdt,
-  usePriceSixUsd,
-  usePriceKlayKusdt,
-  usePriceKethKlay,
-} from 'state/hooks'
+import { usePriceFinixUsd, usePriceKethKusdt, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
 import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
-
 
 const usePoolsList = ({ farms, pools }) => {
   const sixPriceUSD = usePriceSixUsd()
@@ -90,11 +83,11 @@ const usePoolsList = ({ farms, pools }) => {
       const isKlayPool = pool.poolCategory === PoolCategory.KLAYTN
       const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
       const stakingTokenFarm = getStakingTokenFarm(pool)
-  
+
       // tmp mulitplier to support ETH farms
       // Will be removed after the price api
       const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
-  
+
       // /!\ Assume that the farm quote price is KLAY
       const stakingTokenPriceInKLAY = isKlayPool
         ? new BigNumber(1)
@@ -104,7 +97,7 @@ const usePoolsList = ({ farms, pools }) => {
         rewardTokenFarm?.tokenPriceVsQuote,
         rewardTokenFarm?.quoteTokenSymbol,
       )
-  
+
       const totalRewardPricePerYear = rewardTokenPriceInKLAY.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
       const totalStakingTokenInPool = stakingTokenPriceInKLAY.times(getBalanceNumber(pool.totalStaked))
       let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
@@ -113,7 +106,7 @@ const usePoolsList = ({ farms, pools }) => {
       const tokenPerLp = new BigNumber(totalLP).div(new BigNumber(highestToken))
       const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(sixPriceUSD))
       const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
-  
+
       let klayApy = new BigNumber(0)
       switch (pool.sousId) {
         case 0: {
@@ -190,10 +183,10 @@ const usePoolsList = ({ farms, pools }) => {
     klayPriceUSD,
     pools,
     priceToKlay,
-    sixPriceUSD
+    sixPriceUSD,
   ])
 
-  return (!_.compact(pools.map((pool) => pool.totalStaked)).length) ? [] : getPoolsList()
+  return !_.compact(pools.map((pool) => pool.totalStaked)).length ? [] : getPoolsList()
 }
 
 export default usePoolsList

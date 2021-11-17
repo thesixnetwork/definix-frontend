@@ -10,10 +10,7 @@ import { Route, useRouteMatch } from 'react-router-dom'
 import useRefresh from 'hooks/useRefresh'
 import useFarmsList from 'hooks/useFarmsList'
 import { fetchFarmUserDataAsync, fetchBalances } from 'state/actions'
-import {
-  useFarms,
-  useBalances,
-} from 'state/hooks'
+import { useFarms, useBalances } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { TitleSet, Box, DropdownOption } from 'definixswap-uikit'

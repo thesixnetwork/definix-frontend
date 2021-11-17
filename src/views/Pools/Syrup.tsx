@@ -9,11 +9,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import usePoolsList from 'hooks/usePoolsList'
-import {
-  useFarms,
-  usePools,
-  useBalances,
-} from 'state/hooks'
+import { useFarms, usePools, useBalances } from 'state/hooks'
 import { fetchBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
 import { TitleSet, Box, DropdownOption } from 'definixswap-uikit'
