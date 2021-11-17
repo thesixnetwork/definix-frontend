@@ -320,6 +320,66 @@ const CardAutoRebalancing = ({ className = '' }) => {
   return (
     <div>
       <StyledSlider {...settings}>
+      <div>
+          <StyledBannerVelo className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                VELO POOL IS NOW ON DEFINIX’S PARTNERSHIP POOL
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                Get chance to earn maximum of 300,000 VELO by staking FINIX
+              </Text>
+              <Text color={isDark ? 'white' : 'black'} fontSize="12px" bold>
+                Start Staking 15 November 2021 03:00 P.M. (GMT+7)
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as="a" href="/partnership-pool">
+                  <span>Interesting, I want to stake</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerVelo>
+        </div>
+       
+        <div>
+          <StyledBannerLongTerm className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                FINIX LONG-TERM STAKE WITH VOTING SYSTEM
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                New financial product from DEFINIX. It is the single-sided pool stake FINIX earn vFINIX.{' '}
+              </Text>
+              <Text bold fontSize="12px">
+                vFINIX can vote for rewarding fee return from a liquidity pool and discount fee conditioning for
+                Rebalancing Farm.
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as="a"  href="https://klaytn.definix.com/long-term-stake">
+                  <span>Go to stake</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerLongTerm>
+        </div>
+        <div>
+          <StyledBannerVoting className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                Community Proposal is a great way to say your words and to reflects the community feeling about your
+                ideas.{' '}
+              </Text>
+              <div className="mt-6">
+                <SpecialOutline as={Link} to="/">
+                  <span>Coming soon!</span>
+                </SpecialOutline>
+              </div>
+            </div>
+          </StyledBannerVoting>
+        </div>
         <div>
           <StyledBannerLady className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
@@ -344,66 +404,6 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </div>
             </div>
           </StyledBannerLady>
-        </div>
-        <div>
-          <StyledBannerLongTerm className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                FINIX LONG-TERM STAKE WITH VOTING SYSTEM
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                New financial product from DEFINIX. It is the single-sided pool stake FINIX earn vFINIX.{' '}
-              </Text>
-              <Text bold fontSize="12px">
-                vFINIX can vote for rewarding fee return from a liquidity pool and discount fee conditioning for
-                Rebalancing Farm.
-              </Text>
-
-              <div className="mt-6">
-                <SpecialOutline as={Link} to="/">
-                  <span>Coming soon!</span>
-                </SpecialOutline>
-              </div>
-            </div>
-          </StyledBannerLongTerm>
-        </div>
-        <div>
-          <StyledBannerVoting className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                Community Proposal is a great way to say your words and to reflects the community feeling about your
-                ideas.{' '}
-              </Text>
-              <div className="mt-6">
-                <SpecialOutline as={Link} to="/">
-                  <span>Coming soon!</span>
-                </SpecialOutline>
-              </div>
-            </div>
-          </StyledBannerVoting>
-        </div>
-        <div>
-          <StyledBannerVelo className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                VELO POOL IS NOW ON DEFINIX’S PARTNERSHIP POOL
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                Get chance to earn maximum of 300,000 VELO by staking FINIX
-              </Text>
-              <Text color={isDark ? 'white' : 'black'} fontSize="12px" bold>
-                Start Staking 15 November 2021 03:00 P.M. (GMT+7)
-              </Text>
-              <div className="mt-6">
-                <SpecialButton as="a" href="/partnership-pool">
-                  <span>Interesting, I want to stake</span>
-                </SpecialButton>
-              </div>
-            </div>
-          </StyledBannerVelo>
         </div>
       </StyledSlider>
     </div>
