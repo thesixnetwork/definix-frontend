@@ -1,17 +1,20 @@
 import BigNumber from 'bignumber.js'
-
 import numeral from 'numeral'
+import _ from 'lodash'
+import React, { useMemo, useEffect, useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
-import { getAddress } from 'utils/addressHelpers'
-
 import useRefresh from 'hooks/useRefresh'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import _ from 'lodash'
-import React, { useCallback, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import useFarmsList from 'hooks/useFarmsList'
+import usePoolsList from 'hooks/usePoolsList'
+import { getAddress } from 'utils/addressHelpers'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getTokenSymbol } from 'utils/getTokenSymbol'
+
 import { fetchFarmUserDataAsync } from 'state/actions'
 import {
   useBalances,
@@ -27,9 +30,8 @@ import {
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, ChevronRightIcon, IconButton, Text } from 'uikit-dev'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
-import FarmCard from '../../Farms/components/FarmCard/FarmCard'
+import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { FarmWithStakedValue } from '../../Farms/components/FarmCard/types'
 import PoolCard from '../../Pools/components/PoolCard/PoolCard'
@@ -103,10 +105,75 @@ const List = styled.div`
 `
 
 const MyFarmsAndPools = () => {
+  const finixPrice = usePriceFinixUsd()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const balances = useBalances(account)
+  const farms = useFarms()
+  const farmsWithApy = useFarmsList(farms)
+  const stakedFarms = useMemo(() => {
+    return farmsWithApy.reduce((result, farm) => {
+      let arr = result
+      if (farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)) {
+        arr = [
+          ...result,
+          {
+            type: 'farm',
+            data: farm,
+          },
+        ]
+      }
+      return arr
+    }, [])
+  }, [farmsWithApy])
+  const pools = usePools(account)
+  const poolsWithApy = usePoolsList({ farms, pools })
+  // const stakedPools = useMemo(() => {
+  //   return poolsWithApy.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
+  // }, [poolsWithApy])
+  const stakedPools = useMemo(() => {
+    return poolsWithApy.reduce((result, pool) => {
+      let arr = result
+      if (pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)) {
+        arr = [
+          ...result,
+          {
+            type: 'pool',
+            data: pool,
+          },
+        ]
+      }
+      return arr
+    }, [])
+  }, [poolsWithApy])
+
+  const stakedProducts = useMemo(() => {
+    return [...stakedFarms, ...stakedPools]
+  }, [stakedFarms, stakedPools])
+
+  const getMyFarmBalancesInWallet = useCallback(
+    (tokens: string[]) => {
+      return tokens.reduce((result, token) => {
+        const obj = {}
+        const realTokenAddress = getAddress(token)
+        obj[getTokenSymbol(realTokenAddress)] = balances ? _.get(balances, realTokenAddress) : null
+        return { ...result, ...obj }
+      }, {})
+    },
+    [balances],
+  )
+
+  const getMyPoolBalanceInWallet = useCallback(
+    (tokenName: string, tokenAddress: string) => {
+      if (balances) {
+        const address = tokenName === 'WKLAY' ? 'main' : tokenAddress
+        return _.get(balances, address)
+      }
+      return null
+    },
+    [balances],
+  )
 
   const rebalances = useRebalances()
-  const balances = useBalances(account) || {}
   const rebalanceBalances = useRebalanceBalances(account) || {}
   const stakedRebalances = rebalances.filter(
     (r) =>
@@ -142,205 +209,34 @@ const MyFarmsAndPools = () => {
     }
   }, [dispatch, account, rebalances])
 
-  // Farms
-  const farmsLP = useFarms()
-  const klayPrice = usePriceKlayKusdt()
-  const sixPrice = usePriceSixUsd()
-  const finixPrice = usePriceFinixUsd()
-  const ethPriceUsd = usePriceKethKusdt()
-  const listView = true
-  const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 1 && farms.multiplier !== '0X')
-  const stackedOnlyFarms = activeFarms.filter(
-    (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
-  )
-
-  const farmsList = useCallback(
-    (farmsToDisplay, removed: boolean) => {
-      const finixPriceVsBNB = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
-      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
-        if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
-          return farm
-        }
-        const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
-          .times(farm.BONUS_MULTIPLIER)
-          .div(new BigNumber(10).pow(18))
-        const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
-        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-
-        // finixPriceInQuote * finixRewardPerYear / lpTotalInQuoteToken
-        let apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-
-        if (farm.quoteTokenSymbol === QuoteToken.KUSDT) {
-          apy = finixPriceVsBNB.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(klayPrice)
-        } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
-          apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-          apy = finixPrice.div(ethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-          apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
-          apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.dual) {
-          const finixApy =
-            farm && finixPriceVsBNB.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
-          const dualApy =
-            farm.tokenPriceVsQuote &&
-            new BigNumber(farm.tokenPriceVsQuote)
-              .times(farm.dual.rewardPerBlock)
-              .times(BLOCKS_PER_YEAR)
-              .div(farm.lpTotalInQuoteToken)
-
-          apy = finixApy && dualApy && finixApy.plus(dualApy)
-        }
-
-        return { ...farm, apy }
-      })
-
-      return farmsToDisplayWithAPY.map((farm) => (
-        <FarmCard
-          key={farm.pid}
-          farm={farm}
-          removed={removed}
-          klayPrice={klayPrice}
-          kethPrice={ethPriceUsd}
-          sixPrice={sixPrice}
-          finixPrice={finixPrice}
-          klaytn={klaytn}
-          account={account}
-          isHorizontal={listView}
-        />
-      ))
-    },
-    [sixPrice, klayPrice, ethPriceUsd, finixPrice, klaytn, account, listView],
-  )
-
-  // Pools
-  const pools = usePools(account)
-  const farms = useFarms()
-  const sixPriceUSD = usePriceSixUsd()
-  const klayPriceUSD = usePriceKlayKusdt()
-  const ethPriceKlay = usePriceKethKlay()
-  const block = useBlock()
-
-  const priceToKlay = (tokenName: string, tokenPrice: BigNumber, quoteToken: QuoteToken): BigNumber => {
-    const tokenPriceKLAYTN = new BigNumber(tokenPrice)
-    if (tokenName === 'KLAY') {
-      return new BigNumber(1)
-    }
-    if (tokenPrice && quoteToken === QuoteToken.KUSDT) {
-      return tokenPriceKLAYTN.div(klayPriceUSD)
-    }
-    return tokenPriceKLAYTN
-  }
-
-  const poolsWithApy = pools.map((pool) => {
-    const isKlayPool = pool.poolCategory === PoolCategory.KLAYTN
-    const rewardTokenFarm = farms.find((f) => f.tokenSymbol === pool.tokenName)
-    let stakingTokenFarm = farms.find((s) => s.tokenSymbol === pool.stakingTokenName)
-    switch (pool.sousId) {
-      case 0:
-        stakingTokenFarm = farms.find((s) => s.pid === 0)
-        break
-      case 1:
-        stakingTokenFarm = farms.find((s) => s.pid === 1)
-        break
-      case 2:
-        stakingTokenFarm = farms.find((s) => s.pid === 2)
-        break
-      case 3:
-        stakingTokenFarm = farms.find((s) => s.pid === 3)
-        break
-      case 4:
-        stakingTokenFarm = farms.find((s) => s.pid === 4)
-        break
-      case 5:
-        stakingTokenFarm = farms.find((s) => s.pid === 5)
-        break
-      case 6:
-        stakingTokenFarm = farms.find((s) => s.pid === 6)
-        break
-      default:
-        break
-    }
-
-    // tmp mulitplier to support ETH farms
-    // Will be removed after the price api
-    const tempMultiplier = stakingTokenFarm?.quoteTokenSymbol === 'KETH' ? ethPriceKlay : 1
-
-    // /!\ Assume that the farm quote price is KLAY
-    const stakingTokenPriceInKLAY = isKlayPool
-      ? new BigNumber(1)
-      : new BigNumber(stakingTokenFarm?.tokenPriceVsQuote).times(tempMultiplier)
-    const rewardTokenPriceInKLAY = priceToKlay(
-      pool.tokenName,
-      rewardTokenFarm?.tokenPriceVsQuote,
-      rewardTokenFarm?.quoteTokenSymbol,
-    )
-
-    const totalRewardPricePerYear = rewardTokenPriceInKLAY.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
-    const totalStakingTokenInPool = stakingTokenPriceInKLAY.times(getBalanceNumber(pool.totalStaked))
-    let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
-    const totalLP = new BigNumber(stakingTokenFarm.lpTotalSupply).div(new BigNumber(10).pow(18))
-    let highestToken
-    if (stakingTokenFarm.tokenSymbol === QuoteToken.SIX) {
-      highestToken = stakingTokenFarm.tokenAmount
-    } else if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
-      highestToken = stakingTokenFarm.quoteTokenAmount
-    } else if (stakingTokenFarm.tokenAmount > stakingTokenFarm.quoteTokenAmount) {
-      highestToken = stakingTokenFarm.tokenAmount
-    } else {
-      highestToken = stakingTokenFarm.quoteTokenAmount
-    }
-    const tokenPerLp = new BigNumber(totalLP).div(new BigNumber(highestToken))
-    const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(sixPriceUSD))
-    const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
-
-    switch (pool.sousId) {
-      case 0: {
-        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
-          .times(stakingTokenFarm.BONUS_MULTIPLIER)
-          .div(new BigNumber(10).pow(18))
-        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
-        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
-        apy = finixRewardPerYear.div(currentTotalStaked).times(100)
-        break
-      }
-      case 1: {
-        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
-          .times(stakingTokenFarm.BONUS_MULTIPLIER)
-          .div(new BigNumber(10).pow(18))
-        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
-        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
-        const finixInSix = new BigNumber(currentTotalStaked).times(sixPriceUSD).div(finixPrice)
-        apy = finixRewardPerYear.div(finixInSix).times(100)
-        break
-      }
-      case 2:
-      case 3:
-      case 4:
-      case 5:
-      case 6:
-      default:
-        break
-    }
-    return {
-      ...pool,
-      isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
-      apy,
-      estimatePrice,
-      farm: stakingTokenFarm,
-    }
-  })
-
-  const stackedOnlyPools = poolsWithApy.filter(
-    (pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0),
-  )
-
   return (
     <>
-      <List>
+      {!!stakedProducts.length &&
+        stakedProducts.map((product) => {
+          if (product.type === 'farm') {
+            return (
+              <FarmCard
+                key={product.data.pid}
+                farm={product.data}
+                myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
+                removed={false}
+                klaytn={klaytn}
+                account={account}
+              />
+            )
+          }
+          if (product.type === 'pool') {
+            return (
+              <PoolCard
+                key={product.data.sousId}
+                pool={product.data}
+                myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
+              />
+            )
+          }
+          return null
+        })}
+      {/* <List>
         <>
           {stakedRebalances.map((r) => {
             const thisBalance = r.enableAutoCompound ? rebalanceBalances : balances
@@ -430,13 +326,13 @@ const MyFarmsAndPools = () => {
             )
           })}
 
-          {/* {stackedOnlyPools.map((pool) => (
+          {stackedOnlyPools.map((pool) => (
             <PoolCard key={pool.sousId} pool={pool} isHorizontal={listView} />
-          ))} */}
+          ))}
         </>
 
         {farmsList(stackedOnlyFarms, false)}
-      </List>
+      </List> */}
     </>
   )
 }

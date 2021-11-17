@@ -1,15 +1,15 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import FlexLayout from 'components/layout/FlexLayout'
-import useRefresh from 'hooks/useRefresh'
+import { provider } from 'web3-core'
 import React, { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
+import FlexLayout from 'components/layout/FlexLayout'
+import useRefresh from 'hooks/useRefresh'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import styled from 'styled-components'
-import { Heading, Text } from 'uikit-dev'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import { provider } from 'web3-core'
+import { Text, Box, TitleSet } from 'definixswap-uikit'
 import Flip from '../../uikit-dev/components/Flip'
 import CardSummary from './components/CardSummary'
 import MyFarmsAndPools from './components/MyFarmsAndPools'
@@ -38,6 +38,7 @@ const MaxWidth = styled.div`
 `
 
 const MyInvestments: React.FC = () => {
+  const { t } = useTranslation()
   const { path } = useRouteMatch()
   const { account }: { account: string; klaytn: provider } = useWallet()
 
@@ -98,7 +99,14 @@ const MyInvestments: React.FC = () => {
       <Helmet>
         <title>My investments - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
+      <Box className="">
+        <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
+        <Route exact path={`${path}`}>
+          <CardSummary />
+          <MyFarmsAndPools />
+        </Route>
+      </Box>
+      {/* <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
             <div className="mb-5">
@@ -120,7 +128,7 @@ const MyInvestments: React.FC = () => {
             </TimerWrapper>
           </MaxWidth>
         </LeftPanel>
-      </TwoPanelLayout>
+      </TwoPanelLayout> */}
 
       {isOpenModal && React.isValidElement(modalNode) && (
         <ModalWrapper>
@@ -133,33 +141,33 @@ const MyInvestments: React.FC = () => {
   )
 }
 
-const TimerWrapper = ({ isPhrase2, date, children }) => {
-  return isPhrase2 ? (
-    children
-  ) : (
-    <>
-      <div>
-        <br />
-        <Flip date={date} />
-        <br />
-        <br />
-        <br />
-      </div>
-      <div
-        tabIndex={0}
-        role="button"
-        style={{ opacity: 0.4, pointerEvents: 'none' }}
-        onClick={(e) => {
-          e.preventDefault()
-        }}
-        onKeyDown={(e) => {
-          e.preventDefault()
-        }}
-      >
-        {children}
-      </div>
-    </>
-  )
-}
+// const TimerWrapper = ({ isPhrase2, date, children }) => {
+//   return isPhrase2 ? (
+//     children
+//   ) : (
+//     <>
+//       <div>
+//         <br />
+//         <Flip date={date} />
+//         <br />
+//         <br />
+//         <br />
+//       </div>
+//       <div
+//         tabIndex={0}
+//         role="button"
+//         style={{ opacity: 0.4, pointerEvents: 'none' }}
+//         onClick={(e) => {
+//           e.preventDefault()
+//         }}
+//         onKeyDown={(e) => {
+//           e.preventDefault()
+//         }}
+//       >
+//         {children}
+//       </div>
+//     </>
+//   )
+// }
 
 export default MyInvestments
