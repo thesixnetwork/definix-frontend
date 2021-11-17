@@ -22,7 +22,6 @@ const Banner = styled.div`
   text-align: center;
 `
 
-
 const StartVoting = () => {
   const { isDark } = useTheme()
   return (
@@ -31,8 +30,12 @@ const StartVoting = () => {
         <Banner>
           <img src={development} alt="dev-voting" width="30%" />
           <div className="mt-5">
-            <Text fontSize="20px" bold color={isDark ? '#fff' : '#737375'}>Decentralized Voting</Text>
-            <Text fontSize="14px" color={isDark ? '#fff' : '#737375'}>is under development.</Text>
+            <Text fontSize="20px" bold color={isDark ? '#fff' : '#737375'}>
+              Decentralized Voting
+            </Text>
+            <Text fontSize="14px" color={isDark ? '#fff' : '#737375'}>
+              is under development.
+            </Text>
           </div>
         </Banner>
       </Background>
