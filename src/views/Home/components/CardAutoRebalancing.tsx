@@ -340,7 +340,24 @@ const CardAutoRebalancing = ({ className = '' }) => {
             </div>
           </StyledBannerVelo>
         </div>
-
+        <div>
+          <StyledBannerVoting className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                Community Proposal is a great way to say your words and to reflects the community feeling about your
+                ideas.{' '}
+              </Text>
+              <div className="mt-6">
+                <SpecialOutline as={Link} to="/">
+                  <span>Coming soon!</span>
+                </SpecialOutline>
+              </div>
+            </div>
+          </StyledBannerVoting>
+        </div>
         <div>
           <StyledBannerLongTerm className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
@@ -361,24 +378,6 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </div>
             </div>
           </StyledBannerLongTerm>
-        </div>
-        <div>
-          <StyledBannerVoting className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                Community Proposal is a great way to say your words and to reflects the community feeling about your
-                ideas.{' '}
-              </Text>
-              <div className="mt-6">
-                <SpecialOutline as={Link} to="/">
-                  <span>Coming soon!</span>
-                </SpecialOutline>
-              </div>
-            </div>
-          </StyledBannerVoting>
         </div>
         <div>
           <StyledBannerLady className={className}>
