@@ -16,6 +16,6 @@ export interface FarmCardProps {
   removed: boolean
   klaytn?: provider
   account?: string
-  onSelectAddLP: (props: any) => void
-  onSelectRemoveLP: (props: any) => void
+  onSelectAddLP?: (props: any) => void
+  onSelectRemoveLP?: (props: any) => void
 }

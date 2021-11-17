@@ -13,8 +13,8 @@ export interface PoolWithApy extends Pool {
 export interface PoolCardProps {
   pool: PoolWithApy
   myBalanceInWallet?: BigNumber
-  onSelectAdd: (props: any) => void
-  onSelectRemove: (props: any) => void
+  onSelectAdd?: (props: any) => void
+  onSelectRemove?: (props: any) => void
 }
 
 export interface CardHeadingProps {

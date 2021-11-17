@@ -18,7 +18,6 @@ import {
   useMatchBreakpoints,
 } from 'definixswap-uikit'
 import CardHeading from './CardHeading'
-// import CardHeadingAccordion from './CardHeadingAccordion'
 import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
@@ -201,24 +200,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   if (isMobile) {
     return (
-      // <HorizontalMobileStyle className="mb-3">
-      //   <CardHeadingAccordion
-      //     farm={farm}
-      //     lpLabel={lpTokenName}
-      //     removed={removed}
-      //     addLiquidityUrl={addLiquidityUrl}
-      //     finixPrice={finixPrice}
-      //     className=""
-      //     isOpenAccordion={isOpenAccordion}
-      //     setIsOpenAccordion={setIsOpenAccordion}
-      //   />
-      //   <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-      //     {renderStakeAction('pa-5')}
-      //     {/* renderHarvestAction('pa-5') */}
-      //     {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-      //     {renderDetailsSection('px-5 py-3', false)}
-      //   </div>
-      // </HorizontalMobileStyle>
       <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
         <CardBody>
           <Flex justifyContent="space-between">
