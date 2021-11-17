@@ -320,7 +320,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
   return (
     <div>
       <StyledSlider {...settings}>
-      <div>
+        <div>
           <StyledBannerVelo className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
               <Heading className="mb-2" color="primary">
@@ -340,7 +340,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
             </div>
           </StyledBannerVelo>
         </div>
-       
+
         <div>
           <StyledBannerLongTerm className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
@@ -355,7 +355,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 Rebalancing Farm.
               </Text>
               <div className="mt-6">
-                <SpecialButton as="a"  href="https://klaytn.definix.com/long-term-stake">
+                <SpecialButton as="a" href="https://klaytn.definix.com/long-term-stake">
                   <span>Go to stake</span>
                 </SpecialButton>
               </div>
