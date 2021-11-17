@@ -20,34 +20,25 @@ import {
   Box,
 } from 'definixswap-uikit'
 import UnlockButton from 'components/UnlockButton'
-import { FarmWithStakedValue } from './types'
 
 interface FarmStakeActionProps {
-  farm: FarmWithStakedValue
   klaytn?: provider
   account?: string
-  addLiquidityUrl?: string
-  className?: string
   onPresentDeposit?: any
   onPresentWithdraw?: any
   isApproved: boolean
+  hasAllowance: boolean
+  lpSymbol: string
   myLiquidity: BigNumber
   myLiquidityUSD: any
 }
 
-const IconButtonWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-  svg {
-    width: 20px;
-  }
-`
-
 const StakeAction: React.FC<FarmStakeActionProps> = ({
   isApproved,
+  hasAllowance,
   myLiquidity,
   myLiquidityUSD,
-  farm,
+  lpSymbol,
   klaytn,
   account,
   onPresentDeposit,
@@ -58,7 +49,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const [requestedApproval, setRequestedApproval] = useState(false)
 
-  const { lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
+  const { lpAddresses } = useFarmFromSymbol(lpSymbol)
   const lpAddress = getAddress(lpAddresses)
   const lpContract = useMemo(() => getContract(klaytn as provider, lpAddress), [klaytn, lpAddress])
   const { onApprove } = useApprove(lpContract)
@@ -141,44 +132,56 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       </Text>
       {account ? (
         <>
-          {needApproveContract ? (
-            <Button width="100%" md variant={ButtonVariants.BROWN} disabled={requestedApproval} onClick={handleApprove}>
-              Approve Contract
-            </Button>
-          ) : (
-            <Flex justifyContent="space-between">
-              <Box>
-                <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-                  {myLiquidityValue}
-                </Text>
-                <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                  = {myLiquidityUSD}
-                </Text>
-              </Box>
-
-              <Box>
+          {hasAllowance ? (
+            <>
+              {needApproveContract ? (
                 <Button
-                  minWidth="40px"
+                  width="100%"
                   md
-                  variant={ButtonVariants.LINE}
-                  disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
-                  onClick={onPresentWithdraw}
+                  variant={ButtonVariants.BROWN}
+                  disabled={requestedApproval}
+                  onClick={handleApprove}
                 >
-                  <MinusIcon />
+                  Approve Contract
                 </Button>
-                {isEnableAddStake && (
-                  <Button
-                    minWidth="40px"
-                    md
-                    variant={ButtonVariants.LINE}
-                    onClick={onPresentDeposit}
-                    style={{ marginLeft: '4px' }}
-                  >
-                    <PlusIcon />
-                  </Button>
-                )}
-              </Box>
-            </Flex>
+              ) : (
+                <Flex justifyContent="space-between">
+                  <Box>
+                    <Text textStyle="R_18M" color={ColorStyles.BLACK}>
+                      {myLiquidityValue}
+                    </Text>
+                    <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
+                      = {myLiquidityUSD}
+                    </Text>
+                  </Box>
+
+                  <Box>
+                    <Button
+                      minWidth="40px"
+                      md
+                      variant={ButtonVariants.LINE}
+                      disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
+                      onClick={onPresentWithdraw}
+                    >
+                      <MinusIcon />
+                    </Button>
+                    {isEnableAddStake && (
+                      <Button
+                        minWidth="40px"
+                        md
+                        variant={ButtonVariants.LINE}
+                        onClick={onPresentDeposit}
+                        style={{ marginLeft: '4px' }}
+                      >
+                        <PlusIcon />
+                      </Button>
+                    )}
+                  </Box>
+                </Flex>
+              )}
+            </>
+          ) : (
+            <p>loading...</p>
           )}
         </>
       ) : (

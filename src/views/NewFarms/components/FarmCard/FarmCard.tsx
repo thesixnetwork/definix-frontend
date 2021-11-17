@@ -121,18 +121,21 @@ const FarmCard: React.FC<FarmCardProps> = ({
    * stake action
    */
   const isApproved = useMemo(() => {
-    return account && allowance && allowance.isGreaterThan(0)
-  }, [account, allowance])
+    return account && !!farm.userData
+  }, [farm, account])
+  const hasAllowance = useMemo(() => {
+    return isApproved && allowance && allowance.isGreaterThan(0)
+  }, [isApproved, allowance])
   const renderStakeAction = useCallback(
-    (className?: string) => (
+    () => (
       <StakeAction
         isApproved={isApproved}
+        hasAllowance={hasAllowance}
         myLiquidity={stakedBalance}
         myLiquidityUSD={myLiquidityUSD}
-        farm={farm}
+        lpSymbol={farm.lpSymbol}
         klaytn={klaytn}
         account={account}
-        className={className}
         onPresentDeposit={() => {
           onSelectAddLP({
             pid,
@@ -166,6 +169,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       klaytn,
       farm,
       isApproved,
+      hasAllowance,
       stakedBalance,
       lpTokenName,
       pid,
