@@ -11,6 +11,18 @@ const StyledButton = styled(Button)`
   display: unset;
 `
 
+const StyledButtonVote = styled(Button)`
+  background-color: transparent;
+  border: 1px solid #30adff;
+  color: #30adff;
+`
+
+const StyledButoonCore = styled(Button)`
+  background-color: transparent;
+  border: 1px solid #55bd92;
+  color: #55bd92;
+`
+
 const TopicList = () => {
   return (
     <div className="bd-t pa-5 flex justify-space-between">
@@ -22,21 +34,12 @@ const TopicList = () => {
           <Text fontSize="14px !important">Vote Now</Text>&nbsp;
           <Text fontSize="14px !important">12-Nov-21 15:00:00 GMT+9</Text>
         </div>
-        <Button
-          radii="small"
-          color="primary"
-          style={{ backgroundColor: 'transparent', border: `1px solid #30ADFF`, color: '#30ADFF' }}
-        >
+        <StyledButtonVote radii="small" color="primary">
           Vote Now
-        </Button>
-        <Button
-          radii="small"
-          color="primary"
-          className="ml-2"
-          style={{ backgroundColor: 'transparent', border: `1px solid #55BD92`, color: '#55BD92' }}
-        >
+        </StyledButtonVote>
+        <StyledButoonCore radii="small" color="primary" className="ml-2">
           Core
-        </Button>
+        </StyledButoonCore>
       </div>
       <StyledButton as={Link} to="/voting/detail" className="align-self-center">
         <Image src={next} width={28} height={28} />
