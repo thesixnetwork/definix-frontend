@@ -57,9 +57,7 @@ const CardProposals = () => {
     <>
       <Proposals>
         <Header>
-          <Heading fontSize="26px !important">
-            Proposals
-          </Heading>
+          <Heading fontSize="26px !important">Proposals</Heading>
           <SelectType chartName={chartName} setChartName={setChartName} className="ml-5" />
         </Header>
         <Tabs>
