@@ -146,7 +146,6 @@ const CardInput = ({
       const thisInput = currentBalance.isLessThan(new BigNumber(currentInput))
         ? currentBalance
         : new BigNumber(currentInput)
-      const usdToken = _.get(rebalance, 'usdToken.0', {})
 
       const tx = await rebalanceContract.methods
         .removeFund(
