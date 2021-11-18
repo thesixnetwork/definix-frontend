@@ -130,43 +130,44 @@
     "type": "function"
   },
   {
-    "constant": false,
     "inputs": [
       {
+        "internalType": "uint256",
         "name": "_lpAmount",
         "type": "uint256"
       },
       {
+        "internalType": "bool",
         "name": "_toAllAssets",
         "type": "bool"
       },
       {
+        "internalType": "uint256[]",
         "name": "_outputRatios",
         "type": "uint256[]"
-      },
-      {
-        "name": "_outputUSDRatio",
-        "type": "uint256"
       }
     ],
     "name": "removeFund",
     "outputs": [
       {
+        "internalType": "uint256[]",
         "name": "outAmounts",
         "type": "uint256[]"
       },
       {
+        "internalType": "uint256[]",
         "name": "outAmountsInUSD",
         "type": "uint256[]"
       },
       {
+        "internalType": "uint256",
         "name": "outUSD",
         "type": "uint256"
       }
     ],
-    "payable": true,
     "stateMutability": "payable",
-    "type": "function"
+    "type": "function",
+    "payable": true
   },
   {
     "constant": true,

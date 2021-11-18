@@ -93,7 +93,6 @@ const InlineAssetRatioLabel = ({ coin, className = '' }) => {
     if (coin.symbol === 'WBNB') return 'BNB'
     return coin.symbol
   })()
-  console.log('coin', coin)
   return (
     <div className={`flex justify-space-between align-center ${className}`}>
       <Coin className="col-8">
