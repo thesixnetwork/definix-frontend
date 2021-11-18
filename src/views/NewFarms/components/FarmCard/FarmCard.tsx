@@ -16,7 +16,7 @@ import {
   Divider,
   ColorStyles,
   useMatchBreakpoints,
-  Grid
+  Grid,
 } from 'definixswap-uikit'
 import CardHeading from './CardHeading'
 import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
