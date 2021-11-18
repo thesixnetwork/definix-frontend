@@ -47,6 +47,10 @@ const Voting: React.FC = () => {
           </LeftPanel>
         </TwoPanelLayout>
       </Route>
+
+      <Route exact path={`${path}/detail`}>
+        <StartVoting />
+      </Route>
     </>
   )
 }

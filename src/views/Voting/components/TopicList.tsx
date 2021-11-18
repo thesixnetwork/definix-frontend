@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { Card, Heading, Text, Button, Image } from '../../../uikit-dev'
 import next from '../../../uikit-dev/images/next.png'
@@ -59,9 +60,18 @@ const TopicList = () => {
           Core
         </Button>
       </div>
-      <div className="align-self-center">
+      <Button
+        as={Link}
+        to="/voting/detail"
+        style={{
+          backgroundColor: 'transparent',
+          border: 'unset',
+          display: 'unset',
+        }}
+        className="align-self-center"
+      >
         <Image src={next} width={28} height={28} />
-      </div>
+      </Button>
     </div>
   )
 }
