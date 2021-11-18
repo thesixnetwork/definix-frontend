@@ -2,35 +2,13 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import { Card, Heading, Text, Button, Image } from '../../../uikit-dev'
+import { Heading, Text, Button, Image } from '../../../uikit-dev'
 import next from '../../../uikit-dev/images/next.png'
 
-const Proposals = styled(Card)`
-  width: 100%;
-  position: relative;
-  content: '';
-  background-color: ${({ theme }) => theme.mediaQueries.md};
-  background-size: cover;
-  background-repeat: no-repeat;
-  right: 0;
-
-  a {
-    display: block;
-  }
-`
-
-const Tabs = styled(Card)`
-  width: 100%;
-  position: relative;
-  content: '';
-  background-color: ${({ theme }) => theme.mediaQueries.md};
-  background-size: cover;
-  background-repeat: no-repeat;
-  right: 0;
-
-  a {
-    display: block;
-  }
+const StyledButton = styled(Button)`
+  background-color: transparent;
+  border: unset;
+  display: unset;
 `
 
 const TopicList = () => {
@@ -60,18 +38,9 @@ const TopicList = () => {
           Core
         </Button>
       </div>
-      <Button
-        as={Link}
-        to="/voting/detail"
-        style={{
-          backgroundColor: 'transparent',
-          border: 'unset',
-          display: 'unset',
-        }}
-        className="align-self-center"
-      >
+      <StyledButton as={Link} to="/voting/detail" className="align-self-center">
         <Image src={next} width={28} height={28} />
-      </Button>
+      </StyledButton>
     </div>
   )
 }
