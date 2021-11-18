@@ -422,7 +422,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { onSuperHarvest } = useSuperHarvest()
 
   const _superHarvest = useCallback(() => {
-    const selected =  Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
+    const selected = Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
     if (harvestProgress !== -1 && harvestProgress <= Object.values(selected).length) {
       if (_.get(Object.values(selected)[harvestProgress], 'checked')) {
         if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
