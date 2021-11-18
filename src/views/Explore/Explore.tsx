@@ -5,14 +5,14 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
+import { useRebalanceAddress, useRebalances, useRebalanceBalances, useRebalanceRewards } from 'state/hooks'
 import styled from 'styled-components'
 import Heading from 'uikit-dev/components/Heading/Heading'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import { getAddress } from 'utils/addressHelpers'
 import { Rebalance } from '../../state/types'
-import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../state/wallet'
 import DisclaimersModal from './components/DisclaimersModal'
 import ExploreCard from './components/ExploreCard'
 import ExploreTabButtons from './components/ExploreTabButtons'
@@ -36,6 +36,7 @@ const Explore: React.FC = () => {
   const dispatch = useDispatch()
   const { account } = useWallet()
   const rebalanceBalances = useRebalanceBalances(account) || {}
+  const rebalanceRewards = useRebalanceRewards(account) || {}
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
   useEffect(() => {
     if (account) {
@@ -53,6 +54,7 @@ const Explore: React.FC = () => {
         ]),
       )
       dispatch(fetchRebalanceBalances(account, rebalances))
+      dispatch(fetchRebalanceRewards(account, rebalances))
     }
   }, [dispatch, account, rebalances])
 
@@ -114,6 +116,7 @@ const Explore: React.FC = () => {
                         onClickViewDetail={() => {
                           setSelectedRebalance(rebalance)
                         }}
+                        pendingReward={rebalanceRewards[getAddress(rebalance.address)] || new BigNumber(0)}
                       />
                     )
                   })}

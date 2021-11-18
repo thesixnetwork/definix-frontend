@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { AddIcon, Button, Card, MinusIcon } from 'uikit-dev'
 import { getAddress } from 'utils/addressHelpers'
-import { useBalances, useRebalanceBalances } from '../../../state/hooks'
+import { useBalances, useRebalanceBalances, useRebalanceRewards } from '../../../state/hooks'
 import { Rebalance } from '../../../state/types'
 import Harvest from './Harvest'
 import TwoLineFormat from './TwoLineFormat'
@@ -162,12 +162,17 @@ const CurrentInvestment = ({ rebalance, isVertical = false, large = false }) => 
 }
 
 const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical = false }) => {
+  const { account } = useWallet()
+  const rebalanceRewards = useRebalanceRewards(account)
+
+  const currentReward = rebalanceRewards[getAddress(rebalance.address)] || new BigNumber(0)
+
   return (
     <StickyBox isVertical={isVertical} className={className}>
       {isVertical ? (
         <>
           <Card className={isVertical ? 'mb-4' : 'pa-4 pb-0'}>
-            <Harvest value="12,300.75" subValue="$173,440.575" isVertical large />
+            <Harvest value={currentReward} rebalance={rebalance} isVertical large />
           </Card>
 
           <Card>
@@ -176,7 +181,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
         </>
       ) : (
         <Card className={isVertical ? 'mb-4' : 'pa-4'}>
-          <Harvest value="12,300.75" subValue="$173,440.575" />
+          <Harvest value={currentReward} rebalance={rebalance} />
           <CurrentInvestment rebalance={rebalance} />
         </Card>
       )}

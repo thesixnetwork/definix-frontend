@@ -87,6 +87,7 @@ export interface Rebalance extends RebalanceConfig {
   // tokenUsd?: BigNumber[]
   enableAutoCompound?: boolean
   autoHerodotus?: string
+  apollo?: string
   sharedPricePercentDiff?: number
   twentyHperformance?: number
   ratioCal?: string[]
@@ -130,11 +131,13 @@ export interface WalletState {
   decimals: Balance
   balances: Balance
   userRebalanceBalances: Balance
+  userRebalanceReward: Balance
   userDeadline?: number
   allowances: Allowance
   userSlippage?: number
   isFetched: boolean
   isRebalanceFetched: boolean
+  isRebalanceRewardFetched: boolean
 }
 
 export interface FinixPriceState {

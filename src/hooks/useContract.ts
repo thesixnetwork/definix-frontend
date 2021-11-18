@@ -30,6 +30,7 @@ import profile from 'config/abi/definixProfile.json'
 import pointCenterIfo from 'config/abi/pointCenterIfo.json'
 import bunnySpecial from 'config/abi/bunnySpecial.json'
 import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
+import apolloV2Abi from 'config/abi/apolloV2.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -88,6 +89,11 @@ export const useLotteryTicket = () => {
 export const useHerodotus = () => {
   const abi = herodotus as unknown as AbiItem
   return useContract(abi, getHerodotusAddress())
+}
+
+export const useApolloV2 = (address: string) => {
+  const abi = apolloV2Abi as unknown as AbiItem
+  return useContract(abi, address)
 }
 
 export const useTradingCompetRegisContract = () => {
