@@ -23,13 +23,14 @@ interface FarmCardActionsProps {
   isMobile: boolean
   pid?: number
   earnings: BigNumber
-  hideDetailButton: boolean
+  componentType: string
 }
 
-const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings, hideDetailButton = true }) => {
+const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings, componentType = 'farm' }) => {
   const navigate = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
   const [toasts, setToasts] = useState([])
+  const isInFarm = useMemo(() => componentType === 'farm', [componentType])
 
   // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
@@ -78,46 +79,50 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     navigate.push('/farm')
   }, [navigate])
 
-  const AirDrop = ({ value, name, price }) => (
-    <Flex>
-      <Label type="token">{name}</Label>
-      <Box className="ml-s16">
-        <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-          {toLocaleString(value)}
-        </Text>
-        <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-          = {price}
-        </Text>
-      </Box>
-    </Flex>
+  const HarvestButton = () => (
+    <Button
+      variant={ButtonVariants.RED}
+      md
+      minWidth="100px"
+      disabled={finixEarningsValue === 0 || pendingTx}
+      onClick={handleHarvest}
+    >
+      Harvest
+    </Button>
   )
 
   return (
     <>
       <Box>
-        <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
-          Earned Token
-        </Text>
-        <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
+        <Flex flexDirection={isInFarm ? 'column' : 'row'} justifyContent="space-between">
           <Box>
-            <AirDrop value={finixEarningsValue} name="FINIX" price={earningsPrice(finixEarningsValue)} />
+            <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
+              Earned Token
+            </Text>
+            <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
+              <Flex>
+                <Label type="token">FINIX</Label>
+                <Box className="ml-s16">
+                  <Text textStyle="R_18M" color={ColorStyles.BLACK}>
+                    {toLocaleString(finixEarningsValue)}
+                  </Text>
+                  <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+                    = {earningsPrice(finixEarningsValue)}
+                  </Text>
+                </Box>
+              </Flex>
+              {isInFarm && <HarvestButton/>}
+            </Flex>
           </Box>
-          <Flex flexDirection="column" alignItems="space-between">
-            <Button
-              variant={ButtonVariants.RED}
-              md
-              minWidth="100px"
-              disabled={finixEarningsValue === 0 || pendingTx}
-              onClick={handleHarvest}
-            >
-              Harvest
-            </Button>
-            {!hideDetailButton && (
+          
+          {isInFarm ? null : (
+            <Flex flexDirection="column" justifyContent="center">
+              <HarvestButton/>
               <Button variant={ButtonVariants.BROWN} md minWidth="100px" onClick={handleGoToDetail} className="mt-s8">
                 Detail
               </Button>
-            )}
-          </Flex>
+            </Flex>
+          )}
         </Flex>
         {/* {false && (
           <div className="flex align-center justify-space-between">

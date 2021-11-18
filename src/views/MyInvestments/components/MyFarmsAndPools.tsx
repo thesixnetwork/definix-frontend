@@ -29,7 +29,7 @@ import {
   usePriceSixUsd,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Card, ChevronRightIcon, IconButton, Text } from 'uikit-dev'
+import { Card, CardBody } from 'definixswap-uikit'
 import { provider } from 'web3-core'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
@@ -210,33 +210,36 @@ const MyFarmsAndPools = () => {
   }, [dispatch, account, rebalances])
 
   return (
-    <>
-      {!!stakedProducts.length &&
-        stakedProducts.map((product) => {
-          if (product.type === 'farm') {
-            return (
-              <FarmCard
-                importFrom="myInvestment"
-                key={product.data.pid}
-                farm={product.data}
-                myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
-                removed={false}
-                klaytn={klaytn}
-                account={account}
-              />
-            )
-          }
-          if (product.type === 'pool') {
-            return (
-              <PoolCard
-                key={product.data.sousId}
-                pool={product.data}
-                myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
-              />
-            )
-          }
-          return null
-        })}
+    <Card>
+      <CardBody>
+        {!!stakedProducts.length &&
+          stakedProducts.map((product) => {
+            if (product.type === 'farm') {
+              return (
+                <FarmCard
+                  componentType="myInvestment"
+                  key={product.data.pid}
+                  farm={product.data}
+                  myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
+                  removed={false}
+                  klaytn={klaytn}
+                  account={account}
+                />
+              )
+            }
+            if (product.type === 'pool') {
+              return (
+                <PoolCard
+                  key={product.data.sousId}
+                  pool={product.data}
+                  myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
+                />
+              )
+            }
+            return null
+          })
+        }
+      </CardBody>
       {/* <List>
         <>
           {stakedRebalances.map((r) => {
@@ -334,7 +337,7 @@ const MyFarmsAndPools = () => {
 
         {farmsList(stackedOnlyFarms, false)}
       </List> */}
-    </>
+    </Card>
   )
 }
 

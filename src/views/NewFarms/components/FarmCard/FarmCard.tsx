@@ -25,7 +25,7 @@ import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
 
 const FarmCard: React.FC<FarmCardProps> = ({
-  importFrom = 'farm',
+  componentType = 'farm',
   farm,
   myBalancesInWallet,
   klaytn,
@@ -129,7 +129,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
-        useStakeAction={importFrom !== 'myInvestment'}
+        useStakeAction={componentType !== 'myInvestment'}
         isApproved={isApproved}
         hasAllowance={hasAllowance}
         myLiquidity={stakedBalance}
@@ -181,7 +181,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       onSelectAddLP,
       onSelectRemoveLP,
       removed,
-      importFrom,
+      componentType,
     ],
   )
   /**
@@ -190,13 +190,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderHarvestActionAirDrop = useCallback(
     () => (
       <HarvestActionAirDrop
+        componentType={componentType}
         isMobile={isMobile}
         pid={pid}
         earnings={earnings}
-        hideDetailButton={importFrom !== 'myInvestment'}
       />
     ),
-    [isMobile, earnings, pid, importFrom],
+    [isMobile, earnings, pid, componentType],
   )
 
   const renderLinkSection = useCallback(
@@ -208,22 +208,19 @@ const FarmCard: React.FC<FarmCardProps> = ({
     setIsOpenAccordion(false)
   }, [])
 
-  if (importFrom === 'myInvestment') {
+  if (componentType === 'myInvestment') {
     return (
       <>
         {isMobile ? null : (
-          <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-            <CardBody>
-              <Flex justifyContent="space-between">
-                <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
-                <Box style={{ width: '26%' }} className="mx-s24">
-                  {renderStakeAction()}
-                </Box>
-                <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
-                {/* {renderIconButton()} */}
-              </Flex>
-            </CardBody>
-          </Card>
+          <Box className="pa-s32">
+            <Flex justifyContent="space-between">
+              <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
+              <Box style={{ width: '26%' }} className="mx-s24">
+                {renderStakeAction()}
+              </Box>
+              <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
+            </Flex>
+          </Box>
         )}
       </>
     )

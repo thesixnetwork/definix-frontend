@@ -2,7 +2,6 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import { provider } from 'web3-core'
-import styled from 'styled-components'
 import { useApprove } from 'hooks/useApprove'
 import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
@@ -14,7 +13,6 @@ import {
   Button,
   Text,
   ButtonVariants,
-  ButtonScales,
   ColorStyles,
   Flex,
   Box,
@@ -22,6 +20,7 @@ import {
 import UnlockButton from 'components/UnlockButton'
 
 interface FarmStakeActionProps {
+  componentType?: string
   useStakeAction?: boolean
   klaytn?: provider
   account?: string
