@@ -240,7 +240,7 @@ const MyFarmsAndPools = () => {
   )
 
   return (
-    <Card>
+    <Card className="mt-s16">
       {!!stakedProducts.length &&
         stakedProducts.map((product, index) => {
           return (
