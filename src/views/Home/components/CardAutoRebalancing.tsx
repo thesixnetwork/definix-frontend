@@ -227,8 +227,9 @@ const StyledBannerDingoXSix = styled(Card)`
     border-radius: unset;
     height: 327px;
     &:before {
-      width: 46%;
+      width: 42%;
       opacity: 1;
+      background-position: center;
     }
     h2 {
       font-size: 28px !important;
