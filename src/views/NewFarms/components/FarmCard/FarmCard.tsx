@@ -129,7 +129,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
-        useStakeAction={componentType !== 'myInvestment'}
+        componentType={componentType}
         isApproved={isApproved}
         hasAllowance={hasAllowance}
         myLiquidity={stakedBalance}

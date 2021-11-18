@@ -24,9 +24,16 @@ import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { PoolCardProps } from './types'
 
-const PoolCard: React.FC<PoolCardProps> = ({ pool, myBalanceInWallet, onSelectAdd, onSelectRemove }) => {
+const PoolCard: React.FC<PoolCardProps> = ({
+  componentType = 'pool',
+  pool,
+  myBalanceInWallet,
+  onSelectAdd,
+  onSelectRemove
+}) => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
+  const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const {
     sousId,
     tokenName,
@@ -106,40 +113,63 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, myBalanceInWallet, onSelectAd
     [tokenName, earnings],
   )
 
+  const onPresentDeposit = useCallback(() => {
+    onSelectAdd({
+      isOldSyrup,
+      isBnbPool,
+      sousId,
+      tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
+      totalStaked,
+      myStaked: stakedBalance,
+      max:
+        stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
+      apy,
+    })
+  }, [
+    isOldSyrup,
+    sousId,
+    stakedBalance,
+    stakingLimit,
+    stakingTokenName,
+    stakingTokenBalance,
+    convertedLimit,
+    onSelectAdd,
+    isBnbPool,
+    totalStaked,
+    apy
+  ])
+  const onPresentWithdraw = useCallback(() => {
+    onSelectRemove({
+      sousId,
+      isOldSyrup,
+      tokenName: stakingTokenName,
+      totalStaked,
+      myStaked: stakedBalance,
+      max: stakedBalance,
+      apy,
+    })
+  }, [
+    isOldSyrup,
+    sousId,
+    stakedBalance,
+    stakingTokenName,
+    onSelectRemove,
+    totalStaked,
+    apy
+  ])
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
-        sousId={sousId}
+        componentType={componentType}
         isOldSyrup={isOldSyrup}
+        isFinished={isFinished}
+        sousId={sousId}
         tokenName={tokenName}
         stakingTokenAddress={stakingTokenAddress}
         stakedBalance={stakedBalance}
         needsApproval={needsApproval}
-        isFinished={isFinished}
-        onPresentDeposit={() => {
-          onSelectAdd({
-            sousId,
-            isOldSyrup,
-            isBnbPool,
-            tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
-            totalStaked,
-            myStaked: stakedBalance,
-            max:
-              stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
-            apy,
-          })
-        }}
-        onPresentWithdraw={() => {
-          onSelectRemove({
-            sousId,
-            isOldSyrup,
-            tokenName: stakingTokenName,
-            totalStaked,
-            myStaked: stakedBalance,
-            max: stakedBalance,
-            apy,
-          })
-        }}
+        onPresentDeposit={onPresentDeposit}
+        onPresentWithdraw={onPresentWithdraw}
       />
     ),
     [
@@ -150,32 +180,36 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, myBalanceInWallet, onSelectAd
       stakedBalance,
       stakingTokenAddress,
       tokenName,
-      stakingLimit,
-      stakingTokenName,
-      stakingTokenBalance,
-      convertedLimit,
-      onSelectAdd,
-      onSelectRemove,
-      isBnbPool,
-      totalStaked,
-      apy,
+      onPresentDeposit,
+      onPresentWithdraw,
+      componentType
     ],
   )
   const renderHarvestActionAirDrop = useCallback(
     () => (
       <HarvestActionAirDrop
+        componentType={componentType}
         isMobile={isMobile}
+        isBnbPool={isBnbPool}
+        isOldSyrup={isOldSyrup}
         bundleRewards={bundleRewards}
         pendingRewards={pendingRewards}
         sousId={sousId}
-        isBnbPool={isBnbPool}
         earnings={earnings}
         needsApproval={needsApproval}
-        isOldSyrup={isOldSyrup}
-        pool={pool}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, pool, pendingRewards, bundleRewards, isMobile],
+    [
+      earnings,
+      isBnbPool,
+      isOldSyrup,
+      needsApproval,
+      sousId,
+      pendingRewards,
+      bundleRewards,
+      isMobile,
+      componentType
+    ],
   )
   const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
@@ -183,71 +217,71 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, myBalanceInWallet, onSelectAd
     setIsOpenAccordion(false)
   }, [])
 
-  if (isMobile) {
+  if (isInMyInvestment) {
     return (
-      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-        <CardBody>
-          <Flex justifyContent="space-between">
-            {renderCardHeading()}
-            {renderIconButton()}
-          </Flex>
-          {renderEarningsSection()}
-        </CardBody>
-        {isOpenAccordion && (
-          <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
-            {renderHarvestActionAirDrop()}
-            <Box className="py-s24">{renderStakeAction()}</Box>
-            <Divider />
-            <Box className="pt-s24">{renderTotalStakedSection()}</Box>
-            <Box className="pt-s16">{renderMyBalanceSection()}</Box>
-            <Box className="py-s32">{renderLinkSection()}</Box>
+      <>
+        {isMobile ? null : (
+          <Box className="pa-s32">
+            <Flex justifyContent="space-between">
+              <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
+              <Box style={{ width: '26%' }} className="mx-s24">
+                {renderStakeAction()}
+              </Box>
+              <Box style={{ width: '44%' }}>{renderHarvestActionAirDrop()}</Box>
+            </Flex>
           </Box>
         )}
-      </Card>
-      // <HorizontalMobileStyle className="mb-3">
-      //   {/* <CardHeadingAccordion
-      //     tokenName={tokenName}
-      //     isOldSyrup={isOldSyrup}
-      //     apy={apy}
-      //     className=""
-      //     isOpenAccordion={isOpenAccordion}
-      //     setIsOpenAccordion={setIsOpenAccordion}
-      //   /> */}
-
-      //   <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
-      //     {renderStakeAction()}
-      //     {/* {renderHarvestAction('pa-5')} */}
-      //     {renderHarvestActionAirDrop('pa-5 pt-0', false)}
-      //     {renderDetailsSection()}
-      //     {renderLinkSection()}
-      //   </div>
-      // </HorizontalMobileStyle>
+      </>
     )
   }
 
   return (
     <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-      <CardBody>
-        <Flex justifyContent="space-between">
-          <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
-          <Box style={{ width: '16%' }}>{renderTotalStakedSection()}</Box>
-          <Box style={{ width: '26%' }} className="mx-s24">
-            {renderMyBalanceSection()}
-          </Box>
-          <Box style={{ width: '24%' }}>{renderEarningsSection()}</Box>
-          {renderIconButton()}
-        </Flex>
-      </CardBody>
-      {isOpenAccordion && (
-        <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
-          <Flex justifyContent="space-between">
-            <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
-            <Box style={{ width: '40%' }} className="mx-s24">
+      {isMobile ? (
+        <>
+          <CardBody>
+            <Flex justifyContent="space-between">
+              {renderCardHeading()}
+              {renderIconButton()}
+            </Flex>
+            {renderEarningsSection()}
+          </CardBody>
+          {isOpenAccordion && (
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
               {renderHarvestActionAirDrop()}
+              <Box className="py-s24">{renderStakeAction()}</Box>
+              <Divider />
+              <Box className="pt-s24">{renderTotalStakedSection()}</Box>
+              <Box className="pt-s16">{renderMyBalanceSection()}</Box>
+              <Box className="py-s32">{renderLinkSection()}</Box>
             </Box>
-            <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
-          </Flex>
-        </Box>
+          )}
+        </>
+      ) : (
+        <>
+          <CardBody>
+            <Flex justifyContent="space-between">
+              <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
+              <Box style={{ width: '16%' }}>{renderTotalStakedSection()}</Box>
+              <Box style={{ width: '26%' }} className="mx-s24">
+                {renderMyBalanceSection()}
+              </Box>
+              <Box style={{ width: '24%' }}>{renderEarningsSection()}</Box>
+              {renderIconButton()}
+            </Flex>
+          </CardBody>
+          {isOpenAccordion && (
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
+              <Flex justifyContent="space-between">
+                <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
+                <Box style={{ width: '40%' }} className="mx-s24">
+                  {renderHarvestActionAirDrop()}
+                </Box>
+                <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
+              </Flex>
+            </Box>
+          )}
+        </>
       )}
     </Card>
   )

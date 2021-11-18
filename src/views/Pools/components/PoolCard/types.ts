@@ -11,6 +11,7 @@ export interface PoolWithApy extends Pool {
 }
 
 export interface PoolCardProps {
+  componentType?: string
   pool: PoolWithApy
   myBalanceInWallet?: BigNumber
   onSelectAdd?: (props: any) => void
@@ -24,6 +25,7 @@ export interface CardHeadingProps {
 }
 
 export interface StakeActionProps {
+  componentType?: string
   sousId?: number
   isOldSyrup?: boolean
   tokenName?: string

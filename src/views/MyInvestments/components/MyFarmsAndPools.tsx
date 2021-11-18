@@ -29,7 +29,7 @@ import {
   usePriceSixUsd,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Card, CardBody } from 'definixswap-uikit'
+import { Card, CardBody, Divider } from 'definixswap-uikit'
 import { provider } from 'web3-core'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
@@ -209,34 +209,44 @@ const MyFarmsAndPools = () => {
     }
   }, [dispatch, account, rebalances])
 
+  const getProductComponent = useCallback((product) => {
+    if (product.type === 'farm') {
+      return (
+        <FarmCard
+          key={product.data.pid}
+          componentType="myInvestment"
+          farm={product.data}
+          myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
+          removed={false}
+          klaytn={klaytn}
+          account={account}
+        />
+      )
+    }
+    if (product.type === 'pool') {
+      return (
+        <PoolCard
+          key={product.data.sousId}
+          componentType="myInvestment"
+          pool={product.data}
+          myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
+        />
+      )
+    }
+    return null
+  }, [klaytn, account, getMyFarmBalancesInWallet, getMyPoolBalanceInWallet])
+
   return (
     <Card>
       <CardBody>
         {!!stakedProducts.length &&
-          stakedProducts.map((product) => {
-            if (product.type === 'farm') {
-              return (
-                <FarmCard
-                  componentType="myInvestment"
-                  key={product.data.pid}
-                  farm={product.data}
-                  myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
-                  removed={false}
-                  klaytn={klaytn}
-                  account={account}
-                />
-              )
-            }
-            if (product.type === 'pool') {
-              return (
-                <PoolCard
-                  key={product.data.sousId}
-                  pool={product.data}
-                  myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
-                />
-              )
-            }
-            return null
+          stakedProducts.map((product, index) => {
+            return (
+              <>
+                {index > 0 && <Divider/>}
+                {getProductComponent(product)}
+              </>
+            )
           })}
       </CardBody>
       {/* <List>

@@ -12,7 +12,6 @@ import UnlockButton from 'components/UnlockButton'
 
 interface FarmStakeActionProps {
   componentType?: string
-  useStakeAction?: boolean
   klaytn?: provider
   account?: string
   onPresentDeposit?: any
@@ -25,7 +24,7 @@ interface FarmStakeActionProps {
 }
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
-  useStakeAction = true,
+  componentType = 'farm',
   isApproved,
   hasAllowance,
   myLiquidity,
@@ -147,7 +146,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                     </Text>
                   </Box>
 
-                  {useStakeAction && (
+                  {componentType === 'farm' && (
                     <Box>
                       <Button
                         minWidth="40px"

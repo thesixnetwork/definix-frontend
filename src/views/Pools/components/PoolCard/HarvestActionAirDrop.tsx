@@ -1,32 +1,31 @@
 import React, { useState, useMemo, useCallback } from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useHistory } from 'react-router-dom'
 import BigNumber from 'bignumber.js'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from 'definixswap-uikit'
-import { useModal } from 'uikit-dev'
-import miniLogo from 'uikit-dev/images/finix-coin.png'
+// import { useModal } from 'uikit-dev'
+// import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
-import AirDropHarvestModal from './AirDropHarvestModal'
-import { PoolWithApy } from './types'
+// import AirDropHarvestModal from './AirDropHarvestModal'
+// import { PoolWithApy } from './types'
 
 interface HarvestActionAirdropProps {
+  componentType?: string
   isMobile: boolean
   isOldSyrup?: boolean
   isBnbPool?: boolean
   sousId?: number
   pendingRewards?: any
-  // bundleRewardLength?: BigNumber
   bundleRewards?: any
   earnings: BigNumber
-  // tokenDecimals?: number
   needsApproval?: boolean
-  // farm?: FarmWithStakedValue
-  pool?: PoolWithApy
 }
 
 const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
+  componentType = 'pool',
   isMobile,
   isOldSyrup,
   isBnbPool,
@@ -35,12 +34,13 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   bundleRewards,
   earnings,
   needsApproval,
-  pool,
 }) => {
+  const navigate = useHistory()
+  const isInPool = useMemo(() => componentType === 'pool', [componentType])
   const { account } = useWallet()
   const { onReward } = useSousHarvest(sousId, isBnbPool)
   const { convertToUSD, convertToPriceFromSymbol } = useConverter()
-  const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
+  // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const [pendingTx, setPendingTx] = useState(false)
 
   const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
@@ -59,7 +59,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
 
   // const finixApy = pool.finixApy || new BigNumber(0)
 
-  const AirDrop = ({ value, name, price }) => (
+  const AirDrop = ({ value, name }) => (
     <Flex>
       <Label type="token">{name}</Label>
       <Box className="ml-s16">
@@ -67,7 +67,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
           {toLocaleString(value)}
         </Text>
         <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-          = {price}
+          = {earningsPrice(value)}
         </Text>
       </Box>
     </Flex>
@@ -97,72 +97,77 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     // </div>
   )
 
+  const handleGoToDetail = useCallback(() => {
+    navigate.push('/pool')
+  }, [navigate])
+
+  const HarvestButton = () => (
+    <Button
+      variant={ButtonVariants.RED}
+      md
+      minWidth="100px"
+      disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+      onClick={async () => {
+        setPendingTx(true)
+        await onReward()
+        setPendingTx(false)
+      }}
+    >
+      Harvest
+    </Button>
+  )
+
   return (
-    <Box>
-      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
-        Earned Token
-      </Text>
-      <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
-        <Box>
-          <AirDrop
-            // logo={miniLogo}
-            // title="APR"
-            // percent={`${numeral(finixApy.toNumber() || 0).format('0,0')}%`}
-            value={finixEarningsValue}
-            name="FINIX"
-            price={earningsPrice(finixEarningsValue)}
-          />
-          {(bundleRewards || []).map((br, bundleId) => {
-            // let apy = new BigNumber(0)
-            // if (br.rewardTokenInfo.name === QuoteToken.WKLAY || br.rewardTokenInfo.name === QuoteToken.KLAY) {
-            //   apy = pool.klayApy
-            // }
-            const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
-            const allocate = br.rewardPerBlock || new BigNumber(0)
-            // ${numeral(apy.toNumber() || 0).format('0,0')} percent airdrop
-            return reward !== 0 || allocate.toNumber() !== 0 ? (
-              <AirDrop
-                // logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
-                // title="AAPR"
-                // percent="0.0%"
-                value={getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0}
-                price={earningsPrice(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0)}
-                name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
-              />
-            ) : (
-              ''
-            )
-          })}
-          {false && (
-            <div className="flex align-center justify-space-between">
-              <Text color="textSubtle">Claim Ended Bonus</Text>
-              <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-                Claim
+    <>
+      <Box>
+        <Flex flexDirection={isInPool ? 'column' : 'row'} justifyContent="space-between" >
+          <Box>
+            <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
+              Earned Token
+            </Text>
+            <Flex flexDirection={isMobile ? 'column' : 'row'} justifyContent="space-between">
+              <Box>
+                <AirDrop
+                  name="FINIX"
+                  value={finixEarningsValue}
+                />
+                {(bundleRewards || []).map((br, bundleId) => {
+                  const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
+                  const allocate = br.rewardPerBlock || new BigNumber(0)
+                  // ${numeral(apy.toNumber() || 0).format('0,0')} percent airdrop
+                  return reward !== 0 || allocate.toNumber() !== 0 ? (
+                    <AirDrop
+                      // logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
+                      // title="AAPR"
+                      // percent="0.0%"
+                      name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
+                      value={reward}
+                    />
+                  ) : null
+                })}
+                {/* {false && (
+                  <div className="flex align-center justify-space-between">
+                    <Text color="textSubtle">Claim Ended Bonus</Text>
+                    <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
+                      Claim
+                    </Button>
+                  </div>
+                )} */}
+              </Box>
+              {isInPool && <HarvestButton />}
+            </Flex>
+          </Box>
+          {isInPool ? null : (
+            <Flex flexDirection="column" justifyContent="center">
+              <HarvestButton />
+              <Button variant={ButtonVariants.BROWN} md minWidth="100px" onClick={handleGoToDetail} className="mt-s8">
+                Detail
               </Button>
-            </div>
+            </Flex>
           )}
-        </Box>
-        <Button
-          variant={ButtonVariants.RED}
-          md
-          minWidth="100px"
-          mr="8px"
-          disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
-          onClick={async () => {
-            setPendingTx(true)
-            await onReward()
-            setPendingTx(false)
-          }}
-        >
-          Harvest
-        </Button>
-      </Flex>
-      {/* {false && (
-        <Text color="textSubtle" textAlign="right" fontSize="12px" className="mb-4 mt-2">
-          = ${numeral(earnings.toNumber() * finixPrice).format('0,0.0000')}
-        </Text>
-      )} */}
-    </Box>
+        </Flex>
+      </Box>
+    </>
   )
 }
 

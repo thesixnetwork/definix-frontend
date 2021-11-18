@@ -11,7 +11,6 @@ import {
   Button,
   Text,
   ButtonVariants,
-  ButtonScales,
   ColorStyles,
   Flex,
   Box,
@@ -20,13 +19,14 @@ import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { StakeActionProps } from './types'
 
 const StakeAction: React.FC<StakeActionProps> = ({
-  sousId,
+  componentType = 'pool',
   isOldSyrup,
+  isFinished,
+  sousId,
   tokenName,
   stakingTokenAddress,
   stakedBalance,
   needsApproval,
-  isFinished,
   onPresentDeposit,
   onPresentWithdraw,
 }) => {
@@ -102,29 +102,31 @@ const StakeAction: React.FC<StakeActionProps> = ({
                 </Text>
               </Box>
 
-              <Box>
-                <Button
-                  minWidth="40px"
-                  md
-                  variant={ButtonVariants.LINE}
-                  disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
-                  onClick={onPresentWithdraw}
-                >
-                  <MinusIcon />
-                </Button>
-                {isEnableAddStake && (
+              {componentType === 'pool' && (
+                <Box>
                   <Button
                     minWidth="40px"
                     md
                     variant={ButtonVariants.LINE}
-                    disabled={isFinished && sousId !== 0}
-                    onClick={onPresentDeposit}
-                    style={{ marginLeft: '4px' }}
+                    disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                    onClick={onPresentWithdraw}
                   >
-                    <PlusIcon />
+                    <MinusIcon />
                   </Button>
-                )}
-              </Box>
+                  {isEnableAddStake && (
+                    <Button
+                      minWidth="40px"
+                      md
+                      variant={ButtonVariants.LINE}
+                      disabled={isFinished && sousId !== 0}
+                      onClick={onPresentDeposit}
+                      style={{ marginLeft: '4px' }}
+                    >
+                      <PlusIcon />
+                    </Button>
+                  )}
+                </Box>
+              )}
             </Flex>
           )}
         </>
