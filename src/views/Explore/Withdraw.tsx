@@ -491,6 +491,9 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
             ratioPoint,
             value: new BigNumber(currentInput as string).times(new BigNumber(10).pow(decimal)),
             isSelected: !!selectedToken[getAddress(ratioObject.address)],
+            router: rebalance.router[index],
+            factory: rebalance.factory[index],
+            initCodeHash: rebalance.initCodeHash[index],
           }
         }),
         [((rebalance || {}).totalSupply || [])[0]],
