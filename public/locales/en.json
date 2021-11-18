@@ -300,7 +300,7 @@
   "1x": "1x",
   "2x": "2x",
   "4x": "4x",
-  "Approve to {{Token}}": "Approve to {{Token}}",
+  "Approve {{Token}}": "Approve {{Token}}",
   "Stake": "Stake",
   "The amount of FINIX": "The amount of FINIX you are about to stake doesn't reach the minimum requirement.",
   "Estimated Result": "Estimated Result",
@@ -380,8 +380,9 @@
   "No search results": "No search results.",
   "Price Updated": "Price Updated",
   "Accept": "Accept",
-  "Return on Investment": "Return on Investment",
+  "Return on Investment (ROI)": "Return on Investment (ROI)",
   "There are no products deposited": "There are no products deposited.",
   "Provide Liquidity": "Provide Liquidity",
-  "Single Token Staked": "Single Token Staked"
+  "Single Token Staked": "Single Token Staked",
+  "Unknown error": "An unknown error has occured.\nPlaease try again later."
 }
