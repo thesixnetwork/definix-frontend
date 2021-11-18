@@ -237,8 +237,7 @@ const MyFarmsAndPools = () => {
               )
             }
             return null
-          })
-        }
+          })}
       </CardBody>
       {/* <List>
         <>

@@ -7,16 +7,7 @@ import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
 import { getFullDisplayBalance } from 'utils/formatBalance'
-import {
-  PlusIcon,
-  MinusIcon,
-  Button,
-  Text,
-  ButtonVariants,
-  ColorStyles,
-  Flex,
-  Box,
-} from 'definixswap-uikit'
+import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, ColorStyles, Flex, Box } from 'definixswap-uikit'
 import UnlockButton from 'components/UnlockButton'
 
 interface FarmStakeActionProps {

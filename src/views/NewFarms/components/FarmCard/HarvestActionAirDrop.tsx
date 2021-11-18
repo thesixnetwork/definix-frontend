@@ -111,13 +111,13 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
                   </Text>
                 </Box>
               </Flex>
-              {isInFarm && <HarvestButton/>}
+              {isInFarm && <HarvestButton />}
             </Flex>
           </Box>
-          
+
           {isInFarm ? null : (
             <Flex flexDirection="column" justifyContent="center">
-              <HarvestButton/>
+              <HarvestButton />
               <Button variant={ButtonVariants.BROWN} md minWidth="100px" onClick={handleGoToDetail} className="mt-s8">
                 Detail
               </Button>

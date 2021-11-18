@@ -188,14 +188,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
    * harvest action
    */
   const renderHarvestActionAirDrop = useCallback(
-    () => (
-      <HarvestActionAirDrop
-        componentType={componentType}
-        isMobile={isMobile}
-        pid={pid}
-        earnings={earnings}
-      />
-    ),
+    () => <HarvestActionAirDrop componentType={componentType} isMobile={isMobile} pid={pid} earnings={earnings} />,
     [isMobile, earnings, pid, componentType],
   )
 
