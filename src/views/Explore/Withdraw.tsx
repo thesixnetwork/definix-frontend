@@ -93,6 +93,7 @@ const InlineAssetRatioLabel = ({ coin, className = '' }) => {
     if (coin.symbol === 'WBNB') return 'BNB'
     return coin.symbol
   })()
+console.log('coin', coin)
   return (
     <div className={`flex justify-space-between align-center ${className}`}>
       <Coin className="col-8">
@@ -251,7 +252,7 @@ const CardInput = ({
 
       <div className={`bd-b ${isMobile ? 'pa-4' : 'px-6 py-4'} `}>
         {ratioType === 'all' ? (
-          _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+          _.compact([...((rebalance || {}).tokens || [])])
             .map((token, index) => {
               const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
               const ratios = _.get(rebalance, `ratioCal`)
@@ -266,7 +267,7 @@ const CardInput = ({
             .map((c) => <InlineAssetRatioLabel coin={c} className="py-1" />)
         ) : (
           <FormGroup>
-            {_.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+            {_.compact([...((rebalance || {}).tokens || [])])
               .map((token, index) => {
                 const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === token.symbol)
 
@@ -475,7 +476,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       const thisInput = myBalance.isLessThan(new BigNumber(currentInput)) ? myBalance : new BigNumber(currentInput)
       const [, poolAmountsData] = await simulateWithdraw(
         thisInput,
-        _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
+        _.compact([...((rebalance || {}).tokens || [])]).map((c, index) => {
           const ratioPoint = (
             ((rebalance || {}).tokenRatioPoints || [])[index] ||
             ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
