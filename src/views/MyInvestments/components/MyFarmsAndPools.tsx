@@ -241,17 +241,15 @@ const MyFarmsAndPools = () => {
 
   return (
     <Card>
-      <CardBody>
-        {!!stakedProducts.length &&
-          stakedProducts.map((product, index) => {
-            return (
-              <>
-                {index > 0 && <Divider />}
-                {getProductComponent(product)}
-              </>
-            )
-          })}
-      </CardBody>
+      {!!stakedProducts.length &&
+        stakedProducts.map((product, index) => {
+          return (
+            <>
+              {index > 0 && <Divider />}
+              {getProductComponent(product)}
+            </>
+          )
+        })}
       {/* <List>
         <>
           {stakedRebalances.map((r) => {

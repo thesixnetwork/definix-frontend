@@ -14,6 +14,7 @@ import {
   Divider,
   ColorStyles,
   useMatchBreakpoints,
+  Grid,
 } from 'definixswap-uikit'
 // import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
@@ -203,13 +204,18 @@ const PoolCard: React.FC<PoolCardProps> = ({
       <>
         {isMobile ? null : (
           <Box className="pa-s32">
-            <Flex justifyContent="space-between">
+            {/* <Flex justifyContent="space-between">
               <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
               <Box style={{ width: '26%' }} className="mx-s24">
                 {renderStakeAction()}
               </Box>
               <Box style={{ width: '44%' }}>{renderHarvestActionAirDrop()}</Box>
-            </Flex>
+            </Flex> */}
+            <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
+              <Box>{renderCardHeading()}</Box>
+              <Box>{renderStakeAction()}</Box>
+              <Box>{renderHarvestActionAirDrop()}</Box>
+            </Grid>
           </Box>
         )}
       </>

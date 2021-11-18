@@ -16,6 +16,7 @@ import {
   Divider,
   ColorStyles,
   useMatchBreakpoints,
+  Grid
 } from 'definixswap-uikit'
 import CardHeading from './CardHeading'
 import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
@@ -204,17 +205,20 @@ const FarmCard: React.FC<FarmCardProps> = ({
   if (componentType === 'myInvestment') {
     return (
       <>
-        {isMobile ? null : (
-          <Box className="pa-s32">
-            <Flex justifyContent="space-between">
-              <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
-              <Box style={{ width: '26%' }} className="mx-s24">
-                {renderStakeAction()}
-              </Box>
-              <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
-            </Flex>
-          </Box>
-        )}
+        <Box className="pa-s32">
+          {/* <Flex justifyContent="space-between">
+            <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
+            <Box style={{ width: '26%' }} className="mx-s24">
+              {renderStakeAction()}
+            </Box>
+            <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
+          </Flex> */}
+          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
+            <Box>{renderCardHeading()}</Box>
+            <Box>{renderStakeAction()}</Box>
+            <Box>{isApproved && renderHarvestActionAirDrop()}</Box>
+          </Grid>
+        </Box>
       </>
     )
   }
