@@ -7,7 +7,7 @@ class RebalanceSwapper extends Address {
   // }
 
   rebalanceFund = (usdToken, WBNB, tokens, routers, tokenRatioPoints, totalRatioPoint) => {
-    const [usdAmounts, totalUSDAmount] = this.getCurrentPoolUSDBalance(usdToken, WBNB, routers)
+    const [usdAmounts, totalUSDAmount] = this.getCurrentPoolUSDBalance(usdToken, WBNB, tokens)
     // debugger
     // sale first buy after
     let isContainBNB = false
