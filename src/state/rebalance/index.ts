@@ -155,8 +155,7 @@ export const fetchRebalances = () => async (dispatch) => {
       const activeUserCountNumber = new BigNumber([(activeUserCount || [])[0]]).toNumber()
       const selectedTotalSupply = (totalSupply || [])[0]
       const poolUsdBalance = (currentPoolUsdBalances || []).map((x, index) => {
-        let currentToken = [...tokens, ...usdToken][index]
-        if (currentToken) currentToken = (usdToken || [])[0]
+        const currentToken = [...tokens][index]
         // @ts-ignore
         return new BigNumber([x]).div(new BigNumber(10).pow((currentToken || {}).decimals || 18))
       })
