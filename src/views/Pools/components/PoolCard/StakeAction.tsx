@@ -5,16 +5,7 @@ import UnlockButton from 'components/UnlockButton'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useConverter from 'hooks/useConverter'
-import {
-  PlusIcon,
-  MinusIcon,
-  Button,
-  Text,
-  ButtonVariants,
-  ColorStyles,
-  Flex,
-  Box,
-} from 'definixswap-uikit'
+import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, ColorStyles, Flex, Box } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { StakeActionProps } from './types'
 

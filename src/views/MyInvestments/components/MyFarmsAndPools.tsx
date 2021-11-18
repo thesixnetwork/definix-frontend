@@ -209,32 +209,35 @@ const MyFarmsAndPools = () => {
     }
   }, [dispatch, account, rebalances])
 
-  const getProductComponent = useCallback((product) => {
-    if (product.type === 'farm') {
-      return (
-        <FarmCard
-          key={product.data.pid}
-          componentType="myInvestment"
-          farm={product.data}
-          myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
-          removed={false}
-          klaytn={klaytn}
-          account={account}
-        />
-      )
-    }
-    if (product.type === 'pool') {
-      return (
-        <PoolCard
-          key={product.data.sousId}
-          componentType="myInvestment"
-          pool={product.data}
-          myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
-        />
-      )
-    }
-    return null
-  }, [klaytn, account, getMyFarmBalancesInWallet, getMyPoolBalanceInWallet])
+  const getProductComponent = useCallback(
+    (product) => {
+      if (product.type === 'farm') {
+        return (
+          <FarmCard
+            key={product.data.pid}
+            componentType="myInvestment"
+            farm={product.data}
+            myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
+            removed={false}
+            klaytn={klaytn}
+            account={account}
+          />
+        )
+      }
+      if (product.type === 'pool') {
+        return (
+          <PoolCard
+            key={product.data.sousId}
+            componentType="myInvestment"
+            pool={product.data}
+            myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
+          />
+        )
+      }
+      return null
+    },
+    [klaytn, account, getMyFarmBalancesInWallet, getMyPoolBalanceInWallet],
+  )
 
   return (
     <Card>
@@ -243,7 +246,7 @@ const MyFarmsAndPools = () => {
           stakedProducts.map((product, index) => {
             return (
               <>
-                {index > 0 && <Divider/>}
+                {index > 0 && <Divider />}
                 {getProductComponent(product)}
               </>
             )

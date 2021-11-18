@@ -120,17 +120,14 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   return (
     <>
       <Box>
-        <Flex flexDirection={isInPool ? 'column' : 'row'} justifyContent="space-between" >
+        <Flex flexDirection={isInPool ? 'column' : 'row'} justifyContent="space-between">
           <Box>
             <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
               Earned Token
             </Text>
             <Flex flexDirection={isMobile ? 'column' : 'row'} justifyContent="space-between">
               <Box>
-                <AirDrop
-                  name="FINIX"
-                  value={finixEarningsValue}
-                />
+                <AirDrop name="FINIX" value={finixEarningsValue} />
                 {(bundleRewards || []).map((br, bundleId) => {
                   const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
                   const allocate = br.rewardPerBlock || new BigNumber(0)

@@ -29,7 +29,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
   pool,
   myBalanceInWallet,
   onSelectAdd,
-  onSelectRemove
+  onSelectRemove,
 }) => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
@@ -121,8 +121,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
       tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
       totalStaked,
       myStaked: stakedBalance,
-      max:
-        stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
+      max: stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
       apy,
     })
   }, [
@@ -136,7 +135,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
     onSelectAdd,
     isBnbPool,
     totalStaked,
-    apy
+    apy,
   ])
   const onPresentWithdraw = useCallback(() => {
     onSelectRemove({
@@ -148,15 +147,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
       max: stakedBalance,
       apy,
     })
-  }, [
-    isOldSyrup,
-    sousId,
-    stakedBalance,
-    stakingTokenName,
-    onSelectRemove,
-    totalStaked,
-    apy
-  ])
+  }, [isOldSyrup, sousId, stakedBalance, stakingTokenName, onSelectRemove, totalStaked, apy])
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
@@ -182,7 +173,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
       tokenName,
       onPresentDeposit,
       onPresentWithdraw,
-      componentType
+      componentType,
     ],
   )
   const renderHarvestActionAirDrop = useCallback(
@@ -199,17 +190,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
         needsApproval={needsApproval}
       />
     ),
-    [
-      earnings,
-      isBnbPool,
-      isOldSyrup,
-      needsApproval,
-      sousId,
-      pendingRewards,
-      bundleRewards,
-      isMobile,
-      componentType
-    ],
+    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, pendingRewards, bundleRewards, isMobile, componentType],
   )
   const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
