@@ -108,7 +108,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const onPageChange = (e, page) => {
     setCurrentPage(page)
-
   }
   return (
     <CardTable>
@@ -128,64 +127,63 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
         ) : isEmpty(rows) ? (
           <EmptyData text={empText} />
         ) : (
-              <TBody>
-                {rows !== null &&
-                  rows.map((r) => (
-                    <TR key={`tsc-${r.block_number}`}>
-                      <TD>
-                        <div className="flex">
-                          <Text className="mr-2">
-                            {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)}
-                          </Text>
-                          <CopyToClipboard toCopy={r.user_address} iconWidth="16px" noText />
-                        </div>
-                      </TD>
-                      <TD>
-                        <div className="flex align-center">
-                          {r.event_name === 'AddFundAmount' ? (
-                            <>
-                              <AddIcon color="success" className="mr-1" />
-                              <Text>Invest</Text>
-                            </>
-                          ) : (
-                              <>
-                                <MinusIcon color="failure" className="mr-1" />
-                                <Text>Withdraw</Text>
-                              </>
-                            )}
-                        </div>
-                      </TD>
-                      <TD>
-                        <Text>{numeral(r.lp_amount).format('0,0.000')}</Text>
-                      </TD>
-                      <TD>
-                        <Text>{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
-                      </TD>
-                      <TD>
-                        <Text>{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
-                      </TD>
-                      <TD>
-                        <LinkExternal noIcon href={`https://scope.klaytn.com/tx/${r.transaction_hash}`} fontSize="12px">
-                          KlaytnScope
-                </LinkExternal>
-                      </TD>
-                    </TR>
-                  ))}
-                <TR>
-                  <TD className="text-right">
-                    <PaginationCustom
-                      page={currentPage}
-                      count={pages}
-                      onChange={onPageChange}
-                      size="small"
-                      hidePrevButton
-                      hideNextButton
-                    />
+          <TBody>
+            {rows !== null &&
+              rows.map((r) => (
+                <TR key={`tsc-${r.block_number}`}>
+                  <TD>
+                    <div className="flex">
+                      <Text className="mr-2">
+                        {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)}
+                      </Text>
+                      <CopyToClipboard toCopy={r.user_address} iconWidth="16px" noText />
+                    </div>
+                  </TD>
+                  <TD>
+                    <div className="flex align-center">
+                      {r.event_name === 'AddFundAmount' ? (
+                        <>
+                          <AddIcon color="success" className="mr-1" />
+                          <Text>Invest</Text>
+                        </>
+                      ) : (
+                        <>
+                          <MinusIcon color="failure" className="mr-1" />
+                          <Text>Withdraw</Text>
+                        </>
+                      )}
+                    </div>
+                  </TD>
+                  <TD>
+                    <Text>{numeral(r.lp_amount).format('0,0.000')}</Text>
+                  </TD>
+                  <TD>
+                    <Text>{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
+                  </TD>
+                  <TD>
+                    <Text>{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
+                  </TD>
+                  <TD>
+                    <LinkExternal noIcon href={`https://scope.klaytn.com/tx/${r.transaction_hash}`} fontSize="12px">
+                      KlaytnScope
+                    </LinkExternal>
                   </TD>
                 </TR>
-              </TBody>
-            )}
-
+              ))}
+            <TR>
+              <TD className="text-right">
+                <PaginationCustom
+                  page={currentPage}
+                  count={pages}
+                  onChange={onPageChange}
+                  size="small"
+                  hidePrevButton
+                  hideNextButton
+                />
+              </TD>
+            </TR>
+          </TBody>
+        )}
       </Table>
     </CardTable>
   )
@@ -227,7 +225,7 @@ const VotingList = ({ rbAddress }) => {
         <div className="pa-4 pt-3 bd-b">
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
             Votes (2)
-              </Text>
+          </Text>
         </div>
         <TransactionTable
           rows={transactions}

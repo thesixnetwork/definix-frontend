@@ -17,13 +17,13 @@ const Box = styled.div`
   align-items: center;
 `
 const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
+  const { expand, ...other } = props
+  return <IconButton {...other} />
 })(() => ({
   '&.MuiIconButton-root': {
-    padding: "unset"
-  }
-}));
+    padding: 'unset',
+  },
+}))
 
 const BoxDetails = styled.div`
   border: 1px solid #979797;
@@ -38,10 +38,10 @@ const VotingPower = () => {
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
 
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = React.useState(false)
   const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+    setExpanded(!expanded)
+  }
 
   return (
     <>
@@ -59,12 +59,7 @@ const VotingPower = () => {
             <Text fontSize="18px" bold lineHeight="1" color="#30ADFF">
               0
             </Text>
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
+            <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
               <ChevronDown />
             </ExpandMore>
           </Box>
@@ -73,13 +68,12 @@ const VotingPower = () => {
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <div className="flex justify-space-between pa-3">
               <Text fontSize="16px">Your FINIX held now</Text>
-              <Text fontSize="16px" bold color="#30ADFF">2,938.23</Text>
+              <Text fontSize="16px" bold color="#30ADFF">
+                2,938.23
+              </Text>
             </div>
-
-
           </Collapse>
         </BoxDetails>
-
       </Card>
     </>
   )

@@ -9,7 +9,6 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
 
-
 const VotingDetails = () => {
   const { account } = useWallet()
   const { isDark } = useTheme()
@@ -28,25 +27,25 @@ const VotingDetails = () => {
           <div className={isMobile ? 'col-12' : 'col-4'}>
             <Text fontSize="18px" lineHeight="1">
               Identifier
-          </Text>
+            </Text>
           </div>
           <div className={isMobile ? 'col-12' : 'col-8'}>
             <Text fontSize="18px" bold lineHeight="1" color="#30ADFF">
-              QmaSFZ3p  <img src={iconExpore} alt="iconExpore" />
-          </Text>
+              QmaSFZ3p <img src={iconExpore} alt="iconExpore" />
+            </Text>
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-4'}>
             <Text fontSize="18px" lineHeight="1">
               Identifier
-          </Text>
+            </Text>
           </div>
           <div className={isMobile ? 'col-12' : 'col-8'}>
             <Text fontSize="18px" bold lineHeight="1" color="#30ADFF">
               {/* {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}&nbsp; */}
               <img src={iconExpore} alt="iconExpore" />
-          </Text>
+            </Text>
           </div>
         </div>
       </Card>

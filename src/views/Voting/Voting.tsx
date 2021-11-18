@@ -29,7 +29,6 @@ const Voting: React.FC = () => {
   const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobile)
   const [listView, setListView] = useState(true)
 
-  
   return (
     <>
       <Route exact path={path}>

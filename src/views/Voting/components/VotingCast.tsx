@@ -8,8 +8,6 @@ import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
-
-
 const CardList = styled(Card)`
   width: 100%;
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -47,7 +45,7 @@ const VotingCast = () => {
         <div className="pa-4 pt-3 bd-b">
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
             Cast your vote
-              </Text>
+          </Text>
         </div>
         <div className="ma-3">
           <CardList>
@@ -56,19 +54,19 @@ const VotingCast = () => {
                 control={
                   <CustomCheckbox
                     size="small"
-                  // checked={!!_.get(selectedToken, `${18}.checked`)}
-                  // onChange={(event) => {
-                  //   setSelectedToken({
-                  //     ...selectedToken,
-                  //     18: {
-                  //       checked: event.target.checked,
-                  //       pools: false,
-                  //       farms: false,
-                  //       status: false,
-                  //       pendingReward: finixEarn,
-                  //     },
-                  //   })
-                  // }}
+                    // checked={!!_.get(selectedToken, `${18}.checked`)}
+                    // onChange={(event) => {
+                    //   setSelectedToken({
+                    //     ...selectedToken,
+                    //     18: {
+                    //       checked: event.target.checked,
+                    //       pools: false,
+                    //       farms: false,
+                    //       status: false,
+                    //       pendingReward: finixEarn,
+                    //     },
+                    //   })
+                    // }}
                   />
                 }
                 label="Yes, agree with you."
@@ -81,19 +79,19 @@ const VotingCast = () => {
                 control={
                   <CustomCheckbox
                     size="small"
-                  // checked={!!_.get(selectedToken, `${18}.checked`)}
-                  // onChange={(event) => {
-                  //   setSelectedToken({
-                  //     ...selectedToken,
-                  //     18: {
-                  //       checked: event.target.checked,
-                  //       pools: false,
-                  //       farms: false,
-                  //       status: false,
-                  //       pendingReward: finixEarn,
-                  //     },
-                  //   })
-                  // }}
+                    // checked={!!_.get(selectedToken, `${18}.checked`)}
+                    // onChange={(event) => {
+                    //   setSelectedToken({
+                    //     ...selectedToken,
+                    //     18: {
+                    //       checked: event.target.checked,
+                    //       pools: false,
+                    //       farms: false,
+                    //       status: false,
+                    //       pendingReward: finixEarn,
+                    //     },
+                    //   })
+                    // }}
                   />
                 }
                 label="No, I’m not agree with you."
@@ -102,7 +100,7 @@ const VotingCast = () => {
           </CardList>
           <Button variant="success" radii="small">
             Cast vote
-              </Button>
+          </Button>
         </div>
       </Card>
     </>

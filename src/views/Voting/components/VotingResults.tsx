@@ -11,12 +11,11 @@ import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.p
 const BorderLinearProgress = styled(LinearProgress)(() => ({
   borderRadius: 6,
 
-  '&.MuiLinearProgress-root':{
-    height: "10px",
-    backgroundColor:'#979797',
-  }
-
-}));
+  '&.MuiLinearProgress-root': {
+    height: '10px',
+    backgroundColor: '#979797',
+  },
+}))
 
 const VotingResults = () => {
   const { account } = useWallet()
@@ -64,7 +63,6 @@ const VotingResults = () => {
             </Text>
           </div>
         </div>
-
       </Card>
     </>
   )
