@@ -14,7 +14,6 @@ import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
 import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-black.png'
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
 
-
 const StyledBannerLady = styled(Card)`
   width: 100%;
   background: ${({ theme }) => theme.colors.card};
@@ -379,7 +378,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
     autoplay: true,
     dotsClass: 'slick-dots slick-thumb',
   }
-  
+
   const { isDark } = useTheme()
 
   return (
@@ -392,9 +391,9 @@ const CardAutoRebalancing = ({ className = '' }) => {
               <Text color={isDark ? 'white' : 'black'} fontSize="20px" bold mt="6px">
                 Reveals NFT Project for T-ARA’s Comeback
               </Text>
-              <Text  color="textSubtle" fontSize="14px">
-                NFT based on Binance Smart Chain, sale in SIX token
-                expands utility convenience via Swap feature on Definix DEX.
+              <Text color="textSubtle" fontSize="14px">
+                NFT based on Binance Smart Chain, sale in SIX token expands utility convenience via Swap feature on
+                Definix DEX.
               </Text>
               <div className="mt-6">
                 <SpecialButton as="a" href="https://dingoxt-ara.com/" target="_blank" rel="noreferrer">
