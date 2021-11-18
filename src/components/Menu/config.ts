@@ -112,7 +112,7 @@ const config: MenuEntry[] = [
         href: '/voting',
         notHighlight: false,
         newTab: false,
-      }
+      },
     ],
   },
 
