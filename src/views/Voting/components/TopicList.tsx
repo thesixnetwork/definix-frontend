@@ -9,6 +9,7 @@ const StyledButton = styled(Button)`
   background-color: transparent;
   border: unset;
   display: unset;
+  align-self: center;
 `
 
 const StyledButtonVote = styled(Button)`
@@ -23,17 +24,30 @@ const StyledButoonCore = styled(Button)`
   color: #55bd92;
 `
 
+const CardTopicList = styled.div`
+  display: flex !important;
+  padding: 1.5rem !important;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  justify-content: space-between;
+`
+
+const TextHorizontal = styled.div`
+  display: flex !important;
+  margin-bottom: 0.5rem !important;
+  margin-top: 0.5rem !important;
+`
+
 const TopicList = () => {
   return (
-    <div className="bd-t pa-5 flex justify-space-between">
+    <CardTopicList>
       <div>
         <Heading fontSize="18px !important">
           Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic
         </Heading>
-        <div className="flex mb-2 mt-2">
+        <TextHorizontal>
           <Text fontSize="14px !important">Vote Now</Text>&nbsp;
           <Text fontSize="14px !important">12-Nov-21 15:00:00 GMT+9</Text>
-        </div>
+        </TextHorizontal>
         <StyledButtonVote radii="small" color="primary">
           Vote Now
         </StyledButtonVote>
@@ -41,10 +55,10 @@ const TopicList = () => {
           Core
         </StyledButoonCore>
       </div>
-      <StyledButton as={Link} to="/voting/detail" className="align-self-center">
+      <StyledButton as={Link} to="/voting/detail">
         <Image src={next} width={28} height={28} />
       </StyledButton>
-    </div>
+    </CardTopicList>
   )
 }
 
