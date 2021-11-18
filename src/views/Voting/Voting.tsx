@@ -24,7 +24,6 @@ const MaxWidthLeft = styled(MaxWidth)`
   margin: 60px 100px;
 `
 
-
 const TutorailsLink = styled(Link)`
   text-decoration-line: underline;
 `
