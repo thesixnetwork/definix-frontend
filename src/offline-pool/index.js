@@ -7,6 +7,7 @@ import Context from './Context'
 import Address from './Address'
 import DefinixLibrary from './DefinixLibrary'
 import { BNB, BUSD, getCustomLpNetwork } from '../config/constants/tokens'
+import { customFactory, customInitCodeHash } from '../config/constants/rebalances'
 
 const asyncForEach = async (array, callback) => {
   for (let index = 0; index < (array.length || array.size); index++) {
@@ -39,9 +40,6 @@ const BNBToken = {
 
 export const simulateInvest = async (tokens = []) => {
   if (tokens.length === 0) return []
-  const bnbTokenOnly = tokens.find((token) => isBNB(token)) || BNBToken
-  const notBnbToken = tokens.filter((token) => !isBNB(token))
-
   const context = new Context()
 
   const factory = new DefinixFactory(context)
@@ -49,9 +47,14 @@ export const simulateInvest = async (tokens = []) => {
   const router = new DefinixRouter(context, library)
   context.setFactory(factory)
 
-  await asyncForEach(notBnbToken, async (token) => {
+  await factory.loadPair(
+    getLowerAddress(
+      getCustomLpNetwork(BNBToken.address, BUSDToken.address, customFactory.pancake, customInitCodeHash.pancake),
+    ),
+  )
+  await asyncForEach(tokens, async (token) => {
     await factory.loadPair(
-      getLowerAddress(getCustomLpNetwork(token.address, bnbTokenOnly.address, token.factory, token.initCodeHash)),
+      getLowerAddress(getCustomLpNetwork(token.address, BNBToken.address, token.factory, token.initCodeHash)),
     )
   })
 
@@ -68,33 +71,26 @@ export const simulateInvest = async (tokens = []) => {
 
   let poolUSDBalances = swapper.getCurrentPoolUSDBalance(
     getLowerAddress(BUSDToken.address),
-    getLowerAddress(bnbTokenOnly.address),
-    notBnbToken.map(() => router),
+    getLowerAddress(BNBToken.address),
+    tokens.map(() => router),
   )
-  let poolAmounts = swapper.getCurrentPoolAmount(getLowerAddress(bnbTokenOnly.address), [
-    ...notBnbToken.map((token) => getLowerAddress(token.address)),
-  ])
+  let poolAmounts = swapper.getCurrentPoolAmount([...tokens.map((token) => getLowerAddress(token.address))])
 
   swapper.rebalanceFund(
     getLowerAddress(BUSDToken.address),
-    getLowerAddress(bnbTokenOnly.address),
-    [...notBnbToken.map((token) => getLowerAddress(token.address))],
-    notBnbToken.map(() => router),
-    [...notBnbToken.map((token) => new BigNumber(token.ratioPoint))],
-    new BigNumber(bnbTokenOnly.ratioPoint),
-    BigNumber.sum.apply(null, [
-      ...notBnbToken.map((token) => new BigNumber(token.ratioPoint)),
-      new BigNumber(bnbTokenOnly.ratioPoint),
-    ]),
+    getLowerAddress(BNBToken.address),
+    [...tokens.map((token) => getLowerAddress(token.address))],
+    tokens.map(() => router),
+    [...tokens.map((token) => new BigNumber(token.ratioPoint))],
+    BigNumber.sum.apply(null, [...tokens.map((token) => new BigNumber(token.ratioPoint))]),
   )
 
   poolUSDBalances = swapper.getCurrentPoolUSDBalance(
     getLowerAddress(BUSDToken.address),
-    getLowerAddress(bnbTokenOnly.address),
-    [...notBnbToken.map((token) => getLowerAddress(token.address))],
-    // notBnbToken.map(() => router),
+    getLowerAddress(BNBToken.address),
+    [...tokens.map((token) => getLowerAddress(token.address))],
   )
-  poolAmounts = swapper.getCurrentPoolAmount([...notBnbToken.map((token) => getLowerAddress(token.address))])
+  poolAmounts = swapper.getCurrentPoolAmount([...tokens.map((token) => getLowerAddress(token.address))])
   return [poolUSDBalances, poolAmounts]
 }
 
