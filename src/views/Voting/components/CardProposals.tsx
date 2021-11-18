@@ -14,6 +14,7 @@ const Proposals = styled(Card)`
   background-size: cover;
   background-repeat: no-repeat;
   right: 0;
+  margin-top: 1.5rem !important;
 
   a {
     display: block;
@@ -34,6 +35,13 @@ const Tabs = styled(Card)`
   }
 `
 
+const Header = styled.div`
+  display: flex !important;
+  padding: 1.5rem !important;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  align-items: center;
+`
+
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
   const [chartName, setChartName] = useState<TypeChartName>('Core')
@@ -47,13 +55,13 @@ const CardProposals = () => {
 
   return (
     <>
-      <Proposals className="mt-5">
-        <div className="flex pa-5 bd-b">
-          <Heading fontSize="26px !important" className="align-self-center">
+      <Proposals>
+        <Header>
+          <Heading fontSize="26px !important">
             Proposals
           </Heading>
           <SelectType chartName={chartName} setChartName={setChartName} className="ml-5" />
-        </div>
+        </Header>
         <Tabs>
           <CardTab
             menus={['Vote Now', 'Soon', 'Closed']}
