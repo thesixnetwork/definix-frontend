@@ -237,8 +237,9 @@ const StyledBannerDingoXSix = styled(Card)`
     border-radius: unset;
     height: 327px;
     &:before {
-      width: 46%;
+      width: 42%;
       opacity: 1;
+      background-position: center;
     }
     h2 {
       font-size: 28px !important;
@@ -248,6 +249,7 @@ const StyledBannerDingoXSix = styled(Card)`
     }
   }
 `
+
 const SpecialButton = styled(Button)`
   position: relative;
   padding: 12px 24px;
