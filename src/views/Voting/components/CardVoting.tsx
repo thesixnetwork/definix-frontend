@@ -66,7 +66,7 @@ const CardVoting = () => {
           Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
         </Text>
       </StyledBannerVoting>
-      <CardProposals/>
+      <CardProposals />
     </>
   )
 }
