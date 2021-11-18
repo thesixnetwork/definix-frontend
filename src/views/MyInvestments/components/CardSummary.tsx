@@ -22,7 +22,7 @@ function CardSummary() {
         <Tab label={t('Net Worth')} />
       </Tabs>
       <Box>
-        {value === 0 && <Earned isMobile={isMobile}/>}
+        {value === 0 && <Earned isMobile={isMobile} />}
         {value === 1 && <NetWorth />}
       </Box>
     </Card>

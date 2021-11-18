@@ -43,7 +43,7 @@ const Earned = ({ isMobile }) => {
     }, 0)
   }, [farmEarnings])
   const farmEarningBusd = useMemo(() => {
-    return  new BigNumber(farmEarningsSum).multipliedBy(finixPrice).toNumber()
+    return new BigNumber(farmEarningsSum).multipliedBy(finixPrice).toNumber()
   }, [farmEarningsSum, finixPrice])
   // const earningsSum = farmEarnings.reduce((accum, earning) => {
   //   return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
@@ -63,8 +63,6 @@ const Earned = ({ isMobile }) => {
     return new BigNumber(poolEarningsSum).multipliedBy(finixPrice).toNumber()
   }, [poolEarningsSum, finixPrice])
 
-
-
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
@@ -83,33 +81,44 @@ const Earned = ({ isMobile }) => {
   }, [onReward])
 
   const earnedList = useMemo(() => {
-    return [{
-      title: t('Farm'),
-      value: farmEarningsSum,
-      price: farmEarningBusd
-    }, {
-      title: t('Pool'),
-      value: poolEarningsSum,
-      price: poolEarningsBusd
-    }, {
-      title: t('Rebalancing'),
-      value: '100,000,000.123456',
-      price: '000000'
-    }, {
-      title: t('Long-term Stake'),
-      value: '100,000,000.123456',
-      price: '000000'
-    }]
+    return [
+      {
+        title: t('Farm'),
+        value: farmEarningsSum,
+        price: farmEarningBusd,
+      },
+      {
+        title: t('Pool'),
+        value: poolEarningsSum,
+        price: poolEarningsBusd,
+      },
+      {
+        title: t('Rebalancing'),
+        value: '100,000,000.123456',
+        price: '000000',
+      },
+      {
+        title: t('Long-term Stake'),
+        value: '100,000,000.123456',
+        price: '000000',
+      },
+    ]
   }, [t, farmEarningsSum, farmEarningBusd, poolEarningsSum, poolEarningsBusd])
 
   return (
     <Box>
       <Flex justifyContent="space-between" alignItems="center" className="mx-s40 mt-s28 mb-s40">
         <Box>
-          <Text textStyle="R_18M" color={ColorStyles.MEDIUMGREY}>{t('Total Finix Earned')}</Text>
+          <Text textStyle="R_18M" color={ColorStyles.MEDIUMGREY}>
+            {t('Total Finix Earned')}
+          </Text>
           <Flex alignItems="flex-end">
-            <Text textStyle="R_32B" color={ColorStyles.BLACK}>100,000,000.123456</Text>
-            <Text textStyle="R_16M" color={ColorStyles.DEEPGREY} className="ml-s16">= $1303.32</Text>
+            <Text textStyle="R_32B" color={ColorStyles.BLACK}>
+              100,000,000.123456
+            </Text>
+            <Text textStyle="R_16M" color={ColorStyles.DEEPGREY} className="ml-s16">
+              = $1303.32
+            </Text>
           </Flex>
         </Box>
         {account ? (
@@ -139,11 +148,15 @@ const Earned = ({ isMobile }) => {
               borderLeft={index > 0 && '1px solid'}
               borderColor={ColorStyles.LIGHTGREY}
             >
-              <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>{earned.title}</Text>
+              <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+                {earned.title}
+              </Text>
               <Text textStyle="R_16M" color={ColorStyles.BLACK} className="mt-s8">
                 {numeral(earned.value).format('0,0.[000000]')}
               </Text>
-              <Text textStyle="R_14M" color={ColorStyles.DEEPGREY}>= ${numeral(earned.price).format('0,0.[00]')}</Text>
+              <Text textStyle="R_14M" color={ColorStyles.DEEPGREY}>
+                = ${numeral(earned.price).format('0,0.[00]')}
+              </Text>
             </Box>
           ))}
         </Grid>
