@@ -258,7 +258,7 @@ const Menu: React.FC<NavProps> = ({
 
         <Flex alignItems="center">
           <Price
-            href="https://swap.arken.finance/tokens/bsc/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
+            href="https://swap.arken.finance/tokens/bsc/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d?res=15"
             target="_blank"
           >
             <img src={FinixCoin} alt="" />
