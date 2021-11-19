@@ -17,8 +17,8 @@ const CardList = styled(Card)`
   display: flex;
   align-items: center;
   &.Mui-checked {
-    background: #0973B9;
-    border: 1px solid #30ADFF;
+    background: #0973b9;
+    border: 1px solid #30adff;
   }
 `
 

@@ -11,8 +11,8 @@ import { Collapse, CardContent, IconButton } from '@material-ui/core'
 const Box = styled.div<{ expand: boolean }>`
   border: 1px solid #979797;
   border-radius: 6px;
-  border-bottom-left-radius: ${({ expand }) => (expand ? "0px" : "6px")};
-  border-bottom-right-radius: ${({ expand }) => (expand ? "0px" : "6px")};
+  border-bottom-left-radius: ${({ expand }) => (expand ? '0px' : '6px')};
+  border-bottom-right-radius: ${({ expand }) => (expand ? '0px' : '6px')};
   padding: 14px;
   display: flex;
   justify-content: space-between;
@@ -22,8 +22,8 @@ const Box = styled.div<{ expand: boolean }>`
 const BoxDetails = styled.div<{ expand: boolean }>`
   border: 1px solid #979797;
   border-radius: 6px;
-  border-top-left-radius: ${({ expand }) => (expand ? "0px" : "6px")};
-  border-top-right-radius: ${({ expand }) => (expand ? "0px" : "6px")};
+  border-top-left-radius: ${({ expand }) => (expand ? '0px' : '6px')};
+  border-top-right-radius: ${({ expand }) => (expand ? '0px' : '6px')};
   border-top: unset;
   padding: 14px;
   margin: 0px 24px 20px;
@@ -35,7 +35,7 @@ const ExpandMore = styled((props) => {
 })(() => ({
   '&.MuiIconButton-root': {
     padding: 'unset',
-  }
+  },
 }))
 
 const VotingPower = () => {
@@ -58,7 +58,7 @@ const VotingPower = () => {
           </Text>
         </div>
         {console.log('expanded >>', expanded)}
-        <div className={`${expanded === false ? "ma-5" : "ma-5 mb-0"}`}>
+        <div className={`${expanded === false ? 'ma-5' : 'ma-5 mb-0'}`}>
           <Box expand={expanded}>
             <Text fontSize="18px" bold lineHeight="1">
               Your Voting Power
