@@ -44,6 +44,7 @@ const NotFound = lazy(() => import('./views/NotFound'))
 const MyInvestments = lazy(() => import('./views/MyInvestments'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 const LongTermStake = lazy(() => import('./views/LongTermStake'))
+const Bridge = lazy(() => import('./views/Bridge'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -134,6 +135,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/long-term-stake">
                 <LongTermStake />
+              </Route>
+              <Route path="/bridge">
+                <Bridge />
               </Route>
               {/* <Route path="/xxx">
                 <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
