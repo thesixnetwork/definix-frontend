@@ -27,6 +27,7 @@ import {
   usePriceKethKusdt,
   usePriceKlayKusdt,
   usePriceSixUsd,
+  useRebalancesIsFetched,
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Card, CardBody, Divider } from 'definixswap-uikit'
@@ -35,6 +36,7 @@ import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { FarmWithStakedValue } from '../../Farms/components/FarmCard/types'
 import PoolCard from '../../Pools/components/PoolCard/PoolCard'
+import ExploreCard from '../../Explore/components/ExploreCard'
 
 const FarmsAndPools = styled(Card)`
   display: flex;
@@ -104,51 +106,17 @@ const List = styled.div`
   }
 `
 
-const MyFarmsAndPools = () => {
+const MyFarmsAndPools = ({ farms, pools, rebalances }) => {
   const finixPrice = usePriceFinixUsd()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
-  const farms = useFarms()
-  const farmsWithApy = useFarmsList(farms)
-  const stakedFarms = useMemo(() => {
-    return farmsWithApy.reduce((result, farm) => {
-      let arr = result
-      if (farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)) {
-        arr = [
-          ...result,
-          {
-            type: 'farm',
-            data: farm,
-          },
-        ]
-      }
-      return arr
-    }, [])
-  }, [farmsWithApy])
-  const pools = usePools(account)
-  const poolsWithApy = usePoolsList({ farms, pools })
-  // const stakedPools = useMemo(() => {
-  //   return poolsWithApy.filter((pool) => pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0))
-  // }, [poolsWithApy])
-  const stakedPools = useMemo(() => {
-    return poolsWithApy.reduce((result, pool) => {
-      let arr = result
-      if (pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)) {
-        arr = [
-          ...result,
-          {
-            type: 'pool',
-            data: pool,
-          },
-        ]
-      }
-      return arr
-    }, [])
-  }, [poolsWithApy])
+
+  
 
   const stakedProducts = useMemo(() => {
-    return [...stakedFarms, ...stakedPools]
-  }, [stakedFarms, stakedPools])
+    return [...farms, ...pools, ...rebalances]
+  }, [farms, pools, rebalances])
+  console.log('stakedProducts: ', stakedProducts)
 
   const getMyFarmBalancesInWallet = useCallback(
     (tokens: string[]) => {
@@ -173,41 +141,32 @@ const MyFarmsAndPools = () => {
     [balances],
   )
 
-  const rebalances = useRebalances()
-  const rebalanceBalances = useRebalanceBalances(account) || {}
-  const stakedRebalances = rebalances.filter(
-    (r) =>
-      (
-        rebalanceBalances[typeof r.address === 'string' ? r.address : getAddress(r.address)] || new BigNumber(0)
-      ).toNumber() > 0,
-  )
+  // const { fastRefresh } = useRefresh()
+  // const dispatch = useDispatch()
+  // useEffect(() => {
+  //   if (account) {
+  //     dispatch(fetchFarmUserDataAsync(account))
+  //   }
+  // }, [account, dispatch, fastRefresh])
 
-  const { fastRefresh } = useRefresh()
-  const dispatch = useDispatch()
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchFarmUserDataAsync(account))
-    }
-  }, [account, dispatch, fastRefresh])
-
-  useEffect(() => {
-    if (account) {
-      const addressObject = {}
-      rebalances.forEach((rebalance) => {
-        const assets = rebalance.ratio
-        assets.forEach((a) => {
-          addressObject[getAddress(a.address)] = true
-        })
-      })
-      dispatch(
-        fetchBalances(account, [
-          ...Object.keys(addressObject),
-          ...rebalances.map((rebalance) => getAddress(rebalance.address)),
-        ]),
-      )
-      dispatch(fetchRebalanceBalances(account, rebalances))
-    }
-  }, [dispatch, account, rebalances])
+  // useEffect(() => {
+  //   if (account) {
+  //     const addressObject = {}
+  //     rebalances.forEach((rebalance) => {
+  //       const assets = rebalance.ratio
+  //       assets.forEach((a) => {
+  //         addressObject[getAddress(a.address)] = true
+  //       })
+  //     })
+  //     dispatch(
+  //       fetchBalances(account, [
+  //         ...Object.keys(addressObject),
+  //         ...rebalances.map((rebalance) => getAddress(rebalance.address)),
+  //       ]),
+  //     )
+  //     dispatch(fetchRebalanceBalances(account, rebalances))
+  //   }
+  // }, [dispatch, account, rebalances])
 
   const getProductComponent = useCallback(
     (product) => {
@@ -231,6 +190,20 @@ const MyFarmsAndPools = () => {
             componentType="myInvestment"
             pool={product.data}
             myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
+          />
+        )
+      }
+      if (product.type === 'rebalance') {
+        return (
+          <ExploreCard
+            key={product.data.title}
+            componentType="myInvestment"
+            isHorizontal
+            rebalance={product.data}
+            balance={product.data.myRebalanceBalance}
+            onClickViewDetail={() => {
+              // go to link
+            }}
           />
         )
       }

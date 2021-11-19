@@ -1,41 +1,30 @@
+import BigNumber from 'bignumber.js'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import FlexLayout from 'components/layout/FlexLayout'
 import useRefresh from 'hooks/useRefresh'
+import useFarmsList from 'hooks/useFarmsList'
+import usePoolsList from 'hooks/usePoolsList'
+import {
+  useBalances,
+  useRebalances,
+  useRebalanceBalances,
+  useFarms,
+  usePools,
+} from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/actions'
-import styled from 'styled-components'
+import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
+import { getAddress } from 'utils/addressHelpers'
+// import styled from 'styled-components'
 import { Text, Box, TitleSet } from 'definixswap-uikit'
-import Flip from '../../uikit-dev/components/Flip'
+// import Flip from '../../uikit-dev/components/Flip'
 import CardSummary from './components/CardSummary'
 import MyFarmsAndPools from './components/MyFarmsAndPools'
-import MyInvestmentContext from './MyInvestmentContext'
-
-const ModalWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: ${({ theme }) => theme.zIndices.modal - 1};
-  background: url(${({ theme }) => theme.colors.backgroundPolygon});
-  background-size: cover;
-  background-repeat: no-repeat;
-`
-
-const MaxWidth = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
-`
 
 const MyInvestments: React.FC = () => {
   const { t } = useTranslation()
@@ -43,59 +32,123 @@ const MyInvestments: React.FC = () => {
   const { account }: { account: string; klaytn: provider } = useWallet()
 
   const dispatch = useDispatch()
-  const { fastRefresh } = useRefresh()
+  // const { fastRefresh } = useRefresh()
 
-  const [isPhrase2, setIsPhrase2] = useState(false)
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [modalNode, setModalNode] = useState<React.ReactNode>()
+  // const [isPhrase2, setIsPhrase2] = useState(false)
 
-  const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-    ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-    : new Date().getTime()
-  const currentTime = new Date().getTime()
+  // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
+  //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
+  //   : new Date().getTime()
+  // const currentTime = new Date().getTime()
 
-  const handlePresent = useCallback((node: React.ReactNode) => {
-    setModalNode(node)
-    setIsOpenModal(true)
-    window.scrollTo(0, 0)
-  }, [])
+  // useEffect(() => {
+  //   if (currentTime < phrase2TimeStamp) {
+  //     setTimeout(() => {
+  //       setIsPhrase2(true)
+  //     }, phrase2TimeStamp - currentTime)
+  //   } else {
+  //     setIsPhrase2(true)
+  //   }
+  // }, [currentTime, phrase2TimeStamp])
 
-  const handleDismiss = useCallback(() => {
-    setModalNode(undefined)
-    setIsOpenModal(false)
-  }, [])
+  // farms
+  const farms = useFarms()
+  const farmsWithApy = useFarmsList(farms)
+  const stakedFarms = useMemo(() => {
+    return farmsWithApy.reduce((result, farm) => {
+      let arr = result
+      if (farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)) {
+        arr = [
+          ...result,
+          {
+            type: 'farm',
+            data: farm,
+          },
+        ]
+      }
+      return arr
+    }, [])
+  }, [farmsWithApy])
 
-  useEffect(() => {
-    if (currentTime < phrase2TimeStamp) {
-      setTimeout(() => {
-        setIsPhrase2(true)
-      }, phrase2TimeStamp - currentTime)
-    } else {
-      setIsPhrase2(true)
+  // pools
+  const pools = usePools(account)
+  const poolsWithApy = usePoolsList({ farms, pools })
+  const stakedPools = useMemo(() => {
+    return poolsWithApy.reduce((result, pool) => {
+      let arr = result
+      if (pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)) {
+        arr = [
+          ...result,
+          {
+            type: 'pool',
+            data: pool,
+          },
+        ]
+      }
+      return arr
+    }, [])
+  }, [poolsWithApy])
+
+  // rebalances
+  const rebalances = useRebalances()
+  const rebalanceBalances = useRebalanceBalances(account) || {}
+  const getRebalanceAddress = (address) => {
+    return typeof address === 'string' ? address : getAddress(address)
+  }
+  const stakedRebalances = rebalances.reduce((result, rebalance) => {
+    let arr = result
+    const myRebalanceBalance = rebalanceBalances[getRebalanceAddress(rebalance.address)] || new BigNumber(0)
+    if ((myRebalanceBalance).toNumber() > 0) {
+      arr = [
+        ...result,
+        {
+          type: 'rebalance',
+          data: {
+            ...rebalance,
+            myRebalanceBalance
+          },
+        },
+      ]
     }
-  }, [currentTime, phrase2TimeStamp])
+    return arr
+  }, [])
 
   useEffect(() => {
     if (account) {
       dispatch(fetchFarmUserDataAsync(account))
     }
-  }, [account, dispatch, fastRefresh])
+  }, [account, dispatch])
 
   useEffect(() => {
-    return () => {
-      setIsPhrase2(false)
-      setModalNode(undefined)
-      setIsOpenModal(false)
+    if (account && rebalances) {
+      const addressObject = {}
+      rebalances.forEach((rebalance) => {
+        const assets = rebalance.ratio
+        assets.forEach((a) => {
+          addressObject[getAddress(a.address)] = true
+        })
+      })
+      dispatch(
+        fetchBalances(account, [
+          ...Object.keys(addressObject),
+          ...rebalances.map((rebalance) => getAddress(rebalance.address)),
+        ]),
+      )
+      dispatch(fetchRebalanceBalances(account, rebalances))
     }
-  }, [])
+  }, [dispatch, account, rebalances])
+
+
+  // useEffect(() => {
+  //   return () => {
+  //     setIsPhrase2(false)
+  //     setModalNode(undefined)
+  //     setIsOpenModal(false)
+  //   }
+  // }, [])
 
   return (
-    <MyInvestmentContext.Provider
-      value={{
-        onPresent: handlePresent,
-        onDismiss: handleDismiss,
-      }}
-    >
+    <>
       <Helmet>
         <title>My investments - Definix - Advance Your Crypto Assets</title>
       </Helmet>
@@ -103,7 +156,11 @@ const MyInvestments: React.FC = () => {
         <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
         <Route exact path={`${path}`}>
           <CardSummary />
-          <MyFarmsAndPools />
+          <MyFarmsAndPools
+            farms={stakedFarms}
+            pools={stakedPools}
+            rebalances={stakedRebalances}
+          />
         </Route>
       </Box>
       {/* <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
@@ -129,15 +186,7 @@ const MyInvestments: React.FC = () => {
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout> */}
-
-      {isOpenModal && React.isValidElement(modalNode) && (
-        <ModalWrapper>
-          {React.cloneElement(modalNode, {
-            onDismiss: handleDismiss,
-          })}
-        </ModalWrapper>
-      )}
-    </MyInvestmentContext.Provider>
+    </>
   )
 }
 

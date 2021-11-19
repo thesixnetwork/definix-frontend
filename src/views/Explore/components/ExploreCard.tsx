@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import _ from 'lodash'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
-import { getAddress } from 'utils/addressHelpers'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
+import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
-import { Box, Button, Card, CardBody, CardRibbon, Flex, useMatchBreakpoints } from 'definixswap-uikit'
-import numeral from 'numeral'
+import { Box, Button, Card, CardBody, CardRibbon, Flex, useMatchBreakpoints, Grid, ButtonVariants } from 'definixswap-uikit'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
 import MiniChart from './MiniChart'
@@ -17,6 +17,7 @@ import { Rebalance } from '../../../state/types'
 import { usePriceFinixUsd, useRebalanceBalances, useBalances } from '../../../state/hooks'
 
 interface ExploreCardType {
+  componentType?: string
   isHorizontal: boolean
   rebalance: Rebalance | any
   balance: BigNumber
@@ -57,6 +58,7 @@ const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
 }
 
 const ExploreCard: React.FC<ExploreCardType> = ({
+  componentType = 'rebalance',
   balance,
   isHorizontal = true,
   rebalance = {},
@@ -139,6 +141,78 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   }
 
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+
+  
+
+  if (componentType === 'myInvestment') {
+    return (
+      <>
+        <Box className="pa-s32">
+          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
+            <Box>
+              <CardHeading
+                isHorizontal
+                rebalance={rebalance}
+                onlyTitle
+                componentType={componentType}
+              />
+            </Box>
+            <Box>
+              <TwoLineFormat
+                title={t('Share Price(Since Inception)')}
+                value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
+                percent={`${
+                  rebalance.sharedPricePercentDiff >= 0
+                    ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+                    : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
+                }%`}
+                percentClass={(() => {
+                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
+                  if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
+                  return ''
+                })()}
+              />
+            </Box>
+            <Flex justifyContent="space-between">
+              <TwoLineFormat
+                className="pb-6"
+                title={t('Current Investment')}
+                value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
+                currentInvestPercentDiff={`(${
+                  percentage > 0
+                    ? `+${numeral(percentage).format('0,0.[00]')}`
+                    : `${numeral(percentage).format('0,0.[00]')}`
+                }%)`}
+                diffAmounts={`${
+                  percentage > 0
+                    ? `+${numeral(diffAmount).format('0,0.[000]')}`
+                    : `${numeral(diffAmount).format('0,0.[000]')}`
+                }`}
+                percentClass={(() => {
+                  if (percentage < 0) return 'failure'
+                  if (percentage > 0) return 'success'
+                  return ''
+                })()}
+              />
+              <Flex flexDirection="column" justifyContent="center">
+                <Button
+                  variant={ButtonVariants.BROWN}
+                  md
+                  minWidth="100px"
+                  as={Link}
+                  to="/rebalancing/detail"
+                >
+                  Detail
+                </Button>
+              </Flex>
+            </Flex>
+          </Grid>
+        </Box>
+      </>
+    )
+  }
+
+
   if (isMobile) {
     return (
       <HorizontalMobileStyle className="mb-3" ribbon={renderSash()}>
