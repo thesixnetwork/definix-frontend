@@ -22,6 +22,14 @@ import VotingPower from './components/VotingPower'
 const MaxWidthLeft = styled(MaxWidth)`
   max-width: unset;
   margin: 60px 100px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin: 60px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: 60px 100px;
+  }
 `
 
 const TutorailsLink = styled(Link)`

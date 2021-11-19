@@ -16,6 +16,10 @@ const CardList = styled(Card)`
   padding: 2px 20px;
   display: flex;
   align-items: center;
+  &.Mui-checked {
+    background: #0973B9;
+    border: 1px solid #30ADFF;
+  }
 `
 
 const FormControlLabelCustom = styled(FormControlLabel)`
