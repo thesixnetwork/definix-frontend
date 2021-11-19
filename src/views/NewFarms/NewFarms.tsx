@@ -165,7 +165,7 @@ const Farms: React.FC = () => {
             <TitleSet
               title="Farm"
               description={t('Pairing coins to create LP')}
-              linkLabel={t('Learn how to stake')}
+              linkLabel={t('Learn how to stake in Farm')}
               link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
             />
             <FarmTabButtons
