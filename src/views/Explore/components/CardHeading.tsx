@@ -14,7 +14,7 @@ interface CardHeadingType {
   componentType?: string
 }
 
-const FocusImg = styled.img<{ isHorizontal: boolean, isInRebalance: boolean }>`
+const FocusImg = styled.img<{ isHorizontal: boolean; isInRebalance: boolean }>`
   border-radius: ${({ isInRebalance }) => (isInRebalance ? '6px' : '3px')};
   border: solid 1px #979797;
   width: ${({ isHorizontal }) => (isHorizontal ? '100%' : '160px')};
@@ -30,7 +30,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
   className = '',
   onlyTitle = false,
   rebalance = {},
-  componentType = 'rebalance'
+  componentType = 'rebalance',
 }) => {
   const { t } = useTranslation()
   const isInRebalance = useMemo(() => componentType === 'rebalance', [componentType])
@@ -43,7 +43,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
         alignItems={!isHorizontal && onlyTitle ? 'center' : 'start'}
       >
         <Box width={isInRebalance ? 'auto' : 70} className={isInRebalance ? '' : 'mr-s16'}>
-          <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} isInRebalance={isInRebalance}/>
+          <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} isInRebalance={isInRebalance} />
         </Box>
 
         {onlyTitle ? (

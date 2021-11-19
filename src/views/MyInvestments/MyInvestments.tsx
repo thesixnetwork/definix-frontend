@@ -10,13 +10,7 @@ import FlexLayout from 'components/layout/FlexLayout'
 import useRefresh from 'hooks/useRefresh'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
-import {
-  useBalances,
-  useRebalances,
-  useRebalanceBalances,
-  useFarms,
-  usePools,
-} from 'state/hooks'
+import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
@@ -98,14 +92,14 @@ const MyInvestments: React.FC = () => {
   const stakedRebalances = rebalances.reduce((result, rebalance) => {
     let arr = result
     const myRebalanceBalance = rebalanceBalances[getRebalanceAddress(rebalance.address)] || new BigNumber(0)
-    if ((myRebalanceBalance).toNumber() > 0) {
+    if (myRebalanceBalance.toNumber() > 0) {
       arr = [
         ...result,
         {
           type: 'rebalance',
           data: {
             ...rebalance,
-            myRebalanceBalance
+            myRebalanceBalance,
           },
         },
       ]
@@ -138,7 +132,6 @@ const MyInvestments: React.FC = () => {
     }
   }, [dispatch, account, rebalances])
 
-
   // useEffect(() => {
   //   return () => {
   //     setIsPhrase2(false)
@@ -156,11 +149,7 @@ const MyInvestments: React.FC = () => {
         <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
         <Route exact path={`${path}`}>
           <CardSummary />
-          <MyFarmsAndPools
-            farms={stakedFarms}
-            pools={stakedPools}
-            rebalances={stakedRebalances}
-          />
+          <MyFarmsAndPools farms={stakedFarms} pools={stakedPools} rebalances={stakedRebalances} />
         </Route>
       </Box>
       {/* <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>

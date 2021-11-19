@@ -111,8 +111,6 @@ const MyFarmsAndPools = ({ farms, pools, rebalances }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
 
-  
-
   const stakedProducts = useMemo(() => {
     return [...farms, ...pools, ...rebalances]
   }, [farms, pools, rebalances])

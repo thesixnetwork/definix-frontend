@@ -8,7 +8,17 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
-import { Box, Button, Card, CardBody, CardRibbon, Flex, useMatchBreakpoints, Grid, ButtonVariants } from 'definixswap-uikit'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardRibbon,
+  Flex,
+  useMatchBreakpoints,
+  Grid,
+  ButtonVariants,
+} from 'definixswap-uikit'
 import AssetRatio from './AssetRatio'
 import CardHeading from './CardHeading'
 import MiniChart from './MiniChart'
@@ -142,20 +152,13 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
-  
-
   if (componentType === 'myInvestment') {
     return (
       <>
         <Box className="pa-s32">
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
             <Box>
-              <CardHeading
-                isHorizontal
-                rebalance={rebalance}
-                onlyTitle
-                componentType={componentType}
-              />
+              <CardHeading isHorizontal rebalance={rebalance} onlyTitle componentType={componentType} />
             </Box>
             <Box>
               <TwoLineFormat
@@ -195,13 +198,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 })()}
               />
               <Flex flexDirection="column" justifyContent="center">
-                <Button
-                  variant={ButtonVariants.BROWN}
-                  md
-                  minWidth="100px"
-                  as={Link}
-                  to="/rebalancing/detail"
-                >
+                <Button variant={ButtonVariants.BROWN} md minWidth="100px" as={Link} to="/rebalancing/detail">
                   Detail
                 </Button>
               </Flex>
@@ -211,7 +208,6 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       </>
     )
   }
-
 
   if (isMobile) {
     return (
