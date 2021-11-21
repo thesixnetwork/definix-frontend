@@ -133,7 +133,7 @@ const AprValue = styled(Text)`
 
 const AprBox = styled(Card)`
   padding: 0.5rem;
-  background: linear-gradient(90deg, #0973B9, #5CC096);
+  background: linear-gradient(90deg, #0973b9, #5cc096);
   opacity: 1;
   background-size: cover;
   background-repeat: no-repeat;
