@@ -403,14 +403,6 @@ const Farm: React.FC = () => {
                         account={account}
                         veloId={1}
                       />
-                      <PoolCard
-                        key={poolVelo2.sousId}
-                        pool={poolVelo2}
-                        isHorizontal={listView}
-                        veloAmount={amountVfinix2}
-                        account={account}
-                        veloId={0}
-                      />
                     </div>
                   </Route>
                   {/* <Route path={`${path}/history`}>

@@ -105,7 +105,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
           <MinusIcon color="primary" />
         </Button>
 
-        {!isOldSyrup && !isFinished && (
+        {/* {!isOldSyrup && !isFinished && (
           <Button
             variant="secondary"
             disabled={isFinished || veloId !== 1}
@@ -114,7 +114,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
           >
             <AddIcon color="primary" />
           </Button>
-        )}
+        )} */}
       </IconButtonWrapper>
     )
   }
