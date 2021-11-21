@@ -12,7 +12,7 @@ import useTheme from 'hooks/useTheme'
 import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
 
 const ExternalUrl = styled(ExternalLink)`
-  cursor: pointer
+  cursor: pointer;
 `
 
 const VotingDetails = () => {
@@ -39,7 +39,7 @@ const VotingDetails = () => {
             <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="6px">
               QmaSFZ3p
             </Text>
-            <ExternalUrl color="#30ADFF" size={16}/>
+            <ExternalUrl color="#30ADFF" size={16} />
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
