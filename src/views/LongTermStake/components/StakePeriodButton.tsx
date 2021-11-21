@@ -112,13 +112,6 @@ const CustomButton = ({ isMobile, days, period, setPeriod, level = 0, minimum, v
           >
             {days} days
           </Text>
-          <Text
-            style={{ textDecorationLine: 'line-through', textDecorationColor: isDark ? '#FFFFFF' : '#57575B' }}
-            fontSize={`${isMobile ? '6px !important' : '8px !important'}`}
-            color={themeWhitePeriod(period, level)}
-          >
-            APR {`${numeral((vFinixPrice * level) / 1.5 || 0).format('0,0.[00]')}%`}
-          </Text>
           <Text fontSize={`${isMobile ? '8px !important' : '10px !important'}`} color={themeWhitePeriod(period, level)}>
             APR {`${numeral(vFinixPrice * level || 0).format('0,0.[00]')}%`}
           </Text>

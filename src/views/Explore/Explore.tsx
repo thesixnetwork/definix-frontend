@@ -77,7 +77,7 @@ const Explore: React.FC = () => {
             <MaxWidth>
               <div className="mb-5">
                 <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                  <Heading as="h1" fontSize="27px !important" className="mr-3" textAlign="center">
                     Rebalancing Farm
                   </Heading>
                   <div className="mt-2 flex align-center justify-center">

@@ -58,7 +58,7 @@ const LongTermStake: React.FC = () => {
             <MaxWidthLeft>
               <div className="mb-5">
                 <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                  <Heading as="h1" fontSize="30px !important" className="mr-3" textAlign="center">
                     Long-term Stake
                   </Heading>
                   <div className="mt-2 flex align-center justify-center">
