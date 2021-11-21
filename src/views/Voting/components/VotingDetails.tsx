@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from 'react'
 import { AddIcon, MinusIcon, Button, Card, Text, Heading, useMatchBreakpoints, LinkExternal } from 'uikit-dev'
+import { ExternalLink } from 'react-feather'
+import styled from 'styled-components'
 // import moment from 'moment'
 // import numeral from 'numeral'
 
@@ -8,6 +10,10 @@ import { AddIcon, MinusIcon, Button, Card, Text, Heading, useMatchBreakpoints, L
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
+
+const ExternalUrl = styled(ExternalLink)`
+  cursor: pointer
+`
 
 const VotingDetails = () => {
   const { account } = useWallet()
@@ -29,10 +35,11 @@ const VotingDetails = () => {
               Identifier
             </Text>
           </div>
-          <div className={isMobile ? 'col-12' : 'col-8'}>
-            <Text fontSize="18px" bold lineHeight="1" color="#30ADFF">
-              QmaSFZ3p <img src={iconExpore} alt="iconExpore" />
+          <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
+            <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="6px">
+              QmaSFZ3p
             </Text>
+            <ExternalUrl color="#30ADFF" size={16}/>
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -41,11 +48,12 @@ const VotingDetails = () => {
               Identifier
             </Text>
           </div>
-          <div className={isMobile ? 'col-12' : 'col-8'}>
-            <Text fontSize="18px" bold lineHeight="1" color="#30ADFF">
+          <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
+            <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="6px">
               {/* {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}&nbsp; */}
-              <img src={iconExpore} alt="iconExpore" />
+              kfkhldf
             </Text>
+            <ExternalUrl color="#30ADFF" size={16} />
           </div>
         </div>
       </Card>

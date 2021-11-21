@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from 'react'
-import { AddIcon, MinusIcon, Button, Card, Text, Heading, useMatchBreakpoints, LinkExternal } from 'uikit-dev'
+import { Card, Text, Heading, useMatchBreakpoints, Button } from 'uikit-dev'
+import { ExternalLink } from 'react-feather'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
@@ -9,22 +10,10 @@ import { getAddress } from 'utils/addressHelpers'
 import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
+import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
 
-interface TransactionType {
-  className?: string
-  rbAddress: any
-}
-
-const MaxWidth = styled.div`
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-`
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -102,6 +91,10 @@ const TD = styled.td<{ align?: string }>`
   align-self: ${'center'};
 `
 
+const ExternalUrl = styled(ExternalLink)`
+  cursor: pointer
+`
+
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Address', 'Choice', 'Voting Power'])
   const [currentPage, setCurrentPage] = useState(1)
@@ -125,65 +118,50 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
         {isLoading ? (
           <LoadingData />
         ) : isEmpty(rows) ? (
-          <EmptyData text={empText} />
+          <>
+            {console.log('rows', rows)}
+            <EmptyData text={empText} />
+          </>
         ) : (
-          <TBody>
-            {rows !== null &&
-              rows.map((r) => (
-                <TR key={`tsc-${r.block_number}`}>
-                  <TD>
-                    <div className="flex">
-                      <Text className="mr-2">
-                        {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)}
-                      </Text>
-                      <CopyToClipboard toCopy={r.user_address} iconWidth="16px" noText />
-                    </div>
-                  </TD>
-                  <TD>
-                    <div className="flex align-center">
-                      {r.event_name === 'AddFundAmount' ? (
-                        <>
-                          <AddIcon color="success" className="mr-1" />
-                          <Text>Invest</Text>
-                        </>
-                      ) : (
-                        <>
-                          <MinusIcon color="failure" className="mr-1" />
-                          <Text>Withdraw</Text>
-                        </>
-                      )}
-                    </div>
-                  </TD>
-                  <TD>
-                    <Text>{numeral(r.lp_amount).format('0,0.000')}</Text>
-                  </TD>
-                  <TD>
-                    <Text>{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
-                  </TD>
-                  <TD>
-                    <Text>{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
-                  </TD>
-                  <TD>
-                    <LinkExternal noIcon href={`https://scope.klaytn.com/tx/${r.transaction_hash}`} fontSize="12px">
-                      KlaytnScope
-                    </LinkExternal>
+              <TBody>
+                {/* {console.log('rows',rows)} */}
+                {rows !== null &&
+                  rows.map((r) => (
+                    <TR key={`tsc-${r.block_number}`}>
+                      <TD>
+                        <div className="flex align-center">
+                          <Text className="mr-2">
+                            0x0000000000
+                            {/* {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)} */}
+                          </Text>
+                          <ExternalUrl color="#30ADFF" size={16} />
+                        </div>
+                      </TD>
+                      <TD>
+                        <Text>Yes, agree with you.</Text>
+                      </TD>
+                      <TD>
+                        <div className="flex align-center">
+                          <Text>23,143</Text>&nbsp;
+                          <ExternalUrl color="#30ADFF" size={16} />
+                        </div>
+                      </TD>
+                    </TR>
+                  ))}
+                <TR>
+                  <TD className="text-right">
+                    <PaginationCustom
+                      page={currentPage}
+                      count={pages}
+                      onChange={onPageChange}
+                      size="small"
+                      hidePrevButton
+                      hideNextButton
+                    />
                   </TD>
                 </TR>
-              ))}
-            <TR>
-              <TD className="text-right">
-                <PaginationCustom
-                  page={currentPage}
-                  count={pages}
-                  onChange={onPageChange}
-                  size="small"
-                  hidePrevButton
-                  hideNextButton
-                />
-              </TD>
-            </TR>
-          </TBody>
-        )}
+              </TBody>
+            )}
       </Table>
     </CardTable>
   )
@@ -197,7 +175,12 @@ const VotingList = ({ rbAddress }) => {
   const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const [transactions, setTransactions] = useState([])
+  const [transactions, setTransactions] = useState([{
+    id: 1234,
+    address: "0x00000",
+    choise: "Yes, agree with you.",
+    voting_power: "99,999"
+  }])
   const [total, setTotal] = useState(0)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const { isDark } = useTheme()
@@ -207,7 +190,12 @@ const VotingList = ({ rbAddress }) => {
   const setDefault = (tab) => {
     setCurrentTab(tab)
     setCurrentPage(1)
-    setTransactions([])
+    setTransactions([{
+      id: 1234,
+      address: "0x00000",
+      choise: "Yes, agree with you.",
+      voting_power: "99,999"
+    }])
     setTotal(0)
   }
 
@@ -230,10 +218,10 @@ const VotingList = ({ rbAddress }) => {
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}
-          empText={
-            currentTab === 0
-              ? 'Don`t have any transactions in this votes.'
-              : 'You haven`t made any transactions in this votes.'
+          empText={"Don`t have any transactions in this votes."
+            // currentTab === 0
+            //   ? 'Don`t have any transactions in this votes.'
+            //   : 'You haven`t made any transactions in this votes.'
           }
           total
         />

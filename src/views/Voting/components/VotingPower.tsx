@@ -57,7 +57,6 @@ const VotingPower = () => {
             Voting Power
           </Text>
         </div>
-        {console.log('expanded >>', expanded)}
         <div className={`${expanded === false ? 'ma-5' : 'ma-5 mb-0'}`}>
           <Box expand={expanded}>
             <Text fontSize="18px" bold lineHeight="1">
