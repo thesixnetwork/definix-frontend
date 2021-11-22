@@ -1,9 +1,16 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { Card, Flex, Text, Button, ImgTokenSixIcon, ImgTokenFinixIcon } from 'definixswap-uikit'
 import LogoSixBridge from '../../../assets/images/logo-footer-six-bridge.png'
 import LogoSixBridge2x from '../../../assets/images/logo-footer-six-bridge@2x.png'
 import LogoSixBridge3x from '../../../assets/images/logo-footer-six-bridge@3x.png'
+
+const IconToken = styled.div<{ isMobile: string }>`
+  width: 48px;
+  height: 48px;
+  margin-right: ${(props) => props.isMobile};
+`
 
 interface CardType {
   isMobile: boolean
@@ -12,12 +19,16 @@ interface CardType {
 const CardBridge: React.FC<CardType> = ({ isMobile }) => {
   const { t } = useTranslation()
 
+  const onClickBridgeBtn = () => {
+    window.open('https://bridge.six.network/')
+  }
+
   return (
     <>
-      <Card className={`${isMobile && 'mt-s28'}`}>
+      <Card className={`${isMobile && 'mt-s28'}`} p={isMobile ? 'S_20' : 'S_40'}>
         <Flex flexDirection="column" alignItems="center">
           <img
-            className={`my-s${isMobile ? 30 : 40}`}
+            className={`mt-s${isMobile && 10}`}
             width={180}
             height={68}
             src={LogoSixBridge}
@@ -25,15 +36,17 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
             alt="logo-footer-six-bridge"
           />
 
-          <Flex className="px-s40" flexDirection="column" width="100%">
+          <Flex className={`mt-s${isMobile ? 30 : 40} mb-s${isMobile ? 24 : 40}`} flexDirection="column" width="100%">
             <Text className="mb-s16" color="#222222" textStyle="R_18B">
               {t('Token & Chain')}
             </Text>
 
             <Flex flexDirection={isMobile ? 'column' : 'row'}>
               <Flex width={isMobile ? '100%' : '50%'}>
-                <ImgTokenSixIcon className={`mr-s${isMobile ? 14 : 12}`} width="48px" height="48px" />
-                <Flex flexDirection="column" width={isMobile ? 416 : 208}>
+                <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
+                  <ImgTokenSixIcon width={48} height={48} />
+                </IconToken>
+                <Flex flexDirection="column" width={!isMobile && 208}>
                   <Text className="mb-s2" textStyle="R_14B">
                     {t('SIX')}
                   </Text>
@@ -41,9 +54,11 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
                 </Flex>
               </Flex>
 
-              <Flex width={isMobile ? '100%' : '50%'}>
-                <ImgTokenFinixIcon className={`mr-s${isMobile ? 14 : 12}`} width="48px" height="48px" />
-                <Flex flexDirection="column" width={isMobile ? 416 : 208}>
+              <Flex className={isMobile && 'mt-s16'} width={isMobile ? '100%' : '50%'}>
+                <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
+                  <ImgTokenFinixIcon width={48} height={48} />
+                </IconToken>
+                <Flex flexDirection="column" width={!isMobile && 208}>
                   <Text className="mb-s2" textStyle="R_14B">
                     {t('Finix')}
                   </Text>
@@ -53,7 +68,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
             </Flex>
           </Flex>
 
-          <Button className={`my-s${isMobile ? 20 : 40}`} width={549}>
+          <Button width="100%" onClick={onClickBridgeBtn}>
             {t('Go to the bridge')}
           </Button>
         </Flex>

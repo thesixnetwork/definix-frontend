@@ -16,7 +16,7 @@ const TitleBridge: React.FC<TitleType> = ({ isMobile }) => {
 
         {!isMobile && (
           <Flex>
-            <ImgBridgeTopFinixIcon className="mr-s16" viewBox="0 0 193.4 118" width="100%" height="100%" />
+            <ImgBridgeTopFinixIcon className="mt-s8 mr-s16" width="193.4" height="118" />
           </Flex>
         )}
       </Flex>

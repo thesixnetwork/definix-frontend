@@ -1,13 +1,18 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { useTranslation } from 'react-i18next'
-import { Box, Card, Flex, useMatchBreakpoints, LogoFooterSixIcon } from 'definixswap-uikit'
+import styled from 'styled-components'
+import { Box, useMatchBreakpoints } from 'definixswap-uikit'
 
 import TitleBridge from './components/TitleBridge'
 import CardBridge from './components/CardBridge'
 
+const MaxWidth = styled.div<{ isMobile: string }>`
+  max-width: ${(props) => props.isMobile};
+  margin-left: auto;
+  margin-right: auto;
+`
+
 const Bridge: React.FC = () => {
-  const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
 
@@ -16,13 +21,12 @@ const Bridge: React.FC = () => {
       <Helmet>
         <title>Bridge - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Flex justifyContent="center">
-        <Box className={isMobile ? 'mt-s32' : 'mt-s28'} width={629}>
+      <MaxWidth isMobile={`${isMobile ? '100%' : '630px'}`}>
+        <Box className={`my-s${isMobile ? 32 : 28}`} width="100%">
           <TitleBridge isMobile={isMobile} />
-
           <CardBridge isMobile={isMobile} />
         </Box>
-      </Flex>
+      </MaxWidth>
     </>
   )
 }
