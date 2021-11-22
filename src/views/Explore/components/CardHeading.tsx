@@ -14,49 +14,64 @@ interface CardHeadingType {
   componentType?: string
 }
 
-const FocusImg = styled.img<{ isHorizontal: boolean; isInRebalance: boolean }>`
-  border-radius: ${({ isInRebalance }) => (isInRebalance ? '6px' : '3px')};
+const FocusImg = styled.img<{ isMediumSize: boolean }>`
+  border-radius: ${({ isMediumSize }) => (isMediumSize ? '6px' : '3px')};
   border: solid 1px #979797;
-  width: ${({ isHorizontal }) => (isHorizontal ? '100%' : '160px')};
+  width: ${({ isMediumSize }) => (isMediumSize ? '100%' : '160px')};
   height: auto;
   object-fit: contain;
-  margin-right: ${({ isHorizontal }) => (isHorizontal ? '' : '32px')};
-  margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '24px' : '')};
   background: ${({ theme }) => theme.colors.backgroundBox};
 `
+
+export const CardImage = ({
+  isMediumSize = true,
+  imageUrl,
+  title
+}: {
+  isMediumSize: boolean;
+  imageUrl: string;
+  title: string;
+}) => (
+  <FocusImg src={imageUrl} alt={title} isMediumSize={isMediumSize} />
+)
+
+export const CardTitle: React.FC<{ title: string; textStyle?: string; }> = ({ title, textStyle = 'R_16B' }) => {
+  const { t } = useTranslation()
+  return (
+    <Text textStyle={textStyle} textTransform="uppercase">
+      {t(title)}
+    </Text>
+  )
+}
 
 const CardHeading: React.FC<CardHeadingType> = ({
   isHorizontal = false,
   className = '',
   onlyTitle = false,
   rebalance = {},
-  componentType = 'rebalance',
 }) => {
   const { t } = useTranslation()
-  const isInRebalance = useMemo(() => componentType === 'rebalance', [componentType])
 
   return (
     <Flex justifyContent="space-between" className={className}>
       <Flex
-        flexDirection={isHorizontal && isInRebalance ? 'column' : 'row'}
+        flexDirection={isHorizontal ? 'column' : 'row'}
         justifyContent={isHorizontal ? 'center' : ''}
         alignItems={!isHorizontal && onlyTitle ? 'center' : 'start'}
       >
-        <Box width={isInRebalance ? 'auto' : 70} className={isInRebalance ? '' : 'mr-s16'}>
-          <FocusImg src={rebalance.icon[0]} alt="" isHorizontal={isHorizontal} isInRebalance={isInRebalance} />
+        <Box style={{ marginRight: isHorizontal ? '' : '32px', marginBottom: isHorizontal ? '24px' : ''}}>
+          <CardImage imageUrl={rebalance.icon[0]} title={rebalance.title} isMediumSize={isHorizontal}/>
         </Box>
 
         {onlyTitle ? (
-          <div>
-            <Text textStyle="R_20B" textTransform="uppercase" className="mb-1">
-              {t(rebalance.title)}
-            </Text>
+          <div className="mb-1">
+            <CardTitle title={rebalance.title} textStyle="R_20B"/>
           </div>
         ) : (
           <div>
-            <Text textStyle="R_16B" textTransform="uppercase" className="mb-1">
-              {t(rebalance.title)}
-            </Text>
+            <div className="mb-1">
+              <CardTitle title={rebalance.title}/>
+            </div>
             <Text textStyle="R_12R">{t(rebalance.description)}</Text>
           </div>
         )}
