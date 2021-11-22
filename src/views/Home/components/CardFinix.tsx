@@ -15,6 +15,7 @@ import {
   Button,
   TokenFinixIcon,
   useMatchBreakpoints,
+  Divider,
 } from 'definixswap-uikit'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -75,8 +76,16 @@ const InfoValueBold = styled(Text)`
 `
 
 const WrapButton = styled(Flex)`
-  margin-top: 28px;
+  width: 112px;
+  flex-direction: column;
+
+  button:first-child {
+    margin-bottom: 8px;
+  }
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 100%;
+    flex-direction: row;
     margin-top: 20px;
     padding-bottom: 20px;
   }
@@ -89,6 +98,19 @@ const WrapInfo = styled(Flex)`
     margin-top: 0;
     border-top: 1px solid ${({ theme }) => theme.colors.border};
     padding-top: 22px;
+  }
+`
+
+const WrapFinix = styled(Flex)`
+  flex-direction: column;
+`
+
+const WrapTop = styled(Flex)`
+  flex: 1;
+  justify-content: space-between;
+  padding-bottom: 28px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
   }
 `
 
@@ -110,19 +132,24 @@ const CardFinix = () => {
   return (
     <Card>
       <WrapCardBody>
-        <Flex>
-          <TokenFinixIcon viewBox="0 0 24 24" width={isXxl ? '24' : '20'} />
-          <Title>{t('FINIX')}</Title>
-        </Flex>
-        <FinixValue>$ {finixPriceUsd.toFixed(2)}</FinixValue>
-        <WrapButton>
-          <Button xs variant="lightbrown" width="50%" mr="S_6">
-            {t('Price Chart')}
-          </Button>
-          <Button xs variant="line" width="50%" ml="S_6">
-            {t('Transactions')}
-          </Button>
-        </WrapButton>
+        <WrapTop>
+          <WrapFinix>
+            <Flex>
+              <TokenFinixIcon viewBox="0 0 24 24" width={isXxl ? '24' : '20'} />
+              <Title>{t('FINIX')}</Title>
+            </Flex>
+            <FinixValue>$ {finixPriceUsd.toFixed(2)}</FinixValue>
+          </WrapFinix>
+          <WrapButton>
+            <Button xs variant="lightbrown" width="100%">
+              {t('Price Chart')}
+            </Button>
+            <Button xs variant="line" width="100%">
+              {t('Transactions')}
+            </Button>
+          </WrapButton>
+        </WrapTop>
+        <Divider />
         <WrapInfo>
           <InfoValues>
             <InfoTitleBold>{t('Total FINIX Supply')}</InfoTitleBold>

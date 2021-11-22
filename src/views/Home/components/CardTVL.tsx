@@ -70,9 +70,11 @@ const TvlItem = styled(Flex)`
 `
 
 const TvlValue = styled(Text)`
+  margin-top: 8px;
   ${css(textStyle.R_23B)}
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 0;
     ${css(textStyle.R_16B)}
   }
 `
@@ -111,7 +113,7 @@ const CardTVL = () => {
         <WrapTvl>
           <TvlItem>
             <Flex alignItems="center">
-              <ChainBscIcon viewBox="0 0 32 32" width={isXxl ? '24' : '22'} />
+              <ChainBscIcon viewBox="0 0 32 32" width={isXxl ? '24' : '22'} height={isXxl ? '24' : '22'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
                   i18nKey="TVL in <bold>BSC</bold>"
@@ -125,7 +127,7 @@ const CardTVL = () => {
           </TvlItem>
           <TvlItem>
             <Flex alignItems="center">
-              <ChainKlaytnIcon viewBox="0 0 22 22" width={isXxl ? '24' : '22'} />
+              <ChainKlaytnIcon viewBox="0 0 22 22" width={isXxl ? '24' : '22'} height={isXxl ? '24' : '22'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
                   i18nKey="TVL in <bold>Klaytn</bold>"

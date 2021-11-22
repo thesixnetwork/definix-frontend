@@ -66,7 +66,6 @@ const AuditItem = styled(Flex)`
   }
 
   :nth-child(2) {
-    flex: 1.5;
     flex-direction: row;
     padding-left: 30px;
     border-left: 1px solid ${({ theme }) => theme.colors.border};
