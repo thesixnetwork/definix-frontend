@@ -293,8 +293,8 @@ const CardSuperStake = () => {
         Enter an amount
       </Button>
     ) : (
-        renderStakeDOrStake()
-      )
+      renderStakeDOrStake()
+    )
   }
 
   const renderStakeOrInsufficient = () => {
@@ -303,18 +303,18 @@ const CardSuperStake = () => {
         Insufficient Balance
       </Button>
     ) : (
-        renderStakeOrEnter()
-      )
+      renderStakeOrEnter()
+    )
   }
 
   const renderApprovalOrStakeButton = () => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-        <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
-          Approve Contract
-        </Button>
-      )
+      <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+        Approve Contract
+      </Button>
+    )
   }
 
   useEffect(() => {
@@ -344,12 +344,12 @@ const CardSuperStake = () => {
           <div
             style={{
               position: 'absolute',
-              left: loadings === 'loading' && '20%' || !isMobileOrTablet && '19%',
+              left: (loadings === 'loading' && '20%') || (!isMobileOrTablet && '19%'),
               top: loadings === 'loading' ? '18%' : 'unset',
               zIndex: 1,
               alignItems: 'center',
               justifyContent: 'center',
-              display: 'flex'
+              display: 'flex',
             }}
           >
             <ModalSorry title="Sorry, this feature is only for vFINIX holder" hideCloseButton>
@@ -448,35 +448,35 @@ const CardSuperStake = () => {
               </Coin>
             </Balance>
           ) : (
-              <Balance>
-                <NumberInput
-                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                  placeholder="0.00"
-                  value={value}
-                  onChange={handleChange}
-                  pattern="^[0-9]*[,]?[0-9]*$"
-                />
-                {percent !== 1 && (
-                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                      25%
+            <Balance>
+              <NumberInput
+                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                pattern="^[0-9]*[,]?[0-9]*$"
+              />
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
                   </StylesButton>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                      50%
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
                   </StylesButton>
-                    <StylesButton size="sm" onClick={() => setPercent(1)}>
-                      MAX
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
                   </StylesButton>
-                  </div>
-                )}
-                <Coin>
-                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                  <Heading as="h1" fontSize="16px !important">
-                    FINIX
+                </div>
+              )}
+              <Coin>
+                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <Heading as="h1" fontSize="16px !important">
+                  FINIX
                 </Heading>
-                </Coin>
-              </Balance>
-            )}
+              </Coin>
+            </Balance>
+          )}
           <div className="flex mt-4">
             <Text className="col-6" color={isDark ? 'white' : '#000000'}>
               Estimated Period End
@@ -511,8 +511,8 @@ const CardSuperStake = () => {
                 Connect Wallet
               </Button>
             ) : (
-                renderApprovalOrStakeButton()
-              )}
+              renderApprovalOrStakeButton()
+            )}
           </div>
         </div>
         {!isMobileOrTablet && (
