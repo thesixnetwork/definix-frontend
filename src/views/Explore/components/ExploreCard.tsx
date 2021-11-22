@@ -189,14 +189,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         title={t('Current Investment')}
         value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
         currentInvestPercentDiff={`(${
-          percentage > 0
-            ? `+${numeral(percentage).format('0,0.[00]')}`
-            : `${numeral(percentage).format('0,0.[00]')}`
+          percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
         }%)`}
         diffAmounts={`${
-          percentage > 0
-            ? `+${numeral(diffAmount).format('0,0.[000]')}`
-            : `${numeral(diffAmount).format('0,0.[000]')}`
+          percentage > 0 ? `+${numeral(diffAmount).format('0,0.[000]')}` : `${numeral(diffAmount).format('0,0.[000]')}`
         }`}
         percentClass={(() => {
           if (percentage < 0) return 'failure'
@@ -239,12 +235,12 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
             <Flex alignItems="center">
               <Box width={70} className="mr-s16">
-                <CardImage isMediumSize={false} imageUrl={rebalance.icon[0]} title={rebalance.title}/>
+                <CardImage isMediumSize={false} imageUrl={rebalance.icon[0]} title={rebalance.title} />
               </Box>
               <Box>
-                <CardTitle title={rebalance.title} textStyle="R_18M"/>
+                <CardTitle title={rebalance.title} textStyle="R_18M" />
                 <Flex alignItems="end">
-                  <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px'}}>
+                  <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
                     APR
                   </Text>
                   <Text textStyle="R_18B" color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
@@ -253,9 +249,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                 </Flex>
               </Box>
             </Flex>
-            <Flex alignItems="center">
-              {renderSharePrice()}
-            </Flex>
+            <Flex alignItems="center">{renderSharePrice()}</Flex>
             <Flex justifyContent="space-between" alignItems="center">
               {renderCurrentInvestment()}
               <Flex flexDirection="column" justifyContent="center">
