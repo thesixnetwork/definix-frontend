@@ -4,6 +4,9 @@ import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
+import useFarmEarning from 'hooks/useFarmEarning'
+import usePoolEarning from 'hooks/usePoolEarning'
+import { usePrivateData } from 'hooks/useLongTermStake'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
@@ -19,15 +22,18 @@ import {
   usePriceKethKlay,
 } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link } from 'uikit-dev'
+import { Heading, Text, Link, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { IS_GENESIS } from '../../config'
+import BannerTopup from '../../uikit-dev/widgets/Banner/BannerTopup'
 import Flip from '../../uikit-dev/components/Flip'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolTabButtons from './components/PoolTabButtons'
 import PoolContext from './PoolContext'
+import SuperStakeModal from '../../uikit-dev/widgets/WalletModal/SuperStakeModal'
+import StartLongTermStakeModal from '../../uikit-dev/widgets/WalletModal/StartLongTermStakeModal'
 
 const ModalWrapper = styled.div`
   display: flex;
@@ -72,6 +78,23 @@ const Farm: React.FC = () => {
   const [listView, setListView] = useState(true)
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const { isXl, isMd } = useMatchBreakpoints()
+  const isMobile = !isXl && !isMd
+
+  // Super Stake
+  const farmEarnings = useFarmEarning()
+  const poolEarnings = usePoolEarning()
+  const { balancevfinix } = usePrivateData()
+  const earningsSum = farmEarnings.reduce((accum, earning) => {
+    return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
+  }, 0)
+  const earningsPoolSum = poolEarnings.reduce((accum, earning) => {
+    return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
+  }, 0)
+  const totalAllMyFarms = Math.round((earningsSum + earningsPoolSum) * 100) / 100
+  const [onPresentConnectModal] = useModal(
+    !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
+  )
 
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
@@ -292,12 +315,12 @@ const Farm: React.FC = () => {
       <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
         <LeftPanel isShowRightPanel={false}>
           <MaxWidth>
-            <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+            <div className="mb-1">
+              <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
+                <Heading as="h1" fontSize="32px !important" className="mr-3">
                   Pool
                 </Heading>
-                <div className="mt-2 flex align-center justify-center">
+                <div className="mt-2 flex align-center">
                   <Text paddingRight="1">I’m new to this,</Text>
                   <TutorailsLink
                     href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
@@ -316,6 +339,8 @@ const Farm: React.FC = () => {
                 The amount of returns will be calculated by the annual percentage rate (APR).
               </Text>
             </div>
+
+            <BannerTopup />
 
             <PoolTabButtons
               stackedOnly={stackedOnly}

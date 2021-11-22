@@ -1,11 +1,36 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { LeftPanel, TwoPanelLayout, MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
-import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
 import styled from 'styled-components'
+import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
+// import StartVoting from './components/StartVoting'
 import CardVoting from './components/CardVoting'
 import StartVoting from './components/StartVoting'
+import VotingDescription from './components/VotingDescription'
+import VotingCast from './components/VotingCast'
+import VotingList from './components/VotingList'
+import VotingDetails from './components/VotingDetails'
+import VotingResults from './components/VotingResults'
+import VotingPower from './components/VotingPower'
+
+// const MaxWidth = styled.div`
+//   max-width: 1280px;
+//   margin: auto;
+// `
+
+const MaxWidthLeft = styled(MaxWidth)`
+  max-width: unset;
+  margin: 60px 100px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    margin: 60px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin: 60px 100px;
+  }
+`
 
 const TutorailsLink = styled(Link)`
   text-decoration-line: underline;
@@ -14,6 +39,10 @@ const TutorailsLink = styled(Link)`
 const Voting: React.FC = () => {
   const { path } = useRouteMatch()
   const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+  // const isMobile = !isXl && !isLg
+  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobile)
+  const [listView, setListView] = useState(true)
 
   return (
     <>
@@ -49,7 +78,20 @@ const Voting: React.FC = () => {
       </Route>
 
       <Route exact path={`${path}/detail`}>
-        <StartVoting />
+        <MaxWidthLeft>
+          <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
+            <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
+              <VotingDescription />
+              <VotingCast />
+              <VotingList rbAddress />
+            </div>
+            <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
+              <VotingDetails />
+              <VotingResults />
+              <VotingPower />
+            </div>
+          </div>
+        </MaxWidthLeft>
       </Route>
     </>
   )

@@ -43,6 +43,7 @@ const Explore: React.FC = () => {
   const isMobile = !isXl && !isLg && !isMd
   const rebalanceBalances = useRebalanceBalances(account) || {}
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
+
   useEffect(() => {
     if (account) {
       const addressObject = {}
