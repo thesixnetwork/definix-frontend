@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import { Card, Heading, Text } from 'uikit-dev'
+import { Card, Heading, Text, Button } from 'uikit-dev'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting-banner.png'
 import CardProposals from './CardProposals'
 
@@ -52,12 +53,7 @@ const StyledBannerVoting = styled(Card)`
   }
 `
 
-const Proposals = styled(Card)`
-  width: 100%;
-`
-
 const CardVoting = () => {
-  const [text, setText] = useState('TEXT')
   return (
     <>
       <StyledBannerVoting className="mt-5">
@@ -65,6 +61,9 @@ const CardVoting = () => {
         <Text>
           Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
         </Text>
+        <Button as={Link} to="/voting/make-proposal" radii="small" color="success">
+          Make a Proposals
+        </Button>
       </StyledBannerVoting>
       <CardProposals />
     </>

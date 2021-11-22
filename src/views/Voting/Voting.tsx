@@ -13,6 +13,7 @@ import VotingList from './components/VotingList'
 import VotingDetails from './components/VotingDetails'
 import VotingResults from './components/VotingResults'
 import VotingPower from './components/VotingPower'
+import ProposalAdd from './components/ProposalAdd'
 
 // const MaxWidth = styled.div`
 //   max-width: 1280px;
@@ -92,6 +93,10 @@ const Voting: React.FC = () => {
             </div>
           </div>
         </MaxWidthLeft>
+      </Route>
+
+      <Route exact path={`${path}/make-proposal`}>
+        <ProposalAdd />
       </Route>
     </>
   )
