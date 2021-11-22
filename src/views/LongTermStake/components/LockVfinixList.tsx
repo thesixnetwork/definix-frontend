@@ -129,6 +129,20 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
     dispatch(fetchStartIndex((page - 1) * 10))
   }
 
+  const handleUnstake = (item) => {
+    onUnStake(
+      _.get(item, 'id'),
+      _.get(item, 'level'),
+      _.get(item, 'lockAmount'),
+      _.get(item, 'isPenalty'),
+      !_.get(item, 'canBeUnlock'),
+      _.get(item, 'penaltyRate'),
+      _.get(item, 'periodPenalty'),
+      _.get(item, 'multiplier'),
+      _.get(item, 'days'),
+    )
+  }
+
   const handleIsunlocked = (item) => {
     return _.get(item, 'isPenalty') ? (
       <Button
@@ -231,19 +245,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
-        onClick={() =>
-          onUnStake(
-            _.get(item, 'id'),
-            _.get(item, 'level'),
-            _.get(item, 'lockAmount'),
-            _.get(item, 'isPenalty'),
-            !_.get(item, 'canBeUnlock'),
-            _.get(item, 'penaltyRate'),
-            _.get(item, 'periodPenalty'),
-            _.get(item, 'multiplier'),
-            _.get(item, 'days'),
-          )
-        }
+        onClick={() => handleUnstake(item)}
         className="text-right mr-1"
       >
         Unstake
@@ -255,27 +257,15 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         to="/long-term-stake/unstake"
         radii="small"
         style={{
-          backgroundColor: '#0973B9',
-          border: `1px solid #0973B9`,
+          backgroundColor: '#EA9D00',
+          border: `1px solid #EA9D00`,
           display: 'unset',
           padding: '6px',
           color: '#fff',
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
-        onClick={() =>
-          onUnStake(
-            _.get(item, 'id'),
-            _.get(item, 'level'),
-            _.get(item, 'lockAmount'),
-            _.get(item, 'isPenalty'),
-            !_.get(item, 'canBeUnlock'),
-            _.get(item, 'penaltyRate'),
-            _.get(item, 'periodPenalty'),
-            _.get(item, 'multiplier'),
-            _.get(item, 'days'),
-          )
-        }
+        onClick={() => handleUnstake(item)}
         className="text-right mr-1"
       >
         Early Unstake
@@ -300,22 +290,6 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
     }
     return status
   }
-
-  // const [data, setData] = useState('')
-  // const a = _.get(row,"")
-  // const date = _.get(rows, '0.lockTimestamp')
-  // useEffect(() => {
-  //   const offset = 2
-  //   const now = new Date()
-  //   const utc = now.getTime()
-  //   let nd = new Date(utc + 3600000 * offset)
-  //   nd.setDate(nd.getDate() + 28)
-
-  //   const dateTime = now.getTimezoneOffset() / 60
-  //     if (dateTime === -9) {
-  //       nd = new Date()
-  //     }
-  //   },[])
 
   return (
     <CardTable className="mt-5" style={{ overflow: 'auto' }}>
