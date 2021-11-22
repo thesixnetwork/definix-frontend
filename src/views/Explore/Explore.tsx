@@ -39,10 +39,11 @@ const Explore: React.FC = () => {
   const targetRebalance = useRebalanceAddress(selectedRebalance ? getAddress(selectedRebalance.address) : undefined)
   const dispatch = useDispatch()
   const { account } = useWallet()
+  const { isXl, isLg, isMd } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg && !isMd
   const rebalanceBalances = useRebalanceBalances(account) || {}
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isXl && !isMd
+
 
   useEffect(() => {
     if (account) {
@@ -79,8 +80,12 @@ const Explore: React.FC = () => {
           <LeftPanel isShowRightPanel={false}>
             <MaxWidth>
               <div className="mb-5">
-                <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
-                  <Heading as="h1" fontSize="32px !important" className="mr-3">
+                <div className={isMobile ? 'mb-2' : 'flex align-center mb-2'}>
+                  <Heading
+                    as="h1"
+                    fontSize={isMobile ? '28px !important' : '32px !important'}
+                    className={isMobile ? 'mr-3' : 'mr-3 text-center'}
+                  >
                     Rebalancing Farm
                   </Heading>
                   <div className="mt-2 flex align-center">
