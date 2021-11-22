@@ -22,6 +22,7 @@ export interface CardHeadingProps {
   tokenName: string
   isOldSyrup: boolean
   apy: BigNumber
+  size?: string
 }
 
 export interface StakeActionProps {

@@ -12,15 +12,17 @@ export interface ExpandableSectionProps {
   multiplier?: string
   removed?: boolean
   addLiquidityUrl?: string
+  size?: string
   // inlineMultiplier?: boolean
 }
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed, addLiquidityUrl }) => {
+const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed, addLiquidityUrl, size = 'medium' }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
+  const isMediumSize = useMemo(() => size === 'medium', [size])
+  const imageSize = useMemo(() => isMediumSize ? 48 : 40, [isMediumSize])
   const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpLabel)
-
   const displayApy = useMemo(() => {
     try {
       return farm.apy && `${farm.apy.times(new BigNumber(100)).toNumber().toFixed(2)}%`
@@ -31,27 +33,29 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed,
 
   return (
     <Flex position="relative">
-      <Flex className="mr-s12">
-        <Box width={40} style={{ zIndex: 1 }}>
-          <Image src={firstCoinImageUrl} alt={farm.tokenSymbol} width={40} height={40} />
+      <Flex className="mr-s12" alignItems="center">
+        <Box width={imageSize} style={{ zIndex: 1 }}>
+          <Image src={firstCoinImageUrl} alt={farm.tokenSymbol} width={imageSize} height={imageSize} />
         </Box>
-        <Box width={40} style={{ marginLeft: '-10px' }}>
-          <Image src={secondCoinImageUrl} alt={farm.tokenSymbol} width={40} height={40} />
+        <Box width={imageSize} style={{ marginLeft: '-10px' }}>
+          <Image src={secondCoinImageUrl} alt={farm.tokenSymbol} width={imageSize} height={imageSize} />
         </Box>
       </Flex>
 
       <Flex flexDirection="column">
-        <Text textStyle="R_20M">{lpLabel}</Text>
+        <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
 
         {!removed && (
           <Flex alignItems="end">
-            <Text textStyle="R_14M" color={ColorStyles.RED} style={{ paddingBottom: '2px' }}>
+            <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
               APR
             </Text>
-            <Text textStyle="R_20B" color={ColorStyles.RED} style={{ marginLeft: '4px' }}>
+            <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
               {displayApy}
             </Text>
-            <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={farm.apy} />
+            <Box style={{ marginLeft: '4px'}}>
+              <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={farm.apy} />
+            </Box>
           </Flex>
         )}
       </Flex>

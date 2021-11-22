@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import _ from 'lodash'
@@ -96,6 +96,18 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
+  const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+
+  const apr = useMemo(() => {
+    return numeral(
+      finixPrice
+        .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+        .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+        .times(100)
+        .toFixed(2),
+    ).format('0,0.[00]')
+  }, [finixPrice, rebalance])
+
   const combinedAmount = useCallback(async () => {
     if (account) {
       const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
@@ -140,10 +152,6 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     }
   }, [sharedprice, rebalance, account, api])
 
-  useEffect(() => {
-    combinedAmount()
-  }, [combinedAmount])
-
   const renderSash = () => {
     if (rebalance.rebalace?.toUpperCase() === 'NEW') {
       return <CardRibbon text={rebalance.rebalace} />
@@ -151,8 +159,6 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
     return null
   }
-
-  const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
   const renderTotalAssetValue = useCallback(() => {
     return (
@@ -216,17 +222,15 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       <TwoLineFormat
         className="col-6"
         title={t('Yield APR')}
-        value={`${numeral(
-          finixPrice
-            .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-            .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-            .times(100)
-            .toFixed(2),
-        ).format('0,0.[00]')}%`}
+        value={`${apr}%`}
         hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
       />
     )
-  }, [t, finixPrice, rebalance])
+  }, [t, apr])
+
+  useEffect(() => {
+    combinedAmount()
+  }, [combinedAmount])
 
   if (componentType === 'myInvestment') {
     return (
@@ -244,7 +248,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
                     APR
                   </Text>
                   <Text textStyle="R_18B" color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
-                    1200%
+                    {`${apr}%`}
                   </Text>
                 </Flex>
               </Box>

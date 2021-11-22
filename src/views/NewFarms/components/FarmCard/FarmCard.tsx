@@ -90,7 +90,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
   }, [convertToUSD, myLiquidity])
 
   const renderCardHeading = useCallback(
-    () => <CardHeading farm={farm} lpLabel={lpTokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />,
+    () => <CardHeading
+      farm={farm}
+      lpLabel={lpTokenName}
+      removed={removed}
+      addLiquidityUrl={addLiquidityUrl}
+      size="small"
+    />,
     [addLiquidityUrl, farm, lpTokenName, removed],
   )
 
