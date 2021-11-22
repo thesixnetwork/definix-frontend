@@ -13,7 +13,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy, s
     }
     return `${apy.toNumber().toFixed(2)}%`
   }, [apy])
-  const imageSize = useMemo(() => isMediumSize ? 48 : 40, [isMediumSize])
+  const imageSize = useMemo(() => (isMediumSize ? 48 : 40), [isMediumSize])
 
   return (
     <Flex position="relative" alignItems="center">

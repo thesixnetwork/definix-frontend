@@ -16,12 +16,18 @@ export interface ExpandableSectionProps {
   // inlineMultiplier?: boolean
 }
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed, addLiquidityUrl, size = 'medium' }) => {
+const CardHeading: React.FC<ExpandableSectionProps> = ({
+  farm,
+  lpLabel,
+  removed,
+  addLiquidityUrl,
+  size = 'medium',
+}) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
   const isMediumSize = useMemo(() => size === 'medium', [size])
-  const imageSize = useMemo(() => isMediumSize ? 48 : 40, [isMediumSize])
+  const imageSize = useMemo(() => (isMediumSize ? 48 : 40), [isMediumSize])
   const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpLabel)
   const displayApy = useMemo(() => {
     try {
@@ -53,7 +59,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, removed,
             <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
               {displayApy}
             </Text>
-            <Box style={{ marginLeft: '4px'}}>
+            <Box style={{ marginLeft: '4px' }}>
               <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={farm.apy} />
             </Box>
           </Flex>
