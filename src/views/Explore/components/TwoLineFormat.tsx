@@ -8,6 +8,7 @@ interface TwoLineFormatType {
   subTitle?: string
   subTitleFontSize?: string
   titleColor?: string
+  titleMarginBottom?: number
   value: string
   percent?: string
   hint?: string
@@ -27,6 +28,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   subTitle,
   subTitleFontSize,
   titleColor,
+  titleMarginBottom = 0,
   value,
   percent,
   hint,
@@ -53,7 +55,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   return (
     <div className={className}>
       <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
-        <Text textStyle="R_12R" color={titleColor || 'mediumgrey'}>
+        <Text textStyle="R_12R" color={titleColor || 'mediumgrey'} style={{ marginBottom: `${titleMarginBottom}px`}}>
           {title}
         </Text>
 

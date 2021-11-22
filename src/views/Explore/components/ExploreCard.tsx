@@ -79,6 +79,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = !isXl && !isXxl
+  const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const { ratio } = rebalance
   const finixPrice = usePriceFinixUsd()
 
@@ -174,6 +175,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     return (
       <TwoLineFormat
         title={t('Share Price(Since Inception)')}
+        titleMarginBottom={isInMyInvestment ? 4 : 0}
         value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
         percent={`${
           rebalance.sharedPricePercentDiff >= 0
@@ -187,12 +189,13 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         })()}
       />
     )
-  }, [t, rebalance])
+  }, [t, rebalance, isInMyInvestment])
 
   const renderCurrentInvestment = useCallback(() => {
     return (
       <TwoLineFormat
         title={t('Current Investment')}
+        titleMarginBottom={isInMyInvestment ? 4 : 0}
         value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
         currentInvestPercentDiff={`(${
           percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
@@ -207,7 +210,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
         })()}
       />
     )
-  }, [t, rebalance, balance, percentage, diffAmount])
+  }, [t, rebalance, balance, percentage, diffAmount, isInMyInvestment])
 
   const renderViewDetailButton = useCallback(() => {
     return (
@@ -232,7 +235,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     combinedAmount()
   }, [combinedAmount])
 
-  if (componentType === 'myInvestment') {
+  if (isInMyInvestment) {
     return (
       <>
         <Box className="pa-s32">

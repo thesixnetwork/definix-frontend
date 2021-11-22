@@ -10,7 +10,7 @@ import usePoolEarning from 'hooks/usePoolEarning'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { usePoolsIsFetched, useFarmsIsFetched, usePriceFinixUsd } from 'state/hooks'
 
-import { Button, Heading, Skeleton, Text, Box, ColorStyles, Flex, Grid } from 'definixswap-uikit'
+import { Button, Heading, Skeleton, Text, Box, ColorStyles, Flex, Grid, DoubleArrowButtons } from 'definixswap-uikit'
 import UnlockButton from 'components/UnlockButton'
 import FinixHarvestAllBalance from './FinixHarvestTotalBalance'
 import FinixHarvestBalance from './FinixHarvestBalance'
@@ -92,16 +92,16 @@ const Earned = ({ isMobile }) => {
         value: poolEarningsSum,
         price: poolEarningsBusd,
       },
-      {
-        title: t('Rebalancing'),
-        value: '100,000,000.123456',
-        price: '000000',
-      },
-      {
-        title: t('Long-term Stake'),
-        value: '100,000,000.123456',
-        price: '000000',
-      },
+      // {
+      //   title: t('Rebalancing'),
+      //   value: '100,000,000.123456',
+      //   price: '000000',
+      // },
+      // {
+      //   title: t('Long-term Stake'),
+      //   value: '100,000,000.123456',
+      //   price: '000000',
+      // },
     ]
   }, [t, farmEarningsSum, farmEarningBusd, poolEarningsSum, poolEarningsBusd])
 
@@ -141,7 +141,8 @@ const Earned = ({ isMobile }) => {
         backgroundColor={ColorStyles.LIGHTGREY_20}
         className="pr-s40"
       >
-        <Grid gridTemplateColumns={`repeat(${isMobile ? 2 : 4}, 1fr)`}>
+        
+        <Grid gridTemplateColumns={`repeat(${isMobile ? 2 : 4}, 1fr)`} style={{ flex: 1 }}>
           {earnedList.map((earned, index) => (
             <Box
               className={`mt-s20 mb-s24 pr-s32 ${index > 0 ? 'pl-s32' : 'pl-s40'}`}
@@ -160,7 +161,20 @@ const Earned = ({ isMobile }) => {
             </Box>
           ))}
         </Grid>
-        <Box>button</Box>
+        {/* <Flex alignItems="center" border="1px solid" borderColor={ColorStyles.LIGHTBROWN} borderRadius={8} className="pa-s6">
+          <IconButton disabled p={0} style={{ height: '16px', paddingRight: '4px' }}>
+            <ArrowLeftGIcon/>
+          </IconButton>
+          <IconButton p={0} style={{ height: '16px' }}>
+            <ArrowRightGIcon/>
+          </IconButton>
+        </Flex> */}
+        <DoubleArrowButtons
+          disableLeftArrow
+          disableRightArrow
+          onClickLeftArrow={() => alert("click left")}
+          onClickRightArrow={() => alert("click right")}
+        />
       </Flex>
     </Box>
     // <div className="flex">
