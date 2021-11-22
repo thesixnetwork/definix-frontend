@@ -22,7 +22,7 @@ const Bridge: React.FC = () => {
         <title>Bridge - Definix - Advance Your Crypto Assets</title>
       </Helmet>
       <MaxWidth isMobile={`${isMobile ? '100%' : '630px'}`}>
-        <Box className={`my-s${isMobile ? 32 : 28}`} width="100%">
+        <Box className={`${isMobile ? 'my-s32' : 'my-s28'} `} width="100%">
           <TitleBridge isMobile={isMobile} />
           <CardBridge isMobile={isMobile} />
         </Box>

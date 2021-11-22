@@ -28,7 +28,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
       <Card className={`${isMobile && 'mt-s28'}`} p={isMobile ? 'S_20' : 'S_40'}>
         <Flex flexDirection="column" alignItems="center">
           <img
-            className={`mt-s${isMobile && 10}`}
+            style={{ marginTop: '10px' }}
             width={180}
             height={68}
             src={LogoSixBridge}
@@ -36,7 +36,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
             alt="logo-footer-six-bridge"
           />
 
-          <Flex className={`mt-s${isMobile ? 30 : 40} mb-s${isMobile ? 24 : 40}`} flexDirection="column" width="100%">
+          <Flex className={`${isMobile ? 'mt-s30 mb-s24' : 'mt-s40 mb-s40'}`} flexDirection="column" width="100%">
             <Text className="mb-s16" color="#222222" textStyle="R_18B">
               {t('Token & Chain')}
             </Text>
