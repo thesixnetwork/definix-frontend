@@ -518,7 +518,7 @@ const CardSuperStake = () => {
         {!isMobileOrTablet && (
           <BadgeExclusive className="col-4 flex flex-column" style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}>
             <img src={badgeExclusive} alt="" />
-            <img src={logoExclusive} alt="" className="px-2" style={{ opacity: '0.6' }} />
+            <img src={logoExclusive} alt="" style={{ opacity: '0.6' }} />
           </BadgeExclusive>
         )}
       </FinixStake>
