@@ -141,7 +141,6 @@ const Earned = ({ isMobile }) => {
         backgroundColor={ColorStyles.LIGHTGREY_20}
         className="pr-s40"
       >
-        
         <Grid gridTemplateColumns={`repeat(${isMobile ? 2 : 4}, 1fr)`} style={{ flex: 1 }}>
           {earnedList.map((earned, index) => (
             <Box
@@ -172,8 +171,8 @@ const Earned = ({ isMobile }) => {
         <DoubleArrowButtons
           disableLeftArrow
           disableRightArrow
-          onClickLeftArrow={() => alert("click left")}
-          onClickRightArrow={() => alert("click right")}
+          onClickLeftArrow={() => alert('click left')}
+          onClickRightArrow={() => alert('click right')}
         />
       </Flex>
     </Box>

@@ -55,7 +55,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   return (
     <div className={className}>
       <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
-        <Text textStyle="R_12R" color={titleColor || 'mediumgrey'} style={{ marginBottom: `${titleMarginBottom}px`}}>
+        <Text textStyle="R_12R" color={titleColor || 'mediumgrey'} style={{ marginBottom: `${titleMarginBottom}px` }}>
           {title}
         </Text>
 

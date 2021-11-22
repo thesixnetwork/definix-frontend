@@ -10,15 +10,18 @@ function CardSummary() {
   const isMobile = useMemo(() => !isXxl, [isXxl])
   return (
     <Card className="mt-s16">
-      <TabBox tabs={[
-        {
-          name: t('Earned'),
-          component: <Earned isMobile={isMobile} />,
-        }, {
-          name: t('Net Worth'),
-          component: <NetWorth />
-        }
-      ]}/>
+      <TabBox
+        tabs={[
+          {
+            name: t('Earned'),
+            component: <Earned isMobile={isMobile} />,
+          },
+          {
+            name: t('Net Worth'),
+            component: <NetWorth />,
+          },
+        ]}
+      />
     </Card>
   )
 }
