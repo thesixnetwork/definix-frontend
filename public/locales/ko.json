@@ -207,7 +207,7 @@
   "Remove tokens from the pool": "예치한 토큰을 회수합니다.",
   "A Farm that automatically performs": "리밸런싱 전략을 자동으로 수행하는 팜입니다. 리스크를 최소화하고 장기 투자에 유리합니다.",
   "Learn how to invest": "리밸런싱이 처음이신가요?",
-  "Invested only": "풀에서 토큰 제거하기",
+  "Invested only": "운용 중인 자산만 보기",
   "Yield APR": "수익률",
   "Asset Ratio": "구성 자산 비율",
   "Share Price(Since Inception)": "좌당 가치 (운용 이후 수익률)",
@@ -384,5 +384,8 @@
   "There are no products deposited": "예치한 상품이 없습니다.",
   "Provide Liquidity": "유동성 공급",
   "Single Token Staked": "단일 토큰 예치",
-  "Unknown error": "알 수 없는 오류로 일시적인 문제가 발생하였습니다.\n잠시 후에 다시 시도해주시길 바랍니다."
+  "Unknown error": "알 수 없는 오류로 일시적인 문제가 발생하였습니다.\n잠시 후에 다시 시도해주시길 바랍니다.",
+  "Definix is solely": "",
+  "I have read": "",
+  "Do not show": ""
 }
