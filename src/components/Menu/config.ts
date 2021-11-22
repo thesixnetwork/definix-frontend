@@ -107,6 +107,12 @@ const config: MenuEntry[] = [
         notHighlight: false,
         newTab: false,
       },
+      {
+        label: 'Voting',
+        href: '/voting',
+        notHighlight: false,
+        newTab: false,
+      },
     ],
   },
 

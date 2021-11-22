@@ -24,9 +24,9 @@ const TutorailsLink = styled(Link)`
 
 const LongTermStake: React.FC = () => {
   const { path } = useRouteMatch()
-  const { isXl, isMd } = useMatchBreakpoints()
+  const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
-  const isMobile = !isXl && !isMd
+  const isMobile = !isXl && !isLg && !isMd
   const [isViewTurial, setIsViewTurial] = useState(false)
   const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
   const [isOpenModal, setIsOpenModal] = useState(false)
@@ -72,8 +72,12 @@ const LongTermStake: React.FC = () => {
             />
             <MaxWidthLeft>
               <div className="mb-5">
-                <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
-                  <Heading as="h1" fontSize="32px !important" className="mr-3">
+                <div className={isMobile ? 'mb-2' : 'flex align-center mb-2'}>
+                  <Heading
+                    as="h1"
+                    fontSize={isMobile ? '28px !important' : '32px !important'}
+                    className={isMobile ? 'mr-3' : 'mr-3 text-center'}
+                  >
                     Long-term Stake
                   </Heading>
                   <div className="mt-2 flex align-center">

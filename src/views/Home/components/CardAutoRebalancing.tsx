@@ -5,10 +5,14 @@ import { Button, Card, Heading, Text } from 'uikit-dev'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-
+import useTheme from 'hooks/useTheme'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/definix-long-term-stake-with-voting-system.png'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting-banner.png'
+import velo from 'uikit-dev/images/for-ui-v2/banner/velo-banner.png'
+import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
+import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-black.png'
+import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
 
 const StyledBannerLady = styled(Card)`
   width: 100%;
@@ -157,6 +161,95 @@ const StyledBannerVoting = styled(Card)`
   }
 `
 
+const StyledBannerVelo = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: url(${velo});
+    background-size: contain;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 68px 40% 48px 24px;
+    border-radius: unset;
+    height: 327px;
+    &:before {
+      width: 46%;
+      opacity: 1;
+    }
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
+const StyledBannerDingoXSix = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+  &:before {
+    content: '';
+    width: 70%;
+    height: 100%;
+    background: url(${dingoxSix});
+    background-size: contain;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.1;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 44px 40% 48px 24px;
+    border-radius: unset;
+    height: 327px;
+    &:before {
+      width: 42%;
+      opacity: 1;
+      background-position: center;
+    }
+    h2 {
+      font-size: 28px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
 const SpecialButton = styled(Button)`
   position: relative;
   padding: 12px 24px;
@@ -277,8 +370,6 @@ const StyledSlider = styled(Slider)`
 `
 
 const CardAutoRebalancing = ({ className = '' }) => {
-  // const openDate = new Date(1628841600000)
-
   const settings = {
     dots: true,
     infinite: true,
@@ -290,9 +381,89 @@ const CardAutoRebalancing = ({ className = '' }) => {
     dotsClass: 'slick-dots slick-thumb',
   }
 
+  const { isDark } = useTheme()
+
   return (
     <div>
       <StyledSlider {...settings}>
+        <div>
+          <StyledBannerDingoXSix className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <img src={isDark ? logoDingoxSixWhite : logoDingoxSixBlack} alt="logoDingoxSix" width="90%" />
+              <Text color={isDark ? 'white' : 'black'} fontSize="20px" bold mt="6px">
+                Reveals NFT Project for T-ARA’s Comeback
+              </Text>
+              <Text color="textSubtle" fontSize="14px">
+                NFT based on Binance Smart Chain, sale in SIX token expands utility convenience via Swap feature on
+                Definix DEX.
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as="a" href="https://dingoxt-ara.com/" target="_blank" rel="noreferrer">
+                  <span>Go to official website</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerDingoXSix>
+        </div>
+        <div>
+          <StyledBannerVelo className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                VELO POOL IS NOW ON DEFINIX’S PARTNERSHIP POOL
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                Get chance to earn maximum of 300,000 VELO by staking FINIX
+              </Text>
+              <Text color={isDark ? 'white' : 'black'} fontSize="12px" bold>
+                Start Staking 15 November 2021 03:00 P.M. (GMT+7)
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as="a" href="/partnership-pool">
+                  <span>Interesting, I want to stake</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerVelo>
+        </div>
+        <div>
+          <StyledBannerVoting className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                Community Proposal is a great way to say your words and to reflects the community feeling about your
+                ideas.{' '}
+              </Text>
+              <div className="mt-6">
+                <SpecialOutline as={Link} to="/">
+                  <span>Coming soon!</span>
+                </SpecialOutline>
+              </div>
+            </div>
+          </StyledBannerVoting>
+        </div>
+        <div>
+          <StyledBannerLongTerm className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading className="mb-2" color="primary">
+                FINIX LONG-TERM STAKE WITH VOTING SYSTEM
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                New financial product from DEFINIX. It is the single-sided pool stake FINIX earn vFINIX.{' '}
+              </Text>
+              <Text bold fontSize="12px">
+                vFINIX can vote for rewarding fee return from a liquidity pool and discount fee conditioning for
+                Rebalancing Farm.
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as={Link} to="/long-term-stake">
+                  <span>Go to stake</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerLongTerm>
+        </div>
         <div>
           <StyledBannerLady className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
@@ -317,45 +488,6 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </div>
             </div>
           </StyledBannerLady>
-        </div>
-        <div>
-          <StyledBannerLongTerm className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                FINIX LONG-TERM STAKE WITH VOTING SYSTEM
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                New financial product from DEFINIX. It is the single-sided pool stake FINIX earn vFINIX.{' '}
-              </Text>
-              <Text bold fontSize="12px">
-                vFINIX can vote for rewarding fee return from a liquidity pool and discount fee conditioning for
-                Rebalancing Farm.
-              </Text>
-              <div className="mt-6">
-                <SpecialOutline as={Link} to="/">
-                  <span>Coming soon!</span>
-                </SpecialOutline>
-              </div>
-            </div>
-          </StyledBannerLongTerm>
-        </div>
-        <div>
-          <StyledBannerVoting className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                Community Proposal is a great way to say your words and to reflects the community feeling about your
-                ideas.{' '}
-              </Text>
-              <div className="mt-6">
-                <SpecialOutline as={Link} to="/">
-                  <span>Coming soon!</span>
-                </SpecialOutline>
-              </div>
-            </div>
-          </StyledBannerVoting>
         </div>
       </StyledSlider>
     </div>
