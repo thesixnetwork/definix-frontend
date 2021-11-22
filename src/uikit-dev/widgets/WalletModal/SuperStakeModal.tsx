@@ -422,11 +422,12 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { onSuperHarvest } = useSuperHarvest()
 
   const _superHarvest = useCallback(() => {
-    if (harvestProgress !== -1 && harvestProgress <= Object.values(selectedToken).length) {
-      if (_.get(Object.values(selectedToken)[harvestProgress], 'checked')) {
-        if (!_.get(Object.values(selectedToken)[harvestProgress], 'pools')) {
-          if (_.get(Object.values(selectedToken)[harvestProgress], 'farms')) {
-            onSuperHarvest(_.get(Object.values(selectedToken)[harvestProgress], 'pid'))
+    const selected = Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
+    if (harvestProgress !== -1 && harvestProgress <= Object.values(selected).length) {
+      if (_.get(Object.values(selected)[harvestProgress], 'checked')) {
+        if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
+          if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
+            onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
               .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
               })
@@ -445,7 +446,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         } else {
           onReward()
             .then((res) => {
-              setSousId(_.get(Object.values(selectedToken)[harvestProgress], 'sousId'))
+              setSousId(_.get(Object.values(selected)[harvestProgress], 'sousId'))
               setHarvestProgress(harvestProgress + 1)
             })
             .catch((e) => {
@@ -514,6 +515,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         setLengthSelect(0)
         setPendingTx(false)
         setShowLottie(true)
+        setSelectedToken({})
       }
     }
   }, [harvestProgress, period, harvested])
