@@ -19,14 +19,14 @@ const StatSkeleton = () => {
 }
 
 interface ValueList {
-  title: string;
-  value: number;
-  price: number;
+  title: string
+  value: number
+  price: number
 }
 const EarningBoxTemplate: React.FC<{
-  isMobile: boolean;
-  hasAccount: boolean;
-  title: string;
+  isMobile: boolean
+  hasAccount: boolean
+  title: string
   valueList: ValueList[]
 }> = ({ isMobile, hasAccount, title, valueList }) => {
   const { t } = useTranslation()
@@ -53,21 +53,30 @@ const EarningBoxTemplate: React.FC<{
       <Flex justifyContent="space-between" alignItems="center" className="mx-s40 mt-s28 mb-s40">
         <Box>
           <Flex alignItems="flex-end" className="mb-s8">
-            <FireIcon style={{ marginLeft: '-8px' }}/>
+            <FireIcon style={{ marginLeft: '-8px' }} />
             <Text textStyle="R_18M" color={ColorStyles.MEDIUMGREY} ml={4}>
               {title}
             </Text>
           </Flex>
           <Flex alignItems="flex-end">
             <Text textStyle="R_32B" color={ColorStyles.BLACK}>
-              {hasAccount ? convertToBalanceFormat(valueList.reduce((result, item) => {
-                return result + item.value
-              }, 0)) : 0}
+              {hasAccount
+                ? convertToBalanceFormat(
+                    valueList.reduce((result, item) => {
+                      return result + item.value
+                    }, 0),
+                  )
+                : 0}
             </Text>
             <Text textStyle="R_16M" color={ColorStyles.DEEPGREY} className="ml-s16">
-              = ${hasAccount ? convertToPriceFormat(valueList.reduce((result, item) => {
-                return result + item.price
-              }, 0)) : 0}
+              = $
+              {hasAccount
+                ? convertToPriceFormat(
+                    valueList.reduce((result, item) => {
+                      return result + item.price
+                    }, 0),
+                  )
+                : 0}
             </Text>
           </Flex>
         </Box>

@@ -59,6 +59,6 @@ export default function useConverter() {
     convertToUSD,
     convertToPriceFromSymbol,
     convertToBalanceFormat,
-    convertToPriceFormat
+    convertToPriceFormat,
   }
 }
