@@ -38,27 +38,39 @@ const AddActions = () => {
         </div>
         <div className="ma-3">
           <div className="mb-3">
-            <Text color="text" fontSize="16px">Start Date</Text>
+            <Text color="text" fontSize="16px">
+              Start Date
+            </Text>
             <BoxInput className="my-2" placeholder="DD-MM-YY" />
           </div>
           <div className="mb-3">
-            <Text color="text" fontSize="16px">Start Time</Text>
+            <Text color="text" fontSize="16px">
+              Start Time
+            </Text>
             <BoxInput className="my-2" placeholder="00:00" />
           </div>
           <div className="mb-3">
-            <Text color="text" fontSize="16px">End Date</Text>
+            <Text color="text" fontSize="16px">
+              End Date
+            </Text>
             <BoxInput className="my-2" placeholder="DD-MM-YY" />
           </div>
           <div className="mb-3">
-            <Text color="text" fontSize="16px">End Time</Text>
+            <Text color="text" fontSize="16px">
+              End Time
+            </Text>
             <BoxInput className="my-2" placeholder="00:00" />
           </div>
           <div className={`flex align-stretch ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-4'}>
-              <Text fontSize="16px" lineHeight="1">Identifier</Text>
+              <Text fontSize="16px" lineHeight="1">
+                Identifier
+              </Text>
             </div>
             <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-              <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">QmaSFZ3p</Text>
+              <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
+                QmaSFZ3p
+              </Text>
               <ExternalUrl color="#30ADFF" size={16} />
             </div>
           </div>

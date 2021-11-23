@@ -41,7 +41,7 @@ const VotingProposal: React.FC = () => {
               <AddChoices />
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
-               <AddActions />
+              <AddActions />
               <VotingPower />
             </div>
           </div>
