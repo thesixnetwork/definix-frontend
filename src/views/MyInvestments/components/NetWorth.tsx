@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import styled from 'styled-components'
@@ -33,6 +34,7 @@ import { getBalanceNumber } from 'utils/formatBalance'
 import { fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 
 import CardValue from './CardValue'
+import EarningBoxTemplate from './EarningBoxTemplate'
 
 const StatAll = styled.div`
   padding: 12px 16px;
@@ -49,7 +51,8 @@ const StatSkeleton = () => {
   return <Skeleton animation="pulse" variant="rect" height="26px" className="my-1" />
 }
 
-const NetWorth = () => {
+const NetWorth = ({ isMobile }) => {
+  const { t } = useTranslation()
   const [isLoading, setIsLoading] = useState(true)
 
   const { account } = useWallet()
@@ -305,82 +308,116 @@ const NetWorth = () => {
 
   const worthRebalance = stakedRebalances.reduce((all, r) => all + Number(getNetWorth(r)), 0)
 
+  const netWorthList = useMemo(() => {
+    return [
+      {
+        title: t('Farm'),
+        price: worthFarm,
+      },
+      {
+        title: t('Pool'),
+        price: worthPool,
+      },
+      {
+        title: t('Rebalancing'),
+        price: worthRebalance,
+      },
+      // {
+      //   title: t('Long-term Stake'),
+      //   value: '100,000,000.123456',
+      //   price: '000000',
+      // },
+    ]
+  }, [t, worthFarm, worthPool, worthRebalance])
+
   return (
-    <div className="flex">
-      <StatAll>
-        <Heading color="textSubtle">Net worth</Heading>
-        {isLoading ? (
-          <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
-        ) : (
-          <Heading fontSize="24px !important">
-            {(() => {
-              const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances].map((f) => {
-                return getNetWorth(f)
-              })
-              // eslint-disable-next-line
-              const totalNetWorth =
-                _.compact(allNetWorth).length > 0
-                  ? _.compact(allNetWorth).reduce((fv, sv) => {
-                      return fv.plus(sv)
-                    })
-                  : new BigNumber(0)
-              return totalNetWorth && Number(totalNetWorth) !== 0
-                ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                : '-'
-            })()}
-          </Heading>
-        )}
-      </StatAll>
-      <div className="flex">
+    <>
+      <EarningBoxTemplate
+        isMobile={isMobile}
+        hasAccount={!!account}
+        total={{
+          title: t('Total Deposit'),
+          price: netWorthList.reduce((result, item) => result + item.price, 0),
+        }}
+        valueList={netWorthList}
+      />
+
+      {/* <div className="flex">
         <StatAll>
-          <Text color="textSubtle">Farm</Text>
-          {isFarmFetched ? (
-            <>
-              <Heading fontSize="24px !important" color="textInvert">
-                <CardValue value={worthFarm} lineHeight="1.5" color="textInvert" prefix="$" bold={false} decimals={2} />
-              </Heading>
-            </>
+          <Heading color="textSubtle">Net worth</Heading>
+          {isLoading ? (
+            <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
           ) : (
-            <StatSkeleton />
+            <Heading fontSize="24px !important">
+              {(() => {
+                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances].map((f) => {
+                  return getNetWorth(f)
+                })
+                // eslint-disable-next-line
+                const totalNetWorth =
+                  _.compact(allNetWorth).length > 0
+                    ? _.compact(allNetWorth).reduce((fv, sv) => {
+                        return fv.plus(sv)
+                      })
+                    : new BigNumber(0)
+                return totalNetWorth && Number(totalNetWorth) !== 0
+                  ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                  : '-'
+              })()}
+            </Heading>
           )}
         </StatAll>
-      </div>
-      <div className="flex">
-        <StatAll>
-          <Text color="textSubtle">Pool</Text>
-          {isPoolFetched ? (
-            <>
-              <Heading fontSize="24px !important" color="textInvert">
-                <CardValue value={worthPool} lineHeight="1.5" color="textInvert" prefix="$" bold={false} decimals={2} />
-              </Heading>
-            </>
-          ) : (
-            <StatSkeleton />
-          )}
-        </StatAll>
-      </div>
-      <div className="flex">
-        <StatAll>
-          <Text color="textSubtle">Rebalancing</Text>
-          {isRebalanceFetched ? (
-            <>
-              <Heading fontSize="24px !important" color="textInvert">
-                <CardValue
-                  value={worthRebalance}
-                  lineHeight="1.5"
-                  color="textInvert"
-                  prefix="$"
-                  bold={false}
-                  decimals={2}
-                />
-              </Heading>
-            </>
-          ) : (
-            <StatSkeleton />
-          )}
-        </StatAll>
-      </div>
-    </div>
+        <div className="flex">
+          <StatAll>
+            <Text color="textSubtle">Farm</Text>
+            {isFarmFetched ? (
+              <>
+                <Heading fontSize="24px !important" color="textInvert">
+                  <CardValue value={worthFarm} lineHeight="1.5" color="textInvert" prefix="$" bold={false} decimals={2} />
+                </Heading>
+              </>
+            ) : (
+              <StatSkeleton />
+            )}
+          </StatAll>
+        </div>
+        <div className="flex">
+          <StatAll>
+            <Text color="textSubtle">Pool</Text>
+            {isPoolFetched ? (
+              <>
+                <Heading fontSize="24px !important" color="textInvert">
+                  <CardValue value={worthPool} lineHeight="1.5" color="textInvert" prefix="$" bold={false} decimals={2} />
+                </Heading>
+              </>
+            ) : (
+              <StatSkeleton />
+            )}
+          </StatAll>
+        </div>
+        <div className="flex">
+          <StatAll>
+            <Text color="textSubtle">Rebalancing</Text>
+            {isRebalanceFetched ? (
+              <>
+                <Heading fontSize="24px !important" color="textInvert">
+                  <CardValue
+                    value={worthRebalance}
+                    lineHeight="1.5"
+                    color="textInvert"
+                    prefix="$"
+                    bold={false}
+                    decimals={2}
+                  />
+                </Heading>
+              </>
+            ) : (
+              <StatSkeleton />
+            )}
+          </StatAll>
+        </div>
+      </div> */}
+    </>
   )
 }
 

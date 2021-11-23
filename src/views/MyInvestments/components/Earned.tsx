@@ -74,7 +74,11 @@ const Earned = ({ isMobile }) => {
     <EarningBoxTemplate
       isMobile={isMobile}
       hasAccount={!!account}
-      title={t('Total Finix Earned')}
+      total={{
+        title: t('Total Finix Earned'),
+        value: earnedList.reduce((result, item) => result + item.value, 0),
+        price: earnedList.reduce((result, item) => result + item.price, 0),
+      }}
       valueList={earnedList}
     />
     // <div className="flex">

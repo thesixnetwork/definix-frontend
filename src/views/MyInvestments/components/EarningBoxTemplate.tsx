@@ -1,10 +1,13 @@
-import React, { useCallback, useState } from 'react'
+import _ from 'lodash'
+import React, { useCallback, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import useConverter from 'hooks/useConverter'
 import { Button, Skeleton, Text, Box, ColorStyles, Flex, Grid, DoubleArrowButtons, FireIcon } from 'definixswap-uikit'
 import UnlockButton from 'components/UnlockButton'
+import CurrencyText from 'components/CurrencyText'
+import BalanceText from 'components/BalanceText'
 // import FinixHarvestAllBalance from './FinixHarvestTotalBalance'
 // import FinixHarvestBalance from './FinixHarvestBalance'
 // import FinixHarvestPool from './FinixHarvestPool'
@@ -20,15 +23,15 @@ const StatSkeleton = () => {
 
 interface ValueList {
   title: string
-  value: number
+  value?: number
   price: number
 }
 const EarningBoxTemplate: React.FC<{
   isMobile: boolean
   hasAccount: boolean
-  title: string
+  total: ValueList
   valueList: ValueList[]
-}> = ({ isMobile, hasAccount, title, valueList }) => {
+}> = ({ isMobile, hasAccount, total, valueList }) => {
   const { t } = useTranslation()
   const { convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const [pendingTx, setPendingTx] = useState(false)
@@ -48,6 +51,8 @@ const EarningBoxTemplate: React.FC<{
     }
   }, [onReward])
 
+  const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
+
   return (
     <Box>
       <Flex justifyContent="space-between" alignItems="center" className="mx-s40 mt-s28 mb-s40">
@@ -55,44 +60,42 @@ const EarningBoxTemplate: React.FC<{
           <Flex alignItems="flex-end" className="mb-s8">
             <FireIcon style={{ marginLeft: '-8px' }} />
             <Text textStyle="R_18M" color={ColorStyles.MEDIUMGREY} ml={4}>
-              {title}
+              {total.title}
             </Text>
           </Flex>
           <Flex alignItems="flex-end">
-            <Text textStyle="R_32B" color={ColorStyles.BLACK}>
-              {hasAccount
-                ? convertToBalanceFormat(
-                    valueList.reduce((result, item) => {
-                      return result + item.value
-                    }, 0),
-                  )
-                : 0}
-            </Text>
-            <Text textStyle="R_16M" color={ColorStyles.DEEPGREY} className="ml-s16">
-              = $
-              {hasAccount
-                ? convertToPriceFormat(
-                    valueList.reduce((result, item) => {
-                      return result + item.price
-                    }, 0),
-                  )
-                : 0}
-            </Text>
+            {hasTotalValue ? (
+              <BalanceText textStyle="R_32B" color={ColorStyles.BLACK} value={hasAccount ? total.value : 0} />
+            ) : (
+              <CurrencyText textStyle="R_32B" color={ColorStyles.BLACK} value={hasAccount ? total.price : 0} />
+            )}
+            {hasTotalValue && (
+              <CurrencyText
+                value={hasAccount ? total.price : 0}
+                prefix="="
+                textStyle="R_16M"
+                color={ColorStyles.DEEPGREY}
+                className="ml-s16"
+              />
+            )}
           </Flex>
         </Box>
-        {hasAccount ? (
-          <Button
-            // id="harvest-all"
-            md
-            width={186}
-            disabled={balancesWithValue.length <= 0 || pendingTx}
-            onClick={harvestAllFarms}
-          >
-            {pendingTx ? t('Collecting...') : t('Harvest')}
-          </Button>
-        ) : (
-          <UnlockButton />
-        )}
+        <Box width={186}>
+          {hasAccount ? (
+            <Button
+              // id="harvest-all"
+              md
+              width="100%"
+              disabled={balancesWithValue.length <= 0 || pendingTx}
+              onClick={harvestAllFarms}
+            >
+              {pendingTx ? t('Collecting...') : t('Harvest')}
+            </Button>
+          ) : (
+            <UnlockButton />
+          )}
+        </Box>
+        
       </Flex>
       <Flex
         justifyContent="space-between"
@@ -107,15 +110,23 @@ const EarningBoxTemplate: React.FC<{
               borderLeft={index > 0 && '1px solid'}
               borderColor={ColorStyles.LIGHTGREY}
             >
-              <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+              <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
                 {valueItem.title}
               </Text>
-              <Text textStyle="R_16M" color={ColorStyles.BLACK} className="mt-s8">
-                {hasAccount ? convertToBalanceFormat(valueItem.value) : 0}
-              </Text>
-              <Text textStyle="R_14M" color={ColorStyles.DEEPGREY}>
-                = ${hasAccount ? convertToPriceFormat(valueItem.price) : 0}
-              </Text>
+              {typeof _.get(valueItem, 'value') === 'number' ? (
+                <BalanceText textStyle="R_16M" color={ColorStyles.BLACK} value={hasAccount ? valueItem.value : 0} />
+              ) : (
+                <CurrencyText textStyle="R_16M" color={ColorStyles.BLACK} value={hasAccount ? valueItem.price : 0} />
+              )}
+
+              {typeof _.get(valueItem, 'value') === 'number' && (
+                <CurrencyText
+                  textStyle="R_14M"
+                  color={ColorStyles.DEEPGREY}
+                  value={hasAccount ? valueItem.price : 0}
+                  prefix="="
+                />
+              )}
             </Box>
           ))}
         </Grid>

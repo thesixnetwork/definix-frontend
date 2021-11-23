@@ -18,7 +18,7 @@ function CardSummary() {
           },
           {
             name: t('Net Worth'),
-            component: <NetWorth />,
+            component: <NetWorth isMobile={isMobile} />,
           },
         ]}
       />
