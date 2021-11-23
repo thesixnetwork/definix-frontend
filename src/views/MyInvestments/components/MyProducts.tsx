@@ -13,7 +13,7 @@ import ExploreCard from '../../Explore/components/ExploreCard'
 const MyProducts = ({ products }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
-
+  
   const getMyFarmBalancesInWallet = useCallback(
     (tokens: string[]) => {
       return tokens.reduce((result, token) => {
@@ -66,7 +66,8 @@ const MyProducts = ({ products }) => {
 
   const getProductComponent = useCallback(
     (product) => {
-      if (product.type === 'farm') {
+      const productType = product.type.toLowerCase()
+      if (productType === 'farm') {
         return (
           <FarmCard
             key={product.data.pid}
@@ -79,7 +80,7 @@ const MyProducts = ({ products }) => {
           />
         )
       }
-      if (product.type === 'pool') {
+      if (productType === 'pool') {
         return (
           <PoolCard
             key={product.data.sousId}
@@ -89,7 +90,7 @@ const MyProducts = ({ products }) => {
           />
         )
       }
-      if (product.type === 'rebalance') {
+      if (productType === 'rebalancing') {
         return (
           <ExploreCard
             key={product.data.title}
