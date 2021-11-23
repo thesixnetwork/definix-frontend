@@ -1,17 +1,19 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { Card, CardBody, Text, textStyle, ColorStyles, Flex, HomeProtectionFinixIcon } from 'definixswap-uikit'
+import { Card, CardBody, Text, textStyle, ColorStyles, Flex, HomeProtectionFinixIcon, Grid } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 
 const AuditList = [
   {
-    img: '/images/audit/logo_protection_certik.png',
+    src: '/images/audit/logo_protection_certik.png',
+    srcSet: '/images/audit/logo_protection_certik@2x.png 2x, /images/audit/logo_protection_certik@3x.png 3x',
     description: 'Fundamental Protection and Assessment',
     result: 'Verified',
     color: ColorStyles.BLACK,
   },
   {
-    img: '/images/audit/logo_protection_techrate.png',
+    src: '/images/audit/logo_protection_techrate.png',
+    srcSet: '/images/audit/logo_protection_techrate@2x.png 2x, /images/audit/logo_protection_techrate@3x.png 3x',
     description: 'Smart Contract Security Audit',
     result: 'All Pass',
     color: ColorStyles.GREEN,
@@ -39,85 +41,60 @@ const Title = styled(Text)`
 const WrapAudit = styled(Flex)`
   margin-top: 40px;
   justify-content: space-between;
+  padding-left: 40px;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     flex-direction: column;
     margin-top: 28px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 `
 
 const WrapAuditItemImg = styled.div`
+  grid-area: image;
   object-fit: contain;
   height: 20px;
 `
 
 const WrapAuditItemInfo = styled(Flex)`
+  grid-area: info;
   flex-direction: column;
 `
 
-const AuditItem = styled(Flex)`
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-
-  :first-child {
-    flex: 1;
-    padding-left: 40px;
-  }
+const AuditItem = styled(Grid)`
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-areas: 
+    "image image"
+    "info info"
+    "info info";
 
   :nth-child(2) {
-    flex-direction: row;
     padding-left: 30px;
     border-left: 1px solid ${({ theme }) => theme.colors.border};
+    grid-template-areas: 
+      "image char"
+      "info char"
+      "info char";
   }
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    flex-direction: row;
-    align-items: flex-start;
-
-    :first-child {
-      width: 100%;
-      padding-left: 20px;
-      padding-right: 20px;
-      padding-bottom: 16px;
-
-      ${WrapAuditItemImg} {
-        flex: 1.2;
-      }
-      ${WrapAuditItemInfo} {
-        flex: 2;
-      }
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas: 
+      "image info info";
+      
+    :nth-child(1) {
+      margin-bottom: 16px;
     }
 
     :nth-child(2) {
-      border-top: 1px solid ${({ theme }) => theme.colors.border};
-      flex: 1;
-      margin: 0 20px;
-      padding-left: 0;
       padding-top: 20px;
+      padding-left: 0;
+      border-top: 1px solid ${({ theme }) => theme.colors.border};
       border-left: none;
-      justify-content: space-between;
-
-      ${WrapAuditItemImg} {
-        flex: 2;
-      }
-      ${WrapAuditItemInfo} {
-        flex: 2;
-      }
+      grid-template-areas: 
+        "image info char";
     }
-  }
-`
-
-const WrapAuditItem = styled(Flex)`
-  height: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    position: relative;
-    flex-direction: row;
-    width: 100%;
   }
 `
 
@@ -146,9 +123,12 @@ const AuditItemResult = styled(Text)`
 `
 
 const Character = styled(Flex)`
+  grid-area: char;
+  justify-self: flex-end;
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: -30px;
     margin-right: -20px;
-    margin-top: -40px;
   }
 `
 
@@ -161,7 +141,7 @@ const CardAudit = () => {
         <WrapAudit>
           <AuditItem>
             <WrapAuditItemImg>
-              <AuditItemImg src={AuditList[0].img} alt={t(AuditList[0].description)} />
+              <AuditItemImg src={AuditList[0].src} srcSet={AuditList[0].srcSet} alt={t(AuditList[0].description)} />
             </WrapAuditItemImg>
             <WrapAuditItemInfo>
               <AuditItemDesc>{t(AuditList[0].description)}</AuditItemDesc>
@@ -169,15 +149,13 @@ const CardAudit = () => {
             </WrapAuditItemInfo>
           </AuditItem>
           <AuditItem>
-            <WrapAuditItem>
-              <WrapAuditItemImg>
-                <AuditItemImg src={AuditList[1].img} alt={t(AuditList[1].description)} />
-              </WrapAuditItemImg>
-              <WrapAuditItemInfo>
-                <AuditItemDesc>{t(AuditList[1].description)}</AuditItemDesc>
-                <AuditItemResult color={AuditList[1].color}>{t(AuditList[1].result)}</AuditItemResult>
-              </WrapAuditItemInfo>
-            </WrapAuditItem>
+            <WrapAuditItemImg>
+              <AuditItemImg src={AuditList[1].src} srcSet={AuditList[1].srcSet} alt={t(AuditList[1].description)} />
+            </WrapAuditItemImg>
+            <WrapAuditItemInfo>
+              <AuditItemDesc>{t(AuditList[1].description)}</AuditItemDesc>
+              <AuditItemResult color={AuditList[1].color}>{t(AuditList[1].result)}</AuditItemResult>
+            </WrapAuditItemInfo>
             <Character>
               <HomeProtectionFinixIcon />
             </Character>

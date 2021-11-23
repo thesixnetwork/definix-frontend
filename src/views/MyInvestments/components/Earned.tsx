@@ -11,7 +11,10 @@ import EarningBoxTemplate from './EarningBoxTemplate'
 // import FinixHarvestBalance from './FinixHarvestBalance'
 // import FinixHarvestPool from './FinixHarvestPool'
 
-const Earned = ({ isMobile }) => {
+const Earned: React.FC<{
+  isMobile: boolean;
+  theme?: 'white' | 'dark';
+}> = ({ isMobile, theme = 'white' }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
   const finixPrice = usePriceFinixUsd()
@@ -72,6 +75,7 @@ const Earned = ({ isMobile }) => {
 
   return (
     <EarningBoxTemplate
+      theme={theme}
       isMobile={isMobile}
       hasAccount={!!account}
       total={{
