@@ -37,12 +37,12 @@ const THEME = {
 }
 
 const MainSection = styled(Flex)<{ isMobile: boolean }>`
-  flex-direction: ${({ isMobile }) => isMobile ? 'column' : 'row'};
-  align-items: ${({ isMobile }) => isMobile ? 'flex-start' : 'center'};
-  justify-content: space-between
+  flex-direction: ${({ isMobile }) => (isMobile ? 'column' : 'row')};
+  align-items: ${({ isMobile }) => (isMobile ? 'flex-start' : 'center')};
+  justify-content: space-between;
 `
 const ButtonWrap = styled(Box)<{ isMobile: boolean }>`
-  width: ${({ isMobile }) => isMobile ? '100%' : 186};
+  width: ${({ isMobile }) => (isMobile ? '100%' : 186)};
 `
 const GridSection = styled(Grid)<{ isMobile: boolean }>`
   grid-template-columns: ${({ isMobile }) => `repeat(${isMobile ? 2 : 4}, 1fr)`};
@@ -95,17 +95,14 @@ const EarningBoxTemplate: React.FC<{
     const props = {
       textStyle: `R_${isMobile ? '23' : '32'}B`,
       color: curTheme.totalBalanceColor,
-      value: hasAccount ? total.value : 0
+      value: hasAccount ? total.value : 0,
     }
-    return hasTotalValue ? <BalanceText {...props}/> : <CurrencyText {...props}/>
+    return hasTotalValue ? <BalanceText {...props} /> : <CurrencyText {...props} />
   }
 
   return (
     <Box>
-      <MainSection
-        isMobile={isMobile}
-        className="mx-s40 mt-s28 mb-s40"
-      >
+      <MainSection isMobile={isMobile} className="mx-s40 mt-s28 mb-s40">
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
             <FireIcon style={{ marginLeft: '-8px' }} />
@@ -114,7 +111,7 @@ const EarningBoxTemplate: React.FC<{
             </Text>
           </Flex>
           <Flex alignItems="flex-end">
-            <TotalValueSection/>
+            <TotalValueSection />
             {hasTotalValue && (
               <CurrencyText
                 value={hasAccount ? total.price : 0}
