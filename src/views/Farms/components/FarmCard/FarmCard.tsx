@@ -59,7 +59,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   kethPrice,
   account,
   isHorizontal = false,
-  inlineMultiplier = false
+  inlineMultiplier = false,
 }) => {
   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()

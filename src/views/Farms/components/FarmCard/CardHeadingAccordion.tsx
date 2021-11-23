@@ -19,7 +19,7 @@ export interface ExpandableSectionProps {
   className?: string
   isOpenAccordion: boolean
   setIsOpenAccordion: (isOpen: boolean) => void
-  inlineMultiplier: boolean,
+  inlineMultiplier: boolean
 }
 
 const StyledFarmImages = styled.div`
@@ -163,7 +163,7 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
-          
+
           {!inlineMultiplier && (
             <InlineMultiplierTag>
               <p>{farm.multiplier}</p>
