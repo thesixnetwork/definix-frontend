@@ -19,7 +19,7 @@ function CardSummary({ products }) {
           },
           {
             name: t('Net Worth'),
-            component: <NetWorth isMobile={isMobile} products={_.groupBy(products, 'type')}/>,
+            component: <NetWorth isMobile={isMobile} products={_.groupBy(products, 'type')} />,
           },
         ]}
       />

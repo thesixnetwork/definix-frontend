@@ -31,7 +31,7 @@ const StatAll = styled.div`
 // }
 
 const NetWorth: React.FC<{
-  isMobile: boolean;
+  isMobile: boolean
   products: { [key: string]: any[] }
 }> = ({ isMobile, products }) => {
   const { t } = useTranslation()
@@ -54,8 +54,8 @@ const NetWorth: React.FC<{
     return Object.entries(products).map(([type, product]) => {
       return {
         title: type,
-        price: product.reduce((all, f) => all + Number(f.netWorth), 0)
-      } 
+        price: product.reduce((all, f) => all + Number(f.netWorth), 0),
+      }
     })
   }, [products])
 

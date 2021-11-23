@@ -134,7 +134,7 @@ const MyInvestments: React.FC = () => {
       } else {
         totalValue = convertToPriceFromToken(stakedTotalInQuoteToken, d.quoteTokenSymbol)
       }
-      
+
       const earningRaw = _.get(d, 'userData.earnings', 0)
       const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
       const totalEarning = convertToPriceFromToken(earning, 'finix')
@@ -156,7 +156,7 @@ const MyInvestments: React.FC = () => {
   const stakedProducts = useMemo(() => {
     return [...stakedFarms, ...stakedPools, ...stakedRebalances]
   }, [stakedFarms, stakedPools, stakedRebalances])
-  
+
   useEffect(() => {
     if (account) {
       dispatch(fetchFarmUserDataAsync(account))
@@ -198,12 +198,14 @@ const MyInvestments: React.FC = () => {
       <Box className="">
         <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
         <Route exact path={`${path}`}>
-          <CardSummary products={stakedProducts.map((product) => {
-            return {
-              ...product,
-              netWorth: getNetWorth(product.data)
-            }
-          })} />
+          <CardSummary
+            products={stakedProducts.map((product) => {
+              return {
+                ...product,
+                netWorth: getNetWorth(product.data),
+              }
+            })}
+          />
           <MyProducts products={stakedProducts} />
         </Route>
       </Box>
