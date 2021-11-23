@@ -6,6 +6,7 @@ import FarmHighAPR from './FarmHighAPR'
 import ExploreHighAPR from './ExploreHighAPR'
 
 const Title = styled(Text)`
+  align-self: center;
   ${css(textStyle.R_26B)}
   color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
 
@@ -51,7 +52,7 @@ const CardHighAPR = () => {
     <Card bg={ColorStyles.ORANGE}>
       <WrapCardBody>
         <Flex alignItems="flex-end" justifyContent="space-between">
-          <Title pb="S_24">{t('Stake Farms with high APR')}</Title>
+          <Title>{t('Stake Farms with high APR')}</Title>
           <Character>
             <HomeFarmFinixIcon />
           </Character>

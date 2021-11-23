@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { Label, Text, textStyle, Box, ImgHomeTopFinixIcon, Flex } from 'definixswap-uikit'
 
 const Wrap = styled(Flex)`
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
+  ${({ theme }) => theme.mediaQueries.mobile} {
     width: 100%;
     flex-direction: column;
   }
@@ -54,7 +54,10 @@ const NoticeSlider = styled(Slider)`
     background: ${({ theme }) => theme.colors.yellow};
   }
 
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    .slick-list {
+      margin-bottom: 20px;
+    }
     .slick-dots {
       height: 4px;
     }
@@ -62,23 +65,27 @@ const NoticeSlider = styled(Slider)`
 `
 
 const Notice = styled(Text)`
+  white-space: pre-line;
   ${css(textStyle.R_20M)}
   color: black;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
+  ${({ theme }) => theme.mediaQueries.mobile} {
     ${css(textStyle.R_14M)}
   }
 `
 
 const NoticeBox = styled(Box)`
   width: 55%;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
+  ${({ theme }) => theme.mediaQueries.mobile} {
     width: 100%;
   }
 `
 
 const Character = styled(Flex)`
+  max-width: 434px;
   width: 45%;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
+  align-self: flex-end;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    max-width: 260px;
     align-self: flex-end;
     width: 81%;
   }
@@ -107,7 +114,7 @@ const HomeNotice: React.FC = () => {
           new Array(3).fill(true).map((val, index) => ({
             id: index,
             model: index,
-            text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. What a number!',
+            text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. \nWhat a number!',
           })),
         )
         // setNotice(response.data.data?.data?.map(({ id, model, text}) => ({

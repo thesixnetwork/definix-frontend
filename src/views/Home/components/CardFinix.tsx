@@ -87,7 +87,15 @@ const WrapButton = styled(Flex)`
     width: 100%;
     flex-direction: row;
     margin-top: 20px;
-    padding-bottom: 20px;
+
+    button:first-child {
+      margin-bottom: 0;
+      margin-right: 8px;
+    }
+
+    button:last-child {
+      margin-left: 8px;
+    }
   }
 `
 
