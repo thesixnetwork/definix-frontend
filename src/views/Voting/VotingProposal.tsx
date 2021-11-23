@@ -6,6 +6,8 @@ import styled from 'styled-components'
 import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
 
 import AddProposal from './components/AddProposal'
+import AddChoices from './components/AddChoices'
+import AddActions from './components/AddActions'
 import VotingPower from './components/VotingPower'
 
 const MaxWidthLeft = styled(MaxWidth)`
@@ -36,12 +38,10 @@ const VotingProposal: React.FC = () => {
           <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
               <AddProposal />
-              {/* <VotingCast />
-              <VotingList rbAddress /> */}
+              <AddChoices />
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
-              {/* <VotingDetails />
-              <VotingResults /> */}
+               <AddActions />
               <VotingPower />
             </div>
           </div>

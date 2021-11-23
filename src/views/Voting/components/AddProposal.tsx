@@ -5,10 +5,19 @@ import { Link, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import times from 'lodash/times'
 import useTheme from 'hooks/useTheme'
-import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import { ArrowBackIcon, Button, Card, CardHeader, CardBody, Input, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
 
 const EasyMde = lazy(() => import('components/EasyMde'))
+
+const InputChoice = styled(Input)`
+  width: 100%;
+  background: unset;
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  margin: 20px 0px;
+  padding: 2px 20px;
+  display: flex;
+  align-items: center;
+`
 
 const AddProposal: React.FC = () => {
   const { path } = useRouteMatch()
@@ -27,7 +36,7 @@ const AddProposal: React.FC = () => {
     endTime: null,
     snapshot: 0,
   })
-  const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
+  const { name, body, choices, startDate, startTime, endDate, endTime } = state
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
 
   const updateValue = (key: string, value: string | Date) => {
@@ -75,31 +84,14 @@ const AddProposal: React.FC = () => {
             <Text bold color="text" fontSize="18px">
               Title
             </Text>
-            <Input className="mt-2 mb-1" />
+            <InputChoice className="mt-2 mb-1" />
           </div>
         </div>
         <div className="pa-4">
-          <Text bold color="text" fontSize="18px">
+          <Text bold color="text" fontSize="18px" marginBottom="10px">
             Content
           </Text>
           <EasyMde id="body" name="body" onTextChange={handleEasyMdeChange} value={body} options={options} required />
-          {body && (
-            <div className="my-5">
-              <Card>
-                <CardHeader>
-                  <Text bold color="text" fontSize="18px">
-                    Preview
-                  </Text>
-                  {/* <Heading as="h3" scale="md">
-                      {t('Preview')}
-                    </Heading> */}
-                </CardHeader>
-                <CardBody p="0" px="24px">
-                  <div>{body}</div>
-                </CardBody>
-              </Card>
-            </div>
-          )}
         </div>
       </Card>
     </>

@@ -12,7 +12,7 @@ interface SimpleMdeProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement
 
 const Wrapper = styled.div`
   .EasyMDEContainer .CodeMirror {
-    background: ${({ theme }) => theme.colors.backgroundBox};
+    background: unset;
     border-color: ${({ theme }) => theme.colors.border};
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
