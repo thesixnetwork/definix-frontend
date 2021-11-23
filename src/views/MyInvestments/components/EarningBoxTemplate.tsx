@@ -1,5 +1,6 @@
 import _ from 'lodash'
 import React, { useCallback, useState, useMemo } from 'react'
+import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
@@ -35,6 +36,19 @@ const THEME = {
   },
 }
 
+const MainSection = styled(Flex)<{ isMobile: boolean }>`
+  flex-direction: ${({ isMobile }) => isMobile ? 'column' : 'row'};
+  align-items: ${({ isMobile }) => isMobile ? 'flex-start' : 'center'};
+  justify-content: space-between
+`
+const ButtonWrap = styled(Box)<{ isMobile: boolean }>`
+  width: ${({ isMobile }) => isMobile ? '100%' : 186};
+`
+const GridSection = styled(Grid)<{ isMobile: boolean }>`
+  grid-template-columns: ${({ isMobile }) => `repeat(${isMobile ? 2 : 4}, 1fr)`};
+  flex: 1;
+`
+
 const StatSkeleton = () => {
   return (
     <>
@@ -57,7 +71,6 @@ const EarningBoxTemplate: React.FC<{
   theme?: 'white' | 'dark'
 }> = ({ isMobile, hasAccount, total, valueList, theme = 'white' }) => {
   const { t } = useTranslation()
-  const { convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const [pendingTx, setPendingTx] = useState(false)
 
   const farmsWithBalance = useFarmsWithBalance()
@@ -78,34 +91,42 @@ const EarningBoxTemplate: React.FC<{
   const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
   const curTheme = useMemo(() => THEME[theme], [theme])
 
+  const TotalValueSection = () => {
+    const props = {
+      textStyle: `R_${isMobile ? '23' : '32'}B`,
+      color: curTheme.totalBalanceColor,
+      value: hasAccount ? total.value : 0
+    }
+    return hasTotalValue ? <BalanceText {...props}/> : <CurrencyText {...props}/>
+  }
+
   return (
     <Box>
-      <Flex justifyContent="space-between" alignItems="center" className="mx-s40 mt-s28 mb-s40">
+      <MainSection
+        isMobile={isMobile}
+        className="mx-s40 mt-s28 mb-s40"
+      >
         <Box>
-          <Flex alignItems="flex-end" className="mb-s8">
+          <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
             <FireIcon style={{ marginLeft: '-8px' }} />
-            <Text textStyle="R_18M" color={curTheme.totalTitleColor} ml={4}>
+            <Text textStyle={`R_${isMobile ? '14' : '18'}M`} color={curTheme.totalTitleColor} ml={4}>
               {total.title}
             </Text>
           </Flex>
           <Flex alignItems="flex-end">
-            {hasTotalValue ? (
-              <BalanceText textStyle="R_32B" color={curTheme.totalBalanceColor} value={hasAccount ? total.value : 0} />
-            ) : (
-              <CurrencyText textStyle="R_32B" color={curTheme.totalBalanceColor} value={hasAccount ? total.price : 0} />
-            )}
+            <TotalValueSection/>
             {hasTotalValue && (
               <CurrencyText
                 value={hasAccount ? total.price : 0}
                 prefix="="
-                textStyle="R_16M"
+                textStyle={`R_${isMobile ? '14' : '16'}M`}
                 color={curTheme.totalCurrencyColor}
                 className="ml-s16"
               />
             )}
           </Flex>
         </Box>
-        <Box width={186}>
+        <ButtonWrap isMobile={isMobile}>
           {hasAccount ? (
             <Button
               // id="harvest-all"
@@ -119,10 +140,10 @@ const EarningBoxTemplate: React.FC<{
           ) : (
             <UnlockButton />
           )}
-        </Box>
-      </Flex>
+        </ButtonWrap>
+      </MainSection>
       <Flex justifyContent="space-between" alignItems="center" backgroundColor={curTheme.bottomBg} className="pr-s40">
-        <Grid gridTemplateColumns={`repeat(${isMobile ? 2 : 4}, 1fr)`} style={{ flex: 1 }}>
+        <GridSection isMobile={isMobile}>
           {valueList.map((valueItem, index) => (
             <Box
               className={`mt-s20 mb-s24 pr-s32 ${index > 0 ? 'pl-s32' : 'pl-s40'}`}
@@ -156,7 +177,7 @@ const EarningBoxTemplate: React.FC<{
               )}
             </Box>
           ))}
-        </Grid>
+        </GridSection>
         <DoubleArrowButtons
           disableLeftArrow
           disableRightArrow
