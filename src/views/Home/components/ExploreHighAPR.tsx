@@ -9,7 +9,7 @@ import { Rebalance } from 'state/types'
 import FormAPR from './FormAPR'
 
 interface ExtendRebalance extends Rebalance {
-  apr: number;
+  apr: number
 }
 
 const WrapImage = styled(Flex)`
@@ -49,9 +49,16 @@ const ExploreHighAPR: React.FC = () => {
   }, [finixPrice, rebalances])
 
   return highAprRebalance ? (
-    <FormAPR title={highAprRebalance.title} totalAssetValue={numeral(_.get(highAprRebalance, 'totalAssetValue', 0)).format('0,0.00')} apr={highAprRebalance.apr.toFixed(2)} Images={<WrapImage>
-      <img src={highAprRebalance.icon[0]} alt="" />
-    </WrapImage>} />
+    <FormAPR
+      title={highAprRebalance.title}
+      totalAssetValue={numeral(_.get(highAprRebalance, 'totalAssetValue', 0)).format('0,0.00')}
+      apr={highAprRebalance.apr.toFixed(2)}
+      Images={
+        <WrapImage>
+          <img src={highAprRebalance.icon[0]} alt="" />
+        </WrapImage>
+      }
+    />
   ) : (
     <></>
   )

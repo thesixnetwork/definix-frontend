@@ -95,7 +95,6 @@ const EarningBoxTemplate: React.FC<{
             <UnlockButton />
           )}
         </Box>
-        
       </Flex>
       <Flex
         justifyContent="space-between"

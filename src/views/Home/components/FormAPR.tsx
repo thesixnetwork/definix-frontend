@@ -4,25 +4,25 @@ import { ColorStyles, Flex, Grid, Text, textStyle } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 
 interface Props {
-  title: string;
-  apr: string;
-  Images: React.ReactElement;
-  totalAssetValue?: number;
+  title: string
+  apr: string
+  Images: React.ReactElement
+  totalAssetValue?: number
 }
 
 const WrapGrid = styled(Grid)`
   width: 100%;
   grid-template-columns: repeat(2, 80%, 20%);
-  grid-template-areas: 
-    "image image"
-    "lp apr"
-    "total apr";
+  grid-template-areas:
+    'image image'
+    'lp apr'
+    'total apr';
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    grid-template-areas: 
-      "lp lp"
-      "total total"
-      "apr image";
+    grid-template-areas:
+      'lp lp'
+      'total total'
+      'apr image';
   }
 `
 
@@ -34,7 +34,7 @@ const WrapImage = styled(Flex)`
     margin-top: 16px;
   }
 `
-  
+
 const LpName = styled(Flex)`
   ${css(textStyle.R_18B)}
   margin-top: 20px;
@@ -63,7 +63,7 @@ const TotalLiquidity = styled(Flex)`
     .label {
       ${css(textStyle.R_12R)}
     }
-  
+
     .value {
       ${css(textStyle.R_12B)}
     }
@@ -88,18 +88,14 @@ const Apr = styled(Flex)`
   }
 `
 
-
 const FormAPR: React.FC<Props> = ({ title, apr, totalAssetValue, Images }) => {
   const { t } = useTranslation()
 
-  return <WrapGrid mt="S_20">
-      <WrapImage>
-        {Images}
-      </WrapImage>
+  return (
+    <WrapGrid mt="S_20">
+      <WrapImage>{Images}</WrapImage>
       <LpName>
-        <Text color={ColorStyles.BLACK}>
-          {title}
-        </Text>
+        <Text color={ColorStyles.BLACK}>{title}</Text>
       </LpName>
       <TotalLiquidity>
         <Text className="label" color={ColorStyles.MEDIUMGREY}>
@@ -120,6 +116,7 @@ const FormAPR: React.FC<Props> = ({ title, apr, totalAssetValue, Images }) => {
         </Flex>
       </Apr>
     </WrapGrid>
+  )
 }
 
 export default FormAPR

@@ -4,9 +4,7 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import numeral from 'numeral'
 import { Flex, Box } from 'definixswap-uikit'
-import {
-  useFarms,
-} from 'state/hooks'
+import { useFarms } from 'state/hooks'
 import useFarmsList from 'hooks/useFarmsList'
 import { getLpImageUrls } from 'utils/getTokenImage'
 import FormAPR from './FormAPR'
@@ -26,16 +24,26 @@ const FarmHighAPR = () => {
   const farmsWithApy = useFarmsList(farmsLP)
   const activeFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
   const sortedFarmData = useMemo(() => activeFarms.sort((a, b) => +a.apy - +b.apy).reverse(), [activeFarms])
-  const lpImages = useMemo(() => sortedFarmData[0] ? getLpImageUrls(sortedFarmData[0].lpSymbol) : [], [sortedFarmData]);
+  const lpImages = useMemo(
+    () => (sortedFarmData[0] ? getLpImageUrls(sortedFarmData[0].lpSymbol) : []),
+    [sortedFarmData],
+  )
 
   return sortedFarmData[0] ? (
-    <FormAPR title={sortedFarmData[0].lpSymbol} totalAssetValue={numeral(_.get(sortedFarmData[0], 'totalLiquidityValue', 0)).format('0,0.00')} apr={numeral(sortedFarmData[0].apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')} Images={<WrapImage>
-    {
-      lpImages.map((image, index) => <Box width="50%" style={{ marginLeft: index > 0 ? '-10px' : '0' }}>
-        <img src={image} alt="" />
-      </Box>)
-    }
-  </WrapImage>} />
+    <FormAPR
+      title={sortedFarmData[0].lpSymbol}
+      totalAssetValue={numeral(_.get(sortedFarmData[0], 'totalLiquidityValue', 0)).format('0,0.00')}
+      apr={numeral(sortedFarmData[0].apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')}
+      Images={
+        <WrapImage>
+          {lpImages.map((image, index) => (
+            <Box width="50%" style={{ marginLeft: index > 0 ? '-10px' : '0' }}>
+              <img src={image} alt="" />
+            </Box>
+          ))}
+        </WrapImage>
+      }
+    />
   ) : (
     <></>
   )
