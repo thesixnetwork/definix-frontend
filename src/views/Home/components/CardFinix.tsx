@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import numeral from 'numeral'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
@@ -146,13 +147,13 @@ const CardFinix = () => {
               <TokenFinixIcon viewBox="0 0 24 24" width={isXxl ? '24' : '20'} />
               <Title>{t('FINIX')}</Title>
             </Flex>
-            <FinixValue>$ {finixPriceUsd.toFixed(2)}</FinixValue>
+            <FinixValue>$ {numeral(finixPriceUsd).format('0,0.[0000]')}</FinixValue>
           </WrapFinix>
           <WrapButton>
-            <Button xs variant="lightbrown" width="100%">
+            <Button xs variant="lightbrown" width="100%" onClick={() => window.open('https://klaytn.loremboard.finance/chart/FINIX', '_blank')}>
               {t('Price Chart')}
             </Button>
-            <Button xs variant="line" width="100%">
+            <Button xs variant="line" width="100%" onClick={() => window.open('https://scope.klaytn.com/account/0xd51c337147c8033a43f3b5ce0023382320c113aa?tabId=txList', '_blank')}>
               {t('Transactions')}
             </Button>
           </WrapButton>
