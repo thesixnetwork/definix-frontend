@@ -114,7 +114,6 @@ const MyFarmsAndPools = ({ farms, pools, rebalances }) => {
   const stakedProducts = useMemo(() => {
     return [...farms, ...pools, ...rebalances]
   }, [farms, pools, rebalances])
-  console.log('stakedProducts: ', stakedProducts)
 
   const getMyFarmBalancesInWallet = useCallback(
     (tokens: string[]) => {

@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import { QuoteToken } from 'config/constants/types'
 import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 
@@ -45,9 +46,19 @@ export default function useConverter() {
     return price.toNumber()
   }
 
+  const convertToBalanceFormat = (value: number) => {
+    return numeral(value).format('0,0.[000000]')
+  }
+
+  const convertToPriceFormat = (value: number) => {
+    return numeral(value).format('0,0.[00]')
+  }
+
   return {
     convertToPriceFromToken,
     convertToUSD,
     convertToPriceFromSymbol,
+    convertToBalanceFormat,
+    convertToPriceFormat
   }
 }
