@@ -13,7 +13,7 @@ import ExploreCard from '../../Explore/components/ExploreCard'
 const MyProducts = ({ products }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
-  
+
   const getMyFarmBalancesInWallet = useCallback(
     (tokens: string[]) => {
       return tokens.reduce((result, token) => {

@@ -64,25 +64,24 @@ const WrapAuditItemInfo = styled(Flex)`
 
 const AuditItem = styled(Grid)`
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas: 
-    "image image"
-    "info info"
-    "info info";
+  grid-template-areas:
+    'image image'
+    'info info'
+    'info info';
 
   :nth-child(2) {
     padding-left: 30px;
     border-left: 1px solid ${({ theme }) => theme.colors.border};
-    grid-template-areas: 
-      "image char"
-      "info char"
-      "info char";
+    grid-template-areas:
+      'image char'
+      'info char'
+      'info char';
   }
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     grid-template-columns: repeat(3, 1fr);
-    grid-template-areas: 
-      "image info info";
-      
+    grid-template-areas: 'image info info';
+
     :nth-child(1) {
       margin-bottom: 16px;
     }
@@ -92,8 +91,7 @@ const AuditItem = styled(Grid)`
       padding-left: 0;
       border-top: 1px solid ${({ theme }) => theme.colors.border};
       border-left: none;
-      grid-template-areas: 
-        "image info char";
+      grid-template-areas: 'image info char';
     }
   }
 `

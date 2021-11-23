@@ -12,8 +12,8 @@ import EarningBoxTemplate from './EarningBoxTemplate'
 // import FinixHarvestPool from './FinixHarvestPool'
 
 const Earned: React.FC<{
-  isMobile: boolean;
-  theme?: 'white' | 'dark';
+  isMobile: boolean
+  theme?: 'white' | 'dark'
 }> = ({ isMobile, theme = 'white' }) => {
   const { t } = useTranslation()
   const { account } = useWallet()

@@ -1,10 +1,5 @@
 import React, { useMemo } from 'react'
-import {
-  Card,
-  CardBody,
-  ColorStyles,
-  useMatchBreakpoints,
-} from 'definixswap-uikit'
+import { Card, CardBody, ColorStyles, useMatchBreakpoints } from 'definixswap-uikit'
 import Earned from 'views/MyInvestments/components/Earned'
 
 const CardInvestment = () => {
