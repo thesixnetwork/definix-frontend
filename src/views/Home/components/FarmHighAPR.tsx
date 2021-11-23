@@ -1,123 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
+import React, { useMemo } from 'react'
+import _ from 'lodash'
 import BigNumber from 'bignumber.js'
+import styled from 'styled-components'
 import numeral from 'numeral'
+import { Flex, Box } from 'definixswap-uikit'
 import {
   useFarms,
-  usePriceFinixUsdToNumber,
-  usePriceKethKusdtToNumber,
-  usePriceKlayKusdtToNumber,
-  usePriceSixUsdToNumber,
 } from 'state/hooks'
-import { QuoteToken } from 'config/constants/types'
-import { BLOCKS_PER_YEAR } from 'config'
-import { ColorStyles, Flex, Text } from 'definixswap-uikit'
-import { useTranslation } from 'react-i18next'
-import { Farm } from 'state/types'
+import useFarmsList from 'hooks/useFarmsList'
+import { getLpImageUrls } from 'utils/getTokenImage'
+import FormAPR from './FormAPR'
 
-interface FarmState extends Farm {
-  farmAPY: string
-}
-
-const ColumnFlex = styled(Flex)`
-  flex-direction: column;
+const WrapImage = styled(Flex)`
+  width: 96px;
+  height: 48px;
+  align-items: flex-end;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 72px;
+    height: 36px;
+  }
 `
 
 const FarmHighAPR = () => {
-  const { t } = useTranslation()
-  const [highAprFarm, setHighAprFarm] = useState<FarmState>()
-
   const farmsLP = useFarms()
-  const finixPrice = usePriceFinixUsdToNumber()
-  const sixPrice = usePriceSixUsdToNumber()
-  const klayPrice = usePriceKlayKusdtToNumber()
-  const kethPriceUsd = usePriceKethKusdtToNumber()
+  const farmsWithApy = useFarmsList(farmsLP)
+  const activeFarms = farmsWithApy.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
+  const sortedFarmData = useMemo(() => activeFarms.sort((a, b) => +a.apy - +b.apy).reverse(), [activeFarms])
+  const lpImages = useMemo(() => sortedFarmData[0] ? getLpImageUrls(sortedFarmData[0].lpSymbol) : [], [sortedFarmData]);
 
-  useEffect(() => {
-    if (finixPrice === 0 || sixPrice === 0 || klayPrice === 0 || kethPriceUsd === 0) {
-      return
+  return sortedFarmData[0] ? (
+    <FormAPR title={sortedFarmData[0].lpSymbol} totalAssetValue={numeral(_.get(sortedFarmData[0], 'totalLiquidityValue', 0)).format('0,0.00')} apr={numeral(sortedFarmData[0].apy.times(new BigNumber(100)).toNumber() || 0).format('0,0')} Images={<WrapImage>
+    {
+      lpImages.map((image, index) => <Box width="50%" style={{ marginLeft: index > 0 ? '-10px' : '0' }}>
+        <img src={image} alt="" />
+      </Box>)
     }
-    const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
-    const getFarmHighAPR = (farmsToDisplay) => {
-      const finixPriceVsKlay = new BigNumber(finixPrice)
-      return farmsToDisplay.map((farm) => {
-        if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
-          return farm
-        }
-        const klayApy = new BigNumber(0)
-        const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
-          .times(farm.BONUS_MULTIPLIER)
-          .div(new BigNumber(10).pow(18))
-        // const totalKlayRewardPerBlock = new BigNumber(KLAY_PER_BLOCK)
-        const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
-        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
-
-        let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
-          apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
-        } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
-          apy = finixPriceVsKlay.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
-          apy = finixPriceVsKlay.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
-          apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
-        } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
-          apy = finixPriceVsKlay.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
-        } else if (farm.dual) {
-          const finixApy =
-            farm && finixPriceVsKlay.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
-          const dualApy =
-            farm.tokenPriceVsQuote &&
-            new BigNumber(farm.tokenPriceVsQuote)
-              .times(farm.dual.rewardPerBlock)
-              .times(BLOCKS_PER_YEAR)
-              .div(farm.lpTotalInQuoteToken)
-
-          apy = finixApy && dualApy && finixApy.plus(dualApy)
-        }
-
-        return {
-          ...farm,
-          apy,
-          finixApy: apy,
-          klayApy,
-          farmAPY: apy && numeral(apy.times(new BigNumber(100)).toNumber() || 0).format('0,0'),
-        }
-      })
-    }
-
-    const farmData = getFarmHighAPR(activeFarms)
-    const sortedFarmData = farmData.sort((a, b) => +a.farmAPY - +b.farmAPY).reverse()
-    setHighAprFarm(sortedFarmData[0])
-  }, [farmsLP, finixPrice, kethPriceUsd, klayPrice, sixPrice])
-
-  return highAprFarm ? (
-    <ColumnFlex width="100%">
-      <Flex>image</Flex>
-      <Flex mt="S_20" justifyContent="space-between" width="100%">
-        <ColumnFlex justifyContent="flex-end">
-          <Text textStyle="R_18B" color={ColorStyles.BLACK}>
-            {highAprFarm.lpSymbol}
-          </Text>
-          <Flex mt="S_4">
-            <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-              {t('Total Liquidity')}
-            </Text>
-            <Text mr="S_8" textStyle="R_14B" color={ColorStyles.MEDIUMGREY}>
-              $
-            </Text>
-          </Flex>
-        </ColumnFlex>
-        <ColumnFlex alignItems="flex-end">
-          <Text textStyle="R_12M" color={ColorStyles.ORANGE}>
-            {t('APR')}
-          </Text>
-          <Text textStyle="R_28B" color={ColorStyles.BLACK}>
-            {highAprFarm.farmAPY} %
-          </Text>
-        </ColumnFlex>
-      </Flex>
-    </ColumnFlex>
+  </WrapImage>} />
   ) : (
     <></>
   )

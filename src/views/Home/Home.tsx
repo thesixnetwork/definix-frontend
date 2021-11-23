@@ -76,6 +76,11 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
   position: relative;
   grid-column-start: 1;
   grid-column-end: 13;
+  padding-top: 30px;
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding-top: 28px;
+  }
 `
 
 const Home: React.FC = () => {
@@ -86,7 +91,7 @@ const Home: React.FC = () => {
         <title>Home - Definix - Advance Your Crypto Assets</title>
       </Helmet>
       <WrapGrid isAccount={!!account}>
-        <FullColumnGrid pt="S_30" area="notice">
+        <FullColumnGrid area="notice">
           <HomeNotice />
         </FullColumnGrid>
         {account && (

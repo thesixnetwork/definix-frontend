@@ -1,29 +1,35 @@
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
+import React, { useMemo } from 'react'
 import _ from 'lodash'
-import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { ColorStyles, Flex, Text } from 'definixswap-uikit'
+import numeral from 'numeral'
+import { Flex } from 'definixswap-uikit'
 import { usePriceFinixUsdToNumber, useRebalances } from 'state/hooks'
 import { Rebalance } from 'state/types'
+import FormAPR from './FormAPR'
 
 interface ExtendRebalance extends Rebalance {
-  apr: number
+  apr: number;
 }
 
-const ColumnFlex = styled(Flex)`
-  flex-direction: column;
+const WrapImage = styled(Flex)`
+  width: 120px;
+  height: 48px;
+  align-items: flex-end;
+  border-radius: 4px;
+  overflow: hidden;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 90px;
+    height: 36px;
+  }
 `
 
 const ExploreHighAPR: React.FC = () => {
-  const { t } = useTranslation()
-  const [highAprRebalance, setHighAprRebalance] = useState<ExtendRebalance>()
   const rebalances = useRebalances()
   const finixPrice = usePriceFinixUsdToNumber()
 
-  useEffect(() => {
-    if (finixPrice === 0) return
-    const maxAprRebalance = rebalances.reduce<ExtendRebalance>((acc, rebalance) => {
+  const highAprRebalance = useMemo(() => {
+    return rebalances.reduce<ExtendRebalance>((acc, rebalance) => {
       const temp = {
         ...rebalance,
         apr: new BigNumber(finixPrice)
@@ -40,40 +46,15 @@ const ExploreHighAPR: React.FC = () => {
 
       return acc
     }, {} as ExtendRebalance)
-
-    setHighAprRebalance(maxAprRebalance)
   }, [finixPrice, rebalances])
 
   return highAprRebalance ? (
-    <ColumnFlex width="100%">
-      <Flex>image</Flex>
-      <Flex mt="S_20" justifyContent="space-between" width="100%">
-        <ColumnFlex justifyContent="flex-end">
-          <Text textStyle="R_18B" color={ColorStyles.BLACK}>
-            {highAprRebalance.title}
-          </Text>
-          <Flex mt="S_4">
-            <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-              {t('Total Asset Value')}
-            </Text>
-            <Text mr="S_8" textStyle="R_14B" color={ColorStyles.MEDIUMGREY}>
-              $
-            </Text>
-          </Flex>
-        </ColumnFlex>
-        <ColumnFlex alignItems="flex-end">
-          <Text textStyle="R_12M" color={ColorStyles.ORANGE}>
-            {t('APR')}
-          </Text>
-          <Text textStyle="R_28B" color={ColorStyles.BLACK}>
-            {highAprRebalance.apr} %
-          </Text>
-        </ColumnFlex>
-      </Flex>
-    </ColumnFlex>
+    <FormAPR title={highAprRebalance.title} totalAssetValue={numeral(_.get(highAprRebalance, 'totalAssetValue', 0)).format('0,0.00')} apr={highAprRebalance.apr.toFixed(2)} Images={<WrapImage>
+      <img src={highAprRebalance.icon[0]} alt="" />
+    </WrapImage>} />
   ) : (
     <></>
   )
 }
 
-export default React.memo(ExploreHighAPR)
+export default ExploreHighAPR
