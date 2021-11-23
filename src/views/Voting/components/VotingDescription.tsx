@@ -1,46 +1,34 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
 import { ArrowBackIcon, Button, Card, Text, Heading, useMatchBreakpoints } from 'uikit-dev'
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import coreIcon from 'uikit-dev/images/for-ui-v2/voting/icon-core.png'
-// import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
-const MaxWidth = styled.div`
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-`
-
-const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 24px;
-`
-
-const SpecialOutline = styled(Button)`
+const SpecialOutline = styled.div`
   background-color: unset;
   border-radius: 6px;
   border: 1px solid #1587c9;
   color: #1587c9;
+  font-size: 14px;
   font-style: italic;
   cursor: unset;
+  padding: 8px 16px;
 `
 
-const SpecialOutlineCore = styled(Button)`
+const SpecialOutlineCore = styled.div`
   background-color: unset;
   border-radius: 6px;
   border: 1px solid #55bd92;
   color: #55bd92;
+  font-size: 14px;
   font-style: italic;
   cursor: unset;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
 `
 
 const Description = styled(Card)`
@@ -71,21 +59,19 @@ const VotingDescription = () => {
               Back
             </Text>
           </Button>
-          <div>
-            <div className="flex align-center">
-              <SpecialOutline color="primary" size="sm">
-                Vote Now
-              </SpecialOutline>
-              &nbsp;
-              <SpecialOutlineCore color="success" size="sm">
-                <img src={coreIcon} alt="coreIcon" />
+          <div className="flex align-center">
+            <SpecialOutline color="primary">
+              Vote Now
+            </SpecialOutline>
+            &nbsp;
+            <SpecialOutlineCore color="success">
+              <img src={coreIcon} alt="coreIcon" />
                 &nbsp;Core
-              </SpecialOutlineCore>
-            </div>
-            <Text fontSize="32px" bold lineHeight="1" marginTop="10px">
-              Proposal Topic Proposal Topic Proposal Topic
-            </Text>
+            </SpecialOutlineCore>
           </div>
+          <Text fontSize="32px" bold lineHeight="1" marginTop="10px">
+            Proposal Topic Proposal Topic Proposal Topic
+          </Text>
         </div>
         <Description>
           <Text>

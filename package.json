@@ -58,6 +58,7 @@
     "date-fns": "^2.17.0",
     "definixswap-sdk": "1.0.0",
     "definixswap-uikit": "^0.0.2",
+    "easymde": "^2.15.0",
     "jest-styled-components": "^7.0.5",
     "klaytn-use-wallet": "^1.0.1",
     "lodash": "^4.17.20",
