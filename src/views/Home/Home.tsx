@@ -76,10 +76,10 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
   position: relative;
   grid-column-start: 1;
   grid-column-end: 13;
-  padding-top: 30px;
+  // padding-top: 30px;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    padding-top: 28px;
+    // padding-top: 28px;
   }
 `
 
