@@ -16,10 +16,6 @@ const asyncForEach = async (array, callback) => {
   }
 }
 
-// const isStable = (tokenData) => {
-//   return tokenData.symbol === 'KUSDT' || tokenData.symbol === 'BUSD' || tokenData.symbol === 'USDT'
-// }
-
 const isBNB = (tokenData) => {
   return tokenData.symbol === 'BNB' || tokenData.symbol === 'WBNB'
 }
@@ -98,7 +94,6 @@ export const simulateInvest = async (tokens = []) => {
 
 export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, allAsset = false) => {
   if (tokens.length === 0) return []
-  // const bnbTokenOnly = tokens.find((token) => isBNB(token)) || BNBToken
   const notBnbToken = tokens.filter((token) => !isBNB(token))
 
   const context = new Context()
@@ -108,6 +103,11 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
   const router = new DefinixRouter(context, library)
   context.setFactory(factory)
 
+  await factory.loadPair(
+    getLowerAddress(
+      getCustomLpNetwork(BNBToken.address, BUSDToken.address, customFactory.pancake, customInitCodeHash.pancake),
+    ),
+  )
   await asyncForEach(notBnbToken, async (token) => {
     await factory.loadPair(
       getLowerAddress(getCustomLpNetwork(token.address, BNBToken.address, token.factory, token.initCodeHash)),
@@ -134,20 +134,18 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
       const currentAmount = pool.balances[getLowerAddress(token.address)].multipliedBy(share)
       user.balances[getLowerAddress(token.address)] = currentAmount
     })
+    let totalUSDAmount_ = 0
     if (userInput) {
       tokens.forEach((token) => {
-        router.swapExactTokensForTokens(
-          user.balances[getLowerAddress(token.address)],
-          0,
-          [getLowerAddress(token.address), getLowerAddress(BNBToken.address)],
-          pool,
-          user,
-        )
+        totalUSDAmount_ += router.getAmountsOut(user.balances[getLowerAddress(token.address)], [
+          getLowerAddress(token.address),
+          getLowerAddress(BNBToken.address),
+          getLowerAddress(BUSDToken.address),
+        ])
       })
     }
-
     return [
-      [[], user.balances[getLowerAddress(BNBToken.address)]],
+      [[], totalUSDAmount_],
       tokens.map((token) => {
         return pool.balances[getLowerAddress(token.address)].multipliedBy(share)
       }),
@@ -174,16 +172,14 @@ export const simulateWithdraw = async (userInput, tokens = [], totalPoolSupply, 
     getLowerAddress(BNBToken.address),
     [...tokens.map((token) => getLowerAddress(token.address))],
     tokens.map(() => router),
-    [...tokens.map((token) => (token.isSelected ? new BigNumber(token.ratioPoint) : new BigNumber(0)))],
-    // new BigNumber(bnbTokenOnly.isSelected ? bnbTokenOnly.ratioPoint : new BigNumber(0)),
-    BigNumber.sum.apply(null, [...tokens.map((token) => new BigNumber(token.isSelected ? token.ratioPoint : 0))]),
+    [...tokens.map((token) => (token.isSelected ? new BigNumber(1000) : new BigNumber(0)))],
+    BigNumber.sum.apply(null, [...tokens.map((token) => new BigNumber(token.isSelected ? 1000 : 0))]),
   )
 
   poolUSDBalances = swapper.getCurrentPoolUSDBalance(
     getLowerAddress(BUSDToken.address),
     getLowerAddress(BNBToken.address),
     [...tokens.map((token) => getLowerAddress(token.address))],
-    // notBnbToken.map(() => router),
   )
   poolAmounts = swapper.getCurrentPoolAmount([...tokens.map((token) => getLowerAddress(token.address))])
   return [poolUSDBalances, poolAmounts]
