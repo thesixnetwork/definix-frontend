@@ -22,7 +22,6 @@ const THEME = {
     itemCurrencyColor: ColorStyles.DEEPGREY,
     borderColor: ColorStyles.LIGHTGREY,
     bottomBg: ColorStyles.LIGHTGREY_20,
-    
   },
   dark: {
     totalTitleColor: ColorStyles.WHITE,
@@ -33,7 +32,7 @@ const THEME = {
     itemCurrencyColor: 'white80',
     borderColor: ColorStyles.BROWN,
     bottomBg: 'black20',
-  }
+  },
 }
 
 const StatSkeleton = () => {
@@ -77,7 +76,7 @@ const EarningBoxTemplate: React.FC<{
   }, [onReward])
 
   const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
-  const curTheme = useMemo(() => THEME[theme],[theme])
+  const curTheme = useMemo(() => THEME[theme], [theme])
 
   return (
     <Box>
@@ -122,12 +121,7 @@ const EarningBoxTemplate: React.FC<{
           )}
         </Box>
       </Flex>
-      <Flex
-        justifyContent="space-between"
-        alignItems="center"
-        backgroundColor={curTheme.bottomBg}
-        className="pr-s40"
-      >
+      <Flex justifyContent="space-between" alignItems="center" backgroundColor={curTheme.bottomBg} className="pr-s40">
         <Grid gridTemplateColumns={`repeat(${isMobile ? 2 : 4}, 1fr)`} style={{ flex: 1 }}>
           {valueList.map((valueItem, index) => (
             <Box
@@ -139,9 +133,17 @@ const EarningBoxTemplate: React.FC<{
                 {valueItem.title}
               </Text>
               {typeof _.get(valueItem, 'value') === 'number' ? (
-                <BalanceText textStyle="R_16M" color={curTheme.itemBalanceColor} value={hasAccount ? valueItem.value : 0} />
+                <BalanceText
+                  textStyle="R_16M"
+                  color={curTheme.itemBalanceColor}
+                  value={hasAccount ? valueItem.value : 0}
+                />
               ) : (
-                <CurrencyText textStyle="R_16M" color={curTheme.itemBalanceColor} value={hasAccount ? valueItem.price : 0} />
+                <CurrencyText
+                  textStyle="R_16M"
+                  color={curTheme.itemBalanceColor}
+                  value={hasAccount ? valueItem.price : 0}
+                />
               )}
 
               {typeof _.get(valueItem, 'value') === 'number' && (

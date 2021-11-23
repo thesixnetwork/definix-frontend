@@ -150,10 +150,25 @@ const CardFinix = () => {
             <FinixValue>$ {numeral(finixPriceUsd).format('0,0.[0000]')}</FinixValue>
           </WrapFinix>
           <WrapButton>
-            <Button xs variant="lightbrown" width="100%" onClick={() => window.open('https://klaytn.loremboard.finance/chart/FINIX', '_blank')}>
+            <Button
+              xs
+              variant="lightbrown"
+              width="100%"
+              onClick={() => window.open('https://klaytn.loremboard.finance/chart/FINIX', '_blank')}
+            >
               {t('Price Chart')}
             </Button>
-            <Button xs variant="line" width="100%" onClick={() => window.open('https://scope.klaytn.com/account/0xd51c337147c8033a43f3b5ce0023382320c113aa?tabId=txList', '_blank')}>
+            <Button
+              xs
+              variant="line"
+              width="100%"
+              onClick={() =>
+                window.open(
+                  'https://scope.klaytn.com/account/0xd51c337147c8033a43f3b5ce0023382320c113aa?tabId=txList',
+                  '_blank',
+                )
+              }
+            >
               {t('Transactions')}
             </Button>
           </WrapButton>

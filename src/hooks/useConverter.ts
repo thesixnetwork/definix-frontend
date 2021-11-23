@@ -10,16 +10,17 @@ export default function useConverter() {
   const kethPrice = usePriceKethKusdt()
 
   const convertToPriceFromToken = (token, symbol): BigNumber => {
-    if (symbol === QuoteToken.KLAY) {
+    const tokenSymbol = symbol.toUpperCase()
+    if (tokenSymbol === QuoteToken.KLAY) {
       return klayPrice.times(token)
     }
-    if (symbol === QuoteToken.FINIX) {
+    if (tokenSymbol === QuoteToken.FINIX) {
       return finixPrice.times(token)
     }
-    if (symbol === QuoteToken.KETH) {
+    if (tokenSymbol === QuoteToken.KETH) {
       return kethPrice.times(token)
     }
-    if (symbol === QuoteToken.SIX) {
+    if (tokenSymbol === QuoteToken.SIX) {
       return sixPrice.times(token)
     }
     return token

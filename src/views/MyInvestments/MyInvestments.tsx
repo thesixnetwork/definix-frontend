@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
@@ -10,22 +11,25 @@ import FlexLayout from 'components/layout/FlexLayout'
 import useRefresh from 'hooks/useRefresh'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
+import useConverter from 'hooks/useConverter'
 import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
+import { getBalanceNumber } from 'utils/formatBalance'
 // import styled from 'styled-components'
 import { Text, Box, TitleSet } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import CardSummary from './components/CardSummary'
-import MyFarmsAndPools from './components/MyFarmsAndPools'
+import MyProducts from './components/MyProducts'
 
 const MyInvestments: React.FC = () => {
   const { t } = useTranslation()
   const { path } = useRouteMatch()
   const { account }: { account: string; klaytn: provider } = useWallet()
-
+  const { convertToPriceFromToken } = useConverter()
   const dispatch = useDispatch()
+  const balances = useBalances(account)
   // const { fastRefresh } = useRefresh()
 
   // const [isPhrase2, setIsPhrase2] = useState(false)
@@ -55,14 +59,14 @@ const MyInvestments: React.FC = () => {
         arr = [
           ...result,
           {
-            type: 'farm',
+            type: t('Farm'),
             data: farm,
           },
         ]
       }
       return arr
     }, [])
-  }, [farmsWithApy])
+  }, [t, farmsWithApy])
 
   // pools
   const pools = usePools(account)
@@ -74,14 +78,14 @@ const MyInvestments: React.FC = () => {
         arr = [
           ...result,
           {
-            type: 'pool',
+            type: t('Pool'),
             data: pool,
           },
         ]
       }
       return arr
     }, [])
-  }, [poolsWithApy])
+  }, [t, poolsWithApy])
 
   // rebalances
   const rebalances = useRebalances()
@@ -96,7 +100,7 @@ const MyInvestments: React.FC = () => {
       arr = [
         ...result,
         {
-          type: 'rebalance',
+          type: t('Rebalancing'),
           data: {
             ...rebalance,
             myRebalanceBalance,
@@ -106,6 +110,52 @@ const MyInvestments: React.FC = () => {
     }
     return arr
   }, [])
+
+  // Net Worth
+  const getNetWorth = (d) => {
+    if (typeof d.ratio === 'object') {
+      // rebalance
+      const thisBalance = d.enableAutoCompound ? rebalanceBalances : balances
+      const currentBalance = _.get(thisBalance, getAddress(d.address), new BigNumber(0))
+      return currentBalance.times(d.sharedPrice || new BigNumber(0))
+    }
+    if (typeof d.pid === 'number') {
+      // farm
+      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const ratio = new BigNumber(stakedBalance).div(new BigNumber(d.lpTotalSupply))
+      const stakedTotalInQuoteToken = new BigNumber(d.quoteTokenBlanceLP)
+        .div(new BigNumber(10).pow(d.quoteTokenDecimals))
+        .times(ratio)
+        .times(new BigNumber(2))
+      // const displayBalance = rawStakedBalance.toLocaleString()
+      let totalValue
+      if (!d.lpTotalInQuoteToken) {
+        totalValue = new BigNumber(0)
+      } else {
+        totalValue = convertToPriceFromToken(stakedTotalInQuoteToken, d.quoteTokenSymbol)
+      }
+
+      const earningRaw = _.get(d, 'userData.earnings', 0)
+      const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
+      const totalEarning = convertToPriceFromToken(earning, 'finix')
+      return new BigNumber(totalValue).plus(totalEarning)
+    }
+    if (typeof d.sousId === 'number') {
+      // pool
+      const stakedBalance = _.get(d, 'userData.stakedBalance', new BigNumber(0))
+      const stakedTotal = new BigNumber(stakedBalance).div(new BigNumber(10).pow(18))
+      const totalValue = convertToPriceFromToken(stakedTotal, d.stakingTokenName)
+      const earningRaw = _.get(d, 'userData.pendingReward', 0)
+      const earning = new BigNumber(earningRaw).div(new BigNumber(10).pow(18))
+      const totalEarning = convertToPriceFromToken(earning, 'finix')
+      return new BigNumber(totalValue).plus(totalEarning)
+    }
+    return new BigNumber(0)
+  }
+
+  const stakedProducts = useMemo(() => {
+    return [...stakedFarms, ...stakedPools, ...stakedRebalances]
+  }, [stakedFarms, stakedPools, stakedRebalances])
 
   useEffect(() => {
     if (account) {
@@ -148,8 +198,15 @@ const MyInvestments: React.FC = () => {
       <Box className="">
         <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
         <Route exact path={`${path}`}>
-          <CardSummary />
-          <MyFarmsAndPools farms={stakedFarms} pools={stakedPools} rebalances={stakedRebalances} />
+          <CardSummary
+            products={stakedProducts.map((product) => {
+              return {
+                ...product,
+                netWorth: getNetWorth(product.data),
+              }
+            })}
+          />
+          <MyProducts products={stakedProducts} />
         </Route>
       </Box>
       {/* <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
@@ -168,7 +225,7 @@ const MyInvestments: React.FC = () => {
               <FlexLayout cols={1}>
                 <Route exact path={`${path}`}>
                   <CardSummary />
-                  <MyFarmsAndPools />
+                  <MyProducts />
                 </Route>
               </FlexLayout>
             </TimerWrapper>
