@@ -49,10 +49,7 @@ const AddProposal: React.FC = () => {
 
   const options = useMemo(() => {
     return {
-      hideIcons:
-        account
-          ? []
-          : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
+      hideIcons: account ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
     }
   }, [account])
 
@@ -75,25 +72,24 @@ const AddProposal: React.FC = () => {
             </Text>
           </Button>
           <div>
-            <Text bold color="text" fontSize="18px">Title</Text>
+            <Text bold color="text" fontSize="18px">
+              Title
+            </Text>
             <Input className="mt-2 mb-1" />
           </div>
         </div>
         <div className="pa-4">
-          <Text bold color="text" fontSize="18px">Content</Text>
-          <EasyMde
-            id="body"
-            name="body"
-            onTextChange={handleEasyMdeChange}
-            value={body}
-            options={options}
-            required
-          />
+          <Text bold color="text" fontSize="18px">
+            Content
+          </Text>
+          <EasyMde id="body" name="body" onTextChange={handleEasyMdeChange} value={body} options={options} required />
           {body && (
             <div className="my-5">
               <Card>
                 <CardHeader>
-                  <Text bold color="text" fontSize="18px">Preview</Text>
+                  <Text bold color="text" fontSize="18px">
+                    Preview
+                  </Text>
                   {/* <Heading as="h3" scale="md">
                       {t('Preview')}
                     </Heading> */}

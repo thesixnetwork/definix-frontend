@@ -60,13 +60,11 @@ const VotingDescription = () => {
             </Text>
           </Button>
           <div className="flex align-center">
-            <SpecialOutline color="primary">
-              Vote Now
-            </SpecialOutline>
+            <SpecialOutline color="primary">Vote Now</SpecialOutline>
             &nbsp;
             <SpecialOutlineCore color="success">
               <img src={coreIcon} alt="coreIcon" />
-                &nbsp;Core
+              &nbsp;Core
             </SpecialOutlineCore>
           </div>
           <Text fontSize="32px" bold lineHeight="1" marginTop="10px">
