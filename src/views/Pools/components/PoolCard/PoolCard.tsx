@@ -87,10 +87,10 @@ const PoolCard: React.FC<PoolCardProps> = ({
   const renderIconButton = useCallback(
     () => (
       <IconButton
-        variant="transparent"
-        startIcon={isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
         onClick={() => setIsOpenAccordion(!isOpenAccordion)}
-      />
+      >
+        {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+      </IconButton>
     ),
     [isOpenAccordion],
   )

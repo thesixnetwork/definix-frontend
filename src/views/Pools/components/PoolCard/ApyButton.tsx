@@ -15,7 +15,7 @@ const ApyButton: React.FC<ApyButtonProps> = ({ lpLabel, apy, addLiquidityUrl }) 
   )
 
   return (
-    <IconButton onClick={onPresentApyModal} scale={ButtonScales.ICON} variant="text" p={0} style={{ height: '26px' }}>
+    <IconButton onClick={onPresentApyModal} p={0} style={{ height: '26px' }}>
       <CalculatorIcon />
     </IconButton>
   )
