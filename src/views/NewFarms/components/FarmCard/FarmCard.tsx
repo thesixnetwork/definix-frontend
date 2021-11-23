@@ -98,9 +98,9 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   const renderIconButton = useCallback(
     () => (
-      <IconButton
-        onClick={() => setIsOpenAccordion(!isOpenAccordion)}
-      >{isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}</IconButton>
+      <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
+        {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+      </IconButton>
     ),
     [isOpenAccordion],
   )
