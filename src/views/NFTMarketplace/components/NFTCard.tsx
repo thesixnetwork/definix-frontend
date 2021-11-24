@@ -21,7 +21,7 @@ import { NFTCardProps } from './types'
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  box-shadow: ${({ theme }) => theme.isDark ? '0 6px 16px #000000' : theme.shadows.elevation2}
 `
 
 const VerticalStyle = styled(CardStyle)`
@@ -50,7 +50,6 @@ const HorizontalMobileStyle = styled(CardStyle)`
 `
 
 const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false, isMarketplace }) => {
-  //   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
@@ -81,9 +80,9 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
 
   //   if (!isHorizontal) {
   return (
-    <VerticalStyle className="mb-7 mt-5">
+    <VerticalStyle className="my-3">
       <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-7')}
+        {renderCardHeading('pt-2')}
         {/* {renderCardHeading('pt-7')} */}
         {/* {renderStakeAction('pa-5')} */}
         {/* renderHarvestAction('pa-5') */}

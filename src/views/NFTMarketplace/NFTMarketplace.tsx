@@ -7,10 +7,13 @@ import styled from 'styled-components'
 import CardMarketplace from './components/CardMarketplace'
 import CardMyNFT from './components/CardMyNFT'
 
-const MaxWidth = styled.div`
-  max-width: 1280px;
-  margin-left: auto;
-  margin-right: auto;
+
+const NFTButton = styled(Button)`
+  padding: 10px 16px;
+  border-radius: 24px;
+  background: #0973B9;
+  color: ${({ theme }) => theme.colors.white};
+
 `
 
 const NFTMarketplace: React.FC = () => {
@@ -23,24 +26,21 @@ const NFTMarketplace: React.FC = () => {
         <Helmet>
           <title>NFT - Definix - Advance Your Crypto Assets</title>
         </Helmet>
-
         <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
           <LeftPanel isShowRightPanel={false}>
-            <MaxWidth>
-              <div className="mb-5">
-                <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                    NFT Marketplace
-                  </Heading>
-                </div>
-                <Button as="a" href="/NFT">
+            <div className="pb-3">
+              <Heading as="h1" fontSize="30px !important">
+                NFT Marketplace
+              </Heading>
+              <div className="mt-6">
+                <NFTButton as="a" href="/NFT">
                   My NFT
-                </Button>
-                <Button as="a" href="/NFT/market-place" className="ml-2">
+              </NFTButton>
+                <NFTButton as="a" href="/NFT/market-place" className="ml-2">
                   Marketplace
-                </Button>
+              </NFTButton>
               </div>
-            </MaxWidth>
+            </div>
             <Route exact path={path}>
               <CardMyNFT />
             </Route>

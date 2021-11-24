@@ -1,65 +1,71 @@
 // import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading } from '../../../uikit-dev'
+import { Text, Heading, Image } from '../../../uikit-dev'
 
 export interface ExpandableSectionProps {
   isHorizontal?: boolean
   className?: string
 }
 
-const Wrapper = styled.div<{ isHorizontal?: boolean }>`
+const InfosBox = styled.div<{ isHorizontal?: boolean }>`
+  padding: 16px;
   background: ${({ isHorizontal, theme }) => (!isHorizontal ? theme.colors.cardFooter : 'transparent')};
   border-top: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
+  border-bottom: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
+`
+
+const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
+  padding: 10px 16px;
+  background: ${({ isHorizontal, theme }) =>
+    // eslint-disable-next-line no-nested-ternary
+    !isHorizontal && theme.isDark ? '#121212' : !isHorizontal && theme.isDark ? theme.colors.cardFooter : 'transparent'};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false, className = '' }) => {
-  //   const TranslateString = useI18n()
 
   return (
-    <Wrapper isHorizontal={isHorizontal} className={className}>
-      {/* {!removed && ( */}
-      <>
+    <>
+      <InfosBox isHorizontal={isHorizontal}>
         <div className="flex align-baseline flex-wrap justify-space-between mb-1">
-          {/* <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text> */}
-
-          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+          <div className="flex flex-wrap justify-end">
             <Heading bold className="flex-shrink">
               #02
-              {/* {stakedBalanceValueFormated} */}
-            </Heading>
-            {/* <LinkView /> */}
+              </Heading>
           </div>
         </div>
-
         <div className="flex align-baseline flex-wrap justify-space-between">
-          {/* <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text> */}
-
-          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+          <div className="flex flex-wrap justify-end">
             <Text bold className="flex-shrink">
               T-ARA LEGENDARY Grade Limited
-              {/* {totalValueFormated} */}
             </Text>
-            {/* <LinkView /> */}
           </div>
         </div>
-
         <div className="flex align-baseline flex-wrap justify-space-between">
-          {/* <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text> */}
-
-          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-            <Text bold className="flex-shrink">
+          <div className="flex flex-wrap justify-end">
+            <Text bold className="flex-shrink" color="textSubtle">
               Dingo x SIX Network NFT Project No.1
-              {/* {totalValueFormated} */}
             </Text>
-            {/* <LinkView /> */}
           </div>
         </div>
-      </>
-      {/* )} */}
-    </Wrapper>
+      </InfosBox>
+      <PriceUnitBox>
+        <div className="flex justify-space-between py-1">
+          <Text fontSize="12px" color="textSubtle">Price</Text>
+          <div className="flex">
+            <Image src="/images/coins/FINIX.png" width={16} height={16} />
+            <Text fontSize="12px" color="text" paddingLeft="6px">2,837.2938 FINIX</Text>
+          </div>
+        </div>
+        <div className="flex justify-space-between">
+          <Text fontSize="12px" color="textSubtle">Until</Text>
+          <Text fontSize="12px" color="text">28/12/21 00:00:00 GMT+7</Text>
+        </div>
+
+      </PriceUnitBox>
+    </>
   )
 }
 

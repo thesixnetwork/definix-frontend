@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import styled from 'styled-components'
-import badgeLock from '../../../uikit-dev/images/for-ui-v2/badge-lock.png'
+import tAra from '../../../uikit-dev/images/for-ui-v2/nft/T-ARA.png'
 import { Flex, Text, ChevronUpIcon, ChevronDownIcon, Image } from '../../../uikit-dev'
 import { Rebalance } from '../../../state/types'
 
@@ -38,7 +38,6 @@ const StyledFarmImages = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 20px;
 
   > * {
     flex-shrink: 0;
@@ -64,7 +63,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <StyledFarmImages>
-        <img alt="" src={badgeLock} />
+        <img  src={tAra} alt="tAra"/>
       </StyledFarmImages>
     </Flex>
   )

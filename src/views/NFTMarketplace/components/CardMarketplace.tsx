@@ -5,65 +5,61 @@ import styled from 'styled-components'
 import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
+import FlexLayout from 'components/layout/FlexLayout'
 import moment from 'moment'
-
+import { ArrowBackIcon, Button, Card, ChevronRightIcon, Image, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
-import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
-import * as klipProvider from '../../../hooks/klipProvider'
-import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
+import NFTCard from './NFTCard'
 
-const Balance = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  // flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.75rem 0.75rem 0.75rem 0.75rem;
-  background-color: ${'#E4E4E425'};
-  margin-top: 0.5rem !important;
-  border: ${({ theme }) => !theme.isDark && '1px solid #ECECEC'};
-  box-shadow: unset;
-  border-radius: ${({ theme }) => theme.radii.default};
+const CardBox = styled(Card)`
+  width: 100%;
+  position: relative;
+  content: '';
+  background-color: ${({ theme }) => theme.mediaQueries.md};
+  background-size: cover;
+  background-repeat: no-repeat;
+  right: 0;
+  padding: 1.5rem !important;
 
   a {
     display: block;
   }
 `
 
-const Coin = styled.div`
-  min-width: 80px;
-  display: flex;
-  align-items: center;
-  margin: 4px 0;
-  justify-content: end;
-
-  img {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
-`
-
-const APRBOX = styled.div`
-  position: relative;
-  text-align: center;
-`
-
-const NumberInput = styled.input`
-  border: none;
-  background-color: #ffffff00;
-  font-size: 22px;
-  outline: none;
-  color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
-  // width: 45%;
-  -webkit-flex: 1 1 auto;
-  padding: 0px;
-`
-
 const CardMarketplace = () => {
-  return <div className="align-stretch mt-5">CardMarketplace</div>
+  const [listView, setListView] = useState(false)
+  const [isMarketplace, setIsMarketplace] = useState(false)
+  const list = [
+    {
+      id: 1,
+      name: 'toon',
+    },
+    {
+      id: 2,
+      name: 'mo',
+    },
+    {
+      id: 3,
+      name: 'mo',
+    },
+    {
+      id: 4,
+      name: 'mo',
+    },
+  ]
+  return (
+    <div className="align-stretch mt-5">
+      <CardBox>
+        {/* <Text>CardMyNFT</Text> */}
+        <Text className="my-2" fontSize="18px">6 results</Text>
+        <FlexLayout cols={3}>
+          {list.map((data) => (
+            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} />
+          ))}
+        </FlexLayout>
+      </CardBox>
+    </div>
+  )
 }
 
 export default CardMarketplace
