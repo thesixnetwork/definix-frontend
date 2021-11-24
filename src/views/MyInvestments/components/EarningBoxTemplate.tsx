@@ -14,17 +14,17 @@ import BalanceText from 'components/BalanceText'
 // import FinixHarvestPool from './FinixHarvestPool'
 
 interface InnerTheme {
-  totalTitleColor: ColorStyles;
-  totalBalanceColor: ColorStyles;
-  totalCurrencyColor: ColorStyles;
-  itemTitleColor: ColorStyles;
-  itemBalanceColor: ColorStyles;
-  itemCurrencyColor: ColorStyles | string;
-  borderColor: ColorStyles;
-  bottomBg: ColorStyles | string;
+  totalTitleColor: ColorStyles
+  totalBalanceColor: ColorStyles
+  totalCurrencyColor: ColorStyles
+  itemTitleColor: ColorStyles
+  itemBalanceColor: ColorStyles
+  itemCurrencyColor: ColorStyles | string
+  borderColor: ColorStyles
+  bottomBg: ColorStyles | string
 }
 
-const THEME: {[key: string]: InnerTheme} = {
+const THEME: { [key: string]: InnerTheme } = {
   white: {
     totalTitleColor: ColorStyles.MEDIUMGREY,
     totalBalanceColor: ColorStyles.BLACK,
@@ -76,10 +76,10 @@ const GridSection = styled(Grid)<{ isMobile: boolean }>`
 `
 // pt-s20 pb-s24 mr-s32 ml-s${index > 0 ? '32' : '40'
 const GridBox = styled(Box)<{ index: number; curTheme: InnerTheme }>`
-  border-left: ${({ index, curTheme }) => index > 0 ? `1px solid ${curTheme.borderColor}` : 'none'};
+  border-left: ${({ index, curTheme }) => (index > 0 ? `1px solid ${curTheme.borderColor}` : 'none')};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     border-left: none;
-    border-top: ${({ index, curTheme }) => index > 0 ? `1px solid ${curTheme.borderColor}` : 'none'};
+    border-top: ${({ index, curTheme }) => (index > 0 ? `1px solid ${curTheme.borderColor}` : 'none')};
   }
 `
 
@@ -124,7 +124,7 @@ const EarningBoxTemplate: React.FC<{
 
   const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
   const curTheme = useMemo(() => THEME[theme], [theme])
-  
+
   const classNameStore = useMemo(() => {
     return {
       mainSection: () => {
@@ -141,7 +141,7 @@ const EarningBoxTemplate: React.FC<{
           return `pt-s${index > 0 ? '20' : '16'} pb-s16 mx-s20`
         }
         return `mt-s20 mb-s24 pr-s32 pl-s${index > 0 ? '32' : '40'}`
-      }
+      },
     }
   }, [isMobile])
 

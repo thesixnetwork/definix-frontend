@@ -15,7 +15,7 @@ function CardSummary({ products }) {
         <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
         {!isMobile && (
           <Box className="mr-s16">
-            <ImgMyInvestmentDefaultIcon display="block"/>
+            <ImgMyInvestmentDefaultIcon display="block" />
           </Box>
         )}
       </Flex>
