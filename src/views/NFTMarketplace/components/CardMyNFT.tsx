@@ -50,7 +50,7 @@ const CardMyNFT = () => {
         <Text className="mt-5">Not for sale : 5 results</Text>
         <FlexLayout cols={3}>
           {list.map((data) => (
-            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace}/>
+            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} />
           ))}
         </FlexLayout>
       </FinixStake>
