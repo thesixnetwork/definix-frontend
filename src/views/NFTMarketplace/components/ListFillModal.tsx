@@ -94,12 +94,12 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             </Balance>
           </div>
           <div className="mt-2">
-          <Text fontSize="16px !important" color="textSubtle" lineHeight="2">
-            End date/time
-          </Text>
-          <Balance style={{ flexWrap: 'wrap' }}>
-            <NumberInput style={{ width: '45%' }} placeholder="0.00" value="" pattern="^[0-9]*[,]?[0-9]*$" />
-          </Balance>
+            <Text fontSize="16px !important" color="textSubtle" lineHeight="2">
+              End date/time
+            </Text>
+            <Balance style={{ flexWrap: 'wrap' }}>
+              <NumberInput style={{ width: '45%' }} placeholder="0.00" value="" pattern="^[0-9]*[,]?[0-9]*$" />
+            </Balance>
           </div>
           {/* <Dropdown
             position="top-right"
