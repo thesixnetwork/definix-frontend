@@ -79,15 +79,15 @@ const CardInput = ({
   const { isDark } = useTheme()
 
   const onApprove = (token) => async () => {
-    const tokenContract = getContract(ethereum as provider, getAddress(token.address))
+    const tokenContract = getContract(ethereum as provider, getAddress(token.address).toLowerCase())
     setIsApproving(true)
     try {
-      await approveOther(tokenContract, getAddress(rebalance.address), account)
+      await approveOther(tokenContract, getAddress(rebalance.address).toLowerCase(), account)
 
       const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
+      const assetAddresses = assets.map((a) => getAddress(a.address).toLowerCase())
       dispatch(fetchBalances(account, assetAddresses))
-      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address).toLowerCase()))
       setIsApproving(false)
     } catch {
       setIsApproving(false)
@@ -96,7 +96,7 @@ const CardInput = ({
 
   const findAddress = (token) => {
     if (token.symbol === 'WKLAY' || token.symbol === 'WBNB') return 'main'
-    return getAddress(token.address)
+    return getAddress(token.address).toLowerCase()
   }
   function toFixedCustom(num) {
     return num.toString().match(/^-?\d+(?:\.\d{0,7})?/)[0]
@@ -154,10 +154,10 @@ const CardInput = ({
               key={`invest-${c.symbol}`}
               showMaxButton={
                 String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber()) !==
-                currentInput[getAddress(c.address)]
+                currentInput[getAddress(c.address).toLowerCase()]
               }
               className="mb-2"
-              value={currentInput[getAddress(c.address)]}
+              value={currentInput[getAddress(c.address).toLowerCase()]}
               label=""
               onMax={() => {
                 const max = String((_.get(balances, findAddress(c)) || new BigNumber(0)).toNumber())
@@ -167,13 +167,13 @@ const CardInput = ({
                 // debugger
                 setCurrentInput({
                   ...currentInput,
-                  [getAddress(c.address)]: testMax,
+                  [getAddress(c.address).toLowerCase()]: testMax,
                 })
               }}
               onQuarter={() => {
                 setCurrentInput({
                   ...currentInput,
-                  [getAddress(c.address)]: String(
+                  [getAddress(c.address).toLowerCase()]: String(
                     (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.25).toNumber(),
                   ),
                 })
@@ -181,13 +181,13 @@ const CardInput = ({
               onHalf={() => {
                 setCurrentInput({
                   ...currentInput,
-                  [getAddress(c.address)]: String(
+                  [getAddress(c.address).toLowerCase()]: String(
                     (_.get(balances, findAddress(c)) || new BigNumber(0)).times(0.5).toNumber(),
                   ),
                 })
               }}
               onUserInput={(value) => {
-                setCurrentInput({ ...currentInput, [getAddress(c.address)]: value })
+                setCurrentInput({ ...currentInput, [getAddress(c.address).toLowerCase()]: value })
               }}
             />
           ))}
@@ -200,10 +200,14 @@ const CardInput = ({
         />
 
         {(() => {
-          const totalInput = rebalance.ratio.map((c) => currentInput[getAddress(c.address)]).join('')
+          const totalInput = rebalance.ratio.map((c) => currentInput[getAddress(c.address).toLowerCase()]).join('')
           const needsApproval = rebalance.ratio.find((c) => {
-            const currentValue = parseFloat(currentInput[getAddress(c.address)])
-            const currentAllowance = (_.get(allowances, getAddress(c.address)) || new BigNumber(0)).toNumber()
+            const currentValue = parseFloat(currentInput[getAddress(c.address).toLowerCase()])
+            const currentAllowance = (
+              _.get(allowances, getAddress(c.address).toLowerCase()) ||
+              _.get(allowances, getAddress(c.address)) ||
+              new BigNumber(0)
+            ).toNumber()
             return currentAllowance < currentValue && c.symbol !== 'WKLAY' && c.symbol !== 'WBNB'
           })
           if (needsApproval) {
@@ -274,11 +278,11 @@ const CardCalculate = ({
       const arrayTokenAmount = ((rebalance || {}).tokens || []).map((token) => {
         if (token.symbol === 'WKLAY' || token.symbol === 'WBNB') {
           containMainCoin = true
-          mainCoinValue = new BigNumber((currentInput[token.address] || '0') as string)
+          mainCoinValue = new BigNumber((currentInput[token.address.toLowerCase()] || '0') as string)
             .times(new BigNumber(10).pow(token.decimals))
             .toJSON()
         }
-        return new BigNumber((currentInput[token.address] || '0') as string)
+        return new BigNumber((currentInput[token.address.toLowerCase()] || '0') as string)
           .times(new BigNumber(10).pow(token.decimals))
           .toJSON()
       })
@@ -291,9 +295,9 @@ const CardCalculate = ({
       setTx(tx)
 
       const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
+      const assetAddresses = assets.map((a) => getAddress(a.address).toLowerCase())
       dispatch(fetchBalances(account, assetAddresses))
-      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address).toLowerCase()))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
       dispatch(fetchRebalanceRewards(account, [rebalance]))
       dispatch(fetchRebalances())
@@ -485,9 +489,9 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   useEffect(() => {
     if (account && rebalance) {
       const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
-      dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address)]))
-      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
+      const assetAddresses = assets.map((a) => getAddress(a.address).toLowerCase())
+      dispatch(fetchBalances(account, [...assetAddresses, getAddress(rebalance.address).toLowerCase()]))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address).toLowerCase()))
     }
   }, [dispatch, account, rebalance])
 
@@ -517,8 +521,12 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
             symbol: c.symbol,
             address: ratioObject.address,
             ratioPoint,
-            value: new BigNumber((currentInput[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
-            balance: _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+            value: new BigNumber((currentInput[c.address.toLowerCase()] || '0') as string).times(
+              new BigNumber(10).pow(decimal),
+            ),
+            balance:
+              _.get(balances, c.address.toLowerCase(), new BigNumber(0)).times(new BigNumber(10).pow(decimal)) ||
+              _.get(balances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
             router: rebalance.router[index],
             factory: rebalance.factory[index],
             initCodeHash: rebalance.initCodeHash[index],
