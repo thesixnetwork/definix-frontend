@@ -42,10 +42,10 @@ const NFTMarketplace: React.FC = () => {
               </div>
             </MaxWidth>
             <Route exact path={path}>
-              <CardMarketplace />
+              <CardMyNFT />
             </Route>
             <Route exact path={`${path}/market-place`}>
-              <CardMyNFT />
+              <CardMarketplace />
             </Route>
           </LeftPanel>
         </TwoPanelLayout>
