@@ -115,6 +115,28 @@ const config: MenuEntry[] = [
       },
     ],
   },
+  {
+    label: 'NFT Marketplace',
+    icon: safeBlack,
+    iconActive: safeWhite,
+    href: '/nft',
+    notHighlight: false,
+    newTab: false,
+    items: [
+      {
+        label: 'My NFT',
+        href: '/NFT',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
+        label: 'Marketplace',
+        href: '/NFT/market-place',
+        notHighlight: false,
+        newTab: false,
+      },
+    ],
+  },
 
   // {
   //   label: 'Rebalancing',
