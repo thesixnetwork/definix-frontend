@@ -1,7 +1,8 @@
 import _ from 'lodash'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Card, useMatchBreakpoints, TabBox, Flex, TitleSet, Box, ImgMyInvestmentDefaultIcon } from 'definixswap-uikit'
+import { useToast } from 'state/hooks'
+import { Card, useMatchBreakpoints, TabBox, Flex, TitleSet, Box, ImgMyInvestmentDefaultIcon, alertVariants } from 'definixswap-uikit'
 import Earned from './Earned'
 import NetWorth from './NetWorth'
 
@@ -9,6 +10,16 @@ function CardSummary({ products }) {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
+  const { toastInfo, toastError, toastSuccess, toastWarning, push } = useToast()
+
+  useEffect(() => {
+    setTimeout(() => {
+      toastInfo('toast title1', 'toast desc')
+      toastError('toast title2', 'toast desc')
+      toastSuccess('toast title3', 'toast desc')
+      toastWarning('toast title4', 'toast desc')
+    }, 3000)
+  }, [toastInfo, toastError, toastSuccess, toastWarning])
   return (
     <>
       <Flex justifyContent="space-between" className={`mt-s28 ${isMobile ? 'mb-s28' : ''}`}>
