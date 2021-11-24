@@ -127,6 +127,10 @@ export const ALICE = {
   [intMainnetId]: process.env.REACT_APP_ALICE_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_ALICE_ADDRESS_TESTNET,
 }
+export const AXS = {
+  [intMainnetId]: process.env.REACT_APP_AXS_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_AXS_ADDRESS_TESTNET,
+}
 
 export const allTokens = {
   SIX,
@@ -149,6 +153,7 @@ export const allTokens = {
   DOT,
   DOGE,
   LTC,
+  AXS,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
