@@ -6,9 +6,9 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 // import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
+import { Button } from 'uikit-dev'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeading from './CardHeading'
-// import { useMatchBreakpoints } from 'uikit-dev'
 // import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 // import FarmContext from '../../FarmContext'
 // import CardHeading from './CardHeading'
@@ -20,7 +20,7 @@ import { NFTCardProps } from './types'
 
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
+  //   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
 
@@ -49,7 +49,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false, isMarketplace }) => {
+const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false, isMarketplace, data }) => {
   //   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -79,11 +79,16 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
     [],
   )
 
+  const handleImage = (id) => {
+    console.log('handleImage', id)
+  }
+
   //   if (!isHorizontal) {
   return (
-    <VerticalStyle className="mb-7 mt-5">
+    <VerticalStyle className="mb-7" onClick={() => handleImage(data.id)}>
       <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-7')}
+        {renderCardHeading('')}
+        {/* <Button style={{ backgroundColor: 'unset'}}>ddd</Button> */}
         {/* {renderCardHeading('pt-7')} */}
         {/* {renderStakeAction('pa-5')} */}
         {/* renderHarvestAction('pa-5') */}

@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import styled from 'styled-components'
-import badgeLock from '../../../uikit-dev/images/for-ui-v2/badge-lock.png'
-import { Flex, Text, ChevronUpIcon, ChevronDownIcon, Image } from '../../../uikit-dev'
+import tAra from '../../../uikit-dev/images/for-ui-v2/t-ara.png'
+import { Flex, Text, ChevronUpIcon, ChevronDownIcon, Image, Button } from '../../../uikit-dev'
 import { Rebalance } from '../../../state/types'
 
 interface CardHeadingType {
@@ -38,7 +38,7 @@ const StyledFarmImages = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-bottom: 20px;
+  //   margin-bottom: 20px;
 
   > * {
     flex-shrink: 0;
@@ -63,9 +63,11 @@ const CardHeading: React.FC<CardHeadingType> = ({
 }) => {
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
-      <StyledFarmImages>
-        <img alt="" src={badgeLock} />
-      </StyledFarmImages>
+      {/* <Button style={{ backgroundColor: 'unset' }}> */}
+        <StyledFarmImages>
+          <img alt="" width="100%" src={tAra} style={{ backgroundSize: '100% 100%' }} />
+        </StyledFarmImages>
+      {/* </Button> */}
     </Flex>
   )
 }
