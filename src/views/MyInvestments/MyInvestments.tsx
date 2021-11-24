@@ -18,7 +18,7 @@ import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 // import styled from 'styled-components'
-import { Text, Box, TitleSet } from 'definixswap-uikit'
+import { Box } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import CardSummary from './components/CardSummary'
 import MyProducts from './components/MyProducts'
@@ -195,8 +195,7 @@ const MyInvestments: React.FC = () => {
       <Helmet>
         <title>My investments - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box className="">
-        <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
+      <Box>
         <Route exact path={`${path}`}>
           <CardSummary
             products={stakedProducts.map((product) => {

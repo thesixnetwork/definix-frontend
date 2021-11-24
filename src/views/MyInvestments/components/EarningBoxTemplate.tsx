@@ -13,7 +13,18 @@ import BalanceText from 'components/BalanceText'
 // import FinixHarvestBalance from './FinixHarvestBalance'
 // import FinixHarvestPool from './FinixHarvestPool'
 
-const THEME = {
+interface InnerTheme {
+  totalTitleColor: ColorStyles;
+  totalBalanceColor: ColorStyles;
+  totalCurrencyColor: ColorStyles;
+  itemTitleColor: ColorStyles;
+  itemBalanceColor: ColorStyles;
+  itemCurrencyColor: ColorStyles | string;
+  borderColor: ColorStyles;
+  bottomBg: ColorStyles | string;
+}
+
+const THEME: {[key: string]: InnerTheme} = {
   white: {
     totalTitleColor: ColorStyles.MEDIUMGREY,
     totalBalanceColor: ColorStyles.BLACK,
@@ -37,16 +48,39 @@ const THEME = {
 }
 
 const MainSection = styled(Flex)<{ isMobile: boolean }>`
-  flex-direction: ${({ isMobile }) => (isMobile ? 'column' : 'row')};
-  align-items: ${({ isMobile }) => (isMobile ? 'flex-start' : 'center')};
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `
 const ButtonWrap = styled(Box)<{ isMobile: boolean }>`
-  width: ${({ isMobile }) => (isMobile ? '100%' : 186)};
+  width: 186px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 100%;
+  }
+`
+const GridSectionWrap = styled(Flex)<{ bg: any }>`
+  justify-content: space-between;
+  align-items: center;
+  background-color: ${({ bg }) => bg};
 `
 const GridSection = styled(Grid)<{ isMobile: boolean }>`
-  grid-template-columns: ${({ isMobile }) => `repeat(${isMobile ? 2 : 4}, 1fr)`};
+  grid-template-columns: repeat(4, 1fr);
   flex: 1;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`
+// pt-s20 pb-s24 mr-s32 ml-s${index > 0 ? '32' : '40'
+const GridBox = styled(Box)<{ index: number; curTheme: InnerTheme }>`
+  border-left: ${({ index, curTheme }) => index > 0 ? `1px solid ${curTheme.borderColor}` : 'none'};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    border-left: none;
+    border-top: ${({ index, curTheme }) => index > 0 ? `1px solid ${curTheme.borderColor}` : 'none'};
+  }
 `
 
 const StatSkeleton = () => {
@@ -90,6 +124,26 @@ const EarningBoxTemplate: React.FC<{
 
   const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
   const curTheme = useMemo(() => THEME[theme], [theme])
+  
+  const classNameStore = useMemo(() => {
+    return {
+      mainSection: () => {
+        if (isMobile) {
+          return `ma-s20`
+        }
+        return `mx-s40 mt-s28 mb-s40`
+      },
+      gridSectionWrap: () => {
+        return isMobile ? '' : 'pr-s40'
+      },
+      gridBox: (index: number) => {
+        if (isMobile) {
+          return `pt-s${index > 0 ? '20' : '16'} pb-s16 mx-s20`
+        }
+        return `mt-s20 mb-s24 pr-s32 pl-s${index > 0 ? '32' : '40'}`
+      }
+    }
+  }, [isMobile])
 
   const TotalValueSection = () => {
     const props = {
@@ -102,7 +156,7 @@ const EarningBoxTemplate: React.FC<{
 
   return (
     <Box>
-      <MainSection isMobile={isMobile} className="mx-s40 mt-s28 mb-s40">
+      <MainSection isMobile={isMobile} className={classNameStore.mainSection()}>
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
             <FireIcon style={{ marginLeft: '-8px' }} />
@@ -123,7 +177,7 @@ const EarningBoxTemplate: React.FC<{
             )}
           </Flex>
         </Box>
-        <ButtonWrap isMobile={isMobile}>
+        <ButtonWrap isMobile={isMobile} className={isMobile ? 'mt-s20' : ''}>
           {hasAccount ? (
             <Button
               // id="harvest-all"
@@ -139,14 +193,10 @@ const EarningBoxTemplate: React.FC<{
           )}
         </ButtonWrap>
       </MainSection>
-      <Flex justifyContent="space-between" alignItems="center" backgroundColor={curTheme.bottomBg} className="pr-s40">
+      <GridSectionWrap bg={curTheme.bottomBg} className={classNameStore.gridSectionWrap()}>
         <GridSection isMobile={isMobile}>
           {valueList.map((valueItem, index) => (
-            <Box
-              className={`mt-s20 mb-s24 pr-s32 ${index > 0 ? 'pl-s32' : 'pl-s40'}`}
-              borderLeft={index > 0 && '1px solid'}
-              borderColor={curTheme.borderColor}
-            >
+            <GridBox index={index} curTheme={curTheme} className={classNameStore.gridBox(index)}>
               <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
                 {valueItem.title}
               </Text>
@@ -172,16 +222,18 @@ const EarningBoxTemplate: React.FC<{
                   prefix="="
                 />
               )}
-            </Box>
+            </GridBox>
           ))}
         </GridSection>
-        <DoubleArrowButtons
-          disableLeftArrow
-          disableRightArrow
-          onClickLeftArrow={() => alert('click left')}
-          onClickRightArrow={() => alert('click right')}
-        />
-      </Flex>
+        {!isMobile && (
+          <DoubleArrowButtons
+            disableLeftArrow
+            disableRightArrow
+            onClickLeftArrow={() => alert('click left')}
+            onClickRightArrow={() => alert('click right')}
+          />
+        )}
+      </GridSectionWrap>
     </Box>
   )
 }
