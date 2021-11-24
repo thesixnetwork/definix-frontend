@@ -56,7 +56,13 @@ const NFTCard: React.FC<NFTCardProps> = ({
 
   const renderDetailsSection = useCallback(
     (className?: string) => (
-      <DetailsSection isHorizontal={isHorizontal} className={className} data={data} typeName={typeName} isMarketplace={isMarketplace}/>
+      <DetailsSection
+        isHorizontal={isHorizontal}
+        className={className}
+        data={data}
+        typeName={typeName}
+        isMarketplace={isMarketplace}
+      />
     ),
     [data, typeName, isHorizontal, isMarketplace],
   )

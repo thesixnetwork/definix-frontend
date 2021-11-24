@@ -34,13 +34,13 @@ const NFTMarketplace: React.FC = () => {
         <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
           <LeftPanel isShowRightPanel={false}>
             {/* <MaxWidth> */}
-              <div className="mb-5">
-                <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" textAlign="center">
-                    NFT Marketplace
-                  </Heading>
-                </div>
+            <div className="mb-5">
+              <div className="flex align-center mb-2">
+                <Heading as="h1" fontSize="32px !important" textAlign="center">
+                  NFT Marketplace
+                </Heading>
               </div>
+            </div>
             {/* </MaxWidth> */}
             <Route exact path={path}>
               <CardMyNFT />
