@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import {
   Box,
   Button,
@@ -20,6 +20,7 @@ import { useRebalanceBalances, useBalances } from '../../state/hooks'
 import { fetchBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
 import { simulateWithdraw } from '../../offline-pool'
+import WithdrawSummaryCard from './components/WithdrawSummaryCard'
 import WithdrawInputCard, { RatioType } from './components/WithdrawInputCard'
 
 interface WithdrawType {
@@ -28,6 +29,7 @@ interface WithdrawType {
 
 const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const { t } = useTranslation()
+  const history = useHistory();
   const [tx, setTx] = useState({})
   const [selectedToken, setSelectedToken] = useState({})
   const [currentInput, setCurrentInput] = useState('')
@@ -133,6 +135,10 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       </Text>
 
       <div>
+        <WithdrawSummaryCard
+          rebalance={rebalance}
+          currentBalanceNumber={currentBalanceNumber}
+        />
         <WithdrawInputCard
           setTx={setTx}
           isWithdrawing={isWithdrawing}
@@ -157,6 +163,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
               },
               ...prevToasts,
             ])
+            history.goBack();
           }}
         />
       </div>
