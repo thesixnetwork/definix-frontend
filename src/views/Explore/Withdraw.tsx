@@ -12,10 +12,10 @@ import {
   Button,
   Flex,
   Text,
-  ToastContainer,
 } from 'definixswap-uikit'
 import { ArrowBackIcon } from 'uikit-dev'
 import { useTranslation } from 'react-i18next'
+import { useToast } from 'state/hooks'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
 import { fetchBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
@@ -31,6 +31,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const { t } = useTranslation()
   const history = useHistory();
   const [tx, setTx] = useState({})
+  const { toastSuccess } = useToast()
   const [selectedToken, setSelectedToken] = useState({})
   const [currentInput, setCurrentInput] = useState('')
   const [isInputting, setIsInputting] = useState(true)
@@ -99,11 +100,6 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
     fetchData()
   }, [selectedToken, currentInput, rebalance, fetchData, ratioType])
 
-  const [toasts, setToasts] = useState([])
-  const handleRemove = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-  }
-
   if (!rebalance) return <Redirect to="/rebalancing" />
 
   const thisBalance = get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
@@ -156,18 +152,11 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           setRatioType={setRatioType}
           onNext={() => {
             setIsInputting(false)
-            setToasts((prevToasts) => [
-              {
-                title: t('Withdraw Complete'),
-                type: 'success',
-              },
-              ...prevToasts,
-            ])
+            toastSuccess(t('Withdraw Complete'))
             history.goBack();
           }}
         />
       </div>
-      <ToastContainer toasts={toasts} onRemove={handleRemove} />
     </Box>
   )
 }

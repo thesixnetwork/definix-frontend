@@ -12,13 +12,13 @@ import {
   Button,
   Flex,
   Text,
-  ToastContainer,
   useModal,
 } from 'definixswap-uikit'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
+import { useToast } from 'state/hooks'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
@@ -41,6 +41,7 @@ const usePrevious = (value, initialValue) => {
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const { t } = useTranslation()
   const history = useHistory();
+  const { toastSuccess } = useToast()
   const [tx, setTx] = useState({})
   const [poolUSDBalancesState, setPoolUSDBalances] = useState([])
   const [poolAmounts, setPoolAmounts] = useState([])
@@ -56,11 +57,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const prevBalances = usePrevious(balances, {})
   const prevCurrentInput = usePrevious(currentInput, {})
   const [calNewImpact, setCalNewImpact] = useState(0)
-  const [toasts, setToasts] = useState([])
-
-  const handleRemove = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-  }
 
   useEffect(() => {
     if (account && rebalance) {
@@ -231,13 +227,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       sumPoolAmount={sumPoolAmount}
       onNext={() => {
         fetchData()
-        setToasts((prevToasts) => [
-          {
-            title: t('Invest Complete'),
-            type: 'success',
-          },
-          ...prevToasts,
-        ])
+        toastSuccess(t('Invest Complete'))
         history.goBack();
       }}
       calNewImpact={calNewImpact}
@@ -289,7 +279,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
         isSimulating={isSimulating}
         sumPoolAmount={sumPoolAmount}
       />
-      <ToastContainer toasts={toasts} onRemove={handleRemove} />
     </Box>
   )
 }
