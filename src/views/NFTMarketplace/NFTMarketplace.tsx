@@ -2,9 +2,10 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import { Heading, Text, Link, Button } from 'uikit-dev'
+import { Heading, Button } from 'uikit-dev'
 import styled from 'styled-components'
-import Marketplace from './Marketplace'
+import CardMarketplace from './components/CardMarketplace'
+import CardMyNFT from './components/CardMyNFT'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
@@ -12,19 +13,13 @@ const MaxWidth = styled.div`
   margin-right: auto;
 `
 
-const TutorailsLink = styled(Link)`
-  text-decoration-line: underline;
-`
-
 const NFTMarketplace: React.FC = () => {
   const { path } = useRouteMatch()
   const [isOpenModal, setIsOpenModal] = useState(false)
 
-  console.log('path', path)
-
   return (
     <>
-      <Route exact path={path}>
+      <Route exact>
         <Helmet>
           <title>NFT - Definix - Advance Your Crypto Assets</title>
         </Helmet>
@@ -38,12 +33,19 @@ const NFTMarketplace: React.FC = () => {
                     NFT Marketplace
                   </Heading>
                 </div>
-                <Button>My NFT</Button>
-                <Button className="ml-2">Marketplace</Button>
+                <Button as="a" href="/NFT">
+                  My NFT
+                </Button>
+                <Button as="a" href="/NFT/market-place" className="ml-2">
+                  Marketplace
+                </Button>
               </div>
             </MaxWidth>
+            <Route exact path={path}>
+              <CardMarketplace />
+            </Route>
             <Route exact path={`${path}/market-place`}>
-              <Marketplace />
+              <CardMyNFT />
             </Route>
           </LeftPanel>
         </TwoPanelLayout>
