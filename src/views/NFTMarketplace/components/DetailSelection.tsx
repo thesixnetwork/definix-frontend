@@ -16,7 +16,7 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false, className = '' }) => {
-//   const TranslateString = useI18n()
+  //   const TranslateString = useI18n()
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
@@ -26,7 +26,8 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false
           {/* <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text> */}
 
           <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-            <Heading bold className="flex-shrink">#02
+            <Heading bold className="flex-shrink">
+              #02
               {/* {stakedBalanceValueFormated} */}
             </Heading>
             {/* <LinkView /> */}
@@ -37,7 +38,8 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false
           {/* <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text> */}
 
           <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-            <Text bold className="flex-shrink">T-ARA LEGENDARY Grade Limited
+            <Text bold className="flex-shrink">
+              T-ARA LEGENDARY Grade Limited
               {/* {totalValueFormated} */}
             </Text>
             {/* <LinkView /> */}
@@ -48,7 +50,8 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false
           {/* <Text color="textSubtle">{TranslateString(23, 'Total Liquidity')}</Text> */}
 
           <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-            <Text bold className="flex-shrink">Dingo x SIX Network NFT Project No.1
+            <Text bold className="flex-shrink">
+              Dingo x SIX Network NFT Project No.1
               {/* {totalValueFormated} */}
             </Text>
             {/* <LinkView /> */}

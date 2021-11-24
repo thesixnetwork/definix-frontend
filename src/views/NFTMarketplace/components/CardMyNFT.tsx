@@ -40,7 +40,7 @@ const CardMyNFT = () => {
     {
       id: 4,
       name: 'mo',
-    }
+    },
   ]
   return (
     <div className="align-stretch mt-5">
@@ -48,7 +48,9 @@ const CardMyNFT = () => {
         <Text>CardMyNFT</Text>
         <Text className="mt-5">Not for sale : 5 results</Text>
         <FlexLayout cols={3}>
-          {list.map((data) => <NFTCard isHorizontal={listView} />)}
+          {list.map((data) => (
+            <NFTCard isHorizontal={listView} />
+          ))}
         </FlexLayout>
       </FinixStake>
     </div>

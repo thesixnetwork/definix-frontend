@@ -75,31 +75,26 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <DetailsSection
-        isHorizontal={isHor}
-        className={className}
-      />
-    ),
+    (className?: string, isHor?: boolean) => <DetailsSection isHorizontal={isHor} className={className} />,
     [],
   )
 
   console.log('isHorizontal', isHorizontal)
 
-//   if (!isHorizontal) {
-    return (
-      <VerticalStyle className="mb-7 mt-5">
-        <div className="flex flex-column flex-grow">
-          {renderCardHeading('pt-7')}
-          {/* {renderCardHeading('pt-7')} */}
-          {/* {renderStakeAction('pa-5')} */}
-          {/* renderHarvestAction('pa-5') */}
-          {/* {renderHarvestActionAirDrop('pa-5 pt-0', isHorizontal)} */}
-        </div>
-        {renderDetailsSection('px-5 py-3', false)}
-      </VerticalStyle>
-    )
-//   }
+  //   if (!isHorizontal) {
+  return (
+    <VerticalStyle className="mb-7 mt-5">
+      <div className="flex flex-column flex-grow">
+        {renderCardHeading('pt-7')}
+        {/* {renderCardHeading('pt-7')} */}
+        {/* {renderStakeAction('pa-5')} */}
+        {/* renderHarvestAction('pa-5') */}
+        {/* {renderHarvestActionAirDrop('pa-5 pt-0', isHorizontal)} */}
+      </div>
+      {renderDetailsSection('px-5 py-3', false)}
+    </VerticalStyle>
+  )
+  //   }
 }
 
 export default NFTCard
