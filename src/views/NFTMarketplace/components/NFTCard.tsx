@@ -49,7 +49,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false }) => {
+const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false, isMarketplace }) => {
   //   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -78,8 +78,6 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
     (className?: string, isHor?: boolean) => <DetailsSection isHorizontal={isHor} className={className} />,
     [],
   )
-
-  console.log('isHorizontal', isHorizontal)
 
   //   if (!isHorizontal) {
   return (

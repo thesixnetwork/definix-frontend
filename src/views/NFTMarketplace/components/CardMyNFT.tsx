@@ -24,6 +24,7 @@ const FinixStake = styled(Card)`
 
 const CardMyNFT = () => {
   const [listView, setListView] = useState(false)
+  const [isMarketplace, setIsMarketplace] = useState(false)
   const list = [
     {
       id: 1,
@@ -49,7 +50,7 @@ const CardMyNFT = () => {
         <Text className="mt-5">Not for sale : 5 results</Text>
         <FlexLayout cols={3}>
           {list.map((data) => (
-            <NFTCard isHorizontal={listView} />
+            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace}/>
           ))}
         </FlexLayout>
       </FinixStake>
