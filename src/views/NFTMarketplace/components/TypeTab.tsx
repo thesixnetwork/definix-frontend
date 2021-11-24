@@ -67,7 +67,7 @@ const Tab = styled(NavLink)<{ active: boolean }>`
 const TypeTab = ({ current }) => {
   return (
     <Tabs className="mb-5">
-      <Tab className="ml-2" to="/NFT" active={current === '/NFT'}>
+      <Tab to="/NFT" active={current === '/NFT'}>
         My NFT
       </Tab>
       <Tab className="ml-2" to="/NFT/market-place" active={current === '/NFT/market-place'}>

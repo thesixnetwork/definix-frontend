@@ -18,7 +18,6 @@ const StyledFarmImages = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  //   margin-bottom: 20px;
 
   > * {
     flex-shrink: 0;
@@ -44,7 +43,8 @@ const CardHeading: React.FC<CardHeadingType> = ({
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <StyledFarmImages>
-        <img alt="" width="100%" src={tAra} style={{ backgroundSize: '100% 100%' }} />
+        <img src={tAra} alt="tAra" />
+        {/* <img alt="" width="100%" src={tAra} style={{ backgroundSize: '100% 100%' }} /> */}
       </StyledFarmImages>
     </Flex>
   )

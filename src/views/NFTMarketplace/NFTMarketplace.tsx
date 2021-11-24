@@ -8,14 +8,22 @@ import CardMarketplace from './components/CardMarketplace'
 import CardMyNFT from './components/CardMyNFT'
 
 const MaxWidth = styled.div`
-  max-width: 1280px;
+  max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  position: relative;
 `
 
 const NFTMarketplace: React.FC = () => {
   const { path } = useRouteMatch()
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [selected, setSelected] = useState(true)
+
+  useEffect(() => {
+    return () => {
+      setSelected(true)
+    }
+  }, [])
 
   return (
     <>
@@ -23,18 +31,17 @@ const NFTMarketplace: React.FC = () => {
         <Helmet>
           <title>NFT - Definix - Advance Your Crypto Assets</title>
         </Helmet>
-
         <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
           <LeftPanel isShowRightPanel={false}>
-            <MaxWidth>
+            {/* <MaxWidth> */}
               <div className="mb-5">
                 <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                  <Heading as="h1" fontSize="32px !important" textAlign="center">
                     NFT Marketplace
                   </Heading>
                 </div>
               </div>
-            </MaxWidth>
+            {/* </MaxWidth> */}
             <Route exact path={path}>
               <CardMyNFT />
             </Route>

@@ -7,9 +7,11 @@ import ListDetailModal from './ListDetailModal'
 import DetailsSection from './DetailSelection'
 import { NFTCardProps } from './types'
 
-const CardStyle = styled.div`
+const CardStyle = styled.div<{ isHorizontal?: boolean; isMarketplace?: boolean }>`
   background: ${(props) => props.theme.card.background};
-  box-shadow: ${({ theme }) => theme.shadows.elevation1};
+  box-shadow: ${({ theme }) => (theme.isDark ? '0 6px 16px #000000' : theme.shadows.elevation2)};
+  border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
+  border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
 const VerticalStyle = styled(CardStyle)`
@@ -18,6 +20,7 @@ const VerticalStyle = styled(CardStyle)`
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
+  cursor: pointer;
 `
 
 const NFTCard: React.FC<NFTCardProps> = ({
@@ -31,7 +34,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
-  const [onPresentConnectModal] = useModal(<ListDetailModal />)
+  const [onPresentConnectModal] = useModal(<ListDetailModal isMarketplace={isMarketplace} />)
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -53,9 +56,9 @@ const NFTCard: React.FC<NFTCardProps> = ({
 
   const renderDetailsSection = useCallback(
     (className?: string) => (
-      <DetailsSection isHorizontal={isHorizontal} className={className} data={data} typeName={typeName} />
+      <DetailsSection isHorizontal={isHorizontal} className={className} data={data} typeName={typeName} isMarketplace={isMarketplace}/>
     ),
-    [data, typeName, isHorizontal],
+    [data, typeName, isHorizontal, isMarketplace],
   )
 
   if (typeName === 'Grid') {
