@@ -27,11 +27,11 @@ const WithDrawalFees = ({ managementFee, buybackFee, bountyFee, className = '' }
           />
           <Text>{buybackFee}%</Text>
         </div>
-        <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
+        {/* <div className={`${isMobile ? 'col-12' : 'col-4'} flex align-center`}>
           <Text fontSize="14px">Ecosystem fee</Text>
           <Helper text="Reservation fee for further development of the ecosystem." className="mx-2" position="top" />
           <Text>{bountyFee}%</Text>
-        </div>
+        </div> */}
       </div>
 
       {/* <Text fontSize="14px" className="mt-1">

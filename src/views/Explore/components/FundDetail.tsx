@@ -136,7 +136,7 @@ const FactSheet = ({ rebalance }) => {
         value={rebalance.factsheet.finixBuyBackFee}
         isCopy={rebalance.factsheet.finixBuyBackFee}
       />
-      <FactRow name="Ecosystem fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} />
+      {/* <FactRow name="Ecosystem fee" value={rebalance.factsheet.bountyFee} isCopy={rebalance.factsheet.bountyFee} /> */}
     </Table>
   )
 }

@@ -318,21 +318,21 @@ const CardInput = ({
         /> */}
         <SpaceBetweenFormat
           className="mb-2"
-          title={`Management fee ${_.get(rebalance, 'fee.management', 0.2)}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.management', 0.2))).format('0,0.[0000]')}`}
+          title={`Management fee ${_.get(rebalance, 'fee.management', 0.5)}%`}
+          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.management', 0.5))).format('0,0.[0000]')}`}
           hint="Fee collected for vault management."
         />
         <SpaceBetweenFormat
           className="mb-2"
-          title={`FINIX buy back fee ${_.get(rebalance, 'fee.buyback', 1.5)}%`}
-          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.buyback', 1.5))).format('0,0.[0000]')}`}
+          title={`FINIX buy back fee ${_.get(rebalance, 'fee.buyback', 1.0)}%`}
+          value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.buyback', 1.0))).format('0,0.[0000]')}`}
           hint="Fee collected for buyback and burn of FINIX as deflationary purpose."
         />
-        <SpaceBetweenFormat
+        {/* <SpaceBetweenFormat
           title={`Ecosystem fee ${_.get(rebalance, 'fee.bounty', 0.3)}%`}
           value={`$${numeral(usdToBeRecieve / (100 / _.get(rebalance, 'fee.bounty', 0.3))).format('0,0.[0000]')}`}
           hint="Reservation fee for further development of the ecosystem."
-        />
+        /> */}
       </div>
 
       <div className={isMobile ? 'pa-4' : 'pa-6 pt-4'}>
@@ -388,9 +388,9 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
               share={currentInput}
               usd={`~ $${numeral(
                 usdToBeRecieve -
-                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.bounty', 0.3)) -
-                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.buyback', 1.5)) -
-                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.management', 0.2)),
+                  // usdToBeRecieve / (100 / _.get(rebalance, 'fee.bounty', 0.3)) -
+                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.buyback', 1.0)) -
+                  usdToBeRecieve / (100 / _.get(rebalance, 'fee.management', 0.5)),
               ).format('0,0.[0000]')}`}
               textAlign={isMobile ? 'center' : 'left'}
             />
