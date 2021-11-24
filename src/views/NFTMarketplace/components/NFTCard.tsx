@@ -6,9 +6,11 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 // import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Button } from 'uikit-dev'
+import { Button} from 'uikit-dev'
+import useModal from 'uikit-dev/widgets/Modal/useModal'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeading from './CardHeading'
+import ListDetailModal from './ListDetailModal'
 // import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 // import FarmContext from '../../FarmContext'
 // import CardHeading from './CardHeading'
@@ -55,6 +57,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
+  const [onPresentConnectModal] = useModal(<ListDetailModal />)
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -79,13 +82,14 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
     [],
   )
 
-  const handleImage = (id) => {
-    console.log('handleImage', id)
-  }
+//   const handleImage = (id) => {
+//     onPresentConnectModal
+//     console.log('handleImage', id)
+//   }
 
   //   if (!isHorizontal) {
   return (
-    <VerticalStyle className="mb-7" onClick={() => handleImage(data.id)}>
+    <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
       <div className="flex flex-column flex-grow">
         {renderCardHeading('')}
         {/* <Button style={{ backgroundColor: 'unset'}}>ddd</Button> */}
