@@ -3,8 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import tAra from '../../../uikit-dev/images/for-ui-v2/t-ara.png'
-import { Flex, Text, ChevronUpIcon, ChevronDownIcon, Image, Button } from '../../../uikit-dev'
-import { Rebalance } from '../../../state/types'
+import { Flex } from '../../../uikit-dev'
 
 interface CardHeadingType {
   isSkew?: boolean
@@ -15,25 +14,6 @@ interface CardHeadingType {
   setIsOpenAccordion?: (open: boolean) => void
 }
 
-const CardHeadingStyle = styled.div<{ isSkew?: boolean }>`
-  padding-left: ${({ isSkew }) => (isSkew ? '116px !important' : '0')};
-`
-
-const FocusImg = styled.img<{ isHorizontal: boolean }>`
-  width: 120px;
-  height: auto;
-  margin-right: ${({ isHorizontal }) => (isHorizontal ? '' : '16px')};
-  margin-bottom: ${({ isHorizontal }) => (isHorizontal ? '8px' : '')};
-  background: ${({ theme }) => theme.colors.backgroundBox};
-`
-
-const SkewImg = styled.img`
-  width: 106px;
-  height: auto;
-  position: absolute;
-  top: 0;
-  left: 0;
-`
 const StyledFarmImages = styled.div`
   display: flex;
   justify-content: center;
@@ -63,11 +43,9 @@ const CardHeading: React.FC<CardHeadingType> = ({
 }) => {
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
-      {/* <Button style={{ backgroundColor: 'unset' }}> */}
       <StyledFarmImages>
         <img alt="" width="100%" src={tAra} style={{ backgroundSize: '100% 100%' }} />
       </StyledFarmImages>
-      {/* </Button> */}
     </Flex>
   )
 }

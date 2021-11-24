@@ -6,5 +6,5 @@ export interface NFTCardProps {
   inlineMultiplier?: boolean
   isMarketplace?: boolean
   data?: any
-  chartName?: string
+  typeName?: string
 }

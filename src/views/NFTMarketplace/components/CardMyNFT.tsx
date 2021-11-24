@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import moment from 'moment'
-import { Card, Text, Button } from 'uikit-dev'
+import { Card, Text } from 'uikit-dev'
 import FlexLayout from 'components/layout/FlexLayout'
-import ListItem from './ListItem'
 import NFTCard from './NFTCard'
 import SelectView from './SelectView'
-import Group from '../../../uikit-dev/images/for-ui-v2/group.png'
+import TypeTab from './TypeTab'
 
 const FinixStake = styled(Card)`
   width: 100%;
@@ -24,12 +22,12 @@ const FinixStake = styled(Card)`
   }
 `
 
-export type TypeChartName = 'Normalize' | 'Price'
+export type TypeName = 'Grid' | 'Group'
 
 const CardMyNFT = () => {
   const [listView, setListView] = useState(false)
   const [isMarketplace, setIsMarketplace] = useState(false)
-  const [chartName, setChartName] = useState<TypeChartName>('Normalize')
+  const [typeName, setTypeName] = useState<TypeName>('Grid')
   const [groupList, setGroupList] = useState([])
   const list = [
     {
@@ -90,19 +88,20 @@ const CardMyNFT = () => {
 
   return (
     <div className="align-stretch mt-5">
+      <TypeTab current="/NFT"/>
       <FinixStake>
-        <SelectView chartName={chartName} setChartName={setChartName} />
+        <SelectView typeName={typeName} setTypeName={setTypeName} />
         <Text className="mt-5 mb-5">Not for sale : 5 results</Text>
-        {chartName === 'Normalize' ? (
+        {typeName === 'Grid' ? (
           <FlexLayout cols={3}>
             {list.map((data) => (
-              <NFTCard chartName={chartName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
+              <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
             ))}
           </FlexLayout>
         ) : (
           <FlexLayout cols={3}>
             {groupList.map((data) => (
-              <NFTCard chartName={chartName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
+              <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
             ))}
           </FlexLayout>
         )}

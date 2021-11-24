@@ -4,11 +4,9 @@ import { Button } from '../../../uikit-dev'
 import group from '../../../uikit-dev/images/for-ui-v2/group.png'
 import list from '../../../uikit-dev/images/for-ui-v2/list.png'
 
-export type TypeChartName = 'Normalize' | 'Price'
+export type TypeName = 'Grid' | 'Group'
 
 const GroupButton = styled.div`
-  //   display: flex;
-  //   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: ${({ theme }) => theme.radii.small};
 
   button {
@@ -17,7 +15,6 @@ const GroupButton = styled.div`
     height: 40px;
     padding: 0 12px;
     border-radius: 0;
-    // border-right: 1px solid ${({ theme }) => theme.colors.border} !important;
 
     &:first-child {
       border: 1px solid ${({ theme }) => theme.colors.border};
@@ -32,24 +29,22 @@ const GroupButton = styled.div`
   }
 `
 
-const SelectView = ({ chartName, setChartName, className = '' }) => {
-  const charts: TypeChartName[] = ['Normalize', 'Price']
+const SelectView = ({ typeName, setTypeName, className = '' }) => {
+  const charts: TypeName[] = ['Grid', 'Group']
 
   return (
     <GroupButton className={className}>
       {charts.map((t) => (
         <Button
           fullWidth
-          variant={t === chartName ? 'primary' : 'text'}
+          variant={t === typeName ? 'primary' : 'text'}
           radii="small"
           onClick={() => {
-            setChartName(t)
+            setTypeName(t)
           }}
         >
-          {t === 'Normalize' && <img alt="" src={list} />}
-          {t === 'Price' && <img alt="" src={group} />}
-
-          {/* {t} */}
+          {t === 'Grid' && <img alt="" src={list} />}
+          {t === 'Group' && <img alt="" src={group} />}
         </Button>
       ))}
     </GroupButton>

@@ -33,12 +33,6 @@ const NFTMarketplace: React.FC = () => {
                     NFT Marketplace
                   </Heading>
                 </div>
-                <Button as="a" href="/NFT">
-                  My NFT
-                </Button>
-                <Button as="a" href="/NFT/market-place" className="ml-2">
-                  Marketplace
-                </Button>
               </div>
             </MaxWidth>
             <Route exact path={path}>

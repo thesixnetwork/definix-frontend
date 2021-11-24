@@ -1,28 +1,14 @@
-import BigNumber from 'bignumber.js'
-// import { BASE_ADD_LIQUIDITY_URL } from 'config'
-// import { QuoteToken } from 'config/constants/types'
-// import useStake from 'hooks/useStake'
-// import useUnstake from 'hooks/useUnstake'
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-// import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeading from './CardHeading'
 import ListDetailModal from './ListDetailModal'
-// import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-// import FarmContext from '../../FarmContext'
-// import CardHeading from './CardHeading'
-// import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailSelection'
-// import HarvestActionAirDrop from './HarvestActionAirDrop'
-// import StakeAction from './StakeAction'
 import { NFTCardProps } from './types'
 
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
-  //   border-radius: ${({ theme }) => theme.radii.default};
   box-shadow: ${({ theme }) => theme.shadows.elevation1};
 `
 
@@ -34,29 +20,12 @@ const VerticalStyle = styled(CardStyle)`
   text-align: center;
 `
 
-const HorizontalStyle = styled(CardStyle)`
-  display: flex;
-  position: relative;
-`
-
-const HorizontalMobileStyle = styled(CardStyle)`
-  .accordion-content {
-    &.hide {
-      display: none;
-    }
-
-    &.show {
-      display: block;
-    }
-  }
-`
-
 const NFTCard: React.FC<NFTCardProps> = ({
   isHorizontal = false,
   inlineMultiplier = false,
   isMarketplace,
   data,
-  chartName,
+  typeName,
 }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -83,42 +52,26 @@ const NFTCard: React.FC<NFTCardProps> = ({
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <DetailsSection isHorizontal={isHor} className={className} data={data} chartName={chartName} />
+    (className?: string) => (
+      <DetailsSection isHorizontal={isHorizontal} className={className} data={data} typeName={typeName} />
     ),
-    [data, chartName],
+    [data, typeName, isHorizontal],
   )
 
-  //   const handleImage = (id) => {
-  //     onPresentConnectModal
-  //     console.log('handleImage', id)
-  //   }
-
-  if (chartName === 'Price') {
+  if (typeName === 'Grid') {
     return (
       <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
-        <div className="flex flex-column flex-grow">
-          {renderCardHeading('')}
-          {/* <div>{data.group.length}</div> */}
-        </div>
-        {renderDetailsSection('px-5 py-3', false)}
+        <div className="flex flex-column flex-grow">{renderCardHeading('')}</div>
+        {renderDetailsSection('px-5 py-3')}
       </VerticalStyle>
     )
   }
   return (
     <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
-      <div className="flex flex-column flex-grow">
-        {renderCardHeading('')}
-        {/* <Button style={{ backgroundColor: 'unset'}}>ddd</Button> */}
-        {/* {renderCardHeading('pt-7')} */}
-        {/* {renderStakeAction('pa-5')} */}
-        {/* renderHarvestAction('pa-5') */}
-        {/* {renderHarvestActionAirDrop('pa-5 pt-0', isHorizontal)} */}
-      </div>
-      {renderDetailsSection('px-5 py-3', false)}
+      <div className="flex flex-column flex-grow">{renderCardHeading('')}</div>
+      {renderDetailsSection('px-5 py-3')}
     </VerticalStyle>
   )
-  //   }
 }
 
 export default NFTCard
