@@ -26,7 +26,7 @@ export const getPairAddress = (tokenA: string, tokenB: string, factoryAddress?: 
 
 export const getAddress = (address: any): string => {
   const mainNetChainId = 56
-  return address[chainId] ? address[chainId] : address[mainNetChainId]
+  return (address[chainId] ? address[chainId] : address[mainNetChainId]).toLowerCase()
 }
 
 export const getFinixAddress = () => {

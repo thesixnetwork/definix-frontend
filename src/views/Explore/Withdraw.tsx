@@ -151,7 +151,8 @@ const CardInput = ({
           thisInput.times(new BigNumber(10).pow(18)).toJSON(),
           ratioType === 'all',
           ((rebalance || {}).tokens || []).map((token, index) => {
-            const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
+            const tokenAddress =
+              typeof token.address === 'string' ? token.address.toLowerCase() : getAddress(token.address)
             return selectedToken[tokenAddress]
               ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
               : 0
