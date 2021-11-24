@@ -42,43 +42,46 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   isMarketplace,
 }) => {
   return (
-    <InfosBox isHorizontal={isHorizontal} className={className}>
-      <div className="flex align-baseline flex-wrap justify-space-between mb-1">
-        {typeName === 'Group' && (
-          <div
-            style={{
-              borderRadius: 40,
-              padding: '8px 5px',
-              backgroundColor: '#0973B9',
-              position: 'absolute',
-              top: '78%',
-              right: 0,
-            }}
-          >
-            + {data.count}
-          </div>
-        )}
+    <>
+      <InfosBox>
+        <div className="flex align-baseline flex-wrap justify-space-between mb-1">
+          {typeName === 'Group' && (
+            <div
+              style={{
+                borderRadius: 40,
+                padding: '8px 5px',
+                backgroundColor: '#0973B9',
+                position: 'absolute',
+                top: '78%',
+                right: 0,
+              }}
+            >
+              + {data.count}
+            </div>
+          )}
 
-        <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-          <Heading bold className="flex-shrink">
-            #02ffff
-          </Heading>
+          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+            <Heading bold className="flex-shrink">
+              #02ffff
+            </Heading>
+          </div>
         </div>
-      </div>
-      <div className="flex align-baseline flex-wrap justify-space-between">
-        <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-          <Text bold className="flex-shrink">
-            T-ARA LEGENDARY Grade Limited
-          </Text>
+        <div className="flex align-baseline flex-wrap justify-space-between">
+          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+            <Text bold className="flex-shrink">
+              T-ARA LEGENDARY Grade Limited
+            </Text>
+          </div>
         </div>
-      </div>
-      <div className="flex align-baseline flex-wrap justify-space-between">
-        <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-          <Text bold className="flex-shrink" color="textSubtle">
-            Dingo x SIX Network NFT Project No.1
-          </Text>
+        <div className="flex align-baseline flex-wrap justify-space-between">
+          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+            <Text bold className="flex-shrink" color="textSubtle">
+              Dingo x SIX Network NFT Project No.1
+            </Text>
+          </div>
         </div>
-      </div>
+      </InfosBox>
+
       {isMarketplace && (
         <PriceUnitBox>
           <div className="flex justify-space-between py-1">
@@ -102,7 +105,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
           </div>
         </PriceUnitBox>
       )}
-    </InfosBox>
+    </>
   )
 }
 
