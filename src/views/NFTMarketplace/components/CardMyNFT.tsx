@@ -51,7 +51,7 @@ const CardMyNFT = () => {
         <FlexLayout cols={3}>
           {list.map((data) => (
             // <Button style={{ backgroundColor: 'unset' }}>
-              <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
+            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
             // </Button>
           ))}
         </FlexLayout>
