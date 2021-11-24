@@ -88,7 +88,7 @@ const CardMyNFT = () => {
 
   return (
     <div className="align-stretch mt-5">
-      <TypeTab current="/NFT"/>
+      <TypeTab current="/NFT" />
       <FinixStake>
         <SelectView typeName={typeName} setTypeName={setTypeName} />
         <Text className="mt-5 mb-5">Not for sale : 5 results</Text>
