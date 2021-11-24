@@ -6,9 +6,11 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 // import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
+import { Button } from 'uikit-dev'
+import useModal from 'uikit-dev/widgets/Modal/useModal'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeading from './CardHeading'
-// import { useMatchBreakpoints } from 'uikit-dev'
+import ListDetailModal from './ListDetailModal'
 // import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 // import FarmContext from '../../FarmContext'
 // import CardHeading from './CardHeading'
@@ -49,11 +51,13 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false, isMarketplace }) => {
+const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false, isMarketplace, data }) => {
+  //   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
+  const [onPresentConnectModal] = useModal(<ListDetailModal />)
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -78,11 +82,17 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
     [],
   )
 
+  //   const handleImage = (id) => {
+  //     onPresentConnectModal
+  //     console.log('handleImage', id)
+  //   }
+
   //   if (!isHorizontal) {
   return (
-    <VerticalStyle className="my-3">
+    <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
       <div className="flex flex-column flex-grow">
-        {renderCardHeading('pt-2')}
+        {renderCardHeading('')}
+        {/* <Button style={{ backgroundColor: 'unset'}}>ddd</Button> */}
         {/* {renderCardHeading('pt-7')} */}
         {/* {renderStakeAction('pa-5')} */}
         {/* renderHarvestAction('pa-5') */}

@@ -5,4 +5,5 @@ export interface NFTCardProps {
   isHorizontal?: boolean
   inlineMultiplier?: boolean
   isMarketplace?: boolean
+  data?: any
 }

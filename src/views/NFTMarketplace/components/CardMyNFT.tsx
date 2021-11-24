@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import moment from 'moment'
-import { Card, Text } from 'uikit-dev'
+import { Card, Text, Button } from 'uikit-dev'
 import FlexLayout from 'components/layout/FlexLayout'
 import ListItem from './ListItem'
 import NFTCard from './NFTCard'
@@ -47,10 +47,12 @@ const CardMyNFT = () => {
     <div className="align-stretch mt-5">
       <FinixStake>
         <Text>CardMyNFT</Text>
-        <Text className="mt-5">Not for sale : 5 results</Text>
+        <Text className="mt-5 mb-5">Not for sale : 5 results</Text>
         <FlexLayout cols={3}>
           {list.map((data) => (
-            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} />
+            // <Button style={{ backgroundColor: 'unset' }}>
+            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
+            // </Button>
           ))}
         </FlexLayout>
       </FinixStake>
