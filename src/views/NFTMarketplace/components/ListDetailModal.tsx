@@ -1,52 +1,63 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
-import { Button, Text, Heading } from 'uikit-dev'
+import { Button, Text, Heading, Image, useMatchBreakpoints } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
-import ModalSorry from 'uikit-dev/widgets/Modal/Modal'
-import tAra from 'uikit-dev/images/for-ui-v2/t-ara.png'
+import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
+import tAra from 'uikit-dev/images/for-ui-v2/nft/T-ARA.png'
+import iconCopy from 'uikit-dev/images/for-ui-v2/nft/Icon-copy.png'
 import ListFillModal from './ListFillModal'
+import ModalComplete from './ModalComplete'
 
 interface Props {
   onDismiss?: () => void
+  isMarketplace?: boolean
 }
 
-const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null }) => {
+const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [onPresentConnectModal] = useModal(<ListFillModal />)
-  console.log('Modal')
+  const [handleBuy] = useModal(<ModalComplete />)
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+
   return (
-    <ModalSorry
+    <ModalNFT
       isRainbow={false}
       title=""
       onDismiss={onDismiss}
       hideCloseButton={hideCloseButton}
       classHeader="bd-b-n pa-0"
     >
-      <div className="flex">
-        <img alt="" src={tAra} width="340px" height="340px" />
+      <div className={isMobile ? '' : 'flex'}>
+        <div className={isMobile ? 'text-center' : ''}>
+          <img alt="" src={tAra} />
+        </div>
         <div className="ml-5">
-          <Heading fontSize="34px !important" lineHeight="2">
+          <Text bold fontSize="34px !important" lineHeight="1.3">
             #02
-          </Heading>
-          <Heading fontSize="22px !important" lineHeight="2">
+          </Text>
+          <Text bold fontSize="22px !important" lineHeight="1.3">
             T-ARA LEGENDARY Grade Limited
-          </Heading>
-          <Text fontSize="16px !important" color="textSubtle" lineHeight="2">
+          </Text>
+          <Text fontSize="16px !important" color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
           </Text>
           <div className="mt-4">
             <Text fontSize="14px !important" color="textSubtle">
               Metadata
             </Text>
-            <Text fontSize="16px !important" color="textSubtle">
-              https://dryotus.definix.com/…
-            </Text>
+            <div className="flex align-center">
+              <Text bold fontSize="14px" color="text" paddingRight="6px">
+                {`${"https://dryotus.definix.com/".substring(0, 30)}`}...
+              </Text>
+              <Image src={iconCopy} width={14} height={14} />
+            </div>
           </div>
           <div className="mt-3">
             <Text fontSize="14px !important" color="textSubtle">
               NFT token standard
             </Text>
-            <Text fontSize="16px !important" color="textSubtle">
+            <Text bold fontSize="16px !important" color="text">
               BEP-1155
             </Text>
           </div>
@@ -54,16 +65,47 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <Text fontSize="14px !important" color="textSubtle">
               Smart Contract address
             </Text>
-            <Text fontSize="16px !important" color="textSubtle">
-              0x5503...65311
-            </Text>
+            <div className="flex align-center">
+              <Text bold fontSize="14px" color="text" paddingRight="6px">
+                {`${"0x55030000000065311".substring(0, 6)}...${"0x55030000000065311".substring("0x55030000000065311".length - 4)}`}
+              </Text>
+              <Image src={iconCopy} width={14} height={14} />
+            </div>
           </div>
-          <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-            List
-          </Button>
+
+          {isMarketplace ? (
+            <>
+              <div className="mt-3">
+                <Text fontSize="14px !important" color="textSubtle">
+                  Price
+                </Text>
+                <div className="flex align-center">
+                  <Image src="/images/coins/FINIX.png" width={16} height={16} />
+                  <Text bold fontSize="22px" color="text" paddingLeft="6px">
+                    2,837.2938 FINIX
+                  </Text>
+                </div>
+              </div>
+              <div className="mt-3">
+                <Text fontSize="14px !important" color="textSubtle">
+                  Until
+                </Text>
+                <Text bold fontSize="16px !important" color="text">
+                  28/12/21 00:00:00 GMT+7
+                </Text>
+              </div>
+              <Button fullWidth radii="small" className="mt-3" onClick={() => handleBuy()}>
+                Buy
+              </Button>
+            </>
+          ) : (
+              <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+                List
+              </Button>
+            )}
         </div>
       </div>
-    </ModalSorry>
+    </ModalNFT>
   )
 }
 

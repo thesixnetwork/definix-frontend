@@ -22,7 +22,7 @@ import { NFTCardProps } from './types'
 
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
-  border-radius: ${({ theme }) => theme.radii.default};
+  border-radius: ${({ theme }) => theme.radii.card};
   box-shadow: ${({ theme }) => (theme.isDark ? '0 6px 16px #000000' : theme.shadows.elevation2)};
 `
 
@@ -32,6 +32,7 @@ const VerticalStyle = styled(CardStyle)`
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
+  cursor: pointer;
 `
 
 const HorizontalStyle = styled(CardStyle)`
@@ -57,7 +58,7 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
-  const [onPresentConnectModal] = useModal(<ListDetailModal />)
+  const [onPresentConnectModal] = useModal(<ListDetailModal isMarketplace={isMarketplace} />)
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -78,8 +79,8 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => <DetailsSection isHorizontal={isHor} className={className} />,
-    [],
+    (className?: string, isHor?: boolean) => <DetailsSection isHorizontal={isHor} className={className} isMarketplace={isMarketplace} />,
+    [isMarketplace],
   )
 
   //   const handleImage = (id) => {

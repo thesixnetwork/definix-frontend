@@ -6,13 +6,16 @@ import { Text, Heading, Image } from '../../../uikit-dev'
 export interface ExpandableSectionProps {
   isHorizontal?: boolean
   className?: string
+  isMarketplace?: boolean
 }
 
-const InfosBox = styled.div<{ isHorizontal?: boolean }>`
+const InfosBox = styled.div<{ isHorizontal?: boolean, isMarketplace?: boolean }>`
   padding: 16px;
   background: ${({ isHorizontal, theme }) => (!isHorizontal ? theme.colors.cardFooter : 'transparent')};
   border-top: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
-  border-bottom: ${({ theme, isHorizontal }) => (!isHorizontal ? `1px solid ${theme.colors.border}` : 'none')};
+  border-bottom: ${({ isHorizontal, theme, isMarketplace }) =>
+    // eslint-disable-next-line no-nested-ternary
+    !isHorizontal && isMarketplace ? `1px solid ${theme.colors.border}`  : 'none'};
 `
 
 const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
@@ -22,13 +25,13 @@ const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
     !isHorizontal && theme.isDark
       ? '#121212'
       : !isHorizontal && theme.isDark
-      ? theme.colors.cardFooter
-      : 'transparent'};
+        ? theme.colors.cardFooter
+        : 'transparent'};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
-const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false, className = '' }) => {
+const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false, className = '', isMarketplace }) => {
   return (
     <>
       <InfosBox isHorizontal={isHorizontal}>
@@ -54,27 +57,30 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false
           </div>
         </div>
       </InfosBox>
-      <PriceUnitBox>
-        <div className="flex justify-space-between py-1">
-          <Text fontSize="12px" color="textSubtle">
-            Price
-          </Text>
-          <div className="flex">
-            <Image src="/images/coins/FINIX.png" width={16} height={16} />
-            <Text fontSize="12px" color="text" paddingLeft="6px">
-              2,837.2938 FINIX
-            </Text>
+      {isMarketplace && (
+        <PriceUnitBox>
+          <div className="flex justify-space-between py-1">
+            <Text fontSize="12px" color="textSubtle">
+              Price
+    </Text>
+            <div className="flex">
+              <Image src="/images/coins/FINIX.png" width={16} height={16} />
+              <Text fontSize="12px" color="text" paddingLeft="6px">
+                2,837.2938 FINIX
+     </Text>
+            </div>
           </div>
-        </div>
-        <div className="flex justify-space-between">
-          <Text fontSize="12px" color="textSubtle">
-            Until
-          </Text>
-          <Text fontSize="12px" color="text">
-            28/12/21 00:00:00 GMT+7
-          </Text>
-        </div>
-      </PriceUnitBox>
+          <div className="flex justify-space-between">
+            <Text fontSize="12px" color="textSubtle">
+              Until
+   </Text>
+            <Text fontSize="12px" color="text">
+              28/12/21 00:00:00 GMT+7
+   </Text>
+          </div>
+        </PriceUnitBox>
+      )}
+
     </>
   )
 }

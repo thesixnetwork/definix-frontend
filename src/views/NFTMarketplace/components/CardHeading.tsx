@@ -64,8 +64,8 @@ const CardHeading: React.FC<CardHeadingType> = ({
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       {/* <Button style={{ backgroundColor: 'unset' }}> */}
       <StyledFarmImages>
-        {/* <img src={tAra} alt="tAra" /> */}
-        <img alt="" width="100%" src={tAra} style={{ backgroundSize: '100% 100%' }} />
+        <img src={tAra} alt="tAra" />
+        {/* <img alt="" width="100%" src={tAra} style={{ backgroundSize: '100% 100%' }} /> */}
       </StyledFarmImages>
       {/* </Button> */}
     </Flex>
