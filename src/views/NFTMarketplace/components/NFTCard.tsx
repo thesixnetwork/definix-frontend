@@ -6,7 +6,7 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 // import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
-import { Button} from 'uikit-dev'
+import { Button } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeading from './CardHeading'
@@ -82,10 +82,10 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
     [],
   )
 
-//   const handleImage = (id) => {
-//     onPresentConnectModal
-//     console.log('handleImage', id)
-//   }
+  //   const handleImage = (id) => {
+  //     onPresentConnectModal
+  //     console.log('handleImage', id)
+  //   }
 
   //   if (!isHorizontal) {
   return (

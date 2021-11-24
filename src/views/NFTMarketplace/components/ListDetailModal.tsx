@@ -15,7 +15,13 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [onPresentConnectModal] = useModal(<ListFillModal />)
   console.log('Modal')
   return (
-    <ModalSorry isRainbow={false} title="" onDismiss={onDismiss} hideCloseButton={hideCloseButton} classHeader="bd-b-n pa-0">
+    <ModalSorry
+      isRainbow={false}
+      title=""
+      onDismiss={onDismiss}
+      hideCloseButton={hideCloseButton}
+      classHeader="bd-b-n pa-0"
+    >
       <div className="flex">
         <img alt="" src={tAra} width="340px" height="340px" />
         <div className="ml-5">
@@ -52,7 +58,9 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               0x5503...65311
             </Text>
           </div>
-          <Button fullWidth radii='small' className="mt-3" onClick={()=>onPresentConnectModal()}>List</Button>
+          <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+            List
+          </Button>
         </div>
       </div>
     </ModalSorry>

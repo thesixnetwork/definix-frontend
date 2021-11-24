@@ -19,7 +19,10 @@ const ChangeLanguage = styled(Button)`
 
 const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
-  const langs = [{ id: 1, name: 'TH' }, { id: 2, name: 'EN' }]
+  const langs = [
+    { id: 1, name: 'TH' },
+    { id: 2, name: 'EN' },
+  ]
   console.log('Modal')
   return (
     <ModalSorry
