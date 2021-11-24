@@ -7,13 +7,13 @@ import TagManager from 'react-gtm-module'
 import { Route, Router, Switch } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import { GlobalStyle } from 'definixswap-uikit'
+import { GlobalStyle, Loading } from 'definixswap-uikit'
 // import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
 import Menu from './components/Menu'
-import PageLoader from './components/PageLoader'
+// import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 // import GlobalStyle from './style/Global'
@@ -104,7 +104,7 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Suspense fallback={<></>}>
         <Menu>
-          <Suspense fallback={<PageLoader />}>
+          <Suspense fallback={<Loading />}>
             <Switch>
               <Route path="/" exact>
                 <Home />
