@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import React, { useRef, useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import { get, isEqual, compact } from 'lodash'
 
 import { ArrowBackIcon } from 'uikit-dev'
@@ -40,6 +40,7 @@ const usePrevious = (value, initialValue) => {
 
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const { t } = useTranslation()
+  const history = useHistory();
   const [tx, setTx] = useState({})
   const [poolUSDBalancesState, setPoolUSDBalances] = useState([])
   const [poolAmounts, setPoolAmounts] = useState([])
@@ -237,6 +238,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
           },
           ...prevToasts,
         ])
+        history.goBack();
       }}
       calNewImpact={calNewImpact}
     />,
