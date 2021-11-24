@@ -42,10 +42,7 @@ const NFTMarketplace: React.FC = () => {
               <Heading as="h1" fontSize="30px !important">
                 NFT Marketplace
               </Heading>
-              <NFTTabButtons
-                selected={selected}
-                setSelected={setSelected}
-              />
+              <NFTTabButtons selected={selected} setSelected={setSelected} />
               {/* <div className="mt-6">
                 <NFTButton as="a" href="/NFT">
                   My NFT

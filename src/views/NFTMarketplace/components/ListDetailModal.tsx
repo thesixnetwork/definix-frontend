@@ -48,7 +48,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
             </Text>
             <div className="flex align-center">
               <Text bold fontSize="14px" color="text" paddingRight="6px">
-                {`${"https://dryotus.definix.com/".substring(0, 30)}`}...
+                {`${'https://dryotus.definix.com/'.substring(0, 30)}`}...
               </Text>
               <Image src={iconCopy} width={14} height={14} />
             </div>
@@ -67,7 +67,9 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
             </Text>
             <div className="flex align-center">
               <Text bold fontSize="14px" color="text" paddingRight="6px">
-                {`${"0x55030000000065311".substring(0, 6)}...${"0x55030000000065311".substring("0x55030000000065311".length - 4)}`}
+                {`${'0x55030000000065311'.substring(0, 6)}...${'0x55030000000065311'.substring(
+                  '0x55030000000065311'.length - 4,
+                )}`}
               </Text>
               <Image src={iconCopy} width={14} height={14} />
             </div>
@@ -99,10 +101,10 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               </Button>
             </>
           ) : (
-              <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-                List
-              </Button>
-            )}
+            <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+              List
+            </Button>
+          )}
         </div>
       </div>
     </ModalNFT>

@@ -79,7 +79,9 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => <DetailsSection isHorizontal={isHor} className={className} isMarketplace={isMarketplace} />,
+    (className?: string, isHor?: boolean) => (
+      <DetailsSection isHorizontal={isHor} className={className} isMarketplace={isMarketplace} />
+    ),
     [isMarketplace],
   )
 

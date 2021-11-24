@@ -67,33 +67,33 @@ const CardMarketplace = () => {
     },
   ]
 
-  const name = ([
+  const name = [
     { id: 1, name: 'T-ARA' },
     { id: 2, name: 'QRI' },
     { id: 3, name: 'Eunjung' },
     { id: 4, name: 'Jiyeon' },
     { id: 5, name: 'Hyomin' },
-  ])
+  ]
 
-  const level = ([
+  const level = [
     { id: 1, name: 'Normal' },
     { id: 2, name: 'Rare' },
     { id: 3, name: 'Epic' },
     { id: 4, name: 'Legendary' },
-  ])
+  ]
 
-  const info = ([
+  const info = [
     { id: 1, name: ' Most recent' },
     { id: 2, name: 'Price up' },
     { id: 3, name: 'Price down' },
-  ])
+  ]
 
   return (
     <div className="align-stretch mt-5">
       <CardBox>
         <div className="flex">
           <Dropdown
-            position='bottom'
+            position="bottom"
             target={
               <BoxDropdown
                 variant="text"
@@ -103,7 +103,7 @@ const CardMarketplace = () => {
               >
                 <Text color="text" bold>
                   T-ARA
-              </Text>
+                </Text>
               </BoxDropdown>
             }
           >
@@ -118,9 +118,10 @@ const CardMarketplace = () => {
                 {lang.name}
               </MenuButton>
             ))}
-          </Dropdown>&nbsp;
+          </Dropdown>
+          &nbsp;
           <Dropdown
-            position='bottom'
+            position="bottom"
             target={
               <BoxDropdown
                 variant="text"
@@ -130,7 +131,7 @@ const CardMarketplace = () => {
               >
                 <Text color="text" bold>
                   Legendary
-              </Text>
+                </Text>
               </BoxDropdown>
             }
           >
@@ -145,9 +146,10 @@ const CardMarketplace = () => {
                 {lev.name}
               </MenuButton>
             ))}
-          </Dropdown>&nbsp;
+          </Dropdown>
+          &nbsp;
           <Dropdown
-            position='bottom'
+            position="bottom"
             target={
               <BoxDropdown
                 variant="text"
@@ -157,7 +159,7 @@ const CardMarketplace = () => {
               >
                 <Text color="text" bold>
                   Most recent
-              </Text>
+                </Text>
               </BoxDropdown>
             }
           >
