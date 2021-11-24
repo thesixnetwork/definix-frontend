@@ -11,7 +11,7 @@ import rebalanceAbi from 'config/abi/rebalance.json'
 import { getCustomContract } from 'utils/erc20'
 import numeral from 'numeral'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import {
   Box,
   Button,
@@ -26,9 +26,9 @@ import {
 } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
-import CurrencyInputPanel from './CurrencyInputPanel'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import InlineAssetRatioLabel from './InlineAssetRatioLabel'
+import ShareInput from './ShareInput'
 
 export enum RatioType {
   Original = 'Original',
@@ -167,33 +167,31 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
     }
   }
 
+  const handleBalanceChange = useCallback(
+    (precentage: number) => {
+      setCurrentInput(new BigNumber(currentBalance).times(precentage / 100).toJSON())
+    },
+    [currentBalance, setCurrentInput],
+  )
+
+  const handleChange = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      setCurrentInput(e.currentTarget.value)
+    },
+    [setCurrentInput],
+  )
+
   return (
     <Card p={isMobile ? 'S_20' : 'S_40'}>
       <Box mb="S_40">
         <Text display="flex" color="textSubtle" textStyle="R_16M">{t('Withdrawal Amount')}</Text>
-        <Text mt="S_20" color="textSubtle" textStyle="R_28M">
-          {numeral(currentBalanceNumber).format('0,0.[00]')}
-          <Text as="span" textStyle="R_14R" ml="10px" mt="12px">
-            {t('SHR')}
-          </Text>
-        </Text>
 
-        <CurrencyInputPanel
-          currency={{ symbol: 'Shares', hide: true }}
-          id="withdraw-fund"
-          showMaxButton
-          hideBalance
+        <ShareInput
+          onSelectBalanceRateButton={handleBalanceChange}
+          onChange={handleChange}
           value={currentInput}
-          onUserInput={setCurrentInput}
-          onMax={() => {
-            setCurrentInput(new BigNumber(currentBalance).toJSON())
-          }}
-          onQuarter={() => {
-            setCurrentInput(new BigNumber(currentBalance).times(0.25).toJSON())
-          }}
-          onHalf={() => {
-            setCurrentInput(new BigNumber(currentBalance).times(0.5).toJSON())
-          }}
+          max={currentBalance}
+          symbol={t('SHR')}
         />
         <Text fontSize="12px" color="textSubtle" className="mt-1" textAlign="right">
           ~ ${numeral(usdToBeRecieve).format('0,0.[00]')}
@@ -201,12 +199,6 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
       </Box>
 
       <Box>
-        {/* <SpaceBetweenFormat
-          className="mb-2"
-          title="Price Impact"
-          value="< 0.1%"
-          valueColor="success"
-        /> */}
         <SpaceBetweenFormat
           className="mb-2"
           title={`Management fee ${get(rebalance, 'fee.management', 0.2)}%`}
@@ -225,23 +217,6 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
           hint="Reservation fee for further development of the ecosystem."
         />
       </Box>
-      {/* <SpaceBetweenFormat
-        className="mb-2"
-        titleElm={
-          <div className="flex pr-3">
-            <Text fontSize="12px" color="textSubtle">
-              Early withdrawal fee
-            </Text>
-            <Helper text="" className="mx-2" position="top" />
-            <Text fontSize="12px" color="textSubtle">
-              00:00
-            </Text>
-          </div>
-        }
-        title="Early withdrawal fee 0.5%"
-        value="$00 "
-        hint="xx"
-      /> */}
 
       <Divider my="S_32" />
 

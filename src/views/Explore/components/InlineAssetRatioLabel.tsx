@@ -17,11 +17,10 @@ const InlineAssetRatioLabel = ({ coin, className = '' }) => {
       <Coin size="lg" symbol={coin.symbol}>
         <Text textStyle="R_16M">{thisName}</Text>
       </Coin>
-      <Text textStyle="R_16R" color="mediumgrey" ml="auto">
-        Ratio : {coin.valueRatioCal.toFixed(2)} %
+      <Text textStyle="R_16R" color="textSubtle" ml="auto" textAlign="right">
+        {coin.valueRatioCal.toFixed(2)}%
       </Text>
-      |
-      <Text textStyle="R_16M" color="deepgrey">
+      <Text textStyle="R_16M" color="deepgrey" minWidth="160px" textAlign="right">
         {coin.amount ? numeral(coin.amount.toNumber()).format('0,0.[0000]') : '-'}
       </Text>
     </Flex>
