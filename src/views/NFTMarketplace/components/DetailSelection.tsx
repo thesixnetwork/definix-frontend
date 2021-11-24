@@ -1,11 +1,13 @@
 // import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Heading } from '../../../uikit-dev'
+import { Text, Heading, Button } from '../../../uikit-dev'
 
 export interface ExpandableSectionProps {
   isHorizontal?: boolean
   className?: string
+  data: any
+  chartName: string
 }
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
@@ -15,20 +17,41 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
-const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false, className = '' }) => {
+const DetailsSection: React.FC<ExpandableSectionProps> = ({
+  isHorizontal = false,
+  className = '',
+  data,
+  chartName,
+}) => {
   //   const TranslateString = useI18n()
+  console.log('++++++++++', data)
 
   return (
     <Wrapper isHorizontal={isHorizontal} className={className}>
       {/* {!removed && ( */}
       <>
+        {/* <Text style={{position:'absolute', top: 50,left:50}}>TEST</Text> */}
         <div className="flex align-baseline flex-wrap justify-space-between mb-1">
+          {chartName === 'Price' && (
+            <div
+              style={{
+                borderRadius: 40,
+                padding: '8px 5px',
+                backgroundColor: '#0973B9',
+                position: 'absolute',
+                top: '78%',
+                right: 0,
+              }}
+            >
+              + {data.count}
+            </div>
+          )}
           {/* <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text> */}
 
           <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
             <Heading bold className="flex-shrink">
-              #02
-              {/* {stakedBalanceValueFormated} */}
+              #02ffff
+              {/* {fstakedBalanceValueFormated} */}
             </Heading>
             {/* <LinkView /> */}
           </div>

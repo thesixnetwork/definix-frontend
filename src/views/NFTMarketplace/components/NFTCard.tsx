@@ -51,8 +51,13 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplier = false, isMarketplace, data }) => {
-  //   const { onPresent } = useContext(FarmContext)
+const NFTCard: React.FC<NFTCardProps> = ({
+  isHorizontal = false,
+  inlineMultiplier = false,
+  isMarketplace,
+  data,
+  chartName,
+}) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
@@ -78,8 +83,10 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string, isHor?: boolean) => <DetailsSection isHorizontal={isHor} className={className} />,
-    [],
+    (className?: string, isHor?: boolean) => (
+      <DetailsSection isHorizontal={isHor} className={className} data={data} chartName={chartName} />
+    ),
+    [data, chartName],
   )
 
   //   const handleImage = (id) => {
@@ -87,7 +94,17 @@ const NFTCard: React.FC<NFTCardProps> = ({ isHorizontal = false, inlineMultiplie
   //     console.log('handleImage', id)
   //   }
 
-  //   if (!isHorizontal) {
+  if (chartName === 'Price') {
+    return (
+      <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
+        <div className="flex flex-column flex-grow">
+          {renderCardHeading('')}
+          {/* <div>{data.group.length}</div> */}
+        </div>
+        {renderDetailsSection('px-5 py-3', false)}
+      </VerticalStyle>
+    )
+  }
   return (
     <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
       <div className="flex flex-column flex-grow">
