@@ -63,7 +63,7 @@ const CardHeading: React.FC<CardHeadingType> = ({
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <StyledFarmImages>
-        <img  src={tAra} alt="tAra"/>
+        <img src={tAra} alt="tAra" />
       </StyledFarmImages>
     </Flex>
   )

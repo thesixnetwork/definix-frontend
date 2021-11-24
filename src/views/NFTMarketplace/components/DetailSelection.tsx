@@ -19,13 +19,16 @@ const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
   padding: 10px 16px;
   background: ${({ isHorizontal, theme }) =>
     // eslint-disable-next-line no-nested-ternary
-    !isHorizontal && theme.isDark ? '#121212' : !isHorizontal && theme.isDark ? theme.colors.cardFooter : 'transparent'};
+    !isHorizontal && theme.isDark
+      ? '#121212'
+      : !isHorizontal && theme.isDark
+      ? theme.colors.cardFooter
+      : 'transparent'};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false, className = '' }) => {
-
   return (
     <>
       <InfosBox isHorizontal={isHorizontal}>
@@ -33,7 +36,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false
           <div className="flex flex-wrap justify-end">
             <Heading bold className="flex-shrink">
               #02
-              </Heading>
+            </Heading>
           </div>
         </div>
         <div className="flex align-baseline flex-wrap justify-space-between">
@@ -53,17 +56,24 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({ isHorizontal = false
       </InfosBox>
       <PriceUnitBox>
         <div className="flex justify-space-between py-1">
-          <Text fontSize="12px" color="textSubtle">Price</Text>
+          <Text fontSize="12px" color="textSubtle">
+            Price
+          </Text>
           <div className="flex">
             <Image src="/images/coins/FINIX.png" width={16} height={16} />
-            <Text fontSize="12px" color="text" paddingLeft="6px">2,837.2938 FINIX</Text>
+            <Text fontSize="12px" color="text" paddingLeft="6px">
+              2,837.2938 FINIX
+            </Text>
           </div>
         </div>
         <div className="flex justify-space-between">
-          <Text fontSize="12px" color="textSubtle">Until</Text>
-          <Text fontSize="12px" color="text">28/12/21 00:00:00 GMT+7</Text>
+          <Text fontSize="12px" color="textSubtle">
+            Until
+          </Text>
+          <Text fontSize="12px" color="text">
+            28/12/21 00:00:00 GMT+7
+          </Text>
         </div>
-
       </PriceUnitBox>
     </>
   )

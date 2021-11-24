@@ -21,7 +21,7 @@ import { NFTCardProps } from './types'
 const CardStyle = styled.div`
   background: ${(props) => props.theme.card.background};
   border-radius: ${({ theme }) => theme.radii.default};
-  box-shadow: ${({ theme }) => theme.isDark ? '0 6px 16px #000000' : theme.shadows.elevation2}
+  box-shadow: ${({ theme }) => (theme.isDark ? '0 6px 16px #000000' : theme.shadows.elevation2)};
 `
 
 const VerticalStyle = styled(CardStyle)`

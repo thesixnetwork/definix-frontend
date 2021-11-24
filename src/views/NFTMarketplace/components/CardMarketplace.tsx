@@ -7,7 +7,16 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import FlexLayout from 'components/layout/FlexLayout'
 import moment from 'moment'
-import { ArrowBackIcon, Button, Card, ChevronRightIcon, Image, Link as UiLink, Text, useMatchBreakpoints } from 'uikit-dev'
+import {
+  ArrowBackIcon,
+  Button,
+  Card,
+  ChevronRightIcon,
+  Image,
+  Link as UiLink,
+  Text,
+  useMatchBreakpoints,
+} from 'uikit-dev'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
 import NFTCard from './NFTCard'
 
@@ -51,7 +60,9 @@ const CardMarketplace = () => {
     <div className="align-stretch mt-5">
       <CardBox>
         {/* <Text>CardMyNFT</Text> */}
-        <Text className="my-2" fontSize="18px">6 results</Text>
+        <Text className="my-2" fontSize="18px">
+          6 results
+        </Text>
         <FlexLayout cols={3}>
           {list.map((data) => (
             <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} />

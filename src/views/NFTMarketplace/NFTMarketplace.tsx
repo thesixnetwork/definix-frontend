@@ -7,13 +7,11 @@ import styled from 'styled-components'
 import CardMarketplace from './components/CardMarketplace'
 import CardMyNFT from './components/CardMyNFT'
 
-
 const NFTButton = styled(Button)`
   padding: 10px 16px;
   border-radius: 24px;
-  background: #0973B9;
+  background: #0973b9;
   color: ${({ theme }) => theme.colors.white};
-
 `
 
 const NFTMarketplace: React.FC = () => {
@@ -35,10 +33,10 @@ const NFTMarketplace: React.FC = () => {
               <div className="mt-6">
                 <NFTButton as="a" href="/NFT">
                   My NFT
-              </NFTButton>
+                </NFTButton>
                 <NFTButton as="a" href="/NFT/market-place" className="ml-2">
                   Marketplace
-              </NFTButton>
+                </NFTButton>
               </div>
             </div>
             <Route exact path={path}>
