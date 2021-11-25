@@ -7,13 +7,7 @@ import { Link, Redirect, useHistory } from 'react-router-dom'
 import { get, isEqual, compact } from 'lodash'
 
 import { ArrowBackIcon } from 'uikit-dev'
-import {
-  Box,
-  Button,
-  Flex,
-  Text,
-  useModal,
-} from 'definixswap-uikit'
+import { Box, Button, Flex, Text, useModal } from 'definixswap-uikit'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'
@@ -40,7 +34,7 @@ const usePrevious = (value, initialValue) => {
 
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const { t } = useTranslation()
-  const history = useHistory();
+  const history = useHistory()
   const { toastSuccess } = useToast()
   const [tx, setTx] = useState({})
   const [poolUSDBalancesState, setPoolUSDBalances] = useState([])
@@ -228,7 +222,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
       onNext={() => {
         fetchData()
         toastSuccess(t('Invest Complete'))
-        history.goBack();
+        history.goBack()
       }}
       calNewImpact={calNewImpact}
     />,

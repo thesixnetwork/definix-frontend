@@ -42,7 +42,7 @@ i18n
   })
 
 i18n.on('languageChanged', (lng) => {
-  document.documentElement.setAttribute('lang', lng.split('-')[0]);
-});
+  document.documentElement.setAttribute('lang', lng.split('-')[0])
+})
 
 export default i18n

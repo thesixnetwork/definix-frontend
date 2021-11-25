@@ -122,9 +122,13 @@ const HomeNotice: React.FC = () => {
         //     text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. \nWhat a number!',
         //   })),
         // )
-        setNotices(response.data.data?.data?.map(({ id, model, text}) => ({
-          id, model, text
-        })))
+        setNotices(
+          response.data.data?.data?.map(({ id, model, text }) => ({
+            id,
+            model,
+            text,
+          })),
+        )
       }
     }
     fetchNotice()
@@ -134,7 +138,15 @@ const HomeNotice: React.FC = () => {
     <Wrap>
       <NoticeBox>
         <Label type="noti">{t('NOTICE')}</Label>
-        {(notices.length === 1 ? <OneNotice>{notices[0].text}</OneNotice> : <NoticeSlider {...SliderOptions}>{notices.map(({ text }) => <Notice>{text}</Notice>)}</NoticeSlider>)}
+        {notices.length === 1 ? (
+          <OneNotice>{notices[0].text}</OneNotice>
+        ) : (
+          <NoticeSlider {...SliderOptions}>
+            {notices.map(({ text }) => (
+              <Notice>{text}</Notice>
+            ))}
+          </NoticeSlider>
+        )}
       </NoticeBox>
       <Character>
         <ImgHomeTopFinixIcon viewBox="0 0 434 200" width="100%" height="100%" />

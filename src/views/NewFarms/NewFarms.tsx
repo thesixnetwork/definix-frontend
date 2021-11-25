@@ -13,7 +13,7 @@ import { fetchFarmUserDataAsync, fetchBalances } from 'state/actions'
 import { useFarms, useBalances } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
-import { TitleSet, Box, DropdownOption } from 'definixswap-uikit'
+import { TitleSet, Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
 import FarmTabButtons from './components/FarmTabButtons'
@@ -22,6 +22,8 @@ import Withdraw from './components/Withdraw'
 
 const Farms: React.FC = () => {
   const { t } = useTranslation()
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
   const { path } = useRouteMatch()
   const dispatch = useDispatch()
   const farmsLP = useFarms()
@@ -159,7 +161,7 @@ const Farms: React.FC = () => {
       <Helmet>
         <title>Farm - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box className="mt-s28">
+      <Box className={`mb-s${isMobile ? 40 : 80}`}>
         {pageState.state === 'list' && (
           <>
             <TitleSet

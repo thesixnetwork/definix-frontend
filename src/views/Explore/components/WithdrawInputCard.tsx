@@ -38,21 +38,21 @@ export enum RatioType {
 const ratioTypes = Object.keys(RatioType)
 
 interface WithdrawInputCardProp {
-  setTx;
-  isWithdrawing;
-  setIsWithdrawing;
-  rebalance;
-  poolAmounts;
-  isSimulating;
-  currentInput;
-  setCurrentInput;
-  onNext;
-  ratioType;
-  setRatioType;
-  currentBalance;
-  currentBalanceNumber;
-  selectedToken;
-  setSelectedToken;
+  setTx
+  isWithdrawing
+  setIsWithdrawing
+  rebalance
+  poolAmounts
+  isSimulating
+  currentInput
+  setCurrentInput
+  onNext
+  ratioType
+  setRatioType
+  currentBalance
+  currentBalanceNumber
+  selectedToken
+  setSelectedToken
 }
 
 const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
@@ -115,28 +115,25 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         : new BigNumber(currentInput)
       const usdToken = get(rebalance, 'usdToken.0', {})
 
-      const lpAmount = thisInput.times(new BigNumber(10).pow(18)).toJSON();
-      const toAllAssets = ratioType === RatioType.Original;
+      const lpAmount = thisInput.times(new BigNumber(10).pow(18)).toJSON()
+      const toAllAssets = ratioType === RatioType.Original
       const outputRatios = ((rebalance || {}).tokens || []).map((token, index) => {
         const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
         return selectedToken[tokenAddress]
           ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
           : 0
-      });
-      const outputUSDRatio = selectedToken[typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)]
-      ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
-      : 0;
+      })
+      const outputUSDRatio = selectedToken[
+        typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)
+      ]
+        ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
+        : 0
 
       if (connector === 'klip') {
         klipProvider.genQRcodeContactInteract(
           getAddress(rebalance.address),
           JSON.stringify(getAbiRebalanceByName('removeFund')),
-          JSON.stringify([
-            lpAmount,
-            toAllAssets,
-            outputRatios,
-            outputUSDRatio,
-          ]),
+          JSON.stringify([lpAmount, toAllAssets, outputRatios, outputUSDRatio]),
           setShowModal,
         )
         const tx = await klipProvider.checkResponse()
@@ -144,12 +141,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         handleLocalStorage(tx)
       } else {
         const tx = await rebalanceContract.methods
-          .removeFund(
-            lpAmount,
-            toAllAssets,
-            outputRatios,
-            outputUSDRatio,
-          )
+          .removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio)
           .send({ from: account, gas: 5000000 })
         setTx(tx)
         handleLocalStorage(tx)
@@ -162,7 +154,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
       setIsWithdrawing(false)
     } catch (e) {
       // eslint-disable-next-line
-      debugger;
+      debugger
       setIsWithdrawing(false)
     }
   }
@@ -184,7 +176,9 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
   return (
     <Card p={isMobile ? 'S_20' : 'S_40'}>
       <Box mb="S_40">
-        <Text display="flex" color="textSubtle" textStyle="R_16M">{t('Withdrawal Amount')}</Text>
+        <Text display="flex" color="textSubtle" textStyle="R_16M">
+          {t('Withdrawal Amount')}
+        </Text>
 
         <ShareInput
           onSelectBalanceRateButton={handleBalanceChange}
@@ -258,18 +252,19 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
             .map((c) => <InlineAssetRatioLabel coin={c} />)
         ) : ratioType === RatioType.Equal ? (
           <>
-          {tokens
-            .map((token, index) => {
-              return {
-                ...token,
-                valueRatioCal: 100 / tokens.length,
-                // amount: (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
-              }
-            })
-            // .filter((rt) => rt.value)
-            .map((c) => <InlineAssetRatioLabel coin={c} />)
-            }
-            </>
+            {tokens
+              .map((token, index) => {
+                return {
+                  ...token,
+                  valueRatioCal: 100 / tokens.length,
+                  // amount: (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(token.decimals)),
+                }
+              })
+              // .filter((rt) => rt.value)
+              .map((c) => (
+                <InlineAssetRatioLabel coin={c} />
+              ))}
+          </>
         ) : (
           <>
             {tokens
@@ -320,11 +315,16 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         )}
       </Box>
 
-      <Button scale="lg" width="100%" disabled={isWithdrawing || isSimulating || ratioType === RatioType.Single && !selectedToken.length } onClick={onWithdraw}>
+      <Button
+        scale="lg"
+        width="100%"
+        disabled={isWithdrawing || isSimulating || (ratioType === RatioType.Single && !selectedToken.length)}
+        onClick={onWithdraw}
+      >
         {t('Withdraw')}
       </Button>
     </Card>
   )
 }
 
-export default WithdrawInputCard;
+export default WithdrawInputCard
