@@ -103,7 +103,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       classHeader="bd-b-n"
       bodyPadding="0px"
     >
-      <div style={{ width: 480}}>
+      <div style={{ width: 480 }}>
         <div className="bd-b pa-5">
           <Heading fontSize="32px !important" lineHeight="2">
             #02Fiil

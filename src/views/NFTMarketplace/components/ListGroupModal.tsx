@@ -51,7 +51,7 @@ const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       hideCloseButton={hideCloseButton}
       classHeader="bd-b-n pa-0"
     >
-      <div className='flex'>
+      <div className="flex">
         <div className={isMobile ? 'text-center' : ''}>
           <img alt="" src={tAra} />
         </div>
@@ -62,7 +62,7 @@ const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           <Text fontSize="16px !important" color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
           </Text>
-          <TableList rows={rows} isLoading={isLoading} isDark={isDark} total={10}/>
+          <TableList rows={rows} isLoading={isLoading} isDark={isDark} total={10} />
         </div>
       </div>
     </ModalNFT>
