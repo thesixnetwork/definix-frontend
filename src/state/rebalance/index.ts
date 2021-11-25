@@ -157,7 +157,7 @@ export const fetchRebalances = () => async (dispatch) => {
       const poolUsdBalance = (currentPoolUsdBalances || []).map((x, index) => {
         const currentToken = [...tokens][index]
         // @ts-ignore
-        return new BigNumber([x]).div(new BigNumber(10).pow((currentToken || {}).decimals || 18))
+        return new BigNumber([x]).div(new BigNumber(10).pow(18))
       })
       const totalAssetValue = BigNumber.sum.apply(null, poolUsdBalance)
       // @ts-ignore
