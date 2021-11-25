@@ -1,9 +1,6 @@
 import React from 'react'
 import numeral from 'numeral'
-import {
-  Flex,
-  Text,
-} from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit'
 import Coin from './Coin'
 
 const InlineAssetRatioLabel = ({ coin, className = '' }) => {
@@ -27,4 +24,4 @@ const InlineAssetRatioLabel = ({ coin, className = '' }) => {
   )
 }
 
-export default InlineAssetRatioLabel;
+export default InlineAssetRatioLabel

@@ -7,12 +7,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect, useHistory } from 'react-router-dom'
-import {
-  Box,
-  Button,
-  Flex,
-  Text,
-} from 'definixswap-uikit'
+import { Box, Button, Flex, Text } from 'definixswap-uikit'
 import { ArrowBackIcon } from 'uikit-dev'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/hooks'
@@ -29,7 +24,7 @@ interface WithdrawType {
 
 const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const { t } = useTranslation()
-  const history = useHistory();
+  const history = useHistory()
   const [tx, setTx] = useState({})
   const { toastSuccess } = useToast()
   const [selectedToken, setSelectedToken] = useState({})
@@ -131,10 +126,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       </Text>
 
       <div>
-        <WithdrawSummaryCard
-          rebalance={rebalance}
-          currentBalanceNumber={currentBalanceNumber}
-        />
+        <WithdrawSummaryCard rebalance={rebalance} currentBalanceNumber={currentBalanceNumber} />
         <WithdrawInputCard
           setTx={setTx}
           isWithdrawing={isWithdrawing}
@@ -153,7 +145,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           onNext={() => {
             setIsInputting(false)
             toastSuccess(t('Withdraw Complete'))
-            history.goBack();
+            history.goBack()
           }}
         />
       </div>
