@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { get } from 'lodash'
-import { CopyToClipboard, Flex, Text } from 'definixswap-uikit'
-import Helper from 'uikit-dev/components/Helper'
+import { CopyToClipboard, Flex, Helper, Text } from 'definixswap-uikit'
 
 import { useTranslation } from 'react-i18next'
 import { Rebalance } from '../../../state/types'

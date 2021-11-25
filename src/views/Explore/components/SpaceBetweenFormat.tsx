@@ -1,6 +1,5 @@
 import React from 'react'
-import { Flex, Text } from 'definixswap-uikit'
-import Helper from 'uikit-dev/components/Helper'
+import { Flex, Helper, Text } from 'definixswap-uikit'
 
 interface SpaceBetweenFormatType {
   title?: string

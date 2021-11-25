@@ -1,6 +1,5 @@
 import React from 'react'
-import { Text } from 'definixswap-uikit'
-import Helper from 'uikit-dev/components/Helper'
+import { Helper, Text } from 'definixswap-uikit'
 
 interface TwoLineFormatType {
   className?: string

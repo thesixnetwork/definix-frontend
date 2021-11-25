@@ -2,8 +2,7 @@ import useUserDeadline from 'hooks/useUserDeadline'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Input, Text, TextStyles, ColorStyles, Flex, SettingIcon } from 'definixswap-uikit'
-import Helper from 'uikit-dev/components/Helper'
+import { Input, Text, TextStyles, ColorStyles, Flex, Helper, SettingIcon } from 'definixswap-uikit'
 
 const StyledTransactionDeadlineSetting = styled.div`
   margin-top: 4px;
