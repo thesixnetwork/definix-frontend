@@ -64,7 +64,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         <div className="flex align-baseline flex-wrap justify-space-between mb-1">
           {typeName === 'Group' && (
             <GroupPlus>
-              <img src={plusWhite} alt="" width="20%"/>
+              <img src={plusWhite} alt="" width="20%" />
               <Text bold fontSize="20px" color="white" style={{ textShadow: '0px 2px 4px #00000050' }}>
                 {data.count}
               </Text>
