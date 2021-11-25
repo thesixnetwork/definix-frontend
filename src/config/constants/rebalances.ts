@@ -75,7 +75,7 @@ const rebalances: RebalanceConfig[] = [
       'Withstanding the trend in the market with both giants in the area. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
     fullDescription:
       'The representation of the giants of the markert, consisting of BTC and ETH. The distribution of the assets are 70/30 in ratio for this farm and rebalancing will occur once every time rebalancing fee is covered.',
-    icon: ['/images/vaults/bullish_giants_1.png', '/images/vaults/bullish_giants_2.png'],
+    icon: ['/images/vaults/bull1.png', '/images/vaults/bull2.png'],
     address: {
       56: '0xF71f0EA92957ef3916E9AE46e8DA295f437eACE9',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -117,7 +117,7 @@ const rebalances: RebalanceConfig[] = [
     title: 'PoS Top Pick',
     description: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
     fullDescription: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    icon: ['/images/vaults/bullish_giants_1.png', '/images/vaults/bullish_giants_2.png'],
+    icon: ['/images/vaults/pos1.png', '/images/vaults/pos2.png'],
     address: {
       56: '0xff41060E2da907aEe94A9E6349Ef23F2A6f12C79',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -146,13 +146,13 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
       {
         symbol: 'ADA',
         value: 20,
-        color: '#000000',
+        color: '#0031af',
         address: ADA,
       },
       {
@@ -164,19 +164,19 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'AVAX',
         value: 20,
-        color: '#000000',
+        color: '#e84141',
         address: AVAX,
       },
       {
         symbol: 'BNB',
         value: 20,
-        color: '#000000',
+        color: '#eeb80c',
         address: WBNB,
       },
       {
         symbol: 'DOT',
         value: 20,
-        color: '#000000',
+        color: '#e7027b',
         address: DOT,
       },
     ],
@@ -194,7 +194,7 @@ const rebalances: RebalanceConfig[] = [
     title: 'Game Index',
     description: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
     fullDescription: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    icon: ['/images/vaults/bullish_giants_1.png', '/images/vaults/bullish_giants_2.png'],
+    icon: ['/images/vaults/game1.png', '/images/vaults/game2.png'],
     address: {
       56: '0xB7d9f0aEdFd9270f3BD676450208a41e49385872',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -226,44 +226,44 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
       // THG, AXS, MBOX, TLM, ALICE, BUSD
       {
         symbol: 'THG',
         value: 10,
-        color: '#000000',
+        color: '#00f059',
         address: THG,
       },
       {
         symbol: 'AXS',
         value: 30,
-        color: '#000000',
+        color: '#00ebfc',
         address: AXS,
       },
       {
         symbol: 'MBOX',
         value: 30,
-        color: '#000000',
+        color: '#0247dc',
         address: MBOX,
       },
       {
         symbol: 'TLM',
         value: 10,
-        color: '#000000',
+        color: '#eacb7d',
         address: TLM,
       },
       {
         symbol: 'ALICE',
         value: 10,
-        color: '#000000',
+        color: '#e88095',
         address: ALICE,
       },
       {
         symbol: 'BUSD',
         value: 10,
-        color: '#000000',
+        color: '#eeb80c',
         address: BUSD,
       },
     ],
@@ -281,7 +281,7 @@ const rebalances: RebalanceConfig[] = [
     title: 'DeFi Time',
     description: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
     fullDescription: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    icon: ['/images/vaults/bullish_giants_1.png', '/images/vaults/bullish_giants_2.png'],
+    icon: ['/images/vaults/defi1.png', '/images/vaults/defi2.png'],
     address: {
       56: '0xC6dFB6b0A7c401C92c46869Bcf53048f9FC27Fd9',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -310,38 +310,38 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
       // CAKE, SUSHI, UNI, ALPHA, DODO
       {
         symbol: 'CAKE',
         value: 20,
-        color: '#000000',
+        color: '#4cd8de',
         address: CAKE,
       },
       {
         symbol: 'SUSHI',
         value: 20,
-        color: '#000000',
+        color: '#d164ae',
         address: SUSHI,
       },
       {
         symbol: 'UNI',
         value: 20,
-        color: '#000000',
+        color: '#ff007d',
         address: UNI,
       },
       {
         symbol: 'ALPHA',
         value: 20,
-        color: '#000000',
+        color: '#28b2ff',
         address: ALPHA,
       },
       {
         symbol: 'DODO',
         value: 20,
-        color: '#000000',
+        color: '#ffe801',
         address: DODO,
       },
     ],
@@ -361,7 +361,7 @@ const rebalances: RebalanceConfig[] = [
       'Famous capital in the farm and highly versatile to the market. The rebalancing will trigger once the value of the farm is covered for the rebalancing fee +1%.',
     fullDescription:
       'Consisting of BTC ETH USDT which is a big capital farm, but with a lower fluctuation exposure to the market as the biggest ratio is in USDT and other assets are distributed equally. The rebalancing occurs every time an extra 1% coverage movement occurs.',
-    icon: ['/images/vaults/topcoin_collector_1.png', '/images/vaults/topcoin_collector_2.png'],
+    icon: ['/images/vaults/top1.png', '/images/vaults/top2.png'],
     address: {
       56: '0xE915f3a2Bb715f6258A5F6d3902b80D42330c0B6',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -372,7 +372,7 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
       {
@@ -390,7 +390,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'BUSD',
         value: 50,
-        color: '#000000',
+        color: '#eeb80c',
         address: BUSD,
       },
     ],
@@ -410,7 +410,7 @@ const rebalances: RebalanceConfig[] = [
       'Tribute to the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
-    icon: ['/images/vaults/satoshi_1.png', '/images/vaults/satoshi_2.png'],
+    icon: ['/images/vaults/satoshi1.png', '/images/vaults/satoshi2.png'],
     address: {
       56: '0xD7f63315447cdA14Af30E8DF7E79A89e228Df834',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -426,7 +426,7 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
       {
@@ -470,7 +470,7 @@ const rebalances: RebalanceConfig[] = [
       'Leading crypto currencies in the industry. The rebalancing will trigger once the value of the farm is cover the rebalancing fee +1%.',
     fullDescription:
       'Consisting of BTC ETH BNB USDT which is a big capital with lower rate of fluctuation than the smaller market cap coins, responsible for the performance running along with the top market cap cryptocurrency. The ratio is distributed equally for rebalancing every time an extra 1% coverage movement occurs.',
-    icon: ['/images/vaults/bigcap_1.png', '/images/vaults/bigcap_2.png'],
+    icon: ['/images/vaults/bigcap1.png', '/images/vaults/bigcap2.png'],
     address: {
       56: '0x9f3b9cf6552bCDF7161Be1b101c133F24C2282c3',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -499,7 +499,7 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
       {
@@ -517,7 +517,7 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'BNB',
         value: 20,
-        color: '#000000',
+        color: '#eeb80c',
         address: WBNB,
       },
       {
@@ -547,7 +547,7 @@ const rebalances: RebalanceConfig[] = [
     title: 'Forever Favourite',
     description: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
     fullDescription: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    icon: ['/images/vaults/bullish_giants_1.png', '/images/vaults/bullish_giants_2.png'],
+    icon: ['/images/vaults/forever1.png', '/images/vaults/forever2.png'],
     address: {
       56: '0x234339Fb8B171bBeD5658CdbC8B25204C9e54c9e',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -576,38 +576,37 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
-      // DOGE, LTC, DOT, ADA, WBNB
       {
         symbol: 'DOGE',
         value: 20,
-        color: '#000000',
+        color: '#ba9f32',
         address: DOGE,
       },
       {
         symbol: 'LTC',
         value: 20,
-        color: '#000000',
+        color: '#345d9c',
         address: LTC,
       },
       {
         symbol: 'DOT',
         value: 20,
-        color: '#000000',
+        color: '#e7027b',
         address: DOT,
       },
       {
         symbol: 'ADA',
         value: 20,
-        color: '#000000',
+        color: '#0031af',
         address: ADA,
       },
       {
         symbol: 'BNB',
         value: 20,
-        color: '#000000',
+        color: '#eeb80c',
         address: WBNB,
       },
     ],
@@ -627,7 +626,7 @@ const rebalances: RebalanceConfig[] = [
       'Designed for Alt coin advocate. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
     fullDescription:
       'Consisting of ETH XRP BNB USDT with a higher rate of fluctuation in the top market cap coin category. This farm has allocated the risk to the stablecoin and rebalancing strategy is applied every 1 hour.',
-    icon: ['/images/vaults/altparty_1.png', '/images/vaults/altparty_2.png'],
+    icon: ['/images/vaults/alt1.png', '/images/vaults/alt2.png'],
     address: {
       56: '0x15edf6330e74B98172A33C351cEfBeF6e9b85bC6',
       97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
@@ -643,7 +642,7 @@ const rebalances: RebalanceConfig[] = [
     fee: {
       management: 0.2,
       buyback: 1.5,
-      bounty: 0.3,
+      // bounty: 0.3,
     },
     ratio: [
       {
@@ -655,13 +654,13 @@ const rebalances: RebalanceConfig[] = [
       {
         symbol: 'XRP',
         value: 30,
-        color: '#000000',
+        color: '#23292e',
         address: XRP,
       },
       {
         symbol: 'BNB',
         value: 30,
-        color: '#000000',
+        color: '#eeb80c',
         address: WBNB,
       },
       {
