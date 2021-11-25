@@ -196,7 +196,7 @@ const EarningBoxTemplate: React.FC<{
       <GridSectionWrap bg={curTheme.bottomBg} className={classNameStore.gridSectionWrap()}>
         <GridSection isMobile={isMobile}>
           {valueList.map((valueItem, index) => (
-            <GridBox index={index} curTheme={curTheme} className={classNameStore.gridBox(index)}>
+            <GridBox key={valueItem.title} index={index} curTheme={curTheme} className={classNameStore.gridBox(index)}>
               <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
                 {valueItem.title}
               </Text>

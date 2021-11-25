@@ -32,7 +32,7 @@ const Menu = (props) => {
       logout={reset}
       netWorth={<NetWorth />}
       Trans={Trans}
-      currentLang={i18n.language}
+      currentLang={i18n.languages[0]}
       langs={supportedLanguages}
       setLang={({ code }) => i18n.changeLanguage(code)}
       isDark={isDark}
