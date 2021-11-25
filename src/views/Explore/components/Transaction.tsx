@@ -8,8 +8,7 @@ import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { LinkExternal, Text, Toggle } from 'definixswap-uikit'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
+import { CopyToClipboard, Flex, LinkExternal, Text, Toggle } from 'definixswap-uikit'
 import { getAddress } from 'utils/addressHelpers'
 import PaginationCustom from './Pagination'
 import { Table, TD, TH, TR } from './Table'
@@ -71,12 +70,12 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
           rows.map((r) => (
             <TR key={`tsc-${r.block_number}`}>
               <TD>
-                <div className="flex">
-                  <Text textStyle="R_14R" className="mr-2">
+                <Flex alignItems="center">
+                  <Text textStyle="R_14R">
                     {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)}
                   </Text>
-                  <CopyToClipboard toCopy={r.user_address} iconWidth="16px" noText />
-                </div>
+                  <CopyToClipboard toCopy={r.user_address} />
+                </Flex>
               </TD>
               <TD align="center">
                 <Text textStyle="R_14R">
