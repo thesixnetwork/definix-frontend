@@ -73,7 +73,6 @@ const NameText = styled(Text)`
   width: 35px;
 `
 
-
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
   isHorizontal = false,
   className = '',
