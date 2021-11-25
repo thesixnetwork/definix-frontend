@@ -84,9 +84,9 @@ const rebalances: RebalanceConfig[] = [
     factory: [customFactory.definix, customFactory.definix],
     initCodeHash: [customInitCodeHash.definix, customInitCodeHash.definix],
     fee: {
-      management: 0.2,
-      buyback: 1.5,
-      bounty: 0.3,
+      management: 0.5,
+      buyback: 1.0,
+      // bounty: 0.3,
     },
     ratio: [
       {

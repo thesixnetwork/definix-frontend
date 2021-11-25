@@ -60,7 +60,7 @@ export interface Ratio {
 
 export interface Fee {
   management: number
-  bounty: number
+  // bounty: number
   buyback: number
 }
 export interface RebalanceConfig {

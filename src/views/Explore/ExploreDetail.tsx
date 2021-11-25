@@ -658,9 +658,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               <FullAssetRatio ratio={ratio} className="mb-4" />
               <TradeStrategy className="mb-4" description={rebalance.fullDescription} />
               <WithDrawalFees
-                managementFee={_.get(rebalance, 'fee.management', 0.2)}
+                managementFee={_.get(rebalance, 'fee.management', 0.5)}
                 bountyFee={_.get(rebalance, 'fee.bounty', 0.3)}
-                buybackFee={_.get(rebalance, 'fee.buyback', 1.5)}
+                buybackFee={_.get(rebalance, 'fee.buyback', 1.0)}
                 className="mb-4"
               />
               <FundDetail className="mb-4" rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
