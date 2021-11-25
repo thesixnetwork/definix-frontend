@@ -176,10 +176,10 @@ const App: React.FC = () => {
               {/* 404 */}
               <Route component={NotFound} />
             </Switch>
+            <ToastListener />
           </Suspense>
         </Menu>
       </Suspense>
-      <ToastListener />
       {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (
         <div
