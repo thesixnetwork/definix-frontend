@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
+import useTheme from 'hooks/useTheme'
 import { Button, Text, Heading, Image, useMatchBreakpoints } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import tAra from 'uikit-dev/images/for-ui-v2/nft/T-ARA.png'
-import iconCopy from 'uikit-dev/images/for-ui-v2/nft/Icon-copy.png'
+import copyWhite from 'uikit-dev/images/for-ui-v2/nft/copy-white.png'
+import copyBlack from 'uikit-dev/images/for-ui-v2/nft/copy-black.png'
 import ListFillModal from './ListFillModal'
 import ModalComplete from './ModalComplete'
 
@@ -19,6 +21,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
   const [handleBuy] = useModal(<ModalComplete />)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const { isDark } = useTheme()
 
   return (
     <ModalNFT
@@ -32,7 +35,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
         <div className={isMobile ? 'text-center' : ''}>
           <img alt="" src={tAra} />
         </div>
-        <div className="ml-5">
+        <div className={isMobile ? '' : 'ml-5'}>
           <Text bold fontSize="34px !important" lineHeight="1.3">
             #02
           </Text>
@@ -50,7 +53,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               <Text bold fontSize="14px" color="text" paddingRight="6px">
                 {`${'https://dryotus.definix.com/'.substring(0, 30)}`}...
               </Text>
-              <Image src={iconCopy} width={14} height={14} />
+              <Image src={isDark ? copyWhite : copyBlack} width={20} height={18} />
             </div>
           </div>
           <div className="mt-3">
@@ -71,7 +74,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
                   '0x55030000000065311'.length - 4,
                 )}`}
               </Text>
-              <Image src={iconCopy} width={14} height={14} />
+              <Image src={isDark ? copyWhite : copyBlack} width={20} height={18} />
             </div>
           </div>
 

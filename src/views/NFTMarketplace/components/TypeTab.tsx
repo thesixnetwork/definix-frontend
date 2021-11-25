@@ -60,7 +60,12 @@ const Tab = styled(NavLink)<{ active: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 16px;
-    padding: 16px;
+    height: auto;
+  }
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 16px;
+    height: auto;
+    width: 140px;
   }
 `
 
