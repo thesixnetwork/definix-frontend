@@ -4,6 +4,7 @@ import useModal from 'uikit-dev/widgets/Modal/useModal'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeading from './CardHeading'
 import ListDetailModal from './ListDetailModal'
+import ListGroupModal from './ListGroupModal'
 import DetailsSection from './DetailSelection'
 import { NFTCardProps } from './types'
 
@@ -34,7 +35,8 @@ const NFTCard: React.FC<NFTCardProps> = ({
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
-  const [onPresentConnectModal] = useModal(<ListDetailModal isMarketplace={isMarketplace} />)
+  console.log("typeName", typeName)
+  const [onPresentConnectModal] = useModal(typeName !== 'Group' ?<ListDetailModal isMarketplace={isMarketplace} /> : <ListGroupModal/>)
 
   useEffect(() => {
     setIsOpenAccordion(false)
