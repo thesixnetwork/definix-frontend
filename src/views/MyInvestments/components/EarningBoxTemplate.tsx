@@ -76,10 +76,10 @@ const GridSection = styled(Grid)<{ isMobile: boolean }>`
 `
 // pt-s20 pb-s24 mr-s32 ml-s${index > 0 ? '32' : '40'
 const GridBox = styled(Box)<{ index: number; curTheme: InnerTheme }>`
-  border-left: ${({ index, curTheme }) => (index > 0 ? `1px solid ${curTheme.borderColor}` : 'none')};
+  border-left: ${({ index, curTheme, theme }) => (index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none')};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     border-left: none;
-    border-top: ${({ index, curTheme }) => (index > 0 ? `1px solid ${curTheme.borderColor}` : 'none')};
+    border-left: ${({ index, curTheme, theme }) => (index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none')};
   }
 `
 
