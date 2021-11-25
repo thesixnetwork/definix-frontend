@@ -20,6 +20,10 @@ export const toastsSlice = createSlice({
         state.data.splice(toastIndex, 1)
       }
 
+      if (state.data.length >= 2) {
+        state.data.pop()
+      }
+
       state.data.unshift(payload)
     },
     remove: (state: ToastsState, action: PayloadAction<string>) => {

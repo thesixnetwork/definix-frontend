@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react'
 import { get } from 'lodash'
-import { Text } from 'definixswap-uikit'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
+import { CopyToClipboard, Flex, Text } from 'definixswap-uikit'
 import Helper from 'uikit-dev/components/Helper'
 
 import { useTranslation } from 'react-i18next'
@@ -21,22 +20,20 @@ const FactRow: React.FC<FactRowType> = ({ name, helper, value, toCopy }) => {
   return (
     <TR>
       <TH>
-        <div className="flex align-center">
+        <Flex alignItems="center">
           <Text textStyle="R_12M" color="mediumgrey">
             {name}
           </Text>
           {helper && <Helper text={helper} className="mx-2" position="top" />}
-        </div>
+        </Flex>
       </TH>
       <TD>
-        <div className="flex">
+        <Flex alignItems="center">
           {typeof value === 'string' ? (
-            <Text textStyle="R_14R" className={isCopy ? 'mr-2' : ''}>
-              {value}
-            </Text>
+            <Text textStyle="R_14R">{value}</Text>
           ) : (
             value.map((item, index) => {
-              const classNames = [index > 0 || isCopy ? 'mr-2' : '', index < value.length - 1 ? 'bd-r pr-2' : '']
+              const classNames = [index < value.length - 1 ? 'bd-r pr-2' : '']
               return (
                 <Text textStyle="R_14R" className={classNames.join(' ')}>
                   {item}
@@ -44,8 +41,8 @@ const FactRow: React.FC<FactRowType> = ({ name, helper, value, toCopy }) => {
               )
             })
           )}
-          {isCopy && <CopyToClipboard toCopy={toCopy} iconWidth="16px" noText />}
-        </div>
+          {isCopy && <CopyToClipboard toCopy={toCopy} />}
+        </Flex>
       </TD>
     </TR>
   )

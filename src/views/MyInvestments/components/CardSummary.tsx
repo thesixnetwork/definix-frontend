@@ -23,11 +23,17 @@ function CardSummary({ products }) {
 
   useEffect(() => {
     setTimeout(() => {
-      toastInfo('toast title1', 'toast desc')
-      toastError('toast title2', 'toast desc')
-      toastSuccess('toast title3', 'toast desc')
-      toastWarning('toast title4', 'toast desc')
+      toastInfo('toast title', 'toast desc4')
+    }, 5000)
+    setTimeout(() => {
+      toastInfo('toast title', 'toast desc3')
+    }, 4000)
+    setTimeout(() => {
+      toastInfo('toast title', 'toast desc2')
     }, 3000)
+    setTimeout(() => {
+      toastError('toast title', 'toast desc1')
+    }, 2000)
   }, [toastInfo, toastError, toastSuccess, toastWarning])
   return (
     <>
