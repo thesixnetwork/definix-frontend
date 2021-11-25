@@ -123,6 +123,11 @@ const WrapTop = styled(Flex)`
   }
 `
 
+const formatText = (num: number) => {
+  if (!num) return ''
+  return num.toLocaleString('en-US', { maximumFractionDigits: 0 })
+}
+
 const CardFinix = () => {
   const { isXxl } = useMatchBreakpoints()
   const { t } = useTranslation()
@@ -177,11 +182,11 @@ const CardFinix = () => {
         <WrapInfo>
           <InfoValues>
             <InfoTitleBold>{t('Total FINIX Supply')}</InfoTitleBold>
-            <InfoValueBold>{finixSupply}</InfoValueBold>
+            <InfoValueBold>{formatText(finixSupply)}</InfoValueBold>
           </InfoValues>
           <InfoValues mt="S_12">
             <InfoTitle>{t('FINIX Generated')}</InfoTitle>
-            <InfoValue>{finixSupply && finixTransfered ? finixSupply - finixTransfered : 0}</InfoValue>
+            <InfoValue>{formatText(finixSupply && finixTransfered ? finixSupply - finixTransfered : 0)}</InfoValue>
           </InfoValues>
           <InfoValues mt="S_4">
             <InfoTitle>
@@ -189,15 +194,15 @@ const CardFinix = () => {
                 BSC: 'BSC',
               })}
             </InfoTitle>
-            <InfoValue>{finixTransfered ? finixTransfered - 600000 : 0}</InfoValue>
+            <InfoValue>{formatText(finixTransfered ? finixTransfered - 600000 : 0)}</InfoValue>
           </InfoValues>
           <InfoValues mt="S_4">
             <InfoTitle>{t('FINIX Reserved for Bridge')}</InfoTitle>
-            <InfoValue>{finixTransfered ? 600000 : 0}</InfoValue>
+            <InfoValue>{formatText(finixTransfered ? 600000 : 0)}</InfoValue>
           </InfoValues>
           <InfoValues mt="S_16">
             <InfoTitleBold>{t('Total FINIX Burned')}</InfoTitleBold>
-            <InfoValueBold>{burnedBalance}</InfoValueBold>
+            <InfoValueBold>{formatText(burnedBalance)}</InfoValueBold>
           </InfoValues>
           <InfoValues mt="S_12">
             <InfoTitleBold>{t('New FINIX / sec')}</InfoTitleBold>

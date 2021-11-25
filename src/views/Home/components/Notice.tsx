@@ -73,6 +73,11 @@ const Notice = styled(Text)`
   }
 `
 
+const OneNotice = styled(Notice)`
+  margin-top: ${({ theme }) => theme.space.S_20}px;
+  margin-bottom: ${({ theme }) => theme.space.S_20}px;
+`
+
 const NoticeBox = styled(Box)`
   width: 55%;
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -110,16 +115,20 @@ const HomeNotice: React.FC = () => {
       const captionTextAPI = process.env.REACT_APP_API_CAPTION_TEXT_KLAYTN
       const response = await axios.get(captionTextAPI)
       if (response.data.data) {
+        // setNotices(
+        //   new Array(3).fill(true).map((val, index) => ({
+        //     id: index,
+        //     model: index,
+        //     text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. \nWhat a number!',
+        //   })),
+        // )
         setNotices(
-          new Array(3).fill(true).map((val, index) => ({
-            id: index,
-            model: index,
-            text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. \nWhat a number!',
+          response.data.data?.data?.map(({ id, model, text }) => ({
+            id,
+            model,
+            text,
           })),
         )
-        // setNotice(response.data.data?.data?.map(({ id, model, text}) => ({
-        //   id, model, text
-        // })))
       }
     }
     fetchNotice()
@@ -129,7 +138,15 @@ const HomeNotice: React.FC = () => {
     <Wrap>
       <NoticeBox>
         <Label type="noti">{t('NOTICE')}</Label>
-        <NoticeSlider {...SliderOptions}>{notices && notices.map(({ text }) => <Notice>{text}</Notice>)}</NoticeSlider>
+        {notices.length === 1 ? (
+          <OneNotice>{notices[0].text}</OneNotice>
+        ) : (
+          <NoticeSlider {...SliderOptions}>
+            {notices.map(({ text }) => (
+              <Notice>{text}</Notice>
+            ))}
+          </NoticeSlider>
+        )}
       </NoticeBox>
       <Character>
         <ImgHomeTopFinixIcon viewBox="0 0 434 200" width="100%" height="100%" />

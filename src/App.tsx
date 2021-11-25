@@ -127,7 +127,7 @@ const App: React.FC = () => {
               <Route path="/rebalancing">
                 <Explore />
               </Route>
-              <Route path="/myinvestments">
+              <Route path="/my">
                 <MyInvestments />
               </Route>
               <Route path="/AirdropKlay">
@@ -176,10 +176,10 @@ const App: React.FC = () => {
               {/* 404 */}
               <Route component={NotFound} />
             </Switch>
+            <ToastListener />
           </Suspense>
         </Menu>
       </Suspense>
-      <ToastListener />
       {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (
         <div

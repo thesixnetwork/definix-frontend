@@ -12,7 +12,7 @@ import usePoolsList from 'hooks/usePoolsList'
 import { useFarms, usePools, useBalances } from 'state/hooks'
 import { fetchBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
-import { TitleSet, Box, DropdownOption } from 'definixswap-uikit'
+import { TitleSet, Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
 import { IS_GENESIS } from '../../config'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
@@ -22,6 +22,8 @@ import Withdraw from './components/Withdraw'
 
 const Farm: React.FC = () => {
   const { t } = useTranslation()
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
   const { path } = useRouteMatch()
   const { account } = useWallet()
   const dispatch = useDispatch()
@@ -150,7 +152,7 @@ const Farm: React.FC = () => {
           </MaxWidth>
         </LeftPanel>
       </TwoPanelLayout> */}
-      <Box className="mt-s28">
+      <Box className={`mb-s${isMobile ? 40 : 80}`}>
         {pageState.state === 'list' && (
           <>
             <TitleSet

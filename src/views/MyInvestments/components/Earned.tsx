@@ -13,8 +13,9 @@ import EarningBoxTemplate from './EarningBoxTemplate'
 
 const Earned: React.FC<{
   isMobile: boolean
+  isMain?: boolean
   theme?: 'white' | 'dark'
-}> = ({ isMobile, theme = 'white' }) => {
+}> = ({ isMobile, isMain = false, theme = 'white' }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
   const finixPrice = usePriceFinixUsd()
@@ -76,6 +77,7 @@ const Earned: React.FC<{
   return (
     <EarningBoxTemplate
       theme={theme}
+      isMain={isMain}
       isMobile={isMobile}
       hasAccount={!!account}
       total={{

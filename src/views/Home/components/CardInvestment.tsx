@@ -9,18 +9,7 @@ const CardInvestment = () => {
   return (
     <Card bg={ColorStyles.DEEPBROWN}>
       <CardBody p="0">
-        <Earned isMobile={isMobile} theme="dark" />
-        {/* <EarningBoxTemplate
-          theme="dark"
-          isMobile={isMobile}
-          hasAccount={!!account}
-          total={{
-            title: t('Total Finix Earned'),
-            value: earnedList.reduce((result, item) => result + item.value, 0),
-            price: earnedList.reduce((result, item) => result + item.price, 0),
-          }}
-          valueList={earnedList}
-        /> */}
+        <Earned isMain isMobile={isMobile} theme="dark" />
       </CardBody>
     </Card>
   )

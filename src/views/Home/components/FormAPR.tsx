@@ -12,6 +12,7 @@ interface Props {
 
 const WrapGrid = styled(Grid)`
   width: 100%;
+  margin-top: 0;
   grid-template-columns: repeat(2, 80%, 20%);
   grid-template-areas:
     'image image'

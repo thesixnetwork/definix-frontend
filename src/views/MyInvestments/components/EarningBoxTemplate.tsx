@@ -9,6 +9,7 @@ import { Button, Skeleton, Text, Box, ColorStyles, Flex, Grid, DoubleArrowButton
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
+import { useHistory } from 'react-router'
 // import FinixHarvestAllBalance from './FinixHarvestTotalBalance'
 // import FinixHarvestBalance from './FinixHarvestBalance'
 // import FinixHarvestPool from './FinixHarvestPool'
@@ -56,10 +57,21 @@ const MainSection = styled(Flex)<{ isMobile: boolean }>`
     align-items: flex-start;
   }
 `
-const ButtonWrap = styled(Box)<{ isMobile: boolean }>`
+const ButtonWrap = styled(Flex)<{ isMobile: boolean }>`
   width: 186px;
+  flex-direction: column;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: row;
     width: 100%;
+
+    > button {
+      :nth-child(1) {
+        margin-right: 8px;
+      }
+      :nth-child(2) {
+        margin-left: 8px;
+      }
+    }
   }
 `
 const GridSectionWrap = styled(Flex)<{ bg: any }>`
@@ -76,10 +88,12 @@ const GridSection = styled(Grid)<{ isMobile: boolean }>`
 `
 // pt-s20 pb-s24 mr-s32 ml-s${index > 0 ? '32' : '40'
 const GridBox = styled(Box)<{ index: number; curTheme: InnerTheme }>`
-  border-left: ${({ index, curTheme }) => (index > 0 ? `1px solid ${curTheme.borderColor}` : 'none')};
+  border-left: ${({ index, curTheme, theme }) =>
+    index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     border-left: none;
-    border-top: ${({ index, curTheme }) => (index > 0 ? `1px solid ${curTheme.borderColor}` : 'none')};
+    border-top: ${({ index, curTheme, theme }) =>
+      index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
   }
 `
 
@@ -99,12 +113,14 @@ interface ValueList {
 }
 const EarningBoxTemplate: React.FC<{
   isMobile: boolean
+  isMain?: boolean
   hasAccount: boolean
   total: ValueList
   valueList: ValueList[]
   theme?: 'white' | 'dark'
-}> = ({ isMobile, hasAccount, total, valueList, theme = 'white' }) => {
+}> = ({ isMobile, isMain = false, hasAccount, total, valueList, theme = 'white' }) => {
   const { t } = useTranslation()
+  const history = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
 
   const farmsWithBalance = useFarmsWithBalance()
@@ -183,20 +199,26 @@ const EarningBoxTemplate: React.FC<{
               // id="harvest-all"
               md
               width="100%"
-              disabled={balancesWithValue.length <= 0 || pendingTx}
+              isLoading={pendingTx}
+              disabled={balancesWithValue.length <= 0}
               onClick={harvestAllFarms}
             >
-              {pendingTx ? t('Collecting...') : t('Harvest')}
+              {t('Harvest')}
             </Button>
           ) : (
             <UnlockButton />
+          )}
+          {isMain && (
+            <Button md variant="brown" width="100%" mt={isMobile ? '0' : '12px'} onClick={() => history.push('/my')}>
+              {t('Detail')}
+            </Button>
           )}
         </ButtonWrap>
       </MainSection>
       <GridSectionWrap bg={curTheme.bottomBg} className={classNameStore.gridSectionWrap()}>
         <GridSection isMobile={isMobile}>
           {valueList.map((valueItem, index) => (
-            <GridBox index={index} curTheme={curTheme} className={classNameStore.gridBox(index)}>
+            <GridBox key={valueItem.title} index={index} curTheme={curTheme} className={classNameStore.gridBox(index)}>
               <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
                 {valueItem.title}
               </Text>

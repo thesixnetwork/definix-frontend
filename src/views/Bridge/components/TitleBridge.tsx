@@ -12,7 +12,7 @@ const TitleBridge: React.FC<TitleType> = ({ isMobile }) => {
   return (
     <>
       <Flex>
-        <TitleSet title={t('Bridge')} description={t('Try to Bridge the token for a different chain.')} />
+        <TitleSet title={t('Bridge')} description={t('Transfer tokens to other chains')} />
 
         {!isMobile && (
           <Flex>

@@ -23,11 +23,17 @@ i18n
     backend: {
       loadPath: `./locales/{{lng}}.json`,
     },
+    load: 'languageOnly',
     // debug: true,
     react: {
       useSuspense: true,
     },
+    // detection: {
+    //   order: ['localStorage', 'querystring', 'navigator'],
+    //   lookupQuerystring: 'lng',
+    // },
     fallbackLng: 'en',
+    supportedLngs: ['en', 'ko'],
     preload: ['en'],
     keySeparator: false,
     interpolation: {
@@ -36,7 +42,7 @@ i18n
   })
 
 i18n.on('languageChanged', (lng) => {
-  document.documentElement.setAttribute('lang', lng)
+  document.documentElement.setAttribute('lang', lng.split('-')[0])
 })
 
 export default i18n
