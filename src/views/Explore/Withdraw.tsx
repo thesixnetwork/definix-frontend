@@ -7,21 +7,16 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect, useHistory } from 'react-router-dom'
-import {
-  Box,
-  Button,
-  Flex,
-  Text,
-} from 'definixswap-uikit'
+import { Box, Button, Flex, Text } from 'definixswap-uikit'
 import { ArrowBackIcon } from 'uikit-dev'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/hooks'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
 import { fetchBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
-import { simulateWithdraw } from '../../offline-pool'
+
 import WithdrawSummaryCard from './components/WithdrawSummaryCard'
-import WithdrawInputCard, { RatioType } from './components/WithdrawInputCard'
+import WithdrawInputCard from './components/WithdrawInputCard'
 
 interface WithdrawType {
   rebalance: Rebalance | any
@@ -29,16 +24,10 @@ interface WithdrawType {
 
 const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const { t } = useTranslation()
-  const history = useHistory();
+  const history = useHistory()
   const [tx, setTx] = useState({})
   const { toastSuccess } = useToast()
-  const [selectedToken, setSelectedToken] = useState({})
-  const [currentInput, setCurrentInput] = useState('')
   const [isInputting, setIsInputting] = useState(true)
-  const [isSimulating, setIsSimulating] = useState(false)
-  const [isWithdrawing, setIsWithdrawing] = useState(false)
-  const [poolAmounts, setPoolAmounts] = useState([])
-  const [ratioType, setRatioType] = useState(RatioType.Original)
 
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -56,49 +45,8 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   useEffect(() => {
     return () => {
       setIsInputting(true)
-      setRatioType(RatioType.Original)
     }
   }, [])
-
-  const fetchData = useCallback(async () => {
-    if (rebalance && new BigNumber(currentInput).toNumber() > 0) {
-      setIsSimulating(true)
-      const thisRebalanceBalance = get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
-      const myBalance = get(thisRebalanceBalance, getAddress(rebalance.address), new BigNumber(0))
-      const thisInput = myBalance.isLessThan(new BigNumber(currentInput)) ? myBalance : new BigNumber(currentInput)
-      const [, poolAmountsData] = await simulateWithdraw(
-        thisInput,
-        compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])]).map((c, index) => {
-          const ratioPoint = (
-            ((rebalance || {}).tokenRatioPoints || [])[index] ||
-            ((rebalance || {}).usdTokenRatioPoint || [])[0] ||
-            new BigNumber(0)
-          ).toNumber()
-          const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
-          const decimal = c.decimals
-          return {
-            ...c,
-            symbol: c.symbol,
-            address: ratioObject.address,
-            ratioPoint,
-            value: new BigNumber(currentInput as string).times(new BigNumber(10).pow(decimal)),
-            isSelected: !!selectedToken[getAddress(ratioObject.address)],
-          }
-        }),
-        [((rebalance || {}).totalSupply || [])[0]],
-        ratioType === RatioType.Original,
-      )
-      setPoolAmounts(poolAmountsData)
-      setIsSimulating(false)
-    }
-    if (new BigNumber(currentInput).toNumber() <= 0) {
-      setPoolAmounts([])
-    }
-  }, [selectedToken, currentInput, rebalance, ratioType, balances, rebalanceBalances])
-
-  useEffect(() => {
-    fetchData()
-  }, [selectedToken, currentInput, rebalance, fetchData, ratioType])
 
   if (!rebalance) return <Redirect to="/rebalancing" />
 
@@ -131,29 +79,17 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       </Text>
 
       <div>
-        <WithdrawSummaryCard
-          rebalance={rebalance}
-          currentBalanceNumber={currentBalanceNumber}
-        />
+        <WithdrawSummaryCard rebalance={rebalance} currentBalanceNumber={currentBalanceNumber} />
         <WithdrawInputCard
           setTx={setTx}
-          isWithdrawing={isWithdrawing}
-          setIsWithdrawing={setIsWithdrawing}
-          selectedToken={selectedToken}
-          setSelectedToken={setSelectedToken}
           rebalance={rebalance}
-          poolAmounts={poolAmounts}
-          isSimulating={isSimulating}
-          currentInput={currentInput}
-          setCurrentInput={setCurrentInput}
+          balances={balances}
+          rebalanceBalances={rebalanceBalances}
           currentBalance={currentBalance}
-          currentBalanceNumber={currentBalanceNumber}
-          ratioType={ratioType}
-          setRatioType={setRatioType}
           onNext={() => {
             setIsInputting(false)
             toastSuccess(t('Withdraw Complete'))
-            history.goBack();
+            history.goBack()
           }}
         />
       </div>

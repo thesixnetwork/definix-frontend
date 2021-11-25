@@ -176,7 +176,7 @@ const CardCalculate = ({
           </Text>
           {false && <PriceUpdate className="mt-3" onClick={recalculate} />}
         </Flex>
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" color="textSubtle" textStyle="R_14R">
           <SpaceBetweenFormat
             className="mb-2"
             title={t('Estimated Value')}
@@ -185,32 +185,8 @@ const CardCalculate = ({
           <SpaceBetweenFormat
             className="mb-2"
             title={t('Price Impact')}
-            // value={`${calNewImpact <= 0.1 ? '< 0.1' : calNewImpact}%`}
             value={`${calNewImpact <= 0.1 ? '< ' : ''} ${numeral(calNewImpact).format('0,0.[00]')}%`}
           />
-
-          {/* <Share
-            share={
-              currentShare <= 0 || Number.isNaN(currentShare)
-                ? numeral(sumPoolAmount).format('0,0.[00]')
-                : numeral(currentShare).format('0,0.[00]')
-            }
-            usd={`~${numeral(sumPoolAmount).format('0,0.[00]')}`}
-            textAlign={isMobile ? 'center' : 'left'}
-          /> */}
-          {/* <Text fontSize="12px" textAlign={isMobile ? 'center' : 'left'}>
-            Output is estimated. You will receive at least{' '}
-            <strong>{numeral(sumPoolAmount - sumPoolAmount / (100 / (slippage / 100))).format('0,0.[00]')} USD</strong> or
-            the transaction will revert.
-          </Text> */}
-          {/*
-            <SpaceBetweenFormat
-              className="mb-2"
-              title={t('Minimum Received')}
-              value={`${numeral(currentShare).format('0,0.[00]')} SHARE`}
-            />
-            <SpaceBetweenFormat className="mb-2" title="Liquidity Provider Fee" value="0.003996 SIX" />
-           */}
         </Flex>
       </Box>
       <Button className="mt-s40" width="100%" disabled={isInvesting || isSimulating} onClick={onInvest}>

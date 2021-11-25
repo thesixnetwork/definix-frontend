@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'uikit-dev'
+import { Flex, Text } from 'definixswap-uikit'
 import Helper from 'uikit-dev/components/Helper'
 
 interface SpaceBetweenFormatType {
@@ -22,19 +22,19 @@ const SpaceBetweenFormat: React.FC<SpaceBetweenFormatType> = ({
   hint = '',
 }) => {
   return (
-    <div className={`flex justify-space-between align-center ${className}`}>
+    <Flex justifyContent="space-between" alignItems="center" className={className}>
       {titleElm || (
-        <div className="flex pr-3">
+        <Flex pr="S_16">
           <Text fontSize="14px">{title}</Text>
-          {hint && <Helper text={hint} className="ml-2" position="top" />}
-        </div>
+          {hint && <Helper text={hint} className="ml-s4" position="top" />}
+        </Flex>
       )}
       {valueElm || (
-        <Text color={valueColor} bold>
+        <Text color={valueColor} fontWeight="500">
           {value}
         </Text>
       )}
-    </div>
+    </Flex>
   )
 }
 

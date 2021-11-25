@@ -11,8 +11,6 @@ import {
   Card,
   Flex,
   Divider,
-  Button,
-  ButtonVariants,
   BackIcon,
   useModal,
   useMatchBreakpoints,

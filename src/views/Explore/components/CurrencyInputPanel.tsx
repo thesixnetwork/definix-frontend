@@ -38,6 +38,10 @@ const InputBox = styled.div`
   background: ${({ theme }) => theme.colors.input};
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.border};
+
+  .token-amount-input {
+    color: ${({ theme }) => theme.colors.black};
+  }
 `
 
 const StyledAnountButton = styled(AnountButton)`

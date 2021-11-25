@@ -6,16 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { provider } from 'web3-core'
 
-import {
-  Box,
-  Button,
-  Card,
-  CardBody,
-  CheckBIcon,
-  Flex,
-  Text,
-  useMatchBreakpoints,
-} from 'definixswap-uikit'
+import { Box, Button, Card, CardBody, CheckBIcon, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
@@ -31,14 +22,14 @@ import CurrencyInputPanel from './CurrencyInputPanel'
 import TwoLineFormat from './TwoLineFormat'
 
 interface InvestInputCardProp {
-  isSimulating;
-  balances;
-  allowances;
-  onNext;
-  rebalance;
-  setCurrentInput;
-  currentInput;
-  sumPoolAmount;
+  isSimulating
+  balances
+  allowances
+  onNext
+  rebalance
+  setCurrentInput
+  currentInput
+  sumPoolAmount
 }
 
 const InvestInputCard: React.FC<InvestInputCardProp> = ({
@@ -275,4 +266,4 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
   )
 }
 
-export default InvestInputCard;
+export default InvestInputCard
