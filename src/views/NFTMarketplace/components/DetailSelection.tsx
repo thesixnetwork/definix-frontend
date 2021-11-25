@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import useTheme from 'hooks/useTheme'
 import { Text, Heading, Image } from '../../../uikit-dev'
+import plusWhite from '../../../uikit-dev/images/for-ui-v2/plus-white.png'
 
 export interface ExpandableSectionProps {
   isHorizontal?: boolean
@@ -28,10 +30,23 @@ const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
     !isHorizontal && theme.isDark
       ? '#121212'
       : !isHorizontal && theme.isDark
-      ? theme.colors.cardFooter
-      : 'transparent'};
+        ? theme.colors.cardFooter
+        : 'transparent'};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
+`
+
+const GroupPlus = styled.div<{ isHorizontal?: boolean }>`
+  border-radius: 50%;
+  background-color: #0973B9;
+  position: absolute;
+  top: 76%;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 8%;
+  width: 10%;
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
@@ -41,23 +56,18 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   typeName,
   isMarketplace,
 }) => {
+  const { isDark } = useTheme()
   return (
     <>
       <InfosBox>
         <div className="flex align-baseline flex-wrap justify-space-between mb-1">
           {typeName === 'Group' && (
-            <div
-              style={{
-                borderRadius: 40,
-                padding: '8px 5px',
-                backgroundColor: '#0973B9',
-                position: 'absolute',
-                top: '78%',
-                right: 0,
-              }}
-            >
-              + {data.count}
-            </div>
+            <GroupPlus>
+              <img src={plusWhite} alt="" width="20%" />
+              <Text bold fontSize="20px" color="white">
+                {data.count}
+              </Text>
+            </GroupPlus>
           )}
 
           <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>

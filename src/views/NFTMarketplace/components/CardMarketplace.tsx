@@ -38,7 +38,6 @@ const CardBox = styled(Card)`
 const BoxDropdown = styled(Button)`
   height: 40px;
   border: 2px solid ${({ theme }) => theme.colors.backgroundBox} !important;
-  background: ${({ theme }) => theme.colors.border} !important;
   border-radius: ${({ theme }) => theme.radii.large};
 `
 

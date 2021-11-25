@@ -64,7 +64,8 @@ const DropdownContent = styled.div<{ position: Position; isFullWidth: boolean }>
 
 const Container = styled.div`
   position: relative;
-  &:hover ${DropdownContent}, &:focus-within ${DropdownContent} {
+  // &:hover ${DropdownContent}, 
+  &:focus-within ${DropdownContent} {
     display: flex;
   }
 `

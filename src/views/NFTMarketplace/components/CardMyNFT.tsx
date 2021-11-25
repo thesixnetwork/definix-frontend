@@ -91,7 +91,7 @@ const CardMyNFT = () => {
       <TypeTab current="/NFT" />
       <FinixStake>
         <SelectView typeName={typeName} setTypeName={setTypeName} />
-        <Text className="mt-5 mb-5">Not for sale : 5 results</Text>
+        <Text className="mt-5 mb-5" fontSize="16px">Not for sale : <b>5 results</b></Text>
         {typeName === 'Grid' ? (
           <FlexLayout cols={3}>
             {list.map((data) => (
