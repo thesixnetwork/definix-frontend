@@ -168,7 +168,7 @@ const rebalances: RebalanceConfig[] = [
         address: AVAX,
       },
       {
-        symbol: 'BNB',
+        symbol: 'WBNB',
         value: 20,
         color: '#eeb80c',
         address: WBNB,
@@ -515,7 +515,7 @@ const rebalances: RebalanceConfig[] = [
         address: ETH,
       },
       {
-        symbol: 'BNB',
+        symbol: 'WBNB',
         value: 20,
         color: '#eeb80c',
         address: WBNB,
@@ -604,7 +604,7 @@ const rebalances: RebalanceConfig[] = [
         address: ADA,
       },
       {
-        symbol: 'BNB',
+        symbol: 'WBNB',
         value: 20,
         color: '#eeb80c',
         address: WBNB,
@@ -658,7 +658,7 @@ const rebalances: RebalanceConfig[] = [
         address: XRP,
       },
       {
-        symbol: 'BNB',
+        symbol: 'WBNB',
         value: 30,
         color: '#eeb80c',
         address: WBNB,
