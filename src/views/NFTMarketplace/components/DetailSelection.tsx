@@ -37,6 +37,7 @@ const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
 `
 
 const GroupPlus = styled.div<{ isHorizontal?: boolean }>`
+  border: 1px solid #737375;
   border-radius: 50%;
   background-color: #0973b9;
   position: absolute;
@@ -46,7 +47,7 @@ const GroupPlus = styled.div<{ isHorizontal?: boolean }>`
   align-items: center;
   justify-content: center;
   height: 8%;
-  width: 10%;
+  width: 9%;
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
@@ -63,8 +64,8 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         <div className="flex align-baseline flex-wrap justify-space-between mb-1">
           {typeName === 'Group' && (
             <GroupPlus>
-              <img src={plusWhite} alt="" width="20%" />
-              <Text bold fontSize="20px" color="white">
+              <img src={plusWhite} alt="" width="20%"/>
+              <Text bold fontSize="20px" color="white" style={{ textShadow: '0px 2px 4px #00000050' }}>
                 {data.count}
               </Text>
             </GroupPlus>

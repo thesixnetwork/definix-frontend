@@ -6,7 +6,6 @@ import ModalSorry from 'uikit-dev/widgets/Modal/Modal'
 import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
 import tAra from 'uikit-dev/images/for-ui-v2/t-ara.png'
 import { ChevronDownIcon } from 'uikit-dev/components/Svg'
-import 'react-datetime-pickers/dist/index.css'
 import DropdownList from './DropdownNFT/DropdownList'
 
 interface Props {
