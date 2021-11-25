@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Text, Heading, Image } from '../../../uikit-dev'
+import { Text, Heading, Image, Flex } from '../../../uikit-dev'
 import plusWhite from '../../../uikit-dev/images/for-ui-v2/plus-white.png'
 
 export interface ExpandableSectionProps {
@@ -47,8 +47,32 @@ const GroupPlus = styled.div<{ isHorizontal?: boolean }>`
   align-items: center;
   justify-content: center;
   height: 8%;
-  width: 9%;
+  width: 10%;
 `
+
+const BottomContent = styled(Flex)`
+  width: 100%;
+  justify-content: flex-end;
+
+  @media screen and (max-width: ${768}) {
+    padding: 0px 20px 18px 20px;
+  }
+`
+
+const NameText = styled(Text)`
+  border: 1px solid #737375;
+  border-radius: 50%;
+  background-color: #0973b9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -32px;
+  margin-bottom: 12px;
+  z-index: 10;
+  height: 35px;
+  width: 35px;
+`
+
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
   isHorizontal = false,
@@ -61,17 +85,26 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   return (
     <>
       <InfosBox>
-        <div className="flex align-baseline flex-wrap justify-space-between mb-1">
+        <div>
           {typeName === 'Group' && (
-            <GroupPlus>
-              <img src={plusWhite} alt="" width="20%" />
-              <Text bold fontSize="20px" color="white" style={{ textShadow: '0px 2px 4px #00000050' }}>
-                {data.count}
-              </Text>
-            </GroupPlus>
+            <BottomContent>
+              <NameText mt="-20px" mb="18px">
+                <img src={plusWhite} alt="" width="20%" />
+                <Text bold fontSize="20px" color="white" style={{ textShadow: '0px 2px 4px #00000050' }}>
+                  {data.count}
+                </Text>
+              </NameText>
+            </BottomContent>
+
+            // <GroupPlus>
+            //   <img src={plusWhite} alt="" width="20%" />
+            //   <Text bold fontSize="20px" color="white" style={{ textShadow: '0px 2px 4px #00000050' }}>
+            //     {data.count}
+            //   </Text>
+            // </GroupPlus>
           )}
 
-          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+          <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
             <Heading bold className="flex-shrink">
               #02ffff
             </Heading>

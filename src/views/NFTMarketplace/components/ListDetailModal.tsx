@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
+import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Button, Text, Heading, Image, useMatchBreakpoints } from 'uikit-dev'
+import { Button, Text, Heading, Image, useMatchBreakpoints, Flex } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import tAra from 'uikit-dev/images/for-ui-v2/nft/T-ARA.png'
@@ -14,6 +15,16 @@ interface Props {
   onDismiss?: () => void
   isMarketplace?: boolean
 }
+
+const ImgWrap = styled(Flex)`
+  width: 340px;
+  height: 330px;
+  flex-shrink: 0;
+`
+
+const LayoutImg = styled.div`
+  text-align: -webkit-center;
+`
 
 const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
@@ -30,16 +41,25 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
       onDismiss={onDismiss}
       hideCloseButton={hideCloseButton}
       classHeader="bd-b-n pa-0"
+      bodyPadding="42px"
     >
-      <div className={isMobile ? '' : 'flex'}>
-        <div className={isMobile ? 'text-center' : ''}>
-          <img alt="" src={tAra} />
-        </div>
-        <div className={isMobile ? '' : 'ml-5'}>
-          <Text bold fontSize="34px !important" lineHeight="1.3">
+      <div className={isMobile ? 'w-100' : 'w-100 flex'}>
+        <LayoutImg>
+          <ImgWrap>
+            <video autoPlay muted loop playsInline>
+              <source
+                src="https://dryotus.definix.com/ipfs/QmdnHBXwbe1tpa8fpKKk1RnAFiU93JpuM7CwmGkUga3kuC/Legendary_T-ARA.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </ImgWrap>
+        </LayoutImg>
+
+        <div className={isMobile ? 'mt-4' : 'ml-6'}>
+          <Text bold fontSize="32px !important" lineHeight="1">
             #02
           </Text>
-          <Text bold fontSize="22px !important" lineHeight="1.3">
+          <Text bold fontSize="20px !important" lineHeight="1.3">
             T-ARA LEGENDARY Grade Limited
           </Text>
           <Text fontSize="16px !important" color="textSubtle" lineHeight="1.5">
@@ -77,7 +97,6 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               <Image src={isDark ? copyWhite : copyBlack} width={20} height={18} />
             </div>
           </div>
-
           {isMarketplace ? (
             <>
               <div className="mt-3">
