@@ -12,8 +12,8 @@ import EarningBoxTemplate from './EarningBoxTemplate'
 // import FinixHarvestPool from './FinixHarvestPool'
 
 const Earned: React.FC<{
-  isMobile: boolean;
-  isMain?: boolean;
+  isMobile: boolean
+  isMain?: boolean
   theme?: 'white' | 'dark'
 }> = ({ isMobile, isMain = false, theme = 'white' }) => {
   const { t } = useTranslation()

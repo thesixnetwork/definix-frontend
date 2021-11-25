@@ -124,7 +124,7 @@ const WrapTop = styled(Flex)`
 `
 
 const formatText = (num: number) => {
-  if (!num) return '';
+  if (!num) return ''
   return num.toLocaleString('en-US', { maximumFractionDigits: 0 })
 }
 

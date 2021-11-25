@@ -50,7 +50,9 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
                   <Text className="mb-s2" color="black" textStyle="R_14B">
                     {t('SIX')}
                   </Text>
-                  <Text color="deepgrey" textStyle="R_14R">{t('Bridge SIX')}</Text>
+                  <Text color="deepgrey" textStyle="R_14R">
+                    {t('Bridge SIX')}
+                  </Text>
                 </Flex>
               </Flex>
 
@@ -62,7 +64,9 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
                   <Text className="mb-s2" color="black" textStyle="R_14B">
                     {t('FINIX')}
                   </Text>
-                  <Text color="deepgrey" textStyle="R_14R">{t('Bridge FINIX')}</Text>
+                  <Text color="deepgrey" textStyle="R_14R">
+                    {t('Bridge FINIX')}
+                  </Text>
                 </Flex>
               </Flex>
             </Flex>
