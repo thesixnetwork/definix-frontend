@@ -197,10 +197,11 @@ const EarningBoxTemplate: React.FC<{
               // id="harvest-all"
               md
               width="100%"
-              disabled={balancesWithValue.length <= 0 || pendingTx}
+              isLoading={pendingTx}
+              disabled={balancesWithValue.length <= 0}
               onClick={harvestAllFarms}
             >
-              {pendingTx ? t('Collecting...') : t('Harvest')}
+              {t('Harvest')}
             </Button>
           ) : (
             <UnlockButton />
