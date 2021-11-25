@@ -37,7 +37,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
           />
 
           <Flex className={`${isMobile ? 'mt-s30 mb-s24' : 'mt-s40 mb-s40'}`} flexDirection="column" width="100%">
-            <Text className="mb-s16" color="#222222" textStyle="R_18B">
+            <Text className="mb-s16" color="black" textStyle="R_18B">
               {t('Token & Chain')}
             </Text>
 
@@ -46,11 +46,11 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
                 <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
                   <ImgTokenSixIcon width={48} height={48} />
                 </IconToken>
-                <Flex flexDirection="column" width={!isMobile && 208}>
-                  <Text className="mb-s2" textStyle="R_14B">
+                <Flex flexDirection="column" width={!isMobile && 194}>
+                  <Text className="mb-s2" color="black" textStyle="R_14B">
                     {t('SIX')}
                   </Text>
-                  <Text textStyle="R_14R">{t('Binance Smart Chain, Klaytn Chain, Stella Lumen')}</Text>
+                  <Text color="deepgrey" textStyle="R_14R">{t('Bridge SIX')}</Text>
                 </Flex>
               </Flex>
 
@@ -58,11 +58,11 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
                 <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
                   <ImgTokenFinixIcon width={48} height={48} />
                 </IconToken>
-                <Flex flexDirection="column" width={!isMobile && 208}>
-                  <Text className="mb-s2" textStyle="R_14B">
-                    {t('Finix')}
+                <Flex flexDirection="column" width={!isMobile && 194}>
+                  <Text className="mb-s2" color="black" textStyle="R_14B">
+                    {t('FINIX')}
                   </Text>
-                  <Text textStyle="R_14R">{t('Binance Smart Chain, Klaytn Chain')}</Text>
+                  <Text color="deepgrey" textStyle="R_14R">{t('Bridge FINIX')}</Text>
                 </Flex>
               </Flex>
             </Flex>
