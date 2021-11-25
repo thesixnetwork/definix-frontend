@@ -26,6 +26,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, order
             type="text"
             placeholder="Token Name"
             onSearch={(keyword) => search(keyword.trim().toLowerCase())}
+            onReset={() => search('')}
           />
         </Box>
       </Flex>

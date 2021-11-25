@@ -1,18 +1,58 @@
 import _ from 'lodash'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { useBalances } from 'state/hooks'
-import { Card, Divider } from 'definixswap-uikit'
+import { Card, Divider, ColorStyles, Flex, Text, Box } from 'definixswap-uikit'
 import { provider } from 'web3-core'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
-import PoolCard from '../../Pools/components/PoolCard/PoolCard'
-import ExploreCard from '../../Explore/components/ExploreCard'
+import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
+import ExploreCard from 'views/Explore/components/ExploreCard'
+import MyProductsFilter from './MyProductsFilter'
 
-const MyProducts = ({ products }) => {
+interface Product {
+  type: string
+  data: any
+}
+const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
+  const { t } = useTranslation()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
+
+  const [currentProductType, setCurrentProductType] = useState<string>('')
+  const [selectedOrder, setSelectedOrder] = useState<string>('')
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
+
+  const getTokenName = useCallback((product) => {
+    let tokenName = ''
+    if (_.get(product, 'title')) {
+      tokenName = _.get(product, 'title')
+    } else if (_.get(product, 'lpSymbol')) {
+      tokenName = _.get(product, 'lpSymbol').replace(/ LP$/, '')
+    } else if (_.get(product, 'tokenName')) {
+      tokenName = _.get(product, 'tokenName')
+    }
+    return tokenName.toLowerCase()
+  }, [])
+
+  const filteredProducts = useMemo(() => {
+    if (currentProductType === '' || currentProductType === 'all') return products
+    return products.filter((product) => product.type.toLowerCase() === currentProductType)
+  }, [products, currentProductType])
+  const orderedProducts = useMemo(() => {
+    // if (selectedOrder === '') return products
+    return filteredProducts
+  }, [filteredProducts])
+  const displayProducts = useMemo(() => {
+    if (!searchKeyword.length) return orderedProducts
+    return orderedProducts.filter((product) => {
+      return getTokenName(product.data).includes(searchKeyword)
+      // return product.tokenName.toLowerCase().includes(searchKeyword)
+    })
+  }, [orderedProducts, getTokenName, searchKeyword])
 
   const getMyFarmBalancesInWallet = useCallback(
     (tokens: string[]) => {
@@ -25,7 +65,6 @@ const MyProducts = ({ products }) => {
     },
     [balances],
   )
-
   const getMyPoolBalanceInWallet = useCallback(
     (tokenName: string, tokenAddress: string) => {
       if (balances) {
@@ -36,34 +75,6 @@ const MyProducts = ({ products }) => {
     },
     [balances],
   )
-
-  // const { fastRefresh } = useRefresh()
-  // const dispatch = useDispatch()
-  // useEffect(() => {
-  //   if (account) {
-  //     dispatch(fetchFarmUserDataAsync(account))
-  //   }
-  // }, [account, dispatch, fastRefresh])
-
-  // useEffect(() => {
-  //   if (account) {
-  //     const addressObject = {}
-  //     rebalances.forEach((rebalance) => {
-  //       const assets = rebalance.ratio
-  //       assets.forEach((a) => {
-  //         addressObject[getAddress(a.address)] = true
-  //       })
-  //     })
-  //     dispatch(
-  //       fetchBalances(account, [
-  //         ...Object.keys(addressObject),
-  //         ...rebalances.map((rebalance) => getAddress(rebalance.address)),
-  //       ]),
-  //     )
-  //     dispatch(fetchRebalanceBalances(account, rebalances))
-  //   }
-  // }, [dispatch, account, rebalances])
-
   const getProductComponent = useCallback(
     (product) => {
       const productType = product.type.toLowerCase()
@@ -109,17 +120,49 @@ const MyProducts = ({ products }) => {
     [klaytn, account, getMyFarmBalancesInWallet, getMyPoolBalanceInWallet],
   )
 
+  const changeDisplay = useCallback((keyword: string) => {
+    setCurrentProductType(keyword)
+  }, [])
+  const changeOrder = useCallback((keyword: string) => {
+    setSelectedOrder(keyword)
+  }, [])
+  const search = useCallback((keyword: string) => {
+    setSearchKeyword(keyword)
+  }, [])
+
+  const EmptyArea = styled(Flex)`
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 40px;
+    height: 340px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      height: 260px;
+    }
+  `
+
   return (
-    <Card className="mt-s16">
-      {!!products.length &&
-        products.map((product, index) => {
+    <Card className="mt-s16 pt-s40">
+      <MyProductsFilter
+        onChangeDisplayFilter={changeDisplay}
+        onChangeOrderFilter={changeOrder}
+        onChangeSearchInput={search}
+      />
+      {!displayProducts.length ? (
+        displayProducts.map((product, index) => {
           return (
-            <>
+            <Box className={`${index === displayProducts.length - 1 ? `mb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}>
               {index > 0 && <Divider />}
               {getProductComponent(product)}
-            </>
+            </Box>
           )
-        })}
+        })
+      ) : (
+        <EmptyArea>
+          <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+            {t('There are no products deposited')}
+          </Text>
+        </EmptyArea>
+      )}
       {/* <List>
         <>
           {stakedRebalances.map((r) => {
