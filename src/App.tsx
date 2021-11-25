@@ -127,7 +127,7 @@ const App: React.FC = () => {
               <Route path="/rebalancing">
                 <Explore />
               </Route>
-              <Route path="/myinvestments">
+              <Route path="/my">
                 <MyInvestments />
               </Route>
               <Route path="/AirdropKlay">
