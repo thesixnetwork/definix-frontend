@@ -30,15 +30,15 @@ const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
     !isHorizontal && theme.isDark
       ? '#121212'
       : !isHorizontal && theme.isDark
-        ? theme.colors.cardFooter
-        : 'transparent'};
+      ? theme.colors.cardFooter
+      : 'transparent'};
   border-bottom-left-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
 const GroupPlus = styled.div<{ isHorizontal?: boolean }>`
   border-radius: 50%;
-  background-color: #0973B9;
+  background-color: #0973b9;
   position: absolute;
   top: 76%;
   right: 10px;

@@ -55,7 +55,7 @@ const SelectView = ({ typeName, setTypeName, className = '' }) => {
             setTypeName(t)
           }}
         >
-          {t === 'Grid' && <img alt="" src={isDark  ? listWhite  : listBlack} width="18px" />}
+          {t === 'Grid' && <img alt="" src={isDark ? listWhite : listBlack} width="18px" />}
           {t === 'Group' && <img alt="" src={isDark ? groupWhite : groupBlack} width="22px" />}
         </Button>
       ))}

@@ -104,10 +104,10 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               </Button>
             </>
           ) : (
-              <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-                List
-              </Button>
-            )}
+            <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+              List
+            </Button>
+          )}
         </div>
       </div>
     </ModalNFT>
