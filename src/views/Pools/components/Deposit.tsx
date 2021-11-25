@@ -125,7 +125,7 @@ const Deposit: React.FC<DepositProps> = ({
   } => {
     return {
       flexDirection: isMobile ? 'column' : 'row',
-      margin: `my-s${isMobile ? '28' : '40'}`,
+      margin: `mt-s${isMobile ? '28' : '40'}`,
       padding: `pa-s${isMobile ? '20' : '40'}`,
     }
   }, [isMobile])

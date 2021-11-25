@@ -2,13 +2,13 @@ import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
-import FlexLayout from 'components/layout/FlexLayout'
-import useRefresh from 'hooks/useRefresh'
+// import FlexLayout from 'components/layout/FlexLayout'
+// import useRefresh from 'hooks/useRefresh'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
 import useConverter from 'hooks/useConverter'
@@ -16,15 +16,16 @@ import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } 
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
-import { getBalanceNumber } from 'utils/formatBalance'
 // import styled from 'styled-components'
-import { Box } from 'definixswap-uikit'
+import { Box, useMatchBreakpoints } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import CardSummary from './components/CardSummary'
 import MyProducts from './components/MyProducts'
 
 const MyInvestments: React.FC = () => {
   const { t } = useTranslation()
+  const { isXxl } = useMatchBreakpoints()
+  const isMobile = useMemo(() => !isXxl, [isXxl])
   const { path } = useRouteMatch()
   const { account }: { account: string; klaytn: provider } = useWallet()
   const { convertToPriceFromToken } = useConverter()
@@ -195,7 +196,7 @@ const MyInvestments: React.FC = () => {
       <Helmet>
         <title>My investments - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box>
+      <Box className={`mb-s${isMobile ? 40 : 80}`}>
         <Route exact path={`${path}`}>
           <CardSummary
             products={stakedProducts.map((product) => {
