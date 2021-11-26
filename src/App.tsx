@@ -178,9 +178,9 @@ const App: React.FC = () => {
                 <Error />
               </Route>
             </Switch>
-            <ToastListener />
           </Suspense>
         </Menu>
+        <ToastListener />
       </Suspense>
       {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (

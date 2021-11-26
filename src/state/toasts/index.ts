@@ -20,7 +20,7 @@ export const toastsSlice = createSlice({
         state.data.splice(toastIndex, 1)
       }
 
-      if (state.data.length >= 2) {
+      if (state.data.length >= 3) {
         state.data.pop()
       }
 
