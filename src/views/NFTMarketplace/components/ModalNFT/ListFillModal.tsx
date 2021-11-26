@@ -5,16 +5,13 @@ import styled from 'styled-components'
 import moment from 'moment'
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/material_blue.css'
-
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
 import { ChevronDown } from 'react-feather'
-import { Button, Text, Heading, useMatchBreakpoints, Card, Flex } from 'uikit-dev'
+import { Button, Text, useMatchBreakpoints, Card, Flex, Image } from 'uikit-dev'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
 import Helper from 'uikit-dev/components/Helper'
-import { ChevronDownIcon } from 'uikit-dev/components/Svg'
-import DropdownList from '../DropdownNFT/DropdownList'
+import calendarWhite from 'uikit-dev/images/for-ui-v2/nft/calendar-white.png'
+import calendarBlack from 'uikit-dev/images/for-ui-v2/nft/calendar-black.png'
 import OutsideClick from '../OutsideClick'
 
 interface Props {
@@ -27,12 +24,11 @@ const Balance = styled.div`
   align-items: center;
   justify-content: start;
   padding: 0.75rem 0.75rem 0.75rem 0.75rem;
-  background-color: ${'#57575B'};
-  margin-top: 0.5rem !important;
   border: 1px solid #737375;
   box-shadow: unset;
   border-radius: ${({ theme }) => theme.radii.default};
-
+  background-color: ${({ theme }) => theme.isDark ? '#57575B' : '#ECECEC'};
+  
   a {
     display: block;
   }
@@ -42,6 +38,7 @@ const NumberInput = styled.input`
   border: none;
   background-color: #ffffff00;
   font-size: 18px;
+  font-weight: bold;
   outline: none;
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
   -webkit-flex: 1 1 auto;
@@ -73,7 +70,7 @@ const DropdownBtn = styled.button<{ border: string; color: string }>`
   text-align: center;
   color: ${({ color }) => color};
   overflow: hidden;
-  background-color: #57575b;
+  background-color: ${({ theme }) => theme.isDark ? '#57575B' : '#ECECEC'};
   border: solid 1px ${({ border }) => border};
   cursor: pointer;
 
@@ -117,17 +114,28 @@ const SubBtns = styled.div`
   overflow: hidden;
 `
 
+const Flatpicker = styled(Flatpickr)`
+  width: 100%;
+  height: 52px; 
+  border-radius: 8px;
+  border: 1px solid #737375;
+  background-color: ${({ theme }) => theme.isDark ? '#57575B' : '#ECECEC'};
+  color: ${({ theme }) => (theme.isDark ? '#fff' : '#737375')};
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0.75rem;
+`
+
 const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
-  const [isFullWidth, setIsFullWidth] = useState(true)
-  const [date, setDate] = useState(new Date())
-  const [value, onChange] = useState(new Date())
-  const [touchUi, setTouchUi] = useState(true)
   const [values, setValues] = useState('')
-  const [lang, setLang] = useState('')
 
-  const [startDate, setStartDate] = useState(new Date())
-  const [dateFrom, setDateFrom] = useState(moment().format('YYYY-MM-DD'))
+  const datetime = new Date();
+  const [date, setDate] = useState(new Date(datetime));
+
+  const handleChangeDate = (newValue) => {
+    setDate(newValue);
+  };
 
   const currency = [
     { id: 1, value: 'FINIX' },
@@ -214,7 +222,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                           key={c.id}
                           fullWidth
                           onClick={() => handleIsCurrency(c)}
-                          // style={{border: '1px solid #737375', borderRadius: 'unset' }}
+                        // style={{border: '1px solid #737375', borderRadius: 'unset' }}
                         >
                           {c.value}
                         </MenuButton>
@@ -225,7 +233,6 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Flex>
             }
           />
-
           <div className="mt-2">
             <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
               Price
@@ -234,37 +241,26 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <NumberInput placeholder="0.00" value={values} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
             </Balance>
           </div>
-          <div className="mt-2">
+          <div className="mt-2 w-100">
             <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
               End date/time (Optional)
             </Text>
-            {/* <Flatpickr
-              className="form-control"
-              value={dateFrom}
-              options={{
-                altInput: true,
-                altFormat: "d/m/Y hh:mm:ss",
-                dateFromat: "Y-m-d hh:mm:ss",
-              }}
-              showTimeSelect
-              onChange={( dateStr) => {
-                setDateFrom(dateStr);
-              }}
-            /> */}
-            <DatePicker
-              showTimeSelect
-              dateFormat="MMMM d, yyyy h:mmaa"
-              selected={startDate}
-              // dateFormat="YYYY-MM-DD HH:mm:ss"
-              // selectsEnd
-              startDate={startDate}
-              // endDate={endDate}
-              minDate={startDate}
-              onChange={(dates) => setStartDate(dates)}
-            />
-            {/* <Balance style={{ flexWrap: 'wrap', height: 56 }}>
-              <NumberInput style={{ width: '45%' }} placeholder="0.00" value="" pattern="^[0-9]*[,]?[0-9]*$" />
-            </Balance> */}
+            <div className="flex align-center">
+              <Flatpicker
+                data-enable-time
+                value={date}
+                options={{
+                  dateFormat: "dd-MM-yyyy H:i:s",
+                  altFormat: "d-m-y h:i",
+                  altInput:true,
+                }}
+              // onChange={d => {
+              //   setDate({ d });
+              // }}
+              />
+              <img alt="" src={isDark ? calendarWhite : calendarBlack} width="20px" height="18px" style={{ marginLeft: '-30px', cursor: 'pointer' }} />
+            </div>
+
           </div>
           <div className="flex justify-space-between mt-2">
             <div className="flex align-center">
