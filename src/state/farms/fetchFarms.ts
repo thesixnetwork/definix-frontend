@@ -4,7 +4,7 @@ import herodotusABI from 'config/abi/herodotus.json'
 import multicall from 'utils/multicall'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import farmsConfig from 'config/constants/farms'
-import numeral from 'numeral'
+// import numeral from 'numeral'
 
 const fetchFarms = async () => {
   const data = await Promise.all(

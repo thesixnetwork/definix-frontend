@@ -1,5 +1,4 @@
 import { MenuEntry } from 'uikit-dev'
-import newIcon from 'uikit-dev/images/for-trading-challenge/New-icon.png'
 import bridgeBlack from 'uikit-dev/images/for-ui-v2/menu/Bridge-Black.png'
 import bridgeWhite from 'uikit-dev/images/for-ui-v2/menu/Bridge-White.png'
 import farmBlack from 'uikit-dev/images/for-ui-v2/menu/Farm-Black.png'
@@ -16,6 +15,8 @@ import partnerBlack from 'uikit-dev/images/for-ui-v2/menu/Partnership-Black.png'
 import partnerWhite from 'uikit-dev/images/for-ui-v2/menu/Partnership-White.png'
 import swapBlack from 'uikit-dev/images/for-ui-v2/menu/Swap-Black.png'
 import swapWhite from 'uikit-dev/images/for-ui-v2/menu/Swap-White.png'
+import safeBlack from 'uikit-dev/images/for-ui-v2/menu/Safe-Black.png'
+import safeWhite from 'uikit-dev/images/for-ui-v2/menu/Safe-White.png'
 
 const config: MenuEntry[] = [
   {
@@ -65,6 +66,28 @@ const config: MenuEntry[] = [
       {
         label: 'Partnership Pool',
         href: '/partnership-pool',
+        notHighlight: false,
+        newTab: false,
+      },
+    ],
+  },
+  {
+    label: 'NFT Marketplace',
+    icon: safeBlack,
+    iconActive: safeWhite,
+    href: '/nft',
+    notHighlight: false,
+    newTab: false,
+    items: [
+      {
+        label: 'My NFT',
+        href: '/nft',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
+        label: 'Marketplace',
+        href: '/nft/market-place',
         notHighlight: false,
         newTab: false,
       },

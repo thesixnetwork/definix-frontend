@@ -3,9 +3,9 @@ import BigNumber from 'bignumber.js'
 import React, { lazy, Suspense, useEffect } from 'react'
 import ReactGA from 'react-ga'
 import TagManager from 'react-gtm-module'
-import { Redirect, Route, Router, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
-import { Modal, ResetCSS } from 'uikit-dev'
+import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
@@ -15,7 +15,7 @@ import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
-import Flip from './uikit-dev/components/Flip'
+// import Flip from './uikit-dev/components/Flip'
 
 // import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
@@ -41,6 +41,7 @@ const Farms = lazy(() => import('./views/Farms'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 const PartnershipPool = lazy(() => import('./views/PartnershipPool'))
+const NFTMarketplace = lazy(() => import('./views/NFTMarketplace'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -118,7 +119,9 @@ const App: React.FC = () => {
             <Route path="/partnership-pool">
               <PartnershipPool />
             </Route>
-
+            <Route path="/nft">
+              <NFTMarketplace />
+            </Route>
             {/* <Route path="/xxx">
               <WaitingPage pageName="XXX" openDate="Tue Mar 30 2021 08:00:00 GMT+0700 (Indochina Time)" />
             </Route> */}
@@ -203,14 +206,14 @@ const App: React.FC = () => {
   )
 }
 
-const DateModal = ({ date }) => {
-  return (
-    <Modal title="" hideCloseButton isRainbow>
-      <div>
-        <Flip date={date} />
-      </div>
-    </Modal>
-  )
-}
+// const DateModal = ({ date }) => {
+//   return (
+//     <Modal title="" hideCloseButton isRainbow>
+//       <div>
+//         <Flip date={date} />
+//       </div>
+//     </Modal>
+//   )
+// }
 
 export default React.memo(App)
