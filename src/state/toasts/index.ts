@@ -25,8 +25,6 @@ export const toastsSlice = createSlice({
       }
 
       state.data.unshift(payload)
-
-      
     },
     remove: (state: ToastsState, action: PayloadAction<string>) => {
       const toastIndex = state.data.findIndex((toast) => toast.id === action.payload)
