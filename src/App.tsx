@@ -40,7 +40,7 @@ const Home = lazy(() => import('./views/Home'))
 const Pools = lazy(() => import('./views/Pools'))
 const NewFarms = lazy(() => import('./views/NewFarms'))
 const Explore = lazy(() => import('./views/Explore'))
-const NotFound = lazy(() => import('./views/NotFound'))
+const Error = lazy(() => import('./views/Error'))
 const MyInvestments = lazy(() => import('./views/MyInvestments'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 const LongTermStake = lazy(() => import('./views/LongTermStake'))
@@ -174,7 +174,9 @@ const App: React.FC = () => {
               </Route> */}
 
               {/* 404 */}
-              <Route component={NotFound} />
+              <Route>
+                <Error />
+              </Route>
             </Switch>
             <ToastListener />
           </Suspense>
