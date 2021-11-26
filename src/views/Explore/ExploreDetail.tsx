@@ -210,9 +210,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
-            const allCurrentTokens = _.compact([
-              ...((rebalance || {}).tokens || []),
-            ])
+            const allCurrentTokens = _.compact([...((rebalance || {}).tokens || [])])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
             )
@@ -250,12 +248,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             _totalSupply = _totalSupply.dividedBy(10 ** 18)
             let totalUSD = new BigNumber(0)
             for (let j = 0; j < allCurrentTokens.length; j++) {
-              let balance = new BigNumber(dataPoint[j+1])
+              let balance = new BigNumber(dataPoint[j + 1])
               balance = balance.dividedBy(10 ** allCurrentTokens[j].decimals)
 
               let price = new BigNumber(0)
               if (j < allCurrentTokens.length) {
-                price = new BigNumber(dataPoint[j + (allCurrentTokens.length+1)])
+                price = new BigNumber(dataPoint[j + (allCurrentTokens.length + 1)])
               }
               totalUSD = totalUSD.plus(balance.multipliedBy(price))
             }
@@ -340,9 +338,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           const graphTokenData: Record<string, any> = {}
           const base: Record<string, any> = {}
           // find min max between
-          const allCurrentTokens = _.compact([
-            ...((rebalance || {}).tokens || []),
-          ])
+          const allCurrentTokens = _.compact([...((rebalance || {}).tokens || [])])
 
           const priceTokens = []
           for (let index = 0; index < allCurrentTokens.length; index++) {
@@ -405,12 +401,12 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             _totalSupply = _totalSupply.dividedBy(10 ** 18)
             let totalUSD = new BigNumber(0)
             for (let j = 0; j < allCurrentTokens.length; j++) {
-              let balance = new BigNumber(dataPoint[j+1])
+              let balance = new BigNumber(dataPoint[j + 1])
               balance = balance.dividedBy(10 ** allCurrentTokens[j].decimals)
 
               let price = new BigNumber(0)
               if (j < allCurrentTokens.length) {
-                price = new BigNumber(dataPoint[j + (allCurrentTokens.length+1)])
+                price = new BigNumber(dataPoint[j + (allCurrentTokens.length + 1)])
               }
               totalUSD = totalUSD.plus(balance.multipliedBy(price))
             }
@@ -436,10 +432,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
               //   graphTokenData[token.symbol].values.push(50)
               //   graphTokenData[token.symbol].valuesPrice.push(1)
               // } else {
-                graphTokenData[token.symbol].values.push(
-                  new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
-                )
-                graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
+              graphTokenData[token.symbol].values.push(
+                new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
+              )
+              graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
               // }
             })
           })
