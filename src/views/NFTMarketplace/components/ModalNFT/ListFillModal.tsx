@@ -225,7 +225,8 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                           onClick={() => handleIsCurrency(c)}
                           style={{ justifyContent: 'flex-start' }}
                         >
-                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />&nbsp;
+                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />
+                          &nbsp;
                           {c.value}
                         </MenuButton>
                       ))}
