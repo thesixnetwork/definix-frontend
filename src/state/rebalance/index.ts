@@ -40,10 +40,10 @@ const calculateRatio = (currentPriceUsd: BigNumber[], sumCurrentPoolUsdBalance: 
   currentPriceUsd.forEach((data, index) => {
     // @ts-ignore
     const totalPriceNotDevDecimap = new BigNumber([data])
-    const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
+    const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(18))
     // @ts-ignore
     const sumCurrentPoolUsd = new BigNumber([sumCurrentPoolUsdBalance])
-    const sum = sumCurrentPoolUsd.div(new BigNumber(10).pow(6))
+    const sum = sumCurrentPoolUsd.div(new BigNumber(10).pow(18))
     let ratio = +totalPrice.div(sum).times(100).toNumber().toFixed(2)
 
     if (currentPriceUsd.length - 1 === index) {
