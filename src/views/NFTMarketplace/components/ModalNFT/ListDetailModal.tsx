@@ -65,13 +65,13 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
         </LayoutImg>
 
         <div className={isMobile ? 'mt-6' : 'ml-6'}>
-          <Text bold fontSize={isMobile ? '26px !important': '30px !important'} lineHeight="1">
+          <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
             #02
           </Text>
-          <Text bold fontSize={isMobile ? '14px !important': '18px !important'} lineHeight="1.4">
+          <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="1.4">
             T-ARA LEGENDARY Grade Limited
           </Text>
-          <Text fontSize={isMobile ? '12px !important': '14px !important'} color="textSubtle" lineHeight="1.5">
+          <Text fontSize={isMobile ? '12px !important' : '14px !important'} color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
           </Text>
           <div className="mt-4">
@@ -136,10 +136,10 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               </Button>
             </>
           ) : (
-              <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-                List
-              </Button>
-            )}
+            <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+              List
+            </Button>
+          )}
         </div>
       </div>
     </ModalNFT>

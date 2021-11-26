@@ -21,7 +21,7 @@ const ImgWrap = styled(Flex)`
   height: 330px;
   flex-shrink: 0;
   justify-content: center;
-  
+
   ${({ theme }) => theme.mediaQueries.xs} {
     width: unset;
   }

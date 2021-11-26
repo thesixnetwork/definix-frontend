@@ -68,7 +68,7 @@ const ButtonDetails = styled(Button)`
   padding: unset;
   display: flex;
   align-items: center;
-  color: #30ADFF;
+  color: #30adff;
   font-weight: normal;
   font-size: 12px;
   text-decoration-line: underline;
@@ -133,34 +133,34 @@ const TableList = ({ rows, isLoading, isDark, total }) => {
           ) : isEmpty(rows) ? (
             <EmptyData text="No data" />
           ) : (
-                <TBody>
-                  {rows !== null &&
-                    rows.map((item, idx) => (
-                      <TR key={_.get(item, 'id')}>
-                        <TD>
-                          <div className="flex">
-                            <Text fontSize="14px !important" color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                              Token ID #02
-                            </Text>
-                          </div>
-                        </TD>
-                        <TD className="text-right">
-                          <div className="flex align-center">
-                            <ButtonDetails fullWidth radii="small" className="mr-2" size="sm">
-                              Details
-                            </ButtonDetails>
-                            <ButtonAction fullWidth radii="small" size="sm">
-                              List
-                            </ButtonAction>
-                            {/* <ButtonAction  fullWidth radii="small" size="sm">
+            <TBody>
+              {rows !== null &&
+                rows.map((item, idx) => (
+                  <TR key={_.get(item, 'id')}>
+                    <TD>
+                      <div className="flex">
+                        <Text fontSize="14px !important" color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                          Token ID #02
+                        </Text>
+                      </div>
+                    </TD>
+                    <TD className="text-right">
+                      <div className="flex align-center">
+                        <ButtonDetails fullWidth radii="small" className="mr-2" size="sm">
+                          Details
+                        </ButtonDetails>
+                        <ButtonAction fullWidth radii="small" size="sm">
+                          List
+                        </ButtonAction>
+                        {/* <ButtonAction  fullWidth radii="small" size="sm">
                               Delist
                             </ButtonAction> */}
-                          </div>
-                        </TD>
-                      </TR>
-                    ))}
-                </TBody>
-              )}
+                      </div>
+                    </TD>
+                  </TR>
+                ))}
+            </TBody>
+          )}
         </Table>
       </CardTable>
       <TD className="text-right">

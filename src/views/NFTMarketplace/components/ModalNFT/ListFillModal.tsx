@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import _ from 'lodash'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import moment from "moment";
+import moment from 'moment'
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/material_blue.css'
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 import { Button, Text, Heading, useMatchBreakpoints } from 'uikit-dev'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
@@ -95,8 +95,8 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [values, setValues] = useState('')
   const [lang, setLang] = useState('')
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [dateFrom, setDateFrom] = useState(moment().format("YYYY-MM-DD"));
+  const [startDate, setStartDate] = useState(new Date())
+  const [dateFrom, setDateFrom] = useState(moment().format('YYYY-MM-DD'))
 
   const langs = [
     { id: 1, name: 'TH' },
@@ -241,11 +241,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <Text fontSize="14px !important" lineHeight="2">
                 Listing fee
               </Text>
-              <Helper
-                text="Somthing"
-                className="ml-2"
-                position="right"
-              />
+              <Helper text="Somthing" className="ml-2" position="right" />
             </div>
             <Text fontSize="14px !important" lineHeight="2">
               2.5%

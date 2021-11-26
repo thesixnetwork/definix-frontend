@@ -94,11 +94,9 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         <div>
           {typeName === 'Group' && (
             <BottomContent>
-              <CircleCount >
+              <CircleCount>
                 <img src={plusWhite} alt="" width="20%" />
-                <TextCount >
-                  {data.count}
-                </TextCount>
+                <TextCount>{data.count}</TextCount>
               </CircleCount>
             </BottomContent>
           )}
