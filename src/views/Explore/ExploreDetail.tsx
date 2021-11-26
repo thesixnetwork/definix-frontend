@@ -212,7 +212,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           fundGraphResult.forEach((data) => {
             const allCurrentTokens = _.compact([
               ...((rebalance || {}).tokens || []),
-              ...((rebalance || {}).usdToken || []),
             ])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
@@ -250,15 +249,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             let _totalSupply = new BigNumber(dataPoint[0])
             _totalSupply = _totalSupply.dividedBy(10 ** 18)
             let totalUSD = new BigNumber(0)
-            for (let j = 1; j < allCurrentTokens.length + 1; j++) {
-              let balance = new BigNumber(dataPoint[j])
-              balance = balance.dividedBy(10 ** allCurrentTokens[j - 1].decimals)
+            for (let j = 0; j < allCurrentTokens.length; j++) {
+              let balance = new BigNumber(dataPoint[j+1])
+              balance = balance.dividedBy(10 ** allCurrentTokens[j].decimals)
 
               let price = new BigNumber(0)
               if (j < allCurrentTokens.length) {
-                price = new BigNumber(dataPoint[j + allCurrentTokens.length])
-              } else {
-                price = new BigNumber(1)
+                price = new BigNumber(dataPoint[j + (allCurrentTokens.length+1)])
               }
               totalUSD = totalUSD.plus(balance.multipliedBy(price))
             }
@@ -345,7 +342,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           // find min max between
           const allCurrentTokens = _.compact([
             ...((rebalance || {}).tokens || []),
-            ...((rebalance || {}).usdToken || []),
           ])
 
           const priceTokens = []
@@ -357,8 +353,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             for (let j = 0; j < allCurrentTokens.length; j++) {
               if (j < allCurrentTokens.length) {
                 priceTokens[j].push(dataPoint[j + 1 + allCurrentTokens.length])
-              } else {
-                priceTokens[j].push(1)
               }
             }
           })
@@ -410,15 +404,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
             let _totalSupply = new BigNumber(dataPoint[0])
             _totalSupply = _totalSupply.dividedBy(10 ** 18)
             let totalUSD = new BigNumber(0)
-            for (let j = 1; j < allCurrentTokens.length + 1; j++) {
-              let balance = new BigNumber(dataPoint[j])
-              balance = balance.dividedBy(10 ** allCurrentTokens[j - 1].decimals)
+            for (let j = 0; j < allCurrentTokens.length; j++) {
+              let balance = new BigNumber(dataPoint[j+1])
+              balance = balance.dividedBy(10 ** allCurrentTokens[j].decimals)
 
               let price = new BigNumber(0)
               if (j < allCurrentTokens.length) {
-                price = new BigNumber(dataPoint[j + allCurrentTokens.length])
-              } else {
-                price = new BigNumber(1)
+                price = new BigNumber(dataPoint[j + (allCurrentTokens.length+1)])
               }
               totalUSD = totalUSD.plus(balance.multipliedBy(price))
             }
@@ -440,15 +432,15 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
                   color: ratioObject.color,
                 }
               }
-              if (token.symbol === 'USDT') {
-                graphTokenData[token.symbol].values.push(50)
-                graphTokenData[token.symbol].valuesPrice.push(1)
-              } else {
+              // if (token.symbol === 'USDT') {
+              //   graphTokenData[token.symbol].values.push(50)
+              //   graphTokenData[token.symbol].valuesPrice.push(1)
+              // } else {
                 graphTokenData[token.symbol].values.push(
                   new BigNumber(dataValues[index]).minus(calToken[index].min).div(calToken[index].between).plus(20),
                 )
                 graphTokenData[token.symbol].valuesPrice.push(dataValues[index])
-              }
+              // }
             })
           })
           const rebalanceMin = _.min(rebalanceData.values)
