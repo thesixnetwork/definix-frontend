@@ -23,7 +23,7 @@ const Balance = styled.div`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: start;
-  padding: 0.75rem 0.75rem 0.75rem 0.75rem;
+  padding: 0.75rem;
   border: 1px solid #737375;
   box-shadow: unset;
   border-radius: ${({ theme }) => theme.radii.default};
@@ -123,6 +123,7 @@ const Flatpicker = styled(Flatpickr)`
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#737375')};
   font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
   padding: 0.75rem;
 `
 
@@ -222,8 +223,9 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                           key={c.id}
                           fullWidth
                           onClick={() => handleIsCurrency(c)}
-                          // style={{border: '1px solid #737375', borderRadius: 'unset' }}
+                          style={{ justifyContent: 'flex-start' }}
                         >
+                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />&nbsp;
                           {c.value}
                         </MenuButton>
                       ))}
@@ -250,13 +252,10 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 data-enable-time
                 value={date}
                 options={{
-                  dateFormat: 'dd-MM-yyyy H:i:s',
-                  altFormat: 'd-m-y h:i',
+                  dateFormat: 'dd-mm-yyyy H:i:s',
+                  altFormat: 'd-m-y h:i K',
                   altInput: true,
                 }}
-                // onChange={d => {
-                //   setDate({ d });
-                // }}
               />
               <img
                 alt=""
