@@ -81,7 +81,7 @@ const Explore: React.FC = () => {
                 <div className={isMobile ? 'mb-2' : 'flex align-center mb-2'}>
                   <Heading
                     as="h1"
-                    fontSize={isMobile ? '28px !important' : '32px !important'}
+                    fontSize={isMobile ? '28px !important' : '30px !important'}
                     className={isMobile ? 'mr-3' : 'mr-3 text-center'}
                   >
                     Rebalancing Farm

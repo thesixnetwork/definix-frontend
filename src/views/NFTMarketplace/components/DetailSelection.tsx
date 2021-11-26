@@ -59,7 +59,7 @@ const BottomContent = styled(Flex)`
   }
 `
 
-const NameText = styled(Text)`
+const CircleCount = styled.div`
   border: 1px solid #737375;
   border-radius: 50%;
   background-color: #0973b9;
@@ -71,6 +71,13 @@ const NameText = styled(Text)`
   z-index: 10;
   height: 35px;
   width: 35px;
+`
+
+const TextCount = styled(Text)`
+  text-shadow: 0px 2px 4px #00000050;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
 `
 
 const DetailsSection: React.FC<ExpandableSectionProps> = ({
@@ -87,20 +94,13 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         <div>
           {typeName === 'Group' && (
             <BottomContent>
-              <NameText mt="-20px" mb="18px">
+              <CircleCount >
                 <img src={plusWhite} alt="" width="20%" />
-                <Text bold fontSize="20px" color="white" style={{ textShadow: '0px 2px 4px #00000050' }}>
+                <TextCount >
                   {data.count}
-                </Text>
-              </NameText>
+                </TextCount>
+              </CircleCount>
             </BottomContent>
-
-            // <GroupPlus>
-            //   <img src={plusWhite} alt="" width="20%" />
-            //   <Text bold fontSize="20px" color="white" style={{ textShadow: '0px 2px 4px #00000050' }}>
-            //     {data.count}
-            //   </Text>
-            // </GroupPlus>
           )}
 
           <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
@@ -145,6 +145,10 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
             <Text fontSize="12px" color="text">
               28/12/21 00:00:00 GMT+7
             </Text>
+            {/* ถ้าไม่ได้ใส่ วันที่/เวลา */}
+            {/* <Text fontSize="12px" color="text">
+              -
+            </Text> */}
           </div>
         </PriceUnitBox>
       )}

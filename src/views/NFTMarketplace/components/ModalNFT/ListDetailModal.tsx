@@ -20,6 +20,15 @@ const ImgWrap = styled(Flex)`
   width: 340px;
   height: 330px;
   flex-shrink: 0;
+  justify-content: center;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: unset;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 340px;
+  }
 `
 
 const LayoutImg = styled.div`
@@ -41,7 +50,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
       onDismiss={onDismiss}
       hideCloseButton={hideCloseButton}
       classHeader="bd-b-n pa-0"
-      bodyPadding="42px"
+      bodyPadding={isMobile ? '30px 18px' : '42px'}
     >
       <div className={isMobile ? 'w-100' : 'w-100 flex'}>
         <LayoutImg>
@@ -55,14 +64,14 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
           </ImgWrap>
         </LayoutImg>
 
-        <div className={isMobile ? 'mt-4' : 'ml-6'}>
-          <Text bold fontSize="32px !important" lineHeight="1">
+        <div className={isMobile ? 'mt-6' : 'ml-6'}>
+          <Text bold fontSize={isMobile ? '26px !important': '30px !important'} lineHeight="1">
             #02
           </Text>
-          <Text bold fontSize="20px !important" lineHeight="1.3">
+          <Text bold fontSize={isMobile ? '14px !important': '18px !important'} lineHeight="1.4">
             T-ARA LEGENDARY Grade Limited
           </Text>
-          <Text fontSize="16px !important" color="textSubtle" lineHeight="1.5">
+          <Text fontSize={isMobile ? '12px !important': '14px !important'} color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
           </Text>
           <div className="mt-4">
@@ -114,19 +123,23 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
                 <Text fontSize="14px !important" color="textSubtle">
                   Until
                 </Text>
-                <Text bold fontSize="16px !important" color="text">
+                <Text bold fontSize="14px !important" color="text">
                   28/12/21 00:00:00 GMT+7
                 </Text>
+                {/* ถ้าไม่ได้ใส่ วันที่/เวลา */}
+                {/* <Text fontSize="12px" color="text">
+                  -
+                </Text> */}
               </div>
               <Button fullWidth radii="small" className="mt-3" onClick={() => handleBuy()}>
                 Buy
               </Button>
             </>
           ) : (
-            <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-              List
-            </Button>
-          )}
+              <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+                List
+              </Button>
+            )}
         </div>
       </div>
     </ModalNFT>

@@ -33,7 +33,7 @@ export const TR = styled.tr`
   align-items: stretch;
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 12px;
+  padding: 8px 14px;
 
   th {
     border-top: 1px solid${({ theme }) => theme.colors.border};
@@ -62,6 +62,24 @@ const TBody = styled.div`
   overflow: auto;
   position: relative;
 `
+
+const ButtonDetails = styled(Button)`
+  background: unset;
+  padding: unset;
+  display: flex;
+  align-items: center;
+  color: #30ADFF;
+  font-weight: normal;
+  font-size: 12px;
+  text-decoration-line: underline;
+`
+
+const ButtonAction = styled(Button)`
+  font-size: 14px;
+  padding: 10px 18px;
+  height: 28px;
+`
+
 const EmptyData = ({ text }) => (
   <TR>
     <TD colSpan={6}>
@@ -98,7 +116,7 @@ const TableList = ({ rows, isLoading, isDark, total }) => {
 
   return (
     <div>
-      <CardTable className="mt-5" style={{ overflow: 'auto' }}>
+      <CardTable className="mt-4" style={{ overflow: 'auto' }}>
         <Table>
           <TR>
             {cols.map((c) => (
@@ -115,36 +133,34 @@ const TableList = ({ rows, isLoading, isDark, total }) => {
           ) : isEmpty(rows) ? (
             <EmptyData text="No data" />
           ) : (
-            <TBody>
-              {rows !== null &&
-                rows.map((item, idx) => (
-                  <TR key={_.get(item, 'id')}>
-                    <TD>
-                      <div className="flex">
-                        <Text color="textSubtle">
-                          <Text fontSize="14px !important" color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                            Token ID #02
-                          </Text>
-                        </Text>
-                      </div>
-                    </TD>
-                    <TD className="text-right">
-                      {' '}
-                      <div className="flex align-center">
-                        <Text color="textSubtle">
-                          <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                            Details
-                          </Text>
-                        </Text>
-                        <Button style={{ height: '36px' }} fullWidth radii="small" className="ml-6">
-                          List
-                        </Button>
-                      </div>
-                    </TD>
-                  </TR>
-                ))}
-            </TBody>
-          )}
+                <TBody>
+                  {rows !== null &&
+                    rows.map((item, idx) => (
+                      <TR key={_.get(item, 'id')}>
+                        <TD>
+                          <div className="flex">
+                            <Text fontSize="14px !important" color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                              Token ID #02
+                            </Text>
+                          </div>
+                        </TD>
+                        <TD className="text-right">
+                          <div className="flex align-center">
+                            <ButtonDetails fullWidth radii="small" className="mr-2" size="sm">
+                              Details
+                            </ButtonDetails>
+                            <ButtonAction fullWidth radii="small" size="sm">
+                              List
+                            </ButtonAction>
+                            {/* <ButtonAction  fullWidth radii="small" size="sm">
+                              Delist
+                            </ButtonAction> */}
+                          </div>
+                        </TD>
+                      </TR>
+                    ))}
+                </TBody>
+              )}
         </Table>
       </CardTable>
       <TD className="text-right">
