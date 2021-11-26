@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
 
-const WithDrawalFees = ({ managementFee, buybackFee, bountyFee, className = '' }) => {
+const WithDrawalFees = ({ managementFee, buybackFee, className = '' }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
 

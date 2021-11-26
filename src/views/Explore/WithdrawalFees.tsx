@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Text } from 'uikit-dev'
 import Helper from 'uikit-dev/components/Helper'
 
-const WithDrawalFees = ({ managementFee, bountyFee, buybackFee, className = '' }) => {
+const WithDrawalFees = ({ managementFee, buybackFee, className = '' }) => {
   return (
     <Card className={`pa-4 ${className}`} style={{ overflow: 'visible' }}>
       <Text bold className="mb-1">

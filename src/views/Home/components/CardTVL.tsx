@@ -49,9 +49,9 @@ const CardTVL = ({ className = '' }) => {
   // const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
-  const finixSupply = totalSupply ? getBalanceNumber(totalSupply) - burnedBalance : 0
-  // const finixSupply = totalSupply && getBalanceNumber(totalSupply)
-  // const finixTransfered = totalTransferFromBsc ? getBalanceNumber(totalTransferFromBsc) : 0
+  const finixSupply = getBalanceNumber(totalSupply)
+  // const transfer = 500000
+  // const actualBurn = burnedBalance - transfer
 
   useEffect(() => {
     fetchTVL()
@@ -101,9 +101,27 @@ const CardTVL = ({ className = '' }) => {
           {finixSupply && <CardValue fontSize="16px" color="primary" fontWeight="bold" value={finixSupply} />}
         </Row>
         <Row>
-          <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned')}</Text>
+          <Text color="textSubtle">{TranslateString(538, 'Total FINIX Burned on BSC')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={burnedBalance} />
         </Row>
+        {/* <Row>
+          <div className="flex align-center">
+            <Dot />
+            <Text color="textSubtle" fontSize="12px">
+              Actual Burn
+            </Text>
+          </div>
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={actualBurn} />
+        </Row>
+        <Row>
+          <div className="flex align-center">
+            <Dot />
+            <Text color="textSubtle" fontSize="12px">
+              FINIX transferred to Klaytn
+            </Text>
+          </div>
+          <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} value={transfer} />
+        </Row> */}
         <Row>
           <Text color="textSubtle">{TranslateString(540, 'New FINIX / sec')}</Text>
           <CardValue fontSize="16px" color="primary" fontWeight="bold" decimals={0} valueString="1" />

@@ -61,6 +61,12 @@ const config: MenuEntry[] = [
         notHighlight: false,
         newTab: false,
       },
+      {
+        label: 'Partnership Pool',
+        href: '/partnership-pool',
+        notHighlight: false,
+        newTab: false,
+      },
     ],
   },
   // {
@@ -90,6 +96,26 @@ const config: MenuEntry[] = [
     href: '/rebalancing',
     notHighlight: false,
     newTab: false,
+    items: [
+      {
+        label: 'Investors',
+        href: '/info',
+        notHighlight: true,
+        newTab: false,
+      },
+      {
+        label: 'Fund Managers',
+        href: '/info',
+        notHighlight: true,
+        newTab: false,
+      },
+      // {
+      //   label: 'Network Monitor',
+      //   href: '/info',
+      //   notHighlight: true,
+      //   newTab: false,
+      // },
+    ],
   },
 
   // {
@@ -154,7 +180,7 @@ const config: MenuEntry[] = [
     label: 'Gitbook',
     icon: gitbookBlack,
     iconActive: gitbookWhite,
-    href: 'https://app.gitbook.com/@sixnetwork/s/definix/',
+    href: 'https://sixnetwork.gitbook.io/definix/',
     notHighlight: true,
     newTab: true,
   },

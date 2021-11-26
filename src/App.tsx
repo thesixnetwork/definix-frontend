@@ -10,12 +10,16 @@ import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
+
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
 import GlobalStyle from './style/Global'
 import sdkConfig from './sdkconfig'
+
+// import GlobalCheckBullHiccupClaimStatus from './views/Collectibles/components/GlobalCheckBullHiccupClaimStatus'
+// import WaitingPage from 'uikit-dev/components/WaitingPage'
 
 // import WaitingPage from 'uikit-dev/components/WaitingPage'
 Config.configure(sdkConfig)
@@ -40,6 +44,7 @@ const Farms = lazy(() => import('./views/Farms'))
 const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
+const PartnershipPool = lazy(() => import('./views/PartnershipPool'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -116,6 +121,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/AirdropKlay">
               <AirdropKlay />
+            </Route>
+            <Route path="/partnership-pool">
+              <PartnershipPool />
             </Route>
 
             {/* <Route path="/xxx">

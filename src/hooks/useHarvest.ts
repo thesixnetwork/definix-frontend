@@ -9,7 +9,7 @@ import {
 } from 'state/actions'
 import { useRebalances } from 'state/hooks'
 import { soushHarvest, soushHarvestBnb, harvest, rebalanceHarvest } from 'utils/callHelpers'
-import { useHerodotus, useSousChef, useApolloV2 } from './useContract'
+import { useHerodotus, useSousChef, useVeloPool, useApolloV2 } from './useContract'
 
 export const useHarvest = (farmPid: number) => {
   const dispatch = useDispatch()
@@ -73,6 +73,26 @@ export const useRebalanceHarvest = (apolloAddress: string) => {
 
     return txHash
   }, [account, dispatch, rebalances, apolloV2Contract])
+  return { onReward: handleHarvest }
+}
+
+export const useVeloHarvest = (veloId: number) => {
+  // const dispatch = useDispatch()
+  const { account } = useWallet()
+  const sousChefContract = useVeloPool(veloId)
+  // const herodotusContract = useHerodotus()
+
+  const handleHarvest = useCallback(async () => {
+    // if (sousId === 0) {
+    //   await harvest(herodotusContract, 0, account)
+    // } else if (isUsingBnb) {
+    //   await soushHarvestBnb(sousChefContract, account)
+    // } else {
+    await soushHarvest(sousChefContract, account)
+    // }
+    // dispatch(updateUserPendingReward(sousId, account))
+    // dispatch(updateUserBalance(sousId, account))
+  }, [account, sousChefContract])
 
   return { onReward: handleHarvest }
 }
