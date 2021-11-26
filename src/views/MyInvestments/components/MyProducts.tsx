@@ -22,6 +22,8 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
 
+  console.log(products)
+
   const [currentProductType, setCurrentProductType] = useState<string>('')
   const [selectedOrder, setSelectedOrder] = useState<string>('')
   const [searchKeyword, setSearchKeyword] = useState<string>('')
@@ -141,16 +143,16 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
   `
 
   return (
-    <Card className="mt-s16 pt-s40">
+    <Card className="mt-s16">
       <MyProductsFilter
         onChangeDisplayFilter={changeDisplay}
         onChangeOrderFilter={changeOrder}
         onChangeSearchInput={search}
       />
-      {!displayProducts.length ? (
+      {displayProducts.length ? (
         displayProducts.map((product, index) => {
           return (
-            <Box className={`${index === displayProducts.length - 1 ? `mb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}>
+            <Box className={`${index === displayProducts.length - 1 ? `pb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}>
               {index > 0 && <Divider />}
               {getProductComponent(product)}
             </Box>

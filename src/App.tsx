@@ -176,9 +176,9 @@ const App: React.FC = () => {
               {/* 404 */}
               <Route component={NotFound} />
             </Switch>
-            <ToastListener />
           </Suspense>
         </Menu>
+        <ToastListener />
       </Suspense>
       {/* <GlobalCheckBullHiccupClaimStatus /> */}
       {/* !isPhrase1 && (

@@ -1,5 +1,6 @@
 import React, { useRef, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { Flex, Box, DropdownOption, DropdownSet, SearchInput, useMatchBreakpoints } from 'definixswap-uikit'
 
 interface Filter {
@@ -48,8 +49,17 @@ const MyProductsFilter: React.FC<{
     ],
   })
 
+  const Wrap = styled(Flex)`
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 40px 0;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      padding: 20px 20px 0;
+    }
+  `
+
   return (
-    <Flex justifyContent="space-between" alignItems="center" className="px-s40">
+    <Wrap>
       <Flex>
         <Box width={128}>
           <DropdownSet
@@ -74,7 +84,7 @@ const MyProductsFilter: React.FC<{
           onReset={() => onChangeSearchInput('')}
         />
       </Box>
-    </Flex>
+    </Wrap>
   )
 }
 
