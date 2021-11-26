@@ -73,7 +73,7 @@ const DropdownBtn = styled.button<{ border: string; color: string }>`
   text-align: center;
   color: ${({ color }) => color};
   overflow: hidden;
-  background-color: #57575B;
+  background-color: #57575b;
   border: solid 1px ${({ border }) => border};
   cursor: pointer;
 
@@ -81,7 +81,7 @@ const DropdownBtn = styled.button<{ border: string; color: string }>`
     width: 100%;
     padding: 0 0 0 10px;
   }
-`;
+`
 
 const ArrowWrap = styled.span`
   position: absolute;
@@ -95,7 +95,7 @@ const ArrowWrap = styled.span`
   @media screen and (max-width: 768px) {
     right: 6px;
   }
-`;
+`
 
 const SubWrap = styled(Card)`
   position: absolute;
@@ -108,15 +108,14 @@ const SubWrap = styled(Card)`
   // @media screen and (max-width: 768px) {
   //   top: 35px;
   // }
-`;
+`
 
 const SubBtns = styled.div`
   width: 100%;
   border-radius: 8px;
   border: solid 1px var(--gray-scale-03);
   overflow: hidden;
-`;
-
+`
 
 const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
@@ -156,14 +155,13 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const isMobile = !isXl
   const { isDark } = useTheme()
 
-  const [isCurrency, setIsCurrency] = useState<boolean>(false);
+  const [isCurrency, setIsCurrency] = useState<boolean>(false)
   const [fillCurrency, setFillCurrency] = useState('FINIX')
 
   const handleIsCurrency = (val) => {
     setIsCurrency(false)
     setFillCurrency(val.value)
   }
-
 
   return (
     <ModalNFT
@@ -194,9 +192,16 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             onClick={() => setIsCurrency(false)}
             as={
               <Flex position="relative" width="auto">
-                <DropdownBtn border="#737375" color={isDark ? "#FFFFFF" : "#212121"} onClick={() => setIsCurrency(!isCurrency)}>
-                  <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px"/>&nbsp;
-                  <Text bold fontSize="16px">{fillCurrency}</Text>
+                <DropdownBtn
+                  border="#737375"
+                  color={isDark ? '#FFFFFF' : '#212121'}
+                  onClick={() => setIsCurrency(!isCurrency)}
+                >
+                  <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />
+                  &nbsp;
+                  <Text bold fontSize="16px">
+                    {fillCurrency}
+                  </Text>
                   <ArrowWrap>
                     <ChevronDown style={{ transform: `rotate(${isCurrency ? 180 : 0}deg)` }} size="18px" />
                   </ArrowWrap>
@@ -220,18 +225,13 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Flex>
             }
           />
-         
+
           <div className="mt-2">
             <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
               Price
             </Text>
             <Balance style={{ flexWrap: 'wrap', height: 52 }}>
-              <NumberInput
-                placeholder="0.00"
-                value={values}
-                onChange={handleChange}
-                pattern="^[0-9]*[,]?[0-9]*$"
-              />
+              <NumberInput placeholder="0.00" value={values} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
             </Balance>
           </div>
           <div className="mt-2">

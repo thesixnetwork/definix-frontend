@@ -13,7 +13,7 @@ import {
   Text,
   ChevronDownIcon,
   useMatchBreakpoints,
-  Flex
+  Flex,
 } from 'uikit-dev'
 import { ChevronDown } from 'react-feather'
 import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
@@ -61,7 +61,7 @@ const DropdownBtn = styled.button<{ border: string; color: string }>`
     height: 32px;
     padding: 0 0 0 10px;
   }
-`;
+`
 
 const ArrowWrap = styled.span`
   position: absolute;
@@ -75,7 +75,7 @@ const ArrowWrap = styled.span`
   @media screen and (max-width: 768px) {
     right: 6px;
   }
-`;
+`
 
 const SubWrap = styled(Card)`
   position: absolute;
@@ -87,14 +87,14 @@ const SubWrap = styled(Card)`
     top: 35px;
     width: 130px;
   }
-`;
+`
 
 const SubBtns = styled.div`
   width: 100%;
   border-radius: 8px;
   border: solid 1px var(--gray-scale-03);
   overflow: hidden;
-`;
+`
 
 const CardMarketplace = () => {
   const [listView, setListView] = useState(false)
@@ -138,25 +138,25 @@ const CardMarketplace = () => {
     { id: 2, value: 'Price up' },
     { id: 3, value: 'Price down' },
   ]
-  const [isName, setIsName] = useState<boolean>(false);
-  const [isLevel, setIsLevel] = useState<boolean>(false);
-  const [isPrice, setIsPrice] = useState<boolean>(false);
+  const [isName, setIsName] = useState<boolean>(false)
+  const [isLevel, setIsLevel] = useState<boolean>(false)
+  const [isPrice, setIsPrice] = useState<boolean>(false)
   const [fillName, setFillName] = useState('T-ARA')
   const [fillLevel, setFillLevel] = useState('Legendary')
   const [fillPrice, setFillPrice] = useState('Most recent')
   const { isDark } = useTheme()
 
-  const handleIsName = (val) =>{
+  const handleIsName = (val) => {
     setIsName(false)
     setFillName(val.value)
   }
 
-  const handleIsLevel = (val) =>{
+  const handleIsLevel = (val) => {
     setIsLevel(false)
     setFillLevel(val.value)
   }
 
-  const handleIsPrice = (val) =>{
+  const handleIsPrice = (val) => {
     setIsPrice(false)
     setFillPrice(val.value)
   }
@@ -169,7 +169,7 @@ const CardMarketplace = () => {
             onClick={() => setIsName(false)}
             as={
               <Flex position="relative" width="auto">
-                <DropdownBtn border="#737375" color={isDark ? "#FFFFFF" : "#212121"} onClick={() => setIsName(!isName)}>
+                <DropdownBtn border="#737375" color={isDark ? '#FFFFFF' : '#212121'} onClick={() => setIsName(!isName)}>
                   <Text className="R12M">{fillName}</Text>
                   <ArrowWrap>
                     <ChevronDown style={{ transform: `rotate(${isName ? 180 : 0}deg)` }} size="18px" />
@@ -179,11 +179,7 @@ const CardMarketplace = () => {
                   <SubWrap>
                     <SubBtns>
                       {nameGroup.map((n) => (
-                        <MenuButton
-                          key={n.id}
-                          fullWidth
-                          onClick={() => handleIsName(n)}
-                        >
+                        <MenuButton key={n.id} fullWidth onClick={() => handleIsName(n)}>
                           {n.value}
                         </MenuButton>
                       ))}
@@ -192,7 +188,8 @@ const CardMarketplace = () => {
                 )}
               </Flex>
             }
-          /> &nbsp;
+          />{' '}
+          &nbsp;
           <OutsideClick
             onClick={() => setIsLevel(false)}
             as={
@@ -207,11 +204,7 @@ const CardMarketplace = () => {
                   <SubWrap>
                     <SubBtns>
                       {level.map((l) => (
-                        <MenuButton
-                          key={l.id}
-                          fullWidth
-                          onClick={() => handleIsLevel(l)}
-                        >
+                        <MenuButton key={l.id} fullWidth onClick={() => handleIsLevel(l)}>
                           {l.value}
                         </MenuButton>
                       ))}
@@ -220,7 +213,8 @@ const CardMarketplace = () => {
                 )}
               </Flex>
             }
-          />&nbsp;
+          />
+          &nbsp;
           <OutsideClick
             onClick={() => setIsPrice(false)}
             as={
@@ -235,11 +229,7 @@ const CardMarketplace = () => {
                   <SubWrap>
                     <SubBtns>
                       {price.map((p) => (
-                        <MenuButton
-                          key={p.id}
-                          fullWidth
-                          onClick={() => handleIsPrice(p)}
-                        >
+                        <MenuButton key={p.id} fullWidth onClick={() => handleIsPrice(p)}>
                           {p.value}
                         </MenuButton>
                       ))}
