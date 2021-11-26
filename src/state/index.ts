@@ -24,6 +24,6 @@ export default configureStore({
     rebalances: rebalanceReducer,
     wallet: walletReducer,
     longTerm: longTermStake,
-    nft
+    nft,
   },
 })

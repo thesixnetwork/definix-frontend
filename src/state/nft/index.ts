@@ -71,7 +71,7 @@ const getNFTUser = async ({ account }) => {
           params: [addressToCall, idToCall],
         }
       })
-      console.log("allUserNFTSData::", calls)
+      console.log('allUserNFTSData::', calls)
       const allUserNFTSData = await multicall(dryotusABI, calls)
       NFTGroup.forEach((nftConfig: NFTData, index: number) => {
         const [fetchedOwningData] = allUserNFTSData[index]
