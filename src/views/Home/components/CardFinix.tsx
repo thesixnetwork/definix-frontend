@@ -22,24 +22,24 @@ import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const Title = styled(Text)`
-  ${css(textStyle.R_18M)}
+  ${({ theme }) => theme.textStyle.R_18M}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
   margin-left: 14px;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${css(textStyle.R_16M)}
+    ${({ theme }) => theme.textStyle.R_16M}
     margin-left: 8px;
   }
 `
 
 const FinixValue = styled(Text)`
   margin-top: 8px;
-  ${css(textStyle.R_32B)}
+  ${({ theme }) => theme.textStyle.R_32B}
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: 6px;
-    ${css(textStyle.R_26B)}
+    ${({ theme }) => theme.textStyle.R_26B}
   }
 `
 
@@ -57,22 +57,22 @@ const InfoValues = styled(Flex)`
 `
 
 const InfoTitle = styled(Text)`
-  ${css(textStyle.R_14R)}
+${({ theme }) => theme.textStyle.R_14R}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
 `
 
 const InfoValue = styled(Text)`
-  ${css(textStyle.R_14B)}
+${({ theme }) => theme.textStyle.R_14B}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
 `
 
 const InfoTitleBold = styled(Text)`
-  ${css(textStyle.R_14M)}
+${({ theme }) => theme.textStyle.R_14M}
   color: ${({ theme }) => theme.colors[ColorStyles.DEEPGREY]};
 `
 
 const InfoValueBold = styled(Text)`
-  ${css(textStyle.R_16B)}
+${({ theme }) => theme.textStyle.R_16B}
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
 `
 

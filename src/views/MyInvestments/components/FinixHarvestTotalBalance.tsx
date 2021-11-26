@@ -21,23 +21,23 @@ const StyledFlex = styled(Flex)`
 
 const SumText = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
-  ${css(textStyle.R_23B)}
+  ${({ theme }) => theme.textStyle.R_23B}
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    ${css(textStyle.R_32B)}
+    ${({ theme }) => theme.textStyle.R_32B}
   }
 `
 
 const UsdText = styled(Text)`
   margin-top: 4px;
   color: ${({ theme }) => theme.colors.white};
-  ${css(textStyle.R_14M)}
+  ${({ theme }) => theme.textStyle.R_14M}
 
   ${({ theme }) => theme.mediaQueries.xl} {
     margin-top: 0;
     margin-left: 16px;
     margin-bottom: 4px;
-    ${css(textStyle.R_16M)}
+    ${({ theme }) => theme.textStyle.R_16M}
   }
 `
 

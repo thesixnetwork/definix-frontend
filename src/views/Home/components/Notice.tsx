@@ -66,10 +66,10 @@ const NoticeSlider = styled(Slider)`
 
 const Notice = styled(Text)`
   white-space: pre-line;
-  ${css(textStyle.R_20M)}
+  ${({ theme }) => theme.textStyle.R_20M}
   color: black;
   ${({ theme }) => theme.mediaQueries.mobile} {
-    ${css(textStyle.R_14M)}
+    ${({ theme }) => theme.textStyle.R_14M}
   }
 `
 

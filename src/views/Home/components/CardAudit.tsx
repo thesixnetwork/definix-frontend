@@ -28,12 +28,12 @@ const StyledCardBody = styled(CardBody)`
 `
 
 const Title = styled(Text)`
-  ${css(textStyle.R_26B)}
+  ${({ theme }) => theme.textStyle.R_26B}
   padding: 0 40px;
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${css(textStyle.R_20B)}
+    ${({ theme }) => theme.textStyle.R_20B}
     padding: 0 20px;
   }
 `
@@ -99,7 +99,7 @@ const AuditItem = styled(Grid)`
 const AuditItemImg = styled.img``
 
 const AuditItemDesc = styled(Text)`
-  ${css(textStyle.R_14R)}
+  ${({ theme }) => theme.textStyle.R_14R}
   min-height: 40px;
   margin-top: 16px;
   color: ${({ theme }) => theme.colors[ColorStyles.DEEPGREY]};
@@ -110,13 +110,13 @@ const AuditItemDesc = styled(Text)`
 `
 
 const AuditItemResult = styled(Text)`
-  ${css(textStyle.R_28B)}
+  ${({ theme }) => theme.textStyle.R_28B}
   min-height: 40px;
   margin-top: 6px;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: 8px;
-    ${css(textStyle.R_23B)}
+    ${({ theme }) => theme.textStyle.R_23B}
   }
 `
 
