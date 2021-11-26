@@ -34,9 +34,11 @@ const GroupButton = styled.div`
 
     ${({ theme }) => theme.mediaQueries.xs} {
       width: 16%;
+      padding: unset;
     }
     ${({ theme }) => theme.mediaQueries.sm} {
-      width: 6%;
+      width: 8%;
+      padding: unset;
     }
   }
 `

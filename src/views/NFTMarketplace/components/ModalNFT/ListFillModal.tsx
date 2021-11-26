@@ -1,12 +1,21 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
+import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import { Button, Text, Heading } from 'uikit-dev'
-import ModalSorry from 'uikit-dev/widgets/Modal/Modal'
+import moment from 'moment'
+import Flatpickr from 'react-flatpickr'
+import 'flatpickr/dist/themes/material_blue.css'
+
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
+
+import { Button, Text, Heading, useMatchBreakpoints } from 'uikit-dev'
+import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
 import tAra from 'uikit-dev/images/for-ui-v2/t-ara.png'
+import Helper from 'uikit-dev/components/Helper'
 import { ChevronDownIcon } from 'uikit-dev/components/Svg'
-import DropdownList from './DropdownNFT/DropdownList'
+import DropdownList from '../DropdownNFT/DropdownList'
 
 interface Props {
   onDismiss?: () => void
@@ -65,6 +74,18 @@ const NumberInput = styled.input`
   padding: 0px;
 `
 
+const CardField = styled.div`
+  width: 480px;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    width: unset;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 480px;
+  }
+`
+
 const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [isFullWidth, setIsFullWidth] = useState(true)
@@ -73,6 +94,10 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [touchUi, setTouchUi] = useState(true)
   const [values, setValues] = useState('')
   const [lang, setLang] = useState('')
+
+  const [startDate, setStartDate] = useState(new Date())
+  const [dateFrom, setDateFrom] = useState(moment().format('YYYY-MM-DD'))
+
   const langs = [
     { id: 1, name: 'TH' },
     { id: 2, name: 'EN' },
@@ -93,8 +118,12 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     enforcer(e.target.value.replace(/,/g, '.'))
   }
   console.log('Modal')
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+  const { isDark } = useTheme()
+
   return (
-    <ModalSorry
+    <ModalNFT
       isRainbow={false}
       title=""
       onDismiss={onDismiss}
@@ -102,19 +131,19 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       classHeader="bd-b-n"
       bodyPadding="0px"
     >
-      <div style={{ width: 480 }}>
-        <div className="bd-b pa-5">
-          <Heading fontSize="32px !important" lineHeight="2">
+      <CardField>
+        <div className="bd-b px-5 pt-2 pb-3">
+          <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
             #02Fiil
-          </Heading>
-          <Heading fontSize="20px !important" lineHeight="2">
+          </Text>
+          <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="2">
             T-ARA LEGENDARY Grade Limited
-          </Heading>
-          <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
+          </Text>
+          <Text fontSize="14px !important" color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
           </Text>
         </div>
-        <div className="pa-5">
+        <div className="pa-5 pt-3">
           <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
             Currency
           </Text>
@@ -137,7 +166,6 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </ChangeLanguage>
             }
           >
-            {' '}
             {langs.map((item) => (
               <MenuButton
                 key={item.id}
@@ -180,24 +208,59 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
               End date/time (Optional)
             </Text>
-            <Balance style={{ flexWrap: 'wrap', height: 56 }}>
+            {/* <Flatpickr
+              className="form-control"
+              value={dateFrom}
+              options={{
+                altInput: true,
+                altFormat: "d/m/Y hh:mm:ss",
+                dateFromat: "Y-m-d hh:mm:ss",
+              }}
+              showTimeSelect
+              onChange={( dateStr) => {
+                setDateFrom(dateStr);
+              }}
+            /> */}
+            <DatePicker
+              showTimeSelect
+              dateFormat="MMMM d, yyyy h:mmaa"
+              selected={startDate}
+              // dateFormat="YYYY-MM-DD HH:mm:ss"
+              // selectsEnd
+              startDate={startDate}
+              // endDate={endDate}
+              minDate={startDate}
+              onChange={(dates) => setStartDate(dates)}
+            />
+            {/* <Balance style={{ flexWrap: 'wrap', height: 56 }}>
               <NumberInput style={{ width: '45%' }} placeholder="0.00" value="" pattern="^[0-9]*[,]?[0-9]*$" />
-            </Balance>
+            </Balance> */}
           </div>
           <div className="flex justify-space-between mt-2">
-            <Text fontSize="14px !important" lineHeight="2">
-              Listing fee
-            </Text>
+            <div className="flex align-center">
+              <Text fontSize="14px !important" lineHeight="2">
+                Listing fee
+              </Text>
+              <Helper text="Somthing" className="ml-2" position="right" />
+            </div>
             <Text fontSize="14px !important" lineHeight="2">
               2.5%
+            </Text>
+          </div>
+          <div className="flex justify-space-between">
+            <Text fontSize="14px !important" lineHeight="2">
+              Net received
+            </Text>
+            <Text fontSize="14px !important" lineHeight="2">
+              1,125 FINIX
             </Text>
           </div>
           <Button fullWidth radii="small" className="mt-3">
             Submit
           </Button>
         </div>
-      </div>
-    </ModalSorry>
+      </CardField>
+    </ModalNFT>
   )
 }
 
