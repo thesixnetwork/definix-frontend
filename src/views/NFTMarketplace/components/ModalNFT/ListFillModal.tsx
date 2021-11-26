@@ -27,8 +27,8 @@ const Balance = styled.div`
   border: 1px solid #737375;
   box-shadow: unset;
   border-radius: ${({ theme }) => theme.radii.default};
-  background-color: ${({ theme }) => theme.isDark ? '#57575B' : '#ECECEC'};
-  
+  background-color: ${({ theme }) => (theme.isDark ? '#57575B' : '#ECECEC')};
+
   a {
     display: block;
   }
@@ -70,7 +70,7 @@ const DropdownBtn = styled.button<{ border: string; color: string }>`
   text-align: center;
   color: ${({ color }) => color};
   overflow: hidden;
-  background-color: ${({ theme }) => theme.isDark ? '#57575B' : '#ECECEC'};
+  background-color: ${({ theme }) => (theme.isDark ? '#57575B' : '#ECECEC')};
   border: solid 1px ${({ border }) => border};
   cursor: pointer;
 
@@ -116,10 +116,10 @@ const SubBtns = styled.div`
 
 const Flatpicker = styled(Flatpickr)`
   width: 100%;
-  height: 52px; 
+  height: 52px;
   border-radius: 8px;
   border: 1px solid #737375;
-  background-color: ${({ theme }) => theme.isDark ? '#57575B' : '#ECECEC'};
+  background-color: ${({ theme }) => (theme.isDark ? '#57575B' : '#ECECEC')};
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#737375')};
   font-size: 16px;
   font-weight: bold;
@@ -130,12 +130,12 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [values, setValues] = useState('')
 
-  const datetime = new Date();
-  const [date, setDate] = useState(new Date(datetime));
+  const datetime = new Date()
+  const [date, setDate] = useState(new Date(datetime))
 
   const handleChangeDate = (newValue) => {
-    setDate(newValue);
-  };
+    setDate(newValue)
+  }
 
   const currency = [
     { id: 1, value: 'FINIX' },
@@ -222,7 +222,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                           key={c.id}
                           fullWidth
                           onClick={() => handleIsCurrency(c)}
-                        // style={{border: '1px solid #737375', borderRadius: 'unset' }}
+                          // style={{border: '1px solid #737375', borderRadius: 'unset' }}
                         >
                           {c.value}
                         </MenuButton>
@@ -250,17 +250,22 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 data-enable-time
                 value={date}
                 options={{
-                  dateFormat: "dd-MM-yyyy H:i:s",
-                  altFormat: "d-m-y h:i",
-                  altInput:true,
+                  dateFormat: 'dd-MM-yyyy H:i:s',
+                  altFormat: 'd-m-y h:i',
+                  altInput: true,
                 }}
-              // onChange={d => {
-              //   setDate({ d });
-              // }}
+                // onChange={d => {
+                //   setDate({ d });
+                // }}
               />
-              <img alt="" src={isDark ? calendarWhite : calendarBlack} width="20px" height="18px" style={{ marginLeft: '-30px', cursor: 'pointer' }} />
+              <img
+                alt=""
+                src={isDark ? calendarWhite : calendarBlack}
+                width="20px"
+                height="18px"
+                style={{ marginLeft: '-30px', cursor: 'pointer' }}
+              />
             </div>
-
           </div>
           <div className="flex justify-space-between mt-2">
             <div className="flex align-center">
