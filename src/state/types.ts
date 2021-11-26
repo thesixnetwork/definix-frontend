@@ -146,7 +146,7 @@ export interface LongTermState {
   id: string
   level: string
   amount: number
-  isPenalty: Boolean
+  isPenalty: boolean
   periodPenalty: string
   penaltyUnlockTimestamp: string
   penaltyFinixAmount: string
@@ -168,6 +168,30 @@ export interface LongTermState {
   lockCount: number
   balanceFinix: number
   balancevFinix: number
+}
+export interface NFTData {
+  code: string
+  order: number
+  name: string
+  title: string
+  grade: string
+  detailTitleKey: string
+  detailDescKey: string
+  price: number
+  availableAmount?: number
+  totalAmount: number
+  limitCount: number
+  videoUrl: string
+  previewVideoUrl: string
+  previewImgId: string
+  imageUrl: string
+  startID: number
+  endID: number
+  userData?: {
+    amountOwn: number
+    owning: number[]
+  }
+  metaDataURL: string
 }
 export interface PoolsState {
   isFetched: boolean
@@ -262,4 +286,5 @@ export interface State {
   rebalances: RebalanceState
   wallet: WalletState
   longTerm: LongTermState
+  nft: NFTData
 }

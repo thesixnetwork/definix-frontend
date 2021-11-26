@@ -9,6 +9,7 @@ export {
   fetchTotalSupplyAllTimeMint,
   fetchStartIndex,
 } from './longTermStake'
+export { fetchNFTUser } from './nft'
 export { clear, remove, push } from './toasts'
 export { fetchRebalances } from './rebalance'
 export { fetchBalances, setDeadline, setSlippage } from './wallet'

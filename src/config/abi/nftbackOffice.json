@@ -1,0 +1,326 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_itemId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_tokenIndexes",
+        "type": "uint256[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256[]",
+        "name": "_increasingAmounts",
+        "type": "uint256[]"
+      }
+    ],
+    "name": "IncreaseSellingAmount",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_itemCode",
+        "type": "string"
+      }
+    ],
+    "name": "activateItem",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getItemsLength",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_itemCode",
+        "type": "string"
+      }
+    ],
+    "name": "getItemByCode",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "code",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "itemType",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "priceCurrency",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxPerPurchase",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "selection",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "useOracle",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "created",
+            "type": "uint256"
+          },
+          {
+            "internalType": "enum LibDiamond.ItemStatus",
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint16",
+            "name": "otherStatus",
+            "type": "uint16"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalRemainingForRandom",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalRemainingForPurchase",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "totalSellingAmount",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct LibDiamond.SaleItem",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_itemCode",
+        "type": "string"
+      }
+    ],
+    "name": "getLotCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_itemCode",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_lotNo",
+        "type": "uint256"
+      }
+    ],
+    "name": "getLotData",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "lotNo",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "remainingAmount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "tokenIds",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "tokenSellingAmounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "remainingAmounts",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "posibilities",
+            "type": "uint256[]"
+          }
+        ],
+        "internalType": "struct LibDiamond.RandomLot",
+        "name": "_randomLot",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "code",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256",
+            "name": "itemType",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "price",
+            "type": "uint256"
+          },
+          {
+            "internalType": "address",
+            "name": "priceCurrency",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "maxPerPurchase",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct LibDiamond.ItemCommonData",
+        "name": "_commonItem",
+        "type": "tuple"
+      },
+      {
+        "internalType": "bool",
+        "name": "_useOracle",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_startTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_eachSellingAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "createNewItemWithInitialLot",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_itemCode",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_startTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_endTokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_eachSellingAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "addLotToItem",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

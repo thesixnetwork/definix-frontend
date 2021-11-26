@@ -9,6 +9,7 @@ import achievementsReducer from './achievements'
 import rebalanceReducer from './rebalance'
 import walletReducer from './wallet'
 import longTermStake from './longTermStake'
+import nft from './nft'
 
 export default configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -23,5 +24,6 @@ export default configureStore({
     rebalances: rebalanceReducer,
     wallet: walletReducer,
     longTerm: longTermStake,
+    nft
   },
 })

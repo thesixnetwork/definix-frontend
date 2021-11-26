@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import styled from 'styled-components'
-import tAra from '../../../uikit-dev/images/for-ui-v2/t-ara.png'
+import LazyLoad from 'react-lazyload'
 import { Flex } from '../../../uikit-dev'
 
 interface CardHeadingType {
@@ -42,13 +42,14 @@ const CardHeading: React.FC<CardHeadingType> = ({
 }) => {
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
-      <StyledFarmImages>
-        <img
-          src="https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Legendary_T-ARA.png"
-          alt="tAra"
-        />
-        {/* <img alt="" width="100%" src={tAra} style={{ backgroundSize: '100% 100%' }} /> */}
-      </StyledFarmImages>
+      <LazyLoad offset={100}>
+        <StyledFarmImages>
+          <img
+            src="https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Legendary_T-ARA.png"
+            alt="tAra"
+          />
+        </StyledFarmImages>
+      </LazyLoad>
     </Flex>
   )
 }

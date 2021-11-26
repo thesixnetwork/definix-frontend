@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
+import LazyLoad from 'react-lazyload'
 import useTheme from 'hooks/useTheme'
 import { Button, Text, Heading, Image, useMatchBreakpoints, Flex } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
@@ -44,16 +45,18 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
       bodyPadding="42px"
     >
       <div className={isMobile ? 'w-100' : 'w-100 flex'}>
-        <LayoutImg>
-          <ImgWrap>
-            <video autoPlay muted loop playsInline>
-              <source
-                src="https://dryotus.definix.com/ipfs/QmdnHBXwbe1tpa8fpKKk1RnAFiU93JpuM7CwmGkUga3kuC/Legendary_T-ARA.mp4"
-                type="video/mp4"
-              />
-            </video>
-          </ImgWrap>
-        </LayoutImg>
+        <LazyLoad offset={100}>
+          <LayoutImg>
+            <ImgWrap>
+              <video autoPlay muted loop playsInline>
+                <source
+                  src="https://dryotus.definix.com/ipfs/QmdnHBXwbe1tpa8fpKKk1RnAFiU93JpuM7CwmGkUga3kuC/Legendary_T-ARA.mp4"
+                  type="video/mp4"
+                />
+              </video>
+            </ImgWrap>
+          </LayoutImg>
+        </LazyLoad>
 
         <div className={isMobile ? 'mt-4' : 'ml-6'}>
           <Text bold fontSize="32px !important" lineHeight="1">
