@@ -28,6 +28,7 @@ const initialState: FinixPriceState = {
   busdUsdtQuote: 0,
   bnbBtcbQuote: 0,
   ethBnbQuote: 0,
+  veloBusdPrice: 0,
 }
 
 export const finixPriceSlice = createSlice({
@@ -50,6 +51,10 @@ export const finixPriceSlice = createSlice({
       const { caverTVL, web3TVL } = action.payload
       state.caverTVL = caverTVL
       state.web3TVL = web3TVL
+    },
+    setVeloProce: (state, action) => {
+      const { price } = action.payload
+      state.veloBusdPrice = price
     },
     setQuote: (state, action) => {
       const {
@@ -184,6 +189,25 @@ const pairObjectCombination = (inputObject) => {
     })
   })
   return result
+}
+
+export const fetchVeloUsdPrice = () => async (dispatch) => {
+  const fetchPromise = []
+
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getDefinixBnbBusdLPAddress(),
+      pair1: getWbnbAddress(),
+      pair2: getBusdAddress(),
+    }),
+  )
+  const [[totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]] = await Promise.all(fetchPromise)
+  const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
+  dispatch(
+    setPancakeBnbPrice({
+      price: definixBnbBusdRatio,
+    }),
+  )
 }
 
 const findAndSelectPair = (pair) => {

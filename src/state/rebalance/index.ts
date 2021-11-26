@@ -40,10 +40,10 @@ const calculateRatio = (currentPriceUsd: BigNumber[], sumCurrentPoolUsdBalance: 
   currentPriceUsd.forEach((data, index) => {
     // @ts-ignore
     const totalPriceNotDevDecimap = new BigNumber([data])
-    const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
+    const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(18))
     // @ts-ignore
     const sumCurrentPoolUsd = new BigNumber([sumCurrentPoolUsdBalance])
-    const sum = sumCurrentPoolUsd.div(new BigNumber(10).pow(6))
+    const sum = sumCurrentPoolUsd.div(new BigNumber(10).pow(18))
     let ratio = +totalPrice.div(sum).times(100).toNumber().toFixed(2)
 
     if (currentPriceUsd.length - 1 === index) {
@@ -154,8 +154,7 @@ export const fetchRebalances = () => async (dispatch) => {
       // @ts-ignore
       const activeUserCountNumber = new BigNumber([(activeUserCount || [])[0]]).toNumber()
       const selectedTotalSupply = (totalSupply || [])[0]
-      const poolUsdBalance = (currentPoolUsdBalances || []).map((x, index) => {
-        const currentToken = [...tokens][index]
+      const poolUsdBalance = (currentPoolUsdBalances || []).map((x) => {
         // @ts-ignore
         return new BigNumber([x]).div(new BigNumber(10).pow(18))
       })

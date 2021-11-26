@@ -1,4 +1,4 @@
-import { SIX, FINIX, WBNB, USDT, BUSD, BTCB, ETH, XRP, ADA, getLpNetwork } from './tokens'
+import { VELO, SIX, FINIX, WBNB, USDT, BUSD, BTCB, ETH, XRP, ADA, getLpNetwork } from './tokens'
 
 export default {
   definixHerodotus: {
@@ -22,6 +22,7 @@ export default {
   ada: ADA,
   six: SIX,
   finix: FINIX,
+  velo: VELO,
   finixSixLP: getLpNetwork(FINIX, SIX),
   finixBusdLP: getLpNetwork(FINIX, BUSD),
   finixBnbLP: getLpNetwork(FINIX, WBNB),
@@ -42,9 +43,13 @@ export default {
     97: process.env.REACT_APP_ARIDROP_KLAY_TESTNET,
     56: process.env.REACT_APP_ARIDROP_KLAY_MAINNET,
   },
+  veloFinixLP: {
+    97: process.env.REACT_APP_LP_VELO_FINIX_TESTNET,
+    56: process.env.REACT_APP_LP_VELO_FINIX_MAINNET,
+  },
   // configured =====================================================
   syrup: {
-    97: '0xfE1e507CeB712BDe086f3579d2c03248b2dB77f9',
+    97: '0x36101b46fD2C799420f32B2fE267736e72362778',
     56: '0x009cF7bC57584b7998236eff51b98A168DceA9B0',
   },
   sousChef: {

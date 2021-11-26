@@ -54,6 +54,7 @@ export type Colors = {
   input: string
   background: string
   backgroundHeader: string
+  backgroundCountDownBox: string
   backgroundSideMenu: string
   backgroundFooter: string
   backgroundDisabled: string

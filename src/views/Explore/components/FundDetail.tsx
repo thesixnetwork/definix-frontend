@@ -56,7 +56,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
         const ratio = _.get(rebalance, `ratioCal`)
         // @ts-ignore
         const totalPriceNotDevDecimap = new BigNumber([_.get(rebalance, `currentPoolUsdBalances.${index}`)])
-        const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(6))
+        const totalPrice = totalPriceNotDevDecimap.div(new BigNumber(10).pow(18))
 
         const tokenPrice = (totalPrice || new BigNumber(0)).div(
           _.get(r, 'totalBalance', new BigNumber(0)).div(new BigNumber(10).pow(_.get(r, 'decimals', 18))),

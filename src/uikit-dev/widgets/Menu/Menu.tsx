@@ -7,22 +7,21 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import DisclaimersModal from 'views/Explore/components/DisclaimersModal'
+import StartTimeBanner from 'uikit-dev/components/StartTimeBanner'
+import SwitchNetwork from 'uikit-dev/components/SwitchNetwork'
+import logoTrade from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challenge-29.png'
+import colorGradient from 'uikit-dev/images/for-ui-v2/color-gradient.png'
 import BannerEllipsis from '../../components/BannerEllipsis'
 import Button from '../../components/Button/Button'
 import CountDownBanner from '../../components/CountDownBanner'
 import { Flex } from '../../components/Flex'
 import Footer from '../../components/Footer'
 import Overlay from '../../components/Overlay/Overlay'
-import StartTimeBanner from '../../components/StartTimeBanner'
-import SwitchNetwork from '../../components/SwitchNetwork'
 import { Text } from '../../components/Text'
 import { useMatchBreakpoints } from '../../hooks'
 import FinixCoin from '../../images/finix-coin.png'
-import logoTrade from '../../images/for-trading-challenge/Definix-Trading-Challenge-29.png'
-import colorGradient from '../../images/for-ui-v2/color-gradient.png'
 import logoNoti from '../../images/for-ui-v2/noti.png'
 import useModal from '../Modal/useModal'
-import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import { MENU_HEIGHT } from './config'
 import Logo from './Logo'
 import Panel from './Panel'
@@ -245,7 +244,10 @@ const Menu: React.FC<NavProps> = ({
         </Flex>
 
         <Flex alignItems="center">
-          <Price href="https://klaytn.loremboard.finance/chart/FINIX" target="_blank">
+          <Price
+            href="https://swap.arken.finance/tokens/bsc/0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d?res=15"
+            target="_blank"
+          >
             <img src={FinixCoin} alt="" />
             <p>
               <span>FINIX : </span>
@@ -288,64 +290,63 @@ const Menu: React.FC<NavProps> = ({
             />
 
             {location.pathname === '/rebalancing' ||
-            location.pathname === '/rebalancing/detail' ||
-            location.pathname === '/rebalancing/invest' ||
-            location.pathname === '/rebalancing/withdraw' ? (
-              <>
-                {isMobile ? (
-                  <BannerEllipsis />
-                ) : (
-                  <CountDownBanner
-                    logo={logoNoti}
-                    customText={
-                      <>
-                        <Text color="white" fontSize="13px">
-                          <strong>Rebalancing Farm :</strong>{' '}
-                          <span className="mr-1">
-                            Rebalancing farm is a special farm that implements rebalancing strategy. The advantage of
-                            the strategy is that it can help you minimize risk and get favored positions for your
-                            investment in the long run.
-                          </span>
-                          <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong>
-                          <span
-                            role="none"
-                            style={{
-                              color: '#ffd157',
-                              fontWeight: 'bold',
-                              textDecoration: 'underline',
-                              cursor: 'pointer',
-                            }}
-                            onClick={onPresentDisclaimersModal}
-                          >
-                            read more here.
-                          </span>
-                          <span style={{ fontSize: '11px', display: 'block', opacity: '0.7' }}>
-                            Definix is solely a marketplace which provides a tool. The rebalancing farm has been managed
-                            by a 3rd party called Enigma.
-                          </span>
-                        </Text>
-                      </>
-                    }
-                    disableCountdown
-                  />
-                )}
-              </>
-            ) : (
-              <CountDownBanner
-                logo={FinixCoin}
-                title="FINIX-Klaytn Address : "
-                detail="0xd51c337147c8033a43f3b5ce0023382320c113aa"
-                disableCountdown
-                button={
-                  <CopyToClipboard
-                    color="warning"
-                    noText
-                    toCopy="0xd51c337147c8033a43f3b5ce0023382320c113aa"
-                    tooltipPos="right"
-                  />
-                }
-              />
-            )}
+              location.pathname === '/rebalancing/detail' ||
+              location.pathname === '/rebalancing/invest' ||
+              (location.pathname === '/rebalancing/withdraw' && (
+                <>
+                  {isMobile ? (
+                    <BannerEllipsis />
+                  ) : (
+                    <CountDownBanner
+                      logo={logoNoti}
+                      customText={
+                        <>
+                          <Text color="white" fontSize="13px">
+                            <strong>Rebalancing Farm :</strong>{' '}
+                            <span className="mr-1">
+                              Rebalancing farm is a special farm that implements rebalancing strategy. The advantage of
+                              the strategy is that it can help you minimize risk and get favored positions for your
+                              investment in the long run.
+                            </span>
+                            <strong className="mr-1">About the disclosures of the rebalancing farm, you can</strong>
+                            <span
+                              role="none"
+                              style={{
+                                color: '#ffd157',
+                                fontWeight: 'bold',
+                                textDecoration: 'underline',
+                                cursor: 'pointer',
+                              }}
+                              onClick={onPresentDisclaimersModal}
+                            >
+                              read more here.
+                            </span>
+                            <span style={{ fontSize: '11px', display: 'block', opacity: '0.7' }}>
+                              Definix is solely a marketplace which provides a tool. The rebalancing farm has been
+                              managed by a 3rd party called Enigma.
+                            </span>
+                          </Text>
+                        </>
+                      }
+                      disableCountdown
+                    />
+                  )}
+                </>
+              ))}
+            {/* <CountDownBanner
+              logo={finixCoin}
+              title="FINIX-BSC Address : "
+              detail="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
+              disableCountdown
+              button={
+                <CopyToClipboard
+                  color="warning"
+                  noText
+                  toCopy="0x0f02b1f5af54e04fb6dd6550f009ac2429c4e30d"
+                  tooltipPos="right"
+                />
+              }
+            /> */}
 
             {currentTime > endStatedTradingTime ? (
               <CountDownBanner

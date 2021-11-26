@@ -32,6 +32,7 @@ export enum QuoteToken {
   'COMP' = 'COMP',
   'SUSHI' = 'SUSHI',
   'SIX' = 'SIX',
+  'VELO' = 'VELO',
   'FINIX' = 'FINIX',
   'SIXFINIX' = 'FINIX-SIX',
   'FINIXBUSD' = 'FINIX-BUSD',
@@ -41,6 +42,7 @@ export enum QuoteToken {
 }
 
 export enum PoolCategory {
+  'PARTHNER' = 'parthner',
   'COMMUNITY' = 'Community',
   'CORE' = 'Core',
   'BINANCE' = 'Binance', // Pools using native BNB behave differently than pools using a token

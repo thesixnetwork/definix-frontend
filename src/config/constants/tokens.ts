@@ -131,6 +131,10 @@ export const AXS = {
   [intMainnetId]: process.env.REACT_APP_AXS_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_AXS_ADDRESS_TESTNET,
 }
+export const VELO = {
+  [intMainnetId]: process.env.REACT_APP_VELO_TOKEN_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_VELO_TOKEN_TESTNET,
+}
 
 export const allTokens = {
   SIX,
@@ -154,6 +158,7 @@ export const allTokens = {
   DOGE,
   LTC,
   AXS,
+  VELO,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
