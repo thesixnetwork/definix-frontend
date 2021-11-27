@@ -37,7 +37,7 @@ const LayoutImg = styled.div`
 const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
-  const [onPresentConnectModal] = useModal(<ListFillModal data={data}/>)
+  const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
   const [handleBuy] = useModal(<ModalComplete />)
   const { isXl } = useMatchBreakpoints()
   const { isDark, toggleTheme } = useTheme()

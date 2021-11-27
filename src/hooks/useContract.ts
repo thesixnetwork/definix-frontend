@@ -75,12 +75,12 @@ export const useDefinixRabbits = () => {
 
 export const useApprovalForAll = () => {
   const dryotusAbi = dryotus as unknown as AbiItem
-  return useContract(dryotusAbi, "0xB7cdb5199d9D8be847d9B7d9e111977652E53307")
+  return useContract(dryotusAbi, '0xB7cdb5199d9D8be847d9B7d9e111977652E53307')
 }
 
 export const useSellNft = () => {
   const sellerAbi = seller.abi as unknown as AbiItem
-  return useContract(sellerAbi, "0x6Cef51b5684e39597EEf0b82F1e932F45f56a394")
+  return useContract(sellerAbi, '0x6Cef51b5684e39597EEf0b82F1e932F45f56a394')
 }
 
 export const useProfile = () => {

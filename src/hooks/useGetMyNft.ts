@@ -47,12 +47,12 @@ export const useSellNFTOneItem = (nftAddress, tokenId, price, currencyAddress, a
       _price: price,
       _currency: currencyAddress,
     }
-    console.log("jSon", test)
+    console.log('jSon', test)
     let txHash
     if (account) {
       // const callContract = getContract(sellNFTOneItemABI.abi, '0x6Cef51b5684e39597EEf0b82F1e932F45f56a394')
       txHash = await test.methods.sellNFTOneItem(jSon).send({ from: '0x5F3A5da3d9AEbE7A2c66136c92657ab588a39897' })
-      console.log("txHash", txHash)
+      console.log('txHash', txHash)
       return txHash
     }
 

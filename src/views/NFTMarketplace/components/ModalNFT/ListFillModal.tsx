@@ -101,7 +101,6 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const isMobile = !isXl
   const { isDark } = useTheme()
 
-
   const { onSell } = useSellNFTOneItem(
     '0xB7cdb5199d9D8be847d9B7d9e111977652E53307',
     data.userData.owning,

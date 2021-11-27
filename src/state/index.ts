@@ -18,6 +18,6 @@ export default configureStore({
     profile: profileReducer,
     teams: teamsReducer,
     achievements: achievementsReducer,
-    nft
+    nft,
   },
 })
