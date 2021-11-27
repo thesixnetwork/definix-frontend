@@ -6,72 +6,46 @@ import styled from 'styled-components'
 import moment from 'moment'
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/material_blue.css'
-
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-
-import { Button, Text, Heading, useMatchBreakpoints } from 'uikit-dev'
+import { ChevronDown } from 'react-feather'
+import { Button, Text, useMatchBreakpoints, Card, Flex, Image } from 'uikit-dev'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
 import Helper from 'uikit-dev/components/Helper'
 import { ChevronDownIcon } from 'uikit-dev/components/Svg'
+import calendarWhite from 'uikit-dev/images/for-ui-v2/nft/calendar-white.png'
+import calendarBlack from 'uikit-dev/images/for-ui-v2/nft/calendar-black.png'
 import DropdownList from '../DropdownNFT/DropdownList'
 import { useSellNFTOneItem } from '../../../../hooks/useGetMyNft'
+import OutsideClick from '../OutsideClick'
 
 interface Props {
   onDismiss?: () => void
   data: any
 }
 
-const ChangeLanguage = styled(Button)`
-  height: 56px;
-  width: 100%;
-  border: 1px solid #737375 !important;
-  background: #57575b;
-  justify-content: space-between;
-  border-radius: 8px;
-`
-
 const Balance = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: start;
-  padding: 0.75rem 0.75rem 0.75rem 0.75rem;
-  background-color: ${'#57575B'};
-  margin-top: 0.5rem !important;
+  padding: 0.75rem;
   border: 1px solid #737375;
   box-shadow: unset;
   border-radius: ${({ theme }) => theme.radii.default};
+  background-color: ${({ theme }) => (theme.isDark ? '#57575B' : '#ECECEC')};
 
   a {
     display: block;
   }
 `
 
-const Coin = styled.div`
-  min-width: 80px;
-  display: flex;
-  align-items: center;
-  margin: 4px 0;
-  justify-content: start;
-
-  img {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
-`
-
 const NumberInput = styled.input`
   border: none;
   background-color: #ffffff00;
-  font-size: 22px;
+  font-size: 18px;
+  font-weight: bold;
   outline: none;
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
-  // width: 45%;
   -webkit-flex: 1 1 auto;
   padding: 0px;
 `
@@ -88,12 +62,78 @@ const CardField = styled.div`
   }
 `
 
+const DropdownBtn = styled.button<{ border: string; color: string }>`
+  position: relative;
+  width: 100%;
+  height: 52px;
+  display: flex;
+  padding: 0 16px;
+
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 8px;
+  text-align: center;
+  color: ${({ color }) => color};
+  overflow: hidden;
+  background-color: ${({ theme }) => (theme.isDark ? '#57575B' : '#ECECEC')};
+  border: solid 1px ${({ border }) => border};
+  cursor: pointer;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 0 0 0 10px;
+  }
+`
+
+const ArrowWrap = styled.span`
+  position: absolute;
+  right: 12px;
+  float: right;
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+  color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
+
+  @media screen and (max-width: 768px) {
+    right: 6px;
+  }
+`
+
+const SubWrap = styled(Card)`
+  position: absolute;
+  top: 55px;
+  right: 0;
+  z-index: 1;
+  width: 100%;
+  border: 1px solid #737375;
+
+  // @media screen and (max-width: 768px) {
+  //   top: 35px;
+  // }
+`
+
+const SubBtns = styled.div`
+  width: 100%;
+  border-radius: 8px;
+  border: solid 1px var(--gray-scale-03);
+  overflow: hidden;
+`
+
+const Flatpicker = styled(Flatpickr)`
+  width: 100%;
+  height: 52px;
+  border-radius: 8px;
+  border: 1px solid #737375;
+  background-color: ${({ theme }) => (theme.isDark ? '#57575B' : '#ECECEC')};
+  color: ${({ theme }) => (theme.isDark ? '#fff' : '#737375')};
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.75rem;
+`
+
 const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
-  const [isFullWidth, setIsFullWidth] = useState(true)
-  const [date, setDate] = useState(new Date())
-  const [value, onChange] = useState(new Date())
-  const [touchUi, setTouchUi] = useState(true)
   const [values, setValues] = useState('')
   const [lang, setLang] = useState('')
   const [price, setPrice] = useState('')
@@ -109,13 +149,19 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
     '1',
   )
 
-  const [startDate, setStartDate] = useState(new Date())
-  const [dateFrom, setDateFrom] = useState(moment().format('YYYY-MM-DD'))
+  const datetime = new Date()
+  const [date, setDate] = useState(new Date(datetime))
 
-  const langs = [
-    { id: 1, name: 'TH' },
-    { id: 2, name: 'EN' },
+  const handleChangeDate = (newValue) => {
+    setDate(newValue)
+  }
+
+  const currency = [
+    { id: 1, value: 'FINIX' },
+    { id: 2, value: 'SIX' },
+    { id: 3, value: 'xxx' },
   ]
+
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
   function escapeRegExp(string: string): string {
@@ -131,6 +177,14 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const handleChange = (e) => {
     setPrice(new BigNumber(parseFloat(e.target.value)).times(new BigNumber(10).pow(18)).toFixed())
     enforcer(e.target.value.replace(/,/g, '.'))
+  }
+
+  const [isCurrency, setIsCurrency] = useState<boolean>(false)
+  const [fillCurrency, setFillCurrency] = useState('FINIX')
+
+  const handleIsCurrency = (val) => {
+    setIsCurrency(false)
+    setFillCurrency(val.value)
   }
 
   return (
@@ -158,100 +212,82 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
           <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
             Currency
           </Text>
-          <DropdownList
-            isFullWidth={isFullWidth}
-            position="bottom"
-            target={
-              <ChangeLanguage
-                variant="text"
-                radii="card"
-                endIcon={<ChevronDownIcon color="#fff" width="24px" />}
-                padding="0 16px"
-              >
-                <Coin>
-                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                  <Heading as="h1" fontSize="16px !important">
-                    {lang}
-                  </Heading>
-                </Coin>
-              </ChangeLanguage>
+          <OutsideClick
+            onClick={() => setIsCurrency(false)}
+            as={
+              <Flex position="relative" width="auto">
+                <DropdownBtn
+                  border="#737375"
+                  color={isDark ? '#FFFFFF' : '#212121'}
+                  onClick={() => setIsCurrency(!isCurrency)}
+                >
+                  <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />
+                  &nbsp;
+                  <Text bold fontSize="16px">
+                    {fillCurrency}
+                  </Text>
+                  <ArrowWrap>
+                    <ChevronDown style={{ transform: `rotate(${isCurrency ? 180 : 0}deg)` }} size="18px" />
+                  </ArrowWrap>
+                </DropdownBtn>
+                {isCurrency && (
+                  <SubWrap>
+                    <SubBtns>
+                      {currency.map((c) => (
+                        <MenuButton
+                          key={c.id}
+                          fullWidth
+                          onClick={() => handleIsCurrency(c)}
+                          style={{ justifyContent: 'flex-start' }}
+                        >
+                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />
+                          &nbsp;
+                          {c.value}
+                        </MenuButton>
+                      ))}
+                    </SubBtns>
+                  </SubWrap>
+                )}
+              </Flex>
             }
-          >
-            {langs.map((item) => (
-              <MenuButton
-                key={item.id}
-                fullWidth
-                onClick={() => setLang(item.name)}
-                style={{
-                  minHeight: '32px',
-                  padding: 4,
-                  height: 'auto',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                }}
-              >
-                <Coin>
-                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                  <Heading as="h1" fontSize="16px !important">
-                    {item.name}
-                  </Heading>
-                </Coin>
-              </MenuButton>
-            ))}
-          </DropdownList>
-
+          />
           <div className="mt-2">
             <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
               Price
             </Text>
-            <Balance style={{ flexWrap: 'wrap', height: 56 }}>
-              <NumberInput
-                style={{ width: '45%' }}
-                placeholder="0.00"
-                value={values}
-                onChange={handleChange}
-                pattern="^[0-9]*[,]?[0-9]*$"
-              />
+            <Balance style={{ flexWrap: 'wrap', height: 52 }}>
+              <NumberInput placeholder="0.00" value={values} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
             </Balance>
           </div>
-          <div className="mt-2">
+          <div className="mt-2 w-100">
             <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
               End date/time (Optional)
             </Text>
-            {/* <Flatpickr
-              className="form-control"
-              value={dateFrom}
-              options={{
-                altInput: true,
-                altFormat: "d/m/Y hh:mm:ss",
-                dateFromat: "Y-m-d hh:mm:ss",
-              }}
-              showTimeSelect
-              onChange={( dateStr) => {
-                setDateFrom(dateStr);
-              }}
-            /> */}
-            <DatePicker
-              showTimeSelect
-              dateFormat="MMMM d, yyyy h:mmaa"
-              selected={startDate}
-              // dateFormat="YYYY-MM-DD HH:mm:ss"
-              // selectsEnd
-              startDate={startDate}
-              // endDate={endDate}
-              minDate={startDate}
-              onChange={(dates) => setStartDate(dates)}
-            />
-            {/* <Balance style={{ flexWrap: 'wrap', height: 56 }}>
-              <NumberInput style={{ width: '45%' }} placeholder="0.00" value="" pattern="^[0-9]*[,]?[0-9]*$" />
-            </Balance> */}
+            <div className="flex align-center">
+              <Flatpicker
+                data-enable-time
+                value={date}
+                options={{
+                  dateFormat: 'dd-mm-yyyy H:i:s',
+                  altFormat: 'd-m-y h:i K',
+                  altInput: true,
+                }}
+              />
+              <img
+                alt=""
+                src={isDark ? calendarWhite : calendarBlack}
+                width="20px"
+                height="18px"
+                style={{ marginLeft: '-30px', cursor: 'pointer' }}
+              />
+            </div>
           </div>
           <div className="flex justify-space-between mt-2">
             <div className="flex align-center">
               <Text fontSize="14px !important" lineHeight="2">
                 Listing fee
               </Text>
-              <Helper text="Somthing" className="ml-2" position="right" />
+              <Helper text="Something" className="ml-2" position="right" />
             </div>
             <Text fontSize="14px !important" lineHeight="2">
               2.5%

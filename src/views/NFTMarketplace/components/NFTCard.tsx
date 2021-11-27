@@ -6,6 +6,7 @@ import CardHeading from './CardHeading'
 import ListDetailModal from './ModalNFT/ListDetailModal'
 import ListGroupModal from './ModalNFT/ListGroupModal'
 import DetailsSection from './DetailSelection'
+import DetailsMarketPlace from './DetailMarketPlace'
 import { NFTCardProps } from './types'
 
 const CardStyle = styled.div<{ isHorizontal?: boolean; isMarketplace?: boolean }>`
@@ -62,15 +63,24 @@ const NFTCard: React.FC<NFTCardProps> = ({
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string) => (
-      <DetailsSection
-        isHorizontal={isHorizontal}
-        className={className}
-        data={data}
-        typeName={typeName}
-        isMarketplace={isMarketplace}
-      />
-    ),
+    (className?: string) =>
+      !isMarketplace ? (
+        <DetailsSection
+          isHorizontal={isHorizontal}
+          className={className}
+          data={data}
+          typeName={typeName}
+          isMarketplace={isMarketplace}
+        />
+      ) : (
+        <DetailsMarketPlace
+          isHorizontal={isHorizontal}
+          className={className}
+          data={data}
+          typeName={typeName}
+          isMarketplace={isMarketplace}
+        />
+      ),
     [data, typeName, isHorizontal, isMarketplace],
   )
 
