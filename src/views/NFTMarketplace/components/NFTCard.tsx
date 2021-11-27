@@ -35,9 +35,8 @@ const NFTCard: React.FC<NFTCardProps> = ({
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
-  console.log('typeName', typeName)
   const [onPresentConnectModal] = useModal(
-    typeName !== 'Group' ? <ListDetailModal isMarketplace={isMarketplace} /> : <ListGroupModal />,
+    typeName !== 'Group' ? <ListDetailModal data={data} isMarketplace={isMarketplace} /> : <ListGroupModal data={data} />,
   )
 
   useEffect(() => {

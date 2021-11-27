@@ -21,6 +21,8 @@ import ifo from 'config/abi/ifo.json'
 import erc20 from 'config/abi/erc20.json'
 import bunnyFactory from 'config/abi/bunnyFactory.json'
 import definixRabbits from 'config/abi/definixRabbits.json'
+import dryotus from 'config/abi/dryotus.json'
+import seller from 'config/abi/SellerFacet.json'
 import lottery from 'config/abi/lottery.json'
 import lotteryTicket from 'config/abi/lotteryNft.json'
 import herodotus from 'config/abi/herodotus.json'
@@ -69,6 +71,16 @@ export const useBunnyFactory = () => {
 export const useDefinixRabbits = () => {
   const definixRabbitsAbi = definixRabbits as unknown as AbiItem
   return useContract(definixRabbitsAbi, getDefinixRabbitsAddress())
+}
+
+export const useApprovalForAll = () => {
+  const dryotusAbi = dryotus as unknown as AbiItem
+  return useContract(dryotusAbi, "0xB7cdb5199d9D8be847d9B7d9e111977652E53307")
+}
+
+export const useSellNft = () => {
+  const sellerAbi = seller.abi as unknown as AbiItem
+  return useContract(sellerAbi, "0x6Cef51b5684e39597EEf0b82F1e932F45f56a394")
 }
 
 export const useProfile = () => {

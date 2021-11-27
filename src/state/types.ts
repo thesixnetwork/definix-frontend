@@ -98,6 +98,31 @@ export interface FinixPriceState {
   ethBnbQuote: number
   veloBusdPrice: number
 }
+
+export interface NFTData {
+  code: string
+  order: number
+  name: string
+  title: string
+  grade: string
+  detailTitleKey: string
+  detailDescKey: string
+  price: number
+  availableAmount?: number
+  totalAmount: number
+  limitCount: number
+  videoUrl: string
+  previewVideoUrl: string
+  previewImgId: string
+  imageUrl: string
+  startID: number
+  endID: number
+  userData?: {
+    amountOwn: number
+    owning: number[]
+  }
+  metaDataURL: string
+}
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
@@ -147,4 +172,5 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
+  nft: NFTData
 }

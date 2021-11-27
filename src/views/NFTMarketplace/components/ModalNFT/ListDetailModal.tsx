@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import LazyLoad from 'react-lazyload'
@@ -9,12 +9,16 @@ import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import tAra from 'uikit-dev/images/for-ui-v2/nft/T-ARA.png'
 import copyWhite from 'uikit-dev/images/for-ui-v2/nft/copy-white.png'
 import copyBlack from 'uikit-dev/images/for-ui-v2/nft/copy-black.png'
+import CopyToClipboard from '../CopyToClipboard'
+import EllipsisText from '../../../../components/EllipsisText'
 import ListFillModal from './ListFillModal'
 import ModalComplete from './ModalComplete'
+import { useSousApprove } from '../../../../hooks/useGetMyNft'
 
 interface Props {
   onDismiss?: () => void
   isMarketplace?: boolean
+  data: any
 }
 
 const ImgWrap = styled(Flex)`
@@ -36,13 +40,27 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace }) => {
+const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace, data }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
-  const [onPresentConnectModal] = useModal(<ListFillModal />)
+  const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
   const [handleBuy] = useModal(<ModalComplete />)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { isDark } = useTheme()
+  const { onApprove } = useSousApprove()
+  const [requestedApproval, setRequestedApproval] = useState(false)
+
+  // const handleApprove = useCallback(async () => {
+  //   try {
+  //     setRequestedApproval(true)
+  //     const txHash = await onApprove()
+  //     if (!txHash) {
+  //       setRequestedApproval(false)
+  //     }
+  //   } catch (e) {
+  //     console.error(e)
+  //   }
+  // }, [onApprove, setRequestedApproval])
 
   return (
     <ModalNFT
@@ -69,10 +87,10 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
 
         <div className={isMobile ? 'mt-6' : 'ml-6'}>
           <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
-            #02
+            #{data.userData.owning}
           </Text>
           <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="1.4">
-            T-ARA LEGENDARY Grade Limited
+            {data.name} {data.title}
           </Text>
           <Text fontSize={isMobile ? '12px !important' : '14px !important'} color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
@@ -82,10 +100,8 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               Metadata
             </Text>
             <div className="flex align-center">
-              <Text bold fontSize="14px" color="text" paddingRight="6px">
-                {`${'https://dryotus.definix.com/'.substring(0, 30)}`}...
-              </Text>
-              <Image src={isDark ? copyWhite : copyBlack} width={20} height={18} />
+              <EllipsisText start={17} text={data.metaDataURL || ''} />
+              <CopyToClipboard toCopy={data.metaDataURL || ''}>Copy Address</CopyToClipboard>
             </div>
           </div>
           <div className="mt-3">
@@ -101,12 +117,8 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               Smart Contract address
             </Text>
             <div className="flex align-center">
-              <Text bold fontSize="14px" color="text" paddingRight="6px">
-                {`${'0x55030000000065311'.substring(0, 6)}...${'0x55030000000065311'.substring(
-                  '0x55030000000065311'.length - 4,
-                )}`}
-              </Text>
-              <Image src={isDark ? copyWhite : copyBlack} width={20} height={18} />
+              <EllipsisText start={6} end={5} text="0x5503a12290a7Cc6128d18b0DA6FBEab009165311" />
+              <CopyToClipboard toCopy={data.name}>Copy Address</CopyToClipboard>
             </div>
           </div>
           {isMarketplace ? (

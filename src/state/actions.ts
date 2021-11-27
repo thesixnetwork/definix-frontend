@@ -9,5 +9,6 @@ export {
   updateUserStakedBalance,
 } from './pools'
 export { fetchTVL, fetchPancakeBnbPrice, fetchSixPrice, fetchFinixPrice, fetchQuote } from './finixPrice'
+export { fetchNFTUser } from './nft'
 export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
 export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import _ from 'lodash'
+import BigNumber from 'bignumber.js'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -15,9 +16,11 @@ import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
 import Helper from 'uikit-dev/components/Helper'
 import { ChevronDownIcon } from 'uikit-dev/components/Svg'
 import DropdownList from '../DropdownNFT/DropdownList'
+import { useSellNFTOneItem } from '../../../../hooks/useGetMyNft'
 
 interface Props {
   onDismiss?: () => void
+  data: any
 }
 
 const ChangeLanguage = styled(Button)`
@@ -85,7 +88,7 @@ const CardField = styled.div`
   }
 `
 
-const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
+const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [isFullWidth, setIsFullWidth] = useState(true)
   const [date, setDate] = useState(new Date())
@@ -93,6 +96,19 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [touchUi, setTouchUi] = useState(true)
   const [values, setValues] = useState('')
   const [lang, setLang] = useState('')
+  const [price, setPrice] = useState('')
+  const { isXl } = useMatchBreakpoints()
+  const isMobile = !isXl
+  const { isDark } = useTheme()
+
+
+  const { onSell } = useSellNFTOneItem(
+    '0xB7cdb5199d9D8be847d9B7d9e111977652E53307',
+    data.userData.owning,
+    price,
+    '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
+    '1',
+  )
 
   const [startDate, setStartDate] = useState(new Date())
   const [dateFrom, setDateFrom] = useState(moment().format('YYYY-MM-DD'))
@@ -114,12 +130,9 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }
 
   const handleChange = (e) => {
+    setPrice(new BigNumber(parseFloat(e.target.value)).times(new BigNumber(10).pow(18)).toFixed())
     enforcer(e.target.value.replace(/,/g, '.'))
   }
-  console.log('Modal')
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
-  const { isDark } = useTheme()
 
   return (
     <ModalNFT
@@ -133,10 +146,10 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       <CardField>
         <div className="bd-b px-5 pt-2 pb-3">
           <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
-            #02Fiil
+            #{data.userData.owning}
           </Text>
           <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="2">
-            T-ARA LEGENDARY Grade Limited
+            {data.name} {data.title}
           </Text>
           <Text fontSize="14px !important" color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
@@ -170,7 +183,6 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 key={item.id}
                 fullWidth
                 onClick={() => setLang(item.name)}
-                // Safari fix
                 style={{
                   minHeight: '32px',
                   padding: 4,
@@ -254,7 +266,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               1,125 FINIX
             </Text>
           </div>
-          <Button fullWidth radii="small" className="mt-3">
+          <Button fullWidth radii="small" className="mt-3" onClick={onSell}>
             Submit
           </Button>
         </div>

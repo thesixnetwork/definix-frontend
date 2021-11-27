@@ -90,38 +90,73 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   const { isDark } = useTheme()
   return (
     <>
-      <InfosBox>
-        <div>
-          {typeName === 'Group' && (
-            <BottomContent>
-              <CircleCount>
-                <img src={plusWhite} alt="" width="20%" />
-                <TextCount>{data.count}</TextCount>
-              </CircleCount>
-            </BottomContent>
-          )}
+      {typeName === 'Group' ? (
+        <InfosBox>
+          <div>
+            {typeName === 'Group' && (
+              <BottomContent>
+                <CircleCount>
+                  <img src={plusWhite} alt="" width="20%" />
+                  <TextCount>{data.count}</TextCount>
+                </CircleCount>
+              </BottomContent>
+            )}
 
-          <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
-            <Heading bold className="flex-shrink">
-              #02ffff
-            </Heading>
+            <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
+              <Heading bold className="flex-shrink">
+                #12
+              </Heading>
+            </div>
           </div>
-        </div>
-        <div className="flex align-baseline flex-wrap justify-space-between">
-          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-            <Text bold className="flex-shrink">
-              T-ARA LEGENDARY Grade Limited
-            </Text>
+          <div className="flex align-baseline flex-wrap justify-space-between">
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink">
+                dddd
+              </Text>
+            </div>
           </div>
-        </div>
-        <div className="flex align-baseline flex-wrap justify-space-between">
-          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-            <Text bold className="flex-shrink" color="textSubtle">
-              Dingo x SIX Network NFT Project No.1
-            </Text>
+          <div className="flex align-baseline flex-wrap justify-space-between">
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink" color="textSubtle">
+                Dingo x SIX Network NFT Project No.1
+              </Text>
+            </div>
           </div>
-        </div>
-      </InfosBox>
+        </InfosBox>
+      ) : (
+        <InfosBox>
+          <div>
+            {typeName === 'Group' && (
+              <BottomContent>
+                <CircleCount>
+                  <img src={plusWhite} alt="" width="20%" />
+                  <TextCount>{data.count}</TextCount>
+                </CircleCount>
+              </BottomContent>
+            )}
+
+            <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
+              <Heading bold className="flex-shrink">
+                #{data.userData.owning}
+              </Heading>
+            </div>
+          </div>
+          <div className="flex align-baseline flex-wrap justify-space-between">
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink">
+                {data.name} {data.title}
+              </Text>
+            </div>
+          </div>
+          <div className="flex align-baseline flex-wrap justify-space-between">
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink" color="textSubtle">
+                Dingo x SIX Network NFT Project No.1
+              </Text>
+            </div>
+          </div>
+        </InfosBox>
+      )}
 
       {isMarketplace && (
         <PriceUnitBox>

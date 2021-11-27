@@ -12,6 +12,7 @@ import ModalComplete from './ModalComplete'
 interface Props {
   onDismiss?: () => void
   isMarketplace?: boolean
+  data: any
 }
 
 const ImgWrap = styled(Flex)`
@@ -33,10 +34,10 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null }) => {
+const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
-  const [onPresentConnectModal] = useModal(<ListFillModal />)
+  const [onPresentConnectModal] = useModal(<ListFillModal data={data}/>)
   const [handleBuy] = useModal(<ModalComplete />)
   const { isXl } = useMatchBreakpoints()
   const { isDark, toggleTheme } = useTheme()
