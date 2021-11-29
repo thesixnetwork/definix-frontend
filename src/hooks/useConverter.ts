@@ -72,25 +72,23 @@ export default function useConverter() {
     return numeral(apy.times(100).toFixed(2)).format('0,0.[00]')
   }
 
-  const convertToRebalanceAPR = ({ finixRewardPerYear, totalAssetValue }: {
+  const convertToRebalanceAPR = ({
+    finixRewardPerYear,
+    totalAssetValue,
+  }: {
     finixRewardPerYear: BigNumber
     totalAssetValue: BigNumber
   }) => {
-    return getBalanceNumber(finixPrice
-      .times(finixRewardPerYear)
-      .div(totalAssetValue))
+    return getBalanceNumber(finixPrice.times(finixRewardPerYear).div(totalAssetValue))
   }
-  const convertToRebalanceAPRFormat = ({ finixRewardPerYear, totalAssetValue }: {
+  const convertToRebalanceAPRFormat = ({
+    finixRewardPerYear,
+    totalAssetValue,
+  }: {
     finixRewardPerYear: BigNumber
     totalAssetValue: BigNumber
   }) => {
-    return numeral(
-      finixPrice
-        .times(finixRewardPerYear)
-        .div(totalAssetValue)
-        .times(100)
-        .toFixed(2),
-    ).format('0,0.[00]')
+    return numeral(finixPrice.times(finixRewardPerYear).div(totalAssetValue).times(100).toFixed(2)).format('0,0.[00]')
   }
 
   return {

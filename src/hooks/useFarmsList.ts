@@ -114,7 +114,16 @@ const useFarmsList = (farms: Farm[]) => {
         totalLiquidityValue: Number(totalLiquidityValue),
       }
     })
-  }, [convertToPriceFromToken, convertToFarmAPR, farms, finixPrice, finixPriceVsKlay, kethPriceUsd, klayPrice, sixPrice])
+  }, [
+    convertToPriceFromToken,
+    convertToFarmAPR,
+    farms,
+    finixPrice,
+    finixPriceVsKlay,
+    kethPriceUsd,
+    klayPrice,
+    sixPrice,
+  ])
 
   const getFilteredFarms = useCallback(() => {
     const farmsWithApy = getFarmsList()

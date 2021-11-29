@@ -52,7 +52,7 @@ const MyProducts: React.FC<{
     // if (selectedOrder === '') return products
     return filteredProducts
   }, [filteredProducts])
-  
+
   const displayProducts = useMemo(() => {
     if (!searchKeyword.length) return orderedProducts
     return orderedProducts.filter((product) => {
@@ -139,7 +139,6 @@ const MyProducts: React.FC<{
 
   return (
     <>
-      
       {displayProducts.length ? (
         displayProducts.map((product, index) => {
           return (

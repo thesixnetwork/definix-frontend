@@ -103,7 +103,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const apr = useMemo(() => {
     return convertToRebalanceAPRFormat({
       finixRewardPerYear: _.get(rebalance, 'finixRewardPerYear', new BigNumber(0)),
-      totalAssetValue: _.get(rebalance, 'totalAssetValue', new BigNumber(0))
+      totalAssetValue: _.get(rebalance, 'totalAssetValue', new BigNumber(0)),
     })
   }, [convertToRebalanceAPRFormat, rebalance])
 

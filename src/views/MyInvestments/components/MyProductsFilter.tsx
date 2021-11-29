@@ -40,7 +40,7 @@ const MyProductsFilter: React.FC<{
         id: 'apyValue',
         label: t('APR'),
         orderBy: 'desc',
-      }
+      },
     ],
   })
 

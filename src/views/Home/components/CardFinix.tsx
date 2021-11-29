@@ -57,22 +57,22 @@ const InfoValues = styled(Flex)`
 `
 
 const InfoTitle = styled(Text)`
-${({ theme }) => theme.textStyle.R_14R}
+  ${({ theme }) => theme.textStyle.R_14R}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
 `
 
 const InfoValue = styled(Text)`
-${({ theme }) => theme.textStyle.R_14B}
+  ${({ theme }) => theme.textStyle.R_14B}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
 `
 
 const InfoTitleBold = styled(Text)`
-${({ theme }) => theme.textStyle.R_14M}
+  ${({ theme }) => theme.textStyle.R_14M}
   color: ${({ theme }) => theme.colors[ColorStyles.DEEPGREY]};
 `
 
 const InfoValueBold = styled(Text)`
-${({ theme }) => theme.textStyle.R_16B}
+  ${({ theme }) => theme.textStyle.R_16B}
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
 `
 
