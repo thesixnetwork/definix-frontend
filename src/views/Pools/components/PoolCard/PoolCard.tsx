@@ -200,22 +200,20 @@ const PoolCard: React.FC<PoolCardProps> = ({
   if (isInMyInvestment) {
     return (
       <>
-        {isMobile ? null : (
-          <Box className="pa-s32">
-            {/* <Flex justifyContent="space-between">
-              <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
-              <Box style={{ width: '26%' }} className="mx-s24">
-                {renderStakeAction()}
-              </Box>
-              <Box style={{ width: '44%' }}>{renderHarvestActionAirDrop()}</Box>
-            </Flex> */}
-            <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
-              <Box>{renderCardHeading()}</Box>
-              <Box>{renderStakeAction()}</Box>
-              <Box>{renderHarvestActionAirDrop()}</Box>
-            </Grid>
-          </Box>
-        )}
+        <Box p={isMobile ? 20 : 32}>
+          {/* <Flex justifyContent="space-between">
+            <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
+            <Box style={{ width: '26%' }} className="mx-s24">
+              {renderStakeAction()}
+            </Box>
+            <Box style={{ width: '44%' }}>{renderHarvestActionAirDrop()}</Box>
+          </Flex> */}
+          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
+            <Box>{renderCardHeading()}</Box>
+            <Box>{renderStakeAction()}</Box>
+            <Box>{renderHarvestActionAirDrop()}</Box>
+          </Grid>
+        </Box>
       </>
     )
   }

@@ -205,7 +205,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   if (componentType === 'myInvestment') {
     return (
       <>
-        <Box className="pa-s32">
+        <Box p={isMobile ? 20 : 32}>
           {/* <Flex justifyContent="space-between">
             <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
             <Box style={{ width: '26%' }} className="mx-s24">
@@ -213,7 +213,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             </Box>
             <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
           </Flex> */}
-          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
+          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
             <Box>{renderCardHeading()}</Box>
             <Box>{renderStakeAction()}</Box>
             <Box>{isApproved && renderHarvestActionAirDrop()}</Box>
@@ -235,13 +235,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
             {renderEarningsSection()}
           </CardBody>
           {isOpenAccordion && (
-            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
               {renderHarvestActionAirDrop()}
-              <Box className="py-s24">{renderStakeAction()}</Box>
+              <Box py="S_24">{renderStakeAction()}</Box>
               <Divider />
-              <Box className="pt-s24">{renderTotalLiquiditySection()}</Box>
-              <Box className="pt-s16">{renderMyBalanceSection()}</Box>
-              <Box className="py-s32">{renderLinkSection()}</Box>
+              <Box pt="S_24">{renderTotalLiquiditySection()}</Box>
+              <Box pt="S_16">{renderMyBalanceSection()}</Box>
+              <Box py="S_32">{renderLinkSection()}</Box>
             </Box>
           )}
         </Card>
@@ -259,7 +259,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             </Flex>
           </CardBody>
           {isOpenAccordion && (
-            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">
                 <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
                 <Box style={{ width: '40%' }} className="mx-s24">

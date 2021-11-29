@@ -66,7 +66,8 @@ const MyInvestments: React.FC = () => {
         arr = [
           ...result,
           {
-            type: t('Farm'),
+            label: t('Farm'),
+            type: 'farm',
             data: farm,
           },
         ]
@@ -85,7 +86,8 @@ const MyInvestments: React.FC = () => {
         arr = [
           ...result,
           {
-            type: t('Pool'),
+            label: t('Pool'),
+            type: 'pool',
             data: pool,
           },
         ]
@@ -107,7 +109,8 @@ const MyInvestments: React.FC = () => {
       arr = [
         ...result,
         {
-          type: t('Rebalancing'),
+          label: t('Rebalancing'),
+          type: 'rebalancing',
           data: {
             ...rebalance,
             myRebalanceBalance,

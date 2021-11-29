@@ -1,6 +1,8 @@
+import BigNumber from 'bignumber.js'
+import styled from 'styled-components'
 import React, { useState, useMemo, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
+import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
@@ -35,6 +37,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   earnings,
   needsApproval,
 }) => {
+  const { t } = useTranslation()
   const navigate = useHistory()
   const isInPool = useMemo(() => componentType === 'pool', [componentType])
   const { account } = useWallet()
@@ -101,11 +104,20 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     navigate.push('/pool')
   }, [navigate])
 
+  const HarvestButtonInMyInvestment = styled(Flex)`
+    flex-direction: column;
+    justify-content: center;
+    width: 100px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: row;
+      width: 100%;
+    }
+  `
+
   const HarvestButton = () => (
     <Button
       variant={ButtonVariants.RED}
-      md
-      minWidth="100px"
+      width='100%'
       disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
       onClick={async () => {
         setPendingTx(true)
@@ -113,14 +125,20 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
         setPendingTx(false)
       }}
     >
-      Harvest
+      {t('Harvest')}
+    </Button>
+  )
+
+  const DetailButton = () => (
+    <Button variant={ButtonVariants.BROWN} width='100%' onClick={handleGoToDetail} className={isMobile ? 'ml-s16' : 'mt-s8'}>
+      {t('Detail')}
     </Button>
   )
 
   return (
     <>
       <Box>
-        <Flex flexDirection={isInPool ? 'column' : 'row'} justifyContent="space-between">
+        <Flex flexDirection={isInPool || isMobile ? 'column' : 'row'} justifyContent="space-between">
           <Box>
             <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
               Earned Token
@@ -151,16 +169,18 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
                   </div>
                 )} */}
               </Box>
-              {isInPool && <HarvestButton />}
+              {isInPool && (
+                <Box className={`w-full ${isMobile ? 'mt-s24' : ''}`}>
+                  <HarvestButton />
+                </Box>
+              )}
             </Flex>
           </Box>
           {isInPool ? null : (
-            <Flex flexDirection="column" justifyContent="center">
+            <HarvestButtonInMyInvestment className={isMobile ? 'mt-s24' : ''}>
               <HarvestButton />
-              <Button variant={ButtonVariants.BROWN} md minWidth="100px" onClick={handleGoToDetail} className="mt-s8">
-                Detail
-              </Button>
-            </Flex>
+              <DetailButton />
+            </HarvestButtonInMyInvestment>
           )}
         </Flex>
       </Box>

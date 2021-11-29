@@ -26,8 +26,6 @@ const MyProducts: React.FC<{
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
 
-  console.log(products)
-
   const getTokenName = useCallback((product) => {
     let tokenName = ''
     if (_.get(product, 'title')) {

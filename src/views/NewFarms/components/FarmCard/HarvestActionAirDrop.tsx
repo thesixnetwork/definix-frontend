@@ -1,6 +1,8 @@
+import BigNumber from 'bignumber.js'
+import styled from 'styled-components'
 import React, { useState, useMemo, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
+import { useTranslation } from 'react-i18next'
 import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
@@ -27,6 +29,7 @@ interface FarmCardActionsProps {
 }
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings, componentType = 'farm' }) => {
+  const { t } = useTranslation()
   const navigate = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
   const [toasts, setToasts] = useState([])
@@ -79,22 +82,37 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     navigate.push('/farm')
   }, [navigate])
 
+  const HarvestButtonInMyInvestment = styled(Flex)`
+    flex-direction: column;
+    justify-content: center;
+    width: 100px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: row;
+      width: 100%;
+    }
+  `
+
   const HarvestButton = () => (
     <Button
       variant={ButtonVariants.RED}
-      md
-      minWidth="100px"
+      width='100%'
       disabled={finixEarningsValue === 0 || pendingTx}
       onClick={handleHarvest}
     >
-      Harvest
+      {t('Harvest')}
+    </Button>
+  )
+
+  const DetailButton = () => (
+    <Button variant={ButtonVariants.BROWN} width='100%' onClick={handleGoToDetail} className={isMobile ? 'ml-s16' : 'mt-s8'}>
+      {t('Detail')}
     </Button>
   )
 
   return (
     <>
       <Box>
-        <Flex flexDirection={isInFarm ? 'column' : 'row'} justifyContent="space-between">
+        <Flex flexDirection={isInFarm || isMobile ? 'column' : 'row'} justifyContent="space-between">
           <Box>
             <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
               Earned Token
@@ -111,28 +129,21 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
                   </Text>
                 </Box>
               </Flex>
-              {isInFarm && <HarvestButton />}
+              {isInFarm && (
+                <Box className={`w-full ${isMobile ? 'mt-s28' : ''}`}>
+                  <HarvestButton />
+                </Box>
+              )}
             </Flex>
           </Box>
 
           {isInFarm ? null : (
-            <Flex flexDirection="column" justifyContent="center">
+            <HarvestButtonInMyInvestment className={isMobile ? 'mt-s28' : ''}>
               <HarvestButton />
-              <Button variant={ButtonVariants.BROWN} md minWidth="100px" onClick={handleGoToDetail} className="mt-s8">
-                Detail
-              </Button>
-            </Flex>
+              <DetailButton />
+            </HarvestButtonInMyInvestment>
           )}
         </Flex>
-        {/* {false && (
-          <div className="flex align-center justify-space-between">
-            <Text color="textSubtle">Claim Ended Bonus</Text>
-
-            <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-              Claim
-            </Button>
-          </div>
-        )} */}
       </Box>
       <ToastContainer toasts={toasts} onRemove={hideToast} />
     </>
