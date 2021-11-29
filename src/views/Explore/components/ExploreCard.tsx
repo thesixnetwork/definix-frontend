@@ -276,7 +276,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
             <BottomInMyInvestment>
               {renderCurrentInvestment()}
               <HarvestButtonInMyInvestment mt={isMobile ? 'S_24' : ''}>
-                <Button variant={ButtonVariants.BROWN} width='100%' as={Link} to="/rebalancing/detail">
+                <Button variant={ButtonVariants.BROWN} width="100%" as={Link} to="/rebalancing/detail">
                   {t('Detail')}
                 </Button>
               </HarvestButtonInMyInvestment>

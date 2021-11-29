@@ -95,7 +95,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
   const HarvestButton = () => (
     <Button
       variant={ButtonVariants.RED}
-      width='100%'
+      width="100%"
       disabled={finixEarningsValue === 0 || pendingTx}
       onClick={handleHarvest}
     >
@@ -104,7 +104,12 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
   )
 
   const DetailButton = () => (
-    <Button variant={ButtonVariants.BROWN} width='100%' onClick={handleGoToDetail} className={isMobile ? 'ml-s16' : 'mt-s8'}>
+    <Button
+      variant={ButtonVariants.BROWN}
+      width="100%"
+      onClick={handleGoToDetail}
+      className={isMobile ? 'ml-s16' : 'mt-s8'}
+    >
       {t('Detail')}
     </Button>
   )

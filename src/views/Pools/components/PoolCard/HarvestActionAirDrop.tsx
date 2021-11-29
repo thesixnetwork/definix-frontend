@@ -117,7 +117,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   const HarvestButton = () => (
     <Button
       variant={ButtonVariants.RED}
-      width='100%'
+      width="100%"
       disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
       onClick={async () => {
         setPendingTx(true)
@@ -130,7 +130,12 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   )
 
   const DetailButton = () => (
-    <Button variant={ButtonVariants.BROWN} width='100%' onClick={handleGoToDetail} className={isMobile ? 'ml-s16' : 'mt-s8'}>
+    <Button
+      variant={ButtonVariants.BROWN}
+      width="100%"
+      onClick={handleGoToDetail}
+      className={isMobile ? 'ml-s16' : 'mt-s8'}
+    >
       {t('Detail')}
     </Button>
   )
