@@ -79,7 +79,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 }) => {
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
+  const isMobile = !isXxl
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const { ratio } = rebalance
   const { convertToRebalanceAPRFormat } = useConverter()
@@ -234,6 +234,39 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   }, [combinedAmount])
 
   if (isInMyInvestment) {
+    if (isMobile) {
+      return (
+        <Box className="pa-s20">
+          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
+            <Flex alignItems="center">
+              <Box width={70} className="mr-s16">
+                <CardImage isMediumSize={false} imageUrl={rebalance.icon[0]} title={rebalance.title} />
+              </Box>
+              <Box>
+                <CardTitle title={rebalance.title} textStyle="R_18M" />
+                <Flex alignItems="end">
+                  <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
+                    APR
+                  </Text>
+                  <Text textStyle="R_18B" color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
+                    {`${apr}%`}
+                  </Text>
+                </Flex>
+              </Box>
+            </Flex>
+            <Flex alignItems="center">{renderSharePrice()}</Flex>
+            <Flex justifyContent="space-between" alignItems="center">
+              {renderCurrentInvestment()}
+              <Flex flexDirection="column" justifyContent="center">
+                <Button variant={ButtonVariants.BROWN} md minWidth="100px" as={Link} to="/rebalancing/detail">
+                  Detail
+                </Button>
+              </Flex>
+            </Flex>
+          </Grid>
+        </Box>
+      )
+    }
     return (
       <>
         <Box className="pa-s32">
