@@ -46,7 +46,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
                 <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
                   <ImgTokenSixIcon width={48} height={48} />
                 </IconToken>
-                <Flex flexDirection="column" width={!isMobile && 194}>
+                <Flex flexDirection="column" width={!isMobile && 184}>
                   <Text className="mb-s2" color="black" textStyle="R_14B">
                     {t('SIX')}
                   </Text>
@@ -60,7 +60,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
                 <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
                   <ImgTokenFinixIcon width={48} height={48} />
                 </IconToken>
-                <Flex flexDirection="column" width={!isMobile && 194}>
+                <Flex flexDirection="column" width={!isMobile && 184}>
                   <Text className="mb-s2" color="black" textStyle="R_14B">
                     {t('FINIX')}
                   </Text>
