@@ -96,26 +96,6 @@ const config: MenuEntry[] = [
     href: '/rebalancing',
     notHighlight: false,
     newTab: false,
-    items: [
-      {
-        label: 'Investors',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
-      {
-        label: 'Fund Managers',
-        href: '/info',
-        notHighlight: true,
-        newTab: false,
-      },
-      // {
-      //   label: 'Network Monitor',
-      //   href: '/info',
-      //   notHighlight: true,
-      //   newTab: false,
-      // },
-    ],
   },
 
   // {
