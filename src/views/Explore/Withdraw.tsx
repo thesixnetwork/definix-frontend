@@ -476,10 +476,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       const [, poolAmountsData] = await simulateWithdraw(
         thisInput,
         _.compact([...((rebalance || {}).tokens || [])]).map((c, index) => {
-          const ratioPoint = (
-            ((rebalance || {}).tokenRatioPoints || [])[index] ||
-            new BigNumber(0)
-          ).toNumber()
+          const ratioPoint = (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
           const ratioObject = ((rebalance || {}).ratio || []).find((r) => r.symbol === c.symbol)
           const decimal = c.decimals
           return {
