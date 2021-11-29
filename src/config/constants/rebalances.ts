@@ -115,8 +115,10 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'PoS Top Pick',
-    description: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    fullDescription: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+    description:
+      'Proof of Stake leader. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+    fullDescription:
+      'Proof of Stake leader. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
     icon: ['/images/vaults/pos1.png', '/images/vaults/pos2.png'],
     address: {
       56: '0xff41060E2da907aEe94A9E6349Ef23F2A6f12C79',
@@ -192,8 +194,10 @@ const rebalances: RebalanceConfig[] = [
   },
   {
     title: 'Game Index',
-    description: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
-    fullDescription: 'XXXXXXXXXXXXXXXXXXXXXXXXX',
+    description:
+      'Major game fi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+    fullDescription:
+      'Major game fi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
     icon: ['/images/vaults/game1.png', '/images/vaults/game2.png'],
     address: {
       56: '0xB7d9f0aEdFd9270f3BD676450208a41e49385872',
