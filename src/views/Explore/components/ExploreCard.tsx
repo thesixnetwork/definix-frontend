@@ -8,6 +8,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
+import useConverter from 'hooks/useConverter'
 import {
   Box,
   Button,
@@ -81,7 +82,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const isMobile = !isXl && !isXxl
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const { ratio } = rebalance
-  const finixPrice = usePriceFinixUsd()
+  const { convertToRebalanceAPRFormat } = useConverter()
 
   const { account } = useWallet()
   const balances = useBalances(account)
@@ -100,14 +101,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
   const apr = useMemo(() => {
-    return numeral(
-      finixPrice
-        .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-        .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-        .times(100)
-        .toFixed(2),
-    ).format('0,0.[00]')
-  }, [finixPrice, rebalance])
+    return convertToRebalanceAPRFormat({
+      finixRewardPerYear: _.get(rebalance, 'finixRewardPerYear', new BigNumber(0)),
+      totalAssetValue: _.get(rebalance, 'totalAssetValue', new BigNumber(0))
+    })
+  }, [convertToRebalanceAPRFormat, rebalance])
 
   const combinedAmount = useCallback(async () => {
     if (account) {

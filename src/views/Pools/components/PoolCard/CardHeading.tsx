@@ -1,18 +1,20 @@
 import React, { useMemo } from 'react'
 import { getTokenImageUrl } from 'utils/getTokenImage'
+import useConverter from 'hooks/useConverter'
 import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
 import ApyButton from './ApyButton'
 import { CardHeadingProps } from './types'
 
 const CardHeading: React.FC<CardHeadingProps> = ({ tokenName, isOldSyrup, apy, size = 'medium' }) => {
+  const { convertToPoolAPRFormat } = useConverter()
   const isMediumSize = useMemo(() => size === 'medium', [size])
   const displayApy = useMemo(() => {
-    const value = apy.toNumber()
-    if (Number.isNaN(value)) {
-      return ''
+    try {
+      return `${convertToPoolAPRFormat(apy)}%`
+    } catch (error) {
+      return '-'
     }
-    return `${apy.toNumber().toFixed(2)}%`
-  }, [apy])
+  }, [convertToPoolAPRFormat, apy])
   const imageSize = useMemo(() => (isMediumSize ? 48 : 40), [isMediumSize])
 
   return (

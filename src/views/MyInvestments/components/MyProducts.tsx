@@ -11,43 +11,48 @@ import { provider } from 'web3-core'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
 import ExploreCard from 'views/Explore/components/ExploreCard'
-import MyProductsFilter from './MyProductsFilter'
 
 interface Product {
   type: string
   data: any
 }
-const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
+const MyProducts: React.FC<{
+  products: Product[]
+  productType: string
+  orderType: string
+  searchKeyword: string
+}> = ({ products, productType, orderType, searchKeyword }) => {
   const { t } = useTranslation()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
 
   console.log(products)
 
-  const [currentProductType, setCurrentProductType] = useState<string>('')
-  const [selectedOrder, setSelectedOrder] = useState<string>('')
-  const [searchKeyword, setSearchKeyword] = useState<string>('')
-
   const getTokenName = useCallback((product) => {
     let tokenName = ''
     if (_.get(product, 'title')) {
+      // rebalancing
       tokenName = _.get(product, 'title')
     } else if (_.get(product, 'lpSymbol')) {
+      // farm
       tokenName = _.get(product, 'lpSymbol').replace(/ LP$/, '')
     } else if (_.get(product, 'tokenName')) {
+      // pool
       tokenName = _.get(product, 'tokenName')
     }
     return tokenName.toLowerCase()
   }, [])
 
   const filteredProducts = useMemo(() => {
-    if (currentProductType === '' || currentProductType === 'all') return products
-    return products.filter((product) => product.type.toLowerCase() === currentProductType)
-  }, [products, currentProductType])
+    if (productType === '' || productType === 'all') return products
+    return products.filter((product) => product.type.toLowerCase() === productType)
+  }, [products, productType])
+
   const orderedProducts = useMemo(() => {
     // if (selectedOrder === '') return products
     return filteredProducts
   }, [filteredProducts])
+  
   const displayProducts = useMemo(() => {
     if (!searchKeyword.length) return orderedProducts
     return orderedProducts.filter((product) => {
@@ -79,8 +84,8 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
   )
   const getProductComponent = useCallback(
     (product) => {
-      const productType = product.type.toLowerCase()
-      if (productType === 'farm') {
+      const type = product.type.toLowerCase()
+      if (type === 'farm') {
         return (
           <FarmCard
             key={product.data.pid}
@@ -93,7 +98,7 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
           />
         )
       }
-      if (productType === 'pool') {
+      if (type === 'pool') {
         return (
           <PoolCard
             key={product.data.sousId}
@@ -103,7 +108,7 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
           />
         )
       }
-      if (productType === 'rebalancing') {
+      if (type === 'rebalancing') {
         return (
           <ExploreCard
             key={product.data.title}
@@ -122,16 +127,6 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
     [klaytn, account, getMyFarmBalancesInWallet, getMyPoolBalanceInWallet],
   )
 
-  const changeDisplay = useCallback((keyword: string) => {
-    setCurrentProductType(keyword)
-  }, [])
-  const changeOrder = useCallback((keyword: string) => {
-    setSelectedOrder(keyword)
-  }, [])
-  const search = useCallback((keyword: string) => {
-    setSearchKeyword(keyword)
-  }, [])
-
   const EmptyArea = styled(Flex)`
     justify-content: center;
     align-items: center;
@@ -143,12 +138,8 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
   `
 
   return (
-    <Card className="mt-s16">
-      <MyProductsFilter
-        onChangeDisplayFilter={changeDisplay}
-        onChangeOrderFilter={changeOrder}
-        onChangeSearchInput={search}
-      />
+    <>
+      
       {displayProducts.length ? (
         displayProducts.map((product, index) => {
           return (
@@ -262,7 +253,7 @@ const MyProducts: React.FC<{ products: Product[] }> = ({ products }) => {
 
         {farmsList(stackedOnlyFarms, false)}
       </List> */}
-    </Card>
+    </>
   )
 }
 

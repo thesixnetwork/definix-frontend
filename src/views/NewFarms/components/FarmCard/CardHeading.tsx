@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import { getLpImageUrls } from 'utils/getTokenImage'
+import useConverter from 'hooks/useConverter'
 import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
@@ -23,6 +24,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   addLiquidityUrl,
   size = 'medium',
 }) => {
+  const { convertToFarmAPRFormat } = useConverter()
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
   // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
@@ -31,11 +33,11 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpLabel)
   const displayApy = useMemo(() => {
     try {
-      return farm.apy && `${farm.apy.times(new BigNumber(100)).toNumber().toFixed(2)}%`
+      return `${convertToFarmAPRFormat(farm.apy)}%`
     } catch (error) {
       return '-'
     }
-  }, [farm.apy])
+  }, [convertToFarmAPRFormat, farm.apy])
 
   return (
     <Flex position="relative">

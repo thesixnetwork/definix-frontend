@@ -2,7 +2,7 @@ import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
@@ -17,9 +17,10 @@ import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
 // import styled from 'styled-components'
-import { Box, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, useMatchBreakpoints, Card } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import CardSummary from './components/CardSummary'
+import MyProductsFilter from './components/MyProductsFilter'
 import MyProducts from './components/MyProducts'
 
 const MyInvestments: React.FC = () => {
@@ -27,6 +28,11 @@ const MyInvestments: React.FC = () => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const { path } = useRouteMatch()
+
+  const [currentProductType, setCurrentProductType] = useState<string>('')
+  const [selectedOrder, setSelectedOrder] = useState<string>('')
+  const [searchKeyword, setSearchKeyword] = useState<string>('')
+
   const { account }: { account: string; klaytn: provider } = useWallet()
   const { convertToPriceFromToken } = useConverter()
   const dispatch = useDispatch()
@@ -206,7 +212,19 @@ const MyInvestments: React.FC = () => {
               }
             })}
           />
-          <MyProducts products={stakedProducts} />
+          <Card className="mt-s16">
+            <MyProductsFilter
+              onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}
+              onChangeOrderFilter={(keyword: string) => setSelectedOrder(keyword)}
+              onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
+            />
+            <MyProducts
+              productType={currentProductType}
+              orderType={selectedOrder}
+              searchKeyword={searchKeyword}
+              products={stakedProducts}
+            />
+          </Card>
         </Route>
       </Box>
       {/* <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
