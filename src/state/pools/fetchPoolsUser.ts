@@ -74,7 +74,11 @@ export const fetchUserStakeBalances = async (account) => {
   // Six / Finix pool
   const { amount: masterPoolAmountSix } = await herodotusContract.methods.userInfo('25', account).call()
 
-  return { ...stakedBalances, 0: new BigNumber(masterPoolAmount).toJSON(), 25: new BigNumber(masterPoolAmountSix).toJSON() }
+  return {
+    ...stakedBalances,
+    0: new BigNumber(masterPoolAmount).toJSON(),
+    25: new BigNumber(masterPoolAmountSix).toJSON(),
+  }
 }
 
 export const fetchUserPendingRewards = async (account) => {
@@ -97,5 +101,5 @@ export const fetchUserPendingRewards = async (account) => {
   // Six / Finix pool
   const pendingRewardSix = await herodotusContract.methods.pendingFinix('25', account).call()
 
-  return { ...pendingRewards, 0: new BigNumber(pendingReward).toJSON(), 25:  new BigNumber(pendingRewardSix).toJSON() }
+  return { ...pendingRewards, 0: new BigNumber(pendingReward).toJSON(), 25: new BigNumber(pendingRewardSix).toJSON() }
 }
