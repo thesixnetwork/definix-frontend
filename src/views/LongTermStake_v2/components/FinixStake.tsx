@@ -16,7 +16,6 @@ interface CardType {
 const FlexStake = styled(Flex)`
   width: 50%;
   flex-direction: column;
-  border-right: 1px solid #d8d8d880;
 
   > :first-child {
     margin-bottom: 22px;
@@ -27,7 +26,6 @@ const FlexStake = styled(Flex)`
     flex-direction: row;
     justify-content: space-around;
     border-right: none;
-    border-bottom: 1px solid #d8d8d880;
     padding-bottom: 20px;
 
     > :first-child {
