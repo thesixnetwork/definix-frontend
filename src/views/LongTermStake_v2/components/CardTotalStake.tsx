@@ -4,10 +4,7 @@ import styled from 'styled-components'
 
 import StakeDayRatio from './StakeDayRatio'
 import FinixStake from './FinixStake'
-
-interface CardType {
-  isMobile: boolean
-}
+import { IsMobileType } from './types'
 
 const FlexCard = styled(Flex)`
   flex-direction: row;
@@ -18,7 +15,7 @@ const FlexCard = styled(Flex)`
   }
 `
 
-const CardTotalStake: React.FC<CardType> = ({ isMobile }) => {
+const CardTotalStake: React.FC<IsMobileType> = ({ isMobile }) => {
   return (
     <>
       <Card p={isMobile ? 'S_20' : 'S_40'}>
