@@ -1,11 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Text, Box, lightColors } from 'definixswap-uikit'
+import { Flex, Text, lightColors } from 'definixswap-uikit'
 
-interface CardType {
-  isMobile: boolean
-}
+import { IsMobileType } from './types'
 
 const FlexRatio = styled(Flex)`
   width: 50%;
@@ -51,7 +49,7 @@ const Dot = styled.div<{ color: string }>`
   border-radius: 50%;
 `
 
-const StakeDayRatio: React.FC<CardType> = ({ isMobile }) => {
+const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
   const { t } = useTranslation()
 
   const data = [

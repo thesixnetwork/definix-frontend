@@ -2,11 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { TitleSet, Flex } from 'definixswap-uikit'
 
-interface TitleType {
-  isMobile: boolean
-}
-
-const TitleStake: React.FC<TitleType> = ({ isMobile }) => {
+const TitleStake: React.FC = () => {
   const { t } = useTranslation()
 
   return (

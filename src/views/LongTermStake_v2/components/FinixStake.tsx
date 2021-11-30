@@ -2,6 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Flex, Box, Text } from 'definixswap-uikit'
+
 import ImgTokenFinix from '../../../assets/images/img-token-finix.png'
 import ImgTokenFinix2x from '../../../assets/images/img-token-finix@2x.png'
 import ImgTokenFinix3x from '../../../assets/images/img-token-finix@3x.png'
@@ -9,9 +10,7 @@ import ImgTokenVFinix from '../../../assets/images/img-token-vfinix.png'
 import ImgTokenVFinix2x from '../../../assets/images/img-token-vfinix@2x.png'
 import ImgTokenVFinix3x from '../../../assets/images/img-token-vfinix@3x.png'
 
-interface CardType {
-  isMobile: boolean
-}
+import { IsMobileType } from './types'
 
 const FlexStake = styled(Flex)`
   width: 50%;
@@ -25,7 +24,6 @@ const FlexStake = styled(Flex)`
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
-    border-right: none;
     padding-bottom: 20px;
 
     > :first-child {
@@ -49,7 +47,7 @@ const FlexItem = styled(Flex)`
   }
 `
 
-const FinixStake: React.FC<CardType> = ({ isMobile }) => {
+const FinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const { t } = useTranslation()
 
   const data = [

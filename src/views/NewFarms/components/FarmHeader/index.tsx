@@ -1,13 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Flex, TitleSet, ImgFarmIcon, Box } from 'definixswap-uikit'
-
-const ImgWrap = styled(ImgFarmIcon)`
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    display: none;
-  }
-`
+import { Flex, TitleSet, Box } from 'definixswap-uikit'
 
 const FarmHeader: React.FC = () => {
   const { t } = useTranslation()
@@ -21,7 +15,6 @@ const FarmHeader: React.FC = () => {
           link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
         />
       </Box>
-      <ImgWrap />
     </Flex>
   )
 }
