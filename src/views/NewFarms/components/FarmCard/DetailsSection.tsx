@@ -60,6 +60,7 @@ const MyBalanceSection: React.FC<{
   title: string
   myBalances: { [key: string]: BigNumber | null }
 }> = ({ title, myBalances }) => {
+  const { convertToBalanceFormat } = useConverter()
   return (
     <>
       <TitleSection hasMb>{title}</TitleSection>
@@ -67,7 +68,7 @@ const MyBalanceSection: React.FC<{
         <Flex alignItems="center">
           <TokenLabel type="token">{tokenName}</TokenLabel>
           <BalanceText>
-            {!balanceValue || balanceValue === null ? '-' : numeral(balanceValue.toNumber()).format('0,0.[000000]')}
+            {!balanceValue || balanceValue === null ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
           </BalanceText>
         </Flex>
       ))}
@@ -80,7 +81,7 @@ const EarningsSection: React.FC<{
   tokenName: string
   earnings: BigNumber
 }> = ({ title, tokenName, earnings }) => {
-  const { convertToUSD, convertToPriceFromSymbol, convertToPriceFormat } = useConverter()
+  const { convertToUSD, convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
 
   const price = useMemo(() => {
     return convertToPriceFromSymbol(tokenName)
@@ -119,7 +120,7 @@ const EarningsSection: React.FC<{
       </TitleWrap>
       <Box>
         <Flex alignItems="end">
-          <BalanceText>{convertToPriceFormat(earningsValue)}</BalanceText>
+          <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
           <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
             FINIX
           </Text>

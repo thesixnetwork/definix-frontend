@@ -58,6 +58,10 @@ export default function useConverter() {
     return numeral(value).format('0,0.[00]')
   }
 
+  const convertToIntegerFormat = (value: number) => {
+    return numeral(value).format('0,0')
+  }
+
   const convertToPoolAPR = (apy) => {
     return getBalanceNumber(apy)
   }
@@ -97,6 +101,7 @@ export default function useConverter() {
     convertToPriceFromSymbol,
     convertToBalanceFormat,
     convertToPriceFormat,
+    convertToIntegerFormat,
     convertToPoolAPR,
     convertToPoolAPRFormat,
     convertToFarmAPR,

@@ -1,12 +1,12 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useFarmUser } from 'state/hooks'
 import {
   Flex,
   Card,
-  CardBody,
   CardRibbon,
   IconButton,
   Box,
@@ -32,6 +32,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
   onSelectAdd,
   onSelectRemove,
 }) => {
+  const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
@@ -84,7 +85,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
     () => <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} size={isInMyInvestment && 'small'} />,
     [tokenName, isOldSyrup, apy, isInMyInvestment],
   )
-  const renderIconButton = useCallback(
+  const renderToggleButton = useCallback(
     () => (
       <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
         {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
@@ -93,23 +94,23 @@ const PoolCard: React.FC<PoolCardProps> = ({
     [isOpenAccordion],
   )
   const renderTotalStakedSection = useCallback(
-    () => <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked} />,
-    [tokenName, totalStaked],
+    () => <TotalStakedSection title={t('Total staked')} tokenName={tokenName} totalStaked={totalStaked} />,
+    [t, tokenName, totalStaked],
   )
 
   const renderMyBalanceSection = useCallback(
     () => (
       <>
         {!myBalanceInWallet || myBalanceInWallet === null ? null : (
-          <MyBalanceSection title="Balance" tokenName={tokenName} myBalance={myBalanceInWallet} />
+          <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
         )}
       </>
     ),
-    [tokenName, myBalanceInWallet],
+    [t, tokenName, myBalanceInWallet],
   )
   const renderEarningsSection = useCallback(
-    () => <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings} />,
-    [tokenName, earnings],
+    () => <EarningsSection title={t('Earned')} tokenName={tokenName} earnings={earnings} />,
+    [t, tokenName, earnings],
   )
 
   const onPresentDeposit = useCallback(() => {
@@ -225,7 +226,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
           <Wrap>
             <Flex justifyContent="space-between">
               {renderCardHeading()}
-              {renderIconButton()}
+              {renderToggleButton()}
             </Flex>
             {renderEarningsSection()}
           </Wrap>
@@ -250,7 +251,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
                 {renderMyBalanceSection()}
               </Box>
               <Box style={{ width: '24%' }}>{renderEarningsSection()}</Box>
-              {renderIconButton()}
+              {renderToggleButton()}
             </Flex>
           </Wrap>
           {isOpenAccordion && (

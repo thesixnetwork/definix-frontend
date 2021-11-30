@@ -1,16 +1,48 @@
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import React, { useMemo } from 'react'
-import { Flex, Text, ColorStyles, Label } from 'definixswap-uikit'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import styled from 'styled-components'
+import { Flex, Text, ColorStyles, Label, Image, Box } from 'definixswap-uikit'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
+
+const TitleSection = styled(Text)<{ hasMb: boolean }>`
+  margin-right: ${({ theme }) => theme.spacing.S_6}px;
+  margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_12R};
+  white-space: nowrap;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
+  }
+`
+const TokenLabel = styled(Label)`
+  margin-right: ${({ theme }) => theme.spacing.S_6}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-right: ${({ theme }) => theme.spacing.S_12}px;
+  }
+`
+const BalanceText = styled(Text)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const PriceText = styled(Text)`
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
 
 const TotalStakedSection: React.FC<{
   title: string
   tokenName: string
   totalStaked: BigNumber
 }> = ({ title, tokenName, totalStaked }) => {
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
+  const { convertToPriceFromSymbol, convertToIntegerFormat, convertToPriceFormat } = useConverter()
 
   const price = useMemo(() => {
     return convertToPriceFromSymbol(tokenName)
@@ -21,25 +53,19 @@ const TotalStakedSection: React.FC<{
   }, [totalStaked])
 
   const totalStakedPrice = useMemo(() => {
-    return convertToUSD(new BigNumber(totalStakedValue).multipliedBy(price), 2)
-  }, [convertToUSD, totalStakedValue, price])
+    return convertToPriceFormat(new BigNumber(totalStakedValue).multipliedBy(price).toNumber())
+  }, [convertToPriceFormat, totalStakedValue, price])
 
   return (
     <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-        {title}
-      </Text>
+      <TitleSection hasMb>{title}</TitleSection>
       <Flex alignItems="end">
-        <Text color={ColorStyles.BLACK} textStyle="R_18M">
-          {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-        </Text>
+        <BalanceText>{convertToIntegerFormat(totalStakedValue)}</BalanceText>
         <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
           {tokenName}
         </Text>
       </Flex>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-        = {totalStakedPrice}
-      </Text>
+      <PriceText>= ${totalStakedPrice}</PriceText>
     </>
   )
 }
@@ -49,20 +75,19 @@ const MyBalanceSection: React.FC<{
   tokenName: string
   myBalance: BigNumber
 }> = ({ title, tokenName, myBalance }) => {
+  const { convertToBalanceFormat } = useConverter()
   const myBalanceValue = useMemo(() => {
-    return numeral(myBalance.toNumber()).format('0,0.[000000]')
-  }, [myBalance])
+    return convertToBalanceFormat(myBalance.toNumber())
+  }, [convertToBalanceFormat, myBalance])
 
   return (
     <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-        {title}
-      </Text>
+      <TitleSection hasMb>{title}</TitleSection>
       <Flex alignItems="center">
-        <Label type="token">{tokenName}</Label>
-        <Text color={ColorStyles.BLACK} textStyle="R_18M" style={{ paddingLeft: '2px' }}>
+        <TokenLabel type="token">{tokenName}</TokenLabel>
+        <BalanceText>
           {myBalanceValue}
-        </Text>
+        </BalanceText>
       </Flex>
     </>
   )
@@ -73,7 +98,7 @@ const EarningsSection: React.FC<{
   tokenName: string
   earnings: BigNumber
 }> = ({ title, tokenName, earnings }) => {
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
+  const { convertToUSD, convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
 
   const price = useMemo(() => {
     return convertToPriceFromSymbol(tokenName)
@@ -87,23 +112,44 @@ const EarningsSection: React.FC<{
     return convertToUSD(new BigNumber(earningsValue).multipliedBy(price), 2)
   }, [earningsValue, price, convertToUSD])
 
+  const Wrap = styled(Flex)`
+    flex-direction: column;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: row;
+      align-items: flex-start;
+      margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    }
+  `
+  const TitleWrap = styled(Flex)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_2}px; 
+    align-items: flex-start;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: 0;
+      margin-right: ${({ theme }) => theme.spacing.S_28}px; 
+    }
+  `
+  const ValueWrap = styled(Box)`
+    margin-top: -4px;
+  `
+
   return (
-    <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-        {title}
-      </Text>
-      <Flex alignItems="end">
-        <Text color={ColorStyles.BLACK} textStyle="R_18M">
-          {earningsValue.toLocaleString()}
-        </Text>
-        <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
-          {tokenName}
-        </Text>
-      </Flex>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-        = {earningsPrice}
-      </Text>
-    </>
+    <Wrap>
+      <TitleWrap>
+        <TitleSection hasMb={false}>{title}</TitleSection>
+        <Box width={20}>
+          <Image src={getTokenImageUrl('finix')} alt="finix" width={20} height={20} />
+        </Box>
+      </TitleWrap>
+      <ValueWrap>
+        <Flex alignItems="end">
+          <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
+          <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
+            {tokenName}
+          </Text>
+        </Flex>
+        <PriceText>= ${convertToPriceFormat(earningsValue)}</PriceText>
+      </ValueWrap>
+    </Wrap>
   )
 }
 
