@@ -172,7 +172,10 @@ const Farm: React.FC = () => {
         const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
         const currentTotalStaked = getBalanceNumber(pool.totalStaked)
-        apy = finixRewardPerYear.times(finixPriceUsd).div(new BigNumber(currentTotalStaked).times(new BigNumber(sixPriceUSD))).times(100)
+        apy = finixRewardPerYear
+          .times(finixPriceUsd)
+          .div(new BigNumber(currentTotalStaked).times(new BigNumber(sixPriceUSD)))
+          .times(100)
         break
       }
       case 2:
