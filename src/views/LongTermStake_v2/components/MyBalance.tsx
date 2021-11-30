@@ -43,35 +43,39 @@ const FlexFinix = styled(Flex)`
 const MyBalance: React.FC<IsMobileType> = ({ isMobile }) => {
   const { t } = useTranslation()
 
+  const data = [
+    {
+      title: t('Your vFINIX Balance'),
+      value: '100,000,000.123456',
+      token: t('vFINIX'),
+    },
+    {
+      title: t('Your Total FINIX Stake'),
+      value: '100,000,000.123456',
+      token: t('FINIX'),
+    },
+  ]
+
   return (
     <>
       <FlexBalance px={isMobile ? 'S_20' : 'S_40'} pt={isMobile ? 'S_20' : 'S_24'} pb={isMobile ? 'S_20' : 'S_32'}>
-        <FlexFinix>
-          <Text mb="S_6" textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
-            {t('Your vFINIX Balance')}
-          </Text>
-          <Flex alignItems="center">
-            <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              100,000,000.123456
-            </Text>
-            <Text ml="S_6" textStyle="R_12B" color="white">
-              {t('vFINIX')}
-            </Text>
-          </Flex>
-        </FlexFinix>
-        <FlexFinix>
-          <Text mb="S_6" textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
-            {t('Your Total FINIX Stake')}
-          </Text>
-          <Flex alignItems="center">
-            <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              100,000,000.123456
-            </Text>
-            <Text ml="S_6" textStyle="R_12B" color="white">
-              {t('FINIX')}
-            </Text>
-          </Flex>
-        </FlexFinix>
+        {data.map((v) => {
+          return (
+            <FlexFinix>
+              <Text mb="S_6" textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
+                {v.title}
+              </Text>
+              <Flex alignItems="center">
+                <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
+                  {v.value}
+                </Text>
+                <Text ml="S_6" textStyle="R_12B" color="white">
+                  {v.token}
+                </Text>
+              </Flex>
+            </FlexFinix>
+          )
+        })}
       </FlexBalance>
     </>
   )
