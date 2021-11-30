@@ -149,7 +149,7 @@ const Pool: React.FC = () => {
       <Box className={`mb-s${isMobile ? 40 : 80}`}>
         {pageState.state === 'list' && (
           <>
-            <PoolHeader/>
+            <PoolHeader />
             <PoolFilter
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
