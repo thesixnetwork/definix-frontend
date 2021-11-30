@@ -9,6 +9,8 @@ const FlexBalance = styled(Flex)`
   flex-direction: row;
   align-items: flex-end;
   background-color: ${({ theme }) => theme.colors.black20};
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     flex-direction: column;
