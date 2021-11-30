@@ -85,9 +85,7 @@ const MyBalanceSection: React.FC<{
       <TitleSection hasMb>{title}</TitleSection>
       <Flex alignItems="center">
         <TokenLabel type="token">{tokenName}</TokenLabel>
-        <BalanceText>
-          {myBalanceValue}
-        </BalanceText>
+        <BalanceText>{myBalanceValue}</BalanceText>
       </Flex>
     </>
   )
@@ -121,11 +119,11 @@ const EarningsSection: React.FC<{
     }
   `
   const TitleWrap = styled(Flex)`
-    margin-bottom: ${({ theme }) => theme.spacing.S_2}px; 
+    margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
     align-items: flex-start;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
       margin-bottom: 0;
-      margin-right: ${({ theme }) => theme.spacing.S_28}px; 
+      margin-right: ${({ theme }) => theme.spacing.S_28}px;
     }
   `
   const ValueWrap = styled(Box)`
