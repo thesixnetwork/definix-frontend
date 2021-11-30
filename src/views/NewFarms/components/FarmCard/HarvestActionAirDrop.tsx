@@ -7,16 +7,7 @@ import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import {
-  Button,
-  Text,
-  ButtonVariants,
-  Flex,
-  Box,
-  Label,
-  alertVariants,
-  ToastContainer,
-} from 'definixswap-uikit'
+import { Button, Text, ButtonVariants, Flex, Box, Label, alertVariants, ToastContainer } from 'definixswap-uikit'
 import CurrencyText from 'components/CurrencyText'
 
 interface FarmCardActionsProps {
@@ -166,7 +157,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
                 <TokenLabel type="token">FINIX</TokenLabel>
                 <Box>
                   <BalanceText>{convertToBalanceFormat(finixEarningsValue)}</BalanceText>
-                  <PriceText value={earningsPrice} prefix="="/>
+                  <PriceText value={earningsPrice} prefix="=" />
                 </Box>
               </Flex>
               {isInFarm && (

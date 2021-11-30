@@ -147,9 +147,7 @@ const EarningsSection: React.FC<{
       <ValueWrap>
         <Flex alignItems="end">
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
-          <TokenNameText>
-            {tokenName}
-          </TokenNameText>
+          <TokenNameText>{tokenName}</TokenNameText>
         </Flex>
         <PriceText>= ${convertToPriceFormat(earningsValue)}</PriceText>
       </ValueWrap>

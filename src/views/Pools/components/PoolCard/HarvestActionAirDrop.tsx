@@ -124,10 +124,8 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
     <Flex>
       <TokenLabel type="token">{name}</TokenLabel>
       <Box>
-        <BalanceText>
-          {convertToBalanceFormat(value)}
-        </BalanceText>
-        <PriceText value={getEarningsPrice(value)} prefix="="/>
+        <BalanceText>{convertToBalanceFormat(value)}</BalanceText>
+        <PriceText value={getEarningsPrice(value)} prefix="=" />
       </Box>
     </Flex>
   )

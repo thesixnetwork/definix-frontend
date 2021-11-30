@@ -141,9 +141,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     //   )}
     // </div>
     <>
-      <TitleSection>
-        {t('My Liquidity')}
-      </TitleSection>
+      <TitleSection>{t('My Liquidity')}</TitleSection>
       {account ? (
         <>
           {hasAllowance ? (
@@ -161,10 +159,8 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
               ) : (
                 <Flex justifyContent="space-between">
                   <Box>
-                    <BalanceText>
-                      {convertToBalanceFormat(myLiquidityValue)}
-                    </BalanceText>
-                    <PriceText value={myLiquidityValue} prefix="="/>
+                    <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
+                    <PriceText value={myLiquidityValue} prefix="=" />
                   </Box>
 
                   {componentType === 'farm' && (
