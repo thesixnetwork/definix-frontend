@@ -165,7 +165,7 @@ const FundAction: React.FC<FundActionType> = ({ className, rebalance, isVertical
   const { account } = useWallet()
   const rebalanceRewards = useRebalanceRewards(account)
 
-  const currentReward = rebalanceRewards[getAddress(rebalance.address)] || new BigNumber(0)
+  const currentReward = (rebalanceRewards || {})[getAddress(rebalance.address)] || new BigNumber(0)
 
   return (
     <StickyBox isVertical={isVertical} className={className}>
