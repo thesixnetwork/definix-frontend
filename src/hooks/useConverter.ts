@@ -4,7 +4,6 @@ import numeral from 'numeral'
 import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
-import { Rebalance } from 'state/types'
 
 export default function useConverter() {
   const klayPrice = usePriceKlayKusdt()

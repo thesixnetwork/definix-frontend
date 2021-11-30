@@ -1,8 +1,7 @@
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, ColorStyles, Label, Image, Box } from 'definixswap-uikit'
+import { Flex, Text, Label, Image, Box } from 'definixswap-uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
@@ -13,7 +12,6 @@ const TitleSection = styled(Text)<{ hasMb: boolean }>`
   ${({ theme }) => theme.textStyle.R_12R};
   white-space: nowrap;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-right: 0;
     margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
   }
 `
@@ -99,34 +97,45 @@ const EarningsSection: React.FC<{
     flex-direction: column;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
       flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
+      margin-top: ${({ theme }) => theme.spacing.S_20}px;
     }
   `
   const TitleWrap = styled(Flex)`
-    margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+    margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
     align-items: flex-start;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-top: ${({ theme }) => theme.spacing.S_20}px;
       margin-bottom: 0;
+      margin-right: ${({ theme }) => theme.spacing.S_28}px;
     }
+  `
+  const ValueWrap = styled(Box)`
+    margin-top: -2px;
+  `
+  const TokenNameText = styled(Text)`
+    padding-left: 2px;
+    padding-bottom: 1px;
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_12M};
   `
 
   return (
     <Wrap>
       <TitleWrap>
         <TitleSection hasMb={false}>{title}</TitleSection>
-        <Image src={getTokenImageUrl('finix')} alt="finix" width={20} height={20} />
+        <Box width={20}>
+          <Image src={getTokenImageUrl('finix')} alt="finix" width={20} height={20} />
+        </Box>
       </TitleWrap>
-      <Box>
+      <ValueWrap>
         <Flex alignItems="end">
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
-          <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
+          <TokenNameText>
             FINIX
-          </Text>
+          </TokenNameText>
         </Flex>
         <PriceText>= {earningsPrice}</PriceText>
-      </Box>
+      </ValueWrap>
     </Wrap>
   )
 }

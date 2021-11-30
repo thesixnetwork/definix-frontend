@@ -14,10 +14,10 @@ import {
   Flex,
   Box,
   Label,
-  ColorStyles,
   alertVariants,
   ToastContainer,
 } from 'definixswap-uikit'
+import CurrencyText from 'components/CurrencyText'
 
 interface FarmCardActionsProps {
   isMobile: boolean
@@ -35,13 +35,13 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
 
   // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
-  const { convertToUSD, convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
+  const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
 
   const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
   const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
   const earningsPrice = useMemo(() => {
-    return convertToPriceFormat(new BigNumber(earnings).multipliedBy(finixPrice).toNumber())
-  }, [earnings, finixPrice, convertToPriceFormat])
+    return convertToPriceFormat(new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber())
+  }, [finixEarningsValue, finixPrice, convertToPriceFormat])
 
   const showToast = useCallback((type: string, title: string) => {
     setToasts((prevToasts) => [
@@ -82,11 +82,11 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     }
   `
   const TitleSection = styled(Text)`
-    margin-bottom: ${({ theme }) => theme.spacing.S_8}
+    margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
     color: ${({ theme }) => theme.colors.mediumgrey};
     ${({ theme }) => theme.textStyle.R_12R};
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme }) => theme.spacing.S_6}
+      margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
     }
   `
   const HarvestInfo = styled(Flex)`
@@ -94,11 +94,6 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     justify-content: space-between;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
       flex-direction: column;
-    }
-  `
-  const BalanceValueSection = styled(Box)`
-    margin-left: ${({ theme }) => theme.spacing.S_16} ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-left: ${({ theme }) => theme.spacing.S_12};
     }
   `
   const TokenLabel = styled(Label)`
@@ -114,7 +109,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
       ${({ theme }) => theme.textStyle.R_16M};
     }
   `
-  const PriceText = styled(Text)`
+  const PriceText = styled(CurrencyText)`
     color: ${({ theme }) => theme.colors.deepgrey};
     ${({ theme }) => theme.textStyle.R_14R};
     ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -122,10 +117,10 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     }
   `
   const HarvestButtonInFarm = styled(Box)`
-    margin-top: ${({ theme }) => theme.spacing.S_28};
-    width: 100%;
+    width: 100px;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-top: ${({ theme }) => theme.spacing.S_20};
+      margin-top: ${({ theme }) => theme.spacing.S_20}px;
+      width: 100%;
     }
   `
   const HarvestButtonInMyInvestment = styled(Flex)`
@@ -134,7 +129,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     width: 100px;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
       flex-direction: row;
-      margin-top: ${({ theme }) => theme.spacing.S_28}
+      margin-top: ${({ theme }) => theme.spacing.S_28}px;
       width: 100%;
     }
   `
@@ -169,10 +164,10 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
             <HarvestInfo>
               <Flex>
                 <TokenLabel type="token">FINIX</TokenLabel>
-                <BalanceValueSection>
+                <Box>
                   <BalanceText>{convertToBalanceFormat(finixEarningsValue)}</BalanceText>
-                  <PriceText>= {earningsPrice}</PriceText>
-                </BalanceValueSection>
+                  <PriceText value={earningsPrice} prefix="="/>
+                </Box>
               </Flex>
               {isInFarm && (
                 <HarvestButtonInFarm>

@@ -127,7 +127,13 @@ const EarningsSection: React.FC<{
     }
   `
   const ValueWrap = styled(Box)`
-    margin-top: -4px;
+    margin-top: -2px;
+  `
+  const TokenNameText = styled(Text)`
+    padding-left: 2px;
+    padding-bottom: 1px;
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_12M};
   `
 
   return (
@@ -141,9 +147,9 @@ const EarningsSection: React.FC<{
       <ValueWrap>
         <Flex alignItems="end">
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
-          <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
+          <TokenNameText>
             {tokenName}
-          </Text>
+          </TokenNameText>
         </Flex>
         <PriceText>= ${convertToPriceFormat(earningsValue)}</PriceText>
       </ValueWrap>
