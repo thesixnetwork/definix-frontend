@@ -289,7 +289,7 @@ const Farm: React.FC = () => {
     }
     return {
       ...pool,
-      isFinished: pool.sousId === 0 || pool.sousId === 25 ? false : pool.isFinished || block > 14563535,
+      isFinished: pool.sousId === 0 ? false : pool.isFinished || block > 14563535,
       apy,
       estimatePrice,
     }

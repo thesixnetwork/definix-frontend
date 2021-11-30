@@ -42,7 +42,7 @@ export const useSousHarvest = (sousId, isUsingBnb = false) => {
   const herodotusContract = useHerodotus()
 
   const handleHarvest = useCallback(async () => {
-    if (sousId === 0 || sousId === 25) {
+    if (sousId === 0) {
       await harvest(herodotusContract, 0, account)
     } else if (isUsingBnb) {
       await soushHarvestBnb(sousChefContract, account)
