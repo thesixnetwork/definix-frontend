@@ -13,9 +13,10 @@ import { fetchFarmUserDataAsync, fetchBalances } from 'state/actions'
 import { useFarms, useBalances } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
-import { TitleSet, Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
+import FarmHeader from './components/FarmHeader'
 import FarmTabButtons from './components/FarmTabButtons'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
@@ -41,30 +42,27 @@ const Farms: React.FC = () => {
     state: 'list',
     data: null,
   }) // 'list', 'deposit', 'remove',
-  const orderFilter = useRef<{
-    defaultIndex: number
-    options: DropdownOption[]
-  }>({
-    defaultIndex: 0,
-    options: [
+  const [orderFilterIndex, setOrderFilterIndex] = useState<number>()
+  const orderFilter: DropdownOption[] = useMemo(() => {
+    return [
       {
         id: 'sortOrder',
-        label: 'sortOrder',
+        label: t('Recommend'),
         orderBy: 'asc',
       },
       {
         id: 'apyValue',
-        label: 'apr',
+        label: t('APR'),
         orderBy: 'desc',
       },
       {
         id: 'totalLiquidityValue',
-        label: 'totalLiquidity',
+        label: t('Total Liquidity'),
         orderBy: 'desc',
       },
-    ],
-  })
-  const [selectedOrderOptionIndex, setSelectedOrderOptionIndex] = useState<DropdownOption>()
+    ]
+  }, [t])
+  
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
@@ -82,10 +80,10 @@ const Farms: React.FC = () => {
       : farmsWithApy
   }, [stackedOnly, farmsWithApy])
   const orderedFarms = useMemo(() => {
-    if (typeof selectedOrderOptionIndex !== 'number') return filteredFarms
-    const currentOrder = orderFilter.current.options[selectedOrderOptionIndex]
+    if (typeof orderFilterIndex !== 'number') return filteredFarms
+    const currentOrder = orderFilter[orderFilterIndex]
     return _.orderBy(filteredFarms, currentOrder.id, currentOrder.orderBy)
-  }, [filteredFarms, selectedOrderOptionIndex])
+  }, [filteredFarms, orderFilter, orderFilterIndex])
   const displayFarms = useMemo(() => {
     if (!searchKeyword.length) return orderedFarms
     return orderedFarms.filter((farm) => {
@@ -164,18 +162,13 @@ const Farms: React.FC = () => {
       <Box className={`mb-s${isMobile ? 40 : 80}`}>
         {pageState.state === 'list' && (
           <>
-            <TitleSet
-              title="Farm"
-              description={t('Pairing coins to create LP')}
-              linkLabel={t('Learn how to stake in Farm')}
-              link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/yield-farming/how-to-yield-farm-on-definix"
-            />
+            <FarmHeader/>
             <FarmTabButtons
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
-              defaultOptionIndex={orderFilter.current.defaultIndex}
-              orderOptions={orderFilter.current.options}
-              orderBy={(index) => setSelectedOrderOptionIndex(index)}
+              defaultOptionIndex={orderFilterIndex}
+              orderOptions={orderFilter}
+              orderBy={(index) => setOrderFilterIndex(index)}
               search={(keyword: string) => setSearchKeyword(keyword)}
             />
             <Route exact path={`${path}`}>
