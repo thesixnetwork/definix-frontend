@@ -52,7 +52,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, order
         </DropdownWrap>
         <StakedOnlyWrap ml="S_20">
           <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} mr="S_8">
-            {t('Staked only')}
+            {t('Staked only Farm')}
           </Text>
           <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
         </StakedOnlyWrap>
@@ -60,7 +60,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, order
       <RightSection>
         <SearchInput
           type="text"
-          placeholder="Token Name"
+          placeholder={t('Token name')}
           onSearch={(keyword) => search(keyword.trim().toLowerCase())}
           onReset={() => search('')}
         />

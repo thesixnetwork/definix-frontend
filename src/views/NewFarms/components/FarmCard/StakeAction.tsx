@@ -119,7 +119,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     // </div>
     <>
       <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-        My Liquidity
+        {t('My Liquidity')}
       </Text>
       {account ? (
         <>

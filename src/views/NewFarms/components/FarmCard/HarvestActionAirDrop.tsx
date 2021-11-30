@@ -18,8 +18,6 @@ import {
   alertVariants,
   ToastContainer,
 } from 'definixswap-uikit'
-import { repeat } from 'lodash'
-// import AirDropHarvestModal from './AirDropHarvestModal'
 
 interface FarmCardActionsProps {
   isMobile: boolean
@@ -37,19 +35,13 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
 
   // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
+  const { convertToUSD, convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
 
   const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
   const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
-  const earningsPrice = useCallback(
-    (value) => {
-      return convertToUSD(new BigNumber(value).multipliedBy(finixPrice), 2)
-    },
-    [finixPrice, convertToUSD],
-  )
-  const toLocaleString = useCallback((value: number) => {
-    return value.toLocaleString(undefined, { maximumFractionDigits: 6 })
-  }, [])
+  const earningsPrice = useMemo(() => {
+    return convertToPriceFormat(new BigNumber(earnings).multipliedBy(finixPrice).toNumber())
+  }, [earnings, finixPrice, convertToPriceFormat])
 
   const showToast = useCallback((type: string, title: string) => {
     setToasts((prevToasts) => [
@@ -82,12 +74,67 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
     navigate.push('/farm')
   }, [navigate])
 
+  const Wrap = styled(Flex)<{ isInFarm: boolean }>`
+    flex-direction: ${isInFarm ? 'column' : 'row'};
+    justify-content: space-between;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
+    }
+  `
+  const TitleSection = styled(Text)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_8}
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_12R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: ${({ theme }) => theme.spacing.S_6}
+    }
+  `
+  const HarvestInfo = styled(Flex)`
+    flex-direction: row;
+    justify-content: space-between;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
+    }
+  `
+  const BalanceValueSection = styled(Box)`
+    margin-left: ${({ theme }) => theme.spacing.S_16} ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-left: ${({ theme }) => theme.spacing.S_12};
+    }
+  `
+  const TokenLabel = styled(Label)`
+    margin-right: ${({ theme }) => theme.spacing.S_6}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-right: ${({ theme }) => theme.spacing.S_12}px;
+    }
+  `
+  const BalanceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.textStyle.R_18M};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_16M};
+    }
+  `
+  const PriceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_14R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
+  const HarvestButtonInFarm = styled(Box)`
+    margin-top: ${({ theme }) => theme.spacing.S_28};
+    width: 100%;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-top: ${({ theme }) => theme.spacing.S_20};
+    }
+  `
   const HarvestButtonInMyInvestment = styled(Flex)`
     flex-direction: column;
     justify-content: center;
     width: 100px;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
       flex-direction: row;
+      margin-top: ${({ theme }) => theme.spacing.S_28}
       width: 100%;
     }
   `
@@ -102,7 +149,6 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
       {t('Harvest')}
     </Button>
   )
-
   const DetailButton = () => (
     <Button
       variant={ButtonVariants.BROWN}
@@ -117,38 +163,32 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
   return (
     <>
       <Box>
-        <Flex flexDirection={isInFarm || isMobile ? 'column' : 'row'} justifyContent="space-between">
+        <Wrap isInFarm={isInFarm}>
           <Box>
-            <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
-              Earned Token
-            </Text>
-            <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
+            <TitleSection>{t('Earned Token')}</TitleSection>
+            <HarvestInfo>
               <Flex>
-                <Label type="token">FINIX</Label>
-                <Box className="ml-s16">
-                  <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-                    {toLocaleString(finixEarningsValue)}
-                  </Text>
-                  <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-                    = {earningsPrice(finixEarningsValue)}
-                  </Text>
-                </Box>
+                <TokenLabel type="token">FINIX</TokenLabel>
+                <BalanceValueSection>
+                  <BalanceText>{convertToBalanceFormat(finixEarningsValue)}</BalanceText>
+                  <PriceText>= {earningsPrice}</PriceText>
+                </BalanceValueSection>
               </Flex>
               {isInFarm && (
-                <Box className={`w-full ${isMobile ? 'mt-s28' : ''}`}>
+                <HarvestButtonInFarm>
                   <HarvestButton />
-                </Box>
+                </HarvestButtonInFarm>
               )}
-            </Flex>
+            </HarvestInfo>
           </Box>
 
           {isInFarm ? null : (
-            <HarvestButtonInMyInvestment className={isMobile ? 'mt-s28' : ''}>
+            <HarvestButtonInMyInvestment>
               <HarvestButton />
               <DetailButton />
             </HarvestButtonInMyInvestment>
           )}
-        </Flex>
+        </Wrap>
       </Box>
       <ToastContainer toasts={toasts} onRemove={hideToast} />
     </>

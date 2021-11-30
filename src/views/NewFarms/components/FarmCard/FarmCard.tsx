@@ -1,5 +1,7 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useConverter from 'hooks/useConverter'
@@ -7,7 +9,6 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import {
   Flex,
   Card,
-  CardBody,
   CardRibbon,
   IconButton,
   Box,
@@ -35,6 +36,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   onSelectAddLP,
   onSelectRemoveLP,
 }) => {
+  const { t } = useTranslation()
   const { convertToPriceFromToken, convertToUSD } = useConverter()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
@@ -106,16 +108,16 @@ const FarmCard: React.FC<FarmCardProps> = ({
   )
 
   const renderTotalLiquiditySection = useCallback(
-    () => <TotalLiquiditySection title="Total Liquidity" totalLiquidity={totalLiquidity} />,
-    [totalLiquidity],
+    () => <TotalLiquiditySection title={t('Total Liquidity')} totalLiquidity={totalLiquidity} />,
+    [t, totalLiquidity],
   )
   const renderMyBalanceSection = useCallback(
-    () => <MyBalanceSection title="Balance" myBalances={myBalancesInWallet} />,
-    [myBalancesInWallet],
+    () => <MyBalanceSection title={t('Balance')} myBalances={myBalancesInWallet} />,
+    [t, myBalancesInWallet],
   )
   const renderEarningsSection = useCallback(
-    () => <EarningsSection title="Earned" tokenName={lpTokenName} earnings={earnings} />,
-    [lpTokenName, earnings],
+    () => <EarningsSection title={t('Earned')} tokenName={lpTokenName} earnings={earnings} />,
+    [t, lpTokenName, earnings],
   )
 
   /**
@@ -193,19 +195,23 @@ const FarmCard: React.FC<FarmCardProps> = ({
     [isMobile, earnings, pid, componentType],
   )
 
-  const renderLinkSection = useCallback(
-    () => <LinkListSection isMobile={isMobile} lpAddresses={farm.lpAddresses} />,
-    [isMobile, farm.lpAddresses],
-  )
+  const renderLinkSection = useCallback(() => <LinkListSection lpAddresses={farm.lpAddresses} />, [farm.lpAddresses])
 
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
 
+  const Wrap = styled(Box)`
+    padding: ${({ theme }) => theme.spacing.S_32}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      padding: ${({ theme }) => theme.spacing.S_20}px;
+    }
+  `
+
   if (componentType === 'myInvestment') {
     return (
       <>
-        <Box p={isMobile ? 20 : 32}>
+        <Wrap>
           {/* <Flex justifyContent="space-between">
             <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
             <Box style={{ width: '26%' }} className="mx-s24">
@@ -218,7 +224,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             <Box>{renderStakeAction()}</Box>
             <Box>{isApproved && renderHarvestActionAirDrop()}</Box>
           </Grid>
-        </Box>
+        </Wrap>
       </>
     )
   }
@@ -227,13 +233,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
     <>
       {isMobile ? (
         <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-          <CardBody>
+          <Wrap>
             <Flex justifyContent="space-between">
               {renderCardHeading()}
               {renderIconButton()}
             </Flex>
             {renderEarningsSection()}
-          </CardBody>
+          </Wrap>
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
               {renderHarvestActionAirDrop()}
@@ -241,13 +247,13 @@ const FarmCard: React.FC<FarmCardProps> = ({
               <Divider />
               <Box pt="S_24">{renderTotalLiquiditySection()}</Box>
               <Box pt="S_16">{renderMyBalanceSection()}</Box>
-              <Box py="S_32">{renderLinkSection()}</Box>
+              <Box py="S_28">{renderLinkSection()}</Box>
             </Box>
           )}
         </Card>
       ) : (
         <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-          <CardBody>
+          <Wrap>
             <Flex justifyContent="space-between">
               <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
               <Box style={{ width: '13%' }}>{renderTotalLiquiditySection()}</Box>
@@ -257,7 +263,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
               <Box style={{ width: '22%' }}>{renderEarningsSection()}</Box>
               {renderIconButton()}
             </Flex>
-          </CardBody>
+          </Wrap>
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">

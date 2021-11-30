@@ -17,7 +17,7 @@ import { Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
 import FarmHeader from './components/FarmHeader'
-import FarmTabButtons from './components/FarmTabButtons'
+import FarmFilter from './components/FarmFilter'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
 
@@ -163,7 +163,7 @@ const Farms: React.FC = () => {
         {pageState.state === 'list' && (
           <>
             <FarmHeader />
-            <FarmTabButtons
+            <FarmFilter
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
               defaultOptionIndex={orderFilterIndex}
