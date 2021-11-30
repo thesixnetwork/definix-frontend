@@ -5,6 +5,7 @@ import { Box, useMatchBreakpoints } from 'definixswap-uikit'
 import TitleStake from './components/TitleStake'
 import CardTotalStake from './components/CardTotalStake'
 import CardTotalEarn from './components/CardTotalEarn'
+import CardFinixStake from './components/CardFinixStake'
 
 const LongTermStake: React.FC = () => {
   const { isXl, isXxl } = useMatchBreakpoints()
@@ -19,6 +20,7 @@ const LongTermStake: React.FC = () => {
         <TitleStake />
         <CardTotalStake isMobile={isMobile} />
         <CardTotalEarn isMobile={isMobile} />
+        <CardFinixStake isMobile={isMobile} />
       </Box>
     </>
   )
