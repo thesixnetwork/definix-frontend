@@ -3,7 +3,16 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput } from 'definixswap-uikit'
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, orderOptions, orderBy, search }) => {
+const PoolFilter = ({
+  stackedOnly,
+  setStackedOnly,
+  liveOnly,
+  setLiveOnly,
+  defaultOptionIndex,
+  orderOptions,
+  orderBy,
+  search,
+}) => {
   const { t } = useTranslation()
 
   const Wrap = styled(Flex)`
@@ -41,7 +50,6 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, order
   `
 
   return (
-    //     *AAPR = Airdrop APR supported by our partners
     <Wrap>
       <LeftSection>
         <DropdownWrap>
@@ -51,12 +59,20 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, order
             onItemClick={(index: number) => orderBy(index)}
           />
         </DropdownWrap>
+
         <StakedOnlyWrap>
-          <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} mr="S_8">
-            {t('Staked only Farm')}
+          <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+            {t('View Finished Pools')}
           </Text>
           <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
         </StakedOnlyWrap>
+
+        {/* <Flex alignItems="center">
+          <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+            Finished
+          </Text>
+          <Toggle checked={!liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
+        </Flex> */}
       </LeftSection>
       <RightSection>
         <SearchInput
@@ -70,4 +86,4 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, order
   )
 }
 
-export default FarmTabButtons
+export default PoolFilter

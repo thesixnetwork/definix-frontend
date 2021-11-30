@@ -212,13 +212,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     return (
       <>
         <Wrap>
-          {/* <Flex justifyContent="space-between">
-            <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
-            <Box style={{ width: '26%' }} className="mx-s24">
-              {renderStakeAction()}
-            </Box>
-            <Box style={{ width: '44%' }}>{isApproved && renderHarvestActionAirDrop()}</Box>
-          </Flex> */}
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
             <Box>{renderCardHeading()}</Box>
             <Box>{renderStakeAction()}</Box>
@@ -231,52 +224,54 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   return (
     <>
-      {isMobile ? (
-        <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-          <Wrap>
-            <Flex justifyContent="space-between">
-              {renderCardHeading()}
-              {renderIconButton()}
-            </Flex>
-            {renderEarningsSection()}
-          </Wrap>
-          {isOpenAccordion && (
-            <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
-              {renderHarvestActionAirDrop()}
-              <Box py="S_24">{renderStakeAction()}</Box>
-              <Divider />
-              <Box pt="S_24">{renderTotalLiquiditySection()}</Box>
-              <Box pt="S_16">{renderMyBalanceSection()}</Box>
-              <Box py="S_28">{renderLinkSection()}</Box>
-            </Box>
-          )}
-        </Card>
-      ) : (
-        <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
-          <Wrap>
-            <Flex justifyContent="space-between">
-              <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
-              <Box style={{ width: '13%' }}>{renderTotalLiquiditySection()}</Box>
-              <Box style={{ width: '26%' }} className="mx-s24">
-                {renderMyBalanceSection()}
-              </Box>
-              <Box style={{ width: '22%' }}>{renderEarningsSection()}</Box>
-              {renderIconButton()}
-            </Flex>
-          </Wrap>
-          {isOpenAccordion && (
-            <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
+      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} mt="S_16">
+        {isMobile ? (
+          <>
+            <Wrap>
               <Flex justifyContent="space-between">
-                <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
-                <Box style={{ width: '40%' }} className="mx-s24">
-                  {isApproved && renderHarvestActionAirDrop()}
-                </Box>
-                <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
+                {renderCardHeading()}
+                {renderIconButton()}
               </Flex>
-            </Box>
-          )}
-        </Card>
-      )}
+              {renderEarningsSection()}
+            </Wrap>
+            {isOpenAccordion && (
+              <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
+                {renderHarvestActionAirDrop()}
+                <Box py="S_24">{renderStakeAction()}</Box>
+                <Divider />
+                <Box pt="S_24">{renderTotalLiquiditySection()}</Box>
+                <Box pt="S_16">{renderMyBalanceSection()}</Box>
+                <Box py="S_28">{renderLinkSection()}</Box>
+              </Box>
+            )}
+          </>
+        ) : (
+          <>
+            <Wrap>
+              <Flex justifyContent="space-between">
+                <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
+                <Box style={{ width: '13%' }}>{renderTotalLiquiditySection()}</Box>
+                <Box style={{ width: '26%' }} mx="S_24">
+                  {renderMyBalanceSection()}
+                </Box>
+                <Box style={{ width: '22%' }}>{renderEarningsSection()}</Box>
+                {renderIconButton()}
+              </Flex>
+            </Wrap>
+            {isOpenAccordion && (
+              <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
+                <Flex justifyContent="space-between">
+                  <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
+                  <Box style={{ width: '40%' }} mx="S_24">
+                    {isApproved && renderHarvestActionAirDrop()}
+                  </Box>
+                  <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
+                </Flex>
+              </Box>
+            )}
+          </>
+        )}
+      </Card>
     </>
   )
 }

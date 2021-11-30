@@ -1,11 +1,9 @@
-import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import { getLpImageUrls } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
 import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
-// import { communityFarms } from 'config/constants'
 
 export interface ExpandableSectionProps {
   farm: FarmWithStakedValue
