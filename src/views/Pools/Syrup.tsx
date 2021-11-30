@@ -9,7 +9,7 @@ import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
+import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd, usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Heading, Text, Link } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
@@ -55,6 +55,7 @@ const Farm: React.FC = () => {
   const sixPriceUSD = usePriceSixUsd()
   const bnbPriceUSD = usePriceBnbBusd()
   const ethPriceBnb = usePriceEthBnb()
+  const finixPriceUsd = usePriceFinixUsd()
   const block = useBlock()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
@@ -101,6 +102,9 @@ const Farm: React.FC = () => {
         break
       case 6:
         stakingTokenFarm = farms.find((s) => s.pid === 5)
+        break
+      case 25:
+        stakingTokenFarm = farms.find((s) => s.pid === 25)
         break
       default:
         break
@@ -159,6 +163,16 @@ const Farm: React.FC = () => {
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
         const currentTotalStaked = getBalanceNumber(pool.totalStaked)
         apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+        break
+      }
+      case 25: {
+        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
+          .times(stakingTokenFarm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
+        apy = finixRewardPerYear.times(finixPriceUsd).div(new BigNumber(currentTotalStaked).times(new BigNumber(sixPriceUSD))).times(100)
         break
       }
       case 2:
