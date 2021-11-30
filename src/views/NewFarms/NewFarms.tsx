@@ -62,7 +62,7 @@ const Farms: React.FC = () => {
       },
     ]
   }, [t])
-  
+
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
@@ -162,7 +162,7 @@ const Farms: React.FC = () => {
       <Box className={`mb-s${isMobile ? 40 : 80}`}>
         {pageState.state === 'list' && (
           <>
-            <FarmHeader/>
+            <FarmHeader />
             <FarmTabButtons
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
