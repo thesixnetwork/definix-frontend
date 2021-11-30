@@ -95,7 +95,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
         {!isOldSyrup && !isFinished && (
           <Button
             variant="secondary"
-            disabled={isFinished && sousId !== 0}
+            disabled={isFinished && sousId !== 0 && sousId !== 25}
             onClick={onPresentDeposit}
             className="btn-secondary-disable col-6 ml-1"
           >

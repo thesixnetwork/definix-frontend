@@ -30,8 +30,8 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
-      if (sousId === 0) {
-        await stake(herodotusContract, 0, amount, account)
+      if (sousId === 0 || sousId === 25) {
+        await stake(herodotusContract, sousId, amount, account)
       } else if (isUsingBnb) {
         await sousStakeBnb(sousChefContract, amount, account)
       } else {

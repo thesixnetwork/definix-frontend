@@ -211,11 +211,11 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
   return (
     <Card
       isActive={isCardActive}
-      isFinished={isFinished && sousId !== 0}
+      isFinished={isFinished && sousId !== 0 && sousId !== 25}
       className="flex flex-column align-stretch mx-auto"
       style={{ maxWidth: '1000px', padding: '0' }}
     >
-      {isFinished && sousId !== 0 && <PoolSash type="finish" />}
+      {isFinished && sousId !== 0 && sousId !== 25 && <PoolSash type="finish" />}
       <div className="flex justify-space-between">
         <IconButton variant="text" as="a" href="/" area-label="go back" className="ma-3">
           <ArrowBackIcon />
@@ -324,7 +324,11 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                 ) : (
                   <div className="flex">
                     {stakedBalance.toNumber() === 0 ? (
-                      <Button disabled={isFinished && sousId !== 0} onClick={onPresentDeposit} fullWidth>
+                      <Button
+                        disabled={isFinished && sousId !== 0 && sousId !== 25}
+                        onClick={onPresentDeposit}
+                        fullWidth
+                      >
                         Stake
                       </Button>
                     ) : (
@@ -351,7 +355,7 @@ const PoolCardGenesis: React.FC<HarvestProps> = ({ pool }) => {
                         {!isOldSyrup && (
                           <Button
                             fullWidth
-                            disabled={isFinished && sousId !== 0}
+                            disabled={isFinished && sousId !== 0 && sousId !== 25}
                             onClick={onPresentDeposit}
                             variant="secondary"
                             className="ml-2 btn-secondary-disable"

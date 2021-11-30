@@ -217,9 +217,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceEthBusd()
   const [listView, setListView] = useState(false)
-  const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.multiplier !== '0X')
+  const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 25 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
-    (farms) => farms.userData && farms.pid !== 0 && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
+    (farms) =>
+      farms.userData &&
+      farms.pid !== 0 &&
+      farms.pid !== 25 &&
+      new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
   )
 
   const farmsList = useCallback(

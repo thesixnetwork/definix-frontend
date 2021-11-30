@@ -94,7 +94,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ pool, isHorizontal = false }) => {
     if (tokenName === 'FINIX-SIX' && !isFinished) {
       return <PoolSash type="special" />
     }
-    if (isFinished && sousId !== 0) {
+    if (isFinished && sousId !== 0 && sousId !== 25) {
       return <PoolSash type="finish" />
     }
 
