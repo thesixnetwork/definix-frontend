@@ -8,7 +8,7 @@ export const approve = async (lpContract, herodotusContract, account) => {
 }
 
 export const stake = async (herodotusContract, pid, amount, account) => {
-  if (pid === 0) {
+  if (pid === 0 || pid === 25) {
     return herodotusContract.methods
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 200000 })
@@ -44,7 +44,7 @@ export const sousStakeBnb = async (sousChefContract, amount, account) => {
 }
 
 export const unstake = async (herodotusContract, pid, amount, account) => {
-  if (pid === 0) {
+  if (pid === 0 || pid === 25) {
     return herodotusContract.methods
       .leaveStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
       .send({ from: account, gas: 200000 })
@@ -106,7 +106,7 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 }
 
 export const harvest = async (herodotusContract, pid, account) => {
-  if (pid === 0) {
+  if (pid === 0 || pid === 25) {
     return herodotusContract.methods
       .leaveStaking('0')
       .send({ from: account, gas: 200000 })
