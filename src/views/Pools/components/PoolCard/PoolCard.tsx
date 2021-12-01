@@ -192,7 +192,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
     ),
     [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, pendingRewards, bundleRewards, isMobile, componentType],
   )
-  const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
+  // const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -236,8 +236,9 @@ const PoolCard: React.FC<PoolCardProps> = ({
               <Box py="S_24">{renderStakeAction()}</Box>
               <Divider />
               <Box pt="S_24">{renderTotalStakedSection()}</Box>
-              <Box pt="S_16">{renderMyBalanceSection()}</Box>
-              <Box py="S_28">{renderLinkSection()}</Box>
+              <Box pt="S_16" py="S_28">
+                {renderMyBalanceSection()}
+              </Box>
             </Box>
           )}
         </>
@@ -257,7 +258,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">
-                <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
+                <Box style={{ width: '20%' }} />
                 <Box style={{ width: '40%' }} mx="S_24">
                   {renderHarvestActionAirDrop()}
                 </Box>
