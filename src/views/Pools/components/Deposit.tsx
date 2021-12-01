@@ -45,7 +45,7 @@ const Deposit: React.FC<{
   const myStakedValue = useMemo(() => {
     return getBalanceNumber(myStaked)
   }, [myStaked])
-  
+
   const myStakedDisplayValue = useMemo(() => {
     return convertToBalanceFormat(myStakedValue)
   }, [myStakedValue, convertToBalanceFormat])

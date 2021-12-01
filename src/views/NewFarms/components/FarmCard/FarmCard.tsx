@@ -140,17 +140,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       farm,
       removed,
     })
-  }, [
-    farm,
-    stakedBalance,
-    lpTokenName,
-    pid,
-    tokenBalance,
-    addLiquidityUrl,
-    totalLiquidityUSD,
-    onSelectAddLP,
-    removed,
-  ])
+  }, [farm, stakedBalance, lpTokenName, pid, tokenBalance, addLiquidityUrl, totalLiquidityUSD, onSelectAddLP, removed])
   const onPresentWithdraw = useCallback(() => {
     onSelectRemoveLP({
       pid,
@@ -200,7 +190,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       myLiquidityUSD,
       componentType,
       onPresentDeposit,
-      onPresentWithdraw
+      onPresentWithdraw,
     ],
   )
   /**

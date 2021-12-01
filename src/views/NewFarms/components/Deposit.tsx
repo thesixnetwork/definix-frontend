@@ -6,17 +6,7 @@ import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
-import {
-  ColorStyles,
-  Text,
-  Box,
-  TitleSet,
-  Card,
-  Flex,
-  Divider,
-  BackIcon,
-  useModal,
-} from 'definixswap-uikit'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
@@ -33,17 +23,7 @@ const Deposit: React.FC<{
   myLiquidity: BigNumber
   addLiquidityUrl: string
   onBack: () => void
-}> = ({
-  farm,
-  removed,
-  pid,
-  tokenBalance,
-  tokenName = '',
-  addLiquidityUrl,
-  totalLiquidity,
-  myLiquidity,
-  onBack,
-}) => {
+}> = ({ farm, removed, pid, tokenBalance, tokenName = '', addLiquidityUrl, totalLiquidity, myLiquidity, onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat, convertToPriceFormat } = useConverter()
@@ -56,7 +36,7 @@ const Deposit: React.FC<{
   const totalLiquidityValue = useMemo(() => {
     return convertToBalanceFormat(getBalanceNumber(totalLiquidity))
   }, [totalLiquidity, convertToBalanceFormat])
-  
+
   const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
 
   const myLiquidityDisplayValue = useMemo(() => {
@@ -189,9 +169,7 @@ const Deposit: React.FC<{
 
         <CardBody>
           <LiquidityInfo>
-            <LiquidityTitle>
-              {t('Total staked')}
-            </LiquidityTitle>
+            <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
             <LiquidityValue>
               <BalanceText>{totalLiquidityValue}</BalanceText>
             </LiquidityValue>
