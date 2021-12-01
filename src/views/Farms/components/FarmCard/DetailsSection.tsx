@@ -1,7 +1,7 @@
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronRightIcon, Link, Text } from 'uikit-dev'
+import { Link, ChevronRightIcon, Text } from 'uikit-dev'
 
 export interface ExpandableSectionProps {
   bscScanAddress?: string
@@ -11,6 +11,7 @@ export interface ExpandableSectionProps {
   addLiquidityUrl?: string
   isHorizontal?: boolean
   className?: string
+  stakedBalanceValueFormated?: string
 }
 
 const Wrapper = styled.div<{ isHorizontal?: boolean }>`
@@ -26,8 +27,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   totalValueFormated,
   isHorizontal = false,
   className = '',
-  // lpLabel,
-  // addLiquidityUrl,
+  stakedBalanceValueFormated,
 }) => {
   const TranslateString = useI18n()
 
@@ -50,16 +50,10 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
       {!removed && (
         <>
           {false && (
-            <div className="flex align-baseline flex-wrap justify-space-between mb-1">
-              <Text color="textSubtle">{TranslateString(23, 'My Liquidity')}</Text>
-
-              <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-                <Text bold className="flex-shrink">
-                  {totalValueFormated}
-                </Text>
-
-                <LinkView />
-              </div>
+            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+              <Text bold className="flex-shrink">
+                {stakedBalanceValueFormated}
+              </Text>
             </div>
           )}
 

@@ -1,4 +1,3 @@
-import { useGetStats } from 'hooks/api'
 import useI18n from 'hooks/useI18n'
 import React from 'react'
 import { usePriceTVL, usePriceCaverTVL } from 'state/hooks'
@@ -24,8 +23,6 @@ const TotalValueLockedCard = () => {
   const totalTVL = usePriceTVL().toNumber()
   const totalCaverTVL = usePriceCaverTVL().toNumber()
   const TranslateString = useI18n()
-  const data = useGetStats()
-  const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
 
   return (
     <StyledTotalValueLockedCard isRainbow>

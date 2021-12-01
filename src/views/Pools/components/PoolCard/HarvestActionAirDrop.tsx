@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import klay from 'uikit-dev/images/Logo-Klaytn.png'
-import { getBalanceNumber } from 'utils/formatBalance'
 import AirDropHarvestModal from './AirDropHarvestModal'
 
 const MiniLogo = styled.img`
@@ -34,7 +33,6 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   sousId,
   isBnbPool,
   earnings,
-  tokenDecimals,
   needsApproval,
   isOldSyrup,
   className = '',

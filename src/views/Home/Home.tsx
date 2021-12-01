@@ -108,8 +108,6 @@ const Home: React.FC = () => {
       if (response.data.data) {
         const caption = _.get(response.data.data, 'data.0.text', '')
         setCaptionText(caption)
-      } else {
-        console.log('error')
       }
     }
     fetchCaptionText()
@@ -182,7 +180,7 @@ const Home: React.FC = () => {
                       setIsViewTurial(false)
                     }}
                   >
-                    My farms & pools
+                    My investments
                   </Heading>
                 )}
 

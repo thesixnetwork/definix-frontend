@@ -35,14 +35,7 @@ const Apr = styled(Text)`
   align-items: center;
 `
 
-const CardHeading: React.FC<CardHeadingProps> = ({
-  tokenName,
-  isOldSyrup,
-  apy,
-  className = '',
-  isHorizontal = false,
-  veloId,
-}) => {
+const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, apy, className = '', isHorizontal = false, veloId }) => {
   const TranslateString = useI18n()
 
   const finixPrice = usePriceFinixUsd()

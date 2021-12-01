@@ -1,6 +1,6 @@
 import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
-import { CampaignType, FarmConfig, Nft, PoolConfig, Team } from 'config/constants/types'
+import { CampaignType, FarmConfig, RebalanceConfig, Nft, PoolConfig, Team } from 'config/constants/types'
 
 export type TranslatableText =
   | string
@@ -61,6 +61,38 @@ export interface Profile {
   hasRegistered: boolean
 }
 
+export interface Token {
+  address: string
+  name: string
+  symbol: string
+  decimals: number
+  totalBalance: BigNumber
+}
+export interface Rebalance extends RebalanceConfig {
+  currentPoolUsdBalances?: BigNumber[]
+  sumCurrentPoolUsdBalance?: BigNumber
+  totalSupply?: BigNumber
+  activeUserCount?: BigNumber
+  tokens?: Token[]
+  usdToken?: Token[]
+  usdTokenRatioPoint?: BigNumber
+  totalRatioPoints?: BigNumber[]
+  finixRewardPerYear?: BigNumber
+  activeUserCountNumber?: number
+  totalAssetValue?: BigNumber
+  sharedPrice?: BigNumber
+  last24Data?: any
+  // sharpeRatio?: number
+  // maxDrawdown?: number
+  // tokenUsd?: BigNumber[]
+  enableAutoCompound?: boolean
+  autoHerodotus?: string
+  apollo?: string
+  sharedPricePercentDiff?: number
+  twentyHperformance?: number
+  ratioCal?: string[]
+}
+
 // Slices states
 
 export interface ToastsState {
@@ -76,6 +108,36 @@ export interface FarmsState {
 export interface PoolsState {
   isFetched: boolean
   data: Pool[]
+}
+
+export interface RebalanceState {
+  isFetched: boolean
+  data: Rebalance[]
+}
+
+export interface Balances {
+  [key: string]: BigNumber
+}
+
+export interface Balance {
+  [key: string]: Balances
+}
+
+export interface Allowance {
+  [key: string]: Balance
+}
+
+export interface WalletState {
+  decimals: Balance
+  balances: Balance
+  userRebalanceBalances: Balance
+  userRebalanceReward: Balance
+  userDeadline?: number
+  allowances: Allowance
+  userSlippage?: number
+  isFetched: boolean
+  isRebalanceFetched: boolean
+  isRebalanceRewardFetched: boolean
 }
 
 export interface FinixPriceState {
@@ -147,4 +209,6 @@ export interface State {
   profile: ProfileState
   teams: TeamsState
   achievements: AchievementState
+  rebalances: RebalanceState
+  wallet: WalletState
 }

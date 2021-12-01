@@ -1,4 +1,3 @@
-import { useGetStats } from 'hooks/api'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import useI18n from 'hooks/useI18n'
@@ -41,22 +40,13 @@ const Row = styled.div`
   }
 `
 
-const Dot = styled.span`
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: ${({ theme }) => theme.radii.circle};
-  background: ${({ theme }) => theme.colors.primary};
-  margin-right: 8px;
-`
-
 const CardTVL = ({ className = '' }) => {
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
   const totalCaverTVL = usePriceCaverTVL().toNumber()
   const TranslateString = useI18n()
-  const data = useGetStats()
-  const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
+  // const data = useGetStats()
+  // const tvl = data ? data.total_value_locked_all.toLocaleString('en-US', { maximumFractionDigits: 0 }) : null
   const totalSupply = useTotalSupply()
   const burnedBalance = getBalanceNumber(useBurnedBalance(getFinixAddress()))
   const finixSupply = getBalanceNumber(totalSupply)

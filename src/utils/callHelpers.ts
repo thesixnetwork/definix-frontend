@@ -7,7 +7,13 @@ export const approve = async (lpContract, herodotusContract, account) => {
     .send({ from: account })
 }
 
+export const approveOther = async (lpContract, spender, account) => {
+  return lpContract.methods.approve(spender, ethers.constants.MaxUint256).send({ from: account, gas: 300000 })
+}
+
 export const stake = async (herodotusContract, pid, amount, account) => {
+  // const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
+
   if (pid === 0) {
     return herodotusContract.methods
       .enterStaking(new BigNumber(amount).times(new BigNumber(10).pow(18)).toString())
@@ -106,6 +112,8 @@ export const sousEmegencyUnstake = async (sousChefContract, amount, account) => 
 }
 
 export const harvest = async (herodotusContract, pid, account) => {
+  // const flagFeeDelegate = await UseDeParam('KLAYTN_FEE_DELEGATE', 'N')
+
   if (pid === 0) {
     return herodotusContract.methods
       .leaveStaking('0')
@@ -136,6 +144,15 @@ export const soushHarvestBnb = async (sousChefContract, account) => {
   return sousChefContract.methods
     .deposit()
     .send({ from: account, gas: 200000, value: new BigNumber(0) })
+    .on('transactionHash', (tx) => {
+      return tx.transactionHash
+    })
+}
+
+export const rebalanceHarvest = async (apolloV2Contract, account) => {
+  return apolloV2Contract.methods
+    .harvest()
+    .send({ from: account, gas: 500000 })
     .on('transactionHash', (tx) => {
       return tx.transactionHash
     })

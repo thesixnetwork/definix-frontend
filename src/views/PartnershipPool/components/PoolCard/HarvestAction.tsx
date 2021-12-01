@@ -5,11 +5,9 @@ import numeral from 'numeral'
 import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Button, Flex, Heading, Text } from 'uikit-dev'
+import { Button, Heading, Text } from 'uikit-dev'
 
-import Apollo from 'config/abi/Apollo.json'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getContract } from 'utils/web3'
 import { HarvestActionProps } from './types'
 
 const MiniLogo = styled.img`
@@ -20,20 +18,16 @@ const MiniLogo = styled.img`
 `
 
 const HarvestAction: React.FC<HarvestActionProps> = ({
-  sousId,
-  isBnbPool,
   earnings,
   tokenDecimals,
   needsApproval,
   isOldSyrup,
   className = '',
   veloAmount,
-  contractAddrss,
   pairPrice,
   veloId,
 }) => {
   const TranslateString = useI18n()
-  const contractApollo = getContract(Apollo.abi, contractAddrss)
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()

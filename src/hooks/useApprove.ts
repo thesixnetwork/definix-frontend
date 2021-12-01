@@ -22,7 +22,6 @@ export const useApprove = (lpContract: Contract) => {
       return false
     }
   }, [account, dispatch, lpContract, herodotusContract])
-
   return { onApprove: handleApprove }
 }
 

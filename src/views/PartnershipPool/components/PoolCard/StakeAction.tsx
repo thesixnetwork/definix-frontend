@@ -1,12 +1,11 @@
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
-import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
+import { Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethers } from 'ethers'
 import { StakeActionProps } from './types'
@@ -26,19 +25,15 @@ const MiniLogo = styled.img`
 `
 
 const StakeAction: React.FC<StakeActionProps> = ({
-  sousId,
   isOldSyrup,
-  tokenName,
   stakingTokenAddress,
   stakedBalance,
   needsApproval,
   isFinished,
   onUnstake,
-  onPresentDeposit,
   onPresentWithdraw,
   className = '',
   apolloAddress,
-  veloId,
 }) => {
   const TranslateString = useI18n()
 
@@ -58,7 +53,6 @@ const StakeAction: React.FC<StakeActionProps> = ({
     try {
       setRequestedApproval(true)
 
-      console.log('stakingTokenAddress', stakingTokenAddress)
       const txHash = await stakingTokenContract.methods
         .approve(apolloAddress, ethers.constants.MaxUint256)
         .send({ from: account })
@@ -69,7 +63,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
     } catch (e) {
       console.error(e)
     }
-  }, [setRequestedApproval, account, stakingTokenContract, apolloAddress, stakingTokenAddress])
+  }, [setRequestedApproval, account, stakingTokenContract, apolloAddress])
 
   const renderStakingButtons = () => {
     if (!readyToStake && stakedBalance.eq(new BigNumber(0)) && !isFinished) {

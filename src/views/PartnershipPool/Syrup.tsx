@@ -2,11 +2,9 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
-import { PoolCategory, QuoteToken, Address } from 'config/constants/types'
+import { PoolCategory, QuoteToken } from 'config/constants/types'
 
 import useBlock from 'hooks/useBlock'
-import orderBy from 'lodash/orderBy'
-import partition from 'lodash/partition'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
@@ -16,7 +14,7 @@ import PairAbi from 'config/abi/uni_v2_lp.json'
 import erc20 from 'config/abi/erc20.json'
 // import { useFarms, usePools, usePriceBnbBusd, usePriceEthBnb, usePriceSixUsd } from 'state/hooks'
 import styled from 'styled-components'
-import { Heading, Text, Link } from 'uikit-dev'
+import { Heading, Text } from 'uikit-dev'
 import { VeloPool } from 'config/constants'
 import { getAddress } from 'utils/addressHelpers'
 import AddressTokens from 'config/constants/contracts'
@@ -50,10 +48,6 @@ const MaxWidth = styled.div`
   max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-`
-
-const TutorailsLink = styled(Link)`
-  text-decoration-line: underline;
 `
 
 const Farm: React.FC = () => {
@@ -128,7 +122,6 @@ const Farm: React.FC = () => {
   })
 
   const [amountVfinix1, setAmountVfinix1x] = useState<number>(0)
-  const [amountVfinix2, setAmountVfinix2x] = useState<number>(0)
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
@@ -147,18 +140,14 @@ const Farm: React.FC = () => {
 
   const fetch2 = useCallback(async () => {
     const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
-    const veloAddress = getAddress(AddressTokens.velo)
 
     const apolloAddress = '0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f' // getAddress("poolVelo.contractAddress")
     const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
 
     const contractApollo = getContract(Apollo.abi, apolloAddress)
     const contractFinix = getContract(erc20, finixAddress)
-    const contractVelo = getContract(erc20, veloAddress)
-    const [veloBalance, totalStake, rewardPerBlock, reserveFinixVelo] = await Promise.all([
-      contractVelo.methods.balanceOf(apolloAddress).call(),
+    const [totalStake, reserveFinixVelo] = await Promise.all([
       contractFinix.methods.balanceOf(apolloAddress).call(),
-      contractApollo.methods.rewardPerBlock().call(),
       pairContract.methods.getReserves().call(),
     ])
     if (account) {
@@ -176,9 +165,7 @@ const Farm: React.FC = () => {
       poolVelo2.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
       // poolVelo.stakingLimit = new BigNumber(balanceFinixUser)
     }
-    const veloBalanceReward = new BigNumber(veloBalance).div(1e5).toNumber()
     poolVelo2.totalStaked = new BigNumber(totalStake)
-    const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR)
 
     const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
       new BigNumber(reserveFinixVelo._reserve1).div(1e5),
@@ -191,7 +178,6 @@ const Farm: React.FC = () => {
     // eslint-disable-next-line
     // debugger
     setPoolVelo2(poolVelo2)
-    setAmountVfinix2x(veloBalanceReward)
   }, [account, poolVelo2])
 
   const fetch1 = useCallback(async () => {
@@ -250,7 +236,6 @@ const Farm: React.FC = () => {
 
     // tmp mulitplier to support ETH farms
     // Will be removed after the price api
-    const tempMultiplier = 1
 
     // /!\ Assume that the farm quote price is BNB
     const stakingTokenPriceInBNB = new BigNumber(1)
@@ -296,7 +281,6 @@ const Farm: React.FC = () => {
   })
 
   const handlePresent = useCallback((node: React.ReactNode) => {
-    console.log('present')
     setModalNode(node)
     setIsOpenModal(true)
     window.scrollTo(0, 0)

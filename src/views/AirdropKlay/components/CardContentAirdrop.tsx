@@ -1,8 +1,8 @@
 /* eslint eqeqeq: 0 */
 
-import React, { ReactElement, useState, useEffect, useMemo } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Button, Card, Heading, Text, Link, Input, Modal } from 'uikit-dev'
+import { Button, Card, Text, Input } from 'uikit-dev'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { provider } from 'web3-core'
 import { getAirdropKlayAddress } from 'utils/addressHelpers'
@@ -31,7 +31,6 @@ const StyledBanner = styled(Card)`
   background-repeat: no-repeat;
   background-position: center 40%;
   background-color: ${({ theme }) => theme.colors.card};
-
   h2 {
     font-size: 24px;
   }
@@ -42,17 +41,14 @@ const StyledBanner = styled(Card)`
   img {
     width: 120px;
   }
-
   a {
     margin-top: 1rem;
   }
-
   > div > div {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-
     &:nth-of-type(01) {
       flex-grow: 1;
     }
@@ -61,7 +57,6 @@ const StyledBanner = styled(Card)`
       margin-bottom: 0.5rem;
     }
   }
-
   ${({ theme }) => theme.mediaQueries.sm} {
     h2 {
       font-size: 40px !important;
@@ -72,17 +67,14 @@ const StyledBanner = styled(Card)`
     a {
       min-width: 200px;
     }
-
     img {
       width: 180px;
     }
   }
-
   ${({ theme }) => theme.mediaQueries.md} {
     > div {
       flex-direction: row;
       align-items: center;
-
       > div {
         &:nth-of-type(01) {
           padding: 24px 24px 24px 0;
@@ -160,7 +152,7 @@ export default function CardContentAirdrop({
         contractAirdropKlay.methods
           .claimAll(accountClaim)
           .send({ from: account, gas: 600000 })
-          .on('receipt', (receipt) => {
+          .on('receipt', () => {
             setState(CLAIMED)
             setLoading(false)
             setTitleModal('Your request has been submitted')
@@ -172,7 +164,6 @@ export default function CardContentAirdrop({
           })
           .on('error', (e) => {
             setTitleModal('Transaction fail')
-            console.log(e)
             setBodyModal(getErrorMsg(e.code))
             setLoading(false)
             setModalSuccess(false)

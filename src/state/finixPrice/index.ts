@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
-import { Token, Pair, ChainId } from 'definixswap-sdk'
+import { Token, Pair } from 'definixswap-sdk'
 import erc20 from 'config/abi/erc20.json'
 import multicall from 'utils/multicall'
 import _ from 'lodash'
@@ -374,12 +374,7 @@ export const fetchQuote = () => async (dispatch) => {
   const usdtAddress = getUsdtAddress()
   const btcbAddress = getBtcbAddress()
   const ethAddress = getEthAddress()
-  let chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
-  if (chainId === ChainId.MAINNET) {
-    chainId = ChainId.MAINNET
-  } else if (chainId === ChainId.BSCTESTNET) {
-    chainId = ChainId.BSCTESTNET
-  }
+  const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
 
   const FINIX = new Token(chainId, finixAddress, 18, 'FINIX', 'FINIX')
   const SIX = new Token(chainId, sixAddress, 18, 'SIX', 'SIX')

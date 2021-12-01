@@ -14,7 +14,6 @@ const Wrapper = styled.div<{ isHorizontal?: boolean }>`
 `
 
 const DetailsSection: React.FC<DetailsSectionProps> = ({
-  tokenName,
   totalStaked,
   bscScanAddress,
   isHorizontal = false,

@@ -7,8 +7,6 @@ import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { useMatchBreakpoints } from 'uikit-dev'
 import PoolContext from 'views/PartnershipPool/PoolContext'
-import { getContract } from 'utils/web3'
-import ApolloAbi from 'config/abi/Apollo.json'
 import DepositModal from '../DepositModal'
 import PartnerPoolSash from '../PartnerPoolSash'
 import WithdrawModal from '../WithdrawModal'
@@ -16,7 +14,6 @@ import CardHeading from './CardHeading'
 import CardHeadingAccordion from './CardHeadingAccordion'
 import DetailsSection from './DetailsSection'
 import HarvestAction from './HarvestAction'
-import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import { PoolCardVeloProps } from './types'
 import CountDown from './Countdown'
@@ -55,7 +52,7 @@ const HorizontalMobileStyle = styled(CardStyle)`
   }
 `
 
-const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, veloAmount = 0, account, veloId }) => {
+const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, veloAmount = 0, veloId }) => {
   const {
     sousId,
     tokenName,
@@ -113,13 +110,6 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
   )
 
   const renderDepositModal = useCallback(() => {
-    console.log(
-      'stakingLimit',
-      stakingLimit,
-      stakingTokenBalance.isGreaterThan(convertedLimit),
-      convertedLimit,
-      stakingTokenBalance,
-    )
     onPresent(
       <DepositModal
         max={stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance}
@@ -131,15 +121,8 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
   }, [convertedLimit, onStake, onPresent, renderCardHeading, stakingLimit, stakingTokenBalance, stakingTokenName])
 
   const renderWithdrawModal = useCallback(() => {
-    onPresent(
-      <WithdrawModal
-        max={stakedBalance}
-        onConfirm={onUnstake}
-        tokenName={stakingTokenName}
-        renderCardHeading={renderCardHeading}
-      />,
-    )
-  }, [onPresent, onUnstake, renderCardHeading, stakedBalance, stakingTokenName])
+    onPresent(<WithdrawModal max={stakedBalance} onConfirm={onUnstake} renderCardHeading={renderCardHeading} />)
+  }, [onPresent, onUnstake, renderCardHeading, stakedBalance])
 
   const renderStakeAction = useCallback(
     (className?: string) => (
@@ -203,22 +186,6 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
       contractAddress,
       pairPrice,
     ],
-  )
-
-  const renderHarvestActionAirDrop = useCallback(
-    (className?: string, isHor?: boolean) => (
-      <HarvestActionAirDrop
-        sousId={sousId}
-        isBnbPool={isBnbPool}
-        earnings={earnings}
-        tokenDecimals={tokenDecimals}
-        needsApproval={needsApproval}
-        isOldSyrup={isOldSyrup}
-        className={className}
-        isHorizontal={isHor}
-      />
-    ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, tokenDecimals],
   )
 
   const renderDetailsSection = useCallback(

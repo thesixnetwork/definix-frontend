@@ -7,11 +7,8 @@ import React, { useState } from 'react'
 import { usePriceFinixUsd } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
-import ApolloAbi from 'config/abi/Apollo.json'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import klay from 'uikit-dev/images/Logo-Klaytn.png'
-import { getContract } from 'utils/web3'
-import { getBalanceNumber } from 'utils/formatBalance'
 import AirDropHarvestModal from './AirDropHarvestModal'
 
 const MiniLogo = styled.img`
@@ -36,7 +33,6 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   sousId,
   isBnbPool,
   earnings,
-  tokenDecimals,
   needsApproval,
   isOldSyrup,
   className = '',

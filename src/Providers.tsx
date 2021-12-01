@@ -1,12 +1,12 @@
-import React from 'react'
+import { BlockContextProvider } from 'contexts/BlockContext'
+import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
+import { RefreshContextProvider } from 'contexts/RefreshContext'
+import { ThemeContextProvider } from 'contexts/ThemeContext'
 import { ModalProvider } from 'uikit-dev'
 import bsc, { UseWalletProvider } from '@binance-chain/bsc-use-wallet'
+import React from 'react'
 import { Provider } from 'react-redux'
 import getRpcUrl from 'utils/getRpcUrl'
-import { LanguageContextProvider } from 'contexts/Localisation/languageContext'
-import { ThemeContextProvider } from 'contexts/ThemeContext'
-import { BlockContextProvider } from 'contexts/BlockContext'
-import { RefreshContextProvider } from 'contexts/RefreshContext'
 import store from 'state'
 
 const Providers: React.FC = ({ children }) => {

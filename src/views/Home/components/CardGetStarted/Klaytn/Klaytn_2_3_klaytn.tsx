@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import React, { memo } from 'react'
-import { Heading, Link, Text } from 'uikit-dev'
+import { Heading, Text } from 'uikit-dev'
 import img01 from 'uikit-dev/images/for-ui-v2/tutorial-elements/Klaytn/Definix-Tutorial-Elements-62.png'
 
 const Klaytn_2_3_klaytn = ({ title }) => {

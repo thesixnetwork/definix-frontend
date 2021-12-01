@@ -21,13 +21,7 @@ interface DepositModalProps {
   renderCardHeading?: (className?: string) => JSX.Element
 }
 
-const DepositModal: React.FC<DepositModalProps> = ({
-  max,
-  onConfirm,
-  onDismiss,
-  tokenName = '',
-  renderCardHeading,
-}) => {
+const DepositModal: React.FC<DepositModalProps> = ({ max, onConfirm, onDismiss, renderCardHeading }) => {
   const [val, setVal] = useState('')
   const [pendingTx, setPendingTx] = useState(false)
   const TranslateString = useI18n()

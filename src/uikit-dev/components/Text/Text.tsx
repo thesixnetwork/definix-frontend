@@ -11,7 +11,7 @@ const getColor = ({ color, theme }: ThemedProps) => {
   return getThemeValue(`colors.${color}`, color)(theme)
 }
 
-const getFontSize = ({ fontSize, small }: TextProps) => {
+const getFontSize = ({ fontSize }: TextProps) => {
   return fontSize || '14px'
 }
 
