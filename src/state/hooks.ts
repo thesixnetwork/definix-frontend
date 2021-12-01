@@ -165,7 +165,7 @@ export const usePoolFromPid = (sousId): Pool => {
 
 export const usePriceBnbBusd = (): BigNumber => {
   // const pid = 5 // BUSD-BNB LP
-  const pid = parseInt(process.env.REACT_APP_BNB_BUSD_PID, 10) // BUSD-SIX LP
+  const pid = parseInt(process.env.REACT_APP_BNB_BUSD_PID || '7', 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
@@ -173,7 +173,7 @@ export const usePriceBnbBusd = (): BigNumber => {
 
 export const usePriceSixBusd = (): BigNumber => {
   // const pid = 5 // BUSD-BNB LP
-  const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID, 10) // BUSD-SIX LP
+  const pid = parseInt(process.env.REACT_APP_SIX_BUSD_PID || '4', 10) // BUSD-SIX LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
@@ -181,7 +181,7 @@ export const usePriceSixBusd = (): BigNumber => {
 
 export const usePriceFinixBusd = (): BigNumber => {
   // const pid = 1 // FINIX-BNB LP
-  const pid = parseInt(process.env.REACT_APP_FINIX_BUSD_PID, 10) // FINIX-BUSD LP
+  const pid = parseInt(process.env.REACT_APP_FINIX_BUSD_PID || '2', 10) // FINIX-BUSD LP
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
   return farm.tokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : ZERO
@@ -214,7 +214,7 @@ export const usePriceTVL = (): BigNumber => {
 
 export const usePriceEthBusd = (): BigNumber => {
   // const pid = 6 // ETH-BNB LP
-  const pid = parseInt(process.env.REACT_APP_ETH_BNB_PID, 10) // BUSD-SIX LP
+  const pid = parseInt(process.env.REACT_APP_ETH_BNB_PID || '9', 10) // BUSD-SIX LP
   const bnbPriceUSD = usePriceBnbBusd()
   const farm = useFarmFromPid(pid)
   if (!farm) return ZERO
