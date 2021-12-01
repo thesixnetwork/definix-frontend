@@ -5,6 +5,7 @@ import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeading from './CardHeading'
 import ListDetailModal from './ModalNFT/ListDetailModal'
 import ListGroupModal from './ModalNFT/ListGroupModal'
+import ListDetailBuyModal from './ModalNFT/ListDetailBuyModal'
 import DetailsSection from './DetailSelection'
 import DetailsMarketPlace from './DetailMarketPlace'
 import { NFTCardProps } from './types'
@@ -42,6 +43,15 @@ const NFTCard: React.FC<NFTCardProps> = ({
     ) : (
       <ListGroupModal data={data} />
     ),
+  )
+
+  const [onPresentBuyModal] = useModal(
+    <ListDetailBuyModal data={data} />
+    // typeName !== 'Group' ? (
+    //   <ListDetailModal data={data} isMarketplace={isMarketplace} />
+    // ) : (
+    //   <ListGroupModal data={data} />
+    // ),
   )
 
   useEffect(() => {
@@ -93,7 +103,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
     )
   }
   return (
-    <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
+    <VerticalStyle className="mb-7" onClick={() => onPresentBuyModal()}>
       <div className="flex flex-column flex-grow" style={{ position: 'sticky' }}>
         {renderCardHeading('')}
       </div>

@@ -123,6 +123,7 @@ export interface NFTData {
   }
   metaDataURL: string
 }
+
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
