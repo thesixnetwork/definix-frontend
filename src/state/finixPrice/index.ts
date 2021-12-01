@@ -492,4 +492,3 @@ export const fetchQuote = () => async (dispatch) => {
   )
 }
 export default finixPriceSlice.reducer
-
