@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
@@ -45,6 +45,10 @@ const Deposit: React.FC<{
   const myStakedValue = useMemo(() => {
     return getBalanceNumber(myStaked)
   }, [myStaked])
+  
+  const myStakedDisplayValue = useMemo(() => {
+    return convertToBalanceFormat(myStakedValue)
+  }, [myStakedValue, convertToBalanceFormat])
 
   const myStakedPrice = useMemo(() => {
     return convertToPriceFormat(new BigNumber(myStakedValue).multipliedBy(price).toNumber())
@@ -114,8 +118,7 @@ const Deposit: React.FC<{
     justify-content: normal;
     width: 50%;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: row;
-      justify-content: space-between;
+      margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
       width: 100%;
     }
   `
@@ -182,7 +185,7 @@ const Deposit: React.FC<{
           <LiquidityInfo>
             <LiquidityTitle>{t('My Staked')}</LiquidityTitle>
             <LiquidityValue>
-              <BalanceText>{myStakedValue}</BalanceText>
+              <BalanceText>{myStakedDisplayValue}</BalanceText>
               <PriceText value={myStakedPrice} prefix="=" />
             </LiquidityValue>
           </LiquidityInfo>
@@ -200,9 +203,6 @@ const Deposit: React.FC<{
           onClickButton={() => onPresentConfirmModal()}
         />
       </CardWrap>
-      {/* <p>totalStakedPrice: {totalStakedPrice}</p>
-      <p>myStaked: {myStakedValue.toLocaleString()}</p>
-      <p>myStakedPrice: {myStakedPrice}</p> */}
     </>
   )
 }
