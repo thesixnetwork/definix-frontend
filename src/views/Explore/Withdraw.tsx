@@ -415,12 +415,12 @@ const CardResponse = ({ tx, currentInput, rebalance }) => {
           }
           valueElm={
             <UiLink
-              href={`https://scope.klaytn.com/tx/${transactionHash}`}
+              href={`https://bscscan.com/tx/${transactionHash}`}
               fontSize="12px"
               color="textSubtle"
               style={{ marginRight: '-4px' }}
             >
-              KlaytnScope
+              Bscscan
               <ChevronRightIcon color="textSubtle" />
             </UiLink>
           }
