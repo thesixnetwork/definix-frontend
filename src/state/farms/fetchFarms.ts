@@ -92,59 +92,11 @@ const fetchFarms = async () => {
               address: getHerodotusAddress(),
               name: 'BONUS_MULTIPLIER',
             },
-            {
-              address: getHerodotusAddress(),
-              name: 'bundleRewardLength',
-              params: [farmConfig.pid],
-            },
           ],
         )
 
         const allocPoint = new BigNumber(info.allocPoint._hex)
         const poolWeight = allocPoint.div(new BigNumber(totalAllocPoint))
-        const numberBundleRewards = new BigNumber(bundleRewardLength).toNumber()
-        let allBundleRewards = []
-
-        if (numberBundleRewards > 0) {
-          const allBundleRequests = []
-          for (let i = 0; i < numberBundleRewards; i++) {
-            allBundleRequests.push({
-              address: getHerodotusAddress(),
-              name: 'bundleRewards',
-              params: [farmConfig.pid, i],
-            })
-          }
-          allBundleRewards = await multicall(herodotusABI, allBundleRequests)
-          const allTokenRewardToFetch = uniq(allBundleRewards.map((abr) => abr.rewardToken))
-          const fetchedTokenInfo = {}
-          await asyncForEach(allTokenRewardToFetch, async (tokenAddress) => {
-            const singleTokenRequests = []
-            singleTokenRequests.push({
-              address: tokenAddress,
-              name: 'symbol',
-            })
-            singleTokenRequests.push({
-              address: tokenAddress,
-              name: 'symbol',
-            })
-            singleTokenRequests.push({
-              address: tokenAddress,
-              name: 'totalSupply',
-            })
-            const [tokenSymbol, tokenName, tokenTotalSupply] = await multicall(erc20, singleTokenRequests)
-            fetchedTokenInfo[tokenAddress] = {
-              symbol: tokenSymbol[0],
-              name: tokenName[0],
-              totalSupply: tokenTotalSupply[0],
-            }
-          })
-          allBundleRewards = allBundleRewards.map((abr) => {
-            if (fetchedTokenInfo[abr.rewardToken]) {
-              return { ...abr, rewardTokenInfo: fetchedTokenInfo[abr.rewardToken] }
-            }
-            return { ...abr }
-          })
-        }
         return {
           ...farmConfig,
           tokenAmount: tokenAmount.toJSON(),
@@ -157,8 +109,6 @@ const fetchFarms = async () => {
           BONUS_MULTIPLIER: new BigNumber(BONUS_MULTIPLIER).toJSON(),
           lpTotalSupply,
           lpTokenRatio,
-          bundleRewardLength: new BigNumber(bundleRewardLength).toJSON(),
-          bundleRewards: allBundleRewards,
           tokenDecimals,
           quoteTokenDecimals,
           tokenBalanceLP,
