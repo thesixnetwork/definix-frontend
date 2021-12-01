@@ -9,6 +9,7 @@ import { BLOCKS_PER_YEAR } from 'config'
 import herodotusABI from 'config/abi/herodotus.json'
 // import autoHerodotusABI from 'config/abi/autoHerodotus.json'
 import autoHerodotusV2ABI from 'config/abi/autoHerodotusV2.json'
+import apolloV2ABI from 'config/abi/apolloV2.json'
 import { createSlice } from '@reduxjs/toolkit'
 import { getAddress, getHerodotusAddress } from 'utils/addressHelpers'
 import rebalancesConfig from 'config/constants/rebalances'
@@ -188,6 +189,13 @@ export const fetchRebalances = () => async (dispatch) => {
 
       // const twentyHperformance = sharedPrice.times(last24TotalSupply).minus(sumOldTokenPrice).toNumber()
 
+      const apolloV2Calls = [
+        {
+          address: apollo,
+          name: 'rewardPerBlock',
+        },
+      ]
+      const [rewardPerBlockFromApollo] = await multicall(apolloV2ABI, apolloV2Calls)
       const autoHerodotusCalls = [
         {
           address: autoHerodotus,
@@ -222,6 +230,8 @@ export const fetchRebalances = () => async (dispatch) => {
       const totalRewardPerBlock = new BigNumber(finixPerBlock).times(BONUS_MULTIPLIER).div(new BigNumber(10).pow(18))
       const finixRewardPerBlock = totalRewardPerBlock.times(poolWeight)
       const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+      const finixRewardPerBlockFromApollo = new BigNumber(rewardPerBlockFromApollo).div(new BigNumber(10).pow(18))
+      const finixRewardPerYearFromApollo = finixRewardPerBlockFromApollo.times(BLOCKS_PER_YEAR)
       return {
         ...rebalanceConfig,
         currentPoolUsdBalances,
@@ -242,6 +252,7 @@ export const fetchRebalances = () => async (dispatch) => {
         // tokenUsd,
         enableAutoCompound,
         finixRewardPerYear,
+        finixRewardPerYearFromApollo,
         autoHerodotus,
         apollo,
         sharedPricePercentDiff,

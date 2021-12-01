@@ -95,7 +95,7 @@ const YieldAPR = ({ rebalance, className = '' }) => {
       className={className}
       value={`${numeral(
         finixPrice
-          .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+          .times(_.get(rebalance, 'finixRewardPerYearFromApollo', new BigNumber(0)))
           .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
           .times(100)
           .toFixed(2),
