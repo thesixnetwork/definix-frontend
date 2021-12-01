@@ -141,9 +141,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
-            const allCurrentTokens = _.compact([
-              ...((rebalance || {}).tokens || []),
-            ])
+            const allCurrentTokens = _.compact([...((rebalance || {}).tokens || [])])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
             )
