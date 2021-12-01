@@ -11,7 +11,7 @@ interface VFinixProps extends IsMobileType {
   data: DataType[]
 }
 
-const VFinixApr: React.FC<VFinixProps> = ({ isMobile, days, setDays, data }) => {
+const VFinixAprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data }) => {
   return (
     <>
       <Flex width="100%">
@@ -25,4 +25,4 @@ const VFinixApr: React.FC<VFinixProps> = ({ isMobile, days, setDays, data }) => 
   )
 }
 
-export default VFinixApr
+export default VFinixAprButton
