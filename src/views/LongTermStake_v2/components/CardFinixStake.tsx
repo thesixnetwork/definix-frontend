@@ -3,6 +3,7 @@ import { Card, Flex } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 import VFinixAprButton from './VFinixAprButton'
+import BalanceFinix from './BalanceFinix'
 import { IsMobileType } from './types'
 
 const FlexCard = styled(Flex)`
@@ -39,6 +40,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
+          <BalanceFinix isMobile={isMobile} days={days} data={data} />
         </FlexCard>
       </Card>
     </>
