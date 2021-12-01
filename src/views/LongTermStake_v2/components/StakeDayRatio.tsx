@@ -82,7 +82,7 @@ const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
               <Graph width={`${v.ratio}%`}>
                 <Bar color={v.color} />
                 {!isMobile && (
-                  <Text textStyle="R_12R" color="deepgrey">
+                  <Text textStyle="R_12R" color="mediumgrey">
                     {v.ratio}%
                   </Text>
                 )}
@@ -97,7 +97,7 @@ const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
               <FlexDays>
                 <Flex alignItems="center">
                   <Dot color={v.color} />
-                  <Text textStyle="R_14R" color="mediumgrey">
+                  <Text textStyle="R_14R" color="deepgrey">
                     {v.name}
                   </Text>
                 </Flex>
