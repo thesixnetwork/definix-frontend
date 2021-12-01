@@ -1,8 +1,8 @@
+import BigNumber from 'bignumber.js'
+import { provider } from 'web3-core'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { provider } from 'web3-core'
 import { useApprove } from 'hooks/useApprove'
 import useConverter from 'hooks/useConverter'
 import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
@@ -154,7 +154,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                   disabled={requestedApproval}
                   onClick={handleApprove}
                 >
-                  Approve Contract
+                  {t('Approve Contract')}
                 </Button>
               ) : (
                 <Flex justifyContent="space-between">

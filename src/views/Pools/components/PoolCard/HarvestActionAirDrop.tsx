@@ -8,10 +8,10 @@ import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from 'definixswap-uikit'
+import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uikit'
 import CurrencyText from 'components/CurrencyText'
 
-interface HarvestActionAirdropProps {
+const HarvestActionAirdrop: React.FC<{
   componentType?: string
   isMobile: boolean
   isOldSyrup?: boolean
@@ -21,9 +21,7 @@ interface HarvestActionAirdropProps {
   bundleRewards?: any
   earnings: BigNumber
   needsApproval?: boolean
-}
-
-const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
+}> = ({
   componentType = 'pool',
   isMobile,
   isOldSyrup,
@@ -39,8 +37,7 @@ const HarvestActionAirdrop: React.FC<HarvestActionAirdropProps> = ({
   const isInPool = useMemo(() => componentType === 'pool', [componentType])
   const { account } = useWallet()
   const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const { convertToUSD, convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
-  // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
+  const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const [pendingTx, setPendingTx] = useState(false)
 
   const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)

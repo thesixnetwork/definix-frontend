@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Label, Image, Box } from 'definixswap-uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
+import { Flex, Text, Label, Image, Box } from 'definixswap-uikit'
+import CurrencyText from 'components/CurrencyText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;
@@ -28,7 +29,7 @@ const BalanceText = styled(Text)`
     ${({ theme }) => theme.textStyle.R_16M};
   }
 `
-const PriceText = styled(Text)`
+const PriceText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -40,11 +41,11 @@ const TotalLiquiditySection: React.FC<{
   title: string
   totalLiquidity: number
 }> = ({ title, totalLiquidity }) => {
-  const { convertToUSD } = useConverter()
+  const { convertToPriceFormat } = useConverter()
 
   const totalLiquidityPrice = useMemo(() => {
-    return convertToUSD(totalLiquidity)
-  }, [convertToUSD, totalLiquidity])
+    return convertToPriceFormat(totalLiquidity)
+  }, [convertToPriceFormat, totalLiquidity])
 
   return (
     <>
@@ -79,7 +80,7 @@ const EarningsSection: React.FC<{
   tokenName: string
   earnings: BigNumber
 }> = ({ title, tokenName, earnings }) => {
-  const { convertToUSD, convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
+  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
   const price = useMemo(() => {
     return convertToPriceFromSymbol(tokenName)
@@ -90,8 +91,8 @@ const EarningsSection: React.FC<{
   }, [earnings])
 
   const earningsPrice = useMemo(() => {
-    return convertToUSD(new BigNumber(earningsValue).multipliedBy(price), 2)
-  }, [earningsValue, price, convertToUSD])
+    return new BigNumber(earningsValue).multipliedBy(price)
+  }, [earningsValue, price])
 
   const Wrap = styled(Flex)`
     flex-direction: column;
@@ -132,7 +133,7 @@ const EarningsSection: React.FC<{
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
           <TokenNameText>FINIX</TokenNameText>
         </Flex>
-        <PriceText>= {earningsPrice}</PriceText>
+        <PriceText value={earningsPrice} prefix="=" />
       </ValueWrap>
     </Wrap>
   )

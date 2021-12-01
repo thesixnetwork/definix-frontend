@@ -6,8 +6,9 @@ import { useTranslation } from 'react-i18next'
 import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
+import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Button, Text, ButtonVariants, Flex, Box, Label, alertVariants, ToastContainer } from 'definixswap-uikit'
+import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uikit'
 import CurrencyText from 'components/CurrencyText'
 
 interface FarmCardActionsProps {
@@ -19,47 +20,32 @@ interface FarmCardActionsProps {
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings, componentType = 'farm' }) => {
   const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
   const navigate = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
-  const [toasts, setToasts] = useState([])
   const isInFarm = useMemo(() => componentType === 'farm', [componentType])
 
   // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
-  const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
+  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
   const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
   const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
   const earningsPrice = useMemo(() => {
-    return convertToPriceFormat(new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber())
-  }, [finixEarningsValue, finixPrice, convertToPriceFormat])
-
-  const showToast = useCallback((type: string, title: string) => {
-    setToasts((prevToasts) => [
-      {
-        id: 'harvest_result',
-        title,
-        type,
-      },
-      ...prevToasts,
-    ])
-  }, [])
-
-  const hideToast = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-  }
+    return new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber()
+  }, [finixEarningsValue, finixPrice])
 
   const handleHarvest = useCallback(async () => {
     try {
       setPendingTx(true)
       await onReward()
-      showToast(alertVariants.SUCCESS, 'harvest success')
+      // toastSuccess('harvest success')
     } catch (error) {
-      showToast(alertVariants.DANGER, 'harvest fail')
+      // toastError('harvest fail')
     } finally {
       setPendingTx(false)
     }
-  }, [onReward, showToast])
+  }, [onReward])
 
   const handleGoToDetail = useCallback(() => {
     navigate.push('/farm')
@@ -176,7 +162,6 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings
           )}
         </Wrap>
       </Box>
-      <ToastContainer toasts={toasts} onRemove={hideToast} />
     </>
   )
 }

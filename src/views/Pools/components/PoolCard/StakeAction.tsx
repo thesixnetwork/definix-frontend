@@ -1,12 +1,15 @@
-import React, { useCallback, useState, useMemo } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
-import UnlockButton from 'components/UnlockButton'
+import React, { useCallback, useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useConverter from 'hooks/useConverter'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, ColorStyles, Flex, Box } from 'definixswap-uikit'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import UnlockButton from 'components/UnlockButton'
+import CurrencyText from 'components/CurrencyText'
 import { StakeActionProps } from './types'
 
 const StakeAction: React.FC<StakeActionProps> = ({
@@ -21,7 +24,8 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentDeposit,
   onPresentWithdraw,
 }) => {
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
+  const { t } = useTranslation()
+  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
   const [requestedApproval, setRequestedApproval] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
@@ -29,15 +33,19 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const { account } = useWallet()
   const stakingTokenContract = useERC20(stakingTokenAddress)
 
-  const displayBalance = useMemo(() => {
-    return getFullDisplayBalance(stakedBalance, { fixed: 6 })
-  }, [stakedBalance])
   const price = useMemo(() => {
     return convertToPriceFromSymbol(tokenName)
   }, [convertToPriceFromSymbol, tokenName])
+
+  const stakedBalanceValue = useMemo(() => {
+    return getBalanceNumber(stakedBalance)
+  }, [stakedBalance])
+  const displayBalance = useMemo(() => {
+    return convertToBalanceFormat(stakedBalanceValue)
+  }, [convertToBalanceFormat, stakedBalanceValue])
   const stakedBalancePrice = useMemo(() => {
-    return convertToUSD(new BigNumber(getBalanceNumber(stakedBalance)).multipliedBy(price), 2)
-  }, [stakedBalance, price, convertToUSD])
+    return new BigNumber(stakedBalanceValue).multipliedBy(price).toNumber()
+  }, [stakedBalanceValue, price])
 
   const { onApprove } = useSousApprove(stakingTokenContract, sousId)
 
@@ -65,11 +73,32 @@ const StakeAction: React.FC<StakeActionProps> = ({
     return !isOldSyrup && !isFinished
   }, [isOldSyrup, isFinished])
 
+  const TitleSection = styled(Text)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_12R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+    }
+  `
+  const BalanceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.textStyle.R_18M};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_16M};
+    }
+  `
+  const PriceText = styled(CurrencyText)`
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_14R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
+
   return (
     <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-        My Staked
-      </Text>
+      <TitleSection>{t('My Staked')}</TitleSection>
       {account ? (
         <>
           {needApproveContract ? (
@@ -80,17 +109,15 @@ const StakeAction: React.FC<StakeActionProps> = ({
               disabled={isFinished || requestedApproval}
               onClick={handleApprove}
             >
-              Approve Contract
+              {t('Approve Contract')}
             </Button>
           ) : (
             <Flex justifyContent="space-between">
               <Box>
-                <Text textStyle="R_18M" color={ColorStyles.BLACK}>
+                <BalanceText>
                   {displayBalance}
-                </Text>
-                <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                  = {stakedBalancePrice}
-                </Text>
+                </BalanceText>
+                <PriceText value={stakedBalancePrice} prefix="=" />
               </Box>
 
               {componentType === 'pool' && (
