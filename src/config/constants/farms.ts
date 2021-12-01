@@ -120,6 +120,15 @@ const farms: FarmConfig[] = [
     quoteTokenSymbol: QuoteToken.ETH,
     quoteTokenAdresses: contracts.eth,
   },
+  {
+    pid: 25,
+    lpSymbol: 'SIX LP',
+    lpAddresses: getSingleLpNetwork(SIX),
+    tokenSymbol: 'SIX',
+    tokenAddresses: SIX,
+    quoteTokenSymbol: QuoteToken.FINIX,
+    quoteTokenAdresses: contracts.finix,
+  },
 ]
 
 export default farms
