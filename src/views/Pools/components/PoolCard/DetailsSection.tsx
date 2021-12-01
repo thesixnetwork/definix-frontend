@@ -66,7 +66,7 @@ const TotalStakedSection: React.FC<{
           {tokenName}
         </Text>
       </Flex>
-      <PriceText value={totalStakedPrice} prefix="="/>
+      <PriceText value={totalStakedPrice} prefix="=" />
     </>
   )
 }
@@ -150,7 +150,7 @@ const EarningsSection: React.FC<{
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
           <TokenNameText>{tokenName}</TokenNameText>
         </Flex>
-        <PriceText value={earningsPrice} prefix="="/>
+        <PriceText value={earningsPrice} prefix="=" />
       </ValueWrap>
     </Wrap>
   )

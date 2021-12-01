@@ -114,9 +114,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
           ) : (
             <Flex justifyContent="space-between">
               <Box>
-                <BalanceText>
-                  {displayBalance}
-                </BalanceText>
+                <BalanceText>{displayBalance}</BalanceText>
                 <PriceText value={stakedBalancePrice} prefix="=" />
               </Box>
 
