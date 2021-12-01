@@ -71,7 +71,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
    * total liquidity
    */
   const totalLiquidity: number = useMemo(() => farm.totalLiquidityValue, [farm.totalLiquidityValue])
-  const totalLiquidityUSD = useMemo(() => convertToUSD(totalLiquidity), [totalLiquidity, convertToUSD])
   /**
    * my liquidity
    */
@@ -87,9 +86,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
       .times(new BigNumber(2))
     return getTokenPrice(stakedTotalInQuoteToken)
   }, [farm, stakedBalance, getTokenPrice])
-  const myLiquidityUSD = useMemo(() => {
-    return convertToUSD(myLiquidity)
-  }, [convertToUSD, myLiquidity])
 
   const renderCardHeading = useCallback(
     () => (
@@ -135,33 +131,45 @@ const FarmCard: React.FC<FarmCardProps> = ({
       tokenName: lpTokenName,
       tokenBalance,
       addLiquidityUrl,
-      totalLiquidity: totalLiquidityUSD,
+      totalLiquidity,
       myLiquidity: stakedBalance,
-      farm,
-      removed,
-    })
-  }, [farm, stakedBalance, lpTokenName, pid, tokenBalance, addLiquidityUrl, totalLiquidityUSD, onSelectAddLP, removed])
-  const onPresentWithdraw = useCallback(() => {
-    onSelectRemoveLP({
-      pid,
-      tokenName: lpTokenName,
-      tokenBalance,
-      addLiquidityUrl,
-      totalLiquidity: totalLiquidityUSD,
-      myLiquidity: stakedBalance,
-      myLiquidityUSD,
+      myLiquidityPrice: myLiquidity,
       farm,
       removed,
     })
   }, [
     farm,
     stakedBalance,
+    myLiquidity,
     lpTokenName,
     pid,
     tokenBalance,
     addLiquidityUrl,
-    totalLiquidityUSD,
-    myLiquidityUSD,
+    totalLiquidity,
+    onSelectAddLP,
+    removed,
+  ])
+  const onPresentWithdraw = useCallback(() => {
+    onSelectRemoveLP({
+      pid,
+      tokenName: lpTokenName,
+      tokenBalance,
+      addLiquidityUrl,
+      totalLiquidity,
+      myLiquidity: stakedBalance,
+      myLiquidityPrice: myLiquidity,
+      farm,
+      removed,
+    })
+  }, [
+    farm,
+    stakedBalance,
+    myLiquidity,
+    lpTokenName,
+    pid,
+    tokenBalance,
+    addLiquidityUrl,
+    totalLiquidity,
     onSelectRemoveLP,
     removed,
   ])
@@ -172,7 +180,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         isApproved={isApproved}
         hasAllowance={hasAllowance}
         myLiquidity={stakedBalance}
-        myLiquidityUSD={myLiquidityUSD}
+        myLiquidityPrice={myLiquidity}
         lpSymbol={farm.lpSymbol}
         klaytn={klaytn}
         account={account}
@@ -187,10 +195,10 @@ const FarmCard: React.FC<FarmCardProps> = ({
       isApproved,
       hasAllowance,
       stakedBalance,
-      myLiquidityUSD,
       componentType,
       onPresentDeposit,
       onPresentWithdraw,
+      myLiquidity,
     ],
   )
   /**

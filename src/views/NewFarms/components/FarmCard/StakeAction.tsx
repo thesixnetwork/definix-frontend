@@ -23,7 +23,7 @@ interface FarmStakeActionProps {
   hasAllowance: boolean
   lpSymbol: string
   myLiquidity: BigNumber
-  myLiquidityUSD: any
+  myLiquidityPrice: BigNumber
 }
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
@@ -31,7 +31,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   isApproved,
   hasAllowance,
   myLiquidity,
-  myLiquidityUSD,
+  myLiquidityPrice,
   lpSymbol,
   klaytn,
   account,
@@ -160,7 +160,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                 <Flex justifyContent="space-between">
                   <Box>
                     <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
-                    <PriceText value={myLiquidityValue} prefix="=" />
+                    <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
                   </Box>
 
                   {componentType === 'farm' && (

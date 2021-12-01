@@ -21,9 +21,21 @@ const Deposit: React.FC<{
   tokenBalance: BigNumber
   totalLiquidity: BigNumber
   myLiquidity: BigNumber
+  myLiquidityPrice: BigNumber
   addLiquidityUrl: string
   onBack: () => void
-}> = ({ farm, removed, pid, tokenBalance, tokenName = '', addLiquidityUrl, totalLiquidity, myLiquidity, onBack }) => {
+}> = ({
+  farm,
+  removed,
+  pid,
+  tokenBalance,
+  tokenName = '',
+  addLiquidityUrl,
+  totalLiquidity,
+  myLiquidity,
+  myLiquidityPrice,
+  onBack,
+}) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat, convertToPriceFormat } = useConverter()
@@ -42,10 +54,6 @@ const Deposit: React.FC<{
   const myLiquidityDisplayValue = useMemo(() => {
     return convertToBalanceFormat(myLiquidityValue)
   }, [myLiquidityValue, convertToBalanceFormat])
-
-  const myLiquidityPrice = useMemo(() => {
-    return convertToPriceFormat(myLiquidityValue)
-  }, [myLiquidityValue, convertToPriceFormat])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -106,12 +114,12 @@ const Deposit: React.FC<{
       flex-direction: column;
     }
   `
-  const LiquidityInfo = styled(Flex)`
+  const LiquidityInfo = styled(Flex)<{ hasMb: boolean }>`
     flex-direction: column;
     justify-content: normal;
     width: 50%;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
+      margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_16 : 0)}px;
       width: 100%;
     }
   `
@@ -168,18 +176,18 @@ const Deposit: React.FC<{
         <CardHeading farm={farm} lpLabel={tokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />
 
         <CardBody>
-          <LiquidityInfo>
+          <LiquidityInfo hasMb>
             <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
             <LiquidityValue>
               <BalanceText>{totalLiquidityValue}</BalanceText>
             </LiquidityValue>
           </LiquidityInfo>
 
-          <LiquidityInfo>
+          <LiquidityInfo hasMb={false}>
             <LiquidityTitle>{t('My Staked')}</LiquidityTitle>
             <LiquidityValue>
               <BalanceText>{myLiquidityDisplayValue}</BalanceText>
-              <PriceText value={myLiquidityPrice} prefix="=" />
+              <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
             </LiquidityValue>
           </LiquidityInfo>
         </CardBody>
