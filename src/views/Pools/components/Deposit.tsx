@@ -113,12 +113,12 @@ const Deposit: React.FC<{
       flex-direction: column;
     }
   `
-  const LiquidityInfo = styled(Flex)`
+  const LiquidityInfo = styled(Flex)<{ hasMb: boolean }>`
     flex-direction: column;
     justify-content: normal;
     width: 50%;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
+      margin-bottom: ${({ theme, hasMb }) => hasMb ? theme.spacing.S_16 : 0}px;
       width: 100%;
     }
   `
@@ -175,14 +175,14 @@ const Deposit: React.FC<{
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} />
 
         <CardBody>
-          <LiquidityInfo>
+          <LiquidityInfo hasMb>
             <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
             <LiquidityValue>
               <BalanceText>{totalStakedValue}</BalanceText>
             </LiquidityValue>
           </LiquidityInfo>
 
-          <LiquidityInfo>
+          <LiquidityInfo hasMb={false}>
             <LiquidityTitle>{t('My Staked')}</LiquidityTitle>
             <LiquidityValue>
               <BalanceText>{myStakedDisplayValue}</BalanceText>
