@@ -131,6 +131,22 @@ export const AXS = {
   [intMainnetId]: process.env.REACT_APP_AXS_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_AXS_ADDRESS_TESTNET,
 }
+export const MIST = {
+  [intMainnetId]: process.env.REACT_APP_MIST_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_MIST_ADDRESS_TESTNET,
+}
+export const KMON = {
+  [intMainnetId]: process.env.REACT_APP_KMON_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_KMON_ADDRESS_TESTNET,
+}
+export const BMON = {
+  [intMainnetId]: process.env.REACT_APP_BMON_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_BMON_ADDRESS_TESTNET,
+}
+export const ZOO = {
+  [intMainnetId]: process.env.REACT_APP_ZOO_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_ZOO_ADDRESS_TESTNET,
+}
 export const VELO = {
   [intMainnetId]: process.env.REACT_APP_VELO_TOKEN_MAINNET,
   [intTestnetId]: process.env.REACT_APP_VELO_TOKEN_TESTNET,
@@ -140,7 +156,6 @@ export const allTokens = {
   SIX,
   FINIX,
   WBNB,
-  BNB,
   USDT,
   BUSD,
   BTCB,
@@ -159,6 +174,10 @@ export const allTokens = {
   LTC,
   AXS,
   VELO,
+  MIST,
+  KMON,
+  BMON,
+  ZOO,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
