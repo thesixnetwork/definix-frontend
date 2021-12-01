@@ -1,21 +1,11 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
-import styled from 'styled-components';
+import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import {
-  ColorStyles,
-  Text,
-  Box,
-  TitleSet,
-  Card,
-  Flex,
-  Divider,
-  BackIcon,
-  useModal
-} from 'definixswap-uikit'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
@@ -32,17 +22,7 @@ const Deposit: React.FC<{
   max: BigNumber
   apy: BigNumber
   onBack: () => void
-}> = ({
-  sousId,
-  isOldSyrup,
-  isBnbPool,
-  tokenName,
-  totalStaked,
-  myStaked,
-  max,
-  apy,
-  onBack,
-}) => {
+}> = ({ sousId, isOldSyrup, isBnbPool, tokenName, totalStaked, myStaked, max, apy, onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
@@ -193,25 +173,17 @@ const Deposit: React.FC<{
 
         <CardBody>
           <LiquidityInfo>
-            <LiquidityTitle>
-              {t('Total staked')}
-            </LiquidityTitle>
+            <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
             <LiquidityValue>
-              <BalanceText>
-                {totalStakedValue}
-              </BalanceText>
+              <BalanceText>{totalStakedValue}</BalanceText>
             </LiquidityValue>
           </LiquidityInfo>
 
           <LiquidityInfo>
-            <LiquidityTitle>
-              {t('My Staked')}
-            </LiquidityTitle>
+            <LiquidityTitle>{t('My Staked')}</LiquidityTitle>
             <LiquidityValue>
-              <BalanceText>
-                {myStakedValue}
-              </BalanceText>
-              <PriceText value={myStakedPrice} prefix="="/>
+              <BalanceText>{myStakedValue}</BalanceText>
+              <PriceText value={myStakedPrice} prefix="=" />
             </LiquidityValue>
           </LiquidityInfo>
         </CardBody>
