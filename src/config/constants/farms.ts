@@ -123,15 +123,9 @@ const farms: FarmConfig[] = [
   {
     pid: 25,
     lpSymbol: 'SIX LP',
-    lpAddresses: {
-      97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-    },
+    lpAddresses: getSingleLpNetwork(SIX),
     tokenSymbol: 'SIX',
-    tokenAddresses: {
-      97: process.env.REACT_APP_SIX_ADDRESS_TESTNET,
-      56: process.env.REACT_APP_SIX_ADDRESS_MAINNET,
-    },
+    tokenAddresses: SIX,
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
   },
