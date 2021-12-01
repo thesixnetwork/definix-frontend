@@ -118,7 +118,7 @@ const Deposit: React.FC<{
     justify-content: normal;
     width: 50%;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme, hasMb }) => hasMb ? theme.spacing.S_16 : 0}px;
+      margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_16 : 0)}px;
       width: 100%;
     }
   `

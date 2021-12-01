@@ -6,17 +6,7 @@ import { useSousUnstake } from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import {
-  ColorStyles,
-  Text,
-  Box,
-  TitleSet,
-  Card,
-  Flex,
-  Divider,
-  BackIcon,
-  useModal,
-} from 'definixswap-uikit'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
@@ -31,16 +21,7 @@ const Withdraw: React.FC<{
   max: BigNumber
   apy: BigNumber
   onBack: () => void
-}> = ({
-  sousId,
-  isOldSyrup,
-  tokenName,
-  totalStaked,
-  myStaked,
-  max,
-  onBack,
-  apy,
-}) => {
+}> = ({ sousId, isOldSyrup, tokenName, totalStaked, myStaked, max, onBack, apy }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
@@ -136,7 +117,7 @@ const Withdraw: React.FC<{
     justify-content: normal;
     width: 50%;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme, hasMb }) => hasMb ? theme.spacing.S_16 : 0}px;
+      margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_16 : 0)}px;
       width: 100%;
     }
   `
