@@ -108,7 +108,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const LinkView = ({ linkClassName = '' }) => (
     <Link
       external
-      href={`https://bscscan.com/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+      href={`https://bscscan.com/address/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
       bold={false}
       className={`flex-shrink ${linkClassName} ml-2`}
       color="textSubtle"
