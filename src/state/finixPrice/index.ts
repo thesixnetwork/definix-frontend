@@ -1,12 +1,26 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
+import { Token, Pair } from 'definixswap-sdk'
 import erc20 from 'config/abi/erc20.json'
-import { getLpNetwork, allTokens } from 'config/constants/tokens'
 import multicall from 'utils/multicall'
 import _ from 'lodash'
 import axios from 'axios'
-
-import { getAddress, getWbnbAddress, getBusdAddress, getDefinixBnbBusdLPAddress } from 'utils/addressHelpers'
+import {
+  getDefinixHerodotusAddress,
+  getHerodotusAddress,
+  getWbnbAddress,
+  getSixAddress,
+  getFinixAddress,
+  getBusdAddress,
+  getUsdtAddress,
+  getBtcbAddress,
+  getEthAddress,
+  getFinixSixLPAddress,
+  getFinixBusdLPAddress,
+  getFinixBnbLPAddress,
+  getSixBusdLPAddress,
+  getDefinixBnbBusdLPAddress,
+} from 'utils/addressHelpers'
 import { createSlice } from '@reduxjs/toolkit'
 import { FinixPriceState } from '../types'
 
@@ -90,7 +104,7 @@ export const finixPriceSlice = createSlice({
 // Actions
 export const { setTVL, setSixPrice, setFinixPrice, setQuote, setPancakeBnbPrice } = finixPriceSlice.actions
 
-const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
+const getTotalBalanceLp = async ({ lpAddress, pair1, pair2, herodotusAddress }) => {
   let pair1Amount = 0
   let pair2Amount = 0
   try {
@@ -120,10 +134,47 @@ const getTotalBalanceLp = async ({ lpAddress, pair1, pair2 }) => {
     pair1Amount = new BigNumber(pair1BalanceLP).div(new BigNumber(10).pow(pair1Decimals)).toNumber()
     pair2Amount = new BigNumber(pair2BalanceLP).div(new BigNumber(10).pow(pair2Decimals)).toNumber()
   } catch (error) {
-    pair1Amount = 0
-    pair2Amount = 0
+    console.log(error)
   }
   return [pair1Amount, pair2Amount]
+}
+
+const getTotalQuote = async ({ lpAddress, qouteToken }) => {
+  let lpTotalInQuoteToken = 0
+  try {
+    const calls = [
+      // Balance of quote token on LP contract
+      {
+        address: qouteToken,
+        name: 'balanceOf',
+        params: [lpAddress],
+      },
+      // Balance of LP tokens in the master chef contract
+      {
+        address: lpAddress,
+        name: 'balanceOf',
+        params: [getHerodotusAddress()],
+      },
+      // Total supply of LP tokens
+      {
+        address: lpAddress,
+        name: 'totalSupply',
+      },
+    ]
+
+    const [quoteTokenBlanceLP, lpTokenBalanceMC, lpTotalSupply] = await multicall(erc20, calls)
+
+    // const lpTokenRatio = new BigNumber(lpTokenBalanceMC).div(new BigNumber(lpTotalSupply))
+    const lpTokenRatio = 1
+    lpTotalInQuoteToken = new BigNumber(quoteTokenBlanceLP)
+      .div(new BigNumber(10).pow(18))
+      .times(new BigNumber(2))
+      .times(lpTokenRatio)
+      .toNumber()
+  } catch (error) {
+    console.log(error)
+  }
+  return lpTotalInQuoteToken
 }
 
 // Thunks
@@ -160,6 +211,7 @@ export const fetchPancakeBnbPrice = () => async (dispatch) => {
       lpAddress: getDefinixBnbBusdLPAddress(),
       pair1: getWbnbAddress(),
       pair2: getBusdAddress(),
+      herodotusAddress: getDefinixHerodotusAddress(),
     }),
   )
   const [[totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]] = await Promise.all(fetchPromise)
@@ -169,26 +221,6 @@ export const fetchPancakeBnbPrice = () => async (dispatch) => {
       price: definixBnbBusdRatio,
     }),
   )
-}
-
-const pairObjectCombination = (inputObject) => {
-  const result = []
-  const mark = {}
-  Object.keys(inputObject).forEach((a) => {
-    Object.keys(inputObject).forEach((b) => {
-      if (a !== b) {
-        if (!_.get(mark, `${a}.${b}`) && !_.get(mark, `${b}.${a}`)) {
-          if (mark[a]) {
-            mark[a][b] = true
-          } else {
-            mark[a] = { [b]: true }
-          }
-          result.push([a, b])
-        }
-      }
-    })
-  })
-  return result
 }
 
 export const fetchVeloUsdPrice = () => async (dispatch) => {
@@ -199,6 +231,7 @@ export const fetchVeloUsdPrice = () => async (dispatch) => {
       lpAddress: getDefinixBnbBusdLPAddress(),
       pair1: getWbnbAddress(),
       pair2: getBusdAddress(),
+      herodotusAddress: getDefinixHerodotusAddress(),
     }),
   )
   const [[totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair]] = await Promise.all(fetchPromise)
@@ -210,72 +243,253 @@ export const fetchVeloUsdPrice = () => async (dispatch) => {
   )
 }
 
-const findAndSelectPair = (pair) => {
-  if (pair.indexOf('USDT') >= 0) {
-    const firstKey = pair[0] === 'USDT' ? pair[1] : pair[0]
-    const secondKey = pair[0] === 'USDT' ? pair[0] : pair[1]
-    return [firstKey, secondKey]
-  }
-  if (pair.indexOf('FINIX') >= 0) {
-    const firstKey = pair[0] === 'FINIX' ? pair[0] : pair[1]
-    const secondKey = pair[0] === 'FINIX' ? pair[1] : pair[0]
-    return [firstKey, secondKey]
-  }
-  return undefined
-}
-
 export const fetchFinixPrice = () => async (dispatch) => {
-  const allTokenCombinationKeys = pairObjectCombination(allTokens)
-  const allFinixPair = allTokenCombinationKeys.filter((item) => item.indexOf('FINIX') >= 0 || item.indexOf('USDT') >= 0)
-  const sortedPair = _.compact(allFinixPair.map((pair) => findAndSelectPair(pair)))
-  const searchablePair = {}
-  sortedPair.forEach((pair, index) => {
-    if (!searchablePair[pair[0]]) {
-      searchablePair[pair[0]] = {}
-    }
-    searchablePair[pair[0]][pair[1]] = index
-  })
   const fetchPromise = []
-  sortedPair.forEach((pair) => {
-    const [firstKey, secondKey] = findAndSelectPair(pair)
-    const firstTokenAddress = allTokens[firstKey]
-    const secondTokenAddress = allTokens[secondKey]
-    fetchPromise.push(
-      getTotalBalanceLp({
-        lpAddress: getAddress(getLpNetwork(firstTokenAddress, secondTokenAddress)),
-        pair1: getAddress(firstTokenAddress),
-        pair2: getAddress(secondTokenAddress),
-      }),
-    )
-  })
-  const allFetchedData = await Promise.all(fetchPromise)
-  const allRatio = allFetchedData.map((data) => {
-    if (data) {
-      const ratio = data[1] / data[0] || 0
-      return ratio
-    }
-    return undefined
-  })
-  const allPrices = allFetchedData.map((data, index) => {
-    const currentPair = sortedPair[index]
-    if (data && currentPair[0] === 'FINIX') {
-      if (currentPair[1] === 'USDT') {
-        return [allRatio[index], allFetchedData[index][1]]
-      }
-      const pairIndex = searchablePair[currentPair[1]].USDT
-      return [allRatio[index] * allRatio[pairIndex], allFetchedData[index][1]]
-    }
-    return undefined
-  })
-  const availAllPrices = _.compact(allPrices)
-  const calPrice = availAllPrices.reduce((sum, pair) => sum + pair[0] * pair[1], 0)
-  const quoteSum = availAllPrices.reduce((sum, pair) => sum + pair[1], 0)
-  const finixPrice = calPrice / quoteSum || 0
+
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getFinixSixLPAddress(),
+      pair1: getFinixAddress(),
+      pair2: getSixAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getFinixBusdLPAddress(),
+      pair1: getFinixAddress(),
+      pair2: getBusdAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getFinixBnbLPAddress(),
+      pair1: getFinixAddress(),
+      pair2: getWbnbAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getSixBusdLPAddress(),
+      pair1: getSixAddress(),
+      pair2: getBusdAddress(),
+      herodotusAddress: getHerodotusAddress(),
+    }),
+  )
+  fetchPromise.push(
+    getTotalBalanceLp({
+      lpAddress: getDefinixBnbBusdLPAddress(),
+      pair1: getWbnbAddress(),
+      pair2: getBusdAddress(),
+      herodotusAddress: getDefinixHerodotusAddress(),
+    }),
+  )
+  // FINIX-SIX
+  const [
+    [totalFinixDefinixFinixSixPair, totalSixDefinixFinixSixPair],
+    [totalFinixDefinixFinixBusdPair, totalBusdDefinixFinixBusdPair],
+    [totalFinixDefinixFinixBnbPair, totalBnbDefinixFinixBnbPair],
+    [totalSixDefinixSixBusdPair, totalBnbDefinixSixBusdPair],
+    [totalBnbInDefinixBnbBusdPair, totalBusdInDefinixBnbBusdPair],
+  ] = await Promise.all(fetchPromise)
+  // const totalFinixDefinixFinixSixPair = 10000000.0
+  // const totalSixDefinixFinixSixPair = 12820512.82
+  const finixSixRatio = totalSixDefinixFinixSixPair / totalFinixDefinixFinixSixPair || 0
+  // FINIX-BUSD
+  // const totalFinixDefinixFinixBusdPair = 10000000.0
+  // const totalBusdDefinixFinixBusdPair = 500000.0
+  const finixBusdRatio = totalBusdDefinixFinixBusdPair / totalFinixDefinixFinixBusdPair || 0
+  // FINIX-BNB
+  // const totalFinixDefinixFinixBnbPair = 10000000.0
+  // const totalBnbDefinixFinixBnbPair = 1824.82
+  const finixBnbRatio = totalBnbDefinixFinixBnbPair / totalFinixDefinixFinixBnbPair || 0
+  // SIX-BUSD
+  // const totalSixDefinixSixBusdPair = 12820512.82
+  // const totalBnbDefinixSixBusdPair = 500000.0
+  const sixBusdRatio = totalBnbDefinixSixBusdPair / totalSixDefinixSixBusdPair || 0
+  // PANCAKE BNB-BUSD
+  // const totalBnbInDefinixBnbBusdPair = 557985
+  // const totalBusdInDefinixBnbBusdPair = 152220163
+  const definixBnbBusdRatio = totalBusdInDefinixBnbBusdPair / totalBnbInDefinixBnbBusdPair || 0
+  // Price cal
+  const finixSixPrice = finixSixRatio * sixBusdRatio
+  const finixBnbPrice = finixBnbRatio * definixBnbBusdRatio
+  const averageFinixPrice =
+    (finixBusdRatio * totalFinixDefinixFinixBusdPair +
+      finixBnbPrice * totalFinixDefinixFinixBnbPair +
+      finixSixPrice * totalFinixDefinixFinixSixPair) /
+    (totalFinixDefinixFinixBusdPair + totalFinixDefinixFinixBnbPair + totalFinixDefinixFinixSixPair)
+
+  // console.log('FINIX-SIX LP Address : ', getFinixSixLPAddress())
+  // console.log('FINIX Address : ', getFinixAddress())
+  // console.log('Total FINIX in FINIX-SIX pair : ', totalFinixDefinixFinixSixPair)
+  // console.log('SIX Address : ', getSixAddress())
+  // console.log('Total SIX in FINIX-SIX pair : ', totalSixDefinixFinixSixPair)
+  // console.log('FINIX-BUSD LP Address : ', getFinixBusdLPAddress())
+  // console.log('FINIX Address : ', getFinixAddress())
+  // console.log('Total FINIX in FINIX-BUSD pair : ', totalFinixDefinixFinixBusdPair)
+  // console.log('BUSD Address : ', getBusdAddress())
+  // console.log('Total BUSD in FINIX-BUSD pair : ', totalBusdDefinixFinixBusdPair)
+  // console.log('FINIX-WBNB LP Address : ', getFinixBnbLPAddress())
+  // console.log('FINIX Address : ', getFinixAddress())
+  // console.log('Total FINIX in FINIX-WBNB pair : ', totalFinixDefinixFinixBnbPair)
+  // console.log('WBNB Address : ', getWbnbAddress())
+  // console.log('Total WBNB in FINIX-WBNB pair : ', totalBnbDefinixFinixBnbPair)
+  // console.log('SIX-BUSD LP Address : ', getSixBusdLPAddress())
+  // console.log('SIX Address : ', getSixAddress())
+  // console.log('Total SIX in SIX-BUSD pair : ', totalSixDefinixSixBusdPair)
+  // console.log('BUSD Address : ', getBusdAddress())
+  // console.log('Total BUSD in SIX-BUSD pair : ', totalBnbDefinixSixBusdPair)
+  // console.log('Definix BNB-BUSD LP Address : ', getDefinixBnbBusdLPAddress())
+  // console.log('WBNB Address : ', getWbnbAddress())
+  // console.log('Total WBNB in Definix BNB-BUSD pair : ', totalBnbInDefinixBnbBusdPair)
+  // console.log('BUSD Address : ', getBusdAddress())
+  // console.log('Total BUSD in Definix BNB-BUSD pair : ', totalBusdInDefinixBnbBusdPair)
+
   dispatch(
     setFinixPrice({
-      price: finixPrice,
+      price: averageFinixPrice,
+      totalFinixDefinixFinixSixPair,
+      totalSixDefinixFinixSixPair,
+      totalFinixDefinixFinixBusdPair,
+      totalBusdDefinixFinixBusdPair,
+      totalFinixDefinixFinixBnbPair,
+      totalBnbDefinixFinixBnbPair,
+      totalSixDefinixSixBusdPair,
+      totalBnbDefinixSixBusdPair,
+      totalBnbInDefinixBnbBusdPair,
+      totalBusdInDefinixBnbBusdPair,
     }),
   )
 }
 
+// Thunks
+export const fetchQuote = () => async (dispatch) => {
+  const finixAddress = getFinixAddress()
+  const sixAddress = getSixAddress()
+  const busdAddress = getBusdAddress()
+  const wbnbAddress = getWbnbAddress()
+  const usdtAddress = getUsdtAddress()
+  const btcbAddress = getBtcbAddress()
+  const ethAddress = getEthAddress()
+  const chainId = parseInt(process.env.REACT_APP_CHAIN_ID, 10)
+
+  const FINIX = new Token(chainId, finixAddress, 18, 'FINIX', 'FINIX')
+  const SIX = new Token(chainId, sixAddress, 18, 'SIX', 'SIX')
+  const BUSD = new Token(chainId, busdAddress, 18, 'BUSD', 'BUSD')
+  const WBNB = new Token(chainId, wbnbAddress, 18, 'WBNB', 'Wrapped BNB')
+  const USDT = new Token(chainId, usdtAddress, 18, 'USDT', 'USDT')
+  const BTCB = new Token(chainId, btcbAddress, 18, 'BTCB', 'BTCB')
+  const ETH = new Token(chainId, ethAddress, 18, 'ETH', 'ETH')
+
+  const fetchPromise = []
+
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(SIX, FINIX),
+      qouteToken: finixAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(SIX, BUSD),
+      qouteToken: busdAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(SIX, USDT),
+      qouteToken: usdtAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(SIX, WBNB),
+      qouteToken: wbnbAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(FINIX, BUSD),
+      qouteToken: busdAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(FINIX, USDT),
+      qouteToken: usdtAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(FINIX, WBNB),
+      qouteToken: finixAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(WBNB, BUSD),
+      qouteToken: busdAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(WBNB, USDT),
+      qouteToken: usdtAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(BUSD, USDT),
+      qouteToken: busdAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(WBNB, BTCB),
+      qouteToken: wbnbAddress,
+    }),
+  )
+  fetchPromise.push(
+    getTotalQuote({
+      lpAddress: Pair.getAddress(ETH, WBNB),
+      qouteToken: wbnbAddress,
+    }),
+  )
+
+  const [
+    sixFinixQuote,
+    sixBusdQuote,
+    sixUsdtQuote,
+    sixWbnbQuote,
+    finixBusdQuote,
+    finixUsdtQuote,
+    finixWbnbQuote,
+    wbnbBusdQuote,
+    wbnbUsdtQuote,
+    busdUsdtQuote,
+    bnbBtcbQuote,
+    ethBnbQuote,
+  ] = await Promise.all(fetchPromise)
+
+  dispatch(
+    setQuote({
+      sixFinixQuote,
+      sixBusdQuote,
+      sixUsdtQuote,
+      sixWbnbQuote,
+      finixBusdQuote,
+      finixUsdtQuote,
+      finixWbnbQuote,
+      wbnbBusdQuote,
+      wbnbUsdtQuote,
+      busdUsdtQuote,
+      bnbBtcbQuote,
+      ethBnbQuote,
+    }),
+  )
+}
 export default finixPriceSlice.reducer
+
