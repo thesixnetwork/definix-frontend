@@ -115,8 +115,10 @@ const rebalances: RebalanceConfig[] = [
 
   {
     title: 'PoS Top Pick',
-    description: 'Proof of Stake leader. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
-    fullDescription: 'Proof of Stake (POS) is one of the most popular consensus algorithms in the cryptocurrency industry. Even Etheruem is trying to adapt this consensus algorithm. The strength of the PoS is faster and cheaper compared to Proof of Work (PoW). With the mentioned advantages, it can provide the maximum benefits for its holders, especially the Altcoin holders. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
+    description:
+      'Proof of Stake leader. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+    fullDescription:
+      'Proof of Stake (POS) is one of the most popular consensus algorithms in the cryptocurrency industry. Even Etheruem is trying to adapt this consensus algorithm. The strength of the PoS is faster and cheaper compared to Proof of Work (PoW). With the mentioned advantages, it can provide the maximum benefits for its holders, especially the Altcoin holders. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
     icon: ['/images/vaults/pos1.png', '/images/vaults/pos2.png'],
     address: {
       56: '0xff41060E2da907aEe94A9E6349Ef23F2A6f12C79',
@@ -192,8 +194,10 @@ const rebalances: RebalanceConfig[] = [
   },
   {
     title: 'Game Index',
-    description: 'Major game fi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
-    fullDescription: 'Game-Fi has been a recent hype in the DeFi world especially Game NFT, and the rebranding announcement of Facebook to Meta. It drives the internet world crazy. Game-Fi can be super volatile and give a super high profit. We also added the BUSD to this farm to help mitigate the loss that might occur from the negative price fluctuations. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
+    description:
+      'Major game fi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+    fullDescription:
+      'Game-Fi has been a recent hype in the DeFi world especially Game NFT, and the rebranding announcement of Facebook to Meta. It drives the internet world crazy. Game-Fi can be super volatile and give a super high profit. We also added the BUSD to this farm to help mitigate the loss that might occur from the negative price fluctuations. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
     icon: ['/images/vaults/game1.png', '/images/vaults/game2.png'],
     address: {
       56: '0xB7d9f0aEdFd9270f3BD676450208a41e49385872',
