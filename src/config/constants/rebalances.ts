@@ -342,7 +342,7 @@ const rebalances: RebalanceConfig[] = [
         address: BMON,
       },
       {
-        symbol: 'ZOO',
+        symbol: 'Zoo',
         value: 20,
         color: '#569aff',
         address: ZOO,
