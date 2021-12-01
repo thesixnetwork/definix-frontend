@@ -67,8 +67,8 @@ const Farms: React.FC = () => {
     : new Date().getTime()
   const currentTime = new Date().getTime()
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier === '0X')
   const stackedOnlyFarms = activeFarms.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )

@@ -29,7 +29,7 @@ const EarnAPYCard = () => {
   const maxAPY = useRef(Number.MIN_VALUE)
 
   const getHighestAPY = () => {
-    const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
+    const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 25 && farm.multiplier !== '0X')
 
     calculateAPY(activeFarms)
 
