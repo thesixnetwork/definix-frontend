@@ -108,13 +108,13 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   const LinkView = ({ linkClassName = '' }) => (
     <Link
       external
-      href={`${process.env.REACT_APP_KLAYTN_URL}/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
+      href={`https://bscscan.com/account/${farm.lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
       bold={false}
       className={`flex-shrink ${linkClassName} ml-2`}
       color="textSubtle"
       fontSize="12px"
     >
-      {TranslateString(356, 'KlaytnScope')}
+      {TranslateString(356, 'Bscscan')}
       <ChevronRightIcon color="textSubtle" />
     </Link>
   )
