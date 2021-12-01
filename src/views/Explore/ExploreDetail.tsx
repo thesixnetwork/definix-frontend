@@ -126,7 +126,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           )
           const fundGraphResult = _.get(fundGraphResp, 'data.result', [])
           if (timeframe === '1D') {
-            const tokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+            const tokens = _.compact([...((rebalance || {}).tokens || [])])
             const oldPrice = []
             for (let i = 1; i <= tokens.length; i++) {
               oldPrice.push(fundGraphResult[0].values[i + tokens.length])
@@ -141,10 +141,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance }) => {
           }
           const base: Record<string, any> = {}
           fundGraphResult.forEach((data) => {
-            const allCurrentTokens = _.compact([
-              ...((rebalance || {}).tokens || []),
-              ...((rebalance || {}).usdToken || []),
-            ])
+            const allCurrentTokens = _.compact([...((rebalance || {}).tokens || [])])
             const timestampLabel = moment(data.timestamp * 1000 - ((data.timestamp * 1000) % modder[timeframe])).format(
               formatter[timeframe],
             )
