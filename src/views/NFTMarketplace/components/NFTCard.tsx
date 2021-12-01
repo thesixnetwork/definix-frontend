@@ -46,7 +46,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
   )
 
   const [onPresentBuyModal] = useModal(
-    <ListDetailBuyModal data={data} />
+    <ListDetailBuyModal data={data} />,
     // typeName !== 'Group' ? (
     //   <ListDetailModal data={data} isMarketplace={isMarketplace} />
     // ) : (

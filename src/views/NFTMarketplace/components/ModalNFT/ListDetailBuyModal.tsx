@@ -48,7 +48,6 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
   const isMobile = !isXl
   const { isDark } = useTheme()
 
-
   return (
     <ModalNFT
       isRainbow={false}
@@ -88,7 +87,7 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
               Metadata
             </Text>
             <div className="flex align-center">
-              <EllipsisText start={17} text={"https://klaytn.definix.com/" || ''} />
+              <EllipsisText start={17} text={'https://klaytn.definix.com/' || ''} />
               <CopyToClipboard toCopy="https://klaytn.definix.com/">Copy Address</CopyToClipboard>
             </div>
           </div>
@@ -113,21 +112,21 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
           <div className="mt-3">
             <Text fontSize="14px !important" color="textSubtle">
               Price
-                </Text>
+            </Text>
             <div className="flex align-center">
               <Image src="/images/coins/FINIX.png" width={16} height={16} />
               <Text bold fontSize="22px" color="text" paddingLeft="6px">
                 2,837.2938 FINIX
-                  </Text>
+              </Text>
             </div>
           </div>
           <div className="mt-3">
             <Text fontSize="14px !important" color="textSubtle">
               Until
-                </Text>
+            </Text>
             <Text bold fontSize="14px !important" color="text">
               28/12/21 00:00:00 GMT+7
-                </Text>
+            </Text>
             {/* ถ้าไม่ได้ใส่ วันที่/เวลา */}
             {/* <Text fontSize="12px" color="text">
                   -
@@ -136,10 +135,9 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
           <Button fullWidth radii="small" className="mt-3" onClick={() => handleBuy()}>
             Buy
           </Button>
-
         </div>
       </div>
-    </ModalNFT >
+    </ModalNFT>
   )
 }
 
