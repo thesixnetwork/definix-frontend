@@ -1,8 +1,10 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
+import styled from 'styled-components';
 import { useTranslation } from 'react-i18next'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
+import { useToast } from 'state/hooks'
 import {
   ColorStyles,
   Text,
@@ -11,20 +13,16 @@ import {
   Card,
   Flex,
   Divider,
-  Button,
-  ButtonVariants,
   BackIcon,
-  useModal,
-  useMatchBreakpoints,
-  NotiType,
-  Noti,
+  useModal
 } from 'definixswap-uikit'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import ModalInput from 'components/ModalInput'
+import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './PoolCard/CardHeading'
 
-interface DepositProps {
+const Deposit: React.FC<{
   sousId: number
   isOldSyrup: boolean
   isBnbPool: boolean
@@ -34,9 +32,7 @@ interface DepositProps {
   max: BigNumber
   apy: BigNumber
   onBack: () => void
-}
-
-const Deposit: React.FC<DepositProps> = ({
+}> = ({
   sousId,
   isOldSyrup,
   isBnbPool,
@@ -48,9 +44,8 @@ const Deposit: React.FC<DepositProps> = ({
   onBack,
 }) => {
   const { t } = useTranslation()
-  const { isXxl } = useMatchBreakpoints()
-  const isMobile = useMemo(() => !isXxl, [isXxl])
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
+  const { toastSuccess, toastError } = useToast()
+  const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { onStake } = useSousStake(sousId, isBnbPool)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
@@ -64,16 +59,16 @@ const Deposit: React.FC<DepositProps> = ({
   }, [convertToPriceFromSymbol, tokenName])
 
   const totalStakedValue = useMemo(() => {
-    return getBalanceNumber(totalStaked)
-  }, [totalStaked])
+    return convertToBalanceFormat(getBalanceNumber(totalStaked))
+  }, [totalStaked, convertToBalanceFormat])
 
   const myStakedValue = useMemo(() => {
     return getBalanceNumber(myStaked)
   }, [myStaked])
 
   const myStakedPrice = useMemo(() => {
-    return convertToUSD(new BigNumber(myStakedValue).multipliedBy(price), 0)
-  }, [convertToUSD, myStakedValue, price])
+    return convertToPriceFormat(new BigNumber(myStakedValue).multipliedBy(price).toNumber())
+  }, [myStakedValue, price, convertToPriceFormat])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -95,14 +90,14 @@ const Deposit: React.FC<DepositProps> = ({
     try {
       setIsPendingTX(true)
       await onStake(val)
-      // toast
+      toastSuccess(t('Deposit Complete'))
       onBack()
     } catch (error) {
-      // toast
+      toastError(t('Deposit Failed'))
     } finally {
       setIsPendingTX(false)
     }
-  }, [onStake, val, onBack, isPendingTX])
+  }, [onStake, val, onBack, isPendingTX, toastSuccess, toastError, t])
 
   /**
    * confirm modal
@@ -118,33 +113,67 @@ const Deposit: React.FC<DepositProps> = ({
     false,
   )
 
-  const cardStyle = useMemo((): {
-    flexDirection: 'column' | 'row'
-    margin: string
-    padding: string
-  } => {
-    return {
-      flexDirection: isMobile ? 'column' : 'row',
-      margin: `mt-s${isMobile ? '28' : '40'}`,
-      padding: `pa-s${isMobile ? '20' : '40'}`,
+  const CardWrap = styled(Card)`
+    margin-top: ${({ theme }) => theme.spacing.S_40}px;
+    padding: ${({ theme }) => theme.spacing.S_40}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-top: ${({ theme }) => theme.spacing.S_28}px;
+      padding: ${({ theme }) => theme.spacing.S_20}px;
     }
-  }, [isMobile])
-
-  const columnStyle = useMemo((): {
-    flexDirection: 'column' | 'row'
-    width: string
-    justifyContent: 'space-between' | 'normal'
-    valueTextSize: string
-    valueTextWidth: string
-  } => {
-    return {
-      flexDirection: isMobile ? 'row' : 'column',
-      width: isMobile ? '100%' : '50%',
-      justifyContent: isMobile ? 'space-between' : 'normal',
-      valueTextSize: isMobile ? 'R_16M' : 'R_18M',
-      valueTextWidth: isMobile ? '65%' : '100%',
+  `
+  const CardBody = styled(Flex)`
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
     }
-  }, [isMobile])
+  `
+  const LiquidityInfo = styled(Flex)`
+    flex-direction: column;
+    justify-content: normal;
+    width: 50%;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: row;
+      justify-content: space-between;
+      width: 100%;
+    }
+  `
+  const LiquidityTitle = styled(Text)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_4}px;
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_12R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: 0;
+    }
+  `
+  const LiquidityValue = styled(Text)`
+    width: 100%;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      width: 65%;
+    }
+  `
+  const BalanceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.textStyle.R_18M};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_16M};
+    }
+  `
+  const PriceText = styled(CurrencyText)`
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_14R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
+  const StyledDivider = styled(Divider)`
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    margin-bottom: ${({ theme }) => theme.spacing.S_28}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin: ${({ theme }) => theme.spacing.S_24}px 0;
+    }
+  `
 
   return (
     <>
@@ -159,54 +188,46 @@ const Deposit: React.FC<DepositProps> = ({
 
       <TitleSet title={t('Deposit in the Pool')} description={t('By depositing a single token')} />
 
-      <Card className={`${cardStyle.margin} ${cardStyle.padding}`}>
+      <CardWrap>
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} />
 
-        <Flex justifyContent="space-between" flexDirection={cardStyle.flexDirection} className="mt-s20">
-          <Flex
-            flexDirection={columnStyle.flexDirection}
-            justifyContent={columnStyle.justifyContent}
-            style={{ width: columnStyle.width }}
-          >
-            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
+        <CardBody>
+          <LiquidityInfo>
+            <LiquidityTitle>
               {t('Total staked')}
-            </Text>
-            <Text width={columnStyle.valueTextWidth} color={ColorStyles.BLACK} textStyle={columnStyle.valueTextSize}>
-              {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-            </Text>
-          </Flex>
+            </LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>
+                {totalStakedValue}
+              </BalanceText>
+            </LiquidityValue>
+          </LiquidityInfo>
 
-          <Flex
-            flexDirection={columnStyle.flexDirection}
-            justifyContent={columnStyle.justifyContent}
-            style={{ width: columnStyle.width }}
-          >
-            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
+          <LiquidityInfo>
+            <LiquidityTitle>
               {t('My Staked')}
-            </Text>
-            <Box width={columnStyle.valueTextWidth}>
-              <Text textStyle={columnStyle.valueTextSize} color={ColorStyles.BLACK}>
-                {myStakedValue.toLocaleString()}
-              </Text>
-              <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                = {myStakedPrice}
-              </Text>
-            </Box>
-          </Flex>
-        </Flex>
+            </LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>
+                {myStakedValue}
+              </BalanceText>
+              <PriceText value={myStakedPrice} prefix="="/>
+            </LiquidityValue>
+          </LiquidityInfo>
+        </CardBody>
 
-        <Divider className="mt-s20 mb-s28" />
+        <StyledDivider />
 
         <ModalInput
           value={val}
           max={fullBalance}
           symbol={tokenName}
-          buttonName="deposit"
+          buttonName={t('Deposit')}
           onChange={handleChange}
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onClickButton={() => onPresentConfirmModal()}
         />
-      </Card>
+      </CardWrap>
       {/* <p>totalStakedPrice: {totalStakedPrice}</p>
       <p>myStaked: {myStakedValue.toLocaleString()}</p>
       <p>myStakedPrice: {myStakedPrice}</p> */}
