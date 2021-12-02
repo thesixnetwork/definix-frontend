@@ -13,6 +13,7 @@ const TitleStake: React.FC = () => {
           description={t('Stake FINIX to earn vFINIX')}
           linkLabel={t('Learn how to Long-term stake')}
           link="/long-term-stake"
+          linkBottom
         />
       </Flex>
     </>

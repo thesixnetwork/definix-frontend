@@ -20,15 +20,19 @@ const FlexRatio = styled(Flex)`
   }
 `
 
-const Graph = styled.div<{ width: string }>`
-  width: ${({ width }) => width};
-`
-
-const Bar = styled.div<{ color: string }>`
+const Bar = styled.div<{ ratio: number; color: string }>`
   background: ${({ color }) => color};
-  width: 100%;
+  flex: ${({ ratio }) => (ratio <= 5 ? 5 : ratio)};
   height: 16px;
   margin-bottom: 2px;
+`
+
+const BarText = styled.div<{ ratio: number; prevRatio: number }>`
+  flex: ${({ ratio, prevRatio }) => {
+    if (ratio <= 10) return 10
+    if (prevRatio <= 10) return ratio - 5
+    return ratio
+  }};
 `
 
 const FlexDays = styled(Flex)`
@@ -56,13 +60,13 @@ const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
     {
       name: t('90 days'),
       color: lightColors.green,
-      ratio: '12',
+      ratio: '1',
       value: '461,974',
     },
     {
       name: t('180 days'),
       color: lightColors.yellow,
-      ratio: '28',
+      ratio: '39',
       value: '865,204',
     },
     {
@@ -76,19 +80,25 @@ const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
   return (
     <>
       <FlexRatio>
-        <Flex>
-          {data.map((v) => {
-            return (
-              <Graph width={`${v.ratio}%`}>
-                <Bar color={v.color} />
-                {!isMobile && (
-                  <Text textStyle="R_12R" color="mediumgrey">
-                    {v.ratio}%
-                  </Text>
-                )}
-              </Graph>
-            )
-          })}
+        <Flex flexDirection="column">
+          <Flex>
+            {data.map((v) => (
+              <Bar ratio={Number(v.ratio)} color={v.color} />
+            ))}
+          </Flex>
+          {!isMobile && (
+            <Flex>
+              {data.map((v, i) => {
+                return (
+                  <BarText ratio={Number(v.ratio)} prevRatio={i === 0 ? 100 : Number(data[i - 1].ratio)}>
+                    <Text textStyle="R_12R" color="mediumgrey">
+                      {v.ratio}%
+                    </Text>
+                  </BarText>
+                )
+              })}
+            </Flex>
+          )}
         </Flex>
 
         <Flex mt={`${isMobile ? 'S_16' : 'S_20'}`} flexDirection="column">
