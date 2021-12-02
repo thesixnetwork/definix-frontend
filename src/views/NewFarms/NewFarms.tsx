@@ -140,11 +140,11 @@ const Farms: React.FC = () => {
     fetchAllBalances()
   }, [fetchAllBalances])
 
-  useEffect(() => {
-    if (account) {
-      dispatch(fetchFarmUserDataAsync(account))
-    }
-  }, [account, dispatch, fastRefresh])
+  // useEffect(() => {
+  //   if (account) {
+  //     dispatch(fetchFarmUserDataAsync(account))
+  //   }
+  // }, [account, dispatch, fastRefresh])
 
   useEffect(() => {
     return () => {
