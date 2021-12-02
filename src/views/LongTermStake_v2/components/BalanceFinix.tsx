@@ -29,13 +29,14 @@ const FlexBalance = styled(Flex)`
 `
 
 const StyledInput = styled.input`
-  font-size: ${({ theme }) => theme.textStyle.R_28M};
+  ${({ theme }) => theme.textStyle.R_28M};
   color: ${({ theme }) => theme.colors.black};
   width: 95%;
   height: 40px;
   padding: 0;
   outline: none;
   border: none;
+  caret-color: ${({ theme }) => theme.colors.red};
 
   &::placeholder {
     color: ${({ theme }) => theme.colors.mediumgrey};
