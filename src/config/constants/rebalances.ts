@@ -201,7 +201,7 @@ const rebalances: RebalanceConfig[] = [
   {
     title: 'Game Index',
     description:
-      'Major Game Fi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+      'Major GameFi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
     fullDescription:
       'Game-Fi has been a recent hype in the DeFi world especially Game NFT, and the rebranding announcement of Facebook to Meta. It drives the internet world crazy. Game-Fi can be super volatile and give a super high profit. We also added the BUSD to this farm to help mitigate the loss that might occur from the negative price fluctuations. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
     icon: ['/images/vaults/game1.png', '/images/vaults/game2.png'],
