@@ -49,12 +49,13 @@ const StyledInput = styled.input`
   }
 `
 
-const BoxRate = styled(Box)`
+const BoxRate = styled(Box)<{ selected: boolean }>`
   padding: 3px 10px;
   margin-right: 6px;
   border-radius: 13px;
   border: 1px solid ${({ theme }) => theme.colors.lightgrey};
   cursor: pointer;
+  background-color: ${({ theme, selected }) => (selected ? theme.colors.lightgrey : 'none')};
 
   &:last-child {
     margin-right: 0;
@@ -66,24 +67,27 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
   const [balance, setBalance] = useState<number>(1200.20002)
   const [inputBalance, setInputBalance] = useState<string>()
   const [inSufficient, setInSufficient] = useState<boolean>(false)
+  const [selected, setSelected] = useState<string>('')
 
   const onChangeBalance = (e: React.FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
 
     setInputBalance(value)
+    if (selected) setSelected('')
   }
 
   const onClickRate = (value: string) => {
     if (value === '25%') setInputBalance((balance * 0.25).toFixed(6))
     else if (value === '50%') setInputBalance((balance * 0.5).toFixed(6))
     else if (value === 'MAX') setInputBalance(balance.toFixed(6))
+
+    setSelected(value)
   }
 
   useEffect(() => {
     const minValue = Number(data.find((v) => v.day === days).minStake.replace(',', ''))
 
-    if (balance < minValue) setInSufficient(true)
-    else setInSufficient(false)
+    setInSufficient(balance < minValue)
   }, [days, data, balance])
 
   return (
@@ -108,7 +112,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
           <Flex mt="S_8" mb="S_12">
             {['25%', '50%', 'MAX'].map((value) => {
               return (
-                <BoxRate onClick={() => onClickRate(value)}>
+                <BoxRate selected={selected === value} onClick={() => onClickRate(value)}>
                   <Text textStyle="R_14R" color="deepgrey">
                     {value}
                   </Text>
