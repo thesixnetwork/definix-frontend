@@ -53,9 +53,11 @@ const BoxRate = styled(Box)<{ selected: boolean }>`
   padding: 3px 10px;
   margin-right: 6px;
   border-radius: 13px;
-  border: 1px solid ${({ theme }) => theme.colors.lightgrey};
+  border-width: 1px;
+  border-style: solid;
+  border-color: ${({ theme, selected }) => (selected ? theme.colors.orange : theme.colors.lightgrey)};
   cursor: pointer;
-  background-color: ${({ theme, selected }) => (selected ? theme.colors.lightgrey : 'none')};
+  background-color: ${({ theme, selected }) => (selected ? theme.colors.orange : 'none')};
 
   &:last-child {
     margin-right: 0;
@@ -113,7 +115,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
             {['25%', '50%', 'MAX'].map((value) => {
               return (
                 <BoxRate selected={selected === value} onClick={() => onClickRate(value)}>
-                  <Text textStyle="R_14R" color="deepgrey">
+                  <Text textStyle="R_14R" color={`${selected === value ? 'white' : 'deepgrey'}`}>
                     {value}
                   </Text>
                 </BoxRate>
