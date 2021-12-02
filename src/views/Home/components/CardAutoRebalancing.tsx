@@ -6,62 +6,15 @@ import Slider from 'react-slick'
 import useTheme from 'hooks/useTheme'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import lady from 'uikit-dev/images/for-ui-v2/banner/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/banner/definix-long-term-stake-with-voting-system.png'
 import definixVoting from 'uikit-dev/images/for-ui-v2/banner/voting-banner.png'
 import velo from 'uikit-dev/images/for-ui-v2/banner/velo-banner.png'
 import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
 import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-black.png'
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
+import logoRebalance from 'uikit-dev/images/for-ui-v2/banner/logo-rebalance.png'
 
-const StyledBannerLady = styled(Card)`
-  width: 100%;
-  background: ${({ theme }) => theme.colors.card};
-  padding: 48px 24px;
-  position: relative;
-  overflow: visible;
 
-  &:before {
-    content: '';
-    width: 70%;
-    height: 100%;
-    background: url(${lady});
-    background-size: contain;
-    background-position: right bottom;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    opacity: 0.2;
-    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-  h3 {
-    font-size: 12px !important;
-    margin-bottom: 4px;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 48px 40% 48px 24px;
-    border-radius: unset;
-    height: 327px;
-
-    &:before {
-      width: 40%;
-      opacity: 1;
-    }
-
-    h2 {
-      font-size: 32px !important;
-    }
-    h3 {
-      font-size: 16px !important;
-    }
-  }
-`
 
 const StyledBannerLongTerm = styled(Card)`
   width: 100%;
@@ -240,9 +193,59 @@ const StyledBannerDingoXSix = styled(Card)`
   }
 `
 
+const StyledBannerRebalance = styled(Card)`
+  width: 100%;
+  background: ${({ theme }) => theme.colors.card};
+  padding: 48px 24px;
+  position: relative;
+  overflow: visible;
+
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: url(${logoRebalance});
+    background-size: contain;
+    background-position: right bottom;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.2;
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+  h3 {
+    font-size: 12px !important;
+    margin-bottom: 4px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    padding: 48px 40% 48px 24px;
+    border-radius: unset;
+    height: 327px;
+
+    &:before {
+      // width: 40%;
+      margin-right: 2.5em;
+      opacity: 1;
+    }
+
+    h2 {
+      font-size: 32px !important;
+    }
+    h3 {
+      font-size: 16px !important;
+    }
+  }
+`
+
 const SpecialButton = styled(Button)`
   position: relative;
-  padding: 12px 24px;
+  padding: 12px 60px;
   background: linear-gradient(#f3d36c, #e27d3a);
   overflow: hidden;
   border-radius: 40px;
@@ -351,7 +354,6 @@ const StyledSlider = styled(Slider)`
   }
 `
 const CardAutoRebalancing = ({ className = '' }) => {
-  // const openDate = new Date(1628841600000)
   const { isDark } = useTheme()
 
   const settings = {
@@ -368,6 +370,26 @@ const CardAutoRebalancing = ({ className = '' }) => {
   return (
     <div>
       <StyledSlider {...settings}>
+        <div>
+          <StyledBannerRebalance className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Text bold fontSize="22px">
+                THE NEW
+              </Text>
+              <Heading className="mb-2" color="primary">
+                REBALANCING FARMS ON BSC-BASED DEFINIX
+              </Heading>
+              <Text color="textSubtle" fontSize="12px">
+                The revolution of a sustainable investment system. Invovling the principle of Rebalancing Strategy to make the most of every opportunity.
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as="a" href="https://bsc.definix.com/rebalancing">
+                  <span>Let&apos;s get into it!</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerRebalance>
+        </div>
         <div>
           <StyledBannerDingoXSix className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
@@ -446,31 +468,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
             </div>
           </StyledBannerLongTerm>
         </div>
-        <div>
-          <StyledBannerLady className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Text bold fontSize="22px">
-                INTRODUCING
-              </Text>
-              <Heading className="mb-2" color="primary">
-                DEFINIX REBALANCING FARM
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                Rebalancing involves periodically buying or selling assets in a portfolio to maintain an original or
-                desired level of asset allocation or risk.
-              </Text>
-              <Text bold fontSize="12px">
-                Sound complicated? Don’t worry we will take care your investment automatically with our investment
-                partner
-              </Text>
-              <div className="mt-6">
-                <SpecialButton as="a" href="https://klaytn.definix.com/rebalancing">
-                  <span>Interesting, I want to invest</span>
-                </SpecialButton>
-              </div>
-            </div>
-          </StyledBannerLady>
-        </div>
+
       </StyledSlider>
     </div>
   )

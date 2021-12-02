@@ -115,6 +115,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
+    rebalance: 'Old',
   },
 
   {
@@ -195,11 +196,12 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
+    rebalance: 'Old',
   },
   {
     title: 'Game Index',
     description:
-      'Major game fi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+      'Major Game Fi currencies. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
     fullDescription:
       'Game-Fi has been a recent hype in the DeFi world especially Game NFT, and the rebranding announcement of Facebook to Meta. It drives the internet world crazy. Game-Fi can be super volatile and give a super high profit. We also added the BUSD to this farm to help mitigate the loss that might occur from the negative price fluctuations. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
     icon: ['/images/vaults/game1.png', '/images/vaults/game2.png'],
@@ -284,6 +286,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
+    rebalance: 'Old',
   },
   // {
   //   title: 'DeFi Time',
@@ -471,6 +474,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
+    rebalance: 'Old',
   },
   // {
   //   title: 'Big Cap One Plus',
@@ -687,6 +691,7 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
+    rebalance: 'Old',
   },
   // {
   //   title: 'Game Fi Prospect',
@@ -766,6 +771,7 @@ const rebalances: RebalanceConfig[] = [
   //     finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
   //     bountyFee: '',
   //   },
+  //   rebalance: 'New',
   // },
 ]
 

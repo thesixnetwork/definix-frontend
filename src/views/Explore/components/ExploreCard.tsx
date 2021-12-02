@@ -207,15 +207,15 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   }, [combinedAmount])
 
   const renderSash = () => {
-    if (isMobile && isHorizontal && rebalance.rebalace === 'New') {
+    if (isMobile && isHorizontal && rebalance.rebalance === 'New') {
       return <RebalanceSash type="listCard" />
     }
 
-    if (isHorizontal && rebalance.rebalace === 'New') {
+    if (isHorizontal && rebalance.rebalance === 'New') {
       return <RebalanceSash type="list" />
     }
 
-    if (!isHorizontal && rebalance.rebalace === 'New') {
+    if (!isHorizontal && rebalance.rebalance === 'New') {
       return <RebalanceSash type="card" />
     }
 
@@ -227,6 +227,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     if (isMobile) {
       return (
         <HorizontalMobileStyle className="mb-3">
+          {renderSash()}
           <CardHeading
             className="pa-4"
             showAccordion
@@ -315,6 +316,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   return (
     <VerticalStyle className="mb-7">
+      {renderSash()}
       <CardHeading className="pa-4" isSkew isHorizontal={isHorizontal} rebalance={rebalance} />
 
       <div className="flex justify-space-between pa-4 pt-0">

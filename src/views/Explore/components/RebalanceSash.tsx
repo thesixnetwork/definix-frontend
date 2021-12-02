@@ -1,9 +1,11 @@
 import styled from 'styled-components'
-import cardNewImg from 'uikit-dev/images/new-badge/new-badge-card.png'
-import listNewImg from 'uikit-dev/images/new-badge/new-badge-list.png'
+import riskCardImg from 'uikit-dev/images/new-badge/high-risk-card-view.png'
+import riskListImg from 'uikit-dev/images/new-badge/high-risk-list-view.png'
+// import cardNewImg from 'uikit-dev/images/new-badge/new-badge-card.png'
+// import listNewImg from 'uikit-dev/images/new-badge/new-badge-list.png'
 
 const RebalanceSash = styled.div<{ type?: string }>`
-  background-image: url(${({ type }) => (type === 'listCard' || type === 'list' ? listNewImg : cardNewImg)});
+  background-image: url(${({ type }) => (type === 'listCard' || type === 'list' ? riskListImg : riskCardImg)});
   background-repeat: no-repeat;
   background-size: contain;
   height: 60px;
