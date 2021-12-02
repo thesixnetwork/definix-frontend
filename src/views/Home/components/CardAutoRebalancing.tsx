@@ -14,8 +14,6 @@ import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
 import logoRebalance from 'uikit-dev/images/for-ui-v2/banner/logo-rebalance.png'
 
-
-
 const StyledBannerLongTerm = styled(Card)`
   width: 100%;
   background: ${({ theme }) => theme.colors.card};
@@ -380,7 +378,8 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 REBALANCING FARMS ON BSC-BASED DEFINIX
               </Heading>
               <Text color="textSubtle" fontSize="12px">
-                The revolution of a sustainable investment system. Invovling the principle of Rebalancing Strategy to make the most of every opportunity.
+                The revolution of a sustainable investment system. Invovling the principle of Rebalancing Strategy to
+                make the most of every opportunity.
               </Text>
               <div className="mt-6">
                 <SpecialButton as="a" href="https://bsc.definix.com/rebalancing">
@@ -468,7 +467,6 @@ const CardAutoRebalancing = ({ className = '' }) => {
             </div>
           </StyledBannerLongTerm>
         </div>
-
       </StyledSlider>
     </div>
   )
