@@ -88,7 +88,9 @@ const CurrencyInputPanel = ({
             {account && !!hideBalance === false && (
               <Text fontSize="14px" color="textSubtle">
                 Balance:{' '}
-                {!hideBalance && !!currency && balance ? balance.toNumber().toLocaleString('en-US', {maximumFractionDigits:4}) : ' -'}
+                {!hideBalance && !!currency && balance
+                  ? balance.toNumber().toLocaleString('en-US', { maximumFractionDigits: 4 })
+                  : ' -'}
               </Text>
             )}
           </div>
