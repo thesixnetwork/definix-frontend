@@ -3,13 +3,12 @@ import _ from 'lodash'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import useConverter from 'hooks/useConverter'
-import { getBalanceNumber } from 'utils/formatBalance'
 import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import { Farm } from 'state/types'
 import { useCallback } from 'react'
 
 const useFarmsList = (farms: Farm[]) => {
-  const { convertToPriceFromToken } = useConverter()
+  const { convertToPriceFromToken, convertToFarmAPR } = useConverter()
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
@@ -111,11 +110,20 @@ const useFarmsList = (farms: Farm[]) => {
         apy: finixApy,
         finixApy,
         klayApy,
-        apyValue: getBalanceNumber(finixApy),
+        apyValue: convertToFarmAPR(finixApy),
         totalLiquidityValue: Number(totalLiquidityValue),
       }
     })
-  }, [convertToPriceFromToken, farms, finixPrice, finixPriceVsKlay, kethPriceUsd, klayPrice, sixPrice])
+  }, [
+    convertToPriceFromToken,
+    convertToFarmAPR,
+    farms,
+    finixPrice,
+    finixPriceVsKlay,
+    kethPriceUsd,
+    klayPrice,
+    sixPrice,
+  ])
 
   const getFilteredFarms = useCallback(() => {
     const farmsWithApy = getFarmsList()

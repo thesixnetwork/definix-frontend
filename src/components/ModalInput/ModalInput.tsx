@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import {
   Text,
   BalanceInput,
@@ -25,6 +26,13 @@ interface ModalInputProps {
   buttonName?: string
   onClickButton?: () => void
 }
+
+const ButtonWrap = styled(Box)`
+  margin-top: ${({ theme }) => theme.spacing.S_40}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: ${({ theme }) => theme.spacing.S_24}px;
+  }
+`
 
 const ModalInput: React.FC<ModalInputProps> = ({
   max,
@@ -53,11 +61,6 @@ const ModalInput: React.FC<ModalInputProps> = ({
         </Text>
       </Flex>
 
-      {/* <StyledTokenInput isWarning={isBalanceZero}>
-        <StyledInput onChange={onChange} placeholder="0" value={value} />
-        <Text fontSize="16px">{symbol}</Text>
-      </StyledTokenInput> */}
-
       <Box className="mb-s8" style={{ marginTop: '4px' }}>
         <BalanceInput onChange={onChange} placeholder="0" value={value} />
       </Box>
@@ -78,7 +81,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
         </Box>
       )}
 
-      <Box className="mt-s40">
+      <ButtonWrap>
         <Button
           variant={ButtonVariants.RED}
           lg
@@ -93,7 +96,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
             <Noti type={NotiType.ALERT}>{t('Less than a certain amount')}</Noti>
           </Box>
         )}
-      </Box>
+      </ButtonWrap>
 
       {/* {isBalanceZero && (
         <div className="flex align-center justify-center mt-5">

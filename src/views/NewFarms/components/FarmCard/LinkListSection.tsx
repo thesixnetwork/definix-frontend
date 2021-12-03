@@ -1,20 +1,23 @@
 import React from 'react'
-import { LinkExternal, ColorStyles } from 'definixswap-uikit'
+import styled from 'styled-components'
+import { LinkExternal } from 'definixswap-uikit'
 
 const LinkListSection: React.FC<{
-  isMobile: boolean
   lpAddresses: { [key: number]: string }
-}> = ({ isMobile, lpAddresses }) => {
+}> = ({ lpAddresses }) => {
+  const Link = styled(LinkExternal)`
+    ${({ theme }) => theme.textStyle.R_14R};
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
   return (
     <>
       {!!Object.values(lpAddresses).length && (
-        <LinkExternal
-          color={ColorStyles.MEDIUMGREY}
-          textStyle="R_14R"
-          href={`${process.env.REACT_APP_KLAYTN_URL}/account/${lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}
-        >
+        <Link href={`${process.env.REACT_APP_KLAYTN_URL}/account/${lpAddresses[process.env.REACT_APP_CHAIN_ID]}`}>
           KlaytnScope
-        </LinkExternal>
+        </Link>
       )}
     </>
   )

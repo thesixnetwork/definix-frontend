@@ -13,11 +13,11 @@ const WrapCardBody = styled(CardBody)`
 `
 
 const Title = styled(Text)`
-  ${css(textStyle.R_26B)}
+  ${({ theme }) => theme.textStyle.R_26B}
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${css(textStyle.R_20B)}
+    ${({ theme }) => theme.textStyle.R_20B}
   }
 `
 

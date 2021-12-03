@@ -1,26 +1,18 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
-import {
-  ColorStyles,
-  Text,
-  Box,
-  TitleSet,
-  Card,
-  Flex,
-  Divider,
-  BackIcon,
-  useModal,
-  useMatchBreakpoints,
-} from 'definixswap-uikit'
+import { useToast } from 'state/hooks'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
+import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './PoolCard/CardHeading'
 
-interface WithdrawProps {
+const Withdraw: React.FC<{
   sousId: number
   isOldSyrup: boolean
   tokenName: string
@@ -29,22 +21,10 @@ interface WithdrawProps {
   max: BigNumber
   apy: BigNumber
   onBack: () => void
-}
-
-const Withdraw: React.FC<WithdrawProps> = ({
-  sousId,
-  isOldSyrup,
-  tokenName,
-  totalStaked,
-  myStaked,
-  max,
-  onBack,
-  apy,
-}) => {
+}> = ({ sousId, isOldSyrup, tokenName, totalStaked, myStaked, max, onBack, apy }) => {
   const { t } = useTranslation()
-  const { isXxl } = useMatchBreakpoints()
-  const isMobile = useMemo(() => !isXxl, [isXxl])
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
+  const { toastSuccess, toastError } = useToast()
+  const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { onUnstake } = useSousUnstake(sousId)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
@@ -58,16 +38,20 @@ const Withdraw: React.FC<WithdrawProps> = ({
   }, [convertToPriceFromSymbol, tokenName])
 
   const totalStakedValue = useMemo(() => {
-    return getBalanceNumber(totalStaked)
-  }, [totalStaked])
+    return convertToBalanceFormat(getBalanceNumber(totalStaked))
+  }, [totalStaked, convertToBalanceFormat])
 
   const myStakedValue = useMemo(() => {
     return getBalanceNumber(myStaked)
   }, [myStaked])
 
+  const myStakedDisplayValue = useMemo(() => {
+    return convertToBalanceFormat(myStakedValue)
+  }, [myStakedValue, convertToBalanceFormat])
+
   const myStakedPrice = useMemo(() => {
-    return convertToUSD(new BigNumber(myStakedValue).multipliedBy(price), 0)
-  }, [convertToUSD, myStakedValue, price])
+    return convertToPriceFormat(new BigNumber(myStakedValue).multipliedBy(price).toNumber())
+  }, [convertToPriceFormat, myStakedValue, price])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -89,14 +73,14 @@ const Withdraw: React.FC<WithdrawProps> = ({
     try {
       setIsPendingTX(true)
       await onUnstake(isOldSyrup ? '0' : val)
-      // toast
+      toastSuccess(t('Remove Complete'))
       onBack()
     } catch (error) {
-      // toast
+      toastError(t('Remove Failed'))
     } finally {
       setIsPendingTX(false)
     }
-  }, [isOldSyrup, onUnstake, val, isPendingTX, onBack])
+  }, [isOldSyrup, onUnstake, val, isPendingTX, onBack, toastSuccess, toastError, t])
 
   /**
    * confirm modal
@@ -104,7 +88,7 @@ const Withdraw: React.FC<WithdrawProps> = ({
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
       title={t('Confirm Remove')}
-      buttonName="Remove"
+      buttonName={t('Remove')}
       tokenName={tokenName}
       stakedBalance={val}
       onOK={handleUnstake}
@@ -112,33 +96,66 @@ const Withdraw: React.FC<WithdrawProps> = ({
     false,
   )
 
-  const cardStyle = useMemo((): {
-    flexDirection: 'column' | 'row'
-    margin: string
-    padding: string
-  } => {
-    return {
-      flexDirection: isMobile ? 'column' : 'row',
-      margin: `mt-s${isMobile ? '28' : '40'}`,
-      padding: `pa-s${isMobile ? '20' : '40'}`,
+  const CardWrap = styled(Card)`
+    margin-top: ${({ theme }) => theme.spacing.S_40}px;
+    padding: ${({ theme }) => theme.spacing.S_40}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-top: ${({ theme }) => theme.spacing.S_28}px;
+      padding: ${({ theme }) => theme.spacing.S_20}px;
     }
-  }, [isMobile])
-
-  const columnStyle = useMemo((): {
-    flexDirection: 'column' | 'row'
-    width: string
-    justifyContent: 'space-between' | 'normal'
-    valueTextSize: string
-    valueTextWidth: string
-  } => {
-    return {
-      flexDirection: isMobile ? 'row' : 'column',
-      width: isMobile ? '100%' : '50%',
-      justifyContent: isMobile ? 'space-between' : 'normal',
-      valueTextSize: isMobile ? 'R_16M' : 'R_18M',
-      valueTextWidth: isMobile ? '65%' : '100%',
+  `
+  const CardBody = styled(Flex)`
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
     }
-  }, [isMobile])
+  `
+  const LiquidityInfo = styled(Flex)<{ hasMb: boolean }>`
+    flex-direction: column;
+    justify-content: normal;
+    width: 50%;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_16 : 0)}px;
+      width: 100%;
+    }
+  `
+  const LiquidityTitle = styled(Text)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_4}px;
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_12R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: 0;
+    }
+  `
+  const LiquidityValue = styled(Text)`
+    width: 100%;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      width: 65%;
+    }
+  `
+  const BalanceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.textStyle.R_18M};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_16M};
+    }
+  `
+  const PriceText = styled(CurrencyText)`
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_14R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
+  const StyledDivider = styled(Divider)`
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    margin-bottom: ${({ theme }) => theme.spacing.S_28}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin: ${({ theme }) => theme.spacing.S_24}px 0;
+    }
+  `
 
   return (
     <>
@@ -153,54 +170,38 @@ const Withdraw: React.FC<WithdrawProps> = ({
 
       <TitleSet title={t('Remove from the Pool')} description={t('Remove tokens from the pool')} />
 
-      <Card className={`${cardStyle.margin} ${cardStyle.padding}`}>
+      <CardWrap>
         <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} />
 
-        <Flex justifyContent="space-between" flexDirection={cardStyle.flexDirection} className="mt-s20">
-          <Flex
-            flexDirection={columnStyle.flexDirection}
-            justifyContent={columnStyle.justifyContent}
-            style={{ width: columnStyle.width }}
-          >
-            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-              {t('Total staked')}
-            </Text>
-            <Text width={columnStyle.valueTextWidth} color={ColorStyles.BLACK} textStyle={columnStyle.valueTextSize}>
-              {totalStakedValue.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-            </Text>
-          </Flex>
+        <CardBody>
+          <LiquidityInfo hasMb>
+            <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>{totalStakedValue}</BalanceText>
+            </LiquidityValue>
+          </LiquidityInfo>
 
-          <Flex
-            flexDirection={columnStyle.flexDirection}
-            justifyContent={columnStyle.justifyContent}
-            style={{ width: columnStyle.width }}
-          >
-            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-              {t('My Staked')}
-            </Text>
-            <Box width={columnStyle.valueTextWidth}>
-              <Text textStyle={columnStyle.valueTextSize} color={ColorStyles.BLACK}>
-                {myStakedValue.toLocaleString()}
-              </Text>
-              <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                = {myStakedPrice}
-              </Text>
-            </Box>
-          </Flex>
-        </Flex>
+          <LiquidityInfo hasMb={false}>
+            <LiquidityTitle>{t('My Staked')}</LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>{myStakedDisplayValue}</BalanceText>
+              <PriceText value={myStakedPrice} prefix="=" />
+            </LiquidityValue>
+          </LiquidityInfo>
+        </CardBody>
 
-        <Divider className="mt-s20 mb-s28" />
+        <StyledDivider />
 
         <ModalInput
           value={val}
           max={fullBalance}
           symbol={tokenName}
-          buttonName="remove"
+          buttonName={t('Remove')}
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}
           onClickButton={() => onPresentConfirmModal()}
         />
-      </Card>
+      </CardWrap>
     </>
   )
 }

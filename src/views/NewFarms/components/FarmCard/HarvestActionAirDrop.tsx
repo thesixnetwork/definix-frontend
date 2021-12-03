@@ -1,23 +1,15 @@
+import BigNumber from 'bignumber.js'
+import styled from 'styled-components'
 import React, { useState, useMemo, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import BigNumber from 'bignumber.js'
+import { useTranslation } from 'react-i18next'
 import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
+import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import {
-  Button,
-  Text,
-  ButtonVariants,
-  Flex,
-  Box,
-  Label,
-  ColorStyles,
-  alertVariants,
-  ToastContainer,
-} from 'definixswap-uikit'
-import { repeat } from 'lodash'
-// import AirDropHarvestModal from './AirDropHarvestModal'
+import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uikit'
+import CurrencyText from 'components/CurrencyText'
 
 interface FarmCardActionsProps {
   isMobile: boolean
@@ -27,114 +19,149 @@ interface FarmCardActionsProps {
 }
 
 const HarvestAction: React.FC<FarmCardActionsProps> = ({ isMobile, pid, earnings, componentType = 'farm' }) => {
+  const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
   const navigate = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
-  const [toasts, setToasts] = useState([])
   const isInFarm = useMemo(() => componentType === 'farm', [componentType])
 
   // const [onPresentAirDropHarvestModal] = useModal(<AirDropHarvestModal />)
   const { onReward } = useHarvest(pid)
-  const { convertToUSD, convertToPriceFromSymbol } = useConverter()
+  const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
   const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
   const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
-  const earningsPrice = useCallback(
-    (value) => {
-      return convertToUSD(new BigNumber(value).multipliedBy(finixPrice), 2)
-    },
-    [finixPrice, convertToUSD],
-  )
-  const toLocaleString = useCallback((value: number) => {
-    return value.toLocaleString(undefined, { maximumFractionDigits: 6 })
-  }, [])
-
-  const showToast = useCallback((type: string, title: string) => {
-    setToasts((prevToasts) => [
-      {
-        id: 'harvest_result',
-        title,
-        type,
-      },
-      ...prevToasts,
-    ])
-  }, [])
-
-  const hideToast = (id: string) => {
-    setToasts((prevToasts) => prevToasts.filter((prevToast) => prevToast.id !== id))
-  }
+  const earningsPrice = useMemo(() => {
+    return new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber()
+  }, [finixEarningsValue, finixPrice])
 
   const handleHarvest = useCallback(async () => {
     try {
       setPendingTx(true)
       await onReward()
-      showToast(alertVariants.SUCCESS, 'harvest success')
+      // toastSuccess('harvest success')
     } catch (error) {
-      showToast(alertVariants.DANGER, 'harvest fail')
+      // toastError('harvest fail')
     } finally {
       setPendingTx(false)
     }
-  }, [onReward, showToast])
+  }, [onReward])
 
   const handleGoToDetail = useCallback(() => {
     navigate.push('/farm')
   }, [navigate])
 
+  const Wrap = styled(Flex)<{ isInFarm: boolean }>`
+    flex-direction: ${isInFarm ? 'column' : 'row'};
+    justify-content: space-between;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
+    }
+  `
+  const TitleSection = styled(Text)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_12R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+    }
+  `
+  const HarvestInfo = styled(Flex)`
+    flex-direction: row;
+    justify-content: space-between;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
+    }
+  `
+  const TokenLabel = styled(Label)`
+    margin-right: ${({ theme }) => theme.spacing.S_6}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-right: ${({ theme }) => theme.spacing.S_12}px;
+    }
+  `
+  const BalanceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.textStyle.R_18M};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_16M};
+    }
+  `
+  const PriceText = styled(CurrencyText)`
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_14R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
+  const HarvestButtonInFarm = styled(Box)`
+    width: 100px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-top: ${({ theme }) => theme.spacing.S_20}px;
+      width: 100%;
+    }
+  `
+  const HarvestButtonInMyInvestment = styled(Flex)`
+    flex-direction: column;
+    justify-content: center;
+    width: 100px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: row;
+      margin-top: ${({ theme }) => theme.spacing.S_28}px;
+      width: 100%;
+    }
+  `
+
   const HarvestButton = () => (
     <Button
       variant={ButtonVariants.RED}
-      md
-      minWidth="100px"
+      width="100%"
       disabled={finixEarningsValue === 0 || pendingTx}
       onClick={handleHarvest}
     >
-      Harvest
+      {t('Harvest')}
+    </Button>
+  )
+  const DetailButton = () => (
+    <Button
+      variant={ButtonVariants.BROWN}
+      width="100%"
+      onClick={handleGoToDetail}
+      className={isMobile ? 'ml-s16' : 'mt-s8'}
+    >
+      {t('Detail')}
     </Button>
   )
 
   return (
     <>
       <Box>
-        <Flex flexDirection={isInFarm ? 'column' : 'row'} justifyContent="space-between">
+        <Wrap isInFarm={isInFarm}>
           <Box>
-            <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="mb-s8">
-              Earned Token
-            </Text>
-            <Flex justifyContent="space-between" flexDirection={isMobile ? 'column' : 'row'}>
+            <TitleSection>{t('Earned Token')}</TitleSection>
+            <HarvestInfo>
               <Flex>
-                <Label type="token">FINIX</Label>
-                <Box className="ml-s16">
-                  <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-                    {toLocaleString(finixEarningsValue)}
-                  </Text>
-                  <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-                    = {earningsPrice(finixEarningsValue)}
-                  </Text>
+                <TokenLabel type="token">FINIX</TokenLabel>
+                <Box>
+                  <BalanceText>{convertToBalanceFormat(finixEarningsValue)}</BalanceText>
+                  <PriceText value={earningsPrice} prefix="=" />
                 </Box>
               </Flex>
-              {isInFarm && <HarvestButton />}
-            </Flex>
+              {isInFarm && (
+                <HarvestButtonInFarm>
+                  <HarvestButton />
+                </HarvestButtonInFarm>
+              )}
+            </HarvestInfo>
           </Box>
 
           {isInFarm ? null : (
-            <Flex flexDirection="column" justifyContent="center">
+            <HarvestButtonInMyInvestment>
               <HarvestButton />
-              <Button variant={ButtonVariants.BROWN} md minWidth="100px" onClick={handleGoToDetail} className="mt-s8">
-                Detail
-              </Button>
-            </Flex>
+              <DetailButton />
+            </HarvestButtonInMyInvestment>
           )}
-        </Flex>
-        {/* {false && (
-          <div className="flex align-center justify-space-between">
-            <Text color="textSubtle">Claim Ended Bonus</Text>
-
-            <Button onClick={onPresentAirDropHarvestModal} variant="primary" size="sm">
-              Claim
-            </Button>
-          </div>
-        )} */}
+        </Wrap>
       </Box>
-      <ToastContainer toasts={toasts} onRemove={hideToast} />
     </>
   )
 }

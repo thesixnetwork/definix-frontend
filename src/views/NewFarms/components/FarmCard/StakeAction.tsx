@@ -1,13 +1,16 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import { provider } from 'web3-core'
+import React, { useCallback, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { useApprove } from 'hooks/useApprove'
+import useConverter from 'hooks/useConverter'
 import { useFarmFromSymbol, useFarmUnlockDate } from 'state/hooks'
 import { getAddress } from 'utils/addressHelpers'
 import { getContract } from 'utils/erc20'
-import { getFullDisplayBalance } from 'utils/formatBalance'
-import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, ColorStyles, Flex, Box } from 'definixswap-uikit'
+import { getBalanceNumber } from 'utils/formatBalance'
+import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from 'definixswap-uikit'
+import CurrencyText from 'components/CurrencyText'
 import UnlockButton from 'components/UnlockButton'
 
 interface FarmStakeActionProps {
@@ -20,7 +23,7 @@ interface FarmStakeActionProps {
   hasAllowance: boolean
   lpSymbol: string
   myLiquidity: BigNumber
-  myLiquidityUSD: any
+  myLiquidityPrice: BigNumber
 }
 
 const StakeAction: React.FC<FarmStakeActionProps> = ({
@@ -28,7 +31,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   isApproved,
   hasAllowance,
   myLiquidity,
-  myLiquidityUSD,
+  myLiquidityPrice,
   lpSymbol,
   klaytn,
   account,
@@ -36,6 +39,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   onPresentWithdraw,
 }) => {
   const { t } = useTranslation()
+  const { convertToBalanceFormat } = useConverter()
 
   const [pendingTx, setPendingTx] = useState(false)
   const [requestedApproval, setRequestedApproval] = useState(false)
@@ -69,12 +73,31 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   }, [farmUnlockDate])
 
   const myLiquidityValue = useMemo(() => {
-    try {
-      return getFullDisplayBalance(myLiquidity, { fixed: 10 })
-    } catch (error) {
-      return '-'
-    }
+    return getBalanceNumber(myLiquidity)
   }, [myLiquidity])
+
+  const TitleSection = styled(Text)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_12R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+    }
+  `
+  const BalanceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.textStyle.R_18M};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_16M};
+    }
+  `
+  const PriceText = styled(CurrencyText)`
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_14R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
 
   return (
     // <div className={className}>
@@ -118,9 +141,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
     //   )}
     // </div>
     <>
-      <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-        My Liquidity
-      </Text>
+      <TitleSection>{t('My Liquidity')}</TitleSection>
       {account ? (
         <>
           {hasAllowance ? (
@@ -133,17 +154,13 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                   disabled={requestedApproval}
                   onClick={handleApprove}
                 >
-                  Approve Contract
+                  {t('Approve Contract')}
                 </Button>
               ) : (
                 <Flex justifyContent="space-between">
                   <Box>
-                    <Text textStyle="R_18M" color={ColorStyles.BLACK}>
-                      {myLiquidityValue}
-                    </Text>
-                    <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                      = {myLiquidityUSD}
-                    </Text>
+                    <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
+                    <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
                   </Box>
 
                   {componentType === 'farm' && (

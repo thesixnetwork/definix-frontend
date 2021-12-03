@@ -145,9 +145,9 @@ const EarningBoxTemplate: React.FC<{
     return {
       mainSection: () => {
         if (isMobile) {
-          return `ma-s20`
+          return `pa-s20`
         }
-        return `mx-s40 mt-s28 mb-s40`
+        return `px-s40 pt-s28 pb-s40`
       },
       gridSectionWrap: () => {
         return isMobile ? '' : 'pr-s40'

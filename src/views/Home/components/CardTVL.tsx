@@ -17,21 +17,21 @@ import {
 } from 'definixswap-uikit'
 
 const Title = styled(Text)`
-  ${css(textStyle.R_18M)}
+  ${({ theme }) => theme.textStyle.R_18M}
   color: ${({ theme }) => theme.colors[ColorStyles.MEDIUMGREY]};
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${css(textStyle.R_14M)}
+    ${({ theme }) => theme.textStyle.R_14M}
   }
 `
 
 const TotalTvlValue = styled(Text)`
   color: ${({ theme }) => theme.colors[ColorStyles.BLACK]};
-  ${css(textStyle.R_32B)}
+  ${({ theme }) => theme.textStyle.R_32B}
   margin-top: 8px;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${css(textStyle.R_26B)}
+    ${({ theme }) => theme.textStyle.R_26B}
     margin-top: 6px;
   }
 `
@@ -71,11 +71,11 @@ const TvlItem = styled(Flex)`
 
 const TvlValue = styled(Text)`
   margin-top: 8px;
-  ${css(textStyle.R_23B)}
+  ${({ theme }) => theme.textStyle.R_23B}
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: 0;
-    ${css(textStyle.R_16B)}
+    ${({ theme }) => theme.textStyle.R_16B}
   }
 `
 

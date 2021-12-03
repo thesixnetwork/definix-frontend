@@ -8,6 +8,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
+import useConverter from 'hooks/useConverter'
 import {
   Box,
   Button,
@@ -78,10 +79,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 }) => {
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
+  const isMobile = !isXxl
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const { ratio } = rebalance
-  const finixPrice = usePriceFinixUsd()
+  const { convertToRebalanceAPRFormat } = useConverter()
 
   const { account } = useWallet()
   const balances = useBalances(account)
@@ -100,14 +101,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
   const apr = useMemo(() => {
-    return numeral(
-      finixPrice
-        .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-        .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-        .times(100)
-        .toFixed(2),
-    ).format('0,0.[00]')
-  }, [finixPrice, rebalance])
+    return convertToRebalanceAPRFormat({
+      finixRewardPerYear: _.get(rebalance, 'finixRewardPerYear', new BigNumber(0)),
+      totalAssetValue: _.get(rebalance, 'totalAssetValue', new BigNumber(0)),
+    })
+  }, [convertToRebalanceAPRFormat, rebalance])
 
   const combinedAmount = useCallback(async () => {
     if (account) {
@@ -235,13 +233,31 @@ const ExploreCard: React.FC<ExploreCardType> = ({
     combinedAmount()
   }, [combinedAmount])
 
+  const BottomInMyInvestment = styled(Flex)`
+    flex-direction: row;
+    justify-content: space-between;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
+      width: 100%;
+    }
+  `
+
+  const HarvestButtonInMyInvestment = styled(Flex)`
+    justify-content: center;
+    width: 100px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
+      width: 100%;
+    }
+  `
+
   if (isInMyInvestment) {
     return (
       <>
-        <Box className="pa-s32">
+        <Box p={isMobile ? 'S_20' : 'S_32'}>
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
             <Flex alignItems="center">
-              <Box width={70} className="mr-s16">
+              <Box width={70} mr="S_16">
                 <CardImage isMediumSize={false} imageUrl={rebalance.icon[0]} title={rebalance.title} />
               </Box>
               <Box>
@@ -257,14 +273,14 @@ const ExploreCard: React.FC<ExploreCardType> = ({
               </Box>
             </Flex>
             <Flex alignItems="center">{renderSharePrice()}</Flex>
-            <Flex justifyContent="space-between" alignItems="center">
+            <BottomInMyInvestment>
               {renderCurrentInvestment()}
-              <Flex flexDirection="column" justifyContent="center">
-                <Button variant={ButtonVariants.BROWN} md minWidth="100px" as={Link} to="/rebalancing/detail">
-                  Detail
+              <HarvestButtonInMyInvestment mt={isMobile ? 'S_24' : ''}>
+                <Button variant={ButtonVariants.BROWN} width="100%" as={Link} to="/rebalancing/detail">
+                  {t('Detail')}
                 </Button>
-              </Flex>
-            </Flex>
+              </HarvestButtonInMyInvestment>
+            </BottomInMyInvestment>
           </Grid>
         </Box>
       </>

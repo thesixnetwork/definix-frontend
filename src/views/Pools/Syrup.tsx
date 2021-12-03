@@ -16,11 +16,12 @@ import { TitleSet, Box, DropdownOption, useMatchBreakpoints } from 'definixswap-
 import { IS_GENESIS } from '../../config'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
-import PoolTabButtons from './components/PoolTabButtons'
+import PoolHeader from './components/PoolHeader'
+import PoolFilter from './components/PoolFilter'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
 
-const Farm: React.FC = () => {
+const Pool: React.FC = () => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
@@ -48,17 +49,17 @@ const Farm: React.FC = () => {
     options: [
       {
         id: 'sortOrder',
-        label: 'sortOrder',
+        label: t('Recommend'),
         orderBy: 'asc',
       },
       {
         id: 'apyValue',
-        label: 'apr',
+        label: t('APR'),
         orderBy: 'desc',
       },
       {
         id: 'totalStakedValue',
-        label: 'totalStaked',
+        label: t('Total staked'),
         orderBy: 'desc',
       },
     ],
@@ -145,27 +146,11 @@ const Farm: React.FC = () => {
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      {/* <TwoPanelLayout>
-        <LeftPanel isShowRightPanel={false}>
-          <MaxWidth>
-            
-          </MaxWidth>
-        </LeftPanel>
-      </TwoPanelLayout> */}
       <Box className={`mb-s${isMobile ? 40 : 80}`}>
         {pageState.state === 'list' && (
           <>
-            <TitleSet
-              title="Pool"
-              description={t('Deposit a single token')}
-              linkLabel={t('Learn how to stake')}
-              link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/pools/how-to-stake-to-definix-pool"
-            />
-            {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
-              Help
-            </HelpButton> */}
-
-            <PoolTabButtons
+            <PoolHeader />
+            <PoolFilter
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
               liveOnly={liveOnly}
@@ -272,4 +257,4 @@ const Farm: React.FC = () => {
 //   )
 // }
 
-export default Farm
+export default Pool

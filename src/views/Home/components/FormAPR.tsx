@@ -37,12 +37,12 @@ const WrapImage = styled(Flex)`
 `
 
 const LpName = styled(Flex)`
-  ${css(textStyle.R_18B)}
+  ${({ theme }) => theme.textStyle.R_18B}
   margin-top: 20px;
   grid-area: lp;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${css(textStyle.R_16B)}
+    ${({ theme }) => theme.textStyle.R_16B}
     margin-top: 0;
   }
 `
@@ -52,21 +52,21 @@ const TotalLiquidity = styled(Flex)`
   grid-area: total;
 
   .label {
-    ${css(textStyle.R_14R)}
+    ${({ theme }) => theme.textStyle.R_14R}
   }
 
   .value {
-    ${css(textStyle.R_14B)}
+    ${({ theme }) => theme.textStyle.R_14B}
   }
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: 2px;
 
     .label {
-      ${css(textStyle.R_12R)}
+      ${({ theme }) => theme.textStyle.R_12R}
     }
 
     .value {
-      ${css(textStyle.R_12B)}
+      ${({ theme }) => theme.textStyle.R_12B}
     }
   }
 `
@@ -77,14 +77,14 @@ const Apr = styled(Flex)`
   margin-top: 20px;
 
   .value {
-    ${css(textStyle.R_28B)}
+    ${({ theme }) => theme.textStyle.R_28B}
   }
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     justify-content: flex-start;
     margin-top: 16px;
 
     .value {
-      ${css(textStyle.R_26B)}
+      ${({ theme }) => theme.textStyle.R_26B}
     }
   }
 `

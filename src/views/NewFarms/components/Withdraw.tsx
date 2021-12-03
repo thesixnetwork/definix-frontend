@@ -1,59 +1,59 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import useUnstake from 'hooks/useUnstake'
-import {
-  ColorStyles,
-  Text,
-  Box,
-  TitleSet,
-  Card,
-  Flex,
-  Divider,
-  BackIcon,
-  useModal,
-  useMatchBreakpoints,
-} from 'definixswap-uikit'
+import useConverter from 'hooks/useConverter'
+import { useToast } from 'state/hooks'
 import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
+import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './FarmCard/CardHeading'
 import { FarmWithStakedValue } from './FarmCard/types'
 
-interface WithdrawProps {
+const Withdraw: React.FC<{
   farm: FarmWithStakedValue
   removed: boolean
   pid: number
   tokenName: string
-  tokenBalance: BigNumber
-  totalLiquidity: string
+  totalLiquidity: BigNumber
   myLiquidity: BigNumber
-  myLiquidityUSD: number
+  myLiquidityPrice: BigNumber
   addLiquidityUrl: string
   onBack: () => void
-}
-
-const Withdraw: React.FC<WithdrawProps> = ({
+}> = ({
   pid,
-  tokenBalance,
   tokenName = '',
   addLiquidityUrl,
   totalLiquidity,
   myLiquidity,
-  myLiquidityUSD,
+  myLiquidityPrice,
   farm,
   removed,
   onBack,
 }) => {
   const { t } = useTranslation()
-  const { isXxl } = useMatchBreakpoints()
-  const isMobile = useMemo(() => !isXxl, [isXxl])
-
-  const [val, setVal] = useState('')
+  const { toastSuccess, toastError } = useToast()
+  const { convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { onUnstake } = useUnstake(pid)
+  const [isPendingTX, setIsPendingTX] = useState(false)
+  const [val, setVal] = useState('')
 
   const fullBalance = useMemo(() => getFullDisplayBalance(myLiquidity), [myLiquidity])
-  const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
+
+  const totalLiquidityValue = useMemo(() => {
+    return convertToBalanceFormat(getBalanceNumber(totalLiquidity))
+  }, [totalLiquidity, convertToBalanceFormat])
+
+  const myLiquidityValue = useMemo(() => {
+    return getBalanceNumber(myLiquidity)
+  }, [myLiquidity])
+
+  const myLiquidityDisplayValue = useMemo(() => {
+    return convertToBalanceFormat(myLiquidityValue)
+  }, [myLiquidityValue, convertToBalanceFormat])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -70,63 +70,94 @@ const Withdraw: React.FC<WithdrawProps> = ({
     [myLiquidity, setVal],
   )
 
+  const handleUnstake = useCallback(async () => {
+    if (isPendingTX) return
+    try {
+      setIsPendingTX(true)
+      await onUnstake(val)
+      toastSuccess(t('Remove Complete'))
+      onBack()
+    } catch (error) {
+      toastError(t('Remove Failed'))
+    } finally {
+      setIsPendingTX(false)
+    }
+  }, [onUnstake, val, isPendingTX, onBack, toastSuccess, toastError, t])
+
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
       title={t('Confirm Remove')}
-      buttonName="Remove"
+      buttonName={t('Remove')}
       lpSymbol={tokenName}
       stakedBalance={val}
-      onOK={() => onUnstake(val)}
+      onOK={handleUnstake}
     />,
     false,
   )
 
-  const cardStyle = useMemo((): {
-    flexDirection: 'column' | 'row'
-    margin: string
-    padding: string
-  } => {
-    return {
-      flexDirection: isMobile ? 'column' : 'row',
-      margin: `mt-s${isMobile ? '28' : '40'}`,
-      padding: `pa-s${isMobile ? '20' : '40'}`,
+  const CardWrap = styled(Card)`
+    margin-top: ${({ theme }) => theme.spacing.S_40}px;
+    padding: ${({ theme }) => theme.spacing.S_40}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-top: ${({ theme }) => theme.spacing.S_28}px;
+      padding: ${({ theme }) => theme.spacing.S_20}px;
     }
-  }, [isMobile])
-
-  const columnStyle = useMemo((): {
-    flexDirection: 'column' | 'row'
-    width: string
-    justifyContent: 'space-between' | 'normal'
-    valueTextSize: string
-    valueTextWidth: string
-  } => {
-    return {
-      flexDirection: isMobile ? 'row' : 'column',
-      width: isMobile ? '100%' : '50%',
-      justifyContent: isMobile ? 'space-between' : 'normal',
-      valueTextSize: isMobile ? 'R_16M' : 'R_18M',
-      valueTextWidth: isMobile ? '65%' : '100%',
+  `
+  const CardBody = styled(Flex)`
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      flex-direction: column;
     }
-  }, [isMobile])
+  `
+  const LiquidityInfo = styled(Flex)<{ hasMb: boolean }>`
+    flex-direction: column;
+    justify-content: normal;
+    width: 50%;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_16 : 0)}px;
+      width: 100%;
+    }
+  `
+  const LiquidityTitle = styled(Text)`
+    margin-bottom: ${({ theme }) => theme.spacing.S_4}px;
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_12R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin-bottom: 0;
+    }
+  `
+  const LiquidityValue = styled(Text)`
+    width: 100%;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      width: 65%;
+    }
+  `
+  const BalanceText = styled(Text)`
+    color: ${({ theme }) => theme.colors.black};
+    ${({ theme }) => theme.textStyle.R_18M};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_16M};
+    }
+  `
+  const PriceText = styled(CurrencyText)`
+    color: ${({ theme }) => theme.colors.deepgrey};
+    ${({ theme }) => theme.textStyle.R_14R};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
+  const StyledDivider = styled(Divider)`
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    margin-bottom: ${({ theme }) => theme.spacing.S_28}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      margin: ${({ theme }) => theme.spacing.S_24}px 0;
+    }
+  `
 
   return (
     <>
-      {/* <p>totalLiquidity: {totalLiquidity}</p>
-      <p>myLiquidity: {fullBalance}</p>
-      <p>myLiquidityUSDPrice: {myLiquidityUSDPrice}</p>
-
-      <ModalInput
-        onSelectBalanceRateButton={handleSelectBalanceRate}
-        onChange={handleChange}
-        value={val}
-        max={fullBalance}
-        symbol={tokenName}
-        inputTitle={TranslateString(588, 'Unstake')}
-      />
-
-      <Button onClick={() => onPresentConfirmModal()} fullWidth radii="card" className="mt-5">
-        Remove LP
-      </Button> */}
       <Box className="mb-s20" style={{ cursor: 'pointer' }} display="inline-flex" onClick={onBack}>
         <Flex>
           <BackIcon />
@@ -138,43 +169,27 @@ const Withdraw: React.FC<WithdrawProps> = ({
 
       <TitleSet title="Remove LP" description={t('Remove LPs from the farm.')} />
 
-      <Card className={`${cardStyle.margin} ${cardStyle.padding}`}>
+      <CardWrap>
         <CardHeading farm={farm} lpLabel={tokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />
 
-        <Flex justifyContent="space-between" flexDirection={cardStyle.flexDirection} className="mt-s20">
-          <Flex
-            flexDirection={columnStyle.flexDirection}
-            justifyContent={columnStyle.justifyContent}
-            style={{ width: columnStyle.width }}
-          >
-            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-              {t('Total staked')}
-            </Text>
-            <Text width={columnStyle.valueTextWidth} color={ColorStyles.BLACK} textStyle={columnStyle.valueTextSize}>
-              {totalLiquidity}
-            </Text>
-          </Flex>
+        <CardBody>
+          <LiquidityInfo hasMb>
+            <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>{totalLiquidityValue}</BalanceText>
+            </LiquidityValue>
+          </LiquidityInfo>
 
-          <Flex
-            flexDirection={columnStyle.flexDirection}
-            justifyContent={columnStyle.justifyContent}
-            style={{ width: columnStyle.width }}
-          >
-            <Text color={ColorStyles.MEDIUMGREY} textStyle="R_12R" className="mb-s8">
-              {t('My Staked')}
-            </Text>
-            <Box width={columnStyle.valueTextWidth}>
-              <Text textStyle={columnStyle.valueTextSize} color={ColorStyles.BLACK}>
-                {myLiquidityValue.toFixed(6)}
-              </Text>
-              <Text color={ColorStyles.MEDIUMGREY} textStyle="R_14R">
-                = {myLiquidityUSD}
-              </Text>
-            </Box>
-          </Flex>
-        </Flex>
+          <LiquidityInfo hasMb={false}>
+            <LiquidityTitle>{t('My Staked')}</LiquidityTitle>
+            <LiquidityValue>
+              <BalanceText>{myLiquidityDisplayValue}</BalanceText>
+              <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
+            </LiquidityValue>
+          </LiquidityInfo>
+        </CardBody>
 
-        <Divider className="mt-s20 mb-s28" />
+        <StyledDivider />
 
         <ModalInput
           value={val}
@@ -182,10 +197,10 @@ const Withdraw: React.FC<WithdrawProps> = ({
           onChange={handleChange}
           max={fullBalance}
           symbol={tokenName}
-          buttonName="deposit"
+          buttonName={t('Remove')}
           onClickButton={() => onPresentConfirmModal()}
         />
-      </Card>
+      </CardWrap>
     </>
   )
 }

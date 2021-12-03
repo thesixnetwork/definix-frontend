@@ -1,17 +1,17 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import styled, { css } from 'styled-components'
-import { Card, CardBody, ColorStyles, Text, textStyle, Flex, HomeFarmFinixIcon } from 'definixswap-uikit'
+import styled from 'styled-components'
+import { Card, CardBody, ColorStyles, Text, Flex, HomeFarmFinixIcon } from 'definixswap-uikit'
 import FarmHighAPR from './FarmHighAPR'
 import ExploreHighAPR from './ExploreHighAPR'
 
 const Title = styled(Text)`
   align-self: center;
-  ${css(textStyle.R_26B)}
+  ${({ theme }) => theme.textStyle.R_26B}
   color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${css(textStyle.R_20B)}
+    ${({ theme }) => theme.textStyle.R_20B}
   }
 `
 

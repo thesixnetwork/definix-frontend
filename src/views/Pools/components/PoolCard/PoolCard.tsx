@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { useFarmUser } from 'state/hooks'
 import {
   Flex,
   Card,
-  CardBody,
   CardRibbon,
   IconButton,
   Box,
@@ -18,7 +19,6 @@ import {
 } from 'definixswap-uikit'
 // import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
-// import CardHeadingAccordion from './CardHeadingAccordion'
 import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
@@ -32,6 +32,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
   onSelectAdd,
   onSelectRemove,
 }) => {
+  const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
@@ -84,7 +85,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
     () => <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} size={isInMyInvestment && 'small'} />,
     [tokenName, isOldSyrup, apy, isInMyInvestment],
   )
-  const renderIconButton = useCallback(
+  const renderToggleButton = useCallback(
     () => (
       <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
         {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
@@ -93,23 +94,23 @@ const PoolCard: React.FC<PoolCardProps> = ({
     [isOpenAccordion],
   )
   const renderTotalStakedSection = useCallback(
-    () => <TotalStakedSection title="Total Staked" tokenName={tokenName} totalStaked={totalStaked} />,
-    [tokenName, totalStaked],
+    () => <TotalStakedSection title={t('Total staked')} tokenName={tokenName} totalStaked={totalStaked} />,
+    [t, tokenName, totalStaked],
   )
 
   const renderMyBalanceSection = useCallback(
     () => (
       <>
         {!myBalanceInWallet || myBalanceInWallet === null ? null : (
-          <MyBalanceSection title="Balance" tokenName={tokenName} myBalance={myBalanceInWallet} />
+          <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
         )}
       </>
     ),
-    [tokenName, myBalanceInWallet],
+    [t, tokenName, myBalanceInWallet],
   )
   const renderEarningsSection = useCallback(
-    () => <EarningsSection title="Earned" tokenName={tokenName} earnings={earnings} />,
-    [tokenName, earnings],
+    () => <EarningsSection title={t('Earned')} tokenName={tokenName} earnings={earnings} />,
+    [t, tokenName, earnings],
   )
 
   const onPresentDeposit = useCallback(() => {
@@ -191,75 +192,74 @@ const PoolCard: React.FC<PoolCardProps> = ({
     ),
     [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, pendingRewards, bundleRewards, isMobile, componentType],
   )
-  const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
+  // const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
 
+  const Wrap = styled(Box)`
+    padding: ${({ theme }) => theme.spacing.S_32}px;
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      padding: ${({ theme }) => theme.spacing.S_20}px;
+    }
+  `
+
   if (isInMyInvestment) {
     return (
       <>
-        {isMobile ? null : (
-          <Box className="pa-s32">
-            {/* <Flex justifyContent="space-between">
-              <Box style={{ width: '30%' }}>{renderCardHeading()}</Box>
-              <Box style={{ width: '26%' }} className="mx-s24">
-                {renderStakeAction()}
-              </Box>
-              <Box style={{ width: '44%' }}>{renderHarvestActionAirDrop()}</Box>
-            </Flex> */}
-            <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
-              <Box>{renderCardHeading()}</Box>
-              <Box>{renderStakeAction()}</Box>
-              <Box>{renderHarvestActionAirDrop()}</Box>
-            </Grid>
-          </Box>
-        )}
+        <Wrap>
+          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
+            <Box>{renderCardHeading()}</Box>
+            <Box>{renderStakeAction()}</Box>
+            <Box>{renderHarvestActionAirDrop()}</Box>
+          </Grid>
+        </Wrap>
       </>
     )
   }
 
   return (
-    <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} className="mt-s16">
+    <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} mt="S_16">
       {isMobile ? (
         <>
-          <CardBody>
+          <Wrap>
             <Flex justifyContent="space-between">
               {renderCardHeading()}
-              {renderIconButton()}
+              {renderToggleButton()}
             </Flex>
             {renderEarningsSection()}
-          </CardBody>
+          </Wrap>
           {isOpenAccordion && (
-            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="px-s20 py-s24">
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
               {renderHarvestActionAirDrop()}
-              <Box className="py-s24">{renderStakeAction()}</Box>
+              <Box py="S_24">{renderStakeAction()}</Box>
               <Divider />
-              <Box className="pt-s24">{renderTotalStakedSection()}</Box>
-              <Box className="pt-s16">{renderMyBalanceSection()}</Box>
-              <Box className="py-s32">{renderLinkSection()}</Box>
+              <Box pt="S_24">{renderTotalStakedSection()}</Box>
+              <Box pt="S_16" py="S_28">
+                {renderMyBalanceSection()}
+              </Box>
             </Box>
           )}
         </>
       ) : (
         <>
-          <CardBody>
+          <Wrap>
             <Flex justifyContent="space-between">
               <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
               <Box style={{ width: '16%' }}>{renderTotalStakedSection()}</Box>
-              <Box style={{ width: '26%' }} className="mx-s24">
+              <Box style={{ width: '26%' }} mx="S_24">
                 {renderMyBalanceSection()}
               </Box>
               <Box style={{ width: '24%' }}>{renderEarningsSection()}</Box>
-              {renderIconButton()}
+              {renderToggleButton()}
             </Flex>
-          </CardBody>
+          </Wrap>
           {isOpenAccordion && (
-            <Box backgroundColor={ColorStyles.LIGHTGREY_20} className="py-s24 px-s32">
+            <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">
-                <Box style={{ width: '20%' }}>{renderLinkSection()}</Box>
-                <Box style={{ width: '40%' }} className="mx-s24">
+                <Box style={{ width: '20%' }} />
+                <Box style={{ width: '40%' }} mx="S_24">
                   {renderHarvestActionAirDrop()}
                 </Box>
                 <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>

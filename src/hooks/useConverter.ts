@@ -1,6 +1,8 @@
+import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { QuoteToken } from 'config/constants/types'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 
 export default function useConverter() {
@@ -55,11 +57,55 @@ export default function useConverter() {
     return numeral(value).format('0,0.[00]')
   }
 
+  const convertToIntegerFormat = (value: number) => {
+    return numeral(value).format('0,0')
+  }
+
+  const convertToPoolAPR = (apy) => {
+    return getBalanceNumber(apy)
+  }
+  const convertToPoolAPRFormat = (apy) => {
+    return numeral(apy.toFixed(2)).format('0,0.[00]')
+  }
+
+  const convertToFarmAPR = (apy) => {
+    return getBalanceNumber(apy)
+  }
+  const convertToFarmAPRFormat = (apy) => {
+    return numeral(apy.times(100).toFixed(2)).format('0,0.[00]')
+  }
+
+  const convertToRebalanceAPR = ({
+    finixRewardPerYear,
+    totalAssetValue,
+  }: {
+    finixRewardPerYear: BigNumber
+    totalAssetValue: BigNumber
+  }) => {
+    return getBalanceNumber(finixPrice.times(finixRewardPerYear).div(totalAssetValue))
+  }
+  const convertToRebalanceAPRFormat = ({
+    finixRewardPerYear,
+    totalAssetValue,
+  }: {
+    finixRewardPerYear: BigNumber
+    totalAssetValue: BigNumber
+  }) => {
+    return numeral(finixPrice.times(finixRewardPerYear).div(totalAssetValue).times(100).toFixed(2)).format('0,0.[00]')
+  }
+
   return {
     convertToPriceFromToken,
     convertToUSD,
     convertToPriceFromSymbol,
     convertToBalanceFormat,
     convertToPriceFormat,
+    convertToIntegerFormat,
+    convertToPoolAPR,
+    convertToPoolAPRFormat,
+    convertToFarmAPR,
+    convertToFarmAPRFormat,
+    convertToRebalanceAPR,
+    convertToRebalanceAPRFormat,
   }
 }
