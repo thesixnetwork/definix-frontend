@@ -8,8 +8,7 @@ import CardTotalEarn from './components/CardTotalEarn'
 import CardFinixStake from './components/CardFinixStake'
 
 const LongTermStake: React.FC = () => {
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <>

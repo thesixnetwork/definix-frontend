@@ -6,8 +6,7 @@ import TitleBridge from './components/TitleBridge'
 import CardBridge from './components/CardBridge'
 
 const Bridge: React.FC = () => {
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
+  const { isMobile } = useMatchBreakpoints()
 
   return (
     <>
