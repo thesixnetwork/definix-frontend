@@ -6,6 +6,7 @@ import TitleStake from './components/TitleStake'
 import CardTotalStake from './components/CardTotalStake'
 import CardTotalEarn from './components/CardTotalEarn'
 import CardFinixStake from './components/CardFinixStake'
+import CardStakeList from './components/CardStakeList'
 
 const LongTermStake: React.FC = () => {
   const { isMobile } = useMatchBreakpoints()
@@ -20,6 +21,7 @@ const LongTermStake: React.FC = () => {
         <CardTotalStake isMobile={isMobile} />
         <CardTotalEarn isMobile={isMobile} />
         <CardFinixStake isMobile={isMobile} />
+        <CardStakeList isMobile={isMobile} />
       </Box>
     </>
   )
