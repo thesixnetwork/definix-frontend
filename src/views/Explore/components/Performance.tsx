@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { useMatchBreakpoints } from 'definixswap-uikit'
+import { Divider, Flex, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
 
 import { Rebalance } from '../../../state/types'
 
@@ -37,8 +37,9 @@ const Performance: React.FC<PerformanceType> = ({
   sharpRatio,
 }) => {
   const { t } = useTranslation()
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
+  const { isMaxXl } = useMatchBreakpoints()
+  const isMobile = isMaxXl
+  const width = isMobile ? '50%' : '33.3333333%'
 
   return (
     <>
@@ -74,27 +75,32 @@ const Performance: React.FC<PerformanceType> = ({
           graphData={graphData}
           tokens={[...rebalance.ratio.filter((rt) => rt.value)]}
         />
-      </div>
-
-      <div className="flex bd-t">
-        <TwoLineFormat
-          className="px-4 py-3 col-4 bd-r"
-          title={t('Sharpe Ratio')}
-          value={`${numeral(sharpRatio).format('0,0.00')}`}
-          hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
-        />
-        <TwoLineFormat
-          className="px-4 py-3 col-4 bd-r"
-          title={t('Max Drawdown')}
-          value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
-          hint="The differentiation between the historical peak and low point through the portfolio."
-        />
-        <TwoLineFormat
-          className="px-4 py-3 col-4"
-          title={t('Return')}
-          value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
-          hint="Estimated return on investment measures approximately over a period of time."
-        />
+        <Divider />
+        <Flex flexWrap="wrap" mt="S_24">
+          <Flex alignItems="center" width={width}>
+            <TwoLineFormat
+              title={t('Sharpe Ratio')}
+              value={`${numeral(sharpRatio).format('0,0.00')}`}
+              hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
+            />
+          </Flex>
+          <Flex alignItems="center" width={width}>
+            <VDivider mx="S_24" />
+            <TwoLineFormat
+              title={t('Max Drawdown')}
+              value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
+              hint="The differentiation between the historical peak and low point through the portfolio."
+            />
+          </Flex>
+          <Flex alignItems="center" width={width} mt={isMobile ? 'S_20' : ''}>
+            {isMobile || <VDivider mx="S_24" />}
+            <TwoLineFormat
+              title={t('Return')}
+              value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
+              hint="Estimated return on investment measures approximately over a period of time."
+            />
+          </Flex>
+        </Flex>
       </div>
     </>
   )

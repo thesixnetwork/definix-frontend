@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import { Checkbox, CheckboxLabel, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
-import { TypeChartName } from './SelectChart'
 
 const rebalanceColor = '#ff6828'
 
@@ -36,16 +35,8 @@ const LegendItem = styled.div`
   }
 `
 
-const FullDiv = styled.div`
-  background: rgba(255, 255, 255, 0.8);
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-`
-
-const FullDivDark = styled.div`
-  background: rgba(33, 33, 33, 0.8);
+const FullDiv = styled.div<{ isDark: boolean }>`
+  background: ${({ isDark }) => (isDark ? 'rgba(33, 33, 33, 0.8)' : 'rgba(255, 255, 255, 0.8)')};
   position: absolute;
   top: 0;
   width: 100%;
@@ -78,7 +69,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
   const AllChecked = useMemo(() => tokens.every(({ symbol }) => selectedTokens[symbol]), [tokens, selectedTokens])
 
   return (
-    <Flex className="flex mb-5">
+    <Flex mt="S_42" mb="S_20">
       <div>
         <LegendItem className="mr-s24" style={{ minWidth: '160px' }}>
           <div className="rebalancing" />
@@ -221,6 +212,17 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
 
   return (
     <div className={className}>
+      <RelativeDiv>
+        <Box>
+          <Line data={data} options={options} height={height} legend={{ display: false }} />
+        </Box>
+        {isLoading && (
+          <FullDiv isDark={isDark}>
+            <LoadingData />
+          </FullDiv>
+        )}
+      </RelativeDiv>
+
       {isMobile || (
         <Legend
           fundName={fundName}
@@ -229,21 +231,6 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
           setSelectedTokens={setSelectedTokens}
         />
       )}
-      <RelativeDiv>
-        <Box>
-          <Line data={data} options={options} height={height} legend={{ display: false }} />
-        </Box>
-        {isDark && isLoading && (
-          <FullDivDark>
-            <LoadingData />
-          </FullDivDark>
-        )}
-        {!isDark && isLoading && (
-          <FullDiv>
-            <LoadingData />
-          </FullDiv>
-        )}
-      </RelativeDiv>
     </div>
   )
 }

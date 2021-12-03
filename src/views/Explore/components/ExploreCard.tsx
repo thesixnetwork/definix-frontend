@@ -27,7 +27,7 @@ import CardHeading, { CardTitle, CardImage } from './CardHeading'
 import MiniChart from './MiniChart'
 import TwoLineFormat from './TwoLineFormat'
 import { Rebalance } from '../../../state/types'
-import { usePriceFinixUsd, useRebalanceBalances, useBalances } from '../../../state/hooks'
+import { useRebalanceBalances, useBalances } from '../../../state/hooks'
 
 interface ExploreCardType {
   componentType?: string
@@ -78,7 +78,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   onClickViewDetail,
 }) => {
   const { t } = useTranslation()
-  const { isXl, isXxl } = useMatchBreakpoints()
+  const { isXxl } = useMatchBreakpoints()
   const isMobile = !isXxl
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const { ratio } = rebalance
