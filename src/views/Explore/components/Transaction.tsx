@@ -8,8 +8,9 @@ import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { CopyToClipboard, Flex, LinkExternal, Text, Toggle } from 'definixswap-uikit'
+import { Box, CopyToClipboard, Flex, LinkExternal, Text, Toggle, useMatchBreakpoints } from 'definixswap-uikit'
 import { getAddress } from 'utils/addressHelpers'
+import EllipsisText from 'components/EllipsisText'
 import PaginationCustom from './Pagination'
 import { Table, TD, TH, TR } from './Table'
 
@@ -19,26 +20,18 @@ interface TransactionType {
 }
 
 const EmptyData = ({ text }) => (
-  <TR>
-    <TD colSpan={6}>
-      <div className="flex align-center justify-center" style={{ height: '400px' }}>
-        <Text textAlign="center" color="textSubtle">
-          {text}
-        </Text>
-      </div>
-    </TD>
-  </TR>
+  <div className="flex align-center justify-center" style={{ height: '188px' }}>
+    <Text textStyle="R_14R" textAlign="center" color="textSubtle">
+      {text}
+    </Text>
+  </div>
 )
 
 const LoadingData = () => (
-  <TR>
-    <TD colSpan={6}>
-      <div className="flex align-center justify-center" style={{ height: '400px' }}>
-        <CircularProgress size={16} color="inherit" className="mr-2" />
-        <Text>Loading...</Text>
-      </div>
-    </TD>
-  </TR>
+  <div className="flex align-center justify-center" style={{ height: '188px' }}>
+    <CircularProgress size={16} color="inherit" className="mr-2" />
+    <Text textStyle="R_14R">Loading...</Text>
+  </div>
 )
 
 const Overflow = styled.div`
@@ -49,8 +42,12 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
   const { t } = useTranslation()
   const [cols] = useState([t('Investors'), t('Action'), t('Shares'), t('Total Amount'), t('Date'), t('Scope')])
 
-  return (
-    <Overflow className="pa-s24 pt-0">
+  return isLoading ? (
+    <LoadingData />
+  ) : isEmpty(rows) ? (
+    <EmptyData text={empText} />
+  ) : (
+    <Overflow>
       <Table>
         <TR>
           {cols.map((c, idx) => (
@@ -62,47 +59,47 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
           ))}
         </TR>
 
-        {isLoading ? (
-          <LoadingData />
-        ) : isEmpty(rows) ? (
-          <EmptyData text={empText} />
-        ) : (
-          rows.map((r) => (
-            <TR key={`tsc-${r.block_number}`}>
-              <TD>
-                <Flex alignItems="center">
-                  <Text textStyle="R_14R">
-                    {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)}
-                  </Text>
-                  <CopyToClipboard toCopy={r.user_address} />
-                </Flex>
-              </TD>
-              <TD align="center">
+        {rows.map((r) => (
+          <TR key={`tsc-${r.block_number}`}>
+            <TD>
+              <Flex alignItems="center">
                 <Text textStyle="R_14R">
-                  {r.event_name === 'AddFundAmount' ? `+ ${t('Invest')}` : `- ${t('Withdraw')}`}
+                  <EllipsisText start={6} end={5} text={r.user_address} />
                 </Text>
-              </TD>
-              <TD align="center">
-                <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
-              </TD>
-              <TD align="center">
-                <Text textStyle="R_14R">{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
-              </TD>
-              <TD align="center">
-                <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
-              </TD>
-              <TD align="center">
-                <LinkExternal
-                  textStyle="R_14R"
-                  color="mediumgrey"
-                  href={`https://scope.klaytn.com/tx/${r.transaction_hash}`}
-                >
-                  KlaytnScope
-                </LinkExternal>
-              </TD>
-            </TR>
-          ))
-        )}
+                <CopyToClipboard toCopy={r.user_address} />
+              </Flex>
+            </TD>
+            <TD align="center" oneline>
+              {r.event_name === 'AddFundAmount' ? (
+                <Text textStyle="R_14R" color="success">
+                  + {t('Invest')}
+                </Text>
+              ) : (
+                <Text textStyle="R_14R" color="failure">
+                  - {t('Withdraw')}
+                </Text>
+              )}
+            </TD>
+            <TD align="center">
+              <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
+            </TD>
+            <TD align="center">
+              <Text textStyle="R_14R">{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
+            </TD>
+            <TD align="center">
+              <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
+            </TD>
+            <TD align="center">
+              <LinkExternal
+                textStyle="R_14R"
+                color="mediumgrey"
+                href={`https://scope.klaytn.com/tx/${r.transaction_hash}`}
+              >
+                KlaytnScope
+              </LinkExternal>
+            </TD>
+          </TR>
+        ))}
       </Table>
     </Overflow>
   )
@@ -112,6 +109,16 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   const { t } = useTranslation()
   const address = getAddress(rbAddress)
   const { account } = useWallet()
+  const { isMaxXl } = useMatchBreakpoints()
+  const size = isMaxXl
+    ? {
+        marginX: 'S_20',
+        marginY: 'S_20',
+      }
+    : {
+        marginX: 'S_32',
+        marginY: 'S_24',
+      }
 
   const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -164,12 +171,12 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
 
   return (
     <div className={className}>
-      <div className="flex justify-end align-center px-s32 py-s24">
+      <Flex justifyContent="flex-end" alignItems="center" mx={size.marginX} my={size.marginY}>
         <Text className="mr-s8" color="deepgrey" textStyle="R_14R">
           {t('My Transaction only')}
         </Text>
         <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
-      </div>
+      </Flex>
 
       <PaginationCustom
         page={currentPage}
@@ -177,17 +184,18 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         size="small"
         hidePrevButton
         hideNextButton
-        className="px-s32 pb-s24"
         onChange={onPageChange}
       />
 
-      <TransactionTable
-        rows={transactions}
-        isLoading={isLoading}
-        empText={
-          myOnly ? 'You haven`t made any transactions in this farm.' : 'Don`t have any transactions in this farm.'
-        }
-      />
+      <Box mx={size.marginX} mb={size.marginY}>
+        <TransactionTable
+          rows={transactions}
+          isLoading={isLoading}
+          empText={t(
+            myOnly ? 'You haven`t made any transactions in this farm.' : 'Don`t have any transactions in this farm.',
+          )}
+        />
+      </Box>
     </div>
   )
 }
