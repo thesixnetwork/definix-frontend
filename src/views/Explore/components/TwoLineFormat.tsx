@@ -1,11 +1,11 @@
 import React from 'react'
-import { Helper, Text } from 'definixswap-uikit'
+import { Flex, Helper, Text } from 'definixswap-uikit'
+import { isNil } from 'lodash'
 
 interface TwoLineFormatType {
   className?: string
   title: string
   subTitle?: string
-  subTitleFontSize?: string
   titleColor?: string
   titleMarginBottom?: number
   value: string
@@ -25,7 +25,6 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   className = '',
   title,
   subTitle,
-  subTitleFontSize,
   titleColor,
   titleMarginBottom = 0,
   value,
@@ -40,59 +39,63 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   currentInvestPercentDiff,
   diffAmounts,
 }) => {
-  const size = large
+  const textStyle = large
     ? {
-        emphasize: '24px',
-        subTitleFont: '14px',
-        text: '16px',
+        emphasize: 'R_20M',
+        subTitle: 'R_14R',
+        text: 'R_12M',
       }
     : {
-        emphasize: '16px',
-        subTitleFont: '12px',
-        text: '14px',
+        emphasize: 'R_18M',
+        subTitle: 'R_12R',
+        text: 'R_12M',
       }
   return (
-    <div className={className}>
-      <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
-        <Text textStyle="R_12R" color={titleColor || 'mediumgrey'} style={{ marginBottom: `${titleMarginBottom}px` }}>
+    <Flex flexDirection="column" className={className}>
+      <Flex alignItems="center" justifyContent={alignRight ? 'flex-end' : 'inherit'} mb={large ? 'S_4' : 'S_2'}>
+        <Text
+          textStyle={textStyle.subTitle}
+          color={titleColor || 'mediumgrey'}
+          style={{ marginBottom: `${titleMarginBottom}px` }}
+        >
           {title}
         </Text>
 
         {subTitle && (
-          <Text fontSize={subTitleFontSize || size.subTitleFont} className="ml-1" as="span">
+          <Text textStyle={textStyle.subTitle} ml="S_8" as="span">
             {subTitle}
           </Text>
         )}
 
-        {hint && <Helper text={hint} className="ml-1" position={hintPosition} />}
-      </div>
+        {hint && <Helper text={hint} ml="S_8" position={hintPosition} />}
+      </Flex>
 
-      <div className={`flex align-baseline ${alignRight ? 'justify-end' : ''}`}>
-        <Text fontSize={size.emphasize} bold color={valueClass}>
+      <Flex alignItems="baseline" justifyContent={alignRight ? 'flex-end' : 'inherit'}>
+        <Text textStyle={textStyle.emphasize} bold color={valueClass}>
           {value}
         </Text>
-        {diffAmounts !== '0' && (
-          <Text fontSize={size.text} bold color={percentClass} className="ml-1">
+        {!isNil(diffAmounts) && diffAmounts !== '0' && (
+          <Text textStyle={textStyle.text} bold color={percentClass} ml="S_8">
             {diffAmounts}
           </Text>
         )}
-        {currentInvestPercentDiff !== '(0%)' && (
-          <Text fontSize={size.subTitleFont} bold color={percentClass} className="ml-1">
+        {!isNil(currentInvestPercentDiff) && currentInvestPercentDiff !== '(0%)' && (
+          <Text textStyle={textStyle.subTitle} bold color={percentClass} ml="S_8">
             {currentInvestPercentDiff}
           </Text>
         )}
         {percent && (
-          <Text fontSize={size.text} bold color={percentClass} className="ml-1">
+          <Text textStyle="R_12M" color={percentClass} ml="S_8">
             {percent}
           </Text>
         )}
         {days && (
-          <Text fontSize={size.text} className="ml-1">
+          <Text textStyle={textStyle.text} ml="S_8">
             {days}
           </Text>
         )}
-      </div>
-    </div>
+      </Flex>
+    </Flex>
   )
 }
 

@@ -8,7 +8,7 @@ import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import numeral from 'numeral'
 import Color from 'color'
-import { Box, Button, Card, CardBody, Flex, TabBox, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, Button, Card, CardBody, Flex, TabBox, Text, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
 import { ArrowBackIcon } from 'uikit-dev'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
@@ -63,8 +63,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const [maxDrawDown, setMaxDrawDown] = useState(0)
   const [graphData, setGraphData] = useState({})
   const { isDark } = useTheme()
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
+  const { isMaxXl } = useMatchBreakpoints()
   const finixPrice = usePriceFinixUsd()
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -646,54 +645,60 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
             <CardBody>
               <CardHeading
                 rebalance={rebalance}
-                isHorizontal={isMobile}
-                className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`}
+                isHorizontal={isMaxXl}
+                className={`mb-s24 ${isMaxXl ? 'pb-s28' : 'pb-s24 bd-b'}`}
               />
 
               <div className="flex flex-wrap">
                 <TwoLineFormat
-                  className={isMobile ? 'col-6 mb-s20' : 'col-3'}
+                  className={isMaxXl ? 'col-6 mb-s20' : 'col-3'}
                   title={t('Total Asset Value')}
                   value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
+                  large={!isMaxXl}
                 />
-                <TwoLineFormat
-                  className={isMobile ? 'col-6 mb-s20' : 'col-3 bd-l pl-s32'}
-                  title={t('Yield APR')}
-                  value={`${numeral(
-                    finixPrice
-                      .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-                      .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-                      .times(100)
-                      .toFixed(2),
-                  ).format('0,0.[00]')}%`}
-                  hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-                />
+                <Flex className={isMaxXl ? 'col-6 mb-s20' : 'col-3'}>
+                  {isMaxXl || <VDivider mr="S_32" />}
+                  <TwoLineFormat
+                    title={t('Yield APR')}
+                    value={`${numeral(
+                      finixPrice
+                        .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
+                        .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
+                        .times(100)
+                        .toFixed(2),
+                    ).format('0,0.[00]')}%`}
+                    hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+                    large={!isMaxXl}
+                  />
+                </Flex>
+                <Flex className={isMaxXl ? 'col-6' : 'col-3'}>
+                  {isMaxXl || <VDivider mr="S_32" />}
+                  <TwoLineFormat
+                    title={t('Share Price(Since Inception)')}
+                    value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
+                    percent={`${
+                      rebalance.sharedPricePercentDiff >= 0
+                        ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                        : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
+                    }%`}
+                    percentClass={(() => {
+                      if (rebalance.sharedPricePercentDiff < 0) return 'failure'
+                      if (rebalance.sharedPricePercentDiff > 0) return 'success'
+                      return ''
+                    })()}
+                    large={!isMaxXl}
+                  />
+                </Flex>
+                <Flex className={isMaxXl ? 'col-6' : 'col-3'}>
+                  {isMaxXl || <VDivider mr="S_32" />}
+                  <TwoLineFormat title={t('Risk-0-Meter')} value="Medium" large={!isMaxXl} />
+                </Flex>
 
-                <TwoLineFormat
-                  className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
-                  title={t('Share Price(Since Inception)')}
-                  value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                  percent={`${
-                    rebalance.sharedPricePercentDiff >= 0
-                      ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                      : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                  }%`}
-                  percentClass={(() => {
-                    if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                    if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                    return ''
-                  })()}
-                />
                 {/* <TwoLineFormat
-                  className={isMobile ? 'col-6' : 'col-3'}
+                  className={isMaxXl ? 'col-6' : 'col-3'}
                   title="Investors"
                   value={numeral(rebalance.activeUserCountNumber).format('0,0')}
                 /> */}
-                <TwoLineFormat
-                  className={isMobile ? 'col-6' : 'col-3 bd-l pl-s32'}
-                  title={t('Risk-0-Meter')}
-                  value="Medium"
-                />
               </div>
             </CardBody>
           </Card>
@@ -703,7 +708,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           </Card>
         </div>
 
-        <FundAction rebalance={rebalance} isMobile={isMobile} />
+        <FundAction rebalance={rebalance} isMobile={isMaxXl} />
       </Box>
     </>
   )
