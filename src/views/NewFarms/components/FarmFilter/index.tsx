@@ -1,72 +1,73 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput } from 'definixswap-uikit'
+import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput, useMatchBreakpoints } from 'definixswap-uikit'
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, orderOptions, orderBy, search }) => {
   const { t } = useTranslation()
+  const { isMaxXl } = useMatchBreakpoints()
 
-  const Wrap = styled(Flex)`
-    flex-direction: row;
-    justify-content: space-between;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: column;
-    }
-  `
-  const LeftSection = styled(Flex)`
+  const ToggleSection = styled(Flex)`
     align-items: center;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      justify-content: space-between;
-    }
+    justify-content: flex-end;
   `
-  const DropdownWrap = styled(Box)`
-    width: 128px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      width: 50%;
-    }
-  `
-  const StakedOnlyWrap = styled(Flex)`
-    align-items: center;
-    margin-left: ${({ theme }) => theme.spacing.S_20}px;
-    white-space: nowrap;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      width: 50%;
-      justify-content: flex-end;
-    }
-  `
-  const RightSection = styled(Box)`
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-top: ${({ theme }) => theme.spacing.S_12}px;
-    }
-  `
+  const DropdownSection = () => (
+    <DropdownSet
+      defaultIndex={defaultOptionIndex || 0}
+      options={orderOptions}
+      onItemClick={(index: number) => orderBy(index)}
+    />
+  )
+  const StakedOnlySection = () => (
+    <>
+      <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+        {t('Staked only Pools')}
+      </Text>
+      <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
+    </>
+  )
+  if (isMaxXl) {
+    return (
+      <Flex flexDirection="column">
+        <Flex alignItems="center">
+          <ToggleSection>
+            <StakedOnlySection/>
+          </ToggleSection>
+        </Flex>
+        <Flex mt="S_12">
+          <Box minWidth={128} mr="S_6">
+            <DropdownSection/>
+          </Box>
+          <SearchInput
+            type="text"
+            placeholder={t('Token name')}
+            onSearch={(keyword) => search(keyword.trim().toLowerCase())}
+            onReset={() => search('')}
+          />
+        </Flex>
+      </Flex>
+    )
+  }
 
   return (
-    //     *AAPR = Airdrop APR supported by our partners
-    <Wrap>
-      <LeftSection>
-        <DropdownWrap>
-          <DropdownSet
-            defaultIndex={defaultOptionIndex || 0}
-            options={orderOptions}
-            onItemClick={(index: number) => orderBy(index)}
-          />
-        </DropdownWrap>
-        <StakedOnlyWrap>
-          <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} mr="S_8">
-            {t('Staked only Farm')}
-          </Text>
-          <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
-        </StakedOnlyWrap>
-      </LeftSection>
-      <RightSection>
+    <Flex flexDirection="row" justifyContent="space-between">
+      <Flex justifyContent="space-between" alignItems="center">
+        <Box width={128}>
+          <DropdownSection/>
+        </Box>
+        <ToggleSection ml="S_24">
+          <StakedOnlySection/>
+        </ToggleSection>
+      </Flex>
+      <Box>
         <SearchInput
           type="text"
           placeholder={t('Token name')}
           onSearch={(keyword) => search(keyword.trim().toLowerCase())}
           onReset={() => search('')}
         />
-      </RightSection>
-    </Wrap>
+      </Box>
+    </Flex>
   )
 }
 
