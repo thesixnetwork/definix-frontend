@@ -114,18 +114,12 @@ const EarningsSection: React.FC<{
   const Wrap = styled(Flex)`
     flex-direction: column;
     ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: row;
-      align-items: flex-start;
       margin-top: ${({ theme }) => theme.spacing.S_20}px;
     }
   `
   const TitleWrap = styled(Flex)`
     margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
     align-items: flex-start;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: 0;
-      margin-right: ${({ theme }) => theme.spacing.S_28}px;
-    }
   `
   const ValueWrap = styled(Box)`
     margin-top: -2px;

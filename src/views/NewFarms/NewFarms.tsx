@@ -28,7 +28,7 @@ const Farms: React.FC = () => {
   const { path } = useRouteMatch()
   const dispatch = useDispatch()
   const farmsLP = useFarms()
-  const { fastRefresh } = useRefresh()
+  const { slowRefresh } = useRefresh()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
 
@@ -140,11 +140,11 @@ const Farms: React.FC = () => {
     fetchAllBalances()
   }, [fetchAllBalances])
 
-  // useEffect(() => {
-  //   if (account) {
-  //     dispatch(fetchFarmUserDataAsync(account))
-  //   }
-  // }, [account, dispatch, fastRefresh])
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchFarmUserDataAsync(account))
+    }
+  }, [account, dispatch, slowRefresh])
 
   useEffect(() => {
     return () => {
