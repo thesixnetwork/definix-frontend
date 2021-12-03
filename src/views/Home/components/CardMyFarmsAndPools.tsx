@@ -389,6 +389,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       case 6:
         stakingTokenFarm = farms.find((s) => s.pid === 5)
         break
+      case 25:
+        stakingTokenFarm = farms.find((s) => s.pid === 25)
+        break
       default:
         break
     }
@@ -398,6 +401,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       case 3:
       case 4:
       case 5:
+      case 25:
       case 6:
         rewardTokenFarm = farms.find((f) => f.tokenSymbol === 'SIX')
         break
@@ -446,6 +450,19 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
         const currentTotalStaked = getBalanceNumber(pool.totalStaked)
         apy = finixRewardPerYear.div(currentTotalStaked).times(100)
+        break
+      }
+      case 25: {
+        const totalRewardPerBlock = new BigNumber(stakingTokenFarm.finixPerBlock)
+          .times(stakingTokenFarm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+        const finixRewardPerBlock = totalRewardPerBlock.times(stakingTokenFarm.poolWeight)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+        const currentTotalStaked = getBalanceNumber(pool.totalStaked)
+        apy = finixRewardPerYear
+          .times(finixPrice)
+          .div(new BigNumber(currentTotalStaked).times(new BigNumber(sixPriceUSD)))
+          .times(100)
         break
       }
       case 2:
