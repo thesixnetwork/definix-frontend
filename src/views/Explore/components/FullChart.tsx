@@ -11,6 +11,7 @@ const rebalanceColor = '#ff6828'
 const Box = styled.div`
   canvas {
     width: 100% !important;
+    max-height: 500px;
   }
 `
 
@@ -203,7 +204,7 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
           const curGraph = dataTooltip.datasets[index]
           const diff = tooltipItem.value - curGraph.data[0]
           const same = diff === 0
-          const sign = diff < 0 ? '-' : '+'
+          const sign = diff < 0 ? '' : '+'
           return `Change: ${same ? '' : sign}${diff.toFixed(2)}%`
         },
       },

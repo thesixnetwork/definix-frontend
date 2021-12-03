@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { compact, get } from 'lodash'
-import { Text } from 'definixswap-uikit'
+import { Text, useMatchBreakpoints } from 'definixswap-uikit'
 
 import { useTranslation } from 'react-i18next'
 import { Rebalance } from '../../../state/types'
@@ -17,6 +17,7 @@ interface FundDetailType {
 
 const AssetDetail = ({ rebalance, periodPriceTokens }) => {
   const { t } = useTranslation()
+  const { isMaxXl } = useMatchBreakpoints()
   const cols = [t('Asset'), t('Balance'), t('Price'), t('Value'), t('Change'), t('Weight')]
   let tokens = compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
@@ -32,18 +33,13 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
     if (inputNumber > 0) return 'success'
     return ''
   }
-  // const selectSymbolChange = (inputNumber) => {
-  //   if (inputNumber < 0) return '-'
-  //   if (inputNumber > 0) return '+'
-  //   return ''
-  // }
 
   return (
     <div style={{ overflow: 'auto' }}>
       <Table>
         <TR>
           {cols.map((c, idx) => (
-            <TH align={idx > 0 ? 'center' : null} key={c} oneline>
+            <TH align={idx > 0 ? 'center' : null} key={c} oneline sm={isMaxXl}>
               <Text color="mediumgrey" textStyle="R_12M">
                 {c}
               </Text>
@@ -77,13 +73,13 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
 
           return (
             <TR>
-              <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }}>
+              <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
                 <div className="flex align-center">
                   <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={24} height={24} className="mr-s6" />
                   <Text textStyle="R_14B">{thisName}</Text>
                 </div>
               </TD>
-              <TD align="center">
+              <TD align="center" sm={isMaxXl}>
                 <Text textStyle="R_14R">
                   {numeral(
                     get(r, 'totalBalance', new BigNumber(0))
@@ -92,19 +88,18 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
                   ).format('0,0.[000]')}
                 </Text>
               </TD>
-              <TD align="center" oneline>
+              <TD align="center" oneline sm={isMaxXl}>
                 <Text textStyle="R_14R">$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text>
               </TD>
-              <TD align="center" oneline>
+              <TD align="center" oneline sm={isMaxXl}>
                 <Text textStyle="R_14R">$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
               </TD>
-              <TD align="center" oneline>
-                <Text color={selectClass(changeNumber)}>
-                  {/* {selectSymbolChange(changeNumber)} */}
+              <TD align="center" oneline sm={isMaxXl}>
+                <Text textStyle="R_14R" color={selectClass(changeNumber)}>
                   {`${Number.isFinite(changeNumber) ? `${numeral(changeNumber).format('0,0.[00]')} %` : '-'}`}
                 </Text>
               </TD>
-              <TD align="center" oneline>
+              <TD align="center" oneline sm={isMaxXl}>
                 <Text textStyle="R_14R">{ratio ? ratio[index] : 0} %</Text>
               </TD>
             </TR>
