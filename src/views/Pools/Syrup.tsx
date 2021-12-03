@@ -1,4 +1,3 @@
-
 import _ from 'lodash'
 import React, { useState, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -19,7 +18,7 @@ const Pool: React.FC = () => {
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const { path } = useRouteMatch()
-  
+
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
   // const [isPhrase1, setIsPhrase1] = useState(false)
@@ -60,7 +59,7 @@ const Pool: React.FC = () => {
   //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
   //   : new Date().getTime()
   // const currentTime = new Date().getTime()
-  
+
   // useEffect(() => {
   //   if (currentTime < phrase1TimeStamp) {
   //     setTimeout(() => {

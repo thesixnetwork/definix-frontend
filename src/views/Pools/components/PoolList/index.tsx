@@ -2,11 +2,11 @@ import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useMemo, useCallback, useEffect } from 'react'
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import { useFarms, usePools, useBalances } from 'state/hooks'
 import { fetchBalances } from 'state/wallet'
-import usePoolsList from 'hooks/usePoolsList';
+import usePoolsList from 'hooks/usePoolsList'
 import { getAddress } from 'utils/addressHelpers'
 import { DropdownOption } from 'definixswap-uikit'
 import NoResultArea from 'components/NoResultArea'
@@ -19,14 +19,7 @@ const PoolList: React.FC<{
   orderBy: DropdownOption
   goDeposit: (props: any) => void
   goRemove: (props: any) => void
-}> = ({
-  liveOnly,
-  stakedOnly,
-  searchKeyword,
-  orderBy,
-  goDeposit,
-  goRemove,
-}) => {
+}> = ({ liveOnly, stakedOnly, searchKeyword, orderBy, goDeposit, goRemove }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -49,7 +42,7 @@ const PoolList: React.FC<{
     if (!orderBy) return filteredPools
     return _.orderBy(filteredPools, orderBy.id, orderBy.orderBy)
   }, [filteredPools, orderBy])
-  
+
   const displayPools = useMemo(() => {
     if (!searchKeyword.length) return orderedPools
     return orderedPools.filter((pool) => {
