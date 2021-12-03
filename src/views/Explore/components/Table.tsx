@@ -43,17 +43,18 @@ export const TR = styled.tr`
   }
 `
 
-export const TH = styled.th<{ align?: string }>`
+export const TH = styled.th<{ align?: string; sm?: boolean; oneline?: boolean }>`
   background: ${({ theme }) => theme.colors.backgroundDisabled};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 11px 24px;
+  padding: 11px ${({ sm }) => (sm ? '16px' : '24px')};
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
+  ${({ oneline }) => oneline && `white-space: nowrap;`};
 `
 
-export const TD = styled.td<{ align?: string; sidecolor?: string }>`
+export const TD = styled.td<{ align?: string; sidecolor?: string; sm?: boolean; oneline?: boolean }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 18px 24px;
+  padding: 18px ${({ sm }) => (sm ? '16px' : '24px')};
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
 
@@ -71,4 +72,6 @@ export const TD = styled.td<{ align?: string; sidecolor?: string }>`
       height: 100%;
     }
   `};
+
+  ${({ oneline }) => oneline && `white-space: nowrap;`};
 `

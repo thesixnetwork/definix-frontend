@@ -28,6 +28,7 @@ const CardStyled = styled(Card)`
   align-self: start;
   left: 0;
   width: 100%;
+  overflow: hidden;
 `
 
 const Overlay = styled(Flex)`
