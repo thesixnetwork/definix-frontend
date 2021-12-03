@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
@@ -28,10 +29,6 @@ const Withdraw: React.FC<{
   const { onUnstake } = useSousUnstake(sousId)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
-
-  const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max)
-  }, [max])
 
   const price = useMemo(() => {
     return convertToPriceFromSymbol(tokenName)
@@ -62,8 +59,12 @@ const Withdraw: React.FC<{
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      const balance = max.times(rate / 100)
-      setVal(getFullDisplayBalance(balance))
+      if (rate === 100) {
+        setVal(numeral(getBalanceNumber(max)).format('0.000000'))
+      } else {
+        const balance = max.times(rate / 100)
+        setVal(numeral(getBalanceNumber(balance)).format('0.00'))
+      }
     },
     [max, setVal],
   )
@@ -194,7 +195,7 @@ const Withdraw: React.FC<{
 
         <ModalInput
           value={val}
-          max={fullBalance}
+          max={max}
           symbol={tokenName}
           buttonName={t('Remove')}
           onSelectBalanceRateButton={handleSelectBalanceRate}

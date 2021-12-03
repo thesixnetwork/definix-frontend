@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import useUnstake from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
@@ -36,12 +37,10 @@ const Withdraw: React.FC<{
 }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
-  const { convertToBalanceFormat, convertToPriceFormat } = useConverter()
+  const { convertToBalanceFormat } = useConverter()
   const { onUnstake } = useUnstake(pid)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
-
-  const fullBalance = useMemo(() => getFullDisplayBalance(myLiquidity), [myLiquidity])
 
   const totalLiquidityValue = useMemo(() => {
     return convertToBalanceFormat(getBalanceNumber(totalLiquidity))
@@ -64,8 +63,12 @@ const Withdraw: React.FC<{
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      const balance = myLiquidity.times(rate / 100)
-      setVal(getFullDisplayBalance(balance))
+      if (rate === 100) {
+        setVal(numeral(getBalanceNumber(myLiquidity)).format('0.000000'))
+      } else {
+        const balance = myLiquidity.times(rate / 100)
+        setVal(numeral(getBalanceNumber(balance)).format('0.00'))
+      }
     },
     [myLiquidity, setVal],
   )
@@ -195,7 +198,7 @@ const Withdraw: React.FC<{
           value={val}
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}
-          max={fullBalance}
+          max={myLiquidity}
           symbol={tokenName}
           buttonName={t('Remove')}
           onClickButton={() => onPresentConfirmModal()}

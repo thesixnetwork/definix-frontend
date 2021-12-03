@@ -54,7 +54,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         onSelectBalanceRateButton={handleSelectMax}
         onChange={handleChange}
         value={val}
-        max={fullBalance}
+        max={max}
         symbol={tokenName}
         // inputTitle={TranslateString(1070, 'Unstake')}
       />

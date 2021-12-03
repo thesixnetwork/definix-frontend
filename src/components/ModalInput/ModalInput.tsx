@@ -1,6 +1,8 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import useConverter from 'hooks/useConverter'
+import { getBalanceNumber } from 'utils/formatBalance'
 import styled from 'styled-components'
 import {
   Text,
@@ -15,8 +17,15 @@ import {
   ButtonVariants,
 } from 'definixswap-uikit'
 
-interface ModalInputProps {
-  max: string
+const ButtonWrap = styled(Box)`
+  margin-top: ${({ theme }) => theme.spacing.S_40}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: ${({ theme }) => theme.spacing.S_24}px;
+  }
+`
+
+const ModalInput: React.FC<{
+  max: BigNumber
   symbol: string
   placeholder?: string
   value: string
@@ -25,16 +34,7 @@ interface ModalInputProps {
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
-}
-
-const ButtonWrap = styled(Box)`
-  margin-top: ${({ theme }) => theme.spacing.S_40}px;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-top: ${({ theme }) => theme.spacing.S_24}px;
-  }
-`
-
-const ModalInput: React.FC<ModalInputProps> = ({
+}> = ({
   max,
   onChange,
   value,
@@ -43,11 +43,9 @@ const ModalInput: React.FC<ModalInputProps> = ({
   buttonName,
 }) => {
   const { t } = useTranslation()
-  const displayBalance = useMemo(() => {
-    const isBalanceZero = max === '0' || !max
-    return isBalanceZero ? '0' : parseFloat(max).toFixed(6)
-  }, [max])
-  const isGreaterThanMyBalance = useMemo(() => value > max, [value, max])
+  const { convertToBalanceFormat } = useConverter()
+
+  const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).isGreaterThan(max), [value, max])
   const isValidBalance = useMemo(() => {
     return new BigNumber(value).times(new BigNumber(10).pow(18)).isInteger()
   }, [value])
@@ -57,7 +55,7 @@ const ModalInput: React.FC<ModalInputProps> = ({
       <Flex color={ColorStyles.DEEPGREY}>
         <Text textStyle="R_14R">Balance</Text>
         <Text textStyle="R_14B" className="ml-s6">
-          {displayBalance.toLocaleString()}
+          {convertToBalanceFormat(getBalanceNumber(max))}
         </Text>
       </Flex>
 
@@ -97,17 +95,6 @@ const ModalInput: React.FC<ModalInputProps> = ({
           </Box>
         )}
       </ButtonWrap>
-
-      {/* {isBalanceZero && (
-        <div className="flex align-center justify-center mt-5">
-          <Text color="failure" className="mr-3">
-            Not enough LP to stake
-          </Text>
-          <Button size="sm" variant="secondary" as={Link} href={addLiquidityUrl}>
-            Add Liquidity
-          </Button>
-        </div>
-      )} */}
     </div>
   )
 }
