@@ -38,6 +38,22 @@ const FlexApprroveBtn = styled(Flex)`
   }
 `
 
+const ApprovedButton = styled(Flex)`
+  justify-content: center;
+  align-items: center;
+  width: 186px;
+  height: 40px;
+  opacity: 0.5;
+  background-color: #e0e0e04c;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.lightgrey};
+  cursor: not-allowed;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 100%;
+  }
+`
+
 const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
   const { t } = useTranslation()
   const [approve, setApprove] = useState<boolean>(false)
@@ -66,7 +82,7 @@ const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
             </Text>
           </Flex>
           {approve ? (
-            <Button width={`${isMobile ? '100%' : '186px'}`} disabled>
+            <ApprovedButton>
               <img
                 style={{ marginRight: '6px' }}
                 width={16}
@@ -75,8 +91,10 @@ const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
                 srcSet={`${IconCheck2x} 2x, ${IconCheck3x} 3x`}
                 alt="Icon-Check"
               />
-              {t('Approved to FINIX')}
-            </Button>
+              <Text textStyle="R_14B" color="mediumgrey">
+                {t('Approved to FINIX')}
+              </Text>
+            </ApprovedButton>
           ) : (
             <Button width={`${isMobile ? '100%' : '186px'}`} variant="brown">
               {t('Approved to FINIX')}
