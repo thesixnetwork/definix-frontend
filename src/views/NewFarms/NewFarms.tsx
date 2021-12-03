@@ -15,6 +15,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
 // import Flip from '../../uikit-dev/components/Flip'
+import NoResultArea from 'components/NoResultArea'
 import FarmCard from './components/FarmCard/FarmCard'
 import FarmHeader from './components/FarmHeader'
 import FarmFilter from './components/FarmFilter'
@@ -172,19 +173,24 @@ const Farms: React.FC = () => {
               search={(keyword: string) => setSearchKeyword(keyword)}
             />
             <Route exact path={`${path}`}>
-              {/* {stackedOnly ? farmsList(stackedOnlyFarms, false) : farmsList(activeFarms, false)} */}
-              {displayFarms.map((farm) => (
-                <FarmCard
-                  key={farm.pid}
-                  farm={farm}
-                  myBalancesInWallet={getMyBalancesInWallet([farm.firstToken, farm.secondToken])}
-                  removed={false}
-                  klaytn={klaytn}
-                  account={account}
-                  onSelectAddLP={onSelectAddLP}
-                  onSelectRemoveLP={onSelectRemoveLP}
-                />
-              ))}
+              {displayFarms.length > 0 ? (
+                <>
+                  {displayFarms.map((farm) => (
+                    <FarmCard
+                      key={farm.pid}
+                      farm={farm}
+                      myBalancesInWallet={getMyBalancesInWallet([farm.firstToken, farm.secondToken])}
+                      removed={false}
+                      klaytn={klaytn}
+                      account={account}
+                      onSelectAddLP={onSelectAddLP}
+                      onSelectRemoveLP={onSelectRemoveLP}
+                    />
+                  ))}
+                </>
+              ) : (
+                <NoResultArea message={t('No search results')}/>
+              )}
             </Route>
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
               Help

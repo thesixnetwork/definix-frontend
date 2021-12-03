@@ -12,14 +12,15 @@ import usePoolsList from 'hooks/usePoolsList'
 import { useFarms, usePools, useBalances } from 'state/hooks'
 import { fetchBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
-import { TitleSet, Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
-import { IS_GENESIS } from '../../config'
+import { Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
+import NoResultArea from 'components/NoResultArea'
 import PoolCard from './components/PoolCard/PoolCard'
 import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolHeader from './components/PoolHeader'
 import PoolFilter from './components/PoolFilter'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
+import { IS_GENESIS } from '../../config'
 
 const Pool: React.FC = () => {
   const { t } = useTranslation()
@@ -175,15 +176,21 @@ const Pool: React.FC = () => {
             ) : (
               <>
                 <Route exact path={`${path}`}>
-                  {displayPools.map((pool) => (
-                    <PoolCard
-                      key={pool.sousId}
-                      pool={pool}
-                      myBalanceInWallet={getMyBalanceInWallet(pool.tokenName, pool.stakingTokenAddress)}
-                      onSelectAdd={onSelectAdd}
-                      onSelectRemove={onSelectRemove}
-                    />
-                  ))}
+                  {displayPools.length > 0 ? (
+                    <>
+                      {displayPools.map((pool) => (
+                        <PoolCard
+                          key={pool.sousId}
+                          pool={pool}
+                          myBalanceInWallet={getMyBalanceInWallet(pool.tokenName, pool.stakingTokenAddress)}
+                          onSelectAdd={onSelectAdd}
+                          onSelectRemove={onSelectRemove}
+                        />
+                      ))}
+                    </>
+                  ) : (
+                    <NoResultArea message={t('No search results')}/>
+                  )}
                 </Route>
                 {/* <Route path={`${path}/history`}>
                   {orderBy(finishedPools, ['sortOrder']).map((pool) => (
