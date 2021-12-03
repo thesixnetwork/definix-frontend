@@ -33,7 +33,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ data }) => {
         return (
           <StyledFlex>
             <Flex mb="S_16">
-              <Flex mr="S_60" flexDirection="column">
+              <Flex width="50%" flexDirection="column">
                 <Text mb="S_2" textStyle="R_12R" color="mediumgrey">
                   {t('Stake Period')}
                 </Text>
@@ -41,7 +41,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ data }) => {
                   {item.period}
                 </Text>
               </Flex>
-              <Flex flexDirection="column">
+              <Flex width="50%" flexDirection="column">
                 <Text mb="S_2" textStyle="R_12R" color="mediumgrey">
                   {t('Amount')}
                 </Text>
