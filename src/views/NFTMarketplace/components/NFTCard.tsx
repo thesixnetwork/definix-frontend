@@ -37,22 +37,14 @@ const NFTCard: React.FC<NFTCardProps> = ({
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
-  const [onPresentConnectModal] = useModal(
-    typeName !== 'Group' ? (
-      <ListDetailModal data={data} isMarketplace={isMarketplace} />
+  const handleIsMarketplace = () => {
+    return isMarketplace ? (
+      <ListDetailBuyModal data={data} />
     ) : (
-      <ListGroupModal data={data} />
-    ),
-  )
-
-  const [onPresentBuyModal] = useModal(
-    <ListDetailBuyModal data={data} />,
-    // typeName !== 'Group' ? (
-    //   <ListDetailModal data={data} isMarketplace={isMarketplace} />
-    // ) : (
-    //   <ListGroupModal data={data} />
-    // ),
-  )
+      <ListDetailModal data={data} isMarketplace={isMarketplace} />
+    )
+  }
+  const [onPresentConnectModal] = useModal(typeName !== 'Group' ? handleIsMarketplace : <ListGroupModal data={data} />)
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -106,7 +98,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
     )
   }
   return (
-    <VerticalStyle className="mb-7" onClick={() => onPresentBuyModal()}>
+    <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
       <div className="flex flex-column flex-grow" style={{ position: 'sticky' }}>
         {renderCardHeading('')}
       </div>
