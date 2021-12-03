@@ -146,6 +146,7 @@ export interface NFTData {
     tokenContract: string
   }
 }
+
 export interface ProfileState {
   isInitialized: boolean
   isLoading: boolean
