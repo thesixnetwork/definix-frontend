@@ -5,7 +5,7 @@ import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image } fr
 const ConfirmModal = ({ title, lpSymbol, buttonName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpSymbol)
   return (
-    <Modal title={title} mobileFull onDismiss={onDismiss}>
+    <Modal title={title} onDismiss={onDismiss}>
       <Box width="464px" className="mt-s16 mb-s40">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">

@@ -6,7 +6,6 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
   return (
     <Modal
       title={title}
-      mobileFull
       onDismiss={onDismiss}
       // isRainbow={false}
       // bodyPadding="0 32px 32px 32px"
