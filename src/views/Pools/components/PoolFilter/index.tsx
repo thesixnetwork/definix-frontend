@@ -49,15 +49,15 @@ const PoolFilter = ({
       <Flex flexDirection="column">
         <Flex alignItems="center">
           <ToggleSection>
-            <StakedOnlySection/>
+            <StakedOnlySection />
           </ToggleSection>
           <ToggleSection ml="S_20">
-            <LiveOnlySection/>
+            <LiveOnlySection />
           </ToggleSection>
         </Flex>
         <Flex mt="S_12">
           <Box minWidth={128} mr="S_6">
-            <DropdownSection/>
+            <DropdownSection />
           </Box>
           <SearchInput
             type="text"
@@ -74,13 +74,13 @@ const PoolFilter = ({
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex justifyContent="space-between" alignItems="center">
         <Box width={128}>
-          <DropdownSection/>
+          <DropdownSection />
         </Box>
         <ToggleSection ml="S_24">
-          <StakedOnlySection/>
+          <StakedOnlySection />
         </ToggleSection>
         <ToggleSection ml="S_24">
-          <LiveOnlySection/>
+          <LiveOnlySection />
         </ToggleSection>
       </Flex>
       <Box>
