@@ -53,7 +53,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
 
   const heandleDelistOrList = () => {
     return status !== undefined ? (
-      <Button fullWidth radii="small" style={{ backgroundColor: "#E2B23A" }} className="mt-3">
+      <Button fullWidth radii="small" style={{ backgroundColor: '#E2B23A' }} className="mt-3">
         Delist
       </Button>
     ) : (
@@ -89,10 +89,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
           <LayoutImg>
             <ImgWrap>
               <video autoPlay muted loop playsInline>
-                <source
-                  src={_.get(data, 'videoUrl')}
-                  type="video/mp4"
-                />
+                <source src={_.get(data, 'videoUrl')} type="video/mp4" />
               </video>
             </ImgWrap>
           </LayoutImg>

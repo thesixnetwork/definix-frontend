@@ -131,7 +131,10 @@ const getUserOrderOnSell = async ({ account }) => {
         owner: _.get(value, 'owner'),
         price: new BigNumber(_.get(value, 'price._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         status: _.get(value, 'status'),
-        sellPeriod: new BigNumber(_.get(value, 'sellPeriod._hex')).toNumber() === 0 ? 0 : moment(sellPeriod).format(`DD-MMM-YY HH:mm:ss`),
+        sellPeriod:
+          new BigNumber(_.get(value, 'sellPeriod._hex')).toNumber() === 0
+            ? 0
+            : moment(sellPeriod).format(`DD-MMM-YY HH:mm:ss`),
         totalRemainingForSell: new BigNumber(_.get(value, 'totalRemainingForSell._hex')).toNumber(),
       })
 
@@ -157,7 +160,7 @@ const getUserOrderOnSell = async ({ account }) => {
           orderId: new BigNumber(v.orderId._hex).toNumber(),
           price: new BigNumber(v.price._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
           tokenContract: v.tokenContract,
-        })
+        }),
       )
       return ordetItems
     })
