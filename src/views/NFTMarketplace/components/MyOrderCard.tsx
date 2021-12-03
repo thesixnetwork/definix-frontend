@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import useModal from 'uikit-dev/widgets/Modal/useModal'
+import useModal from '../../../uikit-dev/widgets/Modal/useModal'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
-import CardHeading from './CardHeading'
+import CardHeadingOrder from './CardHeadingOrder'
 import ListDetailModal from './ModalNFT/ListDetailModal'
 import ListGroupModal from './ModalNFT/ListGroupModal'
 import DetailsSection from './DetailSelection'
+import DetailOrder from './DetailOrder'
 import DetailsMarketPlace from './DetailMarketPlace'
 import { NFTCardProps } from './types'
 
@@ -25,7 +26,7 @@ const VerticalStyle = styled(CardStyle)`
   cursor: pointer;
 `
 
-const NFTCard: React.FC<NFTCardProps> = ({
+const MyOrderCard: React.FC<NFTCardProps> = ({
   isHorizontal = false,
   inlineMultiplier = false,
   isMarketplace,
@@ -50,39 +51,29 @@ const NFTCard: React.FC<NFTCardProps> = ({
 
   const renderCardHeading = useCallback(
     (className?: string) => (
-      <CardHeading
+      <CardHeadingOrder
         data={data}
         isSkew={false}
         isHorizontal={isHorizontal}
         showAccordion={showAccordion}
         isOpenAccordion={isOpenAccordion}
         className={className}
-        typeName={typeName}
         setIsOpenAccordion={setIsOpenAccordion}
       />
     ),
-    [isHorizontal, isOpenAccordion, showAccordion, data, typeName],
+    [isHorizontal, isOpenAccordion, showAccordion, data],
   )
 
   const renderDetailsSection = useCallback(
-    (className?: string) =>
-      !isMarketplace ? (
-        <DetailsSection
-          isHorizontal={isHorizontal}
-          className={className}
-          data={data}
-          typeName={typeName}
-          isMarketplace={isMarketplace}
-        />
-      ) : (
-        <DetailsMarketPlace
-          isHorizontal={isHorizontal}
-          className={className}
-          data={data}
-          typeName={typeName}
-          isMarketplace={isMarketplace}
-        />
-      ),
+    (className?: string) => (
+      <DetailOrder
+        isHorizontal={isHorizontal}
+        className={className}
+        data={data}
+        typeName={typeName}
+        isMarketplace={isMarketplace}
+      />
+    ),
     [data, typeName, isHorizontal, isMarketplace],
   )
 
@@ -104,4 +95,4 @@ const NFTCard: React.FC<NFTCardProps> = ({
   )
 }
 
-export default NFTCard
+export default MyOrderCard

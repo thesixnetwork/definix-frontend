@@ -140,28 +140,18 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { isDark } = useTheme()
-
+  const [dates, setDate] = useState()
+  const [timeStamp, setTimeStamp] = useState('-')
   const { onSell } = useSellNFTOneItem(
     '0xB7cdb5199d9D8be847d9B7d9e111977652E53307',
-    data.userData.owning,
+    data.tokenID,
     price,
     '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
     '1',
+    timeStamp === '-' ? '0' : Math.round(new Date(timeStamp).getTime() / 1000),
   )
 
-  const datetime = new Date()
-  const [date, setDate] = useState(new Date(datetime))
-
-  const handleChangeDate = (newValue) => {
-    setDate(newValue)
-  }
-
-  const currency = [
-    { id: 1, value: 'FINIX' },
-    { id: 2, value: 'SIX' },
-    { id: 3, value: 'xxx' },
-  ]
-
+  const currency = [{ id: 1, value: 'SIX' }]
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
   function escapeRegExp(string: string): string {
@@ -180,11 +170,16 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   }
 
   const [isCurrency, setIsCurrency] = useState<boolean>(false)
-  const [fillCurrency, setFillCurrency] = useState('FINIX')
+  const [fillCurrency, setFillCurrency] = useState('SIX')
 
   const handleIsCurrency = (val) => {
     setIsCurrency(false)
     setFillCurrency(val.value)
+  }
+
+  const test = (date) => {
+    setDate(date)
+    setTimeStamp(date)
   }
 
   return (
@@ -199,7 +194,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
       <CardField>
         <div className="bd-b px-5 pt-2 pb-3">
           <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
-            #{data.userData.owning}
+            #{data.tokenID}
           </Text>
           <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="2">
             {data.name} {data.title}
@@ -221,7 +216,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
                   color={isDark ? '#FFFFFF' : '#212121'}
                   onClick={() => setIsCurrency(!isCurrency)}
                 >
-                  <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />
+                  <img src={`/images/coins/${'SIX'}.png`} alt="" width="20px" />
                   &nbsp;
                   <Text bold fontSize="16px">
                     {fillCurrency}
@@ -240,7 +235,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
                           onClick={() => handleIsCurrency(c)}
                           style={{ justifyContent: 'flex-start' }}
                         >
-                          <img src={`/images/coins/${'FINIX'}.png`} alt="" width="20px" />
+                          <img src={`/images/coins/${c.value}.png`} alt="" width="20px" />
                           &nbsp;
                           {c.value}
                         </MenuButton>
@@ -266,11 +261,14 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
             <div className="flex align-center">
               <Flatpicker
                 data-enable-time
-                value={date}
+                value={dates}
                 options={{
                   dateFormat: 'dd-mm-yyyy H:i:s',
                   altFormat: 'd-m-y h:i K',
                   altInput: true,
+                }}
+                onChange={([date]) => {
+                  test(date)
                 }}
               />
               <img
@@ -298,7 +296,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
               Net received
             </Text>
             <Text fontSize="14px !important" lineHeight="2">
-              1,125 FINIX
+              {values !== '' ? (parseFloat(values) * (100 - 2.5)) / 100 : '-'} FINIX
             </Text>
           </div>
           <Button fullWidth radii="small" className="mt-3" onClick={onSell}>

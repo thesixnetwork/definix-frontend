@@ -34,30 +34,29 @@ const useNFTUser = () => {
   return { nftUser }
 }
 
-export const useSellNFTOneItem = (nftAddress, tokenId, price, currencyAddress, amount) => {
+export const useSellNFTOneItem = (nftAddress, tokenId, price, currencyAddress, amount, date) => {
   const { account }: { account: string } = useWallet()
-  const test = useSellNft()
+  const sellNft = useSellNft()
 
   const sell = useCallback(async () => {
     const jSon = {
       _tokenContract: nftAddress,
       _description: 'test decription',
-      _tokenId: tokenId[0].toString(),
+      _tokenId: tokenId.toString(),
       _amount: amount,
       _price: price,
       _currency: currencyAddress,
+      _sellPeriod: date.toString(),
     }
-    console.log('jSon', test)
+
     let txHash
     if (account) {
-      // const callContract = getContract(sellNFTOneItemABI.abi, '0x6Cef51b5684e39597EEf0b82F1e932F45f56a394')
-      txHash = await test.methods.sellNFTOneItem(jSon).send({ from: '0x5F3A5da3d9AEbE7A2c66136c92657ab588a39897' })
-      console.log('txHash', txHash)
+      txHash = await sellNft.methods.sellNFTOneItem(jSon).send({ from: '0x5F3A5da3d9AEbE7A2c66136c92657ab588a39897' })
       return txHash
     }
 
     return txHash
-  }, [nftAddress, tokenId, price, currencyAddress, amount, account, test])
+  }, [nftAddress, tokenId, price, currencyAddress, amount, date, account, sellNft])
 
   return { onSell: sell }
 }

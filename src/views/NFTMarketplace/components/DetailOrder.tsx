@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
-import { Text, Heading, Image, Flex } from '../../../uikit-dev'
+import _ from 'lodash'
+import useTheme from '../../../hooks/useTheme'
 import plusWhite from '../../../uikit-dev/images/for-ui-v2/nft/plus-white.png'
+import { Text, Heading, Image, Flex } from '../../../uikit-dev'
 
 export interface ExpandableSectionProps {
   isHorizontal?: boolean
@@ -80,14 +81,21 @@ const TextCount = styled(Text)`
   font-weight: bold;
 `
 
-const DetailsSection: React.FC<ExpandableSectionProps> = ({
+const DetailOrder: React.FC<ExpandableSectionProps> = ({
   isHorizontal = false,
   className = '',
   data,
   typeName,
   isMarketplace,
 }) => {
-  const { isDark } = useTheme()
+  const filterCurrency = useMemo(() => {
+    const options = [
+      { address: '0x1FD5a30570b384f03230595E31a4214C9bEdC964', currency: 'SIX' },
+      { address: '0x1FD5a30570b384f03230595E31a4214C9bEdC962', currency: 'FINIX' },
+    ]
+    return options.filter((item) => _.get(item, 'address') === data.currency)
+  }, [data])
+
   return (
     <>
       {typeName === 'Group' ? (
@@ -97,15 +105,21 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
               <BottomContent>
                 <CircleCount>
                   <img src={plusWhite} alt="" width="20%" />
-                  <TextCount>{data.filterdList[0]}</TextCount>
+                  <TextCount>{data.count}</TextCount>
                 </CircleCount>
               </BottomContent>
             )}
+
+            <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
+              <Heading bold className="flex-shrink">
+                #12
+              </Heading>
+            </div>
           </div>
           <div className="flex align-baseline flex-wrap justify-space-between">
             <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
               <Text bold className="flex-shrink">
-                {data.filterdList[2]} {data.filterdList[3]}
+                dddd
               </Text>
             </div>
           </div>
@@ -152,35 +166,29 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
         </InfosBox>
       )}
 
-      {isMarketplace && (
-        <PriceUnitBox>
-          <div className="flex justify-space-between py-1">
-            <Text fontSize="12px" color="textSubtle">
-              Price
+      <PriceUnitBox>
+        <div className="flex justify-space-between py-1">
+          <Text fontSize="12px" color="textSubtle">
+            Price
+          </Text>
+          <div className="flex">
+            <Image src={`/images/coins/${_.get(filterCurrency, '0.currency')}.png`} width={20} height={20} />
+            <Text fontSize="12px" color="text" paddingLeft="6px">
+              {data.price} {_.get(filterCurrency, '0.currency')}
             </Text>
-            <div className="flex">
-              <Image src="/images/coins/FINIX.png" width={16} height={16} />
-              <Text fontSize="12px" color="text" paddingLeft="6px">
-                2,837.2938 FINIX
-              </Text>
-            </div>
           </div>
-          <div className="flex justify-space-between">
-            <Text fontSize="12px" color="textSubtle">
-              Until
-            </Text>
-            <Text fontSize="12px" color="text">
-              28/12/21 00:00:00 GMT+7
-            </Text>
-            {/* ถ้าไม่ได้ใส่ วันที่/เวลา */}
-            {/* <Text fontSize="12px" color="text">
-              -
-            </Text> */}
-          </div>
-        </PriceUnitBox>
-      )}
+        </div>
+        <div className="flex justify-space-between">
+          <Text fontSize="12px" color="textSubtle">
+            Until
+          </Text>
+          <Text fontSize="12px" color="text">
+            {data.sellPeriod === 0 ? '-' : data.sellPeriod}
+          </Text>
+        </div>
+      </PriceUnitBox>
     </>
   )
 }
 
-export default DetailsSection
+export default DetailOrder

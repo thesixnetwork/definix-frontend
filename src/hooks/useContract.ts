@@ -23,6 +23,7 @@ import bunnyFactory from 'config/abi/bunnyFactory.json'
 import definixRabbits from 'config/abi/definixRabbits.json'
 import dryotus from 'config/abi/dryotus.json'
 import seller from 'config/abi/SellerFacet.json'
+import marketInfo from 'config/abi/MarketInfoFacet.json'
 import lottery from 'config/abi/lottery.json'
 import lotteryTicket from 'config/abi/lotteryNft.json'
 import herodotus from 'config/abi/herodotus.json'
@@ -80,7 +81,12 @@ export const useApprovalForAll = () => {
 
 export const useSellNft = () => {
   const sellerAbi = seller.abi as unknown as AbiItem
-  return useContract(sellerAbi, '0x6Cef51b5684e39597EEf0b82F1e932F45f56a394')
+  return useContract(sellerAbi, '0x85958971FCC8F27569DFFC8b3fAf0f8e9df21B03')
+}
+
+export const useOrderOnSell = () => {
+  const marketInfoAbi = marketInfo.abi as unknown as AbiItem
+  return useContract(marketInfoAbi, '0xB7cdb5199d9D8be847d9B7d9e111977652E53307')
 }
 
 export const useProfile = () => {

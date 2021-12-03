@@ -6,10 +6,11 @@ import _ from 'lodash'
 import { Card, Text } from 'uikit-dev'
 import FlexLayout from 'components/layout/FlexLayout'
 import NFTCard from './NFTCard'
+import MyOrderCard from './MyOrderCard'
 import SelectView from './SelectView'
 import TypeTab from './TypeTab'
 import useRefresh from '../../../hooks/useRefresh'
-import { fetchNFTUser } from '../../../state/actions'
+import { fetchNFTUser, fetchUserOrderOnSell } from '../../../state/actions'
 import { State } from '../../../state/types'
 
 const FinixStake = styled(Card)`
@@ -35,15 +36,43 @@ const CardMyNFT = () => {
   const [isMarketplace, setIsMarketplace] = useState(false)
   const [typeName, setTypeName] = useState<TypeName>('Grid')
   const [groupList, setGroupList] = useState([])
+  const [orderGroupList, setOrderGroupList] = useState([])
   const { account } = useWallet()
-  const { slowRefresh } = useRefresh()
+  const { slowRefresh, fastRefresh } = useRefresh()
   const dispatch = useDispatch()
   const nftUser = useSelector((state: State) => state.nft)
+  const orderItems = _.get(nftUser, 'orderItems')
+  const orderOnSell = _.get(nftUser, 'orderOnSell')
+  const owning = _.get(nftUser, 'owning')
+
+  const intersectionBy = useMemo(() => {
+    const data = []
+    orderItems.map((item) => ({
+      ...item,
+      ...orderOnSell.find(
+        ({ id, price, currency, description, status, sellPeriod }) =>
+          id === item.id &&
+          data.push({
+            tokenId: item.tokenId,
+            price,
+            currency,
+            description,
+            status,
+            sellPeriod,
+          }),
+      ),
+    }))
+    return data
+  }, [orderOnSell, orderItems])
+
   useEffect(() => {
     if (account) {
+      // get My collections
       dispatch(fetchNFTUser(account))
+      // get Orders
+      dispatch(fetchUserOrderOnSell(account))
     }
-  }, [account, dispatch, slowRefresh])
+  }, [account, dispatch, fastRefresh])
 
   const filterdList = useMemo(() => {
     return _.get(nftUser, 'nftListData')?.filter(
@@ -51,69 +80,145 @@ const CardMyNFT = () => {
     )
   }, [nftUser])
 
+  const filterMyOrder = useMemo(() => {
+    const OrderArray = []
+    owning.filter((x) =>
+      filterdList.filter((y) => {
+        if (x.id >= y?.startID && x.id <= y?.endID) {
+          OrderArray.push({
+            tokenID: _.get(x, 'id'),
+            code: _.get(y, 'code'),
+            detailDescKey: _.get(y, 'detailDescKey'),
+            detailTitleKey: _.get(y, 'detailTitleKey'),
+            endID: _.get(y, 'endID'),
+            grade: _.get(y, 'grade'),
+            imageUrl: _.get(y, 'imageUrl'),
+            limitCount: _.get(y, 'limitCount'),
+            metaDataURL: _.get(y, 'metaDataURL'),
+            name: _.get(y, 'name'),
+            order: _.get(y, 'order'),
+            previewImgId: _.get(y, 'previewImgId'),
+            previewVideoUrl: _.get(y, 'previewVideoUrl'),
+            startID: _.get(y, 'startID'),
+            title: _.get(y, 'title'),
+            totalAmount: _.get(y, 'totalAmount'),
+            userData: _.get(y, 'userData'),
+            videoUrl: _.get(y, 'videoUrl'),
+          })
+        }
+        return OrderArray
+      }),
+    )
+    return OrderArray
+  }, [owning, filterdList])
+
+  const filterOrder = useMemo(() => {
+    const OrderArray = []
+    intersectionBy.filter((x) =>
+      filterdList.some(
+        (y) =>
+          x.tokenId >= y?.startID &&
+          x.tokenId <= y?.endID &&
+          OrderArray.push({
+            videoUrl: y?.videoUrl,
+            codeData: y?.code,
+            detailDescKey: y?.detailDescKey,
+            detailTitleKey: y?.detailTitleKey,
+            endID: y?.endID,
+            grade: y?.grade,
+            imageUrl: y?.imageUrl,
+            limitCount: y?.limitCount,
+            metaDataURL: y?.metaDataURL,
+            name: y?.name,
+            order: y?.order,
+            previewImgId: y?.previewImgId,
+            previewVideoUrl: y?.previewVideoUrl,
+            startID: y?.startID,
+            title: y?.title,
+            totalAmount: y?.totalAmount,
+            userData: y?.userData,
+            price: x?.price,
+            currency: x?.currency,
+            description: x?.description,
+            tokenID: x?.tokenId,
+            status: x?.status,
+            sellPeriod: x?.sellPeriod,
+          }),
+      ),
+    )
+    return OrderArray
+  }, [filterdList, intersectionBy])
+
   useEffect(() => {
-    const data = [
-      {
-        id: 1,
-        name: 'toon',
-        group: 'regendary',
-      },
-      {
-        id: 2,
-        name: 'mo',
-        group: 'regendary',
-      },
-      {
-        id: 3,
-        name: 'mo',
-        group: 'normal',
-      },
-      {
-        id: 4,
-        name: 'mof',
-        group: 'normal',
-      },
-      {
-        id: 5,
-        name: 'rrrrr',
-        group: 'rare',
-      },
-    ]
     const h = {}
 
-    data.forEach((x) => {
-      h[x.group] = (h[x.group] || []).concat(x.name)
+    filterMyOrder.forEach((x) => {
+      h[x.order] = (h[x.order] || []).concat(x.userData.amountOwn, x.videoUrl, x.name, x.title)
     })
 
-    const hdata = Object.keys(h).map((k) => ({ order: k, filterdList: h[k], count: h[k].length, isGroup: true }))
+    const hdata = Object.keys(h).map((k) => ({
+      order: k,
+      filterdList: h[k],
+      tokenID: k,
+      count: h[k].length,
+      isGroup: true,
+    }))
 
     setGroupList(hdata)
-  }, [filterdList])
+  }, [filterMyOrder])
 
   return (
     <div className="align-stretch mt-5">
       <TypeTab current="/nft" />
       <FinixStake>
         <SelectView typeName={typeName} setTypeName={setTypeName} />
-        {/* <Text className="mt-5 mb-5" fontSize="16px">
-          My Listing : <b>0 results</b>
-        </Text> */}
-        {/* list data */}
-        <Text className="mt-5 mb-5" fontSize="16px">
-          My Collection : <b>{filterdList.length} results</b>
-        </Text>
         {typeName === 'Grid' ? (
-          <FlexLayout cols={3}>
-            {filterdList.map((data) => (
-              <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
-            ))}
-          </FlexLayout>
+          <>
+            {filterOrder.length > 0 && (
+              <>
+                <Text className="mt-5 mb-5" fontSize="16px">
+                  My Listing : <b>{filterOrder.length} results</b>
+                </Text>
+                <FlexLayout cols={3}>
+                  {filterOrder.map((data) => (
+                    <MyOrderCard
+                      typeName={typeName}
+                      isHorizontal={listView}
+                      isMarketplace={isMarketplace}
+                      data={data}
+                    />
+                  ))}
+                </FlexLayout>
+              </>
+            )}
+            {filterMyOrder.length > 0 && (
+              <>
+                <Text className="mt-5 mb-5" fontSize="16px">
+                  My Collection : <b>{filterMyOrder.length} results</b>
+                </Text>
+                <FlexLayout cols={3}>
+                  {filterMyOrder.map((data) => (
+                    <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
+                  ))}
+                </FlexLayout>
+              </>
+            )}
+          </>
         ) : (
-          <FlexLayout cols={3}>
-            {groupList.map((data) => (
-              <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
-            ))}
-          </FlexLayout>
+          <>
+            {groupList.length > 0 && (
+              <>
+                <Text className="mt-5 mb-5" fontSize="16px">
+                  <b>{groupList.length} results</b>
+                </Text>
+                <FlexLayout cols={3}>
+                  {groupList.map((data) => (
+                    <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
+                  ))}
+                </FlexLayout>
+              </>
+            )}
+          </>
         )}
       </FinixStake>
     </div>

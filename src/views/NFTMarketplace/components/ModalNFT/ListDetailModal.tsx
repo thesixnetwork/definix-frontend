@@ -49,6 +49,19 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
   const { isDark } = useTheme()
   const { onApprove } = useSousApprove()
   const [requestedApproval, setRequestedApproval] = useState(false)
+  const status = _.get(data, 'status')
+
+  const heandleDelistOrList = () => {
+    return status !== undefined ? (
+      <Button fullWidth radii="small" style={{ backgroundColor: "#E2B23A" }} className="mt-3">
+        Delist
+      </Button>
+    ) : (
+      <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+        List
+      </Button>
+    )
+  }
 
   // const handleApprove = useCallback(async () => {
   //   try {
@@ -77,7 +90,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
             <ImgWrap>
               <video autoPlay muted loop playsInline>
                 <source
-                  src="https://dryotus.definix.com/ipfs/QmdnHBXwbe1tpa8fpKKk1RnAFiU93JpuM7CwmGkUga3kuC/Legendary_T-ARA.mp4"
+                  src={_.get(data, 'videoUrl')}
                   type="video/mp4"
                 />
               </video>
@@ -87,7 +100,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
 
         <div className={isMobile ? 'mt-6' : 'ml-6'}>
           <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
-            #{data.userData.owning}
+            #{data.tokenID}
           </Text>
           <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="1.4">
             {data.name} {data.title}
@@ -151,9 +164,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               </Button>
             </>
           ) : (
-            <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-              List
-            </Button>
+            heandleDelistOrList()
           )}
         </div>
       </div>

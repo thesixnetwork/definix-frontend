@@ -13,8 +13,25 @@ interface CardHeadingType {
   isOpenAccordion?: boolean
   className?: string
   setIsOpenAccordion?: (open: boolean) => void
-  typeName: string
 }
+
+const StyledFarmImages = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  > * {
+    flex-shrink: 0;
+
+    &:nth-child(01) {
+      position: relative;
+      z-index: 1;
+    }
+    &:nth-child(02) {
+      margin-left: -8px;
+    }
+  }
+`
 
 const ImgWrap = styled(Flex)`
   height: auto;
@@ -28,28 +45,28 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const CardHeading: React.FC<CardHeadingType> = ({ data, className = '', typeName }) => {
+const CardHeadingOrder: React.FC<CardHeadingType> = ({
+  data,
+  isSkew = false,
+  isHorizontal = false,
+  className = '',
+  showAccordion = false,
+  isOpenAccordion = false,
+  setIsOpenAccordion,
+}) => {
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <LazyLoad offset={100}>
         <LayoutImg>
-          {typeName === 'Group' ? (
-            <ImgWrap>
-              <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
-                <source src={data.filterdList[1]} type="video/mp4" />
-              </video>
-            </ImgWrap>
-          ) : (
-            <ImgWrap>
-              <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
-                <source src={data.videoUrl} type="video/mp4" />
-              </video>
-            </ImgWrap>
-          )}
+          <ImgWrap>
+            <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
+              <source src={data.videoUrl} type="video/mp4" />
+            </video>
+          </ImgWrap>
         </LayoutImg>
       </LazyLoad>
     </Flex>
   )
 }
 
-export default CardHeading
+export default CardHeadingOrder

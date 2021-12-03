@@ -107,7 +107,7 @@ export interface NFTData {
   grade: string
   detailTitleKey: string
   detailDescKey: string
-  price: number
+  // price: number
   availableAmount?: number
   totalAmount: number
   limitCount: number
@@ -122,6 +122,29 @@ export interface NFTData {
     owning: number[]
   }
   metaDataURL: string
+  userOrderOnSell?: {
+    tokenId: number
+    id: number
+    code: string
+    description: string
+    owner: string
+    created: number
+    currency: string
+    amount: number
+    tokenRemeningForSell: number
+    price: number
+    status: number
+    itemCount: number
+  }
+  userOrderItems?: {
+    tokenId: number
+    amount: number
+    id: number
+    code: string
+    orderId: number
+    price: number
+    tokenContract: string
+  }
 }
 export interface ProfileState {
   isInitialized: boolean
