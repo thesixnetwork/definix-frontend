@@ -68,10 +68,11 @@ const NFTCard: React.FC<NFTCardProps> = ({
         isOpenAccordion={isOpenAccordion}
         className={className}
         typeName={typeName}
+        isMarketplace={isMarketplace}
         setIsOpenAccordion={setIsOpenAccordion}
       />
     ),
-    [isHorizontal, isOpenAccordion, showAccordion, data, typeName],
+    [isHorizontal, isOpenAccordion, showAccordion, data, typeName, isMarketplace],
   )
 
   const renderDetailsSection = useCallback(

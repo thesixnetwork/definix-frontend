@@ -14,6 +14,7 @@ interface CardHeadingType {
   className?: string
   setIsOpenAccordion?: (open: boolean) => void
   typeName: string
+  isMarketplace?: boolean
 }
 
 const ImgWrap = styled(Flex)`
@@ -28,25 +29,38 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const CardHeading: React.FC<CardHeadingType> = ({ data, className = '', typeName }) => {
+const CardHeading: React.FC<CardHeadingType> = ({ data, className = '', typeName, isMarketplace }) => {
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <LazyLoad offset={100}>
-        <LayoutImg>
-          {typeName === 'Group' ? (
+        {isMarketplace ? (
+          <LayoutImg>
             <ImgWrap>
               <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
-                <source src={data.filterdList[1]} type="video/mp4" />
+                <source
+                  src="https://dryotus.definix.com/ipfs/QmdnHBXwbe1tpa8fpKKk1RnAFiU93JpuM7CwmGkUga3kuC/Legendary_T-ARA.mp4"
+                  type="video/mp4"
+                />
               </video>
             </ImgWrap>
-          ) : (
-            <ImgWrap>
-              <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
-                <source src={data.videoUrl} type="video/mp4" />
-              </video>
-            </ImgWrap>
-          )}
-        </LayoutImg>
+          </LayoutImg>
+        ) : (
+          <LayoutImg>
+            {typeName === 'Group' ? (
+              <ImgWrap>
+                <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
+                  <source src={data.filterdList[1]} type="video/mp4" />
+                </video>
+              </ImgWrap>
+            ) : (
+              <ImgWrap>
+                <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
+                  <source src={data.videoUrl} type="video/mp4" />
+                </video>
+              </ImgWrap>
+            )}
+          </LayoutImg>
+        )}
       </LazyLoad>
     </Flex>
   )
