@@ -1,6 +1,6 @@
 import React from 'react'
-import styled from 'styled-components';
-import { Flex, Text, ColorStyles, Card } from 'definixswap-uikit';
+import styled from 'styled-components'
+import { Flex, Text, ColorStyles, Card } from 'definixswap-uikit'
 
 const EmptyArea = styled(Flex)`
   justify-content: center;
@@ -16,7 +16,6 @@ const NoResultArea: React.FC<{
   useCardLayout?: boolean
   message: string
 }> = ({ useCardLayout = true, message }) => {
-
   const Content = () => (
     <EmptyArea>
       <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
@@ -27,10 +26,10 @@ const NoResultArea: React.FC<{
 
   return useCardLayout ? (
     <Card mt="S_16">
-      <Content/>
+      <Content />
     </Card>
   ) : (
-    <Content/>
+    <Content />
   )
 }
 

@@ -189,7 +189,7 @@ const Pool: React.FC = () => {
                       ))}
                     </>
                   ) : (
-                    <NoResultArea message={t('No search results')}/>
+                    <NoResultArea message={t('No search results')} />
                   )}
                 </Route>
                 {/* <Route path={`${path}/history`}>

@@ -189,7 +189,7 @@ const Farms: React.FC = () => {
                   ))}
                 </>
               ) : (
-                <NoResultArea message={t('No search results')}/>
+                <NoResultArea message={t('No search results')} />
               )}
             </Route>
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
