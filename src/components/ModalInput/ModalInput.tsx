@@ -34,14 +34,7 @@ const ModalInput: React.FC<{
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
-}> = ({
-  max,
-  onChange,
-  value,
-  onSelectBalanceRateButton,
-  onClickButton,
-  buttonName,
-}) => {
+}> = ({ max, onChange, value, onSelectBalanceRateButton, onClickButton, buttonName }) => {
   const { t } = useTranslation()
   const { convertToBalanceFormat } = useConverter()
 
