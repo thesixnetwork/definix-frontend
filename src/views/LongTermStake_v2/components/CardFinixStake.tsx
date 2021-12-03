@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import VFinixAprButton from './VFinixAprButton'
 import BalanceFinix from './BalanceFinix'
 import ApproveFinix from './ApproveFinix'
+import EstimateVFinix from './EstimateVFinix'
 import { IsMobileType } from './types'
 
 const FlexCard = styled(Flex)`
@@ -43,6 +44,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           <BalanceFinix isMobile={isMobile} days={days} data={data} />
           <ApproveFinix isMobile={isMobile} />
+          <EstimateVFinix isMobile={isMobile} />
         </FlexCard>
       </Card>
     </>
