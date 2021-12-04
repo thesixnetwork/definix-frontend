@@ -106,8 +106,8 @@ const rebalances: RebalanceConfig[] = [
   //     customInitCodeHash.pancake,
   //   ],
   //   fee: {
-  //     management: 0.2,
-  //     buyback: 1.5,
+  //     management: 0.5,
+  //     buyback: 1.0,
   //     // bounty: 0.3,
   //   },
   //   ratio: [
@@ -232,8 +232,8 @@ const rebalances: RebalanceConfig[] = [
       customInitCodeHash.pancake,
     ],
     fee: {
-      management: 0.2,
-      buyback: 1.5,
+      management: 0.5,
+      buyback: 1.0,
       // bounty: 0.3,
     },
     ratio: [
@@ -315,8 +315,8 @@ const rebalances: RebalanceConfig[] = [
       customInitCodeHash.pancake,
     ],
     fee: {
-      management: 0.2,
-      buyback: 1.5,
+      management: 0.5,
+      buyback: 1.0,
       // bounty: 0.3,
     },
     ratio: [
@@ -400,8 +400,8 @@ const rebalances: RebalanceConfig[] = [
   //     customInitCodeHash.pancake,
   //   ],
   //   fee: {
-  //     management: 0.2,
-  //     buyback: 1.5,
+  //     management: 0.5,
+  //     buyback: 1.0,
   //     // bounty: 0.3,
   //   },
   //   ratio: [
@@ -462,8 +462,8 @@ const rebalances: RebalanceConfig[] = [
   //   factory: [customFactory.definix, customFactory.definix, customFactory.pancake],
   //   initCodeHash: [customInitCodeHash.definix, customInitCodeHash.definix, customInitCodeHash.pancake],
   //   fee: {
-  //     management: 0.2,
-  //     buyback: 1.5,
+  //     management: 0.5,
+  //     buyback: 1.0,
   //     // bounty: 0.3,
   //   },
   //   ratio: [
@@ -516,8 +516,8 @@ const rebalances: RebalanceConfig[] = [
       customInitCodeHash.pancake,
     ],
     fee: {
-      management: 0.2,
-      buyback: 1.5,
+      management: 0.5,
+      buyback: 1.0,
       // bounty: 0.3,
     },
     ratio: [
@@ -590,8 +590,8 @@ const rebalances: RebalanceConfig[] = [
   //     customInitCodeHash.pancake,
   //   ],
   //   fee: {
-  //     management: 0.2,
-  //     buyback: 1.5,
+  //     management: 0.5,
+  //     buyback: 1.0,
   //     // bounty: 0.3,
   //   },
   //   ratio: [
@@ -667,8 +667,8 @@ const rebalances: RebalanceConfig[] = [
   //     customInitCodeHash.pancake,
   //   ],
   //   fee: {
-  //     management: 0.2,
-  //     buyback: 1.5,
+  //     management: 0.5,
+  //     buyback: 1.0,
   //     // bounty: 0.3,
   //   },
   //   ratio: [
@@ -733,8 +733,8 @@ const rebalances: RebalanceConfig[] = [
       customInitCodeHash.pancake,
     ],
     fee: {
-      management: 0.2,
-      buyback: 1.5,
+      management: 0.5,
+      buyback: 1.0,
       // bounty: 0.3,
     },
     ratio: [
