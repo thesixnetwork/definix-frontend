@@ -7,6 +7,10 @@ export default {
     97: process.env.REACT_APP_HERODOTUS_TESTNET,
     56: process.env.REACT_APP_HERODOTUS_MAINNET,
   },
+  dryotus: {
+    97: process.env.REACT_APP_DRYOTUS_TESTNET,
+    56: process.env.REACT_APP_DRYOTUS_MAINNET,
+  },
   wbnb: {
     97: process.env.REACT_APP_WBNB_ADDRESS_TESTNET,
     56: process.env.REACT_APP_WBNB_ADDRESS_MAINNET,
@@ -82,6 +86,10 @@ export default {
   veloFinixLP: {
     97: process.env.REACT_APP_LP_VELO_FINIX_TESTNET,
     56: process.env.REACT_APP_LP_VELO_FINIX_MAINNET,
+  },
+  nftMarketplace: {
+    97: process.env.REACT_APP_NFT_MARKETPLACE_TESTNET,
+    56: process.env.REACT_APP_NFT_MARKETPLACE_MAINNET,
   },
   // configured =====================================================
   syrup: {

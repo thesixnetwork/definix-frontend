@@ -155,10 +155,6 @@ const CardMarketplace = () => {
   const owning = _.get(nftUser, 'owning')
   const dispatch = useDispatch()
 
-  console.log('orderItems', orderItems)
-  console.log('orderOnSell', orderOnSell)
-  console.log('owning', owning)
-
   // useEffect(() => {
   //   dispatch(fetchItemByCode(account))
   // },[])
@@ -166,12 +162,11 @@ const CardMarketplace = () => {
   useEffect(() => {
     async function fetchMerketplace() {
       const response = await axios.get(
-        'https://ww4ncb7uf8.execute-api.ap-southeast-1.amazonaws.com/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60',
+        `${process.env.REACT_APP_API_NFT}/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60`,
       )
       if (response.status === 200) {
         const data = response.data
         data.map((v) => dispatch(fetchItemByCode(_.get(v, 'code'))))
-        // console.log('data', response.data)
       }
     }
     fetchMerketplace()
@@ -182,11 +177,6 @@ const CardMarketplace = () => {
       (data) => typeof data?.userData?.amountOwn === 'number' && data?.userData?.amountOwn > 0,
     )
   }, [nftUser])
-
-  // const filterMarketplace = useMemo(() => {
-  //   const data = []
-  //   filterdList.filter((x) => console.log('==========', x))
-  // }, [])
 
   const handleIsName = (val) => {
     setIsName(false)

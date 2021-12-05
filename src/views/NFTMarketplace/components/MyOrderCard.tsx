@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { useDispatch } from 'react-redux'
 import useModal from '../../../uikit-dev/widgets/Modal/useModal'
 import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeadingOrder from './CardHeadingOrder'
@@ -7,6 +8,7 @@ import ListDetailModal from './ModalNFT/ListDetailModal'
 import ListGroupModal from './ModalNFT/ListGroupModal'
 import DetailOrder from './DetailOrder'
 import { NFTCardProps } from './types'
+import { fetchSyncDatabyOrder } from '../../../state/actions'
 
 const CardStyle = styled.div<{ isHorizontal?: boolean; isMarketplace?: boolean }>`
   background: ${(props) => props.theme.card.background};
@@ -35,6 +37,7 @@ const MyOrderCard: React.FC<NFTCardProps> = ({
   const isMobile = !isXl
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const [showAccordion, setShowAccordion] = useState(false)
+  const dispatch = useDispatch()
   const [onPresentConnectModal] = useModal(
     typeName !== 'Group' ? (
       <ListDetailModal data={data} isMarketplace={isMarketplace} />
@@ -42,6 +45,11 @@ const MyOrderCard: React.FC<NFTCardProps> = ({
       <ListGroupModal data={data} code />
     ),
   )
+
+  const callSyncUserData = () => {
+    dispatch(fetchSyncDatabyOrder(data.orderId))
+    onPresentConnectModal()
+  }
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -77,14 +85,14 @@ const MyOrderCard: React.FC<NFTCardProps> = ({
 
   if (typeName === 'Grid') {
     return (
-      <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
+      <VerticalStyle className="mb-7" onClick={() => callSyncUserData()}>
         <div className="flex flex-column flex-grow">{renderCardHeading('')}</div>
         {renderDetailsSection('px-5 py-3')}
       </VerticalStyle>
     )
   }
   return (
-    <VerticalStyle className="mb-7" onClick={() => onPresentConnectModal()}>
+    <VerticalStyle className="mb-7" onClick={() => callSyncUserData()}>
       <div className="flex flex-column flex-grow" style={{ position: 'sticky' }}>
         {renderCardHeading('')}
       </div>

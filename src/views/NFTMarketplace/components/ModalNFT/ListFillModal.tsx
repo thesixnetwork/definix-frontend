@@ -216,10 +216,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
             const body = {
               userAddress: account,
             }
-            const response = await axios.post(
-              'https://ww4ncb7uf8.execute-api.ap-southeast-1.amazonaws.com/orders',
-              body,
-            )
+            const response = await axios.post(`${process.env.REACT_APP_API_NFT}/orders`, body)
             if (response.status === 200) {
               setInterval(() => setIsLoading(''), 5000)
               setInterval(() => onDismiss(), 5000)

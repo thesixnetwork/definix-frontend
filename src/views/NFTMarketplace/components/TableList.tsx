@@ -135,10 +135,7 @@ const TableList = ({ rows, isLoading, isDark, total, setOnDismiss }) => {
             const body = {
               userAddress: account,
             }
-            const response = await axios.post(
-              'https://ww4ncb7uf8.execute-api.ap-southeast-1.amazonaws.com/cancel',
-              body,
-            )
+            const response = await axios.post(`${process.env.REACT_APP_API_NFT}/cancel`, body)
             if (response.status === 200) {
               setOnDismiss(true)
               setFlgDelist(false)

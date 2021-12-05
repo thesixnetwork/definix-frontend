@@ -51,6 +51,7 @@ const CardMyNFT = () => {
         ({ id, price, currency, description, status, sellPeriod, code }) =>
           id === item.id &&
           status !== 2 &&
+          item.isReady &&
           data.push({
             tokenId: item.tokenId,
             price,
@@ -59,6 +60,8 @@ const CardMyNFT = () => {
             status,
             sellPeriod,
             orderCode: code,
+            orderId: item.orderId,
+            isReady: item.isReady,
           }),
       ),
     }))
@@ -145,6 +148,7 @@ const CardMyNFT = () => {
             tokenID: x?.tokenId,
             status: x?.status,
             sellPeriod: x?.sellPeriod,
+            orderId: x.orderId,
           }),
       ),
     )

@@ -1,9 +1,11 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
+import axios from 'axios'
 import numeral from 'numeral'
 import moment from 'moment'
 import _, { chain } from 'lodash'
+import { getDryotusAddress, getNftMarketplaceAddress } from 'utils/addressHelpers'
 import multicall from '../../utils/multicall'
 import * as NFTListData from '../../nft.json'
 import dryotusABI from '../../config/abi/dryotus.json'
@@ -18,6 +20,7 @@ interface IState {
   orderOnSell: NFTData[]
   orderItems: NFTData[]
   owning: NFTData[]
+  syncData: string
 }
 export interface Owning {
   [key: string]: number
@@ -30,6 +33,7 @@ const initialState: IState = {
   orderOnSell: [],
   orderItems: [],
   owning: [],
+  syncData: '',
 }
 
 export const nftSlice = createSlice({
@@ -58,11 +62,15 @@ export const nftSlice = createSlice({
       state.orderOnSell = orderOnSell
       state.orderItems = orderItems
     },
+    setSyncData: (state, action) => {
+      const { syncData } = action.payload
+      state.syncData = syncData
+    },
   },
 })
 
 // Actions
-export const { setUserNFTs, setOrderOnsell, setOnwing } = nftSlice.actions
+export const { setUserNFTs, setOrderOnsell, setOnwing, setSyncData } = nftSlice.actions
 
 const getNFTUser = async (account) => {
   const owningData: Owning = {}
@@ -79,7 +87,7 @@ const getNFTUser = async (account) => {
           )
           const addressToCall = Array(nftConfig.endID - nftConfig.startID + 1).fill(account)
           return {
-            address: '0xB7cdb5199d9D8be847d9B7d9e111977652E53307' || '',
+            address: getDryotusAddress() || '',
             name: 'balanceOfBatch',
             params: [addressToCall, idToCall],
           }
@@ -112,7 +120,7 @@ const getUserOrderOnSell = async ({ account }) => {
   try {
     const calls = [
       {
-        address: '0x85958971FCC8F27569DFFC8b3fAf0f8e9df21B03',
+        address: getNftMarketplaceAddress(),
         name: 'getUserOrderOnSell',
         params: [account],
       },
@@ -141,27 +149,35 @@ const getUserOrderOnSell = async ({ account }) => {
 
       const call = [
         {
-          address: '0x85958971FCC8F27569DFFC8b3fAf0f8e9df21B03',
+          address: getNftMarketplaceAddress(),
           name: 'getOrderItems',
           params: [new BigNumber(_.get(value, 'id._hex')).toNumber()],
         },
+        {
+          address: getNftMarketplaceAddress(),
+          name: 'orderIsReadyForSellByCode',
+          params: [_.get(value, 'code')],
+        },
       ]
-      const getOrderItems = await multicall(marketInfoABI.abi, call)
-      return getOrderItems
+      const [getOrderItems, getOrderIsReadyForSell] = await multicall(marketInfoABI.abi, call)
+      return { getOrderItems, getOrderIsReadyForSell }
     })
 
     const saleItems_ = await Promise.all(orders)
     saleItems_.filter((i) => {
-      _.get(i, '0.saleItems_').map((v) =>
-        ordetItems.push({
-          tokenId: new BigNumber(v.tokenId._hex).toNumber(),
-          amount: new BigNumber(v.amount._hex).toNumber(),
-          code: v.code,
-          id: new BigNumber(v.id._hex).toNumber(),
-          orderId: new BigNumber(v.orderId._hex).toNumber(),
-          price: new BigNumber(v.price._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-          tokenContract: v.tokenContract,
-        }),
+      _.get(i, 'getOrderIsReadyForSell').some((isReady) =>
+        _.get(i, 'getOrderItems.saleItems_').some((v) =>
+          ordetItems.push({
+            tokenId: new BigNumber(v.tokenId._hex).toNumber(),
+            amount: new BigNumber(v.amount._hex).toNumber(),
+            code: v.code,
+            id: new BigNumber(v.id._hex).toNumber(),
+            orderId: new BigNumber(v.orderId._hex).toNumber(),
+            price: new BigNumber(v.price._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
+            tokenContract: v.tokenContract,
+            isReady,
+          }),
+        ),
       )
       return ordetItems
     })
@@ -178,15 +194,13 @@ const getItemByCode = async ({ code }) => {
   try {
     const calls = [
       {
-        address: '0x85958971FCC8F27569DFFC8b3fAf0f8e9df21B03',
+        address: getNftMarketplaceAddress(),
         name: 'getItemByCode',
         params: [code],
       },
     ]
-    console.log('getItemByCode', calls)
     const userOrders = await multicall(marketInfoABI.abi, calls)
-    console.log('userOrders', userOrders)
-    // const result = _.get(userOrders, '0.ordersReturn_')
+    const orderList = _.get(userOrders, '0.0')
   } catch (error) {
     console.log('error::', error)
   }
@@ -220,6 +234,14 @@ export const fetchItemByCode = (code) => async (dispatch) => {
   }
   const [[orderItems, orderOnSell]] = await Promise.all(fetchPromise)
   // dispatch(setOrderOnsell({ orderItems, orderOnSell }))
+}
+
+export const fetchSyncDatabyOrder = (orderId) => async (dispatch) => {
+  const body = {
+    orderId,
+  }
+  const response = await axios.post(`${process.env.REACT_APP_API_NFT}/sync`, body)
+  dispatch(setSyncData({ syncData: response.data.message }))
 }
 
 export default nftSlice.reducer
