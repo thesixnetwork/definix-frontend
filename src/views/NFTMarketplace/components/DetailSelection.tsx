@@ -87,7 +87,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   data,
   typeName,
   isMarketplace,
-  dataForGroup
+  dataForGroup,
 }) => {
   const { isDark } = useTheme()
   return (

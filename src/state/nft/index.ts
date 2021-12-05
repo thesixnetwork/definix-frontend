@@ -183,12 +183,12 @@ const getItemByCode = async ({ code }) => {
         params: [code],
       },
     ]
-    console.log("getItemByCode", calls)
+    console.log('getItemByCode', calls)
     const userOrders = await multicall(marketInfoABI.abi, calls)
-    console.log("userOrders", userOrders)
+    console.log('userOrders', userOrders)
     // const result = _.get(userOrders, '0.ordersReturn_')
   } catch (error) {
-    console.log("error::", error)
+    console.log('error::', error)
   }
 
   return [ordetItems, orderOnSell]

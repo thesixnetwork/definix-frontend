@@ -39,7 +39,7 @@ const MyOrderCard: React.FC<NFTCardProps> = ({
     typeName !== 'Group' ? (
       <ListDetailModal data={data} isMarketplace={isMarketplace} />
     ) : (
-      <ListGroupModal data={data} code/>
+      <ListGroupModal data={data} code />
     ),
   )
 

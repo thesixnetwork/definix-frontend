@@ -49,7 +49,7 @@ const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data, code })
     if (dismiss) {
       onDismiss()
     }
-  },[dismiss, onDismiss])
+  }, [dismiss, onDismiss])
 
   const filterCode = useMemo(() => {
     return data.filter((person) => person.code === code.filterdList[4])

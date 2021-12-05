@@ -249,7 +249,9 @@ const CardMyNFT = () => {
         ) : (
           <div className="text-center">
             <Text fontSize="26px !important">You don’t have any NFT</Text>
-            <Text fontSize="18px !important">You can buy NFT by this button below or Marketplace button on the top</Text>
+            <Text fontSize="18px !important">
+              You can buy NFT by this button below or Marketplace button on the top
+            </Text>
           </div>
         )}
       </FinixStake>
