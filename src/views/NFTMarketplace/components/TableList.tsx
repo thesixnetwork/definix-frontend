@@ -1,13 +1,19 @@
 /* eslint-disable no-nested-ternary */
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useDispatch } from 'react-redux'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
 import _ from 'lodash'
+import axios from 'axios'
+import useModal from '../../../uikit-dev/widgets/Modal/useModal'
+import ListDetailModal from './ModalNFT/ListDetailModal'
+import ListFillModal from './ModalNFT/ListFillModal'
 // import { fetchStartIndex } from '../../../state/longTermStake'
 import { Card, Button, Text } from '../../../uikit-dev'
 import PaginationCustom from './Pagination'
+import { useSousApprove, useCancelOrder } from '../../../hooks/useGetMyNft'
 
 const CardTable = styled(Card)`
   position: relative;
@@ -103,15 +109,71 @@ const LoadingData = () => (
   </TR>
 )
 
-const TableList = ({ rows, isLoading, isDark, total }) => {
+const TableList = ({ rows, isLoading, isDark, total, setOnDismiss }) => {
   const [cols] = useState(['List', ''])
   const [currentPage, setCurrentPage] = useState(1)
+  const [dataSelect, setDataSelect] = useState({})
+  const [flg, setFlg] = useState('')
+  const [flgDelist, setFlgDelist] = useState(false)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  const dispatch = useDispatch()
+  const [onPresentConnectModal] = useModal(<ListDetailModal data={_.get(dataSelect, '0')} isMarketplace={false} />)
+  const [onPresentModal] = useModal(<ListFillModal data={_.get(dataSelect, '0')} />)
+  const { onCancelOrder } = useCancelOrder(_.get(dataSelect, '0.orderCode'))
+  const { account }: { account: string } = useWallet()
 
   const onPageChange = (e, page) => {
     setCurrentPage(page)
     // dispatch(fetchStartIndex((page - 1) * 10))
+  }
+
+  useEffect(() => {
+    if (flgDelist) {
+      try {
+        const res = onCancelOrder()
+        res
+          .then(async (r) => {
+            const body = {
+              userAddress: account,
+            }
+            const response = await axios.post(
+              'https://ww4ncb7uf8.execute-api.ap-southeast-1.amazonaws.com/cancel',
+              body,
+            )
+            if (response.status === 200) {
+              setOnDismiss(true)
+              setFlgDelist(false)
+            }
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      } catch (e) {
+        console.error(e)
+      }
+    }
+  }, [flgDelist, onCancelOrder, account, setOnDismiss])
+
+  const handleListOrder = async (item) => {
+    setFlg('Add')
+    await setDataSelect(rows.filter((person) => person.tokenID === item.tokenID))
+  }
+
+  useEffect(() => {
+    if (flg === 'Detail') {
+      onPresentConnectModal()
+    } else if (flg === 'Add') {
+      onPresentModal()
+    }
+  }, [flg, onPresentConnectModal, onPresentModal])
+
+  const goToDetails = async (item) => {
+    setFlg('Detail')
+    await setDataSelect(rows.filter((person) => person.tokenID === item.tokenID))
+  }
+
+  const handleOrderCancel = async (item) => {
+    setFlgDelist(true)
+    await setDataSelect(rows.filter((person) => person.tokenID === item.tokenID))
   }
 
   return (
@@ -140,21 +202,36 @@ const TableList = ({ rows, isLoading, isDark, total }) => {
                     <TD>
                       <div className="flex">
                         <Text fontSize="14px !important" color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                          Token ID #02
+                          Token ID #{item.tokenID}
                         </Text>
                       </div>
                     </TD>
                     <TD className="text-right">
                       <div className="flex align-center">
-                        <ButtonDetails fullWidth radii="small" className="mr-2" size="sm">
+                        <ButtonDetails
+                          onClick={() => goToDetails(item)}
+                          fullWidth
+                          radii="small"
+                          className="mr-2"
+                          size="sm"
+                        >
                           Details
                         </ButtonDetails>
-                        <ButtonAction fullWidth radii="small" size="sm">
-                          List
-                        </ButtonAction>
-                        {/* <ButtonAction  fullWidth radii="small" size="sm">
-                              Delist
-                            </ButtonAction> */}
+                        {item.status === 0 ? (
+                          <ButtonAction
+                            onClick={() => handleOrderCancel(item)}
+                            style={{ backgroundColor: '#E2B23A' }}
+                            fullWidth
+                            radii="small"
+                            size="sm"
+                          >
+                            Delist
+                          </ButtonAction>
+                        ) : (
+                          <ButtonAction onClick={() => handleListOrder(item)} fullWidth radii="small" size="sm">
+                            List
+                          </ButtonAction>
+                        )}
                       </div>
                     </TD>
                   </TR>

@@ -1,5 +1,7 @@
 import React, { useState, useCallback } from 'react'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import _ from 'lodash'
+import axios from 'axios'
 import styled from 'styled-components'
 import LazyLoad from 'react-lazyload'
 import useTheme from 'hooks/useTheme'
@@ -13,7 +15,7 @@ import CopyToClipboard from '../CopyToClipboard'
 import EllipsisText from '../../../../components/EllipsisText'
 import ListFillModal from './ListFillModal'
 import ModalComplete from './ModalComplete'
-import { useSousApprove } from '../../../../hooks/useGetMyNft'
+import { useSousApprove, useCancelOrder } from '../../../../hooks/useGetMyNft'
 
 interface Props {
   onDismiss?: () => void
@@ -43,17 +45,52 @@ const LayoutImg = styled.div`
 const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace, data }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
+  const [orderCode, setOrderCode] = useState('')
   const [handleBuy] = useModal(<ModalComplete />)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { isDark } = useTheme()
   const { onApprove } = useSousApprove()
+  const { onCancelOrder } = useCancelOrder(data.orderCode)
   const [requestedApproval, setRequestedApproval] = useState(false)
   const status = _.get(data, 'status')
+  const { account }: { account: string } = useWallet()
+
+  const handleOrderCancel = async () => {
+    try {
+      const res = onCancelOrder()
+      res
+        .then(async (r) => {
+          if (r) {
+            const body = {
+              userAddress: account,
+            }
+            const response = await axios.post(
+              'https://ww4ncb7uf8.execute-api.ap-southeast-1.amazonaws.com/cancel',
+              body,
+            )
+            if (response.status === 200) {
+              onDismiss()
+            }
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   const heandleDelistOrList = () => {
     return status !== undefined ? (
-      <Button fullWidth radii="small" style={{ backgroundColor: '#E2B23A' }} className="mt-3">
+      <Button
+        fullWidth
+        radii="small"
+        onClick={() => handleOrderCancel()}
+        style={{ backgroundColor: '#E2B23A' }}
+        className="mt-3"
+      >
         Delist
       </Button>
     ) : (

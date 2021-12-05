@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
+import Lottie from 'react-lottie'
+import { useWallet } from '@binance-chain/bsc-use-wallet'
 import _ from 'lodash'
+import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
@@ -8,6 +11,10 @@ import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/material_blue.css'
 import { ChevronDown } from 'react-feather'
 import { Button, Text, useMatchBreakpoints, Card, Flex, Image } from 'uikit-dev'
+import moon from 'uikit-dev/animation/moon.json'
+import sun from 'uikit-dev/animation/sun.json'
+import success from 'uikit-dev/animation/complete.json'
+import load from 'uikit-dev/animation/farmPool.json'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
 import Helper from 'uikit-dev/components/Helper'
@@ -21,6 +28,18 @@ import OutsideClick from '../OutsideClick'
 interface Props {
   onDismiss?: () => void
   data: any
+}
+
+const sunOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: success,
+}
+
+const moonOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: load,
 }
 
 const Balance = styled.div`
@@ -142,6 +161,9 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const { isDark } = useTheme()
   const [dates, setDate] = useState()
   const [timeStamp, setTimeStamp] = useState('-')
+  const [isStopped, setIsStop] = useState(false)
+  const [isLoading, setIsLoading] = useState('')
+  const { account }: { account: string } = useWallet()
   const { onSell } = useSellNFTOneItem(
     '0xB7cdb5199d9D8be847d9B7d9e111977652E53307',
     data.tokenID,
@@ -182,6 +204,46 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
     setTimeStamp(date)
   }
 
+  const onSellItems = () => {
+    console.log('onSellItems')
+    setIsLoading('loading')
+    try {
+      const call = onSell()
+      call
+        .then(async (r) => {
+          setIsLoading('success')
+          if (r) {
+            const body = {
+              userAddress: account,
+            }
+            const response = await axios.post(
+              'https://ww4ncb7uf8.execute-api.ap-southeast-1.amazonaws.com/orders',
+              body,
+            )
+            if (response.status === 200) {
+              setInterval(() => setIsLoading(''), 5000)
+              setInterval(() => onDismiss(), 5000)
+            }
+          }
+        })
+        .catch((e) => console.log(e))
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  const loading = () => {
+    return (
+      isLoading !== '' && (
+        <Lottie
+          options={isLoading === 'loading' ? moonOptions : sunOptions}
+          height={isLoading === 'loading' ? 300 : 155}
+          width={isLoading === 'loading' ? 444 : 185}
+        />
+      )
+    )
+  }
+
   return (
     <ModalNFT
       isRainbow={false}
@@ -192,117 +254,123 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
       bodyPadding="0px"
     >
       <CardField>
-        <div className="bd-b px-5 pt-2 pb-3">
-          <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
-            #{data.tokenID}
-          </Text>
-          <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="2">
-            {data.name} {data.title}
-          </Text>
-          <Text fontSize="14px !important" color="textSubtle" lineHeight="1.5">
-            Dingo x SIX Network NFT Project No.1
-          </Text>
-        </div>
-        <div className="pa-5 pt-3">
-          <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
-            Currency
-          </Text>
-          <OutsideClick
-            onClick={() => setIsCurrency(false)}
-            as={
-              <Flex position="relative" width="auto">
-                <DropdownBtn
-                  border="#737375"
-                  color={isDark ? '#FFFFFF' : '#212121'}
-                  onClick={() => setIsCurrency(!isCurrency)}
-                >
-                  <img src={`/images/coins/${'SIX'}.png`} alt="" width="20px" />
-                  &nbsp;
-                  <Text bold fontSize="16px">
-                    {fillCurrency}
-                  </Text>
-                  <ArrowWrap>
-                    <ChevronDown style={{ transform: `rotate(${isCurrency ? 180 : 0}deg)` }} size="18px" />
-                  </ArrowWrap>
-                </DropdownBtn>
-                {isCurrency && (
-                  <SubWrap>
-                    <SubBtns>
-                      {currency.map((c) => (
-                        <MenuButton
-                          key={c.id}
-                          fullWidth
-                          onClick={() => handleIsCurrency(c)}
-                          style={{ justifyContent: 'flex-start' }}
-                        >
-                          <img src={`/images/coins/${c.value}.png`} alt="" width="20px" />
-                          &nbsp;
-                          {c.value}
-                        </MenuButton>
-                      ))}
-                    </SubBtns>
-                  </SubWrap>
-                )}
-              </Flex>
-            }
-          />
-          <div className="mt-2">
-            <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
-              Price
-            </Text>
-            <Balance style={{ flexWrap: 'wrap', height: 52 }}>
-              <NumberInput placeholder="0.00" value={values} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
-            </Balance>
-          </div>
-          <div className="mt-2 w-100">
-            <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
-              End date/time (Optional)
-            </Text>
-            <div className="flex align-center">
-              <Flatpicker
-                data-enable-time
-                value={dates}
-                options={{
-                  dateFormat: 'dd-mm-yyyy H:i:s',
-                  altFormat: 'd-m-y h:i K',
-                  altInput: true,
-                }}
-                onChange={([date]) => {
-                  test(date)
-                }}
-              />
-              <img
-                alt=""
-                src={isDark ? calendarWhite : calendarBlack}
-                width="20px"
-                height="18px"
-                style={{ marginLeft: '-30px', cursor: 'pointer' }}
-              />
-            </div>
-          </div>
-          <div className="flex justify-space-between mt-2">
-            <div className="flex align-center">
-              <Text fontSize="14px !important" lineHeight="2">
-                Listing fee
+        {isLoading !== '' ? (
+          loading()
+        ) : (
+          <>
+            <div className="bd-b px-5 pt-2 pb-3">
+              <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
+                #{data.tokenID}
               </Text>
-              <Helper text="Something" className="ml-2" position="right" />
+              <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="2">
+                {data.name} {data.title}
+              </Text>
+              <Text fontSize="14px !important" color="textSubtle" lineHeight="1.5">
+                Dingo x SIX Network NFT Project No.1
+              </Text>
             </div>
-            <Text fontSize="14px !important" lineHeight="2">
-              2.5%
-            </Text>
-          </div>
-          <div className="flex justify-space-between">
-            <Text fontSize="14px !important" lineHeight="2">
-              Net received
-            </Text>
-            <Text fontSize="14px !important" lineHeight="2">
-              {values !== '' ? (parseFloat(values) * (100 - 2.5)) / 100 : '-'} FINIX
-            </Text>
-          </div>
-          <Button fullWidth radii="small" className="mt-3" onClick={onSell}>
-            Submit
-          </Button>
-        </div>
+            <div className="pa-5 pt-3">
+              <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
+                Currency
+              </Text>
+              <OutsideClick
+                onClick={() => setIsCurrency(false)}
+                as={
+                  <Flex position="relative" width="auto">
+                    <DropdownBtn
+                      border="#737375"
+                      color={isDark ? '#FFFFFF' : '#212121'}
+                      onClick={() => setIsCurrency(!isCurrency)}
+                    >
+                      <img src={`/images/coins/${'SIX'}.png`} alt="" width="20px" />
+                      &nbsp;
+                      <Text bold fontSize="16px">
+                        {fillCurrency}
+                      </Text>
+                      <ArrowWrap>
+                        <ChevronDown style={{ transform: `rotate(${isCurrency ? 180 : 0}deg)` }} size="18px" />
+                      </ArrowWrap>
+                    </DropdownBtn>
+                    {isCurrency && (
+                      <SubWrap>
+                        <SubBtns>
+                          {currency.map((c) => (
+                            <MenuButton
+                              key={c.id}
+                              fullWidth
+                              onClick={() => handleIsCurrency(c)}
+                              style={{ justifyContent: 'flex-start' }}
+                            >
+                              <img src={`/images/coins/${c.value}.png`} alt="" width="20px" />
+                              &nbsp;
+                              {c.value}
+                            </MenuButton>
+                          ))}
+                        </SubBtns>
+                      </SubWrap>
+                    )}
+                  </Flex>
+                }
+              />
+              <div className="mt-2">
+                <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
+                  Price
+                </Text>
+                <Balance style={{ flexWrap: 'wrap', height: 52 }}>
+                  <NumberInput placeholder="0.00" value={values} onChange={handleChange} pattern="^[0-9]*[,]?[0-9]*$" />
+                </Balance>
+              </div>
+              <div className="mt-2 w-100">
+                <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
+                  End date/time (Optional)
+                </Text>
+                <div className="flex align-center">
+                  <Flatpicker
+                    data-enable-time
+                    value={dates}
+                    options={{
+                      dateFormat: 'dd-mm-yyyy H:i:s',
+                      altFormat: 'd-m-y h:i K',
+                      altInput: true,
+                    }}
+                    onChange={([date]) => {
+                      test(date)
+                    }}
+                  />
+                  <img
+                    alt=""
+                    src={isDark ? calendarWhite : calendarBlack}
+                    width="20px"
+                    height="18px"
+                    style={{ marginLeft: '-30px', cursor: 'pointer' }}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-space-between mt-2">
+                <div className="flex align-center">
+                  <Text fontSize="14px !important" lineHeight="2">
+                    Listing fee
+                  </Text>
+                  <Helper text="Something" className="ml-2" position="right" />
+                </div>
+                <Text fontSize="14px !important" lineHeight="2">
+                  2.5%
+                </Text>
+              </div>
+              <div className="flex justify-space-between">
+                <Text fontSize="14px !important" lineHeight="2">
+                  Net received
+                </Text>
+                <Text fontSize="14px !important" lineHeight="2">
+                  {values !== '' ? (parseFloat(values) * (100 - 2.5)) / 100 : '-'} FINIX
+                </Text>
+              </div>
+              <Button fullWidth radii="small" className="mt-3" onClick={() => onSellItems()}>
+                Submit
+              </Button>
+            </div>
+          </>
+        )}
       </CardField>
     </ModalNFT>
   )

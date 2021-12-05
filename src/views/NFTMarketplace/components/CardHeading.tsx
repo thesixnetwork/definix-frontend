@@ -15,6 +15,7 @@ interface CardHeadingType {
   setIsOpenAccordion?: (open: boolean) => void
   typeName: string
   isMarketplace?: boolean
+  dataForGroup: any
 }
 
 const ImgWrap = styled(Flex)`
@@ -29,7 +30,7 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const CardHeading: React.FC<CardHeadingType> = ({ data, className = '', typeName, isMarketplace }) => {
+const CardHeading: React.FC<CardHeadingType> = ({ data, className = '', typeName, isMarketplace, dataForGroup }) => {
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
       <LazyLoad offset={100}>

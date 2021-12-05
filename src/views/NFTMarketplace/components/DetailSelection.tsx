@@ -10,6 +10,7 @@ export interface ExpandableSectionProps {
   data: any
   typeName: string
   isMarketplace?: boolean
+  dataForGroup: any
 }
 
 const InfosBox = styled.div<{ isHorizontal?: boolean; isMarketplace?: boolean }>`
@@ -86,6 +87,7 @@ const DetailsSection: React.FC<ExpandableSectionProps> = ({
   data,
   typeName,
   isMarketplace,
+  dataForGroup
 }) => {
   const { isDark } = useTheme()
   return (

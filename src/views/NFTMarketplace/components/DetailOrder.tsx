@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import _ from 'lodash'
 import useTheme from '../../../hooks/useTheme'
 import plusWhite from '../../../uikit-dev/images/for-ui-v2/nft/plus-white.png'
-import { Text, Heading, Image, Flex } from '../../../uikit-dev'
+import { Text, Heading, Image, Flex, Button } from '../../../uikit-dev'
 
 export interface ExpandableSectionProps {
   isHorizontal?: boolean
@@ -37,48 +37,12 @@ const PriceUnitBox = styled.div<{ isHorizontal?: boolean }>`
   border-bottom-right-radius: ${({ theme, isHorizontal }) => (!isHorizontal ? theme.radii.card : '0')};
 `
 
-const GroupPlus = styled.div<{ isHorizontal?: boolean }>`
-  border: 1px solid #737375;
-  border-radius: 50%;
-  background-color: #0973b9;
-  position: absolute;
-  top: 76%;
-  right: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 8%;
-  width: 10%;
-`
-
-const BottomContent = styled(Flex)`
-  width: 100%;
-  justify-content: flex-end;
-
-  @media screen and (max-width: ${768}) {
-    padding: 0px 20px 18px 20px;
-  }
-`
-
-const CircleCount = styled.div`
-  border: 1px solid #737375;
-  border-radius: 50%;
-  background-color: #0973b9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: -32px;
-  margin-bottom: 12px;
-  z-index: 10;
-  height: 35px;
-  width: 35px;
-`
-
-const TextCount = styled(Text)`
-  text-shadow: 0px 2px 4px #00000050;
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: bold;
+const Box = styled.div<{ status?: string }>`
+  padding: 6px 20px 6px 20px;
+  border: ${({ status }) => `1px solid ${status}`};
+  color: ${({ status }) => `${status}`};
+  border-radius: 8px;
+  font-size: 12px;
 `
 
 const DetailOrder: React.FC<ExpandableSectionProps> = ({
@@ -96,75 +60,53 @@ const DetailOrder: React.FC<ExpandableSectionProps> = ({
     return options.filter((item) => _.get(item, 'address') === data.currency)
   }, [data])
 
+  const setData = useMemo(() => {
+    let txt = ''
+    if (data.status === 0) {
+      txt = '#55BD92'
+    } else if (data.status === 1) {
+      txt = '#F5C858'
+    }
+    return txt
+  }, [data])
+
+  // enum OrderStatus {OnSell,SoldOut,Cancel,Other}
+  const textStatus = useMemo(() => {
+    let txt = ''
+    if (data.status === 0) {
+      txt = 'Listed'
+    } else if (data.status === 1) {
+      txt = 'Sold'
+    }
+    return txt
+  }, [data])
+
   return (
     <>
-      {typeName === 'Group' ? (
-        <InfosBox>
-          <div>
-            {typeName === 'Group' && (
-              <BottomContent>
-                <CircleCount>
-                  <img src={plusWhite} alt="" width="20%" />
-                  <TextCount>{data.count}</TextCount>
-                </CircleCount>
-              </BottomContent>
-            )}
-
-            <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
-              <Heading bold className="flex-shrink">
-                #12
-              </Heading>
-            </div>
+      <InfosBox>
+        <div>
+          <div className="flex flex-wrap" style={{ marginRight: '-6px', justifyContent: 'space-between' }}>
+            <Heading bold className="flex-shrink">
+              #{data.tokenID}
+            </Heading>
+            <Box status={setData}>{textStatus}</Box>
           </div>
-          <div className="flex align-baseline flex-wrap justify-space-between">
-            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-              <Text bold className="flex-shrink">
-                dddd
-              </Text>
-            </div>
+        </div>
+        <div className="flex align-baseline flex-wrap justify-space-between">
+          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+            <Text bold className="flex-shrink">
+              {data.name} {data.title}
+            </Text>
           </div>
-          <div className="flex align-baseline flex-wrap justify-space-between">
-            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-              <Text bold className="flex-shrink" color="textSubtle">
-                Dingo x SIX Network NFT Project No.1
-              </Text>
-            </div>
+        </div>
+        <div className="flex align-baseline flex-wrap justify-space-between">
+          <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
+            <Text bold className="flex-shrink" color="textSubtle">
+              Dingo x SIX Network NFT Project No.1
+            </Text>
           </div>
-        </InfosBox>
-      ) : (
-        <InfosBox>
-          <div>
-            {typeName === 'Group' && (
-              <BottomContent>
-                <CircleCount>
-                  <img src={plusWhite} alt="" width="20%" />
-                  <TextCount>{data.count}</TextCount>
-                </CircleCount>
-              </BottomContent>
-            )}
-
-            <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
-              <Heading bold className="flex-shrink">
-                #{data.tokenID}
-              </Heading>
-            </div>
-          </div>
-          <div className="flex align-baseline flex-wrap justify-space-between">
-            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-              <Text bold className="flex-shrink">
-                {data.name} {data.title}
-              </Text>
-            </div>
-          </div>
-          <div className="flex align-baseline flex-wrap justify-space-between">
-            <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
-              <Text bold className="flex-shrink" color="textSubtle">
-                Dingo x SIX Network NFT Project No.1
-              </Text>
-            </div>
-          </div>
-        </InfosBox>
-      )}
+        </div>
+      </InfosBox>
 
       <PriceUnitBox>
         <div className="flex justify-space-between py-1">

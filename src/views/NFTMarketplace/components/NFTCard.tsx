@@ -32,6 +32,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
   isMarketplace,
   data,
   typeName,
+  dataForGroup
 }) => {
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -44,7 +45,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
       <ListDetailModal data={data} isMarketplace={isMarketplace} />
     )
   }
-  const [onPresentConnectModal] = useModal(typeName !== 'Group' ? handleIsMarketplace : <ListGroupModal data={data} />)
+  const [onPresentConnectModal] = useModal(typeName !== 'Group' ? handleIsMarketplace : <ListGroupModal data={dataForGroup} code={data} />)
 
   useEffect(() => {
     setIsOpenAccordion(false)
@@ -62,9 +63,10 @@ const NFTCard: React.FC<NFTCardProps> = ({
         typeName={typeName}
         isMarketplace={isMarketplace}
         setIsOpenAccordion={setIsOpenAccordion}
+        dataForGroup={dataForGroup}
       />
     ),
-    [isHorizontal, isOpenAccordion, showAccordion, data, typeName, isMarketplace],
+    [isHorizontal, isOpenAccordion, showAccordion, data, typeName, isMarketplace, dataForGroup],
   )
 
   const renderDetailsSection = useCallback(
@@ -76,6 +78,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
           data={data}
           typeName={typeName}
           isMarketplace={isMarketplace}
+          dataForGroup={dataForGroup}
         />
       ) : (
         <DetailsMarketPlace
@@ -86,7 +89,7 @@ const NFTCard: React.FC<NFTCardProps> = ({
           isMarketplace={isMarketplace}
         />
       ),
-    [data, typeName, isHorizontal, isMarketplace],
+    [data, typeName, isHorizontal, isMarketplace, dataForGroup],
   )
 
   if (typeName === 'Grid') {

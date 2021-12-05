@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
 import FlexLayout from 'components/layout/FlexLayout'
 import useTheme from 'hooks/useTheme'
+import axios from 'axios'
 import moment from 'moment'
 import {
   ArrowBackIcon,
@@ -22,6 +24,8 @@ import NFTCard from './NFTCard'
 import Dropdown from './DropdownNFT/Dropdown'
 import TypeTab from './TypeTab'
 import OutsideClick from './OutsideClick'
+import { State } from '../../../state/types'
+import { fetchItemByCode } from '../../../state/actions'
 
 const CardBox = styled(Card)`
   width: 100%;
@@ -145,6 +149,44 @@ const CardMarketplace = () => {
   const [fillLevel, setFillLevel] = useState('Legendary')
   const [fillPrice, setFillPrice] = useState('Most recent')
   const { isDark } = useTheme()
+  const nftUser = useSelector((state: State) => state.nft)
+  const orderItems = _.get(nftUser, 'orderItems')
+  const orderOnSell = _.get(nftUser, 'orderOnSell')
+  const owning = _.get(nftUser, 'owning')
+  const dispatch = useDispatch()
+
+  console.log('orderItems', orderItems)
+  console.log('orderOnSell', orderOnSell)
+  console.log('owning', owning)
+
+  // useEffect(() => {
+  //   dispatch(fetchItemByCode(account))
+  // },[])
+
+  useEffect(() => {
+    async function fetchMerketplace() {
+      const response = await axios.get(
+        'https://ww4ncb7uf8.execute-api.ap-southeast-1.amazonaws.com/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60',
+      )
+      if (response.status === 200) {
+        const data = response.data
+        data.map((v) => dispatch(fetchItemByCode(_.get(v, 'code'))))
+        // console.log('data', response.data)
+      }
+    }
+    fetchMerketplace()
+  }, [dispatch])
+
+  const filterdList = useMemo(() => {
+    return _.get(nftUser, 'nftListData')?.filter(
+      (data) => typeof data?.userData?.amountOwn === 'number' && data?.userData?.amountOwn > 0,
+    )
+  }, [nftUser])
+
+  // const filterMarketplace = useMemo(() => {
+  //   const data = []
+  //   filterdList.filter((x) => console.log('==========', x))
+  // }, [])
 
   const handleIsName = (val) => {
     setIsName(false)
@@ -245,7 +287,7 @@ const CardMarketplace = () => {
         </Text>
         <FlexLayout cols={3}>
           {list.map((data) => (
-            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} />
+            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} dataForGroup />
           ))}
         </FlexLayout>
       </CardBox>

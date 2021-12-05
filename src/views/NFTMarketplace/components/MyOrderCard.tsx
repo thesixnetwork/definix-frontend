@@ -5,9 +5,7 @@ import { useMatchBreakpoints } from '../../../uikit-dev/hooks'
 import CardHeadingOrder from './CardHeadingOrder'
 import ListDetailModal from './ModalNFT/ListDetailModal'
 import ListGroupModal from './ModalNFT/ListGroupModal'
-import DetailsSection from './DetailSelection'
 import DetailOrder from './DetailOrder'
-import DetailsMarketPlace from './DetailMarketPlace'
 import { NFTCardProps } from './types'
 
 const CardStyle = styled.div<{ isHorizontal?: boolean; isMarketplace?: boolean }>`
@@ -41,7 +39,7 @@ const MyOrderCard: React.FC<NFTCardProps> = ({
     typeName !== 'Group' ? (
       <ListDetailModal data={data} isMarketplace={isMarketplace} />
     ) : (
-      <ListGroupModal data={data} />
+      <ListGroupModal data={data} code/>
     ),
   )
 

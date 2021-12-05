@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import { Button, Text, Heading, Flex, useMatchBreakpoints } from 'uikit-dev'
@@ -13,6 +13,7 @@ interface Props {
   onDismiss?: () => void
   isMarketplace?: boolean
   data: any
+  code: any
 }
 
 const ImgWrap = styled(Flex)`
@@ -34,33 +35,25 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
+const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data, code }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
+  const [dismiss, setOnDismiss] = useState(false)
   const [handleBuy] = useModal(<ModalComplete />)
   const { isXl } = useMatchBreakpoints()
-  const { isDark, toggleTheme } = useTheme()
+  const { isDark } = useTheme()
   const isMobile = !isXl
 
-  const rows = [
-    {
-      id: 1,
-      name: 'toon',
-    },
-    {
-      id: 2,
-      name: 'mo',
-    },
-    {
-      id: 3,
-      name: 'mo',
-    },
-    {
-      id: 4,
-      name: 'mo',
-    },
-  ]
+  useEffect(() => {
+    if (dismiss) {
+      onDismiss()
+    }
+  },[dismiss, onDismiss])
+
+  const filterCode = useMemo(() => {
+    return data.filter((person) => person.code === code.filterdList[4])
+  }, [data, code])
 
   return (
     <ModalNFT
@@ -75,21 +68,18 @@ const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
         <LayoutImg>
           <ImgWrap>
             <video autoPlay muted loop playsInline>
-              <source
-                src="https://dryotus.definix.com/ipfs/QmdnHBXwbe1tpa8fpKKk1RnAFiU93JpuM7CwmGkUga3kuC/Legendary_T-ARA.mp4"
-                type="video/mp4"
-              />
+              <source src={code.filterdList[1]} type="video/mp4" />
             </video>
           </ImgWrap>
         </LayoutImg>
         <div className={isMobile ? 'mt-6' : 'ml-6'}>
           <Text bold fontSize="20px !important" lineHeight="1">
-            T-ARA LEGENDARY Grade Limited
+            {code.filterdList[2]} {code.filterdList[3]}
           </Text>
           <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
             Dingo x SIX Network NFT Project No.1
           </Text>
-          <TableList rows={rows} isLoading={isLoading} isDark={isDark} total={10} />
+          <TableList rows={filterCode} isLoading={isLoading} isDark={isDark} total={10} setOnDismiss={setOnDismiss} />
         </div>
       </div>
     </ModalNFT>

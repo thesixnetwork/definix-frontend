@@ -7,4 +7,5 @@ export interface NFTCardProps {
   isMarketplace?: boolean
   data?: any
   typeName?: string
+  dataForGroup: any
 }

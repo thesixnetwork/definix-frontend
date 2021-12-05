@@ -32,13 +32,11 @@ export type TypeName = 'Grid' | 'Group'
 
 const CardMyNFT = () => {
   const [listView, setListView] = useState(false)
-  const [isGroup, setIsGroup] = useState(false)
   const [isMarketplace, setIsMarketplace] = useState(false)
   const [typeName, setTypeName] = useState<TypeName>('Grid')
   const [groupList, setGroupList] = useState([])
-  const [orderGroupList, setOrderGroupList] = useState([])
   const { account } = useWallet()
-  const { slowRefresh, fastRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
   const nftUser = useSelector((state: State) => state.nft)
   const orderItems = _.get(nftUser, 'orderItems')
@@ -50,8 +48,9 @@ const CardMyNFT = () => {
     orderItems.map((item) => ({
       ...item,
       ...orderOnSell.find(
-        ({ id, price, currency, description, status, sellPeriod }) =>
+        ({ id, price, currency, description, status, sellPeriod, code }) =>
           id === item.id &&
+          status !== 2 &&
           data.push({
             tokenId: item.tokenId,
             price,
@@ -59,6 +58,7 @@ const CardMyNFT = () => {
             description,
             status,
             sellPeriod,
+            orderCode: code,
           }),
       ),
     }))
@@ -122,6 +122,8 @@ const CardMyNFT = () => {
           OrderArray.push({
             videoUrl: y?.videoUrl,
             codeData: y?.code,
+            code: y?.code,
+            orderCode: x?.orderCode,
             detailDescKey: y?.detailDescKey,
             detailTitleKey: y?.detailTitleKey,
             endID: y?.endID,
@@ -149,11 +151,16 @@ const CardMyNFT = () => {
     return OrderArray
   }, [filterdList, intersectionBy])
 
+  const dataForGroup = useMemo(() => {
+    const merge = filterMyOrder.filter((o1) => !filterOrder.some((o2) => o1.tokenID === o2.tokenID))
+    return filterOrder.concat(merge)
+  }, [filterMyOrder, filterOrder])
+
   useEffect(() => {
     const h = {}
 
     filterMyOrder.forEach((x) => {
-      h[x.order] = (h[x.order] || []).concat(x.userData.amountOwn, x.videoUrl, x.name, x.title)
+      h[x.order] = (h[x.order] || []).concat(x.userData.amountOwn, x.videoUrl, x.name, x.title, x.code)
     })
 
     const hdata = Object.keys(h).map((k) => ({
@@ -171,54 +178,79 @@ const CardMyNFT = () => {
     <div className="align-stretch mt-5">
       <TypeTab current="/nft" />
       <FinixStake>
-        <SelectView typeName={typeName} setTypeName={setTypeName} />
-        {typeName === 'Grid' ? (
+        {owning.length > 0 ? (
           <>
-            {filterOrder.length > 0 && (
+            <SelectView typeName={typeName} setTypeName={setTypeName} />
+            {typeName === 'Grid' ? (
               <>
-                <Text className="mt-5 mb-5" fontSize="16px">
-                  My Listing : <b>{filterOrder.length} results</b>
-                </Text>
-                <FlexLayout cols={3}>
-                  {filterOrder.map((data) => (
-                    <MyOrderCard
-                      typeName={typeName}
-                      isHorizontal={listView}
-                      isMarketplace={isMarketplace}
-                      data={data}
-                    />
-                  ))}
-                </FlexLayout>
+                {filterOrder.length > 0 && (
+                  <>
+                    <Text className="mt-5 mb-5" fontSize="16px">
+                      My Listing : <b>{filterOrder.length} results</b>
+                    </Text>
+                    <FlexLayout cols={3}>
+                      {filterOrder.map(
+                        (data) =>
+                          data.status !== 2 && (
+                            <MyOrderCard
+                              typeName={typeName}
+                              isHorizontal={listView}
+                              isMarketplace={isMarketplace}
+                              data={data}
+                              dataForGroup={dataForGroup}
+                            />
+                          ),
+                      )}
+                    </FlexLayout>
+                  </>
+                )}
+                {filterMyOrder.length > 0 && (
+                  <>
+                    <Text className="mt-5 mb-5" fontSize="16px">
+                      My Collection : <b>{filterMyOrder.length} results</b>
+                    </Text>
+                    <FlexLayout cols={3}>
+                      {filterMyOrder.map((data) => (
+                        <NFTCard
+                          typeName={typeName}
+                          isHorizontal={listView}
+                          isMarketplace={isMarketplace}
+                          data={data}
+                          dataForGroup={dataForGroup}
+                        />
+                      ))}
+                    </FlexLayout>
+                  </>
+                )}
               </>
-            )}
-            {filterMyOrder.length > 0 && (
+            ) : (
               <>
-                <Text className="mt-5 mb-5" fontSize="16px">
-                  My Collection : <b>{filterMyOrder.length} results</b>
-                </Text>
-                <FlexLayout cols={3}>
-                  {filterMyOrder.map((data) => (
-                    <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
-                  ))}
-                </FlexLayout>
+                {groupList.length > 0 && (
+                  <>
+                    <Text className="mt-5 mb-5" fontSize="16px">
+                      <b>{groupList.length} results</b>
+                    </Text>
+                    <FlexLayout cols={3}>
+                      {groupList.map((data) => (
+                        <NFTCard
+                          typeName={typeName}
+                          isHorizontal={listView}
+                          isMarketplace={isMarketplace}
+                          data={data}
+                          dataForGroup={dataForGroup}
+                        />
+                      ))}
+                    </FlexLayout>
+                  </>
+                )}
               </>
             )}
           </>
         ) : (
-          <>
-            {groupList.length > 0 && (
-              <>
-                <Text className="mt-5 mb-5" fontSize="16px">
-                  <b>{groupList.length} results</b>
-                </Text>
-                <FlexLayout cols={3}>
-                  {groupList.map((data) => (
-                    <NFTCard typeName={typeName} isHorizontal={listView} isMarketplace={isMarketplace} data={data} />
-                  ))}
-                </FlexLayout>
-              </>
-            )}
-          </>
+          <div className="text-center">
+            <Text fontSize="26px !important">You don’t have any NFT</Text>
+            <Text fontSize="18px !important">You can buy NFT by this button below or Marketplace button on the top</Text>
+          </div>
         )}
       </FinixStake>
     </div>

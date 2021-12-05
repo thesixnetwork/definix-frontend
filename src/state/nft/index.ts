@@ -8,6 +8,7 @@ import multicall from '../../utils/multicall'
 import * as NFTListData from '../../nft.json'
 import dryotusABI from '../../config/abi/dryotus.json'
 import marketInfoABI from '../../config/abi/MarketInfoFacet.json'
+import sellerABI from '../../config/abi/SellerFacet.json'
 import { NFTData } from '../types'
 
 interface IState {
@@ -63,45 +64,45 @@ export const nftSlice = createSlice({
 // Actions
 export const { setUserNFTs, setOrderOnsell, setOnwing } = nftSlice.actions
 
-const getNFTUser = async ({ account }) => {
+const getNFTUser = async (account) => {
   const owningData: Owning = {}
   const tokenId = []
   const groupedNFTS = chain(NFTListData.data).groupBy('name').value()
 
-  await Promise.all(
-    Object.keys(groupedNFTS).map(async (key: string) => {
-      const NFTGroup: NFTData[] = groupedNFTS[key]
-      const calls = NFTGroup.map((nftConfig: NFTData) => {
-        const idToCall = Array.from(Array(nftConfig.endID - nftConfig.startID + 1).keys()).map(
-          (i: number) => nftConfig.startID + i,
-        )
-        const addressToCall = Array(nftConfig.endID - nftConfig.startID + 1).fill(
-          '0x5F3A5da3d9AEbE7A2c66136c92657ab588a39897',
-        )
-        return {
-          address: '0xB7cdb5199d9D8be847d9B7d9e111977652E53307' || '',
-          name: 'balanceOfBatch',
-          params: [addressToCall, idToCall],
-        }
-      })
-      const allUserNFTSData = await multicall(dryotusABI, calls)
-
-      NFTGroup.forEach((nftConfig: NFTData, index: number) => {
-        const [fetchedOwningData] = allUserNFTSData[index]
-        fetchedOwningData.forEach((itemOwning: any, itemIndex: number) => {
-          // eslint-disable-next-line no-underscore-dangle
-          const currentOwning = new BigNumber(itemOwning._hex).isEqualTo(1)
-          if (currentOwning) {
-            owningData[itemIndex + nftConfig.startID] = 1
-            tokenId.push({
-              id: itemIndex + nftConfig.startID,
-            })
+  if (account) {
+    await Promise.all(
+      Object.keys(groupedNFTS).map(async (key: string) => {
+        const NFTGroup: NFTData[] = groupedNFTS[key]
+        const calls = NFTGroup.map((nftConfig: NFTData) => {
+          const idToCall = Array.from(Array(nftConfig.endID - nftConfig.startID + 1).keys()).map(
+            (i: number) => nftConfig.startID + i,
+          )
+          const addressToCall = Array(nftConfig.endID - nftConfig.startID + 1).fill(account)
+          return {
+            address: '0xB7cdb5199d9D8be847d9B7d9e111977652E53307' || '',
+            name: 'balanceOfBatch',
+            params: [addressToCall, idToCall],
           }
         })
-      })
-      return true
-    }),
-  )
+        const allUserNFTSData = await multicall(dryotusABI, calls)
+
+        NFTGroup.forEach((nftConfig: NFTData, index: number) => {
+          const [fetchedOwningData] = allUserNFTSData[index]
+          fetchedOwningData.forEach((itemOwning: any, itemIndex: number) => {
+            // eslint-disable-next-line no-underscore-dangle
+            const currentOwning = new BigNumber(itemOwning._hex).isEqualTo(1)
+            if (currentOwning) {
+              owningData[itemIndex + nftConfig.startID] = 1
+              tokenId.push({
+                id: itemIndex + nftConfig.startID,
+              })
+            }
+          })
+        })
+        return true
+      }),
+    )
+  }
   return [owningData, tokenId]
 }
 
@@ -171,9 +172,33 @@ const getUserOrderOnSell = async ({ account }) => {
   return [ordetItems, orderOnSell]
 }
 
+const getItemByCode = async ({ code }) => {
+  const ordetItems = []
+  const orderOnSell = []
+  try {
+    const calls = [
+      {
+        address: '0x85958971FCC8F27569DFFC8b3fAf0f8e9df21B03',
+        name: 'getItemByCode',
+        params: [code],
+      },
+    ]
+    console.log("getItemByCode", calls)
+    const userOrders = await multicall(marketInfoABI.abi, calls)
+    console.log("userOrders", userOrders)
+    // const result = _.get(userOrders, '0.ordersReturn_')
+  } catch (error) {
+    console.log("error::", error)
+  }
+
+  return [ordetItems, orderOnSell]
+}
+
 export const fetchNFTUser = (account) => async (dispatch) => {
   const fetchPromise = []
-  fetchPromise.push(getNFTUser(account))
+  if (account) {
+    fetchPromise.push(getNFTUser(account))
+  }
   const [[data, tokenId]] = await Promise.all(fetchPromise)
   dispatch(setUserNFTs(data))
   dispatch(setOnwing({ owning: tokenId }))
@@ -186,6 +211,15 @@ export const fetchUserOrderOnSell = (account) => async (dispatch) => {
   }
   const [[orderItems, orderOnSell]] = await Promise.all(fetchPromise)
   dispatch(setOrderOnsell({ orderItems, orderOnSell }))
+}
+
+export const fetchItemByCode = (code) => async (dispatch) => {
+  const fetchPromise = []
+  if (code) {
+    fetchPromise.push(getItemByCode({ code }))
+  }
+  const [[orderItems, orderOnSell]] = await Promise.all(fetchPromise)
+  // dispatch(setOrderOnsell({ orderItems, orderOnSell }))
 }
 
 export default nftSlice.reducer

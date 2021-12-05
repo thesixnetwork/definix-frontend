@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback, useContext } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import sellNFTOneItemABI from 'config/abi/SellerFacet.json'
 import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
 import { getContract } from 'utils/web3'
@@ -51,11 +50,13 @@ export const useSellNFTOneItem = (nftAddress, tokenId, price, currencyAddress, a
 
     let txHash
     if (account) {
-      txHash = await sellNft.methods.sellNFTOneItem(jSon).send({ from: '0x5F3A5da3d9AEbE7A2c66136c92657ab588a39897' })
+      txHash = await sellNft.methods.sellNFTOneItem(jSon).send({ from: account })
       return txHash
     }
 
-    return txHash
+    return new Promise((resolve, reject) => {
+      resolve(txHash)
+    })
   }, [nftAddress, tokenId, price, currencyAddress, amount, date, account, sellNft])
 
   return { onSell: sell }
@@ -78,6 +79,28 @@ export const useSousApprove = () => {
   }, [account, approvalForAll])
 
   return { onApprove: handleApprove }
+}
+
+export const useCancelOrder = (orderCode) => {
+  const { account }: { account: string } = useWallet()
+  const sellNft = useSellNft()
+
+  const handleCancelOrder = useCallback(async () => {
+    try {
+      let txHash
+      if (account) {
+        txHash = await sellNft.methods.cancelOneOrder(orderCode).send({ from: account })
+      }
+
+      return new Promise((resolve, reject) => {
+        resolve(txHash)
+      })
+    } catch (e) {
+      return false
+    }
+  }, [sellNft, orderCode, account])
+
+  return { onCancelOrder: handleCancelOrder }
 }
 
 export default useNFTUser
