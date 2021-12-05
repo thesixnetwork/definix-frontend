@@ -80,7 +80,14 @@ const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data, code, t
           <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
             Dingo x SIX Network NFT Project No.1
           </Text>
-          <TableList rows={filterCode} isLoading={isLoading} isDark={isDark} total={10} setOnDismiss={setOnDismiss} typeName={typeName} />
+          <TableList
+            rows={filterCode}
+            isLoading={isLoading}
+            isDark={isDark}
+            total={10}
+            setOnDismiss={setOnDismiss}
+            typeName={typeName}
+          />
         </div>
       </div>
     </ModalNFT>

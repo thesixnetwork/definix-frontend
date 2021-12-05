@@ -155,7 +155,6 @@ const CardMarketplace = () => {
   const owning = _.get(nftUser, 'owning')
   const dispatch = useDispatch()
 
-
   useEffect(() => {
     dispatch(fetchOrderList(''))
   }, [dispatch])

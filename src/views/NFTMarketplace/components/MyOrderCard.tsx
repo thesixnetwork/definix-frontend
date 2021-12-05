@@ -40,9 +40,9 @@ const MyOrderCard: React.FC<NFTCardProps> = ({
   const dispatch = useDispatch()
   const [onPresentConnectModal] = useModal(
     typeName !== 'Group' ? (
-      <ListDetailModal data={data} isMarketplace={isMarketplace} typeName={typeName} isOnSell/>
+      <ListDetailModal data={data} isMarketplace={isMarketplace} typeName={typeName} isOnSell />
     ) : (
-      <ListGroupModal data={data} code typeName={typeName}/>
+      <ListGroupModal data={data} code typeName={typeName} />
     ),
   )
 

@@ -35,7 +35,7 @@ const initialState: IState = {
   orderItems: [],
   owning: [],
   syncData: '',
-  orderList: []
+  orderList: [],
 }
 
 export const nftSlice = createSlice({
@@ -71,7 +71,7 @@ export const nftSlice = createSlice({
     setOrderList: (state, action) => {
       const { orderList } = action.payload
       state.orderList = orderList
-    }
+    },
   },
 })
 
@@ -254,7 +254,9 @@ export const fetchSyncDatabyOrder = (orderId) => async (dispatch) => {
 
 // Marketplace
 export const fetchOrderList = (orderId) => async (dispatch) => {
-  const response = await axios.get(`${process.env.REACT_APP_API_NFT}/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60`)
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_NFT}/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60`,
+  )
   dispatch(setOrderList({ orderList: response.data }))
 }
 
