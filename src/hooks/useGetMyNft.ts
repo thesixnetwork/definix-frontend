@@ -1,22 +1,14 @@
 /* eslint-disable no-shadow */
-import { useEffect, useState, useCallback, useContext } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
-import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
-import { getContract } from 'utils/web3'
+import axios from 'axios'
 import { useApprovalForAll, useSellNft } from 'hooks/useContract'
+import { getDryotusAddress } from 'utils/addressHelpers'
 import useRefresh from './useRefresh'
 import { fetchNFTUser } from '../state/actions'
 import { State, NFTData } from '../state/types'
-import dryotusABI from '../config/abi/dryotus.json'
-
-interface IState {
-  isFetched: boolean
-  curOrder: number
-  nftListData: NFTData[]
-}
 
 const useNFTUser = () => {
   const { slowRefresh } = useRefresh()
@@ -33,13 +25,17 @@ const useNFTUser = () => {
   return { nftUser }
 }
 
-export const useSellNFTOneItem = (nftAddress, tokenId, price, currencyAddress, amount, date) => {
+export const useSellNFTOneItem = (tokenId, price, currencyAddress, amount, date) => {
   const { account }: { account: string } = useWallet()
+  const [status, setStatus] = useState(false)
+  const [loadings, setLoading] = useState('')
   const sellNft = useSellNft()
 
   const sell = useCallback(async () => {
+    setStatus(false)
+    setLoading('loading')
     const jSon = {
-      _tokenContract: nftAddress,
+      _tokenContract: getDryotusAddress(),
       _description: 'test decription',
       _tokenId: tokenId.toString(),
       _amount: amount,
@@ -48,18 +44,35 @@ export const useSellNFTOneItem = (nftAddress, tokenId, price, currencyAddress, a
       _sellPeriod: date.toString(),
     }
 
-    let txHash
     if (account) {
-      txHash = await sellNft.methods.sellNFTOneItem(jSon).send({ from: account })
-      return txHash
+      try {
+        await sellNft.methods
+          .sellNFTOneItem(jSon)
+          .send({ from: account })
+          .then(async (v) => {
+            const body = {
+              userAddress: account,
+            }
+            const response = await axios.post(`${process.env.REACT_APP_API_NFT}/orders`, body)
+            if (response.status === 200) {
+              setLoading('success')
+              setInterval(() => setLoading(''), 5000)
+              setInterval(() => setStatus(true), 5000)
+            }
+          })
+          .catch((e) => {
+            setLoading('')
+            setStatus(false)
+          })
+      } catch (error) {
+        setStatus(false)
+      }
     }
 
-    return new Promise((resolve, reject) => {
-      resolve(txHash)
-    })
-  }, [nftAddress, tokenId, price, currencyAddress, amount, date, account, sellNft])
+    return status
+  }, [tokenId, status, price, currencyAddress, amount, date, account, sellNft])
 
-  return { onSell: sell }
+  return { onSell: sell, status, loadings }
 }
 
 export const useSousApprove = () => {
@@ -68,9 +81,7 @@ export const useSousApprove = () => {
 
   const handleApprove = useCallback(async () => {
     try {
-      const txHash = await approvalForAll.methods
-        .setApprovalForAll('0xB7cdb5199d9D8be847d9B7d9e111977652E53307', true)
-        .send({ from: account })
+      const txHash = await approvalForAll.methods.setApprovalForAll(getDryotusAddress(), true).send({ from: account })
 
       return txHash
     } catch (e) {

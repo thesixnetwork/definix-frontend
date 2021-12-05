@@ -14,6 +14,8 @@ import {
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
   getTradingCompetRegisAddress,
+  getNftMarketplaceAddress,
+  getDryotusAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig, VeloPool } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -76,17 +78,17 @@ export const useDefinixRabbits = () => {
 
 export const useApprovalForAll = () => {
   const dryotusAbi = dryotus as unknown as AbiItem
-  return useContract(dryotusAbi, '0xB7cdb5199d9D8be847d9B7d9e111977652E53307')
+  return useContract(dryotusAbi, getDryotusAddress())
 }
 
 export const useSellNft = () => {
   const sellerAbi = seller.abi as unknown as AbiItem
-  return useContract(sellerAbi, '0x85958971FCC8F27569DFFC8b3fAf0f8e9df21B03')
+  return useContract(sellerAbi, getNftMarketplaceAddress())
 }
 
 export const useOrderOnSell = () => {
   const marketInfoAbi = marketInfo.abi as unknown as AbiItem
-  return useContract(marketInfoAbi, '0xB7cdb5199d9D8be847d9B7d9e111977652E53307')
+  return useContract(marketInfoAbi, getDryotusAddress())
 }
 
 export const useProfile = () => {

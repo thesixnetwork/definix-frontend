@@ -1,27 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Lottie from 'react-lottie'
-import { useWallet } from '@binance-chain/bsc-use-wallet'
 import _ from 'lodash'
-import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import moment from 'moment'
 import Flatpickr from 'react-flatpickr'
 import 'flatpickr/dist/themes/material_blue.css'
 import { ChevronDown } from 'react-feather'
-import { Button, Text, useMatchBreakpoints, Card, Flex, Image } from 'uikit-dev'
-import moon from 'uikit-dev/animation/moon.json'
-import sun from 'uikit-dev/animation/sun.json'
+import { Button, Text, useMatchBreakpoints, Card, Flex } from 'uikit-dev'
 import success from 'uikit-dev/animation/complete.json'
 import load from 'uikit-dev/animation/farmPool.json'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import MenuButton from 'uikit-dev/widgets/Menu/MenuButton'
 import Helper from 'uikit-dev/components/Helper'
-import { ChevronDownIcon } from 'uikit-dev/components/Svg'
 import calendarWhite from 'uikit-dev/images/for-ui-v2/nft/calendar-white.png'
 import calendarBlack from 'uikit-dev/images/for-ui-v2/nft/calendar-black.png'
-import DropdownList from '../DropdownNFT/DropdownList'
+import { getFinixAddress, getSixAddress } from 'utils/addressHelpers'
 import { useSellNFTOneItem } from '../../../../hooks/useGetMyNft'
 import OutsideClick from '../OutsideClick'
 
@@ -125,10 +119,6 @@ const SubWrap = styled(Card)`
   z-index: 1;
   width: 100%;
   border: 1px solid #737375;
-
-  // @media screen and (max-width: 768px) {
-  //   top: 35px;
-  // }
 `
 
 const SubBtns = styled.div`
@@ -154,26 +144,27 @@ const Flatpicker = styled(Flatpickr)`
 const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [values, setValues] = useState('')
-  const [lang, setLang] = useState('')
   const [price, setPrice] = useState('')
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { isDark } = useTheme()
   const [dates, setDate] = useState()
   const [timeStamp, setTimeStamp] = useState('-')
-  const [isStopped, setIsStop] = useState(false)
-  const [isLoading, setIsLoading] = useState('')
-  const { account }: { account: string } = useWallet()
-  const { onSell } = useSellNFTOneItem(
-    '0xB7cdb5199d9D8be847d9B7d9e111977652E53307',
+  const [selectToken, setSelectToken] = useState(getSixAddress())
+  const [isCurrency, setIsCurrency] = useState<boolean>(false)
+  const [fillCurrency, setFillCurrency] = useState('SIX')
+  const { onSell, status, loadings } = useSellNFTOneItem(
     data.tokenID,
     price,
-    '0x1FD5a30570b384f03230595E31a4214C9bEdC964',
+    selectToken,
     '1',
     timeStamp === '-' ? '0' : Math.round(new Date(timeStamp).getTime() / 1000),
   )
 
-  const currency = [{ id: 1, value: 'SIX' }]
+  const currency = [
+    { id: 1, value: 'SIX', address: getSixAddress() },
+    { id: 2, value: 'FINIX', address: getFinixAddress() },
+  ]
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
   function escapeRegExp(string: string): string {
@@ -191,51 +182,34 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
     enforcer(e.target.value.replace(/,/g, '.'))
   }
 
-  const [isCurrency, setIsCurrency] = useState<boolean>(false)
-  const [fillCurrency, setFillCurrency] = useState('SIX')
-
   const handleIsCurrency = (val) => {
     setIsCurrency(false)
+    setSelectToken(val.address)
     setFillCurrency(val.value)
   }
 
-  const test = (date) => {
+  const changeDate = (date) => {
     setDate(date)
     setTimeStamp(date)
   }
 
-  const onSellItems = () => {
-    console.log('onSellItems')
-    setIsLoading('loading')
-    try {
-      const call = onSell()
-      call
-        .then(async (r) => {
-          setIsLoading('success')
-          if (r) {
-            const body = {
-              userAddress: account,
-            }
-            const response = await axios.post(`${process.env.REACT_APP_API_NFT}/orders`, body)
-            if (response.status === 200) {
-              setInterval(() => setIsLoading(''), 5000)
-              setInterval(() => onDismiss(), 5000)
-            }
-          }
-        })
-        .catch((e) => console.log(e))
-    } catch (e) {
-      console.error(e)
+  useEffect(() => {
+    if (status) {
+      onDismiss()
     }
+  }, [status, onDismiss])
+
+  const onSellItems = () => {
+    onSell()
   }
 
   const loading = () => {
     return (
-      isLoading !== '' && (
+      loadings !== '' && (
         <Lottie
-          options={isLoading === 'loading' ? moonOptions : sunOptions}
-          height={isLoading === 'loading' ? 300 : 155}
-          width={isLoading === 'loading' ? 444 : 185}
+          options={loadings === 'loading' ? moonOptions : sunOptions}
+          height={loadings === 'loading' ? 300 : 155}
+          width={loadings === 'loading' ? 444 : 185}
         />
       )
     )
@@ -251,7 +225,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
       bodyPadding="0px"
     >
       <CardField>
-        {isLoading !== '' ? (
+        {loadings !== '' ? (
           loading()
         ) : (
           <>
@@ -279,7 +253,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
                       color={isDark ? '#FFFFFF' : '#212121'}
                       onClick={() => setIsCurrency(!isCurrency)}
                     >
-                      <img src={`/images/coins/${'SIX'}.png`} alt="" width="20px" />
+                      <img src={`/images/coins/${fillCurrency}.png`} alt="" width="20px" />
                       &nbsp;
                       <Text bold fontSize="16px">
                         {fillCurrency}
@@ -331,7 +305,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
                       altInput: true,
                     }}
                     onChange={([date]) => {
-                      test(date)
+                      changeDate(date)
                     }}
                   />
                   <img
@@ -362,7 +336,7 @@ const ListFillModal: React.FC<Props> = ({ onDismiss = () => null, data }) => {
                   {values !== '' ? (parseFloat(values) * (100 - 2.5)) / 100 : '-'} FINIX
                 </Text>
               </div>
-              <Button fullWidth radii="small" className="mt-3" onClick={() => onSellItems()}>
+              <Button disabled={price === ''} fullWidth radii="small" className="mt-3" onClick={() => onSellItems()}>
                 Submit
               </Button>
             </div>

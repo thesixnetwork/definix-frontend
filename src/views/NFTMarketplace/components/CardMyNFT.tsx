@@ -208,13 +208,13 @@ const CardMyNFT = () => {
                     </FlexLayout>
                   </>
                 )}
-                {filterMyOrder.length > 0 && (
+                {dataForGroup.length > 0 && (
                   <>
                     <Text className="mt-5 mb-5" fontSize="16px">
-                      My Collection : <b>{filterMyOrder.length} results</b>
+                      My Collection : <b>{dataForGroup.length} results</b>
                     </Text>
                     <FlexLayout cols={3}>
-                      {filterMyOrder.map((data) => (
+                      {dataForGroup.map((data) => (
                         <NFTCard
                           typeName={typeName}
                           isHorizontal={listView}

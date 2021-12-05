@@ -21,6 +21,7 @@ interface IState {
   orderItems: NFTData[]
   owning: NFTData[]
   syncData: string
+  orderList: []
 }
 export interface Owning {
   [key: string]: number
@@ -34,6 +35,7 @@ const initialState: IState = {
   orderItems: [],
   owning: [],
   syncData: '',
+  orderList: []
 }
 
 export const nftSlice = createSlice({
@@ -66,11 +68,15 @@ export const nftSlice = createSlice({
       const { syncData } = action.payload
       state.syncData = syncData
     },
+    setOrderList: (state, action) => {
+      const { orderList } = action.payload
+      state.orderList = orderList
+    }
   },
 })
 
 // Actions
-export const { setUserNFTs, setOrderOnsell, setOnwing, setSyncData } = nftSlice.actions
+export const { setUserNFTs, setOrderOnsell, setOnwing, setSyncData, setOrderList } = nftSlice.actions
 
 const getNFTUser = async (account) => {
   const owningData: Owning = {}
@@ -192,17 +198,19 @@ const getItemByCode = async ({ code }) => {
   const ordetItems = []
   const orderOnSell = []
   try {
-    const calls = [
-      {
-        address: getNftMarketplaceAddress(),
-        name: 'getItemByCode',
-        params: [code],
-      },
-    ]
-    const userOrders = await multicall(marketInfoABI.abi, calls)
-    const orderList = _.get(userOrders, '0.0')
+    code.map(async (value) => {
+      const calls = [
+        {
+          address: getNftMarketplaceAddress(),
+          name: 'getItemByCode',
+          params: [value.orderCode],
+        },
+      ]
+      const userOrders = await multicall(marketInfoABI.abi, calls)
+      const orderList = _.get(userOrders, '0.0')
+    })
   } catch (error) {
-    console.log('error::', error)
+    console.log(error)
   }
 
   return [ordetItems, orderOnSell]
@@ -232,7 +240,7 @@ export const fetchItemByCode = (code) => async (dispatch) => {
   if (code) {
     fetchPromise.push(getItemByCode({ code }))
   }
-  const [[orderItems, orderOnSell]] = await Promise.all(fetchPromise)
+  // const [[orderItems, orderOnSell]] = await Promise.all(fetchPromise)
   // dispatch(setOrderOnsell({ orderItems, orderOnSell }))
 }
 
@@ -242,6 +250,12 @@ export const fetchSyncDatabyOrder = (orderId) => async (dispatch) => {
   }
   const response = await axios.post(`${process.env.REACT_APP_API_NFT}/sync`, body)
   dispatch(setSyncData({ syncData: response.data.message }))
+}
+
+// Marketplace
+export const fetchOrderList = (orderId) => async (dispatch) => {
+  const response = await axios.get(`${process.env.REACT_APP_API_NFT}/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60`)
+  dispatch(setOrderList({ orderList: response.data }))
 }
 
 export default nftSlice.reducer

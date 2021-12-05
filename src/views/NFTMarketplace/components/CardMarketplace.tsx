@@ -25,7 +25,7 @@ import Dropdown from './DropdownNFT/Dropdown'
 import TypeTab from './TypeTab'
 import OutsideClick from './OutsideClick'
 import { State } from '../../../state/types'
-import { fetchItemByCode } from '../../../state/actions'
+import { fetchOrderList } from '../../../state/actions'
 
 const CardBox = styled(Card)`
   width: 100%;
@@ -155,21 +155,9 @@ const CardMarketplace = () => {
   const owning = _.get(nftUser, 'owning')
   const dispatch = useDispatch()
 
-  // useEffect(() => {
-  //   dispatch(fetchItemByCode(account))
-  // },[])
 
   useEffect(() => {
-    async function fetchMerketplace() {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_NFT}/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60`,
-      )
-      if (response.status === 200) {
-        const data = response.data
-        data.map((v) => dispatch(fetchItemByCode(_.get(v, 'code'))))
-      }
-    }
-    fetchMerketplace()
+    dispatch(fetchOrderList(''))
   }, [dispatch])
 
   const filterdList = useMemo(() => {

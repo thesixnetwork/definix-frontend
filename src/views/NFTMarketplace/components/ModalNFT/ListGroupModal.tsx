@@ -14,6 +14,7 @@ interface Props {
   isMarketplace?: boolean
   data: any
   code: any
+  typeName: any
 }
 
 const ImgWrap = styled(Flex)`
@@ -35,7 +36,7 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data, code }) => {
+const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data, code, typeName }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
@@ -79,7 +80,7 @@ const ListGroupModal: React.FC<Props> = ({ onDismiss = () => null, data, code })
           <Text fontSize="14px !important" color="textSubtle" lineHeight="2">
             Dingo x SIX Network NFT Project No.1
           </Text>
-          <TableList rows={filterCode} isLoading={isLoading} isDark={isDark} total={10} setOnDismiss={setOnDismiss} />
+          <TableList rows={filterCode} isLoading={isLoading} isDark={isDark} total={10} setOnDismiss={setOnDismiss} typeName={typeName} />
         </div>
       </div>
     </ModalNFT>

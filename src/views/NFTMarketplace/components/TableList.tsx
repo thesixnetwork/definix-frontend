@@ -109,14 +109,14 @@ const LoadingData = () => (
   </TR>
 )
 
-const TableList = ({ rows, isLoading, isDark, total, setOnDismiss }) => {
+const TableList = ({ rows, isLoading, isDark, total, setOnDismiss, typeName }) => {
   const [cols] = useState(['List', ''])
   const [currentPage, setCurrentPage] = useState(1)
   const [dataSelect, setDataSelect] = useState({})
   const [flg, setFlg] = useState('')
   const [flgDelist, setFlgDelist] = useState(false)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  const [onPresentConnectModal] = useModal(<ListDetailModal data={_.get(dataSelect, '0')} isMarketplace={false} />)
+  const [onPresentConnectModal] = useModal(<ListDetailModal data={_.get(dataSelect, '0')} isMarketplace={false} typeName={typeName} isOnSell={false} />)
   const [onPresentModal] = useModal(<ListFillModal data={_.get(dataSelect, '0')} />)
   const { onCancelOrder } = useCancelOrder(_.get(dataSelect, '0.orderCode'))
   const { account }: { account: string } = useWallet()

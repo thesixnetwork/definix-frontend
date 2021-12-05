@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import _ from 'lodash'
 import axios from 'axios'
@@ -11,6 +11,7 @@ import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
 import tAra from 'uikit-dev/images/for-ui-v2/nft/T-ARA.png'
 import copyWhite from 'uikit-dev/images/for-ui-v2/nft/copy-white.png'
 import copyBlack from 'uikit-dev/images/for-ui-v2/nft/copy-black.png'
+import { getFinixAddress, getSixAddress } from 'utils/addressHelpers'
 import CopyToClipboard from '../CopyToClipboard'
 import EllipsisText from '../../../../components/EllipsisText'
 import ListFillModal from './ListFillModal'
@@ -21,6 +22,8 @@ interface Props {
   onDismiss?: () => void
   isMarketplace?: boolean
   data: any
+  typeName: any
+  isOnSell: boolean
 }
 
 const ImgWrap = styled(Flex)`
@@ -42,7 +45,7 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
-const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace, data }) => {
+const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace, data, typeName, isOnSell }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
   const [orderCode, setOrderCode] = useState('')
@@ -55,6 +58,14 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
   const [requestedApproval, setRequestedApproval] = useState(false)
   const status = _.get(data, 'status')
   const { account }: { account: string } = useWallet()
+
+  const filterCurrency = useMemo(() => {
+    const options = [
+      { address: getSixAddress(), currency: 'SIX' },
+      { address: getFinixAddress(), currency: 'FINIX' },
+    ]
+    return options.filter((item) => _.get(item, 'address') === data.currency)
+  }, [data])
 
   const handleOrderCancel = async () => {
     try {
@@ -80,6 +91,10 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
   }
 
   const heandleDelistOrList = () => {
+    return typeName === 'Group' ? typeGroup() : typeGrid()
+  }
+
+  const typeGroup = () => {
     return status !== undefined ? (
       <Button
         fullWidth
@@ -92,6 +107,25 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
       </Button>
     ) : (
       <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+        List
+      </Button>
+    )
+  }
+
+  const typeGrid = () => {
+    const disable = status === 0
+    return isOnSell ? (
+      <Button
+        fullWidth
+        radii="small"
+        onClick={() => handleOrderCancel()}
+        style={{ backgroundColor: '#E2B23A' }}
+        className="mt-3"
+      >
+        Delist
+      </Button>
+    ) : (
+      <Button disabled={disable} fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
         List
       </Button>
     )
@@ -165,16 +199,16 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               <CopyToClipboard toCopy={data.name}>Copy Address</CopyToClipboard>
             </div>
           </div>
-          {isMarketplace ? (
+          {isOnSell && (
             <>
               <div className="mt-3">
                 <Text fontSize="14px !important" color="textSubtle">
                   Price
                 </Text>
                 <div className="flex align-center">
-                  <Image src="/images/coins/FINIX.png" width={16} height={16} />
+                  <Image src={`/images/coins/${_.get(filterCurrency, '0.currency')}.png`} width={16} height={16} />
                   <Text bold fontSize="22px" color="text" paddingLeft="6px">
-                    2,837.2938 FINIX
+                    {data.price} {_.get(filterCurrency, '0.currency')}
                   </Text>
                 </div>
               </div>
@@ -183,20 +217,12 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
                   Until
                 </Text>
                 <Text bold fontSize="14px !important" color="text">
-                  28/12/21 00:00:00 GMT+7
+                  {data.sellPeriod > 0 ? '28/12/21 00:00:00 GMT+7' : '-'}
                 </Text>
-                {/* ถ้าไม่ได้ใส่ วันที่/เวลา */}
-                {/* <Text fontSize="12px" color="text">
-                  -
-                </Text> */}
               </div>
-              <Button fullWidth radii="small" className="mt-3" onClick={() => handleBuy()}>
-                Buy
-              </Button>
             </>
-          ) : (
-            heandleDelistOrList()
           )}
+          {heandleDelistOrList()}
         </div>
       </div>
     </ModalNFT>
