@@ -44,26 +44,6 @@ const Farms: React.FC = () => {
     data: null,
   }) // 'list', 'deposit', 'remove',
   const [orderFilterIndex, setOrderFilterIndex] = useState<number>()
-  const orderFilter: DropdownOption[] = useMemo(() => {
-    return [
-      {
-        id: 'sortOrder',
-        label: t('Recommend'),
-        orderBy: 'asc',
-      },
-      {
-        id: 'apyValue',
-        label: t('APR'),
-        orderBy: 'desc',
-      },
-      {
-        id: 'totalLiquidityValue',
-        label: t('Total Liquidity'),
-        orderBy: 'desc',
-      },
-    ]
-  }, [t])
-
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
@@ -80,17 +60,17 @@ const Farms: React.FC = () => {
       ? farmsWithApy.filter((farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0))
       : farmsWithApy
   }, [stackedOnly, farmsWithApy])
-  const orderedFarms = useMemo(() => {
-    if (typeof orderFilterIndex !== 'number') return filteredFarms
-    const currentOrder = orderFilter[orderFilterIndex]
-    return _.orderBy(filteredFarms, currentOrder.id, currentOrder.orderBy)
-  }, [filteredFarms, orderFilter, orderFilterIndex])
-  const displayFarms = useMemo(() => {
-    if (!searchKeyword.length) return orderedFarms
-    return orderedFarms.filter((farm) => {
-      return farm.lpSymbol.toLowerCase().includes(searchKeyword)
-    })
-  }, [searchKeyword, orderedFarms])
+  // const orderedFarms = useMemo(() => {
+  //   if (typeof orderFilterIndex !== 'number') return filteredFarms
+  //   const currentOrder = orderFilter[orderFilterIndex]
+  //   return _.orderBy(filteredFarms, currentOrder.id, currentOrder.orderBy)
+  // }, [filteredFarms, orderFilter, orderFilterIndex])
+  // const displayFarms = useMemo(() => {
+  //   if (!searchKeyword.length) return orderedFarms
+  //   return orderedFarms.filter((farm) => {
+  //     return farm.lpSymbol.toLowerCase().includes(searchKeyword)
+  //   })
+  // }, [searchKeyword, orderedFarms])
 
   const onSelectAddLP = useCallback((props: any) => {
     setPageState({
@@ -167,13 +147,11 @@ const Farms: React.FC = () => {
             <FarmFilter
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
-              defaultOptionIndex={orderFilterIndex}
-              orderOptions={orderFilter}
               orderBy={(index) => setOrderFilterIndex(index)}
               search={(keyword: string) => setSearchKeyword(keyword)}
             />
             <Route exact path={`${path}`}>
-              {displayFarms.length > 0 ? (
+              {/* {displayFarms.length > 0 ? (
                 <>
                   {displayFarms.map((farm) => (
                     <FarmCard
@@ -190,7 +168,7 @@ const Farms: React.FC = () => {
                 </>
               ) : (
                 <NoResultArea message={t('No search results')} />
-              )}
+              )} */}
             </Route>
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
               Help

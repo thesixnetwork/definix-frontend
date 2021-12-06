@@ -1,21 +1,50 @@
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput, useMatchBreakpoints, DropdownOption } from 'definixswap-uikit'
 
-const FarmTabButtons = ({ stackedOnly, setStackedOnly, defaultOptionIndex, orderOptions, orderBy, search }) => {
+const ToggleSection = styled(Flex)`
+  align-items: center;
+  justify-content: flex-end;
+`
+
+const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
   const { t } = useTranslation()
   const { isMaxXl } = useMatchBreakpoints()
 
-  const ToggleSection = styled(Flex)`
-    align-items: center;
-    justify-content: flex-end;
-  `
+  const orderByFilter: DropdownOption[] = useMemo(() => {
+    return [
+      {
+        id: 'sortOrder',
+        label: t('Recommend'),
+        orderBy: 'asc',
+      },
+      {
+        id: 'apyValue',
+        label: t('APR'),
+        orderBy: 'desc',
+      },
+      {
+        id: 'totalLiquidityValue',
+        label: t('Total Liquidity'),
+        orderBy: 'desc',
+      },
+    ]
+  }, [t])
+  const [orderByFilterIndex, setOrderByFilterIndex] = useState(0)
+  const [isOpenOrderByFilter, setIsOpenOrderByFilter] = useState(false)
+
   const DropdownSection = () => (
     <DropdownSet
-      defaultIndex={defaultOptionIndex || 0}
-      options={orderOptions}
-      onItemClick={(index: number) => orderBy(index)}
+      isOpen={isOpenOrderByFilter}
+      activeIndex={orderByFilterIndex}
+      options={orderByFilter}
+      onButtonClick={() => setIsOpenOrderByFilter(!isOpenOrderByFilter)}
+      onOptionClick={(index: number) => {
+        setOrderByFilterIndex(index)
+        orderBy(orderByFilter[index])
+        setIsOpenOrderByFilter(false)
+      }}
     />
   )
   const StakedOnlySection = () => (
