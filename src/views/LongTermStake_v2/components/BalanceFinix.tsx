@@ -21,11 +21,6 @@ const FlexBalance = styled(Flex)`
   padding: 24px 0;
   width: 100%;
   justify-content: space-between;
-  border-bottom: 1px solid #e0e0e080;
-
-  ${({ theme }) => theme.mediaQueries.mobile} {
-    border-top: 1px solid #e0e0e080;
-  }
 `
 
 const StyledInput = styled.input`
