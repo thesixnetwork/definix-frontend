@@ -39,10 +39,7 @@ const CardHeading: React.FC<CardHeadingType> = ({ data, className = '', typeName
           <LayoutImg>
             <ImgWrap>
               <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
-                <source
-                  src={data.videoUrl}
-                  type="video/mp4"
-                />
+                <source src={data.videoUrl} type="video/mp4" />
               </video>
             </ImgWrap>
           </LayoutImg>
