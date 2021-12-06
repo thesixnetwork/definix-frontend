@@ -64,12 +64,12 @@ const CardHeading: React.FC<CardHeadingType> = ({
 
         {onlyTitle ? (
           <Box mb="S_4">
-            <CardTitle title={rebalance.title} textStyle="R_20B" />
+            <CardTitle title={t(rebalance.title)} textStyle="R_20B" />
           </Box>
         ) : (
           <div>
             <Box mb="S_4">
-              <CardTitle title={rebalance.title} />
+              <CardTitle title={t(rebalance.title)} />
             </Box>
             <Text textStyle="R_12R">{t(rebalance.description)}</Text>
           </div>

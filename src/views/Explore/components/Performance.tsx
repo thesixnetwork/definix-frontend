@@ -85,7 +85,7 @@ const Performance: React.FC<PerformanceType> = ({
             />
           </Flex>
           <Flex alignItems="center" width={width}>
-            <VDivider mx="S_24" />
+            <VDivider mr="S_24" />
             <TwoLineFormat
               title={t('Max Drawdown')}
               value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}

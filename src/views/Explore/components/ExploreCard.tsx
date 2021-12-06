@@ -163,7 +163,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderTotalAssetValue = useCallback(() => {
     return (
       <TwoLineFormat
-        width="50%"
+        width="60%"
         title={t('Total Asset Value')}
         value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
       />
@@ -173,7 +173,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderSharePrice = useCallback(() => {
     return (
       <TwoLineFormat
-        title={t('Share Price(Since Inception)')}
+        title={t('Share Price (Since Inception)')}
         titleMarginBottom={isInMyInvestment ? 4 : 0}
         value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
         percent={`${
@@ -222,7 +222,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderYieldAPR = useCallback(() => {
     return (
       <TwoLineFormat
-        width="50%"
+        width="40%"
         title={t('Yield APR')}
         value={`${apr}%`}
         hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."

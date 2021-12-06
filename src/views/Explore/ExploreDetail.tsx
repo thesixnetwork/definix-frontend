@@ -26,6 +26,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import { getAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'react-i18next'
+import { format } from 'date-fns'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { usePriceFinixUsd } from '../../state/hooks'
 import { Rebalance } from '../../state/types'
@@ -72,6 +73,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const [chartName, setChartName] = useState<TypeChartName>('Normalize')
   const [returnPercent, setReturnPercent] = useState(0)
   const [maxDrawDown, setMaxDrawDown] = useState(0)
+  const [updatedDate, setUpdatedDate] = useState(' ')
   const [graphData, setGraphData] = useState({})
   const { isDark } = useTheme()
   const { isMaxXl } = useMatchBreakpoints()
@@ -110,6 +112,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
       dispatch(fetchRebalanceBalances(account, [rebalance]))
     }
   }, [dispatch, account, rebalance])
+
+  useEffect(() => {
+    setUpdatedDate(format(new Date(), 'MMM dd, yyyy HH:mm:ss (O)'))
+  }, [rebalance])
 
   const fetchMaxDrawDown = useCallback(async () => {
     if (
@@ -635,9 +641,9 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
       <Helmet>
         <title>Explore - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box pb="32px">
+      <Box pb="S_32">
         <div>
-          <Flex className="mb-s40">
+          <Flex mb={isMaxXl ? 'S_2' : '10px'}>
             <Button
               variant="text"
               as={Link}
@@ -647,27 +653,28 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               startIcon={<BackIcon color="textSubtle" />}
             >
               <Text textStyle="R_16R" color="textSubtle">
-                {rebalance.title}
+                {t(rebalance.title)}
               </Text>
             </Button>
           </Flex>
+          <Text textStyle="R_12R" color="textSubtle" textAlign="right" mb={isMaxXl ? 'S_8' : 'S_12'}>
+            {updatedDate}
+          </Text>
 
-          <Card className="mb-s16">
-            <CardBody>
-              <CardHeading
-                rebalance={rebalance}
-                isHorizontal={isMaxXl}
-                className={`mb-s24 ${isMaxXl ? 'pb-s28' : 'pb-s24 bd-b'}`}
-              />
+          <Card mb="S_16">
+            <CardBody p={isMaxXl ? 'S_20' : 'S_32'}>
+              <CardHeading rebalance={rebalance} isHorizontal={isMaxXl} mb={isMaxXl ? 'S_28' : 'S_24'} />
+              {isMaxXl || <Divider mb="S_24" />}
 
-              <div className="flex flex-wrap">
+              <Flex flexWrap="wrap">
                 <TwoLineFormat
-                  className={isMaxXl ? 'col-6 mb-s20' : 'col-3'}
+                  width={isMaxXl ? '60%' : '25%'}
+                  mb={isMaxXl ? 'S_20' : ''}
                   title={t('Total Asset Value')}
                   value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
                   large={!isMaxXl}
                 />
-                <Flex className={isMaxXl ? 'col-6 mb-s20' : 'col-3'}>
+                <Flex width={isMaxXl ? '40%' : '25%'} mb={isMaxXl ? 'S_20' : ''}>
                   {isMaxXl || <VDivider mr="S_32" />}
                   <TwoLineFormat
                     title={t('Yield APR')}
@@ -682,10 +689,10 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                     large={!isMaxXl}
                   />
                 </Flex>
-                <Flex className={isMaxXl ? 'col-6' : 'col-3'}>
+                <Flex width={isMaxXl ? '60%' : '25%'}>
                   {isMaxXl || <VDivider mr="S_32" />}
                   <TwoLineFormat
-                    title={t('Share Price(Since Inception)')}
+                    title={t('Share Price (Since Inception)')}
                     value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
                     percent={`${
                       rebalance.sharedPricePercentDiff >= 0
@@ -700,7 +707,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                     large={!isMaxXl}
                   />
                 </Flex>
-                <Flex className={isMaxXl ? 'col-6' : 'col-3'}>
+                <Flex width={isMaxXl ? '40%' : '25%'}>
                   {isMaxXl || <VDivider mr="S_32" />}
                   <TwoLineFormat title={t('Risk-0-Meter')} value="Medium" large={!isMaxXl} />
                 </Flex>
@@ -710,7 +717,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                   title="Investors"
                   value={numeral(rebalance.activeUserCountNumber).format('0,0')}
                 /> */}
-              </div>
+              </Flex>
             </CardBody>
           </Card>
 

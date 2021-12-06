@@ -36,7 +36,7 @@ const WithdrawSummaryCard: React.FC<WithdrawSummaryCardProp> = ({ rebalance, cur
 
           <TwoLineFormat
             className={isMobile ? 'col-6' : 'col-4 bd-l pl-s32'}
-            title={t('Share Price(Since Inception)')}
+            title={t('Share Price (Since Inception)')}
             value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
             percent={`${
               rebalance.sharedPricePercentDiff >= 0

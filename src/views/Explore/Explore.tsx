@@ -73,7 +73,7 @@ const Explore: React.FC = () => {
           <Flex alignItems="center" mb="S_28">
             <Flex alignItems="center">
               <Text textStyle="R_14R" color="deepgrey" mr="S_8">
-                {t('Staked only')}
+                {t('Staked only Farm')}
               </Text>
               <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
             </Flex>

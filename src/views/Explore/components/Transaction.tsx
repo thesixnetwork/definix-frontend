@@ -72,11 +72,11 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
             <TD align="center" oneline>
               {r.event_name === 'AddFundAmount' ? (
                 <Text textStyle="R_14R" color="success">
-                  + {t('Invest')}
+                  + {t('Action Invest')}
                 </Text>
               ) : (
                 <Text textStyle="R_14R" color="failure">
-                  - {t('Withdraw')}
+                  - {t('Action Withdraw')}
                 </Text>
               )}
             </TD>
@@ -191,9 +191,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}
-          empText={t(
-            myOnly ? 'You haven`t made any transactions in this farm.' : 'Don`t have any transactions in this farm.',
-          )}
+          empText={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')}
         />
       </Box>
     </div>
