@@ -1,6 +1,8 @@
 import React from 'react'
-import { Card, Flex } from 'definixswap-uikit'
+import { Card, Flex, useModal } from 'definixswap-uikit'
 import styled from 'styled-components'
+
+import UnstakeModal from './UnstakeModal'
 
 import StakeListHead from './StakeListHead'
 import StakeListContentPc from './StakeListContentPc'
@@ -14,6 +16,20 @@ const FlexCard = styled(Flex)`
 `
 
 const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
+  const [onPresentUnstakeModal] = useModal(
+    <UnstakeModal
+      balance="1,000"
+      period="90 days"
+      apr="43.56%"
+      fee="15%"
+      end="08-Nov-21 14:57:20 GMT+9"
+      received="85,000,000.123456"
+      unstake="Early Unstake"
+      onOK={() => null}
+    />,
+    false,
+  )
+
   const data = [
     {
       period: '90 days',
@@ -42,7 +58,11 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
       <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
         <FlexCard>
           {!isMobile && <StakeListHead />}
-          {isMobile ? <StakeListContentMobile data={data} /> : <StakeListContentPc data={data} />}
+          {isMobile ? (
+            <StakeListContentMobile data={data} onPresentUnstakeModal={onPresentUnstakeModal} />
+          ) : (
+            <StakeListContentPc data={data} onPresentUnstakeModal={onPresentUnstakeModal} />
+          )}
           <StakeListPagination isMobile={isMobile} />
         </FlexCard>
       </Card>

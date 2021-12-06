@@ -11,6 +11,7 @@ interface ItemType {
 
 interface ContentProps {
   data: ItemType[]
+  onPresentUnstakeModal: () => any
 }
 
 const StyledFlex = styled(Flex)`
@@ -24,7 +25,7 @@ const StyledFlex = styled(Flex)`
   }
 `
 
-const StakeListContentMobile: React.FC<ContentProps> = ({ data }) => {
+const StakeListContentMobile: React.FC<ContentProps> = ({ data, onPresentUnstakeModal }) => {
   const { t } = useTranslation()
 
   return (
@@ -65,7 +66,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ data }) => {
               </Flex>
             </Flex>
 
-            <Button width="100%" variant="lightbrown">
+            <Button width="100%" variant="lightbrown" onClick={onPresentUnstakeModal}>
               {t('Unstake')}
             </Button>
           </StyledFlex>
