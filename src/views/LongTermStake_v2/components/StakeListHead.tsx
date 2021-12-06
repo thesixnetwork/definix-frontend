@@ -1,12 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text } from 'definixswap-uikit'
+import { Flex, Text, Divider } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 const StyledFlex = styled(Flex)`
   width: 100%;
   padding-bottom: 8px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgrey};
 `
 
 const StakeListHead: React.FC = () => {
@@ -25,6 +24,7 @@ const StakeListHead: React.FC = () => {
           {t('Period End')}
         </Text>
       </StyledFlex>
+      <Divider width="100%" backgroundColor="lightgrey" />
     </>
   )
 }
