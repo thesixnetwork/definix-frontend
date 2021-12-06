@@ -37,6 +37,7 @@ import TwoLineFormat from './components/TwoLineFormat'
 import Performance from './components/Performance'
 import Overview from './components/Overview'
 import Transaction from './components/Transaction'
+import RiskOMeter from './components/RiskOMeter'
 
 interface ExploreDetailType {
   rebalance: Rebalance | any
@@ -485,7 +486,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                         .times(100)
                         .toFixed(2),
                     ).format('0,0.[00]')}%`}
-                    hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+                    hint={t('A return of investment paid')}
                     large={!isMaxXl}
                   />
                 </Flex>
@@ -509,7 +510,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
                 </Flex>
                 <Flex width={isMaxXl ? '40%' : '25%'}>
                   {isMaxXl || <VDivider mr="S_32" />}
-                  <TwoLineFormat title={t('Risk-0-Meter')} value="Medium" large={!isMaxXl} />
+                  <RiskOMeter grade={t('Medium')} small={isMaxXl} />
                 </Flex>
 
                 {/* <TwoLineFormat

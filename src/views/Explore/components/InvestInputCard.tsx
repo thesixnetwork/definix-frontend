@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { provider } from 'web3-core'
 
-import { Box, Button, Card, CardBody, CheckBIcon, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, Button, Card, CardBody, CheckBIcon, Flex, Text, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
@@ -20,6 +20,7 @@ import { fetchAllowances, fetchBalances } from 'state/wallet'
 import CardHeading from './CardHeading'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import TwoLineFormat from './TwoLineFormat'
+import RiskOMeter from './RiskOMeter'
 
 interface InvestInputCardProp {
   isSimulating
@@ -136,6 +137,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
 
           <Flex justifyContent="space-between" flexWrap="wrap">
             <TwoLineFormat
+              large={!isMobile}
               className={isMobile ? 'col-6 mb-s20' : 'col-4'}
               title={t('Yield APR')}
               value={`${numeral(
@@ -149,6 +151,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
             />
 
             <TwoLineFormat
+              large={!isMobile}
               className={isMobile ? 'col-6' : 'col-4 bd-l pl-s32'}
               title={t('Share Price (Since Inception)')}
               value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
@@ -163,11 +166,10 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
                 return ''
               })()}
             />
-            <TwoLineFormat
-              className={isMobile ? 'col-6' : 'col-4 bd-l pl-s32'}
-              title={t('Risk-0-Meter')}
-              value="Medium"
-            />
+            {isMobile || <VDivider />}
+            <Flex width={isMobile ? '60%' : '33.33%'} {...(!isMobile && { pl: 'S_32' })}>
+              <RiskOMeter grade="Medium" small={isMobile} />
+            </Flex>
           </Flex>
         </CardBody>
       </Card>
@@ -221,7 +223,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
                 <Flex alignItems="center" className="col-9">
                   <img width="32px" src={`/images/coins/${coin.symbol}.png`} alt="" />
                   <Text mr="S_8" ml="S_12">
-                    {0.2264627858327316}
+                    {coin.currentValue}
                   </Text>
                   <Text color="textSubtle">{coin.symbol}</Text>
                 </Flex>

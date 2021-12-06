@@ -51,7 +51,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
       <Table>
         <TR>
           {cols.map((c, idx) => (
-            <TH align={idx > 0 ? 'center' : null} key={c}>
+            <TH align={idx > 0 ? 'center' : null} key={c} oneline>
               <Text color="mediumgrey" textStyle="R_12M">
                 {c}
               </Text>

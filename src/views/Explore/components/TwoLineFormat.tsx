@@ -19,6 +19,7 @@ interface TwoLineFormatType extends FlexProps {
   valueClass?: string
   currentInvestPercentDiff?: string
   diffAmounts?: string
+  subfix?: React.ReactNode
 }
 
 const TwoLineFormat: React.FC<TwoLineFormatType> = ({
@@ -38,6 +39,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   valueClass,
   currentInvestPercentDiff,
   diffAmounts,
+  subfix,
   ...props
 }) => {
   const textStyle = large
@@ -72,16 +74,16 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
       </Flex>
 
       <Flex alignItems="baseline" justifyContent={alignRight ? 'flex-end' : 'inherit'}>
-        <Text textStyle={textStyle.emphasize} bold color={valueClass}>
+        <Text textStyle={textStyle.emphasize} color={valueClass}>
           {value}
         </Text>
         {!isNil(diffAmounts) && diffAmounts !== '0' && (
-          <Text textStyle={textStyle.text} bold color={percentClass} ml="S_8">
+          <Text textStyle={textStyle.text} color={percentClass} ml="S_8">
             {diffAmounts}
           </Text>
         )}
         {!isNil(currentInvestPercentDiff) && currentInvestPercentDiff !== '(0%)' && (
-          <Text textStyle={textStyle.subTitle} bold color={percentClass} ml="S_8">
+          <Text textStyle={textStyle.subTitle} color={percentClass} ml="S_8">
             {currentInvestPercentDiff}
           </Text>
         )}
@@ -95,6 +97,8 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
             {days}
           </Text>
         )}
+
+        {subfix && subfix}
       </Flex>
     </Flex>
   )
