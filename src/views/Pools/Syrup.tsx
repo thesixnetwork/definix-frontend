@@ -1,27 +1,22 @@
 import _ from 'lodash'
-import React, { useState, useMemo, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import React, { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 
 import { Box, useMatchBreakpoints, DropdownOption } from 'definixswap-uikit'
-// import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolHeader from './components/PoolHeader'
 import PoolFilter from './components/PoolFilter'
 import PoolList from './components/PoolList'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
-// import { IS_GENESIS } from '../../config'
 
 const Pool: React.FC = () => {
-  const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const { path } = useRouteMatch()
 
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
-  // const [isPhrase1, setIsPhrase1] = useState(false)
   const [pageState, setPageState] = useState<{
     state: string
     data: any
@@ -32,21 +27,6 @@ const Pool: React.FC = () => {
 
   const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
   const [searchKeyword, setSearchKeyword] = useState<string>('')
-
-  // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
-  //   ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
-  //   : new Date().getTime()
-  // const currentTime = new Date().getTime()
-
-  // useEffect(() => {
-  //   if (currentTime < phrase1TimeStamp) {
-  //     setTimeout(() => {
-  //       setIsPhrase1(true)
-  //     }, phrase1TimeStamp - currentTime)
-  //   } else {
-  //     setIsPhrase1(true)
-  //   }
-  // }, [currentTime, phrase1TimeStamp])
 
   return (
     <>
@@ -93,17 +73,6 @@ const Pool: React.FC = () => {
                 ))}
               </Route> */}
             </>
-
-            {/* <Route exact path={`${path}`}>
-              <>
-                {poolsWithApy.map((pool) => (
-                  <PoolCardGenesis key={pool.sousId} pool={pool} />
-                ))}
-                <Coming />
-              </>
-            </Route> */}
-            {/* <TimerWrapper isPhrase1={!(currentTime < phrase1TimeStamp && isPhrase1 === false)} date={phrase1TimeStamp}>
-            </TimerWrapper> */}
           </>
         )}
         {pageState.state === 'deposit' && (
@@ -136,22 +105,5 @@ const Pool: React.FC = () => {
     </>
   )
 }
-
-// const TimerWrapper = ({ isPhrase1, date, children }) => {
-//   return isPhrase1 ? (
-//     children
-//   ) : (
-//     <>
-//       <div>
-//         <br />
-//         <Flip date={date} />
-//         <br />
-//         <br />
-//         <br />
-//       </div>
-//       {children}
-//     </>
-//   )
-// }
 
 export default Pool
