@@ -6,7 +6,18 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { provider } from 'web3-core'
 
-import { Box, Button, Card, CardBody, CheckBIcon, Flex, Text, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CheckBIcon,
+  Divider,
+  Flex,
+  Text,
+  useMatchBreakpoints,
+  VDivider,
+} from 'definixswap-uikit'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
@@ -128,7 +139,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
   return (
     <>
       <Card mb="S_16">
-        <CardBody>
+        <CardBody p={isMobile ? 'S_20' : 'S_40'}>
           <CardHeading
             rebalance={rebalance}
             isHorizontal={isMobile}
@@ -147,7 +158,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
                   .times(100)
                   .toFixed(2),
               ).format('0,0.[00]')}%`}
-              hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
+              hint={t('A return of investment paid')}
             />
 
             <TwoLineFormat
@@ -174,95 +185,104 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
         </CardBody>
       </Card>
 
-      <Card p={isMobile ? 'S_20' : 'S_40'}>
-        <Box mb="S_40">
-          {coins.map((c) => (
-            <CurrencyInputPanel
-              currency={c}
-              balance={c.cBalance}
-              id={`invest-${c.symbol}`}
-              key={`invest-${c.symbol}`}
-              showMaxButton={String(c.cMax.toNumber()) !== currentInput[c.cAddress]}
-              className="mb-s24"
-              value={currentInput[c.cAddress]}
-              onMax={() => {
-                const max = String(c.cMax.toNumber())
+      <Card mb={isMobile ? 'S_40' : 'S_80'}>
+        <CardBody p={isMobile ? 'S_20' : 'S_40'}>
+          <Box mb="S_40">
+            {coins.map((c) => {
+              const max = String(c.cMax.toNumber())
+              return (
+                <CurrencyInputPanel
+                  currency={c}
+                  balance={c.cBalance}
+                  id={`invest-${c.symbol}`}
+                  key={`invest-${c.symbol}`}
+                  showMaxButton={max !== currentInput[c.cAddress]}
+                  className="mb-s24"
+                  value={currentInput[c.cAddress]}
+                  max={c.cMax}
+                  onMax={() => {
+                    const testMax = toFixedCustom(max)
+                    setCurrentInput({
+                      ...currentInput,
+                      [c.cAddress]: testMax,
+                    })
+                  }}
+                  onQuarter={() => {
+                    setCurrentInput({
+                      ...currentInput,
+                      [c.cAddress]: String(c.cMax.times(0.25).toNumber()),
+                    })
+                  }}
+                  onHalf={() => {
+                    setCurrentInput({
+                      ...currentInput,
+                      [c.cAddress]: String(c.cMax.times(0.5).toNumber()),
+                    })
+                  }}
+                  onUserInput={(value) => {
+                    setCurrentInput({ ...currentInput, [c.cAddress]: value })
+                  }}
+                />
+              )
+            })}
+          </Box>
 
-                const testMax = toFixedCustom(max)
-                setCurrentInput({
-                  ...currentInput,
-                  [c.cAddress]: testMax,
-                })
-              }}
-              onQuarter={() => {
-                setCurrentInput({
-                  ...currentInput,
-                  [c.cAddress]: String(c.cMax.times(0.25).toNumber()),
-                })
-              }}
-              onHalf={() => {
-                setCurrentInput({
-                  ...currentInput,
-                  [c.cAddress]: String(c.cMax.times(0.5).toNumber()),
-                })
-              }}
-              onUserInput={(value) => {
-                setCurrentInput({ ...currentInput, [c.cAddress]: value })
-              }}
-            />
-          ))}
-        </Box>
-
-        <Box className="bd-b" pb="S_32" mb="S_32">
-          <Text textStyle="R_16M" mb="S_12" color="textSubtle">
-            {t('Total Amount')}
-          </Text>
-          {needsApprovalCoins.length ? (
-            needsApprovalCoins.map((coin) => (
-              <Flex textStyle="R_16M" mb="S_8" alignItems="center">
-                <Flex alignItems="center" className="col-9">
-                  <img width="32px" src={`/images/coins/${coin.symbol}.png`} alt="" />
-                  <Text mr="S_8" ml="S_12">
-                    {coin.currentValue}
-                  </Text>
-                  <Text color="textSubtle">{coin.symbol}</Text>
-                </Flex>
-                <Button
-                  ml="auto"
-                  width="200px"
-                  variant="brown"
-                  disabled={isApproving || !coin.needsApproval || !coin.currentValue}
-                  onClick={onApprove(coin)}
+          <Box mb="S_32">
+            <Text textStyle="R_16M" mb="S_12" color="textSubtle">
+              {t('Total Amount')}
+            </Text>
+            {needsApprovalCoins.length ? (
+              needsApprovalCoins.map((coin) => (
+                <Flex
+                  textStyle="R_16M"
+                  mb={isMobile ? 'S_24' : 'S_8'}
+                  alignItems={isMobile ? 'flex-start' : 'center'}
+                  flexDirection={isMobile ? 'column' : 'row'}
                 >
-                  {coin.needsApproval || <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />} Approve{' '}
-                  {coin.symbol}
-                </Button>
+                  <Flex alignItems="center" mb={isMobile ? 'S_8' : ''}>
+                    <img width="32px" src={`/images/coins/${coin.symbol}.png`} alt="" />
+                    <Text mr="S_8" ml="S_12">
+                      {coin.currentValue}
+                    </Text>
+                    <Text color="textSubtle">{coin.symbol}</Text>
+                  </Flex>
+                  <Button
+                    ml="auto"
+                    width={isMobile ? '100%' : '200px'}
+                    variant="brown"
+                    disabled={isApproving || !coin.needsApproval || !coin.currentValue}
+                    onClick={onApprove(coin)}
+                  >
+                    {coin.needsApproval || <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />} Approve{' '}
+                    {coin.symbol}
+                  </Button>
+                </Flex>
+              ))
+            ) : (
+              <Flex py="S_28" justifyContent="center">
+                <Text textStyle="R_14R" color="textSubtle">
+                  {t('Please input the investment amount.')}
+                </Text>
               </Flex>
-            ))
-          ) : (
-            <Flex py="S_28" justifyContent="center">
-              <Text textStyle="R_14R" color="textSubtle">
-                {t('Please input the investment amount.')}
-              </Text>
-            </Flex>
-          )}
-        </Box>
+            )}
+          </Box>
+          <Divider mb="S_32" />
+          <Box mb="S_40">
+            <Text textStyle="R_16M" mb="S_8" color="textSubtle">
+              {t('Total Value')}
+            </Text>
+            <Text textStyle="R_23M">$ {numeral(sumPoolAmount).format('0,0.[0000]')}</Text>
+          </Box>
 
-        <Box mb="S_40">
-          <Text textStyle="R_16M" mb="S_8" color="textSubtle">
-            {t('Total Value')}
-          </Text>
-          <Text textStyle="R_23M">$ {numeral(sumPoolAmount).format('0,0.[0000]')}</Text>
-        </Box>
-
-        <Button
-          scale="lg"
-          width="100%"
-          disabled={isSimulating || !allApproved || !needsApprovalCoins.length}
-          onClick={onNext}
-        >
-          {t('Calculate invest amount')}
-        </Button>
+          <Button
+            scale="lg"
+            width="100%"
+            disabled={isSimulating || !allApproved || !needsApprovalCoins.length}
+            onClick={onNext}
+          >
+            {t('Calculate invest amount')}
+          </Button>
+        </CardBody>
       </Card>
     </>
   )

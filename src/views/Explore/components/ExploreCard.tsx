@@ -221,12 +221,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const renderYieldAPR = useCallback(() => {
     return (
-      <TwoLineFormat
-        width="40%"
-        title={t('Yield APR')}
-        value={`${apr}%`}
-        hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
-      />
+      <TwoLineFormat width="40%" title={t('Yield APR')} value={`${apr}%`} hint={t('A return of investment paid')} />
     )
   }, [t, apr])
 

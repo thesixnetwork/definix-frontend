@@ -7,7 +7,7 @@ import { rgba } from 'polished'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { AnountButton, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from 'definixswap-uikit'
 import { Input as NumericalInput } from './NumericalInput'
 import Coin from './Coin'
 
@@ -24,6 +24,7 @@ interface CurrencyInputPanelProps {
   onQuarter?: () => void
   onHalf?: () => void
   onUserInput: (value: string) => void
+  max?: BigInt
 }
 
 const Container = styled.div<{ hideInput: boolean }>``
@@ -62,6 +63,7 @@ const CurrencyInputPanel = ({
   onQuarter,
   onHalf,
   onUserInput,
+  max,
 }: CurrencyInputPanelProps) => {
   const { t } = useTranslation()
   const { account } = useWallet()
@@ -74,49 +76,52 @@ const CurrencyInputPanel = ({
     return currency.symbol
   })()
   return (
-    <>
-      <Container id={id} hideInput={hideInput} className={className}>
-        {!hideInput && (
-          <Flex justifyContent="space-between" alignItems="center" className="mb-s12">
-            {!currency.hide && (
-              <Coin symbol={currency.symbol}>
-                <Text textStyle="R_16M">{thisName}</Text>
-              </Coin>
-            )}
-            {account && !!hideBalance === false && (
-              <Text textStyle="R_14R" color="text">
-                {t('Balance')}
-                <Text as="span" textStyle="R_14B" marginLeft="4px">
-                  {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
-                </Text>
-              </Text>
-            )}
-          </Flex>
-        )}
-
-        <InputBox style={hideInput ? { padding: '0', borderRadius: '8px' } : {}}>
-          {!hideInput && (
-            <>
-              <NumericalInput
-                className="token-amount-input"
-                value={value}
-                onUserInput={(val) => {
-                  onUserInput(val)
-                }}
-                style={{ width: isMobile && currency && showMaxButton ? '100%' : 'auto' }}
-              />
-              {account && currency && showMaxButton && (
-                <div className="flex align-center justify-end" style={{ width: isMobile ? '100%' : 'auto' }}>
-                  <StyledAnountButton onClick={onQuarter}>25%</StyledAnountButton>
-                  <StyledAnountButton onClick={onHalf}>50%</StyledAnountButton>
-                  <StyledAnountButton onClick={onMax}>MAX</StyledAnountButton>
-                </div>
-              )}
-            </>
+    <Container id={id} hideInput={hideInput} className={className}>
+      {!hideInput && (
+        <Flex justifyContent="space-between" alignItems="center" className="mb-s12">
+          {!currency.hide && (
+            <Coin symbol={currency.symbol}>
+              <Text textStyle="R_16M">{thisName}</Text>
+            </Coin>
           )}
-        </InputBox>
-      </Container>
-    </>
+          {account && !!hideBalance === false && (
+            <Text textStyle="R_14R" color="text">
+              {t('Balance')}
+              <Text as="span" textStyle="R_14B" marginLeft="4px">
+                {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
+              </Text>
+            </Text>
+          )}
+        </Flex>
+      )}
+
+      <InputBox style={hideInput ? { padding: '0', borderRadius: '8px' } : {}}>
+        {!hideInput && (
+          <>
+            <NumericalInput
+              className="token-amount-input"
+              value={value}
+              onUserInput={(val) => {
+                onUserInput(val)
+              }}
+              style={{ width: isMobile && currency && showMaxButton ? '100%' : 'auto' }}
+            />
+            {account && currency && showMaxButton && (
+              <div className="flex align-center justify-end" style={{ width: isMobile ? '100%' : 'auto' }}>
+                <StyledAnountButton onClick={onQuarter}>25%</StyledAnountButton>
+                <StyledAnountButton onClick={onHalf}>50%</StyledAnountButton>
+                <StyledAnountButton onClick={onMax}>MAX</StyledAnountButton>
+              </div>
+            )}
+          </>
+        )}
+      </InputBox>
+      {value && value > String(max) && (
+        <Noti mt="S_12" type={NotiType.ALERT}>
+          {t('Insufficient balance')}
+        </Noti>
+      )}
+    </Container>
   )
 }
 

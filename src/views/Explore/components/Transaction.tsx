@@ -160,6 +160,10 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   }
 
   useEffect(() => {
+    setCurrentPage(1)
+  }, [myOnly])
+
+  useEffect(() => {
     fetchTransaction()
   }, [fetchTransaction])
 
@@ -172,22 +176,23 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   return (
     <div className={className}>
       <Flex justifyContent="flex-end" alignItems="center" mx={size.marginX} my={size.marginY}>
-        <Text className="mr-s8" color="deepgrey" textStyle="R_14R">
+        <Text mr="S_8" color="deepgrey" textStyle="R_14R">
           {t('My Transaction only')}
         </Text>
         <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
       </Flex>
-
-      <PaginationCustom
-        page={currentPage}
-        count={pages}
-        size="small"
-        hidePrevButton
-        hideNextButton
-        onChange={onPageChange}
-      />
-
       <Box mx={size.marginX} mb={size.marginY}>
+        <PaginationCustom
+          page={currentPage}
+          count={pages}
+          size="small"
+          hidePrevButton
+          hideNextButton
+          onChange={onPageChange}
+        />
+      </Box>
+
+      <Box mx={size.marginX} pb={size.marginY}>
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}

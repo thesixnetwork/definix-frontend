@@ -70,7 +70,7 @@ const KeyFacts: React.FC<KeyFactsType> = ({ rebalance }) => {
         <FactRow name={t('Vault')} value={rebalance.factsheet.vault} copy ellipsis />
         <FactRow
           name={t('Management Fee')}
-          helper={t('Fee collected for vault management.')}
+          helper={t('Fee collected for vault')}
           prefix={get(rebalance, 'fee.management', 0.2)}
           value={rebalance.factsheet.management}
           ellipsis
@@ -78,7 +78,7 @@ const KeyFacts: React.FC<KeyFactsType> = ({ rebalance }) => {
         />
         <FactRow
           name={t('Finix Buyback Fee')}
-          helper={t('Fee collected for buyback and burn of FINIX as deflationary purpose.')}
+          helper={t('Fee collected for buyback')}
           prefix={get(rebalance, 'fee.buyback', 1.5)}
           value={rebalance.factsheet.finixBuyBackFee}
           ellipsis
@@ -87,7 +87,7 @@ const KeyFacts: React.FC<KeyFactsType> = ({ rebalance }) => {
         <FactRow
           name={t('Ecosystem Fee')}
           prefix={get(rebalance, 'fee.bounty', 0.3)}
-          helper={t('Reservation fee for further development of the ecosystem.')}
+          helper={t('Reservation fee for further')}
           value={rebalance.factsheet.bountyFee}
           ellipsis
           copy
