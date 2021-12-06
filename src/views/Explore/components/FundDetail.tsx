@@ -74,7 +74,7 @@ const AssetDetail = ({ rebalance, periodPriceTokens }) => {
           return (
             <TR>
               <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
-                <div className="flex align-center">
+                <div className="flex align-center" style={{ width: 'max-content' }}>
                   <img src={`/images/coins/${r.symbol || ''}.png`} alt="" width={24} height={24} className="mr-s6" />
                   <Text textStyle="R_14B">{thisName}</Text>
                 </div>

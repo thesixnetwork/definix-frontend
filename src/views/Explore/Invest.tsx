@@ -6,8 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { get, isEqual, compact } from 'lodash'
 
-import { ArrowBackIcon } from 'uikit-dev'
-import { Box, Button, Flex, Text, useModal } from 'definixswap-uikit'
+import { BackIcon, Box, Button, Flex, Text, useModal } from 'definixswap-uikit'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'
@@ -249,7 +248,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
           to="/rebalancing/detail"
           height="24px"
           p="0"
-          startIcon={<ArrowBackIcon color="textSubtle" />}
+          startIcon={<BackIcon color="textSubtle" />}
         >
           <Text textStyle="R_16R" color="textSubtle">
             {t('Back')}

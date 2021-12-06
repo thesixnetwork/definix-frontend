@@ -57,8 +57,8 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
   onNext,
 }) => {
   const { t } = useTranslation()
-  const { isXl, isXxl } = useMatchBreakpoints()
-  const isMobile = !isXl && !isXxl
+  const { isMaxSm } = useMatchBreakpoints()
+  const isMobile = isMaxSm
   const { setShowModal } = React.useContext(KlipModalContext())
   const { account, klaytn, connector } = useWallet()
   const dispatch = useDispatch()
@@ -249,7 +249,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
   }, [fetchData])
 
   return (
-    <Card p={isMobile ? 'S_20' : 'S_40'}>
+    <Card p={isMobile ? 'S_20' : 'S_40'} mb={isMobile ? 'S_40' : 'S_80'}>
       <Box mb="S_40">
         <Text display="flex" color="textSubtle" textStyle="R_16M" mb="S_20">
           {t('Withdrawal Amount')}
@@ -269,18 +269,18 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
           className="mb-2"
           title={`Management fee ${get(rebalance, 'fee.management', 0.2)}%`}
           value={`$${numeral(usdToBeRecieve / (100 / get(rebalance, 'fee.management', 0.2))).format('0,0.[0000]')}`}
-          hint="Fee collected for vault management."
+          hint={t('Fee collected for vault')}
         />
         <SpaceBetweenFormat
           className="mb-2"
           title={`FINIX buy back fee ${get(rebalance, 'fee.buyback', 1.5)}%`}
           value={`$${numeral(usdToBeRecieve / (100 / get(rebalance, 'fee.buyback', 1.5))).format('0,0.[0000]')}`}
-          hint="Fee collected for buyback and burn of FINIX as deflationary purpose."
+          hint={t('Fee collected for buyback')}
         />
         <SpaceBetweenFormat
           title={`Ecosystem fee ${get(rebalance, 'fee.bounty', 0.3)}%`}
           value={`$${numeral(usdToBeRecieve / (100 / get(rebalance, 'fee.bounty', 0.3))).format('0,0.[0000]')}`}
-          hint="Reservation fee for further development of the ecosystem."
+          hint={t('Reservation fee for further')}
         />
       </Box>
 
@@ -290,11 +290,11 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         <Text textStyle="R_16M" color="mediumgrey">
           {t('Withdrawal ratio')}
         </Text>
-        <ButtonGroup>
+        <ButtonGroup width={isMobile ? '100%' : 'fit-content'}>
           {ratioTypes.map((label) => (
             <Button
               scale="sm"
-              width="102px"
+              width={isMobile ? '33.333%' : '102px'}
               height="32px"
               variant={label === ratioType ? 'primary' : 'text'}
               onClick={() => {
@@ -323,16 +323,16 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
                   />
                 }
               >
-                <InlineAssetRatioLabel coin={c} />
+                <InlineAssetRatioLabel coin={c} column={isMobile} />
               </CheckboxLabel>
             ))
-          : tokenList.map((c) => <InlineAssetRatioLabel coin={c} />)}
+          : tokenList.map((c) => <InlineAssetRatioLabel coin={c} column={isMobile} />)}
       </Box>
 
       <Button
         scale="lg"
         width="100%"
-        disabled={isWithdrawing || isSimulating || (ratioType === RatioType.Single && !selectedLength)}
+        disabled={isWithdrawing || isSimulating || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
         onClick={onWithdraw}
       >
         {t('Withdraw')}

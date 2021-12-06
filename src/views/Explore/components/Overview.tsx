@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardBody } from 'definixswap-uikit'
+import { CardBody, useMatchBreakpoints } from 'definixswap-uikit'
 
 import { Rebalance } from '../../../state/types'
 import KeyFacts from './KeyFacts'
@@ -11,12 +11,13 @@ interface OverviewType {
 }
 
 const Overview: React.FC<OverviewType> = ({ rebalance, periodPriceTokens }) => {
+  const { isMaxXl } = useMatchBreakpoints()
   return (
     <>
-      <CardBody>
+      <CardBody p={isMaxXl ? 'S_20' : 'S_32'}>
         <FundDetail rebalance={rebalance} periodPriceTokens={periodPriceTokens} />
       </CardBody>
-      <CardBody>
+      <CardBody p={isMaxXl ? 'S_20' : 'S_32'}>
         <KeyFacts rebalance={rebalance} />
       </CardBody>
     </>

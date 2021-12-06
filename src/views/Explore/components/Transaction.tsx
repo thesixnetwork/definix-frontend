@@ -51,7 +51,7 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
       <Table>
         <TR>
           {cols.map((c, idx) => (
-            <TH align={idx > 0 ? 'center' : null} key={c}>
+            <TH align={idx > 0 ? 'center' : null} key={c} oneline>
               <Text color="mediumgrey" textStyle="R_12M">
                 {c}
               </Text>
@@ -72,11 +72,11 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
             <TD align="center" oneline>
               {r.event_name === 'AddFundAmount' ? (
                 <Text textStyle="R_14R" color="success">
-                  + {t('Invest')}
+                  + {t('Action Invest')}
                 </Text>
               ) : (
                 <Text textStyle="R_14R" color="failure">
-                  - {t('Withdraw')}
+                  - {t('Action Withdraw')}
                 </Text>
               )}
             </TD>
@@ -160,6 +160,10 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   }
 
   useEffect(() => {
+    setCurrentPage(1)
+  }, [myOnly])
+
+  useEffect(() => {
     fetchTransaction()
   }, [fetchTransaction])
 
@@ -172,28 +176,27 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   return (
     <div className={className}>
       <Flex justifyContent="flex-end" alignItems="center" mx={size.marginX} my={size.marginY}>
-        <Text className="mr-s8" color="deepgrey" textStyle="R_14R">
+        <Text mr="S_8" color="deepgrey" textStyle="R_14R">
           {t('My Transaction only')}
         </Text>
         <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
       </Flex>
-
-      <PaginationCustom
-        page={currentPage}
-        count={pages}
-        size="small"
-        hidePrevButton
-        hideNextButton
-        onChange={onPageChange}
-      />
-
       <Box mx={size.marginX} mb={size.marginY}>
+        <PaginationCustom
+          page={currentPage}
+          count={pages}
+          size="small"
+          hidePrevButton
+          hideNextButton
+          onChange={onPageChange}
+        />
+      </Box>
+
+      <Box mx={size.marginX} pb={size.marginY}>
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}
-          empText={t(
-            myOnly ? 'You haven`t made any transactions in this farm.' : 'Don`t have any transactions in this farm.',
-          )}
+          empText={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')}
         />
       </Box>
     </div>
