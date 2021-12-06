@@ -1,7 +1,17 @@
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput, useMatchBreakpoints, DropdownOption } from 'definixswap-uikit'
+import {
+  Box,
+  Text,
+  Toggle,
+  Flex,
+  ColorStyles,
+  DropdownSet,
+  SearchInput,
+  useMatchBreakpoints,
+  DropdownOption,
+} from 'definixswap-uikit'
 
 const ToggleSection = styled(Flex)`
   align-items: center;

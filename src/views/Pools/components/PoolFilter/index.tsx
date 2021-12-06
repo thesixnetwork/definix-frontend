@@ -1,41 +1,47 @@
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Box, Text, Toggle, Flex, ColorStyles, DropdownSet, SearchInput, useMatchBreakpoints, DropdownOption } from 'definixswap-uikit'
+import {
+  Box,
+  Text,
+  Toggle,
+  Flex,
+  ColorStyles,
+  DropdownSet,
+  SearchInput,
+  useMatchBreakpoints,
+  DropdownOption,
+} from 'definixswap-uikit'
 
 const ToggleSection = styled(Flex)`
   align-items: center;
   justify-content: flex-end;
 `
 
-const PoolFilter = ({
-  stackedOnly,
-  setStackedOnly,
-  liveOnly,
-  setLiveOnly,
-  orderBy,
-  search,
-}) => {
+const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderBy, search }) => {
   const { t } = useTranslation()
   const { isMaxXl } = useMatchBreakpoints()
 
-  const orderByFilter = useMemo<DropdownOption[]>(() => [
-    {
-      id: 'sortOrder',
-      label: t('Recommend'),
-      orderBy: 'asc',
-    },
-    {
-      id: 'apyValue',
-      label: t('APR'),
-      orderBy: 'desc',
-    },
-    {
-      id: 'totalStakedValue',
-      label: t('Total staked'),
-      orderBy: 'desc',
-    },
-  ], [t])
+  const orderByFilter = useMemo<DropdownOption[]>(
+    () => [
+      {
+        id: 'sortOrder',
+        label: t('Recommend'),
+        orderBy: 'asc',
+      },
+      {
+        id: 'apyValue',
+        label: t('APR'),
+        orderBy: 'desc',
+      },
+      {
+        id: 'totalStakedValue',
+        label: t('Total staked'),
+        orderBy: 'desc',
+      },
+    ],
+    [t],
+  )
   const [orderByFilterIndex, setOrderByFilterIndex] = useState(0)
   const [isOpenOrderByFilter, setIsOpenOrderByFilter] = useState(false)
 

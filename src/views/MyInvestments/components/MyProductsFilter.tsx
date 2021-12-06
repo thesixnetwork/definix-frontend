@@ -23,13 +23,17 @@ const MyProductsFilter: React.FC<{
   onChangeSearchInput: (keyword: string) => void
 }> = ({ onChangeDisplayFilter, onChangeOrderFilter, onChangeSearchInput }) => {
   const { t } = useTranslation()
-  
-  const displayFilter = useMemo<DropdownOption[]>(() => [t('All'), t('Farm'), t('Pool'), t('Rebalancing')].map((label) => {
-    return {
-      id: label.toLowerCase(),
-      label,
-    }
-  }), [t])
+
+  const displayFilter = useMemo<DropdownOption[]>(
+    () =>
+      [t('All'), t('Farm'), t('Pool'), t('Rebalancing')].map((label) => {
+        return {
+          id: label.toLowerCase(),
+          label,
+        }
+      }),
+    [t],
+  )
   const [displayFilterIndex, setDisplayFilterIndex] = useState(0)
   const [isOpenDisplayFilter, setIsOpenDisplayFilter] = useState(false)
 
@@ -38,18 +42,21 @@ const MyProductsFilter: React.FC<{
   // -Basic order는 Farm, Pool, Rebalancing, Long-term stake, Voting fee 순이며 Farm 하위 리스트의 순서는 farm에서 노출되는 Recommand 순서와 동일하다. -APR, Total Liquidity 선택 시 상품 구분없이 리스트 정렬된다.
   // APR: 높은 상품이 최상단
   // Total Liqudity: 높은 상품이 최상단
-  const orderFilter = useMemo<DropdownOption[]>(() => [
-    {
-      id: 'sortOrder',
-      label: t('Basic order'),
-      orderBy: 'asc',
-    },
-    {
-      id: 'apyValue',
-      label: t('APR'),
-      orderBy: 'desc',
-    },
-  ], [t])
+  const orderFilter = useMemo<DropdownOption[]>(
+    () => [
+      {
+        id: 'sortOrder',
+        label: t('Basic order'),
+        orderBy: 'asc',
+      },
+      {
+        id: 'apyValue',
+        label: t('APR'),
+        orderBy: 'desc',
+      },
+    ],
+    [t],
+  )
   const [orderByFilterIndex, setOrderByFilterIndex] = useState(0)
   const [isOpenOrderByFilter, setIsOpenOrderByFilter] = useState(false)
 
