@@ -257,7 +257,8 @@ export const fetchOrderList = (orderId) => async (dispatch) => {
   const response = await axios.get(
     `${process.env.REACT_APP_API_NFT}/orderlist?sort=ASC&limit=10&pageNumber=1&startIndex=1&endIndex=60`,
   )
-  dispatch(setOrderList({ orderList: response.data }))
+  const data = response.data
+  dispatch(setOrderList({ orderList: data }))
 }
 
 export default nftSlice.reducer

@@ -14,7 +14,7 @@ import CopyToClipboard from '../CopyToClipboard'
 import EllipsisText from '../../../../components/EllipsisText'
 import ListFillModal from './ListFillModal'
 import ModalComplete from './ModalComplete'
-import { useSousApprove } from '../../../../hooks/useGetMyNft'
+import { usePurchaseOneNFT } from '../../../../hooks/useGetMyNft'
 
 interface Props {
   onDismiss?: () => void
@@ -45,9 +45,25 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
   const [handleBuy] = useModal(<ModalComplete />)
+  const { onPurchase } = usePurchaseOneNFT(_.get(data, 'orderCode'))
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { isDark } = useTheme()
+
+  const purchase = () => {
+    try {
+      const res = onPurchase()
+      res
+        .then(async (r) => {
+          handleBuy()
+        })
+        .catch((e) => {
+          onDismiss()
+        })
+    } catch (e) {
+      onDismiss()
+    }
+  }
 
   return (
     <ModalNFT
@@ -74,11 +90,11 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
 
         <div className={isMobile ? 'mt-6' : 'ml-6'}>
           <Text bold fontSize={isMobile ? '26px !important' : '30px !important'} lineHeight="1">
-            #1234
+            #{data.tokenId}
           </Text>
           <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="1.4">
             {/* {data.name} {data.title} */}
-            test
+            {data.name} {data.title}
           </Text>
           <Text fontSize={isMobile ? '12px !important' : '14px !important'} color="textSubtle" lineHeight="1.5">
             Dingo x SIX Network NFT Project No.1
@@ -88,8 +104,8 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
               Metadata
             </Text>
             <div className="flex align-center">
-              <EllipsisText start={17} text={'https://klaytn.definix.com/' || ''} />
-              <CopyToClipboard toCopy="https://klaytn.definix.com/">Copy Address</CopyToClipboard>
+              <EllipsisText start={17} text={data.metaDataURL || ''} />
+              <CopyToClipboard toCopy={data.metaDataURL || ''}>Copy Address</CopyToClipboard>
             </div>
           </div>
           <div className="mt-3">
@@ -117,7 +133,7 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
             <div className="flex align-center">
               <Image src="/images/coins/FINIX.png" width={16} height={16} />
               <Text bold fontSize="22px" color="text" paddingLeft="6px">
-                2,837.2938 FINIX
+                {data.price} FINIX
               </Text>
             </div>
           </div>
@@ -126,14 +142,10 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
               Until
             </Text>
             <Text bold fontSize="14px !important" color="text">
-              28/12/21 00:00:00 GMT+7
+              {data.orderSellPeriod > 0 ? data.orderSellPeriod : '-'}
             </Text>
-            {/* ถ้าไม่ได้ใส่ วันที่/เวลา */}
-            {/* <Text fontSize="12px" color="text">
-                  -
-                </Text> */}
           </div>
-          <Button fullWidth radii="small" className="mt-3" onClick={() => handleBuy()}>
+          <Button fullWidth radii="small" className="mt-3" onClick={() => purchase()}>
             Buy
           </Button>
         </div>

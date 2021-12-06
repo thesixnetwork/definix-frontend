@@ -37,6 +37,7 @@ import ApolloABI from 'config/abi/Apollo.json'
 import dryotus from 'config/abi/dryotus.json'
 import seller from 'config/abi/SellerFacet.json'
 import marketInfo from 'config/abi/MarketInfoFacet.json'
+import buyer from 'config/abi/BuyerFacet.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -143,6 +144,11 @@ export const useSellNft = () => {
 export const useOrderOnSell = () => {
   const marketInfoAbi = marketInfo.abi as unknown as AbiItem
   return useContract(marketInfoAbi, getDryotusAddress())
+}
+
+export const usePurchaseOne = () => {
+  const buyerAbi = buyer.abi as unknown as AbiItem
+  return useContract(buyerAbi, getNftMarketplaceAddress())
 }
 
 export default useContract

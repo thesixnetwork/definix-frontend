@@ -4,7 +4,7 @@ import { useWallet } from '@binance-chain/bsc-use-wallet'
 import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
 import axios from 'axios'
-import { useApprovalForAll, useSellNft } from 'hooks/useContract'
+import { useApprovalForAll, useSellNft, usePurchaseOne } from 'hooks/useContract'
 import { getDryotusAddress } from 'utils/addressHelpers'
 import useRefresh from './useRefresh'
 import { fetchNFTUser } from '../state/actions'
@@ -112,6 +112,28 @@ export const useCancelOrder = (orderCode) => {
   }, [sellNft, orderCode, account])
 
   return { onCancelOrder: handleCancelOrder }
+}
+
+export const usePurchaseOneNFT = (orderCode) => {
+  const { account }: { account: string } = useWallet()
+  const buyNft = usePurchaseOne()
+
+  const handlePurchaseOneNFT = useCallback(async () => {
+    try {
+      let txHash
+      if (account) {
+        txHash = await buyNft.methods.purchaseOneNFT(orderCode).send({ from: account, gas: 200000 })
+      }
+
+      return new Promise((resolve, reject) => {
+        resolve(txHash)
+      })
+    } catch (e) {
+      return false
+    }
+  }, [buyNft, orderCode, account])
+
+  return { onPurchase: handlePurchaseOneNFT }
 }
 
 export default useNFTUser

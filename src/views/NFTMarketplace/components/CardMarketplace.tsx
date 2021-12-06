@@ -24,6 +24,7 @@ import NFTCard from './NFTCard'
 import Dropdown from './DropdownNFT/Dropdown'
 import TypeTab from './TypeTab'
 import OutsideClick from './OutsideClick'
+import useRefresh from '../../../hooks/useRefresh'
 import { State } from '../../../state/types'
 import { fetchOrderList } from '../../../state/actions'
 
@@ -149,15 +150,17 @@ const CardMarketplace = () => {
   const [fillLevel, setFillLevel] = useState('Legendary')
   const [fillPrice, setFillPrice] = useState('Most recent')
   const { isDark } = useTheme()
+  const { fastRefresh } = useRefresh()
   const nftUser = useSelector((state: State) => state.nft)
   const orderItems = _.get(nftUser, 'orderItems')
   const orderOnSell = _.get(nftUser, 'orderOnSell')
   const owning = _.get(nftUser, 'owning')
+  const orderList = _.get(nftUser, 'orderList')
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(fetchOrderList(''))
-  }, [dispatch])
+  }, [dispatch, fastRefresh])
 
   const filterdList = useMemo(() => {
     return _.get(nftUser, 'nftListData')?.filter(
@@ -179,6 +182,51 @@ const CardMarketplace = () => {
     setIsPrice(false)
     setFillPrice(val.value)
   }
+
+  const filterOrderOnSell = useMemo(() => {
+    const OrderArray = []
+    orderList.filter((x) =>
+      x.items.map((v) =>
+        filterdList.some(
+          (y) =>
+            v.tokenId >= y?.startID &&
+            v.tokenId <= y?.endID &&
+            OrderArray.push({
+              tokenId: v.tokenId,
+              orderCode: x.orderCode,
+              videoUrl: y?.videoUrl,
+              codeData: y?.code,
+              code: y?.code,
+              price: v.price,
+              tokenContract: v.tokenContract,
+              amount: v.amount,
+              itemCode: v.itemCode,
+              itemId: v.itemId,
+              orderCurrency: x.orderCurrency,
+              orderStatus: x.orderStatus,
+              orderSellPeriod: x.orderSellPeriod,
+              detailDescKey: y?.detailDescKey,
+              detailTitleKey: y?.detailTitleKey,
+              endID: y?.endID,
+              grade: y?.grade,
+              imageUrl: y?.imageUrl,
+              limitCount: y?.limitCount,
+              metaDataURL: y?.metaDataURL,
+              name: y?.name,
+              order: y?.order,
+              previewImgId: y?.previewImgId,
+              previewVideoUrl: y?.previewVideoUrl,
+              startID: y?.startID,
+              title: y?.title,
+              totalAmount: y?.totalAmount,
+              userData: y?.userData,
+            }),
+        ),
+      ),
+    )
+    return OrderArray
+  }, [filterdList, orderList])
+
   return (
     <div className="align-stretch mt-5">
       <TypeTab current="/nft/market-place" />
@@ -260,11 +308,11 @@ const CardMarketplace = () => {
           />
         </div>
         <Text className="my-4" fontSize="18px">
-          6 results
+          {filterOrderOnSell.length} results
         </Text>
         <FlexLayout cols={3}>
-          {list.map((data) => (
-            <NFTCard isHorizontal={listView} isMarketplace={isMarketplace} dataForGroup />
+          {filterOrderOnSell.map((data) => (
+            <NFTCard data={data} isHorizontal={listView} isMarketplace={isMarketplace} dataForGroup />
           ))}
         </FlexLayout>
       </CardBox>

@@ -40,7 +40,7 @@ const CardHeading: React.FC<CardHeadingType> = ({ data, className = '', typeName
             <ImgWrap>
               <video autoPlay muted loop playsInline style={{ maxWidth: '100.5%' }}>
                 <source
-                  src="https://dryotus.definix.com/ipfs/QmdnHBXwbe1tpa8fpKKk1RnAFiU93JpuM7CwmGkUga3kuC/Legendary_T-ARA.mp4"
+                  src={data.videoUrl}
                   type="video/mp4"
                 />
               </video>

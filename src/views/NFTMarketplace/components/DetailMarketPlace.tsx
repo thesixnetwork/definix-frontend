@@ -103,14 +103,14 @@ const DetailMarketPlace: React.FC<ExpandableSectionProps> = ({
 
           <div className="flex flex-wrap" style={{ marginRight: '-6px' }}>
             <Heading bold className="flex-shrink">
-              #12
+              #{data.tokenId}
             </Heading>
           </div>
         </div>
         <div className="flex align-baseline flex-wrap justify-space-between">
           <div className="flex flex-wrap justify-end" style={{ marginRight: '-6px' }}>
             <Text bold className="flex-shrink">
-              dddd
+              {data.name} {data.title}
             </Text>
           </div>
         </div>
@@ -123,33 +123,27 @@ const DetailMarketPlace: React.FC<ExpandableSectionProps> = ({
         </div>
       </InfosBox>
 
-      {isMarketplace && (
-        <PriceUnitBox>
-          <div className="flex justify-space-between py-1">
-            <Text fontSize="12px" color="textSubtle">
-              Price
+      <PriceUnitBox>
+        <div className="flex justify-space-between py-1">
+          <Text fontSize="12px" color="textSubtle">
+            Price
+          </Text>
+          <div className="flex">
+            <Image src="/images/coins/FINIX.png" width={16} height={16} />
+            <Text fontSize="12px" color="text" paddingLeft="6px">
+              {data.price} FINIX
             </Text>
-            <div className="flex">
-              <Image src="/images/coins/FINIX.png" width={16} height={16} />
-              <Text fontSize="12px" color="text" paddingLeft="6px">
-                2,837.2938 FINIX
-              </Text>
-            </div>
           </div>
-          <div className="flex justify-space-between">
-            <Text fontSize="12px" color="textSubtle">
-              Until
-            </Text>
-            <Text fontSize="12px" color="text">
-              28/12/21 00:00:00 GMT+7
-            </Text>
-            {/* ถ้าไม่ได้ใส่ วันที่/เวลา */}
-            {/* <Text fontSize="12px" color="text">
-              -
-            </Text> */}
-          </div>
-        </PriceUnitBox>
-      )}
+        </div>
+        <div className="flex justify-space-between">
+          <Text fontSize="12px" color="textSubtle">
+            Until
+          </Text>
+          <Text fontSize="12px" color="text">
+            {data.orderSellPeriod > 0 ? data.orderSellPeriod : '-'}
+          </Text>
+        </div>
+      </PriceUnitBox>
     </>
   )
 }
