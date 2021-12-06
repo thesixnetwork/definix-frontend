@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Flex } from 'definixswap-uikit'
+import { Card, Flex, Divider, VDivider } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 import StakeDayRatio from './StakeDayRatio'
@@ -21,6 +21,7 @@ const CardTotalStake: React.FC<IsMobileType> = ({ isMobile }) => {
       <Card p={isMobile ? 'S_20' : 'S_40'}>
         <FlexCard>
           <FinixStake isMobile={isMobile} />
+          {isMobile ? <Divider width="100%" backgroundColor="lightGrey50" /> : <VDivider opacity="0.5" />}
           <StakeDayRatio isMobile={isMobile} />
         </FlexCard>
       </Card>

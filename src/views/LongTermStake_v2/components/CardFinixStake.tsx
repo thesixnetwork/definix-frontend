@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, Flex } from 'definixswap-uikit'
+import { Card, Flex, Divider } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 import VFinixAprButton from './VFinixAprButton'
@@ -42,7 +42,9 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
+          {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
           <BalanceFinix isMobile={isMobile} days={days} data={data} />
+          <Divider width="100%" backgroundColor="lightGrey50" />
           <ApproveFinix isMobile={isMobile} />
           <EstimateVFinix isMobile={isMobile} />
         </FlexCard>

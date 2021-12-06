@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 
-import { Box, DropdownOption, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, useMatchBreakpoints, DropdownOption } from 'definixswap-uikit'
 // import PoolCardGenesis from './components/PoolCardGenesis'
 import PoolHeader from './components/PoolHeader'
 import PoolFilter from './components/PoolFilter'
@@ -29,30 +29,8 @@ const Pool: React.FC = () => {
     state: 'list',
     data: null,
   }) // 'list', 'deposit', 'remove',
-  const orderFilter = useRef<{
-    defaultIndex: number
-    options: DropdownOption[]
-  }>({
-    defaultIndex: 0,
-    options: [
-      {
-        id: 'sortOrder',
-        label: t('Recommend'),
-        orderBy: 'asc',
-      },
-      {
-        id: 'apyValue',
-        label: t('APR'),
-        orderBy: 'desc',
-      },
-      {
-        id: 'totalStakedValue',
-        label: t('Total staked'),
-        orderBy: 'desc',
-      },
-    ],
-  })
-  const [selectedOrderOptionIndex, setSelectedOrderOptionIndex] = useState<number>(0)
+
+  const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   // const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
@@ -84,9 +62,7 @@ const Pool: React.FC = () => {
               setStackedOnly={setStackedOnly}
               liveOnly={liveOnly}
               setLiveOnly={setLiveOnly}
-              defaultOptionIndex={orderFilter.current.defaultIndex}
-              orderOptions={orderFilter.current.options}
-              orderBy={(index) => setSelectedOrderOptionIndex(index)}
+              orderBy={(order) => setSelectedOrderBy(order)}
               search={(keyword: string) => setSearchKeyword(keyword)}
             />
 
@@ -96,7 +72,7 @@ const Pool: React.FC = () => {
                   liveOnly={liveOnly}
                   stakedOnly={stackedOnly}
                   searchKeyword={searchKeyword}
-                  orderBy={orderFilter.current.options[selectedOrderOptionIndex]}
+                  orderBy={selectedOrderBy}
                   goDeposit={(props: any) => {
                     setPageState({
                       state: 'deposit',

@@ -9,14 +9,11 @@ const FlexRatio = styled(Flex)`
   width: 50%;
   flex-direction: column;
   padding-left: 32px;
-  border-left: 1px solid #d8d8d880;
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     width: 100%;
     padding-left: 0;
     padding-top: 24px;
-    border-left: none;
-    border-top: 1px solid #d8d8d880;
   }
 `
 
