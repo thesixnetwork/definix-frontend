@@ -6,7 +6,6 @@ import { Divider, Flex, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
 
 import { Rebalance } from '../../../state/types'
 
-import SelectChart, { TypeChartName } from './SelectChart'
 import FullChart from './FullChart'
 import SelectTime from './SelectTime'
 import TwoLineFormat from './TwoLineFormat'
@@ -19,8 +18,6 @@ interface PerformanceType {
   timeframe: string
   setTimeframe: (timeframe: string) => void
   maxDrawDown: number
-  chartName: TypeChartName
-  setChartName: (chartName: TypeChartName) => void
   sharpRatio: number
 }
 
@@ -31,9 +28,7 @@ const Performance: React.FC<PerformanceType> = ({
   graphData,
   timeframe,
   setTimeframe,
-  chartName,
   maxDrawDown,
-  setChartName,
   sharpRatio,
 }) => {
   const { t } = useTranslation()
@@ -46,12 +41,7 @@ const Performance: React.FC<PerformanceType> = ({
       <div className="pa-4 pt-5">
         <div className="flex flex-wrap align-center justify-space-between mb-3">
           <div className="flex flex-wrap align-center justify-space-between mb-3">
-            <div>
-              <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
-            </div>
-            <div style={{ marginLeft: isMobile ? '0px' : '20px', marginTop: isMobile ? '10px' : '0px' }}>
-              <SelectChart chartName={chartName} setChartName={setChartName} />
-            </div>
+            <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
           </div>
           <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
             {false && (
