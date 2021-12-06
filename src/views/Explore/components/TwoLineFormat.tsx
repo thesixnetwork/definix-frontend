@@ -1,8 +1,8 @@
 import React from 'react'
-import { Flex, Helper, Text } from 'definixswap-uikit'
+import { Flex, FlexProps, Helper, Text } from 'definixswap-uikit'
 import { isNil } from 'lodash'
 
-interface TwoLineFormatType {
+interface TwoLineFormatType extends FlexProps {
   className?: string
   title: string
   subTitle?: string
@@ -38,6 +38,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   valueClass,
   currentInvestPercentDiff,
   diffAmounts,
+  ...props
 }) => {
   const textStyle = large
     ? {
@@ -51,7 +52,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
         text: 'R_12M',
       }
   return (
-    <Flex flexDirection="column" className={className}>
+    <Flex flexDirection="column" className={className} {...props}>
       <Flex alignItems="center" justifyContent={alignRight ? 'flex-end' : 'inherit'} mb={large ? 'S_4' : 'S_2'}>
         <Text
           textStyle={textStyle.subTitle}

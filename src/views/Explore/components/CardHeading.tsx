@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Box } from 'definixswap-uikit'
+import { Flex, Text, Box, BoxProps } from 'definixswap-uikit'
 import { Rebalance } from '../../../state/types'
 
-interface CardHeadingType {
+interface CardHeadingType extends BoxProps {
   isHorizontal?: boolean
   onlyTitle?: boolean
   className?: string
@@ -47,29 +47,30 @@ const CardHeading: React.FC<CardHeadingType> = ({
   className = '',
   onlyTitle = false,
   rebalance = {},
+  ...props
 }) => {
   const { t } = useTranslation()
 
   return (
-    <Flex justifyContent="space-between" className={className}>
+    <Flex justifyContent="space-between" className={className} {...props}>
       <Flex
         flexDirection={isHorizontal ? 'column' : 'row'}
         justifyContent={isHorizontal ? 'center' : ''}
         alignItems={!isHorizontal && onlyTitle ? 'center' : 'start'}
       >
-        <Box style={{ marginRight: isHorizontal ? '' : '32px', marginBottom: isHorizontal ? '24px' : '' }}>
+        <Box mr={isHorizontal ? '' : 'S_32'} mb={isHorizontal ? 'S_24' : ''}>
           <CardImage imageUrl={rebalance.icon[0]} title={rebalance.title} isMediumSize={isHorizontal} />
         </Box>
 
         {onlyTitle ? (
-          <div className="mb-1">
+          <Box mb="S_4">
             <CardTitle title={rebalance.title} textStyle="R_20B" />
-          </div>
+          </Box>
         ) : (
           <div>
-            <div className="mb-1">
+            <Box mb="S_4">
               <CardTitle title={rebalance.title} />
-            </div>
+            </Box>
             <Text textStyle="R_12R">{t(rebalance.description)}</Text>
           </div>
         )}

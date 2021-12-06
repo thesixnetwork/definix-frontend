@@ -13,7 +13,6 @@ import {
   Box,
   Button,
   Card,
-  CardBody,
   CardRibbon,
   Flex,
   useMatchBreakpoints,
@@ -21,6 +20,8 @@ import {
   ButtonVariants,
   Text,
   ColorStyles,
+  Divider,
+  VDivider,
 } from 'definixswap-uikit'
 import AssetRatio from './AssetRatio'
 import CardHeading, { CardTitle, CardImage } from './CardHeading'
@@ -162,7 +163,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderTotalAssetValue = useCallback(() => {
     return (
       <TwoLineFormat
-        className="col-6"
+        width="50%"
         title={t('Total Asset Value')}
         value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
       />
@@ -221,7 +222,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderYieldAPR = useCallback(() => {
     return (
       <TwoLineFormat
-        className="col-6"
+        width="50%"
         title={t('Yield APR')}
         value={`${apr}%`}
         hint="A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid."
@@ -289,18 +290,19 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   if (isMobile) {
     return (
-      <HorizontalMobileStyle className="mb-3" ribbon={renderSash()}>
-        <CardHeading className="pa-4 pb-6" isHorizontal rebalance={rebalance} />
+      <HorizontalMobileStyle mb="S_16" ribbon={renderSash()}>
+        <CardHeading p="S_20" pb="S_28" isHorizontal rebalance={rebalance} />
 
         <div>
-          <Flex flexWrap="wrap" className="flex px-4 pb-5" justifyContent="space-between">
+          <Flex flexWrap="wrap" px="S_20" pb="S_20" justifyContent="space-between">
             {renderTotalAssetValue()}
             {renderYieldAPR()}
           </Flex>
           <Box px="S_20" pb="S_20">
             {renderSharePrice()}
           </Box>
-          <Box p="S_20" pb="S_20" className="bd-t">
+          <Divider />
+          <Box p="S_20">
             {renderCurrentInvestment()}
             {renderViewDetailButton()}
           </Box>
@@ -310,36 +312,35 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   }
 
   return (
-    <HorizontalStyle className="mb-4" ribbon={renderSash()}>
-      <CardBody>
-        <CardHeading rebalance={rebalance} className="bd-b pb-5" />
-        <div className="flex pt-5">
-          <div className="flex flex-column justify-space-between px-0 bd-r" style={{ width: '45.7%' }}>
-            <div className="flex justify-space-between mb-4">
-              {renderTotalAssetValue()}
-              {renderYieldAPR()}
-            </div>
-            <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
-          </div>
-
-          <div className="flex flex-grow">
-            <div className="col-6 flex flex-column justify-space-between bd-r px-6">
-              {renderSharePrice()}
-              <MiniChart
-                color={rebalance.sharedPricePercentDiff >= 0 ? '#02a1a1' : '#ff5532'}
-                tokens={allCurrentTokens}
-                rebalanceAddress={getAddress(rebalance.address)}
-                height={60}
-              />
-            </div>
-
-            <div className="col-6 flex flex-column justify-space-between pl-6">
-              {renderCurrentInvestment()}
-              {renderViewDetailButton()}
-            </div>
-          </div>
-        </div>
-      </CardBody>
+    <HorizontalStyle mb="S_16" ribbon={renderSash()}>
+      <CardHeading p="S_32" rebalance={rebalance} />
+      <Divider mx="S_32" />
+      <Flex py="S_32">
+        <Flex justifyContent="space-between" flexDirection="column" style={{ width: '45.9%' }} px="S_32">
+          <Flex justifyContent="space-between" mb="S_20">
+            {renderTotalAssetValue()}
+            {renderYieldAPR()}
+          </Flex>
+          <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
+        </Flex>
+        <VDivider />
+        <Flex flexGrow={1}>
+          <Flex flexDirection="column" width="50%" justifyContent="space-between" px="S_32">
+            {renderSharePrice()}
+            <MiniChart
+              color={rebalance.sharedPricePercentDiff >= 0 ? '#02a1a1' : '#ff5532'}
+              tokens={allCurrentTokens}
+              rebalanceAddress={getAddress(rebalance.address)}
+              height={60}
+            />
+          </Flex>
+          <VDivider />
+          <Flex flexDirection="column" width="50%" justifyContent="space-between" px="S_32">
+            {renderCurrentInvestment()}
+            {renderViewDetailButton()}
+          </Flex>
+        </Flex>
+      </Flex>
     </HorizontalStyle>
   )
 }

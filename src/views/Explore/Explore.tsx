@@ -1,6 +1,5 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
-import FlexLayout from 'components/layout/FlexLayout'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
@@ -66,7 +65,7 @@ const Explore: React.FC = () => {
             <TitleSet
               title={t('Rebalancing Farm')}
               description={t('A Farm that automatically performs')}
-              linkLabel={t('Learn how to invest.')}
+              linkLabel={t('Learn how to invest')}
               link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/rebalancing-farm/how-to-start-investing-in-rebalancing-farm"
             />
           </Box>
@@ -80,25 +79,23 @@ const Explore: React.FC = () => {
             </Flex>
           </Flex>
 
-          <FlexLayout cols={1}>
-            {(rebalances || [])
-              .filter((r) =>
-                !isInvested ? true : (rebalanceBalances[getAddress(r.address)] || new BigNumber(0)).toNumber() > 0,
+          {(rebalances || [])
+            .filter((r) =>
+              !isInvested ? true : (rebalanceBalances[getAddress(r.address)] || new BigNumber(0)).toNumber() > 0,
+            )
+            .map((rebalance) => {
+              return (
+                <ExploreCard
+                  key={rebalance.title}
+                  isHorizontal
+                  rebalance={rebalance}
+                  balance={rebalanceBalances[getAddress(rebalance.address)] || new BigNumber(0)}
+                  onClickViewDetail={() => {
+                    setSelectedRebalance(rebalance)
+                  }}
+                />
               )
-              .map((rebalance) => {
-                return (
-                  <ExploreCard
-                    key={rebalance.title}
-                    isHorizontal
-                    rebalance={rebalance}
-                    balance={rebalanceBalances[getAddress(rebalance.address)] || new BigNumber(0)}
-                    onClickViewDetail={() => {
-                      setSelectedRebalance(rebalance)
-                    }}
-                  />
-                )
-              })}
-          </FlexLayout>
+            })}
         </>
       </Route>
 
