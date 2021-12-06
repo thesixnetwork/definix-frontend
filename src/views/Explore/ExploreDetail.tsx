@@ -16,7 +16,7 @@ import {
   CardBody,
   Divider,
   Flex,
-  TabBox,
+  Tabs,
   Text,
   useMatchBreakpoints,
   VDivider,
@@ -34,10 +34,10 @@ import { TypeChartName } from './components/SelectChart'
 
 import CardHeading from './components/CardHeading'
 import FundAction from './components/FundAction'
-import Transaction from './components/Transaction'
 import TwoLineFormat from './components/TwoLineFormat'
-import Overview from './components/Overview'
 import Performance from './components/Performance'
+import Overview from './components/Overview'
+import Transaction from './components/Transaction'
 
 interface ExploreDetailType {
   rebalance: Rebalance | any
@@ -81,6 +81,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const dispatch = useDispatch()
   const { account } = useWallet()
   const { t } = useTranslation()
+  const tabs = useMemo(() => [t('Overview'), t('Performance'), t('Transaction')], [t])
+  const [curTab, setCurTab] = useState<string>(tabs[0])
   // for adjust color
   const rebalance = useMemo(() => {
     if (!rawData?.ratio) return rawData
@@ -608,34 +610,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
 
   if (!rebalance) return <Redirect to="/rebalancing" />
 
-  const tabs = [
-    {
-      name: t('Overview'),
-      component: <Overview rebalance={rebalance} periodPriceTokens={periodPriceTokens} />,
-    },
-    {
-      name: t('Performance'),
-      component: (
-        <Performance
-          rebalance={rebalance}
-          isLoading={isLoading}
-          returnPercent={returnPercent}
-          graphData={graphData}
-          timeframe={timeframe}
-          setTimeframe={setTimeframe}
-          chartName={chartName}
-          maxDrawDown={maxDrawDown}
-          setChartName={setChartName}
-          sharpRatio={sharpRatio}
-        />
-      ),
-    },
-    {
-      name: t('Transaction'),
-      component: <Transaction rbAddress={rebalance.address} />,
-    },
-  ]
-
   return (
     <>
       <Helmet>
@@ -722,7 +696,28 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
           </Card>
 
           <Card>
-            <TabBox tabs={tabs} />
+            <Tabs
+              tabs={tabs}
+              curTab={curTab}
+              setCurTab={setCurTab}
+              {...(isMaxXl && { small: true, width: '33.33%' })}
+            />
+            {curTab === tabs[0] && <Overview rebalance={rebalance} periodPriceTokens={periodPriceTokens} />}
+            {curTab === tabs[1] && (
+              <Performance
+                rebalance={rebalance}
+                isLoading={isLoading}
+                returnPercent={returnPercent}
+                graphData={graphData}
+                timeframe={timeframe}
+                setTimeframe={setTimeframe}
+                chartName={chartName}
+                maxDrawDown={maxDrawDown}
+                setChartName={setChartName}
+                sharpRatio={sharpRatio}
+              />
+            )}
+            {curTab === tabs[2] && <Transaction rbAddress={rebalance.address} />}
           </Card>
         </div>
 
