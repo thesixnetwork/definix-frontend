@@ -22,6 +22,6 @@ export default configureStore({
     achievements: achievementsReducer,
     rebalances: rebalanceReducer,
     wallet: walletReducer,
-    nft
+    nft,
   },
 })

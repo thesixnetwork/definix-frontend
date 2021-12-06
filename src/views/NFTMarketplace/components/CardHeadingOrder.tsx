@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react'
 import styled from 'styled-components'
-import LazyLoad from'react-lazyload'
+import LazyLoad from 'react-lazyload'
 // import LazyLoad from 'react-lazyload'
 import { Flex } from '../../../uikit-dev'
 
