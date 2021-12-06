@@ -47,6 +47,14 @@ export default {
     97: process.env.REACT_APP_LP_VELO_FINIX_TESTNET,
     56: process.env.REACT_APP_LP_VELO_FINIX_MAINNET,
   },
+  nftMarketplace: {
+    97: process.env.REACT_APP_NFT_MARKETPLACE_TESTNET,
+    56: process.env.REACT_APP_NFT_MARKETPLACE_MAINNET,
+  },
+  dryotus: {
+    97: process.env.REACT_APP_DRYOTUS_TESTNET,
+    56: process.env.REACT_APP_DRYOTUS_MAINNET,
+  },
   // configured =====================================================
   syrup: {
     97: '0x36101b46fD2C799420f32B2fE267736e72362778',

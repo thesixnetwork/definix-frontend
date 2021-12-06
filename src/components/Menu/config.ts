@@ -15,6 +15,8 @@ import partnerBlack from 'uikit-dev/images/for-ui-v2/menu/Partnership-Black.png'
 import partnerWhite from 'uikit-dev/images/for-ui-v2/menu/Partnership-White.png'
 import swapBlack from 'uikit-dev/images/for-ui-v2/menu/Swap-Black.png'
 import swapWhite from 'uikit-dev/images/for-ui-v2/menu/Swap-White.png'
+import safeBlack from 'uikit-dev/images/for-ui-v2/menu/Safe-Black.png'
+import safeWhite from 'uikit-dev/images/for-ui-v2/menu/Safe-White.png'
 
 const config: MenuEntry[] = [
   {
@@ -64,6 +66,28 @@ const config: MenuEntry[] = [
       {
         label: 'Partnership Pool',
         href: '/partnership-pool',
+        notHighlight: false,
+        newTab: false,
+      },
+    ],
+  },
+  {
+    label: 'NFT Marketplace',
+    icon: safeBlack,
+    iconActive: safeWhite,
+    href: '/nft',
+    notHighlight: false,
+    newTab: false,
+    items: [
+      {
+        label: 'My NFT',
+        href: '/nft',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
+        label: 'Marketplace',
+        href: '/nft/market-place',
         notHighlight: false,
         newTab: false,
       },

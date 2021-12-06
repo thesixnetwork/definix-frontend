@@ -45,6 +45,7 @@ const Explore = lazy(() => import('./views/Explore'))
 const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 const PartnershipPool = lazy(() => import('./views/PartnershipPool'))
+const NFTMarketplace = lazy(() => import('./views/NFTMarketplace'))
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -124,6 +125,9 @@ const App: React.FC = () => {
             </Route>
             <Route path="/partnership-pool">
               <PartnershipPool />
+            </Route>
+            <Route path="/nft">
+              <NFTMarketplace />
             </Route>
 
             {/* <Route path="/xxx">

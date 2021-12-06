@@ -113,3 +113,9 @@ export const getBunnySpecialAddress = () => {
 export const getAirdropKlayAddress = () => {
   return getAddress(addresses.airdropKlay)
 }
+export const getDryotusAddress = () => {
+  return getAddress(addresses.dryotus)
+}
+export const getNftMarketplaceAddress = () => {
+  return getAddress(addresses.nftMarketplace)
+}

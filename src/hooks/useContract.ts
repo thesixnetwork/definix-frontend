@@ -14,6 +14,8 @@ import {
   getPointCenterIfoAddress,
   getBunnySpecialAddress,
   getTradingCompetRegisAddress,
+  getNftMarketplaceAddress,
+  getDryotusAddress,
 } from 'utils/addressHelpers'
 import { poolsConfig, VeloPool } from 'config/constants'
 import { PoolCategory } from 'config/constants/types'
@@ -32,6 +34,9 @@ import bunnySpecial from 'config/abi/bunnySpecial.json'
 import tradeCompetRegisAbi from 'config/abi/definixTradeCompetitionABI.json'
 import apolloV2Abi from 'config/abi/apolloV2.json'
 import ApolloABI from 'config/abi/Apollo.json'
+import dryotus from 'config/abi/dryotus.json'
+import seller from 'config/abi/SellerFacet.json'
+import marketInfo from 'config/abi/MarketInfoFacet.json'
 
 const useContract = (abi: AbiItem, address: string, contractOptions?: ContractOptions) => {
   const web3 = useWeb3()
@@ -123,6 +128,21 @@ export const usePointCenterIfoContract = () => {
 export const useBunnySpecialContract = () => {
   const abi = bunnySpecial as unknown as AbiItem
   return useContract(abi, getBunnySpecialAddress())
+}
+
+export const useApprovalForAll = () => {
+  const dryotusAbi = dryotus as unknown as AbiItem
+  return useContract(dryotusAbi, getDryotusAddress())
+}
+
+export const useSellNft = () => {
+  const sellerAbi = seller.abi as unknown as AbiItem
+  return useContract(sellerAbi, getNftMarketplaceAddress())
+}
+
+export const useOrderOnSell = () => {
+  const marketInfoAbi = marketInfo.abi as unknown as AbiItem
+  return useContract(marketInfoAbi, getDryotusAddress())
 }
 
 export default useContract

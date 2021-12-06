@@ -61,6 +61,54 @@ export interface Profile {
   hasRegistered: boolean
 }
 
+export interface NFTData {
+  code: string
+  order: number
+  name: string
+  title: string
+  grade: string
+  detailTitleKey: string
+  detailDescKey: string
+  // price: number
+  availableAmount?: number
+  totalAmount: number
+  limitCount: number
+  videoUrl: string
+  previewVideoUrl: string
+  previewImgId: string
+  imageUrl: string
+  startID: number
+  endID: number
+  userData?: {
+    amountOwn: number
+    owning: number[]
+  }
+  metaDataURL: string
+  userOrderOnSell?: {
+    tokenId: number
+    id: number
+    code: string
+    description: string
+    owner: string
+    created: number
+    currency: string
+    amount: number
+    tokenRemeningForSell: number
+    price: number
+    status: number
+    itemCount: number
+  }
+  userOrderItems?: {
+    tokenId: number
+    amount: number
+    id: number
+    code: string
+    orderId: number
+    price: number
+    tokenContract: string
+  }
+}
+
 export interface Token {
   address: string
   name: string
@@ -211,4 +259,5 @@ export interface State {
   achievements: AchievementState
   rebalances: RebalanceState
   wallet: WalletState
+  nft: NFTData
 }

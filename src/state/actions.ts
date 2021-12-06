@@ -11,5 +11,6 @@ export {
   updateUserStakedBalance,
 } from './pools'
 export { fetchSixPrice, fetchTVL, fetchFinixPrice, fetchPancakeBnbPrice } from './finixPrice'
+export { fetchNFTUser, fetchUserOrderOnSell, fetchItemByCode, fetchSyncDatabyOrder, fetchOrderList } from './nft'
 export { profileFetchStart, profileFetchSucceeded, profileFetchFailed } from './profile'
 export { fetchStart, teamFetchSucceeded, fetchFailed, teamsFetchSucceeded } from './teams'
