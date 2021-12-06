@@ -8,8 +8,19 @@ import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import numeral from 'numeral'
 import Color from 'color'
-import { Box, Button, Card, CardBody, Flex, TabBox, Text, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
-import { ArrowBackIcon } from 'uikit-dev'
+import {
+  BackIcon,
+  Box,
+  Button,
+  Card,
+  CardBody,
+  Divider,
+  Flex,
+  TabBox,
+  Text,
+  useMatchBreakpoints,
+  VDivider,
+} from 'definixswap-uikit'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
@@ -633,7 +644,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               to="/rebalancing"
               height="24px"
               p="0"
-              startIcon={<ArrowBackIcon color="textSubtle" />}
+              startIcon={<BackIcon color="textSubtle" />}
             >
               <Text textStyle="R_16R" color="textSubtle">
                 {rebalance.title}

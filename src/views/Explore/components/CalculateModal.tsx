@@ -19,8 +19,6 @@ import { fetchRebalances } from '../../../state/rebalance'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import VerticalAssetRatio from './VerticalAssetRatio'
-import PriceUpdate from './PriceUpdate'
-// import Share from './Share'
 
 const CardCalculate = ({
   setTx,
@@ -174,7 +172,6 @@ const CardCalculate = ({
           <Text textStyle="R_14R" className="ml-s4">
             Shares
           </Text>
-          {false && <PriceUpdate className="mt-3" onClick={recalculate} />}
         </Flex>
         <Flex flexDirection="column" color="textSubtle" textStyle="R_14R">
           <SpaceBetweenFormat

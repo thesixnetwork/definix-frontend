@@ -1,14 +1,13 @@
 /* eslint-disable no-nested-ternary */
-import { compact, get } from 'lodash'
+import { get } from 'lodash'
 import BigNumber from 'bignumber.js'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect, useHistory } from 'react-router-dom'
-import { Box, Button, Flex, Text } from 'definixswap-uikit'
-import { ArrowBackIcon } from 'uikit-dev'
+import { BackIcon, Box, Button, Flex, Text } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/hooks'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
@@ -67,7 +66,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           to="/rebalancing/detail"
           height="24px"
           p="0"
-          startIcon={<ArrowBackIcon color="textSubtle" />}
+          startIcon={<BackIcon color="textSubtle" />}
         >
           <Text textStyle="R_16R" color="textSubtle">
             {t('Back')}
