@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
@@ -38,22 +39,12 @@ const Deposit: React.FC<{
 }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
-  const { convertToBalanceFormat, convertToPriceFormat } = useConverter()
+  const { convertToBalanceFormat } = useConverter()
   const { onStake } = useStake(pid)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
-  const fullBalance = useMemo(() => getFullDisplayBalance(tokenBalance), [tokenBalance])
-
-  const totalLiquidityValue = useMemo(() => {
-    return convertToBalanceFormat(getBalanceNumber(totalLiquidity))
-  }, [totalLiquidity, convertToBalanceFormat])
-
   const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
-
-  const myLiquidityDisplayValue = useMemo(() => {
-    return convertToBalanceFormat(myLiquidityValue)
-  }, [myLiquidityValue, convertToBalanceFormat])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -64,8 +55,12 @@ const Deposit: React.FC<{
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      const balance = tokenBalance.times(rate / 100)
-      setVal(getFullDisplayBalance(balance))
+      if (rate === 100) {
+        setVal(numeral(getBalanceNumber(tokenBalance)).format('0.000000'))
+      } else {
+        const balance = tokenBalance.times(rate / 100)
+        setVal(numeral(getBalanceNumber(balance)).format('0.00'))
+      }
     },
     [tokenBalance, setVal],
   )
@@ -179,14 +174,14 @@ const Deposit: React.FC<{
           <LiquidityInfo hasMb>
             <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
             <LiquidityValue>
-              <BalanceText>{totalLiquidityValue}</BalanceText>
+              <BalanceText>{convertToBalanceFormat(getBalanceNumber(totalLiquidity))}</BalanceText>
             </LiquidityValue>
           </LiquidityInfo>
 
           <LiquidityInfo hasMb={false}>
             <LiquidityTitle>{t('My Staked')}</LiquidityTitle>
             <LiquidityValue>
-              <BalanceText>{myLiquidityDisplayValue}</BalanceText>
+              <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
               <PriceText value={myLiquidityPrice.toNumber()} prefix="=" />
             </LiquidityValue>
           </LiquidityInfo>
@@ -196,7 +191,7 @@ const Deposit: React.FC<{
 
         <ModalInput
           value={val}
-          max={fullBalance}
+          max={tokenBalance}
           symbol={tokenName}
           buttonName={t('Deposit')}
           onSelectBalanceRateButton={handleSelectBalanceRate}

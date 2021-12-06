@@ -1,11 +1,12 @@
 import BigNumber from 'bignumber.js'
+import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
-import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
@@ -30,14 +31,6 @@ const Deposit: React.FC<{
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
-  const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max)
-  }, [max])
-
-  const price = useMemo(() => {
-    return convertToPriceFromSymbol(tokenName)
-  }, [convertToPriceFromSymbol, tokenName])
-
   const totalStakedValue = useMemo(() => {
     return convertToBalanceFormat(getBalanceNumber(totalStaked))
   }, [totalStaked, convertToBalanceFormat])
@@ -51,8 +44,9 @@ const Deposit: React.FC<{
   }, [myStakedValue, convertToBalanceFormat])
 
   const myStakedPrice = useMemo(() => {
+    const price = convertToPriceFromSymbol(tokenName)
     return convertToPriceFormat(new BigNumber(myStakedValue).multipliedBy(price).toNumber())
-  }, [myStakedValue, price, convertToPriceFormat])
+  }, [convertToPriceFromSymbol, tokenName, myStakedValue, convertToPriceFormat])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -63,8 +57,12 @@ const Deposit: React.FC<{
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      const balance = max.times(rate / 100)
-      setVal(getFullDisplayBalance(balance))
+      if (rate === 100) {
+        setVal(numeral(getBalanceNumber(max)).format('0.000000'))
+      } else {
+        const balance = max.times(rate / 100)
+        setVal(numeral(getBalanceNumber(balance)).format('0.00'))
+      }
     },
     [max, setVal],
   )
@@ -195,7 +193,7 @@ const Deposit: React.FC<{
 
         <ModalInput
           value={val}
-          max={fullBalance}
+          max={max}
           symbol={tokenName}
           buttonName={t('Deposit')}
           onChange={handleChange}

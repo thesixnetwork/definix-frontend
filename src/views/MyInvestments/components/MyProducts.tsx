@@ -1,13 +1,14 @@
 import _ from 'lodash'
-import React, { useCallback, useMemo, useState } from 'react'
+import { provider } from 'web3-core'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { useBalances } from 'state/hooks'
-import { Card, Divider, ColorStyles, Flex, Text, Box } from 'definixswap-uikit'
-import { provider } from 'web3-core'
+import { Divider, ColorStyles, Flex, Text, Box } from 'definixswap-uikit'
+import NoResultArea from 'components/NoResultArea'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
 import ExploreCard from 'views/Explore/components/ExploreCard'
@@ -125,16 +126,6 @@ const MyProducts: React.FC<{
     [klaytn, account, getMyFarmBalancesInWallet, getMyPoolBalanceInWallet],
   )
 
-  const EmptyArea = styled(Flex)`
-    justify-content: center;
-    align-items: center;
-    padding-bottom: 40px;
-    height: 340px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      height: 260px;
-    }
-  `
-
   return (
     <>
       {displayProducts.length ? (
@@ -147,11 +138,7 @@ const MyProducts: React.FC<{
           )
         })
       ) : (
-        <EmptyArea>
-          <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
-            {t('There are no products deposited')}
-          </Text>
-        </EmptyArea>
+        <NoResultArea useCardLayout={false} message={t('There are no products deposited')} />
       )}
       {/* <List>
         <>
