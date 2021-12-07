@@ -291,7 +291,7 @@ const CardCalculate = ({
       const tx = await rebalanceContract.methods
         // .addFund(arrayTokenAmount, usdTokenAmount, minUsdAmount)
         .addFund(arrayTokenAmount, 0)
-        .send({ from: account, gas: 5000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
+        .send({ from: account, gas: 2000000, ...(containMainCoin ? { value: mainCoinValue } : {}) })
       setTx(tx)
 
       const assets = rebalance.ratio

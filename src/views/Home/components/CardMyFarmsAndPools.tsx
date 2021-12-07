@@ -32,6 +32,7 @@ import {
   usePriceEthBusd,
   usePriceFinixUsd,
   usePriceSixUsd,
+  useRebalanceRewards,
 } from 'state/hooks'
 import styled from 'styled-components'
 import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text } from 'uikit-dev'
@@ -206,6 +207,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const rebalances = useRebalances()
   const balances = useBalances(account) || {}
   const rebalanceBalances = useRebalanceBalances(account) || {}
+  const rebalanceRewards = useRebalanceRewards(account) || {}
   const stakedRebalances = rebalances.filter(
     (r) =>
       (
@@ -856,7 +858,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     <Text bold color="success">
                       {numeral(
                         finixPrice
-                          .times(_.get(r, 'finixRewardPerYear', new BigNumber(0)))
+                          .times(_.get(r, 'finixRewardPerYearFromApollo', new BigNumber(0)))
                           .div(_.get(r, 'totalAssetValue', new BigNumber(0)))
                           .times(100)
                           .toFixed(2),
@@ -877,14 +879,14 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       </Text>
                     </div>
                   </div>
-                  <div className="col-12">
+                  <div className="col-7">
                     <div className="flex align-baseline">
                       <Text fontSize="12px" color="textSubtle">
                         Share price
                       </Text>
-                      <Text className="ml-1" fontSize="11px" color="textSubtle">
+                      {/* <Text className="ml-1" fontSize="11px" color="textSubtle">
                         (Since inception)
-                      </Text>
+                      </Text> */}
                     </div>
                     <div className="flex align-baseline">
                       <Text bold>{`$${numeral((r.sharedPrice || new BigNumber(0)).toNumber()).format('0,0.00')}`}</Text>
@@ -906,8 +908,20 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       </Text>
                     </div>
                   </div>
+                  <div className="col-5">
+                    <Text fontSize="12px" color="textSubtle">
+                      FINIX Earned
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" />
+                    ) : (
+                      <Text bold>
+                        {`${numeral(rebalanceRewards[getAddress(r.address)] || new BigNumber(0)).format('0,0.[000]')}`}
+                      </Text>
+                    )}
+                  </div>
                 </Summary>
-                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+                <IconButton size="sm" as={Link} to="/rebalancing" className="flex flex-shrink">
                   <ChevronRightIcon color="textDisabled" width="28" />
                 </IconButton>
               </FarmsAndPools>
@@ -951,7 +965,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     </Text>
                   </div>
                 </Summary>
-                <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">
+                <IconButton size="sm" as={Link} to="/pool" className="flex flex-shrink">
                   <ChevronRightIcon color="textDisabled" width="28" />
                 </IconButton>
               </FarmsAndPools>
