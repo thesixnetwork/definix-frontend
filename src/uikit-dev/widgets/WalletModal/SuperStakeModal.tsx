@@ -457,55 +457,43 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     }
   }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
 
+  const lockPlus = useCallback(() => {
+    onLockPlus()
+      .then((res) => {
+        setAmount('')
+        if (res === true) {
+          setHarvested(false)
+          setHarvestProgress(-1)
+          setLengthSelect(0)
+          setAmount('')
+          setPendingTx(false)
+          setShowLottie(true)
+          // setInterval(() => setShowLottie(false), 5000)
+          // setInterval(() => onDismiss(), 5000)
+          setSelectedToken({})
+        }
+      })
+      .catch((e) => {
+        setAmount('')
+      })
+  }, [onLockPlus])
+
   useEffect(() => {
     if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
       setHarvested(true)
       setPendingTx(true)
       if (period !== -Infinity) {
         if (Object.values(selectedToken)[0]) {
-          onLockPlus()
-            .then((res) => {
-              setAmount('')
-              if (res === true) {
-                setHarvested(false)
-                setHarvestProgress(-1)
-                setLengthSelect(0)
-                setAmount('')
-                setPendingTx(false)
-                setShowLottie(true)
-                // setInterval(() => setShowLottie(false), 5000)
-                // setInterval(() => onDismiss(), 5000)
-                setSelectedToken({})
-              }
-            })
-            .catch((e) => {
-              setAmount('')
-            })
+          lockPlus()
         } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
-          onLockPlus()
-            .then((res) => {
-              setAmount('')
-              if (res === true) {
-                setHarvested(false)
-                setHarvestProgress(-1)
-                setLengthSelect(0)
-                setAmount('')
-                setPendingTx(false)
-                setShowLottie(true)
-                // setInterval(() => onDismiss(), 5000)
-                setSelectedToken({})
-              }
-            })
-            .catch((e) => {
-              setAmount('')
-            })
+          lockPlus()
         }
       }
     } else if (harvestProgress !== -1) {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, lengthSelect, value, period])
+  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, lengthSelect, value, period, lockPlus])
 
   useEffect(() => {
     if (harvested === true) {
