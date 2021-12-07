@@ -11,7 +11,6 @@ interface TwoLineFormatType extends FlexProps {
   value: string
   percent?: string
   hint?: string
-  hintPosition?: string
   large?: boolean
   days?: string
   alignRight?: boolean
@@ -31,7 +30,6 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   value,
   percent,
   hint,
-  hintPosition = 'top',
   large = false,
   days,
   alignRight = false,
@@ -70,7 +68,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
           </Text>
         )}
 
-        {hint && <Helper text={hint} ml="S_8" position={hintPosition} />}
+        {hint && <Helper text={hint} ml="S_8" />}
       </Flex>
 
       <Flex alignItems="baseline" justifyContent={alignRight ? 'flex-end' : 'inherit'}>

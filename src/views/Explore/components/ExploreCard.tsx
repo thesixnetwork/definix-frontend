@@ -166,7 +166,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderTotalAssetValue = useCallback(() => {
     return (
       <Flex width="60%">
-        <TotalAssetValue value={rebalance?.totalAssetValue} />
+        <TotalAssetValue value={rebalance?.totalAssetValue} small />
       </Flex>
     )
   }, [rebalance])
