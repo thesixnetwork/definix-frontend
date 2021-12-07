@@ -40,31 +40,6 @@ const PriceText = styled(CurrencyText)`
     ${({ theme }) => theme.textStyle.R_12R};
   }
 `
-const Wrap = styled(Flex)`
-  flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-top: ${({ theme }) => theme.spacing.S_20}px;
-  }
-`
-const TitleWrap = styled(Flex)`
-  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
-  align-items: flex-start;
-`
-const ValueWrap = styled(Box)`
-  margin-top: -2px;
-`
-const TokenNameText = styled(Text)`
-  padding-left: 2px;
-  padding-bottom: 1px;
-  color: ${({ theme }) => theme.colors.deepgrey};
-  ${({ theme }) => theme.textStyle.R_12M};
-`
-const TokenImage = styled.img`
-  width: 20px;
-  height: auto;
-  object-fit: contain;
-`
-
 const TotalLiquiditySection: React.FC<{
   title: string
   totalLiquidity: number
@@ -97,6 +72,30 @@ const MyBalanceSection: React.FC<{
   )
 }
 
+const Wrap = styled(Flex)`
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+  }
+`
+const TitleWrap = styled(Flex)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
+  align-items: flex-start;
+`
+const ValueWrap = styled(Box)`
+  margin-top: -2px;
+`
+const TokenNameText = styled(Text)`
+  padding-left: 2px;
+  padding-bottom: 1px;
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_12M};
+`
+const TokenImage = styled.img`
+  width: 20px;
+  height: auto;
+  object-fit: contain;
+`
 const EarningsSection: React.FC<{
   title: string
   tokenName: string
