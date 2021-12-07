@@ -526,7 +526,7 @@ const CardSuperStake = () => {
               src={logoExclusive}
               alt=""
               style={{ opacity: '0.6' }}
-              className={`${!isMobileOrTablet ? 'mt-6 mx-2' : 'mt-4 mx-2'}`}
+              className={`${!isMobileOrTablet ? 'mt-1 mx-4' : 'mt-4 mx-2'}`}
             />
           </div>
         )}
