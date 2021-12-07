@@ -59,21 +59,13 @@ const Wrap = styled(Box)`
   }
 `
 
-const PoolCard: React.FC<PoolCardProps> = ({
-  componentType = 'pool',
-  pool,
-  myBalanceInWallet,
-}) => {
+const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBalanceInWallet }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
-  const {
-    sousId,
-    tokenName,
-    totalStaked,
-  } = pool
-  
+  const { sousId, tokenName, totalStaked } = pool
+
   const isBnbPool = useMemo(() => pool.poolCategory === PoolCategory.KLAYTN, [pool.poolCategory])
   const isOldSyrup = useMemo(() => pool.stakingTokenName === QuoteToken.SYRUP, [pool.stakingTokenName])
 
@@ -82,7 +74,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
   const allowance = useMemo(() => new BigNumber(pool.userData?.allowance || 0), [pool.userData])
   const earnings = useMemo(() => new BigNumber(pool.userData?.pendingReward || 0), [pool.userData])
   const stakedBalance = useMemo(() => new BigNumber(pool.userData?.stakedBalance || 0), [pool.userData])
-  
+
   const needsApprovalContract = useMemo(() => {
     return stakedBalance?.toNumber() <= 0 && !allowance.toNumber() && !isBnbPool
   }, [stakedBalance, allowance, isBnbPool])
@@ -115,15 +107,10 @@ const PoolCard: React.FC<PoolCardProps> = ({
     [t, tokenName, totalStaked],
   )
 
-  const renderMyBalanceSection = useCallback(
-    () => {
-      if (!myBalanceInWallet || myBalanceInWallet === null) return null
-      return (
-        <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
-      )
-    },
-    [t, tokenName, myBalanceInWallet],
-  )
+  const renderMyBalanceSection = useCallback(() => {
+    if (!myBalanceInWallet || myBalanceInWallet === null) return null
+    return <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
+  }, [t, tokenName, myBalanceInWallet])
   const renderEarningsSection = useCallback(
     () => <EarningsSection title={t('Earned')} tokenName={tokenName} earnings={earnings} />,
     [t, tokenName, earnings],
@@ -139,27 +126,24 @@ const PoolCard: React.FC<PoolCardProps> = ({
             pool={pool}
             stakedBalance={stakedBalance}
             needsApprovalContract={needsApprovalContract}
-            onPresentDeposit={() => goDeposit({
-              isOldSyrup,
-              isBnbPool,
-              pool
-            })}
-            onPresentWithdraw={() => goWithdraw({
-              isOldSyrup,
-              pool
-            })}
+            onPresentDeposit={() =>
+              goDeposit({
+                isOldSyrup,
+                isBnbPool,
+                pool,
+              })
+            }
+            onPresentWithdraw={() =>
+              goWithdraw({
+                isOldSyrup,
+                pool,
+              })
+            }
           />
         )}
       </PoolConText.Consumer>
     ),
-    [
-      pool,
-      isOldSyrup,
-      needsApprovalContract,
-      stakedBalance,
-      componentType,
-      isBnbPool,
-    ],
+    [pool, isOldSyrup, needsApprovalContract, stakedBalance, componentType, isBnbPool],
   )
   const renderHarvestActionAirDrop = useCallback(
     () => (
@@ -208,7 +192,9 @@ const PoolCard: React.FC<PoolCardProps> = ({
               <Box py="S_24">{renderStakeAction()}</Box>
               <Divider />
               <Box pt="S_24">{renderTotalStakedSection()}</Box>
-              <Box pt="S_16" py="S_28">{renderMyBalanceSection()}</Box>
+              <Box pt="S_16" py="S_28">
+                {renderMyBalanceSection()}
+              </Box>
             </Box>
           )}
         </>
@@ -226,7 +212,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">
-                <Box className="link-section"/>
+                <Box className="link-section" />
                 <Box className="harvest-action-section">{renderHarvestActionAirDrop()}</Box>
                 <Box className="stake-action-section">{renderStakeAction()}</Box>
               </Flex>

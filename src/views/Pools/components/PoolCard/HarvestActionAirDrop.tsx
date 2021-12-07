@@ -115,40 +115,45 @@ const HarvestActionAirdrop: React.FC<{
   )
   const handleGoToDetail = useCallback(() => navigate.push('/pool'), [navigate])
 
-  const renderAirDrop = useCallback(({ name, value }) => (
-    <Flex>
-      <TokenLabel type="token">{name}</TokenLabel>
-      <Box>
-        <BalanceText>{convertToBalanceFormat(value)}</BalanceText>
-        <PriceText value={getEarningsPrice(value)} prefix="=" />
-      </Box>
-    </Flex>
-  ), [convertToBalanceFormat, getEarningsPrice])
+  const renderAirDrop = useCallback(
+    ({ name, value }) => (
+      <Flex>
+        <TokenLabel type="token">{name}</TokenLabel>
+        <Box>
+          <BalanceText>{convertToBalanceFormat(value)}</BalanceText>
+          <PriceText value={getEarningsPrice(value)} prefix="=" />
+        </Box>
+      </Flex>
+    ),
+    [convertToBalanceFormat, getEarningsPrice],
+  )
 
-  const renderHarvestButton = useCallback(() => (
-    <Button
-      variant={ButtonVariants.RED}
-      width="100%"
-      disabled={!account || (needsApprovalContract && !isOldSyrup) || !earnings.toNumber() || pendingTx}
-      onClick={async () => {
-        setPendingTx(true)
-        await onReward()
-        setPendingTx(false)
-      }}
-    >
-      {t('Harvest')}
-    </Button>
-  ), [t, account, needsApprovalContract, isOldSyrup, earnings, pendingTx, onReward])
+  const renderHarvestButton = useCallback(
+    () => (
+      <Button
+        variant={ButtonVariants.RED}
+        width="100%"
+        disabled={!account || (needsApprovalContract && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+        onClick={async () => {
+          setPendingTx(true)
+          await onReward()
+          setPendingTx(false)
+        }}
+      >
+        {t('Harvest')}
+      </Button>
+    ),
+    [t, account, needsApprovalContract, isOldSyrup, earnings, pendingTx, onReward],
+  )
 
-  const renderDetailButton = useCallback(() => (
-    <DetailButton
-      variant={ButtonVariants.BROWN}
-      width="100%"
-      onClick={handleGoToDetail}
-    >
-      {t('Detail')}
-    </DetailButton>
-  ), [t, handleGoToDetail])
+  const renderDetailButton = useCallback(
+    () => (
+      <DetailButton variant={ButtonVariants.BROWN} width="100%" onClick={handleGoToDetail}>
+        {t('Detail')}
+      </DetailButton>
+    ),
+    [t, handleGoToDetail],
+  )
 
   return (
     <>
@@ -166,17 +171,13 @@ const HarvestActionAirdrop: React.FC<{
                     <>
                       {renderAirDrop({
                         name: br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name,
-                        value: reward
+                        value: reward,
                       })}
                     </>
                   ) : null
                 })}
               </Box>
-              {isInPool && (
-                <HarvestButtonSectionInPool>
-                  {renderHarvestButton()}
-                </HarvestButtonSectionInPool>
-              )}
+              {isInPool && <HarvestButtonSectionInPool>{renderHarvestButton()}</HarvestButtonSectionInPool>}
             </HarvestInfo>
           </Box>
           {isInPool ? null : (

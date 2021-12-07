@@ -22,7 +22,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'med
       return '-'
     }
   }, [convertToPoolAPRFormat, pool.apy])
-  
+
   return (
     <Flex position="relative" alignItems="center">
       <Box mr="S_12">

@@ -88,13 +88,12 @@ const Deposit: React.FC<{
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
-
-  const convertedLimit = useMemo(() => new BigNumber(pool.stakingLimit).multipliedBy(new BigNumber(10).pow(pool.tokenDecimals)), [pool.stakingLimit, pool.tokenDecimals])
-
-  const stakingTokenBalance = useMemo(
-    () => new BigNumber(pool.userData?.stakingTokenBalance || 0),
-    [pool.userData],
+  const convertedLimit = useMemo(
+    () => new BigNumber(pool.stakingLimit).multipliedBy(new BigNumber(10).pow(pool.tokenDecimals)),
+    [pool.stakingLimit, pool.tokenDecimals],
   )
+
+  const stakingTokenBalance = useMemo(() => new BigNumber(pool.userData?.stakingTokenBalance || 0), [pool.userData])
 
   const stakedBalance = useMemo(() => new BigNumber(pool.userData?.stakedBalance || 0), [pool.userData])
 
