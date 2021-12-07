@@ -1,14 +1,13 @@
-import _ from 'lodash'
 import React, { useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
-
 import { Box, useMatchBreakpoints, DropdownOption } from 'definixswap-uikit'
 import PoolHeader from './components/PoolHeader'
 import PoolFilter from './components/PoolFilter'
 import PoolList from './components/PoolList'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
+import PoolContext from './PoolContext'
 
 const Pool: React.FC = () => {
   const { isXxl } = useMatchBreakpoints()
@@ -17,24 +16,31 @@ const Pool: React.FC = () => {
 
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
-  const [pageState, setPageState] = useState<{
-    state: string
-    data: any
-  }>({
-    state: 'list',
-    data: null,
-  }) // 'list', 'deposit', 'remove',
-
+  const [pageState, setPageState] = useState('list')
+  const [pageData, setPageData] = useState(null)
   const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   return (
-    <>
+    <PoolContext.Provider
+      value={{
+        pageState,
+        pageData,
+        goDeposit: (data) => {
+          setPageState('deposit')
+          setPageData(data)
+        },
+        goWithdraw: (data) => {
+          setPageState('withdraw')
+          setPageData(data)
+        },
+      }}
+    >
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
       <Box className={`mb-s${isMobile ? 40 : 80}`}>
-        {pageState.state === 'list' && (
+        {pageState === 'list' && (
           <>
             <PoolHeader />
             <PoolFilter
@@ -53,18 +59,6 @@ const Pool: React.FC = () => {
                   stakedOnly={stackedOnly}
                   searchKeyword={searchKeyword}
                   orderBy={selectedOrderBy}
-                  goDeposit={(props: any) => {
-                    setPageState({
-                      state: 'deposit',
-                      data: props,
-                    })
-                  }}
-                  goRemove={(props: any) => {
-                    setPageState({
-                      state: 'withdraw',
-                      data: props,
-                    })
-                  }}
                 />
               </Route>
               {/* <Route path={`${path}/history`}>
@@ -75,34 +69,30 @@ const Pool: React.FC = () => {
             </>
           </>
         )}
-        {pageState.state === 'deposit' && (
+        {pageState === 'deposit' && (
           <>
             <Deposit
-              {...pageState.data}
+              {...pageData}
               onBack={() => {
-                setPageState({
-                  state: 'list',
-                  data: null,
-                })
+                setPageState('list')
+                setPageData(null)
               }}
             />
           </>
         )}
-        {pageState.state === 'withdraw' && (
+        {pageState === 'withdraw' && (
           <>
             <Withdraw
-              {...pageState.data}
+              {...pageData}
               onBack={() => {
-                setPageState({
-                  state: 'list',
-                  data: null,
-                })
+                setPageState('list')
+                setPageData(null)
               }}
             />
           </>
         )}
       </Box>
-    </>
+    </PoolContext.Provider>
   )
 }
 

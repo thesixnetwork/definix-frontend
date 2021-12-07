@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
-import { useToast } from 'state/hooks'
+import { useFarmFromSymbol, useFarmUser, useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
 import ModalInput from 'components/ModalInput'
@@ -14,35 +14,91 @@ import ConfirmModal from './ConfirmModal'
 import CardHeading from './FarmCard/CardHeading'
 import { FarmWithStakedValue } from './FarmCard/types'
 
+const CardWrap = styled(Card)`
+  margin-top: ${({ theme }) => theme.spacing.S_40}px;
+  padding: ${({ theme }) => theme.spacing.S_40}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: ${({ theme }) => theme.spacing.S_28}px;
+    padding: ${({ theme }) => theme.spacing.S_20}px;
+  }
+`
+const CardBody = styled(Flex)`
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: ${({ theme }) => theme.spacing.S_20}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+  }
+`
+const LiquidityInfo = styled(Flex)<{ hasMb: boolean }>`
+  flex-direction: column;
+  justify-content: normal;
+  width: 50%;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_16 : 0)}px;
+    width: 100%;
+  }
+`
+const LiquidityTitle = styled(Text)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_4}px;
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_12R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: 0;
+  }
+`
+const LiquidityValue = styled(Text)`
+  width: 100%;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 65%;
+  }
+`
+const BalanceText = styled(Text)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const TotalLiquidityText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const PriceText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
+const StyledDivider = styled(Divider)`
+  margin-top: ${({ theme }) => theme.spacing.S_20}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_28}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin: ${({ theme }) => theme.spacing.S_24}px 0;
+  }
+`
+
 const Deposit: React.FC<{
   farm: FarmWithStakedValue
-  removed: boolean
-  pid: number
   lpTokenName: string
-  tokenBalance: BigNumber
-  totalLiquidity: BigNumber
-  myLiquidity: BigNumber
   myLiquidityPrice: BigNumber
   onBack: () => void
-}> = ({
-  farm,
-  removed,
-  pid,
-  tokenBalance,
-  lpTokenName = '',
-  totalLiquidity,
-  myLiquidity,
-  myLiquidityPrice,
-  onBack,
-}) => {
+}> = ({ farm, lpTokenName, myLiquidityPrice, onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
+  const { pid } = useFarmFromSymbol(farm.lpSymbol)
+  const { tokenBalance, stakedBalance } = useFarmUser(pid)
   const { onStake } = useStake(pid)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
-  const myLiquidityValue = useMemo(() => getBalanceNumber(myLiquidity), [myLiquidity])
+  const totalLiquidity: number = useMemo(() => farm.totalLiquidityValue, [farm.totalLiquidityValue])
+  const myLiquidityValue = useMemo(() => getBalanceNumber(stakedBalance), [stakedBalance])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -91,67 +147,6 @@ const Deposit: React.FC<{
     false,
   )
 
-  const CardWrap = styled(Card)`
-    margin-top: ${({ theme }) => theme.spacing.S_40}px;
-    padding: ${({ theme }) => theme.spacing.S_40}px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-top: ${({ theme }) => theme.spacing.S_28}px;
-      padding: ${({ theme }) => theme.spacing.S_20}px;
-    }
-  `
-  const CardBody = styled(Flex)`
-    justify-content: space-between;
-    flex-direction: row;
-    margin-top: ${({ theme }) => theme.spacing.S_20}px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: column;
-    }
-  `
-  const LiquidityInfo = styled(Flex)<{ hasMb: boolean }>`
-    flex-direction: column;
-    justify-content: normal;
-    width: 50%;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_16 : 0)}px;
-      width: 100%;
-    }
-  `
-  const LiquidityTitle = styled(Text)`
-    margin-bottom: ${({ theme }) => theme.spacing.S_4}px;
-    color: ${({ theme }) => theme.colors.mediumgrey};
-    ${({ theme }) => theme.textStyle.R_12R};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: 0;
-    }
-  `
-  const LiquidityValue = styled(Text)`
-    width: 100%;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      width: 65%;
-    }
-  `
-  const BalanceText = styled(Text)`
-    color: ${({ theme }) => theme.colors.black};
-    ${({ theme }) => theme.textStyle.R_18M};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      ${({ theme }) => theme.textStyle.R_16M};
-    }
-  `
-  const PriceText = styled(CurrencyText)`
-    color: ${({ theme }) => theme.colors.deepgrey};
-    ${({ theme }) => theme.textStyle.R_14R};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      ${({ theme }) => theme.textStyle.R_12R};
-    }
-  `
-  const StyledDivider = styled(Divider)`
-    margin-top: ${({ theme }) => theme.spacing.S_20}px;
-    margin-bottom: ${({ theme }) => theme.spacing.S_28}px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin: ${({ theme }) => theme.spacing.S_24}px 0;
-    }
-  `
-
   return (
     <>
       <Box className="mb-s20" style={{ cursor: 'pointer' }} display="inline-flex" onClick={onBack}>
@@ -166,19 +161,13 @@ const Deposit: React.FC<{
       <TitleSet title={t('Deposit LP')} description={t('Deposit LP on the farm')} />
 
       <CardWrap>
-        <CardHeading
-          // apy={farm.apy}
-          // lpSymbols={farm.lpSymbols}
-          farm={farm}
-          lpLabel={lpTokenName}
-          removed={removed}
-        />
+        <CardHeading farm={farm} lpLabel={lpTokenName} />
 
         <CardBody>
           <LiquidityInfo hasMb>
             <LiquidityTitle>{t('Total staked')}</LiquidityTitle>
             <LiquidityValue>
-              <BalanceText>{convertToBalanceFormat(getBalanceNumber(totalLiquidity))}</BalanceText>
+              <TotalLiquidityText value={totalLiquidity} />
             </LiquidityValue>
           </LiquidityInfo>
 

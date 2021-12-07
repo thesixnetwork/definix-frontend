@@ -26,14 +26,11 @@ import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
+import FarmContext from '../../FarmContext'
 
-const Wrap = styled(Box)`
-  padding: ${({ theme }) => theme.spacing.S_32}px;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    padding: ${({ theme }) => theme.spacing.S_20}px;
-  }
-
-  &.horizontal-card {
+const CardWrap = styled(Card)`
+  margin-top: ${({ theme }) => theme.spacing.S_16}px;
+  ${({ theme }) => theme.mediaQueries.xl} {
     .card-heading {
       width: 236px;
     }
@@ -59,17 +56,14 @@ const Wrap = styled(Box)`
     }
   }
 `
+const Wrap = styled(Box)`
+  padding: ${({ theme }) => theme.spacing.S_32}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: ${({ theme }) => theme.spacing.S_20}px;
+  }
+`
 
-const FarmCard: React.FC<FarmCardProps> = ({
-  componentType = 'farm',
-  farm,
-  myBalancesInWallet,
-  klaytn,
-  removed,
-  account,
-  onSelectAddLP,
-  onSelectRemoveLP,
-}) => {
+const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
@@ -78,7 +72,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const { convertToPriceFromToken } = useConverter()
   const lpTokenName = useMemo(() => farm.lpSymbols.map((lpSymbol) => lpSymbol.symbol).join('-'), [farm.lpSymbols])
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
-  const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
+  const { earnings, stakedBalance, allowance } = useFarmUser(pid)
   const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
   /**
    * total liquidity
@@ -101,8 +95,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   }, [farm, stakedBalance, convertToPriceFromToken])
 
   const renderCardHeading = useCallback(
-    () => <CardHeading farm={farm} lpLabel={lpTokenName} removed={removed} size="small" />,
-    [farm, lpTokenName, removed],
+    () => <CardHeading farm={farm} lpLabel={lpTokenName} size="small" />,
+    [farm, lpTokenName],
   )
 
   const renderIconButton = useCallback(
@@ -132,53 +126,36 @@ const FarmCard: React.FC<FarmCardProps> = ({
    */
   const hasAccount = useMemo(() => account && !!farm.userData, [farm, account])
   const hasAllowance = useMemo(() => allowance && allowance.isGreaterThan(0), [allowance])
-  const onPresentDeposit = useCallback(() => {
-    onSelectAddLP({
-      pid,
-      lpTokenName,
-      tokenBalance,
-      totalLiquidity,
-      myLiquidity: stakedBalance,
-      myLiquidityPrice: myLiquidity,
-      farm,
-      removed,
-    })
-  }, [farm, stakedBalance, myLiquidity, lpTokenName, pid, tokenBalance, totalLiquidity, onSelectAddLP, removed])
-  const onPresentWithdraw = useCallback(() => {
-    onSelectRemoveLP({
-      pid,
-      lpTokenName,
-      tokenBalance,
-      totalLiquidity,
-      myLiquidity: stakedBalance,
-      myLiquidityPrice: myLiquidity,
-      farm,
-      removed,
-    })
-  }, [farm, stakedBalance, myLiquidity, lpTokenName, pid, tokenBalance, totalLiquidity, onSelectRemoveLP, removed])
   const renderStakeAction = useCallback(
     () => (
-      <StakeAction
-        componentType={componentType}
-        hasAccount={hasAccount}
-        hasAllowance={hasAllowance}
-        myLiquidity={stakedBalance}
-        myLiquidityPrice={myLiquidity}
-        lpContract={lpContract}
-        onPresentDeposit={onPresentDeposit}
-        onPresentWithdraw={onPresentWithdraw}
-      />
+      <FarmContext.Consumer>
+        {({ goDeposit, goWithdraw }) => (
+          <StakeAction
+            componentType={componentType}
+            hasAccount={hasAccount}
+            hasAllowance={hasAllowance}
+            myLiquidity={stakedBalance}
+            myLiquidityPrice={myLiquidity}
+            lpContract={lpContract}
+            onPresentDeposit={() =>
+              goDeposit({
+                farm,
+                lpTokenName,
+                myLiquidityPrice: myLiquidity,
+              })
+            }
+            onPresentWithdraw={() =>
+              goWithdraw({
+                farm,
+                lpTokenName,
+                myLiquidityPrice: myLiquidity,
+              })
+            }
+          />
+        )}
+      </FarmContext.Consumer>
     ),
-    [
-      componentType,
-      hasAccount,
-      hasAllowance,
-      stakedBalance,
-      myLiquidity,
-      lpContract,
-      onPresentDeposit,
-      onPresentWithdraw,
-    ],
+    [componentType, hasAccount, hasAllowance, stakedBalance, myLiquidity, lpContract, farm, lpTokenName],
   )
   /**
    * harvest action
@@ -206,7 +183,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
 
   return (
     <>
-      <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} mt="S_16">
+      <CardWrap ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
         {isMobile ? (
           <>
             <Wrap>
@@ -229,7 +206,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
           </>
         ) : (
           <>
-            <Wrap className="horizontal-card">
+            <Wrap>
               <Flex justifyContent="space-between">
                 <Box className="card-heading">{renderCardHeading()}</Box>
                 <Box className="total-liquidity-section">{renderTotalLiquiditySection()}</Box>
@@ -249,7 +226,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             )}
           </>
         )}
-      </Card>
+      </CardWrap>
     </>
   )
 }

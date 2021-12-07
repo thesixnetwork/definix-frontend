@@ -14,28 +14,20 @@ export interface PoolCardProps {
   componentType?: string
   pool: PoolWithApy
   myBalanceInWallet?: BigNumber
-  onSelectAdd?: (props: any) => void
-  onSelectRemove?: (props: any) => void
 }
 
 export interface CardHeadingProps {
-  tokenName: string
   isOldSyrup: boolean
-  apy: BigNumber
+  pool: PoolWithApy
   size?: string
 }
 
 export interface StakeActionProps {
   componentType?: string
-  sousId?: number
-  isOldSyrup?: boolean
-  tokenName?: string
-  stakingTokenAddress?: string
-  stakedBalance?: BigNumber
-  needsApproval?: boolean
-  isFinished?: boolean
-  className?: string
-  onUnstake?: any
+  isOldSyrup: boolean
+  pool: PoolWithApy
+  stakedBalance: BigNumber
+  needsApprovalContract: boolean
   onPresentDeposit?: any
   onPresentWithdraw?: any
 }

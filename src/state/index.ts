@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import farmsReducer from './farms'
 import finixPriceReducer from './finixPrice'
 import toastsReducer from './toasts'
@@ -24,4 +24,5 @@ export default configureStore({
     wallet: walletReducer,
     longTerm: longTermStake,
   },
+  middleware: [...getDefaultMiddleware({ serializableCheck: false })],
 })

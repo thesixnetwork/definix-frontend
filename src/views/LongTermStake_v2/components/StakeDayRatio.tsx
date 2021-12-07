@@ -1,9 +1,15 @@
 import React from 'react'
+import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Flex, Text, lightColors } from 'definixswap-uikit'
 
 import { IsMobileType } from './types'
+
+interface StakeDayRatioProps extends IsMobileType {
+  getTotalFinixLock: number[]
+  totalFinixLock: number
+}
 
 const FlexRatio = styled(Flex)`
   width: 50%;
@@ -50,27 +56,30 @@ const Dot = styled.div<{ color: string }>`
   border-radius: 50%;
 `
 
-const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
+const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLock, totalFinixLock }) => {
   const { t } = useTranslation()
 
   const data = [
     {
       name: '90',
       color: lightColors.green,
-      ratio: '1',
-      value: '461,974',
+      ratio: Math.ceil((getTotalFinixLock[0] / totalFinixLock) * 100),
+      value: numeral(getTotalFinixLock[0]).format('0,0'),
     },
     {
       name: '180',
       color: lightColors.yellow,
-      ratio: '39',
-      value: '865,204',
+      ratio: Math.ceil((getTotalFinixLock[1] / totalFinixLock) * 100),
+      value: numeral(getTotalFinixLock[1]).format('0,0'),
     },
     {
       name: '365',
       color: lightColors.red,
-      ratio: '60',
-      value: '8,666,998',
+      ratio:
+        100 -
+        Math.ceil((getTotalFinixLock[0] / totalFinixLock) * 100) -
+        Math.ceil((getTotalFinixLock[1] / totalFinixLock) * 100),
+      value: numeral(getTotalFinixLock[2]).format('0,0'),
     },
   ]
 
@@ -80,16 +89,16 @@ const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
         <Flex flexDirection="column">
           <Flex>
             {data.map((v) => (
-              <Bar ratio={Number(v.ratio)} color={v.color} />
+              <Bar ratio={v.ratio} color={v.color} />
             ))}
           </Flex>
           {!isMobile && (
-            <Flex>
+            <Flex height="18px">
               {data.map((v, i) => {
                 return (
-                  <BarText ratio={Number(v.ratio)} prevRatio={i === 0 ? 100 : Number(data[i - 1].ratio)}>
+                  <BarText ratio={v.ratio} prevRatio={i === 0 ? 100 : data[i - 1].ratio}>
                     <Text textStyle="R_12R" color="mediumgrey">
-                      {v.ratio}%
+                      {getTotalFinixLock.length !== 0 && `${v.ratio}%`}
                     </Text>
                   </BarText>
                 )

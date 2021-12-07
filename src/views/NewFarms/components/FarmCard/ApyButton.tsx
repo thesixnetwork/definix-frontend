@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import BigNumber from 'bignumber.js'
-import { CalculatorIcon, IconButton, useModal, ButtonScales } from 'definixswap-uikit'
+import { CalculatorIcon, IconButton, useModal } from 'definixswap-uikit'
 import ApyCalculatorModal from './ApyCalculatorModal'
 
 export interface ApyButtonProps {

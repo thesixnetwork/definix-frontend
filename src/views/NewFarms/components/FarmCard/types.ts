@@ -20,9 +20,6 @@ export interface FarmCardProps {
   componentType?: string
   farm: FarmWithStakedValue
   myBalancesInWallet?: { [key: string]: BigNumber }
-  removed: boolean
   klaytn?: provider
   account?: string
-  onSelectAddLP?: (props: any) => void
-  onSelectRemoveLP?: (props: any) => void
 }

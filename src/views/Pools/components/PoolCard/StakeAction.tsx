@@ -7,20 +7,40 @@ import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, ColorStyles, Flex, Box } from 'definixswap-uikit'
+import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from 'definixswap-uikit'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
 import { StakeActionProps } from './types'
 
+const TitleSection = styled(Text)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_12R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+  }
+`
+const BalanceText = styled(Text)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const PriceText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
+
 const StakeAction: React.FC<StakeActionProps> = ({
   componentType = 'pool',
+  pool,
   isOldSyrup,
-  isFinished,
-  sousId,
-  tokenName,
-  stakingTokenAddress,
   stakedBalance,
-  needsApproval,
+  needsApprovalContract,
   onPresentDeposit,
   onPresentWithdraw,
 }) => {
@@ -31,23 +51,18 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
 
   const { account } = useWallet()
-  const stakingTokenContract = useERC20(stakingTokenAddress)
+  const stakingTokenContract = useERC20(pool.stakingTokenAddress)
 
-  const price = useMemo(() => {
-    return convertToPriceFromSymbol(tokenName)
-  }, [convertToPriceFromSymbol, tokenName])
-
-  const stakedBalanceValue = useMemo(() => {
-    return getBalanceNumber(stakedBalance)
-  }, [stakedBalance])
+  const stakedBalanceValue = useMemo(() => getBalanceNumber(stakedBalance), [stakedBalance])
   const displayBalance = useMemo(() => {
     return convertToBalanceFormat(stakedBalanceValue)
   }, [convertToBalanceFormat, stakedBalanceValue])
   const stakedBalancePrice = useMemo(() => {
+    const price = convertToPriceFromSymbol(pool.tokenName)
     return new BigNumber(stakedBalanceValue).multipliedBy(price).toNumber()
-  }, [stakedBalanceValue, price])
+  }, [stakedBalanceValue, convertToPriceFromSymbol, pool.tokenName])
 
-  const { onApprove } = useSousApprove(stakingTokenContract, sousId)
+  const { onApprove } = useSousApprove(stakingTokenContract, pool.sousId)
 
   const handleApprove = useCallback(async () => {
     try {
@@ -66,35 +81,12 @@ const StakeAction: React.FC<StakeActionProps> = ({
   }, [onApprove, setRequestedApproval])
 
   const needApproveContract = useMemo(() => {
-    return needsApproval && !isOldSyrup
-  }, [needsApproval, isOldSyrup])
+    return needsApprovalContract && !isOldSyrup
+  }, [needsApprovalContract, isOldSyrup])
 
   const isEnableAddStake = useMemo(() => {
-    return !isOldSyrup && !isFinished
-  }, [isOldSyrup, isFinished])
-
-  const TitleSection = styled(Text)`
-    margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
-    color: ${({ theme }) => theme.colors.mediumgrey};
-    ${({ theme }) => theme.textStyle.R_12R};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
-    }
-  `
-  const BalanceText = styled(Text)`
-    color: ${({ theme }) => theme.colors.black};
-    ${({ theme }) => theme.textStyle.R_18M};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      ${({ theme }) => theme.textStyle.R_16M};
-    }
-  `
-  const PriceText = styled(CurrencyText)`
-    color: ${({ theme }) => theme.colors.deepgrey};
-    ${({ theme }) => theme.textStyle.R_14R};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      ${({ theme }) => theme.textStyle.R_12R};
-    }
-  `
+    return !isOldSyrup && !pool.isFinished
+  }, [isOldSyrup, pool.isFinished])
 
   return (
     <>
@@ -106,7 +98,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
               width="100%"
               md
               variant={ButtonVariants.BROWN}
-              disabled={isFinished || requestedApproval}
+              disabled={pool.isFinished || requestedApproval}
               onClick={handleApprove}
             >
               {t('Approve Contract')}
@@ -134,7 +126,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
                       minWidth="40px"
                       md
                       variant={ButtonVariants.LINE}
-                      disabled={isFinished && sousId !== 0}
+                      disabled={pool.isFinished && pool.sousId !== 0}
                       onClick={onPresentDeposit}
                       style={{ marginLeft: '4px' }}
                     >

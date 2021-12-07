@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
@@ -6,7 +5,7 @@ import useConverter from 'hooks/useConverter'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { Flex, Box, Text, ColorStyles } from 'definixswap-uikit'
 import ApyButton from './ApyButton'
-import { LpSymbol, FarmWithStakedValue } from './types'
+import { FarmWithStakedValue } from './types'
 
 const ImageBox = styled(Box)`
   &:first-child {
@@ -24,21 +23,11 @@ const TokenImage = styled.img<{ isMediumSize: boolean }>`
 
 export interface ExpandableSectionProps {
   farm: FarmWithStakedValue
-  // apy: BigNumber
   lpLabel: string
-  // lpSymbols: LpSymbol[]
-  removed?: boolean
   size?: string
 }
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({
-  farm,
-  // apy,
-  // lpSymbols,
-  lpLabel,
-  removed,
-  size = 'medium',
-}) => {
+const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, size = 'medium' }) => {
   const { convertToFarmAPRFormat } = useConverter()
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
@@ -70,19 +59,17 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       <Flex flexDirection="column">
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
 
-        {!removed && (
-          <Flex alignItems="end">
-            <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
-              APR
-            </Text>
-            <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
-              {displayApy}
-            </Text>
-            <Box style={{ marginLeft: '4px' }}>
-              <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={farm.apy} />
-            </Box>
-          </Flex>
-        )}
+        <Flex alignItems="end">
+          <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
+            APR
+          </Text>
+          <Text textStyle={isMediumSize ? 'R_20B' : 'R_18B'} color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
+            {displayApy}
+          </Text>
+          <Box style={{ marginLeft: '4px' }}>
+            <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} apy={farm.apy} />
+          </Box>
+        </Flex>
       </Flex>
     </Flex>
   )

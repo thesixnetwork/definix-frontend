@@ -1,9 +1,8 @@
 import BigNumber from 'bignumber.js'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
-import { useFarmUser } from 'state/hooks'
 import {
   Flex,
   Card,
@@ -22,53 +21,63 @@ import CardHeading from './CardHeading'
 import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
-import LinkListSection from './LinkListSection'
+import PoolConText from '../../PoolContext'
 import { PoolCardProps } from './types'
 
-const PoolCard: React.FC<PoolCardProps> = ({
-  componentType = 'pool',
-  pool,
-  myBalanceInWallet,
-  onSelectAdd,
-  onSelectRemove,
-}) => {
+const CardWrap = styled(Card)`
+  margin-top: ${({ theme }) => theme.spacing.S_16}px;
+  ${({ theme }) => theme.mediaQueries.xl} {
+    .card-heading {
+      width: 204px;
+    }
+    .total-staked-section {
+      width: 144px;
+    }
+    .my-balance-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 232px;
+    }
+    .earnings-section {
+      width: 200px;
+    }
+    .link-section {
+      width: 166px;
+    }
+    .harvest-action-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 358px;
+    }
+    .stake-action-section {
+      width: 276px;
+    }
+  }
+`
+const Wrap = styled(Box)`
+  padding: ${({ theme }) => theme.spacing.S_32}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: ${({ theme }) => theme.spacing.S_20}px;
+  }
+`
+
+const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBalanceInWallet }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
-  const {
-    sousId,
-    tokenName,
-    stakingTokenName,
-    stakingTokenAddress,
-    apy,
-    farm,
-    tokenDecimals,
-    poolCategory,
-    totalStaked,
-    isFinished,
-    userData,
-    stakingLimit,
-  } = pool
-  const { pendingRewards } = useFarmUser(farm.pid)
-  const { bundleRewardLength, bundleRewards } = farm
+  const { sousId, tokenName, totalStaked } = pool
 
-  const isBnbPool = poolCategory === PoolCategory.KLAYTN
-  const isOldSyrup = stakingTokenName === QuoteToken.SYRUP
+  const isBnbPool = useMemo(() => pool.poolCategory === PoolCategory.KLAYTN, [pool.poolCategory])
+  const isOldSyrup = useMemo(() => pool.stakingTokenName === QuoteToken.SYRUP, [pool.stakingTokenName])
 
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
-  const allowance = new BigNumber(userData?.allowance || 0)
-  const earnings = useMemo(() => new BigNumber(userData?.pendingReward || 0), [userData?.pendingReward])
-  const stakedBalance = useMemo(() => new BigNumber(userData?.stakedBalance || 0), [userData?.stakedBalance])
-  const stakingTokenBalance = useMemo(
-    () => new BigNumber(userData?.stakingTokenBalance || 0),
-    [userData?.stakingTokenBalance],
-  )
-  const convertedLimit = new BigNumber(stakingLimit).multipliedBy(new BigNumber(10).pow(tokenDecimals))
+  const allowance = useMemo(() => new BigNumber(pool.userData?.allowance || 0), [pool.userData])
+  const earnings = useMemo(() => new BigNumber(pool.userData?.pendingReward || 0), [pool.userData])
+  const stakedBalance = useMemo(() => new BigNumber(pool.userData?.stakedBalance || 0), [pool.userData])
 
-  const accountHasStakedBalance = stakedBalance?.toNumber() > 0
-  const needsApproval = !accountHasStakedBalance && !allowance.toNumber() && !isBnbPool
+  const needsApprovalContract = useMemo(() => {
+    return stakedBalance?.toNumber() <= 0 && !allowance.toNumber() && !isBnbPool
+  }, [stakedBalance, allowance, isBnbPool])
 
   // const renderSash = () => {
   //   if (tokenName === 'FINIX-SIX' && !isFinished) {
@@ -82,8 +91,8 @@ const PoolCard: React.FC<PoolCardProps> = ({
   // }
 
   const renderCardHeading = useCallback(
-    () => <CardHeading tokenName={tokenName} isOldSyrup={isOldSyrup} apy={apy} size={isInMyInvestment && 'small'} />,
-    [tokenName, isOldSyrup, apy, isInMyInvestment],
+    () => <CardHeading isOldSyrup={isOldSyrup} pool={pool} size={isInMyInvestment && 'small'} />,
+    [isOldSyrup, pool, isInMyInvestment],
   )
   const renderToggleButton = useCallback(
     () => (
@@ -98,112 +107,59 @@ const PoolCard: React.FC<PoolCardProps> = ({
     [t, tokenName, totalStaked],
   )
 
-  const renderMyBalanceSection = useCallback(
-    () => (
-      <>
-        {!myBalanceInWallet || myBalanceInWallet === null ? null : (
-          <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
-        )}
-      </>
-    ),
-    [t, tokenName, myBalanceInWallet],
-  )
+  const renderMyBalanceSection = useCallback(() => {
+    if (!myBalanceInWallet || myBalanceInWallet === null) return null
+    return <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
+  }, [t, tokenName, myBalanceInWallet])
   const renderEarningsSection = useCallback(
     () => <EarningsSection title={t('Earned')} tokenName={tokenName} earnings={earnings} />,
     [t, tokenName, earnings],
   )
 
-  const onPresentDeposit = useCallback(() => {
-    onSelectAdd({
-      isOldSyrup,
-      isBnbPool,
-      sousId,
-      tokenName: stakingLimit ? `${stakingTokenName} (${stakingLimit} max)` : stakingTokenName,
-      totalStaked,
-      myStaked: stakedBalance,
-      max: stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance,
-      apy,
-    })
-  }, [
-    isOldSyrup,
-    sousId,
-    stakedBalance,
-    stakingLimit,
-    stakingTokenName,
-    stakingTokenBalance,
-    convertedLimit,
-    onSelectAdd,
-    isBnbPool,
-    totalStaked,
-    apy,
-  ])
-  const onPresentWithdraw = useCallback(() => {
-    onSelectRemove({
-      sousId,
-      isOldSyrup,
-      tokenName: stakingTokenName,
-      totalStaked,
-      myStaked: stakedBalance,
-      max: stakedBalance,
-      apy,
-    })
-  }, [isOldSyrup, sousId, stakedBalance, stakingTokenName, onSelectRemove, totalStaked, apy])
   const renderStakeAction = useCallback(
     () => (
-      <StakeAction
-        componentType={componentType}
-        isOldSyrup={isOldSyrup}
-        isFinished={isFinished}
-        sousId={sousId}
-        tokenName={tokenName}
-        stakingTokenAddress={stakingTokenAddress}
-        stakedBalance={stakedBalance}
-        needsApproval={needsApproval}
-        onPresentDeposit={onPresentDeposit}
-        onPresentWithdraw={onPresentWithdraw}
-      />
+      <PoolConText.Consumer>
+        {({ goDeposit, goWithdraw }) => (
+          <StakeAction
+            componentType={componentType}
+            isOldSyrup={isOldSyrup}
+            pool={pool}
+            stakedBalance={stakedBalance}
+            needsApprovalContract={needsApprovalContract}
+            onPresentDeposit={() =>
+              goDeposit({
+                isOldSyrup,
+                isBnbPool,
+                pool,
+              })
+            }
+            onPresentWithdraw={() =>
+              goWithdraw({
+                isOldSyrup,
+                pool,
+              })
+            }
+          />
+        )}
+      </PoolConText.Consumer>
     ),
-    [
-      isFinished,
-      isOldSyrup,
-      needsApproval,
-      sousId,
-      stakedBalance,
-      stakingTokenAddress,
-      tokenName,
-      onPresentDeposit,
-      onPresentWithdraw,
-      componentType,
-    ],
+    [pool, isOldSyrup, needsApprovalContract, stakedBalance, componentType, isBnbPool],
   )
   const renderHarvestActionAirDrop = useCallback(
     () => (
       <HarvestActionAirDrop
         componentType={componentType}
-        isMobile={isMobile}
         isBnbPool={isBnbPool}
         isOldSyrup={isOldSyrup}
-        bundleRewards={bundleRewards}
-        pendingRewards={pendingRewards}
+        needsApprovalContract={needsApprovalContract}
         sousId={sousId}
         earnings={earnings}
-        needsApproval={needsApproval}
+        farm={pool.farm}
       />
     ),
-    [earnings, isBnbPool, isOldSyrup, needsApproval, sousId, pendingRewards, bundleRewards, isMobile, componentType],
+    [componentType, isBnbPool, isOldSyrup, needsApprovalContract, sousId, earnings, pool.farm],
   )
   // const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
-
-  useEffect(() => {
-    setIsOpenAccordion(false)
-  }, [])
-
-  const Wrap = styled(Box)`
-    padding: ${({ theme }) => theme.spacing.S_32}px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      padding: ${({ theme }) => theme.spacing.S_20}px;
-    }
-  `
 
   if (isInMyInvestment) {
     return (
@@ -220,7 +176,7 @@ const PoolCard: React.FC<PoolCardProps> = ({
   }
 
   return (
-    <Card ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />} mt="S_16">
+    <CardWrap ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
       {isMobile ? (
         <>
           <Wrap>
@@ -246,29 +202,25 @@ const PoolCard: React.FC<PoolCardProps> = ({
         <>
           <Wrap>
             <Flex justifyContent="space-between">
-              <Box style={{ width: '26%' }}>{renderCardHeading()}</Box>
-              <Box style={{ width: '16%' }}>{renderTotalStakedSection()}</Box>
-              <Box style={{ width: '26%' }} mx="S_24">
-                {renderMyBalanceSection()}
-              </Box>
-              <Box style={{ width: '24%' }}>{renderEarningsSection()}</Box>
+              <Box className="card-heading">{renderCardHeading()}</Box>
+              <Box className="total-staked-section">{renderTotalStakedSection()}</Box>
+              <Box className="my-balance-section">{renderMyBalanceSection()}</Box>
+              <Box className="earnings-section">{renderEarningsSection()}</Box>
               {renderToggleButton()}
             </Flex>
           </Wrap>
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">
-                <Box style={{ width: '20%' }} />
-                <Box style={{ width: '40%' }} mx="S_24">
-                  {renderHarvestActionAirDrop()}
-                </Box>
-                <Box style={{ width: '30%' }}>{renderStakeAction()}</Box>
+                <Box className="link-section" />
+                <Box className="harvest-action-section">{renderHarvestActionAirDrop()}</Box>
+                <Box className="stake-action-section">{renderStakeAction()}</Box>
               </Flex>
             </Box>
           )}
         </>
       )}
-    </Card>
+    </CardWrap>
   )
 }
 

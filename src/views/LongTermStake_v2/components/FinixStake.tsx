@@ -1,4 +1,5 @@
 import React from 'react'
+import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Flex, Box, Text } from 'definixswap-uikit'
@@ -11,6 +12,11 @@ import ImgTokenVFinix2x from '../../../assets/images/img-token-vfinix@2x.png'
 import ImgTokenVFinix3x from '../../../assets/images/img-token-vfinix@3x.png'
 
 import { IsMobileType } from './types'
+
+interface FinixStakeProps extends IsMobileType {
+  totalFinixLock: number
+  totalSupplyAllTimeMint: number
+}
 
 const FlexStake = styled(Flex)`
   width: 50%;
@@ -47,19 +53,19 @@ const FlexItem = styled(Flex)`
   }
 `
 
-const FinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
+const FinixStake: React.FC<FinixStakeProps> = ({ isMobile, totalFinixLock, totalSupplyAllTimeMint }) => {
   const { t } = useTranslation()
 
   const data = [
     {
       img: [ImgTokenFinix, ImgTokenFinix2x, ImgTokenFinix3x],
       title: 'Total FINIX staked',
-      value: '10,066,444',
+      value: numeral(totalFinixLock).format('0,0'),
     },
     {
       img: [ImgTokenVFinix, ImgTokenVFinix2x, ImgTokenVFinix3x],
       title: 'Total vFINIX supply',
-      value: '37,043,314',
+      value: numeral(totalSupplyAllTimeMint).format('0,0'),
     },
   ]
 
