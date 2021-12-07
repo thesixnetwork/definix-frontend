@@ -48,7 +48,7 @@ const EllipText = styled.div`
 `
 
 const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace, data }) => {
-  console.log("data ...",data)
+  console.log('data ...', data)
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
   const [handleBuy] = useModal(<ModalComplete />)
@@ -113,7 +113,9 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
             </Text>
             <EllipText>
               <EllipsisText start={17} text={data.metaDataURL || ''} />
-              <CopyToClipboard toCopy={data.metaDataURL || ''} cursor="pointer">Copy Address</CopyToClipboard>
+              <CopyToClipboard toCopy={data.metaDataURL || ''} cursor="pointer">
+                Copy Address
+              </CopyToClipboard>
             </EllipText>
           </div>
           <div className="mt-3">
@@ -130,7 +132,9 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
             </Text>
             <EllipText>
               <EllipsisText start={6} end={5} text="0x5503a12290a7Cc6128d18b0DA6FBEab009165311" />
-              <CopyToClipboard toCopy="test" cursor="pointer">Copy Address</CopyToClipboard>
+              <CopyToClipboard toCopy="test" cursor="pointer">
+                Copy Address
+              </CopyToClipboard>
             </EllipText>
           </div>
 

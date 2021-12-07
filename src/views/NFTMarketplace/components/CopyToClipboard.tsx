@@ -12,7 +12,7 @@ interface Props {
   color?: string
   tooltipPos?: string
   iconWidth?: string
-  cursor? : string
+  cursor?: string
 }
 
 const StyleButton = styled.button`
