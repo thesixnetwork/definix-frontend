@@ -233,9 +233,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
               <Flex justifyContent="space-between">
                 <Box className="card-heading">{renderCardHeading()}</Box>
                 <Box className="total-liquidity-section">{renderTotalLiquiditySection()}</Box>
-                <Box className="my-balance-section">
-                  {renderMyBalanceSection()}
-                </Box>
+                <Box className="my-balance-section">{renderMyBalanceSection()}</Box>
                 <Box className="earnings-section">{renderEarningsSection()}</Box>
                 {renderIconButton()}
               </Flex>
@@ -244,9 +242,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
               <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
                 <Flex justifyContent="space-between">
                   <Box className="link-section">{renderLinkSection()}</Box>
-                  <Box className="harvest-action-section">
-                    {renderHarvestAction()}
-                  </Box>
+                  <Box className="harvest-action-section">{renderHarvestAction()}</Box>
                   <Box className="stake-action-section">{renderStakeAction()}</Box>
                 </Flex>
               </Box>
