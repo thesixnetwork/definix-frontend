@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { useDispatch } from 'react-redux'
@@ -13,6 +13,7 @@ import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { getCustomContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
+import { useToast } from 'state/hooks'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { fetchRebalances } from '../../../state/rebalance'
 // import { useSlippage } from '../../../state/hooks'
@@ -20,13 +21,10 @@ import SpaceBetweenFormat from './SpaceBetweenFormat'
 import CardHeading from './CardHeading'
 import VerticalAssetRatio from './VerticalAssetRatio'
 
-const CardCalculate = ({
+const CalculateModal = ({
   setTx,
   currentInput,
-  isInvesting,
-  setIsInvesting,
   isSimulating,
-  recalculate,
   poolUSDBalances,
   poolAmounts,
   onNext,
@@ -36,8 +34,10 @@ const CardCalculate = ({
   onDismiss = () => null,
 }) => {
   const { t } = useTranslation()
-
   const { isXl, isXxl } = useMatchBreakpoints()
+  const { toastSuccess, toastError } = useToast()
+
+  const [isInvesting, setIsInvesting] = useState(false)
   const isMobile = !isXl && !isXxl
   // const slippage = useSlippage()
   const { setShowModal } = React.useContext(KlipModalContext())
@@ -138,94 +138,59 @@ const CardCalculate = ({
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
       dispatch(fetchRebalances())
+      toastSuccess(t('Invest Complete'))
       onNext()
       onDismiss()
       setIsInvesting(false)
     } catch {
+      toastError(t('Invest Fail'))
       setIsInvesting(false)
     }
   }
-
-  return (
-    <>
-      <CardHeading
-        rebalance={rebalance}
-        isHorizontal={isMobile}
-        onlyTitle
-        className={`bd-b ${isMobile ? 'pb-s24' : 'pb-s32'}`}
-      />
-
-      <Text color="text" textStyle="R_16M" className="mt-s24 mb-s12">
-        {t('Invest Asset Ratio')}
-      </Text>
-      <Box className="bd pa-s24 pt-s12" borderRadius="8px">
-        <VerticalAssetRatio className="pb-s12 mb-s20 bd-b" rebalance={rebalance} poolAmounts={poolAmounts} />
-        <Flex color="text" alignItems="center" justifyContent="flex-end" className="mb-s16">
-          <Text textStyle="R_16M" className="flex-auto">
-            {t('Total Invest')}
-          </Text>
-          <Text color="black" textStyle="R_18B" ml="auto">
-            {currentShare <= 0 || Number.isNaN(currentShare)
-              ? numeral(sumPoolAmount).format('0,0.[00]')
-              : numeral(currentShare).format('0,0.[00]')}
-          </Text>
-          <Text textStyle="R_14R" className="ml-s4">
-            Shares
-          </Text>
-        </Flex>
-        <Flex flexDirection="column" color="textSubtle" textStyle="R_14R">
-          <SpaceBetweenFormat
-            className="mb-2"
-            title={t('Estimated Value')}
-            value={numeral(sumPoolAmount).format('0,0.[00]')}
-          />
-          <SpaceBetweenFormat
-            className="mb-2"
-            title={t('Price Impact')}
-            value={`${calNewImpact <= 0.1 ? '< ' : ''} ${numeral(calNewImpact).format('0,0.[00]')}%`}
-          />
-        </Flex>
-      </Box>
-      <Button className="mt-s40" width="100%" disabled={isInvesting || isSimulating} onClick={onInvest}>
-        {t('Invest')}
-      </Button>
-    </>
-  )
-}
-
-const CalculateModal = ({
-  setTx,
-  currentInput,
-  isInvesting,
-  setIsInvesting,
-  isSimulating,
-  recalculate,
-  poolUSDBalances,
-  poolAmounts,
-  onNext,
-  rebalance,
-  sumPoolAmount,
-  calNewImpact,
-  onDismiss = () => null,
-}) => {
-  const { t } = useTranslation()
   return (
     <Modal title={t('Confirm Invest')} mobileFull onDismiss={onDismiss}>
-      <CardCalculate
-        setTx={setTx}
-        currentInput={currentInput}
-        isInvesting={isInvesting}
-        setIsInvesting={setIsInvesting}
-        isSimulating={isSimulating}
-        recalculate={recalculate}
-        poolUSDBalances={poolUSDBalances}
-        poolAmounts={poolAmounts}
-        rebalance={rebalance}
-        sumPoolAmount={sumPoolAmount}
-        onNext={onNext}
-        calNewImpact={calNewImpact}
-        onDismiss={onDismiss}
-      />
+      <>
+        <CardHeading
+          rebalance={rebalance}
+          isHorizontal={isMobile}
+          onlyTitle
+          className={`bd-b ${isMobile ? 'pb-s24' : 'pb-s32'}`}
+        />
+
+        <Text color="text" textStyle="R_16M" className="mt-s24 mb-s12">
+          {t('Invest Asset Ratio')}
+        </Text>
+        <Box className="bd pa-s24 pt-s12" borderRadius="8px">
+          <VerticalAssetRatio className="pb-s12 mb-s20 bd-b" rebalance={rebalance} poolAmounts={poolAmounts} />
+          <Flex color="text" alignItems="center" justifyContent="flex-end" className="mb-s16">
+            <Text textStyle="R_16M" className="flex-auto">
+              {t('Total Invest')}
+            </Text>
+            <Text color="black" textStyle="R_18B" ml="auto">
+              {currentShare <= 0 || Number.isNaN(currentShare)
+                ? numeral(sumPoolAmount).format('0,0.[00]')
+                : numeral(currentShare).format('0,0.[00]')}
+            </Text>
+            <Text textStyle="R_14R" className="ml-s4">
+              {t('SHR')}
+            </Text>
+          </Flex>
+          <Flex flexDirection="column" color="textSubtle" textStyle="R_14R">
+            <SpaceBetweenFormat
+              className="mb-2"
+              title={t('Estimated Value')}
+              value={numeral(sumPoolAmount).format('0,0.[00]')}
+            />
+            <SpaceBetweenFormat
+              title={t('Price Impact')}
+              value={`${calNewImpact <= 0.1 ? '< ' : ''} ${numeral(calNewImpact).format('0,0.[00]')}%`}
+            />
+          </Flex>
+        </Box>
+        <Button className="mt-s40" width="100%" disabled={isInvesting || isSimulating} onClick={onInvest}>
+          {t('Invest')}
+        </Button>
+      </>
     </Modal>
   )
 }

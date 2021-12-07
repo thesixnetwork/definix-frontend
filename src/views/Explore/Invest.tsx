@@ -11,7 +11,6 @@ import { BackIcon, Box, Button, Flex, Text, useModal } from 'definixswap-uikit'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
-import { useToast } from 'state/hooks'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
@@ -34,13 +33,11 @@ const usePrevious = (value, initialValue) => {
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const { t } = useTranslation()
   const history = useHistory()
-  const { toastSuccess } = useToast()
   const [tx, setTx] = useState({})
   const [poolUSDBalancesState, setPoolUSDBalances] = useState([])
   const [poolAmounts, setPoolAmounts] = useState([])
   const [sumPoolAmount, setSumPoolAmount] = useState(0)
   const [isSimulating, setIsSimulating] = useState(true)
-  const [isInvesting, setIsInvesting] = useState(false)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -210,17 +207,14 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
     <CalculateModal
       setTx={setTx}
       currentInput={currentInput}
-      isInvesting={isInvesting}
-      setIsInvesting={setIsInvesting}
       isSimulating={isSimulating}
-      recalculate={fetchData}
+      // recalculate={fetchData}
       poolUSDBalances={poolUSDBalancesState}
       poolAmounts={poolAmounts}
       rebalance={rebalance}
       sumPoolAmount={sumPoolAmount}
       onNext={() => {
         fetchData()
-        toastSuccess(t('Invest Complete'))
         history.goBack()
       }}
       calNewImpact={calNewImpact}
