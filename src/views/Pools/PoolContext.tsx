@@ -1,13 +1,17 @@
-import React, { createContext } from 'react'
+import { createContext } from 'react'
 
-interface ModalsContext {
-  onPresent: (node: React.ReactNode, key?: string) => void
-  onDismiss: () => void
+interface PoolContext {
+  pageState: string
+  pageData: any
+  goDeposit: (pageData: any) => void
+  goWithdraw: (pageData: any) => void
 }
 
-const PoolContext = createContext<ModalsContext>({
-  onPresent: () => null,
-  onDismiss: () => null,
+const PoolContext = createContext<PoolContext>({
+  pageState: '',
+  pageData: null,
+  goDeposit: () => null,
+  goWithdraw: () => null,
 })
 
 export default PoolContext

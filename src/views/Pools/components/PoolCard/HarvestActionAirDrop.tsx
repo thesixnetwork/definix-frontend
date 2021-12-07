@@ -7,117 +7,115 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
+import { useFarmUser } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uikit'
 import CurrencyText from 'components/CurrencyText'
 
+const Wrap = styled(Flex)<{ isInPool: boolean }>`
+  flex-direction: ${({ isInPool }) => (isInPool ? 'column' : 'row')};
+  justify-content: space-between;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+  }
+`
+const TitleSection = styled(Text)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_12R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+  }
+`
+const HarvestInfo = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+  }
+`
+const TokenLabel = styled(Label)`
+  margin-right: ${({ theme }) => theme.spacing.S_6}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-right: ${({ theme }) => theme.spacing.S_12}px;
+  }
+`
+const BalanceText = styled(Text)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
+const PriceText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_14R};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_12R};
+  }
+`
+const HarvestButtonSectionInPool = styled(Box)`
+  width: 100px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+    width: 100%;
+  }
+`
+const HarvestButtonSectionInMyInvestment = styled(Flex)`
+  flex-direction: column;
+  justify-content: center;
+  width: 100px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: row;
+    margin-top: ${({ theme }) => theme.spacing.S_28}px;
+    width: 100%;
+  }
+`
+const DetailButton = styled(Button)`
+  margin-top: ${({ theme }) => theme.spacing.S_8}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: 0;
+    margin-left: ${({ theme }) => theme.spacing.S_16}px;
+  }
+`
+
 const HarvestActionAirdrop: React.FC<{
   componentType?: string
-  isMobile: boolean
   isOldSyrup?: boolean
   isBnbPool?: boolean
+  needsApprovalContract: boolean
   sousId?: number
-  pendingRewards?: any
-  bundleRewards?: any
+  farm: any
   earnings: BigNumber
-  needsApproval?: boolean
 }> = ({
   componentType = 'pool',
-  isMobile,
-  isOldSyrup,
-  isBnbPool,
+  isOldSyrup = false,
+  isBnbPool = false,
   sousId,
-  pendingRewards,
-  bundleRewards,
+  farm,
   earnings,
-  needsApproval,
+  needsApprovalContract,
 }) => {
   const { t } = useTranslation()
   const navigate = useHistory()
   const isInPool = useMemo(() => componentType === 'pool', [componentType])
+  const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { account } = useWallet()
   const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
+  const { pendingRewards } = useFarmUser(farm.pid)
   const [pendingTx, setPendingTx] = useState(false)
 
-  const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
-  const finixEarningsValue = useMemo(() => {
-    return getBalanceNumber(earnings)
-  }, [earnings])
+  const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
   const getEarningsPrice = useCallback(
     (value) => {
+      const finixPrice = convertToPriceFromSymbol(QuoteToken.FINIX)
       return convertToPriceFormat(new BigNumber(value).multipliedBy(finixPrice).toNumber())
     },
-    [finixPrice, convertToPriceFormat],
+    [convertToPriceFormat, convertToPriceFromSymbol],
   )
+  const handleGoToDetail = useCallback(() => navigate.push('/pool'), [navigate])
 
-  // const finixApy = pool.finixApy || new BigNumber(0)
-
-  const handleGoToDetail = useCallback(() => {
-    navigate.push('/pool')
-  }, [navigate])
-
-  const Wrap = styled(Flex)<{ isInPool: boolean }>`
-    flex-direction: ${isInPool ? 'column' : 'row'};
-    justify-content: space-between;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: column;
-    }
-  `
-  const TitleSection = styled(Text)`
-    margin-bottom: ${({ theme }) => theme.spacing.S_8}px;
-    color: ${({ theme }) => theme.colors.mediumgrey};
-    ${({ theme }) => theme.textStyle.R_12R};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
-    }
-  `
-  const HarvestInfo = styled(Flex)`
-    flex-direction: row;
-    justify-content: space-between;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: column;
-    }
-  `
-  const TokenLabel = styled(Label)`
-    margin-right: ${({ theme }) => theme.spacing.S_6}px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-right: ${({ theme }) => theme.spacing.S_12}px;
-    }
-  `
-  const BalanceText = styled(Text)`
-    color: ${({ theme }) => theme.colors.black};
-    ${({ theme }) => theme.textStyle.R_18M};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      ${({ theme }) => theme.textStyle.R_16M};
-    }
-  `
-  const PriceText = styled(CurrencyText)`
-    color: ${({ theme }) => theme.colors.deepgrey};
-    ${({ theme }) => theme.textStyle.R_14R};
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      ${({ theme }) => theme.textStyle.R_12R};
-    }
-  `
-  const HarvestButtonInPool = styled(Box)`
-    width: 100px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-top: ${({ theme }) => theme.spacing.S_20}px;
-      width: 100%;
-    }
-  `
-  const HarvestButtonInMyInvestment = styled(Flex)`
-    flex-direction: column;
-    justify-content: center;
-    width: 100px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: row;
-      margin-top: ${({ theme }) => theme.spacing.S_28}px;
-      width: 100%;
-    }
-  `
-
-  const AirDrop = ({ value, name }) => (
+  const renderAirDrop = useCallback(({ name, value }) => (
     <Flex>
       <TokenLabel type="token">{name}</TokenLabel>
       <Box>
@@ -125,13 +123,13 @@ const HarvestActionAirdrop: React.FC<{
         <PriceText value={getEarningsPrice(value)} prefix="=" />
       </Box>
     </Flex>
-  )
+  ), [convertToBalanceFormat, getEarningsPrice])
 
-  const HarvestButton = () => (
+  const renderHarvestButton = useCallback(() => (
     <Button
       variant={ButtonVariants.RED}
       width="100%"
-      disabled={!account || (needsApproval && !isOldSyrup) || !earnings.toNumber() || pendingTx}
+      disabled={!account || (needsApprovalContract && !isOldSyrup) || !earnings.toNumber() || pendingTx}
       onClick={async () => {
         setPendingTx(true)
         await onReward()
@@ -140,17 +138,17 @@ const HarvestActionAirdrop: React.FC<{
     >
       {t('Harvest')}
     </Button>
-  )
-  const DetailButton = () => (
-    <Button
+  ), [t, account, needsApprovalContract, isOldSyrup, earnings, pendingTx, onReward])
+
+  const renderDetailButton = useCallback(() => (
+    <DetailButton
       variant={ButtonVariants.BROWN}
       width="100%"
       onClick={handleGoToDetail}
-      className={isMobile ? 'ml-s16' : 'mt-s8'}
     >
       {t('Detail')}
-    </Button>
-  )
+    </DetailButton>
+  ), [t, handleGoToDetail])
 
   return (
     <>
@@ -160,30 +158,32 @@ const HarvestActionAirdrop: React.FC<{
             <TitleSection>{t('Earned Token')}</TitleSection>
             <HarvestInfo>
               <Box>
-                <AirDrop name="FINIX" value={finixEarningsValue} />
-                {(bundleRewards || []).map((br, bundleId) => {
+                {renderAirDrop({ name: 'FINIX', value: finixEarningsValue })}
+                {(farm.bundleRewards || []).map((br, bundleId) => {
                   const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
                   const allocate = br.rewardPerBlock || new BigNumber(0)
                   return reward !== 0 || allocate.toNumber() !== 0 ? (
-                    <AirDrop
-                      name={br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}
-                      value={reward}
-                    />
+                    <>
+                      {renderAirDrop({
+                        name: br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name,
+                        value: reward
+                      })}
+                    </>
                   ) : null
                 })}
               </Box>
               {isInPool && (
-                <HarvestButtonInPool>
-                  <HarvestButton />
-                </HarvestButtonInPool>
+                <HarvestButtonSectionInPool>
+                  {renderHarvestButton()}
+                </HarvestButtonSectionInPool>
               )}
             </HarvestInfo>
           </Box>
           {isInPool ? null : (
-            <HarvestButtonInMyInvestment>
-              <HarvestButton />
-              <DetailButton />
-            </HarvestButtonInMyInvestment>
+            <HarvestButtonSectionInMyInvestment>
+              {renderHarvestButton()}
+              {renderDetailButton()}
+            </HarvestButtonSectionInMyInvestment>
           )}
         </Wrap>
       </Box>

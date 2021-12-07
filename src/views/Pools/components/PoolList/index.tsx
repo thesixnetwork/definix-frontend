@@ -1,5 +1,5 @@
-import BigNumber from 'bignumber.js'
 import _ from 'lodash'
+import BigNumber from 'bignumber.js'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useMemo, useCallback, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -17,9 +17,7 @@ const PoolList: React.FC<{
   stakedOnly: boolean
   searchKeyword: string
   orderBy: DropdownOption
-  goDeposit: (props: any) => void
-  goRemove: (props: any) => void
-}> = ({ liveOnly, stakedOnly, searchKeyword, orderBy, goDeposit, goRemove }) => {
+}> = ({ liveOnly, stakedOnly, searchKeyword, orderBy }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { account } = useWallet()
@@ -82,8 +80,6 @@ const PoolList: React.FC<{
           key={pool.sousId}
           pool={pool}
           myBalanceInWallet={getMyBalanceInWallet(pool.tokenName, pool.stakingTokenAddress)}
-          onSelectAdd={goDeposit}
-          onSelectRemove={goRemove}
         />
       ))}
     </>
