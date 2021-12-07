@@ -164,10 +164,7 @@ const Withdraw: React.FC<{
       <TitleSet title="Remove LP" description={t('Remove LPs from the farm.')} />
 
       <CardWrap>
-        <CardHeading
-          farm={farm}
-          lpLabel={lpTokenName}
-        />
+        <CardHeading farm={farm} lpLabel={lpTokenName} />
 
         <CardBody>
           <LiquidityInfo hasMb>

@@ -87,12 +87,7 @@ const Deposit: React.FC<{
   lpTokenName: string
   myLiquidityPrice: BigNumber
   onBack: () => void
-}> = ({
-  farm,
-  lpTokenName,
-  myLiquidityPrice,
-  onBack,
-}) => {
+}> = ({ farm, lpTokenName, myLiquidityPrice, onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
@@ -166,10 +161,7 @@ const Deposit: React.FC<{
       <TitleSet title={t('Deposit LP')} description={t('Deposit LP on the farm')} />
 
       <CardWrap>
-        <CardHeading
-          farm={farm}
-          lpLabel={lpTokenName}
-        />
+        <CardHeading farm={farm} lpLabel={lpTokenName} />
 
         <CardBody>
           <LiquidityInfo hasMb>

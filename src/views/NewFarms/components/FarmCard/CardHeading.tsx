@@ -27,11 +27,7 @@ export interface ExpandableSectionProps {
   size?: string
 }
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({
-  farm,
-  lpLabel,
-  size = 'medium',
-}) => {
+const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, size = 'medium' }) => {
   const { convertToFarmAPRFormat } = useConverter()
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
