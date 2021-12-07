@@ -26,6 +26,7 @@ import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
+import FarmContext from '../../FarmContext'
 
 const CardWrap = styled(Card)`
   margin-top: ${({ theme }) => theme.spacing.S_16}px;
@@ -68,8 +69,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
   myBalancesInWallet,
   klaytn,
   account,
-  onSelectAddLP,
-  onSelectRemoveLP,
 }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
@@ -133,32 +132,30 @@ const FarmCard: React.FC<FarmCardProps> = ({
    */
   const hasAccount = useMemo(() => account && !!farm.userData, [farm, account])
   const hasAllowance = useMemo(() => allowance && allowance.isGreaterThan(0), [allowance])
-  const onPresentDeposit = useCallback(() => {
-    onSelectAddLP({
-      farm,
-      lpTokenName,
-      myLiquidityPrice: myLiquidity,
-    })
-  }, [farm, myLiquidity, lpTokenName, onSelectAddLP])
-  const onPresentWithdraw = useCallback(() => {
-    onSelectRemoveLP({
-      farm,
-      lpTokenName,
-      myLiquidityPrice: myLiquidity,
-    })
-  }, [farm, myLiquidity, lpTokenName, onSelectRemoveLP])
   const renderStakeAction = useCallback(
     () => (
-      <StakeAction
-        componentType={componentType}
-        hasAccount={hasAccount}
-        hasAllowance={hasAllowance}
-        myLiquidity={stakedBalance}
-        myLiquidityPrice={myLiquidity}
-        lpContract={lpContract}
-        onPresentDeposit={onPresentDeposit}
-        onPresentWithdraw={onPresentWithdraw}
-      />
+      <FarmContext.Consumer>
+        {({ goDeposit, goWithdraw }) => (
+          <StakeAction
+            componentType={componentType}
+            hasAccount={hasAccount}
+            hasAllowance={hasAllowance}
+            myLiquidity={stakedBalance}
+            myLiquidityPrice={myLiquidity}
+            lpContract={lpContract}
+            onPresentDeposit={() => goDeposit({
+              farm,
+              lpTokenName,
+              myLiquidityPrice: myLiquidity,
+            })}
+            onPresentWithdraw={() => goWithdraw({
+              farm,
+              lpTokenName,
+              myLiquidityPrice: myLiquidity,
+            })}
+          />
+        )}
+      </FarmContext.Consumer>
     ),
     [
       componentType,
@@ -167,8 +164,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
       stakedBalance,
       myLiquidity,
       lpContract,
-      onPresentDeposit,
-      onPresentWithdraw,
+      farm,
+      lpTokenName
     ],
   )
   /**

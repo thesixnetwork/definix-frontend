@@ -20,9 +20,7 @@ const FarmList: React.FC<{
   stakedOnly: boolean
   searchKeyword: string
   orderBy: DropdownOption
-  goDeposit: (props: any) => void
-  goRemove: (props: any) => void
-}> = ({ stakedOnly, searchKeyword, orderBy, goDeposit, goRemove }) => {
+}> = ({ stakedOnly, searchKeyword, orderBy }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { slowRefresh } = useRefresh()
@@ -90,8 +88,6 @@ const FarmList: React.FC<{
           myBalancesInWallet={getMyBalancesInWallet([farm.firstToken, farm.secondToken])}
           klaytn={klaytn}
           account={account}
-          onSelectAddLP={goDeposit}
-          onSelectRemoveLP={goRemove}
         />
       ))}
     </>

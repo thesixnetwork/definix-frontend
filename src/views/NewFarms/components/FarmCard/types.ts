@@ -22,6 +22,4 @@ export interface FarmCardProps {
   myBalancesInWallet?: { [key: string]: BigNumber }
   klaytn?: provider
   account?: string
-  onSelectAddLP?: (props: any) => void
-  onSelectRemoveLP?: (props: any) => void
 }
