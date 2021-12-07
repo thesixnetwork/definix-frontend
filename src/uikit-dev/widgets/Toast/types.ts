@@ -16,7 +16,7 @@ export interface Toast {
   id: string
   type: Types
   title: string
-  description?: string
+  description?: string | React.ReactElement
   action?: ToastAction
 }
 
