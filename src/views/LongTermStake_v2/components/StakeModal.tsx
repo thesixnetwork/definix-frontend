@@ -66,7 +66,7 @@ const StakeModal: React.FC<ModalProps> = ({
                 {t('Stake Period')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
-                {period}
+                {period} {t('days')}
               </Text>
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
