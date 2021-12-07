@@ -71,12 +71,7 @@ const CopyToClipboard: React.FC<Props> = ({
           }
         }}
       >
-        {isDark ? (
-          <Image src={copyWhite} width={22} height={18}/>
-        ) : (
-            <Image src={copyBlack} width={22} height={18} />
-          )}
-
+        {isDark ? <Image src={copyWhite} width={22} height={18} /> : <Image src={copyBlack} width={22} height={18} />}
       </StyleButton>
     </>
   )

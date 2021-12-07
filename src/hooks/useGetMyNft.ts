@@ -127,17 +127,17 @@ export const usePurchaseOneNFT = (orderCode) => {
       let txHash
       if (account) {
         await buyNft.methods
-        .purchaseOneNFT(orderCode)
-        .send({ from: account, gas: 200000 })
-        .then((v)=>{
-          setLoading('success')
-          setInterval(() => setLoading(''), 5000)
-          setInterval(() => setStatus(true), 5000)
-        })
-        .catch((e) => {
-          setLoading('')
-          setStatus(false)
-        })
+          .purchaseOneNFT(orderCode)
+          .send({ from: account, gas: 200000 })
+          .then((v) => {
+            setLoading('success')
+            setInterval(() => setLoading(''), 5000)
+            setInterval(() => setStatus(true), 5000)
+          })
+          .catch((e) => {
+            setLoading('')
+            setStatus(false)
+          })
       }
 
       return new Promise((resolve, reject) => {
@@ -148,7 +148,7 @@ export const usePurchaseOneNFT = (orderCode) => {
     }
   }, [buyNft, orderCode, account])
 
-  return { onPurchase: handlePurchaseOneNFT,status, loadings  }
+  return { onPurchase: handlePurchaseOneNFT, status, loadings }
 }
 
 export const useIsApprove = () => {
