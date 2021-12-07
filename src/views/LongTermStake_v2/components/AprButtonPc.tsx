@@ -63,7 +63,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
                 </Text>
               </Flex>
               <Text textStyle="R_14M" color="white">
-                {item.day}
+                {item.day} {t('days')}
               </Text>
             </FlexDays>
 
@@ -78,7 +78,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
               </Flex>
               <Flex flexDirection="column">
                 <Text textStyle="R_12R" color="mediumgrey">
-                  {t('Minimum stake')}
+                  {t('Minimum Stake')}
                 </Text>
                 <Text textStyle="R_18B" color="black">
                   {item.minStake} {t('FINIX')}

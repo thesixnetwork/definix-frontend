@@ -4,17 +4,14 @@ import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Text, Label, Image, Box } from 'definixswap-uikit'
+import { Flex, Text, Label, Box } from 'definixswap-uikit'
 import CurrencyText from 'components/CurrencyText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
-  margin-right: ${({ theme }) => theme.spacing.S_6}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
   color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_12R};
   white-space: nowrap;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
-  }
 `
 const TokenLabel = styled(Label)`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;
@@ -29,6 +26,13 @@ const BalanceText = styled(Text)`
     ${({ theme }) => theme.textStyle.R_16M};
   }
 `
+const TotalLiquidityText = styled(CurrencyText)`
+  color: ${({ theme }) => theme.colors.black};
+  ${({ theme }) => theme.textStyle.R_18M};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    ${({ theme }) => theme.textStyle.R_16M};
+  }
+`
 const PriceText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_14R};
@@ -36,21 +40,39 @@ const PriceText = styled(CurrencyText)`
     ${({ theme }) => theme.textStyle.R_12R};
   }
 `
+const Wrap = styled(Flex)`
+  flex-direction: column;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-top: ${({ theme }) => theme.spacing.S_20}px;
+  }
+`
+const TitleWrap = styled(Flex)`
+  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
+  align-items: flex-start;
+`
+const ValueWrap = styled(Box)`
+  margin-top: -2px;
+`
+const TokenNameText = styled(Text)`
+  padding-left: 2px;
+  padding-bottom: 1px;
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_12M};
+`
+const TokenImage = styled.img`
+  width: 20px;
+  height: auto;
+  object-fit: contain;
+`
 
 const TotalLiquiditySection: React.FC<{
   title: string
   totalLiquidity: number
 }> = ({ title, totalLiquidity }) => {
-  const { convertToPriceFormat } = useConverter()
-
-  const totalLiquidityPrice = useMemo(() => {
-    return convertToPriceFormat(totalLiquidity)
-  }, [convertToPriceFormat, totalLiquidity])
-
   return (
     <>
       <TitleSection hasMb>{title}</TitleSection>
-      <BalanceText>{totalLiquidityPrice}</BalanceText>
+      <TotalLiquidityText value={totalLiquidity} />
     </>
   )
 }
@@ -82,44 +104,18 @@ const EarningsSection: React.FC<{
 }> = ({ title, tokenName, earnings }) => {
   const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
-  const price = useMemo(() => {
-    return convertToPriceFromSymbol(tokenName)
-  }, [convertToPriceFromSymbol, tokenName])
-
-  const earningsValue = useMemo(() => {
-    return getBalanceNumber(earnings)
-  }, [earnings])
-
+  const earningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
   const earningsPrice = useMemo(() => {
+    const price = convertToPriceFromSymbol(tokenName)
     return new BigNumber(earningsValue).multipliedBy(price)
-  }, [earningsValue, price])
-
-  const Wrap = styled(Flex)`
-    flex-direction: column;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      margin-top: ${({ theme }) => theme.spacing.S_20}px;
-    }
-  `
-  const TitleWrap = styled(Flex)`
-    margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
-    align-items: flex-start;
-  `
-  const ValueWrap = styled(Box)`
-    margin-top: -2px;
-  `
-  const TokenNameText = styled(Text)`
-    padding-left: 2px;
-    padding-bottom: 1px;
-    color: ${({ theme }) => theme.colors.deepgrey};
-    ${({ theme }) => theme.textStyle.R_12M};
-  `
+  }, [earningsValue, convertToPriceFromSymbol, tokenName])
 
   return (
     <Wrap>
       <TitleWrap>
         <TitleSection hasMb={false}>{title}</TitleSection>
-        <Box width={20}>
-          <Image src={getTokenImageUrl('finix')} alt="finix" width={20} height={20} />
+        <Box>
+          <TokenImage src={getTokenImageUrl('finix')} alt="finix" />
         </Box>
       </TitleWrap>
       <ValueWrap>

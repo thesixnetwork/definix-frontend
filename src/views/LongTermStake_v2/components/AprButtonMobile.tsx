@@ -61,7 +61,7 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
               <FlexVFinix>
                 <FlexDays focus={days === item.day} onClick={() => setDays(item.day)}>
                   <Text width="100%" textAlign="center" textStyle="R_14M" color="white">
-                    {item.day}
+                    {item.day} {t('days')}
                   </Text>
                 </FlexDays>
               </FlexVFinix>
@@ -75,7 +75,7 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
               {t('APR')}
             </TextApr>
             <TextApr textStyle="R_14R" color="mediumgrey">
-              {t('Minimum stake')}
+              {t('Minimum Stake')}
             </TextApr>
             <TextApr textStyle="R_14R" color="mediumgrey">
               {t('vFINIX Multiples')}

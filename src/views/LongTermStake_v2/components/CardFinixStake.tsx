@@ -14,24 +14,24 @@ const FlexCard = styled(Flex)`
 `
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
-  const [days, setDays] = useState('365 days')
+  const [days, setDays] = useState('365')
 
   const data = [
     {
       multiple: '1X',
-      day: '90 days',
+      day: '90',
       apr: '27.69',
       minStake: '1,000',
     },
     {
       multiple: '2X',
-      day: '180 days',
+      day: '180',
       apr: '55.30',
       minStake: '10,000',
     },
     {
       multiple: '4X',
-      day: '365 days',
+      day: '365',
       apr: '110.76',
       minStake: '30,000',
     },

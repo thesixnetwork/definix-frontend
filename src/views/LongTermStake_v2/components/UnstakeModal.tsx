@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Flex, Text, Modal, Button, Divider, VDivider } from 'definixswap-uikit'
+import styled from 'styled-components'
 
 import ImgTokenFinix from '../../../assets/images/img-token-finix.png'
 import ImgTokenFinix2x from '../../../assets/images/img-token-finix@2x.png'
@@ -21,6 +22,14 @@ interface ModalProps {
   onDismiss?: () => any
 }
 
+const StyledBox = styled(Box)`
+  width: 100%;
+
+  @media (min-width: 464px) {
+    width: 416px;
+  }
+`
+
 const UnstakeModal: React.FC<ModalProps> = ({
   balance,
   period,
@@ -36,8 +45,8 @@ const UnstakeModal: React.FC<ModalProps> = ({
 
   return (
     <>
-      <Modal title={`${t('Confirm Unstake')}`} onDismiss={onDismiss}>
-        <Box width="416px" mb="S_30">
+      <Modal title={`${t('Confirm Unstake')}`} onDismiss={onDismiss} mobileFull>
+        <StyledBox mb="S_30">
           <Flex mt="S_14" mb="S_24" justifyContent="space-between" alignItems="flex-start">
             <Flex alignItems="flex-start">
               <img
@@ -54,7 +63,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                 </Text>
                 <Flex my="S_4" alignItems="center" height="12px">
                   <Text mr="S_8" textStyle="R_14R" color="mediumgrey">
-                    {period}
+                    {period} {t('days')}
                   </Text>
                   <VDivider />
                   <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
@@ -92,7 +101,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
               <Text textStyle="R_14R" color="mediumgrey">
-                {t('You will reveived')}
+                {t('You will received')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
                 {received} {t('FINIX')}
@@ -112,7 +121,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
               </Text>
             </Flex>
           </Flex>
-        </Box>
+        </StyledBox>
         <Button onClick={onOK}>{unstake}</Button>
       </Modal>
     </>

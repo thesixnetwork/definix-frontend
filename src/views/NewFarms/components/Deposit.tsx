@@ -18,20 +18,18 @@ const Deposit: React.FC<{
   farm: FarmWithStakedValue
   removed: boolean
   pid: number
-  tokenName: string
+  lpTokenName: string
   tokenBalance: BigNumber
   totalLiquidity: BigNumber
   myLiquidity: BigNumber
   myLiquidityPrice: BigNumber
-  addLiquidityUrl: string
   onBack: () => void
 }> = ({
   farm,
   removed,
   pid,
   tokenBalance,
-  tokenName = '',
-  addLiquidityUrl,
+  lpTokenName = '',
   totalLiquidity,
   myLiquidity,
   myLiquidityPrice,
@@ -86,7 +84,7 @@ const Deposit: React.FC<{
     <ConfirmModal
       title={t('Confirm Deposit')}
       buttonName="Deposit"
-      lpSymbol={tokenName}
+      lpSymbol={lpTokenName}
       stakedBalance={val}
       onOK={handleStake}
     />,
@@ -168,7 +166,13 @@ const Deposit: React.FC<{
       <TitleSet title={t('Deposit LP')} description={t('Deposit LP on the farm')} />
 
       <CardWrap>
-        <CardHeading farm={farm} lpLabel={tokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />
+        <CardHeading
+          // apy={farm.apy}
+          // lpSymbols={farm.lpSymbols}
+          farm={farm}
+          lpLabel={lpTokenName}
+          removed={removed}
+        />
 
         <CardBody>
           <LiquidityInfo hasMb>
@@ -192,7 +196,7 @@ const Deposit: React.FC<{
         <ModalInput
           value={val}
           max={tokenBalance}
-          symbol={tokenName}
+          symbol={lpTokenName}
           buttonName={t('Deposit')}
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}

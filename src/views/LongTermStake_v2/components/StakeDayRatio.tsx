@@ -55,19 +55,19 @@ const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
 
   const data = [
     {
-      name: t('90 days'),
+      name: '90',
       color: lightColors.green,
       ratio: '1',
       value: '461,974',
     },
     {
-      name: t('180 days'),
+      name: '180',
       color: lightColors.yellow,
       ratio: '39',
       value: '865,204',
     },
     {
-      name: t('365 days'),
+      name: '365',
       color: lightColors.red,
       ratio: '60',
       value: '8,666,998',
@@ -105,7 +105,7 @@ const StakeDayRatio: React.FC<IsMobileType> = ({ isMobile }) => {
                 <Flex alignItems="center">
                   <Dot color={v.color} />
                   <Text textStyle="R_14R" color="deepgrey">
-                    {v.name}
+                    {v.name} {t('days')}
                   </Text>
                 </Flex>
                 <Flex>

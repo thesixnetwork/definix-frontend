@@ -43,7 +43,7 @@ const FinixEarn: React.FC<IsMobileType> = ({ isMobile }) => {
           </Flex>
         </Flex>
         <Button width={`${isMobile ? '100%' : '156px'}`} mt={`${isMobile && 'S_24'}`}>
-          Harvest
+          {t('Harvest')}
         </Button>
       </FlexEarn>
     </>

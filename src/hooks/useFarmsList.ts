@@ -2,12 +2,13 @@ import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
+import { getLpImageUrlsAndSymbols } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
 import { usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePriceSixUsd } from 'state/hooks'
 import { Farm } from 'state/types'
 import { useCallback } from 'react'
 
-const useFarmsList = (farms: Farm[]) => {
+const useFarmsList = (farms: Farm[]): any => {
   const { convertToPriceFromToken, convertToFarmAPR } = useConverter()
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
@@ -112,6 +113,7 @@ const useFarmsList = (farms: Farm[]) => {
         klayApy,
         apyValue: convertToFarmAPR(finixApy),
         totalLiquidityValue: Number(totalLiquidityValue),
+        lpSymbols: getLpImageUrlsAndSymbols(farm.lpSymbol),
       }
     })
   }, [

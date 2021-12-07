@@ -1,6 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Flex, Text, Modal, Button, Divider } from 'definixswap-uikit'
+import styled from 'styled-components'
 
 import ImgTokenFinix from '../../../assets/images/img-token-finix.png'
 import ImgTokenFinix2x from '../../../assets/images/img-token-finix@2x.png'
@@ -18,6 +19,14 @@ interface ModalProps {
   onDismiss?: () => any
 }
 
+const StyledBox = styled(Box)`
+  width: 100%;
+
+  @media (min-width: 464px) {
+    width: 416px;
+  }
+`
+
 const StakeModal: React.FC<ModalProps> = ({
   balance,
   period,
@@ -30,8 +39,8 @@ const StakeModal: React.FC<ModalProps> = ({
 
   return (
     <>
-      <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss}>
-        <Box width="416px" mb="S_30">
+      <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
+        <StyledBox mb="S_30">
           <Flex mt="S_14" mb="S_24" justifyContent="space-between" alignItems="center">
             <Flex alignItems="center">
               <img
@@ -57,7 +66,7 @@ const StakeModal: React.FC<ModalProps> = ({
                 {t('Stake Period')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
-                {period}
+                {period} {t('days')}
               </Text>
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
@@ -95,7 +104,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
             </Flex>
           </Flex>
-        </Box>
+        </StyledBox>
         <Button onClick={onOK}>{t('Stake')}</Button>
       </Modal>
     </>
