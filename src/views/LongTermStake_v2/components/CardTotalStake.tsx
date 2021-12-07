@@ -1,6 +1,7 @@
 import React from 'react'
-import { Card, Flex, Divider, VDivider } from 'definixswap-uikit'
 import styled from 'styled-components'
+import { Card, Flex, Divider, VDivider } from 'definixswap-uikit'
+import { useTotalFinixLock, useUnstakeId } from '../../../hooks/useLongTermStake'
 
 import StakeDayRatio from './StakeDayRatio'
 import FinixStake from './FinixStake'
@@ -16,13 +17,20 @@ const FlexCard = styled(Flex)`
 `
 
 const CardTotalStake: React.FC<IsMobileType> = ({ isMobile }) => {
+  const getTotalFinixLock = useTotalFinixLock()
+  const { totalFinixLock, totalSupplyAllTimeMint } = useUnstakeId()
+
   return (
     <>
       <Card p={isMobile ? 'S_20' : 'S_40'}>
         <FlexCard>
-          <FinixStake isMobile={isMobile} />
+          <FinixStake
+            isMobile={isMobile}
+            totalFinixLock={totalFinixLock}
+            totalSupplyAllTimeMint={totalSupplyAllTimeMint}
+          />
           {isMobile ? <Divider width="100%" backgroundColor="lightGrey50" /> : <VDivider opacity="0.5" />}
-          <StakeDayRatio isMobile={isMobile} />
+          <StakeDayRatio isMobile={isMobile} getTotalFinixLock={getTotalFinixLock} totalFinixLock={totalFinixLock} />
         </FlexCard>
       </Card>
     </>
