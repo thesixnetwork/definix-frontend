@@ -54,6 +54,10 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
   const status = _.get(data, 'status')
   const { account }: { account: string } = useWallet()
 
+  const dataContract = {
+    smartcontract: process.env.REACT_APP_NFT_MARKETPLACE_TESTNET || '',
+  };
+
   const filterCurrency = useMemo(() => {
     const options = [
       { address: getSixAddress(), currency: 'SIX' },
@@ -210,8 +214,8 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               Smart Contract address
             </Text>
             <div className="flex align-center">
-              <EllipsisText start={6} end={5} text="0x5503a12290a7Cc6128d18b0DA6FBEab009165311" />
-              <CopyToClipboard toCopy={data.name}>Copy Address</CopyToClipboard>
+              <EllipsisText start={6} end={5} text={dataContract.smartcontract} />
+              <CopyToClipboard toCopy={dataContract.smartcontract}>Copy Address</CopyToClipboard>
             </div>
           </div>
           {isOnSell && (
