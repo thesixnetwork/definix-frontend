@@ -126,9 +126,8 @@ const ExclusiveCard = styled.div<{ isDark: boolean }>`
 const BadgeExclusive = styled.div`
   position: relative;
   text-align: center;
-  justify-content: space-between;
-  display: contents;
 `
+
 const CardSuperStake = () => {
   /* eslint-enable no-unused-vars */
   const { connect, account } = useWallet()
@@ -516,10 +515,20 @@ const CardSuperStake = () => {
           </div>
         </div>
         {!isMobileOrTablet && (
-          <BadgeExclusive className="col-4 flex flex-column" style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}>
-            <img src={badgeExclusive} alt="" />
-            <img src={logoExclusive} alt="" style={{ opacity: '0.6' }} />
-          </BadgeExclusive>
+          <div
+            style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}
+            className="col-4 flex flex-column justify-space-between"
+          >
+            <BadgeExclusive className={`${!isMobileOrTablet ? 'px-2 mb-8' : 'px-5 mb-2'}`}>
+              <img src={badgeExclusive} alt="" />
+            </BadgeExclusive>
+            <img
+              src={logoExclusive}
+              alt=""
+              style={{ opacity: '0.6' }}
+              className={`${!isMobileOrTablet ? 'mt-6 mx-2' : 'mt-4 mx-2'}`}
+            />
+          </div>
         )}
       </FinixStake>
     </div>
