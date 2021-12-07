@@ -20,7 +20,7 @@ export const getLpImageUrlsAndSymbols = (lpSymbol: string) => {
   return symbols.map((symbol) => {
     return {
       symbol,
-      image: getTokenImageUrl(symbol)
+      image: getTokenImageUrl(symbol),
     }
   })
 }

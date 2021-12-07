@@ -23,16 +23,7 @@ const Withdraw: React.FC<{
   myLiquidity: BigNumber
   myLiquidityPrice: BigNumber
   onBack: () => void
-}> = ({
-  pid,
-  lpTokenName = '',
-  totalLiquidity,
-  myLiquidity,
-  myLiquidityPrice,
-  farm,
-  removed,
-  onBack,
-}) => {
+}> = ({ pid, lpTokenName = '', totalLiquidity, myLiquidity, myLiquidityPrice, farm, removed, onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()

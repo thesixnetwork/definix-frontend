@@ -72,14 +72,10 @@ const FarmCard: React.FC<FarmCardProps> = ({
     return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
   }, [farm, stakedBalance, convertToPriceFromToken])
 
-  const renderCardHeading = useCallback(() => (
-    <CardHeading
-      farm={farm}
-      lpLabel={lpTokenName}
-      removed={removed}
-      size="small"
-    />
-  ), [farm, lpTokenName, removed])
+  const renderCardHeading = useCallback(
+    () => <CardHeading farm={farm} lpLabel={lpTokenName} removed={removed} size="small" />,
+    [farm, lpTokenName, removed],
+  )
 
   const renderIconButton = useCallback(
     () => (
@@ -123,17 +119,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       farm,
       removed,
     })
-  }, [
-    farm,
-    stakedBalance,
-    myLiquidity,
-    lpTokenName,
-    pid,
-    tokenBalance,
-    totalLiquidity,
-    onSelectAddLP,
-    removed,
-  ])
+  }, [farm, stakedBalance, myLiquidity, lpTokenName, pid, tokenBalance, totalLiquidity, onSelectAddLP, removed])
   const onPresentWithdraw = useCallback(() => {
     onSelectRemoveLP({
       pid,
@@ -145,17 +131,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       farm,
       removed,
     })
-  }, [
-    farm,
-    stakedBalance,
-    myLiquidity,
-    lpTokenName,
-    pid,
-    tokenBalance,
-    totalLiquidity,
-    onSelectRemoveLP,
-    removed,
-  ])
+  }, [farm, stakedBalance, myLiquidity, lpTokenName, pid, tokenBalance, totalLiquidity, onSelectRemoveLP, removed])
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
@@ -197,8 +173,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
   useEffect(() => {
     setIsOpenAccordion(false)
   }, [])
-
-  
 
   if (componentType === 'myInvestment') {
     return (
