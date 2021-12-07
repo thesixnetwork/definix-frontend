@@ -81,7 +81,7 @@ const CardHarvest = () => {
             style={{
               fontStyle: 'italic',
               fontWeight: 'normal',
-              fontSize: '16px'
+              fontSize: '16px',
             }}
             variant="success"
             radii="small"
@@ -95,7 +95,7 @@ const CardHarvest = () => {
             style={{
               fontStyle: 'italic',
               fontWeight: 'normal',
-              fontSize: '16px'
+              fontSize: '16px',
             }}
             radii="small"
             fullWidth
