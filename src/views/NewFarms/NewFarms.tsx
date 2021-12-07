@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import React, { useEffect, useState, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'

@@ -88,7 +88,6 @@ const FarmList: React.FC<{
           key={farm.pid}
           farm={farm}
           myBalancesInWallet={getMyBalancesInWallet([farm.firstToken, farm.secondToken])}
-          removed={false}
           klaytn={klaytn}
           account={account}
           onSelectAddLP={goDeposit}

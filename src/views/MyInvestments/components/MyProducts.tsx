@@ -91,7 +91,6 @@ const MyProducts: React.FC<{
             componentType="myInvestment"
             farm={product.data}
             myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
-            removed={false}
             klaytn={klaytn}
             account={account}
           />
