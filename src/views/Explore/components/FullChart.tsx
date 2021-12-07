@@ -86,6 +86,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
           })()
           return (
             <CheckboxLabel
+              key={c.symbol}
               className="mr-s24 mb-s16 flex align-center"
               control={
                 <Checkbox scale="sm" variantColor="brown" checked={!!selectedTokens[c.symbol]} onChange={onCheck(c)} />

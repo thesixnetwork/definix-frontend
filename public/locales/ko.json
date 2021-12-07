@@ -202,8 +202,8 @@
   "Confirm Remove": "제거 승인하기",
   "Deposit Complete": "예치가 완료되었습니다.",
   "Remove Complete": "제거가 완료되었습니다.",
-  "Deposit Failed": "예치에 실패하였습니다.",
-  "Remove Failed": "제거에 실패하였습니다.",
+  "Deposit Failed": "예치에 실패했습니다.",
+  "Remove Failed": "제거에 실패했습니다.",
   "Remove from the Pool": "풀에서 제거하기",
   "Remove tokens from the pool": "예치한 토큰을 회수합니다.",
   "A Farm that automatically performs": "리밸런싱 전략을 자동으로 수행하는 팜입니다. 리스크를 최소화하고 장기 투자에 유리합니다.",
@@ -211,7 +211,8 @@
   "Invested only": "운용 중인 자산만 보기",
   "Yield APR": "수익률",
   "Asset Ratio": "구성 자산 비율",
-  "Share Price (Since Inception)": "좌당 가치 (운용 이후 수익률)",
+  "Share Price": "좌당 가치",
+  "Since Inception": "운용 이후 수익률",
   "Current Investment": "현 운용 금액",
   "View Details": "상세 보기",
   "A return of investment paid": "FINIX로 지급된 운용 수익은 지급된 이자 수익률의 연간 비율로 계산되었습니다.",
@@ -399,5 +400,11 @@
   "Action Withdraw": "출금",
   "Action Invest": "입금",
   "You haven`t made any transactions": "거래 내역이 없습니다.",
-  "Don`t have any transactions": "거래 내역이 없습니다."
+  "Don`t have any transactions": "거래 내역이 없습니다.",
+  "Medium": "중간",
+  "Confirm Withdraw": "출금 승인하기",
+  "Withdraw Failed": "출금에 실패했습니다.",
+  "Invest Failed": "입금에 실패했습니다.",
+  "Invest Complete": "입금이 완료되었습니다.",
+  "Withdraw Complete": "출금이 완료되었습니다."
 }

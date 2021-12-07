@@ -6,17 +6,19 @@ import { useTranslation } from 'react-i18next'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { get, isEqual, compact } from 'lodash'
 
-import { BackIcon, Box, Button, Flex, Text, useModal } from 'definixswap-uikit'
+import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints, useModal } from 'definixswap-uikit'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
+import PageTitle from 'components/PageTitle'
 import { Rebalance } from '../../state/types'
 import { useBalances, useAllowances } from '../../state/hooks'
 import { fetchAllowances, fetchBalances } from '../../state/wallet'
 import { simulateInvest, getReserves } from '../../offline-pool'
 import CalculateModal from './components/CalculateModal'
 import InvestInputCard from './components/InvestInputCard'
+import SummaryCard, { SummaryItem } from './components/SummaryCard'
 
 interface InvestType {
   rebalance: Rebalance | any
@@ -33,6 +35,8 @@ const usePrevious = (value, initialValue) => {
 const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const { t } = useTranslation()
   const history = useHistory()
+  const { isMaxSm } = useMatchBreakpoints()
+  const isMobile = isMaxSm
   const [tx, setTx] = useState({})
   const [poolUSDBalancesState, setPoolUSDBalances] = useState([])
   const [poolAmounts, setPoolAmounts] = useState([])
@@ -249,11 +253,17 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
           </Text>
         </Button>
       </Flex>
-      <Text as="h2" textStyle="R_32B" className="mb-s40">
-        {t('Invest')}
-      </Text>
+      <PageTitle text={t('Invest')} small={isMobile} />
+
+      <SummaryCard
+        rebalance={rebalance}
+        isMobile={isMobile}
+        typeB
+        items={[SummaryItem.YIELD_APR, SummaryItem.SHARE_PRICE_W_YIELD, SummaryItem.RISK_O_METER]}
+      />
 
       <InvestInputCard
+        isMobile={isMobile}
         rebalance={rebalance}
         currentInput={currentInput}
         setCurrentInput={setCurrentInput}

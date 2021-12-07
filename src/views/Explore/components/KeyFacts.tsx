@@ -64,34 +64,36 @@ const KeyFacts: React.FC<KeyFactsType> = ({ rebalance }) => {
         {t(rebalance.fullDescription)}
       </Text>
       <Table className="mt-s20">
-        <FactRow name={t('Name')} value={rebalance.factsheet.name} bold />
-        <FactRow name={t('Inception Date')} value={rebalance.factsheet.inceptionDate} />
-        <FactRow name={t('Manager')} value={rebalance.factsheet.manager} copy ellipsis />
-        <FactRow name={t('Vault')} value={rebalance.factsheet.vault} copy ellipsis />
-        <FactRow
-          name={t('Management Fee')}
-          helper={t('Fee collected for vault')}
-          prefix={get(rebalance, 'fee.management', 0.2)}
-          value={rebalance.factsheet.management}
-          ellipsis
-          copy
-        />
-        <FactRow
-          name={t('Finix Buyback Fee')}
-          helper={t('Fee collected for buyback')}
-          prefix={get(rebalance, 'fee.buyback', 1.5)}
-          value={rebalance.factsheet.finixBuyBackFee}
-          ellipsis
-          copy
-        />
-        <FactRow
-          name={t('Ecosystem Fee')}
-          prefix={get(rebalance, 'fee.bounty', 0.3)}
-          helper={t('Reservation fee for further')}
-          value={rebalance.factsheet.bountyFee}
-          ellipsis
-          copy
-        />
+        <tbody>
+          <FactRow name={t('Name')} value={rebalance.factsheet.name} bold />
+          <FactRow name={t('Inception Date')} value={rebalance.factsheet.inceptionDate} />
+          <FactRow name={t('Manager')} value={rebalance.factsheet.manager} copy ellipsis />
+          <FactRow name={t('Vault')} value={rebalance.factsheet.vault} copy ellipsis />
+          <FactRow
+            name={t('Management Fee')}
+            helper={t('Fee collected for vault')}
+            prefix={get(rebalance, 'fee.management', 0.2)}
+            value={rebalance.factsheet.management}
+            ellipsis
+            copy
+          />
+          <FactRow
+            name={t('Finix Buyback Fee')}
+            helper={t('Fee collected for buyback')}
+            prefix={get(rebalance, 'fee.buyback', 1.5)}
+            value={rebalance.factsheet.finixBuyBackFee}
+            ellipsis
+            copy
+          />
+          <FactRow
+            name={t('Ecosystem Fee')}
+            prefix={get(rebalance, 'fee.bounty', 0.3)}
+            helper={t('Reservation fee for further')}
+            value={rebalance.factsheet.bountyFee}
+            ellipsis
+            copy
+          />
+        </tbody>
       </Table>
     </>
   )

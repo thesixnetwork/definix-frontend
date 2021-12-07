@@ -10,14 +10,7 @@ interface SharesType {
 
 const Shares: React.FC<SharesType> = ({ balance, small }) => {
   const { t } = useTranslation()
-  return (
-    <TwoLineFormat
-      large={!small}
-      title={t('Shares')}
-      value={`${numeral(balance).format('0,0.[00]')}`}
-      hint={t('A return of investment paid')}
-    />
-  )
+  return <TwoLineFormat large={!small} title={t('Shares')} value={`${numeral(balance).format('0,0.[00]')}`} />
 }
 
 export default Shares

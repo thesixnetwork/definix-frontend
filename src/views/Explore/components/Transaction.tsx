@@ -38,7 +38,7 @@ const Overflow = styled.div`
   overflow: auto;
 `
 
-const TransactionTable = ({ rows, empText, isLoading }) => {
+const TransactionTable = ({ rows, empText, mx, isLoading }) => {
   const { t } = useTranslation()
   const [cols] = useState([t('Investors'), t('Action'), t('Shares'), t('Total Amount'), t('Date'), t('Scope')])
 
@@ -48,59 +48,63 @@ const TransactionTable = ({ rows, empText, isLoading }) => {
     <EmptyData text={empText} />
   ) : (
     <Overflow>
-      <Table>
-        <TR>
-          {cols.map((c, idx) => (
-            <TH align={idx > 0 ? 'center' : null} key={c} oneline>
-              <Text color="mediumgrey" textStyle="R_12M">
-                {c}
-              </Text>
-            </TH>
-          ))}
-        </TR>
+      <Box mx={mx} minWidth="fit-content">
+        <Table>
+          <tbody>
+            <TR>
+              {cols.map((c, idx) => (
+                <TH align={idx > 0 ? 'center' : null} key={c} oneline>
+                  <Text color="mediumgrey" textStyle="R_12M">
+                    {c}
+                  </Text>
+                </TH>
+              ))}
+            </TR>
 
-        {rows.map((r) => (
-          <TR key={`tsc-${r.block_number}`}>
-            <TD>
-              <Flex alignItems="center">
-                <Text textStyle="R_14R">
-                  <EllipsisText start={6} end={5} text={r.user_address} />
-                </Text>
-                <CopyToClipboard toCopy={r.user_address} />
-              </Flex>
-            </TD>
-            <TD align="center" oneline>
-              {r.event_name === 'AddFundAmount' ? (
-                <Text textStyle="R_14R" color="success">
-                  + {t('Action Invest')}
-                </Text>
-              ) : (
-                <Text textStyle="R_14R" color="failure">
-                  - {t('Action Withdraw')}
-                </Text>
-              )}
-            </TD>
-            <TD align="center">
-              <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
-            </TD>
-            <TD align="center">
-              <Text textStyle="R_14R">{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
-            </TD>
-            <TD align="center">
-              <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
-            </TD>
-            <TD align="center">
-              <LinkExternal
-                textStyle="R_14R"
-                color="mediumgrey"
-                href={`https://scope.klaytn.com/tx/${r.transaction_hash}`}
-              >
-                KlaytnScope
-              </LinkExternal>
-            </TD>
-          </TR>
-        ))}
-      </Table>
+            {rows.map((r) => (
+              <TR key={`tsc-${r.block_number}`}>
+                <TD>
+                  <Flex alignItems="center">
+                    <Text textStyle="R_14R">
+                      <EllipsisText start={6} end={5} text={r.user_address} />
+                    </Text>
+                    <CopyToClipboard toCopy={r.user_address} />
+                  </Flex>
+                </TD>
+                <TD align="center" oneline>
+                  {r.event_name === 'AddFundAmount' ? (
+                    <Text textStyle="R_14R" color="success">
+                      + {t('Action Invest')}
+                    </Text>
+                  ) : (
+                    <Text textStyle="R_14R" color="failure">
+                      - {t('Action Withdraw')}
+                    </Text>
+                  )}
+                </TD>
+                <TD align="center">
+                  <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
+                </TD>
+                <TD align="center">
+                  <Text textStyle="R_14R">{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
+                </TD>
+                <TD align="center" oneline>
+                  <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
+                </TD>
+                <TD align="center">
+                  <LinkExternal
+                    textStyle="R_14R"
+                    color="mediumgrey"
+                    href={`https://scope.klaytn.com/tx/${r.transaction_hash}`}
+                  >
+                    KlaytnScope
+                  </LinkExternal>
+                </TD>
+              </TR>
+            ))}
+          </tbody>
+        </Table>
+      </Box>
     </Overflow>
   )
 }
@@ -181,7 +185,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         </Text>
         <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
       </Flex>
-      <Box mx={size.marginX} mb={size.marginY}>
+      <Box mx={size.marginX} mb="S_8">
         <PaginationCustom
           page={currentPage}
           count={pages}
@@ -192,8 +196,9 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         />
       </Box>
 
-      <Box mx={size.marginX} pb={size.marginY}>
+      <Box pb={size.marginY}>
         <TransactionTable
+          mx={size.marginX}
           rows={transactions}
           isLoading={isLoading}
           empText={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')}

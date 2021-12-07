@@ -110,7 +110,7 @@ const WithdrawCalculateModal = ({
       onDismiss()
       setIsWithdrawing(false)
     } catch (e) {
-      toastError(t('Withdraw Fail'))
+      toastError(t('Withdraw Failed'))
       setIsWithdrawing(false)
     }
   }

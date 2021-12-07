@@ -24,7 +24,7 @@ interface FundActionType {
 const CardStyled = styled(Card)`
   position: sticky;
   top: initial;
-  bottom: 0;
+  bottom: 20px;
   align-self: start;
   left: 0;
   width: 100%;

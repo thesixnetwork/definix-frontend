@@ -15,7 +15,6 @@ import { getAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
-import { usePriceFinixUsd } from '../../state/hooks'
 import { Rebalance } from '../../state/types'
 
 import FundAction from './components/FundAction'
@@ -61,7 +60,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
   const [graphData, setGraphData] = useState({})
   const { isDark } = useTheme()
   const { isMaxXl } = useMatchBreakpoints()
-  const finixPrice = usePriceFinixUsd()
   const dispatch = useDispatch()
   const { account } = useWallet()
   const { t } = useTranslation()
@@ -453,18 +451,13 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
             items={[
               SummaryItem.TOTAL_ASSET_VALUE,
               SummaryItem.YIELD_APR,
-              SummaryItem.SHARE_PRICE,
+              SummaryItem.SHARE_PRICE_W_YIELD,
               SummaryItem.RISK_O_METER,
             ]}
           />
 
           <Card>
-            <Tabs
-              tabs={tabs}
-              curTab={curTab}
-              setCurTab={setCurTab}
-              {...(isMaxXl && { small: true, width: '33.33%' })}
-            />
+            <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} {...(isMaxXl && { small: true, equal: true })} />
             {curTab === tabs[0] && <Overview rebalance={rebalance} periodPriceTokens={periodPriceTokens} />}
             {curTab === tabs[1] && (
               <Performance

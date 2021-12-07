@@ -8,6 +8,7 @@ const SelectTime = ({ timeframe, setTimeframe, className = '' }) => {
     <ButtonGroup className={className}>
       {times.map((t) => (
         <Button
+          key={t}
           scale="sm"
           variant={t.split(' ').join('') === timeframe ? 'primary' : 'text'}
           onClick={() => {

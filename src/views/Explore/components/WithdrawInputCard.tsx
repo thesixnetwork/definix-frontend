@@ -12,7 +12,6 @@ import {
   Divider,
   Flex,
   Text,
-  useMatchBreakpoints,
   CheckboxLabel,
   Checkbox,
   useModal,
@@ -33,6 +32,7 @@ export enum RatioType {
 const ratioTypes = Object.keys(RatioType)
 
 interface WithdrawInputCardProp {
+  isMobile
   setTx
   rebalance
   rebalanceBalances
@@ -42,6 +42,7 @@ interface WithdrawInputCardProp {
 }
 
 const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
+  isMobile,
   setTx,
   rebalance,
   rebalanceBalances,
@@ -50,8 +51,6 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
   onNext,
 }) => {
   const { t } = useTranslation()
-  const { isMaxSm } = useMatchBreakpoints()
-  const isMobile = isMaxSm
 
   const [isSimulating, setIsSimulating] = useState(false)
   const [poolAmounts, setPoolAmounts] = useState([])
@@ -219,8 +218,8 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
 
       <Divider my="S_32" />
 
-      <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" mb="S_32">
-        <Text textStyle="R_16M" color="mediumgrey">
+      <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={isMobile ? 'S_16' : 'S_32'}>
+        <Text textStyle="R_16M" color="mediumgrey" mb={isMobile ? 'S_20' : ''}>
           {t('Withdrawal ratio')}
         </Text>
         <ButtonGroup width={isMobile ? '100%' : 'fit-content'}>
@@ -239,7 +238,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
           ))}
         </ButtonGroup>
       </Flex>
-      <Box mb="S_40">
+      <Box mb={isMobile ? 'S_32' : 'S_40'}>
         {ratioType === RatioType.Single
           ? tokenList.map((c) => (
               <CheckboxLabel

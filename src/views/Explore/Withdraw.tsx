@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
-import { useToast } from 'state/hooks'
+import PageTitle from 'components/PageTitle'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
 import { fetchBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
@@ -27,7 +27,6 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
   const [tx, setTx] = useState({})
-  const { toastSuccess } = useToast()
   const [isInputting, setIsInputting] = useState(true)
 
   const dispatch = useDispatch()
@@ -75,9 +74,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           </Text>
         </Button>
       </Flex>
-      <Text as="h2" textStyle="R_32B" className="mb-s40">
-        {t('Withdraw')}
-      </Text>
+      <PageTitle text={t('Withdraw')} small={isMobile} />
 
       <div>
         <SummaryCard
@@ -88,6 +85,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           typeB
         />
         <WithdrawInputCard
+          isMobile={isMobile}
           setTx={setTx}
           rebalance={rebalance}
           balances={balances}
@@ -95,7 +93,6 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           currentBalance={currentBalance}
           onNext={() => {
             setIsInputting(false)
-            toastSuccess(t('Withdraw Complete'))
             history.goBack()
           }}
         />

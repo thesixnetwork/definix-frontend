@@ -10,13 +10,13 @@ interface RiskOMeterType {
   small?: boolean
 }
 
-const StyledMediumImg = styled(MediumImg)<{ small: boolean }>`
+const StyledMediumImg = styled(MediumImg)<{ small?: boolean }>`
   width: ${({ small }) => (small ? '24px' : '48px')};
   margin-left: ${({ small }) => (small ? '6px' : '25px')};
   height: auto;
   align-self: end;
-  margin-bottom: 4px;
-  margin-top: -4px;
+  margin-bottom: 6px;
+  margin-top: -6px;
 `
 
 const RiskOMeter: React.FC<RiskOMeterType> = ({ grade, small }) => {

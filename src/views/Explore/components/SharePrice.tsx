@@ -5,18 +5,18 @@ import TwoLineFormat from './TwoLineFormat'
 
 interface SharePriceType {
   price: number
-  diff: number
+  diff?: number
   small?: boolean
   titleMarginBottom?: number
 }
 
 const SharePrice: React.FC<SharePriceType> = ({ price, diff, small, titleMarginBottom }) => {
   const { t } = useTranslation()
-  return (
+  return diff !== null ? (
     <TwoLineFormat
       titleMarginBottom={titleMarginBottom}
       large={!small}
-      title={t('Share Price (Since Inception)')}
+      title={`${t('Share Price')} (${t('Since Inception')})`}
       value={`$${numeral(price).format('0,0.00')}`}
       percent={`${diff >= 0 ? `+${numeral(diff).format('0,0.[00]')}` : `${numeral(diff).format('0,0.[00]')}`}%`}
       percentClass={(() => {
@@ -24,6 +24,13 @@ const SharePrice: React.FC<SharePriceType> = ({ price, diff, small, titleMarginB
         if (diff > 0) return 'success'
         return ''
       })()}
+    />
+  ) : (
+    <TwoLineFormat
+      titleMarginBottom={titleMarginBottom}
+      large={!small}
+      title={t('Share Price')}
+      value={`$${numeral(price).format('0,0.00')}`}
     />
   )
 }

@@ -143,7 +143,7 @@ const CalculateModal = ({
       onDismiss()
       setIsInvesting(false)
     } catch {
-      toastError(t('Invest Fail'))
+      toastError(t('Invest Failed'))
       setIsInvesting(false)
     }
   }

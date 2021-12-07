@@ -211,7 +211,8 @@
   "Invested only": "Invested only",
   "Yield APR": "Yield APR",
   "Asset Ratio": "Asset Ratio",
-  "Share Price (Since Inception)": "Share Price (Since Inception)",
+  "Share Price": "Share Price",
+  "Since Inception": "Since Inception",
   "Current Investment": "Current Investment",
   "View Details": "View Details",
   "A return of investment paid": "A return of investment paid in FINIX calculated in annual percentage rate for the interest to be paid.",
@@ -399,5 +400,11 @@
   "Action Withdraw": "Withdraw",
   "Action Invest": "Invest",
   "You haven`t made any transactions": "You haven`t made any transactions in this farm.",
-  "Don`t have any transactions": "Don`t have any transactions in this farm."
+  "Don`t have any transactions": "Don`t have any transactions in this farm.",
+  "Medium": "Medium",
+  "Confirm Withdraw": "Confirm Withdraw",
+  "Withdraw Failed": "Withdraw Failed",
+  "Invest Failed": "Invest Failed",
+  "Invest Complete": "Invest Complete",
+  "Withdraw Complete": "Withdraw Complete"
 }

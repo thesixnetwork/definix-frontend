@@ -15,8 +15,7 @@ interface CardHeadingType extends BoxProps {
 }
 
 const FocusImg = styled.img<{ isMediumSize: boolean }>`
-  border-radius: ${({ isMediumSize }) => (isMediumSize ? '6px' : '3px')};
-  border: solid 1px #979797;
+  border-radius: 6px;
   width: ${({ isMediumSize }) => (isMediumSize ? '100%' : '160px')};
   height: auto;
   object-fit: contain;
