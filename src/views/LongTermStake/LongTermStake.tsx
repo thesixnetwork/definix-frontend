@@ -94,7 +94,7 @@ const LongTermStake: React.FC = () => {
                   <CardStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
-                  <CardSuperStake isShowRightPanel={isShowRightPanel}/>
+                  <CardSuperStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <StakeTable />
               </div>
@@ -161,7 +161,7 @@ const LongTermStake: React.FC = () => {
                   <CardStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
-                  <CardSuperStake isShowRightPanel={isShowRightPanel}/>
+                  <CardSuperStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <StakeTable />
               </div>
