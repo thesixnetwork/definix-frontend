@@ -156,6 +156,7 @@ const CardMarketplace = () => {
   const orderOnSell = _.get(nftUser, 'orderOnSell')
   const owning = _.get(nftUser, 'owning')
   const orderList = _.get(nftUser, 'orderList')
+  const nftListData = _.get(nftUser, 'nftListData')
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -183,49 +184,68 @@ const CardMarketplace = () => {
     setFillPrice(val.value)
   }
 
-  const filterOrderOnSell = useMemo(() => {
+  const filterItems = useMemo(() => {
     const OrderArray = []
     orderList.filter((x) =>
-      x.items.map((v) =>
-        filterdList.some(
-          (y) =>
-            v.tokenId >= y?.startID &&
-            v.tokenId <= y?.endID &&
-            OrderArray.push({
-              tokenId: v.tokenId,
-              orderCode: x.orderCode,
-              videoUrl: y?.videoUrl,
-              codeData: y?.code,
-              code: y?.code,
-              price: v.price,
-              tokenContract: v.tokenContract,
-              amount: v.amount,
-              itemCode: v.itemCode,
-              itemId: v.itemId,
-              orderCurrency: x.orderCurrency,
-              orderStatus: x.orderStatus,
-              orderSellPeriod: x.orderSellPeriod,
-              detailDescKey: y?.detailDescKey,
-              detailTitleKey: y?.detailTitleKey,
-              endID: y?.endID,
-              grade: y?.grade,
-              imageUrl: y?.imageUrl,
-              limitCount: y?.limitCount,
-              metaDataURL: y?.metaDataURL,
-              name: y?.name,
-              order: y?.order,
-              previewImgId: y?.previewImgId,
-              previewVideoUrl: y?.previewVideoUrl,
-              startID: y?.startID,
-              title: y?.title,
-              totalAmount: y?.totalAmount,
-              userData: y?.userData,
-            }),
-        ),
+      x.items.some((v) =>
+        OrderArray.push({
+          tokenId: v.tokenId,
+          orderCode: x.orderCode,
+          price: v.price,
+          tokenContract: v.tokenContract,
+          amount: v.amount,
+          itemCode: v.itemCode,
+          itemId: v.itemId,
+          orderCurrency: x.orderCurrency,
+          orderStatus: x.orderStatus,
+          orderSellPeriod: x.orderSellPeriod,
+        }),
       ),
     )
     return OrderArray
-  }, [filterdList, orderList])
+  }, [orderList])
+
+  const filterOrderOnSell = useMemo(() => {
+    const OrderArray = []
+    filterItems.filter((x) =>
+      nftListData.some(
+        (y) =>
+          x.tokenId >= y?.startID &&
+          x.tokenId <= y?.endID &&
+          OrderArray.push({
+            tokenId: x.tokenId,
+            orderCode: x.orderCode,
+            videoUrl: y?.videoUrl,
+            codeData: y?.code,
+            code: y?.code,
+            price: x.price,
+            tokenContract: x.tokenContract,
+            amount: x.amount,
+            itemCode: x.itemCode,
+            itemId: x.itemId,
+            orderCurrency: x.orderCurrency,
+            orderStatus: x.orderStatus,
+            orderSellPeriod: x.orderSellPeriod,
+            detailDescKey: y?.detailDescKey,
+            detailTitleKey: y?.detailTitleKey,
+            endID: y?.endID,
+            grade: y?.grade,
+            imageUrl: y?.imageUrl,
+            limitCount: y?.limitCount,
+            metaDataURL: y?.metaDataURL,
+            name: y?.name,
+            order: y?.order,
+            previewImgId: y?.previewImgId,
+            previewVideoUrl: y?.previewVideoUrl,
+            startID: y?.startID,
+            title: y?.title,
+            totalAmount: y?.totalAmount,
+            userData: y?.userData,
+          }),
+      ),
+    )
+    return OrderArray
+  }, [nftListData, filterItems])
 
   return (
     <div className="align-stretch mt-5">

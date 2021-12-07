@@ -55,7 +55,9 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
       const res = onPurchase()
       res
         .then(async (r) => {
-          handleBuy()
+          if (r) {
+            handleBuy()
+          }
         })
         .catch((e) => {
           onDismiss()
