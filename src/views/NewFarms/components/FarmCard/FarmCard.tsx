@@ -2,10 +2,10 @@ import BigNumber from 'bignumber.js'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
+
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useConverter from 'hooks/useConverter'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+
 import {
   Flex,
   Card,
@@ -26,6 +26,13 @@ import StakeAction from './StakeAction'
 import LinkListSection from './LinkListSection'
 import { FarmCardProps } from './types'
 
+const Wrap = styled(Box)`
+  padding: ${({ theme }) => theme.spacing.S_32}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: ${({ theme }) => theme.spacing.S_20}px;
+  }
+`
+
 const FarmCard: React.FC<FarmCardProps> = ({
   componentType = 'farm',
   farm,
@@ -37,36 +44,14 @@ const FarmCard: React.FC<FarmCardProps> = ({
   onSelectRemoveLP,
 }) => {
   const { t } = useTranslation()
-  const { convertToPriceFromToken, convertToUSD } = useConverter()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
-  const lpTokenName = useMemo(() => {
-    return (
-      farm.lpSymbol &&
-      farm.lpSymbol
-        .toUpperCase()
-        .replace(/(DEFINIX)|(LP)/g, '')
-        .trim()
-    )
-  }, [farm.lpSymbol])
-
+  const { convertToPriceFromToken } = useConverter()
+  const lpTokenName = useMemo(() => farm.lpSymbols.map((lpSymbol) => lpSymbol.symbol).join('-'), [farm.lpSymbols])
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, tokenBalance, stakedBalance, allowance } = useFarmUser(pid)
-
-  const addLiquidityUrl = useMemo(() => {
-    const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
-    const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
-    return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  }, [farm])
-
-  const getTokenPrice = useCallback(
-    (token) => {
-      return convertToPriceFromToken(token, farm.quoteTokenSymbol)
-    },
-    [farm.quoteTokenSymbol, convertToPriceFromToken],
-  )
   /**
    * total liquidity
    */
@@ -84,15 +69,17 @@ const FarmCard: React.FC<FarmCardProps> = ({
       .div(new BigNumber(10).pow(quoteTokenDecimals))
       .times(ratio)
       .times(new BigNumber(2))
-    return getTokenPrice(stakedTotalInQuoteToken)
-  }, [farm, stakedBalance, getTokenPrice])
+    return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
+  }, [farm, stakedBalance, convertToPriceFromToken])
 
-  const renderCardHeading = useCallback(
-    () => (
-      <CardHeading farm={farm} lpLabel={lpTokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} size="small" />
-    ),
-    [addLiquidityUrl, farm, lpTokenName, removed],
-  )
+  const renderCardHeading = useCallback(() => (
+    <CardHeading
+      farm={farm}
+      lpLabel={lpTokenName}
+      removed={removed}
+      size="small"
+    />
+  ), [farm, lpTokenName, removed])
 
   const renderIconButton = useCallback(
     () => (
@@ -128,9 +115,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const onPresentDeposit = useCallback(() => {
     onSelectAddLP({
       pid,
-      tokenName: lpTokenName,
+      lpTokenName,
       tokenBalance,
-      addLiquidityUrl,
       totalLiquidity,
       myLiquidity: stakedBalance,
       myLiquidityPrice: myLiquidity,
@@ -144,7 +130,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     lpTokenName,
     pid,
     tokenBalance,
-    addLiquidityUrl,
     totalLiquidity,
     onSelectAddLP,
     removed,
@@ -152,9 +137,8 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const onPresentWithdraw = useCallback(() => {
     onSelectRemoveLP({
       pid,
-      tokenName: lpTokenName,
+      lpTokenName,
       tokenBalance,
-      addLiquidityUrl,
       totalLiquidity,
       myLiquidity: stakedBalance,
       myLiquidityPrice: myLiquidity,
@@ -168,7 +152,6 @@ const FarmCard: React.FC<FarmCardProps> = ({
     lpTokenName,
     pid,
     tokenBalance,
-    addLiquidityUrl,
     totalLiquidity,
     onSelectRemoveLP,
     removed,
@@ -215,12 +198,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
     setIsOpenAccordion(false)
   }, [])
 
-  const Wrap = styled(Box)`
-    padding: ${({ theme }) => theme.spacing.S_32}px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      padding: ${({ theme }) => theme.spacing.S_20}px;
-    }
-  `
+  
 
   if (componentType === 'myInvestment') {
     return (

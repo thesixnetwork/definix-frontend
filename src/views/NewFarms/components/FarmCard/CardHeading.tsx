@@ -1,34 +1,48 @@
+import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
-import { getLpImageUrls } from 'utils/getTokenImage'
+import styled from 'styled-components'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useConverter from 'hooks/useConverter'
-import { Flex, Box, Image, Text, ColorStyles } from 'definixswap-uikit'
+import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { Flex, Box, Text, ColorStyles } from 'definixswap-uikit'
 import ApyButton from './ApyButton'
-import { FarmWithStakedValue } from './types'
+import { LpSymbol, FarmWithStakedValue } from './types'
+
+const ImageBox = styled(Box)`
+  &:first-child {
+    z-index: 1;
+  }
+  &:last-child {
+    margin-left: -10px;
+  }
+`
+const TokenImage = styled.img<{ isMediumSize: boolean }>`
+  width: ${({ isMediumSize }) => (isMediumSize ? 48 : 40)}px;
+  height: auto;
+  object-fit: contain;
+`
 
 export interface ExpandableSectionProps {
   farm: FarmWithStakedValue
-  lpLabel?: string
-  multiplier?: string
+  // apy: BigNumber
+  lpLabel: string
+  // lpSymbols: LpSymbol[]
   removed?: boolean
-  addLiquidityUrl?: string
   size?: string
-  // inlineMultiplier?: boolean
 }
 
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   farm,
+  // apy,
+  // lpSymbols,
   lpLabel,
   removed,
-  addLiquidityUrl,
   size = 'medium',
 }) => {
   const { convertToFarmAPRFormat } = useConverter()
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
-  // const isCommunityFarm = communityFarms.includes(farm.tokenSymbol)
   const isMediumSize = useMemo(() => size === 'medium', [size])
-  const imageSize = useMemo(() => (isMediumSize ? 48 : 40), [isMediumSize])
-  const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpLabel)
   const displayApy = useMemo(() => {
     try {
       return `${convertToFarmAPRFormat(farm.apy)}%`
@@ -36,16 +50,21 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
       return '-'
     }
   }, [convertToFarmAPRFormat, farm.apy])
+  const addLiquidityUrl = useMemo(() => {
+    const { quoteTokenAdresses, quoteTokenSymbol, tokenAddresses } = farm
+    const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAdresses, quoteTokenSymbol, tokenAddresses })
+    return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  }, [farm])
 
   return (
     <Flex position="relative">
       <Flex className="mr-s12" alignItems="center">
-        <Box width={imageSize} style={{ zIndex: 1 }}>
-          <Image src={firstCoinImageUrl} alt={farm.tokenSymbol} width={imageSize} height={imageSize} />
-        </Box>
-        <Box width={imageSize} style={{ marginLeft: '-10px' }}>
-          <Image src={secondCoinImageUrl} alt={farm.tokenSymbol} width={imageSize} height={imageSize} />
-        </Box>
+        <ImageBox>
+          <TokenImage isMediumSize={isMediumSize} src={farm.lpSymbols[0].image} alt={farm.lpSymbols[0].symbol} />
+        </ImageBox>
+        <ImageBox>
+          <TokenImage isMediumSize={isMediumSize} src={farm.lpSymbols[1].image} alt={farm.lpSymbols[1].symbol} />
+        </ImageBox>
       </Flex>
 
       <Flex flexDirection="column">
@@ -66,12 +85,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
         )}
       </Flex>
     </Flex>
-
-    // <Flex justifyContent="center">
-    //   {isCommunityFarm ? <CommunityTag /> : <CoreTag />}
-    //   <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
-    // </Flex>
   )
 }
 
-export default CardHeading
+export default React.memo(CardHeading)

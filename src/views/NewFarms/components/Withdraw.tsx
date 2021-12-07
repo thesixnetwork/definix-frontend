@@ -18,16 +18,14 @@ const Withdraw: React.FC<{
   farm: FarmWithStakedValue
   removed: boolean
   pid: number
-  tokenName: string
+  lpTokenName: string
   totalLiquidity: BigNumber
   myLiquidity: BigNumber
   myLiquidityPrice: BigNumber
-  addLiquidityUrl: string
   onBack: () => void
 }> = ({
   pid,
-  tokenName = '',
-  addLiquidityUrl,
+  lpTokenName = '',
   totalLiquidity,
   myLiquidity,
   myLiquidityPrice,
@@ -91,7 +89,7 @@ const Withdraw: React.FC<{
     <ConfirmModal
       title={t('Confirm Remove')}
       buttonName={t('Remove')}
-      lpSymbol={tokenName}
+      lpSymbol={lpTokenName}
       stakedBalance={val}
       onOK={handleUnstake}
     />,
@@ -173,7 +171,13 @@ const Withdraw: React.FC<{
       <TitleSet title="Remove LP" description={t('Remove LPs from the farm.')} />
 
       <CardWrap>
-        <CardHeading farm={farm} lpLabel={tokenName} removed={removed} addLiquidityUrl={addLiquidityUrl} />
+        <CardHeading
+          // apy={farm.apy}
+          // lpSymbols={farm.lpSymbols}
+          farm={farm}
+          lpLabel={lpTokenName}
+          removed={removed}
+        />
 
         <CardBody>
           <LiquidityInfo hasMb>
@@ -199,7 +203,7 @@ const Withdraw: React.FC<{
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}
           max={myLiquidity}
-          symbol={tokenName}
+          symbol={lpTokenName}
           buttonName={t('Remove')}
           onClickButton={() => onPresentConfirmModal()}
         />

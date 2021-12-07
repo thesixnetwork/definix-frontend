@@ -14,6 +14,7 @@ import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { DropdownOption } from 'definixswap-uikit'
 import NoResultArea from 'components/NoResultArea'
 import FarmCard from '../FarmCard/FarmCard'
+import { FarmWithStakedValue } from '../FarmCard/types'
 
 const FarmList: React.FC<{
   stakedOnly: boolean
@@ -28,7 +29,7 @@ const FarmList: React.FC<{
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
   const farmsLP = useFarms()
-  const farmsWithApy = useFarmsList(farmsLP)
+  const farmsWithApy: FarmWithStakedValue[] = useFarmsList(farmsLP)
 
   const filteredFarms = useMemo(() => {
     return stakedOnly
