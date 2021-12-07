@@ -138,4 +138,21 @@ export const usePurchaseOneNFT = (orderCode) => {
   return { onPurchase: handlePurchaseOneNFT }
 }
 
+export const useIsApprove = () => {
+  const { account }: { account: string } = useWallet()
+  const approvalForAll = useApprovalForAll()
+  const [isApprove, setIsApprove] = useState(false)
+
+  useEffect(() => {
+    const fetchIsApprove = async () => {
+      const txHash = await approvalForAll.methods.isApprovedForAll(account, getNftMarketplaceAddress()).call()
+      setIsApprove(txHash)
+    }
+    if (account) {
+      fetchIsApprove()
+    }
+  }, [account, approvalForAll])
+  return isApprove
+}
+
 export default useNFTUser

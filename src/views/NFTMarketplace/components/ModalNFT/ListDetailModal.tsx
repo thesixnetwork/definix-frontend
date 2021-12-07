@@ -4,20 +4,16 @@ import _ from 'lodash'
 import axios from 'axios'
 import styled from 'styled-components'
 import LazyLoad from 'react-lazyload'
-// import LazyLoad from 'react-lazyload'
 import useTheme from 'hooks/useTheme'
-import { Button, Text, Heading, Image, useMatchBreakpoints, Flex } from 'uikit-dev'
+import { Button, Text, Image, useMatchBreakpoints, Flex } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
-import tAra from 'uikit-dev/images/for-ui-v2/nft/T-ARA.png'
-import copyWhite from 'uikit-dev/images/for-ui-v2/nft/copy-white.png'
-import copyBlack from 'uikit-dev/images/for-ui-v2/nft/copy-black.png'
 import { getFinixAddress, getSixAddress } from 'utils/addressHelpers'
 import CopyToClipboard from '../CopyToClipboard'
 import EllipsisText from '../../../../components/EllipsisText'
 import ListFillModal from './ListFillModal'
 import ModalComplete from './ModalComplete'
-import { useSousApprove, useCancelOrder } from '../../../../hooks/useGetMyNft'
+import { useSousApprove, useCancelOrder, useIsApprove } from '../../../../hooks/useGetMyNft'
 
 interface Props {
   onDismiss?: () => void
@@ -49,12 +45,10 @@ const LayoutImg = styled.div`
 const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace, data, typeName, isOnSell }) => {
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
-  const [orderCode, setOrderCode] = useState('')
-  const [handleBuy] = useModal(<ModalComplete />)
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
-  const { isDark } = useTheme()
   const { onApprove } = useSousApprove()
+  const isApprove = useIsApprove()
   const { onCancelOrder } = useCancelOrder(data.orderCode)
   const [requestedApproval, setRequestedApproval] = useState(false)
   const status = _.get(data, 'status')
@@ -95,6 +89,31 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
     return typeName === 'Group' ? typeGroup() : typeGrid()
   }
 
+  const handleIsApproveForGrid = () => {
+    const disable = status === 0
+    return isApprove ? (
+      <Button disabled={disable} fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+        List
+      </Button>
+    ) : (
+      <Button fullWidth radii="small" className="mt-3" onClick={() => handleApprove()}>
+        Approve Contract
+      </Button>
+    )
+  }
+
+  const handleIsApproveForGroup = () => {
+    return isApprove ? (
+      <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
+        List
+      </Button>
+    ) : (
+      <Button fullWidth radii="small" className="mt-3" onClick={() => handleApprove()}>
+        Approve Contract
+      </Button>
+    )
+  }
+
   const typeGroup = () => {
     return status !== undefined ? (
       <Button
@@ -107,14 +126,11 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
         Delist
       </Button>
     ) : (
-      <Button fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-        List
-      </Button>
+      handleIsApproveForGroup()
     )
   }
 
   const typeGrid = () => {
-    const disable = status === 0
     return isOnSell ? (
       <Button
         fullWidth
@@ -126,9 +142,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
         Delist
       </Button>
     ) : (
-      <Button disabled={disable} fullWidth radii="small" className="mt-3" onClick={() => onPresentConnectModal()}>
-        List
-      </Button>
+      handleIsApproveForGrid()
     )
   }
 

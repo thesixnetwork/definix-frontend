@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import LazyLoad from 'react-lazyload'
@@ -7,9 +7,7 @@ import useTheme from 'hooks/useTheme'
 import { Button, Text, Heading, Image, useMatchBreakpoints, Flex } from 'uikit-dev'
 import useModal from 'uikit-dev/widgets/Modal/useModal'
 import ModalNFT from 'uikit-dev/widgets/Modal/Modal'
-import tAra from 'uikit-dev/images/for-ui-v2/nft/T-ARA.png'
-import copyWhite from 'uikit-dev/images/for-ui-v2/nft/copy-white.png'
-import copyBlack from 'uikit-dev/images/for-ui-v2/nft/copy-black.png'
+import { getFinixAddress, getSixAddress } from 'utils/addressHelpers'
 import CopyToClipboard from '../CopyToClipboard'
 import EllipsisText from '../../../../components/EllipsisText'
 import ListFillModal from './ListFillModal'
@@ -56,6 +54,14 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
   const { isDark } = useTheme()
+
+  const filterCurrency = useMemo(() => {
+    const options = [
+      { address: getSixAddress(), currency: 'SIX' },
+      { address: getFinixAddress(), currency: 'FINIX' },
+    ]
+    return options.filter((item) => _.get(item, 'orderCurrency') === data.currency)
+  }, [data])
 
   const purchase = () => {
     try {
@@ -143,9 +149,9 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
               Price
             </Text>
             <div className="flex align-center">
-              <Image src="/images/coins/six.png" width={20} height={20} />
+              <Image src={`/images/coins/${_.get(filterCurrency, '0.currency')}.png`} width={16} height={16} />
               <Text bold fontSize="22px" color="text" paddingLeft="6px">
-                {data.price} SIX
+                {data.price} {_.get(filterCurrency, '0.currency')}
               </Text>
             </div>
           </div>
