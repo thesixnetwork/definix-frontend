@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import Lottie from 'react-lottie'
 import BigNumber from 'bignumber.js'
@@ -128,7 +129,7 @@ const BadgeExclusive = styled.div`
   text-align: center;
 `
 
-const CardSuperStake = () => {
+const CardSuperStake = ({ isShowRightPanel }) => {
   /* eslint-enable no-unused-vars */
   const { connect, account } = useWallet()
   const { isDark } = useTheme()
@@ -140,7 +141,7 @@ const CardSuperStake = () => {
   const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const { isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobileOrTablet = !isXl && !isMd && !isLg
+  const isMobileOrTablet = !isXl && !isLg 
   const { allDataLock, lockAmount } = usePrivateData()
   const [period, setPeriod] = useState(0)
   const [date, setDate] = useState('-')
@@ -292,8 +293,8 @@ const CardSuperStake = () => {
         Enter an amount
       </Button>
     ) : (
-      renderStakeDOrStake()
-    )
+        renderStakeDOrStake()
+      )
   }
 
   const renderStakeOrInsufficient = () => {
@@ -302,18 +303,18 @@ const CardSuperStake = () => {
         Insufficient Balance
       </Button>
     ) : (
-      renderStakeOrEnter()
-    )
+        renderStakeOrEnter()
+      )
   }
 
   const renderApprovalOrStakeButton = () => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-      <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
-        Approve Contract
-      </Button>
-    )
+        <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+          Approve Contract
+        </Button>
+      )
   }
 
   useEffect(() => {
@@ -385,7 +386,7 @@ const CardSuperStake = () => {
             <Heading
               as="h1"
               fontSize={`${isMobileOrTablet ? '16px !important' : '18px !important'}`}
-              className={`${!isMobileOrTablet ? 'mb-4' : 'flex align-center'}`}
+              className={`${!isMobileOrTablet ? 'mb-2' : 'flex align-center mb-0'}`}
             >
               Super Stake
             </Heading>
@@ -395,16 +396,15 @@ const CardSuperStake = () => {
               </ExclusiveCard>
             )}
           </div>
-          <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+          <Text paddingTop="2" color={isDark ? 'white' : '#737375'} fontSize={isMobileOrTablet ? "14px" : "12px"}>
             Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no
             minimum amount.
           </Text>
-          <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+          <Text paddingTop="2" color={isDark ? 'white' : '#737375'} fontSize={isMobileOrTablet ? "14px" : "12px"}>
             You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock period{' '}
             <b>will not be extended.</b>
           </Text>
-
-          <Text className="mt-4" color="textSubtle">
+          <Text className={`${!isMobileOrTablet ? 'mt-2' : 'mt-0'}`} color="textSubtle">
             Please select available duration
           </Text>
           <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
@@ -447,35 +447,35 @@ const CardSuperStake = () => {
               </Coin>
             </Balance>
           ) : (
-            <Balance>
-              <NumberInput
-                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                placeholder="0.00"
-                value={value}
-                onChange={handleChange}
-                pattern="^[0-9]*[,]?[0-9]*$"
-              />
-              {percent !== 1 && (
-                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                    25%
+              <Balance>
+                <NumberInput
+                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                  placeholder="0.00"
+                  value={value}
+                  onChange={handleChange}
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+                {percent !== 1 && (
+                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                      25%
                   </StylesButton>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                    50%
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                      50%
                   </StylesButton>
-                  <StylesButton size="sm" onClick={() => setPercent(1)}>
-                    MAX
+                    <StylesButton size="sm" onClick={() => setPercent(1)}>
+                      MAX
                   </StylesButton>
-                </div>
-              )}
-              <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                <Heading as="h1" fontSize="16px !important">
-                  FINIX
+                  </div>
+                )}
+                <Coin>
+                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                  <Heading as="h1" fontSize="16px !important">
+                    FINIX
                 </Heading>
-              </Coin>
-            </Balance>
-          )}
+                </Coin>
+              </Balance>
+            )}
           <div className="flex mt-4">
             <Text className="col-6" color={isDark ? 'white' : '#000000'}>
               Estimated Period End
@@ -510,23 +510,23 @@ const CardSuperStake = () => {
                 Connect Wallet
               </Button>
             ) : (
-              renderApprovalOrStakeButton()
-            )}
+                renderApprovalOrStakeButton()
+              )}
           </div>
         </div>
         {!isMobileOrTablet && (
           <div
-            style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}
-            className="col-4 flex flex-column justify-space-between"
+            style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1, alignSelf: 'start' }}
+            className="col-4 flex flex-column justify-space-between "
           >
-            <BadgeExclusive className={`${!isMobileOrTablet ? 'px-2 mb-8' : 'px-5 mb-2'}`}>
+            <BadgeExclusive className={`${!isMobileOrTablet ? 'mx-2 mb-2' : 'mx-3 mb-2'}`}>
               <img src={badgeExclusive} alt="" />
             </BadgeExclusive>
             <img
               src={logoExclusive}
               alt=""
               style={{ opacity: '0.6' }}
-              className={`${!isMobileOrTablet ? 'mx-4' : 'mt-4 mx-2'}`}
+              className={`${!isMobileOrTablet ? 'mx-4 mt-6' : 'mx-2 mt-4'}`}
             />
           </div>
         )}
