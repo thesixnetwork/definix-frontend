@@ -91,7 +91,7 @@ const SuperHarvestButton = styled(Button)`
   padding: 0px 16px;
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    padding: 0px 30px;
+    padding: 0px 28px;
   }
 `
 const BannerTopup = () => {
