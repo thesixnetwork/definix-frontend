@@ -61,7 +61,7 @@ const KeyFacts: React.FC<KeyFactsType> = ({ rebalance }) => {
         {t('Key Facts')}
       </Text>
       <Text textStyle="R_14R" color="mediumgrey">
-        {t(rebalance.description)}
+        {t(rebalance.fullDescription)}
       </Text>
       <Table className="mt-s20">
         <FactRow name={t('Name')} value={rebalance.factsheet.name} bold />

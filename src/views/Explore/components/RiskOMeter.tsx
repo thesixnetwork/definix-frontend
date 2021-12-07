@@ -23,7 +23,7 @@ const RiskOMeter: React.FC<RiskOMeterType> = ({ grade, small }) => {
   const { t } = useTranslation()
   return (
     <TwoLineFormat
-      title={t('Risk-0-Meter')}
+      title={t('Risk-O-Meter')}
       value={t(grade)}
       large={!small}
       subfix={<StyledMediumImg small={small} />}

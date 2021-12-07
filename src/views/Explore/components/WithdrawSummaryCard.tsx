@@ -1,10 +1,11 @@
 /* eslint-disable no-nested-ternary */
-import numeral from 'numeral'
 import React from 'react'
 import { Card, CardBody, Flex, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
-import TwoLineFormat from './TwoLineFormat'
 import CardHeading from './CardHeading'
+import SharePrice from './SharePrice'
+import Shares from './Shares'
+import TotalValue from './TotalValue'
 
 interface WithdrawSummaryCardProp {
   rebalance
@@ -28,36 +29,15 @@ const WithdrawSummaryCard: React.FC<WithdrawSummaryCardProp> = ({ rebalance, cur
 
         <Flex justifyContent="space-between" flexWrap="wrap">
           <Flex width={isMobile ? '50%' : '33.33%'} mb={isMobile ? 'S_20' : ''}>
-            <TwoLineFormat
-              title={t('Shares')}
-              value={`${numeral(currentBalanceNumber).format('0,0.[00]')}`}
-              hint={t('A return of investment paid')}
-            />
+            <Shares balance={currentBalanceNumber} small={isMobile} />
+          </Flex>
+          <Flex width={isMobile ? '50%' : '33.33%'}>
+            {isMobile || <VDivider />}
+            <SharePrice price={rebalance.sharedPrice} diff={rebalance.sharedPricePercentDiff} small={isMobile} />
           </Flex>
           <Flex width={isMobile ? '50%' : '33.33%'}>
             {isMobile || <VDivider mr="S_24" />}
-            <TwoLineFormat
-              title={t('Share Price (Since Inception)')}
-              value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-              percent={`${
-                rebalance.sharedPricePercentDiff >= 0
-                  ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                  : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-              }%`}
-              percentClass={(() => {
-                if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                return ''
-              })()}
-            />
-          </Flex>
-          <Flex width={isMobile ? '50%' : '33.33%'}>
-            {isMobile || <VDivider mr="S_24" />}
-            <TwoLineFormat
-              width={isMobile ? '50%' : ''}
-              title={t('Total Value')}
-              value={`$${numeral(currentBalanceNumber * rebalance.sharedPrice).format('0,0.[00]')}`}
-            />
+            <TotalValue balance={currentBalanceNumber} price={rebalance.sharedPrice} small={isMobile} />
           </Flex>
         </Flex>
       </CardBody>

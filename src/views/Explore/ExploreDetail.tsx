@@ -6,7 +6,6 @@ import moment from 'moment'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import numeral from 'numeral'
 import Color from 'color'
 import {
   BackIcon,
@@ -33,11 +32,13 @@ import { Rebalance } from '../../state/types'
 
 import CardHeading from './components/CardHeading'
 import FundAction from './components/FundAction'
-import TwoLineFormat from './components/TwoLineFormat'
 import Performance from './components/Performance'
 import Overview from './components/Overview'
 import Transaction from './components/Transaction'
 import RiskOMeter from './components/RiskOMeter'
+import SharePrice from './components/SharePrice'
+import YieldAPR from './components/YieldAPR'
+import TotalAssetValue from './components/TotalAssetValue'
 
 interface ExploreDetailType {
   rebalance: Rebalance | any
@@ -468,45 +469,20 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               {isMaxXl || <Divider mb="S_24" />}
 
               <Flex flexWrap="wrap">
-                <TwoLineFormat
-                  width={isMaxXl ? '60%' : '25%'}
-                  mb={isMaxXl ? 'S_20' : ''}
-                  title={t('Total Asset Value')}
-                  value={`$${numeral(rebalance.totalAssetValue).format('0,0.00')}`}
-                  large={!isMaxXl}
-                />
+                <Flex width={isMaxXl ? '60%' : '25%'} mb={isMaxXl ? 'S_20' : ''}>
+                  <TotalAssetValue value={rebalance.totalAssetValue} small={isMaxXl} />
+                </Flex>
                 <Flex width={isMaxXl ? '40%' : '25%'} mb={isMaxXl ? 'S_20' : ''}>
                   {isMaxXl || <VDivider mr="S_32" />}
-                  <TwoLineFormat
-                    title={t('Yield APR')}
-                    value={`${numeral(
-                      finixPrice
-                        .times(_.get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-                        .div(_.get(rebalance, 'totalAssetValue', new BigNumber(0)))
-                        .times(100)
-                        .toFixed(2),
-                    ).format('0,0.[00]')}%`}
-                    hint={t('A return of investment paid')}
-                    large={!isMaxXl}
+                  <YieldAPR
+                    finixRewardPerYear={rebalance?.finixRewardPerYear}
+                    totalAssetValue={rebalance?.totalAssetValue}
+                    small={isMaxXl}
                   />
                 </Flex>
                 <Flex width={isMaxXl ? '60%' : '25%'}>
                   {isMaxXl || <VDivider mr="S_32" />}
-                  <TwoLineFormat
-                    title={t('Share Price (Since Inception)')}
-                    value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-                    percent={`${
-                      rebalance.sharedPricePercentDiff >= 0
-                        ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                        : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                    }%`}
-                    percentClass={(() => {
-                      if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                      if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                      return ''
-                    })()}
-                    large={!isMaxXl}
-                  />
+                  <SharePrice price={rebalance.sharedPrice} diff={rebalance.sharedPricePercentDiff} small={isMaxXl} />
                 </Flex>
                 <Flex width={isMaxXl ? '40%' : '25%'}>
                   {isMaxXl || <VDivider mr="S_32" />}

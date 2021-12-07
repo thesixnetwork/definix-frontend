@@ -71,7 +71,9 @@ const CardHeading: React.FC<CardHeadingType> = ({
             <Box mb="S_4">
               <CardTitle title={t(rebalance.title)} />
             </Box>
-            <Text textStyle="R_12R">{t(rebalance.description)}</Text>
+            <Text textStyle="R_12R" color="textSubtle">
+              {t(rebalance.description)}
+            </Text>
           </div>
         )}
       </Flex>

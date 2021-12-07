@@ -29,6 +29,9 @@ import MiniChart from './MiniChart'
 import TwoLineFormat from './TwoLineFormat'
 import { Rebalance } from '../../../state/types'
 import { useRebalanceBalances, useBalances } from '../../../state/hooks'
+import YieldAPR from './YieldAPR'
+import SharePrice from './SharePrice'
+import TotalAssetValue from './TotalAssetValue'
 
 interface ExploreCardType {
   componentType?: string
@@ -162,39 +165,28 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const renderTotalAssetValue = useCallback(() => {
     return (
-      <TwoLineFormat
-        width="60%"
-        title={t('Total Asset Value')}
-        value={`$${numeral(_.get(rebalance, 'totalAssetValue', 0)).format('0,0.00')}`}
-      />
+      <Flex width="60%">
+        <TotalAssetValue value={rebalance?.totalAssetValue} />
+      </Flex>
     )
-  }, [t, rebalance])
+  }, [rebalance])
 
   const renderSharePrice = useCallback(() => {
     return (
-      <TwoLineFormat
-        title={t('Share Price (Since Inception)')}
-        titleMarginBottom={isInMyInvestment ? 4 : 0}
-        value={`$${numeral(_.get(rebalance, 'sharedPrice', 0)).format('0,0.00')}`}
-        percent={`${
-          rebalance.sharedPricePercentDiff >= 0
-            ? `+${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-            : `${numeral(_.get(rebalance, 'sharedPricePercentDiff', 0)).format('0,0.[00]')}`
-        }%`}
-        percentClass={(() => {
-          if (_.get(rebalance, 'sharedPricePercentDiff', 0) < 0) return 'failure'
-          if (_.get(rebalance, 'sharedPricePercentDiff', 0) > 0) return 'success'
-          return ''
-        })()}
+      <SharePrice
+        price={rebalance.sharedPrice}
+        diff={rebalance.sharedPricePercentDiff}
+        titleMarginBottom={isInMyInvestment ? 4 : null}
+        small
       />
     )
-  }, [t, rebalance, isInMyInvestment])
+  }, [isInMyInvestment, rebalance.sharedPrice, rebalance.sharedPricePercentDiff])
 
   const renderCurrentInvestment = useCallback(() => {
     return (
       <TwoLineFormat
         title={t('Current Investment')}
-        titleMarginBottom={isInMyInvestment ? 4 : 0}
+        titleMarginBottom={isInMyInvestment ? 4 : null}
         value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
         currentInvestPercentDiff={`(${
           percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
@@ -221,9 +213,15 @@ const ExploreCard: React.FC<ExploreCardType> = ({
 
   const renderYieldAPR = useCallback(() => {
     return (
-      <TwoLineFormat width="40%" title={t('Yield APR')} value={`${apr}%`} hint={t('A return of investment paid')} />
+      <Flex width="40%">
+        <YieldAPR
+          finixRewardPerYear={rebalance?.finixRewardPerYear}
+          totalAssetValue={rebalance?.totalAssetValue}
+          small
+        />
+      </Flex>
     )
-  }, [t, apr])
+  }, [rebalance?.finixRewardPerYear, rebalance?.totalAssetValue])
 
   useEffect(() => {
     combinedAmount()

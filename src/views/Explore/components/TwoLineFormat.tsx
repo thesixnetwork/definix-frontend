@@ -27,7 +27,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
   title,
   subTitle,
   titleColor,
-  titleMarginBottom = 0,
+  titleMarginBottom,
   value,
   percent,
   hint,
@@ -55,12 +55,12 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
       }
   return (
     <Flex flexDirection="column" className={className} {...props}>
-      <Flex alignItems="center" justifyContent={alignRight ? 'flex-end' : 'inherit'} mb={large ? 'S_4' : 'S_2'}>
-        <Text
-          textStyle={textStyle.subTitle}
-          color={titleColor || 'mediumgrey'}
-          style={{ marginBottom: `${titleMarginBottom}px` }}
-        >
+      <Flex
+        alignItems="center"
+        justifyContent={alignRight ? 'flex-end' : 'inherit'}
+        mb={titleMarginBottom ?? (large ? 'S_4' : 'S_2')}
+      >
+        <Text textStyle={textStyle.subTitle} color={titleColor || 'mediumgrey'}>
           {title}
         </Text>
 

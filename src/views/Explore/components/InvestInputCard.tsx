@@ -30,8 +30,9 @@ import { usePriceFinixUsd } from 'state/hooks'
 import { fetchAllowances, fetchBalances } from 'state/wallet'
 import CardHeading from './CardHeading'
 import CurrencyInputPanel from './CurrencyInputPanel'
-import TwoLineFormat from './TwoLineFormat'
 import RiskOMeter from './RiskOMeter'
+import YieldAPR from './YieldAPR'
+import SharePrice from './SharePrice'
 
 interface InvestInputCardProp {
   isSimulating
@@ -147,38 +148,19 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
           />
 
           <Flex justifyContent="space-between" flexWrap="wrap">
-            <TwoLineFormat
-              large={!isMobile}
-              className={isMobile ? 'col-6 mb-s20' : 'col-4'}
-              title={t('Yield APR')}
-              value={`${numeral(
-                finixPrice
-                  .times(get(rebalance, 'finixRewardPerYear', new BigNumber(0)))
-                  .div(get(rebalance, 'totalAssetValue', new BigNumber(0)))
-                  .times(100)
-                  .toFixed(2),
-              ).format('0,0.[00]')}%`}
-              hint={t('A return of investment paid')}
-            />
-
-            <TwoLineFormat
-              large={!isMobile}
-              className={isMobile ? 'col-6' : 'col-4 bd-l pl-s32'}
-              title={t('Share Price (Since Inception)')}
-              value={`$${numeral(rebalance.sharedPrice).format('0,0.00')}`}
-              percent={`${
-                rebalance.sharedPricePercentDiff >= 0
-                  ? `+${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-                  : `${numeral(rebalance.sharedPricePercentDiff).format('0,0.[00]')}`
-              }%`}
-              percentClass={(() => {
-                if (rebalance.sharedPricePercentDiff < 0) return 'failure'
-                if (rebalance.sharedPricePercentDiff > 0) return 'success'
-                return ''
-              })()}
-            />
+            <Flex width={isMobile ? '50%' : '33.33%'}>
+              <YieldAPR
+                finixRewardPerYear={rebalance?.finixRewardPerYear}
+                totalAssetValue={rebalance?.totalAssetValue}
+                small={isMobile}
+              />
+            </Flex>
             {isMobile || <VDivider />}
-            <Flex width={isMobile ? '60%' : '33.33%'} {...(!isMobile && { pl: 'S_32' })}>
+            <Flex width={isMobile ? '50%' : '33.33%'}>
+              <SharePrice price={rebalance.sharedPrice} diff={rebalance.sharedPricePercentDiff} small={isMobile} />
+            </Flex>
+            {isMobile || <VDivider />}
+            <Flex width={isMobile ? '60%' : '33.33%'} {...(!isMobile && { pl: 'S_24' })}>
               <RiskOMeter grade="Medium" small={isMobile} />
             </Flex>
           </Flex>
