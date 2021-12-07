@@ -11,7 +11,7 @@ const FarmContext = createContext<FarmContext>({
   pageState: '',
   pageData: null,
   goDeposit: () => null,
-  goWithdraw: () => null
+  goWithdraw: () => null,
 })
 
 export default FarmContext

@@ -63,13 +63,7 @@ const Wrap = styled(Box)`
   }
 `
 
-const FarmCard: React.FC<FarmCardProps> = ({
-  componentType = 'farm',
-  farm,
-  myBalancesInWallet,
-  klaytn,
-  account,
-}) => {
+const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBalancesInWallet, klaytn, account }) => {
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
@@ -143,30 +137,25 @@ const FarmCard: React.FC<FarmCardProps> = ({
             myLiquidity={stakedBalance}
             myLiquidityPrice={myLiquidity}
             lpContract={lpContract}
-            onPresentDeposit={() => goDeposit({
-              farm,
-              lpTokenName,
-              myLiquidityPrice: myLiquidity,
-            })}
-            onPresentWithdraw={() => goWithdraw({
-              farm,
-              lpTokenName,
-              myLiquidityPrice: myLiquidity,
-            })}
+            onPresentDeposit={() =>
+              goDeposit({
+                farm,
+                lpTokenName,
+                myLiquidityPrice: myLiquidity,
+              })
+            }
+            onPresentWithdraw={() =>
+              goWithdraw({
+                farm,
+                lpTokenName,
+                myLiquidityPrice: myLiquidity,
+              })
+            }
           />
         )}
       </FarmContext.Consumer>
     ),
-    [
-      componentType,
-      hasAccount,
-      hasAllowance,
-      stakedBalance,
-      myLiquidity,
-      lpContract,
-      farm,
-      lpTokenName
-    ],
+    [componentType, hasAccount, hasAllowance, stakedBalance, myLiquidity, lpContract, farm, lpTokenName],
   )
   /**
    * harvest action

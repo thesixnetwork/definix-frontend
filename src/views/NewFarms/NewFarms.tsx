@@ -26,18 +26,20 @@ const Farms: React.FC = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   return (
-    <FarmContext.Provider value={{
-      pageState,
-      pageData,
-      goDeposit: (data) => {
-        setPageState('deposit')
-        setPageData(data)
-      },
-      goWithdraw: (data) => {
-        setPageState('withdraw')
-        setPageData(data)
-      }
-    }}>
+    <FarmContext.Provider
+      value={{
+        pageState,
+        pageData,
+        goDeposit: (data) => {
+          setPageState('deposit')
+          setPageData(data)
+        },
+        goWithdraw: (data) => {
+          setPageState('withdraw')
+          setPageData(data)
+        },
+      }}
+    >
       <Helmet>
         <title>Farm - Definix - Advance Your Crypto Assets</title>
       </Helmet>
@@ -52,11 +54,7 @@ const Farms: React.FC = () => {
               search={(keyword: string) => setSearchKeyword(keyword)}
             />
             <Route exact path={`${path}`}>
-              <FarmList
-                stakedOnly={stackedOnly}
-                searchKeyword={searchKeyword}
-                orderBy={selectedOrderBy}
-              />
+              <FarmList stakedOnly={stackedOnly} searchKeyword={searchKeyword} orderBy={selectedOrderBy} />
             </Route>
             {/* <HelpButton size="sm" variant="secondary" className="px-2" startIcon={<HelpCircle className="mr-2" />}>
               Help
@@ -64,16 +62,22 @@ const Farms: React.FC = () => {
           </>
         )}
         {pageState === 'deposit' && (
-          <Deposit {...pageData} onBack={() => {
-            setPageState('list')
-            setPageData(null)
-          }}/>
+          <Deposit
+            {...pageData}
+            onBack={() => {
+              setPageState('list')
+              setPageData(null)
+            }}
+          />
         )}
         {pageState === 'withdraw' && (
-          <Withdraw {...pageData} onBack={() => {
-            setPageState('list')
-            setPageData(null)
-          }}/>
+          <Withdraw
+            {...pageData}
+            onBack={() => {
+              setPageState('list')
+              setPageData(null)
+            }}
+          />
         )}
       </Wrap>
     </FarmContext.Provider>
