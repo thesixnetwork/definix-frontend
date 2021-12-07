@@ -6,18 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { provider } from 'web3-core'
 
-import {
-  Box,
-  Button,
-  Card,
-  CardBody,
-  CheckBIcon,
-  Divider,
-  Flex,
-  Text,
-  useMatchBreakpoints,
-  VDivider,
-} from 'definixswap-uikit'
+import { Box, Button, Card, CardBody, CheckBIcon, Divider, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
@@ -28,11 +17,8 @@ import { getContract } from 'utils/erc20'
 import { useDispatch } from 'react-redux'
 import { usePriceFinixUsd } from 'state/hooks'
 import { fetchAllowances, fetchBalances } from 'state/wallet'
-import CardHeading from './CardHeading'
 import CurrencyInputPanel from './CurrencyInputPanel'
-import RiskOMeter from './RiskOMeter'
-import YieldAPR from './YieldAPR'
-import SharePrice from './SharePrice'
+import SummaryCard, { SummaryItem } from './SummaryCard'
 
 interface InvestInputCardProp {
   isSimulating
@@ -139,33 +125,12 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
 
   return (
     <>
-      <Card mb="S_16">
-        <CardBody p={isMobile ? 'S_20' : 'S_40'}>
-          <CardHeading
-            rebalance={rebalance}
-            isHorizontal={isMobile}
-            className={`mb-s24 ${isMobile ? 'pb-s28' : 'pb-s24 bd-b'}`}
-          />
-
-          <Flex justifyContent="space-between" flexWrap="wrap">
-            <Flex width={isMobile ? '50%' : '33.33%'}>
-              <YieldAPR
-                finixRewardPerYear={rebalance?.finixRewardPerYear}
-                totalAssetValue={rebalance?.totalAssetValue}
-                small={isMobile}
-              />
-            </Flex>
-            {isMobile || <VDivider />}
-            <Flex width={isMobile ? '50%' : '33.33%'}>
-              <SharePrice price={rebalance.sharedPrice} diff={rebalance.sharedPricePercentDiff} small={isMobile} />
-            </Flex>
-            {isMobile || <VDivider />}
-            <Flex width={isMobile ? '60%' : '33.33%'} {...(!isMobile && { pl: 'S_24' })}>
-              <RiskOMeter grade="Medium" small={isMobile} />
-            </Flex>
-          </Flex>
-        </CardBody>
-      </Card>
+      <SummaryCard
+        rebalance={rebalance}
+        isMobile={isMobile}
+        typeB
+        items={[SummaryItem.YIELD_APR, SummaryItem.SHARE_PRICE, SummaryItem.RISK_O_METER]}
+      />
 
       <Card mb={isMobile ? 'S_40' : 'S_80'}>
         <CardBody p={isMobile ? 'S_20' : 'S_40'}>

@@ -7,15 +7,15 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect, useHistory } from 'react-router-dom'
-import { BackIcon, Box, Button, Flex, Text } from 'definixswap-uikit'
+import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/hooks'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
 import { fetchBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
 
-import WithdrawSummaryCard from './components/WithdrawSummaryCard'
 import WithdrawInputCard from './components/WithdrawInputCard'
+import SummaryCard, { SummaryItem } from './components/SummaryCard'
 
 interface WithdrawType {
   rebalance: Rebalance | any
@@ -24,6 +24,8 @@ interface WithdrawType {
 const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const { t } = useTranslation()
   const history = useHistory()
+  const { isMaxSm } = useMatchBreakpoints()
+  const isMobile = isMaxSm
   const [tx, setTx] = useState({})
   const { toastSuccess } = useToast()
   const [isInputting, setIsInputting] = useState(true)
@@ -78,7 +80,13 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
       </Text>
 
       <div>
-        <WithdrawSummaryCard rebalance={rebalance} currentBalanceNumber={currentBalanceNumber} />
+        <SummaryCard
+          items={[SummaryItem.SHARES, SummaryItem.SHARE_PRICE, SummaryItem.TOTAL_VALUE]}
+          rebalance={rebalance}
+          isMobile={isMobile}
+          currentBalanceNumber={currentBalanceNumber}
+          typeB
+        />
         <WithdrawInputCard
           setTx={setTx}
           rebalance={rebalance}

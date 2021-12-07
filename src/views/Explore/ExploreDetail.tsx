@@ -7,19 +7,7 @@ import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Color from 'color'
-import {
-  BackIcon,
-  Box,
-  Button,
-  Card,
-  CardBody,
-  Divider,
-  Flex,
-  Tabs,
-  Text,
-  useMatchBreakpoints,
-  VDivider,
-} from 'definixswap-uikit'
+import { BackIcon, Box, Button, Card, Flex, Tabs, Text, useMatchBreakpoints } from 'definixswap-uikit'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
@@ -30,15 +18,11 @@ import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../st
 import { usePriceFinixUsd } from '../../state/hooks'
 import { Rebalance } from '../../state/types'
 
-import CardHeading from './components/CardHeading'
 import FundAction from './components/FundAction'
 import Performance from './components/Performance'
 import Overview from './components/Overview'
 import Transaction from './components/Transaction'
-import RiskOMeter from './components/RiskOMeter'
-import SharePrice from './components/SharePrice'
-import YieldAPR from './components/YieldAPR'
-import TotalAssetValue from './components/TotalAssetValue'
+import SummaryCard, { SummaryItem } from './components/SummaryCard'
 
 interface ExploreDetailType {
   rebalance: Rebalance | any
@@ -463,40 +447,16 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
             {updatedDate}
           </Text>
 
-          <Card mb="S_16">
-            <CardBody p={isMaxXl ? 'S_20' : 'S_32'}>
-              <CardHeading rebalance={rebalance} isHorizontal={isMaxXl} mb={isMaxXl ? 'S_28' : 'S_24'} />
-              {isMaxXl || <Divider mb="S_24" />}
-
-              <Flex flexWrap="wrap">
-                <Flex width={isMaxXl ? '60%' : '25%'} mb={isMaxXl ? 'S_20' : ''}>
-                  <TotalAssetValue value={rebalance.totalAssetValue} small={isMaxXl} />
-                </Flex>
-                <Flex width={isMaxXl ? '40%' : '25%'} mb={isMaxXl ? 'S_20' : ''}>
-                  {isMaxXl || <VDivider mr="S_32" />}
-                  <YieldAPR
-                    finixRewardPerYear={rebalance?.finixRewardPerYear}
-                    totalAssetValue={rebalance?.totalAssetValue}
-                    small={isMaxXl}
-                  />
-                </Flex>
-                <Flex width={isMaxXl ? '60%' : '25%'}>
-                  {isMaxXl || <VDivider mr="S_32" />}
-                  <SharePrice price={rebalance.sharedPrice} diff={rebalance.sharedPricePercentDiff} small={isMaxXl} />
-                </Flex>
-                <Flex width={isMaxXl ? '40%' : '25%'}>
-                  {isMaxXl || <VDivider mr="S_32" />}
-                  <RiskOMeter grade={t('Medium')} small={isMaxXl} />
-                </Flex>
-
-                {/* <TwoLineFormat
-                  className={isMaxXl ? 'col-6' : 'col-3'}
-                  title="Investors"
-                  value={numeral(rebalance.activeUserCountNumber).format('0,0')}
-                /> */}
-              </Flex>
-            </CardBody>
-          </Card>
+          <SummaryCard
+            rebalance={rebalance}
+            isMobile={isMaxXl}
+            items={[
+              SummaryItem.TOTAL_ASSET_VALUE,
+              SummaryItem.YIELD_APR,
+              SummaryItem.SHARE_PRICE,
+              SummaryItem.RISK_O_METER,
+            ]}
+          />
 
           <Card>
             <Tabs
