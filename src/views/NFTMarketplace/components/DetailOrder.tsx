@@ -76,7 +76,7 @@ const DetailOrder: React.FC<ExpandableSectionProps> = ({
     if (data.status === 0) {
       txt = 'Listed'
     } else if (data.status === 1) {
-      txt = 'Sold'
+      txt = 'Sold out'
     }
     return txt
   }, [data])
