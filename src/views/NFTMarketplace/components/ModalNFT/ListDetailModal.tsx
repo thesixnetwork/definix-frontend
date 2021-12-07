@@ -56,7 +56,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
 
   const dataContract = {
     smartcontract: process.env.REACT_APP_NFT_MARKETPLACE_TESTNET || '',
-  };
+  }
 
   const filterCurrency = useMemo(() => {
     const options = [
