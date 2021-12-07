@@ -41,7 +41,14 @@ const LayoutImg = styled.div`
   text-align: -webkit-center;
 `
 
+const EllipText = styled.div`
+  color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  align-items: center;
+`
+
 const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplace, data }) => {
+  console.log("data ...",data)
   const [hideCloseButton, setHideCloseButton] = useState(true)
   const [onPresentConnectModal] = useModal(<ListFillModal data={data} />)
   const [handleBuy] = useModal(<ModalComplete />)
@@ -95,7 +102,6 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
             #{data.tokenId}
           </Text>
           <Text bold fontSize={isMobile ? '14px !important' : '18px !important'} lineHeight="1.4">
-            {/* {data.name} {data.title} */}
             {data.name} {data.title}
           </Text>
           <Text fontSize={isMobile ? '12px !important' : '14px !important'} color="textSubtle" lineHeight="1.5">
@@ -105,10 +111,10 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
             <Text fontSize="14px !important" color="textSubtle">
               Metadata
             </Text>
-            <div className="flex align-center">
+            <EllipText>
               <EllipsisText start={17} text={data.metaDataURL || ''} />
-              <CopyToClipboard toCopy={data.metaDataURL || ''}>Copy Address</CopyToClipboard>
-            </div>
+              <CopyToClipboard toCopy={data.metaDataURL || ''} cursor="pointer">Copy Address</CopyToClipboard>
+            </EllipText>
           </div>
           <div className="mt-3">
             <Text fontSize="14px !important" color="textSubtle">
@@ -122,10 +128,10 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
             <Text fontSize="14px !important" color="textSubtle">
               Smart Contract address
             </Text>
-            <div className="flex align-center">
+            <EllipText>
               <EllipsisText start={6} end={5} text="0x5503a12290a7Cc6128d18b0DA6FBEab009165311" />
-              <CopyToClipboard toCopy="test">Copy Address</CopyToClipboard>
-            </div>
+              <CopyToClipboard toCopy="test" cursor="pointer">Copy Address</CopyToClipboard>
+            </EllipText>
           </div>
 
           <div className="mt-3">
@@ -133,9 +139,9 @@ const ListDetailBuyModal: React.FC<Props> = ({ onDismiss = () => null, isMarketp
               Price
             </Text>
             <div className="flex align-center">
-              <Image src="/images/coins/FINIX.png" width={16} height={16} />
+              <Image src="/images/coins/six.png" width={20} height={20} />
               <Text bold fontSize="22px" color="text" paddingLeft="6px">
-                {data.price} FINIX
+                {data.price} SIX
               </Text>
             </div>
           </div>

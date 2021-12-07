@@ -12,6 +12,7 @@ interface Props {
   color?: string
   tooltipPos?: string
   iconWidth?: string
+  cursor? : string
 }
 
 const StyleButton = styled.button`
@@ -52,6 +53,7 @@ const CopyToClipboard: React.FC<Props> = ({
   color,
   tooltipPos = 'bottom',
   iconWidth = '20px',
+  cursor = 'pointer',
   ...props
 }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
