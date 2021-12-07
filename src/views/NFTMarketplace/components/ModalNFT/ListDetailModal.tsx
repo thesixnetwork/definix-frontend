@@ -202,7 +202,7 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
               NFT token standard
             </Text>
             <Text bold fontSize="16px !important" color="text">
-              BEP-1155
+              {data.nftNormal}
             </Text>
           </div>
           <div className="mt-3">

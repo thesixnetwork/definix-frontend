@@ -119,12 +119,25 @@ export const useCancelOrder = (orderCode) => {
 export const usePurchaseOneNFT = (orderCode) => {
   const { account }: { account: string } = useWallet()
   const buyNft = usePurchaseOne()
+  const [status, setStatus] = useState(false)
+  const [loadings, setLoading] = useState('')
 
   const handlePurchaseOneNFT = useCallback(async () => {
     try {
       let txHash
       if (account) {
-        txHash = await buyNft.methods.purchaseOneNFT(orderCode).send({ from: account, gas: 200000 })
+        await buyNft.methods
+        .purchaseOneNFT(orderCode)
+        .send({ from: account, gas: 200000 })
+        .then((v)=>{
+          setLoading('success')
+          setInterval(() => setLoading(''), 5000)
+          setInterval(() => setStatus(true), 5000)
+        })
+        .catch((e) => {
+          setLoading('')
+          setStatus(false)
+        })
       }
 
       return new Promise((resolve, reject) => {
@@ -135,7 +148,7 @@ export const usePurchaseOneNFT = (orderCode) => {
     }
   }, [buyNft, orderCode, account])
 
-  return { onPurchase: handlePurchaseOneNFT }
+  return { onPurchase: handlePurchaseOneNFT,status, loadings  }
 }
 
 export const useIsApprove = () => {

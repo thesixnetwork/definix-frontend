@@ -233,6 +233,7 @@ const CardMarketplace = () => {
             imageUrl: y?.imageUrl,
             limitCount: y?.limitCount,
             metaDataURL: y?.metaDataURL,
+            nftNormal: y?.nftNormal,
             name: y?.name,
             order: y?.order,
             previewImgId: y?.previewImgId,

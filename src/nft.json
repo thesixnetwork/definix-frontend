@@ -16,7 +16,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Legendary_T-ARA.png",
       "startID": 1,
       "endID": 60,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG00.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG00.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "LG01",
@@ -34,7 +35,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Legendary_QRI.png",
       "startID": 61,
       "endID": 120,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG01.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG01.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "LG02",
@@ -52,7 +54,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Legendary_EUNJUNG.png",
       "startID": 121,
       "endID": 180,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG02.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG02.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "LG03",
@@ -70,7 +73,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Legendary_JIYEON.png",
       "startID": 181,
       "endID": 240,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG03.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG03.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "LG04",
@@ -88,9 +92,9 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Legendary_HYOMIN.png",
       "startID": 241,
       "endID": 300,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG04.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/LG04.json",
+      "nftNormal": "BEP-1155"
     },
-    
     {
       "code": "EP00",
       "order": 6,
@@ -107,7 +111,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Epic_T-ARA.png",
       "startID": 1001,
       "endID": 1150,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP00.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP00.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "EP01",
@@ -125,7 +130,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Epic_QRI.png",
       "startID": 1151,
       "endID": 1300,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP01.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP01.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "EP02",
@@ -143,7 +149,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Epic_EUNJUNG.png",
       "startID": 1301,
       "endID": 1450,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP02.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP02.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "EP03",
@@ -161,7 +168,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Epic_JIYEON.png",
       "startID": 1451,
       "endID": 1600,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP03.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP03.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "EP04",
@@ -179,7 +187,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Epic_HYOMIN.png",
       "startID": 1601,
       "endID": 1750,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP04.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/EP04.json",
+      "nftNormal": "BEP-1155"
     },
 
     {
@@ -198,7 +207,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Rare_T-ARA.png",
       "startID": 5001,
       "endID": 5500,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA00.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA00.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "RA01",
@@ -216,7 +226,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Rare_QRI.png",
       "startID": 5501,
       "endID": 6000,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA01.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA01.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "RA02",
@@ -234,7 +245,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Rare_EUNJUNG.png",
       "startID": 6001,
       "endID": 6500,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA02.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA02.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "RA03",
@@ -252,7 +264,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Rare_JIYEON.png",
       "startID": 6501,
       "endID": 7000,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA03.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA03.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "RA04",
@@ -270,7 +283,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Rare_HYOMIN.png",
       "startID": 7001,
       "endID": 7500,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA04.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/RA04.json",
+      "nftNormal": "BEP-1155"
     },
 
     {
@@ -289,7 +303,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Normal_T-ARA.png",
       "startID": 10001,
       "endID": 11000,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO00.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO00.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "NO01",
@@ -307,7 +322,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Normal_QRI.png",
       "startID": 11001,
       "endID": 12000,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO01.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO01.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "NO02",
@@ -325,7 +341,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Normal_EUNJUNG.png",
       "startID": 12001,
       "endID": 13000,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO02.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO02.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "NO03",
@@ -343,7 +360,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Normal_JIYEON.png",
       "startID": 13001,
       "endID": 14000,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO03.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO03.json",
+      "nftNormal": "BEP-1155"
     },
     {
       "code": "NO04",
@@ -361,7 +379,8 @@
       "imageUrl": "https://dryotus.definix.com/ipfs/QmWg7NKe3JvSC62JXnotVPRkA5JBiyuPEgcmS7cZfUWB9F/Normal_HYOMIN.png",
       "startID": 14001,
       "endID": 15000,
-      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO04.json"
+      "metaDataURL": "https://dryotus.definix.com/ipfs/QmU2DtR76Hv1vqvqZXSFHdLeQh4pxvwahVstucksuGtZwJ/NO04.json",
+      "nftNormal": "BEP-1155"
     }
   ]
 }

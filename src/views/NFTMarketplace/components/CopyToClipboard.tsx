@@ -1,7 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
+import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
-import { Button, Text, Heading, Image, useMatchBreakpoints, Flex } from 'uikit-dev'
+import { Image } from 'uikit-dev'
 import copyWhite from 'uikit-dev/images/for-ui-v2/nft/copy-white.png'
 import copyBlack from 'uikit-dev/images/for-ui-v2/nft/copy-black.png'
 
@@ -12,7 +13,6 @@ interface Props {
   color?: string
   tooltipPos?: string
   iconWidth?: string
-  cursor?: string
 }
 
 const StyleButton = styled.button`
@@ -21,6 +21,7 @@ const StyleButton = styled.button`
   align-items: center;
   background-color: transparent;
   border: 0;
+  cursor: pointer;
 `
 
 const Tooltip = styled.div<{ isTooltipDisplayed: boolean; tooltipPos?: string }>`
@@ -53,11 +54,10 @@ const CopyToClipboard: React.FC<Props> = ({
   color,
   tooltipPos = 'bottom',
   iconWidth = '20px',
-  cursor = 'pointer',
   ...props
 }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
-
+  const { isDark } = useTheme()
   return (
     <>
       <StyleButton
@@ -71,7 +71,12 @@ const CopyToClipboard: React.FC<Props> = ({
           }
         }}
       >
-        <Image src={copyWhite} width={20} height={18} />
+        {isDark ? (
+          <Image src={copyWhite} width={22} height={18}/>
+        ) : (
+            <Image src={copyBlack} width={22} height={18} />
+          )}
+
       </StyleButton>
     </>
   )

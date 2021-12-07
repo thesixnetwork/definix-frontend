@@ -107,6 +107,7 @@ const CardMyNFT = () => {
             totalAmount: _.get(y, 'totalAmount'),
             userData: _.get(y, 'userData'),
             videoUrl: _.get(y, 'videoUrl'),
+            nftNormal: _.get(y, 'nftNormal')
           })
         }
         return OrderArray
@@ -134,6 +135,7 @@ const CardMyNFT = () => {
             imageUrl: y?.imageUrl,
             limitCount: y?.limitCount,
             metaDataURL: y?.metaDataURL,
+            nftNormal: y?.nftNormal,
             name: y?.name,
             order: y?.order,
             previewImgId: y?.previewImgId,
