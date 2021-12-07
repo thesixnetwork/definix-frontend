@@ -11,7 +11,7 @@ import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uiki
 import CurrencyText from 'components/CurrencyText'
 
 const Wrap = styled(Flex)<{ isInFarm: boolean }>`
-  flex-direction: ${({ isInFarm }) => isInFarm ? 'column' : 'row'};
+  flex-direction: ${({ isInFarm }) => (isInFarm ? 'column' : 'row')};
   justify-content: space-between;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     flex-direction: column;
@@ -107,26 +107,28 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, earnings, componen
     }
   }, [onReward])
 
-  const renderHarvestButton = useCallback(() => (
-    <Button
-      variant={ButtonVariants.RED}
-      width="100%"
-      disabled={finixEarningsValue === 0 || pendingTx}
-      onClick={handleHarvest}
-    >
-      {t('Harvest')}
-    </Button>
-  ), [t, finixEarningsValue, pendingTx, handleHarvest])
+  const renderHarvestButton = useCallback(
+    () => (
+      <Button
+        variant={ButtonVariants.RED}
+        width="100%"
+        disabled={finixEarningsValue === 0 || pendingTx}
+        onClick={handleHarvest}
+      >
+        {t('Harvest')}
+      </Button>
+    ),
+    [t, finixEarningsValue, pendingTx, handleHarvest],
+  )
 
-  const renderDetailButton = useCallback(() => (
-    <DetailButton
-      variant={ButtonVariants.BROWN}
-      width="100%"
-      onClick={() => navigate.push('/farm')}
-    >
-      {t('Detail')}
-    </DetailButton>
-  ), [navigate, t])
+  const renderDetailButton = useCallback(
+    () => (
+      <DetailButton variant={ButtonVariants.BROWN} width="100%" onClick={() => navigate.push('/farm')}>
+        {t('Detail')}
+      </DetailButton>
+    ),
+    [navigate, t],
+  )
 
   return (
     <>
@@ -142,11 +144,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, earnings, componen
                   <PriceText value={earningsPrice} prefix="=" />
                 </Box>
               </Flex>
-              {isInFarm && (
-                <HarvestButtonSectionInFarm>
-                  {renderHarvestButton()}
-                </HarvestButtonSectionInFarm>
-              )}
+              {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton()}</HarvestButtonSectionInFarm>}
             </HarvestInfo>
           </Box>
 
@@ -162,4 +160,4 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, earnings, componen
   )
 }
 
-export default HarvestAction
+export default React.memo(HarvestAction)

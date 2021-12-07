@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { provider } from 'web3-core'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
@@ -31,6 +31,32 @@ const Wrap = styled(Box)`
   padding: ${({ theme }) => theme.spacing.S_32}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding: ${({ theme }) => theme.spacing.S_20}px;
+  }
+
+  &.horizontal-card {
+    .card-heading {
+      width: 236px;
+    }
+    .total-liquidity-section {
+      width: 112px;
+    }
+    .my-balance-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 232px;
+    }
+    .earnings-section {
+      width: 200px;
+    }
+    .link-section {
+      width: 166px;
+    }
+    .harvest-action-section {
+      margin: 0 ${({ theme }) => theme.spacing.S_24}px;
+      width: 358px;
+    }
+    .stake-action-section {
+      width: 276px;
+    }
   }
 `
 
@@ -74,14 +100,10 @@ const FarmCard: React.FC<FarmCardProps> = ({
     return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
   }, [farm, stakedBalance, convertToPriceFromToken])
 
-  const renderCardHeading = useCallback(() => (
-    <CardHeading
-      farm={farm}
-      lpLabel={lpTokenName}
-      removed={removed}
-      size="small"
-    />
-  ), [farm, lpTokenName, removed])
+  const renderCardHeading = useCallback(
+    () => <CardHeading farm={farm} lpLabel={lpTokenName} removed={removed} size="small" />,
+    [farm, lpTokenName, removed],
+  )
 
   const renderIconButton = useCallback(
     () => (
@@ -121,17 +143,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       farm,
       removed,
     })
-  }, [
-    farm,
-    stakedBalance,
-    myLiquidity,
-    lpTokenName,
-    pid,
-    tokenBalance,
-    totalLiquidity,
-    onSelectAddLP,
-    removed,
-  ])
+  }, [farm, stakedBalance, myLiquidity, lpTokenName, pid, tokenBalance, totalLiquidity, onSelectAddLP, removed])
   const onPresentWithdraw = useCallback(() => {
     onSelectRemoveLP({
       pid,
@@ -143,17 +155,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
       farm,
       removed,
     })
-  }, [
-    farm,
-    stakedBalance,
-    myLiquidity,
-    lpTokenName,
-    pid,
-    tokenBalance,
-    totalLiquidity,
-    onSelectRemoveLP,
-    removed,
-  ])
+  }, [farm, stakedBalance, myLiquidity, lpTokenName, pid, tokenBalance, totalLiquidity, onSelectRemoveLP, removed])
   const renderStakeAction = useCallback(
     () => (
       <StakeAction
@@ -185,20 +187,20 @@ const FarmCard: React.FC<FarmCardProps> = ({
     () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} />,
     [earnings, pid, componentType],
   )
-
+  /**
+   * link section
+   */
   const renderLinkSection = useCallback(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
 
   if (componentType === 'myInvestment') {
     return (
-      <>
-        <Wrap>
-          <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
-            <Box>{renderCardHeading()}</Box>
-            <Box>{renderStakeAction()}</Box>
-            <Box>{renderHarvestAction()}</Box>
-          </Grid>
-        </Wrap>
-      </>
+      <Wrap>
+        <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
+          <Box>{renderCardHeading()}</Box>
+          <Box>{renderStakeAction()}</Box>
+          <Box>{renderHarvestAction()}</Box>
+        </Grid>
+      </Wrap>
     )
   }
 
@@ -227,21 +229,25 @@ const FarmCard: React.FC<FarmCardProps> = ({
           </>
         ) : (
           <>
-            <Wrap>
+            <Wrap className="horizontal-card">
               <Flex justifyContent="space-between">
-                <Box style={{ width: '236px' }}>{renderCardHeading()}</Box>
-                <Box style={{ width: '112px' }}>{renderTotalLiquiditySection()}</Box>
-                <Box style={{ width: '232px' }} mx="S_24">{renderMyBalanceSection()}</Box>
-                <Box style={{ width: '200px' }}>{renderEarningsSection()}</Box>
+                <Box className="card-heading">{renderCardHeading()}</Box>
+                <Box className="total-liquidity-section">{renderTotalLiquiditySection()}</Box>
+                <Box className="my-balance-section">
+                  {renderMyBalanceSection()}
+                </Box>
+                <Box className="earnings-section">{renderEarningsSection()}</Box>
                 {renderIconButton()}
               </Flex>
             </Wrap>
             {isOpenAccordion && (
               <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
                 <Flex justifyContent="space-between">
-                  <Box style={{ width: '166px' }}>{renderLinkSection()}</Box>
-                  <Box style={{ width: '358px' }} mx="S_24">{renderHarvestAction()}</Box>
-                  <Box style={{ width: '276px' }}>{renderStakeAction()}</Box>
+                  <Box className="link-section">{renderLinkSection()}</Box>
+                  <Box className="harvest-action-section">
+                    {renderHarvestAction()}
+                  </Box>
+                  <Box className="stake-action-section">{renderStakeAction()}</Box>
                 </Flex>
               </Box>
             )}
