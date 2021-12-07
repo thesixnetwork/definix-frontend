@@ -81,7 +81,9 @@ export const useSousApprove = () => {
 
   const handleApprove = useCallback(async () => {
     try {
-      const txHash = await approvalForAll.methods.setApprovalForAll(getNftMarketplaceAddress(), true).send({ from: account })
+      const txHash = await approvalForAll.methods
+        .setApprovalForAll(getNftMarketplaceAddress(), true)
+        .send({ from: account })
 
       return txHash
     } catch (e) {
