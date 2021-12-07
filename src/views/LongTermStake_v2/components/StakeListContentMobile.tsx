@@ -39,7 +39,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ data, onPresentUnstake
                     {t('Stake Period')}
                   </Text>
                   <Text textStyle="R_14R" color="black">
-                    {item.period}
+                    {item.period} {t('days')}
                   </Text>
                 </Flex>
                 <Flex width="50%" flexDirection="column">
@@ -67,7 +67,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ data, onPresentUnstake
               </Flex>
 
               <Button width="100%" variant="lightbrown" onClick={onPresentUnstakeModal}>
-                {t('Unstake')}
+                {t('Early Unstake')}
               </Button>
             </StyledFlex>
             <Divider width="100%" backgroundColor="lightGrey50" />

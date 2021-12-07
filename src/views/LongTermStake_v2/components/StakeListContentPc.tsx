@@ -30,7 +30,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ data, onPresentUnstakeModa
           <>
             <StyledFlex>
               <Text width="20%" textStyle="R_14R" color="black">
-                {item.period}
+                {item.period} {t('days')}
               </Text>
               <Text width="20%" textStyle="R_14R" color="black">
                 {item.amount}
@@ -45,7 +45,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ data, onPresentUnstakeModa
                   </Text>
                 </Flex>
                 <Button width="128px" variant="lightbrown" onClick={onPresentUnstakeModal}>
-                  {t('Unstake')}
+                  {t('Early Unstake')}
                 </Button>
               </Flex>
             </StyledFlex>

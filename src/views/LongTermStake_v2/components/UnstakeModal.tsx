@@ -63,7 +63,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                 </Text>
                 <Flex my="S_4" alignItems="center" height="12px">
                   <Text mr="S_8" textStyle="R_14R" color="mediumgrey">
-                    {period}
+                    {period} {t('days')}
                   </Text>
                   <VDivider />
                   <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
@@ -101,7 +101,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
               <Text textStyle="R_14R" color="mediumgrey">
-                {t('You will reveived')}
+                {t('You will received')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
                 {received} {t('FINIX')}
