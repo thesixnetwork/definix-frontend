@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import _ from 'lodash'
 import axios from 'axios'
 import { useApprovalForAll, useSellNft, usePurchaseOne } from 'hooks/useContract'
-import { getDryotusAddress } from 'utils/addressHelpers'
+import { getDryotusAddress, getNftMarketplaceAddress } from 'utils/addressHelpers'
 import useRefresh from './useRefresh'
 import { fetchNFTUser } from '../state/actions'
 import { State, NFTData } from '../state/types'
@@ -81,7 +81,7 @@ export const useSousApprove = () => {
 
   const handleApprove = useCallback(async () => {
     try {
-      const txHash = await approvalForAll.methods.setApprovalForAll(getDryotusAddress(), true).send({ from: account })
+      const txHash = await approvalForAll.methods.setApprovalForAll(getNftMarketplaceAddress(), true).send({ from: account })
 
       return txHash
     } catch (e) {

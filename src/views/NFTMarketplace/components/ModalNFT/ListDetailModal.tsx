@@ -132,17 +132,17 @@ const ListDetailModal: React.FC<Props> = ({ onDismiss = () => null, isMarketplac
     )
   }
 
-  // const handleApprove = useCallback(async () => {
-  //   try {
-  //     setRequestedApproval(true)
-  //     const txHash = await onApprove()
-  //     if (!txHash) {
-  //       setRequestedApproval(false)
-  //     }
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }, [onApprove, setRequestedApproval])
+  const handleApprove = useCallback(async () => {
+    try {
+      setRequestedApproval(true)
+      const txHash = await onApprove()
+      if (!txHash.status) {
+        setRequestedApproval(false)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }, [onApprove, setRequestedApproval])
 
   return (
     <ModalNFT
