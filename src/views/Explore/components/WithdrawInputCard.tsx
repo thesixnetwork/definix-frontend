@@ -1,16 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import { compact, get } from 'lodash'
 import BigNumber from 'bignumber.js'
-import { getAbiRebalanceByName } from 'hooks/hookHelper'
-import * as klipProvider from 'hooks/klipProvider'
 import { getAddress } from 'utils/addressHelpers'
-import { useDispatch } from 'react-redux'
-import { AbiItem } from 'web3-utils'
-import { provider } from 'web3-core'
-import rebalanceAbi from 'config/abi/rebalance.json'
-import { getCustomContract } from 'utils/erc20'
 import numeral from 'numeral'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   Box,
@@ -23,14 +15,15 @@ import {
   useMatchBreakpoints,
   CheckboxLabel,
   Checkbox,
+  useModal,
 } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 import { useDeepEqualMemo } from 'hooks/useDeepEqualMemo'
-import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { simulateWithdraw } from 'offline-pool'
 import SpaceBetweenFormat from './SpaceBetweenFormat'
 import InlineAssetRatioLabel from './InlineAssetRatioLabel'
 import ShareInput from './ShareInput'
+import WithdrawCalculateModal from './WithdrawCalculateModal'
 
 export enum RatioType {
   Original = 'Original',
@@ -59,15 +52,11 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
   const { t } = useTranslation()
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
-  const { setShowModal } = React.useContext(KlipModalContext())
-  const { account, klaytn, connector } = useWallet()
-  const dispatch = useDispatch()
 
   const [isSimulating, setIsSimulating] = useState(false)
   const [poolAmounts, setPoolAmounts] = useState([])
   const [ratioType, setRatioType] = useState(RatioType.Original)
   const [selectedToken, setSelectedToken] = useState({})
-  const [isWithdrawing, setIsWithdrawing] = useState(false)
   const [currentInput, setCurrentInput] = useState('')
 
   const mRebalance = useDeepEqualMemo(rebalance)
@@ -86,7 +75,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         .filter((value) => value)
       const ratio = selectedLength > 0 ? 100 / selectedLength : 0
       return tokens.map((token) => {
-        return selectedAddress.includes(getAddress(token?.address)) ? ratio : 0
+        return selectedAddress.includes(token.address) ? ratio : 0
       })
     }
     return Array(tokenLength).fill(100 / tokenLength)
@@ -142,77 +131,21 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
     }
   }, [tokens, selectedToken, currentInput, rebalance, ratioType, balances, rebalanceBalances])
 
-  const handleLocalStorage = async (tx) => {
-    const rebalanceAddress: string = getAddress(get(rebalance, 'address'))
-    const { transactionHash } = tx
-    const myInvestTxns = JSON.parse(
-      localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
-    )
-
-    if (myInvestTxns[rebalanceAddress]) {
-      myInvestTxns[rebalanceAddress].push(transactionHash)
-    } else {
-      myInvestTxns[rebalanceAddress] = [transactionHash]
-    }
-
-    localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxns))
-  }
-
-  const onWithdraw = async () => {
-    const rebalanceContract = getCustomContract(
-      klaytn as provider,
-      rebalanceAbi as unknown as AbiItem,
-      getAddress(rebalance.address),
-    )
-    setIsWithdrawing(true)
-    try {
-      const thisInput = currentBalance.isLessThan(new BigNumber(currentInput))
-        ? currentBalance
-        : new BigNumber(currentInput)
-      const usdToken = get(rebalance, 'usdToken.0', {})
-
-      const lpAmount = thisInput.times(new BigNumber(10).pow(18)).toJSON()
-      const toAllAssets = ratioType === RatioType.Original
-      const outputRatios = (rebalance?.tokens || []).map((token, index) => {
-        const tokenAddress = typeof token.address === 'string' ? token.address : getAddress(token.address)
-        return selectedToken[tokenAddress]
-          ? (((rebalance || {}).tokenRatioPoints || [])[index] || new BigNumber(0)).toNumber()
-          : 0
-      })
-      const outputUSDRatio = selectedToken[
-        typeof usdToken.address === 'string' ? usdToken.address : getAddress(usdToken.address)
-      ]
-        ? (((rebalance || {}).usdTokenRatioPoint || [])[0] || new BigNumber(0)).toNumber()
-        : 0
-
-      if (connector === 'klip') {
-        klipProvider.genQRcodeContactInteract(
-          getAddress(rebalance.address),
-          JSON.stringify(getAbiRebalanceByName('removeFund')),
-          JSON.stringify([lpAmount, toAllAssets, outputRatios, outputUSDRatio]),
-          setShowModal,
-        )
-        const tx = await klipProvider.checkResponse()
-        setTx(tx)
-        handleLocalStorage(tx)
-      } else {
-        const tx = await rebalanceContract.methods
-          .removeFund(lpAmount, toAllAssets, outputRatios, outputUSDRatio)
-          .send({ from: account, gas: 5000000 })
-        setTx(tx)
-        handleLocalStorage(tx)
-      }
-      const assets = rebalance.ratio
-      const assetAddresses = assets.map((a) => getAddress(a.address))
-      dispatch(fetchBalances(account, assetAddresses))
-      dispatch(fetchRebalanceBalances(account, [rebalance]))
-      onNext()
-      setIsWithdrawing(false)
-    } catch (e) {
-      setIsWithdrawing(false)
-    }
-  }
-
+  const [onPresentCalcModal] = useModal(
+    <WithdrawCalculateModal
+      setTx={setTx}
+      currentInput={currentInput}
+      isSimulating={isSimulating}
+      toAllAssets={ratioType === RatioType.Original}
+      rebalance={rebalance}
+      selectedToken={selectedToken}
+      currentBalance={currentBalance}
+      tokenList={tokenList}
+      estimatedValue={`$${numeral(usdToBeRecieve).format('0,0.[00]')}`}
+      onNext={onNext}
+    />,
+    false,
+  )
   const handleBalanceChange = useCallback(
     (precentage: number) => {
       setCurrentInput(new BigNumber(currentBalance).times(precentage / 100).toJSON())
@@ -310,12 +243,14 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         {ratioType === RatioType.Single
           ? tokenList.map((c) => (
               <CheckboxLabel
+                key={c.symbol}
                 width="100%"
-                className="flex align-center"
+                className="flex"
                 control={
                   <Checkbox
                     scale="sm"
                     color="primary"
+                    className="mt-s12"
                     checked={!!selectedToken[getAddress(c.address)]}
                     onChange={(event) => {
                       setSelectedToken({ [getAddress(c.address)]: event.target.checked })
@@ -323,17 +258,17 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
                   />
                 }
               >
-                <InlineAssetRatioLabel coin={c} column={isMobile} />
+                <InlineAssetRatioLabel coin={c} column={isMobile} flexGrow={1} />
               </CheckboxLabel>
             ))
-          : tokenList.map((c) => <InlineAssetRatioLabel coin={c} column={isMobile} />)}
+          : tokenList.map((c) => <InlineAssetRatioLabel key={c.symbol} coin={c} column={isMobile} />)}
       </Box>
 
       <Button
         scale="lg"
         width="100%"
-        disabled={isWithdrawing || isSimulating || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
-        onClick={onWithdraw}
+        disabled={isSimulating || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
+        onClick={onPresentCalcModal}
       >
         {t('Withdraw')}
       </Button>
