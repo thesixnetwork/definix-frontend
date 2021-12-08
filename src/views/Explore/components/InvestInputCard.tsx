@@ -45,6 +45,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
   const [sumPoolAmount, setSumPoolAmount] = useState(0)
   const [isSimulating, setIsSimulating] = useState(true)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
+  const [inputError, setInputError] = useState(false)
   const [tx, setTx] = useState({})
   const dispatch = useDispatch()
   const { account, klaytn, connector } = useWallet()
@@ -350,7 +351,6 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
       <CardBody p={isMobile ? 'S_20' : 'S_40'}>
         <Box mb="S_40">
           {coins.map((c) => {
-            const max = String(c.cMax.toNumber())
             return (
               <CurrencyInputPanel
                 currency={c}
@@ -360,25 +360,8 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
                 showMaxButton
                 className="mb-s24"
                 value={currentInput[c.cAddress] as string}
+                hasError={setInputError}
                 max={c.cMax}
-                onMax={() => {
-                  setCurrentInput({
-                    ...currentInput,
-                    [c.cAddress]: max,
-                  })
-                }}
-                onQuarter={() => {
-                  setCurrentInput({
-                    ...currentInput,
-                    [c.cAddress]: String(c.cMax.times(0.25).toNumber()),
-                  })
-                }}
-                onHalf={() => {
-                  setCurrentInput({
-                    ...currentInput,
-                    [c.cAddress]: String(c.cMax.times(0.5).toNumber()),
-                  })
-                }}
                 onUserInput={(value) => {
                   setCurrentInput({ ...currentInput, [c.cAddress]: value })
                 }}
@@ -453,7 +436,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
           scale="lg"
           width="100%"
           isLoading={isSimulating}
-          disabled={!allApproved || !needsApprovalCoins.length}
+          disabled={inputError || !allApproved || !needsApprovalCoins.length}
           onClick={onPresentCalcModal}
         >
           {t('Calculate invest amount')}

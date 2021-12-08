@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Text, BalanceInput, Flex, AnountButton, Noti, NotiType } from 'definixswap-uikit'
 import { useForm, useFormState } from 'react-hook-form'
 import BigNumber from 'bignumber.js'
+import useToFixedFloor from 'hooks/useToFixedFloor'
 
 interface ShareInputProps {
   max: number
@@ -27,17 +28,7 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, d
   const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).gt(max), [value, max])
   const underMinimum = useMemo(() => new BigNumber(value).toNumber() <= 0, [value])
 
-  const toFixedFloor = useCallback(
-    (input: string) => {
-      const [integer, decimal] = input?.split('.') || ['0']
-      if (decimal?.length > decimals) {
-        const calDecimal = decimal.substring(0, decimals)?.replace(/0*$/, '')
-        return [integer, calDecimal].join('.')
-      }
-      return input
-    },
-    [decimals],
-  )
+  const toFixedFloor = useToFixedFloor(decimals)
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -56,7 +47,9 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, d
   )
 
   useEffect(() => {
-    hasError(underMinimum || isGreaterThanMyBalance)
+    if (typeof hasError === 'function') {
+      hasError(underMinimum || isGreaterThanMyBalance)
+    }
   }, [underMinimum, isGreaterThanMyBalance, hasError])
 
   return (
