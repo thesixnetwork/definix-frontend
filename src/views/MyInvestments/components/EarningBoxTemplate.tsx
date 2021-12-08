@@ -10,9 +10,6 @@ import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
 import { useHistory } from 'react-router'
-// import FinixHarvestAllBalance from './FinixHarvestTotalBalance'
-// import FinixHarvestBalance from './FinixHarvestBalance'
-// import FinixHarvestPool from './FinixHarvestPool'
 
 interface InnerTheme {
   totalTitleColor: ColorStyles
@@ -48,13 +45,18 @@ const THEME: { [key: string]: InnerTheme } = {
   },
 }
 
-const MainSection = styled(Flex)<{ isMobile: boolean }>`
+const MainSection = styled(Flex)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding-top: ${({ theme }) => theme.spacing.S_28}px;
+  padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
+  padding-left: ${({ theme }) => theme.spacing.S_40}px;
+  padding-right: ${({ theme }) => theme.spacing.S_40}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     flex-direction: column;
     align-items: flex-start;
+    padding: ${({ theme }) => theme.spacing.S_20}px;
   }
 `
 const ButtonWrap = styled(Flex)<{ isMobile: boolean }>`
@@ -77,7 +79,11 @@ const ButtonWrap = styled(Flex)<{ isMobile: boolean }>`
 const GridSectionWrap = styled(Flex)<{ bg: any }>`
   justify-content: space-between;
   align-items: center;
+  padding-right: ${({ theme }) => theme.spacing.S_40}px;
   background-color: ${({ bg }) => bg};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding-right: 0px;
+  }
 `
 const GridSection = styled(Grid)<{ isMobile: boolean }>`
   grid-template-columns: repeat(4, 1fr);
@@ -86,25 +92,32 @@ const GridSection = styled(Grid)<{ isMobile: boolean }>`
     grid-template-columns: repeat(1, 1fr);
   }
 `
-// pt-s20 pb-s24 mr-s32 ml-s${index > 0 ? '32' : '40'
 const GridBox = styled(Box)<{ index: number; curTheme: InnerTheme }>`
+  margin: ${({ theme }) => theme.spacing.S_20}px 0;
+  padding-left: ${({ theme, index }) => theme.spacing[index > 0 ? 'S_32' : 'S_40']}px;
+  padding-right: ${({ theme }) => theme.spacing.S_32}px;
+  
   border-left: ${({ index, curTheme, theme }) =>
     index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin: 0 ${({ theme }) => theme.spacing.S_20}px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: ${({ theme, index }) => theme.spacing[index > 0 ? 'S_20' : 'S_16']}px;
+    padding-bottom: ${({ theme }) => theme.spacing.S_16}px;
     border-left: none;
     border-top: ${({ index, curTheme, theme }) =>
       index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
   }
 `
-
-const StatSkeleton = () => {
-  return (
-    <>
-      <Skeleton animation="pulse" variant="rect" height="26px" />
-      <Skeleton animation="pulse" variant="rect" height="21px" />
-    </>
-  )
-}
+// const StatSkeleton = () => {
+//   return (
+//     <>
+//       <Skeleton animation="pulse" variant="rect" height="26px" />
+//       <Skeleton animation="pulse" variant="rect" height="21px" />
+//     </>
+//   )
+// }
 
 interface ValueList {
   title: string
@@ -138,41 +151,24 @@ const EarningBoxTemplate: React.FC<{
     }
   }, [onReward])
 
-  const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
   const curTheme = useMemo(() => THEME[theme], [theme])
+  const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
+  const totalValue = useMemo(() => {
+    return _.get(total, hasTotalValue ? 'value' : 'price') || 0
+  }, [hasTotalValue, total])
 
-  const classNameStore = useMemo(() => {
-    return {
-      mainSection: () => {
-        if (isMobile) {
-          return `pa-s20`
-        }
-        return `px-s40 pt-s28 pb-s40`
-      },
-      gridSectionWrap: () => {
-        return isMobile ? '' : 'pr-s40'
-      },
-      gridBox: (index: number) => {
-        if (isMobile) {
-          return `pt-s${index > 0 ? '20' : '16'} pb-s16 mx-s20`
-        }
-        return `mt-s20 mb-s24 pr-s32 pl-s${index > 0 ? '32' : '40'}`
-      },
-    }
-  }, [isMobile])
-
-  const TotalValueSection = () => {
+  const renderTotalValue = useCallback(() => {
     const props = {
       textStyle: `R_${isMobile ? '23' : '32'}B`,
       color: curTheme.totalBalanceColor,
-      value: hasAccount ? total.value : 0,
+      value: hasAccount ? totalValue : 0,
     }
     return hasTotalValue ? <BalanceText {...props} /> : <CurrencyText {...props} />
-  }
+  }, [hasTotalValue, isMobile, curTheme, hasAccount, totalValue])
 
   return (
     <Box>
-      <MainSection isMobile={isMobile} className={classNameStore.mainSection()}>
+      <MainSection>
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
             <FireIcon style={{ marginLeft: '-8px' }} />
@@ -181,7 +177,7 @@ const EarningBoxTemplate: React.FC<{
             </Text>
           </Flex>
           <Flex alignItems="flex-end">
-            <TotalValueSection />
+            {renderTotalValue()}
             {hasTotalValue && (
               <CurrencyText
                 value={hasAccount ? total.price : 0}
@@ -215,10 +211,10 @@ const EarningBoxTemplate: React.FC<{
           )}
         </ButtonWrap>
       </MainSection>
-      <GridSectionWrap bg={curTheme.bottomBg} className={classNameStore.gridSectionWrap()}>
+      <GridSectionWrap bg={curTheme.bottomBg}>
         <GridSection isMobile={isMobile}>
           {valueList.map((valueItem, index) => (
-            <GridBox key={valueItem.title} index={index} curTheme={curTheme} className={classNameStore.gridBox(index)}>
+            <GridBox key={valueItem.title} index={index} curTheme={curTheme}>
               <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
                 {valueItem.title}
               </Text>
