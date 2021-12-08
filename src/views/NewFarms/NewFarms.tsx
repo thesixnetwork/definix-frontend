@@ -11,9 +11,9 @@ import Withdraw from './components/Withdraw'
 import FarmContext from './FarmContext'
 
 const Wrap = styled(Box)`
-  margin-bottom: ${({ theme }) => theme.spacing.S_80}px;
+  padding-bottom: ${({ theme }) => theme.spacing.S_80}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-bottom: ${({ theme }) => theme.spacing.S_40}px;
+    padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
   }
 `
 

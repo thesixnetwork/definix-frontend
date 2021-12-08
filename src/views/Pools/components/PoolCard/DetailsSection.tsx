@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
+import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Text, ColorStyles, Label, Image, Box } from 'definixswap-uikit'
+import { Flex, Text, ColorStyles, Label, Box } from 'definixswap-uikit'
 import CurrencyText from 'components/CurrencyText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
@@ -118,9 +119,8 @@ const TokenImage = styled.img`
 `
 const EarningsSection: React.FC<{
   title: string
-  tokenName: string
   earnings: BigNumber
-}> = ({ title, tokenName, earnings }) => {
+}> = ({ title, earnings }) => {
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
 
   const earningsValue = useMemo(() => {
@@ -128,9 +128,9 @@ const EarningsSection: React.FC<{
   }, [earnings])
 
   const earningsPrice = useMemo(() => {
-    const price = convertToPriceFromSymbol(tokenName)
+    const price = convertToPriceFromSymbol()
     return convertToPriceFormat(new BigNumber(earningsValue).multipliedBy(price).toNumber())
-  }, [earningsValue, convertToPriceFromSymbol, tokenName, convertToPriceFormat])
+  }, [earningsValue, convertToPriceFromSymbol, convertToPriceFormat])
 
   return (
     <Wrap>
@@ -143,7 +143,7 @@ const EarningsSection: React.FC<{
       <ValueWrap>
         <Flex alignItems="end">
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
-          <TokenNameText>{tokenName}</TokenNameText>
+          <TokenNameText>{QuoteToken.FINIX}</TokenNameText>
         </Flex>
         <PriceText value={earningsPrice} prefix="=" />
       </ValueWrap>

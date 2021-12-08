@@ -153,12 +153,12 @@ const Deposit: React.FC<{
         <Flex>
           <BackIcon />
           <Text textStyle="R_16M" color={ColorStyles.MEDIUMGREY} className="ml-s6">
-            Back
+            {t('Back')}
           </Text>
         </Flex>
       </Box>
 
-      <TitleSet title={t('Deposit LP')} description={t('Deposit LP on the farm')} />
+      <TitleSet title={t('Deposit')} description={t('Deposit LP on the farm')} />
 
       <CardWrap>
         <CardHeading farm={farm} lpLabel={lpTokenName} />
