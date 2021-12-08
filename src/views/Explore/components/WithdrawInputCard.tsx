@@ -266,7 +266,8 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
       <Button
         scale="lg"
         width="100%"
-        disabled={isSimulating || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
+        isLoading={isSimulating}
+        disabled={!currentInput || (ratioType === RatioType.Single && !selectedLength)}
         onClick={onPresentCalcModal}
       >
         {t('Withdraw')}
