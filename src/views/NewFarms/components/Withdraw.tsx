@@ -156,12 +156,12 @@ const Withdraw: React.FC<{
         <Flex>
           <BackIcon />
           <Text textStyle="R_16M" color={ColorStyles.MEDIUMGREY} className="ml-s6">
-            Back
+            {t('Back')}
           </Text>
         </Flex>
       </Box>
 
-      <TitleSet title="Remove LP" description={t('Remove LPs from the farm.')} />
+      <TitleSet title={t('Remove LP')} description={t('Remove LPs from the farm.')} />
 
       <CardWrap>
         <CardHeading farm={farm} lpLabel={lpTokenName} />

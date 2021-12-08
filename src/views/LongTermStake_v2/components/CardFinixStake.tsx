@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
-import { Card, Flex, Divider } from 'definixswap-uikit'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import _ from 'lodash'
+import { Card, Flex, Divider } from 'definixswap-uikit'
+import { useApr, useAllLock } from '../../../hooks/useLongTermStake'
 
 import VFinixAprButton from './VFinixAprButton'
 import BalanceFinix from './BalanceFinix'
@@ -14,28 +16,40 @@ const FlexCard = styled(Flex)`
 `
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
-  const [days, setDays] = useState('365')
+  const [days, setDays] = useState<number>(365)
+  const [minimum1, setMinimum1] = useState<number>(0)
+  const [minimum2, setMinimum2] = useState<number>(0)
+  const [minimum4, setMinimum4] = useState<number>(0)
+  const apr = useApr()
+  const { allLockPeriod } = useAllLock()
+  const minimum = _.get(allLockPeriod, '0.minimum')
 
   const data = [
     {
-      multiple: '1X',
-      day: '90',
-      apr: '27.69',
-      minStake: '1,000',
+      multiple: 1,
+      day: 90,
+      apr: apr * 1,
+      minStake: minimum1,
     },
     {
-      multiple: '2X',
-      day: '180',
-      apr: '55.30',
-      minStake: '10,000',
+      multiple: 2,
+      day: 180,
+      apr: apr * 2,
+      minStake: minimum2,
     },
     {
-      multiple: '4X',
-      day: '365',
-      apr: '110.76',
-      minStake: '30,000',
+      multiple: 4,
+      day: 365,
+      apr: apr * 4,
+      minStake: minimum4,
     },
   ]
+
+  useEffect(() => {
+    setMinimum1(_.get(minimum, '0') || 0)
+    setMinimum2(_.get(minimum, '1') || 0)
+    setMinimum4(_.get(minimum, '2') || 0)
+  }, [minimum1, minimum2, minimum4, minimum])
 
   return (
     <>

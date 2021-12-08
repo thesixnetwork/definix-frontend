@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Box } from 'definixswap-uikit'
+import { Flex, Text, Box, AnountButton } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 import ImgTokenFinix from '../../../assets/images/img-token-finix.png'
@@ -13,7 +13,7 @@ import IconAlert3x from '../../../assets/images/ico-16-alert@3x.png'
 import { IsMobileType, DataType } from './types'
 
 interface BalanceProps extends IsMobileType {
-  days: string
+  days: number
   data: DataType[]
 }
 
@@ -44,15 +44,11 @@ const StyledInput = styled.input`
   }
 `
 
-const BoxRate = styled(Box)<{ selected: boolean }>`
-  padding: 3px 10px;
+const StyledAnountButton = styled(AnountButton)<{ selected: boolean }>`
   margin-right: 6px;
-  border-radius: 13px;
-  border-width: 1px;
-  border-style: solid;
+  color: ${({ theme, selected }) => (selected ? theme.colors.white : theme.colors.deepgrey)};
+  background-color: ${({ theme, selected }) => (selected ? theme.colors.orange : 'transparent')};
   border-color: ${({ theme, selected }) => (selected ? theme.colors.orange : theme.colors.lightgrey)};
-  cursor: pointer;
-  background-color: ${({ theme, selected }) => (selected ? theme.colors.orange : 'none')};
 
   &:last-child {
     margin-right: 0;
@@ -82,7 +78,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
   }
 
   useEffect(() => {
-    const minValue = Number(data.find((v) => v.day === days).minStake.replace(',', ''))
+    const minValue = data.find((v) => v.day === days).minStake
 
     setInSufficient(balance < minValue)
   }, [days, data, balance])
@@ -109,11 +105,9 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
           <Flex mt="S_8" mb="S_12">
             {['25%', '50%', 'MAX'].map((value) => {
               return (
-                <BoxRate selected={selected === value} onClick={() => onClickRate(value)}>
-                  <Text textStyle="R_14R" color={`${selected === value ? 'white' : 'deepgrey'}`}>
-                    {value}
-                  </Text>
-                </BoxRate>
+                <StyledAnountButton key={value} selected={selected === value} onClick={() => onClickRate(value)}>
+                  {value}
+                </StyledAnountButton>
               )
             })}
           </Flex>

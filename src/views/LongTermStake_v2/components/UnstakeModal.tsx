@@ -101,7 +101,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
               <Text textStyle="R_14R" color="mediumgrey">
-                {t('You will received')}
+                {t('You will receive')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
                 {received} {t('FINIX')}

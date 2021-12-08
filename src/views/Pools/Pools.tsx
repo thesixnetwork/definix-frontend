@@ -39,7 +39,7 @@ const Pool: React.FC = () => {
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box className={`mb-s${isMobile ? 40 : 80}`}>
+      <Box className={`pb-s${isMobile ? 40 : 80}`}>
         {pageState === 'list' && (
           <>
             <PoolHeader />

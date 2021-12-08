@@ -88,35 +88,29 @@ const Deposit: React.FC<{
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
-  const convertedLimit = useMemo(
+  const tokenName = useMemo(() => {
+    return pool.stakingLimit ? `${pool.stakingTokenName} (${pool.stakingLimit} max)` : pool.stakingTokenName
+  }, [pool.stakingLimit, pool.stakingTokenName])
+
+  const stakingTokenBalance = useMemo(() => new BigNumber(pool.userData?.stakingTokenBalance || 0), [pool.userData])
+  const stakedBalance = useMemo(() => new BigNumber(pool.userData?.stakedBalance || 0), [pool.userData])
+  const stakingLimit = useMemo(
     () => new BigNumber(pool.stakingLimit).multipliedBy(new BigNumber(10).pow(pool.tokenDecimals)),
     [pool.stakingLimit, pool.tokenDecimals],
   )
 
-  const stakingTokenBalance = useMemo(() => new BigNumber(pool.userData?.stakingTokenBalance || 0), [pool.userData])
-
-  const stakedBalance = useMemo(() => new BigNumber(pool.userData?.stakedBalance || 0), [pool.userData])
-
-  const max = useMemo(() => {
-    return pool.stakingLimit && stakingTokenBalance.isGreaterThan(convertedLimit) ? convertedLimit : stakingTokenBalance
-  }, [pool.stakingLimit, convertedLimit, stakingTokenBalance])
-
-  const tokenName = useMemo(() => {
-    return pool.stakingLimit ? `${pool.stakingTokenName} (${pool.stakingLimit} max)` : pool.stakingTokenName
-  }, [pool.stakingLimit, pool.stakingTokenName])
+  const maxValue = useMemo(() => {
+    return pool.stakingLimit && stakingTokenBalance.isGreaterThan(stakingLimit) ? stakingLimit : stakingTokenBalance
+  }, [pool.stakingLimit, stakingLimit, stakingTokenBalance])
 
   const totalStakedValue = useMemo(() => {
     return convertToBalanceFormat(getBalanceNumber(pool.totalStaked))
   }, [pool.totalStaked, convertToBalanceFormat])
 
-  const myStakedValue = useMemo(() => {
-    return getBalanceNumber(stakedBalance)
-  }, [stakedBalance])
-
+  const myStakedValue = useMemo(() => getBalanceNumber(stakedBalance), [stakedBalance])
   const myStakedDisplayValue = useMemo(() => {
     return convertToBalanceFormat(myStakedValue)
   }, [myStakedValue, convertToBalanceFormat])
-
   const myStakedPrice = useMemo(() => {
     const price = convertToPriceFromSymbol(tokenName)
     return convertToPriceFormat(new BigNumber(myStakedValue).multipliedBy(price).toNumber())
@@ -132,13 +126,13 @@ const Deposit: React.FC<{
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
       if (rate === 100) {
-        setVal(numeral(getBalanceNumber(max)).format('0.000000'))
+        setVal(numeral(getBalanceNumber(maxValue)).format('0.000000'))
       } else {
-        const balance = max.times(rate / 100)
+        const balance = maxValue.times(rate / 100)
         setVal(numeral(getBalanceNumber(balance)).format('0.00'))
       }
     },
-    [max, setVal],
+    [maxValue, setVal],
   )
 
   const handleStake = useCallback(async () => {
@@ -175,7 +169,7 @@ const Deposit: React.FC<{
         <Flex>
           <BackIcon />
           <Text textStyle="R_16M" color={ColorStyles.MEDIUMGREY} className="ml-s6">
-            Back
+            {t('Back')}
           </Text>
         </Flex>
       </Box>
@@ -206,7 +200,7 @@ const Deposit: React.FC<{
 
         <ModalInput
           value={val}
-          max={max}
+          max={maxValue}
           symbol={tokenName}
           buttonName={t('Deposit')}
           onChange={handleChange}

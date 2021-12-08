@@ -112,8 +112,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     return <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
   }, [t, tokenName, myBalanceInWallet])
   const renderEarningsSection = useCallback(
-    () => <EarningsSection title={t('Earned')} tokenName={tokenName} earnings={earnings} />,
-    [t, tokenName, earnings],
+    () => <EarningsSection title={t('Earned')} earnings={earnings} />,
+    [t, earnings],
   )
 
   const renderStakeAction = useCallback(

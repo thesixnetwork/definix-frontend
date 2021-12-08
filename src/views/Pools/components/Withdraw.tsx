@@ -162,7 +162,7 @@ const Withdraw: React.FC<{
         <Flex>
           <BackIcon />
           <Text textStyle="R_16M" color={ColorStyles.MEDIUMGREY} className="ml-s6">
-            Back
+            {t('Back')}
           </Text>
         </Flex>
       </Box>
