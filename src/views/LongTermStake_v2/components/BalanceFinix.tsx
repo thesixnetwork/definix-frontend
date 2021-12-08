@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Box, AnountButton } from 'definixswap-uikit'
+import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from 'definixswap-uikit'
 import styled from 'styled-components'
-
-import ImgTokenFinix from '../../../assets/images/img-token-finix.png'
-import ImgTokenFinix2x from '../../../assets/images/img-token-finix@2x.png'
-import ImgTokenFinix3x from '../../../assets/images/img-token-finix@3x.png'
-import IconAlert from '../../../assets/images/ico-16-alert.png'
-import IconAlert2x from '../../../assets/images/ico-16-alert@2x.png'
-import IconAlert3x from '../../../assets/images/ico-16-alert@3x.png'
 
 import { IsMobileType, DataType } from './types'
 
@@ -53,6 +46,10 @@ const StyledAnountButton = styled(AnountButton)<{ selected: boolean }>`
   &:last-child {
     margin-right: 0;
   }
+`
+
+const StyledText = styled(Text)`
+  margin-top: 5px;
 `
 
 const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
@@ -113,13 +110,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
           </Flex>
           {inSufficient && (
             <Flex alignItems="center">
-              <img
-                width={16}
-                height={16}
-                src={IconAlert}
-                srcSet={`${IconAlert2x} 2x, ${IconAlert3x} 3x`}
-                alt="Icon-Alert"
-              />
+              <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               <Text ml="S_4" textStyle="R_14R" color="red">
                 {t('Insufficient balance')}
               </Text>
@@ -127,17 +118,10 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
           )}
         </Flex>
         <Flex mt="S_16" flexDirection="column" alignItems="center">
-          <img
-            style={{ marginBottom: '5px' }}
-            width={40}
-            height={40}
-            src={ImgTokenFinix}
-            srcSet={`${ImgTokenFinix2x} 2x, ${ImgTokenFinix3x} 3x`}
-            alt="Token-Finix"
-          />
-          <Text textStyle="R_14B" color="black">
+          <ImgTokenFinixIcon viewBox="0 0 48 48" width="40px" height="40px" />
+          <StyledText textStyle="R_14B" color="black">
             {t('FINIX')}
-          </Text>
+          </StyledText>
         </Flex>
       </FlexBalance>
     </>
