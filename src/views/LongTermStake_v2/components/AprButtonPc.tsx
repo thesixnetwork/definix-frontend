@@ -1,13 +1,14 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import numeral from 'numeral'
 import { Flex, Text } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 import { DataType } from './types'
 
 interface AprButtonProps {
-  days: string
-  setDays: React.Dispatch<React.SetStateAction<string>>
+  days: number
+  setDays: React.Dispatch<React.SetStateAction<number>>
   data: DataType[]
 }
 
@@ -59,7 +60,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
                   {t('vFINIX')}
                 </Text>
                 <Text textStyle="R_20B" color="white">
-                  {item.multiple}
+                  {item.multiple}X
                 </Text>
               </Flex>
               <Text textStyle="R_14M" color="white">
@@ -73,7 +74,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
                   {t('APR')}
                 </Text>
                 <Text textStyle="R_18B" color="black">
-                  {item.apr}%
+                  {numeral(item.apr).format('0,0.[00]')}%
                 </Text>
               </Flex>
               <Flex flexDirection="column">
@@ -81,7 +82,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
                   {t('Minimum Stake')}
                 </Text>
                 <Text textStyle="R_18B" color="black">
-                  {item.minStake} {t('FINIX')}
+                  {numeral(item.minStake).format('0,0')} {t('FINIX')}
                 </Text>
               </Flex>
             </FlexApr>

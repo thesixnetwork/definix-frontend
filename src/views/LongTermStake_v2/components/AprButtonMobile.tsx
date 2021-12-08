@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import numeral from 'numeral'
 import { Flex, Text } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 import { DataType } from './types'
 
 interface AprButtonProps {
-  days: string
-  setDays: React.Dispatch<React.SetStateAction<string>>
+  days: number
+  setDays: React.Dispatch<React.SetStateAction<number>>
   data: DataType[]
 }
 
@@ -83,13 +84,13 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
           </Flex>
           <Flex flexDirection="column" alignItems="flex-end">
             <TextApr textStyle="R_14B" color="black">
-              {focusDays.apr}%
+              {numeral(focusDays.apr).format('0,0.[00]')}%
             </TextApr>
             <TextApr textStyle="R_14B" color="black">
-              {focusDays.minStake} {t('FINIX')}
+              {numeral(focusDays.minStake).format('0,0')} {t('FINIX')}
             </TextApr>
             <TextApr textStyle="R_14B" color="red">
-              {focusDays.multiple}
+              {focusDays.multiple}X
             </TextApr>
           </Flex>
         </FlexApr>
