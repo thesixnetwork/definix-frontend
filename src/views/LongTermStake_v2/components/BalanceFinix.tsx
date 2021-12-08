@@ -3,9 +3,9 @@ import { useTranslation } from 'react-i18next'
 import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from 'definixswap-uikit'
 import styled from 'styled-components'
 
-import { IsMobileType, DataType } from './types'
+import { DataType } from './types'
 
-interface BalanceProps extends IsMobileType {
+interface BalanceProps {
   days: number
   data: DataType[]
 }
@@ -52,7 +52,7 @@ const StyledText = styled(Text)`
   margin-top: 5px;
 `
 
-const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
+const BalanceFinix: React.FC<BalanceProps> = ({ days, data }) => {
   const { t } = useTranslation()
   const [balance, setBalance] = useState<number>(1200.20002)
   const [inputBalance, setInputBalance] = useState<string>()
