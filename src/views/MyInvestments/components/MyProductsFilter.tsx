@@ -45,20 +45,20 @@ const MyProductsFilter: React.FC<{
     () => [
       {
         id: 'all',
-        label: t('All')
+        label: t('All'),
       },
       {
         id: 'farm',
-        label: t('Farm')
+        label: t('Farm'),
       },
       {
         id: 'pool',
-        label: t('Pool')
+        label: t('Pool'),
       },
       {
         id: 'rebalancing',
-        label: t('Rebalancing')
-      }
+        label: t('Rebalancing'),
+      },
     ],
     [t],
   )

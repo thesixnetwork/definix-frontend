@@ -14,7 +14,7 @@ const NetWorth: React.FC<{
     return {
       farm: t('Farm'),
       pool: t('Pool'),
-      rebalancing: t('Rebalancing')
+      rebalancing: t('Rebalancing'),
     }
   }, [t])
   const netWorthList = useMemo(() => {

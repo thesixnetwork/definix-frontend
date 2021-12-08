@@ -96,7 +96,7 @@ const GridBox = styled(Box)<{ index: number; curTheme: InnerTheme }>`
   margin: ${({ theme }) => theme.spacing.S_20}px 0;
   padding-left: ${({ theme, index }) => theme.spacing[index > 0 ? 'S_32' : 'S_40']}px;
   padding-right: ${({ theme }) => theme.spacing.S_32}px;
-  
+
   border-left: ${({ index, curTheme, theme }) =>
     index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
