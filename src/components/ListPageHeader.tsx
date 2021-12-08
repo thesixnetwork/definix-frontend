@@ -8,7 +8,7 @@ import {
   Box,
   ImgFarmIcon,
   ImgMyInvestmentDefaultIcon,
-  ImgRebalancingIcon
+  ImgRebalancingIcon,
 } from 'definixswap-uikit'
 
 const Wrap = styled(Flex)`
@@ -43,54 +43,53 @@ const ImgWrap = styled(Box)`
 `
 
 const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
-  const { t,
-    i18n } = useTranslation()
+  const { t, i18n } = useTranslation()
   const dataTable = useRef({
     pool: {
       title: 'Pool',
       description: 'Deposit a single token',
       linkLabel: 'Learn how to stake',
       linkPath: '/pools/how-to-stake-to-definix-pool',
-      image: ImgPoolIcon
+      image: ImgPoolIcon,
     },
     farm: {
       title: 'Farm',
       description: 'Pairing coins to create LP',
       linkLabel: 'Learn how to stake in Farm',
       linkPath: '/yield-farming/how-to-yield-farm-on-definix',
-      image: ImgFarmIcon
+      image: ImgFarmIcon,
     },
     rebalancing: {
       title: 'Rebalancing Farm',
       description: 'A Farm that automatically performs',
       linkLabel: 'Learn how to invest',
       linkPath: '/rebalancing-farm/how-to-start-investing-in-rebalancing-farm',
-      image: ImgRebalancingIcon
+      image: ImgRebalancingIcon,
     },
     myInvestment: {
       title: 'My Investment',
       description: 'Check your investment history and profit',
-      image: ImgMyInvestmentDefaultIcon
-    }
+      image: ImgMyInvestmentDefaultIcon,
+    },
   })
-  const linkLanguage = useMemo(() => i18n.language.includes('ko') ? 'kr' : 'en', [i18n.language])
+  const linkLanguage = useMemo(() => (i18n.language.includes('ko') ? 'kr' : 'en'), [i18n.language])
   const currentSet = useMemo(() => dataTable.current[type], [type])
   const currentTitleSet = useMemo(() => {
     return {
       title: t(currentSet.title) || '',
       description: t(currentSet.description) || '',
-      ...((currentSet.linkLabel && currentSet.linkPath) && {
-        linkLabel: t(currentSet.linkLabel) || '',
-        link: `https://sixnetwork.gitbook.io/definix-on-klaytn-${linkLanguage}${currentSet.linkPath}`
-      })
+      ...(currentSet.linkLabel &&
+        currentSet.linkPath && {
+          linkLabel: t(currentSet.linkLabel) || '',
+          link: `https://sixnetwork.gitbook.io/definix-on-klaytn-${linkLanguage}${currentSet.linkPath}`,
+        }),
     }
   }, [t, currentSet, linkLanguage])
-  
 
   return (
     <Wrap className={type}>
       <Box className="title-wrap">
-        <TitleSet {...currentTitleSet}/>
+        <TitleSet {...currentTitleSet} />
       </Box>
       {currentSet.image && (
         <ImgWrap className="image-wrap">
