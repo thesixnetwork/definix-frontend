@@ -197,7 +197,7 @@ const rebalances: RebalanceConfig[] = [
       bountyFee: '',
     },
     type: 'old',
-    badge: ''
+    badge: '',
   },
   {
     title: 'PoS Top Pick',
@@ -278,7 +278,7 @@ const rebalances: RebalanceConfig[] = [
       bountyFee: '',
     },
     type: 'old',
-    badge: ''
+    badge: '',
   },
   {
     title: 'Game Index',
@@ -369,7 +369,7 @@ const rebalances: RebalanceConfig[] = [
       bountyFee: '',
     },
     type: 'old',
-    badge: ''
+    badge: '',
   },
   // {
   //   title: 'DeFi Time',
@@ -558,7 +558,7 @@ const rebalances: RebalanceConfig[] = [
       bountyFee: '',
     },
     type: 'old',
-    badge: ''
+    badge: '',
   },
   // {
   //   title: 'Big Cap One Plus',
@@ -776,7 +776,7 @@ const rebalances: RebalanceConfig[] = [
       bountyFee: '',
     },
     type: 'old',
-    badge: ''
+    badge: '',
   },
 ]
 
