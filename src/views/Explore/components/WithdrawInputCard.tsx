@@ -57,6 +57,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
   const [ratioType, setRatioType] = useState(RatioType.Original)
   const [selectedToken, setSelectedToken] = useState({})
   const [currentInput, setCurrentInput] = useState('')
+  const [inputHasError, setInputHasError] = useState(false)
 
   const mRebalance = useDeepEqualMemo(rebalance)
   const usdToBeRecieve = parseFloat(currentInput) * mRebalance.sharedPrice
@@ -95,7 +96,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
   }, [tokens, poolAmounts, mRebalance, tokenRatios])
 
   const fetchData = useCallback(async () => {
-    if (rebalance && new BigNumber(currentInput).toNumber() > 0) {
+    if (rebalance && new BigNumber(currentInput).toNumber() > 0 && !inputHasError) {
       setIsSimulating(true)
       const thisRebalanceBalance = get(rebalance, 'enableAutoCompound', false) ? rebalanceBalances : balances
       const myBalance = get(thisRebalanceBalance, getAddress(rebalance.address), new BigNumber(0))
@@ -128,7 +129,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
     if (new BigNumber(currentInput).toNumber() <= 0) {
       setPoolAmounts([])
     }
-  }, [tokens, selectedToken, currentInput, rebalance, ratioType, balances, rebalanceBalances])
+  }, [rebalance, currentInput, inputHasError, rebalanceBalances, balances, tokens, ratioType, selectedToken])
 
   const [onPresentCalcModal] = useModal(
     <WithdrawCalculateModal
@@ -145,20 +146,6 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
     />,
     false,
   )
-  const handleBalanceChange = useCallback(
-    (precentage: number) => {
-      setCurrentInput(new BigNumber(currentBalance).times(precentage / 100).toJSON())
-    },
-    [currentBalance, setCurrentInput],
-  )
-
-  const handleChange = useCallback(
-    (e: React.FormEvent<HTMLInputElement>) => {
-      setCurrentInput(e.currentTarget.value)
-    },
-    [setCurrentInput],
-  )
-
   useEffect(() => {
     return () => {
       setRatioType(RatioType.Original)
@@ -188,11 +175,11 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         </Text>
 
         <ShareInput
-          onSelectBalanceRateButton={handleBalanceChange}
-          onChange={handleChange}
+          onChange={setCurrentInput}
           value={currentInput}
           max={currentBalance}
           symbol={t('SHR')}
+          hasError={setInputHasError}
         />
       </Box>
 
@@ -220,7 +207,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
 
       <Flex flexWrap="wrap" justifyContent="space-between" alignItems="center" mb={isMobile ? 'S_16' : 'S_32'}>
         <Text textStyle="R_16M" color="mediumgrey" mb={isMobile ? 'S_20' : ''}>
-          {t('Withdrawal ratio')}
+          {t('Withdrawal Ratio')}
         </Text>
         <ButtonGroup width={isMobile ? '100%' : 'fit-content'}>
           {ratioTypes.map((label) => (
@@ -267,7 +254,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
         scale="lg"
         width="100%"
         isLoading={isSimulating}
-        disabled={!currentInput || (ratioType === RatioType.Single && !selectedLength)}
+        disabled={inputHasError || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
         onClick={onPresentCalcModal}
       >
         {t('Withdraw')}
