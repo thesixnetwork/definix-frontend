@@ -101,9 +101,7 @@ const CurrencyInputPanel = ({
             <NumericalInput
               className="token-amount-input"
               value={value}
-              onUserInput={(val) => {
-                onUserInput(val)
-              }}
+              onUserInput={onUserInput}
               style={{ width: isMobile && currency && showMaxButton ? '100%' : 'auto' }}
             />
             {account && currency && showMaxButton && (

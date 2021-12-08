@@ -20,7 +20,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
           return c.symbol
         })()
         return (
-          <Flex textStyle="R_14R" justifyContent="space-between" alignItems="center" className="py-s12">
+          <Flex key={c.symbol} textStyle="R_14R" justifyContent="space-between" alignItems="center" className="py-s12">
             <Coin size="sm" symbol={c.symbol || ''}>
               <Text textStyle="R_14B" style={{ width: '56px' }}>
                 {thisName}

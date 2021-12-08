@@ -60,15 +60,7 @@ const HorizontalMobileStyle = styled(Card)`
 const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   const { t } = useTranslation()
   return (
-    <Button
-      minWidth="auto"
-      scale="lg"
-      variant="lightbrown"
-      as={Link}
-      to="/rebalancing/detail"
-      onClick={onClick}
-      className="w-100"
-    >
+    <Button scale="lg" variant="lightbrown" as={Link} to="/rebalancing/detail" onClick={onClick} className="w-100">
       {t('View Details')}
     </Button>
   )
