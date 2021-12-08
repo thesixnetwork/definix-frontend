@@ -32,8 +32,9 @@ const Bar = styled.div<{ ratio: number; color: string }>`
 
 const BarText = styled.div<{ ratio: number; prevRatio: number }>`
   flex: ${({ ratio, prevRatio }) => {
-    if (ratio <= 10) return 10
-    if (prevRatio <= 10) return ratio - 5
+    if (ratio < 10) return 10
+    if (ratio < 18) return 12.5
+    if (prevRatio < 10) return ratio - 5
     return ratio
   }};
 `
@@ -63,13 +64,13 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
     {
       name: '90',
       color: lightColors.green,
-      ratio: Math.ceil((getTotalFinixLock[0] / totalFinixLock) * 100),
+      ratio: Math.round((getTotalFinixLock[0] / totalFinixLock) * 100),
       value: numeral(getTotalFinixLock[0]).format('0,0'),
     },
     {
       name: '180',
       color: lightColors.yellow,
-      ratio: Math.ceil((getTotalFinixLock[1] / totalFinixLock) * 100),
+      ratio: Math.round((getTotalFinixLock[1] / totalFinixLock) * 100),
       value: numeral(getTotalFinixLock[1]).format('0,0'),
     },
     {
@@ -77,8 +78,8 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
       color: lightColors.red,
       ratio:
         100 -
-        Math.ceil((getTotalFinixLock[0] / totalFinixLock) * 100) -
-        Math.ceil((getTotalFinixLock[1] / totalFinixLock) * 100),
+        Math.round((getTotalFinixLock[0] / totalFinixLock) * 100) -
+        Math.round((getTotalFinixLock[1] / totalFinixLock) * 100),
       value: numeral(getTotalFinixLock[2]).format('0,0'),
     },
   ]
