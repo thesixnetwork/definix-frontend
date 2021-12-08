@@ -1,19 +1,37 @@
-import React, { useRef, useCallback, useState, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Box, DropdownOption, DropdownSet, SearchInput, useMatchBreakpoints } from 'definixswap-uikit'
-
-interface Filter {
-  defaultIndex: number
-  options: DropdownOption[]
-}
+import { Flex, Box, DropdownOption, DropdownSet, SearchInput } from 'definixswap-uikit'
 
 const Wrap = styled(Flex)`
   justify-content: space-between;
   align-items: center;
   padding: 40px 40px 0;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
     padding: 20px 20px 0;
+  }
+`
+const Row = styled(Flex)`
+  width: 50%;
+  &.search-input-wrap {
+    width: 200px;
+  }
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 100%;
+    &.search-input-wrap {
+      margin-top: ${({ theme }) => theme.spacing.S_8}px;
+      width: 100%;
+    }
+  }
+`
+const DropdownWrap = styled(Box)`
+  width: 128px;
+  &:first-child {
+    margin-right: ${({ theme }) => theme.spacing.S_8}px;
+  }
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 50%;
   }
 `
 
@@ -62,8 +80,8 @@ const MyProductsFilter: React.FC<{
 
   return (
     <Wrap>
-      <Flex>
-        <Box width={128}>
+      <Row>
+        <DropdownWrap>
           <DropdownSet
             isOpen={isOpenDisplayFilter}
             activeIndex={displayFilterIndex}
@@ -75,8 +93,8 @@ const MyProductsFilter: React.FC<{
               setIsOpenDisplayFilter(false)
             }}
           />
-        </Box>
-        <Box className="ml-s8" width={128}>
+        </DropdownWrap>
+        <DropdownWrap>
           <DropdownSet
             isOpen={isOpenOrderByFilter}
             activeIndex={orderByFilterIndex}
@@ -88,16 +106,16 @@ const MyProductsFilter: React.FC<{
               setIsOpenOrderByFilter(false)
             }}
           />
-        </Box>
-      </Flex>
-      <Box width={200}>
+        </DropdownWrap>
+      </Row>
+      <Row className="search-input-wrap">
         <SearchInput
           type="text"
           placeholder={t('Search token name')}
           onSearch={(keyword: string) => onChangeSearchInput(keyword.trim().toLowerCase())}
           onReset={() => onChangeSearchInput('')}
         />
-      </Box>
+      </Row>
     </Wrap>
   )
 }

@@ -7,8 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
-// import FlexLayout from 'components/layout/FlexLayout'
-// import useRefresh from 'hooks/useRefresh'
+import styled from 'styled-components'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
 import useConverter from 'hooks/useConverter'
@@ -16,17 +15,20 @@ import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } 
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
-// import styled from 'styled-components'
-import { Box, useMatchBreakpoints, Card } from 'definixswap-uikit'
-// import Flip from '../../uikit-dev/components/Flip'
+import { Box, Card } from 'definixswap-uikit'
 import CardSummary from './components/CardSummary'
 import MyProductsFilter from './components/MyProductsFilter'
 import MyProducts from './components/MyProducts'
 
+const Wrap = styled(Box)`
+  padding-bottom: ${({ theme }) => theme.spacing.S_80}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
+  }
+`
+
 const MyInvestments: React.FC = () => {
   const { t } = useTranslation()
-  const { isXxl } = useMatchBreakpoints()
-  const isMobile = useMemo(() => !isXxl, [isXxl])
   const { path } = useRouteMatch()
 
   const [currentProductType, setCurrentProductType] = useState<string>('')
@@ -37,24 +39,6 @@ const MyInvestments: React.FC = () => {
   const { convertToPriceFromToken } = useConverter()
   const dispatch = useDispatch()
   const balances = useBalances(account)
-  // const { fastRefresh } = useRefresh()
-
-  // const [isPhrase2, setIsPhrase2] = useState(false)
-
-  // const phrase2TimeStamp = process.env.REACT_APP_PHRASE_2_TIMESTAMP
-  //   ? parseInt(process.env.REACT_APP_PHRASE_2_TIMESTAMP || '', 10) || new Date().getTime()
-  //   : new Date().getTime()
-  // const currentTime = new Date().getTime()
-
-  // useEffect(() => {
-  //   if (currentTime < phrase2TimeStamp) {
-  //     setTimeout(() => {
-  //       setIsPhrase2(true)
-  //     }, phrase2TimeStamp - currentTime)
-  //   } else {
-  //     setIsPhrase2(true)
-  //   }
-  // }, [currentTime, phrase2TimeStamp])
 
   // farms
   const farms = useFarms()
@@ -192,20 +176,12 @@ const MyInvestments: React.FC = () => {
     }
   }, [dispatch, account, rebalances])
 
-  // useEffect(() => {
-  //   return () => {
-  //     setIsPhrase2(false)
-  //     setModalNode(undefined)
-  //     setIsOpenModal(false)
-  //   }
-  // }, [])
-
   return (
     <>
       <Helmet>
         <title>My investments - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box className={`mb-s${isMobile ? 40 : 80}`}>
+      <Wrap>
         <Route exact path={`${path}`}>
           <CardSummary
             products={stakedProducts.map((product) => {
@@ -229,61 +205,9 @@ const MyInvestments: React.FC = () => {
             />
           </Card>
         </Route>
-      </Box>
-      {/* <TwoPanelLayout style={{ display: isOpenModal ? 'none' : 'block' }}>
-        <LeftPanel isShowRightPanel={false}>
-          <MaxWidth>
-            <div className="mb-5">
-              <div className="flex align-center mb-2">
-                <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
-                  My investments
-                </Heading>
-              </div>
-              <Text>디피닉스에서 예치한 상품들을 모두 확인하세요.</Text>
-            </div>
-
-            <TimerWrapper isPhrase2={!(currentTime < phrase2TimeStamp && isPhrase2 === false)} date={phrase2TimeStamp}>
-              <FlexLayout cols={1}>
-                <Route exact path={`${path}`}>
-                  <CardSummary />
-                  <MyProducts />
-                </Route>
-              </FlexLayout>
-            </TimerWrapper>
-          </MaxWidth>
-        </LeftPanel>
-      </TwoPanelLayout> */}
+      </Wrap>
     </>
   )
 }
-
-// const TimerWrapper = ({ isPhrase2, date, children }) => {
-//   return isPhrase2 ? (
-//     children
-//   ) : (
-//     <>
-//       <div>
-//         <br />
-//         <Flip date={date} />
-//         <br />
-//         <br />
-//         <br />
-//       </div>
-//       <div
-//         tabIndex={0}
-//         role="button"
-//         style={{ opacity: 0.4, pointerEvents: 'none' }}
-//         onClick={(e) => {
-//           e.preventDefault()
-//         }}
-//         onKeyDown={(e) => {
-//           e.preventDefault()
-//         }}
-//       >
-//         {children}
-//       </div>
-//     </>
-//   )
-// }
 
 export default MyInvestments
