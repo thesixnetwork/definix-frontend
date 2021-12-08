@@ -57,10 +57,10 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
-          <BalanceFinix isMobile={isMobile} days={days} data={data} />
+          <BalanceFinix days={days} data={data} />
           <Divider width="100%" backgroundColor="lightGrey50" />
           <ApproveFinix isMobile={isMobile} />
-          <EstimateVFinix isMobile={isMobile} />
+          <EstimateVFinix />
         </FlexCard>
       </Card>
     </>

@@ -1,19 +1,24 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
-import { Box, useMatchBreakpoints, DropdownOption } from 'definixswap-uikit'
-import PoolHeader from './components/PoolHeader'
+import styled from 'styled-components'
+import { Box, DropdownOption } from 'definixswap-uikit'
+import ListPageHeader from 'components/ListPageHeader'
 import PoolFilter from './components/PoolFilter'
 import PoolList from './components/PoolList'
 import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
 import PoolContext from './PoolContext'
 
-const Pool: React.FC = () => {
-  const { isXxl } = useMatchBreakpoints()
-  const isMobile = useMemo(() => !isXxl, [isXxl])
-  const { path } = useRouteMatch()
+const Wrap = styled(Box)`
+  padding-bottom: ${({ theme }) => theme.spacing.S_80}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
+  }
+`
 
+const Pool: React.FC = () => {
+  const { path } = useRouteMatch()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
   const [pageState, setPageState] = useState('list')
@@ -39,10 +44,10 @@ const Pool: React.FC = () => {
       <Helmet>
         <title>Pool - Definix - Advance Your Crypto Assets</title>
       </Helmet>
-      <Box className={`pb-s${isMobile ? 40 : 80}`}>
+      <Wrap>
         {pageState === 'list' && (
           <>
-            <PoolHeader />
+            <ListPageHeader type="pool" />
             <PoolFilter
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
@@ -91,7 +96,7 @@ const Pool: React.FC = () => {
             />
           </>
         )}
-      </Box>
+      </Wrap>
     </PoolContext.Provider>
   )
 }

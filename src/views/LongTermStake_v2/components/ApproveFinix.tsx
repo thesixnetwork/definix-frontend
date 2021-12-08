@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, useModal } from 'definixswap-uikit'
+import { Flex, Text, Button, useModal, ImgTokenFinixIcon, CheckBIcon, AlertIcon } from 'definixswap-uikit'
 import styled from 'styled-components'
-
-import ImgTokenFinix from '../../../assets/images/img-token-finix.png'
-import ImgTokenFinix2x from '../../../assets/images/img-token-finix@2x.png'
-import ImgTokenFinix3x from '../../../assets/images/img-token-finix@3x.png'
-import IconAlert from '../../../assets/images/ico-16-alert.png'
-import IconAlert2x from '../../../assets/images/ico-16-alert@2x.png'
-import IconAlert3x from '../../../assets/images/ico-16-alert@3x.png'
-import IconCheck from '../../../assets/images/ico-16-check-b.png'
-import IconCheck2x from '../../../assets/images/ico-16-check-b@2x.png'
-import IconCheck3x from '../../../assets/images/ico-16-check-b@3x.png'
 
 import StakeModal from './StakeModal'
 import { IsMobileType } from './types'
@@ -58,28 +48,16 @@ const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
       <FlexApprove>
         <FlexApprroveBtn>
           <Flex mb={`${isMobile && 'S_8'}`} alignItems="center">
-            <img
-              style={{ marginRight: `${isMobile ? '10px' : '12px'}` }}
-              width={32}
-              height={32}
-              src={ImgTokenFinix}
-              srcSet={`${ImgTokenFinix2x} 2x, ${ImgTokenFinix3x} 3x`}
-              alt="Token-Finix"
-            />
-            <Text textStyle="R_16M" color="mediumgrey">
+            <ImgTokenFinixIcon viewBox="0 0 48 48" width="32px" height="32px" />
+            <Text ml={`${isMobile ? 'S_10' : 'S_12'}`} textStyle="R_16M" color="mediumgrey">
               {t('FINIX')}
             </Text>
           </Flex>
           <Button width={`${isMobile ? '100%' : '186px'}`} variant={`${approve ? 'line' : 'brown'}`} disabled={approve}>
             {approve && (
-              <img
-                style={{ marginRight: '6px' }}
-                width={16}
-                height={16}
-                src={IconCheck}
-                srcSet={`${IconCheck2x} 2x, ${IconCheck3x} 3x`}
-                alt="Icon-Check"
-              />
+              <Flex mr="S_6">
+                <CheckBIcon opacity="0.5" viewBox="0 0 16 16" width="16px" height="16px" />
+              </Flex>
             )}
             {approve
               ? t('Approved to {{Token}}', { Token: t('FINIX') })
@@ -92,13 +70,7 @@ const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
           </Button>
           {error && (
             <Flex alignItems="center">
-              <img
-                width={16}
-                height={16}
-                src={IconAlert}
-                srcSet={`${IconAlert2x} 2x, ${IconAlert3x} 3x`}
-                alt="Icon-Alert"
-              />
+              <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               <Text ml="S_4" textStyle="R_14R" color="red">
                 {error}
               </Text>

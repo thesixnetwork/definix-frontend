@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { Box, DropdownOption } from 'definixswap-uikit'
-import FarmHeader from './components/FarmHeader'
+import ListPageHeader from 'components/ListPageHeader'
 import FarmFilter from './components/FarmFilter'
 import FarmList from './components/FarmList'
 import Deposit from './components/Deposit'
@@ -46,7 +46,7 @@ const Farms: React.FC = () => {
       <Wrap>
         {pageState === 'list' && (
           <>
-            <FarmHeader />
+            <ListPageHeader type="farm" />
             <FarmFilter
               stackedOnly={stackedOnly}
               setStackedOnly={setStackedOnly}
