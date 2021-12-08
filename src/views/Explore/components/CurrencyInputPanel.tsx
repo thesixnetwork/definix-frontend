@@ -66,8 +66,8 @@ const CurrencyInputPanel = ({
 }: CurrencyInputPanelProps) => {
   const { t } = useTranslation()
   const { account } = useWallet()
-  const { isMaxXl } = useMatchBreakpoints()
-  const isMobile = isMaxXl
+  const { isMaxSm } = useMatchBreakpoints()
+  const isMobile = isMaxSm
 
   const toFixedFloor = useToFixedFloor(decimals)
 
