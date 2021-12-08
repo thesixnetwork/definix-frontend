@@ -6,7 +6,19 @@ import { useTranslation } from 'react-i18next'
 import { get, isEqual, compact } from 'lodash'
 import { provider } from 'web3-core'
 
-import { Box, Button, Card, CardBody, CheckBIcon, Divider, Flex, Text, useModal } from 'definixswap-uikit'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CheckBIcon,
+  Divider,
+  Flex,
+  Noti,
+  NotiType,
+  Text,
+  useModal,
+} from 'definixswap-uikit'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useBalances, useAllowances, useToast } from 'state/hooks'
@@ -240,6 +252,8 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
     [currentShare, sumPoolAmount],
   )
 
+  const underMinimum = useMemo(() => shares === '0', [shares])
+
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
     setApprovingCoin(token.symbol)
@@ -260,10 +274,10 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
-      toastSuccess(t('Approve Complete'))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
       setApprovingCoin(null)
     } catch {
-      toastError(t('Approve Failed'))
+      toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
       setApprovingCoin(null)
     }
   }
@@ -436,11 +450,16 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
           scale="lg"
           width="100%"
           isLoading={isSimulating}
-          disabled={inputError || !allApproved || !needsApprovalCoins.length}
+          disabled={underMinimum || inputError || !allApproved || !needsApprovalCoins.length}
           onClick={onPresentCalcModal}
         >
-          {t('Calculate invest amount')}
+          {t('Calculate invest amount')} {shares}
         </Button>
+        {underMinimum && (
+          <Noti mt="S_12" type={NotiType.ALERT}>
+            {t('Less than a certain amount')}
+          </Noti>
+        )}
       </CardBody>
     </Card>
   )

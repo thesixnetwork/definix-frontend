@@ -122,13 +122,13 @@ const CalculateModal = ({
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
       dispatch(fetchRebalances())
-      toastSuccess(t('Invest Complete'))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionInvest') }))
       onNext()
       onDismiss()
       setIsInvesting(false)
     } catch (e) {
       console.error(e)
-      toastError(t('Invest Failed'))
+      toastError(t('{{Action}} Failed', { Action: t('actionInvest') }))
       setIsInvesting(false)
     }
   }

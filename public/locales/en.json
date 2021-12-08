@@ -405,10 +405,6 @@
   "Don`t have any transactions": "Don`t have any transactions in this farm.",
   "Medium": "Medium",
   "Confirm Withdraw": "Confirm Withdraw",
-  "Withdraw Failed": "Withdraw Failed",
-  "Invest Failed": "Invest Failed",
-  "Invest Complete": "Invest Complete",
-  "Withdraw Complete": "Withdraw Complete",
   "Total Deposit": "Total Deposit",
   "Please input the investment amount.": "Please input the investment amount.",
   "Total Invest": "Total Invest",
@@ -416,5 +412,16 @@
   "Lock Up Period End": "Lock Up Period End",
   "Unstake": "Unstake",
   "Claim": "Claim",
-  "EST. {{number}} share": "EST. {{number}} share"
+  "EST. {{number}} share": "EST. {{number}} share",
+  "Investors": "Investors",
+  "Action": "Action",
+  "Date": "Date",
+  "actionSwap": "Swap",
+  "actionAdd Liquidity": "Add Liquidity",
+  "actionRemove Liquidty": "Remove Liquidty",
+  "actionInvest": "Invest",
+  "actionWithdraw": "Withdraw",
+  "actionApprove": "Approve",
+  "actionDeposit": "Deposit",
+  "actionRemove": "Remove"
 }

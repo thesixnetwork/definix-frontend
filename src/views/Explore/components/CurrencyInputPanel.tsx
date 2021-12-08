@@ -113,7 +113,7 @@ const CurrencyInputPanel = ({
             <Text textStyle="R_14R" color="text">
               {t('Balance')}
               <Text as="span" textStyle="R_14B" marginLeft="4px">
-                {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
+                {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[000000]') : ' -'}
               </Text>
             </Text>
           )}

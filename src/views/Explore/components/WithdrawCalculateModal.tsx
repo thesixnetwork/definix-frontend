@@ -105,12 +105,12 @@ const WithdrawCalculateModal = ({
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
-      toastSuccess(t('Withdraw Complete'))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionWithdraw') }))
       onNext()
       onDismiss()
       setIsWithdrawing(false)
     } catch (e) {
-      toastError(t('Withdraw Failed'))
+      toastError(t('{{Action}} Failed', { Action: t('actionWithdraw') }))
       setIsWithdrawing(false)
     }
   }
