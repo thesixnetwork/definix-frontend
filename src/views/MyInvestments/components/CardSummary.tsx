@@ -1,7 +1,8 @@
 import _ from 'lodash'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Card, useMatchBreakpoints, TabBox, Flex, TitleSet, Box, ImgMyInvestmentDefaultIcon } from 'definixswap-uikit'
+import { Card, useMatchBreakpoints, TabBox } from 'definixswap-uikit'
+import ListPageHeader from 'components/ListPageHeader'
 import Earned from './Earned'
 import NetWorth from './NetWorth'
 
@@ -12,14 +13,7 @@ function CardSummary({ products }) {
 
   return (
     <>
-      <Flex justifyContent="space-between" className={`mt-s28 ${isMobile ? 'mb-s28' : ''}`}>
-        <TitleSet title={t('My Investment')} description={t('Check your investment history and profit')} />
-        {!isMobile && (
-          <Box className="mr-s16">
-            <ImgMyInvestmentDefaultIcon display="block" />
-          </Box>
-        )}
-      </Flex>
+      <ListPageHeader type="myInvestment" />
       <Card>
         <TabBox
           tabs={[
