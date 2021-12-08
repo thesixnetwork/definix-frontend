@@ -1,7 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, Divider } from 'definixswap-uikit'
-import styled from 'styled-components'
 
 interface ItemType {
   period: string
@@ -14,12 +13,6 @@ interface ContentProps {
   onPresentUnstakeModal: () => any
 }
 
-const StyledFlex = styled(Flex)`
-  align-items: center;
-  width: 100%;
-  padding: 16px 0;
-`
-
 const StakeListContentPc: React.FC<ContentProps> = ({ data, onPresentUnstakeModal }) => {
   const { t } = useTranslation()
 
@@ -27,8 +20,8 @@ const StakeListContentPc: React.FC<ContentProps> = ({ data, onPresentUnstakeModa
     <>
       {data.map((item) => {
         return (
-          <>
-            <StyledFlex>
+          <Flex width="100%" flexDirection="column" key={item.end}>
+            <Flex width="100%" alignItems="center" py="S_16">
               <Text width="20%" textStyle="R_14R" color="black">
                 {item.period} {t('days')}
               </Text>
@@ -48,9 +41,9 @@ const StakeListContentPc: React.FC<ContentProps> = ({ data, onPresentUnstakeModa
                   {t('Early Unstake')}
                 </Button>
               </Flex>
-            </StyledFlex>
+            </Flex>
             <Divider width="100%" backgroundColor="lightGrey50" />
-          </>
+          </Flex>
         )
       })}
     </>

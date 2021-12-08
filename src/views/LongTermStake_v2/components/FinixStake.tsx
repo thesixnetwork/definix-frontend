@@ -74,7 +74,7 @@ const FinixStake: React.FC<FinixStakeProps> = ({ isMobile, totalFinixLock, total
       <FlexStake>
         {data.map((v) => {
           return (
-            <FlexItem>
+            <FlexItem key={v.title}>
               <img
                 style={{ marginRight: '12px' }}
                 width={40}

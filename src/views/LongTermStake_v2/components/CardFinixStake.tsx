@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import moment from 'moment'
 import { Card, Flex, Divider } from 'definixswap-uikit'
 import { useApr, useAllLock } from '../../../hooks/useLongTermStake'
 

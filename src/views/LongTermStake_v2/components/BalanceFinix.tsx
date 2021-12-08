@@ -109,7 +109,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
           <Flex mt="S_8" mb="S_12">
             {['25%', '50%', 'MAX'].map((value) => {
               return (
-                <BoxRate selected={selected === value} onClick={() => onClickRate(value)}>
+                <BoxRate key={value} selected={selected === value} onClick={() => onClickRate(value)}>
                   <Text textStyle="R_14R" color={`${selected === value ? 'white' : 'deepgrey'}`}>
                     {value}
                   </Text>

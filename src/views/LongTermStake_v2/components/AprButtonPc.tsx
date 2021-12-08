@@ -53,7 +53,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
     <>
       {data.map((item) => {
         return (
-          <FlexVFinix onClick={() => setDays(item.day)}>
+          <FlexVFinix key={item.day} onClick={() => setDays(item.day)}>
             <FlexDays focus={days === item.day}>
               <Flex flexDirection="column">
                 <Text textStyle="R_12R" color="white">

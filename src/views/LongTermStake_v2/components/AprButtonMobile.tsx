@@ -59,7 +59,7 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
         <Flex width="100%">
           {data.map((item) => {
             return (
-              <FlexVFinix>
+              <FlexVFinix key={item.day}>
                 <FlexDays focus={days === item.day} onClick={() => setDays(item.day)}>
                   <Text width="100%" textAlign="center" textStyle="R_14M" color="white">
                     {item.day} {t('days')}
