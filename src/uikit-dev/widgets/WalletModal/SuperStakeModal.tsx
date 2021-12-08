@@ -527,6 +527,38 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setAmount(new BigNumber(parseFloat(total)).times(new BigNumber(10).pow(18)).toFixed())
     } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
       setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
+    } else if (Object.values(selectedToken).length > 0 && value === '') {
+      const dataArray = []
+      for (let i = 0; i < Object.values(selectedToken).length; i++) {
+        const selector = Object.values(selectedToken)[i]
+        if (_.get(selector, 'checked')) {
+          dataArray.push(_.get(selector, 'pendingReward'))
+        } else {
+          dataArray.splice(i)
+        }
+      }
+      const sum = dataArray.reduce((r, n) => r + n, 0)
+      setLengthSelect(dataArray.length)
+      setSumPendingReward(parseFloat(sum).toFixed(2))
+      setAmount(
+        new BigNumber(parseFloat(Number(value.replace(',', '')) + sum)).times(new BigNumber(10).pow(18)).toFixed(),
+      )
+    } else if (Object.values(selectedToken).length > 0 && Number(value) <= 0) {
+      const dataArray = []
+      for (let i = 0; i < Object.values(selectedToken).length; i++) {
+        const selector = Object.values(selectedToken)[i]
+        if (_.get(selector, 'checked')) {
+          dataArray.push(_.get(selector, 'pendingReward'))
+        } else {
+          dataArray.splice(i)
+        }
+      }
+      const sum = dataArray.reduce((r, n) => r + n, 0)
+      setLengthSelect(dataArray.length)
+      setSumPendingReward(parseFloat(sum).toFixed(2))
+      setAmount(
+        new BigNumber(parseFloat(Number(value.replace(',', '')) + sum)).times(new BigNumber(10).pow(18)).toFixed(),
+      )
     } else {
       setAmount('')
     }
