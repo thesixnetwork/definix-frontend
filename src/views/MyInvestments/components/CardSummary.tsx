@@ -1,15 +1,7 @@
 import _ from 'lodash'
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  Card,
-  useMatchBreakpoints,
-  TabBox,
-  Flex,
-  TitleSet,
-  Box,
-  ImgMyInvestmentDefaultIcon,
-} from 'definixswap-uikit'
+import { Card, useMatchBreakpoints, TabBox, Flex, TitleSet, Box, ImgMyInvestmentDefaultIcon } from 'definixswap-uikit'
 import Earned from './Earned'
 import NetWorth from './NetWorth'
 
