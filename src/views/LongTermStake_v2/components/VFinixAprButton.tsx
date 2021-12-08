@@ -6,8 +6,8 @@ import AprButtonMobile from './AprButtonMobile'
 import { IsMobileType, DataType } from './types'
 
 interface VFinixProps extends IsMobileType {
-  days: string
-  setDays: React.Dispatch<React.SetStateAction<string>>
+  days: number
+  setDays: React.Dispatch<React.SetStateAction<number>>
   data: DataType[]
 }
 

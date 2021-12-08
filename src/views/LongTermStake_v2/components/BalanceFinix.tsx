@@ -13,7 +13,7 @@ import IconAlert3x from '../../../assets/images/ico-16-alert@3x.png'
 import { IsMobileType, DataType } from './types'
 
 interface BalanceProps extends IsMobileType {
-  days: string
+  days: number
   data: DataType[]
 }
 
@@ -82,7 +82,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({ isMobile, days, data }) => {
   }
 
   useEffect(() => {
-    const minValue = Number(data.find((v) => v.day === days).minStake.replace(',', ''))
+    const minValue = data.find((v) => v.day === days).minStake
 
     setInSufficient(balance < minValue)
   }, [days, data, balance])
