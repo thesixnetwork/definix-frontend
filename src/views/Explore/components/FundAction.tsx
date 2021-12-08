@@ -105,23 +105,32 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
     return numeral(currentBalanceNumber).format('0,0.[00]')
   }, [currentBalanceNumber])
 
-  const Action = () => (
-    <>
-      <Button
-        scale="md"
-        width="100%"
-        minWidth="auto"
-        as={Link}
-        to="/rebalancing/invest"
-        className={isMobile ? 'mr-s12' : 'mb-s12'}
-        variant="red"
-      >
-        {t('Invest')}
-      </Button>
-      <Button scale="md" width="100%" minWidth="auto" as={Link} variant="lightbrown" to="/rebalancing/withdraw">
-        {t('Withdraw')}
-      </Button>
-    </>
+  const Action = useCallback(
+    () => (
+      <>
+        <Button
+          scale="md"
+          width="100%"
+          minWidth="auto"
+          as={Link}
+          to="/rebalancing/invest"
+          className={isMobile ? 'mr-s12' : 'mb-s12'}
+          variant="red"
+        >
+          {t('Invest')}
+        </Button>
+        {shares === '0' ? (
+          <Button scale="md" width="100%" minWidth="auto" variant="lightbrown" disabled>
+            {t('Withdraw')}
+          </Button>
+        ) : (
+          <Button scale="md" width="100%" minWidth="auto" variant="lightbrown" as={Link} to="/rebalancing/withdraw">
+            {t('Withdraw')}
+          </Button>
+        )}
+      </>
+    ),
+    [isMobile, shares, t],
   )
 
   useEffect(() => {

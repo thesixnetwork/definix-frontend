@@ -83,7 +83,6 @@ const App: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    console.log(`%c App.tsx/useEffect fired`, 'background: coral')
     if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
       connect('injected')
     } else if (

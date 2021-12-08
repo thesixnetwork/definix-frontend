@@ -15,7 +15,7 @@ import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } 
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
-import { Box, Card } from 'definixswap-uikit'
+import { Box, Card, DropdownOption } from 'definixswap-uikit'
 import CardSummary from './components/CardSummary'
 import MyProductsFilter from './components/MyProductsFilter'
 import MyProducts from './components/MyProducts'
@@ -32,7 +32,7 @@ const MyInvestments: React.FC = () => {
   const { path } = useRouteMatch()
 
   const [currentProductType, setCurrentProductType] = useState<string>('')
-  const [selectedOrder, setSelectedOrder] = useState<string>('')
+  const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   const { account }: { account: string; klaytn: provider } = useWallet()
@@ -194,12 +194,12 @@ const MyInvestments: React.FC = () => {
           <Card className="mt-s16">
             <MyProductsFilter
               onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}
-              onChangeOrderFilter={(keyword: string) => setSelectedOrder(keyword)}
+              onChangeOrderFilter={(orderBy: DropdownOption) => setSelectedOrderBy(orderBy)}
               onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
             />
             <MyProducts
               productType={currentProductType}
-              orderType={selectedOrder}
+              orderBy={selectedOrderBy}
               searchKeyword={searchKeyword}
               products={stakedProducts}
             />

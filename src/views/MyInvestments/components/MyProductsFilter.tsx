@@ -37,19 +37,29 @@ const DropdownWrap = styled(Box)`
 
 const MyProductsFilter: React.FC<{
   onChangeDisplayFilter: (keyword: string) => void
-  onChangeOrderFilter: (keyword: string) => void
+  onChangeOrderFilter: (orderBy: DropdownOption) => void
   onChangeSearchInput: (keyword: string) => void
 }> = ({ onChangeDisplayFilter, onChangeOrderFilter, onChangeSearchInput }) => {
   const { t } = useTranslation()
-
   const displayFilter = useMemo<DropdownOption[]>(
-    () =>
-      [t('All'), t('Farm'), t('Pool'), t('Rebalancing')].map((label) => {
-        return {
-          id: label.toLowerCase(),
-          label,
-        }
-      }),
+    () => [
+      {
+        id: 'all',
+        label: t('All'),
+      },
+      {
+        id: 'farm',
+        label: t('Farm'),
+      },
+      {
+        id: 'pool',
+        label: t('Pool'),
+      },
+      {
+        id: 'rebalancing',
+        label: t('Rebalancing'),
+      },
+    ],
     [t],
   )
   const [displayFilterIndex, setDisplayFilterIndex] = useState(0)
@@ -70,7 +80,7 @@ const MyProductsFilter: React.FC<{
       {
         id: 'apyValue',
         label: t('APR'),
-        orderBy: 'desc',
+        orderBy: 'asc',
       },
     ],
     [t],
@@ -102,7 +112,7 @@ const MyProductsFilter: React.FC<{
             onButtonClick={() => setIsOpenOrderByFilter(!isOpenOrderByFilter)}
             onOptionClick={(index: number) => {
               setOrderByFilterIndex(index)
-              onChangeOrderFilter(orderFilter[index].id.toString())
+              onChangeOrderFilter(orderFilter[index])
               setIsOpenOrderByFilter(false)
             }}
           />

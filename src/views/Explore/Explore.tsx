@@ -4,19 +4,32 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
+import styled from 'styled-components'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
-import { Box, Flex, Text, TitleSet, Toggle, useModal } from 'definixswap-uikit'
+import { Box, Flex, Text, Toggle, useModal } from 'definixswap-uikit'
 import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 
-import { Rebalance } from '../../state/types'
-import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
-
+import ListPageHeader from 'components/ListPageHeader'
 import DisclaimersModal from './components/DisclaimersModal'
 import ExploreCard from './components/ExploreCard'
 import ExploreDetail from './ExploreDetail'
 import Invest from './Invest'
 import Withdraw from './Withdraw'
+
+import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
+import { Rebalance } from '../../state/types'
+
+const FilterWrap = styled(Flex)`
+  position: absolute;
+  bottom: 0;
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.spacing.S_28}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    position: relative;
+    margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
+  }
+`
 
 const Explore: React.FC = () => {
   const { path } = useRouteMatch()
@@ -61,23 +74,17 @@ const Explore: React.FC = () => {
           <title>Explore - Definix - Advance Your Crypto Assets</title>
         </Helmet>
         <>
-          <Box marginBottom="48px">
-            <TitleSet
-              title={t('Rebalancing Farm')}
-              description={t('A Farm that automatically performs')}
-              linkLabel={t('Learn how to invest')}
-              link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/rebalancing-farm/how-to-start-investing-in-rebalancing-farm"
-            />
+          <Box position="relative">
+            <ListPageHeader type="rebalancing" />
+            <FilterWrap>
+              <Flex alignItems="center">
+                <Text textStyle="R_14R" color="deepgrey" mr="S_8">
+                  {t('Staked only Farm')}
+                </Text>
+                <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
+              </Flex>
+            </FilterWrap>
           </Box>
-
-          <Flex alignItems="center" mb="S_28">
-            <Flex alignItems="center">
-              <Text textStyle="R_14R" color="deepgrey" mr="S_8">
-                {t('Staked only Farm')}
-              </Text>
-              <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
-            </Flex>
-          </Flex>
 
           {(rebalances || [])
             .filter((r) =>

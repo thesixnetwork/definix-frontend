@@ -146,7 +146,7 @@ const WithdrawCalculateModal = ({
             <SpaceBetweenFormat title={t('Estimated Value')} value={estimatedValue} />
           </Flex>
         </Box>
-        <Button mt="S_40" width="100%" disabled={isWithdrawing || isSimulating} onClick={onWithdraw}>
+        <Button mt="S_40" width="100%" isLoading={isSimulating || isWithdrawing} onClick={onWithdraw}>
           {t('Withdraw')}
         </Button>
       </>

@@ -41,17 +41,17 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
     {
       period: '180',
       amount: '10,000',
-      end: '08-Nov-21 14:57:20 GMT+9',
+      end: '08-Nov-21 14:57:21 GMT+9',
     },
     {
       period: '365',
       amount: '30,000',
-      end: '08-Nov-21 14:57:20 GMT+9',
+      end: '08-Nov-21 14:57:22 GMT+9',
     },
     {
       period: '365',
       amount: '30,000,000',
-      end: '08-Nov-21 14:57:20 GMT+9',
+      end: '08-Nov-21 14:57:23 GMT+9',
     },
   ]
 

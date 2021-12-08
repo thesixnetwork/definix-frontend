@@ -2,11 +2,8 @@ import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Box, Text } from 'definixswap-uikit'
+import { Flex, Box, Text, ImgTokenFinixIcon } from 'definixswap-uikit'
 
-import ImgTokenFinix from '../../../assets/images/img-token-finix.png'
-import ImgTokenFinix2x from '../../../assets/images/img-token-finix@2x.png'
-import ImgTokenFinix3x from '../../../assets/images/img-token-finix@3x.png'
 import ImgTokenVFinix from '../../../assets/images/img-token-vfinix.png'
 import ImgTokenVFinix2x from '../../../assets/images/img-token-vfinix@2x.png'
 import ImgTokenVFinix3x from '../../../assets/images/img-token-vfinix@3x.png'
@@ -56,44 +53,37 @@ const FlexItem = styled(Flex)`
 const FinixStake: React.FC<FinixStakeProps> = ({ isMobile, totalFinixLock, totalSupplyAllTimeMint }) => {
   const { t } = useTranslation()
 
-  const data = [
-    {
-      img: [ImgTokenFinix, ImgTokenFinix2x, ImgTokenFinix3x],
-      title: 'Total FINIX staked',
-      value: numeral(totalFinixLock).format('0,0'),
-    },
-    {
-      img: [ImgTokenVFinix, ImgTokenVFinix2x, ImgTokenVFinix3x],
-      title: 'Total vFINIX supply',
-      value: numeral(totalSupplyAllTimeMint).format('0,0'),
-    },
-  ]
-
   return (
     <>
       <FlexStake>
-        {data.map((v) => {
-          return (
-            <FlexItem>
-              <img
-                style={{ marginRight: '12px' }}
-                width={40}
-                height={40}
-                src={`${v.img[0]}`}
-                srcSet={`${v.img[1]} 2x, ${v.img[2]} 3x`}
-                alt={`${v.title}`}
-              />
-              <Box>
-                <Text mb="S_2" textStyle={`R_14${isMobile ? 'R' : 'M'}`} color="mediumgrey">
-                  {t(`${v.title}`)}
-                </Text>
-                <Text textStyle="R_20B" color="black">
-                  {`${v.value}`}
-                </Text>
-              </Box>
-            </FlexItem>
-          )
-        })}
+        <FlexItem>
+          <ImgTokenFinixIcon viewBox="0 0 48 48" width="40px" height="40px" />
+          <Box ml="S_12">
+            <Text mb="S_2" textStyle={`R_14${isMobile ? 'R' : 'M'}`} color="mediumgrey">
+              {t('Total FINIX staked')}
+            </Text>
+            <Text textStyle="R_20B" color="black">
+              {numeral(totalFinixLock).format('0,0')}
+            </Text>
+          </Box>
+        </FlexItem>
+        <FlexItem>
+          <img
+            width={40}
+            height={40}
+            src={ImgTokenVFinix}
+            srcSet={`${ImgTokenVFinix2x} 2x, ${ImgTokenVFinix3x} 3x`}
+            alt="VFINIX-TOKEN"
+          />
+          <Box ml="S_12">
+            <Text mb="S_2" textStyle={`R_14${isMobile ? 'R' : 'M'}`} color="mediumgrey">
+              {t('Total vFINIX supply')}
+            </Text>
+            <Text textStyle="R_20B" color="black">
+              {numeral(totalSupplyAllTimeMint).format('0,0')}
+            </Text>
+          </Box>
+        </FlexItem>
       </FlexStake>
     </>
   )

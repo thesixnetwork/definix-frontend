@@ -16,6 +16,7 @@ import { approveOther } from 'utils/callHelpers'
 import { getContract } from 'utils/erc20'
 import { useDispatch } from 'react-redux'
 import { fetchAllowances, fetchBalances } from 'state/wallet'
+import { useToast } from 'state/hooks'
 import CurrencyInputPanel from './CurrencyInputPanel'
 
 interface InvestInputCardProp {
@@ -42,14 +43,15 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
   sumPoolAmount,
 }) => {
   const { t } = useTranslation()
-  const [isApproving, setIsApproving] = useState(false)
+  const [approvingCoin, setApprovingCoin] = useState<string | null>(null)
   const dispatch = useDispatch()
   const { account, klaytn, connector } = useWallet()
   const { setShowModal } = React.useContext(KlipModalContext())
+  const { toastSuccess, toastError } = useToast()
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
-    setIsApproving(true)
+    setApprovingCoin(token.symbol)
     try {
       if (connector === 'klip') {
         klipProvider.genQRcodeContactInteract(
@@ -67,9 +69,11 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
-      setIsApproving(false)
+      toastSuccess(t('Approve Complete'))
+      setApprovingCoin(null)
     } catch {
-      setIsApproving(false)
+      toastError(t('Approve Failed'))
+      setApprovingCoin(null)
     }
   }
 
@@ -186,11 +190,12 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
                   ml="auto"
                   width={isMobile ? '100%' : '200px'}
                   variant="brown"
-                  disabled={isApproving || !coin.needsApproval || !coin.currentValue}
+                  isLoading={coin.needsApproval && approvingCoin === coin.symbol}
+                  disabled={!coin.needsApproval || !coin.currentValue}
                   onClick={onApprove(coin)}
                 >
-                  {coin.needsApproval || <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />} Approve{' '}
-                  {coin.symbol}
+                  {coin.needsApproval || <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />}
+                  {t('Approve {{Token}}', { Token: coin.symbol })}
                 </Button>
               </Flex>
             ))
@@ -213,7 +218,8 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
         <Button
           scale="lg"
           width="100%"
-          disabled={isSimulating || !allApproved || !needsApprovalCoins.length}
+          isLoading={isSimulating}
+          disabled={!allApproved || !needsApprovalCoins.length}
           onClick={onNext}
         >
           {t('Calculate invest amount')}

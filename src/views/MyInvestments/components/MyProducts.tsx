@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { useBalances } from 'state/hooks'
-import { Divider, ColorStyles, Flex, Text, Box } from 'definixswap-uikit'
+import { Divider, ColorStyles, Flex, Text, Box, DropdownOption } from 'definixswap-uikit'
 import NoResultArea from 'components/NoResultArea'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
@@ -20,9 +20,9 @@ interface Product {
 const MyProducts: React.FC<{
   products: Product[]
   productType: string
-  orderType: string
+  orderBy: DropdownOption
   searchKeyword: string
-}> = ({ products, productType, orderType, searchKeyword }) => {
+}> = ({ products, productType, orderBy, searchKeyword }) => {
   const { t } = useTranslation()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
@@ -48,15 +48,15 @@ const MyProducts: React.FC<{
   }, [products, productType])
 
   const orderedProducts = useMemo(() => {
-    // if (selectedOrder === '') return products
-    return filteredProducts
-  }, [filteredProducts])
+    if (!orderBy) return filteredProducts
+    console.log('order products: ', orderBy, filteredProducts)
+    return _.orderBy(filteredProducts, orderBy.id, orderBy.orderBy)
+  }, [filteredProducts, orderBy])
 
   const displayProducts = useMemo(() => {
     if (!searchKeyword.length) return orderedProducts
     return orderedProducts.filter((product) => {
       return getTokenName(product.data).includes(searchKeyword)
-      // return product.tokenName.toLowerCase().includes(searchKeyword)
     })
   }, [orderedProducts, getTokenName, searchKeyword])
 

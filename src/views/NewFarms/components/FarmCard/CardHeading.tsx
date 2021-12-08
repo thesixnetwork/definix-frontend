@@ -19,6 +19,9 @@ const TokenImage = styled.img<{ isMediumSize: boolean }>`
   width: ${({ isMediumSize }) => (isMediumSize ? 48 : 40)}px;
   height: auto;
   object-fit: contain;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 36px;
+  }
 `
 
 export interface ExpandableSectionProps {

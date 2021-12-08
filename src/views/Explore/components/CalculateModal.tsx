@@ -187,7 +187,7 @@ const CalculateModal = ({
             />
           </Flex>
         </Box>
-        <Button className="mt-s40" width="100%" disabled={isInvesting || isSimulating} onClick={onInvest}>
+        <Button className="mt-s40" width="100%" isLoading={isInvesting || isSimulating} onClick={onInvest}>
           {t('Invest')}
         </Button>
       </>

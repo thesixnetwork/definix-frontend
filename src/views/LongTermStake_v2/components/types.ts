@@ -3,8 +3,8 @@ export interface IsMobileType {
 }
 
 export interface DataType {
-  multiple: string
-  day: string
-  apr: string
-  minStake: string
+  multiple: number
+  day: number
+  apr: number
+  minStake: number
 }
