@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import {
@@ -32,13 +32,13 @@ const LongTermStake: React.FC = () => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [modalNode, setModalNode] = useState<React.ReactNode>()
 
-  useEffect(() => {
+  useMemo(() => {
     if (isMobileOrTablet) {
       setIsShowRightPanel(false)
     }
   }, [isMobileOrTablet])
 
-  useEffect(() => {
+  useMemo(() => {
     return () => {
       setIsShowRightPanel(true)
     }

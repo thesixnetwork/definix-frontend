@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import Lottie from 'react-lottie'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -20,7 +20,6 @@ import {
   useBalances,
   useAllowance,
   useApprove,
-  useAllLock,
   usePrivateData,
   useLockTopup,
   useAllDataLock,
@@ -59,7 +58,6 @@ const FinixStake = styled(Card)`
 const Balance = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  // flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   padding: 0.75rem 0.75rem 0.75rem 0.75rem;
@@ -112,7 +110,6 @@ const NumberInput = styled.input`
   font-size: 22px;
   outline: none;
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
-  // width: 45%;
   -webkit-flex: 1 1 auto;
   padding: 0px;
 `
@@ -136,13 +133,12 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const lockTopUp = useLockTopup()
-  const { allLockPeriod } = useAllLock()
   const { levelStake, allLock } = useAllDataLock()
   const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
-  const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const { isXl, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isLg
-  const { allDataLock, lockAmount } = usePrivateData()
+  const { lockAmount } = usePrivateData()
   const [period, setPeriod] = useState(0)
   const [date, setDate] = useState('-')
   const [value, setValue] = useState('')
@@ -155,13 +151,10 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   const [transactionHash, setTransactionHash] = useState('')
   const isStake = useMemo(() => lockAmount > 0, [lockAmount])
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
-  const minimum = _.get(allLockPeriod, '0.minimum')
-  const periodEnd = _.get(allLockPeriod, '0.periodMap')
-  const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus, loadings, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix)
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  useEffect(() => {
+  useMemo(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
       const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
@@ -197,7 +190,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         }
       }
     }
-  }, [lockTopUp, allLock, period, allDataLock])
+  }, [lockTopUp, allLock, period])
 
   function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -213,7 +206,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     enforcer(e.target.value.replace(/,/g, '.'))
   }
 
-  useEffect(() => {
+  useMemo(() => {
     const offset = 2
     const now = new Date()
     const utc = now.getTime()
@@ -238,9 +231,9 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
-  }, [period, value, periodEnd, allLockPeriod, realPenaltyRate])
+  }, [period, value])
 
-  useEffect(() => {
+  useMemo(() => {
     if (status) {
       setVFINIX(0)
       setValue('')
@@ -271,13 +264,13 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     setFlgButton('insufficient')
   }, [])
 
-  useEffect(() => {
+  useMemo(() => {
     if (Number(balanceOf) <= 0) {
       hadleInsufficient()
     } else {
       hadleStakeButton()
     }
-  }, [value, period, balanceOf, minimum, hadleStakeButton, hadleInsufficient])
+  }, [balanceOf, hadleStakeButton, hadleInsufficient])
 
   const renderStakeDOrStake = () => {
     return (
@@ -317,7 +310,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
     )
   }
 
-  useEffect(() => {
+  useMemo(() => {
     const percentOf = percent * Number(balanceOf)
     const balance = Math.floor(percentOf * 1000000) / 1000000
     if (percent !== 0) {

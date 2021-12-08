@@ -5,6 +5,7 @@ import numeral from 'numeral'
 import moment from 'moment'
 import VaultFacet from 'config/abi/VaultFacet.json'
 import VaultInfoFacet from 'config/abi/VaultInfoFacet.json'
+import VFinixMergeAbi from 'config/abi/VFinixMergeAbi.json'
 import IKIP7 from 'config/abi/IKIP7.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import TokenFacet from 'config/abi/TokenFacet.json'
@@ -178,7 +179,7 @@ const getVaultFacet = async ({ vFinix }) => {
         name: 'getTotalFinixLock',
       },
     ]
-    const [finixLock] = await multicall(VaultFacet.abi, calls)
+    const [finixLock] = await multicall(VFinixMergeAbi, calls)
     for (let i = 0; i < 3; i++) {
       _.set(
         finixLockMap,
@@ -207,7 +208,7 @@ const getTotalSupplyAllTimeMint = async ({ vFinix }) => {
         name: 'totalSupplyAllTimeMint',
       },
     ]
-    const [finixLock] = await multicall(TokenFacet.abi, calls)
+    const [finixLock] = await multicall(VFinixMergeAbi, calls)
     totalFinixLock = new BigNumber(finixLock).dividedBy(new BigNumber(10).pow(18)).toNumber()
   } catch (error) {
     totalFinixLock = 0
@@ -263,10 +264,10 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         params: [account],
       },
     ]
-    const [count] = await multicall(VaultFacet.abi, calls)
-    const [lockAmount, infoFacet] = await multicall(VaultInfoFacet.abi, callInfoFacet)
+    const [count] = await multicall(VFinixMergeAbi, calls)
+    const [lockAmount, infoFacet] = await multicall(VFinixMergeAbi, callInfoFacet)
     const [balanceOfFinix, balanceOfvFinix] = await multicall(IKIP7.abi, calBalance)
-    const callContract = getContract(VaultInfoFacet.abi, getVFinix())
+    const callContract = getContract(VFinixMergeAbi, getVFinix())
     const finixLock = await callContract.methods.locksDesc(account, index, 10).call()
     balanceFinix = new BigNumber(balanceOfFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     balancevFinix = new BigNumber(balanceOfvFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
@@ -361,7 +362,7 @@ const getAllLockPeriods = async ({ vFinix }) => {
         name: 'getAllLockPeriods',
       },
     ]
-    const [lockPeriods] = await multicall(VaultFacet.abi, calls)
+    const [lockPeriods] = await multicall(VFinixMergeAbi, calls)
     for (let i = 0; i < 3; i++) {
       _.set(periodMap, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_period${i + 1}._hex`)).toNumber())
       _.set(
@@ -414,7 +415,7 @@ const getPendingReward = async ({ vFinix, account }) => {
         params: [account],
       },
     ]
-    const [earn] = await multicall(RewardFacet.abi, calls)
+    const [earn] = await multicall(VFinixMergeAbi, calls)
     pendingReward = new BigNumber(earn).dividedBy(new BigNumber(10).pow(18)).toNumber()
   } catch (error) {
     pendingReward = 0
@@ -441,7 +442,7 @@ const getContactIKIP7 = async ({ vFinix }) => {
       },
     ]
     const [totalvfinixSupply] = await multicall(IKIP7.abi, calls)
-    const [rewardPerBlockResponse] = await multicall(RewardFacet.abi, callrewardPerBlock)
+    const [rewardPerBlockResponse] = await multicall(VFinixMergeAbi, callrewardPerBlock)
     rewardPerBlock = rewardPerBlockResponse
     totalSupply = new BigNumber(totalvfinixSupply).dividedBy(new BigNumber(10).pow(18)).toNumber()
     reward = new BigNumber(rewardPerBlock).dividedBy(new BigNumber(10).pow(18)).toNumber()

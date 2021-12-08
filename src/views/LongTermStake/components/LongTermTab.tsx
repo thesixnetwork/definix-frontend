@@ -1,14 +1,11 @@
 import React from 'react'
-import { NavLink, useRouteMatch } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
-import { CogIcon, IconButton, useModal } from '../../../uikit-dev'
 
 const Tabs = styled.div`
   display: flex;
   align-items: center;
   justify-content: stretch;
-  //   background: ${({ theme }) => theme.colors.backgroundDisabled};
   height: 48px;
   border-radius: 8px;
 `

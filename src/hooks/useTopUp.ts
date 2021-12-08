@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { getAbiVaultFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 
-import VaultTopUpFeatureFacet from '../config/abi/VaultTopUpFeatureFacet.json'
+import VFinixMergeAbi from '../config/abi/VFinixMergeAbi.json'
 import { getContract } from '../utils/caver'
 import { getVFinix } from '../utils/addressHelpers'
 import useRefresh from './useRefresh'
@@ -37,7 +37,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
         if (connector === 'klip') {
           klipProvider.genQRcodeContactInteract(
             getVFinix(),
-            JSON.stringify(getAbiVaultFacetByName('lock')),
+            JSON.stringify(getAbiVaultFacetByName('lockPlus')),
             JSON.stringify([level, lockFinix]),
             setShowModal,
           )
@@ -48,7 +48,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           setInterval(() => setLoading(''), 5000)
           setInterval(() => setStatus(false), 5000)
         } else {
-          const callContract = getContract(VaultTopUpFeatureFacet.abi, getVFinix())
+          const callContract = getContract(VFinixMergeAbi, getVFinix())
           await callContract.methods
             .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })

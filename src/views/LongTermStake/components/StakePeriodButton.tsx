@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import numeral from 'numeral'
@@ -167,7 +167,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   let disableLevel2 = false
   const [data, setData] = useState([])
 
-  useEffect(() => {
+  useMemo(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const array = []
       const arrStr = lockTopUp.map((i) => Number(i))
@@ -177,6 +177,15 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
 
       const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
       removeTopUpId.map((r) => {
+        return array.push(_.get(r, 'level'))
+      })
+      setData(array)
+    } else {
+      const array = []
+      const removeisUnlockedOrisPenalty = allLock.filter(
+        (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
+      )
+      removeisUnlockedOrisPenalty.map((r) => {
         return array.push(_.get(r, 'level'))
       })
       setData(array)
@@ -195,13 +204,13 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
     })
   }
 
-  useEffect(() => {
+  useMemo(() => {
     setMinimum1(_.get(minimum, '0') || 0)
     setMinimum2(_.get(minimum, '1') || 0)
     setMinimum3(_.get(minimum, '2') || 0)
-  }, [_minimum1, _minimum2, _minimum4, minimum])
+  }, [minimum])
 
-  useEffect(() => {
+  useMemo(() => {
     if (status && !isTopUp) {
       // setPeriod(0)
       // setPeriodSelect(0)
@@ -232,7 +241,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
     } else {
       setPeriod(periodSelect)
     }
-  }, [periodSelect, setPeriod, status, isTopUp, levelStake, flgIsTopup, data])
+  }, [periodSelect, setPeriod, status, isTopUp, flgIsTopup, data])
 
   return (
     <div className={`w-100 ${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>

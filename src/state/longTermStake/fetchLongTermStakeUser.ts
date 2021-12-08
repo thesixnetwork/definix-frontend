@@ -2,6 +2,7 @@ import longTermConfig from '../../config/constants/longTerm'
 import { QuoteToken } from '../../config/constants/types'
 import ikip7ABI from '../../config/abi/IKIP7.json'
 import rewardABI from '../../config/abi/RewardFacet.json'
+import VFinixMergeAbi from '../../config/abi/VFinixMergeAbi.json'
 import multicall from '../../utils/multicall'
 import { getAddress } from '../../utils/addressHelpers'
 import { getCaver } from '../../utils/caver'
@@ -42,7 +43,7 @@ export const fetchUserPendingRewards = async (account) => {
     name: 'pendingReward',
     params: [account],
   }))
-  const res = await multicall(rewardABI.abi, calls)
+  const res = await multicall(VFinixMergeAbi, calls)
   const pendingRewards = longTermConfig.reduce(
     (acc, ls, index) => ({
       ...acc,
