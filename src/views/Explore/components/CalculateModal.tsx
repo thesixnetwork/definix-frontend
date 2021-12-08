@@ -24,13 +24,12 @@ import VerticalAssetRatio from './VerticalAssetRatio'
 const CalculateModal = ({
   setTx,
   currentInput,
-  isSimulating,
-  poolUSDBalances,
   poolAmounts,
-  onNext,
   rebalance,
   sumPoolAmount,
   calNewImpact,
+  shares,
+  onNext,
   onDismiss = () => null,
 }) => {
   const { t } = useTranslation()
@@ -45,21 +44,6 @@ const CalculateModal = ({
   const dispatch = useDispatch()
   // const balances = useBalances(account)
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
-  // @ts-ignore
-  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance])
-    .div(new BigNumber(10).pow(usdToken.decimals || 18))
-    .toNumber()
-  const totalUserUsdAmount = new BigNumber(get(poolUSDBalances, 1, '0'))
-    .div(new BigNumber(10).pow(usdToken.decimals || 18))
-    .toNumber()
-  // const minUserUsdAmount = totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))
-
-  // @ts-ignore
-  const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
-  const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
-  // const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
-
-  // const calNewImpact = Math.abs(((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount) * 100)
 
   const handleLocalStorage = async (tx) => {
     const rebalanceAddress: string = getAddress(get(rebalance, 'address'))
@@ -142,7 +126,8 @@ const CalculateModal = ({
       onNext()
       onDismiss()
       setIsInvesting(false)
-    } catch {
+    } catch (e) {
+      console.error(e)
       toastError(t('Invest Failed'))
       setIsInvesting(false)
     }
@@ -167,9 +152,7 @@ const CalculateModal = ({
               {t('Total Invest')}
             </Text>
             <Text color="black" textStyle="R_18B" ml="auto">
-              {currentShare <= 0 || Number.isNaN(currentShare)
-                ? numeral(sumPoolAmount).format('0,0.[00]')
-                : numeral(currentShare).format('0,0.[00]')}
+              {shares}
             </Text>
             <Text textStyle="R_14R" className="ml-s4">
               {t('SHR')}
@@ -187,7 +170,7 @@ const CalculateModal = ({
             />
           </Flex>
         </Box>
-        <Button className="mt-s40" width="100%" isLoading={isInvesting || isSimulating} onClick={onInvest}>
+        <Button className="mt-s40" width="100%" isLoading={isInvesting} onClick={onInvest}>
           {t('Invest')}
         </Button>
       </>
