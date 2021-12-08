@@ -151,9 +151,9 @@ const rebalances: RebalanceConfig[] = [
   //     finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
   //     bountyFee: '',
   //   },
-  //   rebalance: 'New',
+  //   type: 'new',
+  //   badge: 'risk',
   // },
-
   {
     title: 'Bullish Giant',
     description:
@@ -196,9 +196,9 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
-    rebalance: 'Old',
+    type: 'old',
+    badge: ''
   },
-
   {
     title: 'PoS Top Pick',
     description:
@@ -277,7 +277,8 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
-    rebalance: 'Old',
+    type: 'old',
+    badge: ''
   },
   {
     title: 'Game Index',
@@ -367,7 +368,8 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
-    rebalance: 'Old',
+    type: 'old',
+    badge: ''
   },
   // {
   //   title: 'DeFi Time',
@@ -555,7 +557,8 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
-    rebalance: 'Old',
+    type: 'old',
+    badge: ''
   },
   // {
   //   title: 'Big Cap One Plus',
@@ -772,7 +775,8 @@ const rebalances: RebalanceConfig[] = [
       finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
       bountyFee: '',
     },
-    rebalance: 'Old',
+    type: 'old',
+    badge: ''
   },
 ]
 

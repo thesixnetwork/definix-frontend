@@ -78,7 +78,8 @@ export interface RebalanceConfig {
   last24data?: any
   factsheet: any
   fee: Fee
-  rebalance: string
+  badge: string
+  type: string
 }
 
 export interface FarmConfig {
