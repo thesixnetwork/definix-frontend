@@ -397,8 +397,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [lockTopUp, allLock, period])
 
   useEffect(() => {
+    const balance = Math.floor(Number(balanceOf) * 1000000) / 1000000
     if (keyDown === false) {
-      setValue(numeral(balanceOf).format('0.[00]'))
+      setValue(balance.toString())
     }
   }, [value, balanceOf, keyDown])
 
@@ -744,7 +745,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <Text className="col-6" color="textSubtle" fontWeight="500">
                 From your wallet:
                 <span style={{ color: '#0973B9' }} className="pl-2">
-                  {balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX
+                  {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'} FINIX
                 </span>
               </Text>
               <Text className="col-6 pl-3" color="textSubtle" fontWeight="500">
