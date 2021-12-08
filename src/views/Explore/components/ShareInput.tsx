@@ -9,11 +9,12 @@ interface ShareInputProps {
   symbol: string
   placeholder?: string
   value: string
+  decimals?: number
   onChange: (input: string) => void
   hasError?: (error: boolean) => void
 }
 
-const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, hasError }) => {
+const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, decimals = 18, hasError }) => {
   const { t } = useTranslation()
   const { register, control } = useForm({
     defaultValues: {
@@ -26,27 +27,32 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, h
   const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).gt(max), [value, max])
   const underMinimum = useMemo(() => new BigNumber(value).toNumber() <= 0, [value])
 
+  const toFixedFloor = useCallback(
+    (input: string) => {
+      const [integer, decimal] = input?.split('.') || ['0']
+      if (decimal?.length > decimals) {
+        const calDecimal = decimal.substring(0, decimals)?.replace(/0*$/, '')
+        return [integer, calDecimal].join('.')
+      }
+      return input
+    },
+    [decimals],
+  )
+
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       const input = e.currentTarget.value?.replace(/[^0-9|^.]/g, '')
-      const [integer, decimal] = input?.split('.') || ['0']
-      if (decimal?.length > 18) {
-        const calDecimal = decimal.substring(0, 18)?.replace(/0*$/, '')
-        onChange([integer, calDecimal].join('.'))
-        return
-      }
-      onChange(input)
+      onChange(toFixedFloor(input))
     },
-    [onChange],
+    [onChange, toFixedFloor],
   )
 
   const handleBalanceChange = useCallback(
     (precentage: number) => {
       const calval = new BigNumber(max).times(precentage / 100)
-      const val = new BigNumber(calval.toFixed(18)).toJSON()
-      onChange(val)
+      onChange(toFixedFloor(calval.toJSON()))
     },
-    [max, onChange],
+    [max, onChange, toFixedFloor],
   )
 
   useEffect(() => {
@@ -84,6 +90,10 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, h
       )}
     </div>
   )
+}
+
+ShareInput.defaultProps = {
+  decimals: 18,
 }
 
 export default ShareInput
