@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { Menu as UikitMenu } from 'definixswap-uikit'
+import { useTranslation, Trans } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 // import { usePriceFinixUsd, useProfile } from 'state/hooks'
-import { Menu as UikitMenu } from 'definixswap-uikit'
-import { useTranslation, Trans } from 'react-i18next'
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import useUserDeadline from 'hooks/useUserDeadline'
 import NetWorth from './NetWorth'
@@ -18,6 +19,10 @@ const Menu = (props) => {
   const { isDark, toggleTheme } = useTheme()
   // const finixPriceUsd = usePriceFinixUsd()
   // const { profile } = useProfile()
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   return (
     <UikitMenu
