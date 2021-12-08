@@ -24,7 +24,7 @@ import {
   MIST,
   KMON,
   BMON,
-  ZOO,
+  BABY,
 } from './tokens'
 
 export const customRouter = {
@@ -73,86 +73,86 @@ export const customInitCodeHash = {
 }
 
 const rebalances: RebalanceConfig[] = [
-  // {
-  //   title: 'Game Fi Prospect',
-  //   description:
-  //     'Rising star in the game industry. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
-  //   fullDescription:
-  //     'MIST 20% BMON 20% KMON 20% ZOO 20% USDT 20% - The curated game asset based on criterion of community, gameplay, graphics, and growth potential in DeFi world. This farm has a different aspect from game index. The farm is focusing on the new Game Fi token that can make a difference for the market. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
-  //   icon: ['/images/vaults/gamefi1.png', '/images/vaults/gamefi2.png'],
-  //   address: {
-  //     56: '0xD4cD099934d0b9167afb0Be24C1Ea1899d16aB66',
-  //     97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
-  //   },
-  //   router: [
-  //     customRouter.pancake,
-  //     customRouter.pancake,
-  //     customRouter.pancake,
-  //     customRouter.pancake,
-  //     customRouter.pancake,
-  //   ],
-  //   factory: [
-  //     customFactory.pancake,
-  //     customFactory.pancake,
-  //     customFactory.pancake,
-  //     customFactory.pancake,
-  //     customFactory.pancake,
-  //   ],
-  //   initCodeHash: [
-  //     customInitCodeHash.pancake,
-  //     customInitCodeHash.pancake,
-  //     customInitCodeHash.pancake,
-  //     customInitCodeHash.pancake,
-  //     customInitCodeHash.pancake,
-  //   ],
-  //   fee: {
-  //     management: 0.5,
-  //     buyback: 1.0,
-  //     // bounty: 0.3,
-  //   },
-  //   ratio: [
-  //     {
-  //       symbol: 'MIST',
-  //       value: 20,
-  //       color: '#865d16',
-  //       address: MIST,
-  //     },
-  //     {
-  //       symbol: 'KMON',
-  //       value: 20,
-  //       color: '#f231af',
-  //       address: KMON,
-  //     },
-  //     {
-  //       symbol: 'BMON',
-  //       value: 20,
-  //       color: '#ffaa00',
-  //       address: BMON,
-  //     },
-  //     {
-  //       symbol: 'Zoo',
-  //       value: 20,
-  //       color: '#569aff',
-  //       address: ZOO,
-  //     },
-  //     {
-  //       symbol: 'USDT',
-  //       value: 20,
-  //       color: '#2A9D8F',
-  //       address: USDT,
-  //     },
-  //   ],
-  //   factsheet: {
-  //     name: 'Game Fi Prospect',
-  //     inceptionDate: 'Wednesday, December 1, 2021 15:00:00 (UTC+7)',
-  //     manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
-  //     vault: '0xD4cD099934d0b9167afb0Be24C1Ea1899d16aB66',
-  //     management: '0x5c966A18e964b875Fc7002707ff598dB7aebBa68',
-  //     finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
-  //     bountyFee: '',
-  //   },
-  //   rebalance: 'New',
-  // },
+  {
+    title: 'Game Fi Prospect',
+    description:
+      'Rising star in the game industry. The rebalancing will trigger hourly once the price of rebalancing is covered by 2% of fee.',
+    fullDescription:
+      'MIST 20% BMON 20% KMON 20% BABY 20% USDT 20% - The curated game asset based on criterion of community, gameplay, graphics, and growth potential in DeFi world. This farm has a different aspect from game index. The farm is focusing on the new Game Fi token that can make a difference for the market. Rebalancing will occur every hour if the rebalancing fee is 2% covered.',
+    icon: ['/images/vaults/gamefi2-1.png', '/images/vaults/gamefi2-2.png'],
+    address: {
+      56: '0x60aAbd21C26749cA3cdF1119F849F0248Fbb5E22',
+      97: '0xEF15cF01E344CfA4BaCa336c5f0607a8D55D12B8',
+    },
+    router: [
+      customRouter.pancake,
+      customRouter.pancake,
+      customRouter.pancake,
+      customRouter.pancake,
+      customRouter.pancake,
+    ],
+    factory: [
+      customFactory.pancake,
+      customFactory.pancake,
+      customFactory.pancake,
+      customFactory.pancake,
+      customFactory.pancake,
+    ],
+    initCodeHash: [
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+      customInitCodeHash.pancake,
+    ],
+    fee: {
+      management: 0.5,
+      buyback: 1.0,
+      // bounty: 0.3,
+    },
+    ratio: [
+      {
+        symbol: 'MIST',
+        value: 20,
+        color: '#865d16',
+        address: MIST,
+      },
+      {
+        symbol: 'KMON',
+        value: 20,
+        color: '#f231af',
+        address: KMON,
+      },
+      {
+        symbol: 'BMON',
+        value: 20,
+        color: '#ffaa00',
+        address: BMON,
+      },
+      {
+        symbol: 'BABY',
+        value: 20,
+        color: '#e89d38',
+        address: BABY,
+      },
+      {
+        symbol: 'USDT',
+        value: 20,
+        color: '#2A9D8F',
+        address: USDT,
+      },
+    ],
+    factsheet: {
+      name: 'Game Fi Prospect',
+      inceptionDate: 'Wednesday, December 8, 2021 15:00:00 (UTC+7)',
+      manager: '0xED350352eb3C509D0D8A70aE0BC01B173EbA41D7',
+      vault: '0x60aAbd21C26749cA3cdF1119F849F0248Fbb5E22',
+      management: '0x5c966A18e964b875Fc7002707ff598dB7aebBa68',
+      finixBuyBackFee: '0x93CA20A952EF4973B4A8A56AEb4D2c0Ef3aADfAa',
+      bountyFee: '',
+    },
+    rebalance: 'New',
+  },
 
   {
     title: 'Bullish Giant',
