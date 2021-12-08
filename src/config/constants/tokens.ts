@@ -147,6 +147,10 @@ export const ZOO = {
   [intMainnetId]: process.env.REACT_APP_ZOO_ADDRESS_MAINNET,
   [intTestnetId]: process.env.REACT_APP_ZOO_ADDRESS_TESTNET,
 }
+export const BABY = {
+  [intMainnetId]: process.env.REACT_APP_BABY_ADDRESS_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_BABY_ADDRESS_TESTNET,
+}
 export const VELO = {
   [intMainnetId]: process.env.REACT_APP_VELO_TOKEN_MAINNET,
   [intTestnetId]: process.env.REACT_APP_VELO_TOKEN_TESTNET,
@@ -178,6 +182,7 @@ export const allTokens = {
   KMON,
   BMON,
   ZOO,
+  BABY,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
