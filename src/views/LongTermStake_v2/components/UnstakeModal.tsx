@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
 import {
   Box,
   Flex,
@@ -17,7 +17,7 @@ import styled from 'styled-components'
 
 interface ModalProps {
   balance: string
-  period: string
+  period: number
   apr: string
   fee: string
   end: string
@@ -109,8 +109,12 @@ const UnstakeModal: React.FC<ModalProps> = ({
               <Flex mt="S_2">
                 <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               </Flex>
-              <Text ml="S_4" textStyle="R_14R" color="red">
-                {t('Do you want to unstake?', { '15-Nov-21 14:57:20 GMT+9': end })}
+              <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
+                <Trans
+                  i18nKey="Do you want to unstake?"
+                  values={{ '15-Nov-21 14:57:20 GMT+9': end }}
+                  components={{ bold: <strong /> }}
+                />
               </Text>
             </Flex>
           </Flex>

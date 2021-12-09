@@ -32,7 +32,7 @@ const FlexApprroveBtn = styled(Flex)`
 const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
   const { t } = useTranslation()
   const [onPresentStakeModal] = useModal(
-    <StakeModal balance="1,000" period="90" end="08-Nov-21 14:57:20 GMT+9" earn="1,000" onOK={() => null} />,
+    <StakeModal balance="1,000" period={90} end="08-Nov-21 14:57:20 GMT+9" earn="1,000" onOK={() => null} />,
     false,
   )
   const [approve, setApprove] = useState<boolean>(true)
