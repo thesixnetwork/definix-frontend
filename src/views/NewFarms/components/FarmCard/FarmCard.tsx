@@ -80,7 +80,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
     const liquidityUrlPathParts = getLiquidityUrlPathParts({
       quoteTokenAdresses: farm.quoteTokenAdresses,
       quoteTokenSymbol: farm.quoteTokenSymbol,
-      tokenAddresses: farm.tokenAddresses
+      tokenAddresses: farm.tokenAddresses,
     })
     return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   }, [farm.quoteTokenAdresses, farm.quoteTokenSymbol, farm.tokenAddresses])
@@ -107,7 +107,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   /**
    * Card Ribbon
    */
-   const ribbonProps = useMemo(() => {
+  const ribbonProps = useMemo(() => {
     if (typeof farm.tag === 'string') {
       return {
         ribbon: <CardRibbon variantColor={ColorStyles.RED} text={farm.tag} />,
@@ -119,7 +119,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * CardHeading
    */
   const renderCardHeading = useCallback(
-    () => <CardHeading farm={farm} lpLabel={lpTokenName} size="small" addLiquidityUrl={addLiquidityUrl}/>,
+    () => <CardHeading farm={farm} lpLabel={lpTokenName} size="small" addLiquidityUrl={addLiquidityUrl} />,
     [farm, lpTokenName, addLiquidityUrl],
   )
   /**
@@ -164,7 +164,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
       farm,
       lpTokenName,
       myLiquidityPrice: myLiquidity,
-      addLiquidityUrl
+      addLiquidityUrl,
     }
   }, [farm, lpTokenName, myLiquidity, addLiquidityUrl])
   const renderStakeAction = useCallback(
@@ -197,7 +197,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * Link Section
    */
   const renderLinkSection = useCallback(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
-  
+
   if (componentType === 'myInvestment') {
     return (
       <Wrap>

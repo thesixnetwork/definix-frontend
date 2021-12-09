@@ -35,16 +35,13 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
     setIsSkip(event.target.checked)
   }
   return (
-    <Modal title={t("Disclaimers")} hideCloseButton mobileFull onDismiss={onDismiss}>
+    <Modal title={t('Disclaimers')} hideCloseButton mobileFull onDismiss={onDismiss}>
       <ModalBody maxWidth="438px">
         <ScrollArea textStyle="R_12R" className="px-s16 pt-s16">
-          <ContentText className="mb-3">
-            {t('Definix is solely')}
-          </ContentText>
+          <ContentText className="mb-3">{t('Definix is solely')}</ContentText>
         </ScrollArea>
       </ModalBody>
       <ModalFooter>
-
         {isConfirm ? (
           <div className="mt-s24 flex flex-column">
             <CheckboxLabel

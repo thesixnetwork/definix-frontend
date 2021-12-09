@@ -1,6 +1,18 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Flex, Text, Modal, Button, Divider, VDivider, ImgTokenFinixIcon, AlertIcon, ModalBody, ModalFooter } from 'definixswap-uikit-v2'
+import {
+  Box,
+  Flex,
+  Text,
+  Modal,
+  Button,
+  Divider,
+  VDivider,
+  ImgTokenFinixIcon,
+  AlertIcon,
+  ModalBody,
+  ModalFooter,
+} from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 interface ModalProps {

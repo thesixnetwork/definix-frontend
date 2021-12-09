@@ -164,7 +164,7 @@ const Deposit: React.FC<{
       <TitleSet title={t('Deposit')} description={t('Deposit LP on the farm')} />
 
       <CardWrap>
-        <CardHeading farm={farm} lpLabel={lpTokenName} addLiquidityUrl={addLiquidityUrl}/>
+        <CardHeading farm={farm} lpLabel={lpTokenName} addLiquidityUrl={addLiquidityUrl} />
 
         <CardBody>
           <LiquidityInfo hasMb>
@@ -199,9 +199,15 @@ const Deposit: React.FC<{
           <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
             {t(`Don't have an LP?`)}
           </Text>
-          <Button type="button" variant="line" onClick={() => {
-            window.location.href=`${addLiquidityUrl}`
-          }}>{t('Add Liquidity')}</Button>
+          <Button
+            type="button"
+            variant="line"
+            onClick={() => {
+              window.location.href = `${addLiquidityUrl}`
+            }}
+          >
+            {t('Add Liquidity')}
+          </Button>
         </Flex>
       </CardWrap>
     </>

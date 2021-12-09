@@ -127,7 +127,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
       isOldSyrup,
       isBnbPool,
       pool,
-      addSwapUrl
+      addSwapUrl,
     }
   }, [isOldSyrup, isBnbPool, pool, addSwapUrl])
   /**

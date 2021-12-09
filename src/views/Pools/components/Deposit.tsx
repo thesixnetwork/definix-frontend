@@ -215,10 +215,16 @@ const Deposit: React.FC<{
           <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
             {t(`Don't have a token?`)}
           </Text>
-          <Button type="button" variant="line" onClick={() => {
-            console.log(addSwapUrl)
-            // window.location.href=`${addSwapUrl}`
-          }}>{t('Swap')}</Button>
+          <Button
+            type="button"
+            variant="line"
+            onClick={() => {
+              console.log(addSwapUrl)
+              // window.location.href=`${addSwapUrl}`
+            }}
+          >
+            {t('Swap')}
+          </Button>
         </Flex>
       </CardWrap>
     </>
