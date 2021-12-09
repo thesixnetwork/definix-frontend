@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation, Trans } from 'react-i18next'
+import numeral from 'numeral'
 import {
   Box,
   Flex,
@@ -18,7 +19,7 @@ interface ModalProps {
   balance: string
   period: number
   end: string
-  earn: string
+  earn: number
   onOK?: () => any
   onDismiss?: () => any
 }
@@ -66,7 +67,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
             </Flex>
             <Text textStyle="R_16R" color="black">
-              {balance}
+              {numeral(Number(balance)).format('0,0.[000000]')}
             </Text>
           </Flex>
           <Divider />
@@ -85,7 +86,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
               <Flex flexDirection="column" alignItems="flex-end">
                 <Text textStyle="R_14M" color="deepgrey">
-                  {end}
+                  {end} GMT+9
                 </Text>
                 <Text textStyle="R_12R" color="mediumgrey">
                   {t('*Asia/Seoul')}

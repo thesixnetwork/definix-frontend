@@ -8,6 +8,10 @@ import { IsMobileType } from './types'
 
 interface ApproveFinixProps extends IsMobileType {
   account: string
+  inputBalance: string
+  days: number
+  endDay: string
+  earn: number
 }
 
 const FlexApprove = styled(Flex)`
@@ -33,10 +37,10 @@ const FlexApprroveBtn = styled(Flex)`
   }
 `
 
-const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, account }) => {
+const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, account, inputBalance, days, endDay, earn }) => {
   const { t } = useTranslation()
   const [onPresentStakeModal] = useModal(
-    <StakeModal balance="1,000" period={90} end="08-Nov-21 14:57:20 GMT+9" earn="1,000" onOK={() => null} />,
+    <StakeModal balance={inputBalance} period={days} end={endDay} earn={earn} onOK={() => null} />,
     false,
   )
   const [approve] = useState<boolean>(true)
