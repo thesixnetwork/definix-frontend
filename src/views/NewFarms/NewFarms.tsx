@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -24,6 +24,10 @@ const Farms: React.FC = () => {
   const [pageData, setPageData] = useState(null)
   const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
   const [searchKeyword, setSearchKeyword] = useState<string>('')
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pageState])
 
   return (
     <FarmContext.Provider
