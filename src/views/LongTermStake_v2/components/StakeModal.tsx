@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Flex, Text, Modal, Button, Divider, ImgTokenFinixIcon, AlertIcon } from 'definixswap-uikit'
+import { Box, Flex, Text, Modal, Button, Divider, ImgTokenFinixIcon, AlertIcon, ModalBody, ModalFooter } from 'definixswap-uikit'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -31,8 +31,8 @@ const StakeModal: React.FC<ModalProps> = ({
   const { t } = useTranslation()
 
   return (
-    <>
-      <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
+    <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
+      <ModalBody>
         <StyledBox mb="S_30">
           <Flex mt="S_14" mb="S_24" justifyContent="space-between" alignItems="center">
             <Flex alignItems="center">
@@ -55,16 +55,48 @@ const StakeModal: React.FC<ModalProps> = ({
                 {period} {t('days')}
               </Text>
             </Flex>
-            <Flex mb="S_8" justifyContent="space-between">
-              <Text textStyle="R_14R" color="mediumgrey">
-                {t('Period End')}
-              </Text>
-              <Flex flexDirection="column" alignItems="flex-end">
-                <Text textStyle="R_14M" color="deepgrey">
-                  {end}
+            <Divider />
+            <Flex mt="S_24" flexDirection="column">
+              <Flex mb="S_8" justifyContent="space-between">
+                <Text textStyle="R_14R" color="mediumgrey">
+                  {t('Stake Period')}
                 </Text>
-                <Text textStyle="R_12R" color="mediumgrey">
-                  {t('*Asia/Seoul')}
+                <Text textStyle="R_14M" color="deepgrey">
+                  {period} {t('days')}
+                </Text>
+              </Flex>
+              <Flex mb="S_8" justifyContent="space-between">
+                <Text textStyle="R_14R" color="mediumgrey">
+                  {t('Period End')}
+                </Text>
+                <Flex flexDirection="column" alignItems="flex-end">
+                  <Text textStyle="R_14M" color="deepgrey">
+                    {end}
+                  </Text>
+                  <Text textStyle="R_12R" color="mediumgrey">
+                    {t('*Asia/Seoul')}
+                  </Text>
+                </Flex>
+              </Flex>
+              <Flex mb="S_8" justifyContent="space-between">
+                <Text textStyle="R_14R" color="mediumgrey">
+                  {t('vFINIX Earn')}
+                </Text>
+                <Text textStyle="R_14M" color="deepgrey">
+                  {earn} {t('vFINIX')}
+                </Text>
+              </Flex>
+              <Flex mt="S_12" alignItems="flex-start">
+                {/* <img
+                  style={{ marginTop: '2px', marginRight: '4px' }}
+                  width={16}
+                  height={16}
+                  src={IconAlert}
+                  srcSet={`${IconAlert2x} 2x, ${IconAlert3x} 3x`}
+                  alt="Icon-Alert"
+                /> */}
+                <Text textStyle="R_14R" color="red">
+                  {t('FINIX amount will be locked 7 days')}
                 </Text>
               </Flex>
             </Flex>
@@ -86,9 +118,11 @@ const StakeModal: React.FC<ModalProps> = ({
             </Flex>
           </Flex>
         </StyledBox>
+      </ModalBody>
+      <ModalFooter>
         <Button onClick={onOK}>{t('Stake')}</Button>
-      </Modal>
-    </>
+      </ModalFooter>
+    </Modal>
   )
 }
 

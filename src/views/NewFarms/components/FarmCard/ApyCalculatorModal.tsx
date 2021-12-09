@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import useConverter from 'hooks/useConverter'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex, ColorStyles, Divider, Box } from 'definixswap-uikit'
+import { Modal, Text, LinkExternal, Flex, ColorStyles, Divider, Box, ModalBody, ModalFooter } from 'definixswap-uikit'
 import { calculateFinixEarnedPerThousandDollars, apyModalRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
@@ -55,7 +55,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
 
   return (
     <Modal title={t('ROI')} onDismiss={onDismiss} mobileFull>
-      <Box style={{ maxWidth: '416px' }}>
+      <ModalBody style={{ maxWidth: '416px' }}>
         <Grid className="mt-s16 mb-s20">
           {headerData.map((header) => (
             <Box>
@@ -88,12 +88,14 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
         <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY} className="my-s20">
           {t('Calculated based on current rates')}
         </Text>
+      </ModalBody>
+      <ModalFooter>
         <Flex justifyContent="center">
           <LinkExternal href={addLiquidityUrl} textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
             {t('Get {{FINIX-KLAY}} LP', { 'FINIX-KLAY': lpLabel })}
           </LinkExternal>
         </Flex>
-      </Box>
+      </ModalFooter>
     </Modal>
   )
 }
