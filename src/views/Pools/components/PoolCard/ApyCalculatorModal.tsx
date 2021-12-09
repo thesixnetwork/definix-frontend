@@ -3,7 +3,17 @@ import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import useConverter from 'hooks/useConverter'
 import styled from 'styled-components'
-import { Modal, Text, LinkExternal, Flex, ColorStyles, Divider, Box, ModalBody, ModalFooter } from 'definixswap-uikit-v2'
+import {
+  Modal,
+  Text,
+  LinkExternal,
+  Flex,
+  ColorStyles,
+  Divider,
+  Box,
+  ModalBody,
+  ModalFooter,
+} from 'definixswap-uikit-v2'
 import { calculateFinixEarnedPerThousandDollarsOfPool, apyModalRoi } from 'utils/compoundApyHelpers'
 
 interface ApyCalculatorModalProps {
