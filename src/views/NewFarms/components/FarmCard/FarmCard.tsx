@@ -174,7 +174,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   const ribbonProps = useMemo(() => {
     if (typeof farm.tag === 'string') {
       return {
-        ribbon: <CardRibbon variantColor={ColorStyles.RED} text={farm.tag} />
+        ribbon: <CardRibbon variantColor={ColorStyles.RED} text={farm.tag} />,
       }
     }
     return null
