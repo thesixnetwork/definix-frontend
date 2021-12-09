@@ -1,4 +1,3 @@
-import { DefaultTheme } from 'styled-components'
 import { dark as darkAlert } from '../components/Alert/theme'
 import { dark as darkButton } from '../components/Button/theme'
 import { dark as darkCard } from '../components/Card/theme'

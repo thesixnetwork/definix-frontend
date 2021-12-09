@@ -15,7 +15,7 @@ import {
   NotiType,
   Button,
   ButtonVariants,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 
 const ButtonWrap = styled(Box)`
   margin-top: ${({ theme }) => theme.spacing.S_40}px;

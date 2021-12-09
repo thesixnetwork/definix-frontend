@@ -9,7 +9,7 @@ import {
   ImgFarmIcon,
   ImgMyInvestmentDefaultIcon,
   ImgRebalancingIcon,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
   justify-content: space-between;

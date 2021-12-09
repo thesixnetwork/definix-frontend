@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import numeral from 'numeral'
-import { Flex, Text } from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import { DataType } from './types'

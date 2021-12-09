@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, FireIcon } from 'definixswap-uikit'
+import { Flex, Text, Button, FireIcon } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import { IsMobileType } from './types'

@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Text, lightColors } from 'definixswap-uikit'
+import { Flex, Text, lightColors } from 'definixswap-uikit-v2'
 
 import { IsMobileType } from './types'
 

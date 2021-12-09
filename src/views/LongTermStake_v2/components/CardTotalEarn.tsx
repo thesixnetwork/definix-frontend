@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Flex } from 'definixswap-uikit'
+import { Card, Flex } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import FinixEarn from './FinixEarn'

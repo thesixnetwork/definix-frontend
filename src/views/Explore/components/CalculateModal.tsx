@@ -7,7 +7,7 @@ import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
 import { useTranslation } from 'react-i18next'
 import rebalanceAbi from 'config/abi/rebalance.json'
-import { Box, Button, Text, Modal, useMatchBreakpoints, Flex, Noti, NotiType } from 'definixswap-uikit'
+import { Box, Button, Text, Modal, useMatchBreakpoints, Flex, Noti, NotiType, ModalFooter, ModalBody } from 'definixswap-uikit-v2'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
@@ -134,7 +134,7 @@ const CalculateModal = ({
   }
   return (
     <Modal title={t('Confirm Invest')} mobileFull onDismiss={onDismiss}>
-      <>
+      <ModalBody>
         <CardHeading
           rebalance={rebalance}
           isHorizontal={isMobile}
@@ -170,6 +170,8 @@ const CalculateModal = ({
             />
           </Flex>
         </Box>
+      </ModalBody>
+      <ModalFooter>
         <Button className="mt-s40" width="100%" isLoading={isInvesting} onClick={onInvest}>
           {t('Invest')}
         </Button>
@@ -178,7 +180,7 @@ const CalculateModal = ({
             {calNewImpact >= 0.15 ? t('Price Impact Too High') : t('This swap has a price impact of at least 10%')}
           </Noti>
         )}
-      </>
+      </ModalFooter>
     </Modal>
   )
 }

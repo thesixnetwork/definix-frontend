@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, Divider } from 'definixswap-uikit'
+import { Flex, Text, Button, Divider } from 'definixswap-uikit-v2'
 
 interface ItemType {
-  period: string
+  period: number
   amount: string
   end: string
 }

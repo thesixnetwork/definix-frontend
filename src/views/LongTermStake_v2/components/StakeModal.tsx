@@ -1,13 +1,25 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { Box, Flex, Text, Modal, Button, Divider, ImgTokenFinixIcon, AlertIcon } from 'definixswap-uikit'
+import { useTranslation, Trans } from 'react-i18next'
+import numeral from 'numeral'
+import {
+  Box,
+  Flex,
+  Text,
+  Modal,
+  Button,
+  Divider,
+  ImgTokenFinixIcon,
+  AlertIcon,
+  ModalBody,
+  ModalFooter,
+} from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 interface ModalProps {
   balance: string
-  period: string
+  period: number
   end: string
-  earn: string
+  earn: number
   onOK?: () => any
   onDismiss?: () => any
 }
@@ -30,9 +42,22 @@ const StakeModal: React.FC<ModalProps> = ({
 }) => {
   const { t } = useTranslation()
 
+  const getLockDay = (day: number) => {
+    switch (day) {
+      case 90:
+        return 'FINIX amount will be locked 7 days'
+      case 180:
+        return 'FINIX amount will be locked 14 days'
+      case 365:
+        return 'FINIX amount will be locked 28 days'
+      default:
+        return ''
+    }
+  }
+
   return (
-    <>
-      <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
+    <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
+      <ModalBody>
         <StyledBox mb="S_30">
           <Flex mt="S_14" mb="S_24" justifyContent="space-between" alignItems="center">
             <Flex alignItems="center">
@@ -42,7 +67,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
             </Flex>
             <Text textStyle="R_16R" color="black">
-              {balance}
+              {numeral(Number(balance)).format('0,0.[000000]')}
             </Text>
           </Flex>
           <Divider />
@@ -61,7 +86,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
               <Flex flexDirection="column" alignItems="flex-end">
                 <Text textStyle="R_14M" color="deepgrey">
-                  {end}
+                  {end} GMT+9
                 </Text>
                 <Text textStyle="R_12R" color="mediumgrey">
                   {t('*Asia/Seoul')}
@@ -80,15 +105,17 @@ const StakeModal: React.FC<ModalProps> = ({
               <Flex mt="S_2">
                 <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               </Flex>
-              <Text ml="S_4" textStyle="R_14R" color="red">
-                {t('FINIX amount will be locked 7 days')}
+              <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
+                <Trans i18nKey={getLockDay(period)} components={{ bold: <strong /> }} />
               </Text>
             </Flex>
           </Flex>
         </StyledBox>
+      </ModalBody>
+      <ModalFooter>
         <Button onClick={onOK}>{t('Stake')}</Button>
-      </Modal>
-    </>
+      </ModalFooter>
+    </Modal>
   )
 }
 

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import numeral from 'numeral'
-import { Flex, Text, VDivider } from 'definixswap-uikit'
+import { Flex, Text, VDivider } from 'definixswap-uikit-v2'
 import Coin from './Coin'
 
 const InlineAssetRatioLabel = ({ coin, column = false, small = false, ...props }) => {

@@ -42,20 +42,6 @@ const usePoolsList = ({ farms, pools }) => {
     [klayPriceUSD],
   )
 
-  const getHighestToken = useCallback((stakingTokenFarm) => {
-    let highestToken
-    if (stakingTokenFarm.tokenSymbol === QuoteToken.SIX) {
-      highestToken = stakingTokenFarm.tokenAmount
-    } else if (stakingTokenFarm.quoteTokenSymbol === QuoteToken.SIX) {
-      highestToken = stakingTokenFarm.quoteTokenAmount
-    } else if (stakingTokenFarm.tokenAmount > stakingTokenFarm.quoteTokenAmount) {
-      highestToken = stakingTokenFarm.tokenAmount
-    } else {
-      highestToken = stakingTokenFarm.quoteTokenAmount
-    }
-    return highestToken
-  }, [])
-
   const getKlayBundle = useCallback((stakingTokenFarm) => {
     return (stakingTokenFarm.bundleRewards || []).find((br) => br.rewardTokenInfo.name === QuoteToken.WKLAY)
   }, [])
@@ -103,11 +89,6 @@ const usePoolsList = ({ farms, pools }) => {
       const totalRewardPricePerYear = rewardTokenPriceInKLAY.times(pool.tokenPerBlock).times(BLOCKS_PER_YEAR)
       const totalStakingTokenInPool = stakingTokenPriceInKLAY.times(getBalanceNumber(pool.totalStaked))
       let apy = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
-      const totalLP = new BigNumber(stakingTokenFarm.lpTotalSupply).div(new BigNumber(10).pow(18))
-      const highestToken = getHighestToken(stakingTokenFarm)
-      const tokenPerLp = new BigNumber(totalLP).div(new BigNumber(highestToken))
-      const priceUsdTemp = tokenPerLp.times(2).times(new BigNumber(sixPriceUSD))
-      const estimatePrice = priceUsdTemp.times(new BigNumber(pool.totalStaked).div(new BigNumber(10).pow(18)))
 
       let klayApy = new BigNumber(0)
       switch (pool.sousId) {
@@ -178,7 +159,6 @@ const usePoolsList = ({ farms, pools }) => {
     ethPriceKlay,
     farms,
     finixPriceUSD,
-    getHighestToken,
     getKlayBundle,
     getStakingTokenFarm,
     getTotalValue,

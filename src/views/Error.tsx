@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ErrorBlock } from 'definixswap-uikit'
+import { ErrorBlock } from 'definixswap-uikit-v2'
 import { useHistory } from 'react-router'
 
 const Error = () => {

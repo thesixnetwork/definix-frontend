@@ -1,12 +1,23 @@
 import React from 'react'
 import { getLpImageUrls } from 'utils/getTokenImage'
-import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image } from 'definixswap-uikit'
+import {
+  Button,
+  Modal,
+  ButtonVariants,
+  Box,
+  Flex,
+  Text,
+  ColorStyles,
+  Image,
+  ModalBody,
+  ModalFooter,
+} from 'definixswap-uikit-v2'
 
 const ConfirmModal = ({ title, lpSymbol, buttonName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpSymbol)
   return (
     <Modal title={title} onDismiss={onDismiss}>
-      <Box width="464px" className="mt-s16 mb-s40">
+      <ModalBody width="464px" className="mt-s16 mb-s40">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Flex className="mr-s12">
@@ -25,18 +36,19 @@ const ConfirmModal = ({ title, lpSymbol, buttonName, stakedBalance, onOK = () =>
             {stakedBalance}
           </Text>
         </Flex>
-      </Box>
-
-      <Button
-        onClick={() => {
-          onOK()
-          onDismiss()
-        }}
-        variant={ButtonVariants.RED}
-        lg
-      >
-        {buttonName}
-      </Button>
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          onClick={() => {
+            onOK()
+            onDismiss()
+          }}
+          variant={ButtonVariants.RED}
+          lg
+        >
+          {buttonName}
+        </Button>
+      </ModalFooter>
 
       {/* <Button
         onClick={() => {

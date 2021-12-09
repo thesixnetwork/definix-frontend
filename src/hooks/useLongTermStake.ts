@@ -210,7 +210,7 @@ export const useUnLock = () => {
       )
       await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve('')
       })
     }
@@ -223,7 +223,7 @@ export const useUnLock = () => {
   return { unLock: onUnLock }
 }
 
-export const useLock = (level, lockFinix, focus) => {
+export const useLock = (level, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
@@ -256,13 +256,13 @@ export const useLock = (level, lockFinix, focus) => {
               callContract.methods
                 .lock(level, lockFinix)
                 .send({ from: account, gas: estimatedGasLimit })
-                .then((resolve) => {
+                .then(() => {
                   setLoading('success')
                   setStatus(true)
                   setInterval(() => setLoading(''), 5000)
                   setInterval(() => setStatus(false), 5000)
                 })
-                .catch((e) => {
+                .catch(() => {
                   setLoading('')
                   setStatus(false)
                 })
@@ -295,7 +295,7 @@ export const useHarvest = () => {
       )
       await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve('ok')
       })
     }
@@ -322,7 +322,7 @@ export const useApprove = (max) => {
       )
       const txHash = await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve(txHash)
       })
     }
@@ -540,7 +540,7 @@ export const useClaim = () => {
       )
       const txHash = await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve(txHash)
       })
     }

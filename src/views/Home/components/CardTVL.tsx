@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { useTranslation, Trans } from 'react-i18next'
 import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
@@ -9,12 +9,11 @@ import {
   CardBody,
   ColorStyles,
   Text,
-  textStyle,
   Flex,
   ChainBscIcon,
   ChainKlaytnIcon,
   useMatchBreakpoints,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 
 const Title = styled(Text)`
   ${({ theme }) => theme.textStyle.R_18M}

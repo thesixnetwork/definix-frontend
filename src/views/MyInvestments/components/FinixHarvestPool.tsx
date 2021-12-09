@@ -3,7 +3,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import { Text, ColorStyles } from 'definixswap-uikit'
+import { Text, ColorStyles } from 'definixswap-uikit-v2'
 import Locked from './Locked'
 
 const Balance = () => {

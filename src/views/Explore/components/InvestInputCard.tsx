@@ -18,7 +18,7 @@ import {
   NotiType,
   Text,
   useModal,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useBalances, useAllowances, useToast } from 'state/hooks'
@@ -453,7 +453,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
           disabled={underMinimum || inputError || !allApproved || !needsApprovalCoins.length}
           onClick={onPresentCalcModal}
         >
-          {t('Calculate invest amount')} {shares}
+          {t('Calculate invest amount')}
         </Button>
         {underMinimum && (
           <Noti mt="S_12" type={NotiType.ALERT}>

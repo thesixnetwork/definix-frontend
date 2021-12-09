@@ -1,6 +1,17 @@
 import React from 'react'
 import { getTokenImageUrl } from 'utils/getTokenImage'
-import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image } from 'definixswap-uikit'
+import {
+  Button,
+  Modal,
+  ButtonVariants,
+  Box,
+  Flex,
+  Text,
+  ColorStyles,
+  Image,
+  ModalBody,
+  ModalFooter,
+} from 'definixswap-uikit-v2'
 
 const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   return (
@@ -11,7 +22,7 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
       // bodyPadding="0 32px 32px 32px"
       // classHeader="bd-b-n"
     >
-      <Box width="464px" className="mt-s16 mb-s40">
+      <ModalBody width="464px" className="mt-s16 mb-s40">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Box width={48} className="mr-s12">
@@ -25,17 +36,19 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
             {stakedBalance}
           </Text>
         </Flex>
-      </Box>
-      <Button
-        onClick={() => {
-          onOK()
-          onDismiss()
-        }}
-        variant={ButtonVariants.RED}
-        lg
-      >
-        {buttonName}
-      </Button>
+      </ModalBody>
+      <ModalFooter>
+        <Button
+          onClick={() => {
+            onOK()
+            onDismiss()
+          }}
+          variant={ButtonVariants.RED}
+          lg
+        >
+          {buttonName}
+        </Button>
+      </ModalFooter>
     </Modal>
   )
 }

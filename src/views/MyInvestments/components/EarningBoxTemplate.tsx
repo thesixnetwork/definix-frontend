@@ -4,8 +4,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import useConverter from 'hooks/useConverter'
-import { Button, Skeleton, Text, Box, ColorStyles, Flex, Grid, DoubleArrowButtons, FireIcon } from 'definixswap-uikit'
+import { Button, Text, Box, ColorStyles, Flex, Grid, FireIcon } from 'definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
@@ -243,14 +242,18 @@ const EarningBoxTemplate: React.FC<{
             </GridBox>
           ))}
         </GridSection>
-        {!isMobile && (
+        {/* {!isMobile && (
           <DoubleArrowButtons
             disableLeftArrow
             disableRightArrow
-            onClickLeftArrow={() => alert('click left')}
-            onClickRightArrow={() => alert('click right')}
+            onClickLeftArrow={() => {
+              return;
+            }}
+            onClickRightArrow={() => {
+              return;
+            }}
           />
-        )}
+        )} */}
       </GridSectionWrap>
     </Box>
   )

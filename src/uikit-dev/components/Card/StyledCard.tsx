@@ -9,7 +9,7 @@ interface StyledCardProps extends CardProps {
 /**
  * Priority: Warning --> Success --> Active
  */
-const getBoxShadow = ({ isActive, isSuccess, isWarning, isRainbow, theme }: StyledCardProps) => {
+const getBoxShadow = ({ isActive, isSuccess, isWarning, theme }: StyledCardProps) => {
   if (isWarning) {
     return theme.card.boxShadowWarning
   }

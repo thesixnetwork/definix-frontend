@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { compact, get } from 'lodash'
-import { Box, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 
 import { useTranslation } from 'react-i18next'
 

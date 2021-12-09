@@ -7,7 +7,7 @@ import useUnstake from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
 import { useFarmFromSymbol, useFarmUser, useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
@@ -87,8 +87,9 @@ const Withdraw: React.FC<{
   removed: boolean
   lpTokenName: string
   myLiquidityPrice: BigNumber
+  addLiquidityUrl: string
   onBack: () => void
-}> = ({ farm, lpTokenName, myLiquidityPrice, onBack }) => {
+}> = ({ farm, lpTokenName, myLiquidityPrice, addLiquidityUrl, onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
@@ -164,7 +165,7 @@ const Withdraw: React.FC<{
       <TitleSet title={t('Remove LP')} description={t('Remove LPs from the farm.')} />
 
       <CardWrap>
-        <CardHeading farm={farm} lpLabel={lpTokenName} />
+        <CardHeading farm={farm} lpLabel={lpTokenName} addLiquidityUrl={addLiquidityUrl} />
 
         <CardBody>
           <LiquidityInfo hasMb>

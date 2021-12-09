@@ -15,7 +15,7 @@ import {
   CheckboxLabel,
   Checkbox,
   useModal,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { useDeepEqualMemo } from 'hooks/useDeepEqualMemo'
 import { simulateWithdraw } from 'offline-pool'
@@ -253,8 +253,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
       <Button
         scale="lg"
         width="100%"
-        isLoading={isSimulating}
-        disabled={inputHasError || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
+        disabled={isSimulating || inputHasError || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
         onClick={onPresentCalcModal}
       >
         {t('Withdraw')}

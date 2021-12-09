@@ -2,7 +2,7 @@ import React from 'react'
 import { compact } from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import { Flex, Text } from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit-v2'
 import Coin from './Coin'
 
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {

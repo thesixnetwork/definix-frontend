@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Box, Text, ImgTokenFinixIcon } from 'definixswap-uikit'
+import { Flex, Box, Text, ImgTokenFinixIcon } from 'definixswap-uikit-v2'
 
 import ImgTokenVFinix from '../../../assets/images/img-token-vfinix.png'
 import ImgTokenVFinix2x from '../../../assets/images/img-token-vfinix@2x.png'

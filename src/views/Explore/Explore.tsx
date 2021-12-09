@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
-import { Box, Flex, Text, Toggle, useModal } from 'definixswap-uikit'
+import { Box, Flex, Text, Toggle, useModal } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 

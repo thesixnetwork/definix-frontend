@@ -7,7 +7,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet'
 import { Link, Redirect, useHistory } from 'react-router-dom'
-import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import PageTitle from 'components/PageTitle'
 import { useRebalanceBalances, useBalances } from '../../state/hooks'
@@ -26,8 +26,8 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const history = useHistory()
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
-  const [tx, setTx] = useState({})
-  const [isInputting, setIsInputting] = useState(true)
+  const [, setTx] = useState({})
+  const [, setIsInputting] = useState(true)
 
   const dispatch = useDispatch()
   const { account } = useWallet()

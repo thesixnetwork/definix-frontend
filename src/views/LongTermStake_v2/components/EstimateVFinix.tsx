@@ -1,8 +1,13 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text } from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit-v2'
 
-const EstimateVFinix: React.FC = () => {
+interface EstimateVFinixProps {
+  endDay: string
+  earn: number
+}
+
+const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ endDay, earn }) => {
   const { t } = useTranslation()
 
   return (
@@ -17,7 +22,7 @@ const EstimateVFinix: React.FC = () => {
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              02-Nov-2022 17:55:57 GMT+9
+              {endDay} GMT+9
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
               {t('*Asia/Seoul')}
@@ -29,7 +34,7 @@ const EstimateVFinix: React.FC = () => {
             {t('vFINIX Earn')}
           </Text>
           <Text textStyle="R_14M" color="deepgrey">
-            100,000,000.0123444 {t('vFINIX')}
+            {earn} {t('vFINIX')}
           </Text>
         </Flex>
       </Flex>

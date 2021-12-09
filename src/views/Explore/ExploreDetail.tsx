@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet'
 import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Color from 'color'
-import { BackIcon, Box, Button, Card, Flex, Tabs, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { BackIcon, Box, Button, Card, Flex, Tabs, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'

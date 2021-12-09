@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from 'definixswap-uikit'
+import { Flex } from 'definixswap-uikit-v2'
 
 import AprButtonPc from './AprButtonPc'
 import AprButtonMobile from './AprButtonMobile'

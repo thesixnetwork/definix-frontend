@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { Card, Flex, Divider } from 'definixswap-uikit'
+import moment from 'moment'
+import numeral from 'numeral'
+import { Card, Flex, Divider } from 'definixswap-uikit-v2'
 import { useApr, useAllLock } from '../../../hooks/useLongTermStake'
 
 import VFinixAprButton from './VFinixAprButton'
@@ -10,46 +12,59 @@ import ApproveFinix from './ApproveFinix'
 import EstimateVFinix from './EstimateVFinix'
 import { IsMobileType } from './types'
 
+interface CardFinixStakeProps extends IsMobileType {
+  account: string
+}
+
 const FlexCard = styled(Flex)`
   flex-direction: column;
   align-items: center;
 `
 
-const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
+const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, account }) => {
   const [days, setDays] = useState<number>(365)
-  const [minimum1, setMinimum1] = useState<number>(0)
-  const [minimum2, setMinimum2] = useState<number>(0)
-  const [minimum4, setMinimum4] = useState<number>(0)
+  const [inputBalance, setInputBalance] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
+  const today = new Date()
+  const endDay = moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
 
   const data = [
     {
       multiple: 1,
       day: 90,
       apr: apr * 1,
-      minStake: minimum1,
+      minStake: _.get(minimum, '0'),
     },
     {
       multiple: 2,
       day: 180,
       apr: apr * 2,
-      minStake: minimum2,
+      minStake: _.get(minimum, '1'),
     },
     {
       multiple: 4,
       day: 365,
       apr: apr * 4,
-      minStake: minimum4,
+      minStake: _.get(minimum, '2'),
     },
   ]
 
-  useEffect(() => {
-    setMinimum1(_.get(minimum, '0') || 0)
-    setMinimum2(_.get(minimum, '1') || 0)
-    setMinimum4(_.get(minimum, '2') || 0)
-  }, [minimum1, minimum2, minimum4, minimum])
+  const getVFinix = (day: number, balance: string) => {
+    if (!balance) return 0
+
+    switch (day) {
+      case 90:
+        return numeral(Number(balance)).format('0,0.[000000]')
+      case 180:
+        return numeral(Number(balance) * 2).format('0,0.[000000]')
+      case 365:
+        return numeral(Number(balance) * 4).format('0,0.[000000]')
+      default:
+        return 0
+    }
+  }
 
   return (
     <>
@@ -57,10 +72,17 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
-          <BalanceFinix days={days} data={data} />
+          <BalanceFinix days={days} data={data} inputBalance={inputBalance} setInputBalance={setInputBalance} />
           <Divider width="100%" backgroundColor="lightGrey50" />
-          <ApproveFinix isMobile={isMobile} />
-          <EstimateVFinix />
+          <ApproveFinix
+            isMobile={isMobile}
+            account={account}
+            inputBalance={inputBalance}
+            days={days}
+            endDay={endDay}
+            earn={getVFinix(days, inputBalance)}
+          />
+          <EstimateVFinix endDay={endDay} earn={getVFinix(days, inputBalance)} />
         </FlexCard>
       </Card>
     </>

@@ -1,6 +1,6 @@
 import React from 'react'
 import numeral from 'numeral'
-import { Text } from 'definixswap-uikit'
+import { Text } from 'definixswap-uikit-v2'
 
 const BalanceText: React.FC<any> = (props) => {
   const { value, ...rest } = props

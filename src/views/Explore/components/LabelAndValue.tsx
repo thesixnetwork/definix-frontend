@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, FlexProps, Text } from 'definixswap-uikit'
+import { Flex, FlexProps, Text } from 'definixswap-uikit-v2'
 import SignNumber from './SignNumber'
 
 interface LableAndValueType extends FlexProps {

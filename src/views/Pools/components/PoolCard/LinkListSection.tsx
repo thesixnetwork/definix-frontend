@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'definixswap-uikit'
+import { Link } from 'definixswap-uikit-v2'
 
 const LinkListSection: React.FC<{
   isMobile: boolean

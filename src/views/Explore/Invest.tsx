@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet'
 import { useTranslation } from 'react-i18next'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 
-import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 
 import PageTitle from 'components/PageTitle'
 import { Rebalance } from '../../state/types'
