@@ -25,7 +25,7 @@ const Pool: React.FC = () => {
   const [pageData, setPageData] = useState(null)
   const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
   const [searchKeyword, setSearchKeyword] = useState<string>('')
-  
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pageState])
