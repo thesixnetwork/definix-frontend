@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { kebabCase } from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Toast, toastTypes } from 'definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'

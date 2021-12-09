@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { QuoteToken } from 'config/constants/types'

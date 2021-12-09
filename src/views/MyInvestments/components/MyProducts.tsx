@@ -3,11 +3,10 @@ import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { useBalances } from 'state/hooks'
-import { Divider, ColorStyles, Flex, Text, Box, DropdownOption } from 'definixswap-uikit-v2'
+import { Divider, Box, DropdownOption } from 'definixswap-uikit-v2'
 import NoResultArea from 'components/NoResultArea'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
@@ -49,7 +48,6 @@ const MyProducts: React.FC<{
 
   const orderedProducts = useMemo(() => {
     if (!orderBy) return filteredProducts
-    console.log('order products: ', orderBy, filteredProducts)
     return _.orderBy(filteredProducts, orderBy.id, orderBy.orderBy)
   }, [filteredProducts, orderBy])
 

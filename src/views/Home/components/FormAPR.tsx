@@ -1,6 +1,6 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
-import { ColorStyles, Flex, Grid, Text, textStyle } from 'definixswap-uikit-v2'
+import styled from 'styled-components'
+import { ColorStyles, Flex, Grid, Text } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 interface Props {

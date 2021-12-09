@@ -209,12 +209,12 @@ const CardStake = ({ isShowRightPanel }) => {
   const [days, setdays] = useState(28)
   const [percentPenalty, setPercentPenalty] = useState(0)
   const [lockFinix, setLockFinix] = useState('')
-  const [click, setClick] = useState(false)
+  const [click] = useState(false)
   const [percent, setPercent] = useState(0)
   const [isDisabled, setIsDisabled] = useState(false)
   const [flgTextWarning, setFlgTextWarning] = useState('')
   const [flgButton, setFlgButton] = useState('')
-  const [requestedApproval, setRequestedApproval] = useState(false)
+  const [, setRequestedApproval] = useState(false)
   const [transactionHash, setTransactionHash] = useState('')
   const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
@@ -273,7 +273,7 @@ const CardStake = ({ isShowRightPanel }) => {
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
   }, [period, value, periodEnd, allLockPeriod, realPenaltyRate])
 
-  const { onStake, status, loadings } = useLock(letvel, lockFinix, click)
+  const { onStake, status, loadings } = useLock(letvel, lockFinix)
   useEffect(() => {
     if (status) {
       setVFINIX(0)

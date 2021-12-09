@@ -118,7 +118,7 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
   const { isSm, isMd } = useMatchBreakpoints()
   const isMobile = isSm || isMd
   const [selectedTokens, setSelectedTokens] = useState({})
-  const data = (canvas) => {
+  const data = () => {
     return {
       labels: get(graphData, 'labels', []),
       datasets: Object.keys(get(graphData, 'graph', {}))
@@ -187,7 +187,7 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
         intersect: true,
       },
       callbacks: {
-        title: (tooltipItem, dataTooltip, ...props) => {
+        title: (tooltipItem, dataTooltip) => {
           const index = tooltipItem[0].datasetIndex
           const curGraph = dataTooltip.datasets[index]
           return curGraph?.label

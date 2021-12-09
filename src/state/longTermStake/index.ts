@@ -9,7 +9,7 @@ import IKIP7 from 'config/abi/IKIP7.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import TokenFacet from 'config/abi/TokenFacet.json'
 import multicall from 'utils/multicall'
-import { getFinixAddress, getVFinix, getAddress } from 'utils/addressHelpers'
+import { getFinixAddress, getVFinix } from 'utils/addressHelpers'
 import _ from 'lodash'
 
 const initialState = {

@@ -1,4 +1,4 @@
-import { MediaQueries, Breakpoints, Spacing } from './types'
+import { MediaQueries, Breakpoints } from './types'
 
 export const breakpointMap: { [key: string]: number } = {
   xs: 320,
@@ -33,8 +33,6 @@ export const shadows = {
   elevation2: '0 6px 9px rgba(0,0,0,0.16)',
   elevation3: '0 6px 30px rgba(165, 194, 205, 0.5)',
 }
-
-const spacing: Spacing = [0, 4, 8, 16, 24, 32, 48, 64]
 
 const radii = {
   small: '8px',

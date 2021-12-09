@@ -37,7 +37,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
   const history = useHistory()
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
-  const [tx, setTx] = useState({})
+  const [, setTx] = useState({})
   const [poolUSDBalancesState, setPoolUSDBalances] = useState([])
   const [poolAmounts, setPoolAmounts] = useState([])
   const [sumPoolAmount, setSumPoolAmount] = useState(0)

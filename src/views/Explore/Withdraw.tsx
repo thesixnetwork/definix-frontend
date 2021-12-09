@@ -26,8 +26,8 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
   const history = useHistory()
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
-  const [tx, setTx] = useState({})
-  const [isInputting, setIsInputting] = useState(true)
+  const [, setTx] = useState({})
+  const [, setIsInputting] = useState(true)
 
   const dispatch = useDispatch()
   const { account } = useWallet()

@@ -5,13 +5,12 @@ import useRefresh from 'hooks/useRefresh'
 import { fetchTVL } from 'state/actions'
 import { useBurnedBalance, useTotalSupply, useTotalTransfer } from 'hooks/useTokenBalance'
 import { usePriceFinixUsd } from 'state/hooks'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import {
   Card,
   CardBody,
   ColorStyles,
   Text,
-  textStyle,
   Flex,
   Button,
   TokenFinixIcon,

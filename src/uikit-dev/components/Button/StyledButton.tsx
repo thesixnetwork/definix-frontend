@@ -2,7 +2,7 @@
 
 import styled, { DefaultTheme } from 'styled-components'
 import { space } from 'styled-system'
-import { ButtonProps, ButtonThemeVariant, variants } from './types'
+import { ButtonProps } from './types'
 
 type ThemedProps = {
   theme: DefaultTheme
@@ -40,20 +40,8 @@ const removePointerEvents = ({ disabled, as }: ThemedProps) => {
   return ''
 }
 
-const getButtonVariantProp =
-  (prop: keyof ButtonThemeVariant) =>
-  ({ theme, variant = variants.PRIMARY }: ThemedProps) => {
-    // return theme.button[variant][prop]
-    return ''
-  }
-
 const StyledButton = styled.button<ButtonProps>`
   align-items: center;
-  background-color: ${getButtonVariantProp('background')};
-  border: ${getButtonVariantProp('border')};
-  border-radius: ${({ radii, theme }) => (radii ? theme.radii[radii] : '40px')};
-  // box-shadow: ${getButtonVariantProp('boxShadow')};
-  color: ${getButtonVariantProp('color')};
   cursor: pointer;
   display: inline-flex;
   font-family: inherit;
@@ -69,26 +57,6 @@ const StyledButton = styled.button<ButtonProps>`
   padding: ${({ size }) => (size === 'xs' || size === 'sm' ? '0 20px' : '0 24px')};
   transition: background-color 0.1s;
   opacity: ${({ isLoading }) => (isLoading ? 0.5 : 1)};
-
-  &:hover:not(:disabled):not(.button--disabled):not(:active) {
-    background-color: ${getButtonVariantProp('backgroundHover')};
-    border-color: ${getButtonVariantProp('borderColorHover')};
-    color: ${getButtonVariantProp('colorHover')};
-
-    svg {
-      fill: ${getButtonVariantProp('colorHover')};
-      stroke: ${({ isStroke }) => (isStroke ? getButtonVariantProp('colorHover') : 'none')};
-    }
-  }
-
-  // &:focus:not(:active) {
-  //   box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.secondary};
-  // }
-
-  &:active {
-    background-color: ${getButtonVariantProp('backgroundActive')};
-    box-shadow: ${getButtonVariantProp('boxShadowActive')};
-  }
 
   ${getDisabledStyles}
   ${removePointerEvents}

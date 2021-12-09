@@ -54,7 +54,7 @@ const StyledText = styled(Text)`
 
 const BalanceFinix: React.FC<BalanceProps> = ({ days, data }) => {
   const { t } = useTranslation()
-  const [balance, setBalance] = useState<number>(1200.20002)
+  const [balance] = useState<number>(1200.20002)
   const [inputBalance, setInputBalance] = useState<string>()
   const [inSufficient, setInSufficient] = useState<boolean>(false)
   const [selected, setSelected] = useState<string>('')

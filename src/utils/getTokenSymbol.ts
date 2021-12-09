@@ -18,7 +18,6 @@ export const getTokenSymbol = (tokenAddress) => {
     const symbol = addresses[tokenAddress]
     return symbol === 'WKLAY' ? 'KLAY' : symbol
   } catch (error) {
-    console.log(error)
     return '-'
   }
 }
