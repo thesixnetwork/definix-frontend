@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Menu as UikitMenu } from 'definixswap-uikit'
+import { Menu as UikitMenu } from 'definixswap-uikit-v2'
 import { useTranslation, Trans } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { supportedLanguages } from 'config/localisation/languageCodes'

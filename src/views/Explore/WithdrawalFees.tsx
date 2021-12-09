@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Helper, Text } from 'definixswap-uikit'
+import { Card, Helper, Text } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 const WithDrawalFees = ({ managementFee, bountyFee, buybackFee, className = '' }) => {

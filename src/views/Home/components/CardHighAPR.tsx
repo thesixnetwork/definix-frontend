@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Card, CardBody, ColorStyles, Text, Flex, HomeFarmFinixIcon } from 'definixswap-uikit'
+import { Card, CardBody, ColorStyles, Text, Flex, HomeFarmFinixIcon } from 'definixswap-uikit-v2'
 import FarmHighAPR from './FarmHighAPR'
 import ExploreHighAPR from './ExploreHighAPR'
 

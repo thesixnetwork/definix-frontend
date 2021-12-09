@@ -7,7 +7,7 @@ import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uikit'
+import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
 const Wrap = styled(Flex)<{ isInFarm: boolean }>`

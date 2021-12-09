@@ -1,6 +1,6 @@
 import React from 'react'
 import { get } from 'lodash'
-import { CopyToClipboard, Flex, Helper, Text, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
+import { CopyToClipboard, Flex, Helper, Text, useMatchBreakpoints, VDivider } from 'definixswap-uikit-v2'
 
 import { useTranslation } from 'react-i18next'
 import EllipsisText from 'components/EllipsisText'

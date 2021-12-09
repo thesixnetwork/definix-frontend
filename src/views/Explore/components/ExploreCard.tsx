@@ -22,7 +22,7 @@ import {
   ColorStyles,
   Divider,
   VDivider,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 import AssetRatio from './AssetRatio'
 import CardHeading, { CardTitle, CardImage } from './CardHeading'
 import MiniChart from './MiniChart'

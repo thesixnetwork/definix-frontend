@@ -17,7 +17,7 @@ import {
   TokenFinixIcon,
   useMatchBreakpoints,
   Divider,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 import { getFinixAddress } from 'utils/addressHelpers'
 import { getBalanceNumber } from 'utils/formatBalance'
 

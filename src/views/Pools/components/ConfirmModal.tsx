@@ -1,6 +1,6 @@
 import React from 'react'
 import { getTokenImageUrl } from 'utils/getTokenImage'
-import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image, ModalBody, ModalFooter } from 'definixswap-uikit'
+import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image, ModalBody, ModalFooter } from 'definixswap-uikit-v2'
 
 const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, FlexProps } from 'definixswap-uikit'
+import { Flex, FlexProps } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 const Size = {

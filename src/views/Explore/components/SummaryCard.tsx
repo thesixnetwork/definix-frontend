@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useCallback, useMemo } from 'react'
-import { Card, CardBody, Divider, Flex, VDivider } from 'definixswap-uikit'
+import { Card, CardBody, Divider, Flex, VDivider } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import CardHeading from './CardHeading'
 import RiskOMeter from './RiskOMeter'

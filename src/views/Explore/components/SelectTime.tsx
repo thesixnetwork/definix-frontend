@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonGroup } from 'definixswap-uikit'
+import { Button, ButtonGroup } from 'definixswap-uikit-v2'
 
 const SelectTime = ({ timeframe, setTimeframe, className = '' }) => {
   const times = ['1 D', '1 W', '1 M', '3 M', 'ALL']

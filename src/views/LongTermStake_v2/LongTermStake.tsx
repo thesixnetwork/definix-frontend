@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Box, useMatchBreakpoints } from 'definixswap-uikit'
+import { Box, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import TitleStake from './components/TitleStake'

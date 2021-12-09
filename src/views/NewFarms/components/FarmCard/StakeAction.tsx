@@ -7,7 +7,7 @@ import { useApprove } from 'hooks/useApprove'
 import useConverter from 'hooks/useConverter'
 import { useFarmUnlockDate } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from 'definixswap-uikit'
+import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from 'definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 import UnlockButton from 'components/UnlockButton'
 

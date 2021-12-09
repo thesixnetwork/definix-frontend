@@ -15,7 +15,7 @@ import {
   ColorStyles,
   useMatchBreakpoints,
   Grid,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 // import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
 import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, useModal, ImgTokenFinixIcon, CheckBIcon, AlertIcon } from 'definixswap-uikit'
+import { Flex, Text, Button, useModal, ImgTokenFinixIcon, CheckBIcon, AlertIcon } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import StakeModal from './StakeModal'

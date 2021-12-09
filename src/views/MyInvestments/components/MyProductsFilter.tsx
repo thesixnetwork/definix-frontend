@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Box, DropdownOption, DropdownSet, SearchInput } from 'definixswap-uikit'
+import { Flex, Box, DropdownOption, DropdownSet, SearchInput } from 'definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
   justify-content: space-between;

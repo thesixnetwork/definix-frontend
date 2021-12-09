@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Card, Flex, useModal } from 'definixswap-uikit'
+import { Card, Flex, useModal } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import UnstakeModal from './UnstakeModal'

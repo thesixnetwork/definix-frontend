@@ -14,7 +14,7 @@ import {
   ChainBscIcon,
   ChainKlaytnIcon,
   useMatchBreakpoints,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 
 const Title = styled(Text)`
   ${({ theme }) => theme.textStyle.R_18M}

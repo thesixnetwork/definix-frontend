@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { Card, Flex, Divider } from 'definixswap-uikit'
+import { Card, Flex, Divider } from 'definixswap-uikit-v2'
 import { useApr, useAllLock } from '../../../hooks/useLongTermStake'
 
 import VFinixAprButton from './VFinixAprButton'

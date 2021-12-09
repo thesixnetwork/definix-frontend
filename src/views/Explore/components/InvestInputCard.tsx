@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { get } from 'lodash'
 import { provider } from 'web3-core'
 
-import { Box, Button, Card, CardBody, CheckBIcon, Divider, Flex, Text } from 'definixswap-uikit'
+import { Box, Button, Card, CardBody, CheckBIcon, Divider, Flex, Text } from 'definixswap-uikit-v2'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'

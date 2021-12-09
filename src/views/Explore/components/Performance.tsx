@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { Divider, Flex, useMatchBreakpoints, VDivider } from 'definixswap-uikit'
+import { Divider, Flex, useMatchBreakpoints, VDivider } from 'definixswap-uikit-v2'
 
 import { Rebalance } from '../../../state/types'
 

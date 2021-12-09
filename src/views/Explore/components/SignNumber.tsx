@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Text, TextProps } from 'definixswap-uikit'
+import { Text, TextProps } from 'definixswap-uikit-v2'
 
 interface SingType extends TextProps {
   value?: number

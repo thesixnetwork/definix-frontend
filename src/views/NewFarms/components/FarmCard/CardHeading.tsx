@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useConverter from 'hooks/useConverter'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { Flex, Box, Text, ColorStyles } from 'definixswap-uikit'
+import { Flex, Box, Text, ColorStyles } from 'definixswap-uikit-v2'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 

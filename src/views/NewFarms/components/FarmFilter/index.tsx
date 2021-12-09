@@ -11,7 +11,7 @@ import {
   SearchInput,
   useMatchBreakpoints,
   DropdownOption,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 
 const ToggleSection = styled(Flex)`
   align-items: center;

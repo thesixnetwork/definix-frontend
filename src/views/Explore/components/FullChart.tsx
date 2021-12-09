@@ -2,7 +2,7 @@ import { get } from 'lodash'
 import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
-import { Checkbox, CheckboxLabel, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { Checkbox, CheckboxLabel, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
 

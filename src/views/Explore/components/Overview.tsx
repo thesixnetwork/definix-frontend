@@ -1,5 +1,5 @@
 import React from 'react'
-import { CardBody, useMatchBreakpoints } from 'definixswap-uikit'
+import { CardBody, useMatchBreakpoints } from 'definixswap-uikit-v2'
 
 import { Rebalance } from '../../../state/types'
 import KeyFacts from './KeyFacts'

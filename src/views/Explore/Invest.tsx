@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { get, isEqual, compact } from 'lodash'
 
-import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints, useModal } from 'definixswap-uikit'
+import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints, useModal } from 'definixswap-uikit-v2'
 
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { getAddress } from 'utils/addressHelpers'

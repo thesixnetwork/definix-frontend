@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text } from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit-v2'
 
 const EstimateVFinix: React.FC = () => {
   const { t } = useTranslation()

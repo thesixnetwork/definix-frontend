@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { TitleSet, Flex } from 'definixswap-uikit'
+import { TitleSet, Flex } from 'definixswap-uikit-v2'
 
 const TitleStake: React.FC = () => {
   const { t } = useTranslation()

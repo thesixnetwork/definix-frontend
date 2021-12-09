@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Text } from 'definixswap-uikit'
+import { Flex, Text } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import ArrowLeftIcon from '../../../assets/images/ico-16-arrow-left-g.png'

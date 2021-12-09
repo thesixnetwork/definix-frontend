@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Divider } from 'definixswap-uikit'
+import { Flex, Text, Divider } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 const StyledFlex = styled(Flex)`

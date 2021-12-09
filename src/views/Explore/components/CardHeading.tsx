@@ -3,7 +3,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Box, BoxProps } from 'definixswap-uikit'
+import { Flex, Text, Box, BoxProps } from 'definixswap-uikit-v2'
 import { Rebalance } from '../../../state/types'
 
 interface CardHeadingType extends BoxProps {

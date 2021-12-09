@@ -7,7 +7,7 @@ import { rgba } from 'polished'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from 'definixswap-uikit'
+import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { Input as NumericalInput } from './NumericalInput'
 import Coin from './Coin'
 

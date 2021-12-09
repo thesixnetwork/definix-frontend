@@ -19,7 +19,7 @@ import {
   ColorStyles,
   useMatchBreakpoints,
   Grid,
-} from 'definixswap-uikit'
+} from 'definixswap-uikit-v2'
 import CardHeading from './CardHeading'
 import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
