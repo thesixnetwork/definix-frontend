@@ -40,7 +40,7 @@ const ExpandMore = styled((props) => {
 
 const VotingPower = () => {
   // const { account } = useWallet()
-  // const { isDark } = useTheme()
+  const { isDark } = useTheme()
   // const { isXl, isLg } = useMatchBreakpoints()
   // const isMobile = !isXl && !isLg
 
@@ -48,6 +48,7 @@ const VotingPower = () => {
   const handleExpandClick = () => {
     setExpanded(!expanded)
   }
+
 
   return (
     <>
@@ -67,7 +68,7 @@ const VotingPower = () => {
                 2,938.23
               </Text>
               <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
-                <ChevronDown />
+                <ChevronDown color={isDark ? 'white' : 'black'}/>
               </ExpandMore>
             </div>
           </Box>
