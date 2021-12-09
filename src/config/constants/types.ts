@@ -96,6 +96,7 @@ export interface FarmConfig {
   }
   firstToken?: any
   secondToken?: any
+  tag?: string
 }
 
 export interface LongTermStakeConfig {

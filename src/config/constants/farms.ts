@@ -44,6 +44,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.six,
+    tag: 'New'
   },
   {
     pid: 3,
@@ -55,6 +56,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.wklay,
+    tag: 'New'
   },
   {
     pid: 4,
@@ -66,6 +68,7 @@ const farms: FarmConfig[] = [
     quoteTokenAdresses: contracts.finix,
     firstToken: contracts.finix,
     secondToken: contracts.ksp,
+    tag: 'New'
   },
   {
     pid: 5,

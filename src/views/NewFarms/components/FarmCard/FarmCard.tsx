@@ -168,6 +168,17 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * link section
    */
   const renderLinkSection = useCallback(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
+  /**
+   * ribbon
+   */
+  const ribbonProps = useMemo(() => {
+    if (typeof farm.tag === 'string') {
+      return {
+        ribbon: <CardRibbon variantColor={ColorStyles.RED} text={farm.tag} />
+      }
+    }
+    return null
+  }, [farm.tag])
 
   if (componentType === 'myInvestment') {
     return (
@@ -183,7 +194,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
 
   return (
     <>
-      <CardWrap ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
+      <CardWrap {...ribbonProps}>
         {isMobile ? (
           <>
             <Wrap>
