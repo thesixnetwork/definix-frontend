@@ -707,7 +707,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                                 farms: true,
                                 pid: d.props.farm.pid,
                                 status: false,
-                                pendingReward: d.props.farm.userData.earnings,
+                                pendingReward: new BigNumber(d.props.farm.userData.earnings)
+                                  .div(new BigNumber(10).pow(18))
+                                  .toNumber(),
                               },
                             })
                           }}
