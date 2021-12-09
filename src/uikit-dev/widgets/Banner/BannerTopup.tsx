@@ -116,7 +116,7 @@ const BannerTopup = () => {
     <>
       {isMobileOrTablet ? (
         <>
-          {earningsSum <= 0 && (
+          {totalAllMyFarms > 0 && (
             <BannerTopupMobile>
               <div className="pa-4 pos-relative" style={{ zIndex: 1 }}>
                 <div className="flex align-center">
@@ -152,7 +152,7 @@ const BannerTopup = () => {
         </>
       ) : (
         <>
-          {earningsSum <= 0 && (
+          {totalAllMyFarms > 0 && (
             <BannerTopupStyle>
               <div className="flex align-center px-6 pos-relative" style={{ zIndex: 1 }}>
                 <HeaderBanner color="text">
