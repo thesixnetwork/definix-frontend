@@ -21,7 +21,7 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
   const [onPresentUnstakeModal] = useModal(
     <UnstakeModal
       balance="1,000"
-      period="90"
+      period={90}
       apr="43.56%"
       fee="15%"
       end="08-Nov-21 14:57:20 GMT+9"
@@ -34,22 +34,22 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
 
   const data = [
     {
-      period: '90',
+      period: 90,
       amount: '3,000',
       end: '08-Nov-21 14:57:20 GMT+9',
     },
     {
-      period: '180',
+      period: 180,
       amount: '10,000',
       end: '08-Nov-21 14:57:21 GMT+9',
     },
     {
-      period: '365',
+      period: 365,
       amount: '30,000',
       end: '08-Nov-21 14:57:22 GMT+9',
     },
     {
-      period: '365',
+      period: 365,
       amount: '30,000,000',
       end: '08-Nov-21 14:57:23 GMT+9',
     },

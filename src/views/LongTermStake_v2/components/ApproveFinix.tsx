@@ -6,6 +6,10 @@ import styled from 'styled-components'
 import StakeModal from './StakeModal'
 import { IsMobileType } from './types'
 
+interface ApproveFinixProps extends IsMobileType {
+  account: string
+}
+
 const FlexApprove = styled(Flex)`
   flex-direction: column;
   margin-top: 32px;
@@ -29,14 +33,18 @@ const FlexApprroveBtn = styled(Flex)`
   }
 `
 
-const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
+const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, account }) => {
   const { t } = useTranslation()
   const [onPresentStakeModal] = useModal(
-    <StakeModal balance="1,000" period="90" end="08-Nov-21 14:57:20 GMT+9" earn="1,000" onOK={() => null} />,
+    <StakeModal balance="1,000" period={90} end="08-Nov-21 14:57:20 GMT+9" earn="1,000" onOK={() => null} />,
     false,
   )
   const [approve, setApprove] = useState<boolean>(true)
   const [error, setError] = useState<string>('')
+
+  const onClickUnlockWallet = () => {
+    return null
+  }
 
   useEffect(() => {
     // 에러 조건 만들고 그에 맞는 메시지 넣기
@@ -53,22 +61,28 @@ const ApproveFinix: React.FC<IsMobileType> = ({ isMobile }) => {
               {t('FINIX')}
             </Text>
           </Flex>
-          <Button width={`${isMobile ? '100%' : '186px'}`} variant={`${approve ? 'line' : 'brown'}`} disabled={approve}>
-            {approve && (
-              <Flex mr="S_6">
-                <CheckBIcon opacity="0.5" viewBox="0 0 16 16" width="16px" height="16px" />
-              </Flex>
-            )}
-            {approve
-              ? t('Approved to {{Token}}', { Token: t('FINIX') })
-              : t('Approve {{Token}}', { Token: t('FINIX') })}
-          </Button>
+          {account && (
+            <Button
+              width={`${isMobile ? '100%' : '186px'}`}
+              variant={`${approve ? 'line' : 'brown'}`}
+              disabled={approve}
+            >
+              {approve && (
+                <Flex mr="S_6">
+                  <CheckBIcon opacity="0.5" viewBox="0 0 16 16" width="16px" height="16px" />
+                </Flex>
+              )}
+              {approve
+                ? t('Approved to {{Token}}', { Token: t('FINIX') })
+                : t('Approve {{Token}}', { Token: t('FINIX') })}
+            </Button>
+          )}
         </FlexApprroveBtn>
         <Flex flexDirection="column">
-          <Button mb="S_12" disabled={!approve} onClick={onPresentStakeModal}>
-            {t('Stake')}
+          <Button mb="S_12" disabled={!approve} onClick={account ? onPresentStakeModal : onClickUnlockWallet}>
+            {account ? t('Stake') : t('Unlock Wallet')}
           </Button>
-          {error && (
+          {account && error && (
             <Flex alignItems="center">
               <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               <Text ml="S_4" textStyle="R_14R" color="red">

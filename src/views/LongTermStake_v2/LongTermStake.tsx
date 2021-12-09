@@ -22,7 +22,7 @@ const LongTermStake: React.FC = () => {
         <TitleStake />
         <CardTotalStake isMobile={isMobile} />
         {account && <CardTotalEarn isMobile={isMobile} />}
-        <CardFinixStake isMobile={isMobile} />
+        <CardFinixStake isMobile={isMobile} account={account} />
         {account && <CardStakeList isMobile={isMobile} />}
       </Box>
     </>
