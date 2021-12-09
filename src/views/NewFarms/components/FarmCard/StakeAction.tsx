@@ -125,7 +125,14 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
               )}
             </Flex>
           ) : (
-            <Button width="100%" md variant={ButtonVariants.BROWN} disabled={requestedApproval} isLoading={!hasUserData} onClick={handleApprove}>
+            <Button
+              width="100%"
+              md
+              variant={ButtonVariants.BROWN}
+              disabled={requestedApproval}
+              isLoading={!hasUserData}
+              onClick={handleApprove}
+            >
               {t('Approve Contract')}
             </Button>
           )}
