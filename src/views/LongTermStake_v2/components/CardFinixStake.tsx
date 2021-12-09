@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
+import moment from 'moment'
 import { Card, Flex, Divider } from 'definixswap-uikit-v2'
 import { useApr, useAllLock } from '../../../hooks/useLongTermStake'
 
@@ -17,9 +18,12 @@ const FlexCard = styled(Flex)`
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const [days, setDays] = useState<number>(365)
+  const [inputBalance, setInputBalance] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
+  const today = new Date()
+  const endDay = moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
 
   const data = [
     {
@@ -48,10 +52,10 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
-          <BalanceFinix days={days} data={data} />
+          <BalanceFinix days={days} data={data} inputBalance={inputBalance} setInputBalance={setInputBalance} />
           <Divider width="100%" backgroundColor="lightGrey50" />
           <ApproveFinix isMobile={isMobile} />
-          <EstimateVFinix />
+          <EstimateVFinix days={days} inputBalance={inputBalance} endDay={endDay} />
         </FlexCard>
       </Card>
     </>
