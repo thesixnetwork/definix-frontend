@@ -17,6 +17,7 @@ const FlexCard = styled(Flex)`
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const [days, setDays] = useState<number>(365)
+  const [inputBalance, setInputBalance] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
@@ -48,10 +49,10 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
-          <BalanceFinix days={days} data={data} />
+          <BalanceFinix days={days} data={data} inputBalance={inputBalance} setInputBalance={setInputBalance} />
           <Divider width="100%" backgroundColor="lightGrey50" />
           <ApproveFinix isMobile={isMobile} />
-          <EstimateVFinix />
+          <EstimateVFinix days={days} inputBalance={inputBalance} />
         </FlexCard>
       </Card>
     </>
