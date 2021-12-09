@@ -45,8 +45,8 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setInterval(() => setLoading(''), 5000)
-          setInterval(() => setStatus(false), 5000)
+          setInterval(() => setLoading(''), 3000)
+          setInterval(() => setStatus(false), 3000)
         } else {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
           await callContract.methods
@@ -59,8 +59,8 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
                 .then((resolve) => {
                   setLoading('success')
                   setStatus(true)
-                  setInterval(() => setLoading(''), 5000)
-                  setInterval(() => setStatus(false), 5000)
+                  setInterval(() => setLoading(''), 3000)
+                  setInterval(() => setStatus(false), 3000)
                 })
                 .catch((e) => {
                   setLoading('')
