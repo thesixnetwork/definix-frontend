@@ -7,7 +7,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
-import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { getLiquidityUrlPathParts } from 'utils/getUrlPathParts'
 import FarmContext from '../../FarmContext'
 import DepositModal from '../DepositModal'
 import WithdrawModal from '../WithdrawModal'

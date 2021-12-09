@@ -37,6 +37,7 @@ const PriceText = styled(CurrencyText)`
 interface FarmStakeActionProps {
   componentType?: string
   hasAccount: boolean
+  hasUserData: boolean
   hasAllowance: boolean
   myLiquidity: BigNumber
   myLiquidityPrice: BigNumber
@@ -48,6 +49,7 @@ interface FarmStakeActionProps {
 const StakeAction: React.FC<FarmStakeActionProps> = ({
   componentType = 'farm',
   hasAccount,
+  hasUserData,
   hasAllowance,
   myLiquidity,
   myLiquidityPrice,
@@ -90,7 +92,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       {hasAccount ? (
         <>
           {/* // hasAllowance로 loading 상태 구분 */}
-          {hasAllowance ? (
+          {hasUserData && hasAllowance ? (
             <Flex justifyContent="space-between">
               <Box>
                 <BalanceText>{convertToBalanceFormat(myLiquidityValue)}</BalanceText>
@@ -123,7 +125,14 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
               )}
             </Flex>
           ) : (
-            <Button width="100%" md variant={ButtonVariants.BROWN} disabled={requestedApproval} onClick={handleApprove}>
+            <Button
+              width="100%"
+              md
+              variant={ButtonVariants.BROWN}
+              disabled={requestedApproval}
+              isLoading={!hasUserData}
+              onClick={handleApprove}
+            >
               {t('Approve Contract')}
             </Button>
           )}

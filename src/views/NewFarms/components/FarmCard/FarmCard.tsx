@@ -3,10 +3,12 @@ import { provider } from 'web3-core'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
+import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useConverter from 'hooks/useConverter'
 import { getContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
+import { getLiquidityUrlPathParts } from 'utils/getUrlPathParts'
 import {
   Flex,
   Card,
@@ -74,6 +76,14 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, stakedBalance, allowance } = useFarmUser(pid)
   const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
+  const addLiquidityUrl = useMemo(() => {
+    const liquidityUrlPathParts = getLiquidityUrlPathParts({
+      quoteTokenAdresses: farm.quoteTokenAdresses,
+      quoteTokenSymbol: farm.quoteTokenSymbol,
+      tokenAddresses: farm.tokenAddresses,
+    })
+    return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  }, [farm.quoteTokenAdresses, farm.quoteTokenSymbol, farm.tokenAddresses])
   /**
    * total liquidity
    */
@@ -94,82 +104,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
     return convertToPriceFromToken(stakedTotalInQuoteToken, farm.quoteTokenSymbol)
   }, [farm, stakedBalance, convertToPriceFromToken])
 
-  const renderCardHeading = useCallback(
-    () => <CardHeading farm={farm} lpLabel={lpTokenName} size="small" />,
-    [farm, lpTokenName],
-  )
-
-  const renderIconButton = useCallback(
-    () => (
-      <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
-        {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
-      </IconButton>
-    ),
-    [isOpenAccordion],
-  )
-
-  const renderTotalLiquiditySection = useCallback(
-    () => <TotalLiquiditySection title={t('Total Liquidity')} totalLiquidity={totalLiquidity} />,
-    [t, totalLiquidity],
-  )
-  const renderMyBalanceSection = useCallback(
-    () => <MyBalanceSection title={t('Balance')} myBalances={myBalancesInWallet} />,
-    [t, myBalancesInWallet],
-  )
-  const renderEarningsSection = useCallback(
-    () => <EarningsSection title={t('Earned')} tokenName={lpTokenName} earnings={earnings} />,
-    [t, lpTokenName, earnings],
-  )
-
   /**
-   * stake action
-   */
-  const hasAccount = useMemo(() => account && !!farm.userData, [farm, account])
-  const hasAllowance = useMemo(() => allowance && allowance.isGreaterThan(0), [allowance])
-  const renderStakeAction = useCallback(
-    () => (
-      <FarmContext.Consumer>
-        {({ goDeposit, goWithdraw }) => (
-          <StakeAction
-            componentType={componentType}
-            hasAccount={hasAccount}
-            hasAllowance={hasAllowance}
-            myLiquidity={stakedBalance}
-            myLiquidityPrice={myLiquidity}
-            lpContract={lpContract}
-            onPresentDeposit={() =>
-              goDeposit({
-                farm,
-                lpTokenName,
-                myLiquidityPrice: myLiquidity,
-              })
-            }
-            onPresentWithdraw={() =>
-              goWithdraw({
-                farm,
-                lpTokenName,
-                myLiquidityPrice: myLiquidity,
-              })
-            }
-          />
-        )}
-      </FarmContext.Consumer>
-    ),
-    [componentType, hasAccount, hasAllowance, stakedBalance, myLiquidity, lpContract, farm, lpTokenName],
-  )
-  /**
-   * harvest action
-   */
-  const renderHarvestAction = useCallback(
-    () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} />,
-    [earnings, pid, componentType],
-  )
-  /**
-   * link section
-   */
-  const renderLinkSection = useCallback(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
-  /**
-   * ribbon
+   * Card Ribbon
    */
   const ribbonProps = useMemo(() => {
     if (typeof farm.tag === 'string') {
@@ -179,6 +115,90 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
     }
     return null
   }, [farm.tag])
+  /**
+   * CardHeading
+   */
+  const renderCardHeading = useCallback(
+    () => <CardHeading farm={farm} lpLabel={lpTokenName} size="small" addLiquidityUrl={addLiquidityUrl} />,
+    [farm, lpTokenName, addLiquidityUrl],
+  )
+  /**
+   * IconButton
+   */
+  const renderIconButton = useCallback(
+    () => (
+      <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
+        {isOpenAccordion ? <ArrowTopGIcon /> : <ArrowBottomGIcon />}
+      </IconButton>
+    ),
+    [isOpenAccordion],
+  )
+  /**
+   * TotalLiquidity Section
+   */
+  const renderTotalLiquiditySection = useCallback(
+    () => <TotalLiquiditySection title={t('Total Liquidity')} totalLiquidity={totalLiquidity} />,
+    [t, totalLiquidity],
+  )
+  /**
+   * MyBalance Section
+   */
+  const renderMyBalanceSection = useCallback(
+    () => <MyBalanceSection title={t('Balance')} myBalances={myBalancesInWallet} />,
+    [t, myBalancesInWallet],
+  )
+  /**
+   * Earnings Section
+   */
+  const renderEarningsSection = useCallback(
+    () => <EarningsSection title={t('Earned')} tokenName={lpTokenName} earnings={earnings} />,
+    [t, lpTokenName, earnings],
+  )
+  /**
+   * StakeAction Section
+   */
+  const hasAccount = useMemo(() => !!account, [account])
+  const hasUserData = useMemo(() => !!farm.userData, [farm.userData])
+  const hasAllowance = useMemo(() => allowance && allowance.isGreaterThan(0), [allowance])
+  const dataForNextState = useMemo(() => {
+    return {
+      farm,
+      lpTokenName,
+      myLiquidityPrice: myLiquidity,
+      addLiquidityUrl,
+    }
+  }, [farm, lpTokenName, myLiquidity, addLiquidityUrl])
+  const renderStakeAction = useCallback(
+    () => (
+      <FarmContext.Consumer>
+        {({ goDeposit, goWithdraw }) => (
+          <StakeAction
+            componentType={componentType}
+            hasAccount={hasAccount}
+            hasUserData={hasUserData}
+            hasAllowance={hasAllowance}
+            myLiquidity={stakedBalance}
+            myLiquidityPrice={myLiquidity}
+            lpContract={lpContract}
+            onPresentDeposit={() => goDeposit(dataForNextState)}
+            onPresentWithdraw={() => goWithdraw(dataForNextState)}
+          />
+        )}
+      </FarmContext.Consumer>
+    ),
+    [componentType, hasAccount, hasUserData, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState],
+  )
+  /**
+   * HarvestAction Section
+   */
+  const renderHarvestAction = useCallback(
+    () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} />,
+    [earnings, pid, componentType],
+  )
+  /**
+   * Link Section
+   */
+  const renderLinkSection = useCallback(() => <LinkListSection lpAddresses={lpAddresses} />, [lpAddresses])
 
   if (componentType === 'myInvestment') {
     return (

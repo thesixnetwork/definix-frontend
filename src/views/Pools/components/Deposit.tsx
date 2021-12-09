@@ -7,7 +7,7 @@ import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit-v2'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal, Button } from 'definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
@@ -79,14 +79,17 @@ const Deposit: React.FC<{
   isOldSyrup: boolean
   isBnbPool: boolean
   pool: PoolWithApy
+  addSwapUrl?: string
   onBack: () => void
-}> = ({ isOldSyrup, isBnbPool, pool, onBack }) => {
+}> = ({ isOldSyrup, isBnbPool, pool, addSwapUrl = '', onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { onStake } = useSousStake(pool.sousId, isBnbPool)
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
+
+  console.log(pool)
 
   const tokenName = useMemo(() => {
     return pool.stakingLimit ? `${pool.stakingTokenName} (${pool.stakingLimit} max)` : pool.stakingTokenName
@@ -207,6 +210,22 @@ const Deposit: React.FC<{
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onClickButton={() => onPresentConfirmModal()}
         />
+
+        <Flex justifyContent="space-between" alignItems="center" mt="S_20">
+          <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+            {t(`Don't have a token?`)}
+          </Text>
+          <Button
+            type="button"
+            variant="line"
+            onClick={() => {
+              console.log(addSwapUrl)
+              // window.location.href=`${addSwapUrl}`
+            }}
+          >
+            {t('Swap')}
+          </Button>
+        </Flex>
       </CardWrap>
     </>
   )

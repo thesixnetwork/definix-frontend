@@ -4,7 +4,15 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import { Button, Text, Box, ColorStyles, Flex, Grid, FireIcon } from 'definixswap-uikit-v2'
+import {
+  Button,
+  Text,
+  Box,
+  ColorStyles,
+  Flex,
+  Grid,
+  FireIcon,
+} from 'definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'

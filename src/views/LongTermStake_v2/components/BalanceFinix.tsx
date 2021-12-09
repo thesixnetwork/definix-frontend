@@ -8,6 +8,8 @@ import { DataType } from './types'
 interface BalanceProps {
   days: number
   data: DataType[]
+  inputBalance: string
+  setInputBalance: React.Dispatch<React.SetStateAction<string>>
 }
 
 const FlexBalance = styled(Flex)`
@@ -52,10 +54,9 @@ const StyledText = styled(Text)`
   margin-top: 5px;
 `
 
-const BalanceFinix: React.FC<BalanceProps> = ({ days, data }) => {
+const BalanceFinix: React.FC<BalanceProps> = ({ inputBalance, setInputBalance }) => {
   const { t } = useTranslation()
   const [balance] = useState<number>(1200.20002)
-  const [inputBalance, setInputBalance] = useState<string>()
   const [inSufficient, setInSufficient] = useState<boolean>(false)
   const [selected, setSelected] = useState<string>('')
 
@@ -75,10 +76,8 @@ const BalanceFinix: React.FC<BalanceProps> = ({ days, data }) => {
   }
 
   useEffect(() => {
-    const minValue = data.find((v) => v.day === days).minStake
-
-    setInSufficient(balance < minValue)
-  }, [days, data, balance])
+    setInSufficient(balance < Number(inputBalance))
+  }, [balance, inputBalance])
 
   return (
     <>

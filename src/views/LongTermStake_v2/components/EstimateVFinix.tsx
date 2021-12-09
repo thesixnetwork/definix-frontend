@@ -1,9 +1,31 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from 'definixswap-uikit-v2'
+import numeral from 'numeral'
 
-const EstimateVFinix: React.FC = () => {
+interface EstimateVFinixProps {
+  days: number
+  inputBalance: string
+  endDay: string
+}
+
+const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ days, inputBalance, endDay }) => {
   const { t } = useTranslation()
+
+  const getVFinix = (day: number, balance: string) => {
+    if (!balance) return 0
+
+    switch (day) {
+      case 90:
+        return numeral(Number(balance)).format('0,0.[000000]')
+      case 180:
+        return numeral(Number(balance) * 2).format('0,0.[000000]')
+      case 365:
+        return numeral(Number(balance) * 4).format('0,0.[000000]')
+      default:
+        return 0
+    }
+  }
 
   return (
     <>
@@ -17,7 +39,7 @@ const EstimateVFinix: React.FC = () => {
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              02-Nov-2022 17:55:57 GMT+9
+              {endDay} GMT+9
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
               {t('*Asia/Seoul')}
@@ -29,7 +51,7 @@ const EstimateVFinix: React.FC = () => {
             {t('vFINIX Earn')}
           </Text>
           <Text textStyle="R_14M" color="deepgrey">
-            100,000,000.0123444 {t('vFINIX')}
+            {getVFinix(days, inputBalance)} {t('vFINIX')}
           </Text>
         </Flex>
       </Flex>

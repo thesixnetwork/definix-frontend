@@ -1,11 +1,22 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { Box, Flex, Text, Modal, Button, Divider, ImgTokenFinixIcon, AlertIcon, ModalBody, ModalFooter } from 'definixswap-uikit-v2'
+import { useTranslation, Trans } from 'react-i18next'
+import {
+  Box,
+  Flex,
+  Text,
+  Modal,
+  Button,
+  Divider,
+  ImgTokenFinixIcon,
+  AlertIcon,
+  ModalBody,
+  ModalFooter,
+} from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 interface ModalProps {
   balance: string
-  period: string
+  period: number
   end: string
   earn: string
   onOK?: () => any
@@ -29,6 +40,19 @@ const StakeModal: React.FC<ModalProps> = ({
   onDismiss = () => null,
 }) => {
   const { t } = useTranslation()
+
+  const getLockDay = (day: number) => {
+    switch (day) {
+      case 90:
+        return 'FINIX amount will be locked 7 days'
+      case 180:
+        return 'FINIX amount will be locked 14 days'
+      case 365:
+        return 'FINIX amount will be locked 28 days'
+      default:
+        return ''
+    }
+  }
 
   return (
     <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
@@ -80,8 +104,8 @@ const StakeModal: React.FC<ModalProps> = ({
               <Flex mt="S_2">
                 <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               </Flex>
-              <Text ml="S_4" textStyle="R_14R" color="red">
-                {t('FINIX amount will be locked 7 days')}
+              <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
+                <Trans i18nKey={getLockDay(period)} components={{ bold: <strong /> }} />
               </Text>
             </Flex>
           </Flex>

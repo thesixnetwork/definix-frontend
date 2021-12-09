@@ -1,6 +1,17 @@
 import React from 'react'
 import { getLpImageUrls } from 'utils/getTokenImage'
-import { Button, Modal, ButtonVariants, Box, Flex, Text, ColorStyles, Image, ModalBody, ModalFooter } from 'definixswap-uikit-v2'
+import {
+  Button,
+  Modal,
+  ButtonVariants,
+  Box,
+  Flex,
+  Text,
+  ColorStyles,
+  Image,
+  ModalBody,
+  ModalFooter,
+} from 'definixswap-uikit-v2'
 
 const ConfirmModal = ({ title, lpSymbol, buttonName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
   const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpSymbol)
