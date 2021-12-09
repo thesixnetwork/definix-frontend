@@ -103,14 +103,14 @@ const UnstakeModal: React.FC<ModalProps> = ({
                   </Text>
                 </Flex>
                 <Flex mt="S_12" alignItems="flex-start">
-                  <img
+                  {/* <img
                     style={{ marginTop: '2px', marginRight: '4px' }}
                     width={16}
                     height={16}
                     src={IconAlert}
                     srcSet={`${IconAlert2x} 2x, ${IconAlert3x} 3x`}
                     alt="Icon-Alert"
-                  />
+                  /> */}
                   <Text textStyle="R_14R" color="red">
                     {t('Do you want to unstake?', { '15-Nov-21 14:57:20 GMT+9': end })}
                   </Text>
