@@ -598,45 +598,52 @@ export const useSousHarvest = () => {
   const herodotusContract = useHerodotus()
   const { setShowModal } = useContext(KlipModalContext())
 
-  const handleHarvest = useCallback(async (sousId) => {
-    if (connector === 'klip') {
-      // setShowModal(true)
+  const handleHarvest = useCallback(
+    async (sousId) => {
+      if (connector === 'klip') {
+        // setShowModal(true)
 
-      if (sousId === 0) {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          jsonConvert(['0']),
-          setShowModal,
-        )
-      } else {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('deposit')),
-          jsonConvert([sousId, '0']),
-          setShowModal,
-        )
+        if (sousId === 0) {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            jsonConvert(['0']),
+            setShowModal,
+          )
+        } else {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('deposit')),
+            jsonConvert([sousId, '0']),
+            setShowModal,
+          )
+        }
+        const tx = await klipProvider.checkResponse()
+
+        setShowModal(false)
+        dispatch(fetchFarmUserDataAsync(account))
+        console.info(tx)
       }
-      const tx = await klipProvider.checkResponse()
+      if (sousId === 0) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
+        })
+      } else if (sousId === 1) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods
+            .deposit(sousId, '0')
+            .send({ from: account, gas: 400000 })
+            .then(resolve)
+            .catch(reject)
+        })
+      }
 
-      setShowModal(false)
-      dispatch(fetchFarmUserDataAsync(account))
-      console.info(tx)
-    }
-    if (sousId === 0) {
-      return new Promise((resolve, reject) => {
-        herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
-      })
-    } else if (sousId === 1) {
-      return new Promise((resolve, reject) => {
-        herodotusContract.methods.deposit(sousId, '0').send({ from: account, gas: 400000 }).then(resolve).catch(reject)
-      })
-    }
-
-    dispatch(updateUserPendingReward(sousId, account))
-    dispatch(updateUserBalance(sousId, account))
-    return handleHarvest
-  }, [account, dispatch, herodotusContract, connector, setShowModal])
+      dispatch(updateUserPendingReward(sousId, account))
+      dispatch(updateUserBalance(sousId, account))
+      return handleHarvest
+    },
+    [account, dispatch, herodotusContract, connector, setShowModal],
+  )
 
   return { onReward: handleHarvest }
 }

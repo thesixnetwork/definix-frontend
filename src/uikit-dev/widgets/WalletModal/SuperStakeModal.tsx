@@ -428,13 +428,15 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
           if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
             onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
-              .then((res) => { // farm
+              .then((res) => {
+                // farm
                 setHarvestProgress(harvestProgress + 1)
               })
               .catch((e) => {
                 setHarvestProgress(-1)
               })
-          } else { // vfinix
+          } else {
+            // vfinix
             handleHarvest()
               .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
@@ -443,7 +445,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 setHarvestProgress(-1)
               })
           }
-        } else { // pool
+        } else {
+          // pool
           onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
             .then((res) => {
               setHarvestProgress(harvestProgress + 1)
@@ -454,7 +457,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         }
       }
     }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [harvestProgress, selectedToken, handleHarvest])
 
   const lockPlus = useCallback(() => {
@@ -493,7 +496,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setPendingTx(true)
       _superHarvest()
     }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [harvestProgress, _superHarvest, lockPlus])
 
   useEffect(() => {
