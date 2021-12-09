@@ -76,10 +76,8 @@ const BalanceFinix: React.FC<BalanceProps> = ({ days, data, inputBalance, setInp
   }
 
   useEffect(() => {
-    const minValue = data.find((v) => v.day === days).minStake
-
-    setInSufficient(balance < minValue)
-  }, [days, data, balance])
+    setInSufficient(balance < Number(inputBalance))
+  }, [balance, inputBalance])
 
   return (
     <>
