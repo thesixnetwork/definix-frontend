@@ -161,6 +161,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount)
   const { onReward } = useSousHarvest()
+  const [vFINIX, setVFINIX] = useState(0)
+  const [vFinixEarn, setVFinixEarn] = useState(0)
 
   // Farms
   const farmsLP = useFarms()
@@ -590,7 +592,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       localDateTime = new Date(localDateTime)
       setDate(moment(localDateTime).format(`DD-MMM-YYYY HH:mm:ss`))
     }
-  }, [period, value, allLockPeriod, realPenaltyRate])
+    const vfinix = Number(value.replace(',', '')) + Number(sumpendingReward)
+    const vfinixEarn = (Number(value.replace(',', '')) + Number(sumpendingReward)) * period
+    setVFinixEarn(numeral(vfinixEarn).format('0,0.00'))
+    setVFINIX(numeral(vfinix).format('0,0.00'))
+  }, [period, value, allLockPeriod, realPenaltyRate, sumpendingReward])
 
   const harvestOrStake = () => {
     return harvested ? (
@@ -829,7 +835,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
               <div className="flex flex-row justify-end w-100">
                 <Text className="text-right" color="#0973B9" fontWeight="500">
-                  {Number(value.replace(',', '')) + Number(sumpendingReward)}
+                  {vFINIX}
                 </Text>
                 <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
                   vFINIX
@@ -842,7 +848,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
               <div className="flex flex-row justify-end w-100">
                 <Text className="text-right" color="#0973B9" fontWeight="500">
-                  {(Number(value.replace(',', '')) + Number(sumpendingReward)) * period}
+                  {vFinixEarn}
                 </Text>
                 <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
                   vFINIX
