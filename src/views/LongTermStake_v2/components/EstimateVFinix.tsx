@@ -6,9 +6,10 @@ import numeral from 'numeral'
 interface EstimateVFinixProps {
   days: number
   inputBalance: string
+  endDay: string
 }
 
-const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ days, inputBalance }) => {
+const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ days, inputBalance, endDay }) => {
   const { t } = useTranslation()
 
   const getVFinix = (day: number, balance: string) => {
@@ -38,7 +39,7 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ days, inputBalance }) =
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              02-Nov-2022 17:55:57 GMT+9
+              {endDay} GMT+9
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
               {t('*Asia/Seoul')}
