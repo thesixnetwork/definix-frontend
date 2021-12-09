@@ -157,7 +157,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   /**
    * StakeAction Section
    */
-  const hasAccount = useMemo(() => account && !!farm.userData, [farm, account])
+  const hasAccount = useMemo(() => !!account, [account])
+  const hasUserData = useMemo(() => !!farm.userData, [farm.userData])
   const hasAllowance = useMemo(() => allowance && allowance.isGreaterThan(0), [allowance])
   const dataForNextState = useMemo(() => {
     return {
@@ -174,6 +175,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
           <StakeAction
             componentType={componentType}
             hasAccount={hasAccount}
+            hasUserData={hasUserData}
             hasAllowance={hasAllowance}
             myLiquidity={stakedBalance}
             myLiquidityPrice={myLiquidity}
@@ -184,7 +186,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
         )}
       </FarmContext.Consumer>
     ),
-    [componentType, hasAccount, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState],
+    [componentType, hasAccount, hasUserData, hasAllowance, stakedBalance, myLiquidity, lpContract, dataForNextState],
   )
   /**
    * HarvestAction Section
