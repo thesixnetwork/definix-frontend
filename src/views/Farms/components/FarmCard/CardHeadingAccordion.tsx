@@ -19,6 +19,7 @@ export interface ExpandableSectionProps {
   className?: string
   isOpenAccordion: boolean
   setIsOpenAccordion: (isOpen: boolean) => void
+  inlineMultiplier: boolean
 }
 
 const StyledFarmImages = styled.div`
@@ -71,6 +72,22 @@ const CardHeadingStyle = styled(Flex)`
   }
 `
 
+const InlineMultiplierTag = styled.div`
+  background: linear-gradient(#f3d36c, #e27d3a);
+
+  border-radius: ${({ theme }) => theme.radii.small};
+  margin-left: 4px;
+
+  p {
+    padding: 0 8px;
+    line-height: 26px;
+    color: ${({ theme }) => theme.colors.white};
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+  }
+`
+
 const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
   farm,
   lpLabel,
@@ -80,6 +97,7 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
   className = '',
   isOpenAccordion = false,
   setIsOpenAccordion,
+  inlineMultiplier = false,
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
@@ -145,6 +163,12 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
             <div className="ml-1">{farm.apy ? `${farmAPY}%` : <Skeleton height={24} width={80} />}</div>
           </Apr>
           <ApyButton lpLabel={lpLabel} addLiquidityUrl={addLiquidityUrl} finixPrice={finixPrice} apy={farm.apy} />
+
+          {!inlineMultiplier && (
+            <InlineMultiplierTag>
+              <p>{farm.multiplier}</p>
+            </InlineMultiplierTag>
+          )}
         </div>
       )}
 
