@@ -23,7 +23,6 @@ import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
-import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/types'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
@@ -161,7 +160,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [keyDown, setKeyDown] = useState(false)
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount)
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const { onReward } = useSousHarvest()
 
   // Farms
   const farmsLP = useFarms()
@@ -429,13 +428,13 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
           if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
             onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
-              .then((res) => {
+              .then((res) => { // farm
                 setHarvestProgress(harvestProgress + 1)
               })
               .catch((e) => {
                 setHarvestProgress(-1)
               })
-          } else {
+          } else { // vfinix
             handleHarvest()
               .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
@@ -444,10 +443,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 setHarvestProgress(-1)
               })
           }
-        } else {
-          onReward()
+        } else { // pool
+          onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
             .then((res) => {
-              setSousId(_.get(Object.values(selected)[harvestProgress], 'sousId'))
               setHarvestProgress(harvestProgress + 1)
             })
             .catch((e) => {
@@ -456,7 +454,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         }
       }
     }
-  }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [harvestProgress, selectedToken, handleHarvest])
 
   const lockPlus = useCallback(() => {
     onLockPlus()
@@ -494,7 +493,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, lengthSelect, value, period, lockPlus])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [harvestProgress, _superHarvest, lockPlus])
 
   useEffect(() => {
     if (harvested === true) {

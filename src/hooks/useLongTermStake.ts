@@ -592,14 +592,13 @@ export const useClaim = () => {
 }
 
 // @ts-ignore
-export const useSousHarvest = (sousId, isUsingKlay = false) => {
+export const useSousHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
-  const sousChefContract = useSousChef(sousId)
   const herodotusContract = useHerodotus()
   const { setShowModal } = useContext(KlipModalContext())
 
-  const handleHarvest = useCallback(async () => {
+  const handleHarvest = useCallback(async (sousId) => {
     if (connector === 'klip') {
       // setShowModal(true)
 
@@ -632,16 +631,12 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
       return new Promise((resolve, reject) => {
         herodotusContract.methods.deposit(sousId, '0').send({ from: account, gas: 400000 }).then(resolve).catch(reject)
       })
-    } else if (isUsingKlay) {
-      await soushHarvestBnb(sousChefContract, account)
-    } else {
-      await soushHarvest(sousChefContract, account)
     }
 
     dispatch(updateUserPendingReward(sousId, account))
     dispatch(updateUserBalance(sousId, account))
     return handleHarvest
-  }, [account, dispatch, isUsingKlay, herodotusContract, sousChefContract, sousId, connector, setShowModal])
+  }, [account, dispatch, herodotusContract, connector, setShowModal])
 
   return { onReward: handleHarvest }
 }
