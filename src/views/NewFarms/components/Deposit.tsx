@@ -1,13 +1,14 @@
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
-import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router-dom'
+import styled from 'styled-components'
 import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useFarmFromSymbol, useFarmUser, useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit-v2'
+import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal, Button } from 'definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
@@ -86,8 +87,10 @@ const Deposit: React.FC<{
   farm: FarmWithStakedValue
   lpTokenName: string
   myLiquidityPrice: BigNumber
+  addLiquidityUrl: string
   onBack: () => void
-}> = ({ farm, lpTokenName, myLiquidityPrice, onBack }) => {
+}> = ({ farm, lpTokenName, myLiquidityPrice, addLiquidityUrl, onBack }) => {
+  const history = useHistory()
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
@@ -161,7 +164,7 @@ const Deposit: React.FC<{
       <TitleSet title={t('Deposit')} description={t('Deposit LP on the farm')} />
 
       <CardWrap>
-        <CardHeading farm={farm} lpLabel={lpTokenName} />
+        <CardHeading farm={farm} lpLabel={lpTokenName} addLiquidityUrl={addLiquidityUrl} />
 
         <CardBody>
           <LiquidityInfo hasMb>
@@ -191,6 +194,21 @@ const Deposit: React.FC<{
           onChange={handleChange}
           onClickButton={() => onPresentConfirmModal()}
         />
+
+        <Flex justifyContent="space-between" alignItems="center" mt="S_20">
+          <Text textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>
+            {t(`Don't have an LP?`)}
+          </Text>
+          <Button
+            type="button"
+            variant="line"
+            onClick={() => {
+              window.location.href = `${addLiquidityUrl}`
+            }}
+          >
+            {t('Add Liquidity')}
+          </Button>
+        </Flex>
       </CardWrap>
     </>
   )

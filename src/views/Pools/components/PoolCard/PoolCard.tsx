@@ -3,10 +3,11 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
+import { BASE_ADD_SWAP_URL } from 'config'
+import { getSwapUrlPathParts } from 'utils/getUrlPathParts'
 import {
   Flex,
   Card,
-  CardRibbon,
   IconButton,
   Box,
   ArrowBottomGIcon,
@@ -16,7 +17,6 @@ import {
   useMatchBreakpoints,
   Grid,
 } from 'definixswap-uikit-v2'
-// import PoolSash from '../PoolSash'
 import CardHeading from './CardHeading'
 import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
@@ -63,13 +63,12 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   const { t } = useTranslation()
   const { isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXxl, [isXxl])
+  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
   const { sousId, tokenName, totalStaked } = pool
 
   const isBnbPool = useMemo(() => pool.poolCategory === PoolCategory.KLAYTN, [pool.poolCategory])
   const isOldSyrup = useMemo(() => pool.stakingTokenName === QuoteToken.SYRUP, [pool.stakingTokenName])
-
-  const [isOpenAccordion, setIsOpenAccordion] = useState(false)
 
   const allowance = useMemo(() => new BigNumber(pool.userData?.allowance || 0), [pool.userData])
   const earnings = useMemo(() => new BigNumber(pool.userData?.pendingReward || 0), [pool.userData])
@@ -79,21 +78,21 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     return stakedBalance?.toNumber() <= 0 && !allowance.toNumber() && !isBnbPool
   }, [stakedBalance, allowance, isBnbPool])
 
-  // const renderSash = () => {
-  //   if (tokenName === 'FINIX-SIX' && !isFinished) {
-  //     return <PoolSash type="special" />
-  //   }
-  //   if (isFinished && sousId !== 0 && sousId !== 1) {
-  //     return <PoolSash type="finish" />
-  //   }
+  const addSwapUrl = useMemo(() => {
+    const swapUrlPathParts = getSwapUrlPathParts({ tokenAddress: pool.stakingTokenAddress })
+    return `${BASE_ADD_SWAP_URL}/${swapUrlPathParts}`
+  }, [pool.stakingTokenAddress])
 
-  //   return null
-  // }
-
+  /**
+   * CardHeading
+   */
   const renderCardHeading = useCallback(
     () => <CardHeading isOldSyrup={isOldSyrup} pool={pool} size={isInMyInvestment && 'small'} />,
     [isOldSyrup, pool, isInMyInvestment],
   )
+  /**
+   * IconButton
+   */
   const renderToggleButton = useCallback(
     () => (
       <IconButton onClick={() => setIsOpenAccordion(!isOpenAccordion)}>
@@ -102,20 +101,38 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     ),
     [isOpenAccordion],
   )
+  /**
+   * TotalStaked Section
+   */
   const renderTotalStakedSection = useCallback(
     () => <TotalStakedSection title={t('Total staked')} tokenName={tokenName} totalStaked={totalStaked} />,
     [t, tokenName, totalStaked],
   )
-
+  /**
+   * MyBalance Section
+   */
   const renderMyBalanceSection = useCallback(() => {
     if (!myBalanceInWallet || myBalanceInWallet === null) return null
     return <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
   }, [t, tokenName, myBalanceInWallet])
+  /**
+   * Earnings Section
+   */
   const renderEarningsSection = useCallback(
     () => <EarningsSection title={t('Earned')} earnings={earnings} />,
     [t, earnings],
   )
-
+  const dataForNextState = useMemo(() => {
+    return {
+      isOldSyrup,
+      isBnbPool,
+      pool,
+      addSwapUrl,
+    }
+  }, [isOldSyrup, isBnbPool, pool, addSwapUrl])
+  /**
+   * StakeAction Section
+   */
   const renderStakeAction = useCallback(
     () => (
       <PoolConText.Consumer>
@@ -126,25 +143,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
             pool={pool}
             stakedBalance={stakedBalance}
             needsApprovalContract={needsApprovalContract}
-            onPresentDeposit={() =>
-              goDeposit({
-                isOldSyrup,
-                isBnbPool,
-                pool,
-              })
-            }
-            onPresentWithdraw={() =>
-              goWithdraw({
-                isOldSyrup,
-                pool,
-              })
-            }
+            onPresentDeposit={() => goDeposit(dataForNextState)}
+            onPresentWithdraw={() => goWithdraw(dataForNextState)}
           />
         )}
       </PoolConText.Consumer>
     ),
-    [pool, isOldSyrup, needsApprovalContract, stakedBalance, componentType, isBnbPool],
+    [pool, isOldSyrup, needsApprovalContract, stakedBalance, componentType, dataForNextState],
   )
+  /**
+   * HarvestAction Section
+   */
   const renderHarvestActionAirDrop = useCallback(
     () => (
       <HarvestActionAirDrop
@@ -159,7 +168,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     ),
     [componentType, isBnbPool, isOldSyrup, needsApprovalContract, sousId, earnings, pool.farm],
   )
-  // const renderLinkSection = useCallback(() => <LinkListSection isMobile={isMobile} klaytnScopeAddress="" />, [isMobile])
 
   if (isInMyInvestment) {
     return (
@@ -176,7 +184,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   }
 
   return (
-    <CardWrap ribbon={<CardRibbon variantColor={ColorStyles.RED} text="new" />}>
+    <CardWrap>
       {isMobile ? (
         <>
           <Wrap>

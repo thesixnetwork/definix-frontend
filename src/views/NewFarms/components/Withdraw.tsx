@@ -87,8 +87,9 @@ const Withdraw: React.FC<{
   removed: boolean
   lpTokenName: string
   myLiquidityPrice: BigNumber
+  addLiquidityUrl: string
   onBack: () => void
-}> = ({ farm, lpTokenName, myLiquidityPrice, onBack }) => {
+}> = ({ farm, lpTokenName, myLiquidityPrice, addLiquidityUrl, onBack }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
@@ -164,7 +165,7 @@ const Withdraw: React.FC<{
       <TitleSet title={t('Remove LP')} description={t('Remove LPs from the farm.')} />
 
       <CardWrap>
-        <CardHeading farm={farm} lpLabel={lpTokenName} />
+        <CardHeading farm={farm} lpLabel={lpTokenName} addLiquidityUrl={addLiquidityUrl} />
 
         <CardBody>
           <LiquidityInfo hasMb>
