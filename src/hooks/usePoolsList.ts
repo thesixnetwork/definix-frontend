@@ -154,7 +154,20 @@ const usePoolsList = ({ farms, pools }) => {
         totalStakedValue: getBalanceNumber(pool.totalStaked),
       }
     })
-  }, [block, ethPriceKlay, farms, finixPriceUSD, getKlayBundle, getStakingTokenFarm, getTotalValue, klayPriceUSD, pools, priceToKlay, sixPriceUSD, convertToPoolAPR])
+  }, [
+    block,
+    ethPriceKlay,
+    farms,
+    finixPriceUSD,
+    getKlayBundle,
+    getStakingTokenFarm,
+    getTotalValue,
+    klayPriceUSD,
+    pools,
+    priceToKlay,
+    sixPriceUSD,
+    convertToPoolAPR,
+  ])
 
   return !_.compact(pools.map((pool) => pool.totalStaked)).length ? [] : getPoolsList()
 }
