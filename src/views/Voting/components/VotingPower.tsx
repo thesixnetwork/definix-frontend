@@ -49,7 +49,6 @@ const VotingPower = () => {
     setExpanded(!expanded)
   }
 
-
   return (
     <>
       <Card className="mb-4">
@@ -68,7 +67,7 @@ const VotingPower = () => {
                 2,938.23
               </Text>
               <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
-                <ChevronDown color={isDark ? 'white' : 'black'}/>
+                <ChevronDown color={isDark ? 'white' : 'black'} />
               </ExpandMore>
             </div>
           </Box>
