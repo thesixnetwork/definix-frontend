@@ -21,9 +21,9 @@ const LongTermStake: React.FC = () => {
       <Box maxWidth={`${isMobile ? '100%' : '630px'}`} mx="auto" my={`${isMobile ? 'S_32' : 'S_28'}`}>
         <TitleStake />
         <CardTotalStake isMobile={isMobile} />
-        {account && <CardTotalEarn isMobile={isMobile} />}
-        <CardFinixStake isMobile={isMobile} account={account} />
-        {account && <CardStakeList isMobile={isMobile} />}
+        {!!account && <CardTotalEarn isMobile={isMobile} />}
+        <CardFinixStake isMobile={isMobile} hasAccount={!!account} />
+        {!!account && <CardStakeList isMobile={isMobile} />}
       </Box>
     </>
   )

@@ -13,7 +13,7 @@ import EstimateVFinix from './EstimateVFinix'
 import { IsMobileType } from './types'
 
 interface CardFinixStakeProps extends IsMobileType {
-  account: string
+  hasAccount: boolean
 }
 
 const FlexCard = styled(Flex)`
@@ -21,7 +21,7 @@ const FlexCard = styled(Flex)`
   align-items: center;
 `
 
-const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, account }) => {
+const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount }) => {
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
   const apr = useApr()
@@ -76,7 +76,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, account }) =>
           <Divider width="100%" backgroundColor="lightGrey50" />
           <ApproveFinix
             isMobile={isMobile}
-            account={account}
+            hasAccount={hasAccount}
             inputBalance={inputBalance}
             days={days}
             endDay={endDay}

@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, useModal, ImgTokenFinixIcon, CheckBIcon, AlertIcon } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
+import UnlockButton from 'components/UnlockButton'
 
 import StakeModal from './StakeModal'
 import { IsMobileType } from './types'
 
 interface ApproveFinixProps extends IsMobileType {
-  account: string
+  hasAccount: boolean
   inputBalance: string
   days: number
   endDay: string
@@ -37,7 +38,7 @@ const FlexApprroveBtn = styled(Flex)`
   }
 `
 
-const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, account, inputBalance, days, endDay, earn }) => {
+const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, hasAccount, inputBalance, days, endDay, earn }) => {
   const { t } = useTranslation()
   const [onPresentStakeModal] = useModal(
     <StakeModal balance={inputBalance} period={days} end={endDay} earn={earn} onOK={() => null} />,
@@ -45,10 +46,6 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, account, inputBal
   )
   const [approve] = useState<boolean>(true)
   const [error, setError] = useState<string>('')
-
-  const onClickUnlockWallet = () => {
-    return null
-  }
 
   useEffect(() => {
     // 에러 조건 만들고 그에 맞는 메시지 넣기
@@ -65,7 +62,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, account, inputBal
               {t('FINIX')}
             </Text>
           </Flex>
-          {account && (
+          {hasAccount && (
             <Button
               width={`${isMobile ? '100%' : '186px'}`}
               variant={`${approve ? 'line' : 'brown'}`}
@@ -83,10 +80,14 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({ isMobile, account, inputBal
           )}
         </FlexApprroveBtn>
         <Flex flexDirection="column">
-          <Button mb="S_12" disabled={!approve} onClick={account ? onPresentStakeModal : onClickUnlockWallet}>
-            {account ? t('Stake') : t('Unlock Wallet')}
-          </Button>
-          {account && error && (
+          {hasAccount ? (
+            <Button mb="S_12" disabled={!approve} onClick={onPresentStakeModal}>
+              {t('Stake')}
+            </Button>
+          ) : (
+            <UnlockButton />
+          )}
+          {hasAccount && error && (
             <Flex alignItems="center">
               <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               <Text ml="S_4" textStyle="R_14R" color="red">
