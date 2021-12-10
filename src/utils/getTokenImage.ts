@@ -1,4 +1,7 @@
 export const getTokenImageUrl = (tokenName: string) => {
+  if (!tokenName) {
+    return ''
+  }
   return `/images/coins/${tokenName.toLowerCase()}.png`
 }
 
