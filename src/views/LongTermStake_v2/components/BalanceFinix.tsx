@@ -6,8 +6,11 @@ import styled from 'styled-components'
 
 interface BalanceProps {
   hasAccount: boolean
+  minimum: number
   inputBalance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
+  error: string
+  setError: React.Dispatch<React.SetStateAction<string>>
 }
 
 const FlexBalance = styled(Flex)`
@@ -52,10 +55,16 @@ const StyledText = styled(Text)`
   margin-top: 5px;
 `
 
-const BalanceFinix: React.FC<BalanceProps> = ({ hasAccount, inputBalance, setInputBalance }) => {
+const BalanceFinix: React.FC<BalanceProps> = ({
+  hasAccount,
+  minimum,
+  inputBalance,
+  setInputBalance,
+  error,
+  setError,
+}) => {
   const { t } = useTranslation()
   const [balance] = useState<number>(1200.20002)
-  const [inSufficient, setInSufficient] = useState<boolean>(false)
   const [selected, setSelected] = useState<string>('')
 
   const onChangeBalance = (e: React.FormEvent<HTMLInputElement>) => {
@@ -72,10 +81,17 @@ const BalanceFinix: React.FC<BalanceProps> = ({ hasAccount, inputBalance, setInp
 
     setSelected(value)
   }
-
   useEffect(() => {
-    setInSufficient(balance < Number(inputBalance))
-  }, [balance, inputBalance])
+    if (!inputBalance) {
+      setError('noInput')
+    } else if ((Number(inputBalance) % 1) * 10 ** 18 < 1) {
+      setError('Less than a certain amount')
+    } else if (balance < Number(inputBalance)) {
+      setError('Insufficient balance')
+    } else if (Number(inputBalance) < minimum) {
+      setError('The amount of FINIX')
+    } else setError('')
+  }, [minimum, balance, inputBalance, setError])
 
   return (
     <>
@@ -103,11 +119,11 @@ const BalanceFinix: React.FC<BalanceProps> = ({ hasAccount, inputBalance, setInp
               )
             })}
           </Flex>
-          {inSufficient && (
+          {error !== 'noInput' && !!error && (
             <Flex alignItems="center">
               <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               <Text ml="S_4" textStyle="R_14R" color="red">
-                {t('Insufficient balance')}
+                {t(error)}
               </Text>
             </Flex>
           )}
