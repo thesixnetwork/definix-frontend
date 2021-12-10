@@ -84,7 +84,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   useEffect(() => {
     if (!inputBalance) {
       setError('noInput')
-    } else if ((Number(inputBalance) % 1) * 10 ** 18 < 1) {
+    } else if (Number(inputBalance) * 10 ** 18 < 1) {
       setError('Less than a certain amount')
     } else if (balance < Number(inputBalance)) {
       setError('Insufficient balance')
