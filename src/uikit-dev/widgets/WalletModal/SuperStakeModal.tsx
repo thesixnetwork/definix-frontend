@@ -796,7 +796,13 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
               Please select available duration
             </Text>
-            <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp harvestProgress={harvestProgress} />
+            <StakePeriodButton
+              setPeriod={setPeriod}
+              status={status}
+              levelStake={levelStake}
+              isTopUp
+              harvestProgress={harvestProgress}
+            />
             <div className="flex mt-4 w-100">
               <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
                 From your wallet:

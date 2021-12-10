@@ -401,7 +401,13 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           <Text className={`${!isMobileOrTablet ? 'mt-2' : 'mt-0'}`} color="textSubtle">
             Please select available duration
           </Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp harvestProgress={-1}/>
+          <StakePeriodButton
+            setPeriod={setPeriod}
+            status={status}
+            levelStake={levelStake}
+            isTopUp
+            harvestProgress={-1}
+          />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
