@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react'
+import React, { useEffect } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Menu as UikitMenu } from 'definixswap-uikit-v2'
 import { useTranslation, Trans } from 'react-i18next'
