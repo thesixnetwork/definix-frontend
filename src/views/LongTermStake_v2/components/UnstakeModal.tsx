@@ -50,7 +50,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
 
   return (
     <Modal title={`${t('Confirm Unstake')}`} onDismiss={onDismiss} mobileFull>
-      <ModalBody>
+      <ModalBody isBody>
         <StyledBox mb="S_30">
           <Flex mt="S_14" mb="S_24" justifyContent="space-between" alignItems="flex-start">
             <Flex alignItems="flex-start">
@@ -120,7 +120,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
           </Flex>
         </StyledBox>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter isFooter>
         <Button onClick={onOK}>{unstake}</Button>
       </ModalFooter>
     </Modal>
