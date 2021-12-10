@@ -2,7 +2,6 @@ import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
@@ -90,7 +89,6 @@ const Deposit: React.FC<{
   addLiquidityUrl: string
   onBack: () => void
 }> = ({ farm, lpTokenName, myLiquidityPrice, addLiquidityUrl, onBack }) => {
-  const history = useHistory()
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
