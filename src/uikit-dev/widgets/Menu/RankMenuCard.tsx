@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 import numeral from 'numeral'
-import BgHeadCardRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-14.png'
-import BgHeadCardRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-16.png'
-import BgHeadCardRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-15.png'
+import bgHeadCardRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-14.png'
+import bgHeadCardRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-16.png'
+import bgHeadCardRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-15.png'
 
-import LogoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
-import LogoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
-import LogoRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-11.png'
+import logoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
+import logoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
+import logoRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-11.png'
 
 import { Text, Skeleton } from 'uikit-dev'
 import { useRank, usePrivateData } from 'hooks/useLongTermStake'
@@ -27,13 +27,14 @@ const RankMenuCard: React.FC = () => {
   const level = useRank()
   const { balancevfinix } = usePrivateData()
   const getRankTopCardBg = (rank) => {
+    console.log('rank ',rank)
     switch (rank) {
       case '0':
-        return BgHeadCardRankSliver
+        return bgHeadCardRankSliver
       case '1':
-        return BgHeadCardRankGold
+        return bgHeadCardRankGold
       case '2':
-        return BgHeadCardRankDiamond
+        return bgHeadCardRankDiamond
       default:
         return ''
     }
@@ -54,11 +55,11 @@ const RankMenuCard: React.FC = () => {
   const getRanklogo = (rank) => {
     switch (rank) {
       case '0':
-        return LogoRankSliver
+        return logoRankSliver
       case '1':
-        return LogoRankGold
+        return logoRankGold
       case '2':
-        return LogoRankDiamond
+        return logoRankDiamond
       default:
         return ''
     }

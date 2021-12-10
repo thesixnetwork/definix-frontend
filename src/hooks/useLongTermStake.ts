@@ -446,8 +446,8 @@ export const useRank = () => {
         const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
         const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
         let maxRank = -1
-        for (let i = 0; i < userVfinixLocks.length; i++) {
-          const selector = userVfinixLocks[i]
+        for (let i = 0; i < _.get(userVfinixLocks, 'locks_').length; i++) {
+          const selector = _.get(userVfinixLocks, 'locks_')[i]
 
           if (selector.isUnlocked === false && selector.isPenalty === false) {
             if (maxRank < selector.level) maxRank = selector.level
