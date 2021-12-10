@@ -68,8 +68,10 @@ const AuditItem = styled(Grid)`
     'image image'
     'info info'
     'info info';
+  flex: 1.5;
 
   :nth-child(2) {
+    flex: 2;
     padding-left: 30px;
     border-left: 1px solid ${({ theme }) => theme.colors.border};
     grid-template-areas:
@@ -83,10 +85,12 @@ const AuditItem = styled(Grid)`
     grid-template-areas: 'image info info';
 
     :nth-child(1) {
+      flex: auto;
       margin-bottom: 16px;
     }
 
     :nth-child(2) {
+      flex: auto;
       padding-top: 20px;
       padding-left: 0;
       border-top: 1px solid ${({ theme }) => theme.colors.border};
