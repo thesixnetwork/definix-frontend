@@ -39,7 +39,7 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
       {ratio
         .filter((r) => r.value)
         .map((m) => (
-          <Asset width={`${m.value}%`} isMobile={isMobile}>
+          <Asset key={m.symbol} width={`${m.value}%`} isMobile={isMobile}>
             <Bar color={m.color} />
             <Coin className="name" symbol={m.symbol || ''} size="sm">
               <Text textStyle="R_14R">{m.value}%</Text>

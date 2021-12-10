@@ -72,7 +72,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
               const changeNumber = change.toNumber()
 
               return (
-                <TR key={`row-${r.symbol}`}>
+                <TR key={`asset-row-${r.symbol}`}>
                   <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
                     <div className="flex align-center" style={{ width: 'max-content' }}>
                       <img src={getTokenImageUrl(r.symbol)} alt="" width={24} height={24} className="mr-s6" />
