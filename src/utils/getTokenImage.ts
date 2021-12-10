@@ -2,7 +2,7 @@ export const getTokenImageUrl = (tokenName: string) => {
   if (!tokenName) {
     return ''
   }
-  return `/images/coins/${tokenName.toLowerCase()}.png`
+  return `/images/coins/small/${tokenName.toLowerCase()}.png`
 }
 
 const getSplittedLpSymbols = (lpSymbol: string) => {
@@ -15,7 +15,7 @@ const getSplittedLpSymbols = (lpSymbol: string) => {
 
 export const getLpImageUrls = (lpSymbol: string) => {
   const images = getSplittedLpSymbols(lpSymbol)
-  return images.map((image) => `/images/coins/${image}.png`)
+  return images.map((image) => getTokenImageUrl(image))
 }
 
 export const getLpImageUrlsAndSymbols = (lpSymbol: string) => {
