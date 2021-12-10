@@ -108,6 +108,12 @@ const config: MenuEntry[] = [
         newTab: false,
       },
       {
+        label: 'Super Stake',
+        href: '/long-term-stake/top-up',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
         label: 'Voting',
         href: '/voting',
         notHighlight: false,
