@@ -2922,6 +2922,11 @@
     schema-utils "^2.6.5"
     source-map "^0.7.3"
 
+"@popperjs/core@*":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.0.tgz#6734f8ebc106a0860dff7f92bf90df193f0935d7"
+  integrity sha512-zrsUxjLOKAzdewIDRWy9nsV1GQsKBCWaGwsZQlCgr6/q+vjyZhFgqedLfFBuI9anTPEUT4APq9Mu0SZBTzIcGQ==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -7603,10 +7608,10 @@ definixswap-sdk@1.0.0:
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-definixswap-uikit-v2@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.4.tgz#d0141adffecd3f3fd625da0ab61055d7cd9c4be4"
-  integrity sha512-Zp593TXaid8/baMv5AWVXKlDzdhYoRSN0DR7hylJXXfbrR45qZuo9zeIll5UFJ21HjtcpewYaNgmSCZ/s4DOSg==
+definixswap-uikit-v2@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.5.tgz#ed484ab662381b85f294bc1c9ed0f62eacd663f4"
+  integrity sha512-16xhVc8nrS3we8tUWnn8+MkhKCIP6VjG9S4xlD+uVlwIL2MajdKMKeHUgEb/Ao5P37N6ysVQ3qWQ/dLCHPoCZA==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
