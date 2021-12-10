@@ -409,7 +409,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   useEffect(() => {
     const balance = Math.floor(Number(balanceOf) * 1000000) / 1000000
     if (keyDown === false) {
-      setValue(balance.toString())
+      setValue(numeral(balance).format('0.00'))
     }
   }, [value, balanceOf, keyDown])
 
@@ -473,6 +473,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [harvestProgress, selectedToken, handleHarvest])
 
   const lockPlus = useCallback(() => {
+    setLoading('loading')
     onLockPlus()
       .then((res) => {
         setAmount('')
@@ -501,10 +502,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setPendingTx(true)
       if (period !== -Infinity) {
         if (Object.values(selectedToken)[0]) {
-          setLoading('loading')
           lockPlus()
         } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
-          setLoading('loading')
           lockPlus()
         }
       }
@@ -817,7 +816,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
                 From your wallet:
                 <span style={{ color: '#0973B9' }} className="pl-2">
-                  {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'} FINIX
+                  {balanceOf ? numeral(balanceOf).format('0,0.00') : '-'} FINIX
                 </span>
               </Text>
               <Text className="col-6 pl-3" color="textSubtle" fontSize="12px" fontWeight="500">
