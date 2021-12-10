@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
-import { HelmetProvider } from "react-helmet-async";
+import { HelmetProvider } from 'react-helmet-async'
 import { BlockContextProvider } from 'contexts/BlockContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
@@ -37,7 +37,6 @@ const Providers: React.FC = ({ children }) => {
       onHiddenModal()
     }
   }
-
 
   return (
     <Provider store={store}>

@@ -7,6 +7,7 @@ import { Box, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 import { Rebalance } from 'state/types'
+import { getTokenName } from 'utils/getTokenSymbol'
 import { Table, TD, TH, TR } from './Table'
 
 interface AssetDetailType {
@@ -50,11 +51,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
             </TR>
 
             {tokens.map((r, index) => {
-              const thisName = (() => {
-                if (r.symbol === 'WKLAY') return 'KLAY'
-                if (r.symbol === 'WBNB') return 'BNB'
-                return r.symbol
-              })()
+              const thisName = getTokenName(r?.symbol)
 
               const ratio = get(rebalance, `ratioCal`)
               // Do not show record when ratio equal 0

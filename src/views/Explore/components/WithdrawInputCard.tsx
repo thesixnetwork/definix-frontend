@@ -186,18 +186,18 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
       <Box color="textSubtle" textStyle="R_14R">
         <SpaceBetweenFormat
           className="mb-2"
-          title={`Management fee ${get(rebalance, 'fee.management', 0.2)}%`}
+          title={`${t('Management Fee')} ${get(rebalance, 'fee.management', 0.2)}%`}
           value={`$${numeral(usdToBeRecieve / (100 / get(rebalance, 'fee.management', 0.2))).format('0,0.[0000]')}`}
           hint={t('Fee collected for vault')}
         />
         <SpaceBetweenFormat
           className="mb-2"
-          title={`FINIX buy back fee ${get(rebalance, 'fee.buyback', 1.5)}%`}
+          title={`${t('Finix Buyback Fee')} ${get(rebalance, 'fee.buyback', 1.5)}%`}
           value={`$${numeral(usdToBeRecieve / (100 / get(rebalance, 'fee.buyback', 1.5))).format('0,0.[0000]')}`}
           hint={t('Fee collected for buyback')}
         />
         <SpaceBetweenFormat
-          title={`Ecosystem fee ${get(rebalance, 'fee.bounty', 0.3)}%`}
+          title={`${t('Ecosystem Fee')} ${get(rebalance, 'fee.bounty', 0.3)}%`}
           value={`$${numeral(usdToBeRecieve / (100 / get(rebalance, 'fee.bounty', 0.3))).format('0,0.[0000]')}`}
           hint={t('Reservation fee for further')}
         />
@@ -253,8 +253,7 @@ const WithdrawInputCard: React.FC<WithdrawInputCardProp> = ({
       <Button
         scale="lg"
         width="100%"
-        isLoading={isSimulating}
-        disabled={inputHasError || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
+        disabled={isSimulating || inputHasError || !currentInput || (ratioType === RatioType.Single && !selectedLength)}
         onClick={onPresentCalcModal}
       >
         {t('Withdraw')}

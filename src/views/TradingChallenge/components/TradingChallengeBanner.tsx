@@ -1,10 +1,7 @@
 import React from 'react'
 
 const TradingChallengeBanner = () => {
-
-  return (
-    <></>
-  )
+  return <></>
 }
 
 export default TradingChallengeBanner

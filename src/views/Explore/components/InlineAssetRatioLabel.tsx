@@ -1,14 +1,11 @@
 import React, { useMemo } from 'react'
 import numeral from 'numeral'
 import { Flex, Text, VDivider } from 'definixswap-uikit-v2'
+import { getTokenName } from 'utils/getTokenSymbol'
 import Coin from './Coin'
 
 const InlineAssetRatioLabel = ({ coin, column = false, small = false, ...props }) => {
-  const thisName = (() => {
-    if (coin.symbol === 'WKLAY') return 'KLAY'
-    if (coin.symbol === 'WBNB') return 'BNB'
-    return coin.symbol
-  })()
+  const thisName = getTokenName(coin?.symbol)
   const size = useMemo(
     () =>
       small

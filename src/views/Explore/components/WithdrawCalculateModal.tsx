@@ -6,7 +6,17 @@ import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
 import { useTranslation } from 'react-i18next'
 import rebalanceAbi from 'config/abi/rebalance.json'
-import { Box, Button, Divider, Flex, Modal, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  Text,
+  useMatchBreakpoints,
+} from 'definixswap-uikit-v2'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
@@ -105,18 +115,18 @@ const WithdrawCalculateModal = ({
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
-      toastSuccess(t('Withdraw Complete'))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionWithdraw') }))
       onNext()
       onDismiss()
       setIsWithdrawing(false)
     } catch (e) {
-      toastError(t('Withdraw Failed'))
+      toastError(t('{{Action}} Failed', { Action: t('actionWithdraw') }))
       setIsWithdrawing(false)
     }
   }
   return (
     <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss}>
-      <>
+      <ModalBody>
         <CardHeading
           rebalance={rebalance}
           isHorizontal={isMobile}
@@ -146,10 +156,12 @@ const WithdrawCalculateModal = ({
             <SpaceBetweenFormat title={t('Estimated Value')} value={estimatedValue} />
           </Flex>
         </Box>
+      </ModalBody>
+      <ModalFooter>
         <Button mt="S_40" width="100%" isLoading={isSimulating || isWithdrawing} onClick={onWithdraw}>
           {t('Withdraw')}
         </Button>
-      </>
+      </ModalFooter>
     </Modal>
   )
 }

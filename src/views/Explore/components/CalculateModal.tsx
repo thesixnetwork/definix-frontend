@@ -7,7 +7,18 @@ import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
 import { useTranslation } from 'react-i18next'
 import rebalanceAbi from 'config/abi/rebalance.json'
-import { Box, Button, Text, Modal, useMatchBreakpoints, Flex } from 'definixswap-uikit-v2'
+import {
+  Box,
+  Button,
+  Text,
+  Modal,
+  useMatchBreakpoints,
+  Flex,
+  Noti,
+  NotiType,
+  ModalFooter,
+  ModalBody,
+} from 'definixswap-uikit-v2'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
@@ -24,13 +35,12 @@ import VerticalAssetRatio from './VerticalAssetRatio'
 const CalculateModal = ({
   setTx,
   currentInput,
-  isSimulating,
-  poolUSDBalances,
   poolAmounts,
-  onNext,
   rebalance,
   sumPoolAmount,
   calNewImpact,
+  shares,
+  onNext,
   onDismiss = () => null,
 }) => {
   const { t } = useTranslation()
@@ -45,21 +55,6 @@ const CalculateModal = ({
   const dispatch = useDispatch()
   // const balances = useBalances(account)
   const usdToken = ((rebalance || {}).usdToken || [])[0] || {}
-  // @ts-ignore
-  const totalUsdPool = new BigNumber([rebalance.sumCurrentPoolUsdBalance])
-    .div(new BigNumber(10).pow(usdToken.decimals || 18))
-    .toNumber()
-  const totalUserUsdAmount = new BigNumber(get(poolUSDBalances, 1, '0'))
-    .div(new BigNumber(10).pow(usdToken.decimals || 18))
-    .toNumber()
-  // const minUserUsdAmount = totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))
-
-  // @ts-ignore
-  const totalSupply = new BigNumber([rebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
-  const currentShare = (totalUserUsdAmount / totalUsdPool) * totalSupply
-  // const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
-
-  // const calNewImpact = Math.abs(((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount) * 100)
 
   const handleLocalStorage = async (tx) => {
     const rebalanceAddress: string = getAddress(get(rebalance, 'address'))
@@ -138,18 +133,19 @@ const CalculateModal = ({
       dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
       dispatch(fetchRebalanceBalances(account, [rebalance]))
       dispatch(fetchRebalances())
-      toastSuccess(t('Invest Complete'))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionInvest') }))
       onNext()
       onDismiss()
       setIsInvesting(false)
-    } catch {
-      toastError(t('Invest Failed'))
+    } catch (e) {
+      console.error(e)
+      toastError(t('{{Action}} Failed', { Action: t('actionInvest') }))
       setIsInvesting(false)
     }
   }
   return (
     <Modal title={t('Confirm Invest')} mobileFull onDismiss={onDismiss}>
-      <>
+      <ModalBody>
         <CardHeading
           rebalance={rebalance}
           isHorizontal={isMobile}
@@ -167,9 +163,7 @@ const CalculateModal = ({
               {t('Total Invest')}
             </Text>
             <Text color="black" textStyle="R_18B" ml="auto">
-              {currentShare <= 0 || Number.isNaN(currentShare)
-                ? numeral(sumPoolAmount).format('0,0.[00]')
-                : numeral(currentShare).format('0,0.[00]')}
+              {shares}
             </Text>
             <Text textStyle="R_14R" className="ml-s4">
               {t('SHR')}
@@ -187,10 +181,17 @@ const CalculateModal = ({
             />
           </Flex>
         </Box>
-        <Button className="mt-s40" width="100%" isLoading={isInvesting || isSimulating} onClick={onInvest}>
+      </ModalBody>
+      <ModalFooter>
+        <Button className="mt-s40" width="100%" isLoading={isInvesting} onClick={onInvest}>
           {t('Invest')}
         </Button>
-      </>
+        {calNewImpact >= 0.05 && (
+          <Noti mt="S_12" type={NotiType.ALERT}>
+            {calNewImpact >= 0.15 ? t('Price Impact Too High') : t('This swap has a price impact of at least 10%')}
+          </Noti>
+        )}
+      </ModalFooter>
     </Modal>
   )
 }

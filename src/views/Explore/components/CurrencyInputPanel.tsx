@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react/require-default-props */
-import React from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { rgba } from 'polished'
@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import useToFixedFloor from 'hooks/useToFixedFloor'
+import { getTokenName } from 'utils/getTokenSymbol'
 import { Input as NumericalInput } from './NumericalInput'
 import Coin from './Coin'
 
@@ -20,11 +22,10 @@ interface CurrencyInputPanelProps {
   hideBalance?: boolean
   hideInput?: boolean
   className?: string
-  onMax?: () => void
-  onQuarter?: () => void
-  onHalf?: () => void
+  max?: BigNumber
+  decimals?: number
   onUserInput: (value: string) => void
-  max?: BigInt
+  hasError?: (error: boolean) => void
 }
 
 const Container = styled.div<{ hideInput: boolean }>``
@@ -59,22 +60,42 @@ const CurrencyInputPanel = ({
   hideInput = false,
   id,
   className,
-  onMax,
-  onQuarter,
-  onHalf,
-  onUserInput,
   max,
+  decimals = 18,
+  onUserInput,
+  hasError,
 }: CurrencyInputPanelProps) => {
   const { t } = useTranslation()
   const { account } = useWallet()
-  const { isXxl, isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobile = !isXxl && !isXl && !isMd && !isLg
+  const { isMaxSm } = useMatchBreakpoints()
+  const isMobile = isMaxSm
 
-  const thisName = (() => {
-    if (currency.symbol === 'WKLAY') return 'KLAY'
-    if (currency.symbol === 'WBNB') return 'BNB'
-    return currency.symbol
-  })()
+  const toFixedFloor = useToFixedFloor()
+  const overDp = useMemo(() => new BigNumber(value).decimalPlaces() > decimals, [value, decimals])
+  const thisName = useMemo(() => getTokenName(currency?.symbol), [currency.symbol])
+
+  const handleInput = useCallback(
+    (str: string) => {
+      onUserInput(toFixedFloor(str))
+    },
+    [onUserInput, toFixedFloor],
+  )
+
+  const handleClick = useCallback(
+    (ratio: number) => {
+      onUserInput(toFixedFloor(ratio === 1 ? max.toJSON() : String(max.times(ratio).toNumber())))
+    },
+    [max, onUserInput, toFixedFloor],
+  )
+
+  const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).gt(max), [value, max])
+
+  useEffect(() => {
+    if (typeof hasError === 'function') {
+      hasError(isGreaterThanMyBalance || overDp)
+    }
+  }, [isGreaterThanMyBalance, hasError, overDp])
+
   return (
     <Container id={id} hideInput={hideInput} className={className}>
       {!hideInput && (
@@ -88,7 +109,7 @@ const CurrencyInputPanel = ({
             <Text textStyle="R_14R" color="text">
               {t('Balance')}
               <Text as="span" textStyle="R_14B" marginLeft="4px">
-                {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[0000]') : ' -'}
+                {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[000000]') : ' -'}
               </Text>
             </Text>
           )}
@@ -101,24 +122,27 @@ const CurrencyInputPanel = ({
             <NumericalInput
               className="token-amount-input"
               value={value}
-              onUserInput={(val) => {
-                onUserInput(val)
-              }}
-              style={{ width: isMobile && currency && showMaxButton ? '100%' : 'auto' }}
+              onUserInput={handleInput}
+              style={isMobile && currency && showMaxButton ? { width: '100%', marginBottom: '4px' } : { width: 'auto' }}
             />
             {account && currency && showMaxButton && (
               <div className="flex align-center justify-end" style={{ width: isMobile ? '100%' : 'auto' }}>
-                <StyledAnountButton onClick={onQuarter}>25%</StyledAnountButton>
-                <StyledAnountButton onClick={onHalf}>50%</StyledAnountButton>
-                <StyledAnountButton onClick={onMax}>MAX</StyledAnountButton>
+                <StyledAnountButton onClick={() => handleClick(0.25)}>25%</StyledAnountButton>
+                <StyledAnountButton onClick={() => handleClick(0.5)}>50%</StyledAnountButton>
+                <StyledAnountButton onClick={() => handleClick(1)}>MAX</StyledAnountButton>
               </div>
             )}
           </>
         )}
       </InputBox>
-      {value && value > String(max) && (
+      {isGreaterThanMyBalance && (
         <Noti mt="S_12" type={NotiType.ALERT}>
           {t('Insufficient balance')}
+        </Noti>
+      )}
+      {overDp && (
+        <Noti mt="S_12" type={NotiType.ALERT}>
+          {t('The value entered is out of the valid range.')}
         </Noti>
       )}
     </Container>

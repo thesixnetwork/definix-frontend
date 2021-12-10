@@ -3,17 +3,19 @@ import { useTranslation } from 'react-i18next'
 import { Text, BalanceInput, Flex, AnountButton, Noti, NotiType } from 'definixswap-uikit-v2'
 import { useForm, useFormState } from 'react-hook-form'
 import BigNumber from 'bignumber.js'
+import useToFixedFloor from 'hooks/useToFixedFloor'
 
 interface ShareInputProps {
   max: number
   symbol: string
   placeholder?: string
   value: string
+  decimals?: number
   onChange: (input: string) => void
   hasError?: (error: boolean) => void
 }
 
-const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, hasError }) => {
+const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, decimals = 18, hasError }) => {
   const { t } = useTranslation()
   const { register, control } = useForm({
     defaultValues: {
@@ -26,32 +28,30 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, h
   const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).gt(max), [value, max])
   const underMinimum = useMemo(() => new BigNumber(value).toNumber() <= 0, [value])
 
+  const toFixedFloor = useToFixedFloor()
+  const overDp = useMemo(() => new BigNumber(value).decimalPlaces() > decimals, [value, decimals])
+
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       const input = e.currentTarget.value?.replace(/[^0-9|^.]/g, '')
-      const [integer, decimal] = input?.split('.') || ['0']
-      if (decimal?.length > 18) {
-        const calDecimal = decimal.substring(0, 18)?.replace(/0*$/, '')
-        onChange([integer, calDecimal].join('.'))
-        return
-      }
-      onChange(input)
+      onChange(toFixedFloor(input))
     },
-    [onChange],
+    [onChange, toFixedFloor],
   )
 
   const handleBalanceChange = useCallback(
     (precentage: number) => {
       const calval = new BigNumber(max).times(precentage / 100)
-      const val = new BigNumber(calval.toFixed(18)).toJSON()
-      onChange(val)
+      onChange(toFixedFloor(calval.toJSON()))
     },
-    [max, onChange],
+    [max, onChange, toFixedFloor],
   )
 
   useEffect(() => {
-    hasError(underMinimum || isGreaterThanMyBalance)
-  }, [underMinimum, isGreaterThanMyBalance, hasError])
+    if (typeof hasError === 'function') {
+      hasError(underMinimum || isGreaterThanMyBalance || overDp)
+    }
+  }, [underMinimum, isGreaterThanMyBalance, hasError, overDp])
 
   return (
     <div>
@@ -82,8 +82,17 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, h
           {t('Less than a certain amount')}
         </Noti>
       )}
+      {overDp && (
+        <Noti mt="S_12" type={NotiType.ALERT}>
+          {t('The value entered is out of the valid range.')}
+        </Noti>
+      )}
     </div>
   )
+}
+
+ShareInput.defaultProps = {
+  decimals: 18,
 }
 
 export default ShareInput

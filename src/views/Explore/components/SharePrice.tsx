@@ -16,7 +16,8 @@ const SharePrice: React.FC<SharePriceType> = ({ price, diff, small, titleMarginB
     <TwoLineFormat
       titleMarginBottom={titleMarginBottom}
       large={!small}
-      title={`${t('Share Price')} (${t('Since Inception')})`}
+      title={t('Share Price')}
+      subTitle={`(${t('Since Inception')})`}
       value={`$${numeral(price).format('0,0.00')}`}
       percent={`${diff >= 0 ? `+${numeral(diff).format('0,0.[00]')}` : `${numeral(diff).format('0,0.[00]')}`}%`}
       percentClass={(() => {
