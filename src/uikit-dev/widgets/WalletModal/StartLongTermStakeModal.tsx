@@ -10,7 +10,7 @@ interface Props {
 
 const StartLongTermStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   return (
-    <ModalSorry title="Sorry, this feature is only for vFINIX holder" onDismiss={onDismiss}>
+    <ModalSorry title="This feature is only for vFINIX holder" onDismiss={onDismiss}>
       <div className="flex flex-column w-100">
         <Text color="#737375">
           You have never lock in Long-term Stake. Do you want to start staking in the Long-term Stake to get this

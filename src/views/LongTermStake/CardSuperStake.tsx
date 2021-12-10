@@ -8,6 +8,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
 import ModalSorry from '../../uikit-dev/widgets/Modal/ModalSorry'
+import CardSorry from '../../uikit-dev/widgets/Modal/CardSorry'
 import useTheme from '../../hooks/useTheme'
 import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../../uikit-dev'
 import ConnectModal from '../../uikit-dev/widgets/WalletModal/ConnectModal'
@@ -337,22 +338,22 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           <div
             style={{
               position: 'absolute',
-              left: (loadings === 'loading' && '20%') || (!isMobileOrTablet && '19%'),
-              top: loadings === 'loading' ? '18%' : 'unset',
+              left: (loadings === 'loading' && '20%') || (!isMobileOrTablet && '0%'),
+              top: loadings === 'loading' ? '18%' : '4%',
               zIndex: 1,
               alignItems: 'center',
               justifyContent: 'center',
               display: 'flex',
             }}
           >
-            <ModalSorry title="Sorry, this feature is only for vFINIX holder" hideCloseButton>
+            <CardSorry title="This feature is only for vFINIX holder" hideCloseButton >
               <div className="flex flex-column w-100 mt-2">
                 <Text color={isDark ? 'white' : '#737375'}>
                   You have never lock in Long-term Stake. Do you want to start staking in the Long-term Stake to get
                   this exclusive feature?
                 </Text>
               </div>
-            </ModalSorry>
+            </CardSorry>
           </div>
         )}
         {loadings !== '' && (
@@ -372,7 +373,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
           </div>
         )}
         <div
-          style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}
+          style={{ opacity: !isStake || loadings !== '' ? 0.4 : 1 }}
           className={`${!isMobileOrTablet ? 'col-8 pt-5' : 'col-12 pr-5'} pb-5 pl-5`}
         >
           <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center justify-space-between'}`}>
@@ -509,7 +510,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
         </div>
         {!isMobileOrTablet && (
           <div
-            style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1, alignSelf: 'start' }}
+            style={{ opacity: !isStake || loadings !== '' ? 0.4 : 1, alignSelf: 'start' }}
             className="col-4 flex flex-column justify-space-between "
           >
             <BadgeExclusive className={`${!isMobileOrTablet ? 'mx-2 mb-2' : 'mx-3 mb-2'}`}>

@@ -332,7 +332,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                             />
                           </div>
                           <Text fontSize="9px">
-                            {item.lockTopupTimes} - {item.topupTimeStamp}
+                            {item.lockTimestamp} - {item.topupTimeStamp}
                           </Text>
                         </>
                       )}

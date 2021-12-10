@@ -765,8 +765,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 {numeral(balancevfinix || 0).format('0,0.[00]')} vFINIX
               </Text>
             </div>
-            {/* </div> */}
-            {/* <Text className="col-12 flex" color="white"></Text> */}
           </InnerRankCard>
         </RankCard>
       ) : (
