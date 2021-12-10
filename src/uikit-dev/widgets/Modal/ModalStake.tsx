@@ -53,7 +53,6 @@ const ModalHeader = styled.div<{ className?: string }>`
   align-items: center;
   justify-content: center;
   padding: 0px 10px 10px 64px;
-
 `
 
 const ModalTitle = styled(Flex)`
