@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import UnlockButton from 'components/UnlockButton'
-import { findIndex, get } from 'lodash'
-import axios from 'axios'
+import { get } from 'lodash'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'
@@ -10,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Button, Card, Flex, Text } from 'definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'
+import useComineAmount from 'hooks/useCombineAmount'
 import { useRebalanceBalances, useBalances } from '../../../state/hooks'
 import LabelAndValue from './LabelAndValue'
 import { Rebalance } from '../../../state/types'
@@ -50,56 +50,7 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
   const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
   const currentBalance = get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
-
-  const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
-
-  const [diffAmount, setDiffAmount] = useState(0)
-  const [percentage, setPercentage] = useState(0)
-  const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
-
-  const combinedAmount = useCallback(async () => {
-    if (account) {
-      const rebalanceAddress = getAddress(get(rebalance, 'address'))
-
-      const myInvestTxnLocalStorage = JSON.parse(
-        localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
-      )
-
-      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
-      const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
-
-      const latestTxns = get(resTotalTxn.data, 'latest_txn')
-      const totalUsds = get(resTotalTxn.data, 'total_usd_amount')
-      const totalLps = get(resTotalTxn.data, 'total_lp_amount')
-
-      const indexTx = findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
-      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
-      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
-      localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
-
-      const txHash = {
-        txns: transactionsSlice,
-      }
-      let lastTotalAmt = 0
-      let lastTotalLp = 0
-      if (transactionsSlice.length > 0) {
-        const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-        lastTotalAmt = get(datas, 'total_usd_amount')
-        lastTotalLp = get(datas, 'total_lp_amount')
-      }
-
-      const totalUsd = totalUsds
-      const totalLpAmount = totalLps + lastTotalLp
-
-      if (sharedprice > 0 && totalUsd > 0 && totalLpAmount > 0) {
-        const totalUsdAmount = lastTotalAmt + totalUsd
-        const diff = sharedprice - totalUsdAmount
-        setDiffAmount(diff)
-        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-        setPercentage(diffNewAmount)
-      }
-    }
-  }, [sharedprice, rebalance, account, api])
+  const { diffAmount, percentage } = useComineAmount(rebalance, account, currentBalanceNumber)
 
   const shares = useMemo(() => {
     return numeral(currentBalanceNumber).format('0,0.[00]')
@@ -132,10 +83,6 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
     ),
     [isMobile, shares, t],
   )
-
-  useEffect(() => {
-    combinedAmount()
-  }, [combinedAmount])
 
   return (
     <CardStyled className={`pa-4 mt-4 ${className}`}>
