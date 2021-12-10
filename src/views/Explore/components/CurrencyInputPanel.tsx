@@ -123,7 +123,7 @@ const CurrencyInputPanel = ({
               className="token-amount-input"
               value={value}
               onUserInput={handleInput}
-              style={{ width: isMobile && currency && showMaxButton ? '100%' : 'auto' }}
+              style={isMobile && currency && showMaxButton ? { width: '100%', marginBottom: '4px' } : { width: 'auto' }}
             />
             {account && currency && showMaxButton && (
               <div className="flex align-center justify-end" style={{ width: isMobile ? '100%' : 'auto' }}>

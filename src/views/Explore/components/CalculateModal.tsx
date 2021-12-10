@@ -7,7 +7,18 @@ import { provider } from 'web3-core'
 import { AbiItem } from 'web3-utils'
 import { useTranslation } from 'react-i18next'
 import rebalanceAbi from 'config/abi/rebalance.json'
-import { Box, Button, Text, Modal, useMatchBreakpoints, Flex, Noti, NotiType, ModalFooter, ModalBody } from 'definixswap-uikit-v2'
+import {
+  Box,
+  Button,
+  Text,
+  Modal,
+  useMatchBreakpoints,
+  Flex,
+  Noti,
+  NotiType,
+  ModalFooter,
+  ModalBody,
+} from 'definixswap-uikit-v2'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
