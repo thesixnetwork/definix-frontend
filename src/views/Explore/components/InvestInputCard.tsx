@@ -50,7 +50,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
   const [sumPoolAmount, setSumPoolAmount] = useState(0)
   const [isSimulating, setIsSimulating] = useState(true)
   const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
-  const [inputError, setInputError] = useState(false)
+  const [inputError, setInputError] = useState<Record<string, boolean>>({})
   const [, setTx] = useState({})
   const dispatch = useDispatch()
   const { account, klaytn, connector } = useWallet()
@@ -61,73 +61,40 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
   const mRebalance = useDeepEqualMemo(rebalance)
   const allowances = useAllowances(account, getAddress(get(mRebalance, 'address', {})))
   const [calNewImpact, setCalNewImpact] = useState(0)
+  const hasError = useMemo(() => Object.values(inputError).some((value) => value), [inputError])
 
   const fetchData = useCallback(async (value, myBalances, rebalanceInfo) => {
     setIsSimulating(true)
     try {
-      const [, poolAmountsData] = await simulateInvest(
-        compact([...((rebalanceInfo || {}).tokens || []), ...((rebalanceInfo || {}).usdToken || [])]).map(
-          (c, index) => {
-            const ratioPoint = (
-              ((rebalanceInfo || {}).tokenRatioPoints || [])[index] ||
-              ((rebalanceInfo || {}).usdTokenRatioPoint || [])[0] ||
-              new BigNumber(0)
-            ).toNumber()
-            const ratioObject = ((rebalanceInfo || {}).ratio || []).find((r) => r.symbol === c.symbol)
-            const decimal = c.decimals
-            return {
-              ...c,
-              symbol: c.symbol,
-              address: ratioObject.address,
-              ratioPoint,
-              value: new BigNumber((value[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
-              balance: get(myBalances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
-            }
-          },
-        ),
+      const datas = compact([...((rebalanceInfo || {}).tokens || []), ...((rebalanceInfo || {}).usdToken || [])]).map(
+        (c, index) => {
+          const ratioPoint = (
+            ((rebalanceInfo || {}).tokenRatioPoints || [])[index] ||
+            ((rebalanceInfo || {}).usdTokenRatioPoint || [])[0] ||
+            new BigNumber(0)
+          ).toNumber()
+          const ratioObject = ((rebalanceInfo || {}).ratio || []).find((r) => r.symbol === c.symbol)
+          const decimal = c.decimals
+          return {
+            ...c,
+            symbol: c.symbol,
+            address: ratioObject.address,
+            ratioPoint,
+            value: new BigNumber((value[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
+            balance: get(myBalances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+          }
+        },
       )
-      const poolUSDBalancesDataProcess = getReserves(
-        compact([...((rebalanceInfo || {}).tokens || []), ...((rebalanceInfo || {}).usdToken || [])]).map(
-          (c, index) => {
-            const ratioPoint = (
-              ((rebalanceInfo || {}).tokenRatioPoints || [])[index] ||
-              ((rebalanceInfo || {}).usdTokenRatioPoint || [])[0] ||
-              new BigNumber(0)
-            ).toNumber()
-            const ratioObject = ((rebalanceInfo || {}).ratio || []).find((r) => r.symbol === c.symbol)
-            const decimal = c.decimals
-            return {
-              ...c,
-              symbol: c.symbol,
-              address: ratioObject.address,
-              ratioPoint,
-              value: new BigNumber((value[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
-              balance: get(myBalances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
-            }
-          },
-        ),
-      )
+      const [, poolAmountsData] = await simulateInvest(datas)
+      const poolUSDBalancesDataProcess = getReserves(datas)
 
       const reservePoolAmountProcess = getReserves(
-        compact([...((rebalanceInfo || {}).tokens || []), ...((rebalanceInfo || {}).usdToken || [])]).map(
-          (c, index) => {
-            const ratioPoint = (
-              ((rebalanceInfo || {}).tokenRatioPoints || [])[index] ||
-              ((rebalanceInfo || {}).usdTokenRatioPoint || [])[0] ||
-              new BigNumber(0)
-            ).toNumber()
-            const ratioObject = ((rebalanceInfo || {}).ratio || []).find((r) => r.symbol === c.symbol)
-            const decimal = c.decimals
-            return {
-              ...c,
-              symbol: c.symbol,
-              address: ratioObject.address,
-              ratioPoint,
-              value: new BigNumber((poolAmountsData[index] || '0') as string).times(new BigNumber(10).pow(decimal)),
-              balance: get(myBalances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
-            }
-          },
-        ),
+        datas.map((c, index) => {
+          return {
+            ...c,
+            value: new BigNumber((poolAmountsData[index] || '0') as string).times(new BigNumber(10).pow(c.decimal)),
+          }
+        }),
       )
       let sumUsd = new BigNumber(0)
 
@@ -281,7 +248,6 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
     <CalculateModal
       setTx={setTx}
       currentInput={currentInput}
-      // recalculate={fetchData}
       shares={shares}
       poolAmounts={poolAmounts}
       rebalance={mRebalance}
@@ -291,6 +257,8 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
     />,
     false,
   )
+
+  const setError = useCallback((error, c) => setInputError((cur) => ({ ...cur, [c.cAddress]: error })), [])
 
   useEffect(() => {
     if (account && mRebalance) {
@@ -325,7 +293,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
                 showMaxButton
                 className="mb-s24"
                 value={currentInput[c.cAddress] as string}
-                hasError={setInputError}
+                setError={setError}
                 max={c.cMax}
                 onUserInput={(value) => {
                   setCurrentInput({ ...currentInput, [c.cAddress]: value })
@@ -400,7 +368,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
         <Button
           scale="lg"
           width="100%"
-          disabled={isSimulating || underMinimum || inputError || !allApproved || !needsApprovalCoins.length}
+          disabled={hasError || isSimulating || underMinimum || !allApproved || !needsApprovalCoins.length}
           onClick={onPresentCalcModal}
         >
           {t('Calculate invest amount')}
