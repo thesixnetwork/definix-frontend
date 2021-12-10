@@ -25,7 +25,7 @@ interface CurrencyInputPanelProps {
   max?: BigNumber
   decimals?: number
   onUserInput: (value: string) => void
-  hasError?: (error: boolean) => void
+  setError?: (error: boolean, currency: any) => void
 }
 
 const Container = styled.div<{ hideInput: boolean }>``
@@ -63,16 +63,18 @@ const CurrencyInputPanel = ({
   max,
   decimals = 18,
   onUserInput,
-  hasError,
+  setError,
 }: CurrencyInputPanelProps) => {
   const { t } = useTranslation()
   const { account } = useWallet()
+  const toFixedFloor = useToFixedFloor()
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
 
-  const toFixedFloor = useToFixedFloor()
-  const overDp = useMemo(() => new BigNumber(value).decimalPlaces() > decimals, [value, decimals])
   const thisName = useMemo(() => getTokenName(currency?.symbol), [currency.symbol])
+  const overDp = useMemo(() => new BigNumber(value).decimalPlaces() > decimals, [value, decimals])
+  const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).gt(max), [value, max])
+  const error = useMemo(() => isGreaterThanMyBalance || overDp, [isGreaterThanMyBalance, overDp])
 
   const handleInput = useCallback(
     (str: string) => {
@@ -88,13 +90,11 @@ const CurrencyInputPanel = ({
     [max, onUserInput, toFixedFloor],
   )
 
-  const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).gt(max), [value, max])
-
   useEffect(() => {
-    if (typeof hasError === 'function') {
-      hasError(isGreaterThanMyBalance || overDp)
+    if (typeof setError === 'function') {
+      setError(error, currency)
     }
-  }, [isGreaterThanMyBalance, hasError, overDp])
+  }, [error, setError, currency])
 
   return (
     <Container id={id} hideInput={hideInput} className={className}>
