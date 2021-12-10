@@ -4,6 +4,7 @@ import rebalance from 'config/abi/rebalance.json'
 import VaultFacet from 'config/abi/VaultFacet.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import VaultPenaltyFacet from 'config/abi/VaultPenaltyFacet.json'
+import VaultTopUpFeatureFacet from 'config/abi/VaultTopUpFeatureFacet.json'
 
 export const getAbiHerodotusByName = (methodName: string) =>
   herodotus.find((abi) => abi.type === 'function' && abi.name === methodName)
@@ -22,3 +23,6 @@ export const getAbiRewardFacetByName = (methodName: string) =>
 
 export const getAbiVaultPenaltyFacetByName = (methodName: string) =>
   VaultPenaltyFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
+
+export const VaultTopUpFeatureFacetByName = (methodName: string) =>
+  VaultTopUpFeatureFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
