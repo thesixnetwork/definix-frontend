@@ -62,21 +62,30 @@ const CardHarvest = () => {
       </Heading>
       <div className={`${isMobile ? 'col-12 pa-4' : 'col-12 flex bd-b py-4 px-3 '}`}>
         <div className={`align-self-center ${isMobile ? 'col-12 mb-4' : 'col-3 py-2 pl-2'}`}>
-          <Text color="textSubtle" fontSize="12px !important"> Your vFINIX balance</Text>
+          <Text color="textSubtle" fontSize="12px !important">
+            {' '}
+            Your vFINIX balance
+          </Text>
           <Heading as="h1" style={{ lineHeight: 2 }} fontSize="16px !important">
             {numeral(balancevfinix).format('0,0.[00]')} vFINIX
           </Heading>
         </div>
         <div className="bd-r" />
         <div className={`align-self-center ${isMobile ? 'col-12 mb-4' : 'col-3 py-2 pl-3'}`}>
-          <Text color="textSubtle" fontSize="12px !important"> Your total FINIX stake</Text>
+          <Text color="textSubtle" fontSize="12px !important">
+            {' '}
+            Your total FINIX stake
+          </Text>
           <Heading as="h1" style={{ lineHeight: 2 }} fontSize="16px !important">
             {numeral(lockAmount).format('0,0.[00]')} FINIX
           </Heading>
         </div>
         <div className="bd-r" />
         <div className={`align-self-center ${isMobile ? 'col-12' : 'col-3 pa-2 pl-3'}`}>
-          <Text color="textSubtle" fontSize="12px !important"> Your FINIX earned</Text>
+          <Text color="textSubtle" fontSize="12px !important">
+            {' '}
+            Your FINIX earned
+          </Text>
           <div className={`${isMobile ? 'flex' : 'flex'}`}>
             <Heading as="h1" style={{ lineHeight: 2 }} fontSize="16px !important" color="success">
               {`${numeral(finixEarn).format('0,0.00')}`}
@@ -98,7 +107,7 @@ const CardHarvest = () => {
           >
             Harvest
           </HarvestButton>
-          <SuperHarvestButton          
+          <SuperHarvestButton
             radii="small"
             fullWidth
             size="sm"

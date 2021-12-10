@@ -346,7 +346,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
               display: 'flex',
             }}
           >
-            <CardSorry title="This feature is only for vFINIX holder" hideCloseButton >
+            <CardSorry title="This feature is only for vFINIX holder" hideCloseButton>
               <div className="flex flex-column w-100 mt-2">
                 <Text color={isDark ? 'white' : '#737375'}>
                   You have never lock in Long-term Stake. Do you want to start staking in the Long-term Stake to get
