@@ -34,7 +34,6 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 360px;
-    height: 740px;
   }
   position: relative;
 
@@ -53,7 +52,6 @@ const ModalHeader = styled.div<{ className?: string }>`
   align-items: center;
   justify-content: center;
   padding: 0px 10px 10px 64px;
-
 `
 
 const ModalTitle = styled(Flex)`
@@ -61,7 +59,7 @@ const ModalTitle = styled(Flex)`
   flex: 1;
 `
 
-const ModalStake: React.FC<Props> = ({
+const ModalResponses: React.FC<Props> = ({
   title,
   onDismiss,
   onBack,
@@ -100,4 +98,4 @@ const ModalStake: React.FC<Props> = ({
   </StyledModal>
 )
 
-export default ModalStake
+export default ModalResponses

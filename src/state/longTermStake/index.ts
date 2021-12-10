@@ -295,6 +295,10 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       lockTimes.setDate(lockTimes.getDate() + asDays)
       lockTimes = new Date(lockTimes)
 
+      let lockTopup = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
+      lockTopup.setDate(lockTopup.getDate())
+      lockTopup = new Date(lockTopup)
+
       let penaltyTimestamp = new Date(new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() * 1000)
       penaltyTimestamp.setDate(penaltyTimestamp.getDate() + asPenaltyDays)
       penaltyTimestamp = new Date(penaltyTimestamp)
@@ -306,9 +310,11 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       const timeZone = new Date().getTimezoneOffset() / 60
       const offset = timeZone === -7 && 2
       const utcLock = lockTimes.getTime()
+      const utcLockTopup = lockTopup.getTime()
       const utcPenalty = penaltyTimestamp.getTime()
       const utcUnLock = unLockTime.getTime()
       const lock = new Date(utcLock + 3600000 * offset)
+      const topupTime = new Date(utcLockTopup + 3600000 * offset)
       const penaltyUnlock = new Date(utcPenalty + 3600000 * offset)
       const unLock = new Date(utcUnLock + 3600000 * offset)
 
@@ -325,6 +331,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         canBeUnlock: canBeUnlock_,
         canBeClaim: canBeClaim_,
         lockTimestamp: moment(lock).format(`DD-MMM-YY HH:mm:ss`),
+        lockTopupTimes: moment(topupTime).format(`DD-MMM-YY HH:mm:ss`),
         penaltyRate: _.get(period, '0.realPenaltyRate')[value.level] * 100,
         lockAmount: new BigNumber(_.get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         voteAmount: new BigNumber(_.get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
@@ -332,7 +339,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
         topup,
-        topupTimeStamp: moment(new Date(lock.setDate(lock.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
+        topupTimeStamp: moment(new Date(topupTime.setDate(topupTime.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
       })
       return locksData
     })

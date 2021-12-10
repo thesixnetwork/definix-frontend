@@ -41,6 +41,7 @@ import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import success from 'uikit-dev/animation/complete.json'
 import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
+import ModalResponses from '../Modal/ModalResponses'
 import { Text } from '../../components/Text'
 import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
 
@@ -612,11 +613,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
 
   const CardResponse = () => {
     return (
-      <ModalStake title="" onDismiss={onDismiss} className="">
+      <ModalResponses title="" onDismiss={onDismiss} className="">
         <div className="pb-6 pt-2">
           <Lottie options={SuccessOptions} height={155} width={185} />
         </div>
-      </ModalStake>
+      </ModalResponses>
     )
   }
   const lenghtOrvalue = lengthSelect === 0 && value === ''
@@ -785,13 +786,13 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             </Text>
             <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
             <div className="flex mt-4 w-100">
-              <Text className="col-6" color="textSubtle" fontWeight="500">
+              <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
                 From your wallet:
                 <span style={{ color: '#0973B9' }} className="pl-2">
                   {balanceOf ? numeral(balanceOf).format('0,0.00000') : '-'} FINIX
                 </span>
               </Text>
-              <Text className="col-6 pl-3" color="textSubtle" fontWeight="500">
+              <Text className="col-6 pl-3" color="textSubtle" fontSize="12px" fontWeight="500">
                 Pending rewards
               </Text>
             </div>
