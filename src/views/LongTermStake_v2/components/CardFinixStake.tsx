@@ -72,7 +72,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
-          <BalanceFinix days={days} data={data} inputBalance={inputBalance} setInputBalance={setInputBalance} />
+          <BalanceFinix hasAccount={hasAccount} inputBalance={inputBalance} setInputBalance={setInputBalance} />
           <Divider width="100%" backgroundColor="lightGrey50" />
           <ApproveFinix
             isMobile={isMobile}
@@ -82,7 +82,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
             endDay={endDay}
             earn={getVFinix(days, inputBalance)}
           />
-          <EstimateVFinix endDay={endDay} earn={getVFinix(days, inputBalance)} />
+          <EstimateVFinix hasAccount={hasAccount} endDay={endDay} earn={getVFinix(days, inputBalance)} />
         </FlexCard>
       </Card>
     </>

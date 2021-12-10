@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from 'definixswap-uikit-v2'
+import BalanceText from 'components/BalanceText'
 import styled from 'styled-components'
 
-import { DataType } from './types'
-
 interface BalanceProps {
-  days: number
-  data: DataType[]
+  hasAccount: boolean
   inputBalance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
 }
@@ -54,7 +52,7 @@ const StyledText = styled(Text)`
   margin-top: 5px;
 `
 
-const BalanceFinix: React.FC<BalanceProps> = ({ inputBalance, setInputBalance }) => {
+const BalanceFinix: React.FC<BalanceProps> = ({ hasAccount, inputBalance, setInputBalance }) => {
   const { t } = useTranslation()
   const [balance] = useState<number>(1200.20002)
   const [inSufficient, setInSufficient] = useState<boolean>(false)
@@ -87,9 +85,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({ inputBalance, setInputBalance })
             <Text mr="S_4" textStyle="R_14R" color="deepgrey">
               {t('Balance')}
             </Text>
-            <Text textStyle="R_14B" color="deepgrey">
-              {balance.toFixed(6)}
-            </Text>
+            <BalanceText textStyle="R_14B" color="deepgrey" value={hasAccount ? balance : 0} />
           </Flex>
           <StyledInput
             type="number"
