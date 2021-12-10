@@ -433,7 +433,6 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { onSuperHarvest } = useSuperHarvest()
 
   const _superHarvest = useCallback(() => {
-    setLoading('loading')
     const selected = Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
     if (harvestProgress !== -1 && harvestProgress <= Object.values(selected).length) {
       if (_.get(Object.values(selected)[harvestProgress], 'checked')) {
@@ -473,13 +472,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [harvestProgress, selectedToken, handleHarvest])
 
   const lockPlus = useCallback(() => {
-    setLoading('loading')
     onLockPlus()
       .then((res) => {
         setAmount('')
         if (res === true) {
-          setLoading('success')
-          setInterval(() => setLoading('dismiss'), 3000)
           setHarvested(false)
           setHarvestProgress(-1)
           setLengthSelect(0)
@@ -624,26 +620,12 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }
 
   const CardResponse = () => {
-    return loading === 'success' ? (
+    return (
       <ModalResponses title="" onDismiss={onDismiss} className="">
         <div className="pb-6 pt-2">
           <Lottie options={SuccessOptions} height={155} width={185} />
         </div>
       </ModalResponses>
-    ) : (
-      Dismiss()
-    )
-  }
-
-  const Dismiss = () => {
-    return loading === 'loading' ? (
-      <ModalResponses title="" onDismiss={onDismiss} className="">
-        <div className="pb-6 pt-2">
-          <Lottie options={options} height={155} width={185} />
-        </div>
-      </ModalResponses>
-    ) : (
-      onDismiss()
     )
   }
 
@@ -651,8 +633,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
 
   return (
     <>
-      {loading !== '' ? (
-        CardResponse()
+      {showLottie ? (
+        <CardResponse />
       ) : (
         <ModalStake
           title={
