@@ -808,7 +808,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <div className="flex w-100 align-center">
               <Balance className="mr-2">
                 <NumberInput
-                  style={{ width: '45%' }}
+                  style={{ width: '45%', color: '#2A9D8F' }}
                   placeholder="0.00"
                   value={value}
                   onChange={handleChange}
