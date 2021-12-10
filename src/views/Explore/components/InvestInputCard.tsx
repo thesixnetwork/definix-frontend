@@ -1,53 +1,177 @@
 /* eslint-disable no-nested-ternary */
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { get } from 'lodash'
+import { get, compact, debounce } from 'lodash'
 import { provider } from 'web3-core'
 
-import { Box, Button, Card, CardBody, CheckBIcon, Divider, Flex, Text } from 'definixswap-uikit-v2'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CheckBIcon,
+  Divider,
+  Flex,
+  Noti,
+  NotiType,
+  Text,
+  useModal,
+} from 'definixswap-uikit-v2'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { useBalances, useAllowances, useToast } from 'state/hooks'
+import { fetchAllowances, fetchBalances } from 'state/wallet'
+import { simulateInvest, getReserves } from 'offline-pool'
+
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiERC20ByName } from 'hooks/hookHelper'
 import { getAddress } from 'utils/addressHelpers'
 import { approveOther } from 'utils/callHelpers'
 import { getContract } from 'utils/erc20'
 import { useDispatch } from 'react-redux'
-import { fetchAllowances, fetchBalances } from 'state/wallet'
-import { useToast } from 'state/hooks'
+
+import { useDeepEqualMemo } from 'hooks/useDeepEqualMemo'
 import CurrencyInputPanel from './CurrencyInputPanel'
+import CalculateModal from './CalculateModal'
 
 interface InvestInputCardProp {
   isMobile?: boolean
-  isSimulating: boolean
-  balances
-  allowances
-  onNext
   rebalance
-  setCurrentInput
-  currentInput
-  sumPoolAmount
+  onNext
 }
 
-const InvestInputCard: React.FC<InvestInputCardProp> = ({
-  isMobile,
-  isSimulating,
-  balances,
-  allowances,
-  onNext,
-  rebalance,
-  setCurrentInput,
-  currentInput,
-  sumPoolAmount,
-}) => {
+const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, onNext }) => {
   const { t } = useTranslation()
   const [approvingCoin, setApprovingCoin] = useState<string | null>(null)
+  const [poolUSDBalances, setPoolUSDBalances] = useState([])
+  const [poolAmounts, setPoolAmounts] = useState([])
+  const [sumPoolAmount, setSumPoolAmount] = useState(0)
+  const [isSimulating, setIsSimulating] = useState(true)
+  const [currentInput, setCurrentInput] = useState<Record<string, unknown>>({})
+  const [inputError, setInputError] = useState<Record<string, boolean>>({})
+  const [, setTx] = useState({})
   const dispatch = useDispatch()
   const { account, klaytn, connector } = useWallet()
   const { setShowModal } = React.useContext(KlipModalContext())
   const { toastSuccess, toastError } = useToast()
+  const balances = useBalances(account)
+  const mBalances = useDeepEqualMemo(balances)
+  const mRebalance = useDeepEqualMemo(rebalance)
+  const allowances = useAllowances(account, getAddress(get(mRebalance, 'address', {})))
+  const [calNewImpact, setCalNewImpact] = useState(0)
+  const hasError = useMemo(() => Object.values(inputError).some((value) => value), [inputError])
+
+  const fetchData = useCallback(async (value, myBalances, rebalanceInfo) => {
+    setIsSimulating(true)
+    try {
+      const datas = compact([...((rebalanceInfo || {}).tokens || []), ...((rebalanceInfo || {}).usdToken || [])]).map(
+        (c, index) => {
+          const ratioPoint = (
+            ((rebalanceInfo || {}).tokenRatioPoints || [])[index] ||
+            ((rebalanceInfo || {}).usdTokenRatioPoint || [])[0] ||
+            new BigNumber(0)
+          ).toNumber()
+          const ratioObject = ((rebalanceInfo || {}).ratio || []).find((r) => r.symbol === c.symbol)
+          const decimal = c.decimals
+          return {
+            ...c,
+            symbol: c.symbol,
+            address: ratioObject.address,
+            ratioPoint,
+            value: new BigNumber((value[c.address] || '0') as string).times(new BigNumber(10).pow(decimal)),
+            balance: get(myBalances, c.address, new BigNumber(0)).times(new BigNumber(10).pow(decimal)),
+          }
+        },
+      )
+      const [, poolAmountsData] = await simulateInvest(datas)
+      const poolUSDBalancesDataProcess = getReserves(datas)
+
+      const reservePoolAmountProcess = getReserves(
+        datas.map((c, index) => {
+          return {
+            ...c,
+            value: new BigNumber((poolAmountsData[index] || '0') as string).times(new BigNumber(10).pow(c.decimal)),
+          }
+        }),
+      )
+      let sumUsd = new BigNumber(0)
+
+      const [poolUSDBalancesData, reservePoolAmount] = await Promise.all([
+        poolUSDBalancesDataProcess,
+        reservePoolAmountProcess,
+      ])
+      // Promise.all([poolUSDBalancesDataProcess, reservePoolAmountProcess]).then(data => {
+      // const [poolUSDBalancesData,reservePoolAmount]  = data
+      // @ts-ignore
+      for (let i = 0; i < reservePoolAmount[0]?.length || 0; i++) {
+        const decimal = rebalanceInfo.tokens[i]?.decimals ? rebalanceInfo.tokens[i].decimals : 6
+        sumUsd = sumUsd.plus(reservePoolAmount[0][i].dividedBy(10 ** (decimal + 6)))
+      }
+      const usdToken = ((rebalanceInfo || {}).usdToken || [])[0] || {}
+      // @ts-ignore
+      const totalUserUsdAmount = new BigNumber(get(poolUSDBalancesData, 1, '0'))
+        .div(new BigNumber(10).pow(usdToken.decimals || 18))
+        .toNumber()
+      const calNewImpactPrice = Math.abs(((totalUserUsdAmount - +sumUsd.toFixed()) / +sumUsd.toFixed()) * 100)
+
+      setCalNewImpact(calNewImpactPrice)
+      setPoolUSDBalances(poolUSDBalancesData)
+      setSumPoolAmount(+sumUsd.toFixed())
+      setPoolAmounts(poolAmountsData)
+      // })
+    } catch (e) {
+      console.error(e)
+    }
+    setIsSimulating(false)
+  }, [])
+
+  const debouncedFetchData = useMemo(() => debounce(fetchData, 300), [fetchData])
+
+  const usdToken = ((mRebalance || {}).usdToken || [])[0] || {}
+  const totalUsdPool = useMemo(
+    () =>
+      mRebalance?.sumCurrentPoolUsdBalance
+        ? // @ts-ignore
+          new BigNumber([mRebalance.sumCurrentPoolUsdBalance])
+            .div(new BigNumber(10).pow(usdToken.decimals || 18))
+            .toNumber()
+        : 0,
+    [mRebalance.sumCurrentPoolUsdBalance, usdToken.decimals],
+  )
+
+  const totalUserUsdAmount = useMemo(
+    () => new BigNumber(get(poolUSDBalances, 1, '0')).div(new BigNumber(10).pow(usdToken.decimals || 18)).toNumber(),
+    [poolUSDBalances, usdToken.decimals],
+  )
+  // const minUserUsdAmount = totalUserUsdAmount - totalUserUsdAmount / (100 / (slippage / 100))
+
+  const totalSupply = useMemo(
+    () =>
+      mRebalance?.totalSupply?.[0]
+        ? // @ts-ignore
+          new BigNumber([mRebalance.totalSupply[0]]).div(new BigNumber(10).pow(18)).toNumber()
+        : 0,
+    [mRebalance.totalSupply],
+  )
+
+  const currentShare = useMemo(
+    () => (totalUsdPool > 0 ? (totalUserUsdAmount / totalUsdPool) * totalSupply : 0),
+    [totalSupply, totalUsdPool, totalUserUsdAmount],
+  )
+
+  // const priceImpact = Math.round((totalUserUsdAmount / totalUsdPool) * 10) / 10
+  // const calNewImpact = Math.abs(((totalUserUsdAmount - sumPoolAmount) / sumPoolAmount) * 100)
+  const shares = useMemo(
+    () =>
+      currentShare <= 0 || Number.isNaN(currentShare)
+        ? numeral(sumPoolAmount).format('0,0.[00]')
+        : numeral(currentShare).format('0,0.[00]'),
+    [currentShare, sumPoolAmount],
+  )
+
+  const underMinimum = useMemo(() => shares === '0', [shares])
 
   const onApprove = (token) => async () => {
     const tokenContract = getContract(klaytn as provider, getAddress(token.address))
@@ -57,41 +181,37 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
         klipProvider.genQRcodeContactInteract(
           getAddress(token.address),
           JSON.stringify(getAbiERC20ByName('approve')),
-          JSON.stringify([getAddress(rebalance.address), klipProvider.MAX_UINT_256_KLIP]),
+          JSON.stringify([getAddress(mRebalance.address), klipProvider.MAX_UINT_256_KLIP]),
           setShowModal,
         )
         await klipProvider.checkResponse()
         setShowModal(false)
       } else {
-        await approveOther(tokenContract, getAddress(rebalance.address), account)
+        await approveOther(tokenContract, getAddress(mRebalance.address), account)
       }
-      const assets = rebalance.ratio
+      const assets = mRebalance.ratio
       const assetAddresses = assets.map((a) => getAddress(a.address))
       dispatch(fetchBalances(account, assetAddresses))
-      dispatch(fetchAllowances(account, assetAddresses, getAddress(rebalance.address)))
-      toastSuccess(t('Approve Complete'))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(mRebalance.address)))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
       setApprovingCoin(null)
     } catch {
-      toastError(t('Approve Failed'))
+      toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
       setApprovingCoin(null)
     }
   }
 
-  const findAddress = (token) => {
+  const findAddress = useCallback((token) => {
     if (token.symbol === 'WKLAY' || token.symbol === 'WBNB') return 'main'
     return getAddress(token.address)
-  }
-
-  function toFixedCustom(num) {
-    return num.toString().match(/^-?\d+(?:\.\d{0,7})?/)[0]
-  }
+  }, [])
 
   const coins = useMemo(
     () =>
-      rebalance.ratio
+      mRebalance.ratio
         .filter((coin) => coin.value)
         .map((c) => {
-          const balance = get(balances, findAddress(c))
+          const balance = get(mBalances, findAddress(c))
           return {
             ...c,
             cMax: balance || new BigNumber(0),
@@ -99,14 +219,14 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
             cBalance: balance,
           }
         }),
-    [balances, rebalance],
+    [mBalances, findAddress, mRebalance.ratio],
   )
 
   const needsApprovalCoins = useMemo(
     () =>
       coins
         .map((c) => {
-          const currentValue = parseFloat(currentInput[c.cAddress])
+          const currentValue = parseFloat((currentInput[c.cAddress] as string) ?? '')
           const currentAllowance = (get(allowances, c.cAddress) || new BigNumber(0)).toNumber()
           const needsApproval = currentAllowance < currentValue && c.symbol !== 'WKLAY' && c.symbol !== 'WBNB'
           return {
@@ -124,41 +244,57 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
     [needsApprovalCoins],
   )
 
+  const [onPresentCalcModal] = useModal(
+    <CalculateModal
+      setTx={setTx}
+      currentInput={currentInput}
+      shares={shares}
+      poolAmounts={poolAmounts}
+      rebalance={mRebalance}
+      sumPoolAmount={sumPoolAmount}
+      calNewImpact={calNewImpact}
+      onNext={onNext}
+    />,
+    false,
+  )
+
+  const setError = useCallback((error, c) => setInputError((cur) => ({ ...cur, [c.cAddress]: error })), [])
+
+  useEffect(() => {
+    if (account && mRebalance) {
+      const assets = mRebalance.ratio
+      const assetAddresses = assets.map((a) => getAddress(a.address))
+      dispatch(fetchBalances(account, [...assetAddresses, getAddress(mRebalance.address)]))
+      dispatch(fetchAllowances(account, assetAddresses, getAddress(mRebalance.address)))
+    }
+  }, [dispatch, account, mRebalance])
+
+  useEffect(() => {
+    return () => {
+      setTx({})
+    }
+  }, [])
+
+  useEffect(() => {
+    debouncedFetchData(currentInput, mBalances, mRebalance)
+  }, [debouncedFetchData, mBalances, currentInput, mRebalance])
+
   return (
     <Card mb={isMobile ? 'S_40' : 'S_80'}>
       <CardBody p={isMobile ? 'S_20' : 'S_40'}>
         <Box mb="S_40">
           {coins.map((c) => {
-            const max = String(c.cMax.toNumber())
             return (
               <CurrencyInputPanel
                 currency={c}
                 balance={c.cBalance}
                 id={`invest-${c.symbol}`}
                 key={`invest-${c.symbol}`}
-                showMaxButton={max !== currentInput[c.cAddress]}
+                showMaxButton
                 className="mb-s24"
-                value={currentInput[c.cAddress]}
+                value={currentInput[c.cAddress] as string}
+                setError={setError}
                 max={c.cMax}
-                onMax={() => {
-                  const testMax = toFixedCustom(max)
-                  setCurrentInput({
-                    ...currentInput,
-                    [c.cAddress]: testMax,
-                  })
-                }}
-                onQuarter={() => {
-                  setCurrentInput({
-                    ...currentInput,
-                    [c.cAddress]: String(c.cMax.times(0.25).toNumber()),
-                  })
-                }}
-                onHalf={() => {
-                  setCurrentInput({
-                    ...currentInput,
-                    [c.cAddress]: String(c.cMax.times(0.5).toNumber()),
-                  })
-                }}
                 onUserInput={(value) => {
                   setCurrentInput({ ...currentInput, [c.cAddress]: value })
                 }}
@@ -174,6 +310,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
           {needsApprovalCoins.length ? (
             needsApprovalCoins.map((coin) => (
               <Flex
+                key={`approval-${coin.symbol}`}
                 textStyle="R_16M"
                 mb={isMobile ? 'S_24' : 'S_8'}
                 alignItems={isMobile ? 'flex-start' : 'center'}
@@ -194,8 +331,14 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
                   disabled={!coin.needsApproval || !coin.currentValue}
                   onClick={onApprove(coin)}
                 >
-                  {coin.needsApproval || <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />}
-                  {t('Approve {{Token}}', { Token: coin.symbol })}
+                  {coin.needsApproval ? (
+                    t('Approve {{Token}}', { Token: coin.symbol })
+                  ) : (
+                    <>
+                      <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />
+                      {t('{{Token}} Approved', { Token: coin.symbol })}
+                    </>
+                  )}
                 </Button>
               </Flex>
             ))
@@ -208,22 +351,33 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({
           )}
         </Box>
         <Divider mb="S_32" />
-        <Box mb="S_40">
+        <Box mb={isMobile ? 'S_32' : 'S_40'}>
           <Text textStyle="R_16M" mb="S_8" color="textSubtle">
             {t('Total Value')}
           </Text>
-          <Text textStyle="R_23M">$ {numeral(sumPoolAmount).format('0,0.[0000]')}</Text>
+          <Flex flexWrap="wrap" alignItems="baseline">
+            <Text textStyle="R_23M" style={{ whiteSpace: 'nowrap' }} mr="S_8" mb="S_2">
+              $ {numeral(sumPoolAmount).format('0,0.[0000]')}
+            </Text>
+            <Text color="textSubtle" textStyle="R_14R">
+              {t('EST. {{number}} share', { number: shares })}
+            </Text>
+          </Flex>
         </Box>
 
         <Button
           scale="lg"
           width="100%"
-          isLoading={isSimulating}
-          disabled={!allApproved || !needsApprovalCoins.length}
-          onClick={onNext}
+          disabled={hasError || isSimulating || underMinimum || !allApproved || !needsApprovalCoins.length}
+          onClick={onPresentCalcModal}
         >
           {t('Calculate invest amount')}
         </Button>
+        {underMinimum && (
+          <Noti mt="S_12" type={NotiType.ALERT}>
+            {t('Less than a certain amount')}
+          </Noti>
+        )}
       </CardBody>
     </Card>
   )

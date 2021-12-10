@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import axios from 'axios'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
@@ -8,11 +9,11 @@ import numeral from 'numeral'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Box, CopyToClipboard, Flex, LinkExternal, Text, Toggle, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import { Box, CopyToClipboard, Flex, Grid, LinkExternal, Text, Toggle, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'
 import EllipsisText from 'components/EllipsisText'
-import PaginationCustom from './Pagination'
-import { Table, TD, TH, TR } from './Table'
+
+import { TD, TH } from './Table'
 
 interface TransactionType {
   className?: string
@@ -38,32 +39,34 @@ const Overflow = styled.div`
   overflow: auto;
 `
 
-const TransactionTable = ({ rows, empText, mx, isLoading }) => {
+const StyledGrid = styled(Grid)`
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 8px;
+
+  > div:nth-last-child(7) ~ div {
+    border-bottom: none;
+  }
+`
+
+const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
   const { t } = useTranslation()
   const [cols] = useState([t('Investors'), t('Action'), t('Shares'), t('Total Amount'), t('Date'), t('Scope')])
 
-  return isLoading ? (
-    <LoadingData />
-  ) : isEmpty(rows) ? (
-    <EmptyData text={empText} />
-  ) : (
+  return (
     <Overflow>
       <Box mx={mx} minWidth="fit-content">
-        <Table>
-          <tbody>
-            <TR>
-              {cols.map((c, idx) => (
-                <TH align={idx > 0 ? 'center' : null} key={c} oneline>
-                  <Text color="mediumgrey" textStyle="R_12M">
-                    {c}
-                  </Text>
-                </TH>
-              ))}
-            </TR>
-
+        <InfiniteScroll dataLength={rows.length} next={fetchMoreData} hasMore={hasMore} loader={<LoadingData />}>
+          <StyledGrid gridTemplateColumns={`repeat(${cols.length}, 1fr)`}>
+            {cols.map((c, idx) => (
+              <TH align={idx > 0 ? 'center' : null} key={c} oneline as="div">
+                <Text key={c} color="mediumgrey" textStyle="R_12M">
+                  {c}
+                </Text>
+              </TH>
+            ))}
             {rows.map((r) => (
-              <TR key={`tsc-${r.block_number}`}>
-                <TD>
+              <>
+                <TD as="div">
                   <Flex alignItems="center">
                     <Text textStyle="R_14R">
                       <EllipsisText start={6} end={5} text={r.user_address} />
@@ -71,7 +74,7 @@ const TransactionTable = ({ rows, empText, mx, isLoading }) => {
                     <CopyToClipboard toCopy={r.user_address} />
                   </Flex>
                 </TD>
-                <TD align="center" oneline>
+                <TD align="center" oneline as="div">
                   {r.event_name === 'AddFundAmount' ? (
                     <Text textStyle="R_14R" color="success">
                       + {t('Action Invest')}
@@ -82,16 +85,16 @@ const TransactionTable = ({ rows, empText, mx, isLoading }) => {
                     </Text>
                   )}
                 </TD>
-                <TD align="center">
+                <TD align="center" as="div">
                   <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
                 </TD>
-                <TD align="center">
+                <TD align="center" as="div">
                   <Text textStyle="R_14R">{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
                 </TD>
-                <TD align="center" oneline>
+                <TD align="center" oneline as="div">
                   <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>
                 </TD>
-                <TD align="center">
+                <TD align="center" as="div">
                   <LinkExternal
                     textStyle="R_14R"
                     color="mediumgrey"
@@ -100,10 +103,10 @@ const TransactionTable = ({ rows, empText, mx, isLoading }) => {
                     KlaytnScope
                   </LinkExternal>
                 </TD>
-              </TR>
+              </>
             ))}
-          </tbody>
-        </Table>
+          </StyledGrid>
+        </InfiniteScroll>
       </Box>
     </Overflow>
   )
@@ -124,13 +127,12 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         marginY: 'S_24',
       }
 
-  const [isLoading, setIsLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [myOnly, setMyOnly] = useState(false)
 
   const [transactions, setTransactions] = useState([])
   const [total, setTotal] = useState(0)
-  const pages = useMemo(() => Math.ceil(total / 10), [total])
+  const pages = useMemo(() => Math.ceil(total / 20), [total])
 
   const setDefault = () => {
     setMyOnly(false)
@@ -144,26 +146,22 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
       return
     }
 
-    setIsLoading(true)
     const api = process.env.REACT_APP_API_REBALANCING_TRANSACTION
     const response = await axios.get(api, {
       params: {
         pool: (address || '').toLowerCase(),
-        limit: 10,
+        limit: 20,
         address: myOnly ? account : '',
         page: currentPage,
       },
     })
-    setIsLoading(false)
     setTotal(response.data.total)
-    setTransactions(response.data.result)
+    setTransactions((prev) => prev.concat(response.data.result))
   }, [account, address, currentPage, myOnly])
 
-  const onPageChange = (e, page) => {
-    setCurrentPage(page)
-  }
-
   useEffect(() => {
+    setTransactions([])
+    setTotal(0)
     setCurrentPage(1)
   }, [myOnly])
 
@@ -185,24 +183,18 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         </Text>
         <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
       </Flex>
-      <Box mx={size.marginX} mb="S_8">
-        <PaginationCustom
-          page={currentPage}
-          count={pages}
-          size="small"
-          hidePrevButton
-          hideNextButton
-          onChange={onPageChange}
-        />
-      </Box>
 
       <Box pb={size.marginY}>
-        <TransactionTable
-          mx={size.marginX}
-          rows={transactions}
-          isLoading={isLoading}
-          empText={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')}
-        />
+        {isEmpty(transactions) ? (
+          <EmptyData text={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')} />
+        ) : (
+          <TransactionTable
+            mx={size.marginX}
+            rows={transactions}
+            hasMore={pages > currentPage}
+            fetchMoreData={() => setCurrentPage(currentPage + 1)}
+          />
+        )}
       </Box>
     </div>
   )

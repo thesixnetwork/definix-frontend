@@ -1,6 +1,5 @@
 import React from 'react'
 import { useTranslation, Trans } from 'react-i18next'
-import numeral from 'numeral'
 import {
   Box,
   Flex,
@@ -13,6 +12,7 @@ import {
   ModalBody,
   ModalFooter,
 } from 'definixswap-uikit-v2'
+import BalanceText from 'components/BalanceText'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -66,9 +66,7 @@ const StakeModal: React.FC<ModalProps> = ({
                 {t('FINIX')}
               </Text>
             </Flex>
-            <Text textStyle="R_16R" color="black">
-              {numeral(Number(balance)).format('0,0.[000000]')}
-            </Text>
+            <BalanceText textStyle="R_16R" color="black" value={balance} />
           </Flex>
           <Divider />
           <Flex mt="S_24" flexDirection="column">
@@ -97,9 +95,12 @@ const StakeModal: React.FC<ModalProps> = ({
               <Text textStyle="R_14R" color="mediumgrey">
                 {t('vFINIX Earn')}
               </Text>
-              <Text textStyle="R_14M" color="deepgrey">
-                {earn} {t('vFINIX')}
-              </Text>
+              <Flex>
+                <BalanceText textStyle="R_14M" color="deepgrey" value={earn} />
+                <Text ml="S_4" textStyle="R_14M" color="deepgrey">
+                  {t('vFINIX')}
+                </Text>
+              </Flex>
             </Flex>
             <Flex mt="S_12" alignItems="flex-start">
               <Flex mt="S_2">

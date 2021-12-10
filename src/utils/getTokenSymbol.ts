@@ -21,3 +21,9 @@ export const getTokenSymbol = (tokenAddress) => {
     return '-'
   }
 }
+
+export const getTokenName = (symbol: string) => {
+  if (symbol === 'WKLAY') return 'KLAY'
+  if (symbol === 'WBNB') return 'BNB'
+  return symbol
+}

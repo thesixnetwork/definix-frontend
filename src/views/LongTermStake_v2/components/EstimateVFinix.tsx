@@ -1,13 +1,15 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from 'definixswap-uikit-v2'
+import BalanceText from 'components/BalanceText'
 
 interface EstimateVFinixProps {
+  hasAccount: boolean
   endDay: string
   earn: number
 }
 
-const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ endDay, earn }) => {
+const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, endDay, earn }) => {
   const { t } = useTranslation()
 
   return (
@@ -33,9 +35,12 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ endDay, earn }) => {
           <Text textStyle="R_14R" color="mediumgrey">
             {t('vFINIX Earn')}
           </Text>
-          <Text textStyle="R_14M" color="deepgrey">
-            {earn} {t('vFINIX')}
-          </Text>
+          <Flex>
+            <BalanceText textStyle="R_14M" color="deepgrey" value={hasAccount ? earn : 0} />
+            <Text ml="S_4" textStyle="R_14M" color="deepgrey">
+              {t('vFINIX')}
+            </Text>
+          </Flex>
         </Flex>
       </Flex>
     </>

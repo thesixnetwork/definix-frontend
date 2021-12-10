@@ -13,7 +13,7 @@ import EstimateVFinix from './EstimateVFinix'
 import { IsMobileType } from './types'
 
 interface CardFinixStakeProps extends IsMobileType {
-  account: string
+  hasAccount: boolean
 }
 
 const FlexCard = styled(Flex)`
@@ -21,9 +21,10 @@ const FlexCard = styled(Flex)`
   align-items: center;
 `
 
-const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, account }) => {
+const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount }) => {
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
+  const [error, setError] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
@@ -72,17 +73,24 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, account }) =>
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
-          <BalanceFinix days={days} data={data} inputBalance={inputBalance} setInputBalance={setInputBalance} />
-          <Divider width="100%" backgroundColor="lightGrey50" />
+          <BalanceFinix
+            hasAccount={hasAccount}
+            minimum={data.find((item) => item.day === days).minStake}
+            inputBalance={inputBalance}
+            setInputBalance={setInputBalance}
+            error={error}
+            setError={setError}
+          />
           <ApproveFinix
             isMobile={isMobile}
-            account={account}
+            hasAccount={hasAccount}
             inputBalance={inputBalance}
             days={days}
             endDay={endDay}
             earn={getVFinix(days, inputBalance)}
+            isError={!!error}
           />
-          <EstimateVFinix endDay={endDay} earn={getVFinix(days, inputBalance)} />
+          <EstimateVFinix hasAccount={hasAccount} endDay={endDay} earn={getVFinix(days, inputBalance)} />
         </FlexCard>
       </Card>
     </>

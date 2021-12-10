@@ -27,7 +27,7 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
         {ratio
           .filter((r) => r.value)
           .map((m) => (
-            <Coin mx="S_4" py="S_8" isHorizontal={isHorizontal} symbol={m.symbol || ''}>
+            <Coin key={m.symbol} mx="S_4" py="S_8" isHorizontal={isHorizontal} symbol={m.symbol || ''}>
               <Text textStyle="R_14R">{m.value}%</Text>
             </Coin>
           ))}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { Box, useMatchBreakpoints } from 'definixswap-uikit-v2'
 
 import TitleBridge from './components/TitleBridge'

@@ -7,6 +7,7 @@ import { Box, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 import { Rebalance } from 'state/types'
+import { getTokenName } from 'utils/getTokenSymbol'
 import { Table, TD, TH, TR } from './Table'
 
 interface AssetDetailType {
@@ -41,7 +42,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
           <tbody>
             <TR>
               {cols.map((c, idx) => (
-                <TH align={idx > 0 ? 'center' : null} key={c} oneline sm={isMaxXl}>
+                <TH align={idx > 0 ? 'center' : null} key={`th-${c}`} oneline sm={isMaxXl}>
                   <Text color="mediumgrey" textStyle="R_12M">
                     {c}
                   </Text>
@@ -50,11 +51,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
             </TR>
 
             {tokens.map((r, index) => {
-              const thisName = (() => {
-                if (r.symbol === 'WKLAY') return 'KLAY'
-                if (r.symbol === 'WBNB') return 'BNB'
-                return r.symbol
-              })()
+              const thisName = getTokenName(r?.symbol)
 
               const ratio = get(rebalance, `ratioCal`)
               // Do not show record when ratio equal 0
@@ -74,7 +71,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
               const changeNumber = change.toNumber()
 
               return (
-                <TR>
+                <TR key={`row-${r.symbol}`}>
                   <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
                     <div className="flex align-center" style={{ width: 'max-content' }}>
                       <img

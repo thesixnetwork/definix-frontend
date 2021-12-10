@@ -56,14 +56,15 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
       <Flex
         alignItems="center"
         justifyContent={alignRight ? 'flex-end' : 'inherit'}
+        flexWrap="wrap"
         mb={titleMarginBottom ?? (large ? 'S_4' : 'S_2')}
       >
-        <Text textStyle={textStyle.subTitle} color={titleColor || 'mediumgrey'}>
+        <Text textStyle={textStyle.subTitle} color={titleColor || 'mediumgrey'} mr={subTitle ? 'S_2' : ''}>
           {title}
         </Text>
 
         {subTitle && (
-          <Text textStyle={textStyle.subTitle} ml="S_8" as="span">
+          <Text textStyle={textStyle.subTitle} color={titleColor || 'mediumgrey'} as="span">
             {subTitle}
           </Text>
         )}
