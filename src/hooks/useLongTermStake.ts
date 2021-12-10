@@ -80,7 +80,7 @@ export const useTotalFinixLock = () => {
 
   useEffect(() => {
     async function fetchTotalFinixLock() {
-      const callContract = getContract(VFinixMergeAbi, getVFinix())
+      const callContract = getContract(VaultFacet.abi, getVFinix())
       const finixLock = await callContract.methods.getTotalFinixLock().call()
       const finixLockMap = []
       for (let i = 0; i < 3; i++) {
@@ -164,7 +164,7 @@ export const usePendingReward = () => {
 
   useEffect(() => {
     async function fetchReward() {
-      const callContract = getContract(VFinixMergeAbi, getVFinix())
+      const callContract = getContract(RewardFacet.abi, getVFinix())
       try {
         const reward = await callContract.methods.pendingReward(account).call()
         setPendingReward(new BigNumber(reward).dividedBy(new BigNumber(10).pow(18)))
@@ -209,7 +209,7 @@ export const useLockTopup = () => {
 
   useEffect(() => {
     async function fetchTopUp() {
-      const callContract = getContract(VFinixMergeAbi, getVFinix())
+      const callContract = getContract(VaultInfoFacet.abi, getVFinix())
       try {
         const res = await callContract.methods.locksDesc(account, 0, 0).call()
         setTopUp(res.locksTopup)
@@ -250,7 +250,7 @@ export const useUnLock = () => {
         resolve('')
       })
     }
-    const callContract = getContract(VFinixMergeAbi, getVFinix())
+    const callContract = getContract(VaultFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.unlock(id), account).then(resolve).catch(reject)
     })
@@ -284,7 +284,7 @@ export const useLock = (level, lockFinix, focus) => {
           setInterval(() => setLoading(''), 5000)
           setInterval(() => setStatus(false), 5000)
         } else {
-          const callContract = getContract(VFinixMergeAbi, getVFinix())
+          const callContract = getContract(VaultFacet.abi, getVFinix())
           await callContract.methods
             .lock(level, lockFinix)
             .estimateGas({ from: account })
@@ -335,7 +335,7 @@ export const useHarvest = () => {
         resolve('ok')
       })
     }
-    const callContract = getContract(VFinixMergeAbi, getVFinix())
+    const callContract = getContract(RewardFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.harvest(account), account).then(resolve).catch(reject)
     })
@@ -377,9 +377,9 @@ export const useAprCardFarmHome = () => {
 
   useEffect(() => {
     async function fetchApr() {
-      const rewardFacetContract = getContract(VFinixMergeAbi, getVFinix())
+      const rewardFacetContract = getContract(RewardFacet.abi, getVFinix())
       const finixContract = getContract(IKIP7.abi, getVFinix())
-      const userVfinixInfoContract = getContract(VFinixMergeAbi, getVFinix())
+      const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
 
       const [rewardPerBlockNumber, totalSupplyNumber, userVfinixAmount] = await Promise.all([
         await rewardFacetContract.methods.rewardPerBlock().call(),
@@ -420,7 +420,7 @@ export const useApr = () => {
 
   useEffect(() => {
     async function fetchApr() {
-      const finixLock = getContract(VFinixMergeAbi, getVFinix())
+      const finixLock = getContract(RewardFacet.abi, getVFinix())
       const finixContract = getContract(IKIP7.abi, getVFinix())
       const supply = await finixLock.methods.rewardPerBlock().call()
       const total = await finixContract.methods.totalSupply().call()
@@ -443,7 +443,7 @@ export const useRank = () => {
   useEffect(() => {
     async function fetchRank() {
       if (account) {
-        const userVfinixInfoContract = getContract(VFinixMergeAbi, getVFinix())
+        const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
         const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
         let maxRank = -1
         for (let i = 0; i < userVfinixLocks.length; i++) {
@@ -470,7 +470,7 @@ export const useLockCount = () => {
 
   useEffect(() => {
     async function fetchLockCount() {
-      const callContract = getContract(VFinixMergeAbi, getVFinix())
+      const callContract = getContract(VaultFacet.abi, getVFinix())
       try {
         const res = await callContract.methods.lockCount(account).call()
         setLockCount(res)
@@ -582,7 +582,7 @@ export const useClaim = () => {
         resolve(txHash)
       })
     }
-    const callContract = getContract(VFinixMergeAbi, getVFinix())
+    const callContract = getContract(VaultPenaltyFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(callContract.methods.claimWithPenalty(id), account).then(resolve).catch(reject)
     })
@@ -592,56 +592,58 @@ export const useClaim = () => {
 }
 
 // @ts-ignore
-export const useSousHarvest = (sousId, isUsingKlay = false) => {
+export const useSousHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
-  const sousChefContract = useSousChef(sousId)
   const herodotusContract = useHerodotus()
   const { setShowModal } = useContext(KlipModalContext())
 
-  const handleHarvest = useCallback(async () => {
-    if (connector === 'klip') {
-      // setShowModal(true)
+  const handleHarvest = useCallback(
+    async (sousId) => {
+      if (connector === 'klip') {
+        // setShowModal(true)
 
-      if (sousId === 0) {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          jsonConvert(['0']),
-          setShowModal,
-        )
-      } else {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('deposit')),
-          jsonConvert([sousId, '0']),
-          setShowModal,
-        )
+        if (sousId === 0) {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            jsonConvert(['0']),
+            setShowModal,
+          )
+        } else {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('deposit')),
+            jsonConvert([sousId, '0']),
+            setShowModal,
+          )
+        }
+        const tx = await klipProvider.checkResponse()
+
+        setShowModal(false)
+        dispatch(fetchFarmUserDataAsync(account))
+        console.info(tx)
       }
-      const tx = await klipProvider.checkResponse()
+      if (sousId === 0) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
+        })
+      } else if (sousId === 1) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods
+            .deposit(sousId, '0')
+            .send({ from: account, gas: 400000 })
+            .then(resolve)
+            .catch(reject)
+        })
+      }
 
-      setShowModal(false)
-      dispatch(fetchFarmUserDataAsync(account))
-      console.info(tx)
-    }
-    if (sousId === 0) {
-      return new Promise((resolve, reject) => {
-        herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
-      })
-    } else if (sousId === 1) {
-      return new Promise((resolve, reject) => {
-        herodotusContract.methods.deposit(sousId, '0').send({ from: account, gas: 400000 }).then(resolve).catch(reject)
-      })
-    } else if (isUsingKlay) {
-      await soushHarvestBnb(sousChefContract, account)
-    } else {
-      await soushHarvest(sousChefContract, account)
-    }
-
-    dispatch(updateUserPendingReward(sousId, account))
-    dispatch(updateUserBalance(sousId, account))
-    return handleHarvest
-  }, [account, dispatch, isUsingKlay, herodotusContract, sousChefContract, sousId, connector, setShowModal])
+      dispatch(updateUserPendingReward(sousId, account))
+      dispatch(updateUserBalance(sousId, account))
+      return handleHarvest
+    },
+    [account, dispatch, herodotusContract, connector, setShowModal],
+  )
 
   return { onReward: handleHarvest }
 }
@@ -703,7 +705,7 @@ export const useAllDataLock = () => {
   useEffect(() => {
     async function fetchApr() {
       if (account) {
-        const userVfinixInfoContract = getContract(VFinixMergeAbi, getVFinix())
+        const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
         const [userVfinixAmount] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
         const level = _.get(userVfinixAmount, 'locks_')
         const countLevel = []

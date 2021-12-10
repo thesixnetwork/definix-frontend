@@ -8,7 +8,7 @@ import _ from 'lodash'
 import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 
-import VFinixMergeAbi from '../config/abi/VFinixMergeAbi.json'
+import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json'
 import { getContract } from '../utils/caver'
 import { getVFinix } from '../utils/addressHelpers'
 import useRefresh from './useRefresh'
@@ -45,10 +45,10 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setInterval(() => setLoading(''), 5000)
-          setInterval(() => setStatus(false), 5000)
+          setInterval(() => setLoading(''), 3000)
+          setInterval(() => setStatus(false), 3000)
         } else {
-          const callContract = getContract(VFinixMergeAbi, getVFinix())
+          const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
           await callContract.methods
             .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })
@@ -59,8 +59,8 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
                 .then((resolve) => {
                   setLoading('success')
                   setStatus(true)
-                  setInterval(() => setLoading(''), 5000)
-                  setInterval(() => setStatus(false), 5000)
+                  setInterval(() => setLoading(''), 3000)
+                  setInterval(() => setStatus(false), 3000)
                 })
                 .catch((e) => {
                   setLoading('')

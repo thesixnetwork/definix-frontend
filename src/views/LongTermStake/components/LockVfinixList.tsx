@@ -328,7 +328,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                             <Helper
                               text="Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount. You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended."
                               className="ml-1 pt-1"
-                              position="right"
+                              position="bottom"
                             />
                           </div>
                           <Text fontSize="9px">

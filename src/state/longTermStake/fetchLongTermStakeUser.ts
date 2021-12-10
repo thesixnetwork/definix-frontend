@@ -43,7 +43,7 @@ export const fetchUserPendingRewards = async (account) => {
     name: 'pendingReward',
     params: [account],
   }))
-  const res = await multicall(VFinixMergeAbi, calls)
+  const res = await multicall(rewardABI.abi, calls)
   const pendingRewards = longTermConfig.reduce(
     (acc, ls, index) => ({
       ...acc,

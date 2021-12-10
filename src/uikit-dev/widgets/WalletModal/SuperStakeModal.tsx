@@ -23,7 +23,6 @@ import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
-import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/types'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
@@ -161,7 +160,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [keyDown, setKeyDown] = useState(false)
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount)
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const { onReward } = useSousHarvest()
+  const [vFINIX, setVFINIX] = useState(0)
+  const [vFinixEarn, setVFinixEarn] = useState(0)
 
   // Farms
   const farmsLP = useFarms()
@@ -430,12 +431,14 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
             onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
               .then((res) => {
+                // farm
                 setHarvestProgress(harvestProgress + 1)
               })
               .catch((e) => {
                 setHarvestProgress(-1)
               })
           } else {
+            // vfinix
             handleHarvest()
               .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
@@ -445,9 +448,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               })
           }
         } else {
-          onReward()
+          // pool
+          onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
             .then((res) => {
-              setSousId(_.get(Object.values(selected)[harvestProgress], 'sousId'))
               setHarvestProgress(harvestProgress + 1)
             })
             .catch((e) => {
@@ -456,7 +459,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         }
       }
     }
-  }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [harvestProgress, selectedToken, handleHarvest])
 
   const lockPlus = useCallback(() => {
     onLockPlus()
@@ -494,7 +498,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, lengthSelect, value, period, lockPlus])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [harvestProgress, _superHarvest, lockPlus])
 
   useEffect(() => {
     if (harvested === true) {
@@ -527,6 +532,38 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setAmount(new BigNumber(parseFloat(total)).times(new BigNumber(10).pow(18)).toFixed())
     } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
       setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
+    } else if (Object.values(selectedToken).length > 0 && value === '') {
+      const dataArray = []
+      for (let i = 0; i < Object.values(selectedToken).length; i++) {
+        const selector = Object.values(selectedToken)[i]
+        if (_.get(selector, 'checked')) {
+          dataArray.push(_.get(selector, 'pendingReward'))
+        } else {
+          dataArray.splice(i)
+        }
+      }
+      const sum = dataArray.reduce((r, n) => r + n, 0)
+      setLengthSelect(dataArray.length)
+      setSumPendingReward(parseFloat(sum).toFixed(2))
+      setAmount(
+        new BigNumber(parseFloat(Number(value.replace(',', '')) + sum)).times(new BigNumber(10).pow(18)).toFixed(),
+      )
+    } else if (Object.values(selectedToken).length > 0 && Number(value) <= 0) {
+      const dataArray = []
+      for (let i = 0; i < Object.values(selectedToken).length; i++) {
+        const selector = Object.values(selectedToken)[i]
+        if (_.get(selector, 'checked')) {
+          dataArray.push(_.get(selector, 'pendingReward'))
+        } else {
+          dataArray.splice(i)
+        }
+      }
+      const sum = dataArray.reduce((r, n) => r + n, 0)
+      setLengthSelect(dataArray.length)
+      setSumPendingReward(parseFloat(sum).toFixed(2))
+      setAmount(
+        new BigNumber(parseFloat(Number(value.replace(',', '')) + sum)).times(new BigNumber(10).pow(18)).toFixed(),
+      )
     } else {
       setAmount('')
     }
@@ -555,7 +592,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       localDateTime = new Date(localDateTime)
       setDate(moment(localDateTime).format(`DD-MMM-YYYY HH:mm:ss`))
     }
-  }, [period, value, allLockPeriod, realPenaltyRate])
+    const vfinix = Number(value.replace(',', '')) + Number(sumpendingReward)
+    const vfinixEarn = (Number(value.replace(',', '')) + Number(sumpendingReward)) * period
+    setVFinixEarn(numeral(vfinixEarn).format('0,0.00'))
+    setVFINIX(numeral(vfinix).format('0,0.00'))
+  }, [period, value, allLockPeriod, realPenaltyRate, sumpendingReward])
 
   const harvestOrStake = () => {
     return harvested ? (
@@ -672,7 +713,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                                 farms: true,
                                 pid: d.props.farm.pid,
                                 status: false,
-                                pendingReward: d.props.farm.userData.earnings,
+                                pendingReward: new BigNumber(d.props.farm.userData.earnings)
+                                  .div(new BigNumber(10).pow(18))
+                                  .toNumber(),
                               },
                             })
                           }}
@@ -792,7 +835,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
               <div className="flex flex-row justify-end w-100">
                 <Text className="text-right" color="#0973B9" fontWeight="500">
-                  {Number(value.replace(',', '')) + Number(sumpendingReward)}
+                  {vFINIX}
                 </Text>
                 <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
                   vFINIX
@@ -805,7 +848,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
               <div className="flex flex-row justify-end w-100">
                 <Text className="text-right" color="#0973B9" fontWeight="500">
-                  {(Number(value.replace(',', '')) + Number(sumpendingReward)) * period}
+                  {vFinixEarn}
                 </Text>
                 <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
                   vFINIX
