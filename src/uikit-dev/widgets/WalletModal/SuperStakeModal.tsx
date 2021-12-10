@@ -676,6 +676,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     control={
                       <CustomCheckbox
                         size="small"
+                        disabled={harvestProgress !== -1}
                         checked={_.get(selectedToken, `${18}.checked`)}
                         onChange={(event) => {
                           setSelectedToken({
@@ -713,6 +714,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                       control={
                         <CustomCheckbox
                           size="small"
+                          disabled={harvestProgress !== -1}
                           checked={_.get(selectedToken, `${d.props.farm.pid}.checked`)}
                           onChange={(event) => {
                             setSelectedToken({
@@ -758,6 +760,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                         <CustomCheckbox
                           size="small"
                           checked={_.get(selectedToken, `${d.sousId}.checked`)}
+                          disabled={harvestProgress !== -1}
                           onChange={(event) => {
                             setSelectedToken({
                               ...selectedToken,
@@ -793,7 +796,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
               Please select available duration
             </Text>
-            <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
+            <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp harvestProgress={harvestProgress} />
             <div className="flex mt-4 w-100">
               <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
                 From your wallet:
@@ -811,6 +814,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   style={{ width: '45%', color: '#2A9D8F' }}
                   placeholder="0.00"
                   value={value}
+                  disabled={harvestProgress !== -1}
                   onChange={handleChange}
                   onKeyDown={() => setKeyDown(true)}
                   className="text-right"

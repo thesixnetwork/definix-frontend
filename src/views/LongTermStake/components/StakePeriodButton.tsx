@@ -45,6 +45,7 @@ const CustomButton = ({
   isTopUp,
   disableLevel,
   setFlgIsTopup,
+  harvestProgress,
 }) => {
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'
@@ -96,6 +97,10 @@ const CustomButton = ({
     return color
   }
 
+  const renderharvestProgress = () => {
+    return harvestProgress !== -1 ? true : !disableLevel
+  }
+
   return (
     <div className={`col-4 ${mr} ${!isMobile ? 'w-100' : ''}`}>
       <ButtonPeriod
@@ -105,7 +110,7 @@ const CustomButton = ({
         }}
         radii="small"
         isStroke
-        disabled={isTopUp ? !disableLevel : false}
+        disabled={isTopUp ? renderharvestProgress() : false}
         style={{
           background: period === level ? handleBackgroud4(period, level) : onSelect1(),
           border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
@@ -148,7 +153,7 @@ const CustomButton = ({
   )
 }
 
-const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
+const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp, harvestProgress }) => {
   const { isDark } = useTheme()
   const { allLock } = useAllDataLock()
   const lockTopUp = useLockTopup()
@@ -259,6 +264,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         isTopUp={isTopUp}
         disableLevel={disableLevel0}
         setFlgIsTopup={setFlgIsTopup}
+        harvestProgress={harvestProgress}
       />
       <CustomButton
         isDark={isDark}
@@ -274,6 +280,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         isTopUp={isTopUp}
         disableLevel={disableLevel1}
         setFlgIsTopup={setFlgIsTopup}
+        harvestProgress={harvestProgress}
       />
       <CustomButton
         isDark={isDark}
@@ -289,6 +296,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         isTopUp={isTopUp}
         disableLevel={disableLevel2}
         setFlgIsTopup={setFlgIsTopup}
+        harvestProgress={harvestProgress}
       />
     </div>
   )
