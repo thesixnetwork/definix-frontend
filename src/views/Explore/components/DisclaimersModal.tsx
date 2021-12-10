@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const ScrollArea = styled(Box)`
   border: 1px solid rgba(224, 224, 224, 0.5);
-  height: 420px;
+  max-height: 420px;
   overflow: scroll;
   border-radius: 8px;
   padding-bottom: 0;
@@ -40,40 +40,42 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
         <ScrollArea textStyle="R_12R" className="px-s16 pt-s16">
           <ContentText className="mb-3">{t('Definix is solely')}</ContentText>
         </ScrollArea>
+        {isConfirm && (
+          <CheckboxLabel
+            mt="S_24"
+            control={
+              <Checkbox
+                onChange={() => {
+                  setIsAccept(!isAccept)
+                }}
+                checked={isAccept}
+              />
+            }
+          >
+            <Text textStyle="R_14R">{t('I have read')}</Text>
+          </CheckboxLabel>
+        )}
       </ModalBody>
       <ModalFooter isFooter>
         {isConfirm ? (
-          <div className="mt-s24 flex flex-column">
+          <div className="flex flex-column">
             <CheckboxLabel
-              control={
-                <Checkbox
-                  onChange={() => {
-                    setIsAccept(!isAccept)
-                  }}
-                  checked={isAccept}
-                />
-              }
+              control={<Checkbox onChange={onCheckBoxChange} checked={isSkip} scale="sm" variantColor="lightbrown" />}
+              mt="S_4"
             >
-              <Text textStyle="R_14R">{t('I have read')}</Text>
+              <Text textStyle="R_12R" color="mediumgrey">
+                {t('Do not show')}
+              </Text>
             </CheckboxLabel>
-            <Button onClick={onExit} scale="lg" className="mt-s24" disabled={!isAccept}>
+            <Button onClick={onExit} scale="lg" mt="S_20" disabled={!isAccept}>
               {t('Confirm')}
             </Button>
           </div>
         ) : (
-          <Button onClick={onDismiss} scale="lg" className="mt-s24" width="100%">
+          <Button onClick={onDismiss} scale="lg" mt="S_24" width="100%">
             {t('Close')}
           </Button>
         )}
-
-        <CheckboxLabel
-          control={<Checkbox onChange={onCheckBoxChange} checked={isSkip} scale="sm" variantColor="lightbrown" />}
-          className="mt-s32"
-        >
-          <Text textStyle="R_12R" color="mediumgrey">
-            {t('Do not show')}
-          </Text>
-        </CheckboxLabel>
       </ModalFooter>
     </Modal>
   )

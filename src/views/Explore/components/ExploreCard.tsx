@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link, useHistory } from 'react-router-dom'
@@ -22,7 +21,8 @@ import {
   Divider,
   VDivider,
 } from 'definixswap-uikit-v2'
-import { compact, findIndex, get } from 'lodash'
+import { compact, get } from 'lodash'
+import useComineAmount from 'hooks/useCombineAmount'
 import AssetRatio from './AssetRatio'
 import CardHeading, { CardTitle, CardImage } from './CardHeading'
 import MiniChart from './MiniChart'
@@ -54,6 +54,24 @@ const HorizontalMobileStyle = styled(Card)`
     &.show {
       display: block;
     }
+  }
+`
+
+const BottomInMyInvestment = styled(Flex)`
+  flex-direction: row;
+  justify-content: space-between;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+    width: 100%;
+  }
+`
+
+const HarvestButtonInMyInvestment = styled(Flex)`
+  justify-content: center;
+  width: 100px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+    width: 100%;
   }
 `
 
@@ -97,11 +115,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const currentBalance = get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
-  const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
-
-  const [diffAmount, setDiffAmount] = useState(0)
-  const [percentage, setPercentage] = useState(0)
-  const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
+  const { diffAmount, percentage } = useComineAmount(rebalance, account, currentBalanceNumber)
 
   const allCurrentTokens = compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
@@ -111,55 +125,6 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       totalAssetValue: get(rebalance, 'totalAssetValue', new BigNumber(0)),
     })
   }, [convertToRebalanceAPRFormat, rebalance])
-
-  const combinedAmount = useCallback(async () => {
-    if (account) {
-      const rebalanceAddress = getAddress(get(rebalance, 'address'))
-
-      const myInvestTxnLocalStorage = JSON.parse(
-        localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
-      )
-
-      const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
-      const resTotalTxn = await axios
-        .get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
-        .then(({ data }) => data)
-        .catch((error) => error.response?.data)
-
-      if (!resTotalTxn?.success) {
-        return
-      }
-
-      const latestTxns = resTotalTxn?.latest_txn
-      const totalUsd = resTotalTxn?.total_usd_amount
-      const totalLps = resTotalTxn?.total_lp_amount
-
-      const indexTx = findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
-      const transactionsSlice = myInvestTxns.slice(indexTx + 1)
-      myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
-      localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
-
-      const txHash = {
-        txns: transactionsSlice,
-      }
-      let lastTotalAmt = 0
-      let lastTotalLp = 0
-      if (transactionsSlice.length > 0) {
-        const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-        lastTotalAmt = datas?.total_usd_amount
-        lastTotalLp = datas?.total_lp_amount
-      }
-
-      const totalLpAmount = totalLps + lastTotalLp
-      if (sharedprice > 0 && totalUsd > 0 && totalLpAmount > 0) {
-        const totalUsdAmount = lastTotalAmt + totalUsd
-        const diff = sharedprice - totalUsdAmount
-        setDiffAmount(diff)
-        const diffNewAmount = ((sharedprice - totalUsdAmount) / totalUsdAmount) * 100
-        setPercentage(diffNewAmount)
-      }
-    }
-  }, [sharedprice, rebalance, account, api])
 
   const renderSash = () => {
     if (rebalance.rebalace?.toUpperCase() === 'NEW') {
@@ -228,28 +193,6 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       </Flex>
     )
   }, [rebalance?.finixRewardPerYear, rebalance?.totalAssetValue])
-
-  useEffect(() => {
-    combinedAmount()
-  }, [combinedAmount])
-
-  const BottomInMyInvestment = styled(Flex)`
-    flex-direction: row;
-    justify-content: space-between;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: column;
-      width: 100%;
-    }
-  `
-
-  const HarvestButtonInMyInvestment = styled(Flex)`
-    justify-content: center;
-    width: 100px;
-    ${({ theme }) => theme.mediaQueries.mobileXl} {
-      flex-direction: column;
-      width: 100%;
-    }
-  `
 
   if (isInMyInvestment) {
     return (

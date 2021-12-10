@@ -6,7 +6,7 @@ import axios from 'axios'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
 import numeral from 'numeral'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Box, CopyToClipboard, Flex, Grid, LinkExternal, Text, Toggle, useMatchBreakpoints } from 'definixswap-uikit-v2'
@@ -65,7 +65,7 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
               </TH>
             ))}
             {rows.map((r) => (
-              <>
+              <Fragment key={`tx-row-${r.block_number}`}>
                 <TD as="div">
                   <Flex alignItems="center">
                     <Text textStyle="R_14R">
@@ -103,7 +103,7 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
                     KlaytnScope
                   </LinkExternal>
                 </TD>
-              </>
+              </Fragment>
             ))}
           </StyledGrid>
         </InfiniteScroll>
