@@ -81,7 +81,7 @@ const Earned: React.FC<{
         value: earnedList.reduce((result, item) => result + item.value, 0),
         price: earnedList.reduce((result, item) => result + item.price, 0),
       }}
-      valueList={earnedList}
+      valueList={account ? earnedList : []}
     />
   )
 }

@@ -174,13 +174,15 @@ const EarningBoxTemplate: React.FC<{
           )}
         </ButtonWrap>
       </MainSection>
-      <Slide
-        isMobile={isMobile}
-        hasAccount={hasAccount}
-        displayOnlyTotalPrice={displayOnlyTotalPrice}
-        curTheme={curTheme}
-        data={valueList}
-      />
+      {valueList.length > 0 && (
+        <Slide
+          isMobile={isMobile}
+          hasAccount={hasAccount}
+          displayOnlyTotalPrice={displayOnlyTotalPrice}
+          curTheme={curTheme}
+          data={valueList}
+        />
+      )}
     </Box>
   )
 }
