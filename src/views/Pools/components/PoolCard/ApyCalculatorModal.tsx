@@ -65,7 +65,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
 
   return (
     <Modal title="ROI" onDismiss={onDismiss} mobileFull>
-      <ModalBody style={{ maxWidth: '416px' }}>
+      <ModalBody isBody style={{ maxWidth: '416px' }}>
         <Grid className="mt-s16 mb-s20">
           {headerData.map((header) => (
             <Box>
@@ -99,7 +99,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
           {t('Calculated based on current rates')}
         </Text>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter isFooter>
         {addLiquidityUrl && (
           <Flex justifyContent="center">
             <LinkExternal href={addLiquidityUrl} textStyle="R_14R" color={ColorStyles.MEDIUMGREY}>

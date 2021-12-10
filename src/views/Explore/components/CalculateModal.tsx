@@ -145,7 +145,7 @@ const CalculateModal = ({
   }
   return (
     <Modal title={t('Confirm Invest')} mobileFull onDismiss={onDismiss}>
-      <ModalBody>
+      <ModalBody isBody>
         <CardHeading
           rebalance={rebalance}
           isHorizontal={isMobile}
@@ -182,7 +182,7 @@ const CalculateModal = ({
           </Flex>
         </Box>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter isFooter>
         <Button className="mt-s40" width="100%" isLoading={isInvesting} onClick={onInvest}>
           {t('Invest')}
         </Button>

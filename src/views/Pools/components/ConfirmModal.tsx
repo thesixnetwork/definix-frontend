@@ -22,7 +22,7 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
       // bodyPadding="0 32px 32px 32px"
       // classHeader="bd-b-n"
     >
-      <ModalBody width="464px" className="mt-s16 mb-s40">
+      <ModalBody isBody width="464px" className="mt-s16 mb-s40">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Box width={48} className="mr-s12">
@@ -37,7 +37,7 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
           </Text>
         </Flex>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter isFooter>
         <Button
           onClick={() => {
             onOK()

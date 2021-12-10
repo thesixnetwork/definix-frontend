@@ -57,7 +57,7 @@ const StakeModal: React.FC<ModalProps> = ({
 
   return (
     <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
-      <ModalBody>
+      <ModalBody isBody>
         <StyledBox mb="S_30">
           <Flex mt="S_14" mb="S_24" justifyContent="space-between" alignItems="center">
             <Flex alignItems="center">
@@ -113,7 +113,7 @@ const StakeModal: React.FC<ModalProps> = ({
           </Flex>
         </StyledBox>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter isFooter>
         <Button onClick={onOK}>{t('Stake')}</Button>
       </ModalFooter>
     </Modal>

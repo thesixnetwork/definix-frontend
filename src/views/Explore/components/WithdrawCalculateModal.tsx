@@ -126,7 +126,7 @@ const WithdrawCalculateModal = ({
   }
   return (
     <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss}>
-      <ModalBody maxWidth="438px">
+      <ModalBody isBody maxWidth="438px">
         <CardHeading
           rebalance={rebalance}
           isHorizontal={isMobile}
@@ -157,7 +157,7 @@ const WithdrawCalculateModal = ({
           </Flex>
         </Box>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter isFooter>
         <Button mt="S_40" width="100%" isLoading={isSimulating || isWithdrawing} onClick={onWithdraw}>
           {t('Withdraw')}
         </Button>

@@ -17,7 +17,7 @@ const ConfirmModal = ({ title, lpSymbol, buttonName, stakedBalance, onOK = () =>
   const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpSymbol)
   return (
     <Modal title={title} onDismiss={onDismiss}>
-      <ModalBody width="464px" className="mt-s16 mb-s40">
+      <ModalBody isBody width="464px" className="mt-s16 mb-s40">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Flex className="mr-s12">
@@ -37,7 +37,7 @@ const ConfirmModal = ({ title, lpSymbol, buttonName, stakedBalance, onOK = () =>
           </Text>
         </Flex>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter isFooter>
         <Button
           onClick={() => {
             onOK()
