@@ -266,7 +266,7 @@ const StyledBannerSuperStake = styled(Card)`
     content: '';
     width: 70%;
     height: 100%;
-    background: ${({ theme }) => theme.isDark ?  `url(${superStakeBlack})` : `url(${superStakeWhite})`};
+    background: ${({ theme }) => (theme.isDark ? `url(${superStakeBlack})` : `url(${superStakeWhite})`)};
     background-size: contain;
     background-position: right bottom;
     background-repeat: no-repeat;
@@ -439,10 +439,10 @@ const CardAutoRebalancing = ({ className = '' }) => {
 
   const { isDark } = useTheme()
   const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
-// Super Stake
-const [onPresentConnectModal] = useModal(
-  !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
-)
+  // Super Stake
+  const [onPresentConnectModal] = useModal(
+    !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,
+  )
 
   return (
     <div>
@@ -457,16 +457,20 @@ const [onPresentConnectModal] = useModal(
                 SUPER STAKE
               </Heading>
               <Text color="textSubtle" fontSize="12px">
-                Super Stake can help you harvest all of your FINIX reward to stake in Long-term stake with no minimum amount.
+                Super Stake can help you harvest all of your FINIX reward to stake in Long-term stake with no minimum
+                amount.
               </Text>
               <Text bold fontSize="12px">
-                You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended.
+                You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period
+                will not be extended.
               </Text>
               <div className="mt-6">
                 {/* <SpecialButton as={Link} to="/long-term-stake/top-up"> */}
-                <SpecialButton onClick={() => {
-                onPresentConnectModal()
-              }}>
+                <SpecialButton
+                  onClick={() => {
+                    onPresentConnectModal()
+                  }}
+                >
                   <span>Start Super Stake</span>
                 </SpecialButton>
               </div>
