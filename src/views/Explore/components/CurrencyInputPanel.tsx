@@ -69,7 +69,8 @@ const CurrencyInputPanel = ({
   const { isMaxSm } = useMatchBreakpoints()
   const isMobile = isMaxSm
 
-  const toFixedFloor = useToFixedFloor(decimals)
+  const toFixedFloor = useToFixedFloor()
+  const overDp = useMemo(() => new BigNumber(value).decimalPlaces() > decimals, [value, decimals])
 
   const thisName = (() => {
     if (currency.symbol === 'WKLAY') return 'KLAY'
@@ -79,7 +80,6 @@ const CurrencyInputPanel = ({
 
   const handleInput = useCallback(
     (str: string) => {
-      // const input = str?.replace(/[^0-9|^.]/g, '')
       onUserInput(toFixedFloor(str))
     },
     [onUserInput, toFixedFloor],
@@ -96,9 +96,9 @@ const CurrencyInputPanel = ({
 
   useEffect(() => {
     if (typeof hasError === 'function') {
-      hasError(isGreaterThanMyBalance)
+      hasError(isGreaterThanMyBalance || overDp)
     }
-  }, [isGreaterThanMyBalance, hasError])
+  }, [isGreaterThanMyBalance, hasError, overDp])
 
   return (
     <Container id={id} hideInput={hideInput} className={className}>
@@ -142,6 +142,11 @@ const CurrencyInputPanel = ({
       {isGreaterThanMyBalance && (
         <Noti mt="S_12" type={NotiType.ALERT}>
           {t('Insufficient balance')}
+        </Noti>
+      )}
+      {overDp && (
+        <Noti mt="S_12" type={NotiType.ALERT}>
+          {t('The value entered is out of the valid range.')}
         </Noti>
       )}
     </Container>

@@ -28,7 +28,8 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, d
   const isGreaterThanMyBalance = useMemo(() => new BigNumber(value).gt(max), [value, max])
   const underMinimum = useMemo(() => new BigNumber(value).toNumber() <= 0, [value])
 
-  const toFixedFloor = useToFixedFloor(decimals)
+  const toFixedFloor = useToFixedFloor()
+  const overDp = useMemo(() => new BigNumber(value).decimalPlaces() > decimals, [value, decimals])
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -48,9 +49,9 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, d
 
   useEffect(() => {
     if (typeof hasError === 'function') {
-      hasError(underMinimum || isGreaterThanMyBalance)
+      hasError(underMinimum || isGreaterThanMyBalance || overDp)
     }
-  }, [underMinimum, isGreaterThanMyBalance, hasError])
+  }, [underMinimum, isGreaterThanMyBalance, hasError, overDp])
 
   return (
     <div>
@@ -79,6 +80,11 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, d
       {dirtyFields.balance && underMinimum && (
         <Noti mt="S_12" type={NotiType.ALERT}>
           {t('Less than a certain amount')}
+        </Noti>
+      )}
+      {overDp && (
+        <Noti mt="S_12" type={NotiType.ALERT}>
+          {t('The value entered is out of the valid range.')}
         </Noti>
       )}
     </div>

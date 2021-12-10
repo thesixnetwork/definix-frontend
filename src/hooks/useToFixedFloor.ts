@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-const useToFixedFloor = (decimals: number) => {
+const useToFixedFloor = (decimals = 79) => {
   return useCallback(
     (input: string) => {
       const [integer, decimal] = input?.split('.') || ['0']

@@ -449,8 +449,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
         <Button
           scale="lg"
           width="100%"
-          isLoading={isSimulating}
-          disabled={underMinimum || inputError || !allApproved || !needsApprovalCoins.length}
+          disabled={isSimulating || underMinimum || inputError || !allApproved || !needsApprovalCoins.length}
           onClick={onPresentCalcModal}
         >
           {t('Calculate invest amount')}
