@@ -38,7 +38,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           klipProvider.genQRcodeContactInteract(
             getVFinix(),
             JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
-            JSON.stringify([level,idLastMaxLv, lockFinix]),
+            JSON.stringify([level, idLastMaxLv, lockFinix]),
             setShowModal,
           )
           await klipProvider.checkResponse()
