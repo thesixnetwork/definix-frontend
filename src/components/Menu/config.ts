@@ -94,7 +94,7 @@ const config: MenuEntry[] = [
     newTab: false,
   },
   {
-    label: 'Finix',
+    label: 'vFINIX',
     icon: safeBlack,
     iconActive: safeWhite,
     href: '/finix',
