@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import BigNumber from 'bignumber.js'
 import React, { useRef, useCallback, useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { get, isEqual, compact } from 'lodash'

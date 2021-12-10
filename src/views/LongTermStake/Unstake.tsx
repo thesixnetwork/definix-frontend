@@ -2,7 +2,7 @@
 import _ from 'lodash'
 import numeral from 'numeral'
 import React, { useCallback, useState } from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { ArrowBackIcon, Button, Card, Link as UiLink, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
 import { Link, useHistory } from 'react-router-dom'

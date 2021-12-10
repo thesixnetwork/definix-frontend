@@ -10,7 +10,7 @@ import route from 'uikit-dev/images/for-trading-challenge/Definix-Trading-Challe
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import Flip from '../../uikit-dev/components/Flip'
 import TraderProfileModal from './components/TraderProfileModal'
-import TradingChallengeBanner from './components/TradingChallengeBanner'
+// import TradingChallengeBanner from './components/TradingChallengeBanner'
 
 const MaxWidth = styled.div`
   max-width: 1280px;
@@ -105,7 +105,7 @@ const TradingChallenge = () => {
     <Page>
       <MaxWidth>
         <Card isRainbow>
-          <TradingChallengeBanner large />
+          {/* <TradingChallengeBanner large /> */}
           {isRegisterSuccess ? <>{!isTrade && <DateModal date={tradeTimeStamp} />}</> : <></>}
           <Detail>
             <Heading as="h3" className="mb-3">

@@ -1,6 +1,6 @@
 import Page from 'components/layout/Page'
 import React from 'react'
-import { Helmet } from 'react-helmet'
+import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 import { ArrowBackIcon, Button, Card, Heading, IconButton, Text } from 'uikit-dev'
 import colorStroke from '../../uikit-dev/images/Color-stroke.png'

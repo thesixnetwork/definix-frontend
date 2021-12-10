@@ -1,9 +1,11 @@
 import { createTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
+import { HelmetProvider } from "react-helmet-async";
 import { BlockContextProvider } from 'contexts/BlockContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 
-import injected, { UseWalletProvider, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+// import injected, { UseWalletProvider, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { UseWalletProvider, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import React from 'react'
 import { Provider } from 'react-redux'
 import store from 'state'
@@ -35,27 +37,31 @@ const Providers: React.FC = ({ children }) => {
       onHiddenModal()
     }
   }
+
+
   return (
     <Provider store={store}>
-      <ThemeContextProvider>
-        <UseWalletProvider
-          chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
-          connectors={{
-            injected,
-            klip: { showModal: onPresent, closeModal: onHiddenModal },
-          }}
-        >
-          <BlockContextProvider>
-            <RefreshContextProvider>
-              <ModalProvider>
-                <OldModalProvider>
-                  <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
-                </OldModalProvider>
-              </ModalProvider>
-            </RefreshContextProvider>
-          </BlockContextProvider>
-        </UseWalletProvider>
-      </ThemeContextProvider>
+      <HelmetProvider>
+        <ThemeContextProvider>
+          <UseWalletProvider
+            chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
+            connectors={{
+              klip: { showModal: onPresent, closeModal: onHiddenModal },
+              // injected,
+            }}
+          >
+            <BlockContextProvider>
+              <RefreshContextProvider>
+                <ModalProvider>
+                  <OldModalProvider>
+                    <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
+                  </OldModalProvider>
+                </ModalProvider>
+              </RefreshContextProvider>
+            </BlockContextProvider>
+          </UseWalletProvider>
+        </ThemeContextProvider>
+      </HelmetProvider>
     </Provider>
   )
 }
