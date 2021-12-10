@@ -1,14 +1,15 @@
 import _ from 'lodash'
 import React, { useCallback, useState, useMemo } from 'react'
-import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { useHistory } from 'react-router'
+import styled from 'styled-components'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import { Button, Text, Box, ColorStyles, Flex, Grid, FireIcon } from 'definixswap-uikit-v2'
+import { Button, Text, Box, ColorStyles, Flex, FireIcon } from 'definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
-import { useHistory } from 'react-router'
+import Slide from './Slide'
 
 interface InnerTheme {
   totalTitleColor: ColorStyles
@@ -19,6 +20,8 @@ interface InnerTheme {
   itemCurrencyColor: ColorStyles | string
   borderColor: ColorStyles
   bottomBg: ColorStyles | string
+  slideDotColor: ColorStyles,
+  slideDotActiveColor: ColorStyles
 }
 
 const THEME: { [key: string]: InnerTheme } = {
@@ -31,6 +34,8 @@ const THEME: { [key: string]: InnerTheme } = {
     itemCurrencyColor: ColorStyles.DEEPGREY,
     borderColor: ColorStyles.LIGHTGREY,
     bottomBg: ColorStyles.LIGHTGREY_20,
+    slideDotColor: ColorStyles.LIGHTGREY,
+    slideDotActiveColor: ColorStyles.BLACK
   },
   dark: {
     totalTitleColor: ColorStyles.WHITE,
@@ -41,6 +46,8 @@ const THEME: { [key: string]: InnerTheme } = {
     itemCurrencyColor: 'white80',
     borderColor: ColorStyles.BROWN,
     bottomBg: 'black20',
+    slideDotColor: ColorStyles.BROWN,
+    slideDotActiveColor: ColorStyles.WHITE
   },
 }
 
@@ -75,48 +82,6 @@ const ButtonWrap = styled(Flex)<{ isMobile: boolean }>`
     }
   }
 `
-const GridSectionWrap = styled(Flex)<{ bg: any }>`
-  justify-content: space-between;
-  align-items: center;
-  padding-right: ${({ theme }) => theme.spacing.S_40}px;
-  background-color: ${({ bg }) => bg};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    padding-right: 0px;
-  }
-`
-const GridSection = styled(Grid)<{ isMobile: boolean }>`
-  grid-template-columns: repeat(4, 1fr);
-  flex: 1;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    grid-template-columns: repeat(1, 1fr);
-  }
-`
-const GridBox = styled(Box)<{ index: number; curTheme: InnerTheme }>`
-  margin: ${({ theme }) => theme.spacing.S_20}px 0;
-  padding-left: ${({ theme, index }) => theme.spacing[index > 0 ? 'S_32' : 'S_40']}px;
-  padding-right: ${({ theme }) => theme.spacing.S_32}px;
-
-  border-left: ${({ index, curTheme, theme }) =>
-    index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin: 0 ${({ theme }) => theme.spacing.S_20}px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: ${({ theme, index }) => theme.spacing[index > 0 ? 'S_20' : 'S_16']}px;
-    padding-bottom: ${({ theme }) => theme.spacing.S_16}px;
-    border-left: none;
-    border-top: ${({ index, curTheme, theme }) =>
-      index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
-  }
-`
-// const StatSkeleton = () => {
-//   return (
-//     <>
-//       <Skeleton animation="pulse" variant="rect" height="26px" />
-//       <Skeleton animation="pulse" variant="rect" height="21px" />
-//     </>
-//   )
-// }
 
 interface ValueList {
   title: string
@@ -135,6 +100,12 @@ const EarningBoxTemplate: React.FC<{
   const history = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
 
+  const curTheme = useMemo(() => THEME[theme], [theme])
+  const displayOnlyTotalPrice = useMemo(() => typeof _.get(total, 'value') !== 'number', [total])
+  const totalValue = useMemo(() => {
+    return _.get(total, displayOnlyTotalPrice ? 'price' : 'value') || 0
+  }, [displayOnlyTotalPrice, total])
+
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
@@ -150,20 +121,14 @@ const EarningBoxTemplate: React.FC<{
     }
   }, [onReward])
 
-  const curTheme = useMemo(() => THEME[theme], [theme])
-  const hasTotalValue = useMemo(() => typeof _.get(total, 'value') === 'number', [total])
-  const totalValue = useMemo(() => {
-    return _.get(total, hasTotalValue ? 'value' : 'price') || 0
-  }, [hasTotalValue, total])
-
   const renderTotalValue = useCallback(() => {
     const props = {
       textStyle: `R_${isMobile ? '23' : '32'}B`,
       color: curTheme.totalBalanceColor,
       value: hasAccount ? totalValue : 0,
     }
-    return hasTotalValue ? <BalanceText {...props} /> : <CurrencyText {...props} />
-  }, [hasTotalValue, isMobile, curTheme, hasAccount, totalValue])
+    return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
+  }, [displayOnlyTotalPrice, isMobile, curTheme, hasAccount, totalValue])
 
   return (
     <Box>
@@ -177,7 +142,7 @@ const EarningBoxTemplate: React.FC<{
           </Flex>
           <Flex alignItems="flex-end">
             {renderTotalValue()}
-            {hasTotalValue && (
+            {!displayOnlyTotalPrice && (
               <CurrencyText
                 value={hasAccount ? total.price : 0}
                 prefix="="
@@ -191,7 +156,6 @@ const EarningBoxTemplate: React.FC<{
         <ButtonWrap isMobile={isMobile} className={isMobile ? 'mt-s20' : ''}>
           {hasAccount ? (
             <Button
-              // id="harvest-all"
               md
               width="100%"
               isLoading={pendingTx}
@@ -210,51 +174,13 @@ const EarningBoxTemplate: React.FC<{
           )}
         </ButtonWrap>
       </MainSection>
-      <GridSectionWrap bg={curTheme.bottomBg}>
-        <GridSection isMobile={isMobile}>
-          {valueList.map((valueItem, index) => (
-            <GridBox key={valueItem.title} index={index} curTheme={curTheme}>
-              <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
-                {valueItem.title}
-              </Text>
-              {typeof _.get(valueItem, 'value') === 'number' ? (
-                <BalanceText
-                  textStyle="R_16M"
-                  color={curTheme.itemBalanceColor}
-                  value={hasAccount ? valueItem.value : 0}
-                />
-              ) : (
-                <CurrencyText
-                  textStyle="R_16M"
-                  color={curTheme.itemBalanceColor}
-                  value={hasAccount ? valueItem.price : 0}
-                />
-              )}
-
-              {typeof _.get(valueItem, 'value') === 'number' && (
-                <CurrencyText
-                  textStyle="R_14M"
-                  color={curTheme.itemCurrencyColor}
-                  value={hasAccount ? valueItem.price : 0}
-                  prefix="="
-                />
-              )}
-            </GridBox>
-          ))}
-        </GridSection>
-        {/* {!isMobile && (
-          <DoubleArrowButtons
-            disableLeftArrow
-            disableRightArrow
-            onClickLeftArrow={() => {
-              return;
-            }}
-            onClickRightArrow={() => {
-              return;
-            }}
-          />
-        )} */}
-      </GridSectionWrap>
+      <Slide
+        isMobile={isMobile}
+        hasAccount={hasAccount}
+        displayOnlyTotalPrice={displayOnlyTotalPrice}
+        curTheme={curTheme}
+        data={valueList}
+      />
     </Box>
   )
 }

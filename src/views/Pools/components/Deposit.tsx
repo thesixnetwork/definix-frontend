@@ -89,8 +89,6 @@ const Deposit: React.FC<{
   const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
-  console.log(pool)
-
   const tokenName = useMemo(() => {
     return pool.stakingLimit ? `${pool.stakingTokenName} (${pool.stakingLimit} max)` : pool.stakingTokenName
   }, [pool.stakingLimit, pool.stakingTokenName])
@@ -219,8 +217,7 @@ const Deposit: React.FC<{
             type="button"
             variant="line"
             onClick={() => {
-              console.log(addSwapUrl)
-              // window.location.href=`${addSwapUrl}`
+              window.location.href=`${addSwapUrl}`
             }}
           >
             {t('Swap')}

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import useFarmEarning from 'hooks/useFarmEarning'
 import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import EarningBoxTemplate from './EarningBoxTemplate'
+import EarningBoxTemplate from './EarningBoxTemplate/index'
 
 const Earned: React.FC<{
   isMobile: boolean
@@ -56,7 +56,7 @@ const Earned: React.FC<{
         title: t('Pool'),
         value: poolEarningsSum,
         price: poolEarningsBusd,
-      },
+      }
       // {
       //   title: t('Rebalancing'),
       //   value: '100,000,000.123456',
