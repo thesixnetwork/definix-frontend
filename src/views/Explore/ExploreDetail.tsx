@@ -3,7 +3,6 @@ import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import moment from 'moment'
-import { Helmet } from 'react-helmet-async'
 import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Color from 'color'
@@ -422,9 +421,6 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
 
   return (
     <>
-      <Helmet>
-        <title>Explore - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
       <Box pb="S_32">
         <div>
           <Flex mb={isMaxXl ? 'S_2' : '10px'}>
