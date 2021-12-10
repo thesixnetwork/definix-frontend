@@ -73,7 +73,7 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 
 const CardList = styled(Card)`
   width: 100%;
-  background-color: ${({ theme }) => theme.isDark ? '#000000' : '#FCFCFC'};
+  background-color: ${({ theme }) => (theme.isDark ? '#000000' : '#FCFCFC')};
   border-radius: 24px;
   align-items: center;
   margin-top: 10px;
@@ -616,10 +616,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         Staking...
       </Button>
     ) : (
-        <Button fullWidth id="harvest-all" radii="small" className="mt-3" disabled>
-          {`Harvesting...(${harvestProgress} /${lengthSelect})`}
-        </Button>
-      )
+      <Button fullWidth id="harvest-all" radii="small" className="mt-3" disabled>
+        {`Harvesting...(${harvestProgress} /${lengthSelect})`}
+      </Button>
+    )
   }
 
   const CardResponse = () => {
@@ -639,57 +639,98 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       {showLottie ? (
         <CardResponse />
       ) : (
-          <ModalStake
-            title={
-              <img
-                src={exclusive}
-                alt=""
-                style={{
-                  borderBottomRightRadius: '60px',
-                  borderBottomLeftRadius: '60px',
-                  boxShadow: '0 3px 6px rgb(0, 0 ,0, 0.16)',
-                }}
-              />
-            }
-            onDismiss={onDismiss}
-            className=""
-          >
-            <div className="flex flex-column w-100 mt-2">
-              <Text fontSize="18px" fontWeight="600">
-                Super Stake
+        <ModalStake
+          title={
+            <img
+              src={exclusive}
+              alt=""
+              style={{
+                borderBottomRightRadius: '60px',
+                borderBottomLeftRadius: '60px',
+                boxShadow: '0 3px 6px rgb(0, 0 ,0, 0.16)',
+              }}
+            />
+          }
+          onDismiss={onDismiss}
+          className=""
+        >
+          <div className="flex flex-column w-100 mt-2">
+            <Text fontSize="18px" fontWeight="600">
+              Super Stake
             </Text>
-              <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
-                Super Stake is a feature that can harvest all of your FINIX reward to stake in <b> Long-term stake </b>{' '}
+            <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+              Super Stake is a feature that can harvest all of your FINIX reward to stake in <b> Long-term stake </b>{' '}
               with no minimum amount.
             </Text>
-              <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
-                You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock
+            <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+              You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock
               period <b>will not be extended.</b>
-              </Text>
-            </div>
-            <Text paddingTop="3" color="#737375" fontWeight="500">
-              Choose farm/pool you want to harvest reward
             </Text>
+          </div>
+          <Text paddingTop="3" color="#737375" fontWeight="500">
+            Choose farm/pool you want to harvest reward
+          </Text>
 
-            <div className="flex flex-column align-center justify-center">
-              {!!balancevfinix && balancevfinix > 0 && (
-                <CardList key="VFINIX" className="px-4">
+          <div className="flex flex-column align-center justify-center">
+            {!!balancevfinix && balancevfinix > 0 && (
+              <CardList key="VFINIX" className="px-4">
+                <div className="flex align-center">
+                  <FormControlLabelCustom
+                    control={
+                      <CustomCheckbox
+                        size="small"
+                        disabled={harvestProgress !== -1}
+                        checked={_.get(selectedToken, `${18}.checked`)}
+                        onChange={(event) => {
+                          setSelectedToken({
+                            ...selectedToken,
+                            18: {
+                              checked: event.target.checked,
+                              pools: false,
+                              farms: false,
+                              status: false,
+                              pendingReward: finixEarn,
+                            },
+                          })
+                        }}
+                      />
+                    }
+                    label=""
+                  />
+                  <Coins>
+                    <div className="flex">
+                      <img src={vFinix} alt="" />
+                    </div>
+                  </Coins>
+                  <Text className="align-center ml-2">VFINIX</Text>
+                </div>
+                <Text bold>{`${numeral(finixEarn).format('0,0.00')}`} FINIX</Text>
+              </CardList>
+            )}
+
+            {farmsList(stackedOnlyFarms, false).map((d) => {
+              const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
+              return (
+                <CardList className="px-4">
                   <div className="flex align-center">
                     <FormControlLabelCustom
                       control={
                         <CustomCheckbox
                           size="small"
                           disabled={harvestProgress !== -1}
-                          checked={_.get(selectedToken, `${18}.checked`)}
+                          checked={_.get(selectedToken, `${d.props.farm.pid}.checked`)}
                           onChange={(event) => {
                             setSelectedToken({
                               ...selectedToken,
-                              18: {
+                              [d.props.farm.pid]: {
                                 checked: event.target.checked,
                                 pools: false,
-                                farms: false,
+                                farms: true,
+                                pid: d.props.farm.pid,
                                 status: false,
-                                pendingReward: finixEarn,
+                                pendingReward: new BigNumber(d.props.farm.userData.earnings)
+                                  .div(new BigNumber(10).pow(18))
+                                  .toNumber(),
                               },
                             })
                           }}
@@ -699,202 +740,161 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     />
                     <Coins>
                       <div className="flex">
-                        <img src={vFinix} alt="" />
+                        {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                        {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
                       </div>
                     </Coins>
-                    <Text className="align-center ml-2">VFINIX</Text>
+                    <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
                   </div>
-                  <Text bold>{`${numeral(finixEarn).format('0,0.00')}`} FINIX</Text>
-                </CardList>
-              )}
-
-              {farmsList(stackedOnlyFarms, false).map((d) => {
-                const imgs = d.props.farm.lpSymbol.split(' ')[0].split('-')
-                return (
-                  <CardList className="px-4">
-                    <div className="flex align-center">
-                      <FormControlLabelCustom
-                        control={
-                          <CustomCheckbox
-                            size="small"
-                            disabled={harvestProgress !== -1}
-                            checked={_.get(selectedToken, `${d.props.farm.pid}.checked`)}
-                            onChange={(event) => {
-                              setSelectedToken({
-                                ...selectedToken,
-                                [d.props.farm.pid]: {
-                                  checked: event.target.checked,
-                                  pools: false,
-                                  farms: true,
-                                  pid: d.props.farm.pid,
-                                  status: false,
-                                  pendingReward: new BigNumber(d.props.farm.userData.earnings)
-                                    .div(new BigNumber(10).pow(18))
-                                    .toNumber(),
-                                },
-                              })
-                            }}
-                          />
-                        }
-                        label=""
-                      />
-                      <Coins>
-                        <div className="flex">
-                          {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
-                          {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
-                        </div>
-                      </Coins>
-                      <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
-                    </div>
-                    <Text bold>
-                      {new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}{' '}
+                  <Text bold>
+                    {new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}{' '}
                     FINIX
                   </Text>
-                  </CardList>
-                )
-              })}
-              {stackedOnlyPools.map((d, i) => {
-                const imgs = d.tokenName.split(' ')[0].split('-')
-                return (
-                  <CardList className="px-4">
-                    <div className="flex align-center">
-                      <FormControlLabelCustom
-                        control={
-                          <CustomCheckbox
-                            size="small"
-                            checked={_.get(selectedToken, `${d.sousId}.checked`)}
-                            disabled={harvestProgress !== -1}
-                            onChange={(event) => {
-                              setSelectedToken({
-                                ...selectedToken,
-                                [i]: {
-                                  checked: event.target.checked,
-                                  pools: true,
-                                  sousId: d.sousId,
-                                  farms: false,
-                                  status: false,
-                                  pendingReward: new BigNumber(d.userData.pendingReward)
-                                    .div(new BigNumber(10).pow(18))
-                                    .toNumber(),
-                                },
-                              })
-                            }}
-                          />
-                        }
-                        label=""
-                      />
-                      <Coins>
-                        <div className="flex">
-                          <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
-                        </div>
-                      </Coins>
-                      <Text className="align-center ml-2">{d.tokenName}</Text>
-                    </div>
-                    <Text bold>
-                      {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)} FINIX
+                </CardList>
+              )
+            })}
+            {stackedOnlyPools.map((d, i) => {
+              const imgs = d.tokenName.split(' ')[0].split('-')
+              return (
+                <CardList className="px-4">
+                  <div className="flex align-center">
+                    <FormControlLabelCustom
+                      control={
+                        <CustomCheckbox
+                          size="small"
+                          checked={_.get(selectedToken, `${d.sousId}.checked`)}
+                          disabled={harvestProgress !== -1}
+                          onChange={(event) => {
+                            setSelectedToken({
+                              ...selectedToken,
+                              [i]: {
+                                checked: event.target.checked,
+                                pools: true,
+                                sousId: d.sousId,
+                                farms: false,
+                                status: false,
+                                pendingReward: new BigNumber(d.userData.pendingReward)
+                                  .div(new BigNumber(10).pow(18))
+                                  .toNumber(),
+                              },
+                            })
+                          }}
+                        />
+                      }
+                      label=""
+                    />
+                    <Coins>
+                      <div className="flex">
+                        <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                      </div>
+                    </Coins>
+                    <Text className="align-center ml-2">{d.tokenName}</Text>
+                  </div>
+                  <Text bold>
+                    {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)} FINIX
                   </Text>
-                  </CardList>
-                )
-              })}
-              <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
-                Please select available duration
+                </CardList>
+              )
+            })}
+            <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
+              Please select available duration
             </Text>
-              <StakePeriodButton
-                setPeriod={setPeriod}
-                status={status}
-                levelStake={levelStake}
-                isTopUp
-                harvestProgress={harvestProgress}
-              />
-              <div className="flex mt-4 w-100">
-                <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
-                  From your wallet:
+            <StakePeriodButton
+              setPeriod={setPeriod}
+              status={status}
+              levelStake={levelStake}
+              isTopUp
+              harvestProgress={harvestProgress}
+            />
+            <div className="flex mt-4 w-100">
+              <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
+                From your wallet:
                 <span style={{ color: '#0973B9' }} className="pl-2">
-                    {balanceOf ? numeral(balanceOf).format('0,0.00') : '-'} FINIX
+                  {balanceOf ? numeral(balanceOf).format('0,0.00') : '-'} FINIX
                 </span>
-                </Text>
-                <Text className="col-6 pl-3" color="textSubtle" fontSize="12px" fontWeight="500">
-                  Pending rewards
               </Text>
-              </div>
-              <div className="flex w-100 align-center">
-                <Balance className="mr-2">
-                  <NumberInput
-                    style={{ width: '45%', color: '#2A9D8F' }}
-                    placeholder="0.00"
-                    value={value}
-                    disabled={harvestProgress !== -1}
-                    onChange={handleChange}
-                    onKeyDown={() => setKeyDown(true)}
-                    className="text-right"
-                    pattern="^[0-9]*[,]?[0-9]*$"
-                  />
-                </Balance>
-                <Text className="align-center" fontSize="40px" color="#2A9D8F">
-                  +
+              <Text className="col-6 pl-3" color="textSubtle" fontSize="12px" fontWeight="500">
+                Pending rewards
               </Text>
-                <Balance className="ml-2">
-                  <NumberInput
-                    style={{ width: '45%', color: '#2A9D8F' }}
-                    placeholder="0.00"
-                    value={sumpendingReward}
-                    disabled
-                    className="text-right"
-                    pattern="^[0-9]*[,]?[0-9]*$"
-                  />
-                </Balance>
-              </div>
-              <div className="flex mt-4 w-100">
-                <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
-                  Estimated Period End
-              </Text>
-                <Text className="col-6 text-right" color="#0973B9" fontWeight="500">
-                  {date} {date !== '-' && 'GMT+9'}
-                </Text>
-              </div>
-              <div className="flex mt-2 w-100">
-                <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
-                  Total FINIX stake
-              </Text>
-                <div className="flex flex-row justify-end w-100">
-                  <Text className="text-right" color="#0973B9" fontWeight="500">
-                    {vFINIX}
-                  </Text>
-                  <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
-                    vFINIX
-                </Text>
-                </div>
-              </div>
-              <div className="flex mt-2 w-100">
-                <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
-                  vFINIX earn
-              </Text>
-                <div className="flex flex-row justify-end w-100">
-                  <Text className="text-right" color="#0973B9" fontWeight="500">
-                    {vFinixEarn}
-                  </Text>
-                  <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
-                    vFINIX
-                </Text>
-                </div>
-              </div>
-              {pendingTx ? (
-                harvestOrStake()
-              ) : (
-                  <Button
-                    fullWidth
-                    disabled={period === -Infinity && lengthSelect === 0 ? true : lenghtOrvalue}
-                    id="harvest-all"
-                    radii="small"
-                    className="mt-3"
-                    onClick={() => setHarvestProgress(0)}
-                  >
-                    Stake
-                  </Button>
-                )}
             </div>
-          </ModalStake>
-        )}
+            <div className="flex w-100 align-center">
+              <Balance className="mr-2">
+                <NumberInput
+                  style={{ width: '45%', color: '#2A9D8F' }}
+                  placeholder="0.00"
+                  value={value}
+                  disabled={harvestProgress !== -1}
+                  onChange={handleChange}
+                  onKeyDown={() => setKeyDown(true)}
+                  className="text-right"
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+              </Balance>
+              <Text className="align-center" fontSize="40px" color="#2A9D8F">
+                +
+              </Text>
+              <Balance className="ml-2">
+                <NumberInput
+                  style={{ width: '45%', color: '#2A9D8F' }}
+                  placeholder="0.00"
+                  value={sumpendingReward}
+                  disabled
+                  className="text-right"
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+              </Balance>
+            </div>
+            <div className="flex mt-4 w-100">
+              <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
+                Estimated Period End
+              </Text>
+              <Text className="col-6 text-right" color="#0973B9" fontWeight="500">
+                {date} {date !== '-' && 'GMT+9'}
+              </Text>
+            </div>
+            <div className="flex mt-2 w-100">
+              <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
+                Total FINIX stake
+              </Text>
+              <div className="flex flex-row justify-end w-100">
+                <Text className="text-right" color="#0973B9" fontWeight="500">
+                  {vFINIX}
+                </Text>
+                <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
+                  vFINIX
+                </Text>
+              </div>
+            </div>
+            <div className="flex mt-2 w-100">
+              <Text className="col-6" color={isDark ? 'white' : '#000'} fontWeight="500">
+                vFINIX earn
+              </Text>
+              <div className="flex flex-row justify-end w-100">
+                <Text className="text-right" color="#0973B9" fontWeight="500">
+                  {vFinixEarn}
+                </Text>
+                <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
+                  vFINIX
+                </Text>
+              </div>
+            </div>
+            {pendingTx ? (
+              harvestOrStake()
+            ) : (
+              <Button
+                fullWidth
+                disabled={period === -Infinity && lengthSelect === 0 ? true : lenghtOrvalue}
+                id="harvest-all"
+                radii="small"
+                className="mt-3"
+                onClick={() => setHarvestProgress(0)}
+              >
+                Stake
+              </Button>
+            )}
+          </div>
+        </ModalStake>
+      )}
     </>
   )
 }
