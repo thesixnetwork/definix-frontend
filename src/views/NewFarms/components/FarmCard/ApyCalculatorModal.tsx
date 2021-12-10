@@ -64,7 +64,7 @@ const ApyCalculatorModal: React.FC<ApyCalculatorModalProps> = ({ onDismiss, lpLa
   }, [getEarnedPerThousand])
 
   return (
-    <Modal title={t('ROI')} onDismiss={onDismiss} mobileFull>
+    <Modal title={t('ROI')} onDismiss={onDismiss}>
       <ModalBody isBody style={{ maxWidth: '416px' }}>
         <Grid className="mt-s16 mb-s20">
           {headerData.map((header) => (
