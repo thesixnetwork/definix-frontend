@@ -331,7 +331,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                               position="bottom"
                             />
                           </div>
-                          <Text fontSize="9px">
+                          <Text fontSize="8.5px">
                             {item.lockTimestamp} - {item.topupTimeStamp}
                           </Text>
                         </>
@@ -349,7 +349,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
                       {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
                     </Text>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600" fontSize="13px">
                       {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}
                       GMT+9
                     </Text>
