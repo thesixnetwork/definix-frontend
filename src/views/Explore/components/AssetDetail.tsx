@@ -42,7 +42,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
           <tbody>
             <TR>
               {cols.map((c, idx) => (
-                <TH align={idx > 0 ? 'center' : null} key={c} oneline sm={isMaxXl}>
+                <TH align={idx > 0 ? 'center' : null} key={`th-${c}`} oneline sm={isMaxXl}>
                   <Text color="mediumgrey" textStyle="R_12M">
                     {c}
                   </Text>
@@ -71,7 +71,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
               const changeNumber = change.toNumber()
 
               return (
-                <TR>
+                <TR key={`row-${r.symbol}`}>
                   <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
                     <div className="flex align-center" style={{ width: 'max-content' }}>
                       <img

@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import _ from 'lodash'
 import axios from 'axios'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
 import useConverter from 'hooks/useConverter'
@@ -23,6 +22,7 @@ import {
   Divider,
   VDivider,
 } from 'definixswap-uikit-v2'
+import { compact, findIndex, get } from 'lodash'
 import AssetRatio from './AssetRatio'
 import CardHeading, { CardTitle, CardImage } from './CardHeading'
 import MiniChart from './MiniChart'
@@ -59,8 +59,17 @@ const HorizontalMobileStyle = styled(Card)`
 
 const BtnViewDetail: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   const { t } = useTranslation()
+  const history = useHistory()
   return (
-    <Button scale="lg" variant="lightbrown" as={Link} to="/rebalancing/detail" onClick={onClick} className="w-100">
+    <Button
+      scale="lg"
+      variant="lightbrown"
+      onClick={() => {
+        onClick()
+        history.push('rebalancing/detail')
+      }}
+      width="100%"
+    >
       {t('View Details')}
     </Button>
   )
@@ -85,7 +94,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const rebalanceBalances = useRebalanceBalances(account)
 
   const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
-  const currentBalance = _.get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
+  const currentBalance = get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
   const currentBalanceNumber = currentBalance.toNumber()
 
   const api = process.env.REACT_APP_DEFINIX_TOTAL_TXN_AMOUNT_API
@@ -94,31 +103,38 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const [percentage, setPercentage] = useState(0)
   const sharedprice = +(currentBalanceNumber * rebalance.sharedPrice)
 
-  const allCurrentTokens = _.compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
+  const allCurrentTokens = compact([...((rebalance || {}).tokens || []), ...((rebalance || {}).usdToken || [])])
 
   const apr = useMemo(() => {
     return convertToRebalanceAPRFormat({
-      finixRewardPerYear: _.get(rebalance, 'finixRewardPerYear', new BigNumber(0)),
-      totalAssetValue: _.get(rebalance, 'totalAssetValue', new BigNumber(0)),
+      finixRewardPerYear: get(rebalance, 'finixRewardPerYear', new BigNumber(0)),
+      totalAssetValue: get(rebalance, 'totalAssetValue', new BigNumber(0)),
     })
   }, [convertToRebalanceAPRFormat, rebalance])
 
   const combinedAmount = useCallback(async () => {
     if (account) {
-      const rebalanceAddress = getAddress(_.get(rebalance, 'address'))
+      const rebalanceAddress = getAddress(get(rebalance, 'address'))
 
       const myInvestTxnLocalStorage = JSON.parse(
         localStorage.getItem(`my_invest_tx_${account}`) ? localStorage.getItem(`my_invest_tx_${account}`) : '{}',
       )
 
       const myInvestTxns = myInvestTxnLocalStorage[rebalanceAddress] ? myInvestTxnLocalStorage[rebalanceAddress] : []
-      const resTotalTxn = await axios.get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
+      const resTotalTxn = await axios
+        .get(`${api}/total_txn_amount?pool=${rebalanceAddress}&address=${account}`)
+        .then(({ data }) => data)
+        .catch((error) => error.response?.data)
 
-      const latestTxns = _.get(resTotalTxn.data, 'latest_txn')
-      const totalUsds = _.get(resTotalTxn.data, 'total_usd_amount')
-      const totalLps = _.get(resTotalTxn.data, 'total_lp_amount')
+      if (!resTotalTxn?.success) {
+        return
+      }
 
-      const indexTx = _.findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
+      const latestTxns = resTotalTxn?.latest_txn
+      const totalUsd = resTotalTxn?.total_usd_amount
+      const totalLps = resTotalTxn?.total_lp_amount
+
+      const indexTx = findIndex(myInvestTxns, (investTxs) => investTxs === latestTxns)
       const transactionsSlice = myInvestTxns.slice(indexTx + 1)
       myInvestTxnLocalStorage[rebalanceAddress] = transactionsSlice
       localStorage.setItem(`my_invest_tx_${account}`, JSON.stringify(myInvestTxnLocalStorage))
@@ -130,13 +146,11 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       let lastTotalLp = 0
       if (transactionsSlice.length > 0) {
         const datas = (await axios.post(`${api}/txns_usd_amount`, txHash)).data
-        lastTotalAmt = _.get(datas, 'total_usd_amount')
-        lastTotalLp = _.get(datas, 'total_lp_amount')
+        lastTotalAmt = datas?.total_usd_amount
+        lastTotalLp = datas?.total_lp_amount
       }
 
-      const totalUsd = totalUsds
       const totalLpAmount = totalLps + lastTotalLp
-
       if (sharedprice > 0 && totalUsd > 0 && totalLpAmount > 0) {
         const totalUsdAmount = lastTotalAmt + totalUsd
         const diff = sharedprice - totalUsdAmount
@@ -179,7 +193,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       <TwoLineFormat
         title={t('Current Investment')}
         titleMarginBottom={isInMyInvestment ? 4 : null}
-        value={`$${numeral(balance.times(_.get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
+        value={`$${numeral(balance.times(get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
         currentInvestPercentDiff={`(${
           percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
         }%)`}
