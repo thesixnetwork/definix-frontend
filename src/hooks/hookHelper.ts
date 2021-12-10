@@ -4,7 +4,7 @@ import rebalance from 'config/abi/rebalance.json'
 import VaultFacet from 'config/abi/VaultFacet.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import VaultPenaltyFacet from 'config/abi/VaultPenaltyFacet.json'
-import VFinixMergeAbi from 'config/abi/VFinixMergeAbi.json'
+import VaultTopUpFeatureFacet from 'config/abi/VaultTopUpFeatureFacet.json'
 
 export const getAbiHerodotusByName = (methodName: string) =>
   herodotus.find((abi) => abi.type === 'function' && abi.name === methodName)
@@ -16,10 +16,13 @@ export const getAbiRebalanceByName = (methodName: string) =>
   rebalance.find((abi) => abi.type === 'function' && abi.name === methodName)
 
 export const getAbiVaultFacetByName = (methodName: string) =>
-  VFinixMergeAbi.find((abi) => abi.type === 'function' && abi.name === methodName)
+  VaultFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
 
 export const getAbiRewardFacetByName = (methodName: string) =>
-  VFinixMergeAbi.find((abi) => abi.type === 'function' && abi.name === methodName)
+  RewardFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
 
 export const getAbiVaultPenaltyFacetByName = (methodName: string) =>
-  VFinixMergeAbi.find((abi) => abi.type === 'function' && abi.name === methodName)
+  VaultPenaltyFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
+
+export const VaultTopUpFeatureFacetByName = (methodName: string) =>
+  VaultTopUpFeatureFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)

@@ -5,7 +5,7 @@ import BigNumber from 'bignumber.js'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import _ from 'lodash'
-import { getAbiVaultFacetByName } from 'hooks/hookHelper'
+import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 
 import VFinixMergeAbi from '../config/abi/VFinixMergeAbi.json'
@@ -37,8 +37,8 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
         if (connector === 'klip') {
           klipProvider.genQRcodeContactInteract(
             getVFinix(),
-            JSON.stringify(getAbiVaultFacetByName('lockPlus')),
-            JSON.stringify([level, lockFinix]),
+            JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
+            JSON.stringify([level,idLastMaxLv, lockFinix]),
             setShowModal,
           )
           await klipProvider.checkResponse()
