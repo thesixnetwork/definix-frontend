@@ -3,7 +3,8 @@ import useI18n from 'hooks/useI18n'
 import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
-import { ChevronDownIcon, ChevronUpIcon, Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
+import { Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 import ApyButton from './ApyButton'
 
 interface CardHeadingAccordionProps {
@@ -89,7 +90,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
       <div className="flex justify-space-between">
         <div className="currency">
           <StyledFarmImages className="imgs">
-            <Image src={`/images/coins/${tokenName.toLowerCase()}.png`} width={imgSize} height={imgSize} />
+            <Image src={getTokenImageUrl(tokenName)} width={imgSize} height={imgSize} />
           </StyledFarmImages>
 
           <Heading fontSize="16px" fontWeight="500 !important">

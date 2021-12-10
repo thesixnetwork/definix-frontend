@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { Button, Text, useModal } from 'uikit-dev'
 import miniLogo from 'uikit-dev/images/finix-coin.png'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 // import { QuoteToken } from 'config/constants/types'
 import AirDropHarvestModal from './AirDropHarvestModal'
 import { FarmWithStakedValue } from './types'
@@ -103,7 +104,7 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({
 
           return reward !== 0 || allocate.toNumber() !== 0 ? (
             <AirDrop
-              logo={`/images/coins/${br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name}.png`}
+              logo={getTokenImageUrl(br.rewardTokenInfo.name === 'WKLAY' ? 'KLAY' : br.rewardTokenInfo.name)}
               title="AAPR"
               percent="0.0%"
               value={(getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0).toLocaleString()}

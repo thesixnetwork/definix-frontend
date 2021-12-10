@@ -13,6 +13,7 @@ import loading from 'uikit-dev/animation/farmPool.json'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
 import badgeBoost from 'uikit-dev/images/for-ui-v2/badge-boost.png'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
@@ -503,7 +504,7 @@ const CardStake = ({ isShowRightPanel }) => {
                 </div>
               )}
               <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <img src={getTokenImageUrl('finix')} alt="" />
                 <Heading as="h1" fontSize="16px !important">
                   FINIX
                 </Heading>

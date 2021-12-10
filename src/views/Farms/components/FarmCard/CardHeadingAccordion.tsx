@@ -4,6 +4,7 @@ import numeral from 'numeral'
 import React from 'react'
 import styled from 'styled-components'
 import { ChevronDownIcon, ChevronUpIcon, Flex, Heading, Image, Skeleton, Text } from 'uikit-dev'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 // import { communityFarms } from 'config/constants'
@@ -116,7 +117,7 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
               target="_blank"
               rel="noreferrer"
             >
-              <Image src={`/images/coins/${firstCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+              <Image src={getTokenImageUrl(firstCoin)} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
             </a>
             <a
               href={
@@ -127,7 +128,7 @@ const CardHeadingAccordion: React.FC<ExpandableSectionProps> = ({
               target="_blank"
               rel="noreferrer"
             >
-              <Image src={`/images/coins/${secondCoin}.png`} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
+              <Image src={getTokenImageUrl(secondCoin)} alt={farm.tokenSymbol} width={imgSize} height={imgSize} />
             </a>
           </StyledFarmImages>
 
