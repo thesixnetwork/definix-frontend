@@ -3,6 +3,7 @@ import { compact } from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { Flex, Text } from 'definixswap-uikit-v2'
+import { getTokenName } from 'utils/getTokenSymbol'
 import Coin from './Coin'
 
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
@@ -14,11 +15,7 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
           ? []
           : (rebalance || ({} as any)).usdToken || []),
       ]).map((c, index) => {
-        const thisName = (() => {
-          if (c.symbol === 'WKLAY') return 'KLAY'
-          if (c.symbol === 'WBNB') return 'BNB'
-          return c.symbol
-        })()
+        const thisName = getTokenName(c?.symbol)
         return (
           <Flex key={c.symbol} textStyle="R_14R" justifyContent="space-between" alignItems="center" className="py-s12">
             <Coin size="sm" symbol={c.symbol || ''}>

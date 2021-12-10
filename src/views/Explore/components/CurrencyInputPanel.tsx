@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import useToFixedFloor from 'hooks/useToFixedFloor'
+import { getTokenName } from 'utils/getTokenSymbol'
 import { Input as NumericalInput } from './NumericalInput'
 import Coin from './Coin'
 
@@ -71,12 +72,7 @@ const CurrencyInputPanel = ({
 
   const toFixedFloor = useToFixedFloor()
   const overDp = useMemo(() => new BigNumber(value).decimalPlaces() > decimals, [value, decimals])
-
-  const thisName = (() => {
-    if (currency.symbol === 'WKLAY') return 'KLAY'
-    if (currency.symbol === 'WBNB') return 'BNB'
-    return currency.symbol
-  })()
+  const thisName = useMemo(() => getTokenName(currency?.symbol), [currency.symbol])
 
   const handleInput = useCallback(
     (str: string) => {

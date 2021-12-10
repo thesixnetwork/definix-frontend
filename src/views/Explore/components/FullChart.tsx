@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { Checkbox, CheckboxLabel, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
+import { getTokenName } from 'utils/getTokenSymbol'
 
 const rebalanceColor = '#ff6828'
 
@@ -79,11 +80,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
       </div>
       <Flex flexWrap="wrap">
         {tokens.map((c) => {
-          const thisName = (() => {
-            if (c.symbol === 'WKLAY') return 'KLAY'
-            if (c.symbol === 'WBNB') return 'BNB'
-            return c.symbol
-          })()
+          const thisName = getTokenName(c?.symbol)
           return (
             <CheckboxLabel
               key={c.symbol}
