@@ -24,6 +24,7 @@ const FlexCard = styled(Flex)`
 const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount }) => {
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
+  const [error, setError] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
@@ -72,8 +73,14 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
         <FlexCard>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
-          <BalanceFinix days={days} data={data} inputBalance={inputBalance} setInputBalance={setInputBalance} />
-          <Divider width="100%" backgroundColor="lightGrey50" />
+          <BalanceFinix
+            hasAccount={hasAccount}
+            minimum={data.find((item) => item.day === days).minStake}
+            inputBalance={inputBalance}
+            setInputBalance={setInputBalance}
+            error={error}
+            setError={setError}
+          />
           <ApproveFinix
             isMobile={isMobile}
             hasAccount={hasAccount}
@@ -81,8 +88,9 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
             days={days}
             endDay={endDay}
             earn={getVFinix(days, inputBalance)}
+            isError={!!error}
           />
-          <EstimateVFinix endDay={endDay} earn={getVFinix(days, inputBalance)} />
+          <EstimateVFinix hasAccount={hasAccount} endDay={endDay} earn={getVFinix(days, inputBalance)} />
         </FlexCard>
       </Card>
     </>
