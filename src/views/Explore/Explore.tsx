@@ -1,7 +1,6 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -70,9 +69,6 @@ const Explore: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <Helmet>
-          <title>Explore - Definix - Advance Your Crypto Assets</title>
-        </Helmet>
         <>
           <Box position="relative">
             <ListPageHeader type="rebalancing" />

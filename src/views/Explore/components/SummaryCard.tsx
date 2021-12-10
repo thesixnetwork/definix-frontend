@@ -92,8 +92,7 @@ const SummaryCard: React.FC<SummaryCardProp> = ({ items, rebalance, currentBalan
               return !m && i > 0
             })(typeB, index, isMobile)
             return (
-              <Flex width={isMobile ? '50%' : width} mb={isMobile && index + 1 <= half ? 'S_20' : ''}>
-                {/* {index > 0 && !isMobile && <VDivider mr={typeB ? 'S_24' : 'S_32'} />} */}
+              <Flex key={item} width={isMobile ? '50%' : width} mb={isMobile && index + 1 <= half ? 'S_20' : ''}>
                 {divider && <VDivider mr={isMobile ? 'S_20' : 'S_24'} />}
                 {renderItem(item)}
               </Flex>

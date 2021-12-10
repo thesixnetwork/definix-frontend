@@ -1,5 +1,4 @@
 import React from 'react'
-import { Helmet } from 'react-helmet-async'
 import styled from 'styled-components'
 import { Box } from 'definixswap-uikit-v2'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
@@ -88,36 +87,31 @@ const FullColumnGrid = styled(Box)<{ area: string }>`
 const Home: React.FC = () => {
   const { account } = useWallet()
   return (
-    <>
-      <Helmet>
-        <title>Home - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
-      <WrapGrid isAccount={!!account}>
-        <FullColumnGrid area="notice">
-          <HomeNotice />
+    <WrapGrid isAccount={!!account}>
+      <FullColumnGrid area="notice">
+        <HomeNotice />
+      </FullColumnGrid>
+      {account && (
+        <FullColumnGrid mb="S_40" area="investment">
+          <CardInvestment />
         </FullColumnGrid>
-        {account && (
-          <FullColumnGrid mb="S_40" area="investment">
-            <CardInvestment />
-          </FullColumnGrid>
-        )}
-        <LeftColumnGrid area="tvl">
-          <CardTVL />
-        </LeftColumnGrid>
-        <RightColumnGrid area="finix">
-          <CardFinix />
-        </RightColumnGrid>
-        <LeftColumnGrid area="apr">
-          <CardHighAPR />
-        </LeftColumnGrid>
-        <RightColumnGrid area="tweet">
-          <CardTweet />
-        </RightColumnGrid>
-        <LeftColumnGrid area="audit">
-          <CardAudit />
-        </LeftColumnGrid>
-      </WrapGrid>
-    </>
+      )}
+      <LeftColumnGrid area="tvl">
+        <CardTVL />
+      </LeftColumnGrid>
+      <RightColumnGrid area="finix">
+        <CardFinix />
+      </RightColumnGrid>
+      <LeftColumnGrid area="apr">
+        <CardHighAPR />
+      </LeftColumnGrid>
+      <RightColumnGrid area="tweet">
+        <CardTweet />
+      </RightColumnGrid>
+      <LeftColumnGrid area="audit">
+        <CardAudit />
+      </LeftColumnGrid>
+    </WrapGrid>
   )
 }
 

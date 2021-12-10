@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import useFarmEarning from 'hooks/useFarmEarning'
 import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import EarningBoxTemplate from './EarningBoxTemplate'
+import EarningBoxTemplate from './EarningBoxTemplate/index'
 
 const Earned: React.FC<{
   isMobile: boolean

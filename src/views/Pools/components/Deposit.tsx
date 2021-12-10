@@ -81,7 +81,7 @@ const Deposit: React.FC<{
   pool: PoolWithApy
   addSwapUrl?: string
   onBack: () => void
-}> = ({ isOldSyrup, isBnbPool, pool, onBack }) => {
+}> = ({ isOldSyrup, isBnbPool, pool, onBack, addSwapUrl }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
@@ -217,7 +217,7 @@ const Deposit: React.FC<{
             type="button"
             variant="line"
             onClick={() => {
-              // window.location.href=`${addSwapUrl}`
+              window.location.href = `${addSwapUrl}`
             }}
           >
             {t('Swap')}

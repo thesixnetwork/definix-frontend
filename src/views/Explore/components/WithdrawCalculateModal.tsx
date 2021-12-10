@@ -126,7 +126,7 @@ const WithdrawCalculateModal = ({
   }
   return (
     <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss}>
-      <ModalBody>
+      <ModalBody maxWidth="438px">
         <CardHeading
           rebalance={rebalance}
           isHorizontal={isMobile}
@@ -136,7 +136,7 @@ const WithdrawCalculateModal = ({
         <Text color="text" textStyle="R_16M" className="mt-s24 mb-s12">
           {t('Withdrawal Amount')}
         </Text>
-        <Box className="bd pa-s24 pt-s12" borderRadius="8px" width="438px">
+        <Box className="bd pa-s24 pt-s12" borderRadius="8px" width="100%">
           {tokenList.map((c) => (
             <InlineAssetRatioLabel small key={c.symbol} coin={c} column={isMobile} />
           ))}

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import BigNumber from 'bignumber.js'
 import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from 'definixswap-uikit-v2'
 import BalanceText from 'components/BalanceText'
+import useToFixedFloor from 'hooks/useToFixedFloor'
 import styled from 'styled-components'
 
 interface BalanceProps {
@@ -66,11 +68,12 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   const { t } = useTranslation()
   const [balance] = useState<number>(1200.20002)
   const [selected, setSelected] = useState<string>('')
+  const toFixedFloor = useToFixedFloor()
 
   const onChangeBalance = (e: React.FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
 
-    setInputBalance(value)
+    setInputBalance(toFixedFloor(value))
     if (selected) setSelected('')
   }
 
@@ -84,7 +87,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   useEffect(() => {
     if (!inputBalance) {
       setError('noInput')
-    } else if (Number(inputBalance) * 10 ** 18 < 1) {
+    } else if (new BigNumber(Number(`0.${inputBalance.split('.')[1] || 0}`)).decimalPlaces() > 18) {
       setError('Less than a certain amount')
     } else if (balance < Number(inputBalance)) {
       setError('Insufficient balance')
