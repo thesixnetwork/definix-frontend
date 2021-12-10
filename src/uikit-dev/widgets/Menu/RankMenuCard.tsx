@@ -27,7 +27,6 @@ const RankMenuCard: React.FC = () => {
   const level = useRank()
   const { balancevfinix } = usePrivateData()
   const getRankTopCardBg = (rank) => {
-    console.log('rank ', rank)
     switch (rank) {
       case '0':
         return bgHeadCardRankSliver
