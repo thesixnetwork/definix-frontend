@@ -217,7 +217,7 @@ const Deposit: React.FC<{
             type="button"
             variant="line"
             onClick={() => {
-              window.location.href=`${addSwapUrl}`
+              window.location.href = `${addSwapUrl}`
             }}
           >
             {t('Swap')}

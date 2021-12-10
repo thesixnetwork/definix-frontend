@@ -20,7 +20,7 @@ interface InnerTheme {
   itemCurrencyColor: ColorStyles | string
   borderColor: ColorStyles
   bottomBg: ColorStyles | string
-  slideDotColor: ColorStyles,
+  slideDotColor: ColorStyles
   slideDotActiveColor: ColorStyles
 }
 
@@ -35,7 +35,7 @@ const THEME: { [key: string]: InnerTheme } = {
     borderColor: ColorStyles.LIGHTGREY,
     bottomBg: ColorStyles.LIGHTGREY_20,
     slideDotColor: ColorStyles.LIGHTGREY,
-    slideDotActiveColor: ColorStyles.BLACK
+    slideDotActiveColor: ColorStyles.BLACK,
   },
   dark: {
     totalTitleColor: ColorStyles.WHITE,
@@ -47,7 +47,7 @@ const THEME: { [key: string]: InnerTheme } = {
     borderColor: ColorStyles.BROWN,
     bottomBg: 'black20',
     slideDotColor: ColorStyles.BROWN,
-    slideDotActiveColor: ColorStyles.WHITE
+    slideDotActiveColor: ColorStyles.WHITE,
   },
 }
 

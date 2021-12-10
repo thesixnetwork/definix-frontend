@@ -56,7 +56,7 @@ const Earned: React.FC<{
         title: t('Pool'),
         value: poolEarningsSum,
         price: poolEarningsBusd,
-      }
+      },
       // {
       //   title: t('Rebalancing'),
       //   value: '100,000,000.123456',

@@ -24,7 +24,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
     position: relative;
     height: auto;
     margin-bottom: ${({ theme }) => theme.spacing.S_20}px;
-    
+
     > li {
       padding-right: ${({ theme }) => theme.spacing.S_6}px;
       width: 5px;
@@ -68,7 +68,7 @@ const NonSlider = styled(Flex)`
 `
 const SlideItem = styled(Box)<{ index: number; curTheme: any }>`
   margin: ${({ theme }) => theme.spacing.S_20}px 0;
-  padding-left: ${({ theme, index }) => index > 0 ? theme.spacing.S_32 : theme.spacing.S_40}px;
+  padding-left: ${({ theme, index }) => (index > 0 ? theme.spacing.S_32 : theme.spacing.S_40)}px;
   padding-right: ${({ theme }) => theme.spacing.S_32}px;
   width: 176px;
   border-left: ${({ index, curTheme, theme }) =>
@@ -89,7 +89,7 @@ const SlideItem = styled(Box)<{ index: number; curTheme: any }>`
 const commonSlideOptions = {
   infinite: false,
   arrows: false,
-  adaptiveHeight: true
+  adaptiveHeight: true,
 }
 
 interface ValueList {
@@ -103,55 +103,60 @@ const Slide: React.FC<{
   displayOnlyTotalPrice: boolean
   curTheme: { [key: string]: any }
   data: ValueList[]
-}> = ({
-  isMobile,
-  hasAccount,
-  displayOnlyTotalPrice,
-  curTheme,
-  data
-}) => {
+}> = ({ isMobile, hasAccount, displayOnlyTotalPrice, curTheme, data }) => {
   const pcSlider = useRef(null)
   const mobileSlider = useRef(null)
   const [slideIndex, setSlideIndex] = useState(0)
 
-  const slidesToShow = useMemo(() => isMobile ? 1 : 4, [isMobile])
+  const slidesToShow = useMemo(() => (isMobile ? 1 : 4), [isMobile])
   const useSlide = useMemo(() => data.length > slidesToShow, [slidesToShow, data.length])
-  const slideList = useMemo(() => isMobile ? _.chunk(data, 2) : data, [isMobile, data])
+  const slideList = useMemo(() => (isMobile ? _.chunk(data, 2) : data), [isMobile, data])
   const isFirstIndex = useMemo(() => slideIndex === 0, [slideIndex])
   const isLastIndex = useMemo(() => {
     return slideIndex + slidesToShow === slideList.length
   }, [slideList, slideIndex, slidesToShow])
-  
-  const renderItemMainValue = useCallback((item) => {
-    const value = displayOnlyTotalPrice ? item.price : item.value
-    const props = {
-      textStyle: `R_16M`,
-      color: curTheme.itemBalanceColor,
-      value: hasAccount ? value : 0,
-    }
-    return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
-  }, [displayOnlyTotalPrice, curTheme, hasAccount])
 
-  const renderItemSubValue = useCallback((item) => {
-    return displayOnlyTotalPrice ? (<CurrencyText
-      textStyle="R_14M"
-      color={curTheme.itemCurrencyColor}
-      value={hasAccount ? item.price : 0}
-      prefix="="
-    />) : null
-  }, [displayOnlyTotalPrice, curTheme, hasAccount])
-  
-  const renderItems = useCallback((list) => {
-    return list.map((item, index) => (
-      <SlideItem key={item.title} index={index} curTheme={curTheme} className="slide-item">
-        <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
-          {item.title}
-        </Text>
-        {renderItemMainValue(item)}
-        {renderItemSubValue(item)}
-      </SlideItem>
-    ))
-  }, [curTheme, renderItemMainValue, renderItemSubValue])
+  const renderItemMainValue = useCallback(
+    (item) => {
+      const value = displayOnlyTotalPrice ? item.price : item.value
+      const props = {
+        textStyle: `R_16M`,
+        color: curTheme.itemBalanceColor,
+        value: hasAccount ? value : 0,
+      }
+      return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
+    },
+    [displayOnlyTotalPrice, curTheme, hasAccount],
+  )
+
+  const renderItemSubValue = useCallback(
+    (item) => {
+      return displayOnlyTotalPrice ? (
+        <CurrencyText
+          textStyle="R_14M"
+          color={curTheme.itemCurrencyColor}
+          value={hasAccount ? item.price : 0}
+          prefix="="
+        />
+      ) : null
+    },
+    [displayOnlyTotalPrice, curTheme, hasAccount],
+  )
+
+  const renderItems = useCallback(
+    (list) => {
+      return list.map((item, index) => (
+        <SlideItem key={item.title} index={index} curTheme={curTheme} className="slide-item">
+          <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
+            {item.title}
+          </Text>
+          {renderItemMainValue(item)}
+          {renderItemSubValue(item)}
+        </SlideItem>
+      ))
+    },
+    [curTheme, renderItemMainValue, renderItemSubValue],
+  )
 
   if (isMobile) {
     return (
@@ -162,22 +167,18 @@ const Slide: React.FC<{
               ref={mobileSlider}
               {...{
                 dots: true,
-                slidesToShow: 1
+                slidesToShow: 1,
               }}
               {...commonSlideOptions}
             >
               {slideList.map((slideGroup) => (
-                <Box>
-                  {renderItems(slideGroup)}
-                </Box>
+                <Box>{renderItems(slideGroup)}</Box>
               ))}
             </Slider>
           ) : (
             <NonSlider>
               {slideList.map((slideGroup) => (
-                <>
-                  {renderItems(slideGroup)}
-                </>
+                <>{renderItems(slideGroup)}</>
               ))}
             </NonSlider>
           )}
@@ -188,37 +189,35 @@ const Slide: React.FC<{
 
   return (
     <Wrap bg={curTheme.bottomBg}>
-      <Box style={{width: '100%', paddingLeft: '0', paddingRight: '128px'}}>
+      <Box style={{ width: '100%', paddingLeft: '0', paddingRight: '128px' }}>
         <SliderSection curTheme={curTheme}>
           {useSlide ? (
             <Slider
               ref={pcSlider}
               {...{
                 slidesToShow: 4,
-                beforeChange: (current, next) => setSlideIndex(next)
+                beforeChange: (current, next) => setSlideIndex(next),
               }}
               {...commonSlideOptions}
             >
               {renderItems(data)}
             </Slider>
           ) : (
-            <NonSlider>
-              {renderItems(data)}
-            </NonSlider>
+            <NonSlider>{renderItems(data)}</NonSlider>
           )}
         </SliderSection>
       </Box>
-      
+
       <ArrowButtonSection>
         <DoubleArrowButtons
           disableLeftArrow={isFirstIndex}
           disableRightArrow={isLastIndex}
           onClickLeftArrow={() => {
-            if (isFirstIndex) return;
+            if (isFirstIndex) return
             pcSlider.current.slickPrev()
           }}
           onClickRightArrow={() => {
-            if (isLastIndex) return;
+            if (isLastIndex) return
             pcSlider.current.slickNext()
           }}
         />
