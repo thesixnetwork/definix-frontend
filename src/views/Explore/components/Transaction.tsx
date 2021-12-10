@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import axios from 'axios'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
@@ -11,7 +12,6 @@ import { useTranslation } from 'react-i18next'
 import { Box, CopyToClipboard, Flex, Grid, LinkExternal, Text, Toggle, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'
 import EllipsisText from 'components/EllipsisText'
-import InfiniteScroll from 'react-infinite-scroll-component'
 
 import { TD, TH } from './Table'
 

@@ -18,6 +18,7 @@ const Title = styled(Text)`
 const InnerBox = styled(Flex)`
   padding: 24px;
   border-radius: 8px;
+  min-height: 166px;
   background-color: ${({ theme }) => theme.colors[ColorStyles.WHITE]};
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {

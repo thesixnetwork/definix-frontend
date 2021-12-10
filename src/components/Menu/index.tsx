@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Menu as UikitMenu } from 'definixswap-uikit-v2'
 import { useTranslation, Trans } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
-// import { usePriceFinixUsd, useProfile } from 'state/hooks'
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import useUserDeadline from 'hooks/useUserDeadline'
-import NetWorth from './NetWorth'
 import { links } from './config'
 
 const Menu = (props) => {
@@ -26,6 +24,7 @@ const Menu = (props) => {
 
   return (
     <UikitMenu
+      Link={Link}
       // SettingsModal slippage
       userSlippageTolerance={userSlippageTolerance}
       setUserslippageTolerance={setUserslippageTolerance}
@@ -35,7 +34,6 @@ const Menu = (props) => {
       account={account}
       login={connect}
       logout={reset}
-      netWorth={<NetWorth />}
       Trans={Trans}
       currentLang={i18n.languages[0]}
       langs={supportedLanguages}
@@ -43,15 +41,6 @@ const Menu = (props) => {
       isDark={isDark}
       toggleTheme={toggleTheme}
       links={links(t)}
-      // finixPriceUsd={finixPriceUsd.toNumber()}
-      // price={finixPriceUsd.toNumber() <= 0 ? 'N/A' : numeral(finixPriceUsd.toNumber()).format('0,0.0000')}
-      // profile={{
-      //   username: profile?.username,
-      //   image: profile?.nft ? `/images/nfts/${profile.nft?.images.sm}` : undefined,
-      //   profileLink: '/profile',
-      //   noProfileLink: '/profile',
-      //   showPip: !profile?.username,
-      // }}
       {...props}
     />
   )
