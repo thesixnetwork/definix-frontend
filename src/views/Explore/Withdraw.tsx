@@ -5,7 +5,6 @@ import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useEffect, useState } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
@@ -56,10 +55,6 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
 
   return (
     <Box maxWidth="630px" mx="auto">
-      <Helmet>
-        <title>Explore - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
-
       <Flex className="mb-s20">
         <Button
           variant="text"

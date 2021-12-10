@@ -6,6 +6,7 @@ import { Checkbox, CheckboxLabel, Flex, Text, useMatchBreakpoints } from 'defini
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
 import { getTokenName } from 'utils/getTokenSymbol'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 
 const rebalanceColor = '#ff6828'
 
@@ -90,7 +91,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
               }
             >
               <LegendItem>
-                <img src={`/images/coins/${c.symbol || ''}.png`} alt="" />
+                <img src={getTokenImageUrl(c.symbol)} alt="" />
                 <Text textStyle="R_14R">{thisName}</Text>
               </LegendItem>
             </CheckboxLabel>
@@ -101,7 +102,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
           control={<Checkbox scale="sm" variantColor="brown" checked={AllChecked} onChange={onCheckAll()} />}
         >
           <LegendItem>
-            {/* <img src={`/images/coins/${c.symbol || ''}.png`} alt="" /> */}
+            {/* <img src={getTokenImageUrl(c.symbol)} alt="" /> */}
             <Text textStyle="R_14R">ALL</Text>
           </LegendItem>
         </CheckboxLabel>

@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
-import { Helmet } from 'react-helmet-async'
 import { useTranslation } from 'react-i18next'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 
@@ -25,10 +24,6 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
 
   return (
     <Box maxWidth="630px" mx="auto">
-      <Helmet>
-        <title>Explore - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
-
       <Flex className="mb-s20">
         <Button
           variant="text"

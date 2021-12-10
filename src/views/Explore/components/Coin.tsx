@@ -1,6 +1,7 @@
 import React from 'react'
 import { Flex, FlexProps } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 
 const Size = {
   sm: '20px',
@@ -38,7 +39,7 @@ const StyledCoin = styled(Flex)<{ size?: string; isHorizontal?: boolean }>`
 const Coin: React.FC<CoinType> = ({ symbol, children, ...props }) => {
   return (
     <StyledCoin alignItems="center" {...props}>
-      <img src={`/images/coins/${symbol || ''}.png`} alt={symbol} />
+      <img src={getTokenImageUrl(symbol)} alt={symbol} />
       {children}
     </StyledCoin>
   )

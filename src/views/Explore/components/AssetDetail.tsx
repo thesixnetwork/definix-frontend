@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Rebalance } from 'state/types'
 import { getTokenName } from 'utils/getTokenSymbol'
+import { getTokenImageUrl } from 'utils/getTokenImage'
 import { Table, TD, TH, TR } from './Table'
 
 interface AssetDetailType {
@@ -74,13 +75,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
                 <TR key={`row-${r.symbol}`}>
                   <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
                     <div className="flex align-center" style={{ width: 'max-content' }}>
-                      <img
-                        src={`/images/coins/${r.symbol || ''}.png`}
-                        alt=""
-                        width={24}
-                        height={24}
-                        className="mr-s6"
-                      />
+                      <img src={getTokenImageUrl(r.symbol)} alt="" width={24} height={24} className="mr-s6" />
                       <Text textStyle="R_14B">{thisName}</Text>
                     </div>
                   </TD>
