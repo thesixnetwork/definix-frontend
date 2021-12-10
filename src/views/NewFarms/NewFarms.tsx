@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { Box, DropdownOption } from 'definixswap-uikit-v2'
@@ -44,9 +43,6 @@ const Farms: React.FC = () => {
         },
       }}
     >
-      <Helmet>
-        <title>Farm - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
       <Wrap>
         {pageState === 'list' && (
           <>

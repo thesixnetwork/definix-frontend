@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Helmet } from 'react-helmet-async'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { Box, DropdownOption } from 'definixswap-uikit-v2'
@@ -45,9 +44,6 @@ const Pool: React.FC = () => {
         },
       }}
     >
-      <Helmet>
-        <title>Pool - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
       <Wrap>
         {pageState === 'list' && (
           <>

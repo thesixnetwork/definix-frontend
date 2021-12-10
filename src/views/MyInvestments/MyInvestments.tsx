@@ -4,7 +4,6 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Helmet } from 'react-helmet-async'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -177,36 +176,31 @@ const MyInvestments: React.FC = () => {
   }, [dispatch, account, rebalances])
 
   return (
-    <>
-      <Helmet>
-        <title>My investments - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
-      <Wrap>
-        <Route exact path={`${path}`}>
-          <CardSummary
-            products={stakedProducts.map((product) => {
-              return {
-                ...product,
-                netWorth: getNetWorth(product.data),
-              }
-            })}
+    <Wrap>
+      <Route exact path={`${path}`}>
+        <CardSummary
+          products={stakedProducts.map((product) => {
+            return {
+              ...product,
+              netWorth: getNetWorth(product.data),
+            }
+          })}
+        />
+        <Card className="mt-s16">
+          <MyProductsFilter
+            onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}
+            onChangeOrderFilter={(orderBy: DropdownOption) => setSelectedOrderBy(orderBy)}
+            onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
           />
-          <Card className="mt-s16">
-            <MyProductsFilter
-              onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}
-              onChangeOrderFilter={(orderBy: DropdownOption) => setSelectedOrderBy(orderBy)}
-              onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
-            />
-            <MyProducts
-              productType={currentProductType}
-              orderBy={selectedOrderBy}
-              searchKeyword={searchKeyword}
-              products={stakedProducts}
-            />
-          </Card>
-        </Route>
-      </Wrap>
-    </>
+          <MyProducts
+            productType={currentProductType}
+            orderBy={selectedOrderBy}
+            searchKeyword={searchKeyword}
+            products={stakedProducts}
+          />
+        </Card>
+      </Route>
+    </Wrap>
   )
 }
 
