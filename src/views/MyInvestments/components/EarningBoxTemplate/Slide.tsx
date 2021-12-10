@@ -22,6 +22,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
 
   .slick-dots {
     position: relative;
+    bottom: 0;
     height: auto;
     margin-bottom: ${({ theme }) => theme.spacing.S_20}px;
 
@@ -36,6 +37,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
           width: inherit;
           height: inherit;
           background: ${({ curTheme }) => curTheme.slideDotColor};
+          color: transparent;
         }
       }
       &.slick-active {
@@ -45,6 +47,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
             height: inherit;
             border-radius: 50%;
             background: ${({ curTheme }) => curTheme.slideDotActiveColor};
+            color: transparent;
           }
         }
       }
@@ -195,6 +198,7 @@ const Slide: React.FC<{
             <Slider
               ref={pcSlider}
               {...{
+                dots: false,
                 slidesToShow: 4,
                 beforeChange: (current, next) => setSlideIndex(next),
               }}
@@ -210,8 +214,8 @@ const Slide: React.FC<{
 
       <ArrowButtonSection>
         <DoubleArrowButtons
-          disableLeftArrow={isFirstIndex}
-          disableRightArrow={isLastIndex}
+          disableLeftArrow={!useSlide || isFirstIndex}
+          disableRightArrow={!useSlide || isLastIndex}
           onClickLeftArrow={() => {
             if (isFirstIndex) return
             pcSlider.current.slickPrev()
