@@ -78,12 +78,15 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   const onClickRate = (value: string) => {
+    if (!hasAccount) return
+
     if (value === '25%') setInputBalance((balance * 0.25).toFixed(6))
     else if (value === '50%') setInputBalance((balance * 0.5).toFixed(6))
     else if (value === 'MAX') setInputBalance(balance.toFixed(6))
 
     setSelected(value)
   }
+
   useEffect(() => {
     if (!inputBalance) {
       setError('noInput')
@@ -95,6 +98,13 @@ const BalanceFinix: React.FC<BalanceProps> = ({
       setError('The amount of FINIX')
     } else setError('')
   }, [minimum, balance, inputBalance, setError])
+
+  useEffect(() => {
+    if (!hasAccount) {
+      setInputBalance('')
+      setSelected('')
+    }
+  }, [hasAccount, setInputBalance, setSelected])
 
   return (
     <>
@@ -112,6 +122,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
             value={inputBalance}
             onChange={onChangeBalance}
             placeholder="0"
+            readOnly={!hasAccount}
           />
           <Flex mt="S_8" mb="S_12">
             {['25%', '50%', 'MAX'].map((value) => {
@@ -123,8 +134,10 @@ const BalanceFinix: React.FC<BalanceProps> = ({
             })}
           </Flex>
           {error !== 'noInput' && !!error && (
-            <Flex alignItems="center">
-              <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+            <Flex alignItems="flex-start">
+              <Flex mt="S_2">
+                <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+              </Flex>
               <Text ml="S_4" textStyle="R_14R" color="red">
                 {t(error)}
               </Text>

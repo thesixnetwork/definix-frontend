@@ -113,7 +113,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                 <Trans
                   i18nKey="Do you want to unstake?"
                   values={{ '15-Nov-21 14:57:20 GMT+9': end }}
-                  components={{ bold: <strong /> }}
+                  components={[<strong />]}
                 />
               </Text>
             </Flex>

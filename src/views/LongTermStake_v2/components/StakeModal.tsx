@@ -107,7 +107,7 @@ const StakeModal: React.FC<ModalProps> = ({
                 <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               </Flex>
               <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
-                <Trans i18nKey={getLockDay(period)} components={{ bold: <strong /> }} />
+                <Trans i18nKey={getLockDay(period)} components={[<strong />]} />
               </Text>
             </Flex>
           </Flex>
