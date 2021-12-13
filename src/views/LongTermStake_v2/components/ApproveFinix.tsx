@@ -87,8 +87,10 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
             <UnlockButton />
           )}
           {hasAccount && error && (
-            <Flex alignItems="center">
-              <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+            <Flex alignItems="flex-start">
+              <Flex mt="S_2">
+                <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+              </Flex>
               <Text ml="S_4" textStyle="R_14R" color="red">
                 {error}
               </Text>

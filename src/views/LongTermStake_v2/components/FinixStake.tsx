@@ -57,8 +57,10 @@ const FinixStake: React.FC<FinixStakeProps> = ({ isMobile, totalFinixLock, total
     <>
       <FlexStake>
         <FlexItem>
-          <ImgTokenFinixIcon viewBox="0 0 48 48" width="40px" height="40px" />
-          <Box ml="S_12">
+          <Flex mb={`${isMobile && 'S_12'}`}>
+            <ImgTokenFinixIcon viewBox="0 0 48 48" width="40px" height="40px" />
+          </Flex>
+          <Box ml={`${!isMobile && 'S_12'}`}>
             <Text mb="S_2" textStyle={`R_14${isMobile ? 'R' : 'M'}`} color="mediumgrey">
               {t('Total FINIX staked')}
             </Text>
@@ -75,7 +77,7 @@ const FinixStake: React.FC<FinixStakeProps> = ({ isMobile, totalFinixLock, total
             srcSet={`${ImgTokenVFinix2x} 2x, ${ImgTokenVFinix3x} 3x`}
             alt="VFINIX-TOKEN"
           />
-          <Box ml="S_12">
+          <Box ml={`${!isMobile && 'S_12'}`}>
             <Text mb="S_2" textStyle={`R_14${isMobile ? 'R' : 'M'}`} color="mediumgrey">
               {t('Total vFINIX supply')}
             </Text>
