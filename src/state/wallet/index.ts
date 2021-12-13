@@ -13,8 +13,8 @@ const initialState: WalletState = {
   balances: {},
   allowances: {},
   decimals: {},
-  userDeadline: 20,
-  userSlippage: 80,
+  userDeadline: 1200,
+  userSlippage: 50,
   isFetched: false,
   isRebalanceFetched: false,
 }
