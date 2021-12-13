@@ -4,7 +4,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import { Card, Flex, Divider } from 'definixswap-uikit-v2'
-import { useApr, useAllLock } from '../../../hooks/useLongTermStake'
+import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
 
 import VFinixAprButton from './VFinixAprButton'
 import BalanceFinix from './BalanceFinix'
@@ -30,6 +30,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
   const minimum = _.get(allLockPeriod, '0.minimum')
   const today = new Date()
   const endDay = moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
+  const { balancefinix } = usePrivateData()
 
   const data = [
     {
@@ -80,6 +81,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
             setInputBalance={setInputBalance}
             error={error}
             setError={setError}
+            balancefinix={balancefinix}
           />
           <ApproveFinix
             isMobile={isMobile}

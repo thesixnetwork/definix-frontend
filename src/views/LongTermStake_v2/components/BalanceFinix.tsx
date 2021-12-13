@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from 'definixswap-uikit-v2'
 import BalanceText from 'components/BalanceText'
-import useToFixedFloor from 'hooks/useToFixedFloor'
 import styled from 'styled-components'
 
 interface BalanceProps {
@@ -13,6 +12,7 @@ interface BalanceProps {
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
   error: string
   setError: React.Dispatch<React.SetStateAction<string>>
+  balancefinix: number
 }
 
 const FlexBalance = styled(Flex)`
@@ -64,25 +64,26 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   setInputBalance,
   error,
   setError,
+  balancefinix,
 }) => {
   const { t } = useTranslation()
-  const [balance] = useState<number>(1200.20002)
   const [selected, setSelected] = useState<string>('')
-  const toFixedFloor = useToFixedFloor()
 
   const onChangeBalance = (e: React.FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget
 
-    setInputBalance(toFixedFloor(value))
+    if (value.length > 79) return
+    setInputBalance(value.replace(/[^0-9]/g, ''))
+
     if (selected) setSelected('')
   }
 
   const onClickRate = (value: string) => {
     if (!hasAccount) return
 
-    if (value === '25%') setInputBalance((balance * 0.25).toFixed(6))
-    else if (value === '50%') setInputBalance((balance * 0.5).toFixed(6))
-    else if (value === 'MAX') setInputBalance(balance.toFixed(6))
+    if (value === '25%') setInputBalance((balancefinix * 0.25).toFixed(2))
+    else if (value === '50%') setInputBalance((balancefinix * 0.5).toFixed(2))
+    else if (value === 'MAX') setInputBalance(String(balancefinix))
 
     setSelected(value)
   }
@@ -92,12 +93,12 @@ const BalanceFinix: React.FC<BalanceProps> = ({
       setError('noInput')
     } else if (new BigNumber(Number(`0.${inputBalance.split('.')[1] || 0}`)).decimalPlaces() > 18) {
       setError('Less than a certain amount')
-    } else if (balance < Number(inputBalance)) {
+    } else if (balancefinix < Number(inputBalance)) {
       setError('Insufficient balance')
     } else if (Number(inputBalance) < minimum) {
       setError('The amount of FINIX')
     } else setError('')
-  }, [minimum, balance, inputBalance, setError])
+  }, [minimum, balancefinix, inputBalance, setError])
 
   useEffect(() => {
     if (!hasAccount) {
@@ -114,10 +115,14 @@ const BalanceFinix: React.FC<BalanceProps> = ({
             <Text mr="S_4" textStyle="R_14R" color="deepgrey">
               {t('Balance')}
             </Text>
-            <BalanceText textStyle="R_14B" color="deepgrey" value={hasAccount ? balance : 0} />
+            <BalanceText
+              textStyle="R_14B"
+              color="deepgrey"
+              value={hasAccount ? Math.floor(balancefinix * 1000000) / 1000000 : 0}
+            />
           </Flex>
           <StyledInput
-            type="number"
+            type="text"
             inputMode="decimal"
             value={inputBalance}
             onChange={onChangeBalance}

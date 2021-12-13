@@ -105,7 +105,7 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
                     <VDivider color="lightgrey" />
                   </Flex>
                   <Text width="26px" ml="S_8" textStyle="R_14R" color="mediumgrey" textAlign="right">
-                    {v.ratio}%
+                    {v.ratio || 0}%
                   </Text>
                 </Flex>
               </FlexDays>
