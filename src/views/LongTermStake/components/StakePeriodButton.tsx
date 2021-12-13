@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import numeral from 'numeral'
@@ -45,6 +45,7 @@ const CustomButton = ({
   isTopUp,
   disableLevel,
   setFlgIsTopup,
+  harvestProgress,
 }) => {
   const onSelect1 = () => {
     return isDark ? '#333333' : '#00000014'
@@ -96,6 +97,10 @@ const CustomButton = ({
     return color
   }
 
+  const renderharvestProgress = () => {
+    return harvestProgress !== -1 ? true : !disableLevel
+  }
+
   return (
     <div className={`col-4 ${mr} ${!isMobile ? 'w-100' : ''}`}>
       <ButtonPeriod
@@ -105,7 +110,7 @@ const CustomButton = ({
         }}
         radii="small"
         isStroke
-        disabled={isTopUp ? !disableLevel : false}
+        disabled={isTopUp ? renderharvestProgress() : false}
         style={{
           background: period === level ? handleBackgroud4(period, level) : onSelect1(),
           border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
@@ -148,7 +153,7 @@ const CustomButton = ({
   )
 }
 
-const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
+const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp, harvestProgress }) => {
   const { isDark } = useTheme()
   const { allLock } = useAllDataLock()
   const lockTopUp = useLockTopup()
@@ -167,7 +172,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
   let disableLevel2 = false
   const [data, setData] = useState([])
 
-  useEffect(() => {
+  useMemo(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const array = []
       const arrStr = lockTopUp.map((i) => Number(i))
@@ -177,6 +182,15 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
 
       const removeTopUpId = removeisUnlockedOrisPenalty.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
       removeTopUpId.map((r) => {
+        return array.push(_.get(r, 'level'))
+      })
+      setData(array)
+    } else {
+      const array = []
+      const removeisUnlockedOrisPenalty = allLock.filter(
+        (item) => _.get(item, 'isUnlocked') === false && _.get(item, 'isPenalty') === false,
+      )
+      removeisUnlockedOrisPenalty.map((r) => {
         return array.push(_.get(r, 'level'))
       })
       setData(array)
@@ -195,13 +209,13 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
     })
   }
 
-  useEffect(() => {
+  useMemo(() => {
     setMinimum1(_.get(minimum, '0') || 0)
     setMinimum2(_.get(minimum, '1') || 0)
     setMinimum3(_.get(minimum, '2') || 0)
-  }, [_minimum1, _minimum2, _minimum4, minimum])
+  }, [minimum])
 
-  useEffect(() => {
+  useMemo(() => {
     if (status && !isTopUp) {
       // setPeriod(0)
       // setPeriodSelect(0)
@@ -232,7 +246,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
     } else {
       setPeriod(periodSelect)
     }
-  }, [periodSelect, setPeriod, status, isTopUp, levelStake, flgIsTopup, data])
+  }, [periodSelect, setPeriod, status, isTopUp, flgIsTopup, data])
 
   return (
     <div className={`w-100 ${!isMobile ? 'flex align-center justify-space-between' : 'flex align-items-center'} mt-2`}>
@@ -250,6 +264,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         isTopUp={isTopUp}
         disableLevel={disableLevel0}
         setFlgIsTopup={setFlgIsTopup}
+        harvestProgress={harvestProgress}
       />
       <CustomButton
         isDark={isDark}
@@ -265,6 +280,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         isTopUp={isTopUp}
         disableLevel={disableLevel1}
         setFlgIsTopup={setFlgIsTopup}
+        harvestProgress={harvestProgress}
       />
       <CustomButton
         isDark={isDark}
@@ -280,6 +296,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp }) => {
         isTopUp={isTopUp}
         disableLevel={disableLevel2}
         setFlgIsTopup={setFlgIsTopup}
+        harvestProgress={harvestProgress}
       />
     </div>
   )

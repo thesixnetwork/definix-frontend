@@ -40,17 +40,17 @@ import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text, us
 import SuperStakeModal from 'uikit-dev/widgets/WalletModal/SuperStakeModal'
 import StartLongTermStakeModal from 'uikit-dev/widgets/WalletModal/StartLongTermStakeModal'
 
-import LogoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
-import LogoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
-import LogoRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-11.png'
+import logoRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-13.png'
+import logoRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-12.png'
+import logoRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-11.png'
 
-import BgHeadCardRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-05.png'
-import BgHeadCardRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-06.png'
-import BgHeadCardRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-07.png'
+import bgHeadCardRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-05.png'
+import bgHeadCardRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-06.png'
+import bgHeadCardRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-07.png'
 
-import BgMiddleComponentRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-08.png'
-import BgMiddleComponentRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-09.png'
-import BgMiddleComponentRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-10.png'
+import bgMiddleComponentRankSliver from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-08.png'
+import bgMiddleComponentRankGold from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-09.png'
+import bgMiddleComponentRankDiamond from 'uikit-dev/images/vFINIXHolderRank/DefinixIcon-10.png'
 
 import Loading from 'uikit-dev/components/Loading'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -700,11 +700,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const getRankTopCardBg = (rank) => {
     switch (rank) {
       case '0':
-        return BgHeadCardRankSliver
+        return bgHeadCardRankSliver
       case '1':
-        return BgHeadCardRankGold
+        return bgHeadCardRankGold
       case '2':
-        return BgHeadCardRankDiamond
+        return bgHeadCardRankDiamond
       default:
         return ''
     }
@@ -712,11 +712,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const getRanklogo = (rank) => {
     switch (rank) {
       case '0':
-        return LogoRankSliver
+        return logoRankSliver
       case '1':
-        return LogoRankGold
+        return logoRankGold
       case '2':
-        return LogoRankDiamond
+        return logoRankDiamond
       default:
         return ''
     }
@@ -736,11 +736,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const getBgMiddleComponentRank = (rank) => {
     switch (rank) {
       case '0':
-        return `url(${BgMiddleComponentRankSliver})`
+        return `url(${bgMiddleComponentRankSliver})`
       case '1':
-        return `url(${BgMiddleComponentRankGold})`
+        return `url(${bgMiddleComponentRankGold})`
       case '2':
-        return `url(${BgMiddleComponentRankDiamond})`
+        return `url(${bgMiddleComponentRankDiamond})`
       default:
         return 'linear-gradient(#0D418E, #349BE7)'
     }
@@ -765,8 +765,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                 {numeral(balancevfinix || 0).format('0,0.[00]')} vFINIX
               </Text>
             </div>
-            {/* </div> */}
-            {/* <Text className="col-12 flex" color="white"></Text> */}
           </InnerRankCard>
         </RankCard>
       ) : (

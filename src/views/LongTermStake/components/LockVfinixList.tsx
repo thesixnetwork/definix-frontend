@@ -129,6 +129,20 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
     dispatch(fetchStartIndex((page - 1) * 10))
   }
 
+  const handleUnstake = (item) => {
+    onUnStake(
+      _.get(item, 'id'),
+      _.get(item, 'level'),
+      _.get(item, 'lockAmount'),
+      _.get(item, 'isPenalty'),
+      !_.get(item, 'canBeUnlock'),
+      _.get(item, 'penaltyRate'),
+      _.get(item, 'periodPenalty'),
+      _.get(item, 'multiplier'),
+      _.get(item, 'days'),
+    )
+  }
+
   const handleIsunlocked = (item) => {
     return _.get(item, 'isPenalty') ? (
       <Button
@@ -231,19 +245,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
-        onClick={() =>
-          onUnStake(
-            _.get(item, 'id'),
-            _.get(item, 'level'),
-            _.get(item, 'lockAmount'),
-            _.get(item, 'isPenalty'),
-            !_.get(item, 'canBeUnlock'),
-            _.get(item, 'penaltyRate'),
-            _.get(item, 'periodPenalty'),
-            _.get(item, 'multiplier'),
-            _.get(item, 'days'),
-          )
-        }
+        onClick={() => handleUnstake(item)}
         className="text-right mr-1"
       >
         Unstake
@@ -255,27 +257,15 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         to="/long-term-stake/unstake"
         radii="small"
         style={{
-          backgroundColor: '#0973B9',
-          border: `1px solid #0973B9`,
+          backgroundColor: '#EA9D00',
+          border: `1px solid #EA9D00`,
           display: 'unset',
           padding: '6px',
           color: '#fff',
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
-        onClick={() =>
-          onUnStake(
-            _.get(item, 'id'),
-            _.get(item, 'level'),
-            _.get(item, 'lockAmount'),
-            _.get(item, 'isPenalty'),
-            !_.get(item, 'canBeUnlock'),
-            _.get(item, 'penaltyRate'),
-            _.get(item, 'periodPenalty'),
-            _.get(item, 'multiplier'),
-            _.get(item, 'days'),
-          )
-        }
+        onClick={() => handleUnstake(item)}
         className="text-right mr-1"
       >
         Early Unstake
@@ -300,22 +290,6 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
     }
     return status
   }
-
-  // const [data, setData] = useState('')
-  // const a = _.get(row,"")
-  // const date = _.get(rows, '0.lockTimestamp')
-  // useEffect(() => {
-  //   const offset = 2
-  //   const now = new Date()
-  //   const utc = now.getTime()
-  //   let nd = new Date(utc + 3600000 * offset)
-  //   nd.setDate(nd.getDate() + 28)
-
-  //   const dateTime = now.getTimezoneOffset() / 60
-  //     if (dateTime === -9) {
-  //       nd = new Date()
-  //     }
-  //   },[])
 
   return (
     <CardTable className="mt-5" style={{ overflow: 'auto' }}>
@@ -354,10 +328,10 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                             <Helper
                               text="Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount. You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended."
                               className="ml-1 pt-1"
-                              position="right"
+                              position="bottom"
                             />
                           </div>
-                          <Text fontSize="9px">
+                          <Text fontSize="8.5px">
                             {item.lockTimestamp} - {item.topupTimeStamp}
                           </Text>
                         </>
@@ -375,7 +349,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
                       {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
                     </Text>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600" fontSize="13px">
                       {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}
                       GMT+9
                     </Text>

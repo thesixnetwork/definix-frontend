@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import useTheme from 'hooks/useTheme'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
@@ -19,7 +19,7 @@ const StakeTable: React.FC = () => {
   useAllLock()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  useEffect(() => {
+  useMemo(() => {
     if (allDataLock.length !== 0) {
       setTotal(lockCount)
     }

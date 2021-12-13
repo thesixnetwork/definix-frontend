@@ -19,7 +19,7 @@ const Box = styled.div`
 `
 
 const FormControlLabelCustom = styled(FormControlLabel)`
-  .MuiCheckbox-root {
+  &.MuiCheckbox-root {
     padding: 6px;
   }
 `

@@ -26,19 +26,17 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border-radius: ${({ theme }) => theme.radii.default};
   width: 480px;
-  // height: 80%;
   z-index: ${({ theme }) => theme.zIndices.modal};
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
-    // width: auto;
     min-width: calc(100% - 24px);
     max-width: calc(100% - 24px);
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 360px;
+    height: 740px;
   }
   position: relative;
-  padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
 
   .color-stroke {
     position: absolute;
@@ -54,11 +52,7 @@ const ModalHeader = styled.div<{ className?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  // margin-left: 10%;
-  // margin-bottom: 20px;
   padding: 0px 10px 10px 64px;
-  //   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const ModalTitle = styled(Flex)`
