@@ -1,23 +1,22 @@
 import React from 'react'
-import { Link } from 'definixswap-uikit-v2'
+import styled from 'styled-components'
+import { LinkExternal } from 'definixswap-uikit-v2'
 
 const LinkListSection: React.FC<{
-  isMobile: boolean
-  klaytnScopeAddress: string
-}> = ({ isMobile, klaytnScopeAddress }) => {
+  contractAddress: { [key: number]: string }
+}> = ({ contractAddress }) => {
+  const Link = styled(LinkExternal)`
+    ${({ theme }) => theme.textStyle.R_14R};
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.mediaQueries.mobileXl} {
+      ${({ theme }) => theme.textStyle.R_12R};
+    }
+  `
   return (
     <>
-      {!!klaytnScopeAddress.length && (
-        <Link
-          external
-          href={`https://scope.klaytn.com/account/${klaytnScopeAddress}`}
-          bold={false}
-          className="flex-shrink"
-          color="textSubtle"
-          fontSize="12px"
-        >
+      {!!Object.values(contractAddress).length && (
+        <Link href={`${process.env.REACT_APP_KLAYTN_URL}/account/${contractAddress[process.env.REACT_APP_CHAIN_ID]}`}>
           KlaytnScope
-          {/* <ChevronRightIcon color="textSubtle" /> */}
         </Link>
       )}
     </>

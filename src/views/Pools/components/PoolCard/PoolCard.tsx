@@ -21,6 +21,7 @@ import CardHeading from './CardHeading'
 import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
 import StakeAction from './StakeAction'
+import LinkListSection from './LinkListSection'
 import PoolConText from '../../PoolContext'
 import { PoolCardProps } from './types'
 
@@ -168,6 +169,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     ),
     [componentType, isBnbPool, isOldSyrup, needsApprovalContract, sousId, earnings, pool.farm],
   )
+  /**
+   * Link Section
+   */
+   const renderLinkSection = useCallback(() => <LinkListSection contractAddress={pool.contractAddress} />, [pool.contractAddress])
 
   if (isInMyInvestment) {
     return (
@@ -200,9 +205,8 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
               <Box py="S_24">{renderStakeAction()}</Box>
               <Divider />
               <Box pt="S_24">{renderTotalStakedSection()}</Box>
-              <Box pt="S_16" py="S_28">
-                {renderMyBalanceSection()}
-              </Box>
+              <Box pt="S_16">{renderMyBalanceSection()}</Box>
+              <Box py="S_28">{renderLinkSection()}</Box>
             </Box>
           )}
         </>
@@ -220,7 +224,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
           {isOpenAccordion && (
             <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_32" py="S_24">
               <Flex justifyContent="space-between">
-                <Box className="link-section" />
+                <Box className="link-section">{renderLinkSection()}</Box>
                 <Box className="harvest-action-section">{renderHarvestActionAirDrop()}</Box>
                 <Box className="stake-action-section">{renderStakeAction()}</Box>
               </Flex>
