@@ -1,9 +1,14 @@
 import React from 'react'
+import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, FireIcon } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import { IsMobileType } from './types'
+
+interface FinixEarnProps extends IsMobileType {
+  finixEarn: number
+}
 
 const FlexEarn = styled(Flex)`
   flex-direction: row;
@@ -16,7 +21,7 @@ const FlexEarn = styled(Flex)`
   }
 `
 
-const FinixEarn: React.FC<IsMobileType> = ({ isMobile }) => {
+const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
   const { t } = useTranslation()
 
   return (
@@ -31,7 +36,7 @@ const FinixEarn: React.FC<IsMobileType> = ({ isMobile }) => {
           </Flex>
           <Flex alignItems="flex-end">
             <Text textStyle="R_20B" color="white">
-              100,000,000.123456
+              {numeral(finixEarn).format('0,0.[000000]')}
             </Text>
             <Text ml="S_6" textStyle="R_16M" color="white">
               {t('FINIX')}

@@ -59,11 +59,13 @@ const UnstakeModal: React.FC<ModalProps> = ({
                 <Text textStyle="R_16M" color="black">
                   {t('FINIX')}
                 </Text>
-                <Flex my="S_4" alignItems="center" height="12px">
+                <Flex my="S_4" alignItems="center">
                   <Text mr="S_8" textStyle="R_14R" color="mediumgrey">
                     {period} {t('days')}
                   </Text>
-                  <VDivider />
+                  <Flex height="12px">
+                    <VDivider color="lightgrey" />
+                  </Flex>
                   <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                     {t('APR')} {apr}
                   </Text>

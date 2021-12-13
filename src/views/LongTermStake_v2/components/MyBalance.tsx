@@ -1,9 +1,15 @@
 import React from 'react'
+import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider, VDivider } from 'definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import { IsMobileType } from './types'
+
+interface MyBalanceProps extends IsMobileType {
+  lockAmount: number
+  balancevfinix: number
+}
 
 const FlexBalance = styled(Flex)`
   flex-direction: row;
@@ -44,7 +50,7 @@ const FlexFinix = styled(Flex)`
   }
 `
 
-const MyBalance: React.FC<IsMobileType> = ({ isMobile }) => {
+const MyBalance: React.FC<MyBalanceProps> = ({ isMobile, lockAmount, balancevfinix }) => {
   const { t } = useTranslation()
 
   return (
@@ -56,7 +62,7 @@ const MyBalance: React.FC<IsMobileType> = ({ isMobile }) => {
           </Text>
           <Flex alignItems="center">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              100,000,000.123456
+              {numeral(balancevfinix).format('0,0.[000000]')}
             </Text>
             <Text ml="S_6" textStyle="R_12B" color="white">
               {t('vFINIX')}
@@ -70,7 +76,7 @@ const MyBalance: React.FC<IsMobileType> = ({ isMobile }) => {
           </Text>
           <Flex alignItems="center">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              100,000,000.123456
+              {numeral(lockAmount).format('0,0.[000000]')}
             </Text>
             <Text ml="S_6" textStyle="R_12B" color="white">
               {t('FINIX')}

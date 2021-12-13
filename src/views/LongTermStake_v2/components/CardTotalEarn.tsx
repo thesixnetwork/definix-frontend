@@ -1,5 +1,6 @@
 import React from 'react'
 import { Card, Flex } from 'definixswap-uikit-v2'
+import { usePrivateData } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 
 import FinixEarn from './FinixEarn'
@@ -13,12 +14,14 @@ const FlexCard = styled(Flex)`
 `
 
 const CardTotalEarn: React.FC<IsMobileType> = ({ isMobile }) => {
+  const { lockAmount, finixEarn, balancevfinix } = usePrivateData()
+
   return (
     <>
       <Card mt="S_16">
         <FlexCard>
-          <FinixEarn isMobile={isMobile} />
-          <MyBalance isMobile={isMobile} />
+          <FinixEarn isMobile={isMobile} finixEarn={finixEarn} />
+          <MyBalance isMobile={isMobile} lockAmount={lockAmount} balancevfinix={balancevfinix} />
         </FlexCard>
       </Card>
     </>
