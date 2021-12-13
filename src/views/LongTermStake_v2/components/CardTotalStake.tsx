@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, Flex, Divider, VDivider } from 'definixswap-uikit-v2'
-import { useTotalFinixLock, useUnstakeId } from '../../../hooks/useLongTermStake'
+import { useTotalFinixLock, useUnstakeId } from 'hooks/useLongTermStake'
 
 import StakeDayRatio from './StakeDayRatio'
 import FinixStake from './FinixStake'
