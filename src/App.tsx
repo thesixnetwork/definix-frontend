@@ -79,11 +79,11 @@ const App: React.FC = () => {
               <Route path="/my">
                 <MyInvestments />
               </Route>
-              {
-                process.env.NODE_ENV === 'development' && <Route path="/long-term-stake">
+              {process.env.NODE_ENV === 'development' && (
+                <Route path="/long-term-stake">
                   <LongTermStake />
                 </Route>
-              }
+              )}
               <Route path="/bridge">
                 <Bridge />
               </Route>
