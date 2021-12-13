@@ -60,7 +60,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
   const StakedOnlySection = () => (
     <>
       <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
-        {t('Staked only Pools')}
+        {t('Staked only Farm')}
       </Text>
       <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
     </>
