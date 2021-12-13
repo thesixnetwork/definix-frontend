@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Text, lightColors } from 'definixswap-uikit-v2'
+import { Flex, Text, lightColors, VDivider } from 'definixswap-uikit-v2'
 
 import { IsMobileType } from './types'
 
@@ -28,15 +28,6 @@ const Bar = styled.div<{ ratio: number; color: string }>`
   flex: ${({ ratio }) => (ratio <= 5 ? 5 : ratio)};
   height: 16px;
   margin-bottom: 2px;
-`
-
-const BarText = styled.div<{ ratio: number; prevRatio: number }>`
-  flex: ${({ ratio, prevRatio }) => {
-    if (ratio < 10) return 10
-    if (ratio < 18) return 12.5
-    if (prevRatio < 10) return ratio - 5
-    return ratio
-  }};
 `
 
 const FlexDays = styled(Flex)`
@@ -87,28 +78,13 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
   return (
     <>
       <FlexRatio>
-        <Flex flexDirection="column">
-          <Flex>
-            {data.map((v) => (
-              <Bar key={v.name} ratio={v.ratio} color={v.color} />
-            ))}
-          </Flex>
-          {!isMobile && (
-            <Flex height="18px">
-              {data.map((v, i) => {
-                return (
-                  <BarText key={v.name} ratio={v.ratio} prevRatio={i === 0 ? 100 : data[i - 1].ratio}>
-                    <Text textStyle="R_12R" color="mediumgrey">
-                      {getTotalFinixLock.length !== 0 && `${v.ratio}%`}
-                    </Text>
-                  </BarText>
-                )
-              })}
-            </Flex>
-          )}
+        <Flex>
+          {data.map((v) => (
+            <Bar key={v.name} ratio={v.ratio} color={v.color} />
+          ))}
         </Flex>
 
-        <Flex mt={`${isMobile ? 'S_16' : 'S_20'}`} flexDirection="column">
+        <Flex mt={`${isMobile ? 'S_20' : 'S_32'}`} flexDirection="column">
           {data.map((v) => {
             return (
               <FlexDays key={v.name}>
@@ -118,12 +94,18 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
                     {v.name} {t('days')}
                   </Text>
                 </Flex>
-                <Flex>
+                <Flex alignItems="center">
                   <Text textStyle="R_14B" color="black">
                     {v.value}
                   </Text>
-                  <Text ml="S_4" textStyle="R_14R" color="black">
+                  <Text ml="S_4" mr="S_8" textStyle="R_14R" color="black">
                     {t('FINIX')}
+                  </Text>
+                  <Flex height="10px">
+                    <VDivider color="lightgrey" />
+                  </Flex>
+                  <Text width="26px" ml="S_8" textStyle="R_14R" color="mediumgrey" textAlign="right">
+                    {v.ratio}%
                   </Text>
                 </Flex>
               </FlexDays>
