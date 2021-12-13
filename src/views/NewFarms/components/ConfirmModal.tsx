@@ -15,7 +15,14 @@ import {
   ModalFooter,
 } from 'definixswap-uikit-v2'
 
-const ConfirmModal = ({ lpSymbol, buttonName, stakedBalance, onOK = () => null, onDismiss = () => null, goList = () => null }) => {
+const ConfirmModal = ({
+  lpSymbol,
+  buttonName,
+  stakedBalance,
+  onOK = () => null,
+  onDismiss = () => null,
+  goList = () => null,
+}) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const [isPendingTX, setIsPendingTX] = useState(false)
@@ -59,12 +66,7 @@ const ConfirmModal = ({ lpSymbol, buttonName, stakedBalance, onOK = () => null, 
         </Flex>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button
-          lg
-          variant={ButtonVariants.RED}
-          isLoading={isPendingTX}
-          onClick={handleComplete}
-        >
+        <Button lg variant={ButtonVariants.RED} isLoading={isPendingTX} onClick={handleComplete}>
           {t(buttonName)}
         </Button>
       </ModalFooter>

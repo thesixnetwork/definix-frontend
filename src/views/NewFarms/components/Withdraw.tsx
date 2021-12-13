@@ -130,7 +130,7 @@ const Withdraw: React.FC<{
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
-      buttonName='Remove'
+      buttonName="Remove"
       lpSymbol={lpTokenName}
       stakedBalance={val}
       onOK={handleUnstake}

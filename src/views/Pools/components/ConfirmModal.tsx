@@ -15,7 +15,14 @@ import {
   ModalFooter,
 } from 'definixswap-uikit-v2'
 
-const ConfirmModal = ({ buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null, goList = () => null }) => {
+const ConfirmModal = ({
+  buttonName,
+  tokenName,
+  stakedBalance,
+  onOK = () => null,
+  onDismiss = () => null,
+  goList = () => null,
+}) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const [isPendingTX, setIsPendingTX] = useState(false)
@@ -35,10 +42,7 @@ const ConfirmModal = ({ buttonName, tokenName, stakedBalance, onOK = () => null,
     }
   }, [isPendingTX, toastSuccess, toastError, t, onOK, onDismiss, goList, buttonName])
   return (
-    <Modal
-      title={title}
-      onDismiss={onDismiss}
-    >
+    <Modal title={title} onDismiss={onDismiss}>
       <ModalBody isBody width="464px" className="mt-s16 mb-s40">
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
@@ -55,12 +59,7 @@ const ConfirmModal = ({ buttonName, tokenName, stakedBalance, onOK = () => null,
         </Flex>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button
-          lg
-          variant={ButtonVariants.RED}
-          isLoading={isPendingTX}
-          onClick={handleComplete}
-        >
+        <Button lg variant={ButtonVariants.RED} isLoading={isPendingTX} onClick={handleComplete}>
           {t(buttonName)}
         </Button>
       </ModalFooter>

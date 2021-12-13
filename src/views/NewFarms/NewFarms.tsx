@@ -47,7 +47,7 @@ const Farms: React.FC = () => {
           console.log('go list----')
           setPageState('list')
           setPageData(null)
-        }
+        },
       }}
     >
       <Wrap>
