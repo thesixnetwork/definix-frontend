@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import styled from 'styled-components'
 import { useTranslation, Trans } from 'react-i18next'
 import useRefresh from 'hooks/useRefresh'
@@ -14,6 +14,7 @@ import {
   ChainKlaytnIcon,
   useMatchBreakpoints,
 } from 'definixswap-uikit-v2'
+import CurrencyText from 'components/CurrencyText'
 
 const Title = styled(Text)`
   ${({ theme }) => theme.textStyle.R_18M}
@@ -94,6 +95,7 @@ const CardTVL = () => {
   const { fastRefresh } = useRefresh()
   const totalTVL = usePriceTVL().toNumber()
   const totalWeb3TVL = usePriceWeb3TVL().toNumber()
+  const total = useMemo(() => (totalTVL || 0) + (totalWeb3TVL || 0), [totalTVL, totalWeb3TVL])
 
   useEffect(() => {
     fetchTVL()
@@ -103,12 +105,7 @@ const CardTVL = () => {
     <Card>
       <WrapCardBody>
         <Title>{t('Total Value Locked')}</Title>
-        <TotalTvlValue>
-          ${' '}
-          {(totalTVL || 0) + (totalWeb3TVL || 0) <= 0
-            ? 'N/A'
-            : ((totalTVL || 0) + (totalWeb3TVL || 0)).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-        </TotalTvlValue>
+        <TotalTvlValue>{total <= 0 ? 'N/A' : <CurrencyText value={total} />}</TotalTvlValue>
         <WrapTvl>
           <TvlItem>
             <Flex alignItems="center">
@@ -122,7 +119,9 @@ const CardTVL = () => {
                 />
               </Text>
             </Flex>
-            <TvlValue>$ {totalWeb3TVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}</TvlValue>
+            <TvlValue>
+              <CurrencyText value={totalWeb3TVL} />
+            </TvlValue>
           </TvlItem>
           <TvlItem>
             <Flex alignItems="center">
@@ -136,7 +135,9 @@ const CardTVL = () => {
                 />
               </Text>
             </Flex>
-            <TvlValue>$ {totalTVL.toLocaleString('en-US', { maximumFractionDigits: 0 })}</TvlValue>
+            <TvlValue>
+              <CurrencyText value={totalTVL} />
+            </TvlValue>
           </TvlItem>
         </WrapTvl>
       </WrapCardBody>

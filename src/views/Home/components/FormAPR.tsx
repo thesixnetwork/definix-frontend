@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { ColorStyles, Flex, Grid, Text } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
+import CurrencyText from 'components/CurrencyText'
 
 interface Props {
   title: string
@@ -102,9 +103,7 @@ const FormAPR: React.FC<Props> = ({ title, apr, totalAssetValue, Images }) => {
         <Text className="label" color={ColorStyles.MEDIUMGREY}>
           {t('Total Liquidity')}
         </Text>
-        <Text className="value" ml="S_8" color={ColorStyles.MEDIUMGREY}>
-          $ {totalAssetValue}
-        </Text>
+        <CurrencyText ml="S_8" className="value" color={ColorStyles.MEDIUMGREY} value={totalAssetValue} />
       </TotalLiquidity>
       <Apr>
         <Flex flexDirection="column">
