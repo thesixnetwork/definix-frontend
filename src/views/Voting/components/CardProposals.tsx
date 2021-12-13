@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { Card, Heading } from '../../../uikit-dev'
+import { Card, Heading, Button } from '../../../uikit-dev'
 import TopicList from './TopicList'
 import CardTab from './CardTab'
 import SelectType, { TypeChartName } from './SelectType'
@@ -42,6 +42,18 @@ const Header = styled.div`
   align-items: center;
 `
 
+const StyledButtonCore = styled(Button)`
+  background-color: #30ADFF;
+  border: 1px solid #57575B;
+  color: #FFFFFF;
+  border-radius: 6px;
+  padding: 18px 20px;
+
+  &:hover{
+    cursor: default;
+  }
+`
+
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
   const [chartName, setChartName] = useState<TypeChartName>('Core')
@@ -58,7 +70,10 @@ const CardProposals = () => {
       <Proposals>
         <Header>
           <Heading fontSize="26px !important">Proposals</Heading>
-          <SelectType chartName={chartName} setChartName={setChartName} className="ml-5" />
+          <StyledButtonCore color="#30ADFF" className="ml-6" size="sm">
+            Core
+          </StyledButtonCore>
+          {/* <SelectType chartName={chartName} setChartName={setChartName} className="ml-5" /> */}
         </Header>
         <Tabs>
           <CardTab
