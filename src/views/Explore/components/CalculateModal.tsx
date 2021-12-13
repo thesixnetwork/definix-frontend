@@ -174,9 +174,7 @@ const CalculateModal = ({
             <SpaceBetweenFormat
               className="mb-2"
               title={t('Estimated Value')}
-              valueElm={(
-                <CurrencyText value={sumPoolAmount}/>
-              )}
+              valueElm={<CurrencyText value={sumPoolAmount} />}
             />
             <SpaceBetweenFormat
               title={t('Price Impact')}

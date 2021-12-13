@@ -90,7 +90,7 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
                   <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
                 </TD>
                 <TD align="center" as="div">
-                  <CurrencyText value={r.total_value} textStyle="R_14R"/>
+                  <CurrencyText value={r.total_value} textStyle="R_14R" />
                 </TD>
                 <TD align="center" oneline as="div">
                   <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>

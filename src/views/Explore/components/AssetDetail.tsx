@@ -90,10 +90,10 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
                     </Text>
                   </TD>
                   <TD align="center" oneline sm={isMaxXl}>
-                    <CurrencyText value={tokenPrice.toNumber()} textStyle="R_14R"/>
+                    <CurrencyText value={tokenPrice.toNumber()} textStyle="R_14R" />
                   </TD>
                   <TD align="center" oneline sm={isMaxXl}>
-                    <CurrencyText value={totalPrice.toNumber()} textStyle="R_14R"/>
+                    <CurrencyText value={totalPrice.toNumber()} textStyle="R_14R" />
                   </TD>
                   <TD align="center" oneline sm={isMaxXl}>
                     <Text textStyle="R_14R" color={selectClass(changeNumber)}>

@@ -159,7 +159,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       <TwoLineFormat
         title={t('Current Investment')}
         titleMarginBottom={isInMyInvestment ? 4 : null}
-        value={(<CurrencyText value={balance.times(get(rebalance, 'sharedPrice', 0)).toNumber()}/>)}
+        value={<CurrencyText value={balance.times(get(rebalance, 'sharedPrice', 0)).toNumber()} />}
         // value={`$${numeral(balance.times(get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
         currentInvestPercentDiff={`(${
           percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`

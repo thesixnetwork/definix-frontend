@@ -2,7 +2,6 @@ import { isNil } from 'lodash'
 import React from 'react'
 import { Flex, FlexProps, Helper, Text } from 'definixswap-uikit-v2'
 
-
 interface TwoLineFormatType extends FlexProps {
   className?: string
   title: string
@@ -77,7 +76,7 @@ const TwoLineFormat: React.FC<TwoLineFormatType> = ({
         <Text textStyle={textStyle.emphasize} color={valueClass}>
           {value}
         </Text>
-        
+
         {!isNil(diffAmounts) && diffAmounts !== '0' && (
           <Text textStyle={textStyle.text} color={percentClass} ml="S_8">
             {diffAmounts}

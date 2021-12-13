@@ -10,15 +10,7 @@ interface TotalAssetValueType {
 
 const TotalAssetValue: React.FC<TotalAssetValueType> = ({ value, small }) => {
   const { t } = useTranslation()
-  return (
-    <TwoLineFormat
-      title={t('Total Asset Value')}
-      value={(
-        <CurrencyText value={value}/>
-      )}
-      large={!small}
-    />
-  )
+  return <TwoLineFormat title={t('Total Asset Value')} value={<CurrencyText value={value} />} large={!small} />
 }
 
 export default TotalAssetValue

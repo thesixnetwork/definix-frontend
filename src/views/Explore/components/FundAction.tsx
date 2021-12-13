@@ -93,11 +93,7 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
             <Text textStyle="R_14M">{t('Current Investment')}</Text>
             <LabelAndValue label={t('Shares')} value={shares} />
           </Flex>
-          <CurrencyText
-            textStyle="R_18B"
-            marginBottom="2px"
-            value={currentBalanceNumber * rebalance.sharedPrice}
-          />
+          <CurrencyText textStyle="R_18B" marginBottom="2px" value={currentBalanceNumber * rebalance.sharedPrice} />
           <Text className="mb-s20">
             {diffAmount !== 0 && (
               <SignNumber textStyle="R_12M" value={diffAmount}>
@@ -143,10 +139,7 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
             <Text textStyle="R_14R" color="mediumgrey" marginBottom="4px">
               {t('Total Value')}
             </Text>
-            <CurrencyText
-              value={currentBalanceNumber * rebalance.sharedPrice}
-              textStyle="R_20B"
-            />
+            <CurrencyText value={currentBalanceNumber * rebalance.sharedPrice} textStyle="R_20B" />
           </Flex>
           <Flex minWidth="160px" flexDirection="column">
             <Action />
