@@ -94,7 +94,7 @@ const config: MenuEntry[] = [
     newTab: false,
   },
   {
-    label: 'Finix',
+    label: 'vFINIX',
     icon: safeBlack,
     iconActive: safeWhite,
     href: '/finix',
@@ -104,6 +104,12 @@ const config: MenuEntry[] = [
       {
         label: 'Long-term Stake',
         href: '/long-term-stake',
+        notHighlight: false,
+        newTab: false,
+      },
+      {
+        label: 'Super Stake',
+        href: '/long-term-stake/top-up',
         notHighlight: false,
         newTab: false,
       },

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react'
+/* eslint-disable no-nested-ternary */
+import React, { useState, useCallback, useMemo } from 'react'
 import Lottie from 'react-lottie'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -7,6 +8,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
 import ModalSorry from '../../uikit-dev/widgets/Modal/ModalSorry'
+import CardSorry from '../../uikit-dev/widgets/Modal/CardSorry'
 import useTheme from '../../hooks/useTheme'
 import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../../uikit-dev'
 import ConnectModal from '../../uikit-dev/widgets/WalletModal/ConnectModal'
@@ -19,7 +21,6 @@ import {
   useBalances,
   useAllowance,
   useApprove,
-  useAllLock,
   usePrivateData,
   useLockTopup,
   useAllDataLock,
@@ -48,6 +49,7 @@ const FinixStake = styled(Card)`
   background-size: cover;
   background-repeat: no-repeat;
   right: 0;
+  align-items: center;
 
   a {
     display: block;
@@ -57,7 +59,6 @@ const FinixStake = styled(Card)`
 const Balance = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  // flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
   padding: 0.75rem 0.75rem 0.75rem 0.75rem;
@@ -110,7 +111,6 @@ const NumberInput = styled.input`
   font-size: 22px;
   outline: none;
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000000')};
-  // width: 45%;
   -webkit-flex: 1 1 auto;
   padding: 0px;
 `
@@ -125,23 +125,21 @@ const ExclusiveCard = styled.div<{ isDark: boolean }>`
 const BadgeExclusive = styled.div`
   position: relative;
   text-align: center;
-  justify-content: space-between;
-  display: contents;
 `
-const CardSuperStake = () => {
+
+const CardSuperStake = ({ isShowRightPanel }) => {
   /* eslint-enable no-unused-vars */
   const { connect, account } = useWallet()
   const { isDark } = useTheme()
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const lockTopUp = useLockTopup()
-  const { allLockPeriod } = useAllLock()
   const { levelStake, allLock } = useAllDataLock()
   const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
-  const { isXl, isMd, isLg } = useMatchBreakpoints()
-  const isMobileOrTablet = !isXl && !isMd && !isLg
-  const { allDataLock, lockAmount } = usePrivateData()
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl && !isLg
+  const { lockAmount } = usePrivateData()
   const [period, setPeriod] = useState(0)
   const [date, setDate] = useState('-')
   const [value, setValue] = useState('')
@@ -154,13 +152,10 @@ const CardSuperStake = () => {
   const [transactionHash, setTransactionHash] = useState('')
   const isStake = useMemo(() => lockAmount > 0, [lockAmount])
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
-  const minimum = _.get(allLockPeriod, '0.minimum')
-  const periodEnd = _.get(allLockPeriod, '0.periodMap')
-  const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus, loadings, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, lockFinix)
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  useEffect(() => {
+  useMemo(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
       const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
@@ -196,7 +191,7 @@ const CardSuperStake = () => {
         }
       }
     }
-  }, [lockTopUp, allLock, period, allDataLock])
+  }, [lockTopUp, allLock, period])
 
   function escapeRegExp(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -212,7 +207,7 @@ const CardSuperStake = () => {
     enforcer(e.target.value.replace(/,/g, '.'))
   }
 
-  useEffect(() => {
+  useMemo(() => {
     const offset = 2
     const now = new Date()
     const utc = now.getTime()
@@ -237,9 +232,9 @@ const CardSuperStake = () => {
     }
     setVFINIX(numeral(Number(value.replace(',', '')) * period).format('0,0.00'))
     setLockFinix(new BigNumber(parseFloat(value)).times(new BigNumber(10).pow(18)).toFixed())
-  }, [period, value, periodEnd, allLockPeriod, realPenaltyRate])
+  }, [period, value])
 
-  useEffect(() => {
+  useMemo(() => {
     if (status) {
       setVFINIX(0)
       setValue('')
@@ -270,13 +265,13 @@ const CardSuperStake = () => {
     setFlgButton('insufficient')
   }, [])
 
-  useEffect(() => {
+  useMemo(() => {
     if (Number(balanceOf) <= 0) {
       hadleInsufficient()
     } else {
       hadleStakeButton()
     }
-  }, [value, period, balanceOf, minimum, hadleStakeButton, hadleInsufficient])
+  }, [balanceOf, hadleStakeButton, hadleInsufficient])
 
   const renderStakeDOrStake = () => {
     return (
@@ -316,7 +311,7 @@ const CardSuperStake = () => {
     )
   }
 
-  useEffect(() => {
+  useMemo(() => {
     const percentOf = percent * Number(balanceOf)
     const balance = Math.floor(percentOf * 1000000) / 1000000
     if (percent !== 0) {
@@ -343,19 +338,22 @@ const CardSuperStake = () => {
           <div
             style={{
               position: 'absolute',
-              left: loadings === 'loading' ? '20%' : '20%',
-              top: loadings === 'loading' ? '18%' : '38%',
+              left: (loadings === 'loading' && '20%') || (!isMobileOrTablet && '0%'),
+              top: loadings === 'loading' ? '18%' : '4%',
               zIndex: 1,
+              alignItems: 'center',
+              justifyContent: 'center',
+              display: 'flex',
             }}
           >
-            <ModalSorry title="Sorry, this feature is only for vFINIX holder" hideCloseButton>
+            <CardSorry title="This feature is only for vFINIX holder" hideCloseButton>
               <div className="flex flex-column w-100 mt-2">
                 <Text color={isDark ? 'white' : '#737375'}>
                   You have never lock in Long-term Stake. Do you want to start staking in the Long-term Stake to get
                   this exclusive feature?
                 </Text>
               </div>
-            </ModalSorry>
+            </CardSorry>
           </div>
         )}
         {loadings !== '' && (
@@ -375,14 +373,14 @@ const CardSuperStake = () => {
           </div>
         )}
         <div
-          style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}
+          style={{ opacity: !isStake || loadings !== '' ? 0.4 : 1 }}
           className={`${!isMobileOrTablet ? 'col-8 pt-5' : 'col-12 pr-5'} pb-5 pl-5`}
         >
           <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center justify-space-between'}`}>
             <Heading
               as="h1"
               fontSize={`${isMobileOrTablet ? '16px !important' : '18px !important'}`}
-              className={`${!isMobileOrTablet ? 'mb-4' : 'flex align-center'}`}
+              className={`${!isMobileOrTablet ? 'mb-2' : 'flex align-center mb-0'}`}
             >
               Super Stake
             </Heading>
@@ -392,19 +390,24 @@ const CardSuperStake = () => {
               </ExclusiveCard>
             )}
           </div>
-          <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+          <Text paddingTop="2" color={isDark ? 'white' : '#737375'} fontSize={isMobileOrTablet ? '14px' : '12px'}>
             Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no
             minimum amount.
           </Text>
-          <Text paddingTop="2" color={isDark ? 'white' : '#737375'}>
+          <Text paddingTop="2" color={isDark ? 'white' : '#737375'} fontSize={isMobileOrTablet ? '14px' : '12px'}>
             You can stake as much as FINIX you prefer under the same lock period <b>within 28 days</b>, your lock period{' '}
             <b>will not be extended.</b>
           </Text>
-
-          <Text className="mt-4" color="textSubtle">
+          <Text className={`${!isMobileOrTablet ? 'mt-2' : 'mt-0'}`} color="textSubtle">
             Please select available duration
           </Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
+          <StakePeriodButton
+            setPeriod={setPeriod}
+            status={status}
+            levelStake={levelStake}
+            isTopUp
+            harvestProgress={-1}
+          />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
@@ -512,10 +515,20 @@ const CardSuperStake = () => {
           </div>
         </div>
         {!isMobileOrTablet && (
-          <BadgeExclusive className="col-4 flex flex-column" style={{ opacity: !isStake || loadings !== '' ? 0.1 : 1 }}>
-            <img src={badgeExclusive} alt="" />
-            <img src={logoExclusive} alt="" className="px-2" style={{ opacity: '0.6' }} />
-          </BadgeExclusive>
+          <div
+            style={{ opacity: !isStake || loadings !== '' ? 0.4 : 1, alignSelf: 'start' }}
+            className="col-4 flex flex-column justify-space-between "
+          >
+            <BadgeExclusive className={`${!isMobileOrTablet ? 'mx-2 mb-2' : 'mx-3 mb-2'}`}>
+              <img src={badgeExclusive} alt="" />
+            </BadgeExclusive>
+            <img
+              src={logoExclusive}
+              alt=""
+              style={{ opacity: '0.6' }}
+              className={`${!isMobileOrTablet ? 'mx-4 mt-6' : 'mx-2 mt-4'}`}
+            />
+          </div>
         )}
       </FinixStake>
     </div>

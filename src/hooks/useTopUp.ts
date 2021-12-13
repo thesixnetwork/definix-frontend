@@ -5,10 +5,10 @@ import BigNumber from 'bignumber.js'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import _ from 'lodash'
-import { getAbiVaultFacetByName } from 'hooks/hookHelper'
+import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 
-import VaultTopUpFeatureFacet from '../config/abi/VaultTopUpFeatureFacet.json'
+import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json'
 import { getContract } from '../utils/caver'
 import { getVFinix } from '../utils/addressHelpers'
 import useRefresh from './useRefresh'
@@ -37,18 +37,18 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
         if (connector === 'klip') {
           klipProvider.genQRcodeContactInteract(
             getVFinix(),
-            JSON.stringify(getAbiVaultFacetByName('lock')),
-            JSON.stringify([level, lockFinix]),
+            JSON.stringify(VaultTopUpFeatureFacetByName('lockPlus')),
+            JSON.stringify([level, idLastMaxLv, lockFinix]),
             setShowModal,
           )
           await klipProvider.checkResponse()
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setInterval(() => setLoading(''), 5000)
-          setInterval(() => setStatus(false), 5000)
+          setInterval(() => setLoading(''), 3000)
+          setInterval(() => setStatus(false), 3000)
         } else {
-          const callContract = getContract(VaultTopUpFeatureFacet.abi, getVFinix())
+          const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
           await callContract.methods
             .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })
@@ -59,8 +59,8 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
                 .then((resolve) => {
                   setLoading('success')
                   setStatus(true)
-                  setInterval(() => setLoading(''), 5000)
-                  setInterval(() => setStatus(false), 5000)
+                  setInterval(() => setLoading(''), 3000)
+                  setInterval(() => setStatus(false), 3000)
                 })
                 .catch((e) => {
                   setLoading('')

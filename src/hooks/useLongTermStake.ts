@@ -28,6 +28,7 @@ import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
 import VaultPenaltyFacet from '../config/abi/VaultPenaltyFacet.json'
+import VFinixMergeAbi from '../config/abi/VFinixMergeAbi.json'
 import { getContract } from '../utils/caver'
 import { getTokenBalance } from '../utils/erc20'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
@@ -445,8 +446,8 @@ export const useRank = () => {
         const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
         const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
         let maxRank = -1
-        for (let i = 0; i < userVfinixLocks.length; i++) {
-          const selector = userVfinixLocks[i]
+        for (let i = 0; i < _.get(userVfinixLocks, 'locks_').length; i++) {
+          const selector = _.get(userVfinixLocks, 'locks_')[i]
 
           if (selector.isUnlocked === false && selector.isPenalty === false) {
             if (maxRank < selector.level) maxRank = selector.level
@@ -591,56 +592,58 @@ export const useClaim = () => {
 }
 
 // @ts-ignore
-export const useSousHarvest = (sousId, isUsingKlay = false) => {
+export const useSousHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
-  const sousChefContract = useSousChef(sousId)
   const herodotusContract = useHerodotus()
   const { setShowModal } = useContext(KlipModalContext())
 
-  const handleHarvest = useCallback(async () => {
-    if (connector === 'klip') {
-      // setShowModal(true)
+  const handleHarvest = useCallback(
+    async (sousId) => {
+      if (connector === 'klip') {
+        // setShowModal(true)
 
-      if (sousId === 0) {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          jsonConvert(['0']),
-          setShowModal,
-        )
-      } else {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('deposit')),
-          jsonConvert([sousId, '0']),
-          setShowModal,
-        )
+        if (sousId === 0) {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            jsonConvert(['0']),
+            setShowModal,
+          )
+        } else {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('deposit')),
+            jsonConvert([sousId, '0']),
+            setShowModal,
+          )
+        }
+        const tx = await klipProvider.checkResponse()
+
+        setShowModal(false)
+        dispatch(fetchFarmUserDataAsync(account))
+        console.info(tx)
       }
-      const tx = await klipProvider.checkResponse()
+      if (sousId === 0) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
+        })
+      } else if (sousId === 1) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods
+            .deposit(sousId, '0')
+            .send({ from: account, gas: 400000 })
+            .then(resolve)
+            .catch(reject)
+        })
+      }
 
-      setShowModal(false)
-      dispatch(fetchFarmUserDataAsync(account))
-      console.info(tx)
-    }
-    if (sousId === 0) {
-      return new Promise((resolve, reject) => {
-        herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
-      })
-    } else if (sousId === 1) {
-      return new Promise((resolve, reject) => {
-        herodotusContract.methods.deposit(sousId, '0').send({ from: account, gas: 400000 }).then(resolve).catch(reject)
-      })
-    } else if (isUsingKlay) {
-      await soushHarvestBnb(sousChefContract, account)
-    } else {
-      await soushHarvest(sousChefContract, account)
-    }
-
-    dispatch(updateUserPendingReward(sousId, account))
-    dispatch(updateUserBalance(sousId, account))
-    return handleHarvest
-  }, [account, dispatch, isUsingKlay, herodotusContract, sousChefContract, sousId, connector, setShowModal])
+      dispatch(updateUserPendingReward(sousId, account))
+      dispatch(updateUserBalance(sousId, account))
+      return handleHarvest
+    },
+    [account, dispatch, herodotusContract, connector, setShowModal],
+  )
 
   return { onReward: handleHarvest }
 }

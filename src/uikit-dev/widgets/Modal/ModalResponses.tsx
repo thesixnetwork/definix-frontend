@@ -5,6 +5,8 @@ import Flex from '../../components/Box/Flex'
 import { Button, IconButton } from '../../components/Button'
 import Heading from '../../components/Heading/Heading'
 import { ArrowBackIcon, CloseIcon } from '../../components/Svg'
+// import colorStroke from '../../images/Color-stroke.png'
+// import colorStroke from '../../../../i'
 import { InjectedProps } from './types'
 
 interface Props extends InjectedProps {
@@ -21,10 +23,9 @@ interface Props extends InjectedProps {
 
 const StyledModal = styled.div<{ isRainbow: boolean }>`
   background: ${({ theme }) => theme.modal.background};
-  box-shadow: 0px 20px 36px -8px rgba(14, 30, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 20px 36px -8px rgba(14, 14, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => (theme.isDark ? '#3D3D3D' : '#EFEFEF')};
-  width: 100%;
+  width: 480px;
   z-index: ${({ theme }) => theme.zIndices.modal};
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.xs} {
@@ -33,7 +34,6 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 360px;
-    width: 480px;
   }
   position: relative;
 
@@ -51,7 +51,7 @@ const ModalHeader = styled.div<{ className?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px 0px 0px 20px;
+  padding: 0px 10px 10px 64px;
 `
 
 const ModalTitle = styled(Flex)`
@@ -59,13 +59,13 @@ const ModalTitle = styled(Flex)`
   flex: 1;
 `
 
-const ModalSorry: React.FC<Props> = ({
+const ModalResponses: React.FC<Props> = ({
   title,
   onDismiss,
   onBack,
   children,
   hideCloseButton = false,
-  bodyPadding = '0px 20px 10px',
+  bodyPadding = '0px 20px 20px',
   isRainbow = true,
   classHeader = '',
   maxWidth = '',
@@ -98,4 +98,4 @@ const ModalSorry: React.FC<Props> = ({
   </StyledModal>
 )
 
-export default ModalSorry
+export default ModalResponses

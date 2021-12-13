@@ -19,11 +19,11 @@ interface Props extends InjectedProps {
   className?: string
 }
 
-const StyledModal = styled.div<{ isRainbow: boolean }>`
+const StyleCard = styled.div<{ isRainbow: boolean }>`
   background: ${({ theme }) => theme.modal.background};
   box-shadow: 0px 20px 36px -8px rgba(14, 30, 44, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.05);
   border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => (theme.isDark ? '#3D3D3D' : '#EFEFEF')};
+  // border: 1px solid ${({ theme }) => (theme.isDark ? '#3D3D3D' : '#EFEFEF')};
   width: 100%;
   z-index: ${({ theme }) => theme.zIndices.modal};
   overflow-y: auto;
@@ -33,7 +33,7 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 360px;
-    width: 480px;
+    // width: 480px;
   }
   position: relative;
 
@@ -59,7 +59,7 @@ const ModalTitle = styled(Flex)`
   flex: 1;
 `
 
-const ModalSorry: React.FC<Props> = ({
+const CardSorry: React.FC<Props> = ({
   title,
   onDismiss,
   onBack,
@@ -72,7 +72,7 @@ const ModalSorry: React.FC<Props> = ({
   maxHeight = '',
   className = '',
 }) => (
-  <StyledModal isRainbow={isRainbow} style={{ maxWidth, maxHeight }} className={className}>
+  <StyleCard isRainbow={isRainbow} style={{ maxWidth, maxHeight }} className={className}>
     <ModalHeader className={classHeader}>
       <ModalTitle>
         {onBack && (
@@ -95,7 +95,7 @@ const ModalSorry: React.FC<Props> = ({
     <Flex flexDirection="column" p={bodyPadding}>
       {children}
     </Flex>
-  </StyledModal>
+  </StyleCard>
 )
 
-export default ModalSorry
+export default CardSorry

@@ -23,7 +23,6 @@ import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
-import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/types'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
@@ -40,8 +39,10 @@ import {
 import { useLockPlus } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import success from 'uikit-dev/animation/complete.json'
+import loadings from 'uikit-dev/animation/farmPool.json'
 import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
+import ModalResponses from '../Modal/ModalResponses'
 import { Text } from '../../components/Text'
 import StakePeriodButton from '../../../views/LongTermStake/components/StakePeriodButton'
 
@@ -49,6 +50,12 @@ const SuccessOptions = {
   loop: true,
   autoplay: true,
   animationData: success,
+}
+
+const options = {
+  loop: true,
+  autoplay: true,
+  animationData: loadings,
 }
 
 interface Props {
@@ -66,7 +73,7 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 
 const CardList = styled(Card)`
   width: 100%;
-  background-color: '#FCFCFC';
+  background-color: ${({ theme }) => (theme.isDark ? '#000000' : '#FCFCFC')};
   border-radius: 24px;
   align-items: center;
   margin-top: 10px;
@@ -129,9 +136,25 @@ const NumberInput = styled.input`
 `
 
 const CustomCheckbox = styled(Checkbox)`
-  border: 1px solid red;
   &.Mui-checked {
     color: ${({ theme }) => theme.colors.success} !important;
+  }
+
+  &.MuiCheckbox-root {
+    color: #fcfcfc;
+  }
+`
+
+const BpIcons = styled.span`
+  border-radius: 2px;
+  width: 0.65em;
+  height: 0.65em;
+  background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#E3E6EC')} !important;
+  border: 1.5px solid #979797;
+  margin-left: 2px;
+  &.Mui-focusVisible {
+    outline: 2px auto rgba(19, 124, 189, 0.6);
+    outline-offset: 2;
   }
 `
 
@@ -145,7 +168,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { levelStake, allLock } = useAllDataLock()
   const lockTopUp = useLockTopup()
   const [selectedToken, setSelectedToken] = useState({})
-  const [sousId, setSousId] = useState(0)
+  // const [sousId, setSousId] = useState(0)
   const [period, setPeriod] = useState(0)
   const [idLast, setIdLast] = useState(0)
   const [lengthSelect, setLengthSelect] = useState(0)
@@ -161,7 +184,10 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [keyDown, setKeyDown] = useState(false)
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
   const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount)
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
+  const { onReward } = useSousHarvest()
+  const [vFINIX, setVFINIX] = useState(0)
+  const [vFinixEarn, setVFinixEarn] = useState(0)
+  const [loading, setLoading] = useState('')
 
   // Farms
   const farmsLP = useFarms()
@@ -397,8 +423,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [lockTopUp, allLock, period])
 
   useEffect(() => {
+    const balance = Math.floor(Number(balanceOf) * 1000000) / 1000000
     if (keyDown === false) {
-      setValue(numeral(balanceOf).format('0.[00]'))
+      setValue(numeral(balance).format('0.00'))
     }
   }, [value, balanceOf, keyDown])
 
@@ -422,18 +449,21 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { onSuperHarvest } = useSuperHarvest()
 
   const _superHarvest = useCallback(() => {
-    if (harvestProgress !== -1 && harvestProgress <= Object.values(selectedToken).length) {
-      if (_.get(Object.values(selectedToken)[harvestProgress], 'checked')) {
-        if (!_.get(Object.values(selectedToken)[harvestProgress], 'pools')) {
-          if (_.get(Object.values(selectedToken)[harvestProgress], 'farms')) {
-            onSuperHarvest(_.get(Object.values(selectedToken)[harvestProgress], 'pid'))
+    const selected = Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
+    if (harvestProgress !== -1 && harvestProgress <= Object.values(selected).length) {
+      if (_.get(Object.values(selected)[harvestProgress], 'checked')) {
+        if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
+          if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
+            onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
               .then((res) => {
+                // farm
                 setHarvestProgress(harvestProgress + 1)
               })
               .catch((e) => {
                 setHarvestProgress(-1)
               })
           } else {
+            // vfinix
             handleHarvest()
               .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
@@ -443,9 +473,9 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               })
           }
         } else {
-          onReward()
+          // pool
+          onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
             .then((res) => {
-              setSousId(_.get(Object.values(selectedToken)[harvestProgress], 'sousId'))
               setHarvestProgress(harvestProgress + 1)
             })
             .catch((e) => {
@@ -454,7 +484,29 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         }
       }
     }
-  }, [harvestProgress, onSuperHarvest, selectedToken, handleHarvest, onReward])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [harvestProgress, selectedToken, handleHarvest])
+
+  const lockPlus = useCallback(() => {
+    onLockPlus()
+      .then((res) => {
+        setAmount('')
+        if (res === true) {
+          setHarvested(false)
+          setHarvestProgress(-1)
+          setLengthSelect(0)
+          setAmount('')
+          setPendingTx(false)
+          setShowLottie(true)
+          // setInterval(() => setShowLottie(false), 5000)
+          // setInterval(() => onDismiss(), 5000)
+          setSelectedToken({})
+        }
+      })
+      .catch((e) => {
+        setAmount('')
+      })
+  }, [onLockPlus])
 
   useEffect(() => {
     if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
@@ -462,49 +514,17 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setPendingTx(true)
       if (period !== -Infinity) {
         if (Object.values(selectedToken)[0]) {
-          onLockPlus()
-            .then((res) => {
-              setAmount('')
-              if (res === true) {
-                setHarvested(false)
-                setHarvestProgress(-1)
-                setLengthSelect(0)
-                setAmount('')
-                setPendingTx(false)
-                setShowLottie(true)
-                // setInterval(() => setShowLottie(false), 5000)
-                // setInterval(() => onDismiss(), 5000)
-                setSelectedToken({})
-              }
-            })
-            .catch((e) => {
-              setAmount('')
-            })
+          lockPlus()
         } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
-          onLockPlus()
-            .then((res) => {
-              setAmount('')
-              if (res === true) {
-                setHarvested(false)
-                setHarvestProgress(-1)
-                setLengthSelect(0)
-                setAmount('')
-                setPendingTx(false)
-                setShowLottie(true)
-                // setInterval(() => onDismiss(), 5000)
-                setSelectedToken({})
-              }
-            })
-            .catch((e) => {
-              setAmount('')
-            })
+          lockPlus()
         }
       }
     } else if (harvestProgress !== -1) {
       setPendingTx(true)
       _superHarvest()
     }
-  }, [harvestProgress, selectedToken, _superHarvest, onLockPlus, lengthSelect, value, period])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [harvestProgress, _superHarvest, lockPlus])
 
   useEffect(() => {
     if (harvested === true) {
@@ -514,6 +534,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         setLengthSelect(0)
         setPendingTx(false)
         setShowLottie(true)
+        setSelectedToken({})
       }
     }
   }, [harvestProgress, period, harvested])
@@ -536,6 +557,38 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       setAmount(new BigNumber(parseFloat(total)).times(new BigNumber(10).pow(18)).toFixed())
     } else if (Object.values(selectedToken).length === 0 && value !== '' && value !== '0') {
       setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
+    } else if (Object.values(selectedToken).length > 0 && value === '') {
+      const dataArray = []
+      for (let i = 0; i < Object.values(selectedToken).length; i++) {
+        const selector = Object.values(selectedToken)[i]
+        if (_.get(selector, 'checked')) {
+          dataArray.push(_.get(selector, 'pendingReward'))
+        } else {
+          dataArray.splice(i)
+        }
+      }
+      const sum = dataArray.reduce((r, n) => r + n, 0)
+      setLengthSelect(dataArray.length)
+      setSumPendingReward(parseFloat(sum).toFixed(2))
+      setAmount(
+        new BigNumber(parseFloat(Number(value.replace(',', '')) + sum)).times(new BigNumber(10).pow(18)).toFixed(),
+      )
+    } else if (Object.values(selectedToken).length > 0 && Number(value) <= 0) {
+      const dataArray = []
+      for (let i = 0; i < Object.values(selectedToken).length; i++) {
+        const selector = Object.values(selectedToken)[i]
+        if (_.get(selector, 'checked')) {
+          dataArray.push(_.get(selector, 'pendingReward'))
+        } else {
+          dataArray.splice(i)
+        }
+      }
+      const sum = dataArray.reduce((r, n) => r + n, 0)
+      setLengthSelect(dataArray.length)
+      setSumPendingReward(parseFloat(sum).toFixed(2))
+      setAmount(
+        new BigNumber(parseFloat(Number(value.replace(',', '')) + sum)).times(new BigNumber(10).pow(18)).toFixed(),
+      )
     } else {
       setAmount('')
     }
@@ -564,7 +617,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       localDateTime = new Date(localDateTime)
       setDate(moment(localDateTime).format(`DD-MMM-YYYY HH:mm:ss`))
     }
-  }, [period, value, allLockPeriod, realPenaltyRate])
+    const vfinix = Number(value.replace(',', '')) + Number(sumpendingReward)
+    const vfinixEarn = (Number(value.replace(',', '')) + Number(sumpendingReward)) * period
+    setVFinixEarn(numeral(vfinixEarn).format('0,0.00'))
+    setVFINIX(numeral(vfinix).format('0,0.00'))
+  }, [period, value, allLockPeriod, realPenaltyRate, sumpendingReward])
 
   const harvestOrStake = () => {
     return harvested ? (
@@ -580,13 +637,14 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
 
   const CardResponse = () => {
     return (
-      <ModalStake title="" onDismiss={onDismiss} className="">
+      <ModalResponses title="" onDismiss={onDismiss} className="">
         <div className="pb-6 pt-2">
           <Lottie options={SuccessOptions} height={155} width={185} />
         </div>
-      </ModalStake>
+      </ModalResponses>
     )
   }
+
   const lenghtOrvalue = lengthSelect === 0 && value === ''
 
   return (
@@ -634,7 +692,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     control={
                       <CustomCheckbox
                         size="small"
-                        checked={!!_.get(selectedToken, `${18}.checked`)}
+                        disabled={harvestProgress !== -1}
+                        checked={_.get(selectedToken, `${18}.checked`)}
                         onChange={(event) => {
                           setSelectedToken({
                             ...selectedToken,
@@ -647,6 +706,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                             },
                           })
                         }}
+                        icon={<BpIcons />}
                       />
                     }
                     label=""
@@ -671,7 +731,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                       control={
                         <CustomCheckbox
                           size="small"
-                          checked={!!_.get(selectedToken, `${d.props.farm.pid}.checked`)}
+                          disabled={harvestProgress !== -1}
+                          checked={_.get(selectedToken, `${d.props.farm.pid}.checked`)}
                           onChange={(event) => {
                             setSelectedToken({
                               ...selectedToken,
@@ -681,10 +742,13 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                                 farms: true,
                                 pid: d.props.farm.pid,
                                 status: false,
-                                pendingReward: d.props.farm.userData.earnings,
+                                pendingReward: new BigNumber(d.props.farm.userData.earnings)
+                                  .div(new BigNumber(10).pow(18))
+                                  .toNumber(),
                               },
                             })
                           }}
+                          icon={<BpIcons />}
                         />
                       }
                       label=""
@@ -713,7 +777,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                       control={
                         <CustomCheckbox
                           size="small"
-                          checked={!!_.get(selectedToken, `${d.sousId}.checked`)}
+                          checked={_.get(selectedToken, `${d.sousId}.checked`)}
+                          disabled={harvestProgress !== -1}
                           onChange={(event) => {
                             setSelectedToken({
                               ...selectedToken,
@@ -729,6 +794,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                               },
                             })
                           }}
+                          icon={<BpIcons />}
                         />
                       }
                       label=""
@@ -749,24 +815,31 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <Text className="mt-5" style={{ alignSelf: 'start' }} color="textSubtle" fontWeight="500">
               Please select available duration
             </Text>
-            <StakePeriodButton setPeriod={setPeriod} status={status} levelStake={levelStake} isTopUp />
+            <StakePeriodButton
+              setPeriod={setPeriod}
+              status={status}
+              levelStake={levelStake}
+              isTopUp
+              harvestProgress={harvestProgress}
+            />
             <div className="flex mt-4 w-100">
-              <Text className="col-6" color="textSubtle" fontWeight="500">
+              <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
                 From your wallet:
                 <span style={{ color: '#0973B9' }} className="pl-2">
-                  {balanceOf ? numeral(balanceOf).format('0,0') : '-'} FINIX
+                  {balanceOf ? numeral(balanceOf).format('0,0.00') : '-'} FINIX
                 </span>
               </Text>
-              <Text className="col-6 pl-3" color="textSubtle" fontWeight="500">
+              <Text className="col-6 pl-3" color="textSubtle" fontSize="12px" fontWeight="500">
                 Pending rewards
               </Text>
             </div>
             <div className="flex w-100 align-center">
               <Balance className="mr-2">
                 <NumberInput
-                  style={{ width: '45%' }}
+                  style={{ width: '45%', color: '#2A9D8F' }}
                   placeholder="0.00"
                   value={value}
+                  disabled={harvestProgress !== -1}
                   onChange={handleChange}
                   onKeyDown={() => setKeyDown(true)}
                   className="text-right"
@@ -801,7 +874,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
               <div className="flex flex-row justify-end w-100">
                 <Text className="text-right" color="#0973B9" fontWeight="500">
-                  {Number(value.replace(',', '')) + Number(sumpendingReward)}
+                  {vFINIX}
                 </Text>
                 <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
                   vFINIX
@@ -814,7 +887,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
               <div className="flex flex-row justify-end w-100">
                 <Text className="text-right" color="#0973B9" fontWeight="500">
-                  {(Number(value.replace(',', '')) + Number(sumpendingReward)) * period}
+                  {vFinixEarn}
                 </Text>
                 <Text className="text-right ml-1" color={isDark ? 'white' : '#000'} fontWeight="500">
                   vFINIX
