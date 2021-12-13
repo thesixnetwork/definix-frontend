@@ -7608,10 +7608,10 @@ definixswap-sdk@1.0.0:
     tiny-warning "^1.0.3"
     toformat "^2.0.0"
 
-definixswap-uikit-v2@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.5.tgz#ed484ab662381b85f294bc1c9ed0f62eacd663f4"
-  integrity sha512-16xhVc8nrS3we8tUWnn8+MkhKCIP6VjG9S4xlD+uVlwIL2MajdKMKeHUgEb/Ao5P37N6ysVQ3qWQ/dLCHPoCZA==
+definixswap-uikit-v2@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.6.tgz#be8e56623c2b12f242fc8228564d5280131e8b49"
+  integrity sha512-2pddJgES4OW8eI8QpSOHWrPns8Y229MnaPe0VT8aAXZaG48Q6CwT88qgHmlOPWUVvXkjVHmA6vAq3pZxEXUQIQ==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
