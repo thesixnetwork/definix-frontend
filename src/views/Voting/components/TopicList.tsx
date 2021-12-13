@@ -40,7 +40,6 @@ const StyledButton = styled(Button)`
 //   &:hover {
 //       cursor: default;
 
-
 //       span {
 //         color: #e27d3a !important;
 //         background-color: unset;
@@ -51,7 +50,7 @@ const StyledButton = styled(Button)`
 const StyledButtonVote = styled.div`
   background-color: transparent;
   border: 1px solid #30adff;
-  color: #30ADFF;
+  color: #30adff;
   border-radius: 6px;
   padding: 10px 20px;
   font-size: 14px;
@@ -63,8 +62,8 @@ const StyledButtonVote = styled.div`
 
 const StyledButtonCore = styled.div`
   background-color: transparent;
-  border: 1px solid #55BD92;
-  color: #55BD92;
+  border: 1px solid #55bd92;
+  color: #55bd92;
   border-radius: 6px;
   padding: 10px 20px;
   font-size: 14px;
@@ -103,7 +102,7 @@ const TopicList = () => {
             <span>Vote Now</span>
           </StyledButtonVote>
           <StyledButtonCore className="ml-2 flex">
-            <Pocket width={16} height={16} className="mr-1"/>
+            <Pocket width={16} height={16} className="mr-1" />
             <span>Core</span>
           </StyledButtonCore>
         </div>

@@ -6,14 +6,13 @@ import { Card, Heading, Text, Button } from 'uikit-dev'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import CardProposals from './CardProposals'
 
-
 const BannerVoting = styled(Card)`
   width: 100%;
   background: ${({ theme }) => theme.colors.card};
   padding: 28px 24px;
   position: relative;
   overflow: visible;
-  display:flex;
+  display: flex;
 
   h2 {
     font-size: 22px !important;
@@ -57,7 +56,6 @@ const DetailBanner = styled(Text)`
     font-size: 16px !important;
   }
 `
-
 
 const CardVoting = () => {
   return (

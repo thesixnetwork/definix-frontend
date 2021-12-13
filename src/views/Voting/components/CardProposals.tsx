@@ -43,13 +43,13 @@ const Header = styled.div`
 `
 
 const StyledButtonCore = styled(Button)`
-  background-color: #30ADFF;
-  border: 1px solid #57575B;
-  color: #FFFFFF;
+  background-color: #30adff;
+  border: 1px solid #57575b;
+  color: #ffffff;
   border-radius: 6px;
   padding: 18px 20px;
 
-  &:hover{
+  &:hover {
     cursor: default;
   }
 `
