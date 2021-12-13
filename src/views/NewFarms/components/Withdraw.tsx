@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import useUnstake from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
-import { useFarmFromSymbol, useFarmUser, useToast } from 'state/hooks'
+import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
@@ -91,12 +91,10 @@ const Withdraw: React.FC<{
   onBack: () => void
 }> = ({ farm, lpTokenName, myLiquidityPrice, addLiquidityUrl, onBack }) => {
   const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
   const { stakedBalance } = useFarmUser(pid)
   const { onUnstake } = useUnstake(pid)
-  const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
   const totalLiquidity: number = useMemo(() => farm.totalLiquidityValue, [farm.totalLiquidityValue])

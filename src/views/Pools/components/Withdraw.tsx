@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useSousUnstake } from 'hooks/useUnstake'
 import useConverter from 'hooks/useConverter'
-import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal } from 'definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
@@ -81,10 +80,8 @@ const Withdraw: React.FC<{
   onBack: () => void
 }> = ({ isOldSyrup, pool, onBack }) => {
   const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { onUnstake } = useSousUnstake(pool.sousId)
-  const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
   const price = useMemo(() => {
