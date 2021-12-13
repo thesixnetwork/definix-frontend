@@ -13,6 +13,7 @@ import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './FarmCard/CardHeading'
 import { FarmWithStakedValue } from './FarmCard/types'
+import FarmContext from '../FarmContext'
 
 const CardWrap = styled(Card)`
   margin-top: ${({ theme }) => theme.spacing.S_40}px;
@@ -120,30 +121,18 @@ const Deposit: React.FC<{
     [tokenBalance, setVal],
   )
 
-  const handleStake = useCallback(async () => {
-    if (isPendingTX) return
-    try {
-      setIsPendingTX(true)
-      await onStake(val)
-      toastSuccess(t('Deposit Complete'))
-      onBack()
-    } catch (error) {
-      toastError(t('Deposit Failed'))
-    } finally {
-      setIsPendingTX(false)
-    }
-  }, [onStake, val, onBack, isPendingTX, toastSuccess, toastError, t])
+  const handleStake = useCallback(() => onStake(val), [onStake, val])
 
   /**
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
-      title={t('Confirm Deposit')}
       buttonName="Deposit"
       lpSymbol={lpTokenName}
       stakedBalance={val}
       onOK={handleStake}
+      goList={onBack}
     />,
     false,
   )

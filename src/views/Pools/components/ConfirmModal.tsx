@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { getTokenImageUrl } from 'utils/getTokenImage'
+import { useToast } from 'state/hooks'
 import {
   Button,
   Modal,
@@ -13,14 +15,29 @@ import {
   ModalFooter,
 } from 'definixswap-uikit-v2'
 
-const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null }) => {
+const ConfirmModal = ({ buttonName, tokenName, stakedBalance, onOK = () => null, onDismiss = () => null, goList = () => null }) => {
+  const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
+  const [isPendingTX, setIsPendingTX] = useState(false)
+  const title = useMemo(() => t(`Confirm ${buttonName}`), [t, buttonName])
+  const handleComplete = useCallback(async () => {
+    if (isPendingTX) return
+    try {
+      setIsPendingTX(true)
+      await onOK()
+      toastSuccess(t(`${buttonName} Complete`))
+      goList()
+      onDismiss()
+    } catch (error) {
+      toastError(t(`${buttonName} Failed`))
+    } finally {
+      setIsPendingTX(false)
+    }
+  }, [isPendingTX, toastSuccess, toastError, t, onOK, onDismiss, goList, buttonName])
   return (
     <Modal
       title={title}
       onDismiss={onDismiss}
-      // isRainbow={false}
-      // bodyPadding="0 32px 32px 32px"
-      // classHeader="bd-b-n"
     >
       <ModalBody isBody width="464px" className="mt-s16 mb-s40">
         <Flex justifyContent="space-between" alignItems="center">
@@ -39,14 +56,12 @@ const ConfirmModal = ({ title, buttonName, tokenName, stakedBalance, onOK = () =
       </ModalBody>
       <ModalFooter isFooter>
         <Button
-          onClick={() => {
-            onOK()
-            onDismiss()
-          }}
-          variant={ButtonVariants.RED}
           lg
+          variant={ButtonVariants.RED}
+          isLoading={isPendingTX}
+          onClick={handleComplete}
         >
-          {buttonName}
+          {t(buttonName)}
         </Button>
       </ModalFooter>
     </Modal>

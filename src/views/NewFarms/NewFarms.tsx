@@ -34,13 +34,20 @@ const Farms: React.FC = () => {
         pageState,
         pageData,
         goDeposit: (data) => {
+          console.log('go deposit')
           setPageState('deposit')
           setPageData(data)
         },
         goWithdraw: (data) => {
+          console.log('go withdraw')
           setPageState('withdraw')
           setPageData(data)
         },
+        goList: () => {
+          console.log('go list----')
+          setPageState('list')
+          setPageData(null)
+        }
       }}
     >
       <Wrap>

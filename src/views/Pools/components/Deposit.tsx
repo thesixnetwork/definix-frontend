@@ -136,30 +136,18 @@ const Deposit: React.FC<{
     [maxValue, setVal],
   )
 
-  const handleStake = useCallback(async () => {
-    if (isPendingTX) return
-    try {
-      setIsPendingTX(true)
-      await onStake(val)
-      toastSuccess(t('Deposit Complete'))
-      onBack()
-    } catch (error) {
-      toastError(t('Deposit Failed'))
-    } finally {
-      setIsPendingTX(false)
-    }
-  }, [onStake, val, onBack, isPendingTX, toastSuccess, toastError, t])
+  const handleStake = useCallback(() => onStake(val), [onStake, val])
 
   /**
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
-      title={t('Confirm Deposit')}
-      buttonName={t('Deposit')}
+      buttonName="Deposit"
       tokenName={tokenName}
       stakedBalance={val}
       onOK={handleStake}
+      goList={onBack}
     />,
     false,
   )

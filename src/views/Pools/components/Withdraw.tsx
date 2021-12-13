@@ -128,30 +128,18 @@ const Withdraw: React.FC<{
     [myStakedBalance, setVal],
   )
 
-  const handleUnstake = useCallback(async () => {
-    if (isPendingTX) return
-    try {
-      setIsPendingTX(true)
-      await onUnstake(isOldSyrup ? '0' : val)
-      toastSuccess(t('Remove Complete'))
-      onBack()
-    } catch (error) {
-      toastError(t('Remove Failed'))
-    } finally {
-      setIsPendingTX(false)
-    }
-  }, [isOldSyrup, onUnstake, val, isPendingTX, onBack, toastSuccess, toastError, t])
+  const handleUnstake = useCallback(() => onUnstake(isOldSyrup ? '0' : val), [isOldSyrup, onUnstake, val])
 
   /**
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
-      title={t('Confirm Remove')}
-      buttonName={t('Remove')}
+      buttonName="Remove"
       tokenName={pool.stakingTokenName}
       stakedBalance={val}
       onOK={handleUnstake}
+      goList={onBack}
     />,
     false,
   )
