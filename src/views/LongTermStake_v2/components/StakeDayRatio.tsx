@@ -12,9 +12,9 @@ interface StakeDayRatioProps extends IsMobileType {
 }
 
 const FlexRatio = styled(Flex)`
-  width: 50%;
+  width: 60%;
   flex-direction: column;
-  padding-left: 32px;
+  padding-left: 40px;
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     width: 100%;

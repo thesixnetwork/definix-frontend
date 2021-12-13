@@ -16,7 +16,7 @@ interface FinixStakeProps extends IsMobileType {
 }
 
 const FlexStake = styled(Flex)`
-  width: 50%;
+  width: 40%;
   flex-direction: column;
 
   > :first-child {

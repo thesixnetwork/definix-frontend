@@ -29,7 +29,11 @@ const CardTotalStake: React.FC<IsMobileType> = ({ isMobile }) => {
             totalFinixLock={totalFinixLock}
             totalSupplyAllTimeMint={totalSupplyAllTimeMint}
           />
-          {isMobile ? <Divider width="100%" backgroundColor="lightGrey50" /> : <VDivider opacity="0.5" />}
+          {isMobile ? (
+            <Divider width="100%" backgroundColor="lightGrey50" />
+          ) : (
+            <VDivider opacity="0.5" color="lightgrey" />
+          )}
           <StakeDayRatio isMobile={isMobile} getTotalFinixLock={getTotalFinixLock} totalFinixLock={totalFinixLock} />
         </FlexCard>
       </Card>
