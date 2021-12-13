@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
-import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal, Button } from 'definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
@@ -83,10 +82,8 @@ const Deposit: React.FC<{
   onBack: () => void
 }> = ({ isOldSyrup, isBnbPool, pool, onBack, addSwapUrl }) => {
   const { t } = useTranslation()
-  const { toastSuccess, toastError } = useToast()
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { onStake } = useSousStake(pool.sousId, isBnbPool)
-  const [isPendingTX, setIsPendingTX] = useState(false)
   const [val, setVal] = useState('')
 
   const tokenName = useMemo(() => {
