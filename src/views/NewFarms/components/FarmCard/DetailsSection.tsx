@@ -118,7 +118,7 @@ const EarningsSection: React.FC<{
         </Box>
       </TitleWrap>
       <ValueWrap>
-        <Flex alignItems="end">
+        <Flex alignItems="flex-end">
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
           <TokenNameText>FINIX</TokenNameText>
         </Flex>
