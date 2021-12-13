@@ -23,6 +23,7 @@ import {
 } from 'definixswap-uikit-v2'
 import { compact, get } from 'lodash'
 import useComineAmount from 'hooks/useCombineAmount'
+import CurrencyText from 'components/CurrencyText'
 import AssetRatio from './AssetRatio'
 import CardHeading, { CardTitle, CardImage } from './CardHeading'
 import MiniChart from './MiniChart'
@@ -158,7 +159,8 @@ const ExploreCard: React.FC<ExploreCardType> = ({
       <TwoLineFormat
         title={t('Current Investment')}
         titleMarginBottom={isInMyInvestment ? 4 : null}
-        value={`$${numeral(balance.times(get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
+        value={(<CurrencyText value={balance.times(get(rebalance, 'sharedPrice', 0)).toNumber()}/>)}
+        // value={`$${numeral(balance.times(get(rebalance, 'sharedPrice', 0))).format('0,0.[00]')}`}
         currentInvestPercentDiff={`(${
           percentage > 0 ? `+${numeral(percentage).format('0,0.[00]')}` : `${numeral(percentage).format('0,0.[00]')}`
         }%)`}

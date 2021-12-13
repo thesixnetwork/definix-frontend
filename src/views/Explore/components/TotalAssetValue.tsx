@@ -1,6 +1,6 @@
 import React from 'react'
-import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
+import CurrencyText from 'components/CurrencyText'
 import TwoLineFormat from './TwoLineFormat'
 
 interface TotalAssetValueType {
@@ -10,7 +10,15 @@ interface TotalAssetValueType {
 
 const TotalAssetValue: React.FC<TotalAssetValueType> = ({ value, small }) => {
   const { t } = useTranslation()
-  return <TwoLineFormat title={t('Total Asset Value')} value={`$${numeral(value).format('0,0.00')}`} large={!small} />
+  return (
+    <TwoLineFormat
+      title={t('Total Asset Value')}
+      value={(
+        <CurrencyText value={value}/>
+      )}
+      large={!small}
+    />
+  )
 }
 
 export default TotalAssetValue

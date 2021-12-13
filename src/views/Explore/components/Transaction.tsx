@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next'
 import { Box, CopyToClipboard, Flex, Grid, LinkExternal, Text, Toggle, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'
 import EllipsisText from 'components/EllipsisText'
+import CurrencyText from 'components/CurrencyText'
 
 import { TD, TH } from './Table'
 
@@ -89,7 +90,7 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
                   <Text textStyle="R_14R">{numeral(r.lp_amount).format('0,0.000')}</Text>
                 </TD>
                 <TD align="center" as="div">
-                  <Text textStyle="R_14R">{`$${numeral(r.total_value).format('0,0.00')}`}</Text>
+                  <CurrencyText value={r.total_value} textStyle="R_14R"/>
                 </TD>
                 <TD align="center" oneline as="div">
                   <Text textStyle="R_14R">{moment(r.timestamp).format('DD/MM/YYYY, HH:mm')}</Text>

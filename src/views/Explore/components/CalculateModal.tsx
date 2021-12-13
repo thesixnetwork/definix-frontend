@@ -25,6 +25,7 @@ import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { getCustomContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
 import { useToast } from 'state/hooks'
+import CurrencyText from 'components/CurrencyText'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { fetchRebalances } from '../../../state/rebalance'
 // import { useSlippage } from '../../../state/hooks'
@@ -173,7 +174,9 @@ const CalculateModal = ({
             <SpaceBetweenFormat
               className="mb-2"
               title={t('Estimated Value')}
-              value={numeral(sumPoolAmount).format('0,0.[00]')}
+              valueElm={(
+                <CurrencyText value={sumPoolAmount}/>
+              )}
             />
             <SpaceBetweenFormat
               title={t('Price Impact')}

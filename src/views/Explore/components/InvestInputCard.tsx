@@ -34,6 +34,7 @@ import { useDispatch } from 'react-redux'
 
 import { useDeepEqualMemo } from 'hooks/useDeepEqualMemo'
 import { getTokenImageUrl } from 'utils/getTokenImage'
+import CurrencyText from 'components/CurrencyText'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import CalculateModal from './CalculateModal'
 
@@ -357,9 +358,14 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
             {t('Total Value')}
           </Text>
           <Flex flexWrap="wrap" alignItems="baseline">
-            <Text textStyle="R_23M" style={{ whiteSpace: 'nowrap' }} mr="S_8" mb="S_2">
-              $ {numeral(sumPoolAmount).format('0,0.[0000]')}
-            </Text>
+            <CurrencyText
+              textStyle="R_23M"
+              style={{ whiteSpace: 'nowrap' }}
+              mr="S_8"
+              mb="S_2"
+              value={sumPoolAmount}
+              toFixed={6}
+            />
             <Text color="textSubtle" textStyle="R_14R">
               {t('EST. {{number}} share', { number: shares })}
             </Text>

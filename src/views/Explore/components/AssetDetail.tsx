@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Rebalance } from 'state/types'
 import { getTokenName } from 'utils/getTokenSymbol'
 import { getTokenImageUrl } from 'utils/getTokenImage'
+import CurrencyText from 'components/CurrencyText'
 import { Table, TD, TH, TR } from './Table'
 
 interface AssetDetailType {
@@ -89,10 +90,10 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
                     </Text>
                   </TD>
                   <TD align="center" oneline sm={isMaxXl}>
-                    <Text textStyle="R_14R">$ {numeral(tokenPrice.toNumber()).format('0,0.[00]')}</Text>
+                    <CurrencyText value={tokenPrice.toNumber()} textStyle="R_14R"/>
                   </TD>
                   <TD align="center" oneline sm={isMaxXl}>
-                    <Text textStyle="R_14R">$ {numeral(totalPrice.toNumber()).format('0,0.[00]')}</Text>
+                    <CurrencyText value={totalPrice.toNumber()} textStyle="R_14R"/>
                   </TD>
                   <TD align="center" oneline sm={isMaxXl}>
                     <Text textStyle="R_14R" color={selectClass(changeNumber)}>

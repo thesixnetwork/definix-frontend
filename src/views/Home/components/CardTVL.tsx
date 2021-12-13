@@ -105,7 +105,7 @@ const CardTVL = () => {
     <Card>
       <WrapCardBody>
         <Title>{t('Total Value Locked')}</Title>
-        <TotalTvlValue>{total <= 0 ? 'N/A' : <CurrencyText value={total} />}</TotalTvlValue>
+        <TotalTvlValue>{total <= 0 ? 'N/A' : <CurrencyText value={total} toFixed={0} />}</TotalTvlValue>
         <WrapTvl>
           <TvlItem>
             <Flex alignItems="center">
@@ -120,7 +120,7 @@ const CardTVL = () => {
               </Text>
             </Flex>
             <TvlValue>
-              <CurrencyText value={totalWeb3TVL} />
+              <CurrencyText value={totalWeb3TVL} toFixed={0} />
             </TvlValue>
           </TvlItem>
           <TvlItem>
@@ -136,7 +136,7 @@ const CardTVL = () => {
               </Text>
             </Flex>
             <TvlValue>
-              <CurrencyText value={totalTVL} />
+              <CurrencyText value={totalTVL} toFixed={0} />
             </TvlValue>
           </TvlItem>
         </WrapTvl>
