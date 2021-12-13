@@ -319,7 +319,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                       <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                         {_.get(item, 'multiplier')}x {_.get(item, 'days')} days
                       </Text>
-                      {_.get(item, 'topup').some((topup) => !!(Number(topup) === item.id)) && (
+                      {_.get(item, 'topup').some((topup) => Number(topup) === item.id) && (
                         <>
                           <div className="flex align-center">
                             <Text color="#F5C858" fontSize="12px" bold>
