@@ -1,3 +1,4 @@
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useState, useEffect } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -17,6 +18,7 @@ const Wrap = styled(Box)`
 `
 
 const Pool: React.FC = () => {
+  const { account }: { account: string } = useWallet()
   const { path } = useRouteMatch()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [liveOnly, setLiveOnly] = useState(true)
@@ -28,6 +30,13 @@ const Pool: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pageState])
+
+  useEffect(() => {
+    if (typeof account !== 'string') {
+      setPageState('list')
+      setPageData(null)
+    }
+  }, [account])
 
   return (
     <PoolContext.Provider

@@ -1,3 +1,4 @@
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useState, useEffect } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -17,6 +18,7 @@ const Wrap = styled(Box)`
 `
 
 const Farms: React.FC = () => {
+  const { account }: { account: string } = useWallet()
   const { path } = useRouteMatch()
   const [stackedOnly, setStackedOnly] = useState(false)
   const [pageState, setPageState] = useState('list')
@@ -27,6 +29,13 @@ const Farms: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pageState])
+
+  useEffect(() => {
+    if (typeof account !== 'string') {
+      setPageState('list')
+      setPageData(null)
+    }
+  }, [account])
 
   return (
     <FarmContext.Provider
@@ -40,10 +49,6 @@ const Farms: React.FC = () => {
         goWithdraw: (data) => {
           setPageState('withdraw')
           setPageData(data)
-        },
-        goList: () => {
-          setPageState('list')
-          setPageData(null)
         },
       }}
     >
