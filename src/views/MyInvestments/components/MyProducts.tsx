@@ -141,7 +141,10 @@ const MyProducts: React.FC<{
       {displayProducts.length ? (
         displayProducts.map((product, index) => {
           return (
-            <Box key={getKey(product)} className={`${index === displayProducts.length - 1 ? `pb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}>
+            <Box
+              key={getKey(product)}
+              className={`${index === displayProducts.length - 1 ? `pb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}
+            >
               {index > 0 && <Divider />}
               {getProductComponent(product)}
             </Box>
