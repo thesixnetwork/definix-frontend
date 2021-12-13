@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Card, CardBody, ColorStyles, Text, Flex, HomeFarmFinixIcon } from 'definixswap-uikit-v2'
 import FarmHighAPR from './FarmHighAPR'
@@ -15,7 +16,8 @@ const Title = styled(Text)`
   }
 `
 
-const InnerBox = styled(Flex)`
+const InnerBox = styled(Link)`
+  display: flex;
   padding: 24px;
   border-radius: 8px;
   min-height: 166px;
@@ -58,13 +60,13 @@ const CardHighAPR = () => {
             <HomeFarmFinixIcon />
           </Character>
         </Flex>
-        <InnerBox>
+        <InnerBox to="/farm">
           <FarmHighAPR />
         </InnerBox>
         <StyledRebalanceTitle>
           <Title>{t('Meet Rebalancing with Definix unique differentiation.')}</Title>
         </StyledRebalanceTitle>
-        <InnerBox>
+        <InnerBox to="/rebalancing">
           <ExploreHighAPR />
         </InnerBox>
       </WrapCardBody>
