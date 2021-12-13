@@ -172,7 +172,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   /**
    * Link Section
    */
-   const renderLinkSection = useCallback(() => <LinkListSection contractAddress={pool.contractAddress} />, [pool.contractAddress])
+  const renderLinkSection = useCallback(
+    () => <LinkListSection contractAddress={pool.contractAddress} />,
+    [pool.contractAddress],
+  )
 
   if (isInMyInvestment) {
     return (
