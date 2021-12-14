@@ -13,7 +13,7 @@ import PoolContext from './PoolContext'
 const Wrap = styled(Box)<{ pageState: string }>`
   margin: 0 auto;
   padding-bottom: ${({ theme }) => theme.spacing.S_80}px;
-  max-width: ${({ pageState }) => pageState === 'list' ? '100%' : '630px'};
+  max-width: ${({ pageState }) => (pageState === 'list' ? '100%' : '630px')};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
   }
