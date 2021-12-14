@@ -18,12 +18,16 @@ const CardTotalEarn: React.FC<IsMobileType> = ({ isMobile }) => {
 
   return (
     <>
-      <Card mt="S_16">
-        <FlexCard>
-          <FinixEarn isMobile={isMobile} finixEarn={finixEarn} />
-          <MyBalance isMobile={isMobile} lockAmount={lockAmount} balancevfinix={balancevfinix} />
-        </FlexCard>
-      </Card>
+      {lockAmount ? (
+        <Card mt="S_16">
+          <FlexCard>
+            <FinixEarn isMobile={isMobile} finixEarn={finixEarn} />
+            <MyBalance isMobile={isMobile} lockAmount={lockAmount} balancevfinix={balancevfinix} />
+          </FlexCard>
+        </Card>
+      ) : (
+        <></>
+      )}
     </>
   )
 }
