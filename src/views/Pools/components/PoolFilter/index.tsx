@@ -87,7 +87,7 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
           </ToggleSection>
         </Flex>
         <Flex mt="S_12">
-          <Box minWidth={128} mr="S_6">
+          <Box minWidth={148} mr="S_6">
             <DropdownSection />
           </Box>
           <SearchInput
@@ -104,7 +104,7 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex justifyContent="space-between" alignItems="center">
-        <Box width={128}>
+        <Box width={148}>
           <DropdownSection />
         </Box>
         <ToggleSection ml="S_24">
