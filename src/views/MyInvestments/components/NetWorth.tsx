@@ -12,10 +12,10 @@ const NetWorth: React.FC<{
   const filledProducts = useMemo(() => {
     // { farm: [], pool: [], rebalancing: [], ... }
     return {
-      farm: [], 
+      farm: [],
       pool: [],
       rebalancing: [],
-      ...products
+      ...products,
     }
   }, [products])
 
