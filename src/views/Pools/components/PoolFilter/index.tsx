@@ -13,7 +13,7 @@ import {
   DropdownOption,
 } from 'definixswap-uikit-v2'
 
-const ToggleSection = styled(Flex)`
+const ToggleWrap = styled(Flex)`
   align-items: center;
   justify-content: flex-end;
 `
@@ -79,12 +79,12 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
     return (
       <Flex flexDirection="column">
         <Flex alignItems="center">
-          <ToggleSection>
+          <ToggleWrap>
             <StakedOnlySection />
-          </ToggleSection>
-          <ToggleSection ml="S_20">
+          </ToggleWrap>
+          <ToggleWrap ml="S_20">
             <LiveOnlySection />
-          </ToggleSection>
+          </ToggleWrap>
         </Flex>
         <Flex mt="S_12">
           <Box minWidth={148} mr="S_6">
@@ -107,14 +107,14 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
         <Box width={148}>
           <DropdownSection />
         </Box>
-        <ToggleSection ml="S_24">
+        <ToggleWrap ml="S_24">
           <StakedOnlySection />
-        </ToggleSection>
-        <ToggleSection ml="S_24">
+        </ToggleWrap>
+        <ToggleWrap ml="S_24">
           <LiveOnlySection />
-        </ToggleSection>
+        </ToggleWrap>
       </Flex>
-      <Box>
+      <Box width={200}>
         <SearchInput
           type="text"
           placeholder={t('Token name')}
