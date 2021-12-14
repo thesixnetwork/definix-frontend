@@ -48,7 +48,7 @@ const InputBox = styled.div`
 
 const StyledAnountButton = styled(AnountButton)`
   margin-left: ${({ theme }) => theme.spacing.S_6}px;
-  background: ${({ theme }) => rgba(theme.colors.lightgrey, 0.5)};
+  background: ${({ theme }) => rgba(theme.colors.lightgrey, 0.3)};
 `
 
 const CurrencyInputPanel = ({
