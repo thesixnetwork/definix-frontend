@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
 import CastVoteModal from '../Modals/CastVoteModal'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
@@ -49,6 +51,38 @@ const BpIcons = styled.span`
   &.Mui-focusVisible {
     outline: 2px auto rgba(19, 124, 189, 0.6);
     outline-offset: 2;
+  }
+`
+
+const BpCheckboxIcons = styled.span`
+  border-radius: 2px;
+  width: 0.65em;
+  height: 0.65em;
+  background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#E3E6EC')} !important;
+  border: 1.5px solid #979797;
+  margin-left: 2px;
+  &.Mui-focusVisible {
+    outline: 2px auto rgba(19, 124, 189, 0.6);
+    outline-offset: 2;
+  }
+`
+
+const CustomCheckbox = styled(Checkbox)`
+  &.Mui-checked {
+    color: ${({ theme }) => theme.colors.success} !important;
+  }
+
+  &.MuiCheckbox-root {
+    color: #fcfcfc;
+  }
+`
+
+const FormControlLabelCustom = styled(FormControlLabel)`
+  height: 40px;
+  margin: 0 0 0 -10px !important;
+
+  .MuiFormControlLabel-label {
+    flex-grow: 1;
   }
 `
 
@@ -97,7 +131,25 @@ const VotingCast = () => {
             </Button>
             <Text fontSize="14px" color="text" paddingLeft="14px">Claim will be available after the the voting time is ended.</Text>
           </div> */}
-          <RadioGroup name="use-radio-group" defaultValue="yes">
+          <CardList>
+            <FormControlLabelCustom
+              control={<CustomCheckbox size="small" disabled checked icon={<BpCheckboxIcons />} />}
+              label=""
+            />
+            <Text fontSize="15px" bold>
+              Yes, agree with you.
+            </Text>
+          </CardList>
+          <CardList>
+            <FormControlLabelCustom
+              control={<CustomCheckbox size="small" disabled checked={false} icon={<BpCheckboxIcons />} />}
+              label=""
+            />
+            <Text fontSize="15px" bold>
+              No, I’m not agree with you.
+            </Text>
+          </CardList>
+          {/* <RadioGroup name="use-radio-group" defaultValue="yes">
             <CardList>
               <MyFormControlLabel value="yes" label="" control={<Radio />} />
               <Text fontSize="15px" bold>
@@ -110,7 +162,7 @@ const VotingCast = () => {
                 No, I’m not agree with you.
               </Text>
             </CardList>
-          </RadioGroup>
+          </RadioGroup> */}
           <Button
             variant="success"
             radii="small"

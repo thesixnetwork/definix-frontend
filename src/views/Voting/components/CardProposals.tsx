@@ -26,6 +26,7 @@ const Tabs = styled(Card)`
   width: 100%;
   position: relative;
   content: '';
+  border-radius: 0px;
   background-color: ${({ theme }) => theme.mediaQueries.md};
   background-size: cover;
   background-repeat: no-repeat;
@@ -57,6 +58,7 @@ const StyledButtonCore = styled(Button)`
 
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
+  const [currentTabHeader, setCurrentTabHeader] = useState(0)
   // const [chartName, setChartName] = useState<TypeChartName>('Core')
 
   useEffect(
@@ -69,19 +71,22 @@ const CardProposals = () => {
   return (
     <>
       <Proposals>
-        <Header>
-          <Heading fontSize="26px !important">Proposals</Heading>
-          <StyledButtonCore color="#30ADFF" className="ml-6" size="sm">
-            Core
-          </StyledButtonCore>
-          {/* <SelectType chartName={chartName} setChartName={setChartName} className="ml-5" /> */}
-        </Header>
+        <Tabs className="bd-b">
+          <CardTab
+            menus={['Core']}
+            currentTabHeader={currentTabHeader}
+            setCurrentTabHeader={setCurrentTabHeader}
+            className="px-5"
+            isHeader
+          />
+        </Tabs>
         <Tabs>
           <CardTab
             menus={['Vote Now', 'Soon', 'Closed']}
             current={currentTab}
             setCurrent={setCurrentTab}
             className="px-5"
+            isHeader={false}
           />
           {currentTab === 0 ? (
             <TopicList isActive="vote" />
