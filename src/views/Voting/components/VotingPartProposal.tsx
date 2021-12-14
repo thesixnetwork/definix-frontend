@@ -1,18 +1,16 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from 'react'
-import { Card, Text, Heading, useMatchBreakpoints, Button } from 'uikit-dev'
-import { ExternalLink } from 'react-feather'
+import { Link } from 'react-router-dom'
+import { Card, Text, useMatchBreakpoints, Button } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
-import moment from 'moment'
-import numeral from 'numeral'
+// import moment from 'moment'
+// import numeral from 'numeral'
 import { getAddress } from 'utils/addressHelpers'
-import CopyToClipboard from 'uikit-dev/widgets/WalletModal/CopyToClipboard'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
-import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -84,15 +82,37 @@ const TR = styled.tr`
     border-top: 1px solid: ${({ theme }) => theme.colors.border};
   }
 `
+
 const TD = styled.td<{ align?: string }>`
   width: 100%;
   vertical-align: middle;
   align-self: ${'center'};
 `
 
+const BtnDetails = styled(Button)`
+  width: 60%;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: normal;
+  background-color: ${({ theme }) => theme.colors.primary};
+`
+
+// const BtnClaim = styled(Button)`
+//   width: 60%;
+//   padding: 10px 20px;
+//   border-radius: 8px;
+//   text-align: center;
+//   font-size: 12px;
+//   font-style: italic;
+//   font-weight: normal;
+//   background-color: ${({ theme }) => theme.colors.success};
+// `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
-  const [cols] = useState(['Address', 'Choice', 'Voting Power'])
+  const [cols] = useState(['Title', 'Vote', 'Voting Power',''])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const onPageChange = (e, page) => {
@@ -120,18 +140,22 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
           </>
         ) : (
           <TBody>
-            {/* {console.log('rows',rows)} */}
             {rows !== null &&
               rows.map((r) => (
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
-                    <div className="flex align-center">
-                      <Text color="#30ADFF" bold paddingRight="8px">
-                        0x0000000000
-                        {/* {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)} */}
+                      <Text color="text" bold fontSize="20px">
+                        Proposal Topic  Proposal Topic  Proposal Topic  Proposal…
                       </Text>
-                      <img src={exploreIcon} alt="exploreIcon" width={16} />
-                    </div>
+                      <div className="flex align-center">
+                        <Text color="text" paddingRight="8px">
+                          End Date
+                        </Text>
+                        <Text color="text" bold>
+                          12-Nov-21  15:00:00 GMT+9
+                        </Text>
+                      </div>
+                     
                   </TD>
                   <TD>
                     <Text color="text" bold>
@@ -143,8 +167,16 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <Text color="text" bold paddingRight="8px">
                         23,143
                       </Text>
-                      <img src={exploreIcon} alt="exploreIcon" width={16} />
+                     
                     </div>
+                  </TD>
+                  <TD>
+                    <BtnDetails as={Link} to="/voting/detail">
+                      Deatils
+                    </BtnDetails>
+                    {/* <BtnClaim as={Link} to="/voting/detail">
+                      Claim Voting Power
+                    </BtnClaim> */}
                   </TD>
                 </TR>
               ))}
@@ -167,7 +199,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   )
 }
 
-const VotingList = ({ rbAddress }) => {
+const VotingPartProposal = ({ rbAddress }) => {
   const address = getAddress(rbAddress)
   const { account } = useWallet()
 
@@ -213,10 +245,10 @@ const VotingList = ({ rbAddress }) => {
   }, [])
   return (
     <>
-      <Card className="mb-4">
+      <Card className="my-4">
         <div className="pa-4 pt-3 bd-b">
-          <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-            Votes (1)
+          <Text fontSize="26px" bold marginTop="10px">
+            Participated Proposal
           </Text>
         </div>
         <TransactionTable
@@ -244,4 +276,4 @@ const VotingList = ({ rbAddress }) => {
   )
 }
 
-export default VotingList
+export default VotingPartProposal

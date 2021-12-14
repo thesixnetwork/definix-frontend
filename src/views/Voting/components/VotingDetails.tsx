@@ -10,10 +10,8 @@ import styled from 'styled-components'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
+import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
 
-const ExternalUrl = styled(ExternalLink)`
-  cursor: pointer;
-`
 
 const VotingDetails = () => {
   const { account } = useWallet()
@@ -39,7 +37,7 @@ const VotingDetails = () => {
             <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="6px">
               QmaSFZ3p
             </Text>
-            <ExternalUrl color="#30ADFF" size={16} />
+            <img src={exploreIcon} alt="exploreIcon" width={16} />
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -53,7 +51,7 @@ const VotingDetails = () => {
               {/* {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}&nbsp; */}
               kfkhldf
             </Text>
-            <ExternalUrl color="#30ADFF" size={16} />
+            <img src={exploreIcon} alt="exploreIcon" width={16} />
           </div>
         </div>
       </Card>

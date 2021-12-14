@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
 const BoxInput = styled(Input)`
@@ -19,9 +20,7 @@ const BoxInput = styled(Input)`
   align-items: center;
 `
 
-const ExternalUrl = styled(ExternalLink)`
-  cursor: pointer;
-`
+
 
 const AddActions = () => {
   const { isDark } = useTheme()
@@ -71,7 +70,7 @@ const AddActions = () => {
               <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
                 QmaSFZ3p
               </Text>
-              <ExternalUrl color="#30ADFF" size={16} />
+              <img src={exploreIcon} alt="exploreIcon" width={16} />
             </div>
           </div>
           <Button variant="success" radii="small" className="my-4">

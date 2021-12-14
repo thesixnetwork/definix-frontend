@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import { Card, Heading, Text, Button } from 'uikit-dev'
+import { Card, Heading, Text } from 'uikit-dev'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import CardProposals from './CardProposals'
+import VotingPartProposal from './VotingPartProposal'
 
 const BannerVoting = styled(Card)`
   width: 100%;
@@ -12,7 +13,6 @@ const BannerVoting = styled(Card)`
   padding: 28px 24px;
   position: relative;
   overflow: visible;
-  display: flex;
 
   &:before {
     content: '';
@@ -44,7 +44,7 @@ const BannerVoting = styled(Card)`
 
     h2 {
       font-size: 32px !important;
-      width: 100%;
+      width: 80%;
     }
   }
 
@@ -67,12 +67,12 @@ const BannerVoting = styled(Card)`
 
     &:before {
       opacity: 1;
-      margin-right: 18%;
+      margin-right: 14%;
     }
 
     h2 {
       font-size: 32px !important;
-      width: 80%;
+      width: 70%;
     }
   }
 `
@@ -88,6 +88,8 @@ const DetailBanner = styled(Text)`
 `
 
 const CardVoting = () => {
+  // const { isXl, isLg } = useMatchBreakpoints()
+  // const isMobile = !isXl && !isLg
   return (
     <>
       <BannerVoting>
@@ -97,12 +99,14 @@ const CardVoting = () => {
             Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
           </DetailBanner>
         </div>
-        {/* <img src={definixVoting} alt="" width="24%" height="24%" /> */}
-        {/* <Button variant="success" radii="small" as={Link} to="/voting/make-proposal">
-          Make a Proposals
-        </Button> */}
+        {/* {isMobile && (
+          <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
+            Make a Proposals
+          </Button>
+        )} */}
       </BannerVoting>
       <CardProposals />
+      <VotingPartProposal rbAddress />
     </>
   )
 }
