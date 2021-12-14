@@ -20,8 +20,6 @@ const BoxInput = styled(Input)`
   align-items: center;
 `
 
-
-
 const AddActions = () => {
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()

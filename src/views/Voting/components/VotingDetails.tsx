@@ -12,7 +12,6 @@ import useTheme from 'hooks/useTheme'
 import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
 import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
 
-
 const VotingDetails = () => {
   const { account } = useWallet()
   const { isDark } = useTheme()

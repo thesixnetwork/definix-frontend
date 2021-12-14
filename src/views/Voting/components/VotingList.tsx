@@ -90,7 +90,6 @@ const TD = styled.td<{ align?: string }>`
   align-self: ${'center'};
 `
 
-
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Address', 'Choice', 'Voting Power'])
   const [currentPage, setCurrentPage] = useState(1)
