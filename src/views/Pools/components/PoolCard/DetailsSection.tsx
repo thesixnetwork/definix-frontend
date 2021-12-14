@@ -90,9 +90,9 @@ const MyBalanceSection: React.FC<{
         <Flex alignItems="center">
           <TokenLabel type="token">{tokenName}</TokenLabel>
           {BigNumber.isBigNumber(myBalance) ? (
-              <BalanceText value={myBalance.toNumber()} className="balance-text" />
-            ) : (
-              <Text className="balance-text">-</Text>
+            <BalanceText value={myBalance.toNumber()} className="balance-text" />
+          ) : (
+            <Text className="balance-text">-</Text>
           )}
         </Flex>
       </BalanceTextWrap>
@@ -150,7 +150,7 @@ const EarningsSection: React.FC<{
       <ValueWrap>
         <BalanceTextWrap>
           <Flex alignItems="end">
-            <BalanceText value={earningsValue}  className="balance-text"/>
+            <BalanceText value={earningsValue} className="balance-text" />
             <TokenNameText>{QuoteToken.FINIX}</TokenNameText>
           </Flex>
         </BalanceTextWrap>
