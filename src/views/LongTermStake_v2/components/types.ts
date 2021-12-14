@@ -8,3 +8,22 @@ export interface DataType {
   apr: number
   minStake: number
 }
+
+export interface AllDataLockType {
+  canBeClaim: boolean
+  canBeUnlock: boolean
+  days: number
+  flg: boolean
+  id: number
+  isPenalty: boolean
+  isUnlocked: boolean
+  level: number
+  lockAmount: number
+  lockTimestamp: string
+  multiplier: number
+  penaltyFinixAmount: number
+  penaltyRate: number
+  penaltyUnlockTimestamp: string
+  periodPenalty: string
+  voteAmount: number
+}
