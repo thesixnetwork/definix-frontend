@@ -123,12 +123,8 @@ const Deposit: React.FC<{
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      if (rate === 100) {
-        setVal(numeral(getBalanceNumber(maxValue)).format('0.000000'))
-      } else {
-        const balance = maxValue.times(rate / 100)
-        setVal(numeral(getBalanceNumber(balance)).format('0.00'))
-      }
+      const balance = rate === 100 ? maxValue : maxValue.times(rate / 100)
+      setVal(getBalanceNumber(balance).toString())
     },
     [maxValue, setVal],
   )

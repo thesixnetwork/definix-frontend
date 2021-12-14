@@ -57,10 +57,9 @@ const ModalInput: React.FC<{
   }, [t, isEmptyBalance, isGreaterThanMyBalance, isValidBalance])
 
   const handleButtonClick = useCallback(() => {
-    if (!isValidBalance) return
-    if (isGreaterThanMyBalance) return
+    if (hasError) return
     onClickButton()
-  }, [isValidBalance, isGreaterThanMyBalance, onClickButton])
+  }, [hasError, onClickButton])
 
   return (
     <div>

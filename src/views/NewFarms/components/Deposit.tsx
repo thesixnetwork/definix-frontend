@@ -107,12 +107,8 @@ const Deposit: React.FC<{
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      if (rate === 100) {
-        setVal(getBalanceNumber(tokenBalance).toString())
-      } else {
-        const balance = tokenBalance.times(rate / 100)
-        setVal(getBalanceNumber(balance).toString())
-      }
+      const balance = rate === 100 ? tokenBalance : tokenBalance.times(rate / 100)
+      setVal(getBalanceNumber(balance).toString())
     },
     [tokenBalance, setVal],
   )

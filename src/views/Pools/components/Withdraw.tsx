@@ -115,12 +115,8 @@ const Withdraw: React.FC<{
 
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
-      if (rate === 100) {
-        setVal(numeral(getBalanceNumber(myStakedBalance)).format('0.000000'))
-      } else {
-        const balance = myStakedBalance.times(rate / 100)
-        setVal(numeral(getBalanceNumber(balance)).format('0.00'))
-      }
+      const balance = rate === 100 ? myStakedBalance : myStakedBalance.times(rate / 100)
+      setVal(getBalanceNumber(balance).toString())
     },
     [myStakedBalance, setVal],
   )
