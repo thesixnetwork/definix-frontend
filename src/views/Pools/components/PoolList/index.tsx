@@ -69,6 +69,16 @@ const PoolList: React.FC<{
     }
   }, [dispatch, account, poolsWithApy, balances])
 
+  const emptyAreaMessage = useMemo(() => {
+    // stakedOnly => no pool
+    // !liveOnly => no result
+    // stakedOnly && !liveOnly => no pool
+    if (stakedOnly) {
+      return t('There are no pools in deposit.')
+    }
+    return t('No search results')
+  }, [t, stakedOnly])
+
   useEffect(() => {
     fetchAllBalances()
   }, [fetchAllBalances])
@@ -84,7 +94,7 @@ const PoolList: React.FC<{
       ))}
     </>
   ) : (
-    <NoResultArea message={t('No search results')} />
+    <NoResultArea message={emptyAreaMessage} />
   )
 }
 
