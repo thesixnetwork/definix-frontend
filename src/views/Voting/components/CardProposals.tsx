@@ -84,11 +84,11 @@ const CardProposals = () => {
             className="px-5"
           />
           {currentTab === 0 ? (
-            <TopicList isActive="vote"/>
+            <TopicList isActive="vote" />
           ) : currentTab === 1 ? (
-            <TopicList isActive="soon"/>
+            <TopicList isActive="soon" />
           ) : (
-            <TopicList isActive="closed"/>
+            <TopicList isActive="closed" />
           )}
         </Tabs>
       </Proposals>

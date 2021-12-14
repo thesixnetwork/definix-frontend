@@ -29,7 +29,6 @@ import loadings from 'uikit-dev/animation/farmPool.json'
 import ModalCastVote from 'uikit-dev/widgets/Modal/ModalCastVote'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 
-
 const SuccessOptions = {
   loop: true,
   autoplay: true,
@@ -172,7 +171,6 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [vFinixEarn, setVFinixEarn] = useState(0)
   const [loading, setLoading] = useState('')
 
-  
   const CardResponse = () => {
     return (
       <ModalResponses title="" onDismiss={onDismiss} className="">
@@ -190,17 +188,15 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
       {showLottie ? (
         <CardResponse />
       ) : (
-        <ModalCastVote
-          title="Confirm Vote"
-          onDismiss={onDismiss}
-          hideCloseButton
-        >
-          <Text fontSize="12px" color="textSubtle">Voting for</Text>
-          <Text fontSize="16px" color="text" bold paddingTop="6px">Yes, agree with you.</Text>
+        <ModalCastVote title="Confirm Vote" onDismiss={onDismiss} hideCloseButton>
+          <Text fontSize="12px" color="textSubtle">
+            Voting for
+          </Text>
+          <Text fontSize="16px" color="text" bold paddingTop="6px">
+            Yes, agree with you.
+          </Text>
           {/* <Text fontSize="16px" color="text" bold paddingTop="6px>No, I’m not agree with you.</Text> */}
-
         </ModalCastVote>
-       
       )}
     </>
   )

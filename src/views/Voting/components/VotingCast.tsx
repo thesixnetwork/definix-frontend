@@ -17,7 +17,7 @@ const CardList = styled(Card)`
   padding: 0px 20px;
   display: flex;
   align-items: center;
-  
+
   &.Mui-checked {
     background: #0973b9;
     border: 1px solid #30adff;
@@ -52,25 +52,23 @@ const BpIcons = styled.span`
   }
 `
 
-
 function MyFormControlLabel(props) {
-  const radioGroup = useRadioGroup();
+  const radioGroup = useRadioGroup()
 
-  let checked = false;
+  let checked = false
 
   if (radioGroup) {
-    checked = radioGroup.value === props.value;
+    checked = radioGroup.value === props.value
   }
 
-  return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />;
+  return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />
 }
 
 const VotingCast = () => {
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
-  const [onPresentConnectModal] = useModal(<CastVoteModal />,
-  )
+  const [onPresentConnectModal] = useModal(<CastVoteModal />)
 
   return (
     <>
@@ -84,19 +82,26 @@ const VotingCast = () => {
           <RadioGroup name="use-radio-group" defaultValue="yes">
             <CardList>
               <MyFormControlLabel value="yes" label="" control={<Radio />} />
-              <Text fontSize="15px" bold>Yes, agree with you.</Text>
+              <Text fontSize="15px" bold>
+                Yes, agree with you.
+              </Text>
             </CardList>
             <CardList>
               <MyFormControlLabel value="no" label="" control={<Radio />} />
-              <Text fontSize="15px" bold>No, I’m not agree with you.</Text>
+              <Text fontSize="15px" bold>
+                No, I’m not agree with you.
+              </Text>
             </CardList>
           </RadioGroup>
-          <Button variant="success" radii="small"
+          <Button
+            variant="success"
+            radii="small"
             marginTop="10px"
             size="sm"
             onClick={() => {
               onPresentConnectModal()
-            }}>
+            }}
+          >
             Cast vote
           </Button>
         </div>
