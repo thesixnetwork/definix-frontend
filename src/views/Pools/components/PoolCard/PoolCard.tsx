@@ -134,7 +134,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
       addSwapUrl,
     }
   }, [isOldSyrup, isBnbPool, pool, addSwapUrl])
-  
+
   const renderStakeAction = useCallback(
     () => (
       <PoolConText.Consumer>
@@ -154,7 +154,17 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
         )}
       </PoolConText.Consumer>
     ),
-    [pool, isOldSyrup, isBnbPool, hasAccount, hasUserData, hasAllowance, stakedBalance, componentType, dataForNextState],
+    [
+      pool,
+      isOldSyrup,
+      isBnbPool,
+      hasAccount,
+      hasUserData,
+      hasAllowance,
+      stakedBalance,
+      componentType,
+      dataForNextState,
+    ],
   )
   /**
    * HarvestAction Section
