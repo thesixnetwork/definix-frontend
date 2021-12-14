@@ -1,6 +1,5 @@
 import React from 'react'
 import numeral from 'numeral'
-import { get } from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Box, Divider, Flex, useMatchBreakpoints, VDivider } from 'definixswap-uikit-v2'
 
@@ -52,25 +51,9 @@ const Performance: React.FC<PerformanceType> = ({
 
   return (
     <Box px={size.paddingX} py={size.paddingY}>
-      <div className="flex flex-wrap align-center justify-space-between mb-3">
-        <div className="flex flex-wrap align-center justify-space-between mb-3">
-          <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
-        </div>
-        <div className={`flex ${isMobile ? 'mt-3 justify-end' : ''}`}>
-          {false && (
-            <TwoLineFormat
-              title="24H Performance"
-              value={`$${numeral(get(rebalance, 'twentyHperformance', 0)).format('0,0.[00]')}`}
-              valueClass={(() => {
-                if (get(rebalance, 'twentyHperformance', 0) < 0) return 'failure'
-                if (get(rebalance, 'twentyHperformance', 0) > 0) return 'success'
-                return ''
-              })()}
-              className="mr-6"
-            />
-          )}
-        </div>
-      </div>
+      <Box mb="S_24">
+        <SelectTime timeframe={timeframe} setTimeframe={setTimeframe} />
+      </Box>
 
       <FullChart
         fundName={rebalance.title}

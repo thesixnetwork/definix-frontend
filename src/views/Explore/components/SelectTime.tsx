@@ -1,22 +1,36 @@
 import React from 'react'
 import { Button, ButtonGroup } from 'definixswap-uikit-v2'
+import styled from 'styled-components'
 
-const SelectTime = ({ timeframe, setTimeframe, className = '' }) => {
-  const times = ['1 D', '1 W', '1 M', '3 M', 'ALL']
+const TimeButton = styled(Button)`
+  white-space: nowrap;
+  max-width: 60px;
+  height: 32px;
+`
+
+const SelectTime = ({ timeframe, setTimeframe }) => {
+  const times = [
+    { value: '1D', label: '1 D' },
+    { value: '1W', label: '1 W' },
+    { value: '1M', label: '1 M' },
+    { value: '3M', label: '3 M' },
+    { value: 'ALL', label: 'ALL' },
+  ]
 
   return (
-    <ButtonGroup className={className}>
-      {times.map((t) => (
-        <Button
-          key={t}
+    <ButtonGroup>
+      {times.map(({ label, value }) => (
+        <TimeButton
+          key={value}
           scale="sm"
-          variant={t.split(' ').join('') === timeframe ? 'primary' : 'text'}
+          variant={value === timeframe ? 'primary' : 'text'}
+          style={{ whiteSpace: 'nowrap' }}
           onClick={() => {
-            setTimeframe(t.split(' ').join(''))
+            setTimeframe(value)
           }}
         >
-          {t}
-        </Button>
+          {label}
+        </TimeButton>
       ))}
     </ButtonGroup>
   )
