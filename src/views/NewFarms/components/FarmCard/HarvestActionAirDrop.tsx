@@ -38,6 +38,9 @@ const TokenLabel = styled(Label)`
     margin-right: ${({ theme }) => theme.spacing.S_12}px;
   }
 `
+const TokenValueWrap = styled(Box)`
+  margin-top: -3px;
+`
 const BalanceText = styled(Text)`
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
@@ -46,7 +49,7 @@ const BalanceText = styled(Text)`
   }
 `
 const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.deepgrey};
+  color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R};
@@ -139,10 +142,10 @@ const HarvestAction: React.FC<FarmCardActionsProps> = ({ pid, earnings, componen
             <HarvestInfo>
               <Flex>
                 <TokenLabel type="token">FINIX</TokenLabel>
-                <Box>
+                <TokenValueWrap>
                   <BalanceText>{convertToBalanceFormat(finixEarningsValue)}</BalanceText>
                   <PriceText value={earningsPrice} prefix="=" />
-                </Box>
+                </TokenValueWrap>
               </Flex>
               {isInFarm && <HarvestButtonSectionInFarm>{renderHarvestButton()}</HarvestButtonSectionInFarm>}
             </HarvestInfo>

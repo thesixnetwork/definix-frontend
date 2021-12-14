@@ -25,9 +25,12 @@ export interface CardHeadingProps {
 export interface StakeActionProps {
   componentType?: string
   isOldSyrup: boolean
+  isBnbPool: boolean
+  hasAccount: boolean
+  hasUserData: boolean
+  hasAllowance: boolean
   pool: PoolWithApy
   stakedBalance: BigNumber
-  needsApprovalContract: boolean
   onPresentDeposit?: any
   onPresentWithdraw?: any
 }

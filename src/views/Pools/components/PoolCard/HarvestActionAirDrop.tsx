@@ -40,6 +40,9 @@ const TokenLabel = styled(Label)`
     margin-right: ${({ theme }) => theme.spacing.S_12}px;
   }
 `
+const TokenValueWrap = styled(Box)`
+  margin-top: -3px;
+`
 const BalanceText = styled(Text)`
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
@@ -48,7 +51,7 @@ const BalanceText = styled(Text)`
   }
 `
 const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.deepgrey};
+  color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R};
@@ -119,10 +122,10 @@ const HarvestActionAirdrop: React.FC<{
     ({ name, value }) => (
       <Flex>
         <TokenLabel type="token">{name}</TokenLabel>
-        <Box>
+        <TokenValueWrap>
           <BalanceText>{convertToBalanceFormat(value)}</BalanceText>
           <PriceText value={getEarningsPrice(value)} prefix="=" />
-        </Box>
+        </TokenValueWrap>
       </Flex>
     ),
     [convertToBalanceFormat, getEarningsPrice],

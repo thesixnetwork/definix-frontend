@@ -134,14 +134,14 @@ const Slide: React.FC<{
 
   const renderItemSubValue = useCallback(
     (item) => {
-      return displayOnlyTotalPrice ? (
+      return displayOnlyTotalPrice ? null : (
         <CurrencyText
           textStyle="R_14M"
           color={curTheme.itemCurrencyColor}
           value={hasAccount ? item.price : 0}
           prefix="="
         />
-      ) : null
+      )
     },
     [displayOnlyTotalPrice, curTheme, hasAccount],
   )

@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { getLpImageUrls } from 'utils/getTokenImage'
 import { useToast } from 'state/hooks'
 import {
@@ -14,6 +15,15 @@ import {
   ModalBody,
   ModalFooter,
 } from 'definixswap-uikit-v2'
+
+const ModalBodyWrap = styled(ModalBody)`
+  margin-top: ${({ theme }) => theme.spacing.S_16}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_40}px;
+  width: 464px;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 100%;
+  }
+`
 
 const ConfirmModal = ({
   lpSymbol,
@@ -44,8 +54,8 @@ const ConfirmModal = ({
   }, [isPendingTX, toastSuccess, toastError, t, onOK, onDismiss, goList, buttonName])
 
   return (
-    <Modal title={title} onDismiss={onDismiss}>
-      <ModalBody isBody width="464px" className="mt-s16 mb-s40">
+    <Modal title={title} onDismiss={onDismiss} mobileFull>
+      <ModalBodyWrap isBody>
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Flex className="mr-s12">
@@ -64,7 +74,7 @@ const ConfirmModal = ({
             {stakedBalance}
           </Text>
         </Flex>
-      </ModalBody>
+      </ModalBodyWrap>
       <ModalFooter isFooter>
         <Button lg variant={ButtonVariants.RED} isLoading={isPendingTX} onClick={handleComplete}>
           {t(buttonName)}

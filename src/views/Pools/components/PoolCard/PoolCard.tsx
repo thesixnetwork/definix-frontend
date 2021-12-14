@@ -1,3 +1,4 @@
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -66,6 +67,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const [isOpenAccordion, setIsOpenAccordion] = useState(false)
   const isInMyInvestment = useMemo(() => componentType === 'myInvestment', [componentType])
+  const { account } = useWallet()
   const { sousId, tokenName, totalStaked } = pool
 
   const isBnbPool = useMemo(() => pool.poolCategory === PoolCategory.KLAYTN, [pool.poolCategory])
@@ -74,10 +76,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   const allowance = useMemo(() => new BigNumber(pool.userData?.allowance || 0), [pool.userData])
   const earnings = useMemo(() => new BigNumber(pool.userData?.pendingReward || 0), [pool.userData])
   const stakedBalance = useMemo(() => new BigNumber(pool.userData?.stakedBalance || 0), [pool.userData])
-
-  const needsApprovalContract = useMemo(() => {
-    return stakedBalance?.toNumber() <= 0 && !allowance.toNumber() && !isBnbPool
-  }, [stakedBalance, allowance, isBnbPool])
 
   const addSwapUrl = useMemo(() => {
     const swapUrlPathParts = getSwapUrlPathParts({ tokenAddress: pool.stakingTokenAddress })
@@ -113,7 +111,6 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
    * MyBalance Section
    */
   const renderMyBalanceSection = useCallback(() => {
-    if (!myBalanceInWallet || myBalanceInWallet === null) return null
     return <MyBalanceSection title={t('Balance')} tokenName={tokenName} myBalance={myBalanceInWallet} />
   }, [t, tokenName, myBalanceInWallet])
   /**
@@ -123,6 +120,12 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     () => <EarningsSection title={t('Earned')} earnings={earnings} />,
     [t, earnings],
   )
+  /**
+   * StakeAction Section
+   */
+  const hasAccount = useMemo(() => !!account, [account])
+  const hasUserData = useMemo(() => !!pool.userData, [pool.userData])
+  const hasAllowance = useMemo(() => allowance && allowance.isGreaterThan(0), [allowance])
   const dataForNextState = useMemo(() => {
     return {
       isOldSyrup,
@@ -131,9 +134,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
       addSwapUrl,
     }
   }, [isOldSyrup, isBnbPool, pool, addSwapUrl])
-  /**
-   * StakeAction Section
-   */
+
   const renderStakeAction = useCallback(
     () => (
       <PoolConText.Consumer>
@@ -141,16 +142,29 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
           <StakeAction
             componentType={componentType}
             isOldSyrup={isOldSyrup}
+            isBnbPool={isBnbPool}
+            hasAccount={hasAccount}
+            hasUserData={hasUserData}
+            hasAllowance={hasAllowance}
             pool={pool}
             stakedBalance={stakedBalance}
-            needsApprovalContract={needsApprovalContract}
             onPresentDeposit={() => goDeposit(dataForNextState)}
             onPresentWithdraw={() => goWithdraw(dataForNextState)}
           />
         )}
       </PoolConText.Consumer>
     ),
-    [pool, isOldSyrup, needsApprovalContract, stakedBalance, componentType, dataForNextState],
+    [
+      pool,
+      isOldSyrup,
+      isBnbPool,
+      hasAccount,
+      hasUserData,
+      hasAllowance,
+      stakedBalance,
+      componentType,
+      dataForNextState,
+    ],
   )
   /**
    * HarvestAction Section
@@ -161,13 +175,13 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
         componentType={componentType}
         isBnbPool={isBnbPool}
         isOldSyrup={isOldSyrup}
-        needsApprovalContract={needsApprovalContract}
+        needsApprovalContract={!hasUserData || !hasAllowance || isBnbPool}
         sousId={sousId}
         earnings={earnings}
         farm={pool.farm}
       />
     ),
-    [componentType, isBnbPool, isOldSyrup, needsApprovalContract, sousId, earnings, pool.farm],
+    [componentType, isBnbPool, isOldSyrup, hasUserData, hasAllowance, sousId, earnings, pool.farm],
   )
   /**
    * Link Section
