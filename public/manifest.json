@@ -3,11 +3,19 @@
   "name": "Definix",
   "description": "The ultimate crypto investment platform on DeFi for crypto investors to confidently invest and gain profiting results advancing your crypto assets by the help of experts, keeping you connected.",
   "icons": [{
-    "src": "definix_favicon_ESG_icon.ico",
-    "type": "image/x-icon",
-    "sizes": "256x256"
-  }],
-  "start_url": ".",
+      "src": "./definix_app_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./definix_app_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "orientation": "portrait",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
