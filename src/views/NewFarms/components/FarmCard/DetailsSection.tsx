@@ -8,10 +8,14 @@ import { Flex, Text, Label, Box } from 'definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
-  margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+  margin-right: ${({ theme }) => theme.spacing.S_6}px;
+  margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
   color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_12R};
   white-space: nowrap;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
+  }
 `
 const TokenLabel = styled(Label)`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;

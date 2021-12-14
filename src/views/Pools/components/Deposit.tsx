@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
