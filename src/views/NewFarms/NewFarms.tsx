@@ -10,8 +10,10 @@ import Deposit from './components/Deposit'
 import Withdraw from './components/Withdraw'
 import FarmContext from './FarmContext'
 
-const Wrap = styled(Box)`
+const Wrap = styled(Box)<{ pageState: string }>`
+  margin: 0 auto;
   padding-bottom: ${({ theme }) => theme.spacing.S_80}px;
+  max-width: ${({ pageState }) => pageState === 'list' ? '100%' : '630px'};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
   }
@@ -52,7 +54,7 @@ const Farms: React.FC = () => {
         },
       }}
     >
-      <Wrap>
+      <Wrap pageState={pageState}>
         {pageState === 'list' && (
           <>
             <ListPageHeader type="farm" />
