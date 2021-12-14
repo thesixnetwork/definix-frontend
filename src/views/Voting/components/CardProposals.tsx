@@ -1,10 +1,11 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
 import { Card, Heading, Button } from '../../../uikit-dev'
 import TopicList from './TopicList'
 import CardTab from './CardTab'
-import SelectType, { TypeChartName } from './SelectType'
+// import SelectType, { TypeChartName } from './SelectType'
 
 const Proposals = styled(Card)`
   width: 100%;
@@ -56,7 +57,7 @@ const StyledButtonCore = styled(Button)`
 
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
-  const [chartName, setChartName] = useState<TypeChartName>('Core')
+  // const [chartName, setChartName] = useState<TypeChartName>('Core')
 
   useEffect(
     () => () => {
@@ -82,7 +83,13 @@ const CardProposals = () => {
             setCurrent={setCurrentTab}
             className="px-5"
           />
-          <TopicList />
+          {currentTab === 0 ? (
+            <TopicList isActive="vote"/>
+          ) : currentTab === 1 ? (
+            <TopicList isActive="soon"/>
+          ) : (
+            <TopicList isActive="closed"/>
+          )}
         </Tabs>
       </Proposals>
     </>

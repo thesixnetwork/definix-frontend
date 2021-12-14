@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import coreIcon from 'uikit-dev/images/for-ui-v2/voting/icon-core.png'
+// import communityIcon from 'uikit-dev/images/for-ui-v2/voting/icon-community.png'
 
 const SpecialOutline = styled.div`
   background-color: unset;
@@ -15,7 +16,7 @@ const SpecialOutline = styled.div`
   font-size: 14px;
   font-style: italic;
   cursor: unset;
-  padding: 8px 16px;
+  padding: 9px 10px;
 `
 
 const SpecialOutlineCore = styled.div`
@@ -26,7 +27,7 @@ const SpecialOutlineCore = styled.div`
   font-size: 14px;
   font-style: italic;
   cursor: unset;
-  padding: 8px 16px;
+  padding: 0px 16px;
   display: flex;
   align-items: center;
 `
@@ -63,8 +64,8 @@ const VotingDescription = () => {
             <SpecialOutline color="primary">Vote Now</SpecialOutline>
             &nbsp;
             <SpecialOutlineCore color="success">
-              <img src={coreIcon} alt="coreIcon" />
-              &nbsp;Core
+              <img src={coreIcon} alt="coreIcon" width={32} />
+              <span>Core</span>
             </SpecialOutlineCore>
           </div>
           <Text fontSize="32px" bold lineHeight="1" marginTop="10px">

@@ -1,71 +1,27 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import { Pocket } from 'react-feather'
+import { Pocket, Users } from 'react-feather'
 import { Heading, Text, Button, Image } from '../../../uikit-dev'
-import next from '../../../uikit-dev/images/next.png'
+import nextIcon from '../../../uikit-dev/images/next.png'
+import coreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-core.png'
+import communityIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-community.png'
 
-const StyledButton = styled(Button)`
+const Styled = styled(Button)`
   background-color: transparent;
   border: unset;
   display: unset;
   align-self: center;
 `
 
-// const StyledButtonVote = styled(Button)`
-//   background-color: transparent;
-//   border: 1px solid #30adff;
-//   color: #30ADFF;
-//   border-radius: 6px;
-//   padding: 18px 20px;
-//   font-style: italic;
-//   font-weight: normal;
-
-//   &:hover {
-//     cursor: default;
-//     background-color: transparent;
-//   }
-// `
-
-// const StyledButtonCore = styled(Button)`
-//   background-color: transparent;
-//   border: 1px solid #55BD92;
-//   color: #55BD92;
-//   border-radius: 6px;
-//   padding: 18px 20px;
-//   font-style: italic;
-//   font-weight: normal;
-
-//   &:hover {
-//       cursor: default;
-
-//       span {
-//         color: #e27d3a !important;
-//         background-color: unset;
-//       }
-//   }
-// `
-
-const StyledButtonVote = styled.div`
+const StyledTypes = styled.div<{ type: string }>`
   background-color: transparent;
-  border: 1px solid #30adff;
-  color: #30adff;
-  border-radius: 6px;
-  padding: 10px 20px;
-  font-size: 14px;
-  font-style: italic;
-  font-weight: normal;
-  display: flex;
-  align-items: center;
-`
-
-const StyledButtonCore = styled.div`
-  background-color: transparent;
-  border: 1px solid #55bd92;
-  color: #55bd92;
-  border-radius: 6px;
-  padding: 10px 20px;
+  border: 1px solid ${({ type }) => type === "vote" ? "#30adff" : type === "core" ? "#55bd92" : type === "soon" ? "#F5C858" : type === "community" ? "#DA7DC1" : type === "closed" && "#6E6E6E"};
+  color: ${({ type }) => type === "vote" ? "#30adff" : type === "core" ? "#55bd92" : type === "soon" ? "#F5C858" : type === "community" ? "#DA7DC1" : type === "closed" && "#6E6E6E"};
+  border-radius: 10px;
+  padding: 2px 16px;
   font-size: 14px;
   font-style: italic;
   font-weight: normal;
@@ -78,6 +34,7 @@ const CardTopicList = styled.div`
   padding: 1.5rem !important;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   justify-content: space-between;
+  cursor: pointer;
 `
 
 const TextHorizontal = styled.div`
@@ -86,7 +43,7 @@ const TextHorizontal = styled.div`
   margin-top: 0.5rem !important;
 `
 
-const TopicList = () => {
+const TabInfos = ({ tab }) => {
   return (
     <CardTopicList>
       <div>
@@ -94,23 +51,62 @@ const TopicList = () => {
           Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic
         </Heading>
         <TextHorizontal>
-          <Text fontSize="14px !important">Vote Now</Text>&nbsp;
+          <Text fontSize="14px !important">End Date</Text>&nbsp;
           <Text fontSize="14px !important">12-Nov-21 15:00:00 GMT+9</Text>
         </TextHorizontal>
         <div className="flex">
-          <StyledButtonVote>
-            <span>Vote Now</span>
-          </StyledButtonVote>
-          <StyledButtonCore className="ml-2 flex">
-            <Pocket width={16} height={16} className="mr-1" />
-            <span>Core</span>
-          </StyledButtonCore>
+          {tab === "vote" ? (
+            <>
+              <StyledTypes type="vote">
+                <span>Vote Now</span>
+              </StyledTypes>
+              <StyledTypes type="core" className="ml-2 flex">
+                <img src={coreIcon} alt="coreIcon" width={32} />
+                <span>Core</span>
+              </StyledTypes>
+            </>
+          ) : tab === "soon" ? (
+            <>
+              <StyledTypes type="soon">
+                <span>Soon</span>
+              </StyledTypes>
+              <StyledTypes type="community" className="ml-2 flex">
+                <img src={communityIcon} alt="communityIcon" width={32}/>
+                <span>Community</span>
+              </StyledTypes>
+            </>
+          ) : tab === "closed" && (
+            <>
+              <StyledTypes type="closed">
+                <span>Closed</span>
+              </StyledTypes>
+              <StyledTypes type="community" className="ml-2 flex">
+                <img src={communityIcon} alt="communityIcon" width={32}/>
+                <span>Community</span>
+              </StyledTypes>
+            </>
+          )}&nbsp;
         </div>
       </div>
-      <StyledButton as={Link} to="/voting/detail">
-        <Image src={next} width={28} height={28} />
-      </StyledButton>
+      <Styled as={Link} to="/voting/detail">
+        <Image src={nextIcon} width={28} height={28} />
+      </Styled>
     </CardTopicList>
+  )
+}
+
+
+const TopicList = ({ isActive }) => {
+  return (
+    <>
+      {isActive === "vote" ? (
+        <TabInfos tab="vote" />
+      ) : isActive === "soon" ? (
+        <TabInfos tab="soon" />
+      ) : (
+        <TabInfos tab="closed" />
+      )}
+    </>
   )
 }
 
