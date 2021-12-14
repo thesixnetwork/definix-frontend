@@ -56,7 +56,7 @@ const CardTab: React.FC<CardTabType> = ({
       {isHeader
         ? menus.map((m, idx) => (
             <Tab
-              className='pa-6'
+              className="pa-6"
               onClick={() => {
                 if (currentTabHeader !== idx) {
                   setCurrentTabHeader(idx)
