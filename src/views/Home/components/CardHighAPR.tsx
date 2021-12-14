@@ -47,7 +47,18 @@ const StyledRebalanceTitle = styled(Flex)`
   }
 `
 
-const Character = styled(Flex)``
+const Character = styled(Flex)`
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 184px;
+  height: 100px;
+
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 120px;
+    height: 65px;
+  }
+`
 
 const CardHighAPR = () => {
   const { t } = useTranslation()
@@ -57,7 +68,7 @@ const CardHighAPR = () => {
         <Flex alignItems="flex-end" justifyContent="space-between">
           <Title>{t('Stake Farms with high APR')}</Title>
           <Character>
-            <HomeFarmFinixIcon />
+            <HomeFarmFinixIcon viewBox="0 0 184 100" />
           </Character>
         </Flex>
         <InnerBox to="/farm">

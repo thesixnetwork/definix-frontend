@@ -6,7 +6,6 @@ import { Route, Router, Switch } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { GlobalStyle, Loading } from 'definixswap-uikit-v2'
-import Info from 'views/Info/Info'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import history from './routerHistory'
@@ -70,9 +69,9 @@ const App: React.FC = () => {
               <Route path="/farm">
                 <NewFarms />
               </Route>
-              <Route path="/info">
+              {/* <Route path="/info">
                 <Info />
-              </Route>
+              </Route> */}
               <Route path="/rebalancing">
                 <Explore />
               </Route>
