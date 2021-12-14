@@ -9,7 +9,7 @@ import { fetchFarmUserDataAsync, fetchBalances } from 'state/actions'
 import { useFarms, useBalances } from 'state/hooks'
 import useRefresh from 'hooks/useRefresh'
 import useFarmsList from 'hooks/useFarmsList'
-import { getAddress } from 'utils/addressHelpers'
+import { getAddress, getWklayAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { DropdownOption } from 'definixswap-uikit-v2'
 import NoResultArea from 'components/NoResultArea'
@@ -51,16 +51,22 @@ const FarmList: React.FC<{
     return stakedOnly ? t('There are no farms in deposit.') : t('No search results')
   }, [t, stakedOnly])
 
+  const getTokenAddress = useCallback((token: string) => {
+    const realTokenAddress = getAddress(token)
+    // for klay
+    return realTokenAddress === getWklayAddress() ? 'main' : realTokenAddress
+  }, [])
+
   const getMyBalancesInWallet = useCallback(
     (tokens: string[]) => {
       return tokens.reduce((result, token) => {
         const obj = {}
-        const realTokenAddress = getAddress(token)
+        const realTokenAddress = getTokenAddress(token)
         obj[getTokenSymbol(realTokenAddress)] = balances ? _.get(balances, realTokenAddress) : null
         return { ...result, ...obj }
       }, {})
     },
-    [balances],
+    [balances, getTokenAddress],
   )
 
   const fetchAllBalances = useCallback(() => {
