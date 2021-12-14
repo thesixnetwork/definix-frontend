@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
-import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
+import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -129,20 +129,20 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
                     <div className="flex align-center">
-                      <Text className="mr-2">
+                      <Text color="#30ADFF" bold paddingRight="8px">
                         0x0000000000
                         {/* {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)} */}
                       </Text>
-                      <ExternalUrl color="#30ADFF" size={16} />
+                      <img src={exploreIcon} alt="exploreIcon" width={16} />
                     </div>
                   </TD>
                   <TD>
-                    <Text>Yes, agree with you.</Text>
+                  <Text color="text" bold>Yes, agree with you.</Text>
                   </TD>
                   <TD>
                     <div className="flex align-center">
-                      <Text>23,143</Text>&nbsp;
-                      <ExternalUrl color="#30ADFF" size={16} />
+                      <Text color="text" bold paddingRight="8px">23,143</Text>
+                      <img src={exploreIcon} alt="exploreIcon" width={16} />
                     </div>
                   </TD>
                 </TR>
@@ -215,7 +215,7 @@ const VotingList = ({ rbAddress }) => {
       <Card className="mb-4">
         <div className="pa-4 pt-3 bd-b">
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-            Votes (2)
+            Votes (1)
           </Text>
         </div>
         <TransactionTable

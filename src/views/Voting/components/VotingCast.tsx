@@ -77,8 +77,24 @@ const VotingCast = () => {
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
             Cast your vote
           </Text>
+          <Text fontSize="20px" bold lineHeight="1" marginTop="10px">Your vote</Text>
         </div>
         <div className="ma-3">
+          {/* ถ้า vote เสร็จแล้ว */}
+          {/* <Text fontSize="16px" bold lineHeight="1" marginTop="10px">
+            Yes, agree with you.
+          </Text>
+          <div className="flex align-center mt-3">
+            <Button
+              variant="success"
+              radii="small"
+              size="sm"
+              disabled
+            >
+              Claim Voting Power
+            </Button>
+            <Text fontSize="14px" color="text" paddingLeft="14px">Claim will be available after the the voting time is ended.</Text>
+          </div> */}
           <RadioGroup name="use-radio-group" defaultValue="yes">
             <CardList>
               <MyFormControlLabel value="yes" label="" control={<Radio />} />

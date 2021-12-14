@@ -34,6 +34,7 @@ const StyledModal = styled.div<{ isRainbow: boolean }>`
   }
   ${({ theme }) => theme.mediaQueries.sm} {
     min-width: 360px;
+    width: 540px;
   }
   position: relative;
   padding-bottom: ${({ isRainbow }) => (isRainbow ? '4px' : '0')};
@@ -67,7 +68,7 @@ const ModalCastVote: React.FC<Props> = ({
   onBack,
   children,
   hideCloseButton = false,
-  bodyPadding = '24px',
+  bodyPadding = '20px',
   isRainbow = true,
   classHeader = '',
   maxWidth = '',

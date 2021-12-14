@@ -6,16 +6,13 @@ import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Card, Text } from 'uikit-dev'
+import { Card, Text, Heading,useMatchBreakpoints,Button} from 'uikit-dev'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-
 import {
   useHarvest as useHarvestLongterm,
-  usePrivateData,
-  useSuperHarvest,
   useSousHarvest,
   useBalances,
   useLockTopup,
@@ -23,7 +20,8 @@ import {
   useAllLock,
 } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
-import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
+import { ChevronDown, AlertCircle } from 'react-feather'
+import { Collapse, IconButton } from '@material-ui/core'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
 import ModalCastVote from 'uikit-dev/widgets/Modal/ModalCastVote'
@@ -45,26 +43,6 @@ interface Props {
   onDismiss?: () => void
 }
 
-const FormControlLabelCustom = styled(FormControlLabel)`
-  height: 40px;
-  margin: 0 0 0 -10px !important;
-
-  .MuiFormControlLabel-label {
-    flex-grow: 1;
-  }
-`
-
-const CardList = styled(Card)`
-  width: 100%;
-  background-color: ${({ theme }) => (theme.isDark ? '#000000' : '#FCFCFC')};
-  border-radius: 24px;
-  align-items: center;
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-self: center;
-`
-
 const Balance = styled.div`
   display: flex;
   width: 100%;
@@ -83,28 +61,20 @@ const Balance = styled.div`
   }
 `
 
-const Coins = styled.div`
-  padding: 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+const StylesButton = styled(Button)`
+  padding: 11px 12px 11px 12px;
+  border: ${({ theme }) => theme.isDark && '1px solid #707070'};
+  border-radius: 8px;
+  font-size: 12px;
+  background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
+  height: 38;
+  width: auto;
+  color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
 
-  img {
-    width: 37px;
-    flex-shrink: 0;
-  }
-
-  > * {
-    flex-shrink: 0;
-
-    &:nth-child(01) {
-      position: relative;
-      z-index: 1;
-    }
-    &:nth-child(02) {
-      margin-left: -8px;
-    }
+  &:hover:not(:disabled):not(.button--disabled):not(:active) {
+    background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
+    border: ${({ theme }) => theme.isDark && '1px solid #707070'};
+    color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
   }
 `
 
@@ -118,28 +88,44 @@ const NumberInput = styled.input`
   padding: 0px;
 `
 
-const CustomCheckbox = styled(Checkbox)`
-  &.Mui-checked {
-    color: ${({ theme }) => theme.colors.success} !important;
-  }
 
-  &.MuiCheckbox-root {
-    color: #fcfcfc;
-  }
+const Box = styled.div<{ expand: boolean }>`
+  border: 1px solid #979797;
+  border-radius: 6px;
+  border-bottom-left-radius: ${({ expand }) => (expand ? '0px' : '6px')};
+  border-bottom-right-radius: ${({ expand }) => (expand ? '0px' : '6px')};
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 
-const BpIcons = styled.span`
-  border-radius: 2px;
-  width: 0.65em;
-  height: 0.65em;
-  background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#E3E6EC')} !important;
-  border: 1.5px solid #979797;
-  margin-left: 2px;
-  &.Mui-focusVisible {
-    outline: 2px auto rgba(19, 124, 189, 0.6);
-    outline-offset: 2;
-  }
+const BoxDetails = styled.div<{ expand: boolean }>`
+  border: 1px solid #979797;
+  border-radius: 6px;
+  border-top-left-radius: ${({ expand }) => (expand ? '0px' : '6px')};
+  border-top-right-radius: ${({ expand }) => (expand ? '0px' : '6px')};
+  border-top: unset;
+  padding: 14px;
 `
+
+const CardAlert = styled.div`
+  border: 1px solid #F5C858;
+  border-radius: 8px;
+  padding: 6px 14px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+`
+
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props
+  return <IconButton {...other} />
+})(() => ({
+  '&.MuiIconButton-root': {
+    padding: 'unset',
+  },
+}))
 
 const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
@@ -171,6 +157,10 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [vFinixEarn, setVFinixEarn] = useState(0)
   const [loading, setLoading] = useState('')
 
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobileOrTablet = !isXl && !isLg
+  const [percent, setPercent] = useState(0)
+
   const CardResponse = () => {
     return (
       <ModalResponses title="" onDismiss={onDismiss} className="">
@@ -182,20 +172,127 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }
 
   const lenghtOrvalue = lengthSelect === 0 && value === ''
+  const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
+  const [expanded, setExpanded] = React.useState(false)
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
+  function escapeRegExp(string: string): string {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  }
 
+  const enforcer = (nextUserInput: string) => {
+    if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+      setValue(nextUserInput)
+    }
+  }
+  const handleChange = (e) => {
+    setPercent(0)
+    enforcer(e.target.value.replace(/,/g, '.'))
+  }
+
+  
   return (
     <>
       {showLottie ? (
         <CardResponse />
       ) : (
-        <ModalCastVote title="Confirm Vote" onDismiss={onDismiss} hideCloseButton>
-          <Text fontSize="12px" color="textSubtle">
-            Voting for
-          </Text>
-          <Text fontSize="16px" color="text" bold paddingTop="6px">
-            Yes, agree with you.
-          </Text>
-          {/* <Text fontSize="16px" color="text" bold paddingTop="6px>No, I’m not agree with you.</Text> */}
+          <ModalCastVote title="Confirm Vote" onDismiss={onDismiss} hideCloseButton>
+            <Text color="textSubtle">
+              Voting for
+            </Text>
+            <Text fontSize="16px" color="text" bold paddingTop="6px">
+              Yes, agree with you.
+            </Text>
+            {/* <Text fontSize="16px" color="text" bold paddingTop="6px>No, I’m not agree with you.</Text> */}
+            <div className={`${expanded === false ? 'mt-3' : 'mt-3 mb-0'}`}>
+              <Box expand={expanded}>
+                <Text fontSize="18px" bold lineHeight="1">
+                  Your Voting Power
+                </Text>
+                <div className="flex align-center">
+                  <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="10px">
+                    2,938.23
+                  </Text>
+                  <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
+                    <ChevronDown color={isDark ? 'white' : 'black'} />
+                  </ExpandMore>
+                </div>
+              </Box>
+            </div>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <BoxDetails expand={expanded}>
+                <div className="flex justify-space-between">
+                  <Text fontSize="16px">Your FINIX held now</Text>
+                  <Text fontSize="16px" bold color="#30ADFF">
+                    2,938.23
+                  </Text>
+                </div>
+              </BoxDetails>
+            </Collapse>
+            <div className="flex mt-4">
+            <Text className="col-6" color="textSubtle">
+              Vote
+            </Text>
+          </div>
+
+          {isMobileOrTablet ? (
+            <Balance style={{ flexWrap: 'wrap' }}>
+              <NumberInput
+                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                pattern="^[0-9]*[,]?[0-9]*$"
+              />
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
+                  </StylesButton>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
+                  </StylesButton>
+                </div>
+              )}
+              
+            </Balance>
+          ) : (
+            <Balance>
+              <NumberInput
+                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                placeholder="0.00"
+                value={value}
+                onChange={handleChange}
+                pattern="^[0-9]*[,]?[0-9]*$"
+              />
+              {percent !== 1 && (
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
+                  </StylesButton>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
+                  </StylesButton>
+                </div>
+              )}
+            </Balance>
+          )}
+          <CardAlert>
+            <AlertCircle size={50} color="#F5C858"/>
+            <Text color="text" paddingLeft="10px">
+              Do you want to vote? Your Voting Power (vFINIX) will be locked until the voting time is ended.
+            </Text>
+          </CardAlert>
+          <Button fullWidth radii="small" className="mt-3">
+            Confirm
+          </Button>
         </ModalCastVote>
       )}
     </>

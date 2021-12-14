@@ -27,7 +27,7 @@ const SpecialOutlineCore = styled.div`
   font-size: 14px;
   font-style: italic;
   cursor: unset;
-  padding: 0px 16px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
 `
@@ -64,7 +64,7 @@ const VotingDescription = () => {
             <SpecialOutline color="primary">Vote Now</SpecialOutline>
             &nbsp;
             <SpecialOutlineCore color="success">
-              <img src={coreIcon} alt="coreIcon" width={32} />
+              <img src={coreIcon} alt="coreIcon" width={16} />&nbsp;
               <span>Core</span>
             </SpecialOutlineCore>
           </div>
