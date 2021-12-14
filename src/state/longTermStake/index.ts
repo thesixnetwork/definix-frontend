@@ -268,7 +268,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     const [lockAmount, infoFacet] = await multicall(VaultInfoFacet.abi, callInfoFacet)
     const [balanceOfFinix, balanceOfvFinix] = await multicall(IKIP7.abi, calBalance)
     const callContract = getContract(VaultInfoFacet.abi, getVFinix())
-    const finixLock = await callContract.methods.locksDesc(account, index, 10).call()
+    const finixLock = await callContract.methods.locksDesc(account, index, 10).call({ from: account })
     balanceFinix = new BigNumber(balanceOfFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     balancevFinix = new BigNumber(balanceOfvFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     const result = _.get(infoFacet, 'locks_')
