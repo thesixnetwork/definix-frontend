@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -109,10 +108,10 @@ const Deposit: React.FC<{
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
       if (rate === 100) {
-        setVal(numeral(getBalanceNumber(tokenBalance)).format('0.000000'))
+        setVal(getBalanceNumber(tokenBalance).toString())
       } else {
         const balance = tokenBalance.times(rate / 100)
-        setVal(numeral(getBalanceNumber(balance)).format('0.00'))
+        setVal(getBalanceNumber(balance).toString())
       }
     },
     [tokenBalance, setVal],
