@@ -5,7 +5,7 @@ import { provider } from 'web3-core'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
-import { Route, useRouteMatch } from 'react-router-dom'
+import { Route, useRouteMatch, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
@@ -175,7 +175,7 @@ const MyInvestments: React.FC = () => {
     }
   }, [dispatch, account, rebalances])
 
-  return (
+  return account ? (
     <Wrap>
       <Route exact path={`${path}`}>
         <CardSummary
@@ -201,6 +201,8 @@ const MyInvestments: React.FC = () => {
         </Card>
       </Route>
     </Wrap>
+  ) : (
+    <Redirect to="/" />
   )
 }
 
