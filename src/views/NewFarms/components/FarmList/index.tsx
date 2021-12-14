@@ -47,6 +47,10 @@ const FarmList: React.FC<{
     })
   }, [searchKeyword, orderedFarms])
 
+  const emptyAreaMessage = useMemo(() => {
+    return stakedOnly ? t('There are no farms in deposit.') : t('No search results')
+  }, [t, stakedOnly])
+
   const getMyBalancesInWallet = useCallback(
     (tokens: string[]) => {
       return tokens.reduce((result, token) => {
@@ -92,7 +96,7 @@ const FarmList: React.FC<{
       ))}
     </>
   ) : (
-    <NoResultArea message={t('No search results')} />
+    <NoResultArea message={emptyAreaMessage} />
   )
 }
 
