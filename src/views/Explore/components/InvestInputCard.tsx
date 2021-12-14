@@ -344,7 +344,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
             ))
           ) : (
             <Flex py="S_28" justifyContent="center">
-              <Text textStyle="R_14R" color="textSubtle">
+              <Text textStyle="R_14R" color="textSubtle" style={{ opacity: 0.6 }}>
                 {t('Please input the investment amount.')}
               </Text>
             </Flex>
