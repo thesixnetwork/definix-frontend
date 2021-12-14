@@ -211,7 +211,7 @@ export const useLockTopup = () => {
     async function fetchTopUp() {
       const callContract = getContract(VaultInfoFacet.abi, getVFinix())
       try {
-        const res = await callContract.methods.locksDesc(account, 0, 0).call()
+        const res = await callContract.methods.locksDesc(account, 0, 0).call({ from: account })
         setTopUp(res.locksTopup)
       } catch (e) {
         setTopUp(null)
