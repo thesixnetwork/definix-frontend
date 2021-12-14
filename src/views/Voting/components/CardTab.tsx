@@ -1,12 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Text } from '../../../uikit-dev'
+import { Button, Text, Heading } from '../../../uikit-dev'
 
 interface CardTabType {
   menus: string[]
-  current: number
-  setCurrent: (idx: number) => void
+  current?: number
+  setCurrent?: (idx: number) => void
+  currentTabHeader?: number
+  setCurrentTabHeader?: (idx: number) => void
   className?: string
+  isHeader: boolean
 }
 
 const Tabs = styled.div`
@@ -34,21 +37,48 @@ const Tab = styled(Button)<{ active: boolean }>`
   }
 `
 
-const CardTab: React.FC<CardTabType> = ({ menus, current, setCurrent, className }) => {
+const CardTab: React.FC<CardTabType> = ({
+  menus,
+  current,
+  setCurrent,
+  currentTabHeader,
+  setCurrentTabHeader,
+  className,
+  isHeader,
+}) => {
   return (
     <Tabs className={className}>
-      {menus.map((m, idx) => (
-        <Tab
-          onClick={() => {
-            if (current !== idx) {
-              setCurrent(idx)
-            }
-          }}
-          active={current === idx}
-        >
-          {m}
-        </Tab>
-      ))}
+      {isHeader && (
+        <Heading className="pr-5" fontSize="26px !important">
+          Proposals
+        </Heading>
+      )}
+      {isHeader
+        ? menus.map((m, idx) => (
+            <Tab
+              className='pa-6'
+              onClick={() => {
+                if (currentTabHeader !== idx) {
+                  setCurrentTabHeader(idx)
+                }
+              }}
+              active={currentTabHeader === idx}
+            >
+              {m}
+            </Tab>
+          ))
+        : menus.map((m, idx) => (
+            <Tab
+              onClick={() => {
+                if (current !== idx) {
+                  setCurrent(idx)
+                }
+              }}
+              active={current === idx}
+            >
+              {m}
+            </Tab>
+          ))}
     </Tabs>
   )
 }
