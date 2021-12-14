@@ -1,4 +1,3 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { useCallback, useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -39,8 +38,11 @@ const StakeAction: React.FC<StakeActionProps> = ({
   componentType = 'pool',
   pool,
   isOldSyrup,
+  isBnbPool,
+  hasAccount,
+  hasUserData,
+  hasAllowance,
   stakedBalance,
-  needsApprovalContract,
   onPresentDeposit,
   onPresentWithdraw,
 }) => {
@@ -48,11 +50,9 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
 
   const [requestedApproval, setRequestedApproval] = useState(false)
-  const [pendingTx, setPendingTx] = useState(false)
+  const [isLoadingApproveContract, setIsLoadingApproveContract] = useState(false)
 
-  const { account } = useWallet()
   const stakingTokenContract = useERC20(pool.stakingTokenAddress)
-
   const stakedBalanceValue = useMemo(() => getBalanceNumber(stakedBalance), [stakedBalance])
   const displayBalance = useMemo(() => {
     return convertToBalanceFormat(stakedBalanceValue)
@@ -66,7 +66,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
 
   const handleApprove = useCallback(async () => {
     try {
-      setPendingTx(true)
+      setIsLoadingApproveContract(true)
       setRequestedApproval(true)
       const txHash = await onApprove()
       // user rejected tx or didn't go thru
@@ -76,34 +76,24 @@ const StakeAction: React.FC<StakeActionProps> = ({
     } catch (e) {
       console.error(e)
     } finally {
-      setPendingTx(false)
+      setIsLoadingApproveContract(false)
     }
   }, [onApprove, setRequestedApproval])
 
-  const needApproveContract = useMemo(() => {
-    return needsApprovalContract && !isOldSyrup
-  }, [needsApprovalContract, isOldSyrup])
+  // const needApproveContract = useMemo(() => {
+  //   return needsApprovalContract && !isOldSyrup
+  // }, [needsApprovalContract, isOldSyrup])
 
   const isEnableAddStake = useMemo(() => {
-    return !isOldSyrup && !pool.isFinished
-  }, [isOldSyrup, pool.isFinished])
+    return !isOldSyrup && !pool.isFinished && !isBnbPool
+  }, [isOldSyrup, pool.isFinished, isBnbPool])
 
   return (
     <>
       <TitleSection>{t('My Staked')}</TitleSection>
-      {account ? (
+      {hasAccount ? (
         <>
-          {needApproveContract ? (
-            <Button
-              width="100%"
-              md
-              variant={ButtonVariants.BROWN}
-              disabled={pool.isFinished || requestedApproval}
-              onClick={handleApprove}
-            >
-              {t('Approve Contract')}
-            </Button>
-          ) : (
+          {hasUserData && hasAllowance ? (
             <Flex justifyContent="space-between">
               <Box>
                 <BalanceText>{displayBalance}</BalanceText>
@@ -116,7 +106,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
                     minWidth="40px"
                     md
                     variant={ButtonVariants.LINE}
-                    disabled={stakedBalance.eq(new BigNumber(0)) || pendingTx}
+                    disabled={stakedBalance.eq(new BigNumber(0)) || isLoadingApproveContract}
                     onClick={onPresentWithdraw}
                   >
                     <MinusIcon />
@@ -136,6 +126,17 @@ const StakeAction: React.FC<StakeActionProps> = ({
                 </Box>
               )}
             </Flex>
+          ) : (
+            <Button
+              width="100%"
+              md
+              variant={ButtonVariants.BROWN}
+              disabled={pool.isFinished || requestedApproval}
+              isLoading={isLoadingApproveContract}
+              onClick={handleApprove}
+            >
+              {t('Approve Contract')}
+            </Button>
           )}
         </>
       ) : (
