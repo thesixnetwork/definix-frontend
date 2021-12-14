@@ -151,7 +151,12 @@ const MyProducts: React.FC<{
           )
         })
       ) : (
-        <NoResultArea useCardLayout={false} message={t('There are no products deposited')} />
+        <Box mb="S_40">
+          <NoResultArea
+            useCardLayout={false}
+            message={t('There are no products deposited')}
+          />
+        </Box>
       )}
       {/* <List>
         <>
