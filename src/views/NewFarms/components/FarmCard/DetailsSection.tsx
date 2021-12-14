@@ -38,7 +38,7 @@ const TotalLiquidityText = styled(CurrencyText)`
   }
 `
 const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.deepgrey};
+  color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R};
