@@ -79,7 +79,7 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, d
       )}
       {overDp ? (
         <Noti mt="S_12" type={NotiType.ALERT}>
-          {t('The value entered is out of the valid range.')}
+          {t('The value entered is out of the valid range')}
         </Noti>
       ) : (
         isGreaterThanMyBalance && (
