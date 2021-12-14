@@ -39,7 +39,7 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
 
   return (
     <div style={{ overflow: 'auto' }}>
-      <Box mx={mx} minWidth="fit-content">
+      <Box px={mx} minWidth="fit-content">
         <Table>
           <tbody>
             <TR>

@@ -74,7 +74,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
           </ToggleSection>
         </Flex>
         <Flex mt="S_12">
-          <Box minWidth={128} mr="S_6">
+          <Box minWidth={148} mr="S_6">
             <DropdownSection />
           </Box>
           <SearchInput
@@ -91,7 +91,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex justifyContent="space-between" alignItems="center">
-        <Box width={128}>
+        <Box width={148}>
           <DropdownSection />
         </Box>
         <ToggleSection ml="S_24">

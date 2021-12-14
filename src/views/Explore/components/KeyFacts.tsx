@@ -23,12 +23,12 @@ const FactRow: React.FC<FactRowType> = ({ name, helper, value, prefix, bold, ell
 
   return (
     <TR>
-      <TH style={{ wordBreak: 'break-word', minWidth: '110px' }} sm={isMaxXl}>
+      <TH style={{ wordBreak: 'keep-all', minWidth: '130px' }} sm={isMaxXl}>
         <Flex alignItems="center">
           <Text textStyle="R_12M" color="mediumgrey">
             {name}
           </Text>
-          {helper && <Helper text={helper} className="mx-2" position="top" />}
+          {helper && <Helper text={helper} ml="S_12" position="top" />}
         </Flex>
       </TH>
       <TD sm={isMaxXl}>
