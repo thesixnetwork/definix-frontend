@@ -7,7 +7,7 @@ const rebalances: RebalanceConfig[] = [
     description:
       'Withstanding the trend in the market with both giants in the area. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
     fullDescription:
-      'The representation of the giants of the markert, consisting of BTC and ETH. The distribution of the assets are 70/30 in ratio for this farm and rebalancing will occur once every time rebalancing fee is covered.',
+      'The representation of the giants of the market, consisting of BTC and ETH. The distribution of the assets are 70/30 in ratio for this farm and rebalancing will occur once every time rebalancing fee is covered.',
     icon: ['/images/vaults/img_rebalancing_bullish_giant.png'],
     address: {
       1001: '',
@@ -155,7 +155,7 @@ const rebalances: RebalanceConfig[] = [
   {
     title: 'Satoshi and Friends',
     description:
-      'Tribute to the founder of BTC. The rebalancing will trigger every 4 hour based on algorithmatic interval based schedule.',
+      'Tribute to the founder of BTC. The rebalancing will trigger every 4 hours based on an algorithmic interval based schedule.',
     fullDescription:
       'Consisting of BTC ETH XRP USDT which is a big capital coin with lower rate of fluctuation than the small market cap coins. The highlight which is BTC with the biggest ratio will levitate the performance along with risk allocation in other coins every 4 hours to rebalancing.',
     icon: ['/images/vaults/img_rebalancing_satoshi_and_friends.png'],
@@ -269,7 +269,7 @@ const rebalances: RebalanceConfig[] = [
   {
     title: 'Chain Creators',
     description:
-      'Inspried by blockchain creator’s asset. The rebalancing will trigger every time the value of the farm is cover with the rebalancing fee.',
+      'Inspired by blockchain creator’s asset. The rebalancing will trigger every time the value of the farm is covered with the rebalancing fee.',
     fullDescription:
       'Consisting of ETH BNB KLAY USDT which is the chain creator for many DeFi. Representing the trend on the DeFi ecosystem and distributing the ratio in the farm equally to make rebalancing trigger once when covering the rebalance fee.',
     icon: ['/images/vaults/img_rebalancing_chain_creators.png'],
@@ -323,7 +323,7 @@ const rebalances: RebalanceConfig[] = [
   {
     title: 'ALT Party',
     description:
-      'Designed for Alt coin advocate. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
+      'Designed for Altcoin advocate. The rebalancing will trigger every hour based on an algorithmic interval based schedule.',
     fullDescription:
       'Consisting of ETH XRP BNB USDT with a higher rate of fluctuation in the top market cap coin category. This farm has allocated the risk to the stablecoin and rebalancing strategy is applied every 1 hour.',
     icon: ['/images/vaults/img_rebalancing_alt_party.png'],
@@ -449,7 +449,7 @@ const rebalances: RebalanceConfig[] = [
   {
     title: 'FINIX Force',
     description:
-      'The mixture of ecosystem token the top assets. The rebalancing will trigger every hour based on algorithmatic interval based schedule.',
+      'The mixture of ecosystem token the top assets. The rebalancing will trigger every hour based on algorithmic interval based schedule.',
     fullDescription:
       'Consisting of FINIX BTC ETH BNB XRP USDT, the group has a higher fluctuation rate and manages risk by holding stablecoin to increase profitability by rebalancing every hour.',
     icon: ['/images/vaults/img_rebalancing_finix_force.png'],
