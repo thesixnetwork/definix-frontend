@@ -6,7 +6,7 @@ import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Card, Text, Heading,useMatchBreakpoints,Button} from 'uikit-dev'
+import { Card, Text, Heading, useMatchBreakpoints, Button } from 'uikit-dev'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { provider } from 'web3-core'
@@ -88,7 +88,6 @@ const NumberInput = styled.input`
   padding: 0px;
 `
 
-
 const Box = styled.div<{ expand: boolean }>`
   border: 1px solid #979797;
   border-radius: 6px;
@@ -110,7 +109,7 @@ const BoxDetails = styled.div<{ expand: boolean }>`
 `
 
 const CardAlert = styled.div`
-  border: 1px solid #F5C858;
+  border: 1px solid #f5c858;
   border-radius: 8px;
   padding: 6px 14px;
   margin-top: 20px;
@@ -191,46 +190,48 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     enforcer(e.target.value.replace(/,/g, '.'))
   }
 
-  
   return (
     <>
       {showLottie ? (
         <CardResponse />
       ) : (
-          <ModalCastVote title="Confirm Vote" onDismiss={onDismiss} hideCloseButton>
-            <Text color="textSubtle">
-              Voting for
-            </Text>
-            <Text fontSize="16px" color="text" bold paddingTop="6px">
-              Yes, agree with you.
-            </Text>
-            {/* <Text fontSize="16px" color="text" bold paddingTop="6px>No, I’m not agree with you.</Text> */}
-            <div className={`${expanded === false ? 'mt-3' : 'mt-3 mb-0'}`}>
-              <Box expand={expanded}>
-                <Text fontSize="18px" bold lineHeight="1">
-                  Your Voting Power
+        <ModalCastVote title="Confirm Vote" onDismiss={onDismiss} hideCloseButton>
+          <Text color="textSubtle">Voting for</Text>
+          <Text fontSize="16px" color="text" bold paddingTop="6px">
+            Yes, agree with you.
+          </Text>
+          {/* <Text fontSize="16px" color="text" bold paddingTop="6px>No, I’m not agree with you.</Text> */}
+          <div className={`${expanded === false ? 'mt-3' : 'mt-3 mb-0'}`}>
+            <Box expand={expanded}>
+              <Text fontSize="18px" bold lineHeight="1">
+                Your Voting Power
+              </Text>
+              <div className="flex align-center">
+                <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="10px">
+                  2,938.23
                 </Text>
-                <div className="flex align-center">
-                  <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="10px">
-                    2,938.23
-                  </Text>
-                  <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
-                    <ChevronDown color={isDark ? 'white' : 'black'} />
-                  </ExpandMore>
-                </div>
-              </Box>
-            </div>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <BoxDetails expand={expanded}>
-                <div className="flex justify-space-between">
-                  <Text fontSize="16px">Your FINIX held now</Text>
-                  <Text fontSize="16px" bold color="#30ADFF">
-                    2,938.23
-                  </Text>
-                </div>
-              </BoxDetails>
-            </Collapse>
-            <div className="flex mt-4">
+                <ExpandMore
+                  expand={expanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ChevronDown color={isDark ? 'white' : 'black'} />
+                </ExpandMore>
+              </div>
+            </Box>
+          </div>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <BoxDetails expand={expanded}>
+              <div className="flex justify-space-between">
+                <Text fontSize="16px">Your FINIX held now</Text>
+                <Text fontSize="16px" bold color="#30ADFF">
+                  2,938.23
+                </Text>
+              </div>
+            </BoxDetails>
+          </Collapse>
+          <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Vote
             </Text>
@@ -258,7 +259,6 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   </StylesButton>
                 </div>
               )}
-              
             </Balance>
           ) : (
             <Balance>
@@ -285,7 +285,7 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             </Balance>
           )}
           <CardAlert>
-            <AlertCircle size={50} color="#F5C858"/>
+            <AlertCircle size={50} color="#F5C858" />
             <Text color="text" paddingLeft="10px">
               Do you want to vote? Your Voting Power (vFINIX) will be locked until the voting time is ended.
             </Text>

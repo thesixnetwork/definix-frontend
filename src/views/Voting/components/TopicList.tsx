@@ -19,27 +19,27 @@ const StyledTypes = styled.div<{ type: string }>`
   background-color: transparent;
   border: 1px solid
     ${({ type }) =>
-    type === 'vote'
-      ? '#30adff'
-      : type === 'core'
+      type === 'vote'
+        ? '#30adff'
+        : type === 'core'
         ? '#55bd92'
         : type === 'soon'
-          ? '#F5C858'
-          : type === 'community'
-            ? '#DA7DC1'
-            : type === 'closed' && '#6E6E6E'};
+        ? '#F5C858'
+        : type === 'community'
+        ? '#DA7DC1'
+        : type === 'closed' && '#6E6E6E'};
   color: ${({ type }) =>
     type === 'vote'
       ? '#30adff'
       : type === 'core'
-        ? '#55bd92'
-        : type === 'soon'
-          ? '#F5C858'
-          : type === 'community'
-            ? '#DA7DC1'
-            : type === 'closed' && '#6E6E6E'};
+      ? '#55bd92'
+      : type === 'soon'
+      ? '#F5C858'
+      : type === 'community'
+      ? '#DA7DC1'
+      : type === 'closed' && '#6E6E6E'};
   border-radius: 10px;
-  padding: ${({ type }) => type === 'community' ? '2px 16px' : type === 'soon' ? '10px 22px': '10px 16px'};
+  padding: ${({ type }) => (type === 'community' ? '2px 16px' : type === 'soon' ? '10px 22px' : '10px 16px')};
   font-size: 14px;
   font-style: italic;
   font-weight: normal;
@@ -52,8 +52,8 @@ const CardTopicList = styled.div`
   padding: 1.5rem !important;
   border-top: 1px solid ${({ theme }) => theme.colors.border};
   justify-content: space-between;
-  
-  &:hover{
+
+  &:hover {
     cursor: pointer;
   }
 `
@@ -82,7 +82,8 @@ const TabInfos = ({ tab }) => {
                 <span>Vote Now</span>
               </StyledTypes>
               <StyledTypes type="core" className="ml-2 flex">
-                <img src={coreIcon} alt="coreIcon" width={16} />&nbsp;
+                <img src={coreIcon} alt="coreIcon" width={16} />
+                &nbsp;
                 <span>Core</span>
               </StyledTypes>
             </>
@@ -97,18 +98,18 @@ const TabInfos = ({ tab }) => {
               </StyledTypes>
             </>
           ) : (
-                tab === 'closed' && (
-                  <>
-                    <StyledTypes type="closed">
-                      <span>Closed</span>
-                    </StyledTypes>
-                    <StyledTypes type="community" className="ml-2 flex">
-                      <img src={communityIcon} alt="communityIcon" width={32} />
-                      <span>Community</span>
-                    </StyledTypes>
-                  </>
-                )
-              )}
+            tab === 'closed' && (
+              <>
+                <StyledTypes type="closed">
+                  <span>Closed</span>
+                </StyledTypes>
+                <StyledTypes type="community" className="ml-2 flex">
+                  <img src={communityIcon} alt="communityIcon" width={32} />
+                  <span>Community</span>
+                </StyledTypes>
+              </>
+            )
+          )}
           &nbsp;
         </div>
       </div>
@@ -127,8 +128,8 @@ const TopicList = ({ isActive }) => {
       ) : isActive === 'soon' ? (
         <TabInfos tab="soon" />
       ) : (
-            <TabInfos tab="closed" />
-          )}
+        <TabInfos tab="closed" />
+      )}
     </>
   )
 }

@@ -77,7 +77,9 @@ const VotingCast = () => {
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
             Cast your vote
           </Text>
-          <Text fontSize="20px" bold lineHeight="1" marginTop="10px">Your vote</Text>
+          <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
+            Your vote
+          </Text>
         </div>
         <div className="ma-3">
           {/* ถ้า vote เสร็จแล้ว */}

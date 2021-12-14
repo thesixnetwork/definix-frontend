@@ -75,8 +75,6 @@ const BannerVoting = styled(Card)`
       width: 80%;
     }
   }
-
- 
 `
 
 const DetailBanner = styled(Text)`

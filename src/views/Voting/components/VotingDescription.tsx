@@ -64,7 +64,8 @@ const VotingDescription = () => {
             <SpecialOutline color="primary">Vote Now</SpecialOutline>
             &nbsp;
             <SpecialOutlineCore color="success">
-              <img src={coreIcon} alt="coreIcon" width={16} />&nbsp;
+              <img src={coreIcon} alt="coreIcon" width={16} />
+              &nbsp;
               <span>Core</span>
             </SpecialOutlineCore>
           </div>

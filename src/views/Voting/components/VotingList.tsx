@@ -137,11 +137,15 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                     </div>
                   </TD>
                   <TD>
-                  <Text color="text" bold>Yes, agree with you.</Text>
+                    <Text color="text" bold>
+                      Yes, agree with you.
+                    </Text>
                   </TD>
                   <TD>
                     <div className="flex align-center">
-                      <Text color="text" bold paddingRight="8px">23,143</Text>
+                      <Text color="text" bold paddingRight="8px">
+                        23,143
+                      </Text>
                       <img src={exploreIcon} alt="exploreIcon" width={16} />
                     </div>
                   </TD>
