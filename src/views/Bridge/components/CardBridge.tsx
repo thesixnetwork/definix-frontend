@@ -72,7 +72,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
             </Flex>
           </Flex>
 
-          <Button width="100%" onClick={onClickBridgeBtn}>
+          <Button width="100%" height="48px" onClick={onClickBridgeBtn}>
             {t('Go to the bridge')}
           </Button>
         </Flex>
