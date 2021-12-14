@@ -135,15 +135,16 @@ const CurrencyInputPanel = ({
           </>
         )}
       </InputBox>
-      {isGreaterThanMyBalance && (
-        <Noti mt="S_12" type={NotiType.ALERT}>
-          {t('Insufficient balance')}
-        </Noti>
-      )}
-      {overDp && (
+      {overDp ? (
         <Noti mt="S_12" type={NotiType.ALERT}>
           {t('The value entered is out of the valid range.')}
         </Noti>
+      ) : (
+        isGreaterThanMyBalance && (
+          <Noti mt="S_12" type={NotiType.ALERT}>
+            {t('Insufficient balance')}
+          </Noti>
+        )
       )}
     </Container>
   )

@@ -72,20 +72,21 @@ const ShareInput: React.FC<ShareInputProps> = ({ max, onChange, value, symbol, d
         <AnountButton onClick={() => handleBalanceChange(100)}>MAX</AnountButton>
       </Flex>
 
-      {isGreaterThanMyBalance && (
-        <Noti mt="S_12" type={NotiType.ALERT}>
-          {t('Insufficient balance')}
-        </Noti>
-      )}
       {dirtyFields.balance && underMinimum && (
         <Noti mt="S_12" type={NotiType.ALERT}>
           {t('Less than a certain amount')}
         </Noti>
       )}
-      {overDp && (
+      {overDp ? (
         <Noti mt="S_12" type={NotiType.ALERT}>
           {t('The value entered is out of the valid range.')}
         </Noti>
+      ) : (
+        isGreaterThanMyBalance && (
+          <Noti mt="S_12" type={NotiType.ALERT}>
+            {t('Insufficient balance')}
+          </Noti>
+        )
       )}
     </div>
   )
