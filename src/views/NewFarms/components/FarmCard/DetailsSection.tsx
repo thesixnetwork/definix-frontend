@@ -68,7 +68,7 @@ const MyBalanceSection: React.FC<{
         <Flex alignItems="center">
           <TokenLabel type="token">{tokenName}</TokenLabel>
           <BalanceText>
-            {!balanceValue || balanceValue === null ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
+            {!BigNumber.isBigNumber(balanceValue) ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
           </BalanceText>
         </Flex>
       ))}
