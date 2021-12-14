@@ -160,7 +160,8 @@ const EarningBoxTemplate: React.FC<{
                 prefix="="
                 textStyle={`R_${isMobile ? '14' : '16'}M`}
                 color={curTheme.totalCurrencyColor}
-                className="ml-s16"
+                ml="S_16"
+                mb="S_4"
               />
             )}
           </Flex>

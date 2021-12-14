@@ -10,7 +10,7 @@ const Wrap = styled(Flex)<{ bg: any }>`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: ${({ bg }) => bg};
+  background-color: ${({ theme, bg }) => theme.colors[bg]};
 `
 const ArrowButtonSection = styled(Box)`
   position: absolute;

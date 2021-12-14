@@ -14,7 +14,7 @@ function CardSummary({ products }) {
   return (
     <>
       <ListPageHeader type="myInvestment" />
-      <Card>
+      <Card isOverflowHidden>
         <TabBox
           tabs={[
             {
