@@ -39,7 +39,7 @@ const THEME: { [key: string]: InnerTheme } = {
     slideDotColor: ColorStyles.LIGHTGREY,
     slideDotActiveColor: ColorStyles.BLACK,
     harvestButtonBg: ColorStyles.LIGHTGREY,
-    harvestButtonColor: 'rgba(255, 255, 255, 0.5)'
+    harvestButtonColor: 'rgba(255, 255, 255, 0.5)',
   },
   dark: {
     totalTitleColor: ColorStyles.WHITE,
@@ -53,7 +53,7 @@ const THEME: { [key: string]: InnerTheme } = {
     slideDotColor: ColorStyles.BROWN,
     slideDotActiveColor: ColorStyles.WHITE,
     harvestButtonBg: 'brown30',
-    harvestButtonColor: 'rgba(255, 255, 255, 0.1)'
+    harvestButtonColor: 'rgba(255, 255, 255, 0.1)',
   },
 }
 
