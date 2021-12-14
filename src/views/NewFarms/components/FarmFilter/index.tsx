@@ -13,9 +13,15 @@ import {
   DropdownOption,
 } from 'definixswap-uikit-v2'
 
-const ToggleSection = styled(Flex)`
+const ToggleWrap = styled(Flex)`
   align-items: center;
   justify-content: flex-end;
+`
+const SearchInputWrap = styled(Box)`
+  width: 200px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 100%;
+  }
 `
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
@@ -69,9 +75,9 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
     return (
       <Flex flexDirection="column">
         <Flex alignItems="center">
-          <ToggleSection>
+          <ToggleWrap>
             <StakedOnlySection />
-          </ToggleSection>
+          </ToggleWrap>
         </Flex>
         <Flex mt="S_12">
           <Box minWidth={148} mr="S_6">
@@ -94,18 +100,18 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
         <Box width={148}>
           <DropdownSection />
         </Box>
-        <ToggleSection ml="S_24">
+        <ToggleWrap ml="S_24">
           <StakedOnlySection />
-        </ToggleSection>
+        </ToggleWrap>
       </Flex>
-      <Box>
+      <SearchInputWrap>
         <SearchInput
           type="text"
           placeholder={t('Token name')}
           onSearch={(keyword) => search(keyword.trim().toLowerCase())}
           onReset={() => search('')}
         />
-      </Box>
+      </SearchInputWrap>
     </Flex>
   )
 }
