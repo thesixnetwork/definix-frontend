@@ -40,14 +40,14 @@ const Performance: React.FC<PerformanceType> = ({
         paddingX: 'S_20',
         paddingY: 'S_20',
         bottomSectionPaddingTop: 'S_20',
-        bottomSectionPaddingX: 'S_8'
+        bottomSectionPaddingX: 'S_8',
       }
     : {
         width: '33.3333333%',
         paddingX: 'S_32',
         paddingY: 'S_32',
         bottomSectionPaddingTop: 'S_24',
-        bottomSectionPaddingX: 'S_24'
+        bottomSectionPaddingX: 'S_24',
       }
 
   return (
