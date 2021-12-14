@@ -173,7 +173,7 @@ const CardFinix = () => {
                 )
               }
             >
-              {t('Transactions')}
+              {t('Contract')}
             </Button>
           </WrapButton>
         </WrapTop>
