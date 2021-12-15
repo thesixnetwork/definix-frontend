@@ -94,9 +94,7 @@ export const Table = styled.table`
   border-collapse: separate;
 `
 
-export const TR = styled.tr`
-
-`
+export const TR = styled.tr``
 
 export const TH = styled.th<{ align?: string }>`
   background: ${({ theme }) => theme.colors.backgroundDisabled};
@@ -135,7 +133,7 @@ const BtnDetails = styled(Button)`
 // `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
-  const [cols] = useState(['Title', 'Vote', 'Voting Power',''])
+  const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const onPageChange = (e, page) => {
@@ -167,17 +165,17 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
               rows.map((r) => (
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
-                      <Text color="text" bold fontSize="20px">
-                        Proposal Topic  Proposal Topic  Proposal Topic  Proposal…
+                    <Text color="text" bold fontSize="20px">
+                      Proposal Topic Proposal Topic Proposal Topic Proposal…
+                    </Text>
+                    <div className="flex align-center">
+                      <Text color="text" paddingRight="8px">
+                        End Date
                       </Text>
-                      <div className="flex align-center">
-                        <Text color="text" paddingRight="8px">
-                          End Date
-                        </Text>
-                        <Text color="text" bold>
-                          12-Nov-21 15:00:00 GMT+9
-                        </Text>
-                      </div>  
+                      <Text color="text" bold>
+                        12-Nov-21 15:00:00 GMT+9
+                      </Text>
+                    </div>
                   </TD>
                   <TD>
                     <Text color="text" bold>
@@ -189,7 +187,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <Text color="text" bold paddingRight="8px">
                         23,143
                       </Text>
-                     
                     </div>
                   </TD>
                   <TD>
@@ -273,7 +270,7 @@ const VotingPartProposal = ({ rbAddress }) => {
             Participated Proposal
           </Text>
         </div>
-       
+
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}
@@ -285,7 +282,7 @@ const VotingPartProposal = ({ rbAddress }) => {
           }
           total
         />
-         <PaginationCustom
+        <PaginationCustom
           page={currentPage}
           count={pages}
           size="small"
