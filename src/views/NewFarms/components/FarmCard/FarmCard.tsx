@@ -59,7 +59,7 @@ const CardWrap = styled(Card)`
   }
 `
 const Wrap = styled(Box)<{ paddingLg: boolean }>`
-  padding: ${({ theme, paddingLg }) => paddingLg ? theme.spacing.S_40 : theme.spacing.S_32}px;
+  padding: ${({ theme, paddingLg }) => (paddingLg ? theme.spacing.S_40 : theme.spacing.S_32)}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding: ${({ theme }) => theme.spacing.S_20}px;
   }
