@@ -125,7 +125,8 @@ const WithdrawCalculateModal = ({
     }
   }
   return (
-    <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss} maxWidth="438px">
+    // <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss} maxWidth="438px">
+    <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss}>
       <ModalBody isBody>
         <CardHeading
           rebalance={rebalance}
