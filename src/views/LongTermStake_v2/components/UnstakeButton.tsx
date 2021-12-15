@@ -54,6 +54,8 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, balance, period
 
   useEffect(() => {
     setReceiveToken(balance - (balance * getFee(period)) / 100)
+
+    return () => setReceiveToken(0)
   }, [balance, period])
 
   return (
