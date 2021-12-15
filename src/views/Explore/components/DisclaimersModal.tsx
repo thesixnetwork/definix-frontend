@@ -50,7 +50,7 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
     setIsSkip(event.target.checked)
   }
   return (
-    <Modal title={t('Disclaimers')} hideCloseButton mobileFull onDismiss={onDismiss}>
+    <Modal title={t('Disclaimers')} hideCloseButton mobileFull onDismiss={onDismiss} maxWidth="486px">
       <ModalBody isBody maxHeight="328px">
         <ContentBox p="S_16">
           <DESC>{t('Definix is solely')}</DESC>
