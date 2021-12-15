@@ -41,13 +41,11 @@ const DetailButton = styled(Button)`
 
 const LongTermStakeCard: React.FC<{
   longTermStake: any
-}> = ({
-  longTermStake
-}) => {
+}> = ({ longTermStake }) => {
   const { t } = useTranslation()
   const { isMaxXl } = useMatchBreakpoints()
   const navigate = useHistory()
-  
+
   const { lockAmount, finixEarn } = longTermStake
   const { handleHarvest } = useHarvest()
   useAllLock()
@@ -86,7 +84,7 @@ const LongTermStakeCard: React.FC<{
   /**
    * MyBalance Section
    */
-   const renderMyBalanceSection = useCallback(() => {
+  const renderMyBalanceSection = useCallback(() => {
     return <MyBalanceSection title={t('My Staked')} myBalance={lockAmount} />
   }, [t, lockAmount])
   /**

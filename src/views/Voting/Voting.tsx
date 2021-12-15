@@ -8,7 +8,6 @@ const Voting: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-
         <StartVoting />
       </Route>
     </>

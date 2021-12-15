@@ -120,9 +120,7 @@ const MyProducts: React.FC<{
         )
       }
       if (type === 'longtermstake') {
-        return (
-          <LongTermStakeCard longTermStake={product.data} />
-        )
+        return <LongTermStakeCard longTermStake={product.data} />
       }
       return null
     },

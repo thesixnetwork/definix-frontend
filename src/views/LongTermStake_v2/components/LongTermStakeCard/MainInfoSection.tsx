@@ -28,13 +28,11 @@ const MainInfoSection: React.FC = () => {
   return (
     <Flex position="relative" alignItems="center">
       <Box mr="S_12">
-        <TokenImage src={getTokenImageUrl('finix')} alt='finix' />
+        <TokenImage src={getTokenImageUrl('finix')} alt="finix" />
       </Box>
 
       <Flex flexDirection="column">
-        <Text textStyle="R_18M">
-          Long-term Stake
-        </Text>
+        <Text textStyle="R_18M">Long-term Stake</Text>
 
         <Flex alignItems="end">
           <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
@@ -43,9 +41,7 @@ const MainInfoSection: React.FC = () => {
           <Text textStyle="R_18B" color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
             200%
           </Text>
-          <Box style={{ marginLeft: '4px' }}>
-            {/* <ApyButton lpLabel={pool.tokenName} apy={pool.apy} /> */}
-          </Box>
+          <Box style={{ marginLeft: '4px' }}>{/* <ApyButton lpLabel={pool.tokenName} apy={pool.apy} /> */}</Box>
         </Flex>
       </Flex>
     </Flex>

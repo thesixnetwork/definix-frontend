@@ -118,7 +118,7 @@ const MyInvestments: React.FC = () => {
       result.push({
         label: t('Long-term Stake'),
         type: 'longTermStake',
-        data: userLongTerStake
+        data: userLongTerStake,
       })
     }
     return result
