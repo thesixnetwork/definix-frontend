@@ -7,7 +7,6 @@ import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
-import ModalSorry from '../../uikit-dev/widgets/Modal/ModalSorry'
 import CardSorry from '../../uikit-dev/widgets/Modal/CardSorry'
 import useTheme from '../../hooks/useTheme'
 import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from '../../uikit-dev'
@@ -127,7 +126,7 @@ const BadgeExclusive = styled.div`
   text-align: center;
 `
 
-const CardSuperStake = ({ isShowRightPanel }) => {
+const CardSuperStake = () => {
   /* eslint-enable no-unused-vars */
   const { connect, account } = useWallet()
   const { isDark } = useTheme()
@@ -158,7 +157,7 @@ const CardSuperStake = ({ isShowRightPanel }) => {
   useMemo(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
+      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]

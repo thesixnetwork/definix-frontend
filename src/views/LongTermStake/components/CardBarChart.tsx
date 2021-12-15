@@ -1,6 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
-import styled from 'styled-components'
 import { HorizontalBar } from 'react-chartjs-2'
 import numeral from 'numeral'
 
@@ -25,7 +23,7 @@ const CardBarChart = ({ lock, className, totalFinixLock }) => {
     },
     tooltips: {
       callbacks: {
-        label: (tooltipItems, data) => {
+        label: (tooltipItems) => {
           return `${numeral((tooltipItems.value / totalFinixLock) * 100).format('0,0')}%`
         },
       },

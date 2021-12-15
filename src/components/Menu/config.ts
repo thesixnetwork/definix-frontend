@@ -43,6 +43,17 @@ export const links = (t: (key: string) => string) => {
       href: '/rebalancing',
     },
     {
+      label: t('vFINIX'),
+      icon: 'GnbFarmingNIcon',
+      activeIcon: 'GnbFarmingNIcon',
+      items: [
+        {
+          label: t('Long-term Stake'),
+          href: '/long-term-stake',
+        },
+      ],
+    },
+    {
       label: t('Bridge'),
       icon: 'GnbBridgeNIcon',
       activeIcon: 'GnbBridgeSIcon',

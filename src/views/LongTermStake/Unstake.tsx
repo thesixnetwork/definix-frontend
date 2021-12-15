@@ -1,10 +1,9 @@
 /* eslint-disable no-nested-ternary */
-import _ from 'lodash'
 import numeral from 'numeral'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import { ArrowBackIcon, Button, Card, Link as UiLink, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
 import { Link, useHistory } from 'react-router-dom'
 import { Redirect } from 'react-router'
 import styled from 'styled-components'
@@ -153,16 +152,16 @@ const Unstake: React.FC = () => {
   const navigate = useHistory()
 
   const handleUnLock = useCallback(
-    async (Id) => {
+    async () => {
       try {
         const res = unLock(id)
         res
-          .then((r) => {
+          .then(() => {
             navigate.push('/long-term-stake')
             return <Redirect to="/long-term-stake" />
           })
           .catch((e) => {
-            console.log(e)
+            console.warn(e);
           })
       } catch (e) {
         console.error(e)

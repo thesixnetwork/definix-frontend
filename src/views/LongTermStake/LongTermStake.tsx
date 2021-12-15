@@ -1,11 +1,8 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
 import {
   LeftPanel,
   TwoPanelLayout,
-  RightPanel,
-  ShowHideButton,
-  MaxWidthRight,
   MaxWidthLeft,
 } from 'uikit-dev/components/TwoPanelLayout'
 import { Overlay } from 'uikit-dev/components/Overlay'
@@ -13,7 +10,6 @@ import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
 import styled from 'styled-components'
 import StakeTable from './components/StakeTeble'
 import CardStake from './components/CardStake'
-import CardWhatIs from './components/CardWhatIs'
 import Unstake from './Unstake'
 import CardSuperStake from './CardSuperStake'
 
@@ -26,10 +22,7 @@ const LongTermStake: React.FC = () => {
   const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   const isMobile = !isXl && !isLg && !isMd
-  const [isViewTurial, setIsViewTurial] = useState(false)
-  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
-  const [isOpenModal, setIsOpenModal] = useState(false)
-  const [modalNode, setModalNode] = useState<React.ReactNode>()
+  const [isShowRightPanel, setIsShowRightPanel] = useState(false)
 
   useMemo(() => {
     if (isMobileOrTablet) {
@@ -41,17 +34,6 @@ const LongTermStake: React.FC = () => {
     return () => {
       setIsShowRightPanel(true)
     }
-  }, [])
-
-  const handlePresent = useCallback((node: React.ReactNode) => {
-    setModalNode(node)
-    setIsOpenModal(true)
-    window.scrollTo(0, 0)
-  }, [])
-
-  const handleDismiss = useCallback(() => {
-    setModalNode(undefined)
-    setIsOpenModal(false)
   }, [])
 
   return (
@@ -90,14 +72,14 @@ const LongTermStake: React.FC = () => {
                   <CardStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
-                  <CardSuperStake isShowRightPanel={isShowRightPanel} />
+                  <CardSuperStake />
                 </Route>
                 <StakeTable />
               </div>
             </MaxWidthLeft>
           </LeftPanel>
 
-          <RightPanel isShowRightPanel={isShowRightPanel}>
+          {/* <RightPanel isShowRightPanel={false}>
             <ShowHideButton
               isShow={isShowRightPanel}
               action={() => {
@@ -120,7 +102,7 @@ const LongTermStake: React.FC = () => {
                 <CardWhatIs />
               </MaxWidthRight>
             )}
-          </RightPanel>
+          </RightPanel> */}
         </TwoPanelLayout>
       </Route>
 
@@ -154,14 +136,14 @@ const LongTermStake: React.FC = () => {
                   <CardStake isShowRightPanel={isShowRightPanel} />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
-                  <CardSuperStake isShowRightPanel={isShowRightPanel} />
+                  <CardSuperStake />
                 </Route>
                 <StakeTable />
               </div>
             </MaxWidthLeft>
           </LeftPanel>
 
-          <RightPanel isShowRightPanel={isShowRightPanel}>
+          {/* <RightPanel isShowRightPanel={false}>
             <ShowHideButton
               isShow={isShowRightPanel}
               action={() => {
@@ -184,7 +166,7 @@ const LongTermStake: React.FC = () => {
                 <CardWhatIs />
               </MaxWidthRight>
             )}
-          </RightPanel>
+          </RightPanel> */}
         </TwoPanelLayout>
       </Route>
       <Route exact path={`${path}/unstake`}>

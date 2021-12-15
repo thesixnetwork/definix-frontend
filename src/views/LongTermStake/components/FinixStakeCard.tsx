@@ -2,9 +2,8 @@
 import React from 'react'
 import styled, { useTheme } from 'styled-components'
 import numeral from 'numeral'
-import _ from 'lodash'
 import { Card, Text, useMatchBreakpoints, Heading } from '../../../uikit-dev'
-import { useTotalFinixLock, useTotalSupply, useUnstakeId } from '../../../hooks/useLongTermStake'
+import { useTotalFinixLock, useUnstakeId } from '../../../hooks/useLongTermStake'
 import CardBarChart from './CardBarChart'
 import vFinix from '../../../uikit-dev/images/for-ui-v2/vFinix.png'
 

@@ -7,7 +7,8 @@ import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
-import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from 'uikit-dev'
+import { Card, useMatchBreakpoints, Text, Heading, useModal } from 'uikit-dev'
+import { Button } from 'definixswap-uikit-v2'
 import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
@@ -170,7 +171,6 @@ const CardStake = ({ isShowRightPanel }) => {
   const [days, setdays] = useState(28)
   const [percentPenalty, setPercentPenalty] = useState(0)
   const [lockFinix, setLockFinix] = useState('')
-  const [click] = useState(false)
   const [percent, setPercent] = useState(0)
   const [isDisabled, setIsDisabled] = useState(false)
   const [flgTextWarning, setFlgTextWarning] = useState('')
@@ -310,7 +310,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeDOrStake = () => {
     return (
-      <Button fullWidth disabled={isDisabled} className="align-self-center" radii="small" onClick={onStake}>
+      <Button width="100%" disabled={isDisabled} className="align-self-center" onClick={onStake}>
         Stake
       </Button>
     )
@@ -318,7 +318,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeOrEnter = () => {
     return flgButton === 'enter amount' ? (
-      <Button fullWidth disabled className="align-self-center" radii="small">
+      <Button width="100%" disabled className="align-self-center">
         Enter an amount
       </Button>
     ) : (
@@ -328,7 +328,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeOrInsufficient = () => {
     return flgButton === 'insufficient' ? (
-      <Button fullWidth disabled className="align-self-center" radii="small">
+      <Button width="100%" disabled className="align-self-center">
         Insufficient Balance
       </Button>
     ) : (
@@ -340,7 +340,7 @@ const CardStake = ({ isShowRightPanel }) => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-      <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+      <Button width="100%" className="align-self-center" onClick={handleApprove}>
         Approve Contract
       </Button>
     )
@@ -526,9 +526,8 @@ const CardStake = ({ isShowRightPanel }) => {
           <div className="flex mt-4">
             {!account ? (
               <Button
-                fullWidth
+                width="100%"
                 className="align-self-center"
-                radii="small"
                 onClick={() => {
                   onPresentConnectModal()
                 }}
