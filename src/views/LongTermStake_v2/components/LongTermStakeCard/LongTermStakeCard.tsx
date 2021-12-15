@@ -100,7 +100,7 @@ const LongTermStakeCard: React.FC<{
     <>
       <Wrap>
         <Grid gridTemplateColumns={isMaxXl ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMaxXl ? '16px' : '2rem'}>
-          <Box>{renderCardHeading()}</Box>
+          <Flex alignItems="center">{renderCardHeading()}</Flex>
           <Box>{renderMyBalanceSection()}</Box>
           <HarvestSection>
             {renderEarningsSection()}

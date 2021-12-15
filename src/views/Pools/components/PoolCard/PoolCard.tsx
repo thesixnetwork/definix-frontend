@@ -196,7 +196,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
       <>
         <Wrap>
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
-            <Box>{renderCardHeading()}</Box>
+            <Flex alignItems="center">{renderCardHeading()}</Flex>
             <Box>{renderStakeAction()}</Box>
             <Box>{renderHarvestActionAirDrop()}</Box>
           </Grid>
@@ -231,7 +231,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
         <>
           <Wrap>
             <Flex justifyContent="space-between">
-              <Box className="card-heading">{renderCardHeading()}</Box>
+              <Flex className="card-heading" alignItems="center">{renderCardHeading()}</Flex>
               <Box className="total-staked-section">{renderTotalStakedSection()}</Box>
               <Box className="my-balance-section">{renderMyBalanceSection()}</Box>
               <Box className="earnings-section">{renderEarningsSection()}</Box>

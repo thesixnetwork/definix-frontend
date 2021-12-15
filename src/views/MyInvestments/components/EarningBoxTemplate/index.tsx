@@ -172,7 +172,7 @@ const EarningBoxTemplate: React.FC<{
           <Flex alignItems="flex-end">
             <Flex alignItems="flex-end">
               {renderTotalValue()}
-              <Text textStyle="R_16M" color={ColorStyles.BLACK} mb="S_2" ml="S_6">
+              <Text textStyle="R_16M" color={curTheme.totalBalanceColor} mb="S_2" ml="S_6">
                 {unit.length > 0 ? unit : null}
               </Text>
             </Flex>
