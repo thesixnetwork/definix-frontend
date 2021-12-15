@@ -9,7 +9,7 @@ import { Route, useRouteMatch, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
-import { useLockCount, useAllowance, usePrivateData } from 'hooks/useLongTermStake'
+import { useLockCount, useAllowance, usePrivateData, useAprCardFarmHome } from 'hooks/useLongTermStake'
 import useConverter from 'hooks/useConverter'
 import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/actions'
@@ -109,6 +109,7 @@ const MyInvestments: React.FC = () => {
   const userLongTerStake = usePrivateData()
   const lockCount = useLockCount()
   const longTermAllowance = useAllowance()
+  const longtermApr = useAprCardFarmHome()
   const isApprovedLongTerm = useMemo(() => {
     return account && longTermAllowance && longTermAllowance.isGreaterThan(0)
   }, [account, longTermAllowance])
@@ -118,11 +119,14 @@ const MyInvestments: React.FC = () => {
       result.push({
         label: t('Long-term Stake'),
         type: 'longTermStake',
-        data: userLongTerStake,
+        data: {
+          apyValue: typeof longtermApr !== 'number' || Number.isNaN(longtermApr) ? 0 : longtermApr,
+          ...userLongTerStake,
+        },
       })
     }
     return result
-  }, [t, isApprovedLongTerm, lockCount, userLongTerStake])
+  }, [t, isApprovedLongTerm, lockCount, userLongTerStake, longtermApr])
 
   // Net Worth
   const getNetWorth = (d) => {

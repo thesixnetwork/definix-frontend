@@ -79,8 +79,8 @@ const LongTermStakeCard: React.FC<{
    * Main info Section
    */
   const renderCardHeading = useCallback(() => {
-    return <MainInfoSection />
-  }, [])
+    return <MainInfoSection apy={longTermStake.apyValue}/>
+  }, [longTermStake.apyValue])
   /**
    * MyBalance Section
    */

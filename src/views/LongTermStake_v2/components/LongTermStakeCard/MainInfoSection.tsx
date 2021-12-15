@@ -15,15 +15,15 @@ const TokenImage = styled.img`
   }
 `
 
-const MainInfoSection: React.FC = () => {
+const MainInfoSection: React.FC<{ apy: number }> = ({ apy }) => {
   const { convertToPoolAPRFormat } = useConverter()
-  // const displayApy = useMemo(() => {
-  //   try {
-  //     return `${convertToPoolAPRFormat(pool.apy)}%`
-  //   } catch (error) {
-  //     return '-'
-  //   }
-  // }, [convertToPoolAPRFormat, pool.apy])
+  const displayApy = useMemo(() => {
+    try {
+      return `${convertToPoolAPRFormat(apy)}%`
+    } catch (error) {
+      return '-'
+    }
+  }, [convertToPoolAPRFormat, apy])
 
   return (
     <Flex position="relative" alignItems="center">
@@ -39,7 +39,7 @@ const MainInfoSection: React.FC = () => {
             APR
           </Text>
           <Text textStyle="R_18B" color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
-            200%
+            {displayApy}
           </Text>
           <Box style={{ marginLeft: '4px' }}>{/* <ApyButton lpLabel={pool.tokenName} apy={pool.apy} /> */}</Box>
         </Flex>
