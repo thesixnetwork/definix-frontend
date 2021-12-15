@@ -310,7 +310,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         ) : isEmpty(rows) ? (
           <EmptyData text="No data" />
         ) : (
-          <TBody>
+          <>
             {rows !== null &&
               rows.map((item, idx) => (
                 <TR key={_.get(item, 'id')}>
@@ -371,7 +371,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                 />
               </TD>
             </TR>
-          </TBody>
+          </>
         )}
       </Table>
     </CardTable>

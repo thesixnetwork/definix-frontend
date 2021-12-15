@@ -49,48 +49,72 @@ const CardTable = styled(Card)`
   }
 `
 
-const Table = styled.table`
+// const Table = styled.table`
+//   width: 100%;
+//   border-collapse: separate;
+// `
+
+// const TBody = styled.div`
+//   overflow: auto;
+//   position: relative;
+// `
+
+// const TR = styled.tr`
+//   display: flex;
+//   align-items: stretch;
+//   justify-content: space-between;
+//   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+//   padding: 24px;
+
+//   th {
+//     border-top: 1px solid${({ theme }) => theme.colors.border};
+//   }
+
+//   &:last-child {
+//     border: none;
+//   }
+
+//   &.isMe {
+//     position: sticky;
+//     bottom: 1px;
+//     left: 0;
+//     background: #f7f7f8;
+//     border-top: 1px solid: ${({ theme }) => theme.colors.border};
+//   }
+// `
+
+// const TD = styled.td<{ align?: string }>`
+//   width: 100%;
+//   vertical-align: middle;
+//   align-self: ${'center'};
+// `
+
+export const Table = styled.table`
   width: 100%;
   border-collapse: separate;
 `
 
-const TBody = styled.div`
-  overflow: auto;
-  position: relative;
+export const TR = styled.tr`
+
 `
 
-const TR = styled.tr`
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
+export const TH = styled.th<{ align?: string }>`
+  background: ${({ theme }) => theme.colors.backgroundDisabled};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 24px;
-
-  th {
-    border-top: 1px solid${({ theme }) => theme.colors.border};
-  }
-
-  &:last-child {
-    border: none;
-  }
-
-  &.isMe {
-    position: sticky;
-    bottom: 1px;
-    left: 0;
-    background: #f7f7f8;
-    border-top: 1px solid: ${({ theme }) => theme.colors.border};
-  }
+  padding: 8px 16px;
+  vertical-align: middle;
+  text-align: ${({ align }) => align || 'left'};
 `
 
-const TD = styled.td<{ align?: string }>`
-  width: 100%;
+export const TD = styled.td<{ align?: string }>`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  padding: 16px;
+  height: 64px;
   vertical-align: middle;
-  align-self: ${'center'};
+  text-align: ${({ align }) => align || 'left'};
 `
 
 const BtnDetails = styled(Button)`
-  width: 60%;
   padding: 10px 20px;
   border-radius: 8px;
   text-align: center;
@@ -101,7 +125,6 @@ const BtnDetails = styled(Button)`
 `
 
 // const BtnClaim = styled(Button)`
-//   width: 60%;
 //   padding: 10px 20px;
 //   border-radius: 8px;
 //   text-align: center;
@@ -112,7 +135,7 @@ const BtnDetails = styled(Button)`
 // `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
-  const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
+  const [cols] = useState(['Title', 'Vote', 'Voting Power',''])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const onPageChange = (e, page) => {
@@ -139,22 +162,22 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
             <EmptyData text={empText} />
           </>
         ) : (
-          <TBody>
+          <>
             {rows !== null &&
               rows.map((r) => (
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
-                    <Text color="text" bold fontSize="20px">
-                      Proposal Topic Proposal Topic Proposal Topic Proposal…
-                    </Text>
-                    <div className="flex align-center">
-                      <Text color="text" paddingRight="8px">
-                        End Date
+                      <Text color="text" bold fontSize="20px">
+                        Proposal Topic  Proposal Topic  Proposal Topic  Proposal…
                       </Text>
-                      <Text color="text" bold>
-                        12-Nov-21 15:00:00 GMT+9
-                      </Text>
-                    </div>
+                      <div className="flex align-center">
+                        <Text color="text" paddingRight="8px">
+                          End Date
+                        </Text>
+                        <Text color="text" bold>
+                          12-Nov-21 15:00:00 GMT+9
+                        </Text>
+                      </div>  
                   </TD>
                   <TD>
                     <Text color="text" bold>
@@ -166,6 +189,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <Text color="text" bold paddingRight="8px">
                         23,143
                       </Text>
+                     
                     </div>
                   </TD>
                   <TD>
@@ -178,7 +202,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                   </TD>
                 </TR>
               ))}
-            <TR>
+            {/* <TR>
               <TD className="text-right">
                 <PaginationCustom
                   page={currentPage}
@@ -189,8 +213,8 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                   hideNextButton
                 />
               </TD>
-            </TR>
-          </TBody>
+            </TR> */}
+          </>
         )}
       </Table>
     </CardTable>
@@ -213,7 +237,7 @@ const VotingPartProposal = ({ rbAddress }) => {
       voting_power: '99,999',
     },
   ])
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
@@ -249,6 +273,7 @@ const VotingPartProposal = ({ rbAddress }) => {
             Participated Proposal
           </Text>
         </div>
+       
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}
@@ -260,15 +285,15 @@ const VotingPartProposal = ({ rbAddress }) => {
           }
           total
         />
-        {/* <PaginationCustom
-              page={currentPage}
-              count={pages}
-              size="small"
-              hidePrevButton
-              hideNextButton
-              className="px-4 py-2"
-              onChange={onPageChange}
-            /> */}
+         <PaginationCustom
+          page={currentPage}
+          count={pages}
+          size="small"
+          hidePrevButton
+          hideNextButton
+          className="px-4 py-2"
+          onChange={onPageChange}
+        />
       </Card>
     </>
   )
