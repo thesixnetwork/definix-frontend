@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
-import { Card, Flex, Divider } from 'definixswap-uikit-v2'
+import { Card, Flex, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
 
 import VFinixAprButton from './VFinixAprButton'

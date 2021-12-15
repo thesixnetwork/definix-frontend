@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, useModal, ImgTokenFinixIcon, AlertIcon, Divider } from 'definixswap-uikit-v2'
+import { Flex, Text, Button, useModal, ImgTokenFinixIcon, AlertIcon, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import UnlockButton from 'components/UnlockButton'
 

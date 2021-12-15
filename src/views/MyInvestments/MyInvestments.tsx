@@ -14,7 +14,7 @@ import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } 
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
-import { Box, Card, DropdownOption } from 'definixswap-uikit-v2'
+import { Box, Card, DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
 import CardSummary from './components/CardSummary'
 import MyProductsFilter from './components/MyProductsFilter'
 import MyProducts from './components/MyProducts'

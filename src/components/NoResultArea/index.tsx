@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text, ColorStyles, Card } from 'definixswap-uikit-v2'
+import { Flex, Text, ColorStyles, Card } from '@fingerlabs/definixswap-uikit-v2'
 
 const EmptyArea = styled(Flex)`
   justify-content: center;

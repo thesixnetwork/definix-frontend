@@ -1,7 +1,7 @@
 import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
-import { Box, Divider, Flex, useMatchBreakpoints, VDivider } from 'definixswap-uikit-v2'
+import { Box, Divider, Flex, useMatchBreakpoints, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 
 import { Rebalance } from '../../../state/types'
 

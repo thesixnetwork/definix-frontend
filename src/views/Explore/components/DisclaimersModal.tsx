@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Button, Checkbox, CheckboxLabel, Text, Modal, ModalBody, ModalFooter } from 'definixswap-uikit-v2'
+import { Box, Button, Checkbox, CheckboxLabel, Text, Modal, ModalBody, ModalFooter } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
 const ContentBox = styled(Box)`

@@ -1,6 +1,6 @@
 import { isNil } from 'lodash'
 import React from 'react'
-import { Flex, FlexProps, Helper, Text } from 'definixswap-uikit-v2'
+import { Flex, FlexProps, Helper, Text } from '@fingerlabs/definixswap-uikit-v2'
 
 interface TwoLineFormatType extends FlexProps {
   className?: string

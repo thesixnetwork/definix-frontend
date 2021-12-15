@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Card, CardBody, ColorStyles, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import { Card, CardBody, ColorStyles, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import Earned from 'views/MyInvestments/components/Earned'
 
 const CardInvestment = () => {

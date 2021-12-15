@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import { Box, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import TitleStake from './components/TitleStake'
