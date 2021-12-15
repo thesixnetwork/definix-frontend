@@ -5,12 +5,14 @@ import numeral from 'numeral'
 import moment from 'moment'
 import VaultFacet from 'config/abi/VaultFacet.json'
 import VaultInfoFacet from 'config/abi/VaultInfoFacet.json'
+import VFinixMergeAbi from 'config/abi/VFinixMergeAbi.json'
 import IKIP7 from 'config/abi/IKIP7.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import TokenFacet from 'config/abi/TokenFacet.json'
 import multicall from 'utils/multicall'
 import { getFinixAddress, getVFinix } from 'utils/addressHelpers'
 import _ from 'lodash'
+import { getContract } from 'utils/caver'
 
 const initialState = {
   isFetched: false,
@@ -40,6 +42,7 @@ const initialState = {
   balanceFinix: 0,
   balancevFinix: 0,
   rewardPerBlock: 0,
+  countTransactions: 0,
 }
 
 export const longTermSlice = createSlice({
@@ -112,6 +115,10 @@ export const longTermSlice = createSlice({
       const { allDataLock } = action.payload
       state.allDataLock = allDataLock
     },
+    setCountTransactions: (state, action) => {
+      const { countTransactions } = action.payload
+      state.countTransactions = countTransactions
+    },
   },
 })
 
@@ -126,6 +133,7 @@ export const {
   setTotalSupplyAllTimeMint,
   setStartIndex,
   setAllDataLock,
+  setCountTransactions,
 } = longTermSlice.actions
 
 export const fetchIdData =
@@ -149,6 +157,14 @@ export const fetchStartIndex = (index) => async (dispatch) => {
   dispatch(
     setStartIndex({
       startIndex: index,
+    }),
+  )
+}
+
+export const fetchCountTransactions = (count) => async (dispatch) => {
+  dispatch(
+    setCountTransactions({
+      countTransactions: count,
     }),
   )
 }
@@ -251,9 +267,12 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     const [count] = await multicall(VaultFacet.abi, calls)
     const [lockAmount, infoFacet] = await multicall(VaultInfoFacet.abi, callInfoFacet)
     const [balanceOfFinix, balanceOfvFinix] = await multicall(IKIP7.abi, calBalance)
+    const callContract = getContract(VaultInfoFacet.abi, getVFinix())
+    const finixLock = await callContract.methods.locksDesc(account, index, 10).call({ from: account })
     balanceFinix = new BigNumber(balanceOfFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     balancevFinix = new BigNumber(balanceOfvFinix).dividedBy(new BigNumber(10).pow(18)).toNumber()
     const result = _.get(infoFacet, 'locks_')
+    const topup = _.get(finixLock, 'locksTopup')
     let canBeUnlock_
     let canBeClaim_
     let asDays = 0
@@ -261,17 +280,24 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
     const days = [90, 180, 365]
     result.map((value) => {
       canBeUnlock_ =
-        Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
-        new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber()
+        Date.now() >
+        (new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() + _.get(period, '0.periodMap')[value.level]) *
+          1000
       canBeClaim_ =
-        Math.floor(new Date().getTime() / 1000) - _.get(period, '0.periodMap')[value.level] >
-        new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber()
+        Date.now() >
+        (new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() +
+          _.get(period, '0.penaltyPeriod')[value.level]) *
+          1000
       asDays = moment.duration({ seconds: _.get(period, '0.periodMap')[value.level] }).asDays()
       asPenaltyDays = moment.duration({ seconds: _.get(period, '0.penaltyPeriod')[value.level] }).asDays()
 
       let lockTimes = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
       lockTimes.setDate(lockTimes.getDate() + asDays)
       lockTimes = new Date(lockTimes)
+
+      let lockTopup = new Date(new BigNumber(_.get(value, 'lockTimestamp._hex')).toNumber() * 1000)
+      lockTopup.setDate(lockTopup.getDate())
+      lockTopup = new Date(lockTopup)
 
       let penaltyTimestamp = new Date(new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() * 1000)
       penaltyTimestamp.setDate(penaltyTimestamp.getDate() + asPenaltyDays)
@@ -281,45 +307,17 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       unLockTime.setDate(unLockTime.getDate() + asPenaltyDays)
       unLockTime = new Date(unLockTime)
 
-      const offset = 2
+      const timeZone = new Date().getTimezoneOffset() / 60
+      const offset = timeZone === -7 && 2
       const utcLock = lockTimes.getTime()
+      const utcLockTopup = lockTopup.getTime()
       const utcPenalty = penaltyTimestamp.getTime()
       const utcUnLock = unLockTime.getTime()
-      let nd = new Date(utcLock + 3600000 * offset)
-      let pt = new Date(utcPenalty + 3600000 * offset)
-      let ul = new Date(utcUnLock + 3600000 * offset)
-      const dateTime = lockTimes.getTimezoneOffset() / 60
-      const dateTimePenalty = penaltyTimestamp.getTimezoneOffset() / 60
-      const dateTimeUnLock = unLockTime.getTimezoneOffset() / 60
-      if (dateTime === -9) {
-        nd = new Date()
-      }
+      const lock = new Date(utcLock + 3600000 * offset)
+      const topupTime = new Date(utcLockTopup + 3600000 * offset)
+      const penaltyUnlock = new Date(utcPenalty + 3600000 * offset)
+      const unLock = new Date(utcUnLock + 3600000 * offset)
 
-      if (dateTimePenalty === -9) {
-        pt = new Date()
-      }
-
-      if (dateTimeUnLock === -9) {
-        ul = new Date()
-      }
-
-      let claim
-      if (canBeClaim_) {
-        if (new BigNumber(_.get(value, 'penaltyUnlockTimestamp._hex')).toNumber() !== 0) {
-          claim = canBeClaim_
-        } else {
-          claim = false
-        }
-      } else {
-        claim = false
-      }
-
-      let Unlock
-      if (canBeUnlock_) {
-        Unlock = canBeUnlock_
-      } else {
-        Unlock = false
-      }
       locksData.push({
         id: new BigNumber(_.get(value, 'id._hex')).toNumber(),
         level: value.level * 1 + 1,
@@ -329,16 +327,19 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
         penaltyFinixAmount: new BigNumber(_.get(value, 'penaltyFinixAmount._hex'))
           .dividedBy(new BigNumber(10).pow(18))
           .toNumber(),
-        penaltyUnlockTimestamp: moment(pt).format(`DD-MMM-YY HH:mm:ss`),
-        canBeUnlock: Unlock,
-        canBeClaim: claim,
-        lockTimestamp: moment(nd).format(`DD-MMM-YY HH:mm:ss`),
+        penaltyUnlockTimestamp: moment(penaltyUnlock).format(`DD-MMM-YY HH:mm:ss`),
+        canBeUnlock: canBeUnlock_,
+        canBeClaim: canBeClaim_,
+        lockTimestamp: moment(lock).format(`DD-MMM-YY HH:mm:ss`),
+        lockTopupTimes: moment(topupTime).format(`DD-MMM-YY HH:mm:ss`),
         penaltyRate: _.get(period, '0.realPenaltyRate')[value.level] * 100,
         lockAmount: new BigNumber(_.get(value, 'lockAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
         voteAmount: new BigNumber(_.get(value, 'voteAmount._hex')).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-        periodPenalty: moment(ul).format(`DD-MMM-YY HH:mm:ss`),
+        periodPenalty: moment(unLock).format(`DD-MMM-YY HH:mm:ss`),
         multiplier: _.get(period, '0.multiplier')[value.level * 1 + 1 - 1],
         days: days[value.level * 1 + 1 - 1],
+        topup,
+        topupTimeStamp: moment(new Date(topupTime.setDate(topupTime.getDate() + 28))).format(`DD-MMM-YY HH:mm:ss`),
       })
       return locksData
     })
@@ -368,7 +369,7 @@ const getAllLockPeriods = async ({ vFinix }) => {
         name: 'getAllLockPeriods',
       },
     ]
-    const [lockPeriods] = await multicall(VaultFacet.abi, calls)
+    const [lockPeriods] = await multicall(VaultInfoFacet.abi, calls)
     for (let i = 0; i < 3; i++) {
       _.set(periodMap, `${i}`, new BigNumber(_.get(lockPeriods.param_, `_period${i + 1}._hex`)).toNumber())
       _.set(

@@ -1,15 +1,15 @@
 /* eslint-disable no-nested-ternary */
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
-import numeral from 'numeral'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
+import Helper from 'uikit-dev/components/Helper'
 import { fetchIdData, fetchStartIndex } from '../../../state/longTermStake'
-import { Card, Button, Text, Heading } from '../../../uikit-dev'
-import { useUnLock, useClaim } from '../../../hooks/useLongTermStake'
+import { Card, Button, Text } from '../../../uikit-dev'
+import { useClaim, useLockTopup } from '../../../hooks/useLongTermStake'
 import PaginationCustom from './Pagination'
 import CardHarvest from './CardHarvest'
 
@@ -56,11 +56,8 @@ export const TR = styled.tr`
 `
 
 export const TD = styled.td<{ align?: string }>`
-  // padding: 20px;
   width: 100%;
   vertical-align: middle;
-  // padding-left: 24px;
-  //   text-align: ${({ align }) => align || 'center'};
   align-self: ${'center'};
 `
 
@@ -68,6 +65,7 @@ const TBody = styled.div`
   overflow: auto;
   position: relative;
 `
+
 const EmptyData = ({ text }) => (
   <TR>
     <TD colSpan={6}>
@@ -95,9 +93,11 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const [cols] = useState(['Stake Period', 'Amount', 'Status', ''])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  const [statuu, setStatuu] = useState(false)
+  const [statusClaim, setStatusClaim] = useState(false)
+
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
+
   // penaltyFinixAmount
   const onUnStake = useCallback(
     (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days) => {
@@ -112,7 +112,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         const res = onClaim(Id)
         res
           .then((r) => {
-            setStatuu(true)
+            setStatusClaim(true)
           })
           .catch((e) => {
             console.log(e)
@@ -121,12 +121,26 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         console.error(e)
       }
     },
-    [onClaim, setStatuu],
+    [onClaim, setStatusClaim],
   )
 
   const onPageChange = (e, page) => {
     setCurrentPage(page)
     dispatch(fetchStartIndex((page - 1) * 10))
+  }
+
+  const handleUnstake = (item) => {
+    onUnStake(
+      _.get(item, 'id'),
+      _.get(item, 'level'),
+      _.get(item, 'lockAmount'),
+      _.get(item, 'isPenalty'),
+      !_.get(item, 'canBeUnlock'),
+      _.get(item, 'penaltyRate'),
+      _.get(item, 'periodPenalty'),
+      _.get(item, 'multiplier'),
+      _.get(item, 'days'),
+    )
   }
 
   const handleIsunlocked = (item) => {
@@ -231,19 +245,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
-        onClick={() =>
-          onUnStake(
-            _.get(item, 'id'),
-            _.get(item, 'level'),
-            _.get(item, 'lockAmount'),
-            _.get(item, 'isPenalty'),
-            !_.get(item, 'canBeUnlock'),
-            _.get(item, 'penaltyRate'),
-            _.get(item, 'periodPenalty'),
-            _.get(item, 'multiplier'),
-            _.get(item, 'days'),
-          )
-        }
+        onClick={() => handleUnstake(item)}
         className="text-right mr-1"
       >
         Unstake
@@ -255,27 +257,15 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         to="/long-term-stake/unstake"
         radii="small"
         style={{
-          backgroundColor: '#0973B9',
-          border: `1px solid #0973B9`,
+          backgroundColor: '#EA9D00',
+          border: `1px solid #EA9D00`,
           display: 'unset',
           padding: '6px',
           color: '#fff',
           fontStyle: 'italic',
           fontWeight: 'normal',
         }}
-        onClick={() =>
-          onUnStake(
-            _.get(item, 'id'),
-            _.get(item, 'level'),
-            _.get(item, 'lockAmount'),
-            _.get(item, 'isPenalty'),
-            !_.get(item, 'canBeUnlock'),
-            _.get(item, 'penaltyRate'),
-            _.get(item, 'periodPenalty'),
-            _.get(item, 'multiplier'),
-            _.get(item, 'days'),
-          )
-        }
+        onClick={() => handleUnstake(item)}
         className="text-right mr-1"
       >
         Early Unstake
@@ -329,6 +319,23 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                       <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
                         {_.get(item, 'multiplier')}x {_.get(item, 'days')} days
                       </Text>
+                      {_.get(item, 'topup').some((topup) => Number(topup) === item.id) && (
+                        <>
+                          <div className="flex align-center">
+                            <Text color="#F5C858" fontSize="12px" bold>
+                              28 days Super Staked
+                            </Text>
+                            <Helper
+                              text="Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount. You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended."
+                              className="ml-1 pt-1"
+                              position="bottom"
+                            />
+                          </div>
+                          <Text fontSize="8.5px">
+                            {item.lockTimestamp} - {item.topupTimeStamp}
+                          </Text>
+                        </>
+                      )}
                     </Text>
                   </TD>
                   <TD className="col-3">
@@ -342,7 +349,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                     <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
                       {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
                     </Text>
-                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600" fontSize="13px">
                       {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}
                       GMT+9
                     </Text>

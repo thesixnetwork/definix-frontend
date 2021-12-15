@@ -12,11 +12,11 @@ import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
-import badgeBoost from 'uikit-dev/images/for-ui-v2/badge-boost.png'
-import { getTokenImageUrl } from 'utils/getTokenImage'
+import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
 import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
+import LongTermTab from './LongTermTab'
 
 const SuccessOptions = {
   loop: true,
@@ -78,13 +78,6 @@ const Coin = styled.div`
   }
 `
 
-const Centered = styled.div`
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`
-
 const APRBOX = styled.div`
   position: relative;
   text-align: center;
@@ -106,17 +99,6 @@ const StylesButton = styled(Button)`
     color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
   }
 `
-const InputBox = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-  background: ${({ theme }) => theme.colors.backgroundBox};
-  border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-`
 
 const NumberInput = styled.input`
   border: none;
@@ -131,7 +113,7 @@ const NumberInput = styled.input`
 
 const Apr = styled(Text)`
   position: absolute;
-  top: 36%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1;
@@ -150,32 +132,9 @@ const AprValue = styled(Text)`
   text-shadow: #00000050 0px 2px 4px;
 `
 
-const AprDecoration = styled(Text)`
-  position: absolute;
-  // top: 56%;
-  // left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
-  text-decoration: line-through;
-  text-decoration-color: white;
-`
-
-const BoostValue = styled(Text)`
-  position: absolute;
-  top: 21%;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, -50%);
-  // line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
-`
-
 const AprBox = styled(Card)`
   padding: 0.5rem;
-  background: linear-gradient(90deg, #f3d36c, #e27d3a);
+  background: linear-gradient(90deg, #0973b9, #5cc096);
   opacity: 1;
   background-size: cover;
   background-repeat: no-repeat;
@@ -428,6 +387,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   return (
     <div className="align-stretch mt-5">
+      <LongTermTab current="/long-term-stake" />
       <FinixStake className="flex">
         {loadings !== '' && (
           <div
@@ -460,19 +420,19 @@ const CardStake = ({ isShowRightPanel }) => {
             {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="8px !important">
-                  Boosting Period
-                </Text>
-                <Text style={{ textDecoration: 'line-through' }} color="white" bold fontSize="8px !important">
-                  {`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}
-                </Text>
-                <Text color="white" bold fontSize="8px !important">
                   APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
                 </Text>
               </AprBox>
             )}
           </div>
           <Text color="textSubtle">Please select duration</Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} />
+          <StakePeriodButton
+            setPeriod={setPeriod}
+            status={status}
+            levelStake={[]}
+            isTopUp={false}
+            harvestProgress={-1}
+          />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
@@ -585,21 +545,13 @@ const CardStake = ({ isShowRightPanel }) => {
             className="col-4 flex flex-column"
           >
             <APRBOX className="px-5 mb-2">
-              <img src={badgeBoost} alt="" />
-              <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.2vw !important'} color="white">
-                Boosting Period
-              </BoostValue>
-              <Apr fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'} color="white">
+              <img src={badgeLock} alt="" />
+              <Apr fontSize={isShowRightPanel ? '1.2vw !important' : '1.2vw !important'} color="white">
                 APR up to
               </Apr>
-              <AprDecoration
-                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '50%' : '50%' }}
-                fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'}
-                color="white"
-              >{`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}</AprDecoration>
               <AprValue
-                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '67%' : '67%' }}
-                fontSize={isShowRightPanel ? '1.1vw !important' : '1.6vw !important'}
+                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '52%' : '52%' }}
+                fontSize={isShowRightPanel ? '2.2vw !important' : '2.2vw !important'}
                 color="white"
               >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>

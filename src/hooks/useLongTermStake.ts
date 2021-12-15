@@ -9,22 +9,35 @@ import {
   getAbiVaultPenaltyFacetByName,
   getAbiVaultFacetByName,
   getAbiRewardFacetByName,
+  getAbiHerodotusByName,
 } from 'hooks/hookHelper'
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
 import * as klipProvider from 'hooks/klipProvider'
-import { fetchPrivateData, fetchPendingReward, fetchAllLockPeriods } from '../state/actions'
+import { soushHarvestBnb, soushHarvest } from 'utils/callHelpers'
+import {
+  fetchPrivateData,
+  fetchPendingReward,
+  fetchAllLockPeriods,
+  fetchFarmUserDataAsync,
+  updateUserBalance,
+  updateUserPendingReward,
+} from '../state/actions'
 import VaultInfoFacet from '../config/abi/VaultInfoFacet.json'
 import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
 import VaultPenaltyFacet from '../config/abi/VaultPenaltyFacet.json'
+import VFinixMergeAbi from '../config/abi/VFinixMergeAbi.json'
 import { getContract } from '../utils/caver'
 import { getTokenBalance } from '../utils/erc20'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useRefresh from './useRefresh'
 import { State } from '../state/types'
+import { useHerodotus, useSousChef } from './useContract'
+/* eslint no-else-return: "error" */
 
+// @ts-ignore
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
@@ -186,6 +199,29 @@ export const useAllowance = () => {
   }, [slowRefresh, account])
 
   return allowance
+}
+
+export const useLockTopup = () => {
+  const { slowRefresh } = useRefresh()
+  const [topUp, setTopUp] = useState([])
+  const { account } = useWallet()
+  const startIndex = useSelector((state: State) => state.longTerm.startIndex)
+
+  useEffect(() => {
+    async function fetchTopUp() {
+      const callContract = getContract(VaultInfoFacet.abi, getVFinix())
+      try {
+        const res = await callContract.methods.locksDesc(account, 0, 0).call({ from: account })
+        setTopUp(res.locksTopup)
+      } catch (e) {
+        setTopUp(null)
+      }
+    }
+
+    fetchTopUp()
+  }, [slowRefresh, account, startIndex])
+
+  return topUp
 }
 
 const handleContractExecute = (_executeFunction, _account) => {
@@ -406,17 +442,19 @@ export const useRank = () => {
 
   useEffect(() => {
     async function fetchRank() {
-      const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
-      const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
-      let maxRank = -1
-      for (let i = 0; i < userVfinixLocks.length; i++) {
-        const selector = userVfinixLocks[i]
+      if (account) {
+        const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
+        const [userVfinixLocks] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
+        let maxRank = -1
+        for (let i = 0; i < _.get(userVfinixLocks, 'locks_').length; i++) {
+          const selector = _.get(userVfinixLocks, 'locks_')[i]
 
-        if (selector.isUnlocked === false && selector.isPenalty === false) {
-          if (maxRank < selector.level) maxRank = selector.level
+          if (selector.isUnlocked === false && selector.isPenalty === false) {
+            if (maxRank < selector.level) maxRank = selector.level
+          }
         }
+        setRank(maxRank)
       }
-      setRank(maxRank)
     }
 
     fetchRank()
@@ -551,6 +589,152 @@ export const useClaim = () => {
   }
 
   return { onClaim: handleClaim }
+}
+
+// @ts-ignore
+export const useSousHarvest = () => {
+  const dispatch = useDispatch()
+  const { account, connector } = useWallet()
+  const herodotusContract = useHerodotus()
+  const { setShowModal } = useContext(KlipModalContext())
+
+  const handleHarvest = useCallback(
+    async (sousId) => {
+      if (connector === 'klip') {
+        // setShowModal(true)
+
+        if (sousId === 0) {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            jsonConvert(['0']),
+            setShowModal,
+          )
+        } else {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('deposit')),
+            jsonConvert([sousId, '0']),
+            setShowModal,
+          )
+        }
+        const tx = await klipProvider.checkResponse()
+
+        setShowModal(false)
+        dispatch(fetchFarmUserDataAsync(account))
+        console.info(tx)
+      }
+      if (sousId === 0) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods.leaveStaking('0').send({ from: account, gas: 300000 }).then(resolve).catch(reject)
+        })
+      } else if (sousId === 1) {
+        return new Promise((resolve, reject) => {
+          herodotusContract.methods
+            .deposit(sousId, '0')
+            .send({ from: account, gas: 400000 })
+            .then(resolve)
+            .catch(reject)
+        })
+      }
+
+      dispatch(updateUserPendingReward(sousId, account))
+      dispatch(updateUserBalance(sousId, account))
+      return handleHarvest
+    },
+    [account, dispatch, herodotusContract, connector, setShowModal],
+  )
+
+  return { onReward: handleHarvest }
+}
+
+const jsonConvert = (data: any) => JSON.stringify(data)
+// FARMS
+export const useSuperHarvest = () => {
+  const dispatch = useDispatch()
+  const { account, connector } = useWallet()
+  const herodotusContract = useHerodotus()
+  const countTransactions = useSelector((state: State) => state.longTerm.countTransactions)
+
+  const { setShowModal } = useContext(KlipModalContext())
+
+  const handleHarvest = useCallback(
+    async (farmPid) => {
+      if (connector === 'klip') {
+        if (farmPid === 0) {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            jsonConvert(['0']),
+            setShowModal,
+          )
+        } else {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('deposit')),
+            jsonConvert([farmPid, '0']),
+            setShowModal,
+          )
+        }
+        const tx = await klipProvider.checkResponse()
+
+        setShowModal(false)
+        dispatch(fetchFarmUserDataAsync(account))
+        console.info(tx)
+        return tx
+      }
+
+      dispatch(fetchFarmUserDataAsync(account))
+
+      return new Promise((resolve, reject) => {
+        herodotusContract.methods.deposit(farmPid, '0').send({ from: account, gas: 400000 }).then(resolve).catch(reject)
+      })
+    },
+    [account, dispatch, herodotusContract, setShowModal, connector],
+  )
+
+  return { onSuperHarvest: handleHarvest }
+}
+
+export const useAllDataLock = () => {
+  const { account } = useWallet()
+  const { slowRefresh } = useRefresh()
+  const [levelStake, setLevelStake] = useState([])
+  const [allLock, setAllLock] = useState([])
+
+  useEffect(() => {
+    async function fetchApr() {
+      if (account) {
+        const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
+        const [userVfinixAmount] = await Promise.all([await userVfinixInfoContract.methods.locks(account, 0, 0).call()])
+        const level = _.get(userVfinixAmount, 'locks_')
+        const countLevel = []
+        const idNTopup = []
+        for (let i = 0; i < level.length; i++) {
+          const selector = level[i]
+          idNTopup.push({
+            id: _.get(selector, 'id'),
+            isUnlocked: _.get(selector, 'isUnlocked'),
+            isPenalty: _.get(selector, 'isPenalty'),
+            level: _.get(selector, 'level') * 1 + 1,
+          })
+          if (selector.isUnlocked === false && selector.isPenalty === false) {
+            countLevel.push(_.get(selector, 'level'))
+          }
+        }
+        setAllLock(idNTopup)
+
+        const dup = countLevel.filter((val, i) => {
+          return countLevel.indexOf(val) === i
+        })
+        setLevelStake(dup)
+      }
+    }
+
+    fetchApr()
+  }, [slowRefresh, account])
+
+  return { levelStake, allLock }
 }
 
 export default useLongTermStake
