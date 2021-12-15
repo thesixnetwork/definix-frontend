@@ -1,6 +1,6 @@
 import { Ratio } from 'config/constants/types'
 import React from 'react'
-import { Text } from 'definixswap-uikit-v2'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import Coin from './Coin'
 

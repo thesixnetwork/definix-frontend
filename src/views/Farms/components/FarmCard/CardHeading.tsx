@@ -50,6 +50,24 @@ const Apr = styled(Text)`
   align-items: center;
 `
 
+const MultiplierTag = styled.div`
+  position: absolute;
+  top: -1px;
+  left: 16px;
+  width: 52px;
+  height: 36px;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  p {
+    color: ${({ theme }) => theme.colors.white};
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+  }
+`
+
 const CardHeading: React.FC<ExpandableSectionProps> = ({
   farm,
   lpLabel,
@@ -58,6 +76,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
   finixPrice,
   className = '',
   isHorizontal = false,
+  inlineMultiplier = false,
 }) => {
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
@@ -89,6 +108,12 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({
 
   return (
     <Flex className={`pos-relative ${className}`} flexDirection="column" alignItems="center" justifyContent="center">
+      {!inlineMultiplier && (
+        <MultiplierTag>
+          <p>{farm.multiplier}</p>
+        </MultiplierTag>
+      )}
+
       <StyledFarmImages>
         <a
           href={

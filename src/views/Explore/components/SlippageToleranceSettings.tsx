@@ -1,7 +1,16 @@
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button, ColorStyles, Flex, Helper, Input, SettingIcon, Text, TextStyles } from 'definixswap-uikit-v2'
+import {
+  Button,
+  ColorStyles,
+  Flex,
+  Helper,
+  Input,
+  SettingIcon,
+  Text,
+  TextStyles,
+} from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 const MAX_SLIPPAGE = 5000

@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Card, CardBody, ColorStyles, Text, Flex, HomeFarmFinixIcon } from 'definixswap-uikit-v2'
+import { Card, CardBody, ColorStyles, Text, Flex, HomeFarmFinixIcon } from '@fingerlabs/definixswap-uikit-v2'
 import FarmHighAPR from './FarmHighAPR'
 import ExploreHighAPR from './ExploreHighAPR'
 

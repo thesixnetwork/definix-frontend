@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { render, RenderResult } from '@testing-library/react'
 import { ThemeProvider } from 'styled-components'
-import { light } from 'definixswap-uikit-v2'
+import { light } from '@fingerlabs/definixswap-uikit-v2'
 // import { light } from './theme'
 
 /* eslint-disable import/prefer-default-export */

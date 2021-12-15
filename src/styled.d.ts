@@ -1,5 +1,5 @@
 import 'styled-components'
-import { DefinixTheme } from 'definixswap-uikit-v2'
+import { DefinixTheme } from '@fingerlabs/definixswap-uikit-v2'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */

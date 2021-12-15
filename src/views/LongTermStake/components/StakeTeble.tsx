@@ -1,8 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import useTheme from 'hooks/useTheme'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import _ from 'lodash'
 import { useLockCount, useAllowance, usePrivateData, useAllLock } from '../../../hooks/useLongTermStake'
 import LockVfinixList from './LockVfinixList'
 import FinixStakeCard from './FinixStakeCard'
@@ -12,14 +11,14 @@ const StakeTable: React.FC = () => {
   const { isDark } = useTheme()
   const lockCount = useLockCount()
   const [total, setTotal] = useState(lockCount)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading] = useState(false)
   const { account } = useWallet()
   const allowance = useAllowance()
   const { allDataLock } = usePrivateData()
   useAllLock()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
-  useEffect(() => {
+  useMemo(() => {
     if (allDataLock.length !== 0) {
       setTotal(lockCount)
     }

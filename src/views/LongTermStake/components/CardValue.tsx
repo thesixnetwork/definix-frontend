@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useRef, useMemo } from 'react'
 import { useCountUp } from 'react-countup'
 import { Text } from '../../../uikit-dev'
 
@@ -39,7 +39,7 @@ const CardValue: React.FC<CardValueProps> = ({
 
   const updateValue = useRef(update)
 
-  useEffect(() => {
+  useMemo(() => {
     updateValue.current(value)
   }, [value, updateValue])
 

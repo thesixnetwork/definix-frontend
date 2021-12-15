@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, FlexProps } from 'definixswap-uikit-v2'
+import { Flex, FlexProps } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { getTokenImageUrl } from 'utils/getTokenImage'
 

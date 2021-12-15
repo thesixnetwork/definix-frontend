@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Card, Flex, Text, Button, ImgTokenSixIcon, ImgTokenFinixIcon } from 'definixswap-uikit-v2'
+import { Card, Flex, Text, Button, ImgTokenSixIcon, ImgTokenFinixIcon } from '@fingerlabs/definixswap-uikit-v2'
 import LogoSixBridge from '../../../assets/images/logo-footer-six-bridge.png'
 import LogoSixBridge2x from '../../../assets/images/logo-footer-six-bridge@2x.png'
 import LogoSixBridge3x from '../../../assets/images/logo-footer-six-bridge@3x.png'

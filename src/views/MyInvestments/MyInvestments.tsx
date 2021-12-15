@@ -9,12 +9,13 @@ import { Route, useRouteMatch, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
+import { useLockCount, useAllowance, usePrivateData, useAprCardFarmHome } from 'hooks/useLongTermStake'
 import useConverter from 'hooks/useConverter'
 import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { getAddress } from 'utils/addressHelpers'
-import { Box, Card, DropdownOption } from 'definixswap-uikit-v2'
+import { Box, Card, DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
 import CardSummary from './components/CardSummary'
 import MyProductsFilter from './components/MyProductsFilter'
 import MyProducts from './components/MyProducts'
@@ -35,7 +36,7 @@ const MyInvestments: React.FC = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   const { account }: { account: string; klaytn: provider } = useWallet()
-  const { convertToPriceFromToken } = useConverter()
+  const { convertToPriceFromToken, convertToPriceFromSymbol } = useConverter()
   const dispatch = useDispatch()
   const balances = useBalances(account)
 
@@ -104,8 +105,39 @@ const MyInvestments: React.FC = () => {
     return arr
   }, [])
 
+  // long term stake
+  const userLongTerStake = usePrivateData()
+  const lockCount = useLockCount()
+  const longTermAllowance = useAllowance()
+  const longtermApr = useAprCardFarmHome()
+  const isApprovedLongTerm = useMemo(() => {
+    return account && longTermAllowance && longTermAllowance.isGreaterThan(0)
+  }, [account, longTermAllowance])
+  const finixPrice = useMemo(() => convertToPriceFromSymbol(), [convertToPriceFromSymbol])
+  const stakedLongTermStake = useMemo(() => {
+    const result = []
+    if (isApprovedLongTerm && Number(lockCount) !== 0) {
+      result.push({
+        label: t('Long-term Stake'),
+        type: 'longTermStake',
+        data: {
+          title: 'Long-term Stake',
+          apyValue: typeof longtermApr !== 'number' || Number.isNaN(longtermApr) ? 0 : longtermApr,
+          lpSymbol: 'longTermStake',
+          value: new BigNumber(finixPrice).times(userLongTerStake.lockAmount).toNumber(),
+          ...userLongTerStake,
+        },
+      })
+    }
+    return result
+  }, [t, isApprovedLongTerm, lockCount, userLongTerStake, longtermApr, finixPrice])
+
   // Net Worth
   const getNetWorth = (d) => {
+    // long term stake
+    if (typeof d.lpSymbol === 'string' && d.lpSymbol === 'longTermStake') {
+      return d.value
+    }
     if (typeof d.ratio === 'object') {
       // rebalance
       const thisBalance = d.enableAutoCompound ? rebalanceBalances : balances
@@ -147,8 +179,8 @@ const MyInvestments: React.FC = () => {
   }
 
   const stakedProducts = useMemo(() => {
-    return [...stakedFarms, ...stakedPools, ...stakedRebalances]
-  }, [stakedFarms, stakedPools, stakedRebalances])
+    return [...stakedFarms, ...stakedPools, ...stakedRebalances, ...stakedLongTermStake]
+  }, [stakedFarms, stakedPools, stakedRebalances, stakedLongTermStake])
 
   useEffect(() => {
     if (account) {
@@ -193,8 +225,8 @@ const MyInvestments: React.FC = () => {
             onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
           />
           <MyProducts
-            productType={currentProductType}
-            orderBy={selectedOrderBy}
+            currentProductType={currentProductType}
+            currentOrderBy={selectedOrderBy}
             searchKeyword={searchKeyword}
             products={stakedProducts}
           />

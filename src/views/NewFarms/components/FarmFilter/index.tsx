@@ -11,7 +11,7 @@ import {
   SearchInput,
   useMatchBreakpoints,
   DropdownOption,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 
 const ToggleWrap = styled(Flex)`
   align-items: center;

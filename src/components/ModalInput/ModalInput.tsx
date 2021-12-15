@@ -15,7 +15,7 @@ import {
   NotiType,
   Button,
   ButtonVariants,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import BalanceText from 'components/BalanceText'
 
 const ButtonWrap = styled(Box)`
@@ -41,9 +41,7 @@ const ModalInput: React.FC<{
   const maxValue = useMemo(() => getBalanceNumber(max), [max])
   const isEmptyBalance = useMemo(() => !value || numeral(value).value() === 0, [value])
   const isGreaterThanMyBalance = useMemo(() => numeral(value).value() > maxValue, [value, maxValue])
-  const isValidBalance = useMemo(() => {
-    return new BigNumber(value).times(new BigNumber(10).pow(18)).isInteger()
-  }, [value])
+  const isValidBalance = useMemo(() => new BigNumber(value).decimalPlaces() <= 18, [value])
 
   const hasError = useMemo(() => {
     return isEmptyBalance || isGreaterThanMyBalance || !isValidBalance
@@ -51,7 +49,7 @@ const ModalInput: React.FC<{
 
   const errorMessage = useMemo(() => {
     if (isEmptyBalance) return t('Insufficient balance')
-    if (!isValidBalance) return t('Less than a certain amount')
+    if (!isValidBalance) return t('The value entered is out of the valid range')
     if (isGreaterThanMyBalance) return t('Insufficient balance')
     return ''
   }, [t, isEmptyBalance, isGreaterThanMyBalance, isValidBalance])

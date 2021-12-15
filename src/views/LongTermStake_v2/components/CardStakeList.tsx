@@ -1,6 +1,6 @@
-import React from 'react'
-import { Card, Flex } from 'definixswap-uikit-v2'
-import { usePrivateData } from 'hooks/useLongTermStake'
+import React, { useState, useEffect } from 'react'
+import { Card, Flex } from '@fingerlabs/definixswap-uikit-v2'
+import { useLockCount, usePrivateData } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 
 import StakeListHead from './StakeListHead'
@@ -16,6 +16,13 @@ const FlexCard = styled(Flex)`
 
 const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
   const { lockAmount, allDataLock } = usePrivateData()
+  const lockCount = useLockCount()
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [itemPerPage, setItemPerPage] = useState<number>(4)
+
+  useEffect(() => {
+    setItemPerPage(isMobile ? 3 : 4)
+  }, [isMobile])
 
   return (
     <>
@@ -24,11 +31,17 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
           <FlexCard>
             {!isMobile && <StakeListHead />}
             {isMobile ? (
-              <StakeListContentMobile isMobile={isMobile} allDataLock={allDataLock} />
+              <StakeListContentMobile isMobile={isMobile} allDataLock={allDataLock.slice(0, itemPerPage)} />
             ) : (
-              <StakeListContentPc isMobile={isMobile} allDataLock={allDataLock} />
+              <StakeListContentPc isMobile={isMobile} allDataLock={allDataLock.slice(0, itemPerPage)} />
             )}
-            <StakeListPagination isMobile={isMobile} />
+            <StakeListPagination
+              isMobile={isMobile}
+              itemPerPage={itemPerPage}
+              dataLength={Number(lockCount)}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
           </FlexCard>
         </Card>
       ) : (

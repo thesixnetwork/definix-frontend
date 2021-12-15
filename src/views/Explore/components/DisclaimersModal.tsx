@@ -1,19 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Box, Button, Checkbox, CheckboxLabel, Text, Modal, ModalBody, ModalFooter } from 'definixswap-uikit-v2'
+import {
+  Box,
+  Button,
+  Checkbox,
+  CheckboxLabel,
+  Text,
+  Modal,
+  ModalBody,
+  ModalFooter,
+} from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
-const ScrollArea = styled(Box)`
+const ContentBox = styled(Box)`
   border: 1px solid rgba(224, 224, 224, 0.5);
-  max-height: 420px;
-  overflow: scroll;
   border-radius: 8px;
   padding-bottom: 0;
+  overflow: auto;
 `
 
-const ContentText = styled(Text)`
-  white-space: pre-line;
-`
+const H2 = ({ children, ...props }) => (
+  <Text textStyle="R_14R" mt="S_24" mb="S_6" {...props}>
+    {children}
+  </Text>
+)
+const DESC = ({ children, ...props }) => (
+  <Text textStyle="R_12R" color="text" {...props}>
+    {children}
+  </Text>
+)
 
 const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
   const [isAccept, setIsAccept] = useState(false)
@@ -35,30 +50,35 @@ const DisclaimersModal = ({ onDismiss = () => null, isConfirm = false }) => {
     setIsSkip(event.target.checked)
   }
   return (
-    <Modal title={t('Disclaimers')} hideCloseButton mobileFull onDismiss={onDismiss}>
-      <ModalBody isBody maxWidth="438px">
-        <ScrollArea textStyle="R_12R" className="px-s16 pt-s16">
-          <ContentText className="mb-3">{t('Definix is solely')}</ContentText>
-        </ScrollArea>
-        {isConfirm && (
-          <CheckboxLabel
-            mt="S_24"
-            control={
-              <Checkbox
-                onChange={() => {
-                  setIsAccept(!isAccept)
-                }}
-                checked={isAccept}
-              />
-            }
-          >
-            <Text textStyle="R_14R">{t('I have read')}</Text>
-          </CheckboxLabel>
-        )}
+    <Modal title={t('Disclaimers')} hideCloseButton mobileFull onDismiss={onDismiss} maxWidth="486px">
+      <ModalBody isBody maxHeight="328px">
+        <ContentBox p="S_16">
+          <DESC>{t('Definix is solely')}</DESC>
+          <H2>{t('No advice on investment')}</H2>
+          <DESC>{t('Risk of Loss Each investor')}</DESC>
+          <H2>{t('Performance Disclosures')}</H2>
+          <DESC>{t('Performance information is provided for')}</DESC>
+          <DESC mt="S_6" mb="S_16">
+            {t('The information on this Website')}
+          </DESC>
+        </ContentBox>
       </ModalBody>
       <ModalFooter isFooter>
         {isConfirm ? (
           <div className="flex flex-column">
+            <CheckboxLabel
+              mb="S_24"
+              control={
+                <Checkbox
+                  onChange={() => {
+                    setIsAccept(!isAccept)
+                  }}
+                  checked={isAccept}
+                />
+              }
+            >
+              <Text textStyle="R_14R">{t('I have read')}</Text>
+            </CheckboxLabel>
             <CheckboxLabel
               control={<Checkbox onChange={onCheckBoxChange} checked={isSkip} scale="sm" variantColor="lightbrown" />}
               mt="S_4"

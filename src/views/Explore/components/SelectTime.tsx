@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonGroup } from 'definixswap-uikit-v2'
+import { Button, ButtonGroup } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
 const TimeButton = styled(Button)`

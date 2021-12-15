@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-import { Button, useModal } from 'definixswap-uikit-v2'
+import { Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr } from 'hooks/useLongTermStake'
 
 import UnstakeModal from './UnstakeModal'
@@ -54,6 +54,8 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, balance, period
 
   useEffect(() => {
     setReceiveToken(balance - (balance * getFee(period)) / 100)
+
+    return () => setReceiveToken(0)
   }, [balance, period])
 
   return (

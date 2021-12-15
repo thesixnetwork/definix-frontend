@@ -3,7 +3,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import useFarmEarning from 'hooks/useFarmEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import { Text } from 'definixswap-uikit-v2'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
 import Locked from './Locked'
 
 const Balance = () => {

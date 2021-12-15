@@ -5,9 +5,9 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useApprove } from 'hooks/useApprove'
 import useConverter from 'hooks/useConverter'
-import { useFarmUnlockDate } from 'state/hooks'
+import { useFarmUnlockDate, useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from 'definixswap-uikit-v2'
+import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 import UnlockButton from 'components/UnlockButton'
 
@@ -58,10 +58,9 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   onPresentWithdraw,
 }) => {
   const { t } = useTranslation()
+  const { toastError } = useToast()
   const { convertToBalanceFormat } = useConverter()
-
-  const [pendingTx, setPendingTx] = useState(false)
-  const [requestedApproval, setRequestedApproval] = useState(false)
+  const [isLoadingApproveContract, setIsLoadingApproveContract] = useState(false)
 
   const farmUnlockDate = useFarmUnlockDate()
   const isEnableAddStake = useMemo(() => {
@@ -75,16 +74,14 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const { onApprove } = useApprove(lpContract)
   const handleApprove = useCallback(async () => {
     try {
-      setPendingTx(true)
-      setRequestedApproval(true)
+      setIsLoadingApproveContract(true)
       await onApprove()
-      setRequestedApproval(false)
     } catch (e) {
-      console.error(e)
+      toastError(t('{{Action}} Fail', { Action: t('Approve') }))
     } finally {
-      setPendingTx(false)
+      setIsLoadingApproveContract(false)
     }
-  }, [onApprove])
+  }, [onApprove, toastError, t])
 
   return (
     <>
@@ -105,7 +102,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
                     minWidth="40px"
                     md
                     variant={ButtonVariants.LINE}
-                    disabled={myLiquidity.eq(new BigNumber(0)) || pendingTx}
+                    disabled={myLiquidity.eq(new BigNumber(0)) || isLoadingApproveContract}
                     onClick={onPresentWithdraw}
                   >
                     <MinusIcon />
@@ -129,8 +126,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
               width="100%"
               md
               variant={ButtonVariants.BROWN}
-              disabled={requestedApproval}
-              isLoading={!hasUserData}
+              isLoading={!hasUserData || isLoadingApproveContract}
               onClick={handleApprove}
             >
               {t('Approve Contract')}

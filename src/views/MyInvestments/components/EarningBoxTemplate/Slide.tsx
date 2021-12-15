@@ -2,7 +2,7 @@ import _ from 'lodash'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import styled from 'styled-components'
-import { Text, Box, Flex, DoubleArrowButtons } from 'definixswap-uikit-v2'
+import { Text, Box, Flex, DoubleArrowButtons } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
 

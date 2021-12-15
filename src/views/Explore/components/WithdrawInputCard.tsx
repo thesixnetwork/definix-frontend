@@ -15,7 +15,7 @@ import {
   CheckboxLabel,
   Checkbox,
   useModal,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { useDeepEqualMemo } from 'hooks/useDeepEqualMemo'
 import { simulateWithdraw } from 'offline-pool'

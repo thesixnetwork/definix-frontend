@@ -9,7 +9,7 @@ import { useSousHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
 import { useFarmUser } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Button, Text, ButtonVariants, Flex, Box, Label } from 'definixswap-uikit-v2'
+import { Button, Text, ButtonVariants, Flex, Box, Label } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
 const Wrap = styled(Flex)<{ isInPool: boolean }>`

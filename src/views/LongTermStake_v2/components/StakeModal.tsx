@@ -11,7 +11,7 @@ import {
   AlertIcon,
   ModalBody,
   ModalFooter,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import BalanceText from 'components/BalanceText'
 import styled from 'styled-components'
 
