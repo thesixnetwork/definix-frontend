@@ -11,7 +11,6 @@ import useTheme from 'hooks/useTheme'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
-
 export interface FormState {
   name: string
   body: string
@@ -22,7 +21,6 @@ export interface FormState {
   endTime: Date
   snapshot: number
 }
-
 
 const AddActions = () => {
   const { account } = useWallet()

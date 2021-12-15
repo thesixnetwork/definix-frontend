@@ -10,7 +10,6 @@ import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
 
-
 const EmptyData = ({ text }) => (
   <TR>
     <TD colSpan={6}>

@@ -8,7 +8,6 @@ import { ExternalLink } from 'react-feather'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 // import useTheme from 'hooks/useTheme'
 
-
 const VotingDetails = () => {
   const { account } = useWallet()
   // const { isDark } = useTheme()
