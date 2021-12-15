@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
-import {  Card, Text } from 'uikit-dev'
+import { Card, Text } from 'uikit-dev'
 // import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import styled from 'styled-components'
 // import useTheme from 'hooks/useTheme'

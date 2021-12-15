@@ -91,7 +91,6 @@ const DetailBanner = styled(Text)`
 `
 
 const CardVoting = () => {
-
   return (
     <>
       <BannerVoting>

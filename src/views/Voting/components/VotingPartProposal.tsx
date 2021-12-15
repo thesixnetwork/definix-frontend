@@ -116,47 +116,47 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
             <EmptyData text={empText} />
           </>
         ) : (
-              <>
-                {rows !== null &&
-                  rows.map((r) => (
-                    <TR key={`tsc-${r.block_number}`}>
-                      <TD>
-                        <Text color="text" bold fontSize={isMobile ? "16px" : "20px"}>
-                          {"Proposal Topic Proposal Topic Proposal Topic Proposal".substring(0, 38)}...
+          <>
+            {rows !== null &&
+              rows.map((r) => (
+                <TR key={`tsc-${r.block_number}`}>
+                  <TD>
+                    <Text color="text" bold fontSize={isMobile ? '16px' : '20px'}>
+                      {'Proposal Topic Proposal Topic Proposal Topic Proposal'.substring(0, 38)}...
                     </Text>
-                        <div className={isMobile ? "" : "flex align-center"}>
-                          <Text color="text" paddingRight="8px">
-                            End Date
+                    <div className={isMobile ? '' : 'flex align-center'}>
+                      <Text color="text" paddingRight="8px">
+                        End Date
                       </Text>
-                          <Text color="text" bold>
-                            12-Nov-21 15:00:00 GMT+9
+                      <Text color="text" bold>
+                        12-Nov-21 15:00:00 GMT+9
                       </Text>
-                        </div>
-                      </TD>
-                      <TD>
-                        <Text color="text" bold>
-                          Yes, agree with you.
+                    </div>
+                  </TD>
+                  <TD>
+                    <Text color="text" bold>
+                      Yes, agree with you.
                     </Text>
-                      </TD>
-                      <TD>
-                        <div className="flex align-center">
-                          <Text color="text" bold paddingRight="8px">
-                            23,143
+                  </TD>
+                  <TD>
+                    <div className="flex align-center">
+                      <Text color="text" bold paddingRight="8px">
+                        23,143
                       </Text>
-                        </div>
-                      </TD>
-                      <TD>
-                        <BtnDetails as={Link} to="/voting/detail">
-                          Deatils
+                    </div>
+                  </TD>
+                  <TD>
+                    <BtnDetails as={Link} to="/voting/detail">
+                      Deatils
                     </BtnDetails>
-                        {/* <BtnClaim as={Link} to="/voting/detail">
+                    {/* <BtnClaim as={Link} to="/voting/detail">
                       Claim Voting Power
                     </BtnClaim> */}
-                      </TD>
-                    </TR>
-                  ))}
-              </>
-            )}
+                  </TD>
+                </TR>
+              ))}
+          </>
+        )}
       </Table>
     </CardTable>
   )

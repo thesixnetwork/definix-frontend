@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import _ from 'lodash'
-import {Button, Card, Text, useModal } from 'uikit-dev'
+import { Button, Card, Text, useModal } from 'uikit-dev'
 import styled from 'styled-components'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
@@ -129,7 +129,7 @@ const VotingCast = () => {
             </Button>
             <Text fontSize="14px" color="text" paddingLeft="14px">Claim will be available after the the voting time is ended.</Text>
           </div> */}
-          <CardList  checked={_.get(select, `${0}.checked`)}>
+          <CardList checked={_.get(select, `${0}.checked`)}>
             <FormControlLabelCustom
               control={
                 <CustomCheckbox

@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
-import { ArrowBackIcon, Button, Card, Text} from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text } from 'uikit-dev'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 // import useTheme from 'hooks/useTheme'
