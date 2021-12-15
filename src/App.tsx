@@ -10,6 +10,7 @@ import { ResetCSS } from 'uikit-dev'
 import Info from 'views/Info/Info'
 import Leaderboard from 'views/TradingChallenge/Leaderboard'
 import TradingChallenge from 'views/TradingChallenge/TradingChallenge'
+import { DatePickerPortal } from 'components/DatePicker'
 import Menu from './components/Menu'
 import PageLoader from './components/PageLoader'
 import ToastListener from './components/ToastListener'
@@ -212,6 +213,7 @@ const App: React.FC = () => {
           </div>
         </div>
       ) */}
+      <DatePickerPortal />
     </Router>
   )
 }
