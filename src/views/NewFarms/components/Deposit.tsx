@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal, Button } from 'definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
@@ -108,7 +108,7 @@ const Deposit: React.FC<{
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
       const balance = rate === 100 ? tokenBalance : tokenBalance.times(rate / 100)
-      setVal(getBalanceNumber(balance).toString())
+      setVal(getFullDisplayBalance(balance))
     },
     [tokenBalance, setVal],
   )
