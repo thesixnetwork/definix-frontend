@@ -379,7 +379,7 @@ export const useAprCardFarmHome = () => {
         const rewardFacetContract = getContract(RewardFacet.abi, getVFinix())
         const finixContract = getContract(IKIP7.abi, getVFinix())
         const userVfinixInfoContract = getContract(VaultInfoFacet.abi, getVFinix())
-  
+
         const [rewardPerBlockNumber, totalSupplyNumber, userVfinixAmount] = await Promise.all([
           await rewardFacetContract.methods.rewardPerBlock().call(),
           await finixContract.methods.totalSupply().call(),
@@ -387,7 +387,7 @@ export const useAprCardFarmHome = () => {
         ])
         const rewardPerBlock = new BigNumber(rewardPerBlockNumber).multipliedBy(86400).multipliedBy(365)
         const totalSupply = new BigNumber(totalSupplyNumber)
-  
+
         let totalVfinixUser = new BigNumber(0)
         let totalfinixUser = new BigNumber(0)
         for (let i = 0; i < userVfinixAmount.length; i++) {
@@ -397,7 +397,7 @@ export const useAprCardFarmHome = () => {
             totalfinixUser = totalfinixUser.plus(selector.lockAmount)
           }
         }
-  
+
         const aprUser = totalVfinixUser
           .dividedBy(totalSupply)
           .multipliedBy(rewardPerBlock)
