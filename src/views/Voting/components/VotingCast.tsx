@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react'
+import React, { useState } from 'react'
+import _ from 'lodash'
 import { ArrowBackIcon, Button, Card, Text, Heading, useMatchBreakpoints, useModal } from 'uikit-dev'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
@@ -10,16 +11,16 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CastVoteModal from '../Modals/CastVoteModal'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
-const CardList = styled(Card)`
+const CardList = styled(Card)<{ checked: boolean}>`
   width: 100%;
   height: 40px;
-  border: 1px solid ${({ theme }) => theme.colors.border};
+  border: 1px solid ${({ theme, checked }) => checked ? '#30ADFF' : theme.colors.border};
   border-radius: 30px;
   margin: 6px 0px;
   padding: 0px 20px;
   display: flex;
   align-items: center;
-
+  background: ${({ checked }) => checked && '#0973B9'};
   &.Mui-checked {
     background: #0973b9;
     border: 1px solid #30adff;
@@ -103,6 +104,7 @@ const VotingCast = () => {
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
   const [onPresentConnectModal] = useModal(<CastVoteModal />)
+  const [select, setSelect] = useState({})
 
   return (
     <>
@@ -110,9 +112,6 @@ const VotingCast = () => {
         <div className="pa-4 pt-3 bd-b">
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
             Cast your vote
-          </Text>
-          <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-            Your vote
           </Text>
         </div>
         <div className="ma-3">
@@ -131,18 +130,44 @@ const VotingCast = () => {
             </Button>
             <Text fontSize="14px" color="text" paddingLeft="14px">Claim will be available after the the voting time is ended.</Text>
           </div> */}
-          <CardList>
+          <CardList checked={_.get(select, `${0}.checked`)}>
             <FormControlLabelCustom
-              control={<CustomCheckbox size="small" disabled checked icon={<BpCheckboxIcons />} />}
+              control={
+              <CustomCheckbox 
+                size="small"  
+                checked={_.get(select, `${0}.checked`)}
+                onChange={(event, i) => {
+                  setSelect({
+                    ...select,
+                    0 : {
+                      checked: event.target.checked,
+                      id: 0
+                    },
+                  })
+                }}
+                icon={<BpCheckboxIcons />} 
+              />}
               label=""
             />
             <Text fontSize="15px" bold>
               Yes, agree with you.
             </Text>
           </CardList>
-          <CardList>
+          <CardList checked={_.get(select, `${1}.checked`)}>
             <FormControlLabelCustom
-              control={<CustomCheckbox size="small" disabled checked={false} icon={<BpCheckboxIcons />} />}
+              control={<CustomCheckbox 
+                size="small" 
+                checked={_.get(select, `${1}.checked`)}
+                onChange={(event, i) => {
+                  setSelect({
+                    ...select,
+                    1 : {
+                      checked: event.target.checked,
+                      id: 1
+                    },
+                  })
+                }}
+                icon={<BpCheckboxIcons />} />}
               label=""
             />
             <Text fontSize="15px" bold>
