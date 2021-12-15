@@ -71,13 +71,22 @@ const AddActions = () => {
     snapshot: 0,
   })
   const { name, body, startDate, startTime, endDate, endTime, snapshot } = state
+  const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
 
   const handleDateChange = (key: string) => (value: Date) => {
     updateValue(key, value)
   }
 
   const updateValue = (key: string, value: string | Date) => {
-    console.log('updateValue')
+    setState((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }))
+
+    setFieldsState((prevFieldsState) => ({
+      ...prevFieldsState,
+      [key]: true,
+    }))
   }
 
   return (
@@ -90,7 +99,7 @@ const AddActions = () => {
         </div>
         <div className="ma-3">
           <div className="mb-3">
-            <Text color="text" fontSize="16px">
+            <Text className="mb-2" color="text" fontSize="16px">
               Start Date
             </Text>
             <DatePicker
@@ -101,22 +110,37 @@ const AddActions = () => {
             />
           </div>
           <div className="mb-3">
-            <Text color="text" fontSize="16px">
+            <Text className="mb-2" color="text" fontSize="16px">
               Start Time
             </Text>
-            <BoxInput className="my-2" placeholder="00:00" />
+            <TimePicker
+              name="startTime"
+              onChange={handleDateChange('startTime')}
+              selected={startTime}
+              placeholderText="00:00"
+            />
           </div>
           <div className="mb-3">
-            <Text color="text" fontSize="16px">
+            <Text className="mb-2" color="text" fontSize="16px">
               End Date
             </Text>
-            <BoxInput className="my-2" placeholder="DD-MM-YY" />
+            <DatePicker
+              name="endDate"
+              onChange={handleDateChange('endDate')}
+              selected={endDate}
+              placeholderText="YYYY/MM/DD"
+            />
           </div>
           <div className="mb-3">
-            <Text color="text" fontSize="16px">
+            <Text className="mb-2" color="text" fontSize="16px">
               End Time
             </Text>
-            <BoxInput className="my-2" placeholder="00:00" />
+            <TimePicker
+              name="endTime"
+              onChange={handleDateChange('endTime')}
+              selected={endTime}
+              placeholderText="00:00"
+            />
           </div>
           <div className={`flex align-stretch ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-4'}>
