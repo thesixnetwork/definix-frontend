@@ -42,17 +42,17 @@ export const links = (t: (key: string) => string) => {
       activeIcon: 'GnbRebalancingSIcon',
       href: '/rebalancing',
     },
-    {
-      label: t('vFINIX'),
-      icon: 'GnbFinixNIcon',
-      activeIcon: 'GnbFinixSIcon',
-      items: [
-        {
-          label: t('Long-term Stake'),
-          href: '/long-term-stake',
-        },
-      ],
-    },
+    // {
+    //   label: t('vFINIX'),
+    //   icon: 'GnbFinixNIcon',
+    //   activeIcon: 'GnbFinixSIcon',
+    //   items: [
+    //     {
+    //       label: t('Long-term Stake'),
+    //       href: '/long-term-stake',
+    //     },
+    //   ],
+    // },
     {
       label: t('Bridge'),
       icon: 'GnbBridgeNIcon',
