@@ -2254,10 +2254,10 @@
     "@ethersproject/properties" "^5.4.0"
     "@ethersproject/strings" "^5.4.0"
 
-"@fingerlabs/definixswap-uikit-v2@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.12.tgz#6d57988deceb7bc8765a7a6c620a5d5332140de7"
-  integrity sha512-RI4O/9EEnuFVL92ypWk64Md7qAYS9+vxV5za9q22GrHIeDWPHRTz8PuTe1RTSVQynnD8iImcvmkjAtaHO5TRIA==
+"@fingerlabs/definixswap-uikit-v2@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.13.tgz#c12c79ca6b106614de157791d157e6059301c492"
+  integrity sha512-z4+Es+d05kMHmL8fE882KM7gCUxYOAI5fd8vCFYOEPcHcIRjUr/O6m907aIwWRU9rZu9Qa47kA/BJFyJG58l8Q==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
@@ -2935,6 +2935,11 @@
     native-url "^0.2.6"
     schema-utils "^2.6.5"
     source-map "^0.7.3"
+
+"@popperjs/core@*":
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.0.tgz#6734f8ebc106a0860dff7f92bf90df193f0935d7"
+  integrity sha512-zrsUxjLOKAzdewIDRWy9nsV1GQsKBCWaGwsZQlCgr6/q+vjyZhFgqedLfFBuI9anTPEUT4APq9Mu0SZBTzIcGQ==
 
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
