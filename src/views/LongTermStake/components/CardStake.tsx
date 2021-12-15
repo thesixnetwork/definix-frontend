@@ -525,6 +525,7 @@ const CardStake = ({ isShowRightPanel }) => {
           <div className="flex mt-4">
             {!account ? (
               <UnlockButton />
+            ) : (
               // <Button
               //   width="100%"
               //   className="align-self-center"
@@ -534,7 +535,6 @@ const CardStake = ({ isShowRightPanel }) => {
               // >
               //   Connect Wallet
               // </Button>
-            ) : (
               renderApprovalOrStakeButton()
             )}
           </div>

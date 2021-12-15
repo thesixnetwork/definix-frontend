@@ -1,10 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
-import {
-  LeftPanel,
-  TwoPanelLayout,
-  MaxWidthLeft,
-} from 'uikit-dev/components/TwoPanelLayout'
+import { LeftPanel, TwoPanelLayout, MaxWidthLeft } from 'uikit-dev/components/TwoPanelLayout'
 import { Overlay } from 'uikit-dev/components/Overlay'
 import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
 import styled from 'styled-components'

@@ -151,24 +151,21 @@ const Unstake: React.FC = () => {
   const { unLock } = useUnLock()
   const navigate = useHistory()
 
-  const handleUnLock = useCallback(
-    async () => {
-      try {
-        const res = unLock(id)
-        res
-          .then(() => {
-            navigate.push('/long-term-stake')
-            return <Redirect to="/long-term-stake" />
-          })
-          .catch((e) => {
-            console.warn(e);
-          })
-      } catch (e) {
-        console.error(e)
-      }
-    },
-    [unLock, id, navigate],
-  )
+  const handleUnLock = useCallback(async () => {
+    try {
+      const res = unLock(id)
+      res
+        .then(() => {
+          navigate.push('/long-term-stake')
+          return <Redirect to="/long-term-stake" />
+        })
+        .catch((e) => {
+          console.warn(e)
+        })
+    } catch (e) {
+      console.error(e)
+    }
+  }, [unLock, id, navigate])
 
   return (
     <>

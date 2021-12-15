@@ -1,6 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, CardBody, Text, ColorStyles, Flex, HomeProtectionFinixIcon, Grid } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  Card,
+  CardBody,
+  Text,
+  ColorStyles,
+  Flex,
+  HomeProtectionFinixIcon,
+  Grid,
+} from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 const AuditList = [

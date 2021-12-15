@@ -117,10 +117,7 @@ const CustomButton = ({
           opacity: isTopUp && !disableLevel && 0.3,
         }}
       >
-        <BoxLevel
-          className="col-4"
-          style={{ background: period === level ? handleBackgroud(period) : '#737375' }}
-        >
+        <BoxLevel className="col-4" style={{ background: period === level ? handleBackgroud(period) : '#737375' }}>
           <Heading color="white" as="h1" fontSize={`${isMobile ? '20px !important' : '30px !important'}`}>
             {level}x
           </Heading>

@@ -6,7 +6,18 @@ import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
-import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal, Button } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  ColorStyles,
+  Text,
+  Box,
+  TitleSet,
+  Card,
+  Flex,
+  Divider,
+  BackIcon,
+  useModal,
+  Button,
+} from '@fingerlabs/definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
