@@ -29,6 +29,7 @@ const ButtonPeriod = styled(Button)`
   padding: 0;
   width: 100%;
   height: 60px;
+  border-radius: 8px;
 `
 
 const CustomButton = ({

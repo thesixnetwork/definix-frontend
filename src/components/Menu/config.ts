@@ -24,7 +24,7 @@ export const links = (t: (key: string) => string) => {
     {
       label: t('Yield Farming'),
       icon: 'GnbFarmingNIcon',
-      activeIcon: 'GnbFarmingNIcon',
+      activeIcon: 'GnbFarmingSIcon',
       items: [
         {
           label: t('Farm'),
@@ -44,8 +44,8 @@ export const links = (t: (key: string) => string) => {
     },
     {
       label: t('vFINIX'),
-      icon: 'GnbFarmingNIcon',
-      activeIcon: 'GnbFarmingNIcon',
+      icon: 'GnbFinixNIcon',
+      activeIcon: 'GnbFinixSIcon',
       items: [
         {
           label: t('Long-term Stake'),
