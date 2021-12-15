@@ -30,7 +30,7 @@ const THEME: { [key: string]: InnerTheme } = {
   white: {
     totalTitleColor: ColorStyles.MEDIUMGREY,
     totalBalanceColor: ColorStyles.BLACK,
-    totalCurrencyColor: ColorStyles.BLACK,
+    totalCurrencyColor: ColorStyles.DEEPGREY,
     itemTitleColor: ColorStyles.MEDIUMGREY,
     itemBalanceColor: ColorStyles.BLACK,
     itemCurrencyColor: ColorStyles.DEEPGREY,
@@ -108,7 +108,8 @@ const EarningBoxTemplate: React.FC<{
   valueList: ValueList[]
   theme?: 'white' | 'dark'
   useHarvestButton?: boolean
-}> = ({ isMobile, isMain = false, hasAccount, total, valueList, theme = 'white', useHarvestButton = true }) => {
+  unit?: string
+}> = ({ isMobile, isMain = false, hasAccount, total, valueList, theme = 'white', useHarvestButton = true, unit = '' }) => {
   const { t } = useTranslation()
   const history = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
@@ -154,7 +155,12 @@ const EarningBoxTemplate: React.FC<{
             </Text>
           </Flex>
           <Flex alignItems="flex-end">
-            {renderTotalValue()}
+            <Flex alignItems="flex-end">
+              {renderTotalValue()}
+              <Text textStyle="R_16M" color={ColorStyles.BLACK} mb="S_2" ml="S_6">
+                {unit.length > 0 ? unit : null}
+              </Text>
+            </Flex>
             {!displayOnlyTotalPrice && (
               <CurrencyText
                 value={hasAccount ? total.price : 0}
@@ -162,7 +168,7 @@ const EarningBoxTemplate: React.FC<{
                 textStyle={`R_${isMobile ? '14' : '16'}M`}
                 color={curTheme.totalCurrencyColor}
                 ml="S_16"
-                mb="S_4"
+                mb="S_2"
               />
             )}
           </Flex>
