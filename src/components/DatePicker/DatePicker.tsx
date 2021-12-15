@@ -19,7 +19,12 @@ export interface DatePickerProps extends ReactDatePickerProps {
 
 const DatePicker: React.FC<DatePickerProps> = ({ inputProps = {}, ...props }) => {
   return (
-    <ReactDatePicker customInput={<Input style={{ backgroundColor: 'unset'}} {...inputProps} />} portalId="reactDatePicker" dateFormat="PPP" {...props} />
+    <ReactDatePicker
+      customInput={<Input style={{ backgroundColor: 'unset' }} {...inputProps} />}
+      portalId="reactDatePicker"
+      dateFormat="PPP"
+      {...props}
+    />
   )
 }
 
