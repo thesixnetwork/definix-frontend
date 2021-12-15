@@ -8,6 +8,10 @@ import {
   Flex,
   HomeProtectionFinixIcon,
   Grid,
+  ImgHomeProtectionFinix1x,
+  ImgHomeProtectionFinix2x,
+  ImgHomeProtectionFinix3x,
+  ImageSet
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
@@ -132,8 +136,9 @@ const AuditItemResult = styled(Text)`
   }
 `
 
-const Character = styled(Flex)`
+const Character = styled(ImageSet)`
   grid-area: char;
+  display: flex;
   justify-self: flex-end;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -166,9 +171,7 @@ const CardAudit = () => {
               <AuditItemDesc>{t(AuditList[1].description)}</AuditItemDesc>
               <AuditItemResult color={AuditList[1].color}>{t(AuditList[1].result)}</AuditItemResult>
             </WrapAuditItemInfo>
-            <Character>
-              <HomeProtectionFinixIcon />
-            </Character>
+            <Character srcSet={[ImgHomeProtectionFinix1x, ImgHomeProtectionFinix2x, ImgHomeProtectionFinix3x]} alt="" width={112} height={154} />
           </AuditItem>
         </WrapAudit>
       </StyledCardBody>

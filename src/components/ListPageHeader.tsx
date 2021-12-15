@@ -4,11 +4,20 @@ import { useTranslation } from 'react-i18next'
 import {
   Flex,
   TitleSet,
-  ImgPoolIcon,
   Box,
-  ImgFarmIcon,
-  ImgMyInvestmentDefaultIcon,
-  ImgRebalancingIcon,
+  ImageSet,
+  ImgPool1x,
+  ImgPool2x,
+  ImgPool3x,
+  ImgFarm1x,
+  ImgFarm2x,
+  ImgFarm3x,
+  ImgRebalancing1x,
+  ImgRebalancing2x,
+  ImgRebalancing3x,
+  ImgMyinvestmentDefault1x,
+  ImgMyinvestmentDefault2x,
+  ImgMyinvestmentDefault3x
 } from '@fingerlabs/definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
@@ -36,7 +45,9 @@ const Wrap = styled(Flex)`
     }
   }
 `
-const ImgWrap = styled(Box)`
+const ImgWrap = styled(Flex)`
+  width: 100%;
+  justify-content: flex-end;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     display: none;
   }
@@ -50,26 +61,42 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       description: 'Deposit a single token',
       linkLabel: 'Learn how to stake',
       linkPath: '/pools/how-to-stake-to-definix-pool',
-      image: ImgPoolIcon,
+      image: [ImgPool1x, ImgPool2x, ImgPool3x],
+      imageSize: {
+        w: 200,
+        h: 122
+      }
     },
     farm: {
       title: 'Farm',
       description: 'Pairing coins to create LP',
       linkLabel: 'Learn how to stake in Farm',
       linkPath: '/yield-farming/how-to-yield-farm-on-definix',
-      image: ImgFarmIcon,
+      image: [ImgFarm1x, ImgFarm2x, ImgFarm3x],
+      imageSize: {
+        w: 200,
+        h: 122
+      }
     },
     rebalancing: {
       title: 'Rebalancing Farm',
       description: 'A Farm that automatically performs',
       linkLabel: 'Learn how to invest',
       linkPath: '/rebalancing-farm/how-to-start-investing-in-rebalancing-farm',
-      image: ImgRebalancingIcon,
+      image: [ImgRebalancing1x, ImgRebalancing2x, ImgRebalancing3x],
+      imageSize: {
+        w: 236,
+        h: 144
+      }
     },
     myInvestment: {
       title: 'My Investment',
       description: 'Check your investment history and profit',
-      image: ImgMyInvestmentDefaultIcon,
+      image: [ImgMyinvestmentDefault1x, ImgMyinvestmentDefault2x, ImgMyinvestmentDefault3x],
+      imageSize: {
+        w: 230,
+        h: 118
+      }
     },
   })
   const linkLanguage = useMemo(() => (i18n.language.includes('ko') ? 'kr' : 'en'), [i18n.language])
@@ -93,7 +120,8 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       </Box>
       {currentSet.image && (
         <ImgWrap className="image-wrap">
-          <currentSet.image display="block" />
+          <ImageSet srcSet={currentSet.image} alt="" width={currentSet.imageSize.w} height={currentSet.imageSize.h} />
+          {/* <currentSet.image display="block" /> */}
         </ImgWrap>
       )}
     </Wrap>

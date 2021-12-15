@@ -2,7 +2,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Card, CardBody, ColorStyles, Text, Flex, HomeFarmFinixIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { Card, CardBody, ColorStyles, Text, Flex, ImgHomeFarmFinix1x, ImgHomeFarmFinix2x, ImgHomeFarmFinix3x, ImageSet } from '@fingerlabs/definixswap-uikit-v2'
 import FarmHighAPR from './FarmHighAPR'
 import ExploreHighAPR from './ExploreHighAPR'
 
@@ -47,10 +47,10 @@ const StyledRebalanceTitle = styled(Flex)`
   }
 `
 
-const Character = styled(Flex)`
-  flex-direction: column;
+const Character = styled(ImageSet)`
+  /* flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-end; */
   width: 184px;
   height: 100px;
 
@@ -67,9 +67,8 @@ const CardHighAPR = () => {
       <WrapCardBody>
         <Flex alignItems="flex-end" justifyContent="space-between">
           <Title>{t('Stake Farms with high APR')}</Title>
-          <Character>
-            <HomeFarmFinixIcon viewBox="0 0 184 100" />
-          </Character>
+          <Character srcSet={[ImgHomeFarmFinix1x, ImgHomeFarmFinix2x, ImgHomeFarmFinix3x]} alt="" width={184} height={100} />
+          {/* <HomeFarmFinixIcon viewBox="0 0 184 100" /> */}
         </Flex>
         <InnerBox to="/farm">
           <FarmHighAPR />
