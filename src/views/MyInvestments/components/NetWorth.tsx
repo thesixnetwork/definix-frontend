@@ -24,12 +24,13 @@ const NetWorth: React.FC<{
       farm: t('Farm'),
       pool: t('Pool'),
       rebalancing: t('Rebalancing'),
+      longtermstake: t('Long-term Stake')
     }
   }, [t])
   const netWorthList = useMemo(() => {
     return Object.entries(filledProducts).map(([type, product]) => {
       return {
-        title: titleList[type],
+        title: titleList[type.toLowerCase()],
         price: product.reduce((all, f) => all + Number(f.netWorth), 0),
       }
     })
@@ -45,6 +46,7 @@ const NetWorth: React.FC<{
           price: netWorthList.reduce((result, item) => result + item.price, 0),
         }}
         valueList={netWorthList}
+        useHarvestButton={false}
       />
     </>
   )

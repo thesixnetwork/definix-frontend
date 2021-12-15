@@ -36,7 +36,7 @@ const MyInvestments: React.FC = () => {
   const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   const { account }: { account: string; klaytn: provider } = useWallet()
-  const { convertToPriceFromToken } = useConverter()
+  const { convertToPriceFromToken, convertToPriceFromSymbol } = useConverter()
   const dispatch = useDispatch()
   const balances = useBalances(account)
 
@@ -113,6 +113,7 @@ const MyInvestments: React.FC = () => {
   const isApprovedLongTerm = useMemo(() => {
     return account && longTermAllowance && longTermAllowance.isGreaterThan(0)
   }, [account, longTermAllowance])
+  const finixPrice = useMemo(() => convertToPriceFromSymbol(), [convertToPriceFromSymbol])
   const stakedLongTermStake = useMemo(() => {
     const result = []
     if (isApprovedLongTerm && Number(lockCount) !== 0) {
@@ -121,15 +122,21 @@ const MyInvestments: React.FC = () => {
         type: 'longTermStake',
         data: {
           apyValue: typeof longtermApr !== 'number' || Number.isNaN(longtermApr) ? 0 : longtermApr,
+          lpSymbol: 'longTermStake',
+          value: new BigNumber(finixPrice).times(userLongTerStake.lockAmount).toNumber(),
           ...userLongTerStake,
         },
       })
     }
     return result
-  }, [t, isApprovedLongTerm, lockCount, userLongTerStake, longtermApr])
+  }, [t, isApprovedLongTerm, lockCount, userLongTerStake, longtermApr, finixPrice])
 
   // Net Worth
   const getNetWorth = (d) => {
+    // long term stake
+    if (typeof d.lpSymbol === 'string' && d.lpSymbol === 'longTermStake') {
+      return d.value
+    }
     if (typeof d.ratio === 'object') {
       // rebalance
       const thisBalance = d.enableAutoCompound ? rebalanceBalances : balances
