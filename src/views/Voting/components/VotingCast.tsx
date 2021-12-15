@@ -11,10 +11,10 @@ import Checkbox from '@material-ui/core/Checkbox'
 import CastVoteModal from '../Modals/CastVoteModal'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
-const CardList = styled(Card)<{ checked: boolean}>`
+const CardList = styled(Card)<{ checked: boolean }>`
   width: 100%;
   height: 40px;
-  border: 1px solid ${({ theme, checked }) => checked ? '#30ADFF' : theme.colors.border};
+  border: 1px solid ${({ theme, checked }) => (checked ? '#30ADFF' : theme.colors.border)};
   border-radius: 30px;
   margin: 6px 0px;
   padding: 0px 20px;
@@ -133,20 +133,21 @@ const VotingCast = () => {
           <CardList checked={_.get(select, `${0}.checked`)}>
             <FormControlLabelCustom
               control={
-              <CustomCheckbox 
-                size="small"  
-                checked={_.get(select, `${0}.checked`)}
-                onChange={(event, i) => {
-                  setSelect({
-                    ...select,
-                    0 : {
-                      checked: event.target.checked,
-                      id: 0
-                    },
-                  })
-                }}
-                icon={<BpCheckboxIcons />} 
-              />}
+                <CustomCheckbox
+                  size="small"
+                  checked={_.get(select, `${0}.checked`)}
+                  onChange={(event, i) => {
+                    setSelect({
+                      ...select,
+                      0: {
+                        checked: event.target.checked,
+                        id: 0,
+                      },
+                    })
+                  }}
+                  icon={<BpCheckboxIcons />}
+                />
+              }
               label=""
             />
             <Text fontSize="15px" bold>
@@ -155,19 +156,22 @@ const VotingCast = () => {
           </CardList>
           <CardList checked={_.get(select, `${1}.checked`)}>
             <FormControlLabelCustom
-              control={<CustomCheckbox 
-                size="small" 
-                checked={_.get(select, `${1}.checked`)}
-                onChange={(event, i) => {
-                  setSelect({
-                    ...select,
-                    1 : {
-                      checked: event.target.checked,
-                      id: 1
-                    },
-                  })
-                }}
-                icon={<BpCheckboxIcons />} />}
+              control={
+                <CustomCheckbox
+                  size="small"
+                  checked={_.get(select, `${1}.checked`)}
+                  onChange={(event, i) => {
+                    setSelect({
+                      ...select,
+                      1: {
+                        checked: event.target.checked,
+                        id: 1,
+                      },
+                    })
+                  }}
+                  icon={<BpCheckboxIcons />}
+                />
+              }
               label=""
             />
             <Text fontSize="15px" bold>
