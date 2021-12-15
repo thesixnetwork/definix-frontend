@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { useHarvest, useAllLock } from 'hooks/useLongTermStake'
-import { Flex, Box, useMatchBreakpoints, Grid, Button, ButtonVariants } from 'definixswap-uikit-v2'
+import { Flex, Box, useMatchBreakpoints, Grid, Button, ButtonVariants } from '@fingerlabs/definixswap-uikit-v2'
 import MainInfoSection from './MainInfoSection'
 import { MyBalanceSection, EarningsSection } from './DetailsSection'
 

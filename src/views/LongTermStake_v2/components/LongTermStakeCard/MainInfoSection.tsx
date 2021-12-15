@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Box, Text, ColorStyles } from 'definixswap-uikit-v2'
+import { Flex, Box, Text, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 // import ApyButton from './ApyButton'
 // import { CardHeadingProps } from './types'
 
