@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import { useSousApprove } from 'hooks/useApprove'
 import { useERC20 } from 'hooks/useContract'
 import useConverter from 'hooks/useConverter'
+import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from 'definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
@@ -47,9 +48,8 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentWithdraw,
 }) => {
   const { t } = useTranslation()
+  const { toastError } = useToast()
   const { convertToPriceFromSymbol, convertToBalanceFormat } = useConverter()
-
-  const [requestedApproval, setRequestedApproval] = useState(false)
   const [isLoadingApproveContract, setIsLoadingApproveContract] = useState(false)
 
   const stakingTokenContract = useERC20(pool.stakingTokenAddress)
@@ -67,18 +67,19 @@ const StakeAction: React.FC<StakeActionProps> = ({
   const handleApprove = useCallback(async () => {
     try {
       setIsLoadingApproveContract(true)
-      setRequestedApproval(true)
       const txHash = await onApprove()
       // user rejected tx or didn't go thru
       if (!txHash) {
-        setRequestedApproval(false)
+        setIsLoadingApproveContract(false)
+        toastError(t('{{Action}} Fail', { Action: t('Approve') }))
       }
     } catch (e) {
       console.error(e)
+      toastError(t('{{Action}} Fail', { Action: t('Approve') }))
     } finally {
       setIsLoadingApproveContract(false)
     }
-  }, [onApprove, setRequestedApproval])
+  }, [onApprove, toastError, t])
 
   // const needApproveContract = useMemo(() => {
   //   return needsApprovalContract && !isOldSyrup
@@ -131,7 +132,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
               width="100%"
               md
               variant={ButtonVariants.BROWN}
-              disabled={pool.isFinished || requestedApproval}
+              disabled={pool.isFinished}
               isLoading={isLoadingApproveContract}
               onClick={handleApprove}
             >
