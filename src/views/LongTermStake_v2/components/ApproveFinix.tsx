@@ -81,7 +81,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
         )}
         <Flex flexDirection="column">
           {hasAccount ? (
-            <Button mb="S_12" disabled={!approve || isError} onClick={onPresentStakeModal}>
+            <Button height="48px" mb="S_12" disabled={!approve || isError} onClick={onPresentStakeModal}>
               {t('Stake')}
             </Button>
           ) : (

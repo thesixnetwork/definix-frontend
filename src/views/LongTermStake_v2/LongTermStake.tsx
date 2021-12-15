@@ -1,5 +1,4 @@
 import React from 'react'
-import { Helmet } from 'react-helmet-async'
 import { Box, useMatchBreakpoints } from 'definixswap-uikit-v2'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
@@ -15,9 +14,6 @@ const LongTermStake: React.FC = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Long-term Stake - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
       <Box maxWidth={`${isMobile ? '100%' : '630px'}`} mx="auto" my={`${isMobile ? 'S_32' : 'S_28'}`}>
         <TitleStake />
         <CardTotalStake isMobile={isMobile} />
