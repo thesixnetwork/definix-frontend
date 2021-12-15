@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
-import { Box, Flex, Text, Toggle, useModal } from 'definixswap-uikit-v2'
+import { Box, Card, Flex, Text, Toggle, useModal } from 'definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 
@@ -88,7 +88,7 @@ const Explore: React.FC = () => {
             <FilterWrap>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="deepgrey" mr="S_8">
-                  {t('Staked only Farm')}
+                  {t('Invested only')}
                 </Text>
                 <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
               </Flex>
@@ -110,7 +110,9 @@ const Explore: React.FC = () => {
               )
             })
           ) : (
-            <NoResultArea useCardLayout message={t('There are no farms in deposit.')} />
+            <Card>
+              <NoResultArea useCardLayout={false} message={t('There are no farms in deposit.')} />
+            </Card>
           )}
         </>
       </Route>

@@ -6,6 +6,7 @@ const EmptyArea = styled(Flex)`
   justify-content: center;
   align-items: center;
   height: 340px;
+  opacity: 0.6;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     height: 260px;
   }
