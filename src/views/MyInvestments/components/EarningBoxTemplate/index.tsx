@@ -107,7 +107,8 @@ const EarningBoxTemplate: React.FC<{
   total: ValueList
   valueList: ValueList[]
   theme?: 'white' | 'dark'
-}> = ({ isMobile, isMain = false, hasAccount, total, valueList, theme = 'white' }) => {
+  useHarvestButton?: boolean
+}> = ({ isMobile, isMain = false, hasAccount, total, valueList, theme = 'white', useHarvestButton = true }) => {
   const { t } = useTranslation()
   const history = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
@@ -167,21 +168,26 @@ const EarningBoxTemplate: React.FC<{
           </Flex>
         </Box>
         <ButtonWrap curTheme={curTheme} className={isMobile ? 'mt-s20' : ''}>
-          {hasAccount ? (
-            <Button
-              md
-              width="100%"
-              variant="red"
-              className="home-harvest-button"
-              isLoading={pendingTx}
-              disabled={balancesWithValue.length <= 0}
-              onClick={harvestAllFarms}
-            >
-              {t('Harvest')}
-            </Button>
-          ) : (
-            <UnlockButton />
+          {useHarvestButton && (
+            <>
+              {hasAccount ? (
+                <Button
+                  md
+                  width="100%"
+                  variant="red"
+                  className="home-harvest-button"
+                  isLoading={pendingTx}
+                  disabled={balancesWithValue.length <= 0}
+                  onClick={harvestAllFarms}
+                >
+                  {t('Harvest')}
+                </Button>
+              ) : (
+                <UnlockButton />
+              )}
+            </>
           )}
+
           {isMain && (
             <Button md variant="brown" width="100%" mt={isMobile ? '0' : '12px'} onClick={() => history.push('/my')}>
               {t('Detail')}
