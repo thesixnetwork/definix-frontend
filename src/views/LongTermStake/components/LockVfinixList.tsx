@@ -310,72 +310,68 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         ) : isEmpty(rows) ? (
           <EmptyData text="No data" />
         ) : (
-          <>
-            <TBody>
-              {rows !== null &&
-                rows.map((item, idx) => (
-                  <TR key={_.get(item, 'id')}>
-                    <TD>
-                      <Text color="textSubtle">
-                        <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                          {_.get(item, 'multiplier')}x {_.get(item, 'days')} days
-                        </Text>
-                        {_.get(item, 'topup').some((topup) => Number(topup) === item.id) && (
-                          <>
-                            <div className="flex align-center">
-                              <Text color="#F5C858" fontSize="12px" bold>
-                                28 days Super Staked
-                              </Text>
-                              <Helper
-                                text="Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount. You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended."
-                                className="ml-1 pt-1"
-                                position="bottom"
-                              />
-                            </div>
-                            <Text fontSize="8.5px">
-                              {item.lockTimestamp} - {item.topupTimeStamp}
-                            </Text>
-                          </>
-                        )}
-                      </Text>
-                    </TD>
-                    <TD className="col-3">
+          <TBody>
+            {rows !== null &&
+              rows.map((item, idx) => (
+                <TR key={_.get(item, 'id')}>
+                  <TD>
+                    <Text color="textSubtle">
                       <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
-                        {_.get(item, 'isPenalty')
-                          ? _.get(item, 'lockAmount') - (_.get(item, 'penaltyRate') / 100) * _.get(item, 'lockAmount')
-                          : _.get(item, 'lockAmount').toLocaleString()}
+                        {_.get(item, 'multiplier')}x {_.get(item, 'days')} days
                       </Text>
-                    </TD>
-                    <TD>
-                      <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
-                        {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
-                      </Text>
-                      <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600" fontSize="13px">
-                        {_.get(item, 'isPenalty')
-                          ? _.get(item, 'penaltyUnlockTimestamp')
-                          : _.get(item, 'lockTimestamp')}{' '}
-                        GMT+9
-                      </Text>
-                    </TD>
-                    <TD className="text-right">
-                      {_.get(item, 'isUnlocked') ? handleIsunlocked(item) : handleNotIsunlocked(item)}
-                    </TD>
-                  </TR>
-                ))}
-              <TR>
-                <TD className="text-right">
-                  <PaginationCustom
-                    page={currentPage}
-                    count={pages}
-                    onChange={onPageChange}
-                    size="small"
-                    hidePrevButton
-                    hideNextButton
-                  />
-                </TD>
-              </TR>
-            </TBody>
-          </>
+                      {_.get(item, 'topup').some((topup) => Number(topup) === item.id) && (
+                        <>
+                          <div className="flex align-center">
+                            <Text color="#F5C858" fontSize="12px" bold>
+                              28 days Super Staked
+                            </Text>
+                            <Helper
+                              text="Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount. You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended."
+                              className="ml-1 pt-1"
+                              position="bottom"
+                            />
+                          </div>
+                          <Text fontSize="8.5px">
+                            {item.lockTopupTimes} - {item.topupTimeStamp}
+                          </Text>
+                        </>
+                      )}
+                    </Text>
+                  </TD>
+                  <TD className="col-3">
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600">
+                      {_.get(item, 'isPenalty')
+                        ? _.get(item, 'lockAmount') - (_.get(item, 'penaltyRate') / 100) * _.get(item, 'lockAmount')
+                        : _.get(item, 'lockAmount').toLocaleString()}
+                    </Text>
+                  </TD>
+                  <TD>
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="initial">
+                      {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
+                    </Text>
+                    <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600" fontSize="13px">
+                      {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}
+                      GMT+9
+                    </Text>
+                  </TD>
+                  <TD className="text-right">
+                    {_.get(item, 'isUnlocked') ? handleIsunlocked(item) : handleNotIsunlocked(item)}
+                  </TD>
+                </TR>
+              ))}
+            <TR>
+              <TD className="text-right">
+                <PaginationCustom
+                  page={currentPage}
+                  count={pages}
+                  onChange={onPageChange}
+                  size="small"
+                  hidePrevButton
+                  hideNextButton
+                />
+              </TD>
+            </TR>
+          </TBody>
         )}
       </Table>
     </CardTable>
