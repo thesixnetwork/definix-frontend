@@ -88,7 +88,7 @@ const Explore: React.FC = () => {
             <FilterWrap>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="deepgrey" mr="S_8">
-                  {t('Staked only Farm')}
+                  {t('Invested only')}
                 </Text>
                 <Toggle checked={isInvested} onChange={() => setIsInvested(!isInvested)} />
               </Flex>
