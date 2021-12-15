@@ -11,6 +11,7 @@ import NoResultArea from 'components/NoResultArea'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
 import ExploreCard from 'views/Explore/components/ExploreCard'
+import LongTermStakeCard from 'views/LongTermStake_v2/components/LongTermStakeCard/LongTermStakeCard'
 
 interface Product {
   type: string
@@ -116,6 +117,11 @@ const MyProducts: React.FC<{
               // go to link
             }}
           />
+        )
+      }
+      if (type === 'longtermstake') {
+        return (
+          <LongTermStakeCard longTermStake={product.data} />
         )
       }
       return null

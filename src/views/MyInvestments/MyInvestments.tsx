@@ -9,6 +9,7 @@ import { Route, useRouteMatch, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
+import { useLockCount, useAllowance, usePrivateData } from 'hooks/useLongTermStake'
 import useConverter from 'hooks/useConverter'
 import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } from 'state/hooks'
 import { fetchFarmUserDataAsync } from 'state/actions'
@@ -104,6 +105,25 @@ const MyInvestments: React.FC = () => {
     return arr
   }, [])
 
+  // long term stake
+  const userLongTerStake = usePrivateData()
+  const lockCount = useLockCount()
+  const longTermAllowance = useAllowance()
+  const isApprovedLongTerm = useMemo(() => {
+    return account && longTermAllowance && longTermAllowance.isGreaterThan(0)
+  }, [account, longTermAllowance])
+  const stakedLongTermStake = useMemo(() => {
+    const result = []
+    if (isApprovedLongTerm && Number(lockCount) !== 0) {
+      result.push({
+        label: t('Long-term Stake'),
+        type: 'longTermStake',
+        data: userLongTerStake
+      })
+    }
+    return result
+  }, [t, isApprovedLongTerm, lockCount, userLongTerStake])
+
   // Net Worth
   const getNetWorth = (d) => {
     if (typeof d.ratio === 'object') {
@@ -147,8 +167,8 @@ const MyInvestments: React.FC = () => {
   }
 
   const stakedProducts = useMemo(() => {
-    return [...stakedFarms, ...stakedPools, ...stakedRebalances]
-  }, [stakedFarms, stakedPools, stakedRebalances])
+    return [...stakedFarms, ...stakedPools, ...stakedRebalances, ...stakedLongTermStake]
+  }, [stakedFarms, stakedPools, stakedRebalances, stakedLongTermStake])
 
   useEffect(() => {
     if (account) {
