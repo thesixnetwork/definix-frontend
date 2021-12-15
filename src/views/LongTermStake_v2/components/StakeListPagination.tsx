@@ -62,7 +62,7 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
           return (
             <StyledText
               key={num}
-              textStyle="R_14B"
+              textStyle={`${currentPage === num ? 'R_14B' : 'R_14R'}`}
               color={`${currentPage === num ? 'black' : 'mediumgrey'}`}
               onClick={() => setCurrentPage(num)}
             >
