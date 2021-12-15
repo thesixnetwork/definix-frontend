@@ -1,7 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
 import { Button, Card, Text, Input, useMatchBreakpoints } from 'uikit-dev'
-import { Link, Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import Radio from '@material-ui/core/Radio'
@@ -27,41 +26,6 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 
   .MuiFormControlLabel-label {
     flex-grow: 1;
-  }
-`
-
-const CustomCheckbox = styled(Checkbox)`
-  border: 1px solid red;
-  &.Mui-checked {
-    color: ${({ theme }) => theme.colors.success} !important;
-  }
-`
-
-const BpIcons = styled.span`
-  border-radius: 24px;
-  width: 0.8em;
-  height: 0.75em;
-  background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#E3E6EC')} !important;
-  border: 1.5px solid #979797;
-  margin-left: 2px;
-
-  &.Mui-focusVisible {
-    outline: 2px auto rgba(19, 124, 189, 0.6);
-    outline-offset: 2;
-  }
-`
-
-const CustomRadio = styled(Radio)`
-  &.MuiRadio-root {
-    color: #fcfcfc;
-  }
-
-  &.MuiFormControlLabel-label {
-    color: ${({ theme, checked }) => checked && theme.colors.success};
-  }
-
-  &.MuiRadio-colorSecondary.Mui-checked {
-    color: ${({ theme, checked }) => checked && theme.colors.success};
   }
 `
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { ChangeEvent, FormEvent, lazy, useEffect, useState, useMemo } from 'react'
+import React, { lazy, useState, useMemo } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -20,11 +20,11 @@ const InputChoice = styled(Input)`
 `
 
 const AddProposal: React.FC = () => {
-  const { path } = useRouteMatch()
+  // const { path } = useRouteMatch()
   const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
-  const { isDark } = useTheme()
-  const { account, connector } = useWallet()
+  // const isMobile = !isXl
+  // const { isDark } = useTheme()
+  const { account } = useWallet()
 
   const [state, setState] = useState({
     name: '',

@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
-import { Card, Text, Heading, useMatchBreakpoints, LinkExternal } from 'uikit-dev'
+import { Card, Text } from 'uikit-dev'
 import { ChevronDown } from 'react-feather'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Collapse, CardContent, IconButton } from '@material-ui/core'
+import { Collapse, IconButton } from '@material-ui/core'
 // import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
 
 const Box = styled.div<{ expand: boolean }>`
@@ -30,7 +30,7 @@ const BoxDetails = styled.div<{ expand: boolean }>`
 `
 
 const ExpandMore = styled((props) => {
-  const { expand, ...other } = props
+  const { ...other } = props
   return <IconButton {...other} />
 })(() => ({
   '&.MuiIconButton-root': {

@@ -1,12 +1,10 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useMemo, useEffect } from 'react'
-import { AddIcon, MinusIcon, Button, Card, Text, Heading, useMatchBreakpoints, LinkExternal } from 'uikit-dev'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import React from 'react'
+import {  Card, Text } from 'uikit-dev'
+// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
+// import useTheme from 'hooks/useTheme'
 import LinearProgress from '@material-ui/core/LinearProgress'
-
-import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
 
 const BorderLinearProgress = styled(LinearProgress)(() => ({
   borderRadius: 6,
@@ -18,10 +16,10 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
 }))
 
 const VotingResults = () => {
-  const { account } = useWallet()
-  const { isDark } = useTheme()
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
+  // const { account } = useWallet()
+  // const { isDark } = useTheme()
+  // const { isXl, isLg } = useMatchBreakpoints()
+  // const isMobile = !isXl && !isLg
 
   return (
     <>

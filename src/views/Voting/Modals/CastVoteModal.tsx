@@ -1,14 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React, { useState } from 'react'
 import _ from 'lodash'
 import Lottie from 'react-lottie'
-import moment from 'moment'
-import numeral from 'numeral'
-import BigNumber from 'bignumber.js'
+// import moment from 'moment'
+// import numeral from 'numeral'
+// import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Card, Text, Heading, useMatchBreakpoints, Button } from 'uikit-dev'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import { Text, useMatchBreakpoints, Button } from 'uikit-dev'
+// import Checkbox from '@material-ui/core/Checkbox'
+// import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import {
@@ -33,11 +33,11 @@ const SuccessOptions = {
   animationData: success,
 }
 
-const options = {
-  loop: true,
-  autoplay: true,
-  animationData: loadings,
-}
+// const options = {
+//   loop: true,
+//   autoplay: true,
+//   animationData: loadings,
+// }
 
 interface Props {
   onDismiss?: () => void
@@ -170,7 +170,6 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     )
   }
 
-  const lenghtOrvalue = lengthSelect === 0 && value === ''
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
   const [expanded, setExpanded] = React.useState(false)
   const handleExpandClick = () => {

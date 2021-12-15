@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import { Card, Heading, Text } from 'uikit-dev'
+import { Card, Heading, Text, Button } from 'uikit-dev'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import CardProposals from './CardProposals'
 import VotingPartProposal from './VotingPartProposal'
@@ -16,7 +16,7 @@ const BannerVoting = styled(Card)`
 
   &:before {
     content: '';
-    width: 100%;
+    width: 50%;
     height: 100%;
     background: url(${definixVoting});
     background-size: contain;
@@ -40,6 +40,7 @@ const BannerVoting = styled(Card)`
 
     &:before {
       opacity: 0.2;
+      width: 40%;
     }
 
     h2 {
@@ -67,7 +68,9 @@ const BannerVoting = styled(Card)`
 
     &:before {
       opacity: 1;
+      width: 20%;
       margin-right: 14%;
+      background-position: center;
     }
 
     h2 {
@@ -88,8 +91,7 @@ const DetailBanner = styled(Text)`
 `
 
 const CardVoting = () => {
-  // const { isXl, isLg } = useMatchBreakpoints()
-  // const isMobile = !isXl && !isLg
+
   return (
     <>
       <BannerVoting>
@@ -99,11 +101,9 @@ const CardVoting = () => {
             Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
           </DetailBanner>
         </div>
-        {/* {isMobile && (
-          <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
-            Make a Proposals
-          </Button>
-        )} */}
+        <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
+          Make a Proposals
+        </Button>
       </BannerVoting>
       <CardProposals />
       <VotingPartProposal rbAddress />

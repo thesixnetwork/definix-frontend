@@ -1,20 +1,16 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useMemo, useEffect } from 'react'
-import { AddIcon, MinusIcon, Button, Card, Text, Heading, useMatchBreakpoints, LinkExternal } from 'uikit-dev'
-import { ExternalLink } from 'react-feather'
-import styled from 'styled-components'
+import React from 'react'
+import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
+// import styled from 'styled-components'
 // import moment from 'moment'
 // import numeral from 'numeral'
-
-// import styled from 'styled-components'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import useTheme from 'hooks/useTheme'
-import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
+// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+// import useTheme from 'hooks/useTheme'
 import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
 
 const VotingDetails = () => {
-  const { account } = useWallet()
-  const { isDark } = useTheme()
+  // const { account } = useWallet()
+  // const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
 

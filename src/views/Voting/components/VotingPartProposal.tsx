@@ -2,13 +2,13 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Text, useMatchBreakpoints, Button } from 'uikit-dev'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
 // import moment from 'moment'
 // import numeral from 'numeral'
 import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
+// import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
 
@@ -49,62 +49,14 @@ const CardTable = styled(Card)`
   }
 `
 
-// const Table = styled.table`
-//   width: 100%;
-//   border-collapse: separate;
-// `
-
-// const TBody = styled.div`
-//   overflow: auto;
-//   position: relative;
-// `
-
-// const TR = styled.tr`
-//   display: flex;
-//   align-items: stretch;
-//   justify-content: space-between;
-//   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-//   padding: 24px;
-
-//   th {
-//     border-top: 1px solid${({ theme }) => theme.colors.border};
-//   }
-
-//   &:last-child {
-//     border: none;
-//   }
-
-//   &.isMe {
-//     position: sticky;
-//     bottom: 1px;
-//     left: 0;
-//     background: #f7f7f8;
-//     border-top: 1px solid: ${({ theme }) => theme.colors.border};
-//   }
-// `
-
-// const TD = styled.td<{ align?: string }>`
-//   width: 100%;
-//   vertical-align: middle;
-//   align-self: ${'center'};
-// `
-
-export const Table = styled.table`
+const Table = styled.table`
   width: 100%;
   border-collapse: separate;
 `
 
-export const TR = styled.tr``
+const TR = styled.tr``
 
-export const TH = styled.th<{ align?: string }>`
-  background: ${({ theme }) => theme.colors.backgroundDisabled};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 8px 16px;
-  vertical-align: middle;
-  text-align: ${({ align }) => align || 'left'};
-`
-
-export const TD = styled.td<{ align?: string }>`
+const TD = styled.td<{ align?: string }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   padding: 16px;
   height: 64px;
@@ -134,11 +86,15 @@ const BtnDetails = styled(Button)`
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
-  const [currentPage, setCurrentPage] = useState(1)
-  const pages = useMemo(() => Math.ceil(total / 10), [total])
-  const onPageChange = (e, page) => {
-    setCurrentPage(page)
-  }
+  // const [currentPage, setCurrentPage] = useState(1)
+  // const pages = useMemo(() => Math.ceil(total / 10), [total])
+  // const onPageChange = (e, page) => {
+  //   setCurrentPage(page)
+  // }
+
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg
+
   return (
     <CardTable>
       <Table>
@@ -156,63 +112,51 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
           <LoadingData />
         ) : isEmpty(rows) ? (
           <>
-            {console.log('rows', rows)}
+            {/* {console.log('rows', rows)} */}
             <EmptyData text={empText} />
           </>
         ) : (
-          <>
-            {rows !== null &&
-              rows.map((r) => (
-                <TR key={`tsc-${r.block_number}`}>
-                  <TD>
-                    <Text color="text" bold fontSize="20px">
-                      Proposal Topic Proposal Topic Proposal Topic Proposal…
+              <>
+                {rows !== null &&
+                  rows.map((r) => (
+                    <TR key={`tsc-${r.block_number}`}>
+                      <TD>
+                        <Text color="text" bold fontSize={isMobile ? "16px" : "20px"}>
+                          {"Proposal Topic Proposal Topic Proposal Topic Proposal".substring(0, 38)}...
                     </Text>
-                    <div className="flex align-center">
-                      <Text color="text" paddingRight="8px">
-                        End Date
+                        <div className={isMobile ? "" : "flex align-center"}>
+                          <Text color="text" paddingRight="8px">
+                            End Date
                       </Text>
-                      <Text color="text" bold>
-                        12-Nov-21 15:00:00 GMT+9
+                          <Text color="text" bold>
+                            12-Nov-21 15:00:00 GMT+9
                       </Text>
-                    </div>
-                  </TD>
-                  <TD>
-                    <Text color="text" bold>
-                      Yes, agree with you.
+                        </div>
+                      </TD>
+                      <TD>
+                        <Text color="text" bold>
+                          Yes, agree with you.
                     </Text>
-                  </TD>
-                  <TD>
-                    <div className="flex align-center">
-                      <Text color="text" bold paddingRight="8px">
-                        23,143
+                      </TD>
+                      <TD>
+                        <div className="flex align-center">
+                          <Text color="text" bold paddingRight="8px">
+                            23,143
                       </Text>
-                    </div>
-                  </TD>
-                  <TD>
-                    <BtnDetails as={Link} to="/voting/detail">
-                      Deatils
+                        </div>
+                      </TD>
+                      <TD>
+                        <BtnDetails as={Link} to="/voting/detail">
+                          Deatils
                     </BtnDetails>
-                    {/* <BtnClaim as={Link} to="/voting/detail">
+                        {/* <BtnClaim as={Link} to="/voting/detail">
                       Claim Voting Power
                     </BtnClaim> */}
-                  </TD>
-                </TR>
-              ))}
-            {/* <TR>
-              <TD className="text-right">
-                <PaginationCustom
-                  page={currentPage}
-                  count={pages}
-                  onChange={onPageChange}
-                  size="small"
-                  hidePrevButton
-                  hideNextButton
-                />
-              </TD>
-            </TR> */}
-          </>
-        )}
+                      </TD>
+                    </TR>
+                  ))}
+              </>
+            )}
       </Table>
     </CardTable>
   )
@@ -220,7 +164,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 
 const VotingPartProposal = ({ rbAddress }) => {
   const address = getAddress(rbAddress)
-  const { account } = useWallet()
+  // const { account } = useWallet()
 
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState(0)
@@ -236,9 +180,9 @@ const VotingPartProposal = ({ rbAddress }) => {
   ])
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  const { isDark } = useTheme()
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
+  // const { isDark } = useTheme()
+  // const { isXl, isLg } = useMatchBreakpoints()
+  // const isMobile = !isXl && !isLg
 
   const setDefault = (tab) => {
     setCurrentTab(tab)

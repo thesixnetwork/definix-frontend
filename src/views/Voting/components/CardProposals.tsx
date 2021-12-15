@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { Card, Heading, Button } from '../../../uikit-dev'
+import { Card, Button } from '../../../uikit-dev'
 import TopicList from './TopicList'
 import CardTab from './CardTab'
 // import SelectType, { TypeChartName } from './SelectType'

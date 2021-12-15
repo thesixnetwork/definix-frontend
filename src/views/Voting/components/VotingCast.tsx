@@ -1,9 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import _ from 'lodash'
-import { ArrowBackIcon, Button, Card, Text, Heading, useMatchBreakpoints, useModal } from 'uikit-dev'
+import {Button, Card, Text, useModal } from 'uikit-dev'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -20,7 +19,7 @@ const CardList = styled(Card)<{ checked: boolean }>`
   padding: 0px 20px;
   display: flex;
   align-items: center;
-  background: ${({ checked }) => checked && '#0973B9'};
+  background: ${({ theme, checked }) => checked && theme.colors.primary};
   &.Mui-checked {
     background: #0973b9;
     border: 1px solid #30adff;
@@ -87,22 +86,22 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
-function MyFormControlLabel(props) {
-  const radioGroup = useRadioGroup()
+// function MyFormControlLabel(props) {
+//   const radioGroup = useRadioGroup()
 
-  let checked = false
+//   let checked = false
 
-  if (radioGroup) {
-    checked = radioGroup.value === props.value
-  }
+//   if (radioGroup) {
+//     checked = radioGroup.value === props.value
+//   }
 
-  return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />
-}
+//   return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />
+// }
 
 const VotingCast = () => {
-  const { isDark } = useTheme()
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
+  // const { isDark } = useTheme()
+  // const { isXl, isLg } = useMatchBreakpoints()
+  // const isMobile = !isXl && !isLg
   const [onPresentConnectModal] = useModal(<CastVoteModal />)
   const [select, setSelect] = useState({})
 
@@ -130,11 +129,12 @@ const VotingCast = () => {
             </Button>
             <Text fontSize="14px" color="text" paddingLeft="14px">Claim will be available after the the voting time is ended.</Text>
           </div> */}
-          <CardList checked={_.get(select, `${0}.checked`)}>
+          <CardList  checked={_.get(select, `${0}.checked`)}>
             <FormControlLabelCustom
               control={
                 <CustomCheckbox
                   size="small"
+                  defaultChecked
                   checked={_.get(select, `${0}.checked`)}
                   onChange={(event, i) => {
                     setSelect({

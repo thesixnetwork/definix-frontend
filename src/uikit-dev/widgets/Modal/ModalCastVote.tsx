@@ -5,7 +5,6 @@ import Flex from '../../components/Box/Flex'
 import { Button, IconButton } from '../../components/Button'
 import Heading from '../../components/Heading/Heading'
 import { ArrowBackIcon, CloseIcon } from '../../components/Svg'
-import colorStroke from '../../images/Color-stroke.png'
 import { InjectedProps } from './types'
 
 interface Props extends InjectedProps {

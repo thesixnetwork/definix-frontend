@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Button, Text, Heading } from '../../../uikit-dev'
+import { Button, Heading } from '../../../uikit-dev'
 
 interface CardTabType {
   menus: string[]

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import styled from 'styled-components'
-import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
+import { useMatchBreakpoints } from 'uikit-dev'
 
 import VotingDescription from './components/VotingDescription'
 import VotingCast from './components/VotingCast'
@@ -17,7 +17,7 @@ const MaxWidthLeft = styled(MaxWidth)`
   margin: 60px 100px;
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    margin: 60px;
+    margin: 40px 20px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {

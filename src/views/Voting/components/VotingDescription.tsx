@@ -1,10 +1,10 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
-import { ArrowBackIcon, Button, Card, Text, Heading, useMatchBreakpoints } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text} from 'uikit-dev'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
+// import useTheme from 'hooks/useTheme'
+// import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import coreIcon from 'uikit-dev/images/for-ui-v2/voting/icon-core.png'
 // import communityIcon from 'uikit-dev/images/for-ui-v2/voting/icon-community.png'
 
@@ -38,9 +38,9 @@ const Description = styled(Card)`
 `
 
 const VotingDescription = () => {
-  const { isDark } = useTheme()
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
+  // const { isDark } = useTheme()
+  // const { isXl, isLg } = useMatchBreakpoints()
+  // const isMobile = !isXl && !isLg
 
   return (
     <>
