@@ -2,11 +2,10 @@
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import axios from 'axios'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
 import numeral from 'numeral'
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import React, { Fragment, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import {
@@ -23,6 +22,7 @@ import { getAddress } from 'utils/addressHelpers'
 import EllipsisText from 'components/EllipsisText'
 import CurrencyText from 'components/CurrencyText'
 
+import useGetRequest from 'hooks/useGetRequest'
 import { TD, TH } from './Table'
 
 interface TransactionType {
@@ -30,16 +30,16 @@ interface TransactionType {
   rbAddress: any
 }
 
-const EmptyData = ({ text }) => (
-  <div className="flex align-center justify-center" style={{ height: '188px' }}>
+const EmptyData = ({ text, height = 'auto' }) => (
+  <div className="flex align-center justify-center" style={{ height }}>
     <Text textStyle="R_14R" textAlign="center" color="textSubtle">
       {text}
     </Text>
   </div>
 )
 
-const LoadingData = () => (
-  <div className="flex align-center justify-center" style={{ height: '188px' }}>
+const LoadingData = ({ height = 'auto' }) => (
+  <div className="flex align-center justify-center py-s24" style={{ height }}>
     <CircularProgress size={16} color="inherit" className="mr-2" />
     <Text textStyle="R_14R">Loading...</Text>
   </div>
@@ -126,6 +126,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   const { t } = useTranslation()
   const address = getAddress(rbAddress)
   const { account } = useWallet()
+  const { data, request, cancel, loading } = useGetRequest()
   const { isMaxXl } = useMatchBreakpoints()
   const size = isMaxXl
     ? {
@@ -153,24 +154,6 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
     setTotal(0)
   }
 
-  const fetchTransaction = useCallback(async () => {
-    if (myOnly && !account) {
-      return
-    }
-
-    const api = process.env.REACT_APP_API_REBALANCING_TRANSACTION
-    const response = await axios.get(api, {
-      params: {
-        pool: (address || '').toLowerCase(),
-        limit: 20,
-        address: myOnly ? account : '',
-        page: currentPage,
-      },
-    })
-    setTotal(response.data.total)
-    setTransactions((prev) => prev.concat(response.data.result))
-  }, [account, address, currentPage, myOnly])
-
   useEffect(() => {
     setTransactions([])
     setTotal(0)
@@ -178,8 +161,28 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
   }, [myOnly])
 
   useEffect(() => {
-    fetchTransaction()
-  }, [fetchTransaction])
+    if (data?.page) {
+      setTotal(data?.total)
+      setTransactions((prev) => (data?.page === 1 ? data?.result : prev.concat(data?.result)))
+    }
+  }, [data])
+
+  useEffect(() => {
+    const api = process.env.REACT_APP_API_REBALANCING_TRANSACTION
+    const pool = (address || '').toLowerCase()
+
+    if (api && pool && (!myOnly || account)) {
+      request(api, {
+        pool,
+        limit: 20,
+        address: myOnly ? account : '',
+        page: currentPage,
+      })
+    }
+
+    return cancel
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, address, currentPage, myOnly])
 
   useEffect(() => {
     return () => {
@@ -198,7 +201,14 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
 
       <Box pb={size.cardMarginBottom}>
         {isEmpty(transactions) ? (
-          <EmptyData text={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')} />
+          loading ? (
+            <LoadingData height="188px" />
+          ) : (
+            <EmptyData
+              text={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')}
+              height="188px"
+            />
+          )
         ) : (
           <TransactionTable
             mx={size.marginX}
