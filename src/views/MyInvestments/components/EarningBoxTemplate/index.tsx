@@ -57,6 +57,12 @@ const THEME: { [key: string]: InnerTheme } = {
   },
 }
 
+const Wrap = styled(Box)`
+  min-height: 276px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    min-height: 100%;
+  }
+`
 const MainSection = styled(Flex)`
   flex-direction: row;
   align-items: center;
@@ -109,7 +115,16 @@ const EarningBoxTemplate: React.FC<{
   theme?: 'white' | 'dark'
   useHarvestButton?: boolean
   unit?: string
-}> = ({ isMobile, isMain = false, hasAccount, total, valueList, theme = 'white', useHarvestButton = true, unit = '' }) => {
+}> = ({
+  isMobile,
+  isMain = false,
+  hasAccount,
+  total,
+  valueList,
+  theme = 'white',
+  useHarvestButton = true,
+  unit = '',
+}) => {
   const { t } = useTranslation()
   const history = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
@@ -145,7 +160,7 @@ const EarningBoxTemplate: React.FC<{
   }, [displayOnlyTotalPrice, isMobile, curTheme, hasAccount, totalValue])
 
   return (
-    <Box>
+    <Wrap>
       <MainSection>
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
@@ -210,7 +225,7 @@ const EarningBoxTemplate: React.FC<{
           data={valueList}
         />
       )}
-    </Box>
+    </Wrap>
   )
 }
 
