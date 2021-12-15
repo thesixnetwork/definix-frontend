@@ -9,7 +9,7 @@ import _ from 'lodash'
 import Helper from 'uikit-dev/components/Helper'
 import { fetchIdData, fetchStartIndex } from '../../../state/longTermStake'
 import { Card, Button, Text } from '../../../uikit-dev'
-import { useClaim, useLockTopup } from '../../../hooks/useLongTermStake'
+import { useClaim } from '../../../hooks/useLongTermStake'
 import PaginationCustom from './Pagination'
 import CardHarvest from './CardHarvest'
 
@@ -93,7 +93,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
   const [cols] = useState(['Stake Period', 'Amount', 'Status', ''])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  const [statusClaim, setStatusClaim] = useState(false)
+  const [, setStatusClaim] = useState(false)
 
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
@@ -111,11 +111,11 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
       try {
         const res = onClaim(Id)
         res
-          .then((r) => {
+          .then(() => {
             setStatusClaim(true)
           })
           .catch((e) => {
-            console.log(e)
+            console.warn(e)
           })
       } catch (e) {
         console.error(e)
@@ -312,7 +312,7 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
         ) : (
           <TBody>
             {rows !== null &&
-              rows.map((item, idx) => (
+              rows.map((item) => (
                 <TR key={_.get(item, 'id')}>
                   <TD>
                     <Text color="textSubtle">

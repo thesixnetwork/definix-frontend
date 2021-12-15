@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Card, useMatchBreakpoints, Tabs } from 'definixswap-uikit-v2'
+import { Card, useMatchBreakpoints, Tabs } from '@fingerlabs/definixswap-uikit-v2'
 import ListPageHeader from 'components/ListPageHeader'
 import Earned from './Earned'
 import NetWorth from './NetWorth'

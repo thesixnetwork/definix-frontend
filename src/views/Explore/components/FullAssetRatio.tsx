@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import { Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { Ratio } from 'config/constants/types'
 import Coin from './Coin'
 

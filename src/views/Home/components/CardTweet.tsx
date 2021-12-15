@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Card, CardBody, Text, ColorStyles } from 'definixswap-uikit-v2'
+import { Card, CardBody, Text, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import { Timeline } from 'react-twitter-widgets'
 
 const WrapCardBody = styled(CardBody)`

@@ -1,6 +1,6 @@
 import React from 'react'
 import numeral from 'numeral'
-import { Text } from 'definixswap-uikit-v2'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
 
 const CurrencyText: React.FC<{
   value: number

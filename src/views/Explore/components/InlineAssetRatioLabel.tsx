@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import numeral from 'numeral'
-import { Flex, Text, VDivider } from 'definixswap-uikit-v2'
+import { Flex, Text, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 import { getTokenName } from 'utils/getTokenSymbol'
 import Coin from './Coin'
 

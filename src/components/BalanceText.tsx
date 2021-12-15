@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { Text } from 'definixswap-uikit-v2'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
 
 const BalanceText: React.FC<{
   value: number | string

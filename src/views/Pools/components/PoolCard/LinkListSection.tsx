@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { LinkExternal } from 'definixswap-uikit-v2'
+import { LinkExternal } from '@fingerlabs/definixswap-uikit-v2'
 
 const LinkListSection: React.FC<{
   contractAddress: { [key: number]: string }

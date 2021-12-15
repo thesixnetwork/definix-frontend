@@ -39,7 +39,6 @@ import {
 import { useLockPlus } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import success from 'uikit-dev/animation/complete.json'
-import loadings from 'uikit-dev/animation/farmPool.json'
 import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
 import ModalResponses from '../Modal/ModalResponses'
@@ -50,12 +49,6 @@ const SuccessOptions = {
   loop: true,
   autoplay: true,
   animationData: success,
-}
-
-const options = {
-  loop: true,
-  autoplay: true,
-  animationData: loadings,
 }
 
 interface Props {
@@ -162,7 +155,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { allLockPeriod } = useAllLock()
   const balanceOf = useBalances()
-  const { finixEarn, balancevfinix, allDataLock } = usePrivateData()
+  const { finixEarn, balancevfinix } = usePrivateData()
   const { handleHarvest } = useHarvestLongterm()
   const { isDark } = useTheme()
   const { levelStake, allLock } = useAllDataLock()
@@ -177,7 +170,6 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [date, setDate] = useState('-')
   const [sumpendingReward, setSumPendingReward] = useState('0')
   const [value, setValue] = useState('0')
-  const [isBnbPool, setIsBnbPool] = useState(false)
   const [showLottie, setShowLottie] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
   const [harvested, setHarvested] = useState(false)
@@ -187,7 +179,6 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { onReward } = useSousHarvest()
   const [vFINIX, setVFINIX] = useState(0)
   const [vFinixEarn, setVFinixEarn] = useState(0)
-  const [loading, setLoading] = useState('')
 
   // Farms
   const farmsLP = useFarms()
@@ -195,7 +186,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceKethKusdt()
-  const [listView, setListView] = useState(false)
+  const [listView] = useState(false)
   const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 1 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
     (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
@@ -387,7 +378,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
+      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
@@ -455,30 +446,30 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
           if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
             onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
-              .then((res) => {
+              .then(() => {
                 // farm
                 setHarvestProgress(harvestProgress + 1)
               })
-              .catch((e) => {
+              .catch(() => {
                 setHarvestProgress(-1)
               })
           } else {
             // vfinix
             handleHarvest()
-              .then((res) => {
+              .then(() => {
                 setHarvestProgress(harvestProgress + 1)
               })
-              .catch((e) => {
+              .catch(() => {
                 setHarvestProgress(-1)
               })
           }
         } else {
           // pool
           onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
-            .then((res) => {
+            .then(() => {
               setHarvestProgress(harvestProgress + 1)
             })
-            .catch((e) => {
+            .catch(() => {
               setHarvestProgress(-1)
             })
         }
@@ -503,7 +494,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           setSelectedToken({})
         }
       })
-      .catch((e) => {
+      .catch(() => {
         setAmount('')
       })
   }, [onLockPlus])

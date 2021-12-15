@@ -2,7 +2,7 @@ import React from 'react'
 import { compact } from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import { Flex, Text } from 'definixswap-uikit-v2'
+import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 import { getTokenName } from 'utils/getTokenSymbol'
 import Coin from './Coin'
 

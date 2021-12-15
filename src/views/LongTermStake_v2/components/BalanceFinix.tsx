@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
-import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from 'definixswap-uikit-v2'
+import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from '@fingerlabs/definixswap-uikit-v2'
 import BalanceText from 'components/BalanceText'
 import styled from 'styled-components'
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, Redirect, useHistory } from 'react-router-dom'
 
-import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import { BackIcon, Box, Button, Flex, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 
 import PageTitle from 'components/PageTitle'
 import { Rebalance } from '../../state/types'

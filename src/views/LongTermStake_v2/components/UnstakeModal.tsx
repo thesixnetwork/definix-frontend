@@ -13,7 +13,7 @@ import {
   AlertIcon,
   ModalBody,
   ModalFooter,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
 interface ModalProps {

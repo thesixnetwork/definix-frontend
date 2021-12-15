@@ -29,6 +29,7 @@ const ButtonPeriod = styled(Button)`
   padding: 0;
   width: 100%;
   height: 60px;
+  border-radius: 8px;
 `
 
 const CustomButton = ({
@@ -41,7 +42,6 @@ const CustomButton = ({
   vFinixPrice,
   isDark,
   mr,
-  levelStake,
   isTopUp,
   disableLevel,
   setFlgIsTopup,
@@ -51,29 +51,29 @@ const CustomButton = ({
     return isDark ? '#333333' : '#00000014'
   }
 
-  const onSelect4 = (x, y) => {
+  const onSelect4 = (x) => {
     return x === 4 ? '#EA9D00' : '#0973B9'
   }
 
-  const period4 = (x, y) => {
+  const period4 = (x) => {
     return x === 4 ? '#737375' : '#0973B9'
   }
 
   const themeWhite = (x, y) => {
     if (x === y) {
-      return isDark ? 'white' : onSelect4(x, y)
+      return isDark ? 'white' : onSelect4(x)
     }
     return isDark ? 'textSubtle' : 'textSubtle'
   }
 
   const themeWhitePeriod = (x, y) => {
     if (x === y) {
-      return isDark ? 'white' : period4(x, y)
+      return isDark ? 'white' : period4(x)
     }
     return isDark ? 'white' : 'textSubtle'
   }
 
-  const handleBackgroud = (x, y) => {
+  const handleBackgroud = (x) => {
     let color = '#0973B9'
     if (x === 4) {
       color = 'linear-gradient(#F3D36C, #E27D3A)'
@@ -81,7 +81,7 @@ const CustomButton = ({
     return color
   }
 
-  const handleBackgroud4 = (x, y) => {
+  const handleBackgroud4 = (x) => {
     let color = '#0973B937'
     if (x === 4) {
       color = 'linear-gradient(#F3D36C37, #E27D3A37)'
@@ -89,7 +89,7 @@ const CustomButton = ({
     return color
   }
 
-  const themeGold = (x, y) => {
+  const themeGold = (x) => {
     let color = '#0973B9'
     if (x === 4) {
       color = '#70707030'
@@ -112,14 +112,14 @@ const CustomButton = ({
         isStroke
         disabled={isTopUp ? renderharvestProgress() : false}
         style={{
-          background: period === level ? handleBackgroud4(period, level) : onSelect1(),
-          border: `1px solid ${period === level ? themeGold(period, level) : '#737375'}`,
+          background: period === level ? handleBackgroud4(period) : onSelect1(),
+          border: `1px solid ${period === level ? themeGold(period) : '#737375'}`,
           opacity: isTopUp && !disableLevel && 0.3,
         }}
       >
         <BoxLevel
           className="col-4"
-          style={{ background: period === level ? handleBackgroud(period, level) : '#737375' }}
+          style={{ background: period === level ? handleBackgroud(period) : '#737375' }}
         >
           <Heading color="white" as="h1" fontSize={`${isMobile ? '20px !important' : '30px !important'}`}>
             {level}x
@@ -260,7 +260,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp, harvestProg
         minimum={_minimum1}
         vFinixPrice={apr}
         mr="mr-2"
-        levelStake={levelStake}
+        // levelStake={levelStake}
         isTopUp={isTopUp}
         disableLevel={disableLevel0}
         setFlgIsTopup={setFlgIsTopup}
@@ -276,7 +276,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp, harvestProg
         minimum={_minimum2}
         vFinixPrice={apr}
         mr="mr-2"
-        levelStake={levelStake}
+        // levelStake={levelStake}
         isTopUp={isTopUp}
         disableLevel={disableLevel1}
         setFlgIsTopup={setFlgIsTopup}
@@ -292,7 +292,7 @@ const StakePeriodButton = ({ setPeriod, status, levelStake, isTopUp, harvestProg
         minimum={_minimum4}
         vFinixPrice={apr}
         mr=""
-        levelStake={levelStake}
+        // levelStake={levelStake}
         isTopUp={isTopUp}
         disableLevel={disableLevel2}
         setFlgIsTopup={setFlgIsTopup}

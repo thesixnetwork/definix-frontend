@@ -1,6 +1,6 @@
 import React from 'react'
 import BigNumber from 'bignumber.js'
-import { CalculatorIcon, IconButton, useModal } from 'definixswap-uikit-v2'
+import { CalculatorIcon, IconButton, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import ApyCalculatorModal from './ApyCalculatorModal'
 
 export interface ApyButtonProps {

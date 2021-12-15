@@ -5,7 +5,7 @@ import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Text, ColorStyles, Label, Box } from 'definixswap-uikit-v2'
+import { Flex, Text, ColorStyles, Label, Box } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
 

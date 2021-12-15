@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Flex, Text, ArrowLeftGIcon, ArrowRightGIcon } from 'definixswap-uikit-v2'
+import { Flex, Text, ArrowLeftGIcon, ArrowRightGIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import { IsMobileType } from './types'

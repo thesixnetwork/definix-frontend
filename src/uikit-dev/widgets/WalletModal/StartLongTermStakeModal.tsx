@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 import { Button } from 'uikit-dev'
 import ModalSorry from '../Modal/ModalSorry'
 import { Text } from '../../components/Text'

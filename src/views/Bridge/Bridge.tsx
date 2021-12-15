@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, useMatchBreakpoints } from 'definixswap-uikit-v2'
+import { Box, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 
 import TitleBridge from './components/TitleBridge'
 import CardBridge from './components/CardBridge'

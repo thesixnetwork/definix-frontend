@@ -18,7 +18,7 @@ import {
   NotiType,
   ModalFooter,
   ModalBody,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
@@ -184,12 +184,12 @@ const CalculateModal = ({
         </Box>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button className="mt-s40" width="100%" isLoading={isInvesting} onClick={onInvest}>
+        <Button mt="S_16" width="100%" isLoading={isInvesting} onClick={onInvest}>
           {t('Invest')}
         </Button>
-        {calNewImpact >= 0.05 && (
+        {calNewImpact >= 5 && (
           <Noti mt="S_12" type={NotiType.ALERT}>
-            {calNewImpact >= 0.15 ? t('Price Impact Too High') : t('This swap has a price impact of at least 10%')}
+            {calNewImpact >= 15 ? t('Price Impact Too High') : t('This swap has a price impact of at least 10%')}
           </Noti>
         )}
       </ModalFooter>

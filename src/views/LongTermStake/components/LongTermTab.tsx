@@ -10,7 +10,7 @@ const Tabs = styled.div`
   border-radius: 8px;
 `
 
-const Tab = styled(NavLink)<{ active: boolean }>`
+const Tab = styled(NavLink)<{ active: string }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -21,22 +21,22 @@ const Tab = styled(NavLink)<{ active: boolean }>`
   font-weight: 600;
   background: ${({ theme, active }) =>
     // eslint-disable-next-line no-nested-ternary
-    active && theme.isDark
+    active === 'true' && theme.isDark
       ? theme.colors.primary
       : // eslint-disable-next-line no-nested-ternary
-      active && !theme.isDark
+      active === 'true' && !theme.isDark
       ? theme.colors.primary
-      : !active && !theme.isDark
+      : !(active === 'true') && !theme.isDark
       ? '#fff'
       : '#2E2F30'};
   color: ${({ theme, active }) =>
     // eslint-disable-next-line no-nested-ternary
-    active && theme.isDark
+    active === 'true' && theme.isDark
       ? theme.colors.white
       : // eslint-disable-next-line no-nested-ternary
-      active && !theme.isDark
+      active === 'true' && !theme.isDark
       ? theme.colors.white
-      : !active && !theme.isDark
+      : !(active === 'true') && !theme.isDark
       ? '#2E2F30'
       : '#737375'};
   width: 23.333%;
@@ -57,14 +57,14 @@ const Tab = styled(NavLink)<{ active: boolean }>`
     width: 0;
     height: 0;
     border: 8px solid transparent;
-    border-top-color: ${({ active }) => (active ? '#349BE7' : 'transparent')};
+    border-top-color: ${({ active }) => (active === 'true' ? '#349BE7' : 'transparent')};
     position: absolute;
     top: 100%;
     left: calc(50% - 8px);
   }
 
   &:hover {
-    color: ${({ theme, active }) => (active ? theme.colors.white : theme.colors.primary)};
+    color: ${({ theme, active }) => (active === 'true' ? theme.colors.white : theme.colors.primary)};
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -76,10 +76,10 @@ const Tab = styled(NavLink)<{ active: boolean }>`
 const LongTermTab = ({ current }) => {
   return (
     <Tabs>
-      <Tab className="ml-2" to="/long-term-stake" active={current === '/long-term-stake'}>
+      <Tab className="ml-2" to="/long-term-stake" active={(current === '/long-term-stake').toString()}>
         Long-term Stake
       </Tab>
-      <Tab className="ml-2" to="/long-term-stake/top-up" active={current === '/long-term-stake/top-up'}>
+      <Tab className="ml-2" to="/long-term-stake/top-up" active={(current === '/long-term-stake/top-up').toString()}>
         Super Stake
       </Tab>
     </Tabs>

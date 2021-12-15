@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Flex } from 'definixswap-uikit-v2'
+import { Card, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import { usePrivateData } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 

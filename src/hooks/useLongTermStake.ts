@@ -14,7 +14,6 @@ import {
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
 import * as klipProvider from 'hooks/klipProvider'
-import { soushHarvestBnb, soushHarvest } from 'utils/callHelpers'
 import {
   fetchPrivateData,
   fetchPendingReward,
@@ -28,13 +27,12 @@ import IKIP7 from '../config/abi/IKIP7.json'
 import VaultFacet from '../config/abi/VaultFacet.json'
 import RewardFacet from '../config/abi/RewardFacet.json'
 import VaultPenaltyFacet from '../config/abi/VaultPenaltyFacet.json'
-import VFinixMergeAbi from '../config/abi/VFinixMergeAbi.json'
 import { getContract } from '../utils/caver'
 import { getTokenBalance } from '../utils/erc20'
 import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useRefresh from './useRefresh'
 import { State } from '../state/types'
-import { useHerodotus, useSousChef } from './useContract'
+import { useHerodotus } from './useContract'
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
@@ -654,7 +652,6 @@ export const useSuperHarvest = () => {
   const dispatch = useDispatch()
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  const countTransactions = useSelector((state: State) => state.longTerm.countTransactions)
 
   const { setShowModal } = useContext(KlipModalContext())
 
