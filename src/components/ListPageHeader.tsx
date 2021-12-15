@@ -17,7 +17,7 @@ import {
   ImgRebalancing3x,
   ImgMyinvestmentDefault1x,
   ImgMyinvestmentDefault2x,
-  ImgMyinvestmentDefault3x
+  ImgMyinvestmentDefault3x,
 } from '@fingerlabs/definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
@@ -64,8 +64,8 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       image: [ImgPool1x, ImgPool2x, ImgPool3x],
       imageSize: {
         w: 200,
-        h: 122
-      }
+        h: 122,
+      },
     },
     farm: {
       title: 'Farm',
@@ -75,8 +75,8 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       image: [ImgFarm1x, ImgFarm2x, ImgFarm3x],
       imageSize: {
         w: 200,
-        h: 122
-      }
+        h: 122,
+      },
     },
     rebalancing: {
       title: 'Rebalancing Farm',
@@ -86,8 +86,8 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       image: [ImgRebalancing1x, ImgRebalancing2x, ImgRebalancing3x],
       imageSize: {
         w: 236,
-        h: 144
-      }
+        h: 144,
+      },
     },
     myInvestment: {
       title: 'My Investment',
@@ -95,8 +95,8 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       image: [ImgMyinvestmentDefault1x, ImgMyinvestmentDefault2x, ImgMyinvestmentDefault3x],
       imageSize: {
         w: 230,
-        h: 118
-      }
+        h: 118,
+      },
     },
   })
   const linkLanguage = useMemo(() => (i18n.language.includes('ko') ? 'kr' : 'en'), [i18n.language])

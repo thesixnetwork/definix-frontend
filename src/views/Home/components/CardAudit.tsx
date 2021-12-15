@@ -11,7 +11,7 @@ import {
   ImgHomeProtectionFinix1x,
   ImgHomeProtectionFinix2x,
   ImgHomeProtectionFinix3x,
-  ImageSet
+  ImageSet,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
@@ -171,7 +171,12 @@ const CardAudit = () => {
               <AuditItemDesc>{t(AuditList[1].description)}</AuditItemDesc>
               <AuditItemResult color={AuditList[1].color}>{t(AuditList[1].result)}</AuditItemResult>
             </WrapAuditItemInfo>
-            <Character srcSet={[ImgHomeProtectionFinix1x, ImgHomeProtectionFinix2x, ImgHomeProtectionFinix3x]} alt="" width={112} height={154} />
+            <Character
+              srcSet={[ImgHomeProtectionFinix1x, ImgHomeProtectionFinix2x, ImgHomeProtectionFinix3x]}
+              alt=""
+              width={112}
+              height={154}
+            />
           </AuditItem>
         </WrapAudit>
       </StyledCardBody>

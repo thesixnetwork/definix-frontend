@@ -7,7 +7,16 @@ import axios from 'axios'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
 
-import { Label, Text, Box, Flex, ImgHomeTopFinix1x, ImgHomeTopFinix2x, ImgHomeTopFinix3x, ImageSet } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  Label,
+  Text,
+  Box,
+  Flex,
+  ImgHomeTopFinix1x,
+  ImgHomeTopFinix2x,
+  ImgHomeTopFinix3x,
+  ImageSet,
+} from '@fingerlabs/definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
