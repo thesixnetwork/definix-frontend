@@ -83,21 +83,18 @@ const StyledDatePickerPortal = styled.div`
   .react-datepicker__header--time {
     padding: 8px;
   }
-  .react-datepicker__time-container
-    .react-datepicker__time {
-      background-color: ${({ theme }) => theme.card.background};
-    }
-    .react-datepicker__time-box
-    ul.react-datepicker__time-list
-    li.react-datepicker__time-list-item {
+  .react-datepicker__time-container .react-datepicker__time {
+    background-color: ${({ theme }) => theme.card.background};
+  }
+  .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item {
     height: auto;
     padding: 8px;
   }
-  .react-datepicker__time-container 
-  .react-datepicker__time 
-  .react-datepicker__time-box 
-  ul.react-datepicker__time-list 
-  li.react-datepicker__time-list-item--selected {
+  .react-datepicker__time-container
+    .react-datepicker__time
+    .react-datepicker__time-box
+    ul.react-datepicker__time-list
+    li.react-datepicker__time-list-item--selected {
     background-color: ${({ theme }) => theme.colors.success};
     color: white;
     font-weight: bold;
