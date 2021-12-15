@@ -59,6 +59,10 @@ const MyProductsFilter: React.FC<{
         id: 'rebalancing',
         label: t('Rebalancing'),
       },
+      {
+        id: 'longtermstake',
+        label: t('Long-term Stake'),
+      },
     ],
     [t],
   )

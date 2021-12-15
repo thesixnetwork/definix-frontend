@@ -28,7 +28,7 @@ const MainInfoSection: React.FC = () => {
   return (
     <Flex position="relative" alignItems="center">
       <Box mr="S_12">
-        <TokenImage src={getTokenImageUrl('finix')} alt="finix" />
+        <TokenImage src={getTokenImageUrl('vfinix')} alt="vfinix" />
       </Box>
 
       <Flex flexDirection="column">
