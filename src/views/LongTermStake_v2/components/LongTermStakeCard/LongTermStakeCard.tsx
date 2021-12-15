@@ -59,21 +59,22 @@ const LongTermStakeCard: React.FC<{
   // console.log('earned: ', numeral(finixEarn).format('0,0.00'))
   // console.groupEnd()
 
-  const handleGoToDetail = useCallback(() => navigate.push('/pool'), [navigate])
+  const handleGoToDetail = useCallback(() => navigate.push('/long-term-stake'), [navigate])
 
   const harvest = useCallback(async () => {
-    try {
-      setIsLoadingHarvest(true)
-      const res = await handleHarvest()
-      if (!res) {
-        // setStatus(!status)
-      }
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setIsLoadingHarvest(false)
-    }
-  }, [handleHarvest])
+    console.log('harvest longterm')
+    // try {
+    //   setIsLoadingHarvest(true)
+    //   const res = await handleHarvest()
+    //   if (!res) {
+    //     // setStatus(!status)
+    //   }
+    // } catch (e) {
+    //   console.error(e)
+    // } finally {
+    //   setIsLoadingHarvest(false)
+    // }
+  }, [])
 
   /**
    * Main info Section
