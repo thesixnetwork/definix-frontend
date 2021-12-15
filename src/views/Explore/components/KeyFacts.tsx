@@ -28,7 +28,7 @@ const FactRow: React.FC<FactRowType> = ({ name, helper, value, prefix, bold, ell
           <Text textStyle="R_12M" color="mediumgrey">
             {name}
           </Text>
-          {helper && <Helper text={helper} ml="S_12" position="top" />}
+          {helper && <Helper text={helper} ml="S_12" />}
         </Flex>
       </TH>
       <TD sm={isMaxXl}>

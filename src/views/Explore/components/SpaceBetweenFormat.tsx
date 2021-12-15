@@ -25,7 +25,7 @@ const SpaceBetweenFormat: React.FC<SpaceBetweenFormatType> = ({
       {titleElm || (
         <Flex pr="S_16">
           <Text fontSize="14px">{title}</Text>
-          {hint && <Helper text={hint} className="ml-s4" position="top" />}
+          {hint && <Helper text={hint} className="ml-s4" />}
         </Flex>
       )}
       {valueElm || (
