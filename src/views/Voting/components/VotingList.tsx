@@ -4,11 +4,12 @@ import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
 import { getAddress } from 'utils/addressHelpers'
+import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
-import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
+
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -125,7 +126,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                         0x0000000000
                         {/* {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)} */}
                       </Text>
-                      <img src={exploreIcon} alt="exploreIcon" width={16} />
+                      <ExternalLink size={16} color="#30ADFF" />
                     </div>
                   </TD>
                   <TD>
@@ -138,7 +139,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <Text color="text" bold paddingRight="8px">
                         23,143
                       </Text>
-                      <img src={exploreIcon} alt="exploreIcon" width={16} />
+                      <ExternalLink size={16} color="#30ADFF" />
                     </div>
                   </TD>
                 </TR>

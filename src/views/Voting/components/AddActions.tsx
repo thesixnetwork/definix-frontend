@@ -1,25 +1,16 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { ArrowBackIcon, Button, Card, Text, Input, useMatchBreakpoints } from 'uikit-dev'
-import { Link, Redirect } from 'react-router-dom'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
+// import { Link, Redirect } from 'react-router-dom'
 import { ExternalLink } from 'react-feather'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+// import Checkbox from '@material-ui/core/Checkbox'
+// import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { DatePicker, TimePicker } from 'components/DatePicker'
-import exploreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-explore.png'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
-const BoxInput = styled(Input)`
-  width: 100%;
-  background: unset;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  margin: 20px 0px;
-  padding: 2px 20px;
-  display: flex;
-  align-items: center;
-`
 
 export interface FormState {
   name: string
@@ -32,30 +23,9 @@ export interface FormState {
   snapshot: number
 }
 
-const Custom = ({ value, onClick, ...rest }) => {
-  return (
-    <input
-      style={{
-        backgroundColor: 'rgb(238, 234, 244)',
-        borderRadius: '16px',
-        boxShadow: 'rgb(74 74 104 / 10%) 0px 2px 2px -1px inset',
-        color: 'rgb(40, 13, 95)',
-        display: 'block',
-        fontSize: '16px',
-        height: '40px',
-        outline: '0px',
-        padding: '0px 16px',
-        width: '100%',
-        border: '1px solid rgb(215, 202, 236)',
-      }}
-      value={value}
-      onClick={onClick}
-      {...rest}
-    />
-  )
-}
 
 const AddActions = () => {
+  const { account } = useWallet()
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
@@ -145,17 +115,17 @@ const AddActions = () => {
           <div className={`flex align-stretch ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-4'}>
               <Text fontSize="16px" lineHeight="1">
-                Identifier
+                Creator
               </Text>
             </div>
             <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
               <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                QmaSFZ3p
+                {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
               </Text>
-              <img src={exploreIcon} alt="exploreIcon" width={16} />
+              <ExternalLink size={16} color="#30ADFF" />
             </div>
           </div>
-          <Button variant="success" radii="small" className="my-4">
+          <Button variant="success" radii="small" className="my-4" size="sm">
             Publish
           </Button>
           <Text color="#F5C858">You need at least 10 voting power to publish a proposal.</Text>

@@ -1,11 +1,11 @@
 /* eslint-disable no-nested-ternary */
 import React, { lazy, useState, useMemo } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import times from 'lodash/times'
 // import useTheme from 'hooks/useTheme'
-import { ArrowBackIcon, Button, Card, CardHeader, CardBody, Input, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Input, Text } from 'uikit-dev'
 
 const EasyMde = lazy(() => import('components/EasyMde'))
 
@@ -21,7 +21,7 @@ const InputChoice = styled(Input)`
 
 const AddProposal: React.FC = () => {
   // const { path } = useRouteMatch()
-  const { isXl } = useMatchBreakpoints()
+  // const { isXl } = useMatchBreakpoints()
   // const isMobile = !isXl
   // const { isDark } = useTheme()
   const { account } = useWallet()
