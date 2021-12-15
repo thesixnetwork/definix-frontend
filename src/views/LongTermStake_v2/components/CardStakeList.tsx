@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Flex } from '@fingerlabs/definixswap-uikit-v2'
-import { usePrivateData } from 'hooks/useLongTermStake'
+import { useLockCount, usePrivateData } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 
 import StakeListHead from './StakeListHead'
 import StakeListContentPc from './StakeListContentPc'
 import StakeListContentMobile from './StakeListContentMobile'
 import StakeListPagination from './StakeListPagination'
-import { AllDataLockType, IsMobileType } from './types'
+import { IsMobileType } from './types'
 
 const FlexCard = styled(Flex)`
   flex-direction: column;
@@ -16,17 +16,9 @@ const FlexCard = styled(Flex)`
 
 const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
   const { lockAmount, allDataLock } = usePrivateData()
+  const lockCount = useLockCount()
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [indexLast, setIndexLast] = useState<number>(5)
   const [itemPerPage, setItemPerPage] = useState<number>(4)
-
-  const getCurrentData = (data: AllDataLockType[]) => {
-    return data.slice(indexLast - itemPerPage, indexLast)
-  }
-
-  useEffect(() => {
-    setIndexLast(currentPage * itemPerPage)
-  }, [currentPage, indexLast, itemPerPage])
 
   useEffect(() => {
     setItemPerPage(isMobile ? 3 : 4)
@@ -39,14 +31,14 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
           <FlexCard>
             {!isMobile && <StakeListHead />}
             {isMobile ? (
-              <StakeListContentMobile isMobile={isMobile} allDataLock={getCurrentData(allDataLock)} />
+              <StakeListContentMobile isMobile={isMobile} allDataLock={allDataLock.slice(0, itemPerPage)} />
             ) : (
-              <StakeListContentPc isMobile={isMobile} allDataLock={getCurrentData(allDataLock)} />
+              <StakeListContentPc isMobile={isMobile} allDataLock={allDataLock.slice(0, itemPerPage)} />
             )}
             <StakeListPagination
               isMobile={isMobile}
               itemPerPage={itemPerPage}
-              dataLength={allDataLock.length}
+              dataLength={Number(lockCount)}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />
