@@ -46,12 +46,12 @@ const MyProducts: React.FC<{
       farm: [],
       pool: [],
       rebalancing: [],
-      longtermstake: []
+      longtermstake: [],
     }
     products.forEach((product) => {
       defaultProducts[product.type.toLowerCase()].push({
         productType: product.type,
-        ...product.data
+        ...product.data,
       })
     })
     return _.flatten(Object.values(defaultProducts))
