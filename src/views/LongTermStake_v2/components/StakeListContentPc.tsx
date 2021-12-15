@@ -15,7 +15,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
 
   return (
     <>
-      {allDataLock.slice(0, 4).map((item) => {
+      {allDataLock.map((item) => {
         return (
           <Flex width="100%" flexDirection="column" key={item.id}>
             <Flex width="100%" alignItems="center" py="S_16">
