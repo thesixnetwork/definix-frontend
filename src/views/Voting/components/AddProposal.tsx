@@ -4,7 +4,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import times from 'lodash/times'
-import useTheme from 'hooks/useTheme'
+// import useTheme from 'hooks/useTheme'
 import { ArrowBackIcon, Button, Card, CardHeader, CardBody, Input, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
 
 const EasyMde = lazy(() => import('components/EasyMde'))

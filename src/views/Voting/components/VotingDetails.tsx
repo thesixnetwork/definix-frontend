@@ -38,7 +38,7 @@ const VotingDetails = () => {
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-4'}>
             <Text fontSize="18px" lineHeight="1">
-              Identifier
+              Creator
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
@@ -47,6 +47,30 @@ const VotingDetails = () => {
               kfkhldf
             </Text>
             <img src={exploreIcon} alt="exploreIcon" width={16} />
+          </div>
+        </div>
+        <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
+          <div className={isMobile ? 'col-12' : 'col-4'}>
+            <Text fontSize="18px" lineHeight="1">
+              Start Date
+            </Text>
+          </div>
+          <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
+            <Text fontSize="16px" bold>
+              12-Nov-21 15:00:00 GMT+9
+            </Text>
+          </div>
+        </div>
+        <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
+          <div className={isMobile ? 'col-12' : 'col-4'}>
+            <Text fontSize="18px" lineHeight="1">
+              End Date
+            </Text>
+          </div>
+          <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
+            <Text fontSize="16px" bold>
+              12-Nov-21 15:00:00 GMT+9
+            </Text>
           </div>
         </div>
       </Card>
