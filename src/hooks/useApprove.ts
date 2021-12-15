@@ -1,7 +1,7 @@
-import { useCallback, useContext } from 'react'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { Contract } from 'web3-eth-contract'
 import { ethers } from 'ethers'
+import { useCallback, useContext } from 'react'
 import { useDispatch } from 'react-redux'
 import { updateUserAllowance, fetchFarmUserDataAsync } from 'state/actions'
 import { approve } from 'utils/callHelpers'
@@ -18,27 +18,23 @@ export const useApprove = (lpContract: Contract) => {
   const herodotusContract = useHerodotus()
 
   const handleApprove = useCallback(async () => {
-    try {
-      let tx
-      if (connector === 'klip') {
-        klipProvider.genQRcodeContactInteract(
-          lpContract._address,
-          jsonConvert(getAbiERC20ByName('approve')),
-          jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
-          setShowModal,
-        )
-        tx = await klipProvider.checkResponse()
+    let tx
+    if (connector === 'klip') {
+      klipProvider.genQRcodeContactInteract(
+        lpContract._address,
+        jsonConvert(getAbiERC20ByName('approve')),
+        jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
+        setShowModal,
+      )
+      tx = await klipProvider.checkResponse()
 
-        setShowModal(false)
-      } else {
-        // is inject
-        tx = await approve(lpContract, herodotusContract, account)
-      }
-      dispatch(fetchFarmUserDataAsync(account))
-      return tx
-    } catch (e) {
-      return false
+      setShowModal(false)
+    } else {
+      // is inject
+      tx = await approve(lpContract, herodotusContract, account)
     }
+    dispatch(fetchFarmUserDataAsync(account))
+    return tx
   }, [account, dispatch, lpContract, herodotusContract, setShowModal, connector])
   return { onApprove: handleApprove }
 }
@@ -52,27 +48,23 @@ export const useSousApprove = (lpContract: Contract, sousId) => {
 
   const herodotusContract = useHerodotus()
   const handleApprove = useCallback(async () => {
-    try {
-      let tx
-      if (connector === 'klip') {
-        // setShowModal(true)
-        klipProvider.genQRcodeContactInteract(
-          lpContract._address,
-          jsonConvert(getAbiERC20ByName('approve')),
-          jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
-          setShowModal,
-        )
-        tx = await klipProvider.checkResponse()
-        dispatch(updateUserAllowance(sousId, account))
-        setShowModal(false)
-      } else {
-        tx = await approve(lpContract, sousChefContract, account)
-        dispatch(updateUserAllowance(sousId, account))
-      }
-      return tx
-    } catch (e) {
-      return false
+    let tx
+    if (connector === 'klip') {
+      // setShowModal(true)
+      klipProvider.genQRcodeContactInteract(
+        lpContract._address,
+        jsonConvert(getAbiERC20ByName('approve')),
+        jsonConvert([herodotusContract._address, klipProvider.MAX_UINT_256_KLIP]),
+        setShowModal,
+      )
+      tx = await klipProvider.checkResponse()
+      dispatch(updateUserAllowance(sousId, account))
+      setShowModal(false)
+    } else {
+      tx = await approve(lpContract, sousChefContract, account)
+      dispatch(updateUserAllowance(sousId, account))
     }
+    return tx
   }, [account, dispatch, lpContract, sousChefContract, sousId, connector, setShowModal, herodotusContract])
 
   return { onApprove: handleApprove }

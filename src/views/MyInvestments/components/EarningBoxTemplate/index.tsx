@@ -171,7 +171,7 @@ const EarningBoxTemplate: React.FC<{
             <Button
               md
               width="100%"
-              variant="brown"
+              variant="red"
               className="home-harvest-button"
               isLoading={pendingTx}
               disabled={balancesWithValue.length <= 0}
