@@ -1,5 +1,5 @@
-import React from 'react'
-import numeral from 'numeral'
+import React, { useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 import { Text } from 'definixswap-uikit-v2'
 
 const BalanceText: React.FC<{
@@ -8,6 +8,8 @@ const BalanceText: React.FC<{
   [key: string]: any
 }> = (props) => {
   const { value, toFixed = 6, ...rest } = props
-  return <Text {...rest}>{numeral(value).format(`0,0.[${'0'.repeat(toFixed)}]`)}</Text>
+  const decimalPlaces = useMemo(() => Math.min(new BigNumber(value).decimalPlaces(), toFixed), [value, toFixed])
+  const formatedValue = useMemo(() => new BigNumber(value).toFixed(decimalPlaces, 1), [value, decimalPlaces])
+  return <Text {...rest}>{formatedValue}</Text>
 }
 export default BalanceText
