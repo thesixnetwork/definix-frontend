@@ -7,14 +7,14 @@ import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
-import { Card, useMatchBreakpoints, Text, Heading, useModal } from 'uikit-dev'
+import { Card, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
 import { Button } from '@fingerlabs/definixswap-uikit-v2'
 import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
-import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
 import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
 import { getTokenImageUrl } from 'utils/getTokenImage'
+import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
@@ -158,9 +158,8 @@ const CardStake = ({ isShowRightPanel }) => {
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isMd && !isLg
-  const { connect, account } = useWallet()
+  const { account } = useWallet()
   const [date, setDate] = useState('-')
-  const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
@@ -310,7 +309,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeDOrStake = () => {
     return (
-      <Button width="100%" disabled={isDisabled} className="align-self-center" onClick={onStake}>
+      <Button width="100%" md disabled={isDisabled} className="align-self-center" onClick={onStake}>
         Stake
       </Button>
     )
@@ -318,7 +317,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeOrEnter = () => {
     return flgButton === 'enter amount' ? (
-      <Button width="100%" disabled className="align-self-center">
+      <Button width="100%" md disabled className="align-self-center">
         Enter an amount
       </Button>
     ) : (
@@ -328,7 +327,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeOrInsufficient = () => {
     return flgButton === 'insufficient' ? (
-      <Button width="100%" disabled className="align-self-center">
+      <Button width="100%" md disabled className="align-self-center">
         Insufficient Balance
       </Button>
     ) : (
@@ -340,7 +339,7 @@ const CardStake = ({ isShowRightPanel }) => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-      <Button width="100%" className="align-self-center" onClick={handleApprove}>
+      <Button width="100%" md className="align-self-center" onClick={handleApprove}>
         Approve Contract
       </Button>
     )
@@ -525,15 +524,16 @@ const CardStake = ({ isShowRightPanel }) => {
           {handleBalance()}
           <div className="flex mt-4">
             {!account ? (
-              <Button
-                width="100%"
-                className="align-self-center"
-                onClick={() => {
-                  onPresentConnectModal()
-                }}
-              >
-                Connect Wallet
-              </Button>
+              <UnlockButton />
+              // <Button
+              //   width="100%"
+              //   className="align-self-center"
+              //   onClick={() => {
+              //     onPresentConnectModal()
+              //   }}
+              // >
+              //   Connect Wallet
+              // </Button>
             ) : (
               renderApprovalOrStakeButton()
             )}
