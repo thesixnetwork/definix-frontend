@@ -123,19 +123,37 @@ const MyProducts: React.FC<{
     [klaytn, account, getMyFarmBalancesInWallet, getMyPoolBalanceInWallet],
   )
 
+  const getKey = useCallback((product) => {
+    if (product.data.pid) {
+      return product.data.pid
+    }
+    if (product.data.sousId) {
+      return product.data.sousId
+    }
+    if (product.data.title) {
+      return product.data.title
+    }
+    return ''
+  }, [])
+
   return (
     <>
       {displayProducts.length ? (
         displayProducts.map((product, index) => {
           return (
-            <Box className={`${index === displayProducts.length - 1 ? `pb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}>
+            <Box
+              key={getKey(product)}
+              className={`${index === displayProducts.length - 1 ? `pb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}
+            >
               {index > 0 && <Divider />}
               {getProductComponent(product)}
             </Box>
           )
         })
       ) : (
-        <NoResultArea useCardLayout={false} message={t('There are no products deposited')} />
+        <Box mb="S_40">
+          <NoResultArea useCardLayout={false} message={t('There are no products deposited')} />
+        </Box>
       )}
       {/* <List>
         <>

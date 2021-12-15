@@ -47,6 +47,15 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
   const { account } = useWallet()
   const balances = useBalances(account)
   const rebalanceBalances = useRebalanceBalances(account)
+  const size = isMobile
+    ? {
+        paddingX: 'S_20',
+        paddingY: 'S_20',
+      }
+    : {
+        paddingX: 'S_32',
+        paddingY: 'S_24',
+      }
 
   const thisBalance = rebalance.enableAutoCompound ? rebalanceBalances : balances
   const currentBalance = get(thisBalance, getAddress(rebalance.address), new BigNumber(0))
@@ -86,7 +95,7 @@ const FundAction: React.FC<FundActionType> = ({ className = '', rebalance, isMob
   )
 
   return (
-    <CardStyled className={`pa-4 mt-4 ${className}`}>
+    <CardStyled mt="S_20" px={size.paddingX} py={size.paddingY} className={className}>
       {isMobile ? (
         <>
           <Flex alignItems="center" justifyContent="space-between" flex="1 1 0" className="mb-s16">

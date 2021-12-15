@@ -1,6 +1,6 @@
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 
 import ListPageHeader from 'components/ListPageHeader'
+import NoResultArea from 'components/NoResultArea'
 import DisclaimersModal from './components/DisclaimersModal'
 import ExploreCard from './components/ExploreCard'
 import ExploreDetail from './ExploreDetail'
@@ -39,8 +40,20 @@ const Explore: React.FC = () => {
   const targetRebalance = useRebalanceAddress(selectedRebalance ? getAddress(selectedRebalance.address) : undefined)
   const dispatch = useDispatch()
   const { account } = useWallet()
-  const rebalanceBalances = useRebalanceBalances(account) || {}
+  const rebalanceBalances = useRebalanceBalances(account)
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
+  const withBalance = useMemo(() => {
+    return rebalances.map((r) => ({
+      ...r,
+      balance: rebalanceBalances?.[getAddress(r.address)] || new BigNumber(0),
+      // rebalanceBalances?.[getAddress(r.address)] || new BigNumber(0)
+    }))
+  }, [rebalanceBalances, rebalances])
+
+  const filteredFarms = useMemo(() => {
+    return withBalance.filter(({ balance }) => (isInvested ? balance?.toNumber() > 0 : true))
+  }, [isInvested, withBalance])
+
   useEffect(() => {
     if (account) {
       const addressObject = {}
@@ -82,23 +95,23 @@ const Explore: React.FC = () => {
             </FilterWrap>
           </Box>
 
-          {(rebalances || [])
-            .filter((r) =>
-              !isInvested ? true : (rebalanceBalances[getAddress(r.address)] || new BigNumber(0)).toNumber() > 0,
-            )
-            .map((rebalance) => {
+          {filteredFarms?.length ? (
+            filteredFarms.map((rebalance) => {
               return (
                 <ExploreCard
                   key={rebalance.title}
                   isHorizontal
                   rebalance={rebalance}
-                  balance={rebalanceBalances[getAddress(rebalance.address)] || new BigNumber(0)}
+                  balance={rebalance.balance}
                   onClickViewDetail={() => {
                     setSelectedRebalance(rebalance)
                   }}
                 />
               )
-            })}
+            })
+          ) : (
+            <NoResultArea useCardLayout message={t('There are no farms in deposit.')} />
+          )}
         </>
       </Route>
 

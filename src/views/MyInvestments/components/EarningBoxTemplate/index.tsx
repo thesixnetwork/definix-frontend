@@ -22,6 +22,8 @@ interface InnerTheme {
   bottomBg: ColorStyles | string
   slideDotColor: ColorStyles
   slideDotActiveColor: ColorStyles
+  harvestButtonBg: ColorStyles | string
+  harvestButtonColor: string
 }
 
 const THEME: { [key: string]: InnerTheme } = {
@@ -36,6 +38,8 @@ const THEME: { [key: string]: InnerTheme } = {
     bottomBg: ColorStyles.LIGHTGREY_20,
     slideDotColor: ColorStyles.LIGHTGREY,
     slideDotActiveColor: ColorStyles.BLACK,
+    harvestButtonBg: ColorStyles.LIGHTGREY,
+    harvestButtonColor: 'rgba(255, 255, 255, 0.5)',
   },
   dark: {
     totalTitleColor: ColorStyles.WHITE,
@@ -48,6 +52,8 @@ const THEME: { [key: string]: InnerTheme } = {
     bottomBg: 'black20',
     slideDotColor: ColorStyles.BROWN,
     slideDotActiveColor: ColorStyles.WHITE,
+    harvestButtonBg: 'brown30',
+    harvestButtonColor: 'rgba(255, 255, 255, 0.1)',
   },
 }
 
@@ -65,9 +71,15 @@ const MainSection = styled(Flex)`
     padding: ${({ theme }) => theme.spacing.S_20}px;
   }
 `
-const ButtonWrap = styled(Flex)<{ isMobile: boolean }>`
+const ButtonWrap = styled(Flex)<{ curTheme: any }>`
   width: 186px;
   flex-direction: column;
+  .home-harvest-button {
+    &.definix-button--disabled:not(.definix-button--loading) {
+      background-color: ${({ theme, curTheme }) => theme.colors[curTheme.harvestButtonBg]};
+      color: ${({ curTheme }) => curTheme.harvestButtonColor};
+    }
+  }
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     flex-direction: row;
     width: 100%;
@@ -148,16 +160,19 @@ const EarningBoxTemplate: React.FC<{
                 prefix="="
                 textStyle={`R_${isMobile ? '14' : '16'}M`}
                 color={curTheme.totalCurrencyColor}
-                className="ml-s16"
+                ml="S_16"
+                mb="S_4"
               />
             )}
           </Flex>
         </Box>
-        <ButtonWrap isMobile={isMobile} className={isMobile ? 'mt-s20' : ''}>
+        <ButtonWrap curTheme={curTheme} className={isMobile ? 'mt-s20' : ''}>
           {hasAccount ? (
             <Button
               md
               width="100%"
+              variant="brown"
+              className="home-harvest-button"
               isLoading={pendingTx}
               disabled={balancesWithValue.length <= 0}
               onClick={harvestAllFarms}

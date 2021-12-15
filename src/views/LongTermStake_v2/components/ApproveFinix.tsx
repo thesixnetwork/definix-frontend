@@ -9,6 +9,7 @@ import { IsMobileType } from './types'
 
 interface ApproveFinixProps extends IsMobileType {
   hasAccount: boolean
+  approve: boolean
   inputBalance: string
   days: number
   endDay: string
@@ -39,6 +40,7 @@ const FlexApprroveBtn = styled(Flex)`
 const ApproveFinix: React.FC<ApproveFinixProps> = ({
   isMobile,
   hasAccount,
+  approve,
   inputBalance,
   days,
   endDay,
@@ -50,7 +52,6 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
     <StakeModal balance={inputBalance} period={days} end={endDay} earn={earn} onOK={() => null} />,
     false,
   )
-  const [approve] = useState<boolean>(true)
   const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠
 
   return (

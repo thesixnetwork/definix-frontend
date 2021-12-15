@@ -8,10 +8,14 @@ import { Flex, Text, Label, Box } from 'definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
-  margin-bottom: ${({ theme }) => theme.spacing.S_6}px;
+  margin-right: ${({ theme }) => theme.spacing.S_6}px;
+  margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
   color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_12R};
   white-space: nowrap;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: ${({ theme, hasMb }) => (hasMb ? theme.spacing.S_6 : 0)}px;
+  }
 `
 const TokenLabel = styled(Label)`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;
@@ -34,7 +38,7 @@ const TotalLiquidityText = styled(CurrencyText)`
   }
 `
 const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.deepgrey};
+  color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R};
@@ -64,7 +68,7 @@ const MyBalanceSection: React.FC<{
         <Flex alignItems="center">
           <TokenLabel type="token">{tokenName}</TokenLabel>
           <BalanceText>
-            {!balanceValue || balanceValue === null ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
+            {!BigNumber.isBigNumber(balanceValue) ? '-' : convertToBalanceFormat(balanceValue.toNumber())}
           </BalanceText>
         </Flex>
       ))}
@@ -118,7 +122,7 @@ const EarningsSection: React.FC<{
         </Box>
       </TitleWrap>
       <ValueWrap>
-        <Flex alignItems="end">
+        <Flex alignItems="flex-end">
           <BalanceText>{convertToBalanceFormat(earningsValue)}</BalanceText>
           <TokenNameText>FINIX</TokenNameText>
         </Flex>

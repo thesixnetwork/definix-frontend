@@ -56,7 +56,7 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, size = '
       <Flex flexDirection="column">
         <Text textStyle={isMediumSize ? 'R_20M' : 'R_18M'}>{lpLabel}</Text>
 
-        <Flex alignItems="end">
+        <Flex alignItems="flex-end">
           <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
             APR
           </Text>

@@ -1,9 +1,7 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
-import { Card, Flex, useModal } from 'definixswap-uikit-v2'
+import { Card, Flex } from 'definixswap-uikit-v2'
+import { usePrivateData } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
-
-import UnstakeModal from './UnstakeModal'
 
 import StakeListHead from './StakeListHead'
 import StakeListContentPc from './StakeListContentPc'
@@ -17,57 +15,25 @@ const FlexCard = styled(Flex)`
 `
 
 const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
-  const { t } = useTranslation()
-  const [onPresentUnstakeModal] = useModal(
-    <UnstakeModal
-      balance="1,000"
-      period={90}
-      apr="43.56%"
-      fee="15%"
-      end="08-Nov-21 14:57:20 GMT+9"
-      received="85,000,000.123456"
-      unstake={`${t('Early Unstake')}`}
-      onOK={() => null}
-    />,
-    false,
-  )
-
-  const data = [
-    {
-      period: 90,
-      amount: '3,000',
-      end: '08-Nov-21 14:57:20 GMT+9',
-    },
-    {
-      period: 180,
-      amount: '10,000',
-      end: '08-Nov-21 14:57:21 GMT+9',
-    },
-    {
-      period: 365,
-      amount: '30,000',
-      end: '08-Nov-21 14:57:22 GMT+9',
-    },
-    {
-      period: 365,
-      amount: '30,000,000',
-      end: '08-Nov-21 14:57:23 GMT+9',
-    },
-  ]
+  const { lockAmount, allDataLock } = usePrivateData()
 
   return (
     <>
-      <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
-        <FlexCard>
-          {!isMobile && <StakeListHead />}
-          {isMobile ? (
-            <StakeListContentMobile data={data} onPresentUnstakeModal={onPresentUnstakeModal} />
-          ) : (
-            <StakeListContentPc data={data} onPresentUnstakeModal={onPresentUnstakeModal} />
-          )}
-          <StakeListPagination isMobile={isMobile} />
-        </FlexCard>
-      </Card>
+      {lockAmount ? (
+        <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
+          <FlexCard>
+            {!isMobile && <StakeListHead />}
+            {isMobile ? (
+              <StakeListContentMobile isMobile={isMobile} allDataLock={allDataLock} />
+            ) : (
+              <StakeListContentPc isMobile={isMobile} allDataLock={allDataLock} />
+            )}
+            <StakeListPagination isMobile={isMobile} />
+          </FlexCard>
+        </Card>
+      ) : (
+        <></>
+      )}
     </>
   )
 }

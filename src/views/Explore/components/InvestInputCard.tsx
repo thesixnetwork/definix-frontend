@@ -91,12 +91,10 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
       const poolUSDBalancesDataProcess = getReserves(datas)
 
       const reservePoolAmountProcess = getReserves(
-        datas.map((c, index) => {
-          return {
-            ...c,
-            value: new BigNumber((poolAmountsData[index] || '0') as string).times(new BigNumber(10).pow(c.decimal)),
-          }
-        }),
+        datas.map((c, index) => ({
+          ...c,
+          value: new BigNumber((poolAmountsData[index] || '0') as string).times(new BigNumber(10).pow(c.decimals)),
+        })),
       )
       let sumUsd = new BigNumber(0)
 
@@ -108,7 +106,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
       // const [poolUSDBalancesData,reservePoolAmount]  = data
       // @ts-ignore
       for (let i = 0; i < reservePoolAmount[0]?.length || 0; i++) {
-        const decimal = rebalanceInfo.tokens[i]?.decimals ? rebalanceInfo.tokens[i].decimals : 6
+        const decimal = rebalanceInfo.tokens[i]?.decimals || 6
         sumUsd = sumUsd.plus(reservePoolAmount[0][i].dividedBy(10 ** (decimal + 6)))
       }
       const usdToken = ((rebalanceInfo || {}).usdToken || [])[0] || {}
@@ -346,7 +344,7 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
             ))
           ) : (
             <Flex py="S_28" justifyContent="center">
-              <Text textStyle="R_14R" color="textSubtle">
+              <Text textStyle="R_14R" color="textSubtle" style={{ opacity: 0.6 }}>
                 {t('Please input the investment amount.')}
               </Text>
             </Flex>

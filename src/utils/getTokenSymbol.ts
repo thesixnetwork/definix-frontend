@@ -15,6 +15,7 @@ const addresses = getAddresses()
 export const tokenAddressMap = addresses
 export const getTokenSymbol = (tokenAddress) => {
   try {
+    if (tokenAddress === 'main') return 'KLAY'
     const symbol = addresses[tokenAddress]
     return symbol === 'WKLAY' ? 'KLAY' : symbol
   } catch (error) {

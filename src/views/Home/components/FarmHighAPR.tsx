@@ -37,8 +37,8 @@ const FarmHighAPR = () => {
       Images={
         <WrapImage>
           {lpImages.map((image, index) => (
-            <Box key={image} width="50%" style={{ marginLeft: index > 0 ? '-10px' : '0' }}>
-              <img src={image} alt="" />
+            <Box key={image} width="50%" height="100%" style={{ marginLeft: index > 0 ? '-10px' : '0' }}>
+              <img src={image} width="100%" height="100%" alt="" />
             </Box>
           ))}
         </WrapImage>

@@ -48,7 +48,7 @@ const InputBox = styled.div`
 
 const StyledAnountButton = styled(AnountButton)`
   margin-left: ${({ theme }) => theme.spacing.S_6}px;
-  background: ${({ theme }) => rgba(theme.colors.lightgrey, 0.5)};
+  background: ${({ theme }) => rgba(theme.colors.lightgrey, 0.3)};
 `
 
 const CurrencyInputPanel = ({
@@ -135,15 +135,16 @@ const CurrencyInputPanel = ({
           </>
         )}
       </InputBox>
-      {isGreaterThanMyBalance && (
+      {overDp ? (
         <Noti mt="S_12" type={NotiType.ALERT}>
-          {t('Insufficient balance')}
+          {t('The value entered is out of the valid range')}
         </Noti>
-      )}
-      {overDp && (
-        <Noti mt="S_12" type={NotiType.ALERT}>
-          {t('The value entered is out of the valid range.')}
-        </Noti>
+      ) : (
+        isGreaterThanMyBalance && (
+          <Noti mt="S_12" type={NotiType.ALERT}>
+            {t('Insufficient balance')}
+          </Noti>
+        )
       )}
     </Container>
   )

@@ -7,6 +7,7 @@ import styled from 'styled-components'
 
 interface BalanceProps {
   hasAccount: boolean
+  approve: boolean
   minimum: number
   inputBalance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
@@ -22,23 +23,22 @@ const FlexBalance = styled(Flex)`
 `
 
 const StyledInput = styled.input`
-  ${({ theme }) => theme.textStyle.R_28M};
   color: ${({ theme }) => theme.colors.black};
-  width: 95%;
-  height: 40px;
-  padding: 0;
+  width: 100%;
   outline: none;
   border: none;
-  caret-color: ${({ theme }) => theme.colors.red};
+  background-color: transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 20px 0 0;
 
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.mediumgrey};
+  ${({ theme }) => theme.textStyle.R_28M}
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    ${({ theme }) => theme.textStyle.R_23M}
   }
 
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  ::placeholder {
+    color: ${({ theme }) => theme.colors.placeholder};
   }
 `
 
@@ -59,6 +59,7 @@ const StyledText = styled(Text)`
 
 const BalanceFinix: React.FC<BalanceProps> = ({
   hasAccount,
+  approve,
   minimum,
   inputBalance,
   setInputBalance,
@@ -67,25 +68,25 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   balancefinix,
 }) => {
   const { t } = useTranslation()
-  const [selected, setSelected] = useState<string>('')
+  const [selected, setSelected] = useState<number>(0)
 
-  const onChangeBalance = (e: React.FormEvent<HTMLInputElement>) => {
-    const { value } = e.currentTarget
+  const onChangeBalance = (value: string) => {
+    const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
-    if (value.length > 79) return
-    setInputBalance(value.replace(/[^0-9]/g, ''))
+    if (value === '' || inputRegex.test(value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))) {
+      setInputBalance(value)
+    }
 
-    if (selected) setSelected('')
+    if (selected) setSelected(0)
   }
 
-  const onClickRate = (value: string) => {
-    if (!hasAccount) return
+  const onClickRate = (rate: number) => {
+    if (!hasAccount || !approve) return
 
-    if (value === '25%') setInputBalance((balancefinix * 0.25).toFixed(2))
-    else if (value === '50%') setInputBalance((balancefinix * 0.5).toFixed(2))
-    else if (value === 'MAX') setInputBalance(String(balancefinix))
+    if (rate === 1) setInputBalance(String(balancefinix))
+    else setInputBalance((balancefinix * rate).toFixed(2))
 
-    setSelected(value)
+    setSelected(rate)
   }
 
   useEffect(() => {
@@ -103,7 +104,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   useEffect(() => {
     if (!hasAccount) {
       setInputBalance('')
-      setSelected('')
+      setSelected(0)
     }
   }, [hasAccount, setInputBalance, setSelected])
 
@@ -124,19 +125,28 @@ const BalanceFinix: React.FC<BalanceProps> = ({
           <StyledInput
             type="text"
             inputMode="decimal"
-            value={inputBalance}
-            onChange={onChangeBalance}
+            title="Token Amount"
             placeholder="0"
-            readOnly={!hasAccount}
+            value={inputBalance}
+            onChange={(e) => onChangeBalance(e.target.value)}
+            pattern="^[0-9]*[.]?[0-9]*$"
+            minLength={1}
+            maxLength={79}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck="false"
+            readOnly={!hasAccount || !approve}
           />
           <Flex mt="S_8" mb="S_12">
-            {['25%', '50%', 'MAX'].map((value) => {
-              return (
-                <StyledAnountButton key={value} selected={selected === value} onClick={() => onClickRate(value)}>
-                  {value}
-                </StyledAnountButton>
-              )
-            })}
+            <StyledAnountButton selected={selected === 0.25} onClick={() => onClickRate(0.25)}>
+              25%
+            </StyledAnountButton>
+            <StyledAnountButton selected={selected === 0.5} onClick={() => onClickRate(0.5)}>
+              50%
+            </StyledAnountButton>
+            <StyledAnountButton selected={selected === 1} onClick={() => onClickRate(1)}>
+              {t('MAX')}
+            </StyledAnountButton>
           </Flex>
           {error !== 'noInput' && !!error && (
             <Flex alignItems="flex-start">

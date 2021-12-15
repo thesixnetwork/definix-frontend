@@ -433,7 +433,7 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
               startIcon={<BackIcon color="textSubtle" />}
             >
               <Text textStyle="R_16R" color="textSubtle">
-                {t(rebalance.title)}
+                {t('Back')}
               </Text>
             </Button>
           </Flex>

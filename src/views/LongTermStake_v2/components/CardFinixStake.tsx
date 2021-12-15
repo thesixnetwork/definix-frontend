@@ -25,6 +25,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
   const [error, setError] = useState<string>('')
+  const [approve] = useState<boolean>(true)
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
@@ -76,6 +77,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
           <BalanceFinix
             hasAccount={hasAccount}
+            approve={approve}
             minimum={data.find((item) => item.day === days).minStake}
             inputBalance={inputBalance}
             setInputBalance={setInputBalance}
@@ -86,6 +88,7 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
           <ApproveFinix
             isMobile={isMobile}
             hasAccount={hasAccount}
+            approve={approve}
             inputBalance={inputBalance}
             days={days}
             endDay={endDay}

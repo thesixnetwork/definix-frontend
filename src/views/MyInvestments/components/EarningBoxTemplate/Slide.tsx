@@ -10,7 +10,7 @@ const Wrap = styled(Flex)<{ bg: any }>`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background-color: ${({ bg }) => bg};
+  background-color: ${({ theme, bg }) => theme.colors[bg]};
 `
 const ArrowButtonSection = styled(Box)`
   position: absolute;
@@ -134,14 +134,14 @@ const Slide: React.FC<{
 
   const renderItemSubValue = useCallback(
     (item) => {
-      return displayOnlyTotalPrice ? (
+      return displayOnlyTotalPrice ? null : (
         <CurrencyText
           textStyle="R_14M"
           color={curTheme.itemCurrencyColor}
           value={hasAccount ? item.price : 0}
           prefix="="
         />
-      ) : null
+      )
     },
     [displayOnlyTotalPrice, curTheme, hasAccount],
   )

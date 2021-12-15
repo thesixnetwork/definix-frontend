@@ -5,7 +5,6 @@ import { Flex, Text, ColorStyles, Card } from 'definixswap-uikit-v2'
 const EmptyArea = styled(Flex)`
   justify-content: center;
   align-items: center;
-  padding-bottom: 40px;
   height: 340px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     height: 260px;

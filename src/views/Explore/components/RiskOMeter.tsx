@@ -10,13 +10,23 @@ interface RiskOMeterType {
   small?: boolean
 }
 
-const StyledMediumImg = styled(MediumImg)<{ small?: boolean }>`
-  width: ${({ small }) => (small ? '24px' : '48px')};
-  margin-left: ${({ small }) => (small ? '6px' : '25px')};
+const StyledImageBox = styled.div<{ small?: boolean }>`
   height: auto;
   align-self: end;
-  margin-bottom: 6px;
-  margin-top: -6px;
+  ${({ small }) =>
+    small
+      ? `
+    width: 24px;
+    margin-left: 6px;
+    margin-top: 6px;
+    margin-bottom: 3px;
+    `
+      : `
+    width: 48px;
+    margin-left: 25px;
+    margin-top: -4px;
+    margin-bottom: 2px;
+  `};
 `
 
 const RiskOMeter: React.FC<RiskOMeterType> = ({ grade, small }) => {
@@ -26,7 +36,11 @@ const RiskOMeter: React.FC<RiskOMeterType> = ({ grade, small }) => {
       title={t('Risk-O-Meter')}
       value={t(grade)}
       large={!small}
-      subfix={<StyledMediumImg small={small} />}
+      subfix={
+        <StyledImageBox small={small}>
+          <MediumImg width="100%" height="auto" />
+        </StyledImageBox>
+      }
     />
   )
 }

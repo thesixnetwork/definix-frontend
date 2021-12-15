@@ -13,9 +13,15 @@ import {
   DropdownOption,
 } from 'definixswap-uikit-v2'
 
-const ToggleSection = styled(Flex)`
+const ToggleWrap = styled(Flex)`
   align-items: center;
   justify-content: flex-end;
+`
+const SearchInputWrap = styled(Box)`
+  width: 200px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    width: 100%;
+  }
 `
 
 const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
@@ -60,7 +66,7 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
   const StakedOnlySection = () => (
     <>
       <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
-        {t('Staked only Pools')}
+        {t('Staked only Farm')}
       </Text>
       <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
     </>
@@ -69,12 +75,12 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
     return (
       <Flex flexDirection="column">
         <Flex alignItems="center">
-          <ToggleSection>
+          <ToggleWrap>
             <StakedOnlySection />
-          </ToggleSection>
+          </ToggleWrap>
         </Flex>
         <Flex mt="S_12">
-          <Box minWidth={128} mr="S_6">
+          <Box minWidth={148} mr="S_6">
             <DropdownSection />
           </Box>
           <SearchInput
@@ -91,21 +97,21 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex justifyContent="space-between" alignItems="center">
-        <Box width={128}>
+        <Box width={148}>
           <DropdownSection />
         </Box>
-        <ToggleSection ml="S_24">
+        <ToggleWrap ml="S_24">
           <StakedOnlySection />
-        </ToggleSection>
+        </ToggleWrap>
       </Flex>
-      <Box>
+      <SearchInputWrap>
         <SearchInput
           type="text"
           placeholder={t('Token name')}
           onSearch={(keyword) => search(keyword.trim().toLowerCase())}
           onReset={() => search('')}
         />
-      </Box>
+      </SearchInputWrap>
     </Flex>
   )
 }

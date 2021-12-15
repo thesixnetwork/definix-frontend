@@ -9,6 +9,15 @@ const NetWorth: React.FC<{
 }> = ({ isMobile, products }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
+  const filledProducts = useMemo(() => {
+    // { farm: [], pool: [], rebalancing: [], ... }
+    return {
+      farm: [],
+      pool: [],
+      rebalancing: [],
+      ...products,
+    }
+  }, [products])
 
   const titleList = useMemo(() => {
     return {
@@ -18,13 +27,13 @@ const NetWorth: React.FC<{
     }
   }, [t])
   const netWorthList = useMemo(() => {
-    return Object.entries(products).map(([type, product]) => {
+    return Object.entries(filledProducts).map(([type, product]) => {
       return {
         title: titleList[type],
         price: product.reduce((all, f) => all + Number(f.netWorth), 0),
       }
     })
-  }, [products, titleList])
+  }, [filledProducts, titleList])
 
   return (
     <>

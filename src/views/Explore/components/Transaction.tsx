@@ -122,10 +122,12 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
     ? {
         marginX: 'S_20',
         marginY: 'S_20',
+        cardMarginBottom: 'S_20',
       }
     : {
         marginX: 'S_32',
         marginY: 'S_24',
+        cardMarginBottom: 'S_32',
       }
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -185,7 +187,7 @@ const Transaction: React.FC<TransactionType> = ({ className = '', rbAddress }) =
         <Toggle checked={myOnly} onChange={() => setMyOnly(!myOnly)} />
       </Flex>
 
-      <Box pb={size.marginY}>
+      <Box pb={size.cardMarginBottom}>
         {isEmpty(transactions) ? (
           <EmptyData text={t(myOnly ? 'You haven`t made any transactions' : 'Don`t have any transactions')} />
         ) : (

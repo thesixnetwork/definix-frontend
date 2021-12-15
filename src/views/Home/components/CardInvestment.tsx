@@ -7,7 +7,7 @@ const CardInvestment = () => {
   const isMobile = useMemo(() => !isXxl, [isXxl])
 
   return (
-    <Card bg={ColorStyles.DEEPBROWN}>
+    <Card bg={ColorStyles.DEEPBROWN} isOverflowHidden>
       <CardBody p="0">
         <Earned isMain isMobile={isMobile} theme="dark" />
       </CardBody>
