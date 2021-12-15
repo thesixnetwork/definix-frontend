@@ -121,6 +121,7 @@ const MyInvestments: React.FC = () => {
         label: t('Long-term Stake'),
         type: 'longTermStake',
         data: {
+          title: 'Long-term Stake',
           apyValue: typeof longtermApr !== 'number' || Number.isNaN(longtermApr) ? 0 : longtermApr,
           lpSymbol: 'longTermStake',
           value: new BigNumber(finixPrice).times(userLongTerStake.lockAmount).toNumber(),
@@ -224,8 +225,8 @@ const MyInvestments: React.FC = () => {
             onChangeSearchInput={(keyword: string) => setSearchKeyword(keyword)}
           />
           <MyProducts
-            productType={currentProductType}
-            orderBy={selectedOrderBy}
+            currentProductType={currentProductType}
+            currentOrderBy={selectedOrderBy}
             searchKeyword={searchKeyword}
             products={stakedProducts}
           />

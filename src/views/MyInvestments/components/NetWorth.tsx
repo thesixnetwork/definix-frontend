@@ -15,6 +15,7 @@ const NetWorth: React.FC<{
       farm: [],
       pool: [],
       rebalancing: [],
+      longtermstake: [],
       ...products,
     }
   }, [products])

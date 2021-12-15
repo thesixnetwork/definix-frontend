@@ -77,7 +77,7 @@ const MyProductsFilter: React.FC<{
   const orderFilter = useMemo<DropdownOption[]>(
     () => [
       {
-        id: 'sortOrder',
+        id: '',
         label: t('Basic order'),
         orderBy: 'asc',
       },
