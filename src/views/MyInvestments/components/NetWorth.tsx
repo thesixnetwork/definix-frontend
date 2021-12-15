@@ -24,7 +24,7 @@ const NetWorth: React.FC<{
       farm: t('Farm'),
       pool: t('Pool'),
       rebalancing: t('Rebalancing'),
-      longtermstake: t('Long-term Stake')
+      longtermstake: t('Long-term Stake'),
     }
   }, [t])
   const netWorthList = useMemo(() => {
