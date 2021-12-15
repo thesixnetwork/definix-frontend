@@ -56,7 +56,6 @@ const MultiplierTag = styled.div`
   left: 16px;
   width: 52px;
   height: 36px;
-  background: url(${ribbin});
   background-size: contain;
   background-repeat: no-repeat;
 
