@@ -351,7 +351,9 @@ const LockVfinixList = ({ rows, isLoading, isDark, total }) => {
                         {_.get(item, 'isPenalty') ? handleStatusPenalty(item) : handleStatusNormal(item)}
                       </Text>
                       <Text color={isDark ? 'white' : 'textSubtle'} fontWeight="600" fontSize="13px">
-                        {_.get(item, 'isPenalty') ? _.get(item, 'penaltyUnlockTimestamp') : _.get(item, 'lockTimestamp')}{' '}
+                        {_.get(item, 'isPenalty')
+                          ? _.get(item, 'penaltyUnlockTimestamp')
+                          : _.get(item, 'lockTimestamp')}{' '}
                         GMT+9
                       </Text>
                     </TD>
