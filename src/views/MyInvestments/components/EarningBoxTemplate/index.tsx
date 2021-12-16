@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { useAllHarvest } from 'hooks/useHarvest'
+import { useHarvest, usePrivateData } from 'hooks/useLongTermStake'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { Button, Text, Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
@@ -138,20 +139,25 @@ const EarningBoxTemplate: React.FC<{
     return _.get(total, displayOnlyTotalPrice ? 'price' : 'value') || 0
   }, [displayOnlyTotalPrice, total])
 
+  const { finixEarn } = usePrivateData()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const { handleHarvest } = useHarvest()
 
-  const harvestAllFarms = useCallback(async () => {
+  const harvestAll = useCallback(async () => {
     setPendingTx(true)
     try {
       await onReward()
+      if (finixEarn) {
+        await handleHarvest()
+      }
     } catch (error) {
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
       setPendingTx(false)
     }
-  }, [onReward])
+  }, [handleHarvest, onReward, finixEarn])
 
   const renderTotalValue = useCallback(() => {
     const props = {
@@ -202,7 +208,7 @@ const EarningBoxTemplate: React.FC<{
                   className="home-harvest-button"
                   isLoading={pendingTx}
                   disabled={balancesWithValue.length <= 0}
-                  onClick={harvestAllFarms}
+                  onClick={harvestAll}
                 >
                   {t('Harvest')}
                 </Button>
