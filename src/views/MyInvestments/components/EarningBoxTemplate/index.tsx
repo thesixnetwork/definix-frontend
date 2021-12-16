@@ -104,6 +104,35 @@ const ButtonWrap = styled(Flex)<{ curTheme: any }>`
     }
   }
 `
+const TotalValuesWrap = styled(Flex)`
+  align-items: flex-end;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+const UnitText = styled(Text)<{ curTheme: any }>`
+  margin-left: ${({ theme }) => theme.spacing.S_6}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
+  ${({ theme }) => theme.textStyle.R_16M};
+  color: ${({ theme, curTheme }) => theme.colors[curTheme.totalBalanceColor]};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: -2px;
+    ${({ theme }) => theme.textStyle.R_14M};
+  }
+`
+const TotalPriceText = styled(CurrencyText)<{ curTheme: any }>`
+  margin-left: ${({ theme }) => theme.spacing.S_16}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
+  ${({ theme }) => theme.textStyle.R_16M};
+  color: ${({ theme, curTheme }) => theme.colors[curTheme.totalCurrencyColor]};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-top: 4px;
+    ${({ theme }) => theme.textStyle.R_14M};
+  }
+`
 
 interface ValueList {
   title: string
@@ -178,24 +207,21 @@ const EarningBoxTemplate: React.FC<{
               {total.title}
             </Text>
           </Flex>
-          <Flex alignItems="flex-end">
+          <TotalValuesWrap>
             <Flex alignItems="flex-end">
               {renderTotalValue()}
-              <Text textStyle="R_16M" color={curTheme.totalBalanceColor} mb="S_2" ml="S_6">
+              <UnitText curTheme={curTheme}>
                 {unit.length > 0 ? unit : null}
-              </Text>
+              </UnitText>
             </Flex>
             {!displayOnlyTotalPrice && (
-              <CurrencyText
+              <TotalPriceText
+                curTheme={curTheme}
                 value={hasAccount ? total.price : 0}
                 prefix="="
-                textStyle={`R_${isMobile ? '14' : '16'}M`}
-                color={curTheme.totalCurrencyColor}
-                ml="S_16"
-                mb="S_2"
               />
             )}
-          </Flex>
+          </TotalValuesWrap>
         </Box>
         <ButtonWrap curTheme={curTheme} className={isMobile ? 'mt-s20' : ''}>
           {useHarvestButton && (
