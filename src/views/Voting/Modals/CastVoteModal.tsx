@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import numeral from 'numeral'
 import _ from 'lodash'
 import Lottie from 'react-lottie'
 // import moment from 'moment'
@@ -18,7 +19,9 @@ import {
   useLockTopup,
   useAllDataLock,
   useAllLock,
+  usePrivateData,
 } from 'hooks/useLongTermStake'
+import { useAvailableVotes } from 'hooks/useVoting'
 import { useLockPlus } from 'hooks/useTopUp'
 import { ChevronDown, AlertCircle } from 'react-feather'
 import { Collapse, IconButton } from '@material-ui/core'
@@ -128,6 +131,8 @@ const ExpandMore = styled((props) => {
 
 const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const availableVotes = useAvailableVotes()
+  const { balancevfinix } = usePrivateData()
   const { allLockPeriod } = useAllLock()
   const balanceOf = useBalances()
   const { handleHarvest } = useHarvestLongterm()
@@ -207,7 +212,7 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
               <div className="flex align-center">
                 <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="10px">
-                  2,938.23
+                  {numeral(availableVotes).format('0,0.00')}{' '}
                 </Text>
                 <ExpandMore
                   expand={expanded}
@@ -225,7 +230,7 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <div className="flex justify-space-between">
                 <Text fontSize="16px">Your FINIX held now</Text>
                 <Text fontSize="16px" bold color="#30ADFF">
-                  2,938.23
+                  {numeral(balancevfinix).format('0,0.00')}{' '}
                 </Text>
               </div>
             </BoxDetails>
