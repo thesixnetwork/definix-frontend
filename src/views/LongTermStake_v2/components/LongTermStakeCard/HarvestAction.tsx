@@ -149,9 +149,7 @@ const HarvestAction: React.FC<{
           <Box>
             <TitleSection>{title}</TitleSection>
             <HarvestInfo>
-              <Box>
-                {renderAirDrop()}
-              </Box>
+              <Box>{renderAirDrop()}</Box>
             </HarvestInfo>
           </Box>
           <HarvestButtonSection>

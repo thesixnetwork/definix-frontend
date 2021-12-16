@@ -47,7 +47,7 @@ const LongTermStakeCard: React.FC<{
    * Earnings Section
    */
   const renderEarningsSection = useCallback(
-    () => <HarvestAction title={t('Earned')} earnings={finixEarn} hasReward={hasReward}/>,
+    () => <HarvestAction title={t('Earned')} earnings={finixEarn} hasReward={hasReward} />,
     [t, finixEarn, hasReward],
   )
 
