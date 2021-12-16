@@ -23,16 +23,11 @@ import {
   ImgBridge3x,
 } from '@fingerlabs/definixswap-uikit-v2'
 
-const Wrap = styled(Flex)`
-  justify-content: space-between;
-  align-items: flex-end;
-
-  .title-wrap {
-    margin-bottom: ${({ theme }) => theme.spacing.S_40}px;
-  }
+const Wrap = styled(Box)`
+  position: relative;
 
   &.rebalancing .title-wrap {
-    margin-bottom: 100px;
+    padding-bottom: 100px;
   }
 
   &.myInvestment,
@@ -42,14 +37,19 @@ const Wrap = styled(Flex)`
       margin-right: ${({ theme }) => theme.spacing.S_16}px;
     }
   }
-
+  
+`
+const TitleWrap = styled(Box)<{ imageSize: number }>`
+  padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
+  padding-right: ${({ imageSize, theme }) => imageSize + theme.spacing.S_24}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    .title-wrap {
-      margin-bottom: ${({ theme }) => theme.spacing.S_28}px !important;
-    }
+    padding-bottom: ${({ theme }) => theme.spacing.S_28}px !important;
+    padding-right: 0;
   }
 `
 const ImgWrap = styled(Flex)`
+  position: absolute;
+  bottom: 0;
   width: 100%;
   justify-content: flex-end;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -128,9 +128,9 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
 
   return (
     <Wrap className={type}>
-      <Box className="title-wrap">
+      <TitleWrap className="title-wrap" imageSize={currentSet.imageSize.w}>
         <TitleSet {...currentTitleSet} />
-      </Box>
+      </TitleWrap>
       {currentSet.image && (
         <ImgWrap className="image-wrap">
           <ImageSet srcSet={currentSet.image} alt="" width={currentSet.imageSize.w} height={currentSet.imageSize.h} />
