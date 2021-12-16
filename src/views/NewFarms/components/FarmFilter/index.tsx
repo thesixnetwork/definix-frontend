@@ -37,12 +37,12 @@ const FarmTabButtons = ({ stackedOnly, setStackedOnly, orderBy, search }) => {
       },
       {
         id: 'apyValue',
-        label: t('APR'),
+        label: t('Order APR'),
         orderBy: 'desc',
       },
       {
         id: 'totalLiquidityValue',
-        label: t('Total Liquidity'),
+        label: t('By Total Liquidity'),
         orderBy: 'desc',
       },
     ]

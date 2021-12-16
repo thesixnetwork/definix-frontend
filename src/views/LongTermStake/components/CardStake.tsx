@@ -8,12 +8,15 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
 import { Card, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
-import { Button } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  Button,
+  Coin as UikitCoin,
+  useMatchBreakpoints as useMatchBreakpointsV2,
+} from '@fingerlabs/definixswap-uikit-v2'
 import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
-import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
-import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
-import { getTokenImageUrl } from 'utils/getTokenImage'
+// import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
+// import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
@@ -80,10 +83,10 @@ const Coin = styled.div`
   }
 `
 
-const APRBOX = styled.div`
-  position: relative;
-  text-align: center;
-`
+// const APRBOX = styled.div`
+//   position: relative;
+//   text-align: center;
+// `
 
 const StylesButton = styled(Button)`
   padding: 11px 12px 11px 12px;
@@ -113,28 +116,29 @@ const NumberInput = styled.input`
   padding: 0px;
 `
 
-const Apr = styled(Text)`
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-  font-weight: 500;
-  // font-size: 28px;
-  text-shadow: #00000050 0px 2px 4px;
-`
+// const Apr = styled(Text)`
+//   position: absolute;
+//   top: 30%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+//   line-height: 1;
+//   font-weight: 500;
+//   // font-size: 28px;
+//   text-shadow: #00000050 0px 2px 4px;
+// `
 
-const AprValue = styled(Text)`
-  position: absolute;
-  // top: 56%;
-  // left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
-`
+// const AprValue = styled(Text)`
+//   position: absolute;
+//   // top: 56%;
+//   // left: 50%;
+//   transform: translate(-50%, -50%);
+//   line-height: 1;
+//   font-weight: 600;
+//   text-shadow: #00000050 0px 2px 4px;
+// `
 
 const AprBox = styled(Card)`
+  width: 103px;
   padding: 0.5rem;
   background: linear-gradient(90deg, #0973b9, #5cc096);
   opacity: 1;
@@ -151,12 +155,17 @@ const AprBox = styled(Card)`
   a {
     display: block;
   }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 200px;
+  }
 `
 
-const CardStake = ({ isShowRightPanel }) => {
+const CardStake = (/* { isShowRightPanel } */) => {
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const { isMaxSm } = useMatchBreakpointsV2()
   const isMobileOrTablet = !isXl && !isMd && !isLg
   const { account } = useWallet()
   const [date, setDate] = useState('-')
@@ -406,10 +415,17 @@ const CardStake = ({ isShowRightPanel }) => {
           </div>
         )}
         <div
-          style={{ opacity: loadings !== '' ? 0.1 : 1 }}
+          style={{
+            width: '100%',
+            marginRight: `${isMobileOrTablet ? '0px' : '24px'}`,
+            opacity: loadings !== '' ? 0.1 : 1,
+          }}
           className={`${!isMobileOrTablet ? 'col-8' : 'col-12 pr-5'} py-5 pl-5`}
         >
-          <div className={`${!isMobileOrTablet ? '' : 'flex align-items-center mb-3'}`}>
+          <div
+            style={{ display: 'flex', justifyContent: 'space-between' }}
+            className={`${!isMobileOrTablet ? '' : 'flex align-items-center mb-3'}`}
+          >
             <Heading
               as="h1"
               fontSize={`${isMobileOrTablet ? '16px !important' : '18px !important'}`}
@@ -417,13 +433,11 @@ const CardStake = ({ isShowRightPanel }) => {
             >
               Stake FINIX get vFINIX
             </Heading>
-            {isMobileOrTablet && (
-              <AprBox>
-                <Text color="white" bold fontSize="8px !important">
-                  APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
-                </Text>
-              </AprBox>
-            )}
+            <AprBox>
+              <Text color="white" bold fontSize={`${isMaxSm ? '8px !important' : '16px !important'}`}>
+                APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
+              </Text>
+            </AprBox>
           </div>
           <Text color="textSubtle">Please select duration</Text>
           <StakePeriodButton
@@ -464,7 +478,7 @@ const CardStake = ({ isShowRightPanel }) => {
                 </div>
               )}
               <Coin>
-                <img src={getTokenImageUrl('finix')} alt="" />
+                <UikitCoin symbol="FINIX" size="24px" />
                 <Heading as="h1" fontSize="16px !important">
                   FINIX
                 </Heading>
@@ -493,7 +507,7 @@ const CardStake = ({ isShowRightPanel }) => {
                 </div>
               )}
               <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <UikitCoin symbol="FINIX" size="24px" />
                 <Heading as="h1" fontSize="16px !important">
                   FINIX
                 </Heading>
@@ -539,7 +553,7 @@ const CardStake = ({ isShowRightPanel }) => {
             )}
           </div>
         </div>
-        {!isMobileOrTablet && (
+        {/* {!isMobileOrTablet && (
           <div
             style={{ opacity: loadings !== '' ? 0.1 : 1, justifyContent: 'space-between' }}
             className="col-4 flex flex-column"
@@ -557,7 +571,7 @@ const CardStake = ({ isShowRightPanel }) => {
             </APRBOX>
             <img src={definixLongTerm} alt="" className="pl-3 pb-5" />
           </div>
-        )}
+        )} */}
       </FinixStake>
     </div>
   )

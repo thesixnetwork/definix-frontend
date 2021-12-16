@@ -2,9 +2,8 @@ import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Text, Label, Box } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
@@ -91,15 +90,15 @@ const ValueWrap = styled(Box)`
 `
 const TokenNameText = styled(Text)`
   padding-left: 2px;
-  padding-bottom: 1px;
+  padding-bottom: 2px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
 `
-const TokenImage = styled.img`
-  width: 20px;
-  height: auto;
-  object-fit: contain;
-`
+// const TokenImage = styled.img`
+//   width: 20px;
+//   height: auto;
+//   object-fit: contain;
+// `
 const EarningsSection: React.FC<{
   title: string
   tokenName: string
@@ -118,7 +117,8 @@ const EarningsSection: React.FC<{
       <TitleWrap>
         <TitleSection hasMb={false}>{title}</TitleSection>
         <Box>
-          <TokenImage src={getTokenImageUrl('finix')} alt="finix" />
+          <Coin symbol="FINIX" size="20px" />
+          {/* <TokenImage src={getTokenImageUrl('finix')} alt="finix" /> */}
         </Box>
       </TitleWrap>
       <ValueWrap>

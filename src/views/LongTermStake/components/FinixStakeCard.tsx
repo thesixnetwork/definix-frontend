@@ -2,10 +2,10 @@
 import React from 'react'
 import styled, { useTheme } from 'styled-components'
 import numeral from 'numeral'
+import { Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
 import { Card, Text, useMatchBreakpoints, Heading } from '../../../uikit-dev'
 import { useTotalFinixLock, useUnstakeId } from '../../../hooks/useLongTermStake'
 import CardBarChart from './CardBarChart'
-import vFinix from '../../../uikit-dev/images/for-ui-v2/vFinix.png'
 
 const CardFinixStake = styled(Card)`
   position: relative;
@@ -98,6 +98,14 @@ const Coin = styled.div`
   }
 `
 
+const StyledText = styled(Text)<{ mobile: boolean }>`
+  text-align: ${({ mobile }) => (mobile ? 'center' : 'left')};
+`
+
+const StyledHeading = styled(Heading)<{ mobile: boolean }>`
+  text-align: ${({ mobile }) => (mobile ? 'center' : 'left')};
+`
+
 const FinixStakeCard = () => {
   // @ts-ignore
   const { isDark } = useTheme()
@@ -125,15 +133,21 @@ const FinixStakeCard = () => {
             }`}
           >
             <Coin className={`${isMobile ? 'flex justify-center align-center mb-2' : ''}`}>
-              <img src={`/images/coins/${'FINIX'}.png`} alt="" width="63px" height="63px" />
+              <UikitCoin symbol="FINIX" size="63px" />
+              {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" width="63px" height="63px" /> */}
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
-              <Text color="textSubtle" fontWeight="inherit">
+              <StyledText color="textSubtle" fontWeight="inherit" mobile={isMobile}>
                 Total FINIX staked
-              </Text>
-              <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
+              </StyledText>
+              <StyledHeading
+                as="h1"
+                style={{ lineHeight: '1.5' }}
+                fontSize={`${isMobile ? '24px !important' : '30px !important'}`}
+                mobile={isMobile}
+              >
                 {numeral(totalFinixLock).format('0,0')}{' '}
-              </Heading>
+              </StyledHeading>
             </div>
           </div>
           <div className="mt-3 bd-r" />
@@ -145,15 +159,21 @@ const FinixStakeCard = () => {
             }`}
           >
             <Coin className={`${isMobile ? 'flex justify-center align-center mb-2' : ''}`}>
-              <img src={vFinix} alt="vfinix" width="63px" height="63px" />
+              <UikitCoin symbol="VFINIX" size="63px" />
+              {/* <img src={vFinix} alt="vfinix" width="63px" height="63px" /> */}
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
-              <Text color="textSubtle" fontWeight="inherit">
+              <StyledText color="textSubtle" fontWeight="inherit" mobile={isMobile}>
                 Total vFINIX supply
-              </Text>
-              <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
+              </StyledText>
+              <StyledHeading
+                as="h1"
+                style={{ lineHeight: '1.5' }}
+                fontSize={`${isMobile ? '24px !important' : '30px !important'}`}
+                mobile={isMobile}
+              >
                 {numeral(totalSupplyAllTimeMint).format('0,0')}
-              </Heading>
+              </StyledHeading>
             </div>
           </div>
         </div>

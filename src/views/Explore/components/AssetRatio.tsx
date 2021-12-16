@@ -2,7 +2,7 @@ import { Ratio } from 'config/constants/types'
 import React from 'react'
 import { Text } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import Coin from './Coin'
+import CoinWrap from './CoinWrap'
 
 interface AssetRatioType {
   isHorizontal: boolean
@@ -27,9 +27,9 @@ const AssetRatio: React.FC<AssetRatioType> = ({ isHorizontal = false, className 
         {ratio
           .filter((r) => r.value)
           .map((m) => (
-            <Coin key={m.symbol} mx="S_4" py="S_8" isHorizontal={isHorizontal} symbol={m.symbol || ''}>
+            <CoinWrap key={m.symbol} mx="S_4" py="S_8" symbol={m.symbol || ''} size="sm" spacing="S_6">
               <Text textStyle="R_14R">{m.value}%</Text>
-            </Coin>
+            </CoinWrap>
           ))}
       </div>
     </div>

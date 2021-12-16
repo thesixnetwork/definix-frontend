@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import useConverter from 'hooks/useConverter'
-import { Flex, Box, Text, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Box, Text, ColorStyles, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import ApyButton from './ApyButton'
 import { FarmWithStakedValue } from './types'
 
@@ -13,12 +13,21 @@ const ImageBox = styled(Box)`
     margin-left: -10px;
   }
 `
-const TokenImage = styled.img<{ isMediumSize: boolean }>`
-  width: ${({ isMediumSize }) => (isMediumSize ? 48 : 40)}px;
-  height: auto;
-  object-fit: contain;
+// const TokenImage = styled.img<{ isMediumSize: boolean }>`
+//   width: ${({ isMediumSize }) => (isMediumSize ? 48 : 40)}px;
+//   height: auto;
+//   object-fit: contain;
+//   ${({ theme }) => theme.mediaQueries.mobileXl} {
+//     width: 36px;
+//   }
+// `
+
+const StyledCoin = styled(Coin)`
+  width: 40px;
+  height: 40px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     width: 36px;
+    height: 36px;
   }
 `
 
@@ -46,10 +55,10 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, size = '
     <Flex position="relative">
       <Flex className="mr-s12" alignItems="center">
         <ImageBox>
-          <TokenImage isMediumSize={isMediumSize} src={farm.lpSymbols[0].image} alt={farm.lpSymbols[0].symbol} />
+          <StyledCoin symbol={farm.lpSymbols[0].symbol} size="40px" />
         </ImageBox>
         <ImageBox>
-          <TokenImage isMediumSize={isMediumSize} src={farm.lpSymbols[1].image} alt={farm.lpSymbols[1].symbol} />
+          <StyledCoin symbol={farm.lpSymbols[1].symbol} size="40px" />
         </ImageBox>
       </Flex>
 

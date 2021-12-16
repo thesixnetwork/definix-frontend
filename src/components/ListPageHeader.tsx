@@ -18,34 +18,40 @@ import {
   ImgMyinvestmentDefault1x,
   ImgMyinvestmentDefault2x,
   ImgMyinvestmentDefault3x,
+  ImgBridge1x,
+  ImgBridge2x,
+  ImgBridge3x,
 } from '@fingerlabs/definixswap-uikit-v2'
 
-const Wrap = styled(Flex)`
-  justify-content: space-between;
-  align-items: flex-end;
-
-  .title-wrap {
-    margin-bottom: ${({ theme }) => theme.spacing.S_40}px;
-  }
+const Wrap = styled(Box)`
+  position: relative;
 
   &.rebalancing .title-wrap {
-    margin-bottom: 100px;
+    padding-bottom: 100px;
+  }
+  &.pool .title-wrap {
+    padding-bottom: 96px;
   }
 
   &.myInvestment,
-  &.rebalancing {
+  &.rebalancing,
+  &.bridge {
     .image-wrap {
       margin-right: ${({ theme }) => theme.spacing.S_16}px;
     }
   }
-
+`
+const TitleWrap = styled(Box)<{ imageSize: number }>`
+  padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
+  padding-right: ${({ imageSize, theme }) => imageSize + theme.spacing.S_24}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
-    .title-wrap {
-      margin-bottom: ${({ theme }) => theme.spacing.S_28}px !important;
-    }
+    padding-bottom: ${({ theme }) => theme.spacing.S_28}px !important;
+    padding-right: 0;
   }
 `
 const ImgWrap = styled(Flex)`
+  position: absolute;
+  bottom: 0;
   width: 100%;
   justify-content: flex-end;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -63,8 +69,8 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       linkPath: '/pools/how-to-stake-to-definix-pool',
       image: [ImgPool1x, ImgPool2x, ImgPool3x],
       imageSize: {
-        w: 200,
-        h: 122,
+        w: 236,
+        h: 144,
       },
     },
     farm: {
@@ -98,6 +104,15 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
         h: 118,
       },
     },
+    bridge: {
+      title: 'Bridge',
+      description: 'Transfer tokens to other chains',
+      image: [ImgBridge1x, ImgBridge2x, ImgBridge3x],
+      imageSize: {
+        w: 194,
+        h: 118,
+      },
+    },
   })
   const linkLanguage = useMemo(() => (i18n.language.includes('ko') ? 'kr' : 'en'), [i18n.language])
   const currentSet = useMemo(() => dataTable.current[type], [type])
@@ -115,9 +130,9 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
 
   return (
     <Wrap className={type}>
-      <Box className="title-wrap">
+      <TitleWrap className="title-wrap" imageSize={currentSet.imageSize.w}>
         <TitleSet {...currentTitleSet} />
-      </Box>
+      </TitleWrap>
       {currentSet.image && (
         <ImgWrap className="image-wrap">
           <ImageSet srcSet={currentSet.image} alt="" width={currentSet.imageSize.w} height={currentSet.imageSize.h} />

@@ -77,7 +77,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
       setIsLoadingApproveContract(true)
       await onApprove()
     } catch (e) {
-      toastError(t('{{Action}} Fail', { Action: t('Approve') }))
+      toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
     } finally {
       setIsLoadingApproveContract(false)
     }

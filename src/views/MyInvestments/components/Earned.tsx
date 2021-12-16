@@ -1,9 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import React, { useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import useFarmEarning from 'hooks/useFarmEarning'
-import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
 import EarningBoxTemplate from './EarningBoxTemplate/index'
 
@@ -11,36 +9,49 @@ const Earned: React.FC<{
   isMobile: boolean
   isMain?: boolean
   theme?: 'white' | 'dark'
-}> = ({ isMobile, isMain = false, theme = 'white' }) => {
+  products: { [key: string]: any }
+}> = ({ isMobile, isMain = false, products, theme = 'white' }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
   const finixPrice = usePriceFinixUsd()
 
-  /**
-   * farm
-   */
-  const farmEarnings = useFarmEarning()
-  const farmEarningsSum = useMemo(() => {
-    return farmEarnings.reduce((accum, earning) => {
-      return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
-    }, 0)
-  }, [farmEarnings])
-  const farmEarningBusd = useMemo(() => {
-    return new BigNumber(farmEarningsSum).multipliedBy(finixPrice).toNumber()
-  }, [farmEarningsSum, finixPrice])
+  const convertEarningsSumToPrice = useCallback(
+    (value) => {
+      return new BigNumber(value).multipliedBy(finixPrice).toNumber()
+    },
+    [finixPrice],
+  )
 
-  /**
-   * pool
-   */
-  const poolEarnings = usePoolEarning()
+  const calculateEarning = useCallback((value) => {
+    return new BigNumber(value).div(new BigNumber(10).pow(18)) || 0
+  }, [])
+
+  const farmEarningsSum = useMemo(() => {
+    if (!Array.isArray(products.farm)) return 0
+    return products.farm
+      .reduce((accum, farm) => {
+        return accum.plus(calculateEarning(farm.data.userData.earnings))
+      }, new BigNumber(0))
+      .toNumber()
+  }, [products.farm, calculateEarning])
+
   const poolEarningsSum = useMemo(() => {
-    return poolEarnings.reduce((accum, earning) => {
-      return accum + new BigNumber(earning).div(new BigNumber(10).pow(18)).toNumber()
-    }, 0)
-  }, [poolEarnings])
-  const poolEarningsBusd = useMemo(() => {
-    return new BigNumber(poolEarningsSum).multipliedBy(finixPrice).toNumber()
-  }, [poolEarningsSum, finixPrice])
+    if (!Array.isArray(products.pool)) return 0
+    return products.pool
+      .reduce((accum, pool) => {
+        return accum.plus(calculateEarning(pool.data.userData.pendingReward))
+      }, new BigNumber(0))
+      .toNumber()
+  }, [products.pool, calculateEarning])
+
+  const longTermStakeEarningsSum = useMemo(() => {
+    if (!Array.isArray(products.longTermStake)) return 0
+    return products.longTermStake
+      .reduce((accum, longTermStake) => {
+        return accum.plus(new BigNumber(longTermStake.data.finixEarn) || 0)
+      }, new BigNumber(0))
+      .toNumber()
+  }, [products.longTermStake])
 
   /**
    * total
@@ -50,25 +61,20 @@ const Earned: React.FC<{
       {
         title: t('Farm'),
         value: farmEarningsSum,
-        price: farmEarningBusd,
+        price: convertEarningsSumToPrice(farmEarningsSum),
       },
       {
         title: t('Pool'),
         value: poolEarningsSum,
-        price: poolEarningsBusd,
+        price: convertEarningsSumToPrice(poolEarningsSum),
       },
-      // {
-      //   title: t('Rebalancing'),
-      //   value: '100,000,000.123456',
-      //   price: '000000',
-      // },
-      // {
-      //   title: t('Long-term Stake'),
-      //   value: '100,000,000.123456',
-      //   price: '000000',
-      // },
+      {
+        title: t('Long-term Stake'),
+        value: longTermStakeEarningsSum,
+        price: convertEarningsSumToPrice(longTermStakeEarningsSum),
+      },
     ]
-  }, [t, farmEarningsSum, farmEarningBusd, poolEarningsSum, poolEarningsBusd])
+  }, [t, farmEarningsSum, poolEarningsSum, longTermStakeEarningsSum, convertEarningsSumToPrice])
 
   return (
     <EarningBoxTemplate

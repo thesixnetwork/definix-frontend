@@ -1,13 +1,36 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
+import {
+  Flex,
+  ImageSet,
+  ImgLongterm1x,
+  ImgLongterm2x,
+  ImgLongterm3x,
+  useMatchBreakpoints,
+} from '@fingerlabs/definixswap-uikit-v2'
+
+const ImgWrap = styled(Flex)`
+  width: 100%;
+  position: absolute;
+  left: 560px;
+  bottom: 0;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    display: none;
+  }
+`
 
 const Tabs = styled.div`
   display: flex;
   align-items: center;
   justify-content: stretch;
+  width: 100%;
   height: 48px;
   border-radius: 8px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding-right: 10px;
+  }
 `
 
 const Tab = styled(NavLink)<{ active: string }>`
@@ -71,18 +94,29 @@ const Tab = styled(NavLink)<{ active: string }>`
     font-size: 16px;
     padding: 16px;
   }
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 50%;
+  }
 `
 
 const LongTermTab = ({ current }) => {
+  const { isXxl } = useMatchBreakpoints()
+
   return (
-    <Tabs>
-      <Tab className="ml-2" to="/long-term-stake" active={(current === '/long-term-stake').toString()}>
-        Long-term Stake
-      </Tab>
-      <Tab className="ml-2" to="/long-term-stake/top-up" active={(current === '/long-term-stake/top-up').toString()}>
-        Super Stake
-      </Tab>
-    </Tabs>
+    <div style={{ position: 'relative', marginTop: `${isXxl ? '70px' : '0px'}` }}>
+      <Tabs>
+        <Tab className="ml-2" to="/long-term-stake" active={(current === '/long-term-stake').toString()}>
+          Long-term Stake
+        </Tab>
+        <Tab className="ml-2" to="/long-term-stake/top-up" active={(current === '/long-term-stake/top-up').toString()}>
+          Super Stake
+        </Tab>
+      </Tabs>
+
+      <ImgWrap>
+        <ImageSet srcSet={[ImgLongterm1x, ImgLongterm2x, ImgLongterm3x]} alt="" width={236} height={144} />
+      </ImgWrap>
+    </div>
   )
 }
 

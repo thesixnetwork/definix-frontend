@@ -27,7 +27,7 @@ import PoolConText from '../../PoolContext'
 import { PoolCardProps } from './types'
 
 const CardWrap = styled(Card)`
-  margin-top: ${({ theme }) => theme.spacing.S_16}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
   ${({ theme }) => theme.mediaQueries.xl} {
     .card-heading {
       width: 204px;

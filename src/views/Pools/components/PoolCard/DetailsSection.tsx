@@ -3,9 +3,8 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Text, ColorStyles, Label, Box } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, ColorStyles, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
 
@@ -34,13 +33,18 @@ const BalanceTextWrap = styled(Box)`
     }
   }
 `
-
 const PriceText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R};
   }
+`
+const TokenNameText = styled(Text)`
+  padding-left: 2px;
+  padding-bottom: 2px;
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_12M};
 `
 
 const TotalStakedSection: React.FC<{
@@ -68,9 +72,7 @@ const TotalStakedSection: React.FC<{
       <BalanceTextWrap>
         <Flex alignItems="end">
           <BalanceText className="balance-text" value={totalStakedValue} toFixed={0} />
-          <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
-            {tokenName}
-          </Text>
+          <TokenNameText>{tokenName}</TokenNameText>
         </Flex>
       </BalanceTextWrap>
       <PriceText value={totalStakedPrice} prefix="=" />
@@ -113,17 +115,6 @@ const TitleWrap = styled(Flex)`
 const ValueWrap = styled(Box)`
   margin-top: -2px;
 `
-const TokenNameText = styled(Text)`
-  padding-left: 2px;
-  padding-bottom: 1px;
-  color: ${({ theme }) => theme.colors.deepgrey};
-  ${({ theme }) => theme.textStyle.R_12M};
-`
-const TokenImage = styled.img`
-  width: 20px;
-  height: auto;
-  object-fit: contain;
-`
 const EarningsSection: React.FC<{
   title: string
   earnings: BigNumber
@@ -144,7 +135,7 @@ const EarningsSection: React.FC<{
       <TitleWrap>
         <TitleSection hasMb={false}>{title}</TitleSection>
         <Box>
-          <TokenImage src={getTokenImageUrl('finix')} alt="finix" />
+          <Coin symbol="FINIX" size="20px" />
         </Box>
       </TitleWrap>
       <ValueWrap>

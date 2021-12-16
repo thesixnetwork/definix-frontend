@@ -32,6 +32,9 @@ const DropdownWrap = styled(Box)`
   }
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     width: 50%;
+    &:first-child {
+      min-width: 176px;
+    }
   }
 `
 
@@ -83,8 +86,8 @@ const MyProductsFilter: React.FC<{
       },
       {
         id: 'apyValue',
-        label: t('APR'),
-        orderBy: 'asc',
+        label: t('Order APR'),
+        orderBy: 'desc',
       },
     ],
     [t],

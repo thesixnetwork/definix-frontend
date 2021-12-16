@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Card, Flex, Text, Button, ImgTokenSixIcon, ImgTokenFinixIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { Card, Flex, Text, Button, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import LogoSixBridge from '../../../assets/images/logo-footer-six-bridge.png'
 import LogoSixBridge2x from '../../../assets/images/logo-footer-six-bridge@2x.png'
 import LogoSixBridge3x from '../../../assets/images/logo-footer-six-bridge@3x.png'
@@ -44,7 +44,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
             <Flex flexDirection={isMobile ? 'column' : 'row'}>
               <Flex width={isMobile ? '100%' : '50%'}>
                 <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
-                  <ImgTokenSixIcon width={48} height={48} />
+                  <Coin symbol="SIX" size="48px" />
                 </IconToken>
                 <Flex flexDirection="column" width={!isMobile && 184}>
                   <Text className="mb-s2" color="black" textStyle="R_14B">
@@ -58,7 +58,7 @@ const CardBridge: React.FC<CardType> = ({ isMobile }) => {
 
               <Flex className={isMobile && 'mt-s16'} width={isMobile ? '100%' : '50%'}>
                 <IconToken isMobile={`${isMobile ? '14px' : '12px'}`}>
-                  <ImgTokenFinixIcon width={48} height={48} />
+                  <Coin symbol="FINIX" size="48px" />
                 </IconToken>
                 <Flex flexDirection="column" width={!isMobile && 184}>
                   <Text className="mb-s2" color="black" textStyle="R_14B">

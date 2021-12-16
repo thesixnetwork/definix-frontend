@@ -17,12 +17,12 @@ import {
 import styled from 'styled-components'
 
 interface ModalProps {
-  early: boolean
+  canBeUnlock: boolean
   balance: number
   period: number
   apr: number
   fee: number
-  end: string
+  periodPenalty: string
   received: number
   onOK?: () => any
   onDismiss?: () => any
@@ -37,12 +37,12 @@ const StyledBox = styled(Box)`
 `
 
 const UnstakeModal: React.FC<ModalProps> = ({
-  early,
+  canBeUnlock,
   balance,
   period,
   apr,
   fee,
-  end,
+  periodPenalty,
   received,
   onOK = () => null,
   onDismiss = () => null,
@@ -68,7 +68,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                     <VDivider color="lightgrey" />
                   </Flex>
                   <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
-                    {t('APR')} {numeral(apr).format('0, 0.[00]')}
+                    {t('APR')} {numeral(apr).format('0, 0.[00]')}%
                   </Text>
                 </Flex>
               </Flex>
@@ -77,7 +77,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
               {numeral(balance).format(0, 0)}
             </Text>
           </Flex>
-          {early && (
+          {!canBeUnlock && (
             <>
               <Divider mt="S_24" />
               <Flex mt="S_24" flexDirection="column">
@@ -95,7 +95,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                   </Text>
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text textStyle="R_14M" color="deepgrey">
-                      {end} GMT+9
+                      {periodPenalty} GMT+9
                     </Text>
                     <Text textStyle="R_12R" color="mediumgrey">
                       {t('*Asia/Seoul')}
@@ -107,7 +107,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                     {t('You will receive')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(received).format(0, 0)} {t('FINIX')}
+                    {numeral(received).format('0, 0.[000000]')} {t('FINIX')}
                   </Text>
                 </Flex>
                 <Flex mt="S_12" alignItems="flex-start">
@@ -117,7 +117,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                   <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
                     <Trans
                       i18nKey="Do you want to unstake?"
-                      values={{ '15-Nov-21 14:57:20 GMT+9': `${end} GMT+9` }}
+                      values={{ '15-Nov-21 14:57:20 GMT+9': `${periodPenalty} GMT+9` }}
                       components={[<strong />]}
                     />
                   </Text>
@@ -128,7 +128,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={onOK}>{early ? t('Early Unstake') : t('Unstake')}</Button>
+        <Button onClick={onOK}>{canBeUnlock ? t('Unstake') : t('Early Unstake')}</Button>
       </ModalFooter>
     </Modal>
   )

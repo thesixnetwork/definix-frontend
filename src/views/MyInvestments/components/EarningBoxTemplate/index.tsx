@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { useAllHarvest } from 'hooks/useHarvest'
+import { useHarvest, usePrivateData } from 'hooks/useLongTermStake'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { Button, Text, Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
@@ -103,6 +104,41 @@ const ButtonWrap = styled(Flex)<{ curTheme: any }>`
     }
   }
 `
+const TotalValuesWrap = styled(Flex)`
+  align-items: flex-end;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`
+const UnitText = styled(Text)<{ curTheme: any }>`
+  margin-left: ${({ theme }) => theme.spacing.S_6}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
+  ${({ theme }) => theme.textStyle.R_16M};
+  color: ${({ theme, curTheme }) => theme.colors[curTheme.totalBalanceColor]};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-bottom: -2px;
+    ${({ theme }) => theme.textStyle.R_14M};
+  }
+`
+const TotalPriceText = styled(CurrencyText)<{ curTheme: any }>`
+  margin-left: ${({ theme }) => theme.spacing.S_16}px;
+  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
+  ${({ theme }) => theme.textStyle.R_16M};
+  color: ${({ theme, curTheme }) => theme.colors[curTheme.totalCurrencyColor]};
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    margin-left: 0;
+    margin-bottom: 0;
+    margin-top: 4px;
+    ${({ theme }) => theme.textStyle.R_14M};
+  }
+`
+const SlideSection = styled(Box)`
+  height: 112px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    height: auto;
+  }
+`
 
 interface ValueList {
   title: string
@@ -138,20 +174,25 @@ const EarningBoxTemplate: React.FC<{
     return _.get(total, displayOnlyTotalPrice ? 'price' : 'value') || 0
   }, [displayOnlyTotalPrice, total])
 
+  const { finixEarn } = usePrivateData()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const { handleHarvest } = useHarvest()
 
-  const harvestAllFarms = useCallback(async () => {
+  const harvestAll = useCallback(async () => {
     setPendingTx(true)
     try {
       await onReward()
+      if (finixEarn) {
+        await handleHarvest()
+      }
     } catch (error) {
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
       setPendingTx(false)
     }
-  }, [onReward])
+  }, [handleHarvest, onReward, finixEarn])
 
   const renderTotalValue = useCallback(() => {
     const props = {
@@ -172,24 +213,15 @@ const EarningBoxTemplate: React.FC<{
               {total.title}
             </Text>
           </Flex>
-          <Flex alignItems="flex-end">
+          <TotalValuesWrap>
             <Flex alignItems="flex-end">
               {renderTotalValue()}
-              <Text textStyle="R_16M" color={curTheme.totalBalanceColor} mb="S_2" ml="S_6">
-                {unit.length > 0 ? unit : null}
-              </Text>
+              <UnitText curTheme={curTheme}>{unit.length > 0 ? unit : null}</UnitText>
             </Flex>
             {!displayOnlyTotalPrice && (
-              <CurrencyText
-                value={hasAccount ? total.price : 0}
-                prefix="="
-                textStyle={`R_${isMobile ? '14' : '16'}M`}
-                color={curTheme.totalCurrencyColor}
-                ml="S_16"
-                mb="S_2"
-              />
+              <TotalPriceText curTheme={curTheme} value={hasAccount ? total.price : 0} prefix="=" />
             )}
-          </Flex>
+          </TotalValuesWrap>
         </Box>
         <ButtonWrap curTheme={curTheme} className={isMobile ? 'mt-s20' : ''}>
           {useHarvestButton && (
@@ -202,7 +234,7 @@ const EarningBoxTemplate: React.FC<{
                   className="home-harvest-button"
                   isLoading={pendingTx}
                   disabled={balancesWithValue.length <= 0}
-                  onClick={harvestAllFarms}
+                  onClick={harvestAll}
                 >
                   {t('Harvest')}
                 </Button>
@@ -219,15 +251,18 @@ const EarningBoxTemplate: React.FC<{
           )}
         </ButtonWrap>
       </MainSection>
-      {valueList.length > 0 && (
-        <Slide
-          isMobile={isMobile}
-          hasAccount={hasAccount}
-          displayOnlyTotalPrice={displayOnlyTotalPrice}
-          curTheme={curTheme}
-          data={valueList}
-        />
-      )}
+
+      <SlideSection>
+        {valueList.length > 0 && (
+          <Slide
+            isMobile={isMobile}
+            hasAccount={hasAccount}
+            displayOnlyTotalPrice={displayOnlyTotalPrice}
+            curTheme={curTheme}
+            data={valueList}
+          />
+        )}
+      </SlideSection>
     </Wrap>
   )
 }

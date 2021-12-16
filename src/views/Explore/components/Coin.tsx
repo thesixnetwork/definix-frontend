@@ -1,7 +1,6 @@
 import React from 'react'
-import { Flex, FlexProps } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, FlexProps, Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 
 const Size = {
   sm: '20px',
@@ -26,20 +25,17 @@ const getSize = ({ size }: CoinType) => {
 
 const StyledCoin = styled(Flex)<{ size?: string; isHorizontal?: boolean }>`
   width: ${({ isHorizontal }) => (!isHorizontal ? '33.333%' : 'auto')};
-
-  img {
-    flex-shrink: 0;
-    width: ${getSize};
-    height: ${getSize};
-    border-radius: ${({ theme }) => theme.radii.circle};
-    margin-right: 6px;
-  }
 `
 
-const Coin: React.FC<CoinType> = ({ symbol, children, ...props }) => {
+const Coin: React.FC<CoinType> = ({ symbol, children, size, ...props }) => {
   return (
     <StyledCoin alignItems="center" {...props}>
-      <img src={getTokenImageUrl(symbol)} alt={symbol} />
+      <UikitCoin
+        symbol={symbol}
+        size={getSize({
+          size,
+        })}
+      />
       {children}
     </StyledCoin>
   )

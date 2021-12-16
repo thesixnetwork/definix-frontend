@@ -39,7 +39,7 @@ const ModalInput: React.FC<{
   const { t } = useTranslation()
 
   const maxValue = useMemo(() => getBalanceNumber(max), [max])
-  const isEmptyBalance = useMemo(() => !value || numeral(value).value() === 0, [value])
+  const isEmptyBalance = useMemo(() => numeral(value).value() === 0, [value])
   const isGreaterThanMyBalance = useMemo(() => numeral(value).value() > maxValue, [value, maxValue])
   const isValidBalance = useMemo(() => new BigNumber(value).decimalPlaces() <= 18, [value])
 

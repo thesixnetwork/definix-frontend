@@ -8,10 +8,19 @@ import {
   Flex,
   ColorStyles,
   DropdownSet,
-  SearchInput,
   useMatchBreakpoints,
   DropdownOption,
 } from '@fingerlabs/definixswap-uikit-v2'
+
+const Wrap = styled(Flex)`
+  position: absolute;
+  bottom: 0;
+  align-items: center;
+  margin-bottom: ${({ theme }) => theme.spacing.S_16}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    position: relative;
+  }
+`
 
 const ToggleWrap = styled(Flex)`
   align-items: center;
@@ -31,12 +40,12 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
       },
       {
         id: 'apyValue',
-        label: t('APR'),
+        label: t('Order APR'),
         orderBy: 'desc',
       },
       {
         id: 'totalStakedValue',
-        label: t('Total staked'),
+        label: t('By Total staked'),
         orderBy: 'desc',
       },
     ],
@@ -60,49 +69,38 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
   )
   const StakedOnlySection = () => (
     <>
-      <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+      <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} mr="S_8" style={{ wordBreak: 'keep-all' }}>
         {t('Staked only Pools')}
       </Text>
       <Toggle checked={stackedOnly} onChange={() => setStackedOnly(!stackedOnly)} />
     </>
   )
-  const LiveOnlySection = () => (
-    <>
-      <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
-        {t('Finished pool')}
-      </Text>
-      <Toggle checked={!liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
-    </>
-  )
+  // const LiveOnlySection = () => (
+  //   <>
+  //     <Text textStyle="R_14R" color={ColorStyles.DEEPGREY} className="mr-s8">
+  //       {t('Finished pool')}
+  //     </Text>
+  //     <Toggle checked={!liveOnly} onChange={() => setLiveOnly(!liveOnly)} />
+  //   </>
+  // )
 
   if (isMaxXl) {
     return (
-      <Flex flexDirection="column">
-        <Flex alignItems="center">
+      <Flex justifyContent="space-between" alignItems="center" mb="S_16">
+        <Box width="148px">
+          <DropdownSection />
+        </Box>
+        <Box ml="S_8">
           <ToggleWrap>
             <StakedOnlySection />
           </ToggleWrap>
-          <ToggleWrap ml="S_20">
-            <LiveOnlySection />
-          </ToggleWrap>
-        </Flex>
-        <Flex mt="S_12">
-          <Box minWidth={148} mr="S_6">
-            <DropdownSection />
-          </Box>
-          <SearchInput
-            type="text"
-            placeholder={t('Token name')}
-            onSearch={(keyword) => search(keyword.trim().toLowerCase())}
-            onReset={() => search('')}
-          />
-        </Flex>
+        </Box>
       </Flex>
     )
   }
 
   return (
-    <Flex flexDirection="row" justifyContent="space-between">
+    <Wrap>
       <Flex justifyContent="space-between" alignItems="center">
         <Box width={148}>
           <DropdownSection />
@@ -110,19 +108,19 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
         <ToggleWrap ml="S_24">
           <StakedOnlySection />
         </ToggleWrap>
-        <ToggleWrap ml="S_24">
+        {/* <ToggleWrap ml="S_24">
           <LiveOnlySection />
-        </ToggleWrap>
+        </ToggleWrap> */}
       </Flex>
-      <Box width={200}>
+      {/* <Box width={200}>
         <SearchInput
           type="text"
           placeholder={t('Token name')}
           onSearch={(keyword) => search(keyword.trim().toLowerCase())}
           onReset={() => search('')}
         />
-      </Box>
-    </Flex>
+      </Box> */}
+    </Wrap>
   )
 }
 

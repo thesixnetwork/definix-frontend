@@ -3,6 +3,7 @@ import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import styled from 'styled-components'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { useBalances } from 'state/hooks'
@@ -12,6 +13,13 @@ import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
 import ExploreCard from 'views/Explore/components/ExploreCard'
 import LongTermStakeCard from 'views/LongTermStake_v2/components/LongTermStakeCard/LongTermStakeCard'
+
+const DividerWrap = styled(Box)`
+  padding: 0 ${({ theme }) => theme.spacing.S_40}px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    padding: 0 ${({ theme }) => theme.spacing.S_20}px;
+  }
+`
 
 interface Product {
   productType: string
@@ -164,7 +172,11 @@ const MyProducts: React.FC<{
               key={getKey(product)}
               className={`${index === displayProducts.length - 1 ? `pb-s40` : ''} ${index === 0 ? 'mt-s24' : ''}`}
             >
-              {index > 0 && <Divider />}
+              {index > 0 && (
+                <DividerWrap>
+                  <Divider />
+                </DividerWrap>
+              )}
               {getProductComponent(product)}
             </Box>
           )

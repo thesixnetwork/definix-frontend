@@ -129,7 +129,7 @@ const Withdraw: React.FC<{
     [stakedBalance, setVal],
   )
 
-  const handleUnstake = useCallback(async () => onUnstake(val), [onUnstake, val])
+  const handleUnstake = useCallback(() => onUnstake(val), [onUnstake, val])
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal

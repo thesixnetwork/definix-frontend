@@ -2,11 +2,10 @@ import { get } from 'lodash'
 import React, { useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
-import { Checkbox, CheckboxLabel, Flex, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Checkbox, CheckboxLabel, Coin, Flex, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
 import { getTokenName } from 'utils/getTokenSymbol'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 
 const rebalanceColor = '#ff6828'
 
@@ -91,7 +90,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
               }
             >
               <LegendItem>
-                <img src={getTokenImageUrl(c.symbol)} alt="" />
+                <Coin symbol={c.symbol} size="24px" />
                 <Text textStyle="R_14R">{thisName}</Text>
               </LegendItem>
             </CheckboxLabel>
@@ -102,7 +101,6 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
           control={<Checkbox scale="sm" variantColor="brown" checked={AllChecked} onChange={onCheckAll()} />}
         >
           <LegendItem>
-            {/* <img src={getTokenImageUrl(c.symbol)} alt="" /> */}
             <Text textStyle="R_14R">ALL</Text>
           </LegendItem>
         </CheckboxLabel>
