@@ -8,7 +8,11 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
 import { Card, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
-import { Button, Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  Button,
+  Coin as UikitCoin,
+  useMatchBreakpoints as useMatchBreakpointsV2,
+} from '@fingerlabs/definixswap-uikit-v2'
 import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
 // import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
@@ -134,7 +138,7 @@ const NumberInput = styled.input`
 // `
 
 const AprBox = styled(Card)`
-  width: 200px;
+  width: 103px;
   padding: 0.5rem;
   background: linear-gradient(90deg, #0973b9, #5cc096);
   opacity: 1;
@@ -152,8 +156,8 @@ const AprBox = styled(Card)`
     display: block;
   }
 
-  ${({ theme }) => theme.mediaQueries.mobile} {
-    width: 103px;
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 200px;
   }
 `
 
@@ -161,6 +165,7 @@ const CardStake = (/* { isShowRightPanel } */) => {
   const [period, setPeriod] = useState(0)
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
+  const { isMaxSm } = useMatchBreakpointsV2()
   const isMobileOrTablet = !isXl && !isMd && !isLg
   const { account } = useWallet()
   const [date, setDate] = useState('-')
@@ -429,7 +434,7 @@ const CardStake = (/* { isShowRightPanel } */) => {
               Stake FINIX get vFINIX
             </Heading>
             <AprBox>
-              <Text color="white" bold fontSize={`${isMobileOrTablet ? '8px !important' : '16px !important'}`}>
+              <Text color="white" bold fontSize={`${isMaxSm ? '8px !important' : '16px !important'}`}>
                 APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
               </Text>
             </AprBox>

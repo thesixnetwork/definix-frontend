@@ -98,6 +98,14 @@ const Coin = styled.div`
   }
 `
 
+const StyledText = styled(Text)<{ mobile: boolean }>`
+  text-align: ${({ mobile }) => (mobile ? 'center' : 'left')};
+`
+
+const StyledHeading = styled(Heading)<{ mobile: boolean }>`
+  text-align: ${({ mobile }) => (mobile ? 'center' : 'left')};
+`
+
 const FinixStakeCard = () => {
   // @ts-ignore
   const { isDark } = useTheme()
@@ -129,12 +137,17 @@ const FinixStakeCard = () => {
               {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" width="63px" height="63px" /> */}
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
-              <Text color="textSubtle" fontWeight="inherit">
+              <StyledText color="textSubtle" fontWeight="inherit" mobile={isMobile}>
                 Total FINIX staked
-              </Text>
-              <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
+              </StyledText>
+              <StyledHeading
+                as="h1"
+                style={{ lineHeight: '1.5' }}
+                fontSize={`${isMobile ? '24px !important' : '30px !important'}`}
+                mobile={isMobile}
+              >
                 {numeral(totalFinixLock).format('0,0')}{' '}
-              </Heading>
+              </StyledHeading>
             </div>
           </div>
           <div className="mt-3 bd-r" />
@@ -150,12 +163,17 @@ const FinixStakeCard = () => {
               {/* <img src={vFinix} alt="vfinix" width="63px" height="63px" /> */}
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
-              <Text color="textSubtle" fontWeight="inherit">
+              <StyledText color="textSubtle" fontWeight="inherit" mobile={isMobile}>
                 Total vFINIX supply
-              </Text>
-              <Heading as="h1" style={{ lineHeight: '1.5' }} fontSize="30px !important">
+              </StyledText>
+              <StyledHeading
+                as="h1"
+                style={{ lineHeight: '1.5' }}
+                fontSize={`${isMobile ? '24px !important' : '30px !important'}`}
+                mobile={isMobile}
+              >
                 {numeral(totalSupplyAllTimeMint).format('0,0')}
-              </Heading>
+              </StyledHeading>
             </div>
           </div>
         </div>

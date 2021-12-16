@@ -1,7 +1,14 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
-import { Flex, ImageSet, ImgLongterm1x, ImgLongterm2x, ImgLongterm3x } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  Flex,
+  ImageSet,
+  ImgLongterm1x,
+  ImgLongterm2x,
+  ImgLongterm3x,
+  useMatchBreakpoints,
+} from '@fingerlabs/definixswap-uikit-v2'
 
 const ImgWrap = styled(Flex)`
   width: 100%;
@@ -20,6 +27,10 @@ const Tabs = styled.div`
   width: 100%;
   height: 48px;
   border-radius: 8px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding-right: 10px;
+  }
 `
 
 const Tab = styled(NavLink)<{ active: string }>`
@@ -83,11 +94,16 @@ const Tab = styled(NavLink)<{ active: string }>`
     font-size: 16px;
     padding: 16px;
   }
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 50%;
+  }
 `
 
 const LongTermTab = ({ current }) => {
+  const { isXxl } = useMatchBreakpoints()
+
   return (
-    <div style={{ position: 'relative', marginTop: '70px' }}>
+    <div style={{ position: 'relative', marginTop: `${isXxl ? '70px' : '0px'}` }}>
       <Tabs>
         <Tab className="ml-2" to="/long-term-stake" active={(current === '/long-term-stake').toString()}>
           Long-term Stake
