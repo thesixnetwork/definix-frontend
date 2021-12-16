@@ -88,7 +88,7 @@ const AddProposal: React.FC = () => {
 
   const options = useMemo(() => {
     return {
-      hideIcons: account ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
+      hideIcons: !account ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
     }
   }, [account])
 
