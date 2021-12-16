@@ -3,9 +3,8 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Text, ColorStyles, Label, Box } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, ColorStyles, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
 
@@ -119,11 +118,6 @@ const TokenNameText = styled(Text)`
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
 `
-const TokenImage = styled.img`
-  width: 20px;
-  height: auto;
-  object-fit: contain;
-`
 const EarningsSection: React.FC<{
   title: string
   earnings: BigNumber
@@ -144,7 +138,7 @@ const EarningsSection: React.FC<{
       <TitleWrap>
         <TitleSection hasMb={false}>{title}</TitleSection>
         <Box>
-          <TokenImage src={getTokenImageUrl('finix')} alt="finix" />
+          <Coin symbol="FINIX" size="20px" />
         </Box>
       </TitleWrap>
       <ValueWrap>
