@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
 import _ from 'lodash'
 import moment from 'moment'
 import CardSorry from '../../uikit-dev/widgets/Modal/CardSorry'
@@ -439,7 +440,8 @@ const CardSuperStake = () => {
                 </div>
               )}
               <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <UikitCoin symbol="FINIX" size="24px" />
+                {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" /> */}
                 <Heading as="h1" fontSize="16px !important">
                   FINIX
                 </Heading>
@@ -468,7 +470,7 @@ const CardSuperStake = () => {
                 </div>
               )}
               <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <UikitCoin symbol="FINIX" size="24px" />
                 <Heading as="h1" fontSize="16px !important">
                   FINIX
                 </Heading>

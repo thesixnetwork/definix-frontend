@@ -6,7 +6,6 @@ import { Checkbox, CheckboxLabel, Coin, Flex, Text, useMatchBreakpoints } from '
 import CircularProgress from '@material-ui/core/CircularProgress'
 import useTheme from 'hooks/useTheme'
 import { getTokenName } from 'utils/getTokenSymbol'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 
 const rebalanceColor = '#ff6828'
 

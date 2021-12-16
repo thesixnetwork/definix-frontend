@@ -6,7 +6,6 @@ import {
   Text,
   ColorStyles,
   Flex,
-  HomeProtectionFinixIcon,
   Grid,
   ImgHomeProtectionFinix1x,
   ImgHomeProtectionFinix2x,

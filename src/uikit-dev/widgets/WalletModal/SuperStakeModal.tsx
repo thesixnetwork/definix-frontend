@@ -8,6 +8,7 @@ import { BLOCKS_PER_YEAR } from 'config'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { Button, Card } from 'uikit-dev'
+import { Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {
@@ -37,7 +38,6 @@ import {
   useAllLock,
 } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
-import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import success from 'uikit-dev/animation/complete.json'
 import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
@@ -704,7 +704,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   />
                   <Coins>
                     <div className="flex">
-                      <img src={vFinix} alt="" />
+                      <UikitCoin symbol="VFINIX" size="37px" />
                     </div>
                   </Coins>
                   <Text className="align-center ml-2">VFINIX</Text>
@@ -746,8 +746,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     />
                     <Coins>
                       <div className="flex">
-                        {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
-                        {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                        {imgs[0] && <UikitCoin symbol={imgs[0]} size="37px" />}
+                        {imgs[1] && <UikitCoin symbol={imgs[1]} size="37px" />}
                       </div>
                     </Coins>
                     <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
@@ -792,7 +792,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     />
                     <Coins>
                       <div className="flex">
-                        <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                        <UikitCoin symbol={imgs[0]} size="37px" />
+                        {/* <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" /> */}
                       </div>
                     </Coins>
                     <Text className="align-center ml-2">{d.tokenName}</Text>

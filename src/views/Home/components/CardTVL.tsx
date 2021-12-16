@@ -10,9 +10,8 @@ import {
   ColorStyles,
   Text,
   Flex,
-  ChainBscIcon,
-  ChainKlaytnIcon,
   useMatchBreakpoints,
+  Coin,
 } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
@@ -109,7 +108,7 @@ const CardTVL = () => {
         <WrapTvl>
           <TvlItem>
             <Flex alignItems="center">
-              <ChainBscIcon viewBox="0 0 32 32" width={isXxl ? '24' : '22'} height={isXxl ? '24' : '22'} />
+              <Coin symbol="KBNB" size={isXxl ? '24px' : '22px'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
                   i18nKey="TVL in <bold>BSC</bold>"
@@ -125,7 +124,7 @@ const CardTVL = () => {
           </TvlItem>
           <TvlItem>
             <Flex alignItems="center">
-              <ChainKlaytnIcon viewBox="0 0 22 22" width={isXxl ? '24' : '22'} height={isXxl ? '24' : '22'} />
+              <Coin symbol="KLAY" size={isXxl ? '24px' : '22px'} />
               <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
                 <Trans
                   i18nKey="TVL in <bold>Klaytn</bold>"

@@ -2,10 +2,10 @@
 import React from 'react'
 import styled, { useTheme } from 'styled-components'
 import numeral from 'numeral'
+import { Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
 import { Card, Text, useMatchBreakpoints, Heading } from '../../../uikit-dev'
 import { useTotalFinixLock, useUnstakeId } from '../../../hooks/useLongTermStake'
 import CardBarChart from './CardBarChart'
-import vFinix from '../../../uikit-dev/images/for-ui-v2/vFinix.png'
 
 const CardFinixStake = styled(Card)`
   position: relative;
@@ -125,7 +125,8 @@ const FinixStakeCard = () => {
             }`}
           >
             <Coin className={`${isMobile ? 'flex justify-center align-center mb-2' : ''}`}>
-              <img src={`/images/coins/${'FINIX'}.png`} alt="" width="63px" height="63px" />
+              <UikitCoin symbol="FINIX" size="63px" />
+              {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" width="63px" height="63px" /> */}
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
               <Text color="textSubtle" fontWeight="inherit">
@@ -145,7 +146,8 @@ const FinixStakeCard = () => {
             }`}
           >
             <Coin className={`${isMobile ? 'flex justify-center align-center mb-2' : ''}`}>
-              <img src={vFinix} alt="vfinix" width="63px" height="63px" />
+              <UikitCoin symbol="VFINIX" size="63px" />
+              {/* <img src={vFinix} alt="vfinix" width="63px" height="63px" /> */}
             </Coin>
             <div className={`${isMobile ? 'text-center' : 'pl-5'}`}>
               <Text color="textSubtle" fontWeight="inherit">

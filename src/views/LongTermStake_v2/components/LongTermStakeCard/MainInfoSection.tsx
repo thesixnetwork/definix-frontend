@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import useConverter from 'hooks/useConverter'
-import { Flex, Box, Text, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Box, Text, ColorStyles, Coin } from '@fingerlabs/definixswap-uikit-v2'
 // import ApyButton from './ApyButton'
 // import { CardHeadingProps } from './types'
 
-const TokenImage = styled.img`
+const StyledCoin = styled(Coin)`
   width: 40px;
   height: auto;
   object-fit: contain;
@@ -28,7 +27,7 @@ const MainInfoSection: React.FC<{ apy: number }> = ({ apy }) => {
   return (
     <Flex position="relative" alignItems="center">
       <Box mr="S_12">
-        <TokenImage src={getTokenImageUrl('vfinix')} alt="vfinix" />
+        <StyledCoin symbol="VFINIX" size="" />
       </Box>
 
       <Flex flexDirection="column">
