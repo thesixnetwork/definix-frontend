@@ -71,11 +71,11 @@ const StakeAction: React.FC<StakeActionProps> = ({
       // user rejected tx or didn't go thru
       if (!txHash) {
         setIsLoadingApproveContract(false)
-        toastError(t('{{Action}} Fail', { Action: t('Approve') }))
+        toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
       }
     } catch (e) {
       console.error(e)
-      toastError(t('{{Action}} Fail', { Action: t('Approve') }))
+      toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
     } finally {
       setIsLoadingApproveContract(false)
     }

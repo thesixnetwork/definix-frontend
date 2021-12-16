@@ -42,11 +42,11 @@ const ConfirmModal = ({
     try {
       setIsPendingTX(true)
       await onOK()
-      toastSuccess(t(`${buttonName} Complete`))
+      toastSuccess(t('{{Action}} Complete', { Action: buttonName }))
       goList()
       onDismiss()
     } catch (error) {
-      toastError(t(`${buttonName} Failed`))
+      toastError(t('{{Action}} Failed', { Action: buttonName }))
     } finally {
       setIsPendingTX(false)
     }
