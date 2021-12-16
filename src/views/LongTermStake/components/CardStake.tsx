@@ -8,12 +8,11 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
 import { Card, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
-import { Button } from '@fingerlabs/definixswap-uikit-v2'
+import { Button, Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
 import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
 // import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
 // import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
@@ -474,7 +473,7 @@ const CardStake = (/* { isShowRightPanel } */) => {
                 </div>
               )}
               <Coin>
-                <img src={getTokenImageUrl('finix')} alt="" />
+                <UikitCoin symbol="FINIX" size="24px" />
                 <Heading as="h1" fontSize="16px !important">
                   FINIX
                 </Heading>
@@ -503,7 +502,7 @@ const CardStake = (/* { isShowRightPanel } */) => {
                 </div>
               )}
               <Coin>
-                <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                <UikitCoin symbol="FINIX" size="24px" />
                 <Heading as="h1" fontSize="16px !important">
                   FINIX
                 </Heading>
