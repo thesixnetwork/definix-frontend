@@ -33,13 +33,18 @@ const BalanceTextWrap = styled(Box)`
     }
   }
 `
-
 const PriceText = styled(CurrencyText)`
   color: ${({ theme }) => theme.colors.mediumgrey};
   ${({ theme }) => theme.textStyle.R_14R};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R};
   }
+`
+const TokenNameText = styled(Text)`
+  padding-left: 2px;
+  padding-bottom: 2px;
+  color: ${({ theme }) => theme.colors.deepgrey};
+  ${({ theme }) => theme.textStyle.R_12M};
 `
 
 const TotalStakedSection: React.FC<{
@@ -67,9 +72,7 @@ const TotalStakedSection: React.FC<{
       <BalanceTextWrap>
         <Flex alignItems="end">
           <BalanceText className="balance-text" value={totalStakedValue} toFixed={0} />
-          <Text color={ColorStyles.DEEPGREY} textStyle="R_12M" style={{ paddingLeft: '2px' }}>
-            {tokenName}
-          </Text>
+          <TokenNameText>{tokenName}</TokenNameText>
         </Flex>
       </BalanceTextWrap>
       <PriceText value={totalStakedPrice} prefix="=" />
@@ -111,12 +114,6 @@ const TitleWrap = styled(Flex)`
 `
 const ValueWrap = styled(Box)`
   margin-top: -2px;
-`
-const TokenNameText = styled(Text)`
-  padding-left: 2px;
-  padding-bottom: 1px;
-  color: ${({ theme }) => theme.colors.deepgrey};
-  ${({ theme }) => theme.textStyle.R_12M};
 `
 const EarningsSection: React.FC<{
   title: string

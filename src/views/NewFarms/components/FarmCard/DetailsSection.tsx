@@ -90,7 +90,7 @@ const ValueWrap = styled(Box)`
 `
 const TokenNameText = styled(Text)`
   padding-left: 2px;
-  padding-bottom: 1px;
+  padding-bottom: 2px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.textStyle.R_12M};
 `
