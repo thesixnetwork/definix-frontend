@@ -24,10 +24,9 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
     "apr tweet"
     "apr tweet"
     "audit tweet";
-    "audit";
 
   ${({ theme }) => theme.mediaQueries.mobile} {
-    padding-top: 28px;
+    padding-top: 0;
     column-gap: 16px;
     grid-template-areas: 
       "notice"

@@ -3,12 +3,10 @@ import 'slick-carousel/slick/slick-theme.css'
 
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
 
 import {
-  Label,
   Text,
   Box,
   Flex,
@@ -17,6 +15,37 @@ import {
   ImgHomeTopFinix3x,
   ImageSet,
 } from '@fingerlabs/definixswap-uikit-v2'
+import NoticeItem from './NoticeItem'
+
+export interface NoticeProps {
+  title: string;
+  content: string;
+  link?: string;
+  linkLabel?: string;
+}
+
+const KO_NOTICE_LIST: NoticeProps[] = [{
+  title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
+  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+  다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
+}, {
+  title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
+  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+  다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
+  link: '2 ko_link',
+  linkLabel: 'Beta 피드백 보내기',
+}]
+const EN_NOTICE_LIST: NoticeProps[] = [{
+  title: '[번역필요]Definix 클레이튼 체인 V2 Beta 런칭!',
+  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+  다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
+}, {
+  title: '[번역필요]Definix 클레이튼 체인 V2 Beta 런칭!',
+  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+  다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
+  link: '2 en_link',
+  linkLabel: 'Beta 피드백 보내기',
+}]
 
 const Wrap = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -64,8 +93,9 @@ const NoticeSlider = styled(Slider)`
   }
 
   ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 0;
     .slick-list {
-      margin-bottom: 20px;
+      margin-bottom: 0;
     }
     .slick-dots {
       height: 4px;
@@ -111,48 +141,29 @@ const SliderOptions = {
   autoplaySpeed: 10000,
   speed: 500,
   vertical: true,
-  dots: true,
+  dots: false,
   dotsClass: 'slick-dots slick-thumb',
 }
 
 const HomeNotice: React.FC = () => {
-  const { t } = useTranslation()
-  const [notices, setNotices] = useState([])
+  const { i18n } = useTranslation()
+  const [notices, setNotices] = useState(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
 
   useEffect(() => {
-    async function fetchNotice() {
-      const captionTextAPI = process.env.REACT_APP_API_CAPTION_TEXT_KLAYTN
-      const response = await axios.get(captionTextAPI)
-      if (response.data.data) {
-        // setNotices(
-        //   new Array(3).fill(true).map((val, index) => ({
-        //     id: index,
-        //     model: index,
-        //     text: '9,757,423 (24% of total FINIX supply) has been staked in Long-term staking pool. \nWhat a number!',
-        //   })),
-        // )
-        setNotices(
-          response.data.data?.data?.map(({ id, model, text }) => ({
-            id,
-            model,
-            text,
-          })),
-        )
-      }
-    }
-    fetchNotice()
-  }, [])
+    setNotices(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
+  }, [i18n.languages])
 
   return (
     <Wrap>
       <NoticeBox>
-        <Label type="noti">{t('NOTICE')}</Label>
         {notices.length === 1 ? (
-          <OneNotice>{notices[0].text}</OneNotice>
+          <OneNotice>
+            <NoticeItem {...notices[0]} />
+          </OneNotice>
         ) : (
           <NoticeSlider {...SliderOptions}>
-            {notices.map(({ text }) => (
-              <Notice>{text}</Notice>
+            {notices.map((notice) => (
+              <NoticeItem {...notice} />
             ))}
           </NoticeSlider>
         )}
