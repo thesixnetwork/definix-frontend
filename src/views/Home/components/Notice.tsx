@@ -18,34 +18,40 @@ import {
 import NoticeItem from './NoticeItem'
 
 export interface NoticeProps {
-  title: string;
-  content: string;
-  link?: string;
-  linkLabel?: string;
+  title: string
+  content: string
+  link?: string
+  linkLabel?: string
 }
 
-const KO_NOTICE_LIST: NoticeProps[] = [{
-  title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
-  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+const KO_NOTICE_LIST: NoticeProps[] = [
+  {
+    title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
+    content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
   다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
-}, {
-  title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
-  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+  },
+  {
+    title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
+    content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
   다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
-  link: '2 ko_link',
-  linkLabel: 'Beta 피드백 보내기',
-}]
-const EN_NOTICE_LIST: NoticeProps[] = [{
-  title: '[번역필요]Definix 클레이튼 체인 V2 Beta 런칭!',
-  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+    link: '2 ko_link',
+    linkLabel: 'Beta 피드백 보내기',
+  },
+]
+const EN_NOTICE_LIST: NoticeProps[] = [
+  {
+    title: '[번역필요]Definix 클레이튼 체인 V2 Beta 런칭!',
+    content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
   다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
-}, {
-  title: '[번역필요]Definix 클레이튼 체인 V2 Beta 런칭!',
-  content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+  },
+  {
+    title: '[번역필요]Definix 클레이튼 체인 V2 Beta 런칭!',
+    content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
   다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
-  link: '2 en_link',
-  linkLabel: 'Beta 피드백 보내기',
-}]
+    link: '2 en_link',
+    linkLabel: 'Beta 피드백 보내기',
+  },
+]
 
 const Wrap = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {

@@ -1,7 +1,7 @@
 import React from 'react'
-import styled from 'styled-components';
-import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2';
-import { NoticeProps } from './Notice';
+import styled from 'styled-components'
+import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
+import { NoticeProps } from './Notice'
 
 const Wrap = styled(Flex)`
   flex-direction: column;
@@ -42,15 +42,18 @@ const LinkLabel = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
 `
 
-
 const NoticeItem: React.FC<NoticeProps> = ({ title, content, link, linkLabel }) => {
-  return <Wrap>
-    <Title>{title}</Title>
-    <Content>{content}</Content>
-    {link && <Link href={link}>
-      <LinkLabel>{linkLabel}</LinkLabel>
-    </Link>}
-  </Wrap>
+  return (
+    <Wrap>
+      <Title>{title}</Title>
+      <Content>{content}</Content>
+      {link && (
+        <Link href={link}>
+          <LinkLabel>{linkLabel}</LinkLabel>
+        </Link>
+      )}
+    </Wrap>
+  )
 }
 
-export default NoticeItem;
+export default NoticeItem

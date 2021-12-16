@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import CurrencyText from 'components/CurrencyText'
 
 interface Props {
-  isFarm?: boolean;
+  isFarm?: boolean
   title: string
   apr: string
   Images: React.ReactElement
