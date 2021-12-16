@@ -83,7 +83,7 @@ const MyProductsFilter: React.FC<{
       },
       {
         id: 'apyValue',
-        label: t('APR'),
+        label: t('Order APR'),
         orderBy: 'desc',
       },
     ],
