@@ -76,7 +76,9 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
                   <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
                     <div className="flex align-center" style={{ width: 'max-content' }}>
                       <Coin symbol={r.symbol} size="24px" />
-                      <Text textStyle="R_14B" className="ml-s6">{thisName}</Text>
+                      <Text textStyle="R_14B" className="ml-s6">
+                        {thisName}
+                      </Text>
                     </div>
                   </TD>
                   <TD align="center" sm={isMaxXl}>

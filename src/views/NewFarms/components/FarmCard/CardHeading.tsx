@@ -29,7 +29,6 @@ const StyledCoin = styled(Coin)`
     width: 36px;
     height: 36px;
   }
-
 `
 
 export interface ExpandableSectionProps {

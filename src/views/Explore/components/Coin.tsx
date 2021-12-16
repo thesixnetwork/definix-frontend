@@ -30,9 +30,12 @@ const StyledCoin = styled(Flex)<{ size?: string; isHorizontal?: boolean }>`
 const Coin: React.FC<CoinType> = ({ symbol, children, size, ...props }) => {
   return (
     <StyledCoin alignItems="center" {...props}>
-      <UikitCoin symbol={symbol} size={getSize({
-        size
-      })} />
+      <UikitCoin
+        symbol={symbol}
+        size={getSize({
+          size,
+        })}
+      />
       {children}
     </StyledCoin>
   )
