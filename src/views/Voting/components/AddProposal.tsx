@@ -121,7 +121,7 @@ const AddProposal: React.FC = () => {
           type: '',
         },
       })
-      console.log("proposal", proposal)
+      console.log('proposal', proposal)
       // call api
     } catch (error) {
       setIsLoading(false)
@@ -153,7 +153,14 @@ const AddProposal: React.FC = () => {
                   <Text bold color="text" fontSize="18px">
                     Title
                   </Text>
-                  <InputChoice id="name" value={name} name="name" className="mt-2 mb-1" onChange={handleChange} required />
+                  <InputChoice
+                    id="name"
+                    value={name}
+                    name="name"
+                    className="mt-2 mb-1"
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </div>
               <div className="pa-4">
