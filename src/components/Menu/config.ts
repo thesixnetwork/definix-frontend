@@ -96,7 +96,7 @@ export const socials = [
   {
     label: 'kakao',
     icon: 'FooterKakaotalkIcon',
-    href: 'https://open.kakao.com/o/gQNRT5K',
+    href: 'https://open.kakao.com/o/gsh5pWGd',
   },
   {
     label: 'gitbook',

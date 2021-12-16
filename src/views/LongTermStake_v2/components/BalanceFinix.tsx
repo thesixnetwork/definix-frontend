@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from '@fingerlabs/definixswap-uikit-v2'
-import BalanceText from 'components/BalanceText'
 import styled from 'styled-components'
 
 interface BalanceProps {
@@ -116,11 +115,9 @@ const BalanceFinix: React.FC<BalanceProps> = ({
             <Text mr="S_4" textStyle="R_14R" color="deepgrey">
               {t('Balance')}
             </Text>
-            <BalanceText
-              textStyle="R_14B"
-              color="deepgrey"
-              value={hasAccount ? Math.floor(balancefinix * 1000000) / 1000000 : 0}
-            />
+            <Text textStyle="R_14B" color="deepgrey">
+              {hasAccount ? Math.floor(balancefinix * 1000000) / 1000000 : 0}
+            </Text>
           </Flex>
           <StyledInput
             type="text"

@@ -1,7 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
-import BalanceText from 'components/BalanceText'
 
 interface EstimateVFinixProps {
   hasAccount: boolean
@@ -36,7 +35,9 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, endDay, ear
             {t('vFINIX Earn')}
           </Text>
           <Flex>
-            <BalanceText textStyle="R_14M" color="deepgrey" value={hasAccount ? earn : 0} />
+            <Text textStyle="R_14M" color="deepgrey">
+              {hasAccount ? earn : 0}
+            </Text>
             <Text ml="S_4" textStyle="R_14M" color="deepgrey">
               {t('vFINIX')}
             </Text>
