@@ -7,7 +7,7 @@ import { useMatchBreakpoints } from 'uikit-dev'
 
 import AddProposal from './components/AddProposal'
 import AddChoices from './components/AddChoices'
-import AddActions from './components/AddActions'
+// import AddActions from './components/AddActions'
 import VotingPower from './components/VotingPower'
 
 const MaxWidthLeft = styled(MaxWidth)`
@@ -35,13 +35,12 @@ const VotingProposal: React.FC = () => {
           <title>Voting - Definix - Advance Your Crypto Assets</title>
         </Helmet>
         <MaxWidthLeft>
-          <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
+          <AddProposal />
+          <div className={`flex align-stretch mt-1 ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
-              <AddProposal />
               <AddChoices />
             </div>
-            <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
-              <AddActions />
+            <div className={isMobile ? 'col-12 mt-2' : 'col-4 ml-3'}>
               <VotingPower />
             </div>
           </div>

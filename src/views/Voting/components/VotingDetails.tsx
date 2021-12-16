@@ -43,7 +43,8 @@ const VotingDetails = () => {
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
             <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="6px">
-              {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
+              {/* {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`} */}
+              ddasf...adfdafds
             </Text>
             <ExternalLink size={16} color="#30ADFF" />
           </div>

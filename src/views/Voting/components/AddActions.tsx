@@ -1,14 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints } from '../../../uikit-dev'
 // import { Link, Redirect } from 'react-router-dom'
 import { ExternalLink } from 'react-feather'
 // import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
+import useTheme from '../../../hooks/useTheme'
 // import Checkbox from '@material-ui/core/Checkbox'
 // import FormControlLabel from '@material-ui/core/FormControlLabel'
-import { DatePicker, TimePicker } from 'components/DatePicker'
+import { DatePicker, TimePicker } from '../../../components/DatePicker'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
 export interface FormState {
@@ -118,7 +118,8 @@ const AddActions = () => {
             </div>
             <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
               <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
+                {/* {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`} */}
+                ddasf...adfdafds
               </Text>
               <ExternalLink size={16} color="#30ADFF" />
             </div>
