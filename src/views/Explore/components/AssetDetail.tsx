@@ -2,13 +2,12 @@ import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { compact, get } from 'lodash'
-import { Box, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, Coin, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 
 import { useTranslation } from 'react-i18next'
 
 import { Rebalance } from 'state/types'
 import { getTokenName } from 'utils/getTokenSymbol'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import CurrencyText from 'components/CurrencyText'
 import { Table, TD, TH, TR } from './Table'
 
@@ -76,8 +75,8 @@ const AssetDetail: React.FC<AssetDetailType> = ({ rebalance, periodPriceTokens, 
                 <TR key={`asset-row-${r.symbol}`}>
                   <TD sidecolor={colors?.[r.symbol]} style={{ overflow: 'hidden' }} sm={isMaxXl}>
                     <div className="flex align-center" style={{ width: 'max-content' }}>
-                      <img src={getTokenImageUrl(r.symbol)} alt="" width={24} height={24} className="mr-s6" />
-                      <Text textStyle="R_14B">{thisName}</Text>
+                      <Coin symbol={r.symbol} size="24px" />
+                      <Text textStyle="R_14B" className="ml-s6">{thisName}</Text>
                     </div>
                   </TD>
                   <TD align="center" sm={isMaxXl}>
