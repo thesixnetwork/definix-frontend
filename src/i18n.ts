@@ -35,7 +35,6 @@ i18n
     //   lookupQuerystring: 'lng',
     // },
     resources,
-    // lng: 'en',
     fallbackLng: 'en',
     supportedLngs: ['en', 'ko'],
     keySeparator: false,
