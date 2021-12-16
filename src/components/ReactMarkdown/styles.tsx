@@ -42,7 +42,7 @@ const Pre = styled.pre`
 const AStyle = styled.a`
   word-break: break-all;
   text-decoration-line: underline;
-  color: #30ADFF;
+  color: #30adff;
 `
 
 const TitleH1 = (props) => {
@@ -55,7 +55,7 @@ const TitleH3 = (props) => {
   return <Heading as="h3" fontSize="1.17em !important" my="16px" {...props} />
 }
 const TitleH4 = (props) => {
-  return <Heading as="h4" fontSize="1em !important"  my="16px" {...props} />
+  return <Heading as="h4" fontSize="1em !important" my="16px" {...props} />
 }
 const TitleH5 = (props) => {
   return <Heading as="h5" fontSize=".87em !important" my="16px" {...props} />
@@ -63,7 +63,6 @@ const TitleH5 = (props) => {
 const TitleH6 = (props) => {
   return <Heading as="h6" fontSize=".63em !important" my="16px" {...props} />
 }
-
 
 const Code = styled.code`
   color: #c7254e;
@@ -80,7 +79,7 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   h5: TitleH5,
   h6: TitleH6,
   p: (props) => {
-    return <p {...props} style={{ lineHeight: "1.3rem", fontWeight: 400 }} />
+    return <p {...props} style={{ lineHeight: '1.3rem', fontWeight: 400 }} />
   },
   table: ({ ...props }) => {
     return (
@@ -97,7 +96,7 @@ const markdownComponents: Partial<NormalComponents & SpecialComponents> = {
   },
   pre: Pre,
   a: AStyle,
-  code: Code
+  code: Code,
 }
 
 export default markdownComponents

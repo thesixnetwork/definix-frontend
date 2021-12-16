@@ -43,7 +43,8 @@ const VotingDescription = () => {
   // const { isXl, isLg } = useMatchBreakpoints()
   // const isMobile = !isXl && !isLg
 
-  const body = "**text**\n*text*\n# text\n> text\n* text\n1. text\n[text](https://definix.com)\n\ntext text **dsgsdg** *23423523* \n\n or use shortcuts like `ctrl-b` or `cmd-b`."
+  const body =
+    '**text**\n*text*\n# text\n> text\n* text\n1. text\n[text](https://definix.com)\n\ntext text **dsgsdg** *23423523* \n\n or use shortcuts like `ctrl-b` or `cmd-b`.'
   return (
     <>
       <Card className="mb-4">
@@ -76,11 +77,8 @@ const VotingDescription = () => {
           </Text>
         </div>
         <Description>
-          <ReactMarkdown>
-            {body}
-          </ReactMarkdown>
+          <ReactMarkdown>{body}</ReactMarkdown>
         </Description>
-
       </Card>
     </>
   )
