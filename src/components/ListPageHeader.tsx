@@ -29,6 +29,9 @@ const Wrap = styled(Box)`
   &.rebalancing .title-wrap {
     padding-bottom: 100px;
   }
+  &.pool .title-wrap {
+    padding-bottom: 96px;
+  }
 
   &.myInvestment,
   &.rebalancing,
@@ -66,8 +69,8 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       linkPath: '/pools/how-to-stake-to-definix-pool',
       image: [ImgPool1x, ImgPool2x, ImgPool3x],
       imageSize: {
-        w: 200,
-        h: 122,
+        w: 236,
+        h: 144,
       },
     },
     farm: {

@@ -58,15 +58,17 @@ const Pool: React.FC = () => {
       <Wrap pageState={pageState}>
         {pageState === 'list' && (
           <>
-            <ListPageHeader type="pool" />
-            <PoolFilter
-              stackedOnly={stackedOnly}
-              setStackedOnly={setStackedOnly}
-              liveOnly={liveOnly}
-              setLiveOnly={setLiveOnly}
-              orderBy={(order) => setSelectedOrderBy(order)}
-              search={(keyword: string) => setSearchKeyword(keyword)}
-            />
+            <Box position="relative">
+              <ListPageHeader type="pool" />
+              <PoolFilter
+                stackedOnly={stackedOnly}
+                setStackedOnly={setStackedOnly}
+                liveOnly={liveOnly}
+                setLiveOnly={setLiveOnly}
+                orderBy={(order) => setSelectedOrderBy(order)}
+                search={(keyword: string) => setSearchKeyword(keyword)}
+              />
+            </Box>
 
             <>
               <Route exact path={`${path}`}>
