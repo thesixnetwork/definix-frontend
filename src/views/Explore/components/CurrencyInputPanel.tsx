@@ -11,7 +11,7 @@ import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from '@
 import useToFixedFloor from 'hooks/useToFixedFloor'
 import { getTokenName } from 'utils/getTokenSymbol'
 import { Input as NumericalInput } from './NumericalInput'
-import Coin from './Coin'
+import CoinWrap from './CoinWrap'
 
 interface CurrencyInputPanelProps {
   value: string
@@ -99,15 +99,15 @@ const CurrencyInputPanel = ({
   return (
     <Container id={id} hideInput={hideInput} className={className}>
       {!hideInput && (
-        <Flex justifyContent="space-between" alignItems="center" className="mb-s12">
+        <Flex justifyContent="space-between" alignItems="center" mb={isMobile ? 'S_8' : 'S_12'}>
           {!currency.hide && (
-            <Coin symbol={currency.symbol}>
+            <CoinWrap symbol={currency.symbol} size="lg" spacing="S_12">
               <Text textStyle="R_16M">{thisName}</Text>
-            </Coin>
+            </CoinWrap>
           )}
           {account && !!hideBalance === false && (
             <Text textStyle="R_14R" color="text">
-              {t('Balance')}
+              {isMobile || t('Balance')}
               <Text as="span" textStyle="R_14B" marginLeft="4px">
                 {!hideBalance && !!currency && balance ? numeral(balance.toNumber()).format('0,0.[000000]') : ' -'}
               </Text>

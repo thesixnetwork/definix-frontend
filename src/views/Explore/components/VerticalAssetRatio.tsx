@@ -4,7 +4,7 @@ import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 import { getTokenName } from 'utils/getTokenSymbol'
-import Coin from './Coin'
+import CoinWrap from './CoinWrap'
 
 const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }) => {
   return (
@@ -18,11 +18,11 @@ const VerticalAssetRatio = ({ rebalance = {}, poolAmounts = [], className = '' }
         const thisName = getTokenName(c?.symbol)
         return (
           <Flex key={c.symbol} textStyle="R_14R" justifyContent="space-between" alignItems="center" className="py-s12">
-            <Coin size="sm" symbol={c.symbol || ''}>
+            <CoinWrap size="sm" symbol={c.symbol || ''} spacing="S_6">
               <Text textStyle="R_14B" style={{ width: '56px' }}>
                 {thisName}
               </Text>
-            </Coin>
+            </CoinWrap>
             <Text>
               {numeral(
                 (poolAmounts[index] || new BigNumber(0)).div(new BigNumber(10).pow(c.decimals)).toNumber(),

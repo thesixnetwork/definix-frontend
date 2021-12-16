@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import numeral from 'numeral'
 import { Flex, Text, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 import { getTokenName } from 'utils/getTokenSymbol'
-import Coin from './Coin'
+import CoinWrap from './CoinWrap'
 
 const InlineAssetRatioLabel = ({ coin, column = false, small = false, ...props }) => {
   const thisName = getTokenName(coin?.symbol)
@@ -10,12 +10,10 @@ const InlineAssetRatioLabel = ({ coin, column = false, small = false, ...props }
     () =>
       small
         ? {
-            coin: 'md',
             textM: 'R_14M',
             textR: 'R_14R',
           }
         : {
-            coin: 'lg',
             textM: 'R_16M',
             textR: 'R_16R',
           },
@@ -30,9 +28,9 @@ const InlineAssetRatioLabel = ({ coin, column = false, small = false, ...props }
       {...props}
     >
       <Flex flexGrow={1} width={column ? '100%' : ''}>
-        <Coin size={size.coin} symbol={coin.symbol}>
+        <CoinWrap size="lg" symbol={coin.symbol} spacing="10px">
           <Text textStyle={size.textM}>{thisName}</Text>
-        </Coin>
+        </CoinWrap>
         <Text textStyle={size.textR} color="textSubtle" ml="auto" textAlign="right">
           {coin.valueRatioCal.toFixed(2)}%
         </Text>

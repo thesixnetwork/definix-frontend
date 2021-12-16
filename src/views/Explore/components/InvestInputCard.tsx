@@ -33,10 +33,10 @@ import { getContract } from 'utils/erc20'
 import { useDispatch } from 'react-redux'
 
 import { useDeepEqualMemo } from 'hooks/useDeepEqualMemo'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import CurrencyText from 'components/CurrencyText'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import CalculateModal from './CalculateModal'
+import CoinWrap from './CoinWrap'
 
 interface InvestInputCardProp {
   isMobile?: boolean
@@ -316,13 +316,12 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
                 alignItems={isMobile ? 'flex-start' : 'center'}
                 flexDirection={isMobile ? 'column' : 'row'}
               >
-                <Flex alignItems="center" mb={isMobile ? 'S_8' : ''}>
-                  <img width="32px" src={getTokenImageUrl(coin.symbol)} alt="" />
+                <CoinWrap mb={isMobile ? 'S_8' : ''} symbol={coin.symbol} size="lg">
                   <Text mr="S_8" ml="S_12">
                     {coin.currentValue}
                   </Text>
                   <Text color="textSubtle">{coin.symbol}</Text>
-                </Flex>
+                </CoinWrap>
                 <Button
                   ml="auto"
                   width={isMobile ? '100%' : '200px'}
