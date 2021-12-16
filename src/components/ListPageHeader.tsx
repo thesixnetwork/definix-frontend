@@ -37,7 +37,6 @@ const Wrap = styled(Box)`
       margin-right: ${({ theme }) => theme.spacing.S_16}px;
     }
   }
-  
 `
 const TitleWrap = styled(Box)<{ imageSize: number }>`
   padding-bottom: ${({ theme }) => theme.spacing.S_40}px;
