@@ -133,6 +133,12 @@ const TotalPriceText = styled(CurrencyText)<{ curTheme: any }>`
     ${({ theme }) => theme.textStyle.R_14M};
   }
 `
+const SlideSection = styled(Box)`
+  height: 112px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    height: auto;
+  }
+`
 
 interface ValueList {
   title: string
@@ -245,15 +251,18 @@ const EarningBoxTemplate: React.FC<{
           )}
         </ButtonWrap>
       </MainSection>
-      {valueList.length > 0 && (
-        <Slide
-          isMobile={isMobile}
-          hasAccount={hasAccount}
-          displayOnlyTotalPrice={displayOnlyTotalPrice}
-          curTheme={curTheme}
-          data={valueList}
-        />
-      )}
+
+      <SlideSection>
+        {valueList.length > 0 && (
+          <Slide
+            isMobile={isMobile}
+            hasAccount={hasAccount}
+            displayOnlyTotalPrice={displayOnlyTotalPrice}
+            curTheme={curTheme}
+            data={valueList}
+          />
+        )}
+      </SlideSection>
     </Wrap>
   )
 }
