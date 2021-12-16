@@ -210,16 +210,10 @@ const EarningBoxTemplate: React.FC<{
           <TotalValuesWrap>
             <Flex alignItems="flex-end">
               {renderTotalValue()}
-              <UnitText curTheme={curTheme}>
-                {unit.length > 0 ? unit : null}
-              </UnitText>
+              <UnitText curTheme={curTheme}>{unit.length > 0 ? unit : null}</UnitText>
             </Flex>
             {!displayOnlyTotalPrice && (
-              <TotalPriceText
-                curTheme={curTheme}
-                value={hasAccount ? total.price : 0}
-                prefix="="
-              />
+              <TotalPriceText curTheme={curTheme} value={hasAccount ? total.price : 0} prefix="=" />
             )}
           </TotalValuesWrap>
         </Box>
