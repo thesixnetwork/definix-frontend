@@ -26,16 +26,11 @@ const MyInvestments: React.FC = () => {
 
   const { account }: { account: string; klaytn: provider } = useWallet()
   const stakedProducts = useMyInvestments()
-  
-
-  
 
   return account ? (
     <Wrap>
       <Route exact path={`${path}`}>
-        <CardSummary
-          products={stakedProducts}
-        />
+        <CardSummary products={stakedProducts} />
         <Card className="mt-s16">
           <MyProductsFilter
             onChangeDisplayFilter={(keyword: string) => setCurrentProductType(keyword)}

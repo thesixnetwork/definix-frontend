@@ -9,15 +9,18 @@ const Earned: React.FC<{
   isMobile: boolean
   isMain?: boolean
   theme?: 'white' | 'dark'
-  products: {[key: string]: any}
+  products: { [key: string]: any }
 }> = ({ isMobile, isMain = false, products, theme = 'white' }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
   const finixPrice = usePriceFinixUsd()
 
-  const convertEarningsSumToPrice = useCallback((value) => {
-    return new BigNumber(value).multipliedBy(finixPrice).toNumber()
-  }, [finixPrice])
+  const convertEarningsSumToPrice = useCallback(
+    (value) => {
+      return new BigNumber(value).multipliedBy(finixPrice).toNumber()
+    },
+    [finixPrice],
+  )
 
   const calculateEarning = useCallback((value) => {
     return new BigNumber(value).div(new BigNumber(10).pow(18)) || 0
@@ -25,23 +28,29 @@ const Earned: React.FC<{
 
   const farmEarningsSum = useMemo(() => {
     if (!Array.isArray(products.farm)) return 0
-    return (products.farm.reduce((accum, farm) => {
-      return accum.plus(calculateEarning(farm.data.userData.earnings))
-    }, new BigNumber(0))).toNumber()
+    return products.farm
+      .reduce((accum, farm) => {
+        return accum.plus(calculateEarning(farm.data.userData.earnings))
+      }, new BigNumber(0))
+      .toNumber()
   }, [products.farm, calculateEarning])
 
   const poolEarningsSum = useMemo(() => {
     if (!Array.isArray(products.pool)) return 0
-    return (products.pool.reduce((accum, pool) => {
-      return accum.plus(calculateEarning(pool.data.userData.pendingReward))
-    }, new BigNumber(0))).toNumber()
+    return products.pool
+      .reduce((accum, pool) => {
+        return accum.plus(calculateEarning(pool.data.userData.pendingReward))
+      }, new BigNumber(0))
+      .toNumber()
   }, [products.pool, calculateEarning])
 
   const longTermStakeEarningsSum = useMemo(() => {
     if (!Array.isArray(products.longTermStake)) return 0
-    return (products.longTermStake.reduce((accum, longTermStake) => {
-      return accum.plus(new BigNumber(longTermStake.data.finixEarn) || 0)
-    }, new BigNumber(0))).toNumber()
+    return products.longTermStake
+      .reduce((accum, longTermStake) => {
+        return accum.plus(new BigNumber(longTermStake.data.finixEarn) || 0)
+      }, new BigNumber(0))
+      .toNumber()
   }, [products.longTermStake])
 
   /**
