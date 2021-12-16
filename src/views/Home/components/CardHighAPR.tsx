@@ -58,9 +58,7 @@ const StyledRebalanceTitle = styled(Flex)`
 `
 
 const Character = styled(ImageSet)`
-  /* flex-direction: column;
-  align-items: center;
-  justify-content: flex-end; */
+  flex-shrink: 0;
   width: 184px;
   height: 100px;
 
