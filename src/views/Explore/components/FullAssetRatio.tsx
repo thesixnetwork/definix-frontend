@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { Ratio } from 'config/constants/types'
-import Coin from './Coin'
+import CoinWrap from './CoinWrap'
 
 interface FullAssetRatioType {
   className?: string
@@ -16,10 +16,6 @@ const Asset = styled.div<{ width: string; isMobile: boolean }>`
     display: flex;
     flex-direction: ${({ isMobile }) => (isMobile ? 'column' : 'row')};
     align-items: ${({ isMobile }) => (isMobile ? 'flex-start' : 'center')};
-
-    img {
-      margin-right: 4px;
-    }
   }
 `
 
@@ -41,9 +37,9 @@ const FullAssetRatio: React.FC<FullAssetRatioType> = ({ ratio = [], className = 
         .map((m) => (
           <Asset key={m.symbol} width={`${m.value}%`} isMobile={isMobile}>
             <Bar color={m.color} />
-            <Coin className="name" symbol={m.symbol || ''} size="sm">
+            <CoinWrap className="name" symbol={m.symbol || ''} size="sm" spacing="S_4" isVertical={isMobile}>
               <Text textStyle="R_14R">{m.value}%</Text>
-            </Coin>
+            </CoinWrap>
           </Asset>
         ))}
     </div>

@@ -18,6 +18,9 @@ import {
   ImgMyinvestmentDefault1x,
   ImgMyinvestmentDefault2x,
   ImgMyinvestmentDefault3x,
+  ImgBridge1x,
+  ImgBridge2x,
+  ImgBridge3x,
 } from '@fingerlabs/definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
@@ -33,7 +36,8 @@ const Wrap = styled(Flex)`
   }
 
   &.myInvestment,
-  &.rebalancing {
+  &.rebalancing,
+  &.bridge {
     .image-wrap {
       margin-right: ${({ theme }) => theme.spacing.S_16}px;
     }
@@ -95,6 +99,15 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
       image: [ImgMyinvestmentDefault1x, ImgMyinvestmentDefault2x, ImgMyinvestmentDefault3x],
       imageSize: {
         w: 230,
+        h: 118,
+      },
+    },
+    bridge: {
+      title: 'Bridge',
+      description: 'Transfer tokens to other chains',
+      image: [ImgBridge1x, ImgBridge2x, ImgBridge3x],
+      imageSize: {
+        w: 194,
         h: 118,
       },
     },

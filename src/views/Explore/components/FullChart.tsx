@@ -101,7 +101,6 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
           control={<Checkbox scale="sm" variantColor="brown" checked={AllChecked} onChange={onCheckAll()} />}
         >
           <LegendItem>
-            {/* <img src={getTokenImageUrl(c.symbol)} alt="" /> */}
             <Text textStyle="R_14R">ALL</Text>
           </LegendItem>
         </CheckboxLabel>
