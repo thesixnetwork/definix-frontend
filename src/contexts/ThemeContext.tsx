@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ThemeProvider as SCThemeProvider } from 'styled-components'
-import { light } from 'definixswap-uikit-v2'
+import { light } from '@fingerlabs/definixswap-uikit-v2'
 // import oldLight from 'uikit-dev/theme/light'
 // import oldDark from 'uikit-dev/theme/dark'
 

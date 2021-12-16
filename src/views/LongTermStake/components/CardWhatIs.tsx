@@ -17,7 +17,7 @@ const StyledBanner = styled(Card)`
   position: relative;
   display: flex;
   flex-direction: column;
-  max-height: 700px;
+  max-height: 850px;
   flex-grow: 1;
   color: #fff;
 
@@ -108,6 +108,10 @@ const BeforeStart = () => {
       <Text className="mt-6 mb-4" color={isDark ? 'white' : 'textSubtle'}>
         vFINIX is a bonus governance token that will be used for voting and lowering transaction fees in rebalancing
         farms.
+      </Text>
+      <Heading color="primary">Super Stake</Heading>
+      <Text className="mt-4" color={isDark ? 'white' : 'textSubtle'}>
+        This is an exclusive feature for vFINIX holder that can stake in Long-term Stake with no minimum amount
       </Text>
     </Overflow>
   )

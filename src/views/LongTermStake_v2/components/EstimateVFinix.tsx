@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text } from 'definixswap-uikit-v2'
+import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 import BalanceText from 'components/BalanceText'
 
 interface EstimateVFinixProps {

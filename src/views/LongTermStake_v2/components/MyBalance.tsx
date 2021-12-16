@@ -1,7 +1,7 @@
 import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Divider, VDivider } from 'definixswap-uikit-v2'
+import { Flex, Text, Divider, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
 import { IsMobileType } from './types'

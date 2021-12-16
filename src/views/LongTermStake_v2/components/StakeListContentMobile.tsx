@@ -1,7 +1,7 @@
 import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Divider } from 'definixswap-uikit-v2'
+import { Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
@@ -15,7 +15,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
 
   return (
     <>
-      {allDataLock.slice(0, 3).map((item) => {
+      {allDataLock.map((item) => {
         return (
           <Flex flexDirection="column" width="100%" key={item.id}>
             <Flex mb="S_16">

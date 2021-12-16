@@ -6,55 +6,71 @@ import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { useBalances } from 'state/hooks'
-import { Divider, Box, DropdownOption } from 'definixswap-uikit-v2'
+import { Divider, Box, DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
 import NoResultArea from 'components/NoResultArea'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
 import ExploreCard from 'views/Explore/components/ExploreCard'
+import LongTermStakeCard from 'views/LongTermStake_v2/components/LongTermStakeCard/LongTermStakeCard'
 
 interface Product {
-  type: string
-  data: any
+  productType: string
+  productLabel: string
+  [key: string]: any
 }
 const MyProducts: React.FC<{
   products: Product[]
-  productType: string
-  orderBy: DropdownOption
+  currentProductType: string
+  currentOrderBy: DropdownOption
   searchKeyword: string
-}> = ({ products, productType, orderBy, searchKeyword }) => {
+}> = ({ products, currentProductType, currentOrderBy, searchKeyword }) => {
   const { t } = useTranslation()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const balances = useBalances(account)
 
   const getTokenName = useCallback((product) => {
     let tokenName = ''
-    if (_.get(product, 'title')) {
-      // rebalancing
-      tokenName = _.get(product, 'title')
-    } else if (_.get(product, 'lpSymbol')) {
-      // farm
+    if (product.productType === 'farm') {
       tokenName = _.get(product, 'lpSymbol').replace(/ LP$/, '')
-    } else if (_.get(product, 'tokenName')) {
-      // pool
+    } else if (product.productType === 'pool') {
       tokenName = _.get(product, 'tokenName')
+    } else {
+      tokenName = _.get(product, 'title')
     }
     return tokenName.toLowerCase()
   }, [])
 
+  const filledProducts = useMemo(() => {
+    // { farm: [], pool: [], rebalancing: [], ... }
+    const defaultProducts = {
+      farm: [],
+      pool: [],
+      rebalancing: [],
+      longtermstake: [],
+    }
+    products.forEach((product) => {
+      defaultProducts[product.type.toLowerCase()].push({
+        productType: product.type,
+        ...product.data,
+      })
+    })
+    return _.flatten(Object.values(defaultProducts))
+  }, [products])
+
   const filteredProducts = useMemo(() => {
-    if (productType === '' || productType === 'all') return products
-    return products.filter((product) => product.type.toLowerCase() === productType)
-  }, [products, productType])
+    if (currentProductType === '' || currentProductType === 'all') return filledProducts
+    return filledProducts.filter((product) => product.productType.toLowerCase() === currentProductType)
+  }, [filledProducts, currentProductType])
 
   const orderedProducts = useMemo(() => {
-    if (!orderBy) return filteredProducts
-    return _.orderBy(filteredProducts, orderBy.id, orderBy.orderBy)
-  }, [filteredProducts, orderBy])
+    if (!currentOrderBy) return filteredProducts
+    return _.orderBy(filteredProducts, currentOrderBy.id, currentOrderBy.orderBy)
+  }, [filteredProducts, currentOrderBy])
 
   const displayProducts = useMemo(() => {
     if (!searchKeyword.length) return orderedProducts
     return orderedProducts.filter((product) => {
-      return getTokenName(product.data).includes(searchKeyword)
+      return getTokenName(product).includes(searchKeyword)
     })
   }, [orderedProducts, getTokenName, searchKeyword])
 
@@ -81,14 +97,14 @@ const MyProducts: React.FC<{
   )
   const getProductComponent = useCallback(
     (product) => {
-      const type = product.type.toLowerCase()
+      const type = _.get(product, 'productType').toLowerCase()
       if (type === 'farm') {
         return (
           <FarmCard
-            key={product.data.pid}
+            key={product.pid}
             componentType="myInvestment"
-            farm={product.data}
-            myBalancesInWallet={getMyFarmBalancesInWallet([product.data.firstToken, product.data.secondToken])}
+            farm={product}
+            myBalancesInWallet={getMyFarmBalancesInWallet([product.firstToken, product.secondToken])}
             klaytn={klaytn}
             account={account}
           />
@@ -97,26 +113,29 @@ const MyProducts: React.FC<{
       if (type === 'pool') {
         return (
           <PoolCard
-            key={product.data.sousId}
+            key={product.sousId}
             componentType="myInvestment"
-            pool={product.data}
-            myBalanceInWallet={getMyPoolBalanceInWallet(product.data.tokenName, product.data.stakingTokenAddress)}
+            pool={product}
+            myBalanceInWallet={getMyPoolBalanceInWallet(product.tokenName, product.stakingTokenAddress)}
           />
         )
       }
       if (type === 'rebalancing') {
         return (
           <ExploreCard
-            key={product.data.title}
+            key={product.title}
             componentType="myInvestment"
             isHorizontal
-            rebalance={product.data}
-            balance={product.data.myRebalanceBalance}
+            rebalance={product}
+            balance={product.myRebalanceBalance}
             onClickViewDetail={() => {
               // go to link
             }}
           />
         )
+      }
+      if (type === 'longtermstake') {
+        return <LongTermStakeCard longTermStake={product} />
       }
       return null
     },
@@ -124,14 +143,14 @@ const MyProducts: React.FC<{
   )
 
   const getKey = useCallback((product) => {
-    if (product.data.pid) {
-      return product.data.pid
+    if (product.pid) {
+      return product.pid
     }
-    if (product.data.sousId) {
-      return product.data.sousId
+    if (product.sousId) {
+      return product.sousId
     }
-    if (product.data.title) {
-      return product.data.title
+    if (product.title) {
+      return product.title
     }
     return ''
   }, [])

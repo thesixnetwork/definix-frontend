@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { Text, TextProps } from 'definixswap-uikit-v2'
+import { Text, TextProps } from '@fingerlabs/definixswap-uikit-v2'
 
 interface PageTitleType extends TextProps {
   text: string

@@ -21,7 +21,7 @@ import {
   ColorStyles,
   useMatchBreakpoints,
   Grid,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import CardHeading from './CardHeading'
 import { TotalLiquiditySection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
@@ -58,8 +58,8 @@ const CardWrap = styled(Card)`
     }
   }
 `
-const Wrap = styled(Box)`
-  padding: ${({ theme }) => theme.spacing.S_32}px;
+const Wrap = styled(Box)<{ paddingLg: boolean }>`
+  padding: ${({ theme, paddingLg }) => (paddingLg ? theme.spacing.S_40 : theme.spacing.S_32)}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding: ${({ theme }) => theme.spacing.S_20}px;
   }
@@ -202,9 +202,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
 
   if (componentType === 'myInvestment') {
     return (
-      <Wrap>
+      <Wrap paddingLg>
         <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
-          <Box>{renderCardHeading()}</Box>
+          <Flex alignItems="center">{renderCardHeading()}</Flex>
           <Box>{renderStakeAction()}</Box>
           <Box>{renderHarvestAction()}</Box>
         </Grid>
@@ -217,7 +217,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
       <CardWrap {...ribbonProps}>
         {isMobile ? (
           <>
-            <Wrap>
+            <Wrap paddingLg={false}>
               <Flex justifyContent="space-between">
                 {renderCardHeading()}
                 {renderIconButton()}
@@ -237,9 +237,11 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
           </>
         ) : (
           <>
-            <Wrap>
+            <Wrap paddingLg={false}>
               <Flex justifyContent="space-between">
-                <Box className="card-heading">{renderCardHeading()}</Box>
+                <Flex className="card-heading" alignItems="center">
+                  {renderCardHeading()}
+                </Flex>
                 <Box className="total-liquidity-section">{renderTotalLiquiditySection()}</Box>
                 <Box className="my-balance-section">{renderMyBalanceSection()}</Box>
                 <Box className="earnings-section">{renderEarningsSection()}</Box>

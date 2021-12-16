@@ -1,15 +1,17 @@
-import React from 'react'
-import { Flex, Text } from 'definixswap-uikit-v2'
+import React, { useState, useEffect, useCallback } from 'react'
+import { Flex, Text, ArrowLeftGIcon, ArrowRightGIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
-
-import ArrowLeftIcon from '../../../assets/images/ico-16-arrow-left-g.png'
-import ArrowLeftIcon2x from '../../../assets/images/ico-16-arrow-left-g@2x.png'
-import ArrowLeftIcon3x from '../../../assets/images/ico-16-arrow-left-g@3x.png'
-import ArrowRightIcon from '../../../assets/images/ico-16-arrow-right-g.png'
-import ArrowRightIcon2x from '../../../assets/images/ico-16-arrow-right-g@2x.png'
-import ArrowRightIcon3x from '../../../assets/images/ico-16-arrow-right-g@3x.png'
+import { useDispatch } from 'react-redux'
+import { fetchStartIndex } from 'state/longTermStake'
 
 import { IsMobileType } from './types'
+
+interface StakeListPaginationProps extends IsMobileType {
+  itemPerPage: number
+  dataLength: number
+  currentPage: number
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>
+}
 
 const StyledText = styled(Text)`
   margin: 0 2px;
@@ -18,43 +20,84 @@ const StyledText = styled(Text)`
   cursor: pointer;
 `
 
-const StakeListPagination: React.FC<IsMobileType> = ({ isMobile }) => {
+const StyledArrow = styled(Flex)`
+  cursor: pointer;
+`
+
+const StakeListPagination: React.FC<StakeListPaginationProps> = ({
+  isMobile,
+  itemPerPage,
+  dataLength,
+  currentPage,
+  setCurrentPage,
+}) => {
+  const dispatch = useDispatch()
+  const [pageNumbers, setPageNumbers] = useState<number[]>([])
+
+  const onClickNumber = useCallback(
+    (num: number) => {
+      setCurrentPage(num)
+      dispatch(fetchStartIndex((num - 1) * itemPerPage))
+    },
+    [setCurrentPage, dispatch, itemPerPage],
+  )
+
+  const onClickArrow = (direction: string) => {
+    let num: number
+
+    if (direction === 'left') {
+      num = Math.ceil(currentPage / 5) * 5 - 5
+    } else {
+      num = Math.ceil(currentPage / 5) * 5 + 1
+    }
+    onClickNumber(num)
+  }
+
+  useEffect(() => {
+    const pageArray = []
+
+    for (let i = 1; i <= Math.ceil(dataLength / itemPerPage); i++) {
+      if (Math.ceil(i / 5) === Math.ceil(currentPage / 5)) pageArray.push(i)
+    }
+
+    setPageNumbers(pageArray)
+  }, [currentPage, dataLength, itemPerPage])
+
+  useEffect(() => {
+    onClickNumber(1)
+  }, [isMobile, onClickNumber])
+
   return (
     <>
       <Flex mt={`${isMobile ? 'S_12' : 'S_20'}`}>
-        <img
-          style={{ marginRight: '10px', cursor: 'pointer' }}
-          width={16}
-          height={16}
-          src={ArrowLeftIcon}
-          srcSet={`${ArrowLeftIcon2x} 2x, ${ArrowLeftIcon3x} 3x`}
-          alt="Arrow-Left"
-        />
+        {Math.ceil(currentPage / 5) !== 1 ? (
+          <StyledArrow mr="S_10" alignItems="center" onClick={() => onClickArrow('left')}>
+            <ArrowLeftGIcon viewBox="0 0 16 16" width={16} height={16} />
+          </StyledArrow>
+        ) : (
+          <div style={{ width: '26px' }} />
+        )}
 
-        <StyledText textStyle="R_14B" color="black">
-          6
-        </StyledText>
-        <StyledText textStyle="R_14R" color="mediumgrey">
-          7
-        </StyledText>
-        <StyledText textStyle="R_14R" color="mediumgrey">
-          8
-        </StyledText>
-        <StyledText textStyle="R_14R" color="mediumgrey">
-          9
-        </StyledText>
-        <StyledText textStyle="R_14R" color="mediumgrey">
-          10
-        </StyledText>
+        {pageNumbers.map((num) => {
+          return (
+            <StyledText
+              key={num}
+              textStyle={`${currentPage === num ? 'R_14B' : 'R_14R'}`}
+              color={`${currentPage === num ? 'black' : 'mediumgrey'}`}
+              onClick={() => onClickNumber(num)}
+            >
+              {num}
+            </StyledText>
+          )
+        })}
 
-        <img
-          style={{ marginLeft: '10px', cursor: 'pointer' }}
-          width={16}
-          height={16}
-          src={ArrowRightIcon}
-          srcSet={`${ArrowRightIcon2x} 2x, ${ArrowRightIcon3x} 3x`}
-          alt="Arrow-Right"
-        />
+        {Math.ceil(currentPage / 5) !== Math.ceil(dataLength / itemPerPage / 5) ? (
+          <StyledArrow ml="S_10" alignItems="center" onClick={() => onClickArrow('right')}>
+            <ArrowRightGIcon viewBox="0 0 16 16" width={16} height={16} />
+          </StyledArrow>
+        ) : (
+          <div style={{ width: '26px' }} />
+        )}
       </Flex>
     </>
   )

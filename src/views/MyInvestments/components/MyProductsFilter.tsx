@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Flex, Box, DropdownOption, DropdownSet, SearchInput } from 'definixswap-uikit-v2'
+import { Flex, Box, DropdownOption, DropdownSet, SearchInput } from '@fingerlabs/definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
   justify-content: space-between;
@@ -59,6 +59,10 @@ const MyProductsFilter: React.FC<{
         id: 'rebalancing',
         label: t('Rebalancing'),
       },
+      {
+        id: 'longtermstake',
+        label: t('Long-term Stake'),
+      },
     ],
     [t],
   )
@@ -73,7 +77,7 @@ const MyProductsFilter: React.FC<{
   const orderFilter = useMemo<DropdownOption[]>(
     () => [
       {
-        id: 'sortOrder',
+        id: '',
         label: t('Basic order'),
         orderBy: 'asc',
       },

@@ -7,7 +7,16 @@ import axios from 'axios'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
 
-import { Label, Text, Box, ImgHomeTopFinixIcon, Flex } from 'definixswap-uikit-v2'
+import {
+  Label,
+  Text,
+  Box,
+  Flex,
+  ImgHomeTopFinix1x,
+  ImgHomeTopFinix2x,
+  ImgHomeTopFinix3x,
+  ImageSet,
+} from '@fingerlabs/definixswap-uikit-v2'
 
 const Wrap = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -85,13 +94,13 @@ const NoticeBox = styled(Box)`
   }
 `
 
-const Character = styled(Flex)`
+const Character = styled(ImageSet)`
   max-width: 434px;
   width: 45%;
-  align-self: flex-end;
+  /* align-self: flex-end; */
   ${({ theme }) => theme.mediaQueries.mobile} {
     max-width: 260px;
-    align-self: flex-end;
+    /* align-self: flex-end; */
     width: 81%;
   }
 `
@@ -148,9 +157,7 @@ const HomeNotice: React.FC = () => {
           </NoticeSlider>
         )}
       </NoticeBox>
-      <Character>
-        <ImgHomeTopFinixIcon viewBox="0 0 434 200" width="100%" height="100%" />
-      </Character>
+      <Character srcSet={[ImgHomeTopFinix1x, ImgHomeTopFinix2x, ImgHomeTopFinix3x]} alt="" width={434} height={200} />
     </Wrap>
   )
 }

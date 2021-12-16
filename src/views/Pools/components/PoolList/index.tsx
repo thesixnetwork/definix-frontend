@@ -8,7 +8,7 @@ import { useFarms, usePools, useBalances } from 'state/hooks'
 import { fetchBalances } from 'state/wallet'
 import usePoolsList from 'hooks/usePoolsList'
 import { getAddress } from 'utils/addressHelpers'
-import { DropdownOption } from 'definixswap-uikit-v2'
+import { DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
 import NoResultArea from 'components/NoResultArea'
 import PoolCard from '../PoolCard/PoolCard'
 

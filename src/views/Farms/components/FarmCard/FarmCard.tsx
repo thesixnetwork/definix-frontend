@@ -59,6 +59,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   kethPrice,
   account,
   isHorizontal = false,
+  inlineMultiplier = false,
 }) => {
   const { onPresent } = useContext(FarmContext)
   const { isXl } = useMatchBreakpoints()
@@ -136,7 +137,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
   const { onUnstake } = useUnstake(pid)
 
   const renderCardHeading = useCallback(
-    (className?: string, inlineMultiplier?: boolean) => (
+    (className?: string) => (
       <CardHeading
         farm={farm}
         lpLabel={lpLabel}
@@ -148,7 +149,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
         inlineMultiplier={inlineMultiplier || false}
       />
     ),
-    [addLiquidityUrl, farm, finixPrice, isHorizontal, lpLabel, removed],
+    [addLiquidityUrl, farm, finixPrice, isHorizontal, lpLabel, removed, inlineMultiplier],
   )
 
   const renderDepositModal = useCallback(() => {
@@ -239,6 +240,7 @@ const FarmCard: React.FC<FarmCardProps> = ({
             className=""
             isOpenAccordion={isOpenAccordion}
             setIsOpenAccordion={setIsOpenAccordion}
+            inlineMultiplier={inlineMultiplier || false}
           />
           <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
             {renderStakeAction('pa-5')}

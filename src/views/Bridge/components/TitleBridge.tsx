@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { TitleSet, Flex, ImgBridgeTopFinixIcon } from 'definixswap-uikit-v2'
+import { TitleSet, Flex, ImgBridgeTopFinixIcon } from '@fingerlabs/definixswap-uikit-v2'
 
 interface TitleType {
   isMobile: boolean

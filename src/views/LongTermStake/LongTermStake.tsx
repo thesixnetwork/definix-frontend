@@ -1,21 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Helmet } from 'react-helmet-async'
+import React, { useState, useMemo } from 'react'
 import { Route, useRouteMatch } from 'react-router-dom'
-import {
-  LeftPanel,
-  TwoPanelLayout,
-  RightPanel,
-  ShowHideButton,
-  MaxWidthRight,
-  MaxWidthLeft,
-} from 'uikit-dev/components/TwoPanelLayout'
+import { LeftPanel, TwoPanelLayout, MaxWidthLeft } from 'uikit-dev/components/TwoPanelLayout'
 import { Overlay } from 'uikit-dev/components/Overlay'
 import { Heading, useMatchBreakpoints, Text, Link } from 'uikit-dev'
 import styled from 'styled-components'
 import StakeTable from './components/StakeTeble'
 import CardStake from './components/CardStake'
-import CardWhatIs from './components/CardWhatIs'
 import Unstake from './Unstake'
+import CardSuperStake from './CardSuperStake'
 
 const TutorailsLink = styled(Link)`
   text-decoration-line: underline;
@@ -23,18 +15,18 @@ const TutorailsLink = styled(Link)`
 
 const LongTermStake: React.FC = () => {
   const { path } = useRouteMatch()
-  const { isXl } = useMatchBreakpoints()
+  const { isXl, isLg, isMd } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
-  const [isViewTurial, setIsViewTurial] = useState(false)
-  const [isShowRightPanel, setIsShowRightPanel] = useState(!isMobileOrTablet)
+  const isMobile = !isXl && !isLg && !isMd
+  const [isShowRightPanel, setIsShowRightPanel] = useState(false)
 
-  useEffect(() => {
+  useMemo(() => {
     if (isMobileOrTablet) {
       setIsShowRightPanel(false)
     }
   }, [isMobileOrTablet])
 
-  useEffect(() => {
+  useMemo(() => {
     return () => {
       setIsShowRightPanel(true)
     }
@@ -42,10 +34,7 @@ const LongTermStake: React.FC = () => {
 
   return (
     <>
-      <Route exact path={path}>
-        <Helmet>
-          <title>Long-term Stake - Definix - Advance Your Crypto Assets</title>
-        </Helmet>
+      <Route exact path="/long-term-stake">
         <TwoPanelLayout>
           <LeftPanel isShowRightPanel={isShowRightPanel}>
             <Overlay
@@ -57,11 +46,15 @@ const LongTermStake: React.FC = () => {
             />
             <MaxWidthLeft>
               <div className="mb-5">
-                <div className="flex align-center mb-2">
-                  <Heading as="h1" fontSize="32px !important" className="mr-3" textAlign="center">
+                <div className={isMobile ? 'mb-2' : 'flex align-center mb-2'}>
+                  <Heading
+                    as="h1"
+                    fontSize={isMobile ? '28px !important' : '32px !important'}
+                    className={isMobile ? 'mr-3' : 'mr-3 text-center'}
+                  >
                     Long-term Stake
                   </Heading>
-                  <div className="mt-2 flex align-center justify-center">
+                  <div className="mt-2 flex align-center">
                     <Text paddingRight="1">I’m new to this,</Text>
                     <TutorailsLink
                       href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
@@ -71,13 +64,18 @@ const LongTermStake: React.FC = () => {
                     </TutorailsLink>
                   </div>
                 </div>
-                <CardStake isShowRightPanel={isShowRightPanel} />
+                <Route exact path="/long-term-stake">
+                  <CardStake isShowRightPanel={isShowRightPanel} />
+                </Route>
+                <Route exact path="/long-term-stake/top-up">
+                  <CardSuperStake />
+                </Route>
                 <StakeTable />
               </div>
             </MaxWidthLeft>
           </LeftPanel>
 
-          <RightPanel isShowRightPanel={isShowRightPanel}>
+          {/* <RightPanel isShowRightPanel={false}>
             <ShowHideButton
               isShow={isShowRightPanel}
               action={() => {
@@ -100,10 +98,73 @@ const LongTermStake: React.FC = () => {
                 <CardWhatIs />
               </MaxWidthRight>
             )}
-          </RightPanel>
+          </RightPanel> */}
         </TwoPanelLayout>
       </Route>
 
+      <Route exact path="/long-term-stake/top-up">
+        <TwoPanelLayout>
+          <LeftPanel isShowRightPanel={isShowRightPanel}>
+            <Overlay
+              show={isShowRightPanel && isMobileOrTablet}
+              style={{ position: 'absolute', zIndex: 2 }}
+              onClick={() => {
+                setIsShowRightPanel(false)
+              }}
+            />
+            <MaxWidthLeft>
+              <div className="mb-5">
+                <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
+                  <Heading as="h1" fontSize="32px !important" className="mr-3">
+                    Long-term Stake
+                  </Heading>
+                  <div className="mt-2 flex align-center">
+                    <Text paddingRight="1">I’m new to this,</Text>
+                    <TutorailsLink
+                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
+                      target="_blank"
+                    >
+                      How to stake.
+                    </TutorailsLink>
+                  </div>
+                </div>
+                <Route exact path="/long-term-stake">
+                  <CardStake isShowRightPanel={isShowRightPanel} />
+                </Route>
+                <Route exact path="/long-term-stake/top-up">
+                  <CardSuperStake />
+                </Route>
+                <StakeTable />
+              </div>
+            </MaxWidthLeft>
+          </LeftPanel>
+
+          {/* <RightPanel isShowRightPanel={false}>
+            <ShowHideButton
+              isShow={isShowRightPanel}
+              action={() => {
+                setIsShowRightPanel(!isShowRightPanel)
+              }}
+            />
+
+            {isShowRightPanel && (
+              <MaxWidthRight>
+                <Heading
+                  fontSize="18px !important"
+                  textTransform="uppercase"
+                  className={`mr-3 ${!isViewTurial ? 'current' : ''} mb-4`}
+                  onClick={() => {
+                    setIsViewTurial(false)
+                  }}
+                >
+                  What is long-term stake?
+                </Heading>
+                <CardWhatIs />
+              </MaxWidthRight>
+            )}
+          </RightPanel> */}
+        </TwoPanelLayout>
+      </Route>
       <Route exact path={`${path}/unstake`}>
         <Unstake />
       </Route>

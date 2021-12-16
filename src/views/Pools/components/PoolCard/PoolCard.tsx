@@ -17,7 +17,7 @@ import {
   ColorStyles,
   useMatchBreakpoints,
   Grid,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import CardHeading from './CardHeading'
 import { TotalStakedSection, MyBalanceSection, EarningsSection } from './DetailsSection'
 import HarvestActionAirDrop from './HarvestActionAirDrop'
@@ -54,8 +54,8 @@ const CardWrap = styled(Card)`
     }
   }
 `
-const Wrap = styled(Box)`
-  padding: ${({ theme }) => theme.spacing.S_32}px;
+const Wrap = styled(Box)<{ paddingLg: boolean }>`
+  padding: ${({ theme, paddingLg }) => (paddingLg ? theme.spacing.S_40 : theme.spacing.S_32)}px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     padding: ${({ theme }) => theme.spacing.S_20}px;
   }
@@ -194,9 +194,9 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
   if (isInMyInvestment) {
     return (
       <>
-        <Wrap>
+        <Wrap paddingLg>
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap={isMobile ? '16px' : '2rem'}>
-            <Box>{renderCardHeading()}</Box>
+            <Flex alignItems="center">{renderCardHeading()}</Flex>
             <Box>{renderStakeAction()}</Box>
             <Box>{renderHarvestActionAirDrop()}</Box>
           </Grid>
@@ -209,7 +209,7 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
     <CardWrap>
       {isMobile ? (
         <>
-          <Wrap>
+          <Wrap paddingLg={false}>
             <Flex justifyContent="space-between">
               {renderCardHeading()}
               {renderToggleButton()}
@@ -229,9 +229,11 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
         </>
       ) : (
         <>
-          <Wrap>
+          <Wrap paddingLg={false}>
             <Flex justifyContent="space-between">
-              <Box className="card-heading">{renderCardHeading()}</Box>
+              <Flex className="card-heading" alignItems="center">
+                {renderCardHeading()}
+              </Flex>
               <Box className="total-staked-section">{renderTotalStakedSection()}</Box>
               <Box className="my-balance-section">{renderMyBalanceSection()}</Box>
               <Box className="earnings-section">{renderEarningsSection()}</Box>

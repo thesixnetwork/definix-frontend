@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Text, BalanceInput, Flex, AnountButton, Noti, NotiType } from 'definixswap-uikit-v2'
+import { Text, BalanceInput, Flex, AnountButton, Noti, NotiType } from '@fingerlabs/definixswap-uikit-v2'
 import { useForm, useFormState } from 'react-hook-form'
 import BigNumber from 'bignumber.js'
 import useToFixedFloor from 'hooks/useToFixedFloor'

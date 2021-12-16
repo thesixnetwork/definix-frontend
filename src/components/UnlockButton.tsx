@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ButtonVariants, Login, useWalletModal } from 'definixswap-uikit-v2'
+import { Button, ButtonVariants, Login, useWalletModal } from '@fingerlabs/definixswap-uikit-v2'
 import { Trans, useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 

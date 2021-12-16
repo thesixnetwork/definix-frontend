@@ -82,6 +82,7 @@ const Earned: React.FC<{
         price: earnedList.reduce((result, item) => result + item.price, 0),
       }}
       valueList={account ? earnedList : []}
+      unit="FINIX"
     />
   )
 }

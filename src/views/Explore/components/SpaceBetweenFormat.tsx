@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Helper, Text } from 'definixswap-uikit-v2'
+import { Flex, Helper, Text } from '@fingerlabs/definixswap-uikit-v2'
 
 interface SpaceBetweenFormatType {
   title?: string
@@ -25,7 +25,7 @@ const SpaceBetweenFormat: React.FC<SpaceBetweenFormatType> = ({
       {titleElm || (
         <Flex pr="S_16">
           <Text fontSize="14px">{title}</Text>
-          {hint && <Helper text={hint} className="ml-s4" position="top" />}
+          {hint && <Helper text={hint} className="ml-s4" />}
         </Flex>
       )}
       {valueElm || (

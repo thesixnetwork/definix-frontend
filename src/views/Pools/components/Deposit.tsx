@@ -4,8 +4,19 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useSousStake } from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { ColorStyles, Text, Box, TitleSet, Card, Flex, Divider, BackIcon, useModal, Button } from 'definixswap-uikit-v2'
+import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import {
+  ColorStyles,
+  Text,
+  Box,
+  TitleSet,
+  Card,
+  Flex,
+  Divider,
+  BackIcon,
+  useModal,
+  Button,
+} from '@fingerlabs/definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
 import CurrencyText from 'components/CurrencyText'
 import ConfirmModal from './ConfirmModal'
@@ -123,7 +134,7 @@ const Deposit: React.FC<{
   const handleSelectBalanceRate = useCallback(
     (rate: number) => {
       const balance = rate === 100 ? maxValue : maxValue.times(rate / 100)
-      setVal(getBalanceNumber(balance).toString())
+      setVal(getFullDisplayBalance(balance))
     },
     [maxValue, setVal],
   )

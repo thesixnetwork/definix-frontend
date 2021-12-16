@@ -13,7 +13,7 @@ import {
   ChainBscIcon,
   ChainKlaytnIcon,
   useMatchBreakpoints,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
 const Title = styled(Text)`

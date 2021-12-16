@@ -5,7 +5,7 @@ import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { useAllHarvest } from 'hooks/useHarvest'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
-import { Button, Text, Box, ColorStyles, Flex, FireIcon } from 'definixswap-uikit-v2'
+import { Button, Text, Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
@@ -30,7 +30,7 @@ const THEME: { [key: string]: InnerTheme } = {
   white: {
     totalTitleColor: ColorStyles.MEDIUMGREY,
     totalBalanceColor: ColorStyles.BLACK,
-    totalCurrencyColor: ColorStyles.BLACK,
+    totalCurrencyColor: ColorStyles.DEEPGREY,
     itemTitleColor: ColorStyles.MEDIUMGREY,
     itemBalanceColor: ColorStyles.BLACK,
     itemCurrencyColor: ColorStyles.DEEPGREY,
@@ -57,6 +57,15 @@ const THEME: { [key: string]: InnerTheme } = {
   },
 }
 
+const Wrap = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 276px;
+  ${({ theme }) => theme.mediaQueries.mobileXl} {
+    min-height: 100%;
+  }
+`
 const MainSection = styled(Flex)`
   flex-direction: row;
   align-items: center;
@@ -107,7 +116,18 @@ const EarningBoxTemplate: React.FC<{
   total: ValueList
   valueList: ValueList[]
   theme?: 'white' | 'dark'
-}> = ({ isMobile, isMain = false, hasAccount, total, valueList, theme = 'white' }) => {
+  useHarvestButton?: boolean
+  unit?: string
+}> = ({
+  isMobile,
+  isMain = false,
+  hasAccount,
+  total,
+  valueList,
+  theme = 'white',
+  useHarvestButton = true,
+  unit = '',
+}) => {
   const { t } = useTranslation()
   const history = useHistory()
   const [pendingTx, setPendingTx] = useState(false)
@@ -143,7 +163,7 @@ const EarningBoxTemplate: React.FC<{
   }, [displayOnlyTotalPrice, isMobile, curTheme, hasAccount, totalValue])
 
   return (
-    <Box>
+    <Wrap>
       <MainSection>
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
@@ -153,7 +173,12 @@ const EarningBoxTemplate: React.FC<{
             </Text>
           </Flex>
           <Flex alignItems="flex-end">
-            {renderTotalValue()}
+            <Flex alignItems="flex-end">
+              {renderTotalValue()}
+              <Text textStyle="R_16M" color={curTheme.totalBalanceColor} mb="S_2" ml="S_6">
+                {unit.length > 0 ? unit : null}
+              </Text>
+            </Flex>
             {!displayOnlyTotalPrice && (
               <CurrencyText
                 value={hasAccount ? total.price : 0}
@@ -161,27 +186,32 @@ const EarningBoxTemplate: React.FC<{
                 textStyle={`R_${isMobile ? '14' : '16'}M`}
                 color={curTheme.totalCurrencyColor}
                 ml="S_16"
-                mb="S_4"
+                mb="S_2"
               />
             )}
           </Flex>
         </Box>
         <ButtonWrap curTheme={curTheme} className={isMobile ? 'mt-s20' : ''}>
-          {hasAccount ? (
-            <Button
-              md
-              width="100%"
-              variant="brown"
-              className="home-harvest-button"
-              isLoading={pendingTx}
-              disabled={balancesWithValue.length <= 0}
-              onClick={harvestAllFarms}
-            >
-              {t('Harvest')}
-            </Button>
-          ) : (
-            <UnlockButton />
+          {useHarvestButton && (
+            <>
+              {hasAccount ? (
+                <Button
+                  md
+                  width="100%"
+                  variant="red"
+                  className="home-harvest-button"
+                  isLoading={pendingTx}
+                  disabled={balancesWithValue.length <= 0}
+                  onClick={harvestAllFarms}
+                >
+                  {t('Harvest')}
+                </Button>
+              ) : (
+                <UnlockButton />
+              )}
+            </>
           )}
+
           {isMain && (
             <Button md variant="brown" width="100%" mt={isMobile ? '0' : '12px'} onClick={() => history.push('/my')}>
               {t('Detail')}
@@ -198,7 +228,7 @@ const EarningBoxTemplate: React.FC<{
           data={valueList}
         />
       )}
-    </Box>
+    </Wrap>
   )
 }
 

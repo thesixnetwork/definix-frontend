@@ -20,7 +20,7 @@ import {
   ColorStyles,
   Divider,
   VDivider,
-} from 'definixswap-uikit-v2'
+} from '@fingerlabs/definixswap-uikit-v2'
 import { compact, get } from 'lodash'
 import useComineAmount from 'hooks/useCombineAmount'
 import CurrencyText from 'components/CurrencyText'
@@ -199,7 +199,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   if (isInMyInvestment) {
     return (
       <>
-        <Box p={isMobile ? 'S_20' : 'S_32'}>
+        <Box p={isMobile ? 'S_20' : 'S_40'}>
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
             <Flex alignItems="center">
               <Box width={70} mr="S_16">

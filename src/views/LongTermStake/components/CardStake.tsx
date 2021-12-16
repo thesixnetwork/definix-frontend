@@ -7,16 +7,18 @@ import numeral from 'numeral'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import moment from 'moment'
-import { Card, Button, useMatchBreakpoints, Text, Heading, useModal } from 'uikit-dev'
+import { Card, useMatchBreakpoints, Text, Heading } from 'uikit-dev'
+import { Button } from '@fingerlabs/definixswap-uikit-v2'
 import success from 'uikit-dev/animation/complete.json'
 import loading from 'uikit-dev/animation/farmPool.json'
-import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/long-term-stake-opacity.png'
-import badgeBoost from 'uikit-dev/images/for-ui-v2/badge-boost.png'
+import badgeLock from 'uikit-dev/images/for-ui-v2/badge-lock.png'
 import { getTokenImageUrl } from 'utils/getTokenImage'
+import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from '../../../hooks/klipProvider'
 import { useBalances, useAllowance, useLock, useApprove, useAllLock, useApr } from '../../../hooks/useLongTermStake'
 import StakePeriodButton from './StakePeriodButton'
+import LongTermTab from './LongTermTab'
 
 const SuccessOptions = {
   loop: true,
@@ -78,13 +80,6 @@ const Coin = styled.div`
   }
 `
 
-const Centered = styled.div`
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`
-
 const APRBOX = styled.div`
   position: relative;
   text-align: center;
@@ -106,17 +101,6 @@ const StylesButton = styled(Button)`
     color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
   }
 `
-const InputBox = styled.div`
-  display: flex;
-  flex-flow: row nowrap;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
-  background: ${({ theme }) => theme.colors.backgroundBox};
-  border-radius: ${({ theme }) => theme.radii.default};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-`
 
 const NumberInput = styled.input`
   border: none;
@@ -131,7 +115,7 @@ const NumberInput = styled.input`
 
 const Apr = styled(Text)`
   position: absolute;
-  top: 36%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   line-height: 1;
@@ -150,32 +134,9 @@ const AprValue = styled(Text)`
   text-shadow: #00000050 0px 2px 4px;
 `
 
-const AprDecoration = styled(Text)`
-  position: absolute;
-  // top: 56%;
-  // left: 50%;
-  transform: translate(-50%, -50%);
-  line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
-  text-decoration: line-through;
-  text-decoration-color: white;
-`
-
-const BoostValue = styled(Text)`
-  position: absolute;
-  top: 21%;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, -50%);
-  // line-height: 1;
-  font-weight: 600;
-  text-shadow: #00000050 0px 2px 4px;
-`
-
 const AprBox = styled(Card)`
   padding: 0.5rem;
-  background: linear-gradient(90deg, #f3d36c, #e27d3a);
+  background: linear-gradient(90deg, #0973b9, #5cc096);
   opacity: 1;
   background-size: cover;
   background-repeat: no-repeat;
@@ -197,9 +158,8 @@ const CardStake = ({ isShowRightPanel }) => {
   const { isDark } = useTheme()
   const { isXl, isMd, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isMd && !isLg
-  const { connect, account } = useWallet()
+  const { account } = useWallet()
   const [date, setDate] = useState('-')
-  const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const balanceOf = useBalances()
   const allowance = useAllowance()
   const isApproved = account && allowance && allowance.isGreaterThan(0)
@@ -210,7 +170,6 @@ const CardStake = ({ isShowRightPanel }) => {
   const [days, setdays] = useState(28)
   const [percentPenalty, setPercentPenalty] = useState(0)
   const [lockFinix, setLockFinix] = useState('')
-  const [click] = useState(false)
   const [percent, setPercent] = useState(0)
   const [isDisabled, setIsDisabled] = useState(false)
   const [flgTextWarning, setFlgTextWarning] = useState('')
@@ -350,7 +309,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeDOrStake = () => {
     return (
-      <Button fullWidth disabled={isDisabled} className="align-self-center" radii="small" onClick={onStake}>
+      <Button width="100%" md disabled={isDisabled} className="align-self-center" onClick={onStake}>
         Stake
       </Button>
     )
@@ -358,7 +317,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeOrEnter = () => {
     return flgButton === 'enter amount' ? (
-      <Button fullWidth disabled className="align-self-center" radii="small">
+      <Button width="100%" md disabled className="align-self-center">
         Enter an amount
       </Button>
     ) : (
@@ -368,7 +327,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   const renderStakeOrInsufficient = () => {
     return flgButton === 'insufficient' ? (
-      <Button fullWidth disabled className="align-self-center" radii="small">
+      <Button width="100%" md disabled className="align-self-center">
         Insufficient Balance
       </Button>
     ) : (
@@ -380,7 +339,7 @@ const CardStake = ({ isShowRightPanel }) => {
     return isApproved || transactionHash !== '' ? (
       renderStakeOrInsufficient()
     ) : (
-      <Button fullWidth className="align-self-center" radii="small" onClick={handleApprove}>
+      <Button width="100%" md className="align-self-center" onClick={handleApprove}>
         Approve Contract
       </Button>
     )
@@ -428,6 +387,7 @@ const CardStake = ({ isShowRightPanel }) => {
 
   return (
     <div className="align-stretch mt-5">
+      <LongTermTab current="/long-term-stake" />
       <FinixStake className="flex">
         {loadings !== '' && (
           <div
@@ -460,19 +420,19 @@ const CardStake = ({ isShowRightPanel }) => {
             {isMobileOrTablet && (
               <AprBox>
                 <Text color="white" bold fontSize="8px !important">
-                  Boosting Period
-                </Text>
-                <Text style={{ textDecoration: 'line-through' }} color="white" bold fontSize="8px !important">
-                  {`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}
-                </Text>
-                <Text color="white" bold fontSize="8px !important">
                   APR up to {`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}
                 </Text>
               </AprBox>
             )}
           </div>
           <Text color="textSubtle">Please select duration</Text>
-          <StakePeriodButton setPeriod={setPeriod} status={status} />
+          <StakePeriodButton
+            setPeriod={setPeriod}
+            status={status}
+            levelStake={[]}
+            isTopUp={false}
+            harvestProgress={-1}
+          />
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Deposit
@@ -564,17 +524,17 @@ const CardStake = ({ isShowRightPanel }) => {
           {handleBalance()}
           <div className="flex mt-4">
             {!account ? (
-              <Button
-                fullWidth
-                className="align-self-center"
-                radii="small"
-                onClick={() => {
-                  onPresentConnectModal()
-                }}
-              >
-                Connect Wallet
-              </Button>
+              <UnlockButton />
             ) : (
+              // <Button
+              //   width="100%"
+              //   className="align-self-center"
+              //   onClick={() => {
+              //     onPresentConnectModal()
+              //   }}
+              // >
+              //   Connect Wallet
+              // </Button>
               renderApprovalOrStakeButton()
             )}
           </div>
@@ -585,21 +545,13 @@ const CardStake = ({ isShowRightPanel }) => {
             className="col-4 flex flex-column"
           >
             <APRBOX className="px-5 mb-2">
-              <img src={badgeBoost} alt="" />
-              <BoostValue fontSize={isShowRightPanel ? '1vw !important' : '1.2vw !important'} color="white">
-                Boosting Period
-              </BoostValue>
-              <Apr fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'} color="white">
+              <img src={badgeLock} alt="" />
+              <Apr fontSize={isShowRightPanel ? '1.2vw !important' : '1.2vw !important'} color="white">
                 APR up to
               </Apr>
-              <AprDecoration
-                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '50%' : '50%' }}
-                fontSize={isShowRightPanel ? '0.7vw !important' : '0.8vw !important'}
-                color="white"
-              >{`${numeral((apr * 4) / 1.5 || 0).format('0,0.[00]')}%`}</AprDecoration>
               <AprValue
-                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '67%' : '67%' }}
-                fontSize={isShowRightPanel ? '1.1vw !important' : '1.6vw !important'}
+                style={{ left: isShowRightPanel ? '50%' : '50%', top: isShowRightPanel ? '52%' : '52%' }}
+                fontSize={isShowRightPanel ? '2.2vw !important' : '2.2vw !important'}
                 color="white"
               >{`${numeral(apr * 4 || 0).format('0,0.[00]')}%`}</AprValue>
             </APRBOX>
