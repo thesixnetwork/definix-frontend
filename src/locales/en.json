@@ -1,5 +1,5 @@
 {
-  "* 대문자, 긴 문장일 경우 앞 5단어,  \" 금지\nKey": "영어",
+  "Key": "English",
   "What is FINIX token?": "What is FINIX token?",
   "SIX Bridge": "SIX Bridge",
   "English": "English",
@@ -58,7 +58,7 @@
   "Home": "Home",
   "Exchange": "Exchange",
   "Yield Farming": "Yield Farming",
-  "Rebalancing": "Rebalancing",
+  "Rebalancing": "Rebalancing Farm",
   "Finix": "Finix",
   "Bridge": "Bridge",
   "More": "More",
@@ -440,5 +440,13 @@
   "The value entered is out of the valid range": "The value entered is out of the valid range.",
   "There are no routes.": "There are no routes.",
   "Approve to LP": "Approve to LP",
-  "Loading data": "Loading data. Please wait for a moment."
+  "Loading data": "Loading data. Please wait for a moment.",
+  "Go to BSC": "Go to BSC",
+  "Wrap": "Wrap",
+  "Found by address (Add)": "Found by address (Add)",
+  "Approve Failed": "Approve Failed",
+  "Approve Complete": "Approve Complete",
+  "Order APR": "APR",
+  "By Total Liquidity": "Total Liquidity",
+  "By Total staked": "Total staked"
 }
