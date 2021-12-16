@@ -2,11 +2,14 @@
 import React from 'react'
 import { Card, Text } from 'uikit-dev'
 import { ChevronDown } from 'react-feather'
-// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import numeral from 'numeral'
+import {
+  usePrivateData
+} from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { Collapse, IconButton } from '@material-ui/core'
-// import iconExpore from '../../../uikit-dev/images/for-ui-v2/voting/icon-expore.png'
+import { useAvailableVotes } from 'hooks/useVoting'
 
 const Box = styled.div<{ expand: boolean }>`
   border: 1px solid #979797;
@@ -39,11 +42,9 @@ const ExpandMore = styled((props) => {
 }))
 
 const VotingPower = () => {
-  // const { account } = useWallet()
   const { isDark } = useTheme()
-  // const { isXl, isLg } = useMatchBreakpoints()
-  // const isMobile = !isXl && !isLg
-
+  const availableVotes = useAvailableVotes()
+  const { balancevfinix } = usePrivateData()
   const [expanded, setExpanded] = React.useState(false)
   const handleExpandClick = () => {
     setExpanded(!expanded)
@@ -64,7 +65,7 @@ const VotingPower = () => {
             </Text>
             <div className="flex align-center">
               <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="10px">
-                2,938.23
+                {numeral(availableVotes).format('0,0.00')}{' '}
               </Text>
               <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
                 <ChevronDown color={isDark ? 'white' : 'black'} />
@@ -77,7 +78,7 @@ const VotingPower = () => {
             <div className="flex justify-space-between">
               <Text fontSize="16px">Your FINIX held now</Text>
               <Text fontSize="16px" bold color="#30ADFF">
-                2,938.23
+                {numeral(balancevfinix).format('0,0.00')}{' '}
               </Text>
             </div>
           </BoxDetails>
