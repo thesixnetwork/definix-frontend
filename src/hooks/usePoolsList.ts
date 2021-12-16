@@ -4,12 +4,10 @@ import { useCallback } from 'react'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { usePriceFinixUsd, usePriceKethKusdt, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
-import useConverter from 'hooks/useConverter'
 import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const usePoolsList = ({ farms, pools }) => {
-  const { convertToPoolAPR } = useConverter()
   const sixPriceUSD = usePriceSixUsd()
   const finixPriceUSD = usePriceFinixUsd()
   const klayPriceUSD = usePriceKlayKusdt()
@@ -149,8 +147,8 @@ const usePoolsList = ({ farms, pools }) => {
         ...pool,
         isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
         apy: sumApy,
+        apyValue: sumApy.toNumber(),
         farm: stakingTokenFarm,
-        apyValue: convertToPoolAPR(sumApy),
         totalStakedValue: getBalanceNumber(pool.totalStaked),
       }
     })
@@ -166,7 +164,6 @@ const usePoolsList = ({ farms, pools }) => {
     pools,
     priceToKlay,
     sixPriceUSD,
-    convertToPoolAPR,
   ])
 
   return !_.compact(pools.map((pool) => pool.totalStaked)).length ? [] : getPoolsList()

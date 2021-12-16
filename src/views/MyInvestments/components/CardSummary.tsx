@@ -21,7 +21,7 @@ function CardSummary({ products }) {
         {curTab === tabs[1] ? (
           <NetWorth isMobile={isMobile} products={_.groupBy(products, 'type')} />
         ) : (
-          <Earned isMobile={isMobile} />
+          <Earned isMobile={isMobile} products={_.groupBy(products, 'type')} />
         )}
       </Card>
     </>

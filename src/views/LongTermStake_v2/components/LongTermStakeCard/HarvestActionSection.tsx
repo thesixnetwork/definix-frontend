@@ -91,19 +91,18 @@ const HarvestAction: React.FC<{
   const handleGoToDetail = useCallback(() => navigate.push('/long-term-stake'), [navigate])
 
   const harvest = useCallback(async () => {
-    console.log('harvest longterm')
-    // try {
-    //   setIsLoadingHarvest(true)
-    //   const res = await handleHarvest()
-    //   if (!res) {
-    //     // setStatus(!status)
-    //   }
-    // } catch (e) {
-    //   console.error(e)
-    // } finally {
-    //   setIsLoadingHarvest(false)
-    // }
-  }, [])
+    try {
+      setIsLoadingHarvest(true)
+      const res = await handleHarvest()
+      if (!res) {
+        // setStatus(!status)
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsLoadingHarvest(false)
+    }
+  }, [handleHarvest])
 
   const renderAirDrop = useCallback(
     () => (

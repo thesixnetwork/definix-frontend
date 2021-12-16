@@ -4,8 +4,8 @@ import styled from 'styled-components'
 import { useAllLock } from 'hooks/useLongTermStake'
 import { Flex, Box, useMatchBreakpoints, Grid } from '@fingerlabs/definixswap-uikit-v2'
 import MainInfoSection from './MainInfoSection'
-import MyBalanceSection from './DetailsSection'
-import HarvestAction from './HarvestAction'
+import MyBalanceSection from './MyBalanceSection'
+import HarvestActionSection from './HarvestActionSection'
 
 const Wrap = styled(Box)`
   padding: ${({ theme }) => theme.spacing.S_40}px;
@@ -47,7 +47,7 @@ const LongTermStakeCard: React.FC<{
    * Earnings Section
    */
   const renderEarningsSection = useCallback(
-    () => <HarvestAction title={t('Earned')} earnings={finixEarn} hasReward={hasReward} />,
+    () => <HarvestActionSection title={t('Earned')} earnings={finixEarn} hasReward={hasReward} />,
     [t, finixEarn, hasReward],
   )
 

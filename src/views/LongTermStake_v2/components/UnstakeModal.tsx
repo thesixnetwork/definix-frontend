@@ -68,7 +68,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                     <VDivider color="lightgrey" />
                   </Flex>
                   <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
-                    {t('APR')} {numeral(apr).format('0, 0.[00]')}
+                    {t('APR')} {numeral(apr).format('0, 0.[00]')}%
                   </Text>
                 </Flex>
               </Flex>
@@ -107,7 +107,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                     {t('You will receive')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(received).format(0, 0)} {t('FINIX')}
+                    {numeral(received).format('0, 0.[000000]')} {t('FINIX')}
                   </Text>
                 </Flex>
                 <Flex mt="S_12" alignItems="flex-start">
