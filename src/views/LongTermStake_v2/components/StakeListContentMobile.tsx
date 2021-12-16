@@ -51,12 +51,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
               </Flex>
             </Flex>
 
-            <UnstakeButton
-              isMobile={isMobile}
-              balance={item.lockAmount}
-              period={item.days}
-              periodPenalty={item.periodPenalty}
-            />
+            <UnstakeButton isMobile={isMobile} data={item} />
 
             <Divider my="S_20" width="100%" backgroundColor="lightGrey50" />
           </Flex>

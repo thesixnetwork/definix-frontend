@@ -17,7 +17,7 @@ import {
 import styled from 'styled-components'
 
 interface ModalProps {
-  early: boolean
+  canBeUnlock: boolean
   balance: number
   period: number
   apr: number
@@ -37,7 +37,7 @@ const StyledBox = styled(Box)`
 `
 
 const UnstakeModal: React.FC<ModalProps> = ({
-  early,
+  canBeUnlock,
   balance,
   period,
   apr,
@@ -77,7 +77,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
               {numeral(balance).format(0, 0)}
             </Text>
           </Flex>
-          {early && (
+          {!canBeUnlock && (
             <>
               <Divider mt="S_24" />
               <Flex mt="S_24" flexDirection="column">
@@ -128,7 +128,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={onOK}>{early ? t('Early Unstake') : t('Unstake')}</Button>
+        <Button onClick={onOK}>{canBeUnlock ? t('Unstake') : t('Early Unstake')}</Button>
       </ModalFooter>
     </Modal>
   )
