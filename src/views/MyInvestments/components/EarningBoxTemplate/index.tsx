@@ -58,6 +58,9 @@ const THEME: { [key: string]: InnerTheme } = {
 }
 
 const Wrap = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   min-height: 276px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     min-height: 100%;
