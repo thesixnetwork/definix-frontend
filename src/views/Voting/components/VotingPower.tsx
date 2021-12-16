@@ -3,9 +3,7 @@ import React from 'react'
 import { Card, Text } from 'uikit-dev'
 import { ChevronDown } from 'react-feather'
 import numeral from 'numeral'
-import {
-  usePrivateData
-} from 'hooks/useLongTermStake'
+import { usePrivateData } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { Collapse, IconButton } from '@material-ui/core'
