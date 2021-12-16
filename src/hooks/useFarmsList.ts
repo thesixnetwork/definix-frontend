@@ -111,14 +111,14 @@ const useFarmsList = (farms: Farm[]): any => {
         apy: finixApy,
         finixApy,
         klayApy,
-        apyValue: convertToFarmAPR(finixApy),
+        // apyValue: convertToFarmAPR(finixApy),
+        apyValue: finixApy.times(100).toNumber(),
         totalLiquidityValue: Number(totalLiquidityValue),
         lpSymbols: getLpImageUrlsAndSymbols(farm.lpSymbol),
       }
     })
   }, [
     convertToPriceFromToken,
-    convertToFarmAPR,
     farms,
     finixPrice,
     finixPriceVsKlay,

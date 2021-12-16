@@ -107,6 +107,8 @@ const useMyInvestments = () => {
     }, [])
   }, [t, poolsWithApy])
 
+  const finixPrice = useMemo(() => convertToPriceFromSymbol(), [convertToPriceFromSymbol])
+
   // rebalances
   const rebalances = useRebalances()
   const rebalanceBalances = useRebalanceBalances(account) || {}
@@ -123,6 +125,7 @@ const useMyInvestments = () => {
           label: t('Rebalancing'),
           type: 'rebalancing',
           data: {
+            apyValue: new BigNumber(finixPrice).times(rebalance.finixRewardPerYear).div(rebalance.totalAssetValue).times(100).toNumber(),
             ...rebalance,
             myRebalanceBalance,
           },
@@ -134,14 +137,12 @@ const useMyInvestments = () => {
 
   // long term stake
   const userLongTerStake = usePrivateData()
-  // console.log('userLongTerStake: ', userLongTerStake)
   const lockCount = useLockCount()
   const longTermAllowance = useAllowance()
   const longtermApr = useAprCardFarmHome()
   const isApprovedLongTerm = useMemo(() => {
     return account && longTermAllowance && longTermAllowance.isGreaterThan(0)
   }, [account, longTermAllowance])
-  const finixPrice = useMemo(() => convertToPriceFromSymbol(), [convertToPriceFromSymbol])
   const stakedLongTermStake = useMemo(() => {
     const result = []
     if (isApprovedLongTerm && Number(lockCount) !== 0) {

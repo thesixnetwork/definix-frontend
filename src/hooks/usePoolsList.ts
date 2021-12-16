@@ -149,8 +149,8 @@ const usePoolsList = ({ farms, pools }) => {
         ...pool,
         isFinished: pool.sousId === 0 || pool.sousId === 1 ? false : pool.isFinished || block > pool.endBlock,
         apy: sumApy,
+        apyValue: sumApy.toNumber(),
         farm: stakingTokenFarm,
-        apyValue: convertToPoolAPR(sumApy),
         totalStakedValue: getBalanceNumber(pool.totalStaked),
       }
     })
@@ -166,7 +166,6 @@ const usePoolsList = ({ farms, pools }) => {
     pools,
     priceToKlay,
     sixPriceUSD,
-    convertToPoolAPR,
   ])
 
   return !_.compact(pools.map((pool) => pool.totalStaked)).length ? [] : getPoolsList()
