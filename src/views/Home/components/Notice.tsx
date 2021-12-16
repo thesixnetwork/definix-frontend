@@ -95,13 +95,13 @@ const NoticeBox = styled(Box)`
 `
 
 const Character = styled(ImageSet)`
-  max-width: 434px;
-  width: 45%;
-  /* align-self: flex-end; */
+  display: flex;
+  width: 434px;
+  height: 200px;
+  align-self: flex-end;
   ${({ theme }) => theme.mediaQueries.mobile} {
-    max-width: 260px;
-    /* align-self: flex-end; */
-    width: 81%;
+    width: 260px;
+    height: 120px;
   }
 `
 
