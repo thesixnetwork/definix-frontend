@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Flex, Text, Label, Box } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Box } from '@fingerlabs/definixswap-uikit-v2'
 import useConverter from 'hooks/useConverter'
 import BalanceText from 'components/BalanceText'
 import CurrencyText from 'components/CurrencyText'

@@ -2,7 +2,7 @@ import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
 import useFarmsList from 'hooks/useFarmsList'
@@ -125,7 +125,11 @@ const useMyInvestments = () => {
           label: t('Rebalancing'),
           type: 'rebalancing',
           data: {
-            apyValue: new BigNumber(finixPrice).times(rebalance.finixRewardPerYear).div(rebalance.totalAssetValue).times(100).toNumber(),
+            apyValue: new BigNumber(finixPrice)
+              .times(rebalance.finixRewardPerYear)
+              .div(rebalance.totalAssetValue)
+              .times(100)
+              .toNumber(),
             ...rebalance,
             myRebalanceBalance,
           },

@@ -4,12 +4,10 @@ import { useCallback } from 'react'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { usePriceFinixUsd, usePriceKethKusdt, usePriceSixUsd, usePriceKlayKusdt, usePriceKethKlay } from 'state/hooks'
-import useConverter from 'hooks/useConverter'
 import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
 
 const usePoolsList = ({ farms, pools }) => {
-  const { convertToPoolAPR } = useConverter()
   const sixPriceUSD = usePriceSixUsd()
   const finixPriceUSD = usePriceFinixUsd()
   const klayPriceUSD = usePriceKlayKusdt()

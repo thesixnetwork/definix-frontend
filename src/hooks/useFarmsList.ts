@@ -9,7 +9,7 @@ import { Farm } from 'state/types'
 import { useCallback } from 'react'
 
 const useFarmsList = (farms: Farm[]): any => {
-  const { convertToPriceFromToken, convertToFarmAPR } = useConverter()
+  const { convertToPriceFromToken } = useConverter()
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
@@ -117,15 +117,7 @@ const useFarmsList = (farms: Farm[]): any => {
         lpSymbols: getLpImageUrlsAndSymbols(farm.lpSymbol),
       }
     })
-  }, [
-    convertToPriceFromToken,
-    farms,
-    finixPrice,
-    finixPriceVsKlay,
-    kethPriceUsd,
-    klayPrice,
-    sixPrice,
-  ])
+  }, [convertToPriceFromToken, farms, finixPrice, finixPriceVsKlay, kethPriceUsd, klayPrice, sixPrice])
 
   const getFilteredFarms = useCallback(() => {
     const farmsWithApy = getFarmsList()

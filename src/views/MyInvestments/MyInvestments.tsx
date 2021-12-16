@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import React, { useState } from 'react'
