@@ -31,12 +31,18 @@ const StyledCoin = styled(Flex)<{ spacing?: string; isVertical?: boolean }>`
 `
 
 const Coin: React.FC<CoinType> = ({ symbol, children, size, spacing, isVertical, ...props }) => {
-  const space = useMemo(() => spacing ? {
-    ...(isVertical ? { mb: spacing } : { mr: spacing }),
-  } : null, [isVertical, spacing]);
+  const space = useMemo(
+    () =>
+      spacing
+        ? {
+            ...(isVertical ? { mb: spacing } : { mr: spacing }),
+          }
+        : null,
+    [isVertical, spacing],
+  )
 
   return (
-    <StyledCoin alignItems="center" spacing={spacing} isVertical={isVertical} {...props} >
+    <StyledCoin alignItems="center" spacing={spacing} isVertical={isVertical} {...props}>
       <UikitCoin symbol={symbol} size={getSize(size)} {...space} />
       {children}
     </StyledCoin>
