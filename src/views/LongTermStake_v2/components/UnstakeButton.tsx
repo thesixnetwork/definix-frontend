@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr } from 'hooks/useLongTermStake'

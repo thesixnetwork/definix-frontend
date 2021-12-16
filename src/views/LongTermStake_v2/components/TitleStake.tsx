@@ -12,7 +12,7 @@ const TitleStake: React.FC = () => {
           title={t('Long-term Stake')}
           description={t('Stake FINIX to earn vFINIX')}
           linkLabel={t('Learn how to Long-term stake')}
-          link="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
+          link="https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-staking-pool/undefined"
           linkBottom
         />
       </Flex>
