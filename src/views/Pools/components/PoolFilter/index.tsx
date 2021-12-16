@@ -31,12 +31,12 @@ const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderB
       },
       {
         id: 'apyValue',
-        label: t('APR'),
+        label: t('Order APR'),
         orderBy: 'desc',
       },
       {
         id: 'totalStakedValue',
-        label: t('Total staked'),
+        label: t('By Total staked'),
         orderBy: 'desc',
       },
     ],
