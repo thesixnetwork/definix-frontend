@@ -5,15 +5,15 @@ import LanguageDetector from 'i18next-browser-languagedetector'
 // don't want to use this?
 // have a look at the Quick start guide
 // for passing in lng and translations on init
-import enJSON from './locales/en.json';
-import koJSON from './locales/ko.json';
+import enJSON from './locales/en.json'
+import koJSON from './locales/ko.json'
 
 const resources = {
   en: {
-    translation: enJSON
+    translation: enJSON,
   },
   ko: {
-    translation: koJSON
+    translation: koJSON,
   },
 }
 
