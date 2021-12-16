@@ -2,6 +2,7 @@ import { useEffect, useReducer, useRef } from 'react'
 import { noop } from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useToast } from 'state/hooks'
+import { useTranslation } from 'react-i18next'
 
 type CaverPayload = Record<string, unknown> | null
 
@@ -95,6 +96,7 @@ const useApproveConfirmTransaction = ({
   onRequiresApproval,
   onSuccess = noop,
 }: ApproveConfirmTransaction) => {
+  const { t } = useTranslation()
   const { account } = useWallet()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
@@ -131,7 +133,7 @@ const useApproveConfirmTransaction = ({
         .on('error', (error: CaverPayload) => {
           dispatch({ type: 'approve_error', payload: error })
           console.error('An error occurred approving transaction:', error)
-          toastError('An error occurred approving transaction')
+          toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
         })
     },
     handleConfirm: () => {
@@ -146,7 +148,7 @@ const useApproveConfirmTransaction = ({
         .on('error', (error: CaverPayload) => {
           dispatch({ type: 'confirm_error', payload: error })
           console.error('An error occurred confirming transaction:', error)
-          toastError('An error occurred confirming transaction')
+          toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
         })
     },
   }
