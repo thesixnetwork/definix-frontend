@@ -10,9 +10,10 @@ import { IsMobileType } from './types'
 interface UnstakeButtonProps extends IsMobileType {
   balance: number
   period: number
+  periodPenalty: string
 }
 
-const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, balance, period }) => {
+const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, balance, period, periodPenalty }) => {
   const { t } = useTranslation()
   const apr = useApr()
   const [receiveToken, setReceiveToken] = useState<number>(0)
@@ -28,15 +29,6 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, balance, period
     if (days === 180) return 25
     return 40
   }
-  const getLockDay = (days: number) => {
-    const lockDay = new Date()
-
-    if (days === 90) lockDay.setDate(lockDay.getDate() + 7)
-    else if (days === 180) lockDay.setDate(lockDay.getDate() + 14)
-    else lockDay.setDate(lockDay.getDate() + 28)
-
-    return moment(lockDay).format(`DD-MMM-YY HH:mm:ss`)
-  }
 
   const [onPresentUnstakeModal] = useModal(
     <UnstakeModal
@@ -45,7 +37,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, balance, period
       period={period}
       apr={getApr(period)}
       fee={getFee(period)}
-      end={getLockDay(period)}
+      periodPenalty={periodPenalty}
       received={receiveToken}
       onOK={() => null}
     />,

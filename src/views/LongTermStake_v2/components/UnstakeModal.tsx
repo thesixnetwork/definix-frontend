@@ -22,7 +22,7 @@ interface ModalProps {
   period: number
   apr: number
   fee: number
-  end: string
+  periodPenalty: string
   received: number
   onOK?: () => any
   onDismiss?: () => any
@@ -42,7 +42,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
   period,
   apr,
   fee,
-  end,
+  periodPenalty,
   received,
   onOK = () => null,
   onDismiss = () => null,
@@ -95,7 +95,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                   </Text>
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text textStyle="R_14M" color="deepgrey">
-                      {end} GMT+9
+                      {periodPenalty} GMT+9
                     </Text>
                     <Text textStyle="R_12R" color="mediumgrey">
                       {t('*Asia/Seoul')}
@@ -117,7 +117,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                   <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
                     <Trans
                       i18nKey="Do you want to unstake?"
-                      values={{ '15-Nov-21 14:57:20 GMT+9': `${end} GMT+9` }}
+                      values={{ '15-Nov-21 14:57:20 GMT+9': `${periodPenalty} GMT+9` }}
                       components={[<strong />]}
                     />
                   </Text>
