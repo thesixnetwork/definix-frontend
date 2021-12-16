@@ -1,11 +1,6 @@
-import BigNumber from 'bignumber.js'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { QuoteToken } from 'config/constants/types'
-import { getTokenImageUrl } from 'utils/getTokenImage'
-import useConverter from 'hooks/useConverter'
 import { Flex, Text, Label, Box } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
@@ -34,14 +29,6 @@ const BalanceTextWrap = styled(Box)`
   }
 `
 
-const PriceText = styled(CurrencyText)`
-  color: ${({ theme }) => theme.colors.mediumgrey};
-  ${({ theme }) => theme.textStyle.R_14R};
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    ${({ theme }) => theme.textStyle.R_12R};
-  }
-`
-
 const MyBalanceSection: React.FC<{
   title: string
   myBalance: number | null
@@ -63,64 +50,4 @@ const MyBalanceSection: React.FC<{
   )
 }
 
-const Wrap = styled(Flex)`
-  flex-direction: column;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-top: ${({ theme }) => theme.spacing.S_20}px;
-  }
-`
-const TitleWrap = styled(Flex)`
-  margin-bottom: ${({ theme }) => theme.spacing.S_2}px;
-  align-items: flex-start;
-`
-const ValueWrap = styled(Box)`
-  margin-top: -2px;
-`
-const TokenNameText = styled(Text)`
-  padding-left: 2px;
-  padding-bottom: 1px;
-  color: ${({ theme }) => theme.colors.deepgrey};
-  ${({ theme }) => theme.textStyle.R_12M};
-`
-const TokenImage = styled.img`
-  width: 20px;
-  height: auto;
-  object-fit: contain;
-`
-const EarningsSection: React.FC<{
-  title: string
-  earnings: number
-}> = ({ title, earnings }) => {
-  const { convertToPriceFromSymbol, convertToPriceFormat } = useConverter()
-
-  // const earningsValue = useMemo(() => {
-  //   return getBalanceNumber(earnings)
-  // }, [earnings])
-
-  const earningsPrice = useMemo(() => {
-    const price = convertToPriceFromSymbol()
-    return convertToPriceFormat(new BigNumber(earnings).multipliedBy(price).toNumber())
-  }, [earnings, convertToPriceFromSymbol, convertToPriceFormat])
-
-  return (
-    <Wrap>
-      <TitleWrap>
-        <TitleSection hasMb={false}>{title}</TitleSection>
-        <Box>
-          <TokenImage src={getTokenImageUrl('finix')} alt="finix" />
-        </Box>
-      </TitleWrap>
-      <ValueWrap>
-        <BalanceTextWrap>
-          <Flex alignItems="end">
-            <BalanceText value={earnings} className="balance-text" />
-            <TokenNameText>{QuoteToken.FINIX}</TokenNameText>
-          </Flex>
-        </BalanceTextWrap>
-        <PriceText value={earningsPrice} prefix="=" />
-      </ValueWrap>
-    </Wrap>
-  )
-}
-
-export { MyBalanceSection, EarningsSection }
+export default MyBalanceSection
