@@ -68,7 +68,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                     <VDivider color="lightgrey" />
                   </Flex>
                   <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
-                    {t('APR')} {numeral(apr).format('0, 0.[00]')}
+                    {t('APR')} {numeral(apr).format('0, 0.[00]')}%
                   </Text>
                 </Flex>
               </Flex>
