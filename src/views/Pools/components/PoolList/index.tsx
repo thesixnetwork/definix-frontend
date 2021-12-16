@@ -73,11 +73,12 @@ const PoolList: React.FC<{
     // stakedOnly => no pool
     // !liveOnly => no result
     // stakedOnly && !liveOnly => no pool
+    if (poolsWithApy.length === 0) return t('Loading data')
     if (stakedOnly) {
       return t('There are no pools in deposit.')
     }
     return t('No search results')
-  }, [t, stakedOnly])
+  }, [t, stakedOnly, poolsWithApy])
 
   useEffect(() => {
     fetchAllBalances()

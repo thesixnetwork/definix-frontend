@@ -48,8 +48,9 @@ const FarmList: React.FC<{
   }, [searchKeyword, orderedFarms])
 
   const emptyAreaMessage = useMemo(() => {
+    if (farmsWithApy.length === 0) return t('Loading data')
     return stakedOnly ? t('There are no farms in deposit.') : t('No search results')
-  }, [t, stakedOnly])
+  }, [t, stakedOnly, farmsWithApy])
 
   const getTokenAddress = useCallback((token: string) => {
     const realTokenAddress = getAddress(token)
