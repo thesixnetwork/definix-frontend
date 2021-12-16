@@ -11,6 +11,7 @@ import CardSuperStake from './CardSuperStake'
 
 const TutorailsLink = styled(Link)`
   text-decoration-line: underline;
+  margin-left: 4px;
 `
 
 const LongTermStake: React.FC = () => {
@@ -51,13 +52,14 @@ const LongTermStake: React.FC = () => {
                     as="h1"
                     fontSize={isMobile ? '28px !important' : '32px !important'}
                     className={isMobile ? 'mr-3' : 'mr-3 text-center'}
+                    color="black"
                   >
                     Long-term Stake
                   </Heading>
                   <div className="mt-2 flex align-center">
                     <Text paddingRight="1">I’m new to this,</Text>
                     <TutorailsLink
-                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
+                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-staking-pool/undefined"
                       target="_blank"
                     >
                       How to stake.
@@ -65,7 +67,7 @@ const LongTermStake: React.FC = () => {
                   </div>
                 </div>
                 <Route exact path="/long-term-stake">
-                  <CardStake isShowRightPanel={isShowRightPanel} />
+                  <CardStake /* isShowRightPanel={isShowRightPanel} */ />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
                   <CardSuperStake />
@@ -115,13 +117,13 @@ const LongTermStake: React.FC = () => {
             <MaxWidthLeft>
               <div className="mb-5">
                 <div className={`${!isMobile ? 'flex align-center mb-2' : 'mb-2'}`}>
-                  <Heading as="h1" fontSize="32px !important" className="mr-3">
+                  <Heading as="h1" fontSize="32px !important" className="mr-3" color="black">
                     Long-term Stake
                   </Heading>
                   <div className="mt-2 flex align-center">
                     <Text paddingRight="1">I’m new to this,</Text>
                     <TutorailsLink
-                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
+                      href="https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-staking-pool/undefined"
                       target="_blank"
                     >
                       How to stake.
@@ -129,7 +131,7 @@ const LongTermStake: React.FC = () => {
                   </div>
                 </div>
                 <Route exact path="/long-term-stake">
-                  <CardStake isShowRightPanel={isShowRightPanel} />
+                  <CardStake /* isShowRightPanel={isShowRightPanel} */ />
                 </Route>
                 <Route exact path="/long-term-stake/top-up">
                   <CardSuperStake />
