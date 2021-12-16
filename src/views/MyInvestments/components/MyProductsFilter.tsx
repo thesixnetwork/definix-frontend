@@ -32,6 +32,9 @@ const DropdownWrap = styled(Box)`
   }
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     width: 50%;
+    &:first-child {
+      min-width: 176px;
+    }
   }
 `
 
