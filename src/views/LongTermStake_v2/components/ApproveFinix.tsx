@@ -106,7 +106,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
             <Button
               height="48px"
               mb="S_12"
-              disabled={isApproved || transactionHash !== '' || isError}
+              disabled={(!isApproved && transactionHash === '') || isError}
               onClick={onPresentStakeModal}
             >
               {t('Stake')}
