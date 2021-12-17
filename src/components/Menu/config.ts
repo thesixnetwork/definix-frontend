@@ -65,12 +65,8 @@ export const links = (t: (key: string) => string) => {
       activeIcon: 'GnbMoreNIcon',
       items: [
         {
-          label: t('GitBook'),
+          label: t('Document'),
           href: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
-        },
-        {
-          label: t('Partnership'),
-          href: 'https://docs.google.com/forms/d/e/1FAIpQLScQcrUmV53N5y-ita6zD4Do8nQ6zdI_Al795jMUK--HSbHU5Q/viewform',
         },
       ],
     },
