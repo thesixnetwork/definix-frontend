@@ -13,7 +13,6 @@ import CardInvestment from './components/CardInvestment'
 const WrapGrid = styled.div<{ isAccount: boolean }>`
   position: relative;
   display: grid;
-  padding-top: 30px;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 32px;
   grid-template-areas:

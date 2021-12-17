@@ -133,7 +133,7 @@ const useApproveConfirmTransaction = ({
         .on('error', (error: CaverPayload) => {
           dispatch({ type: 'approve_error', payload: error })
           console.error('An error occurred approving transaction:', error)
-          toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
+          toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
         })
     },
     handleConfirm: () => {
@@ -148,7 +148,7 @@ const useApproveConfirmTransaction = ({
         .on('error', (error: CaverPayload) => {
           dispatch({ type: 'confirm_error', payload: error })
           console.error('An error occurred confirming transaction:', error)
-          toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
+          toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
         })
     },
   }
