@@ -79,6 +79,7 @@ const TR = styled.tr`
     background: #f7f7f8;
     border-top: 1px solid: ${({ theme }) => theme.colors.border};
   }
+  
 `
 const TD = styled.td<{ align?: string }>`
   width: 100%;

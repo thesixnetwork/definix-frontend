@@ -66,57 +66,61 @@ const TextHorizontal = styled.div`
 
 const TabInfos = ({ tab }) => {
   return (
-    <CardTopicList as={Link} to="/voting/detail">
-      <div>
-        <Heading fontSize="18px !important">
-          Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic
-        </Heading>
-        <TextHorizontal>
-          <Text fontSize="14px !important">End Date</Text>&nbsp;
-          <Text fontSize="14px !important">12-Nov-21 15:00:00 GMT+9</Text>
-        </TextHorizontal>
-        <div className="flex">
-          {tab === 'vote' ? (
-            <>
-              <StyledTypes type="vote">
-                <span>Vote Now</span>
-              </StyledTypes>
-              <StyledTypes type="core" className="ml-2 flex">
-                <img src={coreIcon} alt="coreIcon" width={16} />
-                &nbsp;
-                <span>Core</span>
-              </StyledTypes>
-            </>
-          ) : tab === 'soon' ? (
-            <>
-              <StyledTypes type="soon">
-                <span>Soon</span>
-              </StyledTypes>
-              <StyledTypes type="community" className="ml-2 flex">
-                <img src={communityIcon} alt="communityIcon" width={32} />
-                <span>Community</span>
-              </StyledTypes>
-            </>
-          ) : (
-            tab === 'closed' && (
+    <>
+      <CardTopicList as={Link} to="/voting/detail">
+        <div>
+          <Heading fontSize="18px !important">
+            Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic
+          </Heading>
+          <TextHorizontal>
+            <Text fontSize="14px !important">End Date</Text>&nbsp;
+            <Text fontSize="14px !important" bold>
+              12-Nov-21 15:00:00 GMT+9
+            </Text>
+          </TextHorizontal>
+          <div className="flex">
+            {tab === 'vote' ? (
               <>
-                <StyledTypes type="closed">
-                  <span>Closed</span>
+                <StyledTypes type="vote">
+                  <span>Vote Now</span>
+                </StyledTypes>
+                <StyledTypes type="core" className="ml-2 flex">
+                  <img src={coreIcon} alt="coreIcon" width={16} />
+                  &nbsp;
+                  <span>Core</span>
+                </StyledTypes>
+              </>
+            ) : tab === 'soon' ? (
+              <>
+                <StyledTypes type="soon">
+                  <span>Soon</span>
                 </StyledTypes>
                 <StyledTypes type="community" className="ml-2 flex">
                   <img src={communityIcon} alt="communityIcon" width={32} />
                   <span>Community</span>
                 </StyledTypes>
               </>
-            )
-          )}
-          &nbsp;
+            ) : (
+              tab === 'closed' && (
+                <>
+                  <StyledTypes type="closed">
+                    <span>Closed</span>
+                  </StyledTypes>
+                  <StyledTypes type="community" className="ml-2 flex">
+                    <img src={communityIcon} alt="communityIcon" width={32} />
+                    <span>Community</span>
+                  </StyledTypes>
+                </>
+              )
+            )}
+            &nbsp;
+          </div>
         </div>
-      </div>
-      <Styled as={Link} to="/voting/detail">
-        <Image src={nextIcon} width={28} height={28} />
-      </Styled>
-    </CardTopicList>
+        <Styled as={Link} to="/voting/detail">
+          <Image src={nextIcon} width={28} height={28} />
+        </Styled>
+      </CardTopicList>
+    </>
   )
 }
 

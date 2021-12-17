@@ -49,6 +49,22 @@ const CardTable = styled(Card)`
   }
 `
 
+const CardList = styled(Card)`
+  position: relative;
+  content: '';
+  background-color: ${({ theme }) => theme.mediaQueries.md};
+  background-size: cover;
+  background-repeat: no-repeat;
+  right: 0;
+  overflow: auto;
+  box-shadow: unset;
+  border-radius: unset;
+
+  a {
+    display: block;
+  }
+`
+
 const Table = styled.table`
   width: 100%;
   border-collapse: separate;
@@ -72,6 +88,7 @@ const BtnDetails = styled(Button)`
   font-style: italic;
   font-weight: normal;
   background-color: ${({ theme }) => theme.colors.primary};
+  color: #ffffff;
 `
 
 // const BtnClaim = styled(Button)`
@@ -96,7 +113,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const isMobile = !isXl && !isLg
 
   return (
-    <CardTable>
+    <CardList>
       <Table>
         <TR>
           {cols.map((c) => (
@@ -158,7 +175,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
           </>
         )}
       </Table>
-    </CardTable>
+    </CardList>
   )
 }
 
@@ -208,7 +225,7 @@ const VotingPartProposal = ({ rbAddress }) => {
   }, [])
   return (
     <>
-      <Card className="my-4">
+      <CardTable className="my-4">
         <div className="pa-4 pt-3 bd-b">
           <Text fontSize="26px" bold marginTop="10px">
             Participated Proposal
@@ -235,7 +252,7 @@ const VotingPartProposal = ({ rbAddress }) => {
           className="px-4 py-2"
           onChange={onPageChange}
         />
-      </Card>
+      </CardTable>
     </>
   )
 }
