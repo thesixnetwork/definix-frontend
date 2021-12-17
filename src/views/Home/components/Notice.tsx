@@ -18,6 +18,7 @@ import {
 import NoticeItem from './NoticeItem'
 
 export interface NoticeProps {
+  id: number
   title: string
   content: string
   link?: string
@@ -26,11 +27,13 @@ export interface NoticeProps {
 
 const KO_NOTICE_LIST: NoticeProps[] = [
   {
+    id: 0,
     title: 'Definix 클레이튼 체인 G2 Beta 런칭!',
     content: `Definix가 클레이튼 체인을 대상으로 G2 서비스를 런칭하였습니다.
     다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
   },
   {
+    id: 1,
     title: '여러분의 목소리를 들려주세요',
     content: `디피닉스는 홀더분들의 목소리에 항상 귀기울이고 있습니다.
     베타서비스에 불편한점, 개선점 있으시면 피드백 부탁드립니다.`,
@@ -40,11 +43,13 @@ const KO_NOTICE_LIST: NoticeProps[] = [
 ]
 const EN_NOTICE_LIST: NoticeProps[] = [
   {
+    id: 0,
     title: 'Definix on Klaytn Chain G2 beta launch!',
     content: `Definix Generation 2 service has been launched on Klaytn Chain.
     Long-term stake and Super stack are also in the works, so please wait a little bit!`,
   },
   {
+    id: 1,
     title: 'Let your voice be heard',
     content: `Definix is always listening to the voices of holders.
     If there are any inconveniences or improvements to the beta service, please give us feedback.`,
@@ -176,7 +181,7 @@ const HomeNotice: React.FC = () => {
         ) : (
           <NoticeSlider {...SliderOptions}>
             {notices.map((notice) => (
-              <NoticeItem {...notice} />
+              <NoticeItem key={notice.id} {...notice} />
             ))}
           </NoticeSlider>
         )}
