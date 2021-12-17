@@ -255,28 +255,28 @@ const YourVoteList = () => {
           </Text>
         </div>
         {/* <div className="ma-3"> */}
-          <TransactionTable
-            rows={transactions}
-            isLoading={isLoading}
-            empText={
-              'Don`t have any transactions in this votes.'
-              // currentTab === 0
-              //   ? 'Don`t have any transactions in this votes.'
-              //   : 'You haven`t made any transactions in this votes.'
-            }
-            total
-          />
-          {/* <Text fontSize="16px" bold lineHeight="1" marginTop="10px">
+        <TransactionTable
+          rows={transactions}
+          isLoading={isLoading}
+          empText={
+            'Don`t have any transactions in this votes.'
+            // currentTab === 0
+            //   ? 'Don`t have any transactions in this votes.'
+            //   : 'You haven`t made any transactions in this votes.'
+          }
+          total
+        />
+        {/* <Text fontSize="16px" bold lineHeight="1" marginTop="10px">
             Yes, agree with you.
           </Text> */}
-          <div className="flex align-center ma-3">
-            <Button variant="success" radii="small" size="sm" disabled>
-              Claim Voting Power
-            </Button>
-            <Text fontSize="14px" color="text" paddingLeft="14px">
-              Claim will be available after the the voting time is ended.
-            </Text>
-          </div>
+        <div className="flex align-center ma-3">
+          <Button variant="success" radii="small" size="sm" disabled>
+            Claim Voting Power
+          </Button>
+          <Text fontSize="14px" color="text" paddingLeft="14px">
+            Claim will be available after the the voting time is ended.
+          </Text>
+        </div>
         {/* </div> */}
       </Card>
     </>
