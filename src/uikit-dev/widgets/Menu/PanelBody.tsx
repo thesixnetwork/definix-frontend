@@ -176,7 +176,7 @@ const PanelBody: React.FC<Props> = (props) => {
         </StyleLight>
       )}
 
-      <a href="http://google.com" target="_blank" rel="noopener noreferrer" className="mx-2">
+      <a href="http://g2.klaytn.definix.com" target="_blank" rel="noopener noreferrer" className="mx-2">
         <img src={g2en} alt="" />
       </a>
       {/* <BorderBox>
