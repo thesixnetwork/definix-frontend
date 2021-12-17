@@ -58,7 +58,7 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   onPresentWithdraw,
 }) => {
   const { t } = useTranslation()
-  const { toastError } = useToast()
+  const { toastError, toastSuccess } = useToast()
   const { convertToBalanceFormat } = useConverter()
   const [isLoadingApproveContract, setIsLoadingApproveContract] = useState(false)
 
@@ -75,13 +75,19 @@ const StakeAction: React.FC<FarmStakeActionProps> = ({
   const handleApprove = useCallback(async () => {
     try {
       setIsLoadingApproveContract(true)
-      await onApprove()
+      const txHash = await onApprove()
+      if (txHash) {
+        toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
+      } else {
+        // user rejected tx or didn't go thru
+        throw new Error()
+      }
     } catch (e) {
-      toastError(t('{{Action}} Fail', { Action: t('actionApprove') }))
+      toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
     } finally {
       setIsLoadingApproveContract(false)
     }
-  }, [onApprove, toastError, t])
+  }, [onApprove, toastError, toastSuccess, t])
 
   return (
     <>
