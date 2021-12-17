@@ -26,13 +26,13 @@ export interface NoticeProps {
 
 const KO_NOTICE_LIST: NoticeProps[] = [
   {
-    title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
-    content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+    title: 'Definix 클레이튼 체인 G2 Beta 런칭!',
+    content: `Definix가 클레이튼 체인을 대상으로 G2 서비스를 런칭하였습니다.
   다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
   },
   {
-    title: 'Definix 클레이튼 체인 V2 Beta 런칭!',
-    content: `Definix가 클레이튼 체인을 대상으로 V2 서비스를 런칭하였습니다.
+    title: 'Definix 클레이튼 체인 G2 Beta 런칭!',
+    content: `Definix가 클레이튼 체인을 대상으로 G2 서비스를 런칭하였습니다.
   다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
     link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
     linkLabel: 'Beta 피드백 보내기',
