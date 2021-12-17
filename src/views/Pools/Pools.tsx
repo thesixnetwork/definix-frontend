@@ -23,11 +23,11 @@ const Pool: React.FC = () => {
   const { account }: { account: string } = useWallet()
   const { path } = useRouteMatch()
   const [stackedOnly, setStackedOnly] = useState(false)
-  const [liveOnly, setLiveOnly] = useState(true)
+  // const [liveOnly, setLiveOnly] = useState(true)
   const [pageState, setPageState] = useState('list')
   const [pageData, setPageData] = useState(null)
   const [selectedOrderBy, setSelectedOrderBy] = useState<DropdownOption>()
-  const [searchKeyword, setSearchKeyword] = useState<string>('')
+  // const [searchKeyword, setSearchKeyword] = useState<string>('')
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -63,21 +63,13 @@ const Pool: React.FC = () => {
               <PoolFilter
                 stackedOnly={stackedOnly}
                 setStackedOnly={setStackedOnly}
-                liveOnly={liveOnly}
-                setLiveOnly={setLiveOnly}
                 orderBy={(order) => setSelectedOrderBy(order)}
-                search={(keyword: string) => setSearchKeyword(keyword)}
               />
             </Box>
 
             <>
               <Route exact path={`${path}`}>
-                <PoolList
-                  liveOnly={liveOnly}
-                  stakedOnly={stackedOnly}
-                  searchKeyword={searchKeyword}
-                  orderBy={selectedOrderBy}
-                />
+                <PoolList stakedOnly={stackedOnly} orderBy={selectedOrderBy} />
               </Route>
               {/* <Route path={`${path}/history`}>
                 {orderBy(finishedPools, ['sortOrder']).map((pool) => (

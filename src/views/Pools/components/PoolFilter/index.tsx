@@ -27,7 +27,7 @@ const ToggleWrap = styled(Flex)`
   justify-content: flex-end;
 `
 
-const PoolFilter = ({ stackedOnly, setStackedOnly, liveOnly, setLiveOnly, orderBy, search }) => {
+const PoolFilter = ({ stackedOnly, setStackedOnly, orderBy }) => {
   const { t } = useTranslation()
   const { isMaxXl } = useMatchBreakpoints()
 
