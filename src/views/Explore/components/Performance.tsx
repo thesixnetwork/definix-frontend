@@ -66,7 +66,7 @@ const Performance: React.FC<PerformanceType> = ({
         <Flex alignItems="center" width={size.width}>
           <TwoLineFormat
             large={!isMobile}
-            title={t('Sharpe Ratio')}
+            title={t('Sharpe')}
             value={`${numeral(sharpRatio).format('0,0.00')}`}
             hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
           />
