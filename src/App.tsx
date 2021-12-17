@@ -22,7 +22,6 @@ const Explore = lazy(() => import('./views/Explore'))
 const Error = lazy(() => import('./views/Error'))
 const MyInvestments = lazy(() => import('./views/MyInvestments'))
 const LongTermStakeV2 = lazy(() => import('./views/LongTermStake_v2'))
-const LongTermStake = lazy(() => import('./views/LongTermStake'))
 const Bridge = lazy(() => import('./views/Bridge'))
 
 // This config is required for number formating
@@ -79,13 +78,8 @@ const App: React.FC = () => {
               <Route path="/my">
                 <MyInvestments />
               </Route>
-              {process.env.NODE_ENV === 'development' && (
-                <Route path="/long-term-stake-v2">
-                  <LongTermStakeV2 />
-                </Route>
-              )}
               <Route path="/long-term-stake">
-                <LongTermStake />
+                <LongTermStakeV2 />
               </Route>
               <Route path="/bridge">
                 <Bridge />
