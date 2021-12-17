@@ -170,7 +170,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
         {isFinished && sousId !== 0 && sousId !== 1 && <PoolSash type="finish" />}
 
         <CustomTitle className="bg-gray">
-          <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} />
+          {/* <Image src={`/images/coins/${tokenName}.png`} width={56} height={56} /> */}
           <Heading as="h2" fontSize="20px !important" className="ml-3" color="inherit">
             {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')}
           </Heading>
@@ -180,11 +180,11 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           <p className="mb-3">
             Stake {tokenName} to earn {sousId === 1 || sousId === 0 ? 'FINIX' : 'SIX'}
           </p>
-          <Image
+          {/* <Image
             src={sousId === 1 || sousId === 0 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'}
             width={96}
             height={96}
-          />
+          /> */}
         </div>
 
         <div className="pa-5 pt-0">
@@ -348,7 +348,7 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           <Heading as="h2" className="mr-2" color="inherit">
             My Funds
           </Heading>
-          <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} />
+          {/* <Image src={`/images/coins/${tokenName}.png`} width={40} height={40} /> */}
         </CustomTitle>
 
         <div className="flex flex-column align-center">
@@ -419,11 +419,11 @@ const PoolCard: React.FC<HarvestProps> = ({ pool }) => {
           <Heading as="h2" className="mr-2" color="inherit">
             My Rewards
           </Heading>
-          <Image
+          {/* <Image
             src={sousId === 1 || sousId === 0 ? '/images/coins/FINIX.png' : '/images/coins/SIX.png'}
             width={40}
             height={40}
-          />
+          /> */}
         </CustomTitle>
 
         <div className="flex flex-column align-center">

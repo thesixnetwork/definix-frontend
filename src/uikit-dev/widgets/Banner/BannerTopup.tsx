@@ -131,7 +131,7 @@ const BannerTopup = () => {
                       FINIX ready to harvest
                     </Text>
                     <div className="flex align-center">
-                      <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                      {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} /> */}
                       <Text color="primary" fontSize="14px" fontWeight="bold" paddingLeft="4px">
                         {totalAllMyFarms} FINIX
                       </Text>
@@ -164,7 +164,7 @@ const BannerTopup = () => {
                     FINIX ready to harvest
                   </Text>
                   <div className="flex align-center">
-                    <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} />
+                    {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" width={24} /> */}
                     <Text color="primary" fontSize="18px" fontWeight="bold" paddingLeft="4px">
                       {totalAllMyFarms} FINIX
                     </Text>
