@@ -4,7 +4,8 @@ import _ from 'lodash'
 import moment from 'moment'
 import numeral from 'numeral'
 import { Card, Flex, Divider } from '@fingerlabs/definixswap-uikit-v2'
-import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
+import { useApr, useAllLock, usePrivateData, useAllowance } from 'hooks/useLongTermStake'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import VFinixAprButton from './VFinixAprButton'
 import BalanceFinix from './BalanceFinix'
@@ -12,26 +13,25 @@ import ApproveFinix from './ApproveFinix'
 import EstimateVFinix from './EstimateVFinix'
 import { IsMobileType } from './types'
 
-interface CardFinixStakeProps extends IsMobileType {
-  hasAccount: boolean
-}
-
 const FlexCard = styled(Flex)`
   flex-direction: column;
   align-items: center;
 `
 
-const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount }) => {
+const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
   const [error, setError] = useState<string>('')
-  const [approve] = useState<boolean>(true)
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
   const today = new Date()
   const endDay = moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
   const { balancefinix } = usePrivateData()
+
+  const { account } = useWallet()
+  const allowance = useAllowance()
+  const isApproved = account && allowance && allowance.isGreaterThan(0)
 
   const data = [
     {
@@ -76,8 +76,8 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
           <BalanceFinix
-            hasAccount={hasAccount}
-            approve={approve}
+            hasAccount={!!account}
+            isApproved={isApproved}
             minimum={data.find((item) => item.day === days).minStake}
             inputBalance={inputBalance}
             setInputBalance={setInputBalance}
@@ -87,15 +87,15 @@ const CardFinixStake: React.FC<CardFinixStakeProps> = ({ isMobile, hasAccount })
           />
           <ApproveFinix
             isMobile={isMobile}
-            hasAccount={hasAccount}
-            approve={approve}
+            hasAccount={!!account}
+            isApproved={isApproved}
             inputBalance={inputBalance}
             days={days}
             endDay={endDay}
             earn={getVFinix(days, inputBalance)}
             isError={!!error}
           />
-          <EstimateVFinix hasAccount={hasAccount} endDay={endDay} earn={getVFinix(days, inputBalance)} />
+          <EstimateVFinix hasAccount={!!account} endDay={endDay} earn={getVFinix(days, inputBalance)} />
         </FlexCard>
       </Card>
     </>
