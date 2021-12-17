@@ -1,0 +1,15 @@
+{
+  "sheetId": "12-dWTuxdzOkJm5h_fnUZwfL9xmX9ly19SFgLcno4H3w",
+  "sheetName": "Language",
+  "defaultValue": "",
+  "result": {
+    "en": {
+      "keyCol": "$D",
+      "valueCol": "$E"
+    },
+    "ko": {
+      "keyCol": "$D",
+      "valueCol": "$F"
+    }
+  }
+}
