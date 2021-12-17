@@ -68,6 +68,10 @@ export const links = (t: (key: string) => string) => {
           label: t('Document'),
           href: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
         },
+        {
+          label: t('Feedback'),
+          href: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
+        },
       ],
     },
   ]
