@@ -40,7 +40,7 @@ const Menu = (props) => {
       setLang={({ code }) => i18n.changeLanguage(code)}
       isDark={isDark}
       toggleTheme={toggleTheme}
-      links={links(t)}
+      links={links(t, i18n.languages[0])}
       {...props}
     />
   )

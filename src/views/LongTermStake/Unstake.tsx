@@ -1,8 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import numeral from 'numeral'
 import React, { useCallback } from 'react'
-import { Helmet } from 'react-helmet-async'
-import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import { ArrowBackIcon, Button, Card, Text, useMatchBreakpoints, Heading } from 'uikit-dev'
 import { Link, useHistory } from 'react-router-dom'
 import { Redirect } from 'react-router'
@@ -37,16 +35,6 @@ const Finix = styled.div`
     height: 32px;
     margin: 0px 12px 0px 6px;
   }
-`
-
-const LeftPanelAbsolute = styled(LeftPanel)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  padding-bottom: 24px;
 `
 
 const Balance = styled(Card)`
@@ -169,98 +157,91 @@ const Unstake: React.FC = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Explore - Definix - Advance Your Crypto Assets</title>
-      </Helmet>
-      <TwoPanelLayout>
-        <LeftPanelAbsolute isShowRightPanel={false}>
-          <MaxWidth>
-            <div className={`align-stretch mt-5 ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
-              <Card className="mb-4">
-                <div className={`${isMobileOrTablet ? 'pa-4 pt-2' : 'px-6 py-6'} `}>
-                  <div className="flex justify-space-between mb-2">
-                    <Button
-                      variant="text"
-                      as={Link}
-                      to="/long-term-stake"
-                      ml="-12px"
-                      padding="0 12px"
-                      size="sm"
-                      startIcon={<ArrowBackIcon color="textSubtle" />}
-                    >
-                      <Text fontSize="14px" color="textSubtle">
-                        Back
-                      </Text>
-                    </Button>
-                  </div>
-                  <div className="text-center">
-                    <Coin className="mb-6">
-                      <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                    </Coin>
-                    <Heading as="h1" fontSize="24px !important">
-                      Long-term Stake
-                    </Heading>
-                    <div className="flex justify-center mb-6">
-                      <Period>
-                        <Text color="#30adff" bold fontSize="16px !important">
-                          {multiplier}X {days} days
-                        </Text>
-                      </Period>
-                      <Apr>
-                        <Text color="white" bold fontSize="10px !important">
-                          APR {`${numeral(vFinixPrice * multiplier || 0).format('0,0.[00]')}%`}
-                        </Text>
-                      </Apr>
-                    </div>
-                  </div>
-                  <div className="mb-7">
-                    <Text color="textSubtle" lineHeight="0.5">
-                      Unstake
+      <MaxWidth>
+        <div className={`align-stretch mt-5 ${isMobileOrTablet ? 'flex-wrap' : ''}`}>
+          <Card className="mb-4">
+            <div className={`${isMobileOrTablet ? 'pa-4 pt-2' : 'px-6 py-6'} `}>
+              <div className="flex justify-space-between mb-2">
+                <Button
+                  variant="text"
+                  as={Link}
+                  to="/long-term-stake"
+                  ml="-12px"
+                  padding="0 12px"
+                  size="sm"
+                  startIcon={<ArrowBackIcon color="textSubtle" />}
+                >
+                  <Text fontSize="14px" color="textSubtle">
+                    Back
+                  </Text>
+                </Button>
+              </div>
+              <div className="text-center">
+                <Coin className="mb-6">
+                  <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                </Coin>
+                <Heading as="h1" fontSize="24px !important">
+                  Long-term Stake
+                </Heading>
+                <div className="flex justify-center mb-6">
+                  <Period>
+                    <Text color="#30adff" bold fontSize="16px !important">
+                      {multiplier}X {days} days
                     </Text>
-                    <Balance className="flex align-center">
-                      <NumberInput fontSize="18px !important">{(amount && amount.toLocaleString()) || 0}</NumberInput>
-                      <Input>
-                        <Finix>
-                          <img src={`/images/coins/${'FINIX'}.png`} alt="" />
-                        </Finix>
-                        <Heading as="h1" fontSize="18px !important">
-                          FINIX
-                        </Heading>
-                      </Input>
-                    </Balance>
-                  </div>
-                  {canBeUnlock && (
-                    <>
-                      <Warning className="flex mb-6">
-                        <img src={warning} alt="" />
-                        <Text className="ml-2" bold fontSize="14px !important" lineHeight="1" fontWeight="initial">
-                          Do you want to unstake? Your FINIX will be locked for {periodPenalty} GMT+9 to receive staked
-                          amount.
-                        </Text>
-                      </Warning>
-                      <div className="flex mt-4">
-                        <Text className="col-6">Early unstake fee</Text>
-                        <Text className="col-6 text-right" color="#30ADFF">
-                          {penaltyRate}%
-                        </Text>
-                      </div>
-                      <div className="flex mt-4 mb-6">
-                        <Text className="col-8">You will received (after {periodPenalty} GMT+9)</Text>
-                        <Text className="col-4 text-right" color="#30ADFF">
-                          {amount - (penaltyRate * amount) / 100} FINIX
-                        </Text>
-                      </div>
-                    </>
-                  )}
-                  <Button fullWidth className="align-self-center" radii="small" onClick={handleUnLock}>
-                    Unstake FINIX
-                  </Button>
+                  </Period>
+                  <Apr>
+                    <Text color="white" bold fontSize="10px !important">
+                      APR {`${numeral(vFinixPrice * multiplier || 0).format('0,0.[00]')}%`}
+                    </Text>
+                  </Apr>
                 </div>
-              </Card>
+              </div>
+              <div className="mb-7">
+                <Text color="textSubtle" lineHeight="0.5">
+                  Unstake
+                </Text>
+                <Balance className="flex align-center">
+                  <NumberInput fontSize="18px !important">{(amount && amount.toLocaleString()) || 0}</NumberInput>
+                  <Input>
+                    <Finix>
+                      <img src={`/images/coins/${'FINIX'}.png`} alt="" />
+                    </Finix>
+                    <Heading as="h1" fontSize="18px !important">
+                      FINIX
+                    </Heading>
+                  </Input>
+                </Balance>
+              </div>
+              {canBeUnlock && (
+                <>
+                  <Warning className="flex mb-6">
+                    <img src={warning} alt="" />
+                    <Text className="ml-2" bold fontSize="14px !important" lineHeight="1" fontWeight="initial">
+                      Do you want to unstake? Your FINIX will be locked for {periodPenalty} GMT+9 to receive staked
+                      amount.
+                    </Text>
+                  </Warning>
+                  <div className="flex mt-4">
+                    <Text className="col-6">Early unstake fee</Text>
+                    <Text className="col-6 text-right" color="#30ADFF">
+                      {penaltyRate}%
+                    </Text>
+                  </div>
+                  <div className="flex mt-4 mb-6">
+                    <Text className="col-8">You will received (after {periodPenalty} GMT+9)</Text>
+                    <Text className="col-4 text-right" color="#30ADFF">
+                      {amount - (penaltyRate * amount) / 100} FINIX
+                    </Text>
+                  </div>
+                </>
+              )}
+              <Button fullWidth className="align-self-center" radii="small" onClick={handleUnLock}>
+                Unstake FINIX
+              </Button>
             </div>
-          </MaxWidth>
-        </LeftPanelAbsolute>
-      </TwoPanelLayout>
+          </Card>
+        </div>
+      </MaxWidth>
     </>
   )
 }

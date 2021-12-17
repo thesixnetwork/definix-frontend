@@ -1,9 +1,8 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import useConverter from 'hooks/useConverter'
-import { Flex, Box, Text, ColorStyles, Coin } from '@fingerlabs/definixswap-uikit-v2'
+// import useConverter from 'hooks/useConverter'
+import { Flex, Box, Text, Coin } from '@fingerlabs/definixswap-uikit-v2'
 // import ApyButton from './ApyButton'
-// import { CardHeadingProps } from './types'
 
 const StyledCoin = styled(Coin)`
   width: 40px;
@@ -14,15 +13,15 @@ const StyledCoin = styled(Coin)`
   }
 `
 
-const MainInfoSection: React.FC<{ apy: number }> = ({ apy }) => {
-  const { convertToPoolAPRFormat } = useConverter()
-  const displayApy = useMemo(() => {
-    try {
-      return `${convertToPoolAPRFormat(apy)}%`
-    } catch (error) {
-      return '-'
-    }
-  }, [convertToPoolAPRFormat, apy])
+const MainInfoSection: React.FC = () => {
+  // const { convertToPoolAPRFormat } = useConverter()
+  // const displayApy = useMemo(() => {
+  //   try {
+  //     return `${convertToPoolAPRFormat(apy)}%`
+  //   } catch (error) {
+  //     return '-'
+  //   }
+  // }, [convertToPoolAPRFormat, apy])
 
   return (
     <Flex position="relative" alignItems="center">
@@ -33,15 +32,14 @@ const MainInfoSection: React.FC<{ apy: number }> = ({ apy }) => {
       <Flex flexDirection="column">
         <Text textStyle="R_18M">Long-term Stake</Text>
 
-        <Flex alignItems="end">
+        {/* <Flex alignItems="end">
           <Text textStyle="R_14M" color={ColorStyles.ORANGE} style={{ paddingBottom: '2px' }}>
             APR
           </Text>
           <Text textStyle="R_18B" color={ColorStyles.ORANGE} style={{ marginLeft: '4px' }}>
             {displayApy}
           </Text>
-          <Box style={{ marginLeft: '4px' }}>{/* <ApyButton lpLabel={pool.tokenName} apy={pool.apy} /> */}</Box>
-        </Flex>
+        </Flex> */}
       </Flex>
     </Flex>
   )

@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 interface BalanceProps {
   hasAccount: boolean
-  approve: boolean
+  isApproved: boolean
   minimum: number
   inputBalance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
@@ -58,7 +58,7 @@ const StyledText = styled(Text)`
 
 const BalanceFinix: React.FC<BalanceProps> = ({
   hasAccount,
-  approve,
+  isApproved,
   minimum,
   inputBalance,
   setInputBalance,
@@ -80,7 +80,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   const onClickRate = (rate: number) => {
-    if (!hasAccount || !approve) return
+    if (!hasAccount || !isApproved) return
 
     if (rate === 1) setInputBalance(String(balancefinix))
     else setInputBalance((balancefinix * rate).toFixed(2))
@@ -132,7 +132,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
             autoComplete="off"
             autoCorrect="off"
             spellCheck="false"
-            readOnly={!hasAccount || !approve}
+            readOnly={!hasAccount || !isApproved}
           />
           <Flex mt="S_8" mb="S_12">
             <StyledAnountButton selected={selected === 0.25} onClick={() => onClickRate(0.25)}>

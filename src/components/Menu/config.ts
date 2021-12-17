@@ -1,4 +1,4 @@
-export const links = (t: (key: string) => string) => {
+export const links = (t: (key: string) => string, currentLang: string) => {
   return [
     {
       label: t('Home'),
@@ -66,7 +66,13 @@ export const links = (t: (key: string) => string) => {
       items: [
         {
           label: t('Document'),
-          href: 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
+          href: currentLang === 'ko' ? 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/' : 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
+          target: '_blank'
+        },
+        {
+          label: t('Feedback'),
+          href: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
+          target: '_blank'
         },
       ],
     },
