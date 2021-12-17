@@ -13,11 +13,11 @@ import NoResultArea from 'components/NoResultArea'
 import PoolCard from '../PoolCard/PoolCard'
 
 const PoolList: React.FC<{
-  liveOnly: boolean
+  liveOnly?: boolean
   stakedOnly: boolean
-  searchKeyword: string
+  searchKeyword?: string
   orderBy: DropdownOption
-}> = ({ liveOnly, stakedOnly, searchKeyword, orderBy }) => {
+}> = ({ liveOnly = true, stakedOnly, searchKeyword = '', orderBy }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { account } = useWallet()
