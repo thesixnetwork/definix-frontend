@@ -28,14 +28,14 @@ const KO_NOTICE_LIST: NoticeProps[] = [
   {
     title: 'Definix 클레이튼 체인 G2 Beta 런칭!',
     content: `Definix가 클레이튼 체인을 대상으로 G2 서비스를 런칭하였습니다.
-  다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
+    다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
   },
   {
-    title: 'Definix 클레이튼 체인 G2 Beta 런칭!',
-    content: `Definix가 클레이튼 체인을 대상으로 G2 서비스를 런칭하였습니다.
-  다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
+    title: '여러분의 목소리를 들려주세요',
+    content: `디피닉스는 홀더분들의 목소리에 항상 귀기울이고 있습니다.
+    베타서비스에 불편한점, 개선점 있으시면 피드백 부탁드립니다.`,
     link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
-    linkLabel: 'Beta 피드백 보내기',
+    linkLabel: 'Beta 피드백',
   },
 ]
 const EN_NOTICE_LIST: NoticeProps[] = [
@@ -49,7 +49,7 @@ const EN_NOTICE_LIST: NoticeProps[] = [
     content: `Definix is always listening to the voices of holders.
     If there are any inconveniences or improvements to the beta service, please give us feedback.`,
     link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
-    linkLabel: 'Send Feedback for Beta',
+    linkLabel: 'Feedback for Beta',
   },
 ]
 
