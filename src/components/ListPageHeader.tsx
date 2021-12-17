@@ -2,7 +2,6 @@ import React, { useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import {
-  Flex,
   TitleSet,
   Box,
   ImageSet,
@@ -49,11 +48,10 @@ const TitleWrap = styled(Box)<{ imageSize: number }>`
     padding-right: 0;
   }
 `
-const ImgWrap = styled(Flex)`
+const ImgWrap = styled(Box)`
   position: absolute;
+  right: 0;
   bottom: 0;
-  width: 100%;
-  justify-content: flex-end;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     display: none;
   }
@@ -134,7 +132,7 @@ const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
         <TitleSet {...currentTitleSet} />
       </TitleWrap>
       {currentSet.image && (
-        <ImgWrap className="image-wrap">
+        <ImgWrap className="image-wrap" width={currentSet.imageSize.w}>
           <ImageSet srcSet={currentSet.image} alt="" width={currentSet.imageSize.w} height={currentSet.imageSize.h} />
           {/* <currentSet.image display="block" /> */}
         </ImgWrap>

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { QuoteToken } from 'config/constants/types'
 import { getBalanceNumber } from 'utils/formatBalance'
 import useConverter from 'hooks/useConverter'
-import { Flex, Text, ColorStyles, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Label, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 import BalanceText from 'components/BalanceText'
 
