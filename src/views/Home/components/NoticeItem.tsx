@@ -48,7 +48,7 @@ const NoticeItem: React.FC<NoticeProps> = ({ title, content, link, linkLabel }) 
       <Title>{title}</Title>
       <Content>{content}</Content>
       {link && (
-        <Link href={link}>
+        <Link href={link} target="_blank">
           <LinkLabel>{linkLabel}</LinkLabel>
         </Link>
       )}
