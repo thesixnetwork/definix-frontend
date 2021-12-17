@@ -223,13 +223,13 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <BoxDetails expand={expanded}>
                 <div className="flex justify-space-between">
-                <Text fontSize="16px">Your FINIX held now</Text>
-                <Text fontSize="16px" bold color="#30ADFF">
-                  {numeral(balancevfinix).format('0,0.00')}{' '}
-                </Text>
-              </div>
-            </BoxDetails>
-          </Collapse>
+                  <Text fontSize="16px">Your FINIX held now</Text>
+                  <Text fontSize="16px" bold color="#30ADFF">
+                    {numeral(balancevfinix).format('0,0.00')}{' '}
+                  </Text>
+                </div>
+              </BoxDetails>
+            </Collapse>
             <div className="mt-3">
               <Text color="textSubtle">Voting for</Text>
               <Text fontSize="16px" color="text" bold paddingTop="6px">
@@ -237,67 +237,69 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               </Text>
             </div>
             <div className="flex mt-4">
-            <Text className="col-6" color="textSubtle">
-              Vote
-            </Text>
+              <Text className="col-6" color="textSubtle">
+                Vote
+              </Text>
+            </div>
+
+            {isMobileOrTablet ? (
+              <Balance style={{ flexWrap: 'wrap' }}>
+                <NumberInput
+                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                  placeholder="0.00"
+                  value={value}
+                  onChange={handleChange}
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+                {percent !== 1 && (
+                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                      25%
+                    </StylesButton>
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                      50%
+                    </StylesButton>
+                    <StylesButton size="sm" onClick={() => setPercent(1)}>
+                      MAX
+                    </StylesButton>
+                  </div>
+                )}
+              </Balance>
+            ) : (
+              <Balance>
+                <NumberInput
+                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                  placeholder="0.00"
+                  value={value}
+                  onChange={handleChange}
+                  pattern="^[0-9]*[,]?[0-9]*$"
+                />
+                {percent !== 1 && (
+                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                      25%
+                    </StylesButton>
+                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                      50%
+                    </StylesButton>
+                    <StylesButton size="sm" onClick={() => setPercent(1)}>
+                      MAX
+                    </StylesButton>
+                  </div>
+                )}
+              </Balance>
+            )}
           </div>
 
-          {isMobileOrTablet ? (
-            <Balance style={{ flexWrap: 'wrap' }}>
-              <NumberInput
-                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                placeholder="0.00"
-                value={value}
-                onChange={handleChange}
-                pattern="^[0-9]*[,]?[0-9]*$"
-              />
-              {percent !== 1 && (
-                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                    25%
-                  </StylesButton>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                    50%
-                  </StylesButton>
-                  <StylesButton size="sm" onClick={() => setPercent(1)}>
-                    MAX
-                  </StylesButton>
-                </div>
-              )}
-            </Balance>
-          ) : (
-            <Balance>
-              <NumberInput
-                style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                placeholder="0.00"
-                value={value}
-                onChange={handleChange}
-                pattern="^[0-9]*[,]?[0-9]*$"
-              />
-              {percent !== 1 && (
-                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                    25%
-                  </StylesButton>
-                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                    50%
-                  </StylesButton>
-                  <StylesButton size="sm" onClick={() => setPercent(1)}>
-                    MAX
-                  </StylesButton>
-                </div>
-              )}
-            </Balance>
+          {!multiple && (
+            <div className="flex justify-space-between mt-5">
+              <Text color="text" bold>
+                Total Voting Power
+              </Text>
+              <Text color="#30ADFF">000000000</Text>
+            </div>
           )}
-          </div>
-        
-          {!multiple&&(
-          <div className="flex justify-space-between mt-5">
-            <Text color="text" bold>Total Voting Power</Text>
-            <Text color="#30ADFF">000000000</Text>
-          </div>
-          )}
-        
+
           <CardAlert>
             <AlertCircle size={50} color="#F5C858" />
             <Text color="text" paddingLeft="10px">

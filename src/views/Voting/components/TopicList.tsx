@@ -19,25 +19,25 @@ const StyledTypes = styled.div<{ type: string }>`
   background-color: transparent;
   border: 1px solid
     ${({ type }) =>
-    type === 'vote'
-      ? '#30adff'
-      : type === 'core'
+      type === 'vote'
+        ? '#30adff'
+        : type === 'core'
         ? '#55bd92'
         : type === 'soon'
-          ? '#F5C858'
-          : type === 'community'
-            ? '#DA7DC1'
-            : type === 'closed' && '#6E6E6E'};
+        ? '#F5C858'
+        : type === 'community'
+        ? '#DA7DC1'
+        : type === 'closed' && '#6E6E6E'};
   color: ${({ type }) =>
     type === 'vote'
       ? '#30adff'
       : type === 'core'
-        ? '#55bd92'
-        : type === 'soon'
-          ? '#F5C858'
-          : type === 'community'
-            ? '#DA7DC1'
-            : type === 'closed' && '#6E6E6E'};
+      ? '#55bd92'
+      : type === 'soon'
+      ? '#F5C858'
+      : type === 'community'
+      ? '#DA7DC1'
+      : type === 'closed' && '#6E6E6E'};
   border-radius: 10px;
   padding: ${({ type }) => (type === 'community' ? '2px 16px' : type === 'soon' ? '10px 22px' : '10px 16px')};
   font-size: 14px;
@@ -71,10 +71,12 @@ const TabInfos = ({ tab }) => {
         <div>
           <Heading fontSize="18px !important">
             Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic Proposal Topic
-        </Heading>
+          </Heading>
           <TextHorizontal>
             <Text fontSize="14px !important">End Date</Text>&nbsp;
-          <Text fontSize="14px !important" bold>12-Nov-21 15:00:00 GMT+9</Text>
+            <Text fontSize="14px !important" bold>
+              12-Nov-21 15:00:00 GMT+9
+            </Text>
           </TextHorizontal>
           <div className="flex">
             {tab === 'vote' ? (
@@ -84,8 +86,8 @@ const TabInfos = ({ tab }) => {
                 </StyledTypes>
                 <StyledTypes type="core" className="ml-2 flex">
                   <img src={coreIcon} alt="coreIcon" width={16} />
-                &nbsp;
-                <span>Core</span>
+                  &nbsp;
+                  <span>Core</span>
                 </StyledTypes>
               </>
             ) : tab === 'soon' ? (
@@ -99,20 +101,20 @@ const TabInfos = ({ tab }) => {
                 </StyledTypes>
               </>
             ) : (
-                  tab === 'closed' && (
-                    <>
-                      <StyledTypes type="closed">
-                        <span>Closed</span>
-                      </StyledTypes>
-                      <StyledTypes type="community" className="ml-2 flex">
-                        <img src={communityIcon} alt="communityIcon" width={32} />
-                        <span>Community</span>
-                      </StyledTypes>
-                    </>
-                  )
-                )}
-          &nbsp;
-        </div>
+              tab === 'closed' && (
+                <>
+                  <StyledTypes type="closed">
+                    <span>Closed</span>
+                  </StyledTypes>
+                  <StyledTypes type="community" className="ml-2 flex">
+                    <img src={communityIcon} alt="communityIcon" width={32} />
+                    <span>Community</span>
+                  </StyledTypes>
+                </>
+              )
+            )}
+            &nbsp;
+          </div>
         </div>
         <Styled as={Link} to="/voting/detail">
           <Image src={nextIcon} width={28} height={28} />
@@ -130,8 +132,8 @@ const TopicList = ({ isActive }) => {
       ) : isActive === 'soon' ? (
         <TabInfos tab="soon" />
       ) : (
-            <TabInfos tab="closed" />
-          )}
+        <TabInfos tab="closed" />
+      )}
     </>
   )
 }

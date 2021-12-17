@@ -49,7 +49,6 @@ const CardTable = styled(Card)`
   }
 `
 
-
 const CardList = styled(Card)`
   position: relative;
   content: '';
