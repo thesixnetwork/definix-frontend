@@ -16,27 +16,26 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
   padding-top: 30px;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 32px;
-  grid-template-areas: 
-    "notice notice"
+  grid-template-areas:
+    'notice notice'
     ${({ isAccount }) => isAccount && `"investment investment"`}
-    "tvl finix"
-    "apr finix"
-    "apr tweet"
-    "apr tweet"
-    "audit tweet";
-    "audit";
+    'tvl finix'
+    'apr finix'
+    'apr tweet'
+    'apr tweet'
+    'audit tweet';
 
   ${({ theme }) => theme.mediaQueries.mobile} {
-    padding-top: 28px;
+    padding-top: 0;
     column-gap: 16px;
-    grid-template-areas: 
-      "notice"
+    grid-template-areas:
+      'notice'
       ${({ isAccount }) => isAccount && `"investment"`}
-      "tvl"
-      "finix"
-      "apr"
-      "audit"
-      "tweet";
+      'tvl'
+      'finix'
+      'apr'
+      'audit'
+      'tweet';
   }
 `
 

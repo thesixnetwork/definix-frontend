@@ -2260,9 +2260,9 @@
     "@ethersproject/properties" "^5.4.0"
     "@ethersproject/strings" "^5.4.0"
 
-"@fingerlabs/definixswap-uikit-v2@^0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.19.tgz#d19b3126982ebddc2691532fa20ac4772f0a6cf9"
+"@fingerlabs/definixswap-uikit-v2@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.0.20.tgz#e70f2de8ec8c09305c0da7ed62f87bd872fd043b"
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"

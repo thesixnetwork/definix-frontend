@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import CurrencyText from 'components/CurrencyText'
 
 interface Props {
+  isFarm?: boolean
   title: string
   apr: string
   Images: React.ReactElement
@@ -90,7 +91,7 @@ const Apr = styled(Flex)`
   }
 `
 
-const FormAPR: React.FC<Props> = ({ title, apr, totalAssetValue, Images }) => {
+const FormAPR: React.FC<Props> = ({ isFarm = true, title, apr, totalAssetValue, Images }) => {
   const { t } = useTranslation()
 
   return (
@@ -101,7 +102,7 @@ const FormAPR: React.FC<Props> = ({ title, apr, totalAssetValue, Images }) => {
       </LpName>
       <TotalLiquidity>
         <Text className="label" color={ColorStyles.MEDIUMGREY}>
-          {t('Total Liquidity')}
+          {isFarm ? t('Total Liquidity') : t('Total Asset Value')}
         </Text>
         <CurrencyText ml="S_8" className="value" color={ColorStyles.MEDIUMGREY} value={totalAssetValue} />
       </TotalLiquidity>

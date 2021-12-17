@@ -50,9 +50,10 @@ const ExploreHighAPR: React.FC = () => {
 
   return highAprRebalance ? (
     <FormAPR
+      isFarm={false}
       title={highAprRebalance.title}
       totalAssetValue={numeral(_.get(highAprRebalance, 'totalAssetValue', 0)).format('0,0.00')}
-      apr={highAprRebalance.apr.toFixed(2)}
+      apr={numeral(highAprRebalance.apr).format('0,0.00')}
       Images={
         <WrapImage>
           <img src={highAprRebalance.icon[0]} alt="" />
