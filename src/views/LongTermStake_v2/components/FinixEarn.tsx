@@ -25,7 +25,7 @@ const FlexEarn = styled(Flex)`
 const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
   const { t } = useTranslation()
   const { handleHarvest } = useHarvest()
-  const [isLoadingHarvest, setIsLoadingHarvest] = useState(false)
+  const [isLoadingHarvest, setIsLoadingHarvest] = useState<boolean>(false)
 
   const onHarvest = useCallback(async () => {
     try {
