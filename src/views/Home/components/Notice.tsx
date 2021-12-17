@@ -65,6 +65,10 @@ const NoticeSlider = styled(Slider)`
   grid-column-end: 8;
   margin-top: ${({ theme }) => theme.space.S_20}px;
 
+  .slick-slider {
+    margin-top: 48px;
+  }
+
   .slick-dots {
     position: relative;
     justify-content: flex-start;
@@ -105,6 +109,9 @@ const NoticeSlider = styled(Slider)`
     }
     .slick-dots {
       height: 4px;
+    }
+    .slick-slider {
+      margin-top: 20px;
     }
   }
 `
