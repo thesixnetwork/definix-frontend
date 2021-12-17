@@ -10,6 +10,7 @@ const IconToken = styled.div<{ isMobile: string }>`
   width: 48px;
   height: 48px;
   margin-right: ${(props) => props.isMobile};
+  flex-shrink: 0;
 `
 
 interface CardType {
