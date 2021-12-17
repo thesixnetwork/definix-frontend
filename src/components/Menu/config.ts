@@ -12,7 +12,7 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       activeIcon: 'GnbExchangeSIcon',
       items: [
         {
-          label: t('Swap'),
+          label: t('Menu Swap'),
           href: `${process.env.REACT_APP_SWAP_URL}/swap`,
         },
         {
