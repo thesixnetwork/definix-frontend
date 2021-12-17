@@ -1,11 +1,12 @@
 /* eslint-disable no-nested-ternary */
-import React, { ChangeEvent, lazy, useState, useMemo, FormEvent } from 'react'
+import React, { useCallback, ChangeEvent, lazy, useState, useMemo, FormEvent } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { ExternalLink } from 'react-feather'
 import times from 'lodash/times'
 // import useTheme from 'hooks/useTheme'
+import { usePropose } from 'hooks/useVoting'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import { ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints } from 'uikit-dev'
 import Label from 'components/Label'
@@ -55,6 +56,7 @@ const AddProposal: React.FC = () => {
   const isMobile = !isXl && !isLg
   // const { isDark } = useTheme()
   const { account } = useWallet()
+  const { onPropose } = usePropose('0', '0', '0', '0', '0', '0', '0')
 
   const [state, setState] = useState({
     name: '',
@@ -86,6 +88,25 @@ const AddProposal: React.FC = () => {
     updateValue('body', value)
   }
 
+  const handleMakeAProposal = useCallback(async () => {
+    try {
+      const res = onPropose()
+      res
+        .then((r) => {
+          console.log('onPropose', r)
+          // navigate.push('/long-term-stake')
+          // return <Redirect to="/long-term-stake" />
+        })
+        .catch((e) => {
+          console.log('Error', e)
+          // console.log(e)
+        })
+    } catch (e) {
+      console.log('Error', e)
+      // console.error(e)
+    }
+  }, [onPropose])
+
   const options = useMemo(() => {
     return {
       hideIcons: !account ? [] : ['guide', 'fullscreen', 'preview', 'side-by-side', 'image'],
@@ -104,29 +125,46 @@ const AddProposal: React.FC = () => {
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
 
-    console.log('body', body)
-
     try {
-      setIsLoading(true)
-      const proposal = JSON.stringify({
-        ...generatePayloadData(),
-        type: SnapshotCommand.PROPOSAL,
-        payload: {
-          name,
-          body,
-          start: '',
-          end: '',
-          choices: '',
-          // metadata: generateMetaData(),
-          type: '',
-        },
-      })
-      console.log('proposal', proposal)
-      // call api
-    } catch (error) {
-      setIsLoading(false)
+      const res = onPropose()
+      res
+        .then((r) => {
+          console.log('onPropose', r)
+        })
+        .catch((e) => {
+          console.log('Error1', e)
+        })
+    } catch (e) {
+      console.log('Error2', e)
     }
   }
+
+  // const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
+  //   evt.preventDefault()
+
+  //   console.log('body', body)
+
+  //   try {
+  //     setIsLoading(true)
+  //     const proposal = JSON.stringify({
+  //       ...generatePayloadData(),
+  //       type: SnapshotCommand.PROPOSAL,
+  //       payload: {
+  //         name,
+  //         body,
+  //         start: '',
+  //         end: '',
+  //         choices: '',
+  //         // metadata: generateMetaData(),
+  //         type: '',
+  //       },
+  //     })
+  //     console.log('proposal', proposal)
+  //     // call api
+  //   } catch (error) {
+  //     setIsLoading(false)
+  //   }
+  // }
 
   return (
     <>
@@ -245,7 +283,7 @@ const AddProposal: React.FC = () => {
                   </div>
                 </div>
                 <Button type="submit" variant="success" radii="small" className="my-2" size="sm">
-                  Publish
+                  Publishee
                 </Button>
                 <Text color="#F5C858">You need at least 10 voting power to publish a proposal.</Text>
               </div>

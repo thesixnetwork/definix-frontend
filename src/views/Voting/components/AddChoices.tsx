@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
 import { Button, Card, Text, Input, useMatchBreakpoints } from 'uikit-dev'
+import uniqueId from 'lodash/uniqueId'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import Radio from '@material-ui/core/Radio'
@@ -81,10 +82,28 @@ function BpRadio(props) {
   )
 }
 
-const AddChoices = () => {
+export interface Choice {
+  id: string
+  value: string
+}
+
+interface ChoicesProps {
+  choices?: Choice[]
+  onChange?: (newChoices: Choice[]) => void
+}
+
+export const MINIMUM_CHOICES = 2
+export const makeChoice = (): Choice => ({ id: uniqueId(), value: '' })
+
+const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange }) => {
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
+  // const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
+
+  const addChoice = () => {
+    onChange([...choices, makeChoice()])
+  }
 
   return (
     <>
@@ -105,6 +124,32 @@ const AddChoices = () => {
           </RadioGroup>
         </div>
         <div className="ma-3">
+          {/* {choices.map(({ id, value }, index) => {
+            const handleTextInput = (newValue: string) => {
+              const newChoices = [...choices]
+              const choiceIndex = newChoices.findIndex((newChoice) => newChoice.id === id)
+
+              newChoices[choiceIndex].value = newValue
+
+              onChange(newChoices)
+            }
+
+            const handleRemove = () => {
+              onChange(choices.filter((newPrevChoice) => newPrevChoice.id !== id))
+            }
+
+            return (
+              <InputChoice key={id} className="my-3" placeholder="Input choice text" />
+              <Choice
+                key={id}
+                scale="lg"
+                onTextInput={handleTextInput}
+                placeholder={t('Input choice text')}
+                value={value}
+                onRemove={index > 1 ? handleRemove : undefined}
+              />
+            )
+          })} */}
           <InputChoice className="my-3" placeholder="Input choice text" />
           <InputChoice className="my-3" placeholder="Input choice text" />
           <Button variant="success" radii="small" className="mt-2" size="sm">

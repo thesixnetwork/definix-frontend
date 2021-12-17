@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useAllProposalOfType } from '../../../hooks/useVoting'
 import { Button, Heading } from '../../../uikit-dev'
 
 interface CardTabType {
@@ -46,6 +47,7 @@ const CardTab: React.FC<CardTabType> = ({
   className,
   isHeader,
 }) => {
+  const allProposal = useAllProposalOfType()
   return (
     <Tabs className={className}>
       {isHeader && (

@@ -250,6 +250,24 @@ export interface AchievementState {
   data: Achievement[]
 }
 
+export interface Voting {
+  proposalIndex?: BigNumber
+  ipfsHash?: any
+  proposalType?: any
+  proposer?: any
+  startTimestamp?: any
+  endTimestamp?: any
+  optionsCount?: any
+  minimumVotingPower?: any
+  totalVotingPower?: any
+  voteLimit?: any
+  optionVotingPower?: any
+}
+
+export interface VotingState {
+  allProposal: Voting[]
+}
+
 // Global state
 
 export interface State {
@@ -263,4 +281,5 @@ export interface State {
   rebalances: RebalanceState
   wallet: WalletState
   longTerm: LongTermState
+  voting: VotingState
 }

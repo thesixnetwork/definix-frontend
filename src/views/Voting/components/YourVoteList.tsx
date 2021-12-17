@@ -1,13 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
 import Radio from '@material-ui/core/Radio'
-import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Checkbox from '@material-ui/core/Checkbox'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
 import { useAvailableVotes } from '../../../hooks/useVoting'
@@ -37,22 +33,6 @@ const LoadingData = () => (
   </TR>
 )
 
-const CardList = styled(Card)<{ checked: boolean }>`
-  width: 100%;
-  height: 40px;
-  border: 1px solid ${({ theme, checked }) => (checked ? '#30ADFF' : theme.colors.border)};
-  border-radius: 30px;
-  margin: 6px 0px;
-  padding: 0px 20px;
-  display: flex;
-  align-items: center;
-  background: ${({ theme, checked }) => checked && theme.colors.primary};
-  &.Mui-checked {
-    background: #0973b9;
-    border: 1px solid #30adff;
-  }
-`
-
 const CustomRadio = styled(Radio)`
   &.MuiRadio-root {
     color: #fcfcfc;
@@ -67,51 +47,6 @@ const CustomRadio = styled(Radio)`
   }
 `
 
-const BpIcons = styled.span`
-  border-radius: 24px;
-  width: 0.8em;
-  height: 0.75em;
-  background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#E3E6EC')} !important;
-  border: 1.5px solid #979797;
-  margin-left: 2px;
-
-  &.Mui-focusVisible {
-    outline: 2px auto rgba(19, 124, 189, 0.6);
-    outline-offset: 2;
-  }
-`
-
-const BpCheckboxIcons = styled.span`
-  border-radius: 2px;
-  width: 0.65em;
-  height: 0.65em;
-  background-color: ${({ theme }) => (theme.isDark ? '#FFFFFF' : '#E3E6EC')} !important;
-  border: 1.5px solid #979797;
-  margin-left: 2px;
-  &.Mui-focusVisible {
-    outline: 2px auto rgba(19, 124, 189, 0.6);
-    outline-offset: 2;
-  }
-`
-
-const CustomCheckbox = styled(Checkbox)`
-  &.Mui-checked {
-    color: ${({ theme }) => theme.colors.success} !important;
-  }
-
-  &.MuiCheckbox-root {
-    color: #fcfcfc;
-  }
-`
-
-const FormControlLabelCustom = styled(FormControlLabel)`
-  height: 40px;
-  margin: 0 0 0 -10px !important;
-
-  .MuiFormControlLabel-label {
-    flex-grow: 1;
-  }
-`
 const CardTable = styled(Card)`
   position: relative;
   content: '';
@@ -139,16 +74,6 @@ const TD = styled.td<{ align?: string }>`
   height: 64px;
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
-`
-
-const BtnDetails = styled(Button)`
-  padding: 10px 20px;
-  border-radius: 8px;
-  text-align: center;
-  font-size: 12px;
-  font-style: italic;
-  font-weight: normal;
-  background-color: ${({ theme }) => theme.colors.primary};
 `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
