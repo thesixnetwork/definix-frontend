@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { useHarvest } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 
 import { IsMobileType } from './types'
@@ -23,6 +24,34 @@ const FlexEarn = styled(Flex)`
 
 const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
   const { t } = useTranslation()
+  const { handleHarvest } = useHarvest()
+  const [isLoadingHarvest, setIsLoadingHarvest] = useState<boolean>(false)
+
+  const onHarvest = useCallback(async () => {
+    try {
+      setIsLoadingHarvest(true)
+      await handleHarvest()
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsLoadingHarvest(false)
+    }
+  }, [handleHarvest])
+
+  const renderHarvestButton = useCallback(
+    () => (
+      <Button
+        width={`${isMobile ? '100%' : '156px'}`}
+        mt={`${isMobile && 'S_24'}`}
+        disabled={!finixEarn}
+        isLoading={isLoadingHarvest}
+        onClick={onHarvest}
+      >
+        {t('Harvest')}
+      </Button>
+    ),
+    [t, isMobile, finixEarn, isLoadingHarvest, onHarvest],
+  )
 
   return (
     <>
@@ -43,9 +72,7 @@ const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
             </Text>
           </Flex>
         </Flex>
-        <Button width={`${isMobile ? '100%' : '156px'}`} mt={`${isMobile && 'S_24'}`}>
-          {t('Harvest')}
-        </Button>
+        {renderHarvestButton()}
       </FlexEarn>
     </>
   )

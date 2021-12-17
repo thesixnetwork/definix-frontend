@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import numeral from 'numeral'
 import { useTranslation, Trans } from 'react-i18next'
 import {
@@ -14,17 +14,10 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { useUnstakeId, useUnLock } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 
 interface ModalProps {
-  canBeUnlock: boolean
-  balance: number
-  period: number
-  apr: number
-  fee: number
-  periodPenalty: string
-  received: number
-  onOK?: () => any
   onDismiss?: () => any
 }
 
@@ -36,18 +29,23 @@ const StyledBox = styled(Box)`
   }
 `
 
-const UnstakeModal: React.FC<ModalProps> = ({
-  canBeUnlock,
-  balance,
-  period,
-  apr,
-  fee,
-  periodPenalty,
-  received,
-  onOK = () => null,
-  onDismiss = () => null,
-}) => {
+const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { t } = useTranslation()
+  const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
+  const { unLock } = useUnLock()
+  const [isLoadingUnLock, setIsLoadingUnLock] = useState<boolean>(false)
+
+  const handleUnLock = useCallback(async () => {
+    try {
+      setIsLoadingUnLock(true)
+      await unLock(id)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsLoadingUnLock(false)
+      onDismiss()
+    }
+  }, [unLock, id, onDismiss])
 
   return (
     <Modal title={`${t('Confirm Unstake')}`} onDismiss={onDismiss} mobileFull>
@@ -62,22 +60,22 @@ const UnstakeModal: React.FC<ModalProps> = ({
                 </Text>
                 <Flex my="S_4" alignItems="center">
                   <Text mr="S_8" textStyle="R_14R" color="mediumgrey">
-                    {period} {t('days')}
+                    {days} {t('days')}
                   </Text>
                   <Flex height="12px">
                     <VDivider color="lightgrey" />
                   </Flex>
                   <Text ml="S_8" textStyle="R_14R" color="mediumgrey">
-                    {t('APR')} {numeral(apr).format('0, 0.[00]')}%
+                    {t('APR')} {`${numeral(vFinixPrice * multiplier || 0).format('0,0.[00]')}%`}
                   </Text>
                 </Flex>
               </Flex>
             </Flex>
             <Text mt="S_4" textStyle="R_16R" color="black">
-              {numeral(balance).format(0, 0)}
+              {numeral(amount).format(0, 0)}
             </Text>
           </Flex>
-          {!canBeUnlock && (
+          {canBeUnlock && (
             <>
               <Divider mt="S_24" />
               <Flex mt="S_24" flexDirection="column">
@@ -86,7 +84,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                     {t('Early Unstake Fee')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {fee}%
+                    {penaltyRate}%
                   </Text>
                 </Flex>
                 <Flex mb="S_8" justifyContent="space-between">
@@ -107,7 +105,7 @@ const UnstakeModal: React.FC<ModalProps> = ({
                     {t('You will receive')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(received).format('0, 0.[000000]')} {t('FINIX')}
+                    {numeral(amount - (penaltyRate * amount) / 100).format('0, 0.[000000]')} {t('FINIX')}
                   </Text>
                 </Flex>
                 <Flex mt="S_12" alignItems="flex-start">
@@ -128,7 +126,9 @@ const UnstakeModal: React.FC<ModalProps> = ({
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={onOK}>{canBeUnlock ? t('Unstake') : t('Early Unstake')}</Button>
+        <Button isLoading={isLoadingUnLock} onClick={handleUnLock}>
+          {canBeUnlock ? t('Early Unstake') : t('Unstake')}
+        </Button>
       </ModalFooter>
     </Modal>
   )

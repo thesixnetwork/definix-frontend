@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
+import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, useModal, ImgTokenFinixIcon, AlertIcon, Divider } from '@fingerlabs/definixswap-uikit-v2'
+import { useApprove } from 'hooks/useLongTermStake'
+import * as klipProvider from 'hooks/klipProvider'
 import styled from 'styled-components'
 import UnlockButton from 'components/UnlockButton'
 
@@ -9,7 +12,7 @@ import { IsMobileType } from './types'
 
 interface ApproveFinixProps extends IsMobileType {
   hasAccount: boolean
-  approve: boolean
+  isApproved: boolean
   inputBalance: string
   days: number
   endDay: string
@@ -40,7 +43,7 @@ const FlexApprroveBtn = styled(Flex)`
 const ApproveFinix: React.FC<ApproveFinixProps> = ({
   isMobile,
   hasAccount,
-  approve,
+  isApproved,
   inputBalance,
   days,
   endDay,
@@ -54,10 +57,28 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   )
   const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠
 
+  const [transactionHash, setTransactionHash] = useState<string>('')
+  const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
+  const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(false)
+
+  const handleApprove = useCallback(async () => {
+    try {
+      setIsLoadingApprove(true)
+      const txHash = await onApprove()
+      if (txHash) {
+        setTransactionHash(_.get(txHash, 'transactionHash'))
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsLoadingApprove(false)
+    }
+  }, [onApprove])
+
   return (
     <>
       <FlexApprove>
-        {!approve && (
+        {!isApproved && transactionHash === '' && (
           <>
             <Divider width="100%" backgroundColor="lightGrey50" />
             <FlexApprroveBtn>
@@ -70,8 +91,9 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
               {hasAccount && (
                 <Button
                   width={`${isMobile ? '100%' : '186px'}`}
-                  variant={`${approve ? 'line' : 'brown'}`}
-                  disabled={approve}
+                  variant="brown"
+                  isLoading={isLoadingApprove}
+                  onClick={handleApprove}
                 >
                   {t('Approve {{Token}}', { Token: t('FINIX') })}
                 </Button>
@@ -81,7 +103,12 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
         )}
         <Flex flexDirection="column">
           {hasAccount ? (
-            <Button height="48px" mb="S_12" disabled={!approve || isError} onClick={onPresentStakeModal}>
+            <Button
+              height="48px"
+              mb="S_12"
+              disabled={isApproved || transactionHash !== '' || isError}
+              onClick={onPresentStakeModal}
+            >
               {t('Stake')}
             </Button>
           ) : (

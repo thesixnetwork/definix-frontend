@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useCallback } from 'react'
+import _ from 'lodash'
+import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
-import { useApr } from 'hooks/useLongTermStake'
+import { useClaim } from 'hooks/useLongTermStake'
+import { fetchIdData } from 'state/longTermStake'
 
 import UnstakeModal from './UnstakeModal'
 import { AllDataLockType, IsMobileType } from './types'
@@ -12,40 +15,47 @@ interface UnstakeButtonProps extends IsMobileType {
 
 const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   const { t } = useTranslation()
-  const apr = useApr()
-  const [receiveToken, setReceiveToken] = useState<number>(0)
+  const [isLoadingClaim, setIsLoadingClaim] = useState<boolean>(false)
 
-  const getApr = (days: number) => {
-    if (days === 90) return apr
-    if (days === 180) return apr * 2
-    return apr * 4
-  }
-  const getFee = (days: number) => {
-    if (days === 90) return 15
-    if (days === 180) return 25
-    return 40
-  }
+  const dispatch = useDispatch()
+  const { onClaim } = useClaim()
 
-  const [onPresentUnstakeModal] = useModal(
-    <UnstakeModal
-      canBeUnlock={data.canBeUnlock}
-      balance={data.lockAmount}
-      period={data.days}
-      apr={getApr(data.days)}
-      fee={getFee(data.days)}
-      periodPenalty={data.periodPenalty}
-      received={receiveToken}
-      onOK={() => handleUnstake()}
-    />,
-    false,
+  const [onPresentUnstakeModal] = useModal(<UnstakeModal />, false)
+
+  const handleClaim = useCallback(
+    async (Id) => {
+      try {
+        setIsLoadingClaim(true)
+        await onClaim(Id)
+      } catch (e) {
+        console.error(e)
+      } finally {
+        setIsLoadingClaim(false)
+      }
+    },
+    [onClaim],
   )
 
-  const handleClaim = () => {
-    console.log('handleClaim') // eslint-disable-line no-console
-  }
+  const onUnStake = useCallback(
+    (Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days) => {
+      dispatch(fetchIdData(Id, Level, Amount, IsPenalty, CanBeUnlock, PenaltyRate, PeriodPenalty, Multiplier, Days))
+    },
+    [dispatch],
+  )
 
-  const handleUnstake = () => {
-    console.log('handleUnstake') // eslint-disable-line no-console
+  const handleUnstake = (item: AllDataLockType) => {
+    onUnStake(
+      _.get(item, 'id'),
+      _.get(item, 'level'),
+      _.get(item, 'lockAmount'),
+      _.get(item, 'isPenalty'),
+      !_.get(item, 'canBeUnlock'),
+      _.get(item, 'penaltyRate'),
+      _.get(item, 'periodPenalty'),
+      _.get(item, 'multiplier'),
+      _.get(item, 'days'),
+    )
+    onPresentUnstakeModal()
   }
 
   const handleIsunlocked = (item: AllDataLockType) => {
@@ -62,7 +72,12 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
 
   const handleClaimed = (item: AllDataLockType) => {
     return item.canBeClaim ? (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={() => handleClaim()}>
+      <Button
+        width={`${isMobile ? '100%' : '128px'}`}
+        variant="lightbrown"
+        isLoading={isLoadingClaim}
+        onClick={() => handleClaim(_.get(item, 'id'))}
+      >
         {t('Claim')}
       </Button>
     ) : (
@@ -74,11 +89,11 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
 
   const handleCanUnlock = (item: AllDataLockType) => {
     return item.canBeUnlock ? (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={onPresentUnstakeModal}>
+      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={() => handleUnstake(data)}>
         {t('Unstake')}
       </Button>
     ) : (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={onPresentUnstakeModal}>
+      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={() => handleUnstake(data)}>
         {t('Early Unstake')}
       </Button>
     )
@@ -87,12 +102,6 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   const handleNotIsunlocked = (item: AllDataLockType) => {
     return item.isPenalty ? handleClaimed(item) : handleCanUnlock(item)
   }
-
-  useEffect(() => {
-    setReceiveToken(data.lockAmount - (data.lockAmount * getFee(data.days)) / 100)
-
-    return () => setReceiveToken(0)
-  }, [data])
 
   return <>{data.isUnlocked ? handleIsunlocked(data) : handleNotIsunlocked(data)}</>
 }
