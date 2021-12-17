@@ -7,6 +7,7 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
+import { useAvailableVotes } from 'hooks/useVoting'
 import CastVoteModal from '../Modals/CastVoteModal'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
@@ -102,6 +103,7 @@ const VotingCast = () => {
   // const { isDark } = useTheme()
   // const { isXl, isLg } = useMatchBreakpoints()
   // const isMobile = !isXl && !isLg
+  const availableVotes = useAvailableVotes()
   const [onPresentConnectModal] = useModal(<CastVoteModal />)
   const [select, setSelect] = useState({})
 
@@ -197,6 +199,7 @@ const VotingCast = () => {
             radii="small"
             marginTop="10px"
             size="sm"
+            disabled={Number(availableVotes) <= 0}
             onClick={() => {
               onPresentConnectModal()
             }}

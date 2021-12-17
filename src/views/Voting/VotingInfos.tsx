@@ -7,6 +7,7 @@ import { useMatchBreakpoints } from 'uikit-dev'
 
 import VotingDescription from './components/VotingDescription'
 import VotingCast from './components/VotingCast'
+import YourVoteList from './components/YourVoteList'
 import VotingList from './components/VotingList'
 import VotingDetails from './components/VotingDetails'
 import VotingResults from './components/VotingResults'
@@ -25,7 +26,11 @@ const MaxWidthLeft = styled(MaxWidth)`
   }
 `
 
-const VotingInfos: React.FC = () => {
+interface ValueProps {
+  isParticipate?: boolean
+}
+
+const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
   const { path } = useRouteMatch()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
@@ -40,7 +45,7 @@ const VotingInfos: React.FC = () => {
           <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
               <VotingDescription />
-              <VotingCast />
+              {isParticipate ? <YourVoteList /> : <VotingCast />}
               <VotingList rbAddress />
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>

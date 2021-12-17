@@ -50,7 +50,11 @@ const Voting: React.FC = () => {
       </Route>
 
       <Route exact path={`${path}/detail`}>
-        <VotingInfos />
+        <VotingInfos isParticipate={false} />
+      </Route>
+
+      <Route exact path={`${path}/detail/participate`}>
+        <VotingInfos isParticipate/>
       </Route>
 
       <Route exact path={`${path}/make-proposal`}>
