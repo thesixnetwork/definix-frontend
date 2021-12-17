@@ -19,7 +19,7 @@ const Wrap = styled.div`
 `
 
 const Working = styled(Flex)`
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255,255,255,0.9);
   position: absolute;
   left: 0;
   top: 0;
