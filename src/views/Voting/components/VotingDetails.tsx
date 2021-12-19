@@ -49,13 +49,17 @@ const VotingDetails = ({ index }) => {
             {isLoading ? (
               <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
             ) : (
-                <>
-                  <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                    {`${_.get(indexProposal, "indexProposal.proposer", "").substring(0, 6)}...${_.get(indexProposal, "indexProposal.proposer", "").substring(_.get(indexProposal, "indexProposal.proposer", "").length - 4)}`}
-                  </Text>
-                  <ExternalLink size={16} color="#30ADFF" />
-                </>
-              )}
+              <>
+                <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
+                  {`${_.get(indexProposal, 'indexProposal.proposer', '').substring(0, 6)}...${_.get(
+                    indexProposal,
+                    'indexProposal.proposer',
+                    '',
+                  ).substring(_.get(indexProposal, 'indexProposal.proposer', '').length - 4)}`}
+                </Text>
+                <ExternalLink size={16} color="#30ADFF" />
+              </>
+            )}
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -65,15 +69,15 @@ const VotingDetails = ({ index }) => {
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-          {isLoading ? (
+            {isLoading ? (
               <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
             ) : (
-                <>
-                  <Text fontSize="16px" bold color="text" lineHeight="1" >
-                    {_.get(indexProposal, "indexProposal.startTimestamp", "")} GMT+9
-                  </Text>
-                </>
-              )}
+              <>
+                <Text fontSize="16px" bold color="text" lineHeight="1">
+                  {_.get(indexProposal, 'indexProposal.startTimestamp', '')} GMT+9
+                </Text>
+              </>
+            )}
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -83,15 +87,15 @@ const VotingDetails = ({ index }) => {
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-          {isLoading ? (
+            {isLoading ? (
               <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
             ) : (
-                <>
-                  <Text fontSize="16px" bold color="text" lineHeight="1" >
-                    {_.get(indexProposal, "indexProposal.endTimestamp", "")} GMT+9
-                  </Text>
-                </>
-              )}
+              <>
+                <Text fontSize="16px" bold color="text" lineHeight="1">
+                  {_.get(indexProposal, 'indexProposal.endTimestamp', '')} GMT+9
+                </Text>
+              </>
+            )}
           </div>
         </div>
       </Card>

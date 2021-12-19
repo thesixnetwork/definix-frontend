@@ -47,7 +47,6 @@ const CardTab: React.FC<CardTabType> = ({
   className,
   isHeader,
 }) => {
-  
   return (
     <Tabs className={className}>
       {isHeader && (

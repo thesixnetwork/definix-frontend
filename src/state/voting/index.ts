@@ -13,7 +13,7 @@ import { getContract } from '../../utils/caver'
 
 const initialState = {
   allProposal: [],
-  indexProposal: []
+  indexProposal: [],
 }
 
 export const votingSlice = createSlice({
@@ -33,7 +33,6 @@ export const votingSlice = createSlice({
 
 // Actions
 export const { setAllProposal, setProposalIndex } = votingSlice.actions
-
 
 const getAllProposalOfType = async ({ vFinixVoting }) => {
   let allProposal = []
@@ -59,9 +58,11 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
 
       const endTime = new Date(utcEndTimestamp + 3600000 * offset)
 
-     
       dataArray.push({
-        ipfsHash: item.ipfsHash, endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`), proposalType: item.proposalType, proposer: item.proposer
+        ipfsHash: item.ipfsHash,
+        endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
+        proposalType: item.proposalType,
+        proposer: item.proposer,
       })
 
       return dataArray
@@ -72,7 +73,6 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
   }
   return [allProposal]
 }
-
 
 export const fetchAllProposalOfType = () => async (dispatch) => {
   const fetchPromise = []
@@ -103,7 +103,6 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
       startTimestamp.setDate(startTimestamp.getDate())
       startTimestamp = new Date(startTimestamp)
 
-
       let endTimestamp = new Date(new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000)
       endTimestamp.setDate(endTimestamp.getDate())
       endTimestamp = new Date(endTimestamp)
@@ -117,7 +116,11 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
       const endTime = new Date(utcEndTimestamp + 3600000 * offset)
 
       return {
-        ipfsHash: item.ipfsHash, proposer: item.proposer, startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`), endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`), proposalType: item.proposalType
+        ipfsHash: item.ipfsHash,
+        proposer: item.proposer,
+        startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`),
+        endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
+        proposalType: item.proposalType,
       }
     })
     indexProposal = resultByIndex
@@ -132,11 +135,11 @@ export const fetchProposalIndex = (index) => async (dispatch) => {
   fetchPromise.push(
     getProposalByIndex({
       vFinixVoting: getVFinixVoting(),
-      index
+      index,
     }),
   )
   const [[[indexProposal]]] = await Promise.all(fetchPromise)
-  console.log("indexProposal", indexProposal)
+  console.log('indexProposal', indexProposal)
   dispatch(setProposalIndex({ indexProposal }))
 }
 
