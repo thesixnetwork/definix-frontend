@@ -89,7 +89,7 @@ const CardProposals = () => {
             isHeader={false}
           />
           {currentTab === 0 ? (
-            <TopicList isActive="vote" />
+            <TopicList isActive="vote"  />
           ) : currentTab === 1 ? (
             <TopicList isActive="soon" />
           ) : (

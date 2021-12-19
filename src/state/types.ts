@@ -266,6 +266,7 @@ export interface Voting {
 
 export interface VotingState {
   allProposal: Voting[]
+  indexProposal: []
 }
 
 // Global state

@@ -1,18 +1,22 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react'
-import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import React, { useState } from 'react'
+import _ from 'lodash'
+import { Card, Text, useMatchBreakpoints, Skeleton } from 'uikit-dev'
 // import styled from 'styled-components'
 // import moment from 'moment'
 // import numeral from 'numeral'
 import { ExternalLink } from 'react-feather'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useProposalIndex } from '../../../hooks/useVoting'
 // import useTheme from 'hooks/useTheme'
 
-const VotingDetails = () => {
+const VotingDetails = ({ index }) => {
   const { account } = useWallet()
   // const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
+  const indexProposal = useProposalIndex(index)
+  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <>
@@ -24,12 +28,12 @@ const VotingDetails = () => {
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-4'}>
-            <Text fontSize="18px" lineHeight="1">
+            <Text fontSize="16px" lineHeight="1">
               Identifier
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="6px">
+            <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
               QmaSFZ3p
             </Text>
             <ExternalLink size={16} color="#30ADFF" />
@@ -37,40 +41,57 @@ const VotingDetails = () => {
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-4'}>
-            <Text fontSize="18px" lineHeight="1">
+            <Text fontSize="16px" lineHeight="1">
               Creator
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            <Text fontSize="18px" bold lineHeight="1" color="#30ADFF" mr="6px">
-              {/* {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`} */}
-              ddasf...adfdafds
-            </Text>
-            <ExternalLink size={16} color="#30ADFF" />
+            {isLoading ? (
+              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+            ) : (
+                <>
+                  <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
+                    {`${_.get(indexProposal, "indexProposal.proposer", "").substring(0, 6)}...${_.get(indexProposal, "indexProposal.proposer", "").substring(_.get(indexProposal, "indexProposal.proposer", "").length - 4)}`}
+                  </Text>
+                  <ExternalLink size={16} color="#30ADFF" />
+                </>
+              )}
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-4'}>
-            <Text fontSize="18px" lineHeight="1">
+            <Text fontSize="16px" lineHeight="1">
               Start Date
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            <Text fontSize="16px" bold>
-              12-Nov-21 15:00:00 GMT+9
-            </Text>
+          {isLoading ? (
+              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+            ) : (
+                <>
+                  <Text fontSize="16px" bold color="text" lineHeight="1" >
+                    {_.get(indexProposal, "indexProposal.startTimestamp", "")} GMT+9
+                  </Text>
+                </>
+              )}
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-4'}>
-            <Text fontSize="18px" lineHeight="1">
+            <Text fontSize="16px" lineHeight="1">
               End Date
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            <Text fontSize="16px" bold>
-              12-Nov-21 15:00:00 GMT+9
-            </Text>
+          {isLoading ? (
+              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+            ) : (
+                <>
+                  <Text fontSize="16px" bold color="text" lineHeight="1" >
+                    {_.get(indexProposal, "indexProposal.endTimestamp", "")} GMT+9
+                  </Text>
+                </>
+              )}
           </div>
         </div>
       </Card>

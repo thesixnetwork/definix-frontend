@@ -49,7 +49,7 @@ const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
               <VotingList rbAddress />
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
-              <VotingDetails />
+              <VotingDetails index={1}/>
               <VotingResults />
               <VotingPower />
             </div>

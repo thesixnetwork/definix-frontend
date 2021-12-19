@@ -13,6 +13,7 @@ import { getContract } from '../../utils/caver'
 
 const initialState = {
   allProposal: [],
+  indexProposal: []
 }
 
 export const votingSlice = createSlice({
@@ -23,11 +24,16 @@ export const votingSlice = createSlice({
       const { allProposal } = action.payload
       state.allProposal = allProposal
     },
+    setProposalIndex: (state, action) => {
+      const { indexProposal } = action.payload
+      state.indexProposal = indexProposal
+    },
   },
 })
 
 // Actions
-export const { setAllProposal } = votingSlice.actions
+export const { setAllProposal, setProposalIndex } = votingSlice.actions
+
 
 const getAllProposalOfType = async ({ vFinixVoting }) => {
   let allProposal = []
@@ -40,15 +46,33 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
       },
     ]
     const [[proposalOfType]] = await multicall(IProposalFacet.abi, calls)
-    const result = proposalOfType.map((item) => {
-      return { ipfsHash: item.ipfsHash }
+    const dataArray = []
+
+    proposalOfType.map((item) => {
+      let endTimestamp = new Date(new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000)
+      endTimestamp.setDate(endTimestamp.getDate())
+      endTimestamp = new Date(endTimestamp)
+
+      const timeZone = new Date().getTimezoneOffset() / 60
+      const offset = timeZone === -7 && 2
+      const utcEndTimestamp = endTimestamp.getTime()
+
+      const endTime = new Date(utcEndTimestamp + 3600000 * offset)
+
+     
+      dataArray.push({
+        ipfsHash: item.ipfsHash, endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`), proposalType: item.proposalType, proposer: item.proposer
+      })
+
+      return dataArray
     })
-    allProposal = result
+    allProposal = dataArray
   } catch (error) {
     allProposal = []
   }
   return [allProposal]
 }
+
 
 export const fetchAllProposalOfType = () => async (dispatch) => {
   const fetchPromise = []
@@ -57,8 +81,63 @@ export const fetchAllProposalOfType = () => async (dispatch) => {
       vFinixVoting: getVFinixVoting(),
     }),
   )
-  const [[[allProposal]]] = await Promise.all(fetchPromise)
+  const [[allProposal]] = await Promise.all(fetchPromise)
   dispatch(setAllProposal({ allProposal }))
+}
+
+const getProposalByIndex = async ({ vFinixVoting, index }) => {
+  let indexProposal = []
+  try {
+    const calls = [
+      {
+        address: vFinixVoting,
+        name: 'getProposal',
+        params: [index],
+      },
+    ]
+    const [proposalByIndex] = await multicall(IProposalFacet.abi, calls)
+    const resultByIndex = proposalByIndex.map((item) => {
+      console.log('#####', item)
+
+      let startTimestamp = new Date(new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000)
+      startTimestamp.setDate(startTimestamp.getDate())
+      startTimestamp = new Date(startTimestamp)
+
+
+      let endTimestamp = new Date(new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000)
+      endTimestamp.setDate(endTimestamp.getDate())
+      endTimestamp = new Date(endTimestamp)
+
+      const timeZone = new Date().getTimezoneOffset() / 60
+      const offset = timeZone === -7 && 2
+      const utcStartTimestamp = endTimestamp.getTime()
+      const utcEndTimestamp = endTimestamp.getTime()
+
+      const startTime = new Date(utcStartTimestamp + 3600000 * offset)
+      const endTime = new Date(utcEndTimestamp + 3600000 * offset)
+
+      return {
+        ipfsHash: item.ipfsHash, proposer: item.proposer, startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`), endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`), proposalType: item.proposalType
+      }
+    })
+    indexProposal = resultByIndex
+  } catch (error) {
+    indexProposal = []
+  }
+  return [indexProposal]
+}
+
+export const fetchProposalIndex = (index) => async (dispatch) => {
+  const fetchPromise = []
+  fetchPromise.push(
+    getProposalByIndex({
+      vFinixVoting: getVFinixVoting(),
+      index
+    }),
+  )
+  const [[[indexProposal]]] = await Promise.all(fetchPromise)
+  console.log("indexProposal", indexProposal)
+  dispatch(setProposalIndex({ indexProposal }))
 }
 
 export default votingSlice.reducer

@@ -21,7 +21,7 @@ import IVotingFacet from '../config/abi/IVotingFacet.json'
 import { getContract } from '../utils/caver'
 import { State } from '../state/types'
 import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
-import { fetchAllProposalOfType } from '../state/actions'
+import { fetchAllProposalOfType, fetchProposalIndex } from '../state/actions'
 import useRefresh from './useRefresh'
 /* eslint no-else-return: "error" */
 
@@ -58,6 +58,19 @@ export const useAllProposalOfType = () => {
   }, [fastRefresh, dispatch])
 
   return { allProposal }
+}
+
+export const useProposalIndex = (index) => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const indexProposal = useSelector((state: State) => state.voting.indexProposal)
+
+  useEffect(() => {
+    dispatch(fetchProposalIndex(index))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh, dispatch])
+
+  return { indexProposal }
 }
 
 // Make a proposal

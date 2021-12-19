@@ -9,7 +9,7 @@ export {
   fetchTotalSupplyAllTimeMint,
   fetchStartIndex,
 } from './longTermStake'
-export { fetchAllProposalOfType } from './voting'
+export { fetchAllProposalOfType, fetchProposalIndex } from './voting'
 export { clear, remove, push } from './toasts'
 export { fetchRebalances } from './rebalance'
 export { fetchBalances, setDeadline, setSlippage } from './wallet'
