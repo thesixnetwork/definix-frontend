@@ -51,7 +51,8 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                  {index.creator && `${index.creator.substring(0, 6)}...${index.creator.substring(index.creator.length - 4)}`}
+                  {index.creator &&
+                    `${index.creator.substring(0, 6)}...${index.creator.substring(index.creator.length - 4)}`}
                 </Text>
                 <ExternalLink size={16} color="#30ADFF" />
               </>
@@ -88,7 +89,7 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold color="text" lineHeight="1">
-                {index.end_unixtimestamp} GMT+9
+                  {index.end_unixtimestamp} GMT+9
                 </Text>
               </>
             )}

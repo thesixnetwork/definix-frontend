@@ -85,7 +85,7 @@ const TabInfos = ({ tab }) => {
                 <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
               ) : (
                 <Text fontSize="18px !important" bold lineHeight="1" mr="6px">
-                  {_.get(item,'title')}
+                  {_.get(item, 'title')}
                 </Text>
               )}
             </Heading>
