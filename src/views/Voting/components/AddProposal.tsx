@@ -194,7 +194,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
       const epochTime = moment().unix()
 
       const sign = await caver.klay.sign(epochTime.toString(), account)
-  
+
       const voteAPI = process.env.REACT_APP_VOTE_IPFS
       const bodyRequest = {
         message: epochTime.toString(),
@@ -212,18 +212,18 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
         .put(`${voteAPI}`, bodyRequest)
         .then(async (resp) => {
           if (resp) {
-            console.log('resp >>>>>> ',resp.data.result.IpfsHash)
+            console.log('resp >>>>>> ', resp.data.result.IpfsHash)
             await updateValue('ipfs', resp.data.result.IpfsHash)
             const res = onPropose()
             res
               .then((r) => {
-                console.log('r >>>>>> ',r)
+                console.log('r >>>>>> ', r)
                 if (_.get(r, 'status')) {
                   setInterval(() => setIsLoading(false), 5000)
                 }
               })
               .catch((e) => {
-                console.log('e >>>>>> ',e)
+                console.log('e >>>>>> ', e)
                 setIsLoading(false)
               })
           }
