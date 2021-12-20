@@ -5,7 +5,8 @@ import _ from 'lodash'
 import { Card, Heading, Text, Button } from 'uikit-dev'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import CardProposals from './CardProposals'
-import VotingPartProposal from './VotingPartProposal'
+// import VotingPartProposal from './VotingPartProposal'
+import { useIsProposable } from '../../../hooks/useVoting'
 
 const BannerVoting = styled(Card)`
   width: 100%;
@@ -91,6 +92,9 @@ const DetailBanner = styled(Text)`
 `
 
 const CardVoting = () => {
+  const proposable = useIsProposable()
+  const isProposable = _.get(proposable, "proposables")
+
   return (
     <>
       <BannerVoting>
@@ -100,9 +104,11 @@ const CardVoting = () => {
             Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
           </DetailBanner>
         </div>
-        <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
-          Make a Proposals
-        </Button>
+        {isProposable && (
+          <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
+            Make a Proposals
+          </Button>
+        )}
       </BannerVoting>
       <CardProposals />
       {/* <VotingPartProposal rbAddress /> */}

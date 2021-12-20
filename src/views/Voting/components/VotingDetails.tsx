@@ -1,14 +1,17 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
 import _ from 'lodash'
-import { Card, Text, useMatchBreakpoints, Skeleton } from 'uikit-dev'
-// import styled from 'styled-components'
-// import moment from 'moment'
-// import numeral from 'numeral'
-import { ExternalLink } from 'react-feather'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import styled from 'styled-components'
+import { Card, Text, useMatchBreakpoints, Skeleton, Button } from 'uikit-dev'
+import { ExternalLink } from 'react-feather'
 import { useProposalIndex } from '../../../hooks/useVoting'
-// import useTheme from 'hooks/useTheme'
+
+const LinkView = styled(Button)`
+  background-color: unset;
+  cursor: pointer;
+  padding-left: 6px;
+`
 
 const VotingDetails = ({ index }) => {
   const { account } = useWallet()
@@ -36,7 +39,7 @@ const VotingDetails = ({ index }) => {
             <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
               QmaSFZ3p
             </Text>
-            <ExternalLink size={16} color="#30ADFF" />
+              <ExternalLink size={16} color="#30ADFF" />
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -49,14 +52,16 @@ const VotingDetails = ({ index }) => {
             {isLoading ? (
               <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
             ) : (
-              <>
-                <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                  {index.creator &&
-                    `${index.creator.substring(0, 6)}...${index.creator.substring(index.creator.length - 4)}`}
-                </Text>
-                <ExternalLink size={16} color="#30ADFF" />
-              </>
-            )}
+                <>
+                  <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
+                    {index.creator &&
+                      `${index.creator.substring(0, 6)}...${index.creator.substring(index.creator.length - 4)}`}
+                  </Text>
+                  <LinkView as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
+                    <ExternalLink size={16} color="#30ADFF" />
+                  </LinkView>
+                </>
+              )}
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -69,12 +74,12 @@ const VotingDetails = ({ index }) => {
             {isLoading ? (
               <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
             ) : (
-              <>
-                <Text fontSize="16px" bold color="text" lineHeight="1">
-                  {index.start_unixtimestamp} GMT+9
+                <>
+                  <Text fontSize="16px" bold color="text" lineHeight="1">
+                    {index.start_unixtimestamp} GMT+9
                 </Text>
-              </>
-            )}
+                </>
+              )}
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -87,12 +92,12 @@ const VotingDetails = ({ index }) => {
             {isLoading ? (
               <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
             ) : (
-              <>
-                <Text fontSize="16px" bold color="text" lineHeight="1">
-                  {index.end_unixtimestamp} GMT+9
+                <>
+                  <Text fontSize="16px" bold color="text" lineHeight="1">
+                    {index.end_unixtimestamp} GMT+9
                 </Text>
-              </>
-            )}
+                </>
+              )}
           </div>
         </div>
       </Card>

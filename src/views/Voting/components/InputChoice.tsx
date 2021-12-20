@@ -1,4 +1,5 @@
 import React, { ChangeEvent, InputHTMLAttributes, useState } from 'react'
+import styled from 'styled-components'
 import { Box, CloseIcon, IconButton, Input, InputProps } from '../../../uikit-dev'
 
 interface ChoiceProps extends InputProps, InputHTMLAttributes<HTMLInputElement> {
@@ -6,6 +7,11 @@ interface ChoiceProps extends InputProps, InputHTMLAttributes<HTMLInputElement> 
   onRemove?: () => void
   hasMinimumChoices?: boolean
 }
+
+const StyledInput = styled(Input)`
+  border-radius: 30px;
+  height: 42px;
+`
 
 const InputChoice: React.FC<ChoiceProps> = ({ onRemove, onTextInput, hasMinimumChoices, ...props }) => {
   const [isWarning, setIsWarning] = useState(false)
@@ -21,7 +27,7 @@ const InputChoice: React.FC<ChoiceProps> = ({ onRemove, onTextInput, hasMinimumC
 
   return (
     <Box position="relative" mb="16px">
-      <Input {...props} onChange={handleChange} isWarning={isWarning} />
+      <StyledInput {...props} onChange={handleChange} isWarning={isWarning} />
       {onRemove && (
         <Box position="absolute" right="8px" top="0px" zIndex={30}>
           <IconButton variant="text" onClick={onRemove}>

@@ -78,7 +78,6 @@ const TabInfos = ({ tab }) => {
     <>
       {listAllProposal.map((item) => (
         <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}>
-          {/* <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}> */}
           <div>
             <Heading fontSize="18px !important">
               {isLoading ? (
@@ -90,7 +89,7 @@ const TabInfos = ({ tab }) => {
               )}
             </Heading>
             <TextHorizontal>
-              <Text fontSize="14px !important">End Date</Text>&nbsp;
+              <Text fontSize="14px !important" lineHeight="1">End Date</Text>&nbsp;
               {isLoading ? (
                 <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
               ) : (

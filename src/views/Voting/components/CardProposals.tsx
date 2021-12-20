@@ -37,24 +37,7 @@ const Tabs = styled(Card)`
   }
 `
 
-const Header = styled.div`
-  display: flex !important;
-  padding: 1.5rem !important;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  align-items: center;
-`
 
-const StyledButtonCore = styled(Button)`
-  background-color: #30adff;
-  border: 1px solid #57575b;
-  color: #ffffff;
-  border-radius: 6px;
-  padding: 18px 20px;
-
-  &:hover {
-    cursor: default;
-  }
-`
 
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
