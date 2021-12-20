@@ -66,13 +66,16 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       items: [
         {
           label: t('Document'),
-          href: currentLang === 'ko' ? 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/' : 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
-          target: '_blank'
+          href:
+            currentLang === 'ko'
+              ? 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/'
+              : 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/',
+          target: '_blank',
         },
         {
           label: t('Feedback'),
           href: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
-          target: '_blank'
+          target: '_blank',
         },
       ],
     },

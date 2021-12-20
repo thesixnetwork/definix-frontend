@@ -177,9 +177,7 @@ const Unstake: React.FC = () => {
                 </Button>
               </div>
               <div className="text-center">
-                <Coin className="mb-6">
-                  {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" /> */}
-                </Coin>
+                <Coin className="mb-6">{/* <img src={`/images/coins/${'FINIX'}.png`} alt="" /> */}</Coin>
                 <Heading as="h1" fontSize="24px !important">
                   Long-term Stake
                 </Heading>
@@ -203,9 +201,7 @@ const Unstake: React.FC = () => {
                 <Balance className="flex align-center">
                   <NumberInput fontSize="18px !important">{(amount && amount.toLocaleString()) || 0}</NumberInput>
                   <Input>
-                    <Finix>
-                      {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" /> */}
-                    </Finix>
+                    <Finix>{/* <img src={`/images/coins/${'FINIX'}.png`} alt="" /> */}</Finix>
                     <Heading as="h1" fontSize="18px !important">
                       FINIX
                     </Heading>
