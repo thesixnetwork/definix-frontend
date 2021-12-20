@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import useTheme from '../../../hooks/useTheme'
 import { DatePicker, TimePicker } from '../../../components/DatePicker'
 
-
 export interface FormState {
   name: string
   body: string

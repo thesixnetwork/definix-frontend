@@ -37,8 +37,6 @@ const Tabs = styled(Card)`
   }
 `
 
-
-
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
   const [currentTabHeader, setCurrentTabHeader] = useState(0)

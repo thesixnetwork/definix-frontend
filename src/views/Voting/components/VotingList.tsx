@@ -90,7 +90,7 @@ const TD = styled.td<{ align?: string }>`
 const LinkView = styled(Button)`
   background-color: unset;
   cursor: pointer;
-padding-left: 6px;
+  padding-left: 6px;
 `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
@@ -129,16 +129,20 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
                     <div className="flex align-center">
-                    <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                      {account && (
-                        <>
-                          {`${account.substring(0, 12)}...${account.substring(account.length - 4)}`}
-                          <LinkView as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
-                            <ExternalLink size={16} color="#30ADFF" />
-                          </LinkView>
-                        </>
-                      )}
-                    </Text>                 
+                      <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
+                        {account && (
+                          <>
+                            {`${account.substring(0, 12)}...${account.substring(account.length - 4)}`}
+                            <LinkView
+                              as="a"
+                              href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`}
+                              target="_blank"
+                            >
+                              <ExternalLink size={16} color="#30ADFF" />
+                            </LinkView>
+                          </>
+                        )}
+                      </Text>
                     </div>
                   </TD>
                   <TD>
@@ -151,7 +155,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <Text color="text" bold paddingRight="8px">
                         23,143
                       </Text>
-                      <ExternalLink size={16} color="#30ADFF" /> 
+                      <ExternalLink size={16} color="#30ADFF" />
                     </div>
                   </TD>
                 </TR>
@@ -176,7 +180,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 }
 
 const VotingList = ({ rbAddress }) => {
-  
   const address = getAddress(rbAddress)
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState(0)

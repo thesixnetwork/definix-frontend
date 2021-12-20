@@ -69,7 +69,7 @@ export const useIsProposable = () => {
   const { account } = useWallet()
   const { fastRefresh } = useRefresh()
   const [proposables, setProposables] = useState<string>()
-  
+
   useEffect(() => {
     async function fetchIsProposable() {
       const callContract = getContract(IProposerFacet.abi, getVFinixVoting())
@@ -78,8 +78,7 @@ export const useIsProposable = () => {
     }
 
     fetchIsProposable()
-  }, [fastRefresh,account])
-
+  }, [fastRefresh, account])
 
   return { proposables }
 }

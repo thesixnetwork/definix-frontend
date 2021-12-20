@@ -136,7 +136,6 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     ipfs: '',
   })
 
-
   // const allProposal = useAllProposalOfType()
   // console.log('allProposal >>',allProposal)
   // const listAllProposal = _.get(allProposal, 'allProposal')
@@ -371,7 +370,11 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                       {account && (
                         <>
                           {`${account.substring(0, 12)}...${account.substring(account.length - 4)}`}
-                          <LinkView as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
+                          <LinkView
+                            as="a"
+                            href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`}
+                            target="_blank"
+                          >
                             <ExternalLink size={16} color="#30ADFF" />
                           </LinkView>
                         </>

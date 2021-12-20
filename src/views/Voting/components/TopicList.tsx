@@ -89,7 +89,10 @@ const TabInfos = ({ tab }) => {
               )}
             </Heading>
             <TextHorizontal>
-              <Text fontSize="14px !important" lineHeight="1">End Date</Text>&nbsp;
+              <Text fontSize="14px !important" lineHeight="1">
+                End Date
+              </Text>
+              &nbsp;
               {isLoading ? (
                 <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
               ) : (

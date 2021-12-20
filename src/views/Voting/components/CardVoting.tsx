@@ -93,7 +93,7 @@ const DetailBanner = styled(Text)`
 
 const CardVoting = () => {
   const proposable = useIsProposable()
-  const isProposable = _.get(proposable, "proposables")
+  const isProposable = _.get(proposable, 'proposables')
 
   return (
     <>
