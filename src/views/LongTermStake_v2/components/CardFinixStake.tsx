@@ -90,6 +90,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
             hasAccount={!!account}
             isApproved={isApproved}
             inputBalance={inputBalance}
+            setInputBalance={setInputBalance}
             days={days}
             endDay={endDay}
             earn={getVFinix(days, inputBalance)}
