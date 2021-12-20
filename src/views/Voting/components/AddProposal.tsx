@@ -193,10 +193,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
       const epochTime = moment().unix()
       // const getKeyring = caver.wallet.keyring.generate()
       // const privateKey = _.get(getKeyring, '_key._privateKey')
-      const signature = caver.klay.accounts.sign(
-        epochTime.toString(),
-        '',
-      )
+      const signature = caver.klay.accounts.sign(epochTime.toString(), '')
 
       const voteAPI = process.env.REACT_APP_VOTE_IPFS
       const bodya = {

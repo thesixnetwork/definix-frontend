@@ -6,7 +6,15 @@ const TimePicker: React.FC<DatePickerProps> = (props) => {
   //   const { t } = useTranslation()
 
   return (
-    <DatePicker required showTimeSelect showTimeSelectOnly timeIntervals={15} timeCaption="Time" dateFormat="ppp" {...props} />
+    <DatePicker
+      required
+      showTimeSelect
+      showTimeSelectOnly
+      timeIntervals={15}
+      timeCaption="Time"
+      dateFormat="ppp"
+      {...props}
+    />
   )
 }
 

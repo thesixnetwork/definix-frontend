@@ -92,7 +92,7 @@ interface ChoicesProps {
   choices?: Choice[]
   onChange?: (newChoices: Choice[]) => void
   setChoiceType?: any
-  isLoading? : boolean
+  isLoading?: boolean
 }
 
 export const MINIMUM_CHOICES = 2

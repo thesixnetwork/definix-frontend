@@ -48,7 +48,7 @@ const CardTab: React.FC<CardTabType> = ({
   isHeader,
 }) => {
   const allProposal = useAllProposalOfType()
-  console.log("allProposal", allProposal)
+  console.log('allProposal', allProposal)
   return (
     <Tabs className={className}>
       {isHeader && (
