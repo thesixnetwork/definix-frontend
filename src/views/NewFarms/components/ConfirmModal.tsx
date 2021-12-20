@@ -1,19 +1,17 @@
 import React, { useState, useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { getLpImageUrls } from 'utils/getTokenImage'
 import { useToast } from 'state/hooks'
 import {
   Button,
   Modal,
   ButtonVariants,
-  Box,
   Flex,
   Text,
   ColorStyles,
-  Image,
   ModalBody,
   ModalFooter,
+  Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
 
 const ModalBodyWrap = styled(ModalBody)`
@@ -36,7 +34,6 @@ const ConfirmModal = ({
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
   const [isPendingTX, setIsPendingTX] = useState(false)
-  const [firstCoinImageUrl, secondCoinImageUrl] = getLpImageUrls(lpSymbol)
   const title = useMemo(() => t(`Confirm ${buttonName}`), [t, buttonName])
   const handleComplete = useCallback(async () => {
     if (isPendingTX) return
@@ -59,12 +56,13 @@ const ConfirmModal = ({
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
             <Flex className="mr-s12">
-              <Box width={32} style={{ zIndex: 1 }}>
+              <Lp lpSymbols={lpSymbol.split('-')} size="32" />
+              {/* <Box width={32} style={{ zIndex: 1 }}>
                 <Image src={firstCoinImageUrl} alt={lpSymbol} width={32} height={32} />
               </Box>
               <Box width={32} style={{ marginLeft: '-10px' }}>
                 <Image src={secondCoinImageUrl} alt={lpSymbol} width={32} height={32} />
-              </Box>
+              </Box> */}
             </Flex>
             <Text textStyle="R_16M" color={ColorStyles.BLACK}>
               {lpSymbol}
