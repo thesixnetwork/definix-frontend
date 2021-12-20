@@ -6,7 +6,6 @@ import axios from 'axios'
 import Caver from 'caver-js'
 import _ from 'lodash'
 import moment from 'moment'
-// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
 import styled from 'styled-components'
@@ -19,9 +18,8 @@ import success from 'uikit-dev/animation/complete.json'
 import { usePropose } from 'hooks/useVoting'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints } from 'uikit-dev'
-// import Label from 'components/Label'
-// import { Box, Text } from '@pancakeswap/uikit'
 import { format, parseISO, isValid } from 'date-fns'
+import { useAllProposalOfType } from '../../../hooks/useVoting'
 import AddChoices, { Choice, makeChoice, MINIMUM_CHOICES } from './AddChoices'
 import VotingPower from './VotingPower'
 
@@ -131,6 +129,9 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     snapshot: 0,
     ipfs: '',
   })
+  // const allProposal = useAllProposalOfType()
+  // console.log('allProposal >>',allProposal)
+  // const listAllProposal = _.get(allProposal, 'allProposal')
   const [isLoading, setIsLoading] = useState(false)
   const [choiceType, setChoiceType] = useState('single')
   const { name, body, choices, startDate, startTime, endDate, endTime, ipfs } = state
@@ -191,14 +192,13 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
       await setIsLoading(true)
       const caver = getCaver()
       const epochTime = moment().unix()
-      // const getKeyring = caver.wallet.keyring.generate()
-      // const privateKey = _.get(getKeyring, '_key._privateKey')
-      const signature = caver.klay.accounts.sign(epochTime.toString(), '')
 
+      const sign = await caver.klay.sign(epochTime.toString(), account)
+  
       const voteAPI = process.env.REACT_APP_VOTE_IPFS
-      const bodya = {
+      const bodyRequest = {
         message: epochTime.toString(),
-        signature,
+        signature: sign,
         proposals_type: 'core',
         title: name,
         content: body,
@@ -209,18 +209,21 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
       }
 
       await axios
-        .put(`${voteAPI}`, bodya)
+        .put(`${voteAPI}`, bodyRequest)
         .then(async (resp) => {
           if (resp) {
+            console.log('resp >>>>>> ',resp.data.result.IpfsHash)
             await updateValue('ipfs', resp.data.result.IpfsHash)
             const res = onPropose()
             res
               .then((r) => {
+                console.log('r >>>>>> ',r)
                 if (_.get(r, 'status')) {
                   setInterval(() => setIsLoading(false), 5000)
                 }
               })
               .catch((e) => {
+                console.log('e >>>>>> ',e)
                 setIsLoading(false)
               })
           }

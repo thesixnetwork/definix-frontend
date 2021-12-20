@@ -77,8 +77,8 @@ const TabInfos = ({ tab }) => {
   return (
     <>
       {listAllProposal.map((item) => (
+        // <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}>
         <CardTopicList as={Link} to="/voting/detail">
-          {/* <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}> */}
           <div>
             <Heading fontSize="18px !important">
               {isLoading ? (
@@ -190,7 +190,7 @@ const TabInfos = ({ tab }) => {
               &nbsp;
             </div>
           </div>
-          <Styled as={Link} to="/voting/detail">
+          <Styled as={Link} to={`/voting/detail/${item.ipfsHash}`}>
             <Image src={nextIcon} width={28} height={28} />
           </Styled>
         </CardTopicList>
