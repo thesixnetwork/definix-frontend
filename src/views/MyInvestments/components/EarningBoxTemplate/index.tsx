@@ -177,7 +177,9 @@ const EarningBoxTemplate: React.FC<{
   const { finixEarn } = usePrivateData()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-  const { onReward, currentHarvestStackIndex } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const { onReward, currentHarvestStackIndex } = useAllHarvest(
+    balancesWithValue.map((farmWithBalance) => farmWithBalance.pid),
+  )
   const { handleHarvest } = useHarvest()
 
   const harvestAll = useCallback(async () => {

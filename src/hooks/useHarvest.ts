@@ -58,43 +58,49 @@ export const useAllHarvest = (farmPids: number[]) => {
   const { setShowModal } = useContext(KlipModalContext())
   const [currentHarvestStackIndex, setCurrentHarvestStackIndex] = useState(0)
 
-  const harvestUsingKlipWallet = useCallback(async (farmPid: number) => {
-    console.log('useHarvest/harvestUsingKlipWallet] farm pid: ', farmPid)
-    if (farmPid === 0) {
-      klipProvider.genQRcodeContactInteract(
-        herodotusContract._address,
-        jsonConvert(getAbiHerodotusByName('leaveStaking')),
-        jsonConvert(['0']),
-        setShowModal,
-      )
-    } else {
-      klipProvider.genQRcodeContactInteract(
-        herodotusContract._address,
-        jsonConvert(getAbiHerodotusByName('deposit')),
-        jsonConvert([farmPid, '0']),
-        setShowModal,
-      )
-    }
-    return klipProvider.checkResponse()
-  }, [setShowModal, herodotusContract._address])
+  const harvestUsingKlipWallet = useCallback(
+    async (farmPid: number) => {
+      console.log('useHarvest/harvestUsingKlipWallet] farm pid: ', farmPid)
+      if (farmPid === 0) {
+        klipProvider.genQRcodeContactInteract(
+          herodotusContract._address,
+          jsonConvert(getAbiHerodotusByName('leaveStaking')),
+          jsonConvert(['0']),
+          setShowModal,
+        )
+      } else {
+        klipProvider.genQRcodeContactInteract(
+          herodotusContract._address,
+          jsonConvert(getAbiHerodotusByName('deposit')),
+          jsonConvert([farmPid, '0']),
+          setShowModal,
+        )
+      }
+      return klipProvider.checkResponse()
+    },
+    [setShowModal, herodotusContract._address],
+  )
 
-  const harvestAllUsingKlipWallet = useCallback(async (pids, txIndex) => {
-    console.log('useHarvest/harvestAllUsingKlipWallet] --> pids / txIndex: ', pids, txIndex)
-    setCurrentHarvestStackIndex(txIndex)
-    if (pids.length === 0) return Promise.resolve()
-    
-    const tx = await harvestUsingKlipWallet(pids[txIndex])
-    console.info(tx)
+  const harvestAllUsingKlipWallet = useCallback(
+    async (pids, txIndex) => {
+      console.log('useHarvest/harvestAllUsingKlipWallet] --> pids / txIndex: ', pids, txIndex)
+      setCurrentHarvestStackIndex(txIndex)
+      if (pids.length === 0) return Promise.resolve()
 
-    if (txIndex < pids.length - 1) {
-      return harvestAllUsingKlipWallet(pids, txIndex + 1)
-    }
-    return Promise.resolve()
-  }, [harvestUsingKlipWallet])
+      const tx = await harvestUsingKlipWallet(pids[txIndex])
+      console.info(tx)
+
+      if (txIndex < pids.length - 1) {
+        return harvestAllUsingKlipWallet(pids, txIndex + 1)
+      }
+      return Promise.resolve()
+    },
+    [harvestUsingKlipWallet],
+  )
 
   const handleHarvest = useCallback(async () => {
     setCurrentHarvestStackIndex(0)
-    
+
     if (connector === 'klip') {
       await harvestAllUsingKlipWallet(farmPids, 0)
       console.log('useHarvest/handleHarvest] done ')
@@ -107,7 +113,6 @@ export const useAllHarvest = (farmPids: number[]) => {
       return [...accum, harvest(herodotusContract, pid, account)]
     }, [])
     return Promise.all(harvestPromises)
-
   }, [account, farmPids, herodotusContract, connector, dispatch, setShowModal, harvestAllUsingKlipWallet])
 
   return { onReward: handleHarvest, currentHarvestStackIndex }
