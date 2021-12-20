@@ -36,14 +36,6 @@ const VotingProposal: React.FC = () => {
         </Helmet>
         <MaxWidthLeft>
           <AddProposal />
-          <div className={`flex align-stretch mt-1 ${isMobile ? 'flex-wrap' : ''}`}>
-            <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
-              <AddChoices />
-            </div>
-            <div className={isMobile ? 'col-12 mt-2' : 'col-4 ml-3'}>
-              <VotingPower />
-            </div>
-          </div>
         </MaxWidthLeft>
       </Route>
     </>

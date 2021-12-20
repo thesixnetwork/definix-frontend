@@ -105,7 +105,7 @@ const CardVoting = () => {
         </Button>
       </BannerVoting>
       <CardProposals />
-      <VotingPartProposal rbAddress />
+      {/* <VotingPartProposal rbAddress /> */}
     </>
   )
 }

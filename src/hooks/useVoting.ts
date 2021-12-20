@@ -6,13 +6,7 @@ import moment from 'moment'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  getAbiERC20ByName,
-  getAbiVaultPenaltyFacetByName,
-  getAbiVaultFacetByName,
-  getAbiRewardFacetByName,
-  getAbiHerodotusByName,
-} from 'hooks/hookHelper'
+import { getAbiVaultFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 import UsageFacet from '../config/abi/UsageFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
@@ -91,7 +85,15 @@ export const usePropose = (
       klipProvider.genQRcodeContactInteract(
         getVFinixVoting(),
         JSON.stringify(getAbiVaultFacetByName('unlock')),
-        JSON.stringify(['text', 0, moment().unix() + 1000, 1671268395, 2, 5, 0]),
+        JSON.stringify([
+          ipfsHash,
+          proposalType,
+          startTimestamp,
+          endTimestamp,
+          optionsCount,
+          minimumVotingPower,
+          voteLimit,
+        ]),
         setShowModal,
       )
       await klipProvider.checkResponse()
@@ -102,10 +104,9 @@ export const usePropose = (
     }
 
     const callContract = getContract(IProposalFacet.abi, getVFinixVoting())
-    console.log('moment1', moment().unix() + 100)
     return new Promise((resolve, reject) => {
       callContract.methods
-        .propose('text', 0, moment().unix() + 1000, 1671268395, 2, 1, 0)
+        .propose(ipfsHash, proposalType, startTimestamp, endTimestamp, optionsCount, minimumVotingPower, voteLimit)
         .send({ from: account, gas: 5000000 })
         .then(resolve)
         .catch(reject)

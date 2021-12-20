@@ -1,15 +1,35 @@
 /* eslint-disable no-nested-ternary */
 import React, { useCallback, ChangeEvent, lazy, useState, useMemo, FormEvent } from 'react'
+import Lottie from 'react-lottie'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import axios from 'axios'
+import Caver from 'caver-js'
+import _ from 'lodash'
+import moment from 'moment'
+// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Link } from 'react-router-dom'
+import { useForm, Controller } from 'react-hook-form'
 import styled from 'styled-components'
 import { ExternalLink } from 'react-feather'
 import times from 'lodash/times'
+import { getCaver } from 'utils/caver'
+import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
+import success from 'uikit-dev/animation/complete.json'
 // import useTheme from 'hooks/useTheme'
 import { usePropose } from 'hooks/useVoting'
 import { DatePicker, TimePicker } from 'components/DatePicker'
-import { ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints } from 'uikit-dev'
-import Label from 'components/Label'
+import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints } from 'uikit-dev'
+// import Label from 'components/Label'
+// import { Box, Text } from '@pancakeswap/uikit'
+import { format, parseISO, isValid } from 'date-fns'
+import AddChoices, { Choice, makeChoice, MINIMUM_CHOICES } from './AddChoices'
+import VotingPower from './VotingPower'
+
+const SuccessOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: success,
+}
 
 const EasyMde = lazy(() => import('components/EasyMde'))
 
@@ -24,7 +44,7 @@ const InputChoice = styled(Input)`
 `
 
 const CardProposals = styled(Card)`
-  height: 620px;
+  // height: 620px;
 `
 
 export const generatePayloadData = () => {
@@ -50,29 +70,82 @@ export enum ProposalState {
   CLOSED = 'closed',
 }
 
-const AddProposal: React.FC = () => {
-  // const { path } = useRouteMatch()
+export const combineDateAndTime = (date: Date, time: Date) => {
+  if (!isValid(date) || !isValid(time)) {
+    return null
+  }
+
+  const dateStr = format(date, 'yyyy-MM-dd')
+  const timeStr = format(time, 'HH:mm:ss')
+
+  return parseISO(`${dateStr}T${timeStr}`).getTime() / 1e3
+}
+
+const BaseLabel = styled.label`
+  color: ${({ theme }) => theme.colors.text};
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+`
+
+export const Label = styled(BaseLabel)`
+  font-size: 20px;
+`
+
+export const SecondaryLabel = styled(BaseLabel)`
+  font-size: 12px;
+  text-transform: uppercase;
+`
+
+export const FormError: React.FC = ({ children }) => (
+  <Text color="failure" mb="4px">
+    {children}
+  </Text>
+)
+
+export const FormErrors: React.FC<{ errors: string[] }> = ({ errors }) => {
+  return (
+    <Box mt="8px">
+      {errors.map((error) => {
+        return <FormError key={error}>{error}</FormError>
+      })}
+    </Box>
+  )
+}
+interface Props {
+  onDismiss?: () => void
+}
+
+const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
-  // const { isDark } = useTheme()
   const { account } = useWallet()
-  const { onPropose } = usePropose('0', '0', '0', '0', '0', '0', '0')
-
   const [state, setState] = useState({
     name: '',
     body: '',
-    choices: times(1),
+    choices: times(MINIMUM_CHOICES).map(makeChoice),
     startDate: null,
     startTime: null,
     endDate: null,
     endTime: null,
     snapshot: 0,
+    ipfs: '',
   })
   const [isLoading, setIsLoading] = useState(false)
-  const { name, body, choices, startDate, startTime, endDate, endTime } = state
+  const [choiceType, setChoiceType] = useState('single')
+  const { name, body, choices, startDate, startTime, endDate, endTime, ipfs } = state
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
+  const { onPropose } = usePropose(
+    ipfs,
+    0,
+    combineDateAndTime(startDate, startTime),
+    combineDateAndTime(endDate, endTime),
+    choices.length,
+    0,
+    0,
+  )
 
-  const updateValue = (key: string, value: string | Date) => {
+  const updateValue = (key: string, value: string | Choice[] | Date) => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,
@@ -87,25 +160,6 @@ const AddProposal: React.FC = () => {
   const handleEasyMdeChange = (value: string) => {
     updateValue('body', value)
   }
-
-  const handleMakeAProposal = useCallback(async () => {
-    try {
-      const res = onPropose()
-      res
-        .then((r) => {
-          console.log('onPropose', r)
-          // navigate.push('/long-term-stake')
-          // return <Redirect to="/long-term-stake" />
-        })
-        .catch((e) => {
-          console.log('Error', e)
-          // console.log(e)
-        })
-    } catch (e) {
-      console.log('Error', e)
-      // console.error(e)
-    }
-  }, [onPropose])
 
   const options = useMemo(() => {
     return {
@@ -122,52 +176,82 @@ const AddProposal: React.FC = () => {
     updateValue(inputName, value)
   }
 
+  const handleChoiceChange = (newChoices: Choice[]) => {
+    updateValue('choices', newChoices)
+  }
+
+  const filterChoices = choices.map((choice) => {
+    return choice.value
+  })
+
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
 
     try {
-      const res = onPropose()
-      res
-        .then((r) => {
-          console.log('onPropose', r)
+      await setIsLoading(true)
+      const caver = getCaver()
+      const epochTime = moment().unix()
+      // const getKeyring = caver.wallet.keyring.generate()
+      // const privateKey = _.get(getKeyring, '_key._privateKey')
+      const signature = caver.klay.accounts.sign(epochTime.toString(), '')
+
+      const voteAPI = process.env.REACT_APP_VOTE_IPFS
+      const bodya = {
+        message: epochTime.toString(),
+        signature,
+        proposals_type: 'core',
+        title: name,
+        content: body,
+        choice_type: choiceType,
+        choices: filterChoices,
+        start_unixtimestamp: combineDateAndTime(startDate, startTime),
+        end_unixtimestamp: combineDateAndTime(endDate, endTime),
+      }
+
+      await axios
+        .put(`${voteAPI}`, bodya)
+        .then(async (resp) => {
+          if (resp) {
+            await updateValue('ipfs', resp.data.result.IpfsHash)
+            const res = onPropose()
+            res
+              .then((r) => {
+                if (_.get(r, 'status')) {
+                  setInterval(() => setIsLoading(false), 5000)
+                }
+              })
+              .catch((e) => {
+                setIsLoading(false)
+              })
+          }
         })
         .catch((e) => {
-          console.log('Error1', e)
+          setIsLoading(false)
         })
     } catch (e) {
-      console.log('Error2', e)
+      setIsLoading(false)
     }
   }
 
-  // const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
-  //   evt.preventDefault()
+  const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
 
-  //   console.log('body', body)
-
-  //   try {
-  //     setIsLoading(true)
-  //     const proposal = JSON.stringify({
-  //       ...generatePayloadData(),
-  //       type: SnapshotCommand.PROPOSAL,
-  //       payload: {
-  //         name,
-  //         body,
-  //         start: '',
-  //         end: '',
-  //         choices: '',
-  //         // metadata: generateMetaData(),
-  //         type: '',
-  //       },
-  //     })
-  //     console.log('proposal', proposal)
-  //     // call api
-  //   } catch (error) {
-  //     setIsLoading(false)
-  //   }
-  // }
+  const CardResponse = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss} className="">
+        <div className="pb-6 pt-2">
+          <Lottie options={SuccessOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
 
   return (
     <>
+      {isLoading && (
+        <div style={{ position: 'absolute' }}>
+          <CardResponse />
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div className={`flex align-stretch mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
@@ -282,12 +366,32 @@ const AddProposal: React.FC = () => {
                     <ExternalLink size={16} color="#30ADFF" />
                   </div>
                 </div>
-                <Button type="submit" variant="success" radii="small" className="my-2" size="sm">
+                <Button
+                  disabled={!hasMinimumChoices || isLoading}
+                  type="submit"
+                  variant="success"
+                  radii="small"
+                  className="my-2"
+                  size="sm"
+                >
                   Publishee
                 </Button>
                 <Text color="#F5C858">You need at least 10 voting power to publish a proposal.</Text>
               </div>
             </CardProposals>
+          </div>
+        </div>
+        <div className={`flex align-stretch mt-1 ${isMobile ? 'flex-wrap' : ''}`}>
+          <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
+            <AddChoices
+              choices={choices}
+              onChange={handleChoiceChange}
+              setChoiceType={setChoiceType}
+              isLoading={isLoading}
+            />
+          </div>
+          <div className={isMobile ? 'col-12 mt-2' : 'col-4 ml-3'}>
+            <VotingPower />
           </div>
         </div>
       </form>
