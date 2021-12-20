@@ -8,18 +8,19 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import InputChoice from './InputChoice'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
-const InputChoice = styled(Input)`
-  width: 100%;
-  background: unset;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 30px;
-  margin: 20px 0px;
-  padding: 2px 20px;
-  display: flex;
-  align-items: center;
-`
+// const InputChoice = styled(Input)`
+//   width: 100%;
+//   background: unset;
+//   border: 1px solid ${({ theme }) => theme.colors.border};
+//   border-radius: 30px;
+//   margin: 20px 0px;
+//   padding: 2px 20px;
+//   display: flex;
+//   align-items: center;
+// `
 
 const FormControlLabelCustom = styled(FormControlLabel)`
   height: 40px;
@@ -90,19 +91,25 @@ export interface Choice {
 interface ChoicesProps {
   choices?: Choice[]
   onChange?: (newChoices: Choice[]) => void
+  setChoiceType?: any
+  isLoading? : boolean
 }
 
 export const MINIMUM_CHOICES = 2
 export const makeChoice = (): Choice => ({ id: uniqueId(), value: '' })
 
-const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange }) => {
+const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange, setChoiceType, isLoading }) => {
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
-  // const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
+  const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
 
   const addChoice = () => {
     onChange([...choices, makeChoice()])
+  }
+
+  const addType = (event) => {
+    setChoiceType(event.target.value)
   }
 
   return (
@@ -112,19 +119,29 @@ const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange }) => {
           <Text fontSize="20px" bold>
             Choice
           </Text>
-          <RadioGroup className="ml-6" row name="use-radio-group" defaultValue="yes">
+          <RadioGroup className="ml-6" row name="use-radio-group" defaultValue="single">
             <div className="flex align-center mr-4">
-              <FormControlLabelCustom value="yes" label="" control={<BpRadio />} />
+              <FormControlLabelCustom
+                onClick={(event) => addType(event)}
+                value="single"
+                label=""
+                control={<BpRadio />}
+              />
               <Text>Single</Text>
             </div>
             <div className="flex align-center">
-              <FormControlLabelCustom value="no" label="" control={<BpRadio />} />
+              <FormControlLabelCustom
+                onClick={(event) => addType(event)}
+                value="multiple"
+                label=""
+                control={<BpRadio />}
+              />
               <Text>Multiple</Text>
             </div>
           </RadioGroup>
         </div>
         <div className="ma-3">
-          {/* {choices.map(({ id, value }, index) => {
+          {choices.map(({ id, value }, index) => {
             const handleTextInput = (newValue: string) => {
               const newChoices = [...choices]
               const choiceIndex = newChoices.findIndex((newChoice) => newChoice.id === id)
@@ -139,20 +156,26 @@ const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange }) => {
             }
 
             return (
-              <InputChoice key={id} className="my-3" placeholder="Input choice text" />
-              <Choice
+              // <InputChoice key={id} className="my-3" placeholder="Input choice text" />
+              <InputChoice
                 key={id}
                 scale="lg"
                 onTextInput={handleTextInput}
-                placeholder={t('Input choice text')}
+                placeholder="Input choice text"
                 value={value}
                 onRemove={index > 1 ? handleRemove : undefined}
+                hasMinimumChoices={hasMinimumChoices}
               />
             )
-          })} */}
-          <InputChoice className="my-3" placeholder="Input choice text" />
-          <InputChoice className="my-3" placeholder="Input choice text" />
-          <Button variant="success" radii="small" className="mt-2" size="sm">
+          })}
+          <Button
+            onClick={addChoice}
+            disabled={!hasMinimumChoices || isLoading}
+            variant="success"
+            radii="small"
+            className="mt-2"
+            size="sm"
+          >
             Add Choice
           </Button>
         </div>

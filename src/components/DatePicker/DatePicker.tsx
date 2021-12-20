@@ -15,6 +15,7 @@ export interface DatePickerProps extends ReactDatePickerProps {
   onChange?: any
   selected?: any
   placeholderText?: any
+  required?: any
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({ inputProps = {}, ...props }) => {
@@ -23,6 +24,7 @@ const DatePicker: React.FC<DatePickerProps> = ({ inputProps = {}, ...props }) =>
       customInput={<Input style={{ backgroundColor: 'unset' }} {...inputProps} />}
       portalId="reactDatePicker"
       dateFormat="PPP"
+      required
       {...props}
     />
   )
