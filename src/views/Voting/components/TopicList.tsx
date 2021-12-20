@@ -190,7 +190,7 @@ const TabInfos = ({ tab }) => {
               &nbsp;
             </div>
           </div>
-          <Styled as={Link} to="/voting/detail">
+          <Styled as={Link} to={`/voting/detail/${item.ipfsHash}`}>
             <Image src={nextIcon} width={28} height={28} />
           </Styled>
         </CardTopicList>
