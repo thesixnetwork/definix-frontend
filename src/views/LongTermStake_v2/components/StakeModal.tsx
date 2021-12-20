@@ -68,6 +68,10 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
 
   useEffect(() => {
     setFinixValue(new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed())
+
+    return () => {
+      setFinixValue('')
+    }
   }, [balance])
 
   return (

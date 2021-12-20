@@ -72,7 +72,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
               </Flex>
             </Flex>
             <Text mt="S_4" textStyle="R_16R" color="black">
-              {numeral(amount).format(0, 0)}
+              {numeral(amount).format('0, 0.[000000]')}
             </Text>
           </Flex>
           {canBeUnlock && (
