@@ -448,5 +448,8 @@
   "Connect to a wallet to view": "Connect to a wallet to view your liquidity.",
   "No liquidity found.": "No liquidity found.",
   "Go to G1": "Go to G1",
-  "Menu Swap": "Swap"
+  "Menu Swap": "Swap",
+  "Sharpe detail": "The average return ratio compares to the risk-taking activities earned per unit rate of the total risk.",
+  "MDD detail": "The differentiation between the historical peak and low point through the portfolio.",
+  "ROI detail": "Estimated return on investment measures approximately over a period of time."
 }
