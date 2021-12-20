@@ -91,7 +91,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   useEffect(() => {
     if (!inputBalance) {
       setError('noInput')
-    } else if (new BigNumber(Number(`0.${inputBalance.split('.')[1] || 0}`)).decimalPlaces() > 18) {
+    } else if (new BigNumber(inputBalance).dp() > 18) {
       setError('Less than a certain amount')
     } else if (Number(inputBalance) < minimum) {
       setError('The amount of FINIX')
