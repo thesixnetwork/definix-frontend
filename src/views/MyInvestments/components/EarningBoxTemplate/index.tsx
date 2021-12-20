@@ -177,7 +177,7 @@ const EarningBoxTemplate: React.FC<{
   const { finixEarn } = usePrivateData()
   const farmsWithBalance = useFarmsWithBalance()
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const { onReward, currentHarvestStackIndex } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
   const { handleHarvest } = useHarvest()
 
   const harvestAll = useCallback(async () => {
@@ -232,11 +232,11 @@ const EarningBoxTemplate: React.FC<{
                   width="100%"
                   variant="red"
                   className="home-harvest-button"
-                  isLoading={pendingTx}
+                  // isLoading={pendingTx}
                   disabled={balancesWithValue.length <= 0}
                   onClick={harvestAll}
                 >
-                  {t('Harvest')}
+                  {pendingTx ? `loading ${currentHarvestStackIndex + 1}/${balancesWithValue.length}...` : t('Harvest')}
                 </Button>
               ) : (
                 <UnlockButton />
