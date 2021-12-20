@@ -51,11 +51,7 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                  {`${_.get(indexProposal, 'indexProposal.proposer', '').substring(0, 6)}...${_.get(
-                    indexProposal,
-                    'indexProposal.proposer',
-                    '',
-                  ).substring(_.get(indexProposal, 'indexProposal.proposer', '').length - 4)}`}
+                  {index.creator && `${index.creator.substring(0, 6)}...${index.creator.substring(index.creator.length - 4)}`}
                 </Text>
                 <ExternalLink size={16} color="#30ADFF" />
               </>
@@ -74,7 +70,7 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold color="text" lineHeight="1">
-                  {_.get(indexProposal, 'indexProposal.startTimestamp', '')} GMT+9
+                  {index.start_unixtimestamp} GMT+9
                 </Text>
               </>
             )}
@@ -92,7 +88,7 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold color="text" lineHeight="1">
-                  {_.get(indexProposal, 'indexProposal.endTimestamp', '')} GMT+9
+                {index.end_unixtimestamp} GMT+9
                 </Text>
               </>
             )}

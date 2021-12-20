@@ -77,7 +77,7 @@ const TabInfos = ({ tab }) => {
   return (
     <>
       {listAllProposal.map((item) => (
-        <CardTopicList as={Link} to="/voting/detail">
+        <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}>
           {/* <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}> */}
           <div>
             <Heading fontSize="18px !important">
@@ -85,7 +85,7 @@ const TabInfos = ({ tab }) => {
                 <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
               ) : (
                 <Text fontSize="18px !important" bold lineHeight="1" mr="6px">
-                  {item.ipfsHash}
+                  {_.get(item,'title')}
                 </Text>
               )}
             </Heading>

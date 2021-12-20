@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
-import { Route, useRouteMatch } from 'react-router-dom'
+import { Route, useRouteMatch, useParams } from 'react-router-dom'
 import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import styled from 'styled-components'
 import { useMatchBreakpoints } from 'uikit-dev'
@@ -12,6 +12,7 @@ import VotingList from './components/VotingList'
 import VotingDetails from './components/VotingDetails'
 import VotingResults from './components/VotingResults'
 import VotingPower from './components/VotingPower'
+import { useGetProposal } from '../../hooks/useVoting'
 
 const MaxWidthLeft = styled(MaxWidth)`
   max-width: unset;
@@ -34,6 +35,8 @@ const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
   const { path } = useRouteMatch()
   const { isXl } = useMatchBreakpoints()
   const isMobile = !isXl
+  const { id }: { id: string } = useParams()
+  const proposal = useGetProposal(id)
 
   return (
     <>
@@ -49,7 +52,7 @@ const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
               <VotingList rbAddress />
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
-              <VotingDetails index={1} />
+              <VotingDetails index={proposal && proposal.proposal} />
               <VotingResults />
               <VotingPower />
             </div>

@@ -15,7 +15,7 @@ import IVotingFacet from '../config/abi/IVotingFacet.json'
 import { getContract } from '../utils/caver'
 import { State } from '../state/types'
 import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
-import { fetchAllProposalOfType, fetchProposalIndex } from '../state/actions'
+import { fetchAllProposalOfType, fetchProposalIndex, fetchProposal } from '../state/actions'
 import useRefresh from './useRefresh'
 /* eslint no-else-return: "error" */
 
@@ -149,5 +149,23 @@ export const usePropose = (
 
 //   return { onRecallVotes: onRecallVotesFromProposal }
 // }
+
+// export const useGetProposal = (proposalId: string) => {
+//   const proposal = useSelector((state: State) => state.voting.proposals[proposalId])
+//   return proposal
+// }
+
+export const useGetProposal = (proposalId: string) => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const proposal = useSelector((state: State) => state.voting.proposals)
+
+  useEffect(() => {
+    dispatch(fetchProposal(proposalId))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh, dispatch])
+
+  return { proposal }
+}
 
 export default useAvailableVotes
