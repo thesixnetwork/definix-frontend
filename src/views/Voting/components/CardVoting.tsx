@@ -1,11 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import { Card, Heading, Text, Button } from 'uikit-dev'
+import { useWallet } from "@sixnetwork/klaytn-use-wallet"
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import CardProposals from './CardProposals'
+import { useAllProposalOfType, getIsParticipated, getVotingPowersOfAddress } from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
+import { Voting } from "../../../state/types"
+
 
 const BannerVoting = styled(Card)`
   width: 100%;
@@ -91,6 +95,40 @@ const DetailBanner = styled(Text)`
 `
 
 const CardVoting = () => {
+  const { account } = useWallet()
+  const allProposal = useAllProposalOfType()
+  const listAllProposal = _.get(allProposal, 'allProposal')
+  const [userProposals, setUserProposals] = useState([])
+  useEffect(() => {
+    const fetch = async () => {
+      // console.log("listAllProposal",listAllProposal)
+      const anyObj: any[] = []
+      const isParticipateds = []
+      for (let i = 0; i < listAllProposal.length; i++) {
+
+        // eslint-disable-next-line
+        isParticipateds.push(await getIsParticipated(listAllProposal[i].proposalIndex.toNumber()))
+
+      }
+
+      const listUserVoted = listAllProposal.filter((item, index) => isParticipateds[index])
+      for (let i = 0; i < listUserVoted.length; i++) {
+        const userVoted = listUserVoted[i]
+        for (let j = 0; j < userVoted.optionsCount.toNumber(); j++) {
+          // eslint-disable-next-line
+          const xxx = await getVotingPowersOfAddress(
+            userVoted.proposalIndex.toNumber(),
+            j,
+            account
+          )
+          console.log(xxx)
+        }
+
+      }
+      setUserProposals(listUserVoted)
+    }
+    fetch()
+  }, [listAllProposal, account])
   return (
     <>
       <BannerVoting>
@@ -105,7 +143,9 @@ const CardVoting = () => {
         </Button>
       </BannerVoting>
       <CardProposals />
-      {/* <VotingPartProposal rbAddress /> */}
+
+      {account && userProposals.length > 0 ? <VotingPartProposal rbAddress userProposals={userProposals} /> : ""}
+
     </>
   )
 }

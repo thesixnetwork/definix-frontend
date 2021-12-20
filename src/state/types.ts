@@ -13,12 +13,12 @@ import {
 export type TranslatableText =
   | string
   | {
-      id: number
-      fallback: string
-      data?: {
-        [key: string]: string | number
-      }
+    id: number
+    fallback: string
+    data?: {
+      [key: string]: string | number
     }
+  }
 
 export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber
@@ -257,11 +257,12 @@ export interface Voting {
   proposer?: any
   startTimestamp?: any
   endTimestamp?: any
-  optionsCount?: any
+  optionsCount?: BigNumber
   minimumVotingPower?: any
   totalVotingPower?: any
   voteLimit?: any
   optionVotingPower?: any
+  isParticipated?: any
 }
 
 export interface VotingState {
