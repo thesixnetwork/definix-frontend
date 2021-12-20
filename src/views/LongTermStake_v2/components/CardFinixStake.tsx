@@ -77,7 +77,6 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
           <BalanceFinix
             hasAccount={!!account}
-            isApproved={isApproved}
             minimum={data.find((item) => item.day === days).minStake}
             inputBalance={inputBalance}
             setInputBalance={setInputBalance}
