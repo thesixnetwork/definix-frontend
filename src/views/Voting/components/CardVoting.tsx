@@ -125,7 +125,7 @@ const CardVoting = () => {
 
       for (let i = 0; i < userProposalsFilter.length; i++) {
         // eslint-disable-next-line
-        const metaData = (await axios.get(`https://gateway.pinata.cloud/ipfs/${userProposalsFilter[i].ipfsHash}`)).data
+        const metaData = (await axios.get(`${process.env.REACT_APP_IPFS}/${userProposalsFilter[i].ipfsHash}`)).data
 
         userProposalsFilter[i].choices = []
         userProposalsFilter[i].title = metaData.title
