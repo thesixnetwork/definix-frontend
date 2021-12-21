@@ -1,8 +1,6 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
-import moment from 'moment'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,11 +11,14 @@ import UsageFacet from '../config/abi/UsageFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
+import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
+import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
 import { State } from '../state/types'
 import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
-import { fetchAllProposalOfType, fetchProposalIndex } from '../state/actions'
+import { fetchAllProposalOfType, fetchProposalIndex, fetchProposal } from '../state/actions'
 import useRefresh from './useRefresh'
+
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
@@ -56,16 +57,37 @@ export const useAllProposalOfType = () => {
 }
 
 export const useProposalIndex = (index) => {
-  const { fastRefresh } = useRefresh()
+  const { slowRefresh } = useRefresh()
   const dispatch = useDispatch()
   const indexProposal = useSelector((state: State) => state.voting.indexProposal)
 
   useEffect(() => {
     dispatch(fetchProposalIndex(index))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fastRefresh, dispatch])
+  }, [slowRefresh, dispatch])
 
   return { indexProposal }
+}
+
+export const useIsProposable = () => {
+  const { account } = useWallet()
+  const { fastRefresh } = useRefresh()
+  const [proposables, setProposables] = useState<string>()
+
+  useEffect(() => {
+    async function fetchIsProposable() {
+      if (account) {
+        const callContract = getContract(IProposerFacet.abi, getVFinixVoting())
+        const isProposable = await callContract.methods.isProposable(account, 0).call()
+        setProposables(isProposable)
+      }
+    }
+
+    fetchIsProposable()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
+
+  return { proposables }
 }
 
 // Make a proposal
@@ -164,5 +186,128 @@ export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIn
 
 //   return { onRecallVotes: onRecallVotesFromProposal }
 // }
+
+// export const useGetProposal = (proposalId: string) => {
+//   const proposal = useSelector((state: State) => state.voting.proposals[proposalId])
+//   return proposal
+// }
+
+export const useGetProposal = (proposalId: string) => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const proposal = useSelector((state: State) => state.voting.proposals)
+
+  useEffect(() => {
+    dispatch(fetchProposal(proposalId))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh, dispatch])
+
+  return { proposal }
+}
+
+export const useApproveToService = (max) => {
+  const { account, connector } = useWallet()
+  const { setShowModal } = useContext(KlipModalContext())
+
+  const onApprove = useCallback(async () => {
+    const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
+    const serviceKey = await call.methods.getServiceKey().call()
+    // if (connector === 'klip') {
+    //   klipProvider.genQRcodeContactInteract(
+    //     getFinixAddress(),
+    //     JSON.stringify(getAbiERC20ByName('approve')),
+    //     JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
+    //     setShowModal,
+    //   )
+    //   const txHash = await klipProvider.checkResponse()
+    //   setShowModal(false)
+    //   return new Promise((resolve, reject) => {
+    //     resolve(txHash)
+    //   })
+    // }
+    const callContract = getContract(IUsageFacet.abi, getVFinix())
+    return new Promise((resolve, reject) => {
+      handleContractExecute(
+        callContract.methods.approveToService(
+          serviceKey,
+          '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
+        ),
+        account,
+      )
+        .then(resolve)
+        .catch(reject)
+    })
+  }, [account])
+
+  return { onApprove }
+}
+
+export const useServiceAllowance = () => {
+  const { account } = useWallet()
+  const { slowRefresh } = useRefresh()
+  const [allowances, setServiceAllowance] = useState<number>()
+
+  useMemo(async () => {
+    const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
+    const serviceKey = await call.methods.getServiceKey().call()
+    const allowance = getContract(IUsageFacet.abi, getVFinix())
+    const serviceAllowance = await allowance.methods.getServiceAllowance(serviceKey, account).call()
+    setServiceAllowance(serviceAllowance)
+  }, [account])
+
+  return allowances
+}
+
+const handleContractExecute = (_executeFunction, _account) => {
+  return new Promise((resolve, reject) => {
+    _executeFunction.estimateGas({ from: _account }).then((estimatedGasLimit) => {
+      _executeFunction.send({ from: _account, gas: estimatedGasLimit }).then(resolve).catch(reject)
+    })
+  })
+}
+
+// Add vote
+export const useVote = (proposalIndex, votingPowers) => {
+  const { account, connector } = useWallet()
+  const { setShowModal } = useContext(KlipModalContext())
+  const [serviceKey, setServiceKey] = useState('')
+
+  const callCastVote = async () => {
+    // console.log('proposalIndex2', votingPowers)
+    // setServiceKey(service)
+    // if (connector === 'klip') {
+    //   klipProvider.genQRcodeContactInteract(
+    //     getVFinixVoting(),
+    //     JSON.stringify(getAbiVaultFacetByName('unlock')),
+    //     JSON.stringify([
+    //       ipfsHash,
+    //       proposalType,
+    //       startTimestamp,
+    //       endTimestamp,
+    //       optionsCount,
+    //       minimumVotingPower,
+    //       voteLimit,
+    //     ]),
+    //     setShowModal,
+    //   )
+    //   await klipProvider.checkResponse()
+    //   setShowModal(false)
+    //   return new Promise((resolve, reject) => {
+    //     resolve('')
+    //   })
+    // }
+
+    const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
+    return new Promise((resolve, reject) => {
+      callContract.methods
+        .vote(proposalIndex, votingPowers)
+        .send({ from: account, gas: 5000000 })
+        .then(resolve)
+        .catch(reject)
+    })
+  }
+
+  return { onCastVote: callCastVote, serviceKey }
+}
 
 export default useAvailableVotes

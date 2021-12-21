@@ -193,7 +193,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                     <BtnDetails as={Link} to="/voting/detail/participate">
                       Deatils
                     </BtnDetails>
-                    {/* <BtnClaim as={Link} to="/voting/detail">
+                    {/* <BtnClaim as={Link} to={`/voting/detail/${item.ipfsHash`}>
                       Claim Voting Power
                     </BtnClaim> */}
                   </TD>

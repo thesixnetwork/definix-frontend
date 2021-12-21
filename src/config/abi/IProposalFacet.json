@@ -365,7 +365,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getAllProposal\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"proposalType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"voteLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256[]\",\"name\":\"optionVotingPower\",\"type\":\"uint256[]\"}],\"internalType\":\"struct LibDiamond.Proposal[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"_proposalType\",\"type\":\"uint8\"}],\"name\":\"getAllProposalOfType\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"proposalType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"voteLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256[]\",\"name\":\"optionVotingPower\",\"type\":\"uint256[]\"}],\"internalType\":\"struct LibDiamond.Proposal[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDefaultMinimumVotingPowers\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"}],\"name\":\"getProposal\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"proposalType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"voteLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256[]\",\"name\":\"optionVotingPower\",\"type\":\"uint256[]\"}],\"internalType\":\"struct LibDiamond.Proposal\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_optionIndex\",\"type\":\"uint256\"}],\"name\":\"getVotingPowers\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_optionIndex\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_voter\",\"type\":\"address\"}],\"name\":\"getVotingPowersOfAddress\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"}],\"name\":\"isProposalCompleted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"_proposalType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"_startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_voteLimit\",\"type\":\"uint256\"}],\"name\":\"propose\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_votingPowers\",\"type\":\"uint256\"}],\"name\":\"setDefaultMinimumVotingPowers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol\":\"IProposalFacet\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/interfaces/IDiamondCut.sol\":{\"keccak256\":\"0xc00c16bfa30a3fa5f3dc684f7f8ba62c259962b25f647d9588739458989717fc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://119d9a5acd99b9462a8341c9b95ddd468648799eefa47038f81521431743c1ae\",\"dweb:/ipfs/QmTF7WNyPWTUtUzNcpq5rf5v2uw5TwzqsSg9D53pfQufcu\"]},\"/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol\":{\"keccak256\":\"0xf9ad8fa2b2bc29534e0f540170a75af9764d1b91831ca00150384080a679913b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1aa9586fb017723fd064d2fab9a611d03b95b6d7d559ce184499352aafddbdf8\",\"dweb:/ipfs/QmPzHyu195F3Vqmz8dG5yPynNwRvnuJcQMCbJRM92dszhy\"]},\"/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/libraries/LibDiamond.sol\":{\"keccak256\":\"0x51558123151ef2a15f00da20acdc131d9d0d51adf47781556c4b2777c66d26fb\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0efdd1556e4972c24e99204163f200f37ad7f68499bc7c919a0f87652a96434f\",\"dweb:/ipfs/QmbGtV8imUtQPkhPGan3cZWutkNgfAyzh5DJnw5dJHMgar\"]},\"/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/utils/math/SafeMath.sol\":{\"keccak256\":\"0x7408e0b6e09c3e683d0666d319daaf6f2b4e2b1c063dd9f857c4af5158491021\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://55a9f1585597d72b8b18578a6e6c13f8716e00bd806325babb42db1d12361429\",\"dweb:/ipfs/QmfYUash3a9F22mQWAmH2ZW94nm66hJe8s7jy5xyq5o1q8\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getAllProposal\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"proposalType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"voteLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256[]\",\"name\":\"optionVotingPower\",\"type\":\"uint256[]\"}],\"internalType\":\"struct LibDiamond.Proposal[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"_proposalType\",\"type\":\"uint8\"}],\"name\":\"getAllProposalOfType\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"proposalType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"voteLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256[]\",\"name\":\"optionVotingPower\",\"type\":\"uint256[]\"}],\"internalType\":\"struct LibDiamond.Proposal[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDefaultMinimumVotingPowers\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"}],\"name\":\"getProposal\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"proposalType\",\"type\":\"uint8\"},{\"internalType\":\"address\",\"name\":\"proposer\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"totalVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"voteLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256[]\",\"name\":\"optionVotingPower\",\"type\":\"uint256[]\"}],\"internalType\":\"struct LibDiamond.Proposal\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_optionIndex\",\"type\":\"uint256\"}],\"name\":\"getVotingPowers\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_optionIndex\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"_voter\",\"type\":\"address\"}],\"name\":\"getVotingPowersOfAddress\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_proposalIndex\",\"type\":\"uint256\"}],\"name\":\"isProposalCompleted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_ipfsHash\",\"type\":\"string\"},{\"internalType\":\"enum LibDiamond.ProposalType\",\"name\":\"_proposalType\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"_startTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_endTimestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_optionsCount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minimumVotingPower\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_voteLimit\",\"type\":\"uint256\"}],\"name\":\"propose\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_votingPowers\",\"type\":\"uint256\"}],\"name\":\"setDefaultMinimumVotingPowers\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol\":\"IProposalFacet\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IDiamondCut.sol\":{\"keccak256\":\"0xc00c16bfa30a3fa5f3dc684f7f8ba62c259962b25f647d9588739458989717fc\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://119d9a5acd99b9462a8341c9b95ddd468648799eefa47038f81521431743c1ae\",\"dweb:/ipfs/QmTF7WNyPWTUtUzNcpq5rf5v2uw5TwzqsSg9D53pfQufcu\"]},\"/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol\":{\"keccak256\":\"0xf9ad8fa2b2bc29534e0f540170a75af9764d1b91831ca00150384080a679913b\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://1aa9586fb017723fd064d2fab9a611d03b95b6d7d559ce184499352aafddbdf8\",\"dweb:/ipfs/QmPzHyu195F3Vqmz8dG5yPynNwRvnuJcQMCbJRM92dszhy\"]},\"/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/libraries/LibDiamond.sol\":{\"keccak256\":\"0x51558123151ef2a15f00da20acdc131d9d0d51adf47781556c4b2777c66d26fb\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://0efdd1556e4972c24e99204163f200f37ad7f68499bc7c919a0f87652a96434f\",\"dweb:/ipfs/QmbGtV8imUtQPkhPGan3cZWutkNgfAyzh5DJnw5dJHMgar\"]},\"/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/utils/math/SafeMath.sol\":{\"keccak256\":\"0x7408e0b6e09c3e683d0666d319daaf6f2b4e2b1c063dd9f857c4af5158491021\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://55a9f1585597d72b8b18578a6e6c13f8716e00bd806325babb42db1d12361429\",\"dweb:/ipfs/QmfYUash3a9F22mQWAmH2ZW94nm66hJe8s7jy5xyq5o1q8\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
@@ -374,23 +374,23 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport {LibDiamond} from \"../libraries/LibDiamond.sol\";\n\ninterface IProposalFacet {\n    function propose(\n        string memory _ipfsHash,\n        LibDiamond.ProposalType _proposalType,\n        uint256 _startTimestamp,\n        uint256 _endTimestamp,\n        uint256 _optionsCount,\n        uint256 _minimumVotingPower,\n        uint256 _voteLimit\n    ) external;\n\n    function getProposal(uint256 _proposalIndex)\n        external\n        view\n        returns (LibDiamond.Proposal memory);\n\n    function getAllProposal()\n        external\n        view\n        returns (LibDiamond.Proposal[] memory);\n\n    function getAllProposalOfType(LibDiamond.ProposalType _proposalType)\n        external\n        view\n        returns (LibDiamond.Proposal[] memory);\n\n    function getVotingPowers(uint256 _proposalIndex, uint256 _optionIndex)\n        external\n        view\n        returns (uint256);\n\n    function getVotingPowersOfAddress(\n        uint256 _proposalIndex,\n        uint256 _optionIndex,\n        address _voter\n    ) external view returns (uint256);\n\n    function isProposalCompleted(uint256 _proposalIndex)\n        external\n        view\n        returns (bool);\n\n    function getDefaultMinimumVotingPowers() external view returns (uint256);\n\n    function setDefaultMinimumVotingPowers(uint256 _votingPowers) external;\n}\n",
-  "sourcePath": "/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol",
+  "sourcePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol",
   "ast": {
-    "absolutePath": "/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol",
+    "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol",
     "exportedSymbols": {
       "IProposalFacet": [
-        2626
+        2721
       ],
       "LibDiamond": [
-        3810
+        3927
       ]
     },
-    "id": 2627,
+    "id": 2722,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2543,
+        "id": 2638,
         "literals": [
           "solidity",
           "^",
@@ -398,24 +398,24 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:14"
+        "src": "32:23:15"
       },
       {
-        "absolutePath": "/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/libraries/LibDiamond.sol",
+        "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/libraries/LibDiamond.sol",
         "file": "../libraries/LibDiamond.sol",
-        "id": 2545,
+        "id": 2640,
         "nodeType": "ImportDirective",
-        "scope": 2627,
-        "sourceUnit": 3811,
-        "src": "57:55:14",
+        "scope": 2722,
+        "sourceUnit": 3928,
+        "src": "57:55:15",
         "symbolAliases": [
           {
             "foreign": {
-              "id": 2544,
+              "id": 2639,
               "name": "LibDiamond",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "src": "65:10:14",
+              "src": "65:10:15",
               "typeDescriptions": {}
             }
           }
@@ -428,33 +428,33 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2626,
+        "id": 2721,
         "linearizedBaseContracts": [
-          2626
+          2721
         ],
         "name": "IProposalFacet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "9473d290",
-            "id": 2563,
+            "id": 2658,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "propose",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2561,
+              "id": 2656,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2547,
+                  "id": 2642,
                   "mutability": "mutable",
                   "name": "_ipfsHash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "171:23:14",
+                  "scope": 2658,
+                  "src": "171:23:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -462,10 +462,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 2546,
+                    "id": 2641,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "171:6:14",
+                    "src": "171:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -475,32 +475,32 @@
                 },
                 {
                   "constant": false,
-                  "id": 2550,
+                  "id": 2645,
                   "mutability": "mutable",
                   "name": "_proposalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "204:37:14",
+                  "scope": 2658,
+                  "src": "204:37:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2549,
+                    "id": 2644,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2548,
+                      "id": 2643,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "204:23:14"
+                      "referencedDeclaration": 2904,
+                      "src": "204:23:15"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "204:23:14",
+                    "referencedDeclaration": 2904,
+                    "src": "204:23:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
@@ -508,12 +508,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2552,
+                  "id": 2647,
                   "mutability": "mutable",
                   "name": "_startTimestamp",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "251:23:14",
+                  "scope": 2658,
+                  "src": "251:23:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -521,10 +521,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2551,
+                    "id": 2646,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "251:7:14",
+                    "src": "251:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -534,12 +534,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2554,
+                  "id": 2649,
                   "mutability": "mutable",
                   "name": "_endTimestamp",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "284:21:14",
+                  "scope": 2658,
+                  "src": "284:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -547,10 +547,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2553,
+                    "id": 2648,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "284:7:14",
+                    "src": "284:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -560,12 +560,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2556,
+                  "id": 2651,
                   "mutability": "mutable",
                   "name": "_optionsCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "315:21:14",
+                  "scope": 2658,
+                  "src": "315:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -573,10 +573,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2555,
+                    "id": 2650,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "315:7:14",
+                    "src": "315:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -586,12 +586,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2558,
+                  "id": 2653,
                   "mutability": "mutable",
                   "name": "_minimumVotingPower",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "346:27:14",
+                  "scope": 2658,
+                  "src": "346:27:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -599,10 +599,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2557,
+                    "id": 2652,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "346:7:14",
+                    "src": "346:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -612,12 +612,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2560,
+                  "id": 2655,
                   "mutability": "mutable",
                   "name": "_voteLimit",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "383:18:14",
+                  "scope": 2658,
+                  "src": "383:18:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -625,10 +625,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2559,
+                    "id": 2654,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "383:7:14",
+                    "src": "383:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -637,40 +637,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "161:246:14"
+              "src": "161:246:15"
             },
             "returnParameters": {
-              "id": 2562,
+              "id": 2657,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "416:0:14"
+              "src": "416:0:15"
             },
-            "scope": 2626,
-            "src": "145:272:14",
+            "scope": 2721,
+            "src": "145:272:15",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "c7f758a8",
-            "id": 2571,
+            "id": 2666,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2566,
+              "id": 2661,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2565,
+                  "id": 2660,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2571,
-                  "src": "444:22:14",
+                  "scope": 2666,
+                  "src": "444:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -678,10 +678,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2564,
+                    "id": 2659,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "444:7:14",
+                    "src": "444:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -690,246 +690,246 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "443:24:14"
+              "src": "443:24:15"
             },
             "returnParameters": {
-              "id": 2570,
+              "id": 2665,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2569,
+                  "id": 2664,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2571,
-                  "src": "515:26:14",
+                  "scope": 2666,
+                  "src": "515:26:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Proposal_$2825_memory_ptr",
+                    "typeIdentifier": "t_struct$_Proposal_$2942_memory_ptr",
                     "typeString": "struct LibDiamond.Proposal"
                   },
                   "typeName": {
-                    "id": 2568,
+                    "id": 2663,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2567,
+                      "id": 2662,
                       "name": "LibDiamond.Proposal",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2825,
-                      "src": "515:19:14"
+                      "referencedDeclaration": 2942,
+                      "src": "515:19:15"
                     },
-                    "referencedDeclaration": 2825,
-                    "src": "515:19:14",
+                    "referencedDeclaration": 2942,
+                    "src": "515:19:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Proposal_$2825_storage_ptr",
+                      "typeIdentifier": "t_struct$_Proposal_$2942_storage_ptr",
                       "typeString": "struct LibDiamond.Proposal"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "514:28:14"
+              "src": "514:28:15"
             },
-            "scope": 2626,
-            "src": "423:120:14",
+            "scope": 2721,
+            "src": "423:120:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "43344983",
-            "id": 2578,
+            "id": 2673,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getAllProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2572,
+              "id": 2667,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "572:2:14"
+              "src": "572:2:15"
             },
             "returnParameters": {
-              "id": 2577,
+              "id": 2672,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2576,
+                  "id": 2671,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2578,
-                  "src": "622:28:14",
+                  "scope": 2673,
+                  "src": "622:28:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibDiamond.Proposal[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2574,
+                      "id": 2669,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2573,
+                        "id": 2668,
                         "name": "LibDiamond.Proposal",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2825,
-                        "src": "622:19:14"
+                        "referencedDeclaration": 2942,
+                        "src": "622:19:15"
                       },
-                      "referencedDeclaration": 2825,
-                      "src": "622:19:14",
+                      "referencedDeclaration": 2942,
+                      "src": "622:19:15",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Proposal_$2825_storage_ptr",
+                        "typeIdentifier": "t_struct$_Proposal_$2942_storage_ptr",
                         "typeString": "struct LibDiamond.Proposal"
                       }
                     },
-                    "id": 2575,
+                    "id": 2670,
                     "nodeType": "ArrayTypeName",
-                    "src": "622:21:14",
+                    "src": "622:21:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_storage_$dyn_storage_ptr",
                       "typeString": "struct LibDiamond.Proposal[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "621:30:14"
+              "src": "621:30:15"
             },
-            "scope": 2626,
-            "src": "549:103:14",
+            "scope": 2721,
+            "src": "549:103:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "7a3de7d5",
-            "id": 2588,
+            "id": 2683,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getAllProposalOfType",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2582,
+              "id": 2677,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2581,
+                  "id": 2676,
                   "mutability": "mutable",
                   "name": "_proposalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2588,
-                  "src": "688:37:14",
+                  "scope": 2683,
+                  "src": "688:37:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2580,
+                    "id": 2675,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2579,
+                      "id": 2674,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "688:23:14"
+                      "referencedDeclaration": 2904,
+                      "src": "688:23:15"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "688:23:14",
+                    "referencedDeclaration": 2904,
+                    "src": "688:23:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "687:39:14"
+              "src": "687:39:15"
             },
             "returnParameters": {
-              "id": 2587,
+              "id": 2682,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2586,
+                  "id": 2681,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2588,
-                  "src": "774:28:14",
+                  "scope": 2683,
+                  "src": "774:28:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibDiamond.Proposal[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2584,
+                      "id": 2679,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2583,
+                        "id": 2678,
                         "name": "LibDiamond.Proposal",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2825,
-                        "src": "774:19:14"
+                        "referencedDeclaration": 2942,
+                        "src": "774:19:15"
                       },
-                      "referencedDeclaration": 2825,
-                      "src": "774:19:14",
+                      "referencedDeclaration": 2942,
+                      "src": "774:19:15",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Proposal_$2825_storage_ptr",
+                        "typeIdentifier": "t_struct$_Proposal_$2942_storage_ptr",
                         "typeString": "struct LibDiamond.Proposal"
                       }
                     },
-                    "id": 2585,
+                    "id": 2680,
                     "nodeType": "ArrayTypeName",
-                    "src": "774:21:14",
+                    "src": "774:21:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_storage_$dyn_storage_ptr",
                       "typeString": "struct LibDiamond.Proposal[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "773:30:14"
+              "src": "773:30:15"
             },
-            "scope": 2626,
-            "src": "658:146:14",
+            "scope": 2721,
+            "src": "658:146:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "7b236b52",
-            "id": 2597,
+            "id": 2692,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getVotingPowers",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2593,
+              "id": 2688,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2590,
+                  "id": 2685,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2597,
-                  "src": "835:22:14",
+                  "scope": 2692,
+                  "src": "835:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -937,10 +937,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2589,
+                    "id": 2684,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "835:7:14",
+                    "src": "835:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -950,12 +950,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2592,
+                  "id": 2687,
                   "mutability": "mutable",
                   "name": "_optionIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2597,
-                  "src": "859:20:14",
+                  "scope": 2692,
+                  "src": "859:20:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -963,10 +963,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2591,
+                    "id": 2686,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "859:7:14",
+                    "src": "859:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -975,20 +975,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "834:46:14"
+              "src": "834:46:15"
             },
             "returnParameters": {
-              "id": 2596,
+              "id": 2691,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2595,
+                  "id": 2690,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2597,
-                  "src": "928:7:14",
+                  "scope": 2692,
+                  "src": "928:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -996,10 +996,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2594,
+                    "id": 2689,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "928:7:14",
+                    "src": "928:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1008,34 +1008,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "927:9:14"
+              "src": "927:9:15"
             },
-            "scope": 2626,
-            "src": "810:127:14",
+            "scope": 2721,
+            "src": "810:127:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "5ee8223c",
-            "id": 2608,
+            "id": 2703,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getVotingPowersOfAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2604,
+              "id": 2699,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2599,
+                  "id": 2694,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "986:22:14",
+                  "scope": 2703,
+                  "src": "986:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1043,10 +1043,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2598,
+                    "id": 2693,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "986:7:14",
+                    "src": "986:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1056,12 +1056,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2601,
+                  "id": 2696,
                   "mutability": "mutable",
                   "name": "_optionIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "1018:20:14",
+                  "scope": 2703,
+                  "src": "1018:20:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1069,10 +1069,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2600,
+                    "id": 2695,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1018:7:14",
+                    "src": "1018:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1082,12 +1082,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2603,
+                  "id": 2698,
                   "mutability": "mutable",
                   "name": "_voter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "1048:14:14",
+                  "scope": 2703,
+                  "src": "1048:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1095,10 +1095,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2602,
+                    "id": 2697,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1048:7:14",
+                    "src": "1048:7:15",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1108,20 +1108,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "976:92:14"
+              "src": "976:92:15"
             },
             "returnParameters": {
-              "id": 2607,
+              "id": 2702,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2606,
+                  "id": 2701,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "1092:7:14",
+                  "scope": 2703,
+                  "src": "1092:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1129,10 +1129,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2605,
+                    "id": 2700,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1092:7:14",
+                    "src": "1092:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1141,34 +1141,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1091:9:14"
+              "src": "1091:9:15"
             },
-            "scope": 2626,
-            "src": "943:158:14",
+            "scope": 2721,
+            "src": "943:158:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "b3c06855",
-            "id": 2615,
+            "id": 2710,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isProposalCompleted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2611,
+              "id": 2706,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2610,
+                  "id": 2705,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2615,
-                  "src": "1136:22:14",
+                  "scope": 2710,
+                  "src": "1136:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1176,10 +1176,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2609,
+                    "id": 2704,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1136:7:14",
+                    "src": "1136:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1188,20 +1188,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1135:24:14"
+              "src": "1135:24:15"
             },
             "returnParameters": {
-              "id": 2614,
+              "id": 2709,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2613,
+                  "id": 2708,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2615,
-                  "src": "1207:4:14",
+                  "scope": 2710,
+                  "src": "1207:4:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1209,10 +1209,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2612,
+                    "id": 2707,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1207:4:14",
+                    "src": "1207:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -1221,40 +1221,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1206:6:14"
+              "src": "1206:6:15"
             },
-            "scope": 2626,
-            "src": "1107:106:14",
+            "scope": 2721,
+            "src": "1107:106:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "cf5b6cd0",
-            "id": 2620,
+            "id": 2715,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getDefaultMinimumVotingPowers",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2616,
+              "id": 2711,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1257:2:14"
+              "src": "1257:2:15"
             },
             "returnParameters": {
-              "id": 2619,
+              "id": 2714,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2618,
+                  "id": 2713,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2620,
-                  "src": "1283:7:14",
+                  "scope": 2715,
+                  "src": "1283:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1262,10 +1262,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2617,
+                    "id": 2712,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1283:7:14",
+                    "src": "1283:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1274,34 +1274,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1282:9:14"
+              "src": "1282:9:15"
             },
-            "scope": 2626,
-            "src": "1219:73:14",
+            "scope": 2721,
+            "src": "1219:73:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "76fda17a",
-            "id": 2625,
+            "id": 2720,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setDefaultMinimumVotingPowers",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2623,
+              "id": 2718,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2622,
+                  "id": 2717,
                   "mutability": "mutable",
                   "name": "_votingPowers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2625,
-                  "src": "1337:21:14",
+                  "scope": 2720,
+                  "src": "1337:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1309,10 +1309,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2621,
+                    "id": 2716,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1337:7:14",
+                    "src": "1337:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1321,43 +1321,43 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1336:23:14"
+              "src": "1336:23:15"
             },
             "returnParameters": {
-              "id": 2624,
+              "id": 2719,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1368:0:14"
+              "src": "1368:0:15"
             },
-            "scope": 2626,
-            "src": "1298:71:14",
+            "scope": 2721,
+            "src": "1298:71:15",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2627,
-        "src": "114:1257:14"
+        "scope": 2722,
+        "src": "114:1257:15"
       }
     ],
-    "src": "32:1340:14"
+    "src": "32:1340:15"
   },
   "legacyAST": {
-    "absolutePath": "/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol",
+    "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IProposalFacet.sol",
     "exportedSymbols": {
       "IProposalFacet": [
-        2626
+        2721
       ],
       "LibDiamond": [
-        3810
+        3927
       ]
     },
-    "id": 2627,
+    "id": 2722,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2543,
+        "id": 2638,
         "literals": [
           "solidity",
           "^",
@@ -1365,24 +1365,24 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:14"
+        "src": "32:23:15"
       },
       {
-        "absolutePath": "/Users/kanthakarn/Documents/work/six-network/tmp/definix-vfinix-voting/contracts/libraries/LibDiamond.sol",
+        "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/libraries/LibDiamond.sol",
         "file": "../libraries/LibDiamond.sol",
-        "id": 2545,
+        "id": 2640,
         "nodeType": "ImportDirective",
-        "scope": 2627,
-        "sourceUnit": 3811,
-        "src": "57:55:14",
+        "scope": 2722,
+        "sourceUnit": 3928,
+        "src": "57:55:15",
         "symbolAliases": [
           {
             "foreign": {
-              "id": 2544,
+              "id": 2639,
               "name": "LibDiamond",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "src": "65:10:14",
+              "src": "65:10:15",
               "typeDescriptions": {}
             }
           }
@@ -1395,33 +1395,33 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2626,
+        "id": 2721,
         "linearizedBaseContracts": [
-          2626
+          2721
         ],
         "name": "IProposalFacet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "9473d290",
-            "id": 2563,
+            "id": 2658,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "propose",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2561,
+              "id": 2656,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2547,
+                  "id": 2642,
                   "mutability": "mutable",
                   "name": "_ipfsHash",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "171:23:14",
+                  "scope": 2658,
+                  "src": "171:23:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
@@ -1429,10 +1429,10 @@
                     "typeString": "string"
                   },
                   "typeName": {
-                    "id": 2546,
+                    "id": 2641,
                     "name": "string",
                     "nodeType": "ElementaryTypeName",
-                    "src": "171:6:14",
+                    "src": "171:6:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_string_storage_ptr",
                       "typeString": "string"
@@ -1442,32 +1442,32 @@
                 },
                 {
                   "constant": false,
-                  "id": 2550,
+                  "id": 2645,
                   "mutability": "mutable",
                   "name": "_proposalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "204:37:14",
+                  "scope": 2658,
+                  "src": "204:37:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2549,
+                    "id": 2644,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2548,
+                      "id": 2643,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "204:23:14"
+                      "referencedDeclaration": 2904,
+                      "src": "204:23:15"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "204:23:14",
+                    "referencedDeclaration": 2904,
+                    "src": "204:23:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
@@ -1475,12 +1475,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2552,
+                  "id": 2647,
                   "mutability": "mutable",
                   "name": "_startTimestamp",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "251:23:14",
+                  "scope": 2658,
+                  "src": "251:23:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1488,10 +1488,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2551,
+                    "id": 2646,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "251:7:14",
+                    "src": "251:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1501,12 +1501,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2554,
+                  "id": 2649,
                   "mutability": "mutable",
                   "name": "_endTimestamp",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "284:21:14",
+                  "scope": 2658,
+                  "src": "284:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1514,10 +1514,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2553,
+                    "id": 2648,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "284:7:14",
+                    "src": "284:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1527,12 +1527,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2556,
+                  "id": 2651,
                   "mutability": "mutable",
                   "name": "_optionsCount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "315:21:14",
+                  "scope": 2658,
+                  "src": "315:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1540,10 +1540,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2555,
+                    "id": 2650,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "315:7:14",
+                    "src": "315:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1553,12 +1553,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2558,
+                  "id": 2653,
                   "mutability": "mutable",
                   "name": "_minimumVotingPower",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "346:27:14",
+                  "scope": 2658,
+                  "src": "346:27:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1566,10 +1566,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2557,
+                    "id": 2652,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "346:7:14",
+                    "src": "346:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1579,12 +1579,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2560,
+                  "id": 2655,
                   "mutability": "mutable",
                   "name": "_voteLimit",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2563,
-                  "src": "383:18:14",
+                  "scope": 2658,
+                  "src": "383:18:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1592,10 +1592,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2559,
+                    "id": 2654,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "383:7:14",
+                    "src": "383:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1604,40 +1604,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "161:246:14"
+              "src": "161:246:15"
             },
             "returnParameters": {
-              "id": 2562,
+              "id": 2657,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "416:0:14"
+              "src": "416:0:15"
             },
-            "scope": 2626,
-            "src": "145:272:14",
+            "scope": 2721,
+            "src": "145:272:15",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "c7f758a8",
-            "id": 2571,
+            "id": 2666,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2566,
+              "id": 2661,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2565,
+                  "id": 2660,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2571,
-                  "src": "444:22:14",
+                  "scope": 2666,
+                  "src": "444:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1645,10 +1645,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2564,
+                    "id": 2659,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "444:7:14",
+                    "src": "444:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1657,246 +1657,246 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "443:24:14"
+              "src": "443:24:15"
             },
             "returnParameters": {
-              "id": 2570,
+              "id": 2665,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2569,
+                  "id": 2664,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2571,
-                  "src": "515:26:14",
+                  "scope": 2666,
+                  "src": "515:26:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_Proposal_$2825_memory_ptr",
+                    "typeIdentifier": "t_struct$_Proposal_$2942_memory_ptr",
                     "typeString": "struct LibDiamond.Proposal"
                   },
                   "typeName": {
-                    "id": 2568,
+                    "id": 2663,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2567,
+                      "id": 2662,
                       "name": "LibDiamond.Proposal",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2825,
-                      "src": "515:19:14"
+                      "referencedDeclaration": 2942,
+                      "src": "515:19:15"
                     },
-                    "referencedDeclaration": 2825,
-                    "src": "515:19:14",
+                    "referencedDeclaration": 2942,
+                    "src": "515:19:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_Proposal_$2825_storage_ptr",
+                      "typeIdentifier": "t_struct$_Proposal_$2942_storage_ptr",
                       "typeString": "struct LibDiamond.Proposal"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "514:28:14"
+              "src": "514:28:15"
             },
-            "scope": 2626,
-            "src": "423:120:14",
+            "scope": 2721,
+            "src": "423:120:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "43344983",
-            "id": 2578,
+            "id": 2673,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getAllProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2572,
+              "id": 2667,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "572:2:14"
+              "src": "572:2:15"
             },
             "returnParameters": {
-              "id": 2577,
+              "id": 2672,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2576,
+                  "id": 2671,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2578,
-                  "src": "622:28:14",
+                  "scope": 2673,
+                  "src": "622:28:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibDiamond.Proposal[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2574,
+                      "id": 2669,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2573,
+                        "id": 2668,
                         "name": "LibDiamond.Proposal",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2825,
-                        "src": "622:19:14"
+                        "referencedDeclaration": 2942,
+                        "src": "622:19:15"
                       },
-                      "referencedDeclaration": 2825,
-                      "src": "622:19:14",
+                      "referencedDeclaration": 2942,
+                      "src": "622:19:15",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Proposal_$2825_storage_ptr",
+                        "typeIdentifier": "t_struct$_Proposal_$2942_storage_ptr",
                         "typeString": "struct LibDiamond.Proposal"
                       }
                     },
-                    "id": 2575,
+                    "id": 2670,
                     "nodeType": "ArrayTypeName",
-                    "src": "622:21:14",
+                    "src": "622:21:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_storage_$dyn_storage_ptr",
                       "typeString": "struct LibDiamond.Proposal[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "621:30:14"
+              "src": "621:30:15"
             },
-            "scope": 2626,
-            "src": "549:103:14",
+            "scope": 2721,
+            "src": "549:103:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "7a3de7d5",
-            "id": 2588,
+            "id": 2683,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getAllProposalOfType",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2582,
+              "id": 2677,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2581,
+                  "id": 2676,
                   "mutability": "mutable",
                   "name": "_proposalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2588,
-                  "src": "688:37:14",
+                  "scope": 2683,
+                  "src": "688:37:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2580,
+                    "id": 2675,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2579,
+                      "id": 2674,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "688:23:14"
+                      "referencedDeclaration": 2904,
+                      "src": "688:23:15"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "688:23:14",
+                    "referencedDeclaration": 2904,
+                    "src": "688:23:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "687:39:14"
+              "src": "687:39:15"
             },
             "returnParameters": {
-              "id": 2587,
+              "id": 2682,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2586,
+                  "id": 2681,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2588,
-                  "src": "774:28:14",
+                  "scope": 2683,
+                  "src": "774:28:15",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_memory_ptr_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_memory_ptr_$dyn_memory_ptr",
                     "typeString": "struct LibDiamond.Proposal[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2584,
+                      "id": 2679,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2583,
+                        "id": 2678,
                         "name": "LibDiamond.Proposal",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2825,
-                        "src": "774:19:14"
+                        "referencedDeclaration": 2942,
+                        "src": "774:19:15"
                       },
-                      "referencedDeclaration": 2825,
-                      "src": "774:19:14",
+                      "referencedDeclaration": 2942,
+                      "src": "774:19:15",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_Proposal_$2825_storage_ptr",
+                        "typeIdentifier": "t_struct$_Proposal_$2942_storage_ptr",
                         "typeString": "struct LibDiamond.Proposal"
                       }
                     },
-                    "id": 2585,
+                    "id": 2680,
                     "nodeType": "ArrayTypeName",
-                    "src": "774:21:14",
+                    "src": "774:21:15",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2825_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_Proposal_$2942_storage_$dyn_storage_ptr",
                       "typeString": "struct LibDiamond.Proposal[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "773:30:14"
+              "src": "773:30:15"
             },
-            "scope": 2626,
-            "src": "658:146:14",
+            "scope": 2721,
+            "src": "658:146:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "7b236b52",
-            "id": 2597,
+            "id": 2692,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getVotingPowers",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2593,
+              "id": 2688,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2590,
+                  "id": 2685,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2597,
-                  "src": "835:22:14",
+                  "scope": 2692,
+                  "src": "835:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1904,10 +1904,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2589,
+                    "id": 2684,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "835:7:14",
+                    "src": "835:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1917,12 +1917,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2592,
+                  "id": 2687,
                   "mutability": "mutable",
                   "name": "_optionIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2597,
-                  "src": "859:20:14",
+                  "scope": 2692,
+                  "src": "859:20:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1930,10 +1930,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2591,
+                    "id": 2686,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "859:7:14",
+                    "src": "859:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1942,20 +1942,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "834:46:14"
+              "src": "834:46:15"
             },
             "returnParameters": {
-              "id": 2596,
+              "id": 2691,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2595,
+                  "id": 2690,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2597,
-                  "src": "928:7:14",
+                  "scope": 2692,
+                  "src": "928:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1963,10 +1963,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2594,
+                    "id": 2689,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "928:7:14",
+                    "src": "928:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -1975,34 +1975,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "927:9:14"
+              "src": "927:9:15"
             },
-            "scope": 2626,
-            "src": "810:127:14",
+            "scope": 2721,
+            "src": "810:127:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "5ee8223c",
-            "id": 2608,
+            "id": 2703,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getVotingPowersOfAddress",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2604,
+              "id": 2699,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2599,
+                  "id": 2694,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "986:22:14",
+                  "scope": 2703,
+                  "src": "986:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2010,10 +2010,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2598,
+                    "id": 2693,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "986:7:14",
+                    "src": "986:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2023,12 +2023,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2601,
+                  "id": 2696,
                   "mutability": "mutable",
                   "name": "_optionIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "1018:20:14",
+                  "scope": 2703,
+                  "src": "1018:20:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2036,10 +2036,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2600,
+                    "id": 2695,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1018:7:14",
+                    "src": "1018:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2049,12 +2049,12 @@
                 },
                 {
                   "constant": false,
-                  "id": 2603,
+                  "id": 2698,
                   "mutability": "mutable",
                   "name": "_voter",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "1048:14:14",
+                  "scope": 2703,
+                  "src": "1048:14:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2062,10 +2062,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2602,
+                    "id": 2697,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1048:7:14",
+                    "src": "1048:7:15",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -2075,20 +2075,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "976:92:14"
+              "src": "976:92:15"
             },
             "returnParameters": {
-              "id": 2607,
+              "id": 2702,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2606,
+                  "id": 2701,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2608,
-                  "src": "1092:7:14",
+                  "scope": 2703,
+                  "src": "1092:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2096,10 +2096,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2605,
+                    "id": 2700,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1092:7:14",
+                    "src": "1092:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2108,34 +2108,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1091:9:14"
+              "src": "1091:9:15"
             },
-            "scope": 2626,
-            "src": "943:158:14",
+            "scope": 2721,
+            "src": "943:158:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "b3c06855",
-            "id": 2615,
+            "id": 2710,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isProposalCompleted",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2611,
+              "id": 2706,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2610,
+                  "id": 2705,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2615,
-                  "src": "1136:22:14",
+                  "scope": 2710,
+                  "src": "1136:22:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2143,10 +2143,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2609,
+                    "id": 2704,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1136:7:14",
+                    "src": "1136:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2155,20 +2155,20 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1135:24:14"
+              "src": "1135:24:15"
             },
             "returnParameters": {
-              "id": 2614,
+              "id": 2709,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2613,
+                  "id": 2708,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2615,
-                  "src": "1207:4:14",
+                  "scope": 2710,
+                  "src": "1207:4:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2176,10 +2176,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2612,
+                    "id": 2707,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1207:4:14",
+                    "src": "1207:4:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -2188,40 +2188,40 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1206:6:14"
+              "src": "1206:6:15"
             },
-            "scope": 2626,
-            "src": "1107:106:14",
+            "scope": 2721,
+            "src": "1107:106:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "cf5b6cd0",
-            "id": 2620,
+            "id": 2715,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getDefaultMinimumVotingPowers",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2616,
+              "id": 2711,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1257:2:14"
+              "src": "1257:2:15"
             },
             "returnParameters": {
-              "id": 2619,
+              "id": 2714,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2618,
+                  "id": 2713,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2620,
-                  "src": "1283:7:14",
+                  "scope": 2715,
+                  "src": "1283:7:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2229,10 +2229,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2617,
+                    "id": 2712,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1283:7:14",
+                    "src": "1283:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2241,34 +2241,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1282:9:14"
+              "src": "1282:9:15"
             },
-            "scope": 2626,
-            "src": "1219:73:14",
+            "scope": 2721,
+            "src": "1219:73:15",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "76fda17a",
-            "id": 2625,
+            "id": 2720,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "setDefaultMinimumVotingPowers",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2623,
+              "id": 2718,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2622,
+                  "id": 2717,
                   "mutability": "mutable",
                   "name": "_votingPowers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2625,
-                  "src": "1337:21:14",
+                  "scope": 2720,
+                  "src": "1337:21:15",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -2276,10 +2276,10 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2621,
+                    "id": 2716,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
-                    "src": "1337:7:14",
+                    "src": "1337:7:15",
                     "typeDescriptions": {
                       "typeIdentifier": "t_uint256",
                       "typeString": "uint256"
@@ -2288,26 +2288,26 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "1336:23:14"
+              "src": "1336:23:15"
             },
             "returnParameters": {
-              "id": 2624,
+              "id": 2719,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "1368:0:14"
+              "src": "1368:0:15"
             },
-            "scope": 2626,
-            "src": "1298:71:14",
+            "scope": 2721,
+            "src": "1298:71:15",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2627,
-        "src": "114:1257:14"
+        "scope": 2722,
+        "src": "114:1257:15"
       }
     ],
-    "src": "32:1340:14"
+    "src": "32:1340:15"
   },
   "compiler": {
     "name": "solc",
@@ -2315,7 +2315,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-12-20T07:52:50.981Z",
+  "updatedAt": "2021-12-20T12:01:40.187Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

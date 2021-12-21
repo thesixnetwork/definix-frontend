@@ -7,9 +7,12 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import axios from 'axios'
 import CardProposals from './CardProposals'
-import { useAllProposalOfType, getIsParticipated, getVotingPowersOfAddress } from '../../../hooks/useVoting'
+import { useAllProposalOfType, getIsParticipated, getVotingPowersOfAddress,useIsProposable } from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
 import { Voting } from '../../../state/types'
+// import { useIsProposable } from '../../../hooks/useVoting'
+// import CardProposals from './CardProposals'
+// import VotingPartProposal from './VotingPartProposal'
 
 const BannerVoting = styled(Card)`
   width: 100%;
@@ -106,11 +109,11 @@ const CardVoting = () => {
       const isParticipateds = []
       for (let i = 0; i < userProposalsFilter.length; i++) {
         // eslint-disable-next-line
-        const [IsParticipated, meta] = await Promise.all([
+        const [isParticipated, meta] = await Promise.all([
           getIsParticipated(listAllProposal[i].proposalIndex.toNumber()),
           axios.get(`https://gateway.pinata.cloud/ipfs/${listAllProposal[i].ipfsHash}`),
         ])
-        userProposalsFilter[i].IsParticipated = IsParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
+        userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
         const metaData = meta.data
         userProposalsFilter[i].choices = metaData.choices
         userProposalsFilter[i].title = metaData.title
@@ -138,6 +141,11 @@ const CardVoting = () => {
     }
     fetch()
   }, [listAllProposal, account])
+
+  const proposable = useIsProposable()
+  const isProposable = _.get(proposable, 'proposables')
+  console.log('isProposable', isProposable)
+
   return (
     <>
       <BannerVoting>
@@ -147,9 +155,11 @@ const CardVoting = () => {
             Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
           </DetailBanner>
         </div>
-        <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
-          Make a Proposals
-        </Button>
+        {isProposable && (
+          <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
+            Make a Proposals
+          </Button>
+        )}
       </BannerVoting>
       <CardProposals />
 

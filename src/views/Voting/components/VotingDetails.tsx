@@ -1,16 +1,19 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import _ from 'lodash'
-import { Card, Text, useMatchBreakpoints, Skeleton } from 'uikit-dev'
-// import styled from 'styled-components'
-// import moment from 'moment'
-// import numeral from 'numeral'
 import { ExternalLink } from 'react-feather'
+import _ from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import styled from 'styled-components'
+import { Card, Text, useMatchBreakpoints, Skeleton, Button } from 'uikit-dev'
 import { useProposalIndex } from '../../../hooks/useVoting'
-// import useTheme from 'hooks/useTheme'
 
-const VotingDetails = ({ index }) => {
+const LinkView = styled(Button)`
+  background-color: unset;
+  cursor: pointer;
+  padding-left: 6px;
+`
+
+const VotingDetails = ({ id, index }) => {
   const { account } = useWallet()
   // const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
@@ -34,7 +37,7 @@ const VotingDetails = ({ index }) => {
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
             <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-              QmaSFZ3p
+              {id}
             </Text>
             <ExternalLink size={16} color="#30ADFF" />
           </div>
@@ -51,13 +54,12 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                  {`${_.get(indexProposal, 'indexProposal.proposer', '').substring(0, 6)}...${_.get(
-                    indexProposal,
-                    'indexProposal.proposer',
-                    '',
-                  ).substring(_.get(indexProposal, 'indexProposal.proposer', '').length - 4)}`}
+                  {index.creator &&
+                    `${index.creator.substring(0, 6)}...${index.creator.substring(index.creator.length - 4)}`}
                 </Text>
-                <ExternalLink size={16} color="#30ADFF" />
+                <LinkView as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
+                  <ExternalLink size={16} color="#30ADFF" />
+                </LinkView>
               </>
             )}
           </div>
@@ -74,7 +76,7 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold color="text" lineHeight="1">
-                  {_.get(indexProposal, 'indexProposal.startTimestamp', '')} GMT+9
+                  {index.start_unixtimestamp} GMT+9
                 </Text>
               </>
             )}
@@ -92,7 +94,7 @@ const VotingDetails = ({ index }) => {
             ) : (
               <>
                 <Text fontSize="16px" bold color="text" lineHeight="1">
-                  {_.get(indexProposal, 'indexProposal.endTimestamp', '')} GMT+9
+                  {index.end_unixtimestamp} GMT+9
                 </Text>
               </>
             )}

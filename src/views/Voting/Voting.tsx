@@ -49,7 +49,7 @@ const Voting: React.FC = () => {
         </TwoPanelLayout>
       </Route>
 
-      <Route exact path={`${path}/detail`}>
+      <Route exact path={`${path}/detail/:id/:proposalIndex`}>
         <VotingInfos isParticipate={false} />
       </Route>
 

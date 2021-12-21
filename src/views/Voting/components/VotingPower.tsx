@@ -1,5 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
+import _ from 'lodash'
 import { Card, Text } from 'uikit-dev'
 import { ChevronDown } from 'react-feather'
 import numeral from 'numeral'
