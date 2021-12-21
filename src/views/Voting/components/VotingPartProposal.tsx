@@ -168,11 +168,11 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                   <TD>
                     {r.choices.map((item) => (
                       <TR>
-                          <div className="flex align-center">
-                            <Text color="text" bold paddingRight="8px">
-                              {item.votePower}
-                            </Text>
-                          </div>
+                        <div className="flex align-center">
+                          <Text color="text" bold paddingRight="8px">
+                            {item.votePower}
+                          </Text>
+                        </div>
                       </TR>
                     ))}
                   </TD>
@@ -220,11 +220,10 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
       }
     }),
   )
-  
 
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  
+
   const setDefault = (tab) => {
     setCurrentTab(tab)
     setCurrentPage(1)
