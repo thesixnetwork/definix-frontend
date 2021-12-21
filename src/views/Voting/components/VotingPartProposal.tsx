@@ -82,7 +82,7 @@ const TR = styled.tr`
 `
 
 const TD = styled.td<{ align?: string }>`
-  // border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   padding: 16px;
   // height: 64px;
   vertical-align: middle;
@@ -156,28 +156,23 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       </Text>
                     </div>
                   </TD>
-
                   <TD>
                     {r.choices.map((item) => (
                       <TR>
-                        <TD>
-                          <Text color="text" bold>
-                            {item.choiceName}
-                          </Text>
-                        </TD>
+                        <Text color="text" bold>
+                          {item.choiceName}
+                        </Text>
                       </TR>
                     ))}
                   </TD>
                   <TD>
                     {r.choices.map((item) => (
                       <TR>
-                        <TD>
                           <div className="flex align-center">
                             <Text color="text" bold paddingRight="8px">
                               {item.votePower}
                             </Text>
                           </div>
-                        </TD>
                       </TR>
                     ))}
                   </TD>
@@ -225,10 +220,11 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
       }
     }),
   )
+  
 
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-
+  
   const setDefault = (tab) => {
     setCurrentTab(tab)
     setCurrentPage(1)
