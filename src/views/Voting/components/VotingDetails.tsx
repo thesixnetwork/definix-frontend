@@ -10,7 +10,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useProposalIndex } from '../../../hooks/useVoting'
 // import useTheme from 'hooks/useTheme'
 
-const VotingDetails = ({ index }) => {
+const VotingDetails = ({ id, index }) => {
   const { account } = useWallet()
   // const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
@@ -34,7 +34,7 @@ const VotingDetails = ({ index }) => {
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
             <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-              QmaSFZ3p
+              {id}
             </Text>
             <ExternalLink size={16} color="#30ADFF" />
           </div>

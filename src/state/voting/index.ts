@@ -52,61 +52,34 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
     ]
     const [[proposalOfType]] = await multicall(IProposalFacet.abi, calls)
     const dataArray = []
+    const proposalArray = []
+    const voteAPI = process.env.REACT_APP_IPFS
 
-    proposalOfType.map(async (item) => {
+    await proposalOfType.map(async (item) => {
+      let startTimestamp = new Date(new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000)
+      startTimestamp.setDate(startTimestamp.getDate())
+      startTimestamp = new Date(startTimestamp)
+
       let endTimestamp = new Date(new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000)
       endTimestamp.setDate(endTimestamp.getDate())
       endTimestamp = new Date(endTimestamp)
 
       const timeZone = new Date().getTimezoneOffset() / 60
       const offset = timeZone === -7 && 2
+      const utcStartTimestamp = startTimestamp.getTime()
       const utcEndTimestamp = endTimestamp.getTime()
 
+      const startTime = new Date(utcStartTimestamp + 3600000 * offset)
       const endTime = new Date(utcEndTimestamp + 3600000 * offset)
-      const voteAPI = process.env.REACT_APP_IPFS
-
-      //   console.log('item', item.ipfsHash)
-      //   if (item.ipfsHash.length > 6) {
-      //     await axios
-      //       .get(`${voteAPI}/${item.ipfsHash}`)
-      //       .then(async (resp) => {
-      //         console.log('resp', resp.data)
-      //         if (resp.status === 200) {
-      //           dataArray.push({
-      //             ipfsHash: item.ipfsHash,
-      //             endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
-      //             proposalType: item.proposalType,
-      //             proposer: item.proposer,
-      //             choice_type: resp.data.choice_type, // "single"
-      //             choices: resp.data.choices, // ['3', '4']
-      //             content: resp.data.content, //"test1"
-      //             creator: resp.data.creator, // "0x14073ed09cae2694bafc2d8078dc181095a682be"
-      //             proposals_type: resp.data.proposals_type, //"core"
-      //             start_unixtimestamp: resp.data.start_unixtimestamp, // 1640886300
-      //             end_unixtimestamp: resp.data.end_unixtimestamp, // 1643652000
-      //             title: resp.data.test1, // "title"
-      //           })
-      //         }
-      //       })
-      //       .catch((e) => {
-      //         console.log('error', e)
-      //         //   setIsLoading(false)
-      //       })
-      //   }
 
       dataArray.push({
         ipfsHash: item.ipfsHash,
+        startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`),
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
         proposalType: item.proposalType,
         proposer: item.proposer,
-        choice_type: 'single',
-        choices: ['3', '4'],
-        content: 'test1',
-        creator: '0x14073ed09cae2694bafc2d8078dc181095a682be',
-        proposals_type: 'core',
-        start_unixtimestamp: 1640886300,
-        end_unixtimestamp: 1643652000,
-        title: 'title',
+        proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')).toNumber(),
+        optionVotingPower: item.optionVotingPower,
       })
 
       return dataArray
@@ -151,7 +124,7 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
 
       const timeZone = new Date().getTimezoneOffset() / 60
       const offset = timeZone === -7 && 2
-      const utcStartTimestamp = endTimestamp.getTime()
+      const utcStartTimestamp = startTimestamp.getTime()
       const utcEndTimestamp = endTimestamp.getTime()
 
       const startTime = new Date(utcStartTimestamp + 3600000 * offset)
@@ -163,6 +136,9 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
         startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`),
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
         proposalType: item.proposalType,
+        proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')).toNumber(),
+        optionVotingPower: item.optionVotingPower,
+        totalVotingPower: item.totalVotingPower,
       }
     })
     indexProposal = resultByIndex
@@ -190,7 +166,7 @@ const getProposal = async ({ id }) => {
 
           const timeZone = new Date().getTimezoneOffset() / 60
           const offset = timeZone === -7 && 2
-          const utcStartTimestamp = endTimestamp.getTime()
+          const utcStartTimestamp = startTimestamp.getTime()
           const utcEndTimestamp = endTimestamp.getTime()
 
           const startTime = new Date(utcStartTimestamp + 3600000 * offset)

@@ -112,18 +112,18 @@
     "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IProposerFacet.sol",
     "exportedSymbols": {
       "IProposerFacet": [
-        2677
+        2772
       ],
       "LibDiamond": [
-        3810
+        3927
       ]
     },
-    "id": 2678,
+    "id": 2773,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2628,
+        "id": 2723,
         "literals": [
           "solidity",
           "^",
@@ -131,24 +131,24 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:15"
+        "src": "32:23:16"
       },
       {
         "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/libraries/LibDiamond.sol",
         "file": "../libraries/LibDiamond.sol",
-        "id": 2630,
+        "id": 2725,
         "nodeType": "ImportDirective",
-        "scope": 2678,
-        "sourceUnit": 3811,
-        "src": "57:55:15",
+        "scope": 2773,
+        "sourceUnit": 3928,
+        "src": "57:55:16",
         "symbolAliases": [
           {
             "foreign": {
-              "id": 2629,
+              "id": 2724,
               "name": "LibDiamond",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "src": "65:10:15",
+              "src": "65:10:16",
               "typeDescriptions": {}
             }
           }
@@ -161,33 +161,33 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2677,
+        "id": 2772,
         "linearizedBaseContracts": [
-          2677
+          2772
         ],
         "name": "IProposerFacet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "5760a405",
-            "id": 2640,
+            "id": 2735,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isProposable",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2636,
+              "id": 2731,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2632,
+                  "id": 2727,
                   "mutability": "mutable",
                   "name": "_proposer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2640,
-                  "src": "167:17:15",
+                  "scope": 2735,
+                  "src": "167:17:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -195,10 +195,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2631,
+                    "id": 2726,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "167:7:15",
+                    "src": "167:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -209,52 +209,52 @@
                 },
                 {
                   "constant": false,
-                  "id": 2635,
+                  "id": 2730,
                   "mutability": "mutable",
                   "name": "_propersalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2640,
-                  "src": "186:38:15",
+                  "scope": 2735,
+                  "src": "186:38:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2634,
+                    "id": 2729,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2633,
+                      "id": 2728,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "186:23:15"
+                      "referencedDeclaration": 2904,
+                      "src": "186:23:16"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "186:23:15",
+                    "referencedDeclaration": 2904,
+                    "src": "186:23:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "166:59:15"
+              "src": "166:59:16"
             },
             "returnParameters": {
-              "id": 2639,
+              "id": 2734,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2638,
+                  "id": 2733,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2640,
-                  "src": "248:4:15",
+                  "scope": 2735,
+                  "src": "248:4:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -262,10 +262,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2637,
+                    "id": 2732,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "248:4:15",
+                    "src": "248:4:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -274,34 +274,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "247:6:15"
+              "src": "247:6:16"
             },
-            "scope": 2677,
-            "src": "145:109:15",
+            "scope": 2772,
+            "src": "145:109:16",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "c4228b05",
-            "id": 2648,
+            "id": 2743,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "grantProposable",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2646,
+              "id": 2741,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2642,
+                  "id": 2737,
                   "mutability": "mutable",
                   "name": "_proposer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2648,
-                  "src": "284:17:15",
+                  "scope": 2743,
+                  "src": "284:17:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -309,10 +309,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2641,
+                    "id": 2736,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "284:7:15",
+                    "src": "284:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -323,72 +323,72 @@
                 },
                 {
                   "constant": false,
-                  "id": 2645,
+                  "id": 2740,
                   "mutability": "mutable",
                   "name": "_propersalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2648,
-                  "src": "303:38:15",
+                  "scope": 2743,
+                  "src": "303:38:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2644,
+                    "id": 2739,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2643,
+                      "id": 2738,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "303:23:15"
+                      "referencedDeclaration": 2904,
+                      "src": "303:23:16"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "303:23:15",
+                    "referencedDeclaration": 2904,
+                    "src": "303:23:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "283:59:15"
+              "src": "283:59:16"
             },
             "returnParameters": {
-              "id": 2647,
+              "id": 2742,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "351:0:15"
+              "src": "351:0:16"
             },
-            "scope": 2677,
-            "src": "259:93:15",
+            "scope": 2772,
+            "src": "259:93:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "5f1f2472",
-            "id": 2658,
+            "id": 2753,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "grantProposableBatch",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2656,
+              "id": 2751,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2651,
+                  "id": 2746,
                   "mutability": "mutable",
                   "name": "_proposers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2658,
-                  "src": "387:29:15",
+                  "scope": 2753,
+                  "src": "387:29:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -397,19 +397,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2649,
+                      "id": 2744,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "387:7:15",
+                      "src": "387:7:16",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2650,
+                    "id": 2745,
                     "nodeType": "ArrayTypeName",
-                    "src": "387:9:15",
+                    "src": "387:9:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -419,81 +419,81 @@
                 },
                 {
                   "constant": false,
-                  "id": 2655,
+                  "id": 2750,
                   "mutability": "mutable",
                   "name": "_proposalTypes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2658,
-                  "src": "418:49:15",
+                  "scope": 2753,
+                  "src": "418:49:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_calldata_ptr",
+                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_calldata_ptr",
                     "typeString": "enum LibDiamond.ProposalType[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2653,
+                      "id": 2748,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2652,
+                        "id": 2747,
                         "name": "LibDiamond.ProposalType",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2787,
-                        "src": "418:23:15"
+                        "referencedDeclaration": 2904,
+                        "src": "418:23:16"
                       },
-                      "referencedDeclaration": 2787,
-                      "src": "418:23:15",
+                      "referencedDeclaration": 2904,
+                      "src": "418:23:16",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_ProposalType_$2787",
+                        "typeIdentifier": "t_enum$_ProposalType_$2904",
                         "typeString": "enum LibDiamond.ProposalType"
                       }
                     },
-                    "id": 2654,
+                    "id": 2749,
                     "nodeType": "ArrayTypeName",
-                    "src": "418:25:15",
+                    "src": "418:25:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_storage_ptr",
                       "typeString": "enum LibDiamond.ProposalType[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "386:82:15"
+              "src": "386:82:16"
             },
             "returnParameters": {
-              "id": 2657,
+              "id": 2752,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "477:0:15"
+              "src": "477:0:16"
             },
-            "scope": 2677,
-            "src": "357:121:15",
+            "scope": 2772,
+            "src": "357:121:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "b21d3328",
-            "id": 2666,
+            "id": 2761,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "revokeProposable",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2664,
+              "id": 2759,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2660,
+                  "id": 2755,
                   "mutability": "mutable",
                   "name": "_proposer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2666,
-                  "src": "509:17:15",
+                  "scope": 2761,
+                  "src": "509:17:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -501,10 +501,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2659,
+                    "id": 2754,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "509:7:15",
+                    "src": "509:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -515,72 +515,72 @@
                 },
                 {
                   "constant": false,
-                  "id": 2663,
+                  "id": 2758,
                   "mutability": "mutable",
                   "name": "_propersalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2666,
-                  "src": "528:38:15",
+                  "scope": 2761,
+                  "src": "528:38:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2662,
+                    "id": 2757,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2661,
+                      "id": 2756,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "528:23:15"
+                      "referencedDeclaration": 2904,
+                      "src": "528:23:16"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "528:23:15",
+                    "referencedDeclaration": 2904,
+                    "src": "528:23:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "508:59:15"
+              "src": "508:59:16"
             },
             "returnParameters": {
-              "id": 2665,
+              "id": 2760,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "576:0:15"
+              "src": "576:0:16"
             },
-            "scope": 2677,
-            "src": "483:94:15",
+            "scope": 2772,
+            "src": "483:94:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "d9ddea59",
-            "id": 2676,
+            "id": 2771,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "revokeProposableBatch",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2674,
+              "id": 2769,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2669,
+                  "id": 2764,
                   "mutability": "mutable",
                   "name": "_proposers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2676,
-                  "src": "613:29:15",
+                  "scope": 2771,
+                  "src": "613:29:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -589,19 +589,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2667,
+                      "id": 2762,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "613:7:15",
+                      "src": "613:7:16",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2668,
+                    "id": 2763,
                     "nodeType": "ArrayTypeName",
-                    "src": "613:9:15",
+                    "src": "613:9:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -611,84 +611,84 @@
                 },
                 {
                   "constant": false,
-                  "id": 2673,
+                  "id": 2768,
                   "mutability": "mutable",
                   "name": "_proposalTypes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2676,
-                  "src": "644:49:15",
+                  "scope": 2771,
+                  "src": "644:49:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_calldata_ptr",
+                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_calldata_ptr",
                     "typeString": "enum LibDiamond.ProposalType[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2671,
+                      "id": 2766,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2670,
+                        "id": 2765,
                         "name": "LibDiamond.ProposalType",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2787,
-                        "src": "644:23:15"
+                        "referencedDeclaration": 2904,
+                        "src": "644:23:16"
                       },
-                      "referencedDeclaration": 2787,
-                      "src": "644:23:15",
+                      "referencedDeclaration": 2904,
+                      "src": "644:23:16",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_ProposalType_$2787",
+                        "typeIdentifier": "t_enum$_ProposalType_$2904",
                         "typeString": "enum LibDiamond.ProposalType"
                       }
                     },
-                    "id": 2672,
+                    "id": 2767,
                     "nodeType": "ArrayTypeName",
-                    "src": "644:25:15",
+                    "src": "644:25:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_storage_ptr",
                       "typeString": "enum LibDiamond.ProposalType[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "612:82:15"
+              "src": "612:82:16"
             },
             "returnParameters": {
-              "id": 2675,
+              "id": 2770,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "703:0:15"
+              "src": "703:0:16"
             },
-            "scope": 2677,
-            "src": "582:122:15",
+            "scope": 2772,
+            "src": "582:122:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2678,
-        "src": "114:592:15"
+        "scope": 2773,
+        "src": "114:592:16"
       }
     ],
-    "src": "32:675:15"
+    "src": "32:675:16"
   },
   "legacyAST": {
     "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IProposerFacet.sol",
     "exportedSymbols": {
       "IProposerFacet": [
-        2677
+        2772
       ],
       "LibDiamond": [
-        3810
+        3927
       ]
     },
-    "id": 2678,
+    "id": 2773,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2628,
+        "id": 2723,
         "literals": [
           "solidity",
           "^",
@@ -696,24 +696,24 @@
           ".0"
         ],
         "nodeType": "PragmaDirective",
-        "src": "32:23:15"
+        "src": "32:23:16"
       },
       {
         "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/libraries/LibDiamond.sol",
         "file": "../libraries/LibDiamond.sol",
-        "id": 2630,
+        "id": 2725,
         "nodeType": "ImportDirective",
-        "scope": 2678,
-        "sourceUnit": 3811,
-        "src": "57:55:15",
+        "scope": 2773,
+        "sourceUnit": 3928,
+        "src": "57:55:16",
         "symbolAliases": [
           {
             "foreign": {
-              "id": 2629,
+              "id": 2724,
               "name": "LibDiamond",
               "nodeType": "Identifier",
               "overloadedDeclarations": [],
-              "src": "65:10:15",
+              "src": "65:10:16",
               "typeDescriptions": {}
             }
           }
@@ -726,33 +726,33 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2677,
+        "id": 2772,
         "linearizedBaseContracts": [
-          2677
+          2772
         ],
         "name": "IProposerFacet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "5760a405",
-            "id": 2640,
+            "id": 2735,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isProposable",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2636,
+              "id": 2731,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2632,
+                  "id": 2727,
                   "mutability": "mutable",
                   "name": "_proposer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2640,
-                  "src": "167:17:15",
+                  "scope": 2735,
+                  "src": "167:17:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -760,10 +760,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2631,
+                    "id": 2726,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "167:7:15",
+                    "src": "167:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -774,52 +774,52 @@
                 },
                 {
                   "constant": false,
-                  "id": 2635,
+                  "id": 2730,
                   "mutability": "mutable",
                   "name": "_propersalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2640,
-                  "src": "186:38:15",
+                  "scope": 2735,
+                  "src": "186:38:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2634,
+                    "id": 2729,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2633,
+                      "id": 2728,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "186:23:15"
+                      "referencedDeclaration": 2904,
+                      "src": "186:23:16"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "186:23:15",
+                    "referencedDeclaration": 2904,
+                    "src": "186:23:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "166:59:15"
+              "src": "166:59:16"
             },
             "returnParameters": {
-              "id": 2639,
+              "id": 2734,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2638,
+                  "id": 2733,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2640,
-                  "src": "248:4:15",
+                  "scope": 2735,
+                  "src": "248:4:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -827,10 +827,10 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2637,
+                    "id": 2732,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
-                    "src": "248:4:15",
+                    "src": "248:4:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_bool",
                       "typeString": "bool"
@@ -839,34 +839,34 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "247:6:15"
+              "src": "247:6:16"
             },
-            "scope": 2677,
-            "src": "145:109:15",
+            "scope": 2772,
+            "src": "145:109:16",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "c4228b05",
-            "id": 2648,
+            "id": 2743,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "grantProposable",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2646,
+              "id": 2741,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2642,
+                  "id": 2737,
                   "mutability": "mutable",
                   "name": "_proposer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2648,
-                  "src": "284:17:15",
+                  "scope": 2743,
+                  "src": "284:17:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -874,10 +874,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2641,
+                    "id": 2736,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "284:7:15",
+                    "src": "284:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -888,72 +888,72 @@
                 },
                 {
                   "constant": false,
-                  "id": 2645,
+                  "id": 2740,
                   "mutability": "mutable",
                   "name": "_propersalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2648,
-                  "src": "303:38:15",
+                  "scope": 2743,
+                  "src": "303:38:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2644,
+                    "id": 2739,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2643,
+                      "id": 2738,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "303:23:15"
+                      "referencedDeclaration": 2904,
+                      "src": "303:23:16"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "303:23:15",
+                    "referencedDeclaration": 2904,
+                    "src": "303:23:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "283:59:15"
+              "src": "283:59:16"
             },
             "returnParameters": {
-              "id": 2647,
+              "id": 2742,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "351:0:15"
+              "src": "351:0:16"
             },
-            "scope": 2677,
-            "src": "259:93:15",
+            "scope": 2772,
+            "src": "259:93:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "5f1f2472",
-            "id": 2658,
+            "id": 2753,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "grantProposableBatch",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2656,
+              "id": 2751,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2651,
+                  "id": 2746,
                   "mutability": "mutable",
                   "name": "_proposers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2658,
-                  "src": "387:29:15",
+                  "scope": 2753,
+                  "src": "387:29:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -962,19 +962,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2649,
+                      "id": 2744,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "387:7:15",
+                      "src": "387:7:16",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2650,
+                    "id": 2745,
                     "nodeType": "ArrayTypeName",
-                    "src": "387:9:15",
+                    "src": "387:9:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -984,81 +984,81 @@
                 },
                 {
                   "constant": false,
-                  "id": 2655,
+                  "id": 2750,
                   "mutability": "mutable",
                   "name": "_proposalTypes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2658,
-                  "src": "418:49:15",
+                  "scope": 2753,
+                  "src": "418:49:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_calldata_ptr",
+                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_calldata_ptr",
                     "typeString": "enum LibDiamond.ProposalType[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2653,
+                      "id": 2748,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2652,
+                        "id": 2747,
                         "name": "LibDiamond.ProposalType",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2787,
-                        "src": "418:23:15"
+                        "referencedDeclaration": 2904,
+                        "src": "418:23:16"
                       },
-                      "referencedDeclaration": 2787,
-                      "src": "418:23:15",
+                      "referencedDeclaration": 2904,
+                      "src": "418:23:16",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_ProposalType_$2787",
+                        "typeIdentifier": "t_enum$_ProposalType_$2904",
                         "typeString": "enum LibDiamond.ProposalType"
                       }
                     },
-                    "id": 2654,
+                    "id": 2749,
                     "nodeType": "ArrayTypeName",
-                    "src": "418:25:15",
+                    "src": "418:25:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_storage_ptr",
                       "typeString": "enum LibDiamond.ProposalType[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "386:82:15"
+              "src": "386:82:16"
             },
             "returnParameters": {
-              "id": 2657,
+              "id": 2752,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "477:0:15"
+              "src": "477:0:16"
             },
-            "scope": 2677,
-            "src": "357:121:15",
+            "scope": 2772,
+            "src": "357:121:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "b21d3328",
-            "id": 2666,
+            "id": 2761,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "revokeProposable",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2664,
+              "id": 2759,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2660,
+                  "id": 2755,
                   "mutability": "mutable",
                   "name": "_proposer",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2666,
-                  "src": "509:17:15",
+                  "scope": 2761,
+                  "src": "509:17:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -1066,10 +1066,10 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2659,
+                    "id": 2754,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
-                    "src": "509:7:15",
+                    "src": "509:7:16",
                     "stateMutability": "nonpayable",
                     "typeDescriptions": {
                       "typeIdentifier": "t_address",
@@ -1080,72 +1080,72 @@
                 },
                 {
                   "constant": false,
-                  "id": 2663,
+                  "id": 2758,
                   "mutability": "mutable",
                   "name": "_propersalType",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2666,
-                  "src": "528:38:15",
+                  "scope": 2761,
+                  "src": "528:38:16",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_enum$_ProposalType_$2787",
+                    "typeIdentifier": "t_enum$_ProposalType_$2904",
                     "typeString": "enum LibDiamond.ProposalType"
                   },
                   "typeName": {
-                    "id": 2662,
+                    "id": 2757,
                     "nodeType": "UserDefinedTypeName",
                     "pathNode": {
-                      "id": 2661,
+                      "id": 2756,
                       "name": "LibDiamond.ProposalType",
                       "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 2787,
-                      "src": "528:23:15"
+                      "referencedDeclaration": 2904,
+                      "src": "528:23:16"
                     },
-                    "referencedDeclaration": 2787,
-                    "src": "528:23:15",
+                    "referencedDeclaration": 2904,
+                    "src": "528:23:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_enum$_ProposalType_$2787",
+                      "typeIdentifier": "t_enum$_ProposalType_$2904",
                       "typeString": "enum LibDiamond.ProposalType"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "508:59:15"
+              "src": "508:59:16"
             },
             "returnParameters": {
-              "id": 2665,
+              "id": 2760,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "576:0:15"
+              "src": "576:0:16"
             },
-            "scope": 2677,
-            "src": "483:94:15",
+            "scope": 2772,
+            "src": "483:94:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           },
           {
             "functionSelector": "d9ddea59",
-            "id": 2676,
+            "id": 2771,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "revokeProposableBatch",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2674,
+              "id": 2769,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2669,
+                  "id": 2764,
                   "mutability": "mutable",
                   "name": "_proposers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2676,
-                  "src": "613:29:15",
+                  "scope": 2771,
+                  "src": "613:29:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
@@ -1154,19 +1154,19 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2667,
+                      "id": 2762,
                       "name": "address",
                       "nodeType": "ElementaryTypeName",
-                      "src": "613:7:15",
+                      "src": "613:7:16",
                       "stateMutability": "nonpayable",
                       "typeDescriptions": {
                         "typeIdentifier": "t_address",
                         "typeString": "address"
                       }
                     },
-                    "id": 2668,
+                    "id": 2763,
                     "nodeType": "ArrayTypeName",
-                    "src": "613:9:15",
+                    "src": "613:9:16",
                     "typeDescriptions": {
                       "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
                       "typeString": "address[]"
@@ -1176,67 +1176,67 @@
                 },
                 {
                   "constant": false,
-                  "id": 2673,
+                  "id": 2768,
                   "mutability": "mutable",
                   "name": "_proposalTypes",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2676,
-                  "src": "644:49:15",
+                  "scope": 2771,
+                  "src": "644:49:16",
                   "stateVariable": false,
                   "storageLocation": "calldata",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_calldata_ptr",
+                    "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_calldata_ptr",
                     "typeString": "enum LibDiamond.ProposalType[]"
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2671,
+                      "id": 2766,
                       "nodeType": "UserDefinedTypeName",
                       "pathNode": {
-                        "id": 2670,
+                        "id": 2765,
                         "name": "LibDiamond.ProposalType",
                         "nodeType": "IdentifierPath",
-                        "referencedDeclaration": 2787,
-                        "src": "644:23:15"
+                        "referencedDeclaration": 2904,
+                        "src": "644:23:16"
                       },
-                      "referencedDeclaration": 2787,
-                      "src": "644:23:15",
+                      "referencedDeclaration": 2904,
+                      "src": "644:23:16",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_enum$_ProposalType_$2787",
+                        "typeIdentifier": "t_enum$_ProposalType_$2904",
                         "typeString": "enum LibDiamond.ProposalType"
                       }
                     },
-                    "id": 2672,
+                    "id": 2767,
                     "nodeType": "ArrayTypeName",
-                    "src": "644:25:15",
+                    "src": "644:25:16",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2787_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_enum$_ProposalType_$2904_$dyn_storage_ptr",
                       "typeString": "enum LibDiamond.ProposalType[]"
                     }
                   },
                   "visibility": "internal"
                 }
               ],
-              "src": "612:82:15"
+              "src": "612:82:16"
             },
             "returnParameters": {
-              "id": 2675,
+              "id": 2770,
               "nodeType": "ParameterList",
               "parameters": [],
-              "src": "703:0:15"
+              "src": "703:0:16"
             },
-            "scope": 2677,
-            "src": "582:122:15",
+            "scope": 2772,
+            "src": "582:122:16",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2678,
-        "src": "114:592:15"
+        "scope": 2773,
+        "src": "114:592:16"
       }
     ],
-    "src": "32:675:15"
+    "src": "32:675:16"
   },
   "compiler": {
     "name": "solc",
@@ -1244,7 +1244,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-12-20T05:42:08.957Z",
+  "updatedAt": "2021-12-20T12:01:40.192Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

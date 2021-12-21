@@ -38,13 +38,11 @@ const Description = styled(Card)`
   font-size: 16px;
 `
 
-const VotingDescription = () => {
+const VotingDescription = ({ id, index }) => {
   // const { isDark } = useTheme()
   // const { isXl, isLg } = useMatchBreakpoints()
   // const isMobile = !isXl && !isLg
 
-  const body =
-    '**text**\n*text*\n# text\n> text\n* text\n1. text\n[text](https://definix.com)\n\ntext text **dsgsdg** *23423523* \n\n or use shortcuts like `ctrl-b` or `cmd-b`.'
   return (
     <>
       <Card className="mb-4">
@@ -73,11 +71,11 @@ const VotingDescription = () => {
             </SpecialOutlineCore>
           </div>
           <Text fontSize="32px" bold lineHeight="1" marginTop="10px">
-            Proposal Topic Proposal Topic Proposal Topic
+            {index.title}
           </Text>
         </div>
         <Description>
-          <ReactMarkdown>{body}</ReactMarkdown>
+          <ReactMarkdown>{index.content}</ReactMarkdown>
         </Description>
       </Card>
     </>

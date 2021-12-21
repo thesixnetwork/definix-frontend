@@ -143,7 +143,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     combineDateAndTime(endDate, endTime),
     choices.length,
     0,
-    0,
+    1,
   )
 
   const updateValue = (key: string, value: string | Choice[] | Date) => {

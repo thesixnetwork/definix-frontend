@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import numeral from 'numeral'
+import BigNumber from 'bignumber.js'
 import _ from 'lodash'
 import Lottie from 'react-lottie'
 // import moment from 'moment'
@@ -12,6 +13,7 @@ import { Text, useMatchBreakpoints, Button } from 'uikit-dev'
 // import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import * as klipProvider from 'hooks/klipProvider'
 import {
   useHarvest as useHarvestLongterm,
   useSousHarvest,
@@ -21,7 +23,7 @@ import {
   useAllLock,
   usePrivateData,
 } from 'hooks/useLongTermStake'
-import { useAvailableVotes } from 'hooks/useVoting'
+import { useAvailableVotes, useVote, useApproveToService, useServiceAllowance } from 'hooks/useVoting'
 import { useLockPlus } from 'hooks/useTopUp'
 import { ChevronDown, AlertCircle } from 'react-feather'
 import { Collapse, IconButton } from '@material-ui/core'
@@ -44,6 +46,9 @@ const SuccessOptions = {
 
 interface Props {
   onDismiss?: () => void
+  select?: any
+  proposalIndex?: any
+  allChoices?: any
 }
 
 const Balance = styled.div`
@@ -129,7 +134,7 @@ const ExpandMore = styled((props) => {
   },
 }))
 
-const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
+const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null, select, proposalIndex, allChoices }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const availableVotes = useAvailableVotes()
   const { balancevfinix } = usePrivateData()
@@ -140,31 +145,63 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { levelStake, allLock } = useAllDataLock()
   const lockTopUp = useLockTopup()
   const [selectedToken, setSelectedToken] = useState({})
+  const [transactionHash, setTransactionHash] = useState('')
   // const [sousId, setSousId] = useState(0)
   const [period, setPeriod] = useState(0)
   const [idLast, setIdLast] = useState(0)
-  const [lengthSelect, setLengthSelect] = useState(0)
-  const [harvestProgress, setHarvestProgress] = useState(-1)
+
   const [amount, setAmount] = useState('')
-  const [date, setDate] = useState('-')
-  const [sumpendingReward, setSumPendingReward] = useState('0')
   const [value, setValue] = useState('0')
-  const [isBnbPool, setIsBnbPool] = useState(false)
   const [showLottie, setShowLottie] = useState(false)
-  const [pendingTx, setPendingTx] = useState(false)
-  const [harvested, setHarvested] = useState(false)
-  const [keyDown, setKeyDown] = useState(false)
+  const [selects, setSelect] = useState({})
+
+  const arrayAmounr = useMemo(() => {
+    const brr = []
+    Object.values(selects).filter((v) => brr.push(_.get(v, 'vote')))
+    return brr
+  }, [selects])
+
+  const mapChoices = useMemo(() => {
+    const map = []
+    allChoices.filter((v) => {
+      Object.values(selects).some((i) => {
+        if (_.get(i, 'id') === _.get(v, 'id') && _.get(i, 'vote')) {
+          map.push(_.get(i, 'vote'))
+        } else {
+          map.push('0')
+        }
+        console.log('map', map)
+        return map
+      })
+      return map
+    })
+    return map
+  }, [allChoices, selects])
+
+  const { onCastVote, serviceKey } = useVote(proposalIndex, mapChoices)
+  const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
+  const allowance = useServiceAllowance()
+
   const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
-  const { onLockPlus, status } = useLockPlus(period - 1 !== 3 ? period - 1 : 2, idLast, amount)
-  const { onReward } = useSousHarvest()
-  const [vFINIX, setVFINIX] = useState(0)
-  const [vFinixEarn, setVFinixEarn] = useState(0)
-  const [loading, setLoading] = useState('')
 
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isLg
   const [percent, setPercent] = useState(0)
   const [multiple, setMultiple] = useState(true)
+  const filter = Object.values(select).filter((i) => {
+    return _.get(i, 'checked') === true
+  })
+
+  const handleApprove = useCallback(async () => {
+    try {
+      const txHash = await onApprove()
+      if (txHash) {
+        setTransactionHash(_.get(txHash, 'transactionHash'))
+      }
+    } catch (e) {
+      setTransactionHash('')
+    }
+  }, [onApprove])
 
   const CardResponse = () => {
     return (
@@ -185,14 +222,35 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   }
 
-  const enforcer = (nextUserInput: string) => {
+  const enforcer = (nextUserInput: string, e, i, data) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
+      setSelect({
+        ...select,
+        [i]: {
+          checked: e.target.checked,
+          id: data.id,
+          value: data.value,
+          vote: new BigNumber(Number(nextUserInput.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed(),
+        },
+      })
       setValue(nextUserInput)
+      setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
     }
   }
-  const handleChange = (e) => {
+  const handleChange = async (e, i, data) => {
+    enforcer(e.target.value.replace(/,/g, '.'), e, i, data)
     setPercent(0)
-    enforcer(e.target.value.replace(/,/g, '.'))
+  }
+
+  const onConfirm = () => {
+    const res = onCastVote()
+    res
+      .then((r) => {
+        console.log('onCastVote >>>>>> ', r)
+      })
+      .catch((e) => {
+        console.log('e >>>>>> ', e)
+      })
   }
 
   return (
@@ -230,65 +288,69 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 </div>
               </BoxDetails>
             </Collapse>
-            <div className="mt-3">
-              <Text color="textSubtle">Voting for</Text>
-              <Text fontSize="16px" color="text" bold paddingTop="6px">
-                Yes, agree with you.
-              </Text>
-            </div>
-            <div className="flex mt-4">
-              <Text className="col-6" color="textSubtle">
-                Vote
-              </Text>
-            </div>
+            {filter.map((v, index) => (
+              <>
+                <div className="mt-3">
+                  <Text color="textSubtle">Voting for</Text>
+                  <Text fontSize="16px" color="text" bold paddingTop="6px">
+                    {_.get(v, 'value')}
+                  </Text>
+                </div>
+                <div className="flex mt-4">
+                  <Text className="col-6" color="textSubtle">
+                    Vote
+                  </Text>
+                </div>
 
-            {isMobileOrTablet ? (
-              <Balance style={{ flexWrap: 'wrap' }}>
-                <NumberInput
-                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                  placeholder="0.00"
-                  value={value}
-                  onChange={handleChange}
-                  pattern="^[0-9]*[,]?[0-9]*$"
-                />
-                {percent !== 1 && (
-                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                      25%
-                    </StylesButton>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                      50%
-                    </StylesButton>
-                    <StylesButton size="sm" onClick={() => setPercent(1)}>
-                      MAX
-                    </StylesButton>
-                  </div>
+                {isMobileOrTablet ? (
+                  <Balance id={_.get(v, 'id')} style={{ flexWrap: 'wrap' }}>
+                    <NumberInput
+                      style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                      placeholder="0.00"
+                      value={value}
+                      onChange={(e) => handleChange(e, index, v)}
+                      pattern="^[0-9]*[,]?[0-9]*$"
+                    />
+                    {percent !== 1 && (
+                      <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                          25%
+                        </StylesButton>
+                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                          50%
+                        </StylesButton>
+                        <StylesButton size="sm" onClick={() => setPercent(1)}>
+                          MAX
+                        </StylesButton>
+                      </div>
+                    )}
+                  </Balance>
+                ) : (
+                  <Balance>
+                    <NumberInput
+                      style={{ width: isMobileOrTablet ? '20%' : '45%' }}
+                      placeholder="0.00"
+                      value={value}
+                      onChange={(e) => handleChange(e, index, v)}
+                      pattern="^[0-9]*[,]?[0-9]*$"
+                    />
+                    {percent !== 1 && (
+                      <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                          25%
+                        </StylesButton>
+                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                          50%
+                        </StylesButton>
+                        <StylesButton size="sm" onClick={() => setPercent(1)}>
+                          MAX
+                        </StylesButton>
+                      </div>
+                    )}
+                  </Balance>
                 )}
-              </Balance>
-            ) : (
-              <Balance>
-                <NumberInput
-                  style={{ width: isMobileOrTablet ? '20%' : '45%' }}
-                  placeholder="0.00"
-                  value={value}
-                  onChange={handleChange}
-                  pattern="^[0-9]*[,]?[0-9]*$"
-                />
-                {percent !== 1 && (
-                  <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                      25%
-                    </StylesButton>
-                    <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                      50%
-                    </StylesButton>
-                    <StylesButton size="sm" onClick={() => setPercent(1)}>
-                      MAX
-                    </StylesButton>
-                  </div>
-                )}
-              </Balance>
-            )}
+              </>
+            ))}
           </div>
 
           {!multiple && (
@@ -306,9 +368,15 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               Do you want to vote? Your Voting Power (vFINIX) will be locked until the voting time is ended.
             </Text>
           </CardAlert>
-          <Button fullWidth radii="small" className="mt-3">
-            Confirm
-          </Button>
+          {allowance > 0 || transactionHash !== '' ? (
+            <Button onClick={() => onConfirm()} fullWidth radii="small" className="mt-3">
+              Confirm
+            </Button>
+          ) : (
+            <Button onClick={() => handleApprove()} fullWidth radii="small" className="mt-3">
+              Approve Contract
+            </Button>
+          )}
         </ModalCastVote>
       )}
     </>

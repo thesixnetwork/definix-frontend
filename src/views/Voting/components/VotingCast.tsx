@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import _ from 'lodash'
 import { Button, Card, Text, useModal } from 'uikit-dev'
 import styled from 'styled-components'
@@ -99,13 +99,32 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 //   return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />
 // }
 
-const VotingCast = () => {
+const VotingCast = ({ id, indexs, proposalIndex }) => {
   // const { isDark } = useTheme()
   // const { isXl, isLg } = useMatchBreakpoints()
   // const isMobile = !isXl && !isLg
   const availableVotes = useAvailableVotes()
-  const [onPresentConnectModal] = useModal(<CastVoteModal />)
   const [select, setSelect] = useState({})
+  const choices = indexs.choices
+  const filterChoies = useMemo(() => {
+    return choices
+  }, [choices])
+  const allChoices = useMemo(() => {
+    const set = []
+    if (choices) {
+      choices.map((v, index) => {
+        set.push({
+          id: index,
+          value: v,
+        })
+        return set
+      })
+    }
+    return set
+  }, [choices])
+  const [onPresentConnectModal] = useModal(
+    <CastVoteModal select={select} proposalIndex={proposalIndex} allChoices={allChoices} />,
+  )
 
   return (
     <>
@@ -116,21 +135,48 @@ const VotingCast = () => {
           </Text>
         </div>
         <div className="ma-3">
-          {/* ถ้า vote เสร็จแล้ว */}
-          {/* <Text fontSize="16px" bold lineHeight="1" marginTop="10px">
-            Yes, agree with you.
-          </Text>
-          <div className="flex align-center mt-3">
-            <Button
-              variant="success"
-              radii="small"
-              size="sm"
-              disabled
-            >
-              Claim Voting Power
-            </Button>
-            <Text fontSize="14px" color="text" paddingLeft="14px">Claim will be available after the the voting time is ended.</Text>
-          </div> */}
+          {choices &&
+            Object.values(choices).map((c, index) => (
+              <CardList checked={_.get(select, `${index}.checked`)}>
+                <FormControlLabelCustom
+                  control={
+                    <CustomCheckbox
+                      size="small"
+                      checked={_.get(select, `${index}.checked`)}
+                      onChange={(event, i) => {
+                        setSelect({
+                          ...select,
+                          [index]: {
+                            checked: event.target.checked,
+                            id: index,
+                            value: c,
+                          },
+                        })
+                      }}
+                      icon={<BpCheckboxIcons />}
+                    />
+                  }
+                  label=""
+                />
+                <Text fontSize="15px" bold>
+                  {c}
+                </Text>
+              </CardList>
+            ))}
+          <Button
+            variant="success"
+            radii="small"
+            marginTop="10px"
+            size="sm"
+            disabled={Number(availableVotes) <= 0}
+            onClick={() => {
+              onPresentConnectModal()
+            }}
+          >
+            Cast vote
+          </Button>
+        </div>
+        {/* <div className="ma-3">
           <CardList checked={_.get(select, `${0}.checked`)}>
             <FormControlLabelCustom
               control={
@@ -180,7 +226,7 @@ const VotingCast = () => {
               No, I’m not agree with you.
             </Text>
           </CardList>
-          {/* <RadioGroup name="use-radio-group" defaultValue="yes">
+          <RadioGroup name="use-radio-group" defaultValue="yes">
             <CardList>
               <MyFormControlLabel value="yes" label="" control={<Radio />} />
               <Text fontSize="15px" bold>
@@ -193,7 +239,7 @@ const VotingCast = () => {
                 No, I’m not agree with you.
               </Text>
             </CardList>
-          </RadioGroup> */}
+          </RadioGroup>
           <Button
             variant="success"
             radii="small"
@@ -206,7 +252,7 @@ const VotingCast = () => {
           >
             Cast vote
           </Button>
-        </div>
+        </div> */}
       </Card>
     </>
   )

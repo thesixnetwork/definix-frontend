@@ -66,15 +66,15 @@
     "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IVotingFacet.sol",
     "exportedSymbols": {
       "IVotingFacet": [
-        2770
+        2802
       ]
     },
-    "id": 2771,
+    "id": 2803,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2749,
+        "id": 2781,
         "literals": [
           "solidity",
           "^",
@@ -90,32 +90,32 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2770,
+        "id": 2802,
         "linearizedBaseContracts": [
-          2770
+          2802
         ],
         "name": "IVotingFacet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "7055d368",
-            "id": 2757,
+            "id": 2789,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "vote",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2755,
+              "id": 2787,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2751,
+                  "id": 2783,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2757,
+                  "scope": 2789,
                   "src": "100:22:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -124,7 +124,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2750,
+                    "id": 2782,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "100:7:17",
@@ -137,11 +137,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2754,
+                  "id": 2786,
                   "mutability": "mutable",
                   "name": "_votingPowers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2757,
+                  "scope": 2789,
                   "src": "124:32:17",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -151,7 +151,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2752,
+                      "id": 2784,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "124:7:17",
@@ -160,7 +160,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 2753,
+                    "id": 2785,
                     "nodeType": "ArrayTypeName",
                     "src": "124:9:17",
                     "typeDescriptions": {
@@ -174,12 +174,12 @@
               "src": "99:58:17"
             },
             "returnParameters": {
-              "id": 2756,
+              "id": 2788,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "174:0:17"
             },
-            "scope": 2770,
+            "scope": 2802,
             "src": "86:89:17",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -187,23 +187,23 @@
           },
           {
             "functionSelector": "d73df0a1",
-            "id": 2762,
+            "id": 2794,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "recallVotesFromProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2760,
+              "id": 2792,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2759,
+                  "id": 2791,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2762,
+                  "scope": 2794,
                   "src": "214:22:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -212,7 +212,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2758,
+                    "id": 2790,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "214:7:17",
@@ -227,12 +227,12 @@
               "src": "213:24:17"
             },
             "returnParameters": {
-              "id": 2761,
+              "id": 2793,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "246:0:17"
             },
-            "scope": 2770,
+            "scope": 2802,
             "src": "181:66:17",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -240,23 +240,23 @@
           },
           {
             "functionSelector": "460c47ff",
-            "id": 2769,
+            "id": 2801,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isParticipated",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2765,
+              "id": 2797,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2764,
+                  "id": 2796,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2769,
+                  "scope": 2801,
                   "src": "277:22:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -265,7 +265,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2763,
+                    "id": 2795,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "277:7:17",
@@ -280,16 +280,16 @@
               "src": "276:24:17"
             },
             "returnParameters": {
-              "id": 2768,
+              "id": 2800,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2767,
+                  "id": 2799,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2769,
+                  "scope": 2801,
                   "src": "324:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -298,7 +298,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2766,
+                    "id": 2798,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "324:4:17",
@@ -312,14 +312,14 @@
               ],
               "src": "323:6:17"
             },
-            "scope": 2770,
+            "scope": 2802,
             "src": "253:77:17",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2771,
+        "scope": 2803,
         "src": "57:275:17"
       }
     ],
@@ -329,15 +329,15 @@
     "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IVotingFacet.sol",
     "exportedSymbols": {
       "IVotingFacet": [
-        2770
+        2802
       ]
     },
-    "id": 2771,
+    "id": 2803,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2749,
+        "id": 2781,
         "literals": [
           "solidity",
           "^",
@@ -353,32 +353,32 @@
         "contractDependencies": [],
         "contractKind": "interface",
         "fullyImplemented": false,
-        "id": 2770,
+        "id": 2802,
         "linearizedBaseContracts": [
-          2770
+          2802
         ],
         "name": "IVotingFacet",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "functionSelector": "7055d368",
-            "id": 2757,
+            "id": 2789,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "vote",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2755,
+              "id": 2787,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2751,
+                  "id": 2783,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2757,
+                  "scope": 2789,
                   "src": "100:22:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -387,7 +387,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2750,
+                    "id": 2782,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "100:7:17",
@@ -400,11 +400,11 @@
                 },
                 {
                   "constant": false,
-                  "id": 2754,
+                  "id": 2786,
                   "mutability": "mutable",
                   "name": "_votingPowers",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2757,
+                  "scope": 2789,
                   "src": "124:32:17",
                   "stateVariable": false,
                   "storageLocation": "calldata",
@@ -414,7 +414,7 @@
                   },
                   "typeName": {
                     "baseType": {
-                      "id": 2752,
+                      "id": 2784,
                       "name": "uint256",
                       "nodeType": "ElementaryTypeName",
                       "src": "124:7:17",
@@ -423,7 +423,7 @@
                         "typeString": "uint256"
                       }
                     },
-                    "id": 2753,
+                    "id": 2785,
                     "nodeType": "ArrayTypeName",
                     "src": "124:9:17",
                     "typeDescriptions": {
@@ -437,12 +437,12 @@
               "src": "99:58:17"
             },
             "returnParameters": {
-              "id": 2756,
+              "id": 2788,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "174:0:17"
             },
-            "scope": 2770,
+            "scope": 2802,
             "src": "86:89:17",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -450,23 +450,23 @@
           },
           {
             "functionSelector": "d73df0a1",
-            "id": 2762,
+            "id": 2794,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "recallVotesFromProposal",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2760,
+              "id": 2792,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2759,
+                  "id": 2791,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2762,
+                  "scope": 2794,
                   "src": "214:22:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -475,7 +475,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2758,
+                    "id": 2790,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "214:7:17",
@@ -490,12 +490,12 @@
               "src": "213:24:17"
             },
             "returnParameters": {
-              "id": 2761,
+              "id": 2793,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "246:0:17"
             },
-            "scope": 2770,
+            "scope": 2802,
             "src": "181:66:17",
             "stateMutability": "nonpayable",
             "virtual": false,
@@ -503,23 +503,23 @@
           },
           {
             "functionSelector": "460c47ff",
-            "id": 2769,
+            "id": 2801,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "isParticipated",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2765,
+              "id": 2797,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2764,
+                  "id": 2796,
                   "mutability": "mutable",
                   "name": "_proposalIndex",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2769,
+                  "scope": 2801,
                   "src": "277:22:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -528,7 +528,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2763,
+                    "id": 2795,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "277:7:17",
@@ -543,16 +543,16 @@
               "src": "276:24:17"
             },
             "returnParameters": {
-              "id": 2768,
+              "id": 2800,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2767,
+                  "id": 2799,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2769,
+                  "scope": 2801,
                   "src": "324:4:17",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -561,7 +561,7 @@
                     "typeString": "bool"
                   },
                   "typeName": {
-                    "id": 2766,
+                    "id": 2798,
                     "name": "bool",
                     "nodeType": "ElementaryTypeName",
                     "src": "324:4:17",
@@ -575,14 +575,14 @@
               ],
               "src": "323:6:17"
             },
-            "scope": 2770,
+            "scope": 2802,
             "src": "253:77:17",
             "stateMutability": "view",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 2771,
+        "scope": 2803,
         "src": "57:275:17"
       }
     ],
@@ -594,7 +594,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.1",
-  "updatedAt": "2021-12-20T03:48:18.880Z",
+  "updatedAt": "2021-12-20T08:48:48.147Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

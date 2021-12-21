@@ -77,7 +77,7 @@ const TabInfos = ({ tab }) => {
   return (
     <>
       {listAllProposal.map((item) => (
-        <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}>
+        <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}/${item.proposalIndex}`}>
           {/* <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}> */}
           <div>
             <Heading fontSize="18px !important">
