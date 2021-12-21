@@ -82,7 +82,7 @@ const TR = styled.tr`
 `
 
 const TD = styled.td<{ align?: string }>`
-  // border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   padding: 16px;
   // height: 64px;
   vertical-align: middle;
@@ -111,43 +111,10 @@ const BtnClaim = styled(Button)`
   color: #ffffff;
 `
 
-// const BtnClaim = styled(Button)`
-//   padding: 10px 20px;
-//   border-radius: 8px;
-//   text-align: center;
-//   font-size: 12px;
-//   font-style: italic;
-//   font-weight: normal;
-//   background-color: ${({ theme }) => theme.colors.success};
-// `
-
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
   const allProposal = useAllProposalOfType()
   const { callClaimVote } = useClaimVote()
-  // const {account} = useWallet()
-  // const listAllProposal = _.get(allProposal, 'allProposal')
-
-  // useEffect(() => {
-  //   // const fetch = async () => {
-  //     const vfinixContract = getContract(IVotingFacet.abi,getVFinixVoting())
-  //     // for (let i = 0; i < listAllProposal.length; i++) {
-  //       // eslint-disable-next-line
-  //       // vfinixContract.methods.isParticipated(0).call().then(console.log)
-  //       // const x = await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
-  //       // console.log("xxxx",x)
-
-  //     // }
-  //   // }
-  //   // fetch()
-
-  // }, [listAllProposal])
-
-  // const [currentPage, setCurrentPage] = useState(1)
-  // const pages = useMemo(() => Math.ceil(total / 10), [total])
-  // const onPageChange = (e, page) => {
-  //   setCurrentPage(page)
-  // }
 
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
@@ -169,7 +136,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
           <LoadingData />
         ) : isEmpty(rows) ? (
           <>
-            {/* {console.log('rows', rows)} */}
             <EmptyData text={empText} />
           </>
         ) : (
@@ -187,34 +153,26 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       </Text>
                       <Text color="text" bold>
                         {new Date(r.endDate).toLocaleString()}
-                        {/* 12-Nov-21 15:00:00 GMT+9 */}
                       </Text>
                     </div>
                   </TD>
-
                   <TD>
                     {r.choices.map((item) => (
                       <TR>
-                        <TD>
-                          <Text color="text" bold>
-                            {item.choiceName}
-                            {/* Yes, agree with you. */}
-                          </Text>
-                        </TD>
+                        <Text color="text" bold>
+                          {item.choiceName}
+                        </Text>
                       </TR>
                     ))}
                   </TD>
                   <TD>
                     {r.choices.map((item) => (
                       <TR>
-                        <TD>
-                          <div className="flex align-center">
-                            <Text color="text" bold paddingRight="8px">
-                              {/* 23,143 */}
-                              {item.votePower}
-                            </Text>
-                          </div>
-                        </TD>
+                        <div className="flex align-center">
+                          <Text color="text" bold paddingRight="8px">
+                            {item.votePower}
+                          </Text>
+                        </div>
                       </TR>
                     ))}
                   </TD>
@@ -244,7 +202,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 
 const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
   const address = getAddress(rbAddress)
-  // const { account } = useWallet()
   const testVots: Voting[] = []
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState(0)
@@ -263,35 +220,13 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
       }
     }),
   )
-  // useEffect(() => {
-
-  // }, [])
-  // useState([
-  //   {
-  //     id: 1234,
-  //     address: '0x00000',
-  //     choise: 'Yes, agree with you.',
-  //     voting_power: '99,999',
-  //   },
-  // ])
 
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
-  // const { isDark } = useTheme()
-  // const { isXl, isLg } = useMatchBreakpoints()
-  // const isMobile = !isXl && !isLg
 
   const setDefault = (tab) => {
     setCurrentTab(tab)
     setCurrentPage(1)
-    // setTransactions([
-    //   {
-    //     id: 1234,
-    //     address: '0x00000',
-    //     choise: 'Yes, agree with you.',
-    //     voting_power: '99,999',
-    //   },
-    // ])
     setTotal(0)
   }
 

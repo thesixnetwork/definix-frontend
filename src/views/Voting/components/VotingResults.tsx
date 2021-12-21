@@ -32,6 +32,7 @@ const VotingResults = ({ getByIndex }) => {
   const [mapVoting, setMapVoting] = useState([])
 
   const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
+
   useEffect(() => {
     const dataArray = []
     const array = []
