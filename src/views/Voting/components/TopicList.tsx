@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 import moment from 'moment'
@@ -83,7 +83,7 @@ const TabInfos = ({ tab }) => {
   const allProposal = useAllProposalOfType()
   const listAllProposal = _.get(allProposal, 'allProposal')
   const [array, setArray] = useState([])
-  const { slowRefresh } = useRefresh()
+  const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,7 +120,7 @@ const TabInfos = ({ tab }) => {
 
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slowRefresh])
+  }, [fastRefresh])
 
   return (
     <>
