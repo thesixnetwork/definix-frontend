@@ -189,7 +189,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                         </TD>
                       </TR>
                     ))}
-
                   </TD>
                   <TD>
                     {r.choices.map((item) => (

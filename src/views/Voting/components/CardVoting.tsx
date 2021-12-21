@@ -8,7 +8,12 @@ import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import CardProposals from './CardProposals'
-import { useAllProposalOfType, getIsParticipated, getVotingPowersOfAddress, useIsProposable } from '../../../hooks/useVoting'
+import {
+  useAllProposalOfType,
+  getIsParticipated,
+  getVotingPowersOfAddress,
+  useIsProposable,
+} from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
 import { Voting } from '../../../state/types'
 
@@ -112,9 +117,7 @@ const CardVoting = () => {
       for (let i = 0; i < userProposalsFilter.length; i++) {
         userProposalsFilter[i].choices = []
         // eslint-disable-next-line
-        const [isParticipated] = await Promise.all([
-          getIsParticipated(userProposalsFilter[i].proposalIndex),
-        ])
+        const [isParticipated] = await Promise.all([getIsParticipated(userProposalsFilter[i].proposalIndex)])
         isParticipateds.push(isParticipated)
         userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
 
@@ -130,10 +133,14 @@ const CardVoting = () => {
         userProposalsFilter[i].choices = [] // metaData.choices
         userProposalsFilter[i].title = metaData.title
         userProposalsFilter[i].endDate = metaData.end_unixtimestamp
-    
+
         for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
           // eslint-disable-next-line
-          const votingPower = new BigNumber(await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account)).div(1e18).toNumber()
+          const votingPower = new BigNumber(
+            await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
+          )
+            .div(1e18)
+            .toNumber()
           if (votingPower > 0) {
             userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
           }
