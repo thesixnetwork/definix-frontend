@@ -42,7 +42,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                   {t('Amount')}
                 </Text>
                 <Text textStyle="R_14R" color="black">
-                  {numeral(item.lockAmount).format(0, 0)} {t('FINIX')}
+                  {numeral(item.lockAmount).format('0, 0.[000000]')} {t('FINIX')}
                 </Text>
               </Flex>
             </Flex>

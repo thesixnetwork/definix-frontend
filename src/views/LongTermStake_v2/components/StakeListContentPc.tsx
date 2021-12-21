@@ -35,7 +35,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                 )}
               </Flex>
               <Text width="27%" textStyle="R_14R" color="black">
-                {numeral(item.lockAmount).format(0, 0)}
+                {numeral(item.lockAmount).format('0, 0.[000000]')}
               </Text>
               <Flex width="53%" justifyContent="space-between">
                 <Flex flexDirection="column" justifyContent="center">
