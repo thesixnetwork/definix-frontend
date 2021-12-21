@@ -203,7 +203,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
             <Flex alignItems="center">
               <Box width={70} mr="S_16">
-                <CardImage isMediumSize={false} imageUrl={rebalance.icon[0]} title={rebalance.title} />
+                <CardImage isMediumSize={false} imageUrls={rebalance.icon} title={rebalance.title} />
               </Box>
               <Box>
                 <CardTitle title={rebalance.title} textStyle="R_18M" />
