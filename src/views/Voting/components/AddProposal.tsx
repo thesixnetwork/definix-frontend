@@ -13,7 +13,9 @@ import { ExternalLink } from 'react-feather'
 import times from 'lodash/times'
 import { usePropose } from 'hooks/useVoting'
 import { getCaver } from 'utils/caver'
+import ModalStake from 'uikit-dev/widgets/Modal/ModalStake'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
+import ModalSorry from 'uikit-dev/widgets/Modal/ModalSorry'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
 import { DatePicker, TimePicker } from 'components/DatePicker'
@@ -142,7 +144,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     ipfs: '',
   })
 
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState('')
   const [choiceType, setChoiceType] = useState('single')
   const { name, body, choices, startDate, startTime, endDate, endTime, ipfs } = state
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
@@ -199,7 +201,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     evt.preventDefault()
 
     try {
-      await setIsLoading(true)
+      setIsLoading('loading')
       const caver = getCaver()
       const epochTime = moment().unix()
 
@@ -227,19 +229,23 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
             res
               .then((r) => {
                 if (_.get(r, 'status')) {
-                  setInterval(() => setIsLoading(false), 5000)
+                  setIsLoading('success')
+                  setInterval(() => setIsLoading(''), 5000)
                 }
               })
               .catch((e) => {
-                setIsLoading(false)
+                console.log('1')
+                setIsLoading('failed')
               })
           }
         })
         .catch((e) => {
-          setIsLoading(false)
+          console.log('2')
+          setIsLoading('success')
         })
     } catch (e) {
-      setIsLoading(false)
+      console.log('3')
+      setIsLoading('success')
     }
   }
 
@@ -247,7 +253,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
 
   const CardResponse = () => {
     return (
-      <ModalResponses title="" onDismiss={onDismiss} className="">
+      <ModalResponses title="" onDismiss={onDismiss}>
         <div className="pb-6 pt-2">
           <Lottie options={SuccessOptions} height={155} width={185} />
         </div>
@@ -257,7 +263,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
 
   const CardLoading = () => {
     return (
-      <ModalResponses title="" onDismiss={onDismiss} className="">
+      <ModalResponses title="" onDismiss={onDismiss}>
         <div className="pb-6 pt-2">
           <Lottie options={LoadingOptions} height={155} width={185} />
         </div>
@@ -266,22 +272,25 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }
 
   console.log('isLoading ==', isLoading)
+
   return (
     <>
-      <div>
-        {!isLoading ? (
-          <div style={{ position: 'absolute' }}>
+      {isLoading === 'loading' ? (
+        <div style={{ position: 'absolute' }}>
+          <ModalStake title=""  onDismiss={onDismiss}>
             <CardLoading />
-          </div>
-        ) : (
-          <div style={{ position: 'absolute' }}>
-            <CardResponse />
-          </div>
-        )}
-      </div>
+          </ModalStake>
+        </div>
+      ) : isLoading === 'success' && (
+        <div style={{ position: 'absolute' }}>
+          <ModalStake title=""  onDismiss={onDismiss}>
+             <CardResponse />
+          </ModalStake>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit}>
-        <div className={`flex align-center mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
+        <div className={`flex mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
             <CardProposals className="mb-4">
               <div className="pa-4 pt-3 bd-b">
@@ -380,7 +389,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     placeholderText="00:00"
                   />
                 </div>
-                <div className={`flex align-center ${isMobile ? 'flex-wrap' : 'my-4'}`}>
+                <div className={`flex align-center ${isMobile ? 'flex-wrap' : 'my-3'}`}>
                   <div className={isMobile ? 'col-12' : 'col-4'}>
                     <Text fontSize="16px" lineHeight="1">
                       Creator
@@ -404,21 +413,21 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   </div>
                 </div>
                 <Button
-                  disabled={!hasMinimumChoices || isLoading}
+                  disabled={!hasMinimumChoices || isLoading === 'loading' || isLoading === 'success'}
                   type="submit"
                   variant="success"
                   radii="small"
-                  className="my-2"
+                  className="mt-1 mb-2"
                   size="sm"
                 >
                   Publish
                 </Button>
-                <Text color="#F5C858">You need at least 10 voting power to publish a proposal.</Text>
+                <Text color="#F5C858" fontSize="14px">You need at least 10 voting power to publish a proposal.</Text>
               </div>
             </CardProposals>
           </div>
         </div>
-        <div className={`flex align-center mt-1 ${isMobile ? 'flex-wrap' : ''}`}>
+        <div className={`flex ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
             <AddChoices
               choices={choices}
