@@ -39,7 +39,7 @@ interface ExploreCardType {
   isHorizontal: boolean
   rebalance: Rebalance | any
   balance: BigNumber
-  onClickViewDetail: () => void
+  onClickViewDetail: (rebalance: Rebalance | any) => void
 }
 
 const HorizontalStyle = styled(Card)`
@@ -179,10 +179,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderViewDetailButton = useCallback(() => {
     return (
       <Box className="mt-6">
-        <BtnViewDetail onClick={onClickViewDetail} />
+        <BtnViewDetail onClick={() => onClickViewDetail(rebalance)} />
       </Box>
     )
-  }, [onClickViewDetail])
+  }, [rebalance, onClickViewDetail])
 
   const renderYieldAPR = useCallback(() => {
     return (
