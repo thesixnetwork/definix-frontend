@@ -56,10 +56,9 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
   const herodotusContract = useHerodotus()
   const dispatch = useDispatch()
   const { setShowModal } = useContext(KlipModalContext())
-  const [currentHarvestStackIndex, setCurrentHarvestStackIndex] = useState(0)
   const [harvestResultList, setHarvestResultList] = useState([])
 
-  const harvestUsingKlipWallet = useCallback(
+  const harvestUsingKlip = useCallback(
     async (farmPid: number) => {
       if (farmPid === 0) {
         klipProvider.genQRcodeContactInteract(
@@ -81,18 +80,18 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
     [setShowModal, herodotusContract._address],
   )
 
-  const harvestAllUsingKlipWallet = useCallback(
+  const harvestAllUsingKlip = useCallback(
     async (txs, txIndex) => {
       if (txs.length === 0) return Promise.resolve()
-      setCurrentHarvestStackIndex(txIndex)
       let isSuccess = false
 
       try {
-        const tx = await harvestUsingKlipWallet(txs[txIndex].pid)
+        const tx = await harvestUsingKlip(txs[txIndex].pid)
         isSuccess = true
         console.info(tx)
       } catch {
-        console.log('tx failed')
+        // tx failed
+        console.warn('useHarvest/harvestAllUsingKlip] tx failed')
       } finally {
         setHarvestResultList((prev) => [
           {
@@ -105,31 +104,54 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
       }
 
       if (txIndex < txs.length - 1) {
-        return harvestAllUsingKlipWallet(txs, txIndex + 1)
+        return harvestAllUsingKlip(txs, txIndex + 1)
       }
       return Promise.resolve()
     },
-    [harvestUsingKlipWallet, setShowModal],
+    [harvestUsingKlip, setShowModal],
   )
+  
+  // const harvestUsingOthers = useCallback((farm) => {
+  //   let isSuccess = false
+  //   try {
+  //     const tx = await harvest(herodotusContract, farm.pid, account)
+  //     if (tx !== null) {
+  //       console.log('tx success', tx)
+  //       isSuccess = true
+  //     } else {
+  //       console.log('tx failed', tx)
+  //     }
+  //   } catch (error) {
+  //     console.log('tx failed', error)
+  //   } finally {
+  //     console.log('tx done', farm.pid, farm.lpSymbol, isSuccess)
+  //     setHarvestResultList((prev) => [
+  //       {
+  //         symbol: farm.lpSymbol,
+  //         isSuccess,
+  //       },
+  //       ...prev,
+  //     ])
+  //   }
+  // }, [herodotusContract, account])
 
   const handleHarvest = useCallback(async () => {
     setHarvestResultList([])
-
+    
     if (connector === 'klip') {
-      await harvestAllUsingKlipWallet(farms, 0)
-      setCurrentHarvestStackIndex(0)
-      setHarvestResultList([])
-      dispatch(fetchFarmUserDataAsync(account))
-      return Promise.resolve()
+      await harvestAllUsingKlip(farms, 0)
+    } else {
+      await Promise.all(farms.map((farm) => harvest(herodotusContract, farm.pid, account)))
     }
+    setHarvestResultList([])
+    dispatch(fetchFarmUserDataAsync(account))
+    return Promise.resolve()
+  }, [account, farms, connector, harvestAllUsingKlip, dispatch, herodotusContract])
 
-    const harvestPromises = farms.reduce((accum, farm) => {
-      return [...accum, harvest(herodotusContract, farm.pid, account)]
-    }, [])
-    return Promise.all(harvestPromises)
-  }, [account, farms, herodotusContract, connector, harvestAllUsingKlipWallet, dispatch])
-
-  return { onReward: handleHarvest, currentHarvestStackIndex, harvestResultList }
+  return {
+    onReward: handleHarvest,
+    harvestResultList
+  }
 }
 
 export const useSousHarvest = (sousId, isUsingKlay = false) => {
