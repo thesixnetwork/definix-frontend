@@ -78,9 +78,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   const onClickRate = (rate: number) => {
-    if (rate === 1) setInputBalance(String(balancefinix))
-    else setInputBalance((balancefinix * rate).toFixed(2))
-
+    setInputBalance(String(balancefinix * rate))
     setSelected(rate)
   }
 
