@@ -125,24 +125,18 @@ const WithdrawCalculateModal = ({
     }
   }
   return (
-    // <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss} maxWidth="438px">
     <Modal title={t('Confirm Withdraw')} mobileFull onDismiss={onDismiss}>
       <ModalBody isBody>
-        <CardHeading
-          rebalance={rebalance}
-          isHorizontal={isMobile}
-          onlyTitle
-          className={`bd-b ${isMobile ? 'pb-s24' : 'pb-s32'}`}
-        />
-        <Text color="text" textStyle="R_16M" className="mt-s24 mb-s12">
+        <CardHeading rebalance={rebalance} isHorizontal={isMobile} onlyTitle xspacing="S_24" />
+        <Text color="text" textStyle="R_16M" mt="S_40" mb="S_12">
           {t('Withdrawal Amount')}
         </Text>
-        <Box className="bd pa-s24 pt-s12" borderRadius="8px" width="100%">
+        <Box p="S_24" pt="S_12" className="bd" borderRadius="8px" width="100%">
           {tokenList.map((c) => (
             <InlineAssetRatioLabel small key={c.symbol} coin={c} column={isMobile} />
           ))}
           <Divider mt="S_12" mb="S_20" />
-          <Flex color="text" alignItems="center" justifyContent="flex-end" mb="S_16">
+          <Flex color="text" alignItems="center" mb="S_16" flexWrap="wrap">
             <Text textStyle="R_16M" className="flex-auto">
               {t('Total Withdraw')}
             </Text>
