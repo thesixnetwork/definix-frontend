@@ -63,7 +63,7 @@ const CardProposals = () => {
         </Tabs>
         <Tabs>
           <CardTab
-            menus={['Vote Now', 'Soon', 'Closed']}
+            menus={['Vote Now']}
             current={currentTab}
             setCurrent={setCurrentTab}
             className="px-5"

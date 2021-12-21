@@ -14,7 +14,7 @@ import times from 'lodash/times'
 import { getCaver } from 'utils/caver'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import success from 'uikit-dev/animation/complete.json'
-
+import loadings from 'uikit-dev/animation/farmPool.json'
 import { usePropose } from 'hooks/useVoting'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints } from 'uikit-dev'
@@ -26,6 +26,13 @@ const SuccessOptions = {
   loop: true,
   autoplay: true,
   animationData: success,
+}
+
+
+const LoadingOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: loadings,
 }
 
 const EasyMde = lazy(() => import('components/EasyMde'))
@@ -136,9 +143,6 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     ipfs: '',
   })
 
-  // const allProposal = useAllProposalOfType()
-  // console.log('allProposal >>',allProposal)
-  // const listAllProposal = _.get(allProposal, 'allProposal')
   const [isLoading, setIsLoading] = useState(false)
   const [choiceType, setChoiceType] = useState('single')
   const { name, body, choices, startDate, startTime, endDate, endTime, ipfs } = state
@@ -252,13 +256,31 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     )
   }
 
+  const CardLoading = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss} className="">
+        <div className="pb-6 pt-2">
+          <Lottie options={LoadingOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+
+  console.log('isLoading ==',isLoading)
   return (
     <>
-      {isLoading && (
-        <div style={{ position: 'absolute' }}>
-          <CardResponse />
-        </div>
-      )}
+      <div>
+        {!isLoading ? (
+            <div style={{ position: 'absolute' }}>
+              <CardLoading />
+            </div>
+          ) : (
+            <div style={{ position: 'absolute' }}>
+              <CardResponse />
+            </div>
+          )}
+      </div>
+      
       <form onSubmit={handleSubmit}>
         <div className={`flex align-center mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
@@ -390,7 +412,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   className="my-2"
                   size="sm"
                 >
-                  Publishee
+                  Publish
                 </Button>
                 <Text color="#F5C858">You need at least 10 voting power to publish a proposal.</Text>
               </div>

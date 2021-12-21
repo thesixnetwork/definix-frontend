@@ -63,50 +63,12 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
       const utcEndTimestamp = endTimestamp.getTime()
 
       const endTime = new Date(utcEndTimestamp + 3600000 * offset)
-      const voteAPI = process.env.REACT_APP_IPFS
-
-      //   console.log('item', item.ipfsHash)
-      //   if (item.ipfsHash.length > 6) {
-      //     await axios
-      //       .get(`${voteAPI}/${item.ipfsHash}`)
-      //       .then(async (resp) => {
-      //         console.log('resp', resp.data)
-      //         if (resp.status === 200) {
-      //           dataArray.push({
-      //             ipfsHash: item.ipfsHash,
-      //             endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
-      //             proposalType: item.proposalType,
-      //             proposer: item.proposer,
-      //             choice_type: resp.data.choice_type, // "single"
-      //             choices: resp.data.choices, // ['3', '4']
-      //             content: resp.data.content, //"test1"
-      //             creator: resp.data.creator, // "0x14073ed09cae2694bafc2d8078dc181095a682be"
-      //             proposals_type: resp.data.proposals_type, //"core"
-      //             start_unixtimestamp: resp.data.start_unixtimestamp, // 1640886300
-      //             end_unixtimestamp: resp.data.end_unixtimestamp, // 1643652000
-      //             title: resp.data.test1, // "title"
-      //           })
-      //         }
-      //       })
-      //       .catch((e) => {
-      //         console.log('error', e)
-      //         //   setIsLoading(false)
-      //       })
-      //   }
 
       dataArray.push({
         ipfsHash: item.ipfsHash,
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
         proposalType: item.proposalType,
-        proposer: item.proposer,
-        choice_type: 'single',
-        choices: ['3', '4'],
-        content: 'test1',
-        creator: '0x14073ed09cae2694bafc2d8078dc181095a682be',
-        proposals_type: 'core',
-        start_unixtimestamp: 1640886300,
-        end_unixtimestamp: 1643652000,
-        title: 'title',
+        proposer: item.proposer
       })
 
       return dataArray

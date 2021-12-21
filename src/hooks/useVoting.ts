@@ -72,13 +72,16 @@ export const useIsProposable = () => {
 
   useEffect(() => {
     async function fetchIsProposable() {
-      const callContract = getContract(IProposerFacet.abi, getVFinixVoting())
-      const isProposable = await callContract.methods.isProposable(account, 0).call()
-      setProposables(isProposable)
+      if (account) {
+        const callContract = getContract(IProposerFacet.abi, getVFinixVoting())
+        const isProposable = await callContract.methods.isProposable(account, 0).call()
+        setProposables(isProposable)
+      }
     }
 
     fetchIsProposable()
-  }, [fastRefresh, account])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
 
   return { proposables }
 }
