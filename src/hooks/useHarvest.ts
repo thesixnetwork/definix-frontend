@@ -51,78 +51,82 @@ export const useHarvest = (farmPid: number) => {
   return { onReward: handleHarvest }
 }
 
-export const useAllHarvest = (farmPids: number[]) => {
-  const { account } = useWallet()
+export const useAllHarvest = (farms: { pid: number, lpSymbol: string}[]) => {
+  const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
-  // const dispatch = useDispatch()
-  // const { setShowModal } = useContext(KlipModalContext())
+  const dispatch = useDispatch()
+  const { setShowModal } = useContext(KlipModalContext())
   const [currentHarvestStackIndex, setCurrentHarvestStackIndex] = useState(0)
+  const [harvestResultList, setHarvestResultList] = useState([])
 
-  // const harvestUsingKlipWallet = useCallback(
-  //   async (farmPid: number) => {
-  //     console.log('useHarvest/harvestUsingKlipWallet] farm pid: ', farmPid)
-  //     if (farmPid === 0) {
-  //       klipProvider.genQRcodeContactInteract(
-  //         herodotusContract._address,
-  //         jsonConvert(getAbiHerodotusByName('leaveStaking')),
-  //         jsonConvert(['0']),
-  //         setShowModal,
-  //       )
-  //     } else {
-  //       klipProvider.genQRcodeContactInteract(
-  //         herodotusContract._address,
-  //         jsonConvert(getAbiHerodotusByName('deposit')),
-  //         jsonConvert([farmPid, '0']),
-  //         setShowModal,
-  //       )
-  //     }
-  //     return klipProvider.checkResponse()
-  //   },
-  //   [setShowModal, herodotusContract._address],
-  // )
+  const harvestUsingKlipWallet = useCallback(
+    async (farmPid: number) => {
+      if (farmPid === 0) {
+        klipProvider.genQRcodeContactInteract(
+          herodotusContract._address,
+          jsonConvert(getAbiHerodotusByName('leaveStaking')),
+          jsonConvert(['0']),
+          setShowModal,
+        )
+      } else {
+        klipProvider.genQRcodeContactInteract(
+          herodotusContract._address,
+          jsonConvert(getAbiHerodotusByName('deposit')),
+          jsonConvert([farmPid, '0']),
+          setShowModal,
+        )
+      }
+      return klipProvider.checkResponse()
+    },
+    [setShowModal, herodotusContract._address],
+  )
 
-  // const harvestAllUsingKlipWallet = useCallback(
-  //   async (pids, txIndex) => {
-  //     console.log('----------------------------------')
-  //     console.log('harvest/before] pids / txIndex: ', pids, txIndex)
-  //     setCurrentHarvestStackIndex(txIndex)
-  //     if (pids.length === 0) return Promise.resolve()
+  const harvestAllUsingKlipWallet = useCallback(
+    async (txs, txIndex) => {
+      if (txs.length === 0) return Promise.resolve()
+      setCurrentHarvestStackIndex(txIndex)
+      let isSuccess = false
 
-  //     try {
-  //       const tx = await harvestUsingKlipWallet(pids[txIndex])
-  //       console.info(tx)
-  //     } catch (error) {
-  //       console.log('harvest/error] ', pids[txIndex])
-  //     } finally {
-  //       setShowModal(false)
-  //     }
+      try {
+        const tx = await harvestUsingKlipWallet(txs[txIndex].pid)
+        isSuccess = true
+        console.info(tx)
+      } catch {
+        console.log('tx failed')
+      } finally {
+        setHarvestResultList((prev) => [{
+          symbol: txs[txIndex].lpSymbol,
+          isSuccess
+        }, ...prev])
+        setShowModal(false)
+      }
 
-  //     if (txIndex < pids.length - 1) {
-  //       return harvestAllUsingKlipWallet(pids, txIndex + 1)
-  //     }
-  //     return Promise.resolve()
-  //   },
-  //   [harvestUsingKlipWallet, setShowModal],
-  // )
+      if (txIndex < txs.length - 1) {
+        return harvestAllUsingKlipWallet(txs, txIndex + 1)
+      }
+      return Promise.resolve()
+    },
+    [harvestUsingKlipWallet, setShowModal],
+  )
 
   const handleHarvest = useCallback(async () => {
-    setCurrentHarvestStackIndex(0)
+    setHarvestResultList([])
 
-    // if (connector === 'klip') {
-    //   await harvestAllUsingKlipWallet(farmPids, 0)
-    //   console.log('useHarvest/handleHarvest] done ')
-    //   setShowModal(false)
-    //   dispatch(fetchFarmUserDataAsync(account))
-    //   return Promise.resolve()
-    // }
+    if (connector === 'klip') {
+      await harvestAllUsingKlipWallet(farms, 0)
+      setCurrentHarvestStackIndex(0)
+      setHarvestResultList([])
+      dispatch(fetchFarmUserDataAsync(account))
+      return Promise.resolve()
+    }
 
-    const harvestPromises = farmPids.reduce((accum, pid) => {
-      return [...accum, harvest(herodotusContract, pid, account)]
+    const harvestPromises = farms.reduce((accum, farm) => {
+      return [...accum, harvest(herodotusContract, farm.pid, account)]
     }, [])
     return Promise.all(harvestPromises)
-  }, [account, farmPids, herodotusContract])
+  }, [account, farms, herodotusContract, connector, harvestAllUsingKlipWallet, dispatch])
 
-  return { onReward: handleHarvest, currentHarvestStackIndex }
+  return { onReward: handleHarvest, currentHarvestStackIndex, harvestResultList }
 }
 
 export const useSousHarvest = (sousId, isUsingKlay = false) => {

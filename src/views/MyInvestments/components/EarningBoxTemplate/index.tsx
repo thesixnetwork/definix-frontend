@@ -1,11 +1,12 @@
 import _ from 'lodash'
-import React, { useCallback, useState, useMemo } from 'react'
+import React, { useCallback, useState, useMemo, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { useAllHarvest } from 'hooks/useHarvest'
 import { useHarvest, usePrivateData } from 'hooks/useLongTermStake'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
+import { useToast } from 'state/hooks'
 import { Button, Text, Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
@@ -57,7 +58,6 @@ const THEME: { [key: string]: InnerTheme } = {
     harvestButtonColor: 'rgba(255, 255, 255, 0.1)',
   },
 }
-
 const Wrap = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -166,6 +166,7 @@ const EarningBoxTemplate: React.FC<{
 }) => {
   const { t } = useTranslation()
   const history = useHistory()
+  const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
 
   const curTheme = useMemo(() => THEME[theme], [theme])
@@ -179,7 +180,9 @@ const EarningBoxTemplate: React.FC<{
   const balancesWithValue = useMemo(() => {
     return farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   }, [farmsWithBalance])
-  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  const { onReward, currentHarvestStackIndex, harvestResultList } = useAllHarvest(
+    balancesWithValue.map((farmWithBalance) => _.pick(farmWithBalance, ['pid', 'lpSymbol'])),
+  )
   const { handleHarvest } = useHarvest()
 
   const harvestAll = useCallback(async () => {
@@ -196,6 +199,19 @@ const EarningBoxTemplate: React.FC<{
       setPendingTx(false)
     }
   }, [handleHarvest, onReward, finixEarn])
+
+  const showHarvestResult = useCallback(() => {
+    if (harvestResultList[0].isSuccess) {
+      toastSuccess(`transaction success - ${harvestResultList[0].symbol}`)
+    } else {
+      toastError(`transaction fail - ${harvestResultList[0].symbol}`)
+    }
+  }, [toastSuccess, toastError, harvestResultList])
+
+  useEffect(() => {
+    if (harvestResultList.length === 0) return
+    showHarvestResult()
+  }, [harvestResultList.length, showHarvestResult])
 
   const renderTotalValue = useCallback(() => {
     const props = {
@@ -235,12 +251,11 @@ const EarningBoxTemplate: React.FC<{
                   width="100%"
                   variant="red"
                   className="home-harvest-button"
-                  isLoading={pendingTx}
+                  // isLoading={pendingTx}
                   disabled={balancesWithValue.length <= 0}
                   onClick={harvestAll}
                 >
-                  {/* {pendingTx ? `loading ${currentHarvestStackIndex + 1}/${balancesWithValue.length}...` : t('Harvest')} */}
-                  {t('Harvest')}
+                  {pendingTx ? `loading ${currentHarvestStackIndex + 1}/${balancesWithValue.length}...` : t('Harvest')}
                 </Button>
               ) : (
                 <UnlockButton />
