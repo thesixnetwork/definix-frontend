@@ -177,20 +177,36 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       </Text>
                     </div>
                   </TD>
+
                   <TD>
-                    <Text color="text" bold>
-                      Yes, agree with you.
-                    </Text>
+                    {r.choices.map((item) => (
+                      <TR>
+                        <TD>
+                          <Text color="text" bold>
+                            {item.choiceName}
+                            {/* Yes, agree with you. */}
+                          </Text>
+                        </TD>
+                      </TR>
+                    ))}
+
                   </TD>
                   <TD>
-                    <div className="flex align-center">
-                      <Text color="text" bold paddingRight="8px">
-                        23,143
-                      </Text>
-                    </div>
+                    {r.choices.map((item) => (
+                      <TR>
+                        <TD>
+                          <div className="flex align-center">
+                            <Text color="text" bold paddingRight="8px">
+                              {/* 23,143 */}
+                              {item.votePower}
+                            </Text>
+                          </div>
+                        </TD>
+                      </TR>
+                    ))}
                   </TD>
                   <TD>
-                    <BtnDetails as={Link} to="/voting/detail/participate">
+                    <BtnDetails as={Link} to={`/voting/detail/${r.ipfsHash}/${r.proposalIndex}`}>
                       Deatils
                     </BtnDetails>
                     {/* <BtnClaim as={Link} to={`/voting/detail/${item.ipfsHash`}>
@@ -217,12 +233,13 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
   const [transactions, setTransactions] = useState(
     userProposals.map((item) => {
       return {
-        id: item.proposalIndex,
+        proposalIndex: item.proposalIndex,
+        ipfsHash: item.ipfsHash,
         title: item.title,
         address: item.proposer,
         endDate: item.endDate,
-        choise: 'item.choices',
-        voting_power: '999',
+        choices: item.choices,
+        // voting_power: '999',
       }
     }),
   )

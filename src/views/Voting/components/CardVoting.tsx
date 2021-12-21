@@ -6,10 +6,12 @@ import { Card, Heading, Text, Button } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import axios from 'axios'
+import BigNumber from 'bignumber.js'
 import CardProposals from './CardProposals'
-import { useAllProposalOfType, getIsParticipated, getVotingPowersOfAddress,useIsProposable } from '../../../hooks/useVoting'
+import { useAllProposalOfType, getIsParticipated, getVotingPowersOfAddress, useIsProposable } from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
 import { Voting } from '../../../state/types'
+
 // import { useIsProposable } from '../../../hooks/useVoting'
 // import CardProposals from './CardProposals'
 // import VotingPartProposal from './VotingPartProposal'
@@ -104,37 +106,41 @@ const CardVoting = () => {
   const [userProposals, setUserProposals] = useState([])
   useEffect(() => {
     const fetch = async () => {
-      // console.log('listAllProposal', listAllProposal)
-      const userProposalsFilter: any[] = JSON.parse(JSON.stringify(listAllProposal))
+      console.log('listAllProposal', listAllProposal)
+      let userProposalsFilter: any[] = JSON.parse(JSON.stringify(listAllProposal))
       const isParticipateds = []
       for (let i = 0; i < userProposalsFilter.length; i++) {
+        userProposalsFilter[i].choices = []
         // eslint-disable-next-line
-        const [isParticipated, meta] = await Promise.all([
-          getIsParticipated(listAllProposal[i].proposalIndex.toNumber()),
-          axios.get(`https://gateway.pinata.cloud/ipfs/${listAllProposal[i].ipfsHash}`),
+        const [isParticipated] = await Promise.all([
+          getIsParticipated(userProposalsFilter[i].proposalIndex),
         ])
+        isParticipateds.push(isParticipated)
         userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
-        const metaData = meta.data
-        userProposalsFilter[i].choices = metaData.choices
-        userProposalsFilter[i].title = metaData.title
-        userProposalsFilter[i].endDate = metaData.end_unixtimestamp
+
         // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
       }
-
-      // const listUserVoted = listAllProposal.filter((item, index) => isParticipateds[index])
+      console.log(isParticipateds)
+      userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
       // console.log(isParticipateds)
-      // for (let i = 0; i < userProposalsFilter.length; i++) {
-      // eslint-disable-next-line
+      for (let i = 0; i < userProposalsFilter.length; i++) {
+        // eslint-disable-next-line
+        const metaData = (await axios.get(`https://gateway.pinata.cloud/ipfs/${listAllProposal[i].ipfsHash}`)).data
 
-      // console.log(metadata.choices)
-      // console.log('bu')
-      // console.log(i, 'i', userVoted.optionsCount.toNumber())
-      // for (let j = 0; j < userVoted.optionsCount.toNumber(); j++) {
-      // eslint-disable-next-line
-      // const xxx = await getVotingPowersOfAddress(userVoted.proposalIndex.toNumber(), j, account)
-      // console.log(xxx)
-      // }
-      // }
+        userProposalsFilter[i].choices = [] // metaData.choices
+        userProposalsFilter[i].title = metaData.title
+        userProposalsFilter[i].endDate = metaData.end_unixtimestamp
+    
+        for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
+          // eslint-disable-next-line
+          const votingPower = new BigNumber(await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account)).div(1e18).toNumber()
+          if (votingPower > 0) {
+            userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
+          }
+          console.log(votingPower)
+        }
+      }
+      // console.log(userProposalsFilter)
       // const testmap = {}
       // console.log("userProposalsFilter",userProposalsFilter)
       setUserProposals(userProposalsFilter)
