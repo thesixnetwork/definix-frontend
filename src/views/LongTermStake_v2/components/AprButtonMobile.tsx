@@ -83,13 +83,13 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
             </TextApr>
           </Flex>
           <Flex flexDirection="column" alignItems="flex-end">
-            <TextApr textStyle="R_14B" color="black">
+            <TextApr textStyle="R_14B" color="red">
               {numeral(focusDays.apr).format('0,0.[00]')}%
             </TextApr>
             <TextApr textStyle="R_14B" color="black">
               {numeral(focusDays.minStake).format('0,0')} {t('FINIX')}
             </TextApr>
-            <TextApr textStyle="R_14B" color="red">
+            <TextApr textStyle="R_14B" color="black">
               {focusDays.multiple}X
             </TextApr>
           </Flex>

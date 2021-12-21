@@ -73,7 +73,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
                 <Text textStyle="R_12R" color="mediumgrey">
                   {t('APR')}
                 </Text>
-                <Text textStyle="R_18B" color="black">
+                <Text textStyle="R_18B" color={`${days === item.day ? 'red' : 'black'}`}>
                   {numeral(item.apr).format('0,0.[00]')}%
                 </Text>
               </Flex>
