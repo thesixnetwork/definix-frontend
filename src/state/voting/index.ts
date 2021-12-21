@@ -65,7 +65,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
         proposalType: item.proposalType,
         proposer: item.proposer,
         proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')),
-        optionsCount: new BigNumber(_.get(item,"optionsCount._hex"))
+        optionsCount: new BigNumber(_.get(item, 'optionsCount._hex')),
       })
 
       return dataArray
@@ -123,7 +123,7 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
         proposer: item.proposer,
         startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`),
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
-        proposalType: item.proposalType
+        proposalType: item.proposalType,
       }
     })
     indexProposal = resultByIndex

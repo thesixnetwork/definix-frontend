@@ -106,9 +106,9 @@ const CardVoting = () => {
       const isParticipateds = []
       for (let i = 0; i < userProposalsFilter.length; i++) {
         // eslint-disable-next-line
-       const [IsParticipated,meta] = await Promise.all([
+        const [IsParticipated, meta] = await Promise.all([
           getIsParticipated(listAllProposal[i].proposalIndex.toNumber()),
-          axios.get(`https://gateway.pinata.cloud/ipfs/${listAllProposal[i].ipfsHash}`)
+          axios.get(`https://gateway.pinata.cloud/ipfs/${listAllProposal[i].ipfsHash}`),
         ])
         userProposalsFilter[i].IsParticipated = IsParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
         const metaData = meta.data
@@ -121,16 +121,16 @@ const CardVoting = () => {
       // const listUserVoted = listAllProposal.filter((item, index) => isParticipateds[index])
       // console.log(isParticipateds)
       // for (let i = 0; i < userProposalsFilter.length; i++) {
-        // eslint-disable-next-line
-        
-        // console.log(metadata.choices)
-        // console.log('bu')
-        // console.log(i, 'i', userVoted.optionsCount.toNumber())
-        // for (let j = 0; j < userVoted.optionsCount.toNumber(); j++) {
-        // eslint-disable-next-line
-        // const xxx = await getVotingPowersOfAddress(userVoted.proposalIndex.toNumber(), j, account)
-        // console.log(xxx)
-        // }
+      // eslint-disable-next-line
+
+      // console.log(metadata.choices)
+      // console.log('bu')
+      // console.log(i, 'i', userVoted.optionsCount.toNumber())
+      // for (let j = 0; j < userVoted.optionsCount.toNumber(); j++) {
+      // eslint-disable-next-line
+      // const xxx = await getVotingPowersOfAddress(userVoted.proposalIndex.toNumber(), j, account)
+      // console.log(xxx)
+      // }
       // }
       // const testmap = {}
       // console.log("userProposalsFilter",userProposalsFilter)

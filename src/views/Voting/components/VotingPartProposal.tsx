@@ -214,18 +214,19 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
   const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const [transactions, setTransactions] = useState(userProposals.map((item) => {
-    return {
-      id: item.proposalIndex,
-      title: item.title,
-      address: item.proposer,
-      endDate: item.endDate,
-      choise: "item.choices",
-      voting_power: "999"
-    }
-  }))
+  const [transactions, setTransactions] = useState(
+    userProposals.map((item) => {
+      return {
+        id: item.proposalIndex,
+        title: item.title,
+        address: item.proposer,
+        endDate: item.endDate,
+        choise: 'item.choices',
+        voting_power: '999',
+      }
+    }),
+  )
   // useEffect(() => {
-
 
   // }, [])
   // useState([
