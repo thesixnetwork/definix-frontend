@@ -119,8 +119,16 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * CardHeading
    */
   const renderCardHeading = useCallback(
-    () => <CardHeading farm={farm} lpLabel={lpTokenName} size="small" addLiquidityUrl={addLiquidityUrl} />,
-    [farm, lpTokenName, addLiquidityUrl],
+    () => (
+      <CardHeading
+        farm={farm}
+        lpLabel={lpTokenName}
+        size="small"
+        addLiquidityUrl={addLiquidityUrl}
+        componentType={componentType}
+      />
+    ),
+    [farm, lpTokenName, addLiquidityUrl, componentType],
   )
   /**
    * IconButton
