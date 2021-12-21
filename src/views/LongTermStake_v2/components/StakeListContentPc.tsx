@@ -29,7 +29,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                       <Text textStyle="R_12R" color="red" mr="S_4">
                         Super staked
                       </Text>
-                      <Helper text="Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount. You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended." />
+                      <Helper text={t('28 days Superstake')} />
                     </Flex>
                   </>
                 )}
