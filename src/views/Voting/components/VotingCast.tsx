@@ -7,7 +7,7 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import { useAvailableVotes } from 'hooks/useVoting'
+import { useAvailableVotes, useAllProposalOfAddress, useProposalIndex } from 'hooks/useVoting'
 import CastVoteModal from '../Modals/CastVoteModal'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
@@ -104,13 +104,13 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
   // const { isXl, isLg } = useMatchBreakpoints()
   // const isMobile = !isXl && !isLg
   const availableVotes = useAvailableVotes()
+  const { indexProposal } = useProposalIndex(proposalIndex)
+  const { proposalOfAddress } = useAllProposalOfAddress()
+  const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
   const [select, setSelect] = useState({})
   const [singleType, setSingleType] = useState({})
   const choices = indexs.choices
   const choiceType = indexs.choice_type
-  const filterChoies = useMemo(() => {
-    return choices
-  }, [choices])
   const allChoices = useMemo(() => {
     const set = []
     if (choices) {
@@ -163,7 +163,12 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                     onChange={(event, i) => handleRadioButton(event, index, c)}
                   >
                     <CardList checked={_.get(select, `${index}.value`)}>
-                      <MyFormControlLabel value={c} label="" control={<Radio />} />
+                      <MyFormControlLabel
+                        disabled={_.get(items, 'choices') !== undefined && c !== _.get(items, 'choices.0.choiceName')}
+                        value={c}
+                        label=""
+                        control={<Radio />}
+                      />
                       <Text fontSize="15px" bold>
                         {c}
                       </Text>
@@ -206,7 +211,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
             radii="small"
             marginTop="10px"
             size="sm"
-            disabled={Number(availableVotes) <= 0}
+            disabled={Number(availableVotes) <= 0 || Date.now() < _.get(indexProposal, 'startEpoch')}
             onClick={() => {
               onPresentConnectModal()
             }}
@@ -214,83 +219,6 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
             Cast vote
           </Button>
         </div>
-        {/* <div className="ma-3">
-          <CardList checked={_.get(select, `${0}.checked`)}>
-            <FormControlLabelCustom
-              control={
-                <CustomCheckbox
-                  size="small"
-                  defaultChecked
-                  checked={_.get(select, `${0}.checked`)}
-                  onChange={(event, i) => {
-                    setSelect({
-                      ...select,
-                      0: {
-                        checked: event.target.checked,
-                        id: 0,
-                      },
-                    })
-                  }}
-                  icon={<BpCheckboxIcons />}
-                />
-              }
-              label=""
-            />
-            <Text fontSize="15px" bold>
-              Yes, agree with you.
-            </Text>
-          </CardList>
-          <CardList checked={_.get(select, `${1}.checked`)}>
-            <FormControlLabelCustom
-              control={
-                <CustomCheckbox
-                  size="small"
-                  checked={_.get(select, `${1}.checked`)}
-                  onChange={(event, i) => {
-                    setSelect({
-                      ...select,
-                      1: {
-                        checked: event.target.checked,
-                        id: 1,
-                      },
-                    })
-                  }}
-                  icon={<BpCheckboxIcons />}
-                />
-              }
-              label=""
-            />
-            <Text fontSize="15px" bold>
-              No, I’m not agree with you.
-            </Text>
-          </CardList>
-          <RadioGroup name="use-radio-group" defaultValue="yes">
-            <CardList>
-              <MyFormControlLabel value="yes" label="" control={<Radio />} />
-              <Text fontSize="15px" bold>
-                Yes, agree with you.
-              </Text>
-            </CardList>
-            <CardList>
-              <MyFormControlLabel value="no" label="" control={<Radio />} />
-              <Text fontSize="15px" bold>
-                No, I’m not agree with you.
-              </Text>
-            </CardList>
-          </RadioGroup>
-          <Button
-            variant="success"
-            radii="small"
-            marginTop="10px"
-            size="sm"
-            disabled={Number(availableVotes) <= 0}
-            onClick={() => {
-              onPresentConnectModal()
-            }}
-          >
-            Cast vote
-          </Button>
-        </div> */}
       </Card>
     </>
   )

@@ -137,6 +137,8 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
         proposer: item.proposer,
         startTimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`),
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
+        startEpoch: new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000,
+        endEpoch: new BigNumber(_.get(item, 'endTimestamp._hex')).toNumber() * 1000,
         proposalType: item.proposalType,
         proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')).toNumber(),
         optionVotingPower: item.optionVotingPower,

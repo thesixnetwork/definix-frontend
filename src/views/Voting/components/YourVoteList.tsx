@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Radio from '@material-ui/core/Radio'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
-import { useAvailableVotes, useAllProposalOfAddress } from '../../../hooks/useVoting'
+import { useAvailableVotes, useAllProposalOfAddress, useClaimVote } from '../../../hooks/useVoting'
 import CastVoteModal from '../Modals/CastVoteModal'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
@@ -137,6 +137,7 @@ const YourVoteList = () => {
   const [onPresentConnectModal] = useModal(<CastVoteModal />)
   const [select, setSelect] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const { callClaimVote } = useClaimVote()
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
 
   return (
@@ -159,11 +160,16 @@ const YourVoteList = () => {
           }
           total
         />
-        {/* <Text fontSize="16px" bold lineHeight="1" marginTop="10px">
-            Yes, agree with you.
-          </Text> */}
         <div className="flex align-center ma-3">
-          <Button variant="success" radii="small" size="sm" disabled={Date.now() < +_.get(items, 'endDate')}>
+          <Button
+            onClick={() => {
+              callClaimVote(proposalIndex)
+            }}
+            variant="success"
+            radii="small"
+            size="sm"
+            disabled={Date.now() < +_.get(items, 'endDate')}
+          >
             Claim Voting Power
           </Button>
           <Text fontSize="14px" color="text" paddingLeft="14px">

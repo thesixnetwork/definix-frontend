@@ -248,17 +248,19 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
         .then(async (resp) => {
           if (resp) {
             await updateValue('ipfs', resp.data.result.IpfsHash)
-            const res = onPropose()
-            res
-              .then((r) => {
-                if (_.get(r, 'status')) {
-                  setIsLoading('success')
-                  setInterval(() => setIsLoading(''), 5000)
-                }
-              })
-              .catch((e) => {
-                setIsLoading('')
-              })
+            if (ipfs !== '') {
+              const res = onPropose()
+              await res
+                .then((r) => {
+                  if (_.get(r, 'status')) {
+                    setIsLoading('success')
+                    setInterval(() => setIsLoading(''), 5000)
+                  }
+                })
+                .catch((e) => {
+                  setIsLoading('')
+                })
+            }
           }
         })
         .catch((e) => {
@@ -361,6 +363,14 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     selected={endDate}
                     placeholderText="YYYY/MM/DD"
                   />
+                  {startDate !== null &&
+                    startTime !== null &&
+                    Number(combineDateAndTime(startDate, startTime)) * 1000 >
+                      Number(combineDateAndTime(endDate, endTime)) * 1000 && (
+                      <Text className="mt-2" color="#F5C858" fontSize="14px">
+                        End date must be after the start date
+                      </Text>
+                    )}
                 </div>
                 <div className="mb-4">
                   <Text className="mb-3" color="text" fontSize="16px">
@@ -397,7 +407,14 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   </div>
                 </div>
                 <Button
-                  disabled={!hasMinimumChoices || isLoading === 'loading' || isLoading === 'success'}
+                  disabled={
+                    !hasMinimumChoices ||
+                    isLoading === 'loading' ||
+                    isLoading === 'success' ||
+                    Number(combineDateAndTime(startDate, startTime)) * 1000 < Date.now() ||
+                    Number(combineDateAndTime(startDate, startTime)) * 1000 >
+                      Number(combineDateAndTime(endDate, endTime)) * 1000
+                  }
                   type="submit"
                   variant="success"
                   radii="small"
