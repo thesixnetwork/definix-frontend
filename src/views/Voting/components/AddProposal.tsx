@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useCallback, ChangeEvent, lazy, useState, useMemo, FormEvent } from 'react'
+import React, { useEffect, ChangeEvent, lazy, useState, useMemo, FormEvent } from 'react'
 import Lottie from 'react-lottie'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import axios from 'axios'
@@ -7,19 +7,18 @@ import Caver from 'caver-js'
 import _ from 'lodash'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import { useForm, Controller } from 'react-hook-form'
+
 import styled from 'styled-components'
 import { ExternalLink } from 'react-feather'
 import times from 'lodash/times'
+import { usePropose } from 'hooks/useVoting'
 import { getCaver } from 'utils/caver'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import success from 'uikit-dev/animation/complete.json'
-// import useTheme from 'hooks/useTheme'
-import { usePropose } from 'hooks/useVoting'
+import loadings from 'uikit-dev/animation/farmPool.json'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints } from 'uikit-dev'
 import { format, parseISO, isValid } from 'date-fns'
-import { useAllProposalOfType } from '../../../hooks/useVoting'
 import AddChoices, { Choice, makeChoice, MINIMUM_CHOICES } from './AddChoices'
 import VotingPower from './VotingPower'
 
@@ -27,6 +26,12 @@ const SuccessOptions = {
   loop: true,
   autoplay: true,
   animationData: success,
+}
+
+const LoadingOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: loadings,
 }
 
 const EasyMde = lazy(() => import('components/EasyMde'))
@@ -39,6 +44,12 @@ const InputChoice = styled(Input)`
   padding: 2px 20px;
   display: flex;
   align-items: center;
+`
+
+const LinkView = styled(Button)`
+  background-color: unset;
+  cursor: pointer;
+  padding-left: 6px;
 `
 
 const CardProposals = styled(Card)`
@@ -118,6 +129,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
   const { account } = useWallet()
+
   const [state, setState] = useState({
     name: '',
     body: '',
@@ -129,9 +141,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     snapshot: 0,
     ipfs: '',
   })
-  // const allProposal = useAllProposalOfType()
-  // console.log('allProposal >>',allProposal)
-  // const listAllProposal = _.get(allProposal, 'allProposal')
+
   const [isLoading, setIsLoading] = useState(false)
   const [choiceType, setChoiceType] = useState('single')
   const { name, body, choices, startDate, startTime, endDate, endTime, ipfs } = state
@@ -212,18 +222,15 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
         .put(`${voteAPI}`, bodyRequest)
         .then(async (resp) => {
           if (resp) {
-            console.log('resp >>>>>> ', resp.data.result.IpfsHash)
             await updateValue('ipfs', resp.data.result.IpfsHash)
             const res = onPropose()
             res
               .then((r) => {
-                console.log('r >>>>>> ', r)
                 if (_.get(r, 'status')) {
                   setInterval(() => setIsLoading(false), 5000)
                 }
               })
               .catch((e) => {
-                console.log('e >>>>>> ', e)
                 setIsLoading(false)
               })
           }
@@ -248,15 +255,33 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     )
   }
 
+  const CardLoading = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss} className="">
+        <div className="pb-6 pt-2">
+          <Lottie options={LoadingOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+
+  console.log('isLoading ==', isLoading)
   return (
     <>
-      {isLoading && (
-        <div style={{ position: 'absolute' }}>
-          <CardResponse />
-        </div>
-      )}
+      <div>
+        {!isLoading ? (
+          <div style={{ position: 'absolute' }}>
+            <CardLoading />
+          </div>
+        ) : (
+          <div style={{ position: 'absolute' }}>
+            <CardResponse />
+          </div>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit}>
-        <div className={`flex align-stretch mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
+        <div className={`flex align-center mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
             <CardProposals className="mb-4">
               <div className="pa-4 pt-3 bd-b">
@@ -355,7 +380,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     placeholderText="00:00"
                   />
                 </div>
-                <div className={`flex align-stretch ${isMobile ? 'flex-wrap' : 'my-4'}`}>
+                <div className={`flex align-center ${isMobile ? 'flex-wrap' : 'my-4'}`}>
                   <div className={isMobile ? 'col-12' : 'col-4'}>
                     <Text fontSize="16px" lineHeight="1">
                       Creator
@@ -363,10 +388,19 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   </div>
                   <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
                     <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                      {/* {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`} */}
-                      assfsf...dsgfkajgds
+                      {account && (
+                        <>
+                          {`${account.substring(0, 12)}...${account.substring(account.length - 4)}`}
+                          <LinkView
+                            as="a"
+                            href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`}
+                            target="_blank"
+                          >
+                            <ExternalLink size={16} color="#30ADFF" />
+                          </LinkView>
+                        </>
+                      )}
                     </Text>
-                    <ExternalLink size={16} color="#30ADFF" />
                   </div>
                 </div>
                 <Button
@@ -377,14 +411,14 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   className="my-2"
                   size="sm"
                 >
-                  Publishee
+                  Publish
                 </Button>
                 <Text color="#F5C858">You need at least 10 voting power to publish a proposal.</Text>
               </div>
             </CardProposals>
           </div>
         </div>
-        <div className={`flex align-stretch mt-1 ${isMobile ? 'flex-wrap' : ''}`}>
+        <div className={`flex align-center mt-1 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
             <AddChoices
               choices={choices}

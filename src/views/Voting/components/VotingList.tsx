@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from 'react'
-import { Card, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Card, Text, useMatchBreakpoints, Button } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
 import { getAddress } from 'utils/addressHelpers'
@@ -87,13 +87,21 @@ const TD = styled.td<{ align?: string }>`
   align-self: ${'center'};
 `
 
+const LinkView = styled(Button)`
+  background-color: unset;
+  cursor: pointer;
+  padding-left: 6px;
+`
+
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
+  const { account } = useWallet()
   const [cols] = useState(['Address', 'Choice', 'Voting Power'])
   const [currentPage, setCurrentPage] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const onPageChange = (e, page) => {
     setCurrentPage(page)
   }
+
   return (
     <CardTable>
       <Table>
@@ -111,7 +119,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
           <LoadingData />
         ) : isEmpty(rows) ? (
           <>
-            {console.log('rows', rows)}
             <EmptyData text={empText} />
           </>
         ) : (
@@ -121,13 +128,20 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
               rows.map((r) => (
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
-                    <div className="flex align-center">
-                      <Text color="#30ADFF" bold paddingRight="8px">
-                        0x0000000000
-                        {/* {r.user_address.substring(0, 6)}...{r.user_address.substring(r.user_address.length - 4)} */}
-                      </Text>
-                      <ExternalLink size={16} color="#30ADFF" />
-                    </div>
+                    {account && (
+                      <div className="flex align-center">
+                        <Text fontSize="16px" bold lineHeight="1" color="#30ADFF">
+                          {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
+                        </Text>
+                        <LinkView
+                          as="a"
+                          href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`}
+                          target="_blank"
+                        >
+                          <ExternalLink size={16} color="#30ADFF" />
+                        </LinkView>
+                      </div>
+                    )}
                   </TD>
                   <TD>
                     <Text color="text" bold>
@@ -165,8 +179,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 
 const VotingList = ({ rbAddress }) => {
   const address = getAddress(rbAddress)
-  const { account } = useWallet()
-
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)

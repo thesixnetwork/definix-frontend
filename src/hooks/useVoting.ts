@@ -1,8 +1,6 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
-import moment from 'moment'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,11 +11,13 @@ import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
 import IServiceInfoFacet from '../config/abi/IServiceInfoFacet.json'
+import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
 import { State } from '../state/types'
 import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
 import { fetchAllProposalOfType, fetchProposalIndex, fetchProposal } from '../state/actions'
 import useRefresh from './useRefresh'
+
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
@@ -66,6 +66,27 @@ export const useProposalIndex = (index) => {
   }, [slowRefresh, dispatch])
 
   return { indexProposal }
+}
+
+export const useIsProposable = () => {
+  const { account } = useWallet()
+  const { fastRefresh } = useRefresh()
+  const [proposables, setProposables] = useState<string>()
+
+  useEffect(() => {
+    async function fetchIsProposable() {
+      if (account) {
+        const callContract = getContract(IProposerFacet.abi, getVFinixVoting())
+        const isProposable = await callContract.methods.isProposable(account, 0).call()
+        setProposables(isProposable)
+      }
+    }
+
+    fetchIsProposable()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
+
+  return { proposables }
 }
 
 // Make a proposal

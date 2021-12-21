@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import _ from 'lodash'
-import { Card, Button } from '../../../uikit-dev'
 import TopicList from './TopicList'
 import CardTab from './CardTab'
-// import SelectType, { TypeChartName } from './SelectType'
+import { Card, Button } from '../../../uikit-dev'
 
 const Proposals = styled(Card)`
   width: 100%;
@@ -37,25 +36,6 @@ const Tabs = styled(Card)`
   }
 `
 
-const Header = styled.div`
-  display: flex !important;
-  padding: 1.5rem !important;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  align-items: center;
-`
-
-const StyledButtonCore = styled(Button)`
-  background-color: #30adff;
-  border: 1px solid #57575b;
-  color: #ffffff;
-  border-radius: 6px;
-  padding: 18px 20px;
-
-  &:hover {
-    cursor: default;
-  }
-`
-
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
   const [currentTabHeader, setCurrentTabHeader] = useState(0)
@@ -82,7 +62,7 @@ const CardProposals = () => {
         </Tabs>
         <Tabs>
           <CardTab
-            menus={['Vote Now', 'Soon', 'Closed']}
+            menus={['Vote Now']}
             current={currentTab}
             setCurrent={setCurrentTab}
             className="px-5"

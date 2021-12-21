@@ -1,14 +1,17 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import _ from 'lodash'
-import { Card, Text, useMatchBreakpoints, Skeleton } from 'uikit-dev'
-// import styled from 'styled-components'
-// import moment from 'moment'
-// import numeral from 'numeral'
 import { ExternalLink } from 'react-feather'
+import _ from 'lodash'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import styled from 'styled-components'
+import { Card, Text, useMatchBreakpoints, Skeleton, Button } from 'uikit-dev'
 import { useProposalIndex } from '../../../hooks/useVoting'
-// import useTheme from 'hooks/useTheme'
+
+const LinkView = styled(Button)`
+  background-color: unset;
+  cursor: pointer;
+  padding-left: 6px;
+`
 
 const VotingDetails = ({ id, index }) => {
   const { account } = useWallet()
@@ -54,7 +57,9 @@ const VotingDetails = ({ id, index }) => {
                   {index.creator &&
                     `${index.creator.substring(0, 6)}...${index.creator.substring(index.creator.length - 4)}`}
                 </Text>
-                <ExternalLink size={16} color="#30ADFF" />
+                <LinkView as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`} target="_blank">
+                  <ExternalLink size={16} color="#30ADFF" />
+                </LinkView>
               </>
             )}
           </div>
