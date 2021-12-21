@@ -10,6 +10,8 @@ interface CardHeadingType extends BoxProps {
   isHorizontal?: boolean
   onlyTitle?: boolean
   className?: string
+  xspacing?: string
+  yspacing?: string
   rebalance: Rebalance | any
   componentType?: string
 }
@@ -45,6 +47,8 @@ const CardHeading: React.FC<CardHeadingType> = ({
   isHorizontal = false,
   className = '',
   onlyTitle = false,
+  xspacing = 'S_32',
+  yspacing = 'S_24',
   rebalance = {},
   ...props
 }) => {
@@ -57,23 +61,23 @@ const CardHeading: React.FC<CardHeadingType> = ({
         justifyContent={isHorizontal ? 'center' : ''}
         alignItems={!isHorizontal && onlyTitle ? 'center' : 'start'}
       >
-        <Box mr={isHorizontal ? '' : 'S_32'} mb={isHorizontal ? 'S_24' : ''}>
+        <Box mr={isHorizontal ? '' : xspacing} mb={isHorizontal ? yspacing : ''}>
           <CardImage imageUrl={rebalance.icon[0]} title={rebalance.title} isMediumSize={isHorizontal} />
         </Box>
 
         {onlyTitle ? (
-          <Box mb="S_4">
+          <Box>
             <CardTitle title={t(rebalance.title)} textStyle="R_20B" />
           </Box>
         ) : (
-          <div>
+          <Box mt="S_4">
             <Box mb="S_4">
               <CardTitle title={t(rebalance.title)} />
             </Box>
             <Text textStyle="R_12R" color="textSubtle">
               {t(rebalance.description)}
             </Text>
-          </div>
+          </Box>
         )}
       </Flex>
     </Flex>

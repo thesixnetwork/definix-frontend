@@ -86,8 +86,15 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
    * CardHeading
    */
   const renderCardHeading = useCallback(
-    () => <CardHeading isOldSyrup={isOldSyrup} pool={pool} size={isInMyInvestment && 'small'} />,
-    [isOldSyrup, pool, isInMyInvestment],
+    () => (
+      <CardHeading
+        isOldSyrup={isOldSyrup}
+        pool={pool}
+        size={isInMyInvestment && 'small'}
+        componentType={componentType}
+      />
+    ),
+    [isOldSyrup, pool, isInMyInvestment, componentType],
   )
   /**
    * IconButton

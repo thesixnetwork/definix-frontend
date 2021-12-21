@@ -27,7 +27,7 @@ const InlineAssetRatioLabel = ({ coin, column = false, small = false, ...props }
       flexDirection={column ? 'column' : 'row'}
       {...props}
     >
-      <Flex flexGrow={1} width={column ? '100%' : ''}>
+      <Flex flexGrow={1} width={column ? '100%' : ''} alignItems="center">
         <CoinWrap size="lg" symbol={coin.symbol} spacing="10px">
           <Text textStyle={size.textM}>{thisName}</Text>
         </CoinWrap>

@@ -308,39 +308,42 @@ const InvestInputCard: React.FC<InvestInputCardProp> = ({ isMobile, rebalance, o
             {t('Total Amount')}
           </Text>
           {needsApprovalCoins.length ? (
-            needsApprovalCoins.map((coin) => (
-              <Flex
-                key={`approval-${coin.symbol}`}
-                textStyle="R_16M"
-                mb={isMobile ? 'S_24' : 'S_8'}
-                alignItems={isMobile ? 'flex-start' : 'center'}
-                flexDirection={isMobile ? 'column' : 'row'}
-              >
-                <CoinWrap mb={isMobile ? 'S_8' : ''} symbol={coin.symbol} size="lg">
-                  <Text mr="S_8" ml="S_12">
-                    {coin.currentValue}
-                  </Text>
-                  <Text color="textSubtle">{coin.symbol}</Text>
-                </CoinWrap>
-                <Button
-                  ml="auto"
-                  width={isMobile ? '100%' : '200px'}
-                  variant="brown"
-                  isLoading={coin.needsApproval && approvingCoin === coin.symbol}
-                  disabled={!coin.needsApproval || !coin.currentValue}
-                  onClick={onApprove(coin)}
+            needsApprovalCoins.map((coin) => {
+              const approved = !coin.needsApproval || !coin.currentValue
+              return (
+                <Flex
+                  key={`approval-${coin.symbol}`}
+                  textStyle="R_16M"
+                  mb={isMobile ? 'S_24' : 'S_8'}
+                  alignItems={isMobile ? 'flex-start' : 'center'}
+                  flexDirection={isMobile ? 'column' : 'row'}
                 >
-                  {coin.needsApproval ? (
-                    t('Approve {{Token}}', { Token: coin.symbol })
-                  ) : (
-                    <>
-                      <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />
-                      {t('{{Token}} Approved', { Token: coin.symbol })}
-                    </>
-                  )}
-                </Button>
-              </Flex>
-            ))
+                  <CoinWrap mb={isMobile ? 'S_8' : ''} symbol={coin.symbol} size="lg">
+                    <Text mr="S_8" ml="S_12">
+                      {coin.currentValue}
+                    </Text>
+                    <Text color="textSubtle">{coin.symbol}</Text>
+                  </CoinWrap>
+                  <Button
+                    ml="auto"
+                    width={isMobile ? '100%' : '200px'}
+                    variant={approved ? 'line' : 'brown'}
+                    isLoading={coin.needsApproval && approvingCoin === coin.symbol}
+                    disabled={approved}
+                    onClick={onApprove(coin)}
+                  >
+                    {coin.needsApproval ? (
+                      t('Approve {{Token}}', { Token: coin.symbol })
+                    ) : (
+                      <>
+                        <CheckBIcon opacity=".5" style={{ marginRight: '6px' }} />
+                        {t('{{Token}} Approved', { Token: coin.symbol })}
+                      </>
+                    )}
+                  </Button>
+                </Flex>
+              )
+            })
           ) : (
             <Flex py="S_28" justifyContent="center">
               <Text textStyle="R_14R" color="textSubtle" style={{ opacity: 0.6 }}>

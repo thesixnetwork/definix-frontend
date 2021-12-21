@@ -15,7 +15,7 @@ const StyledCoin = styled(Coin)`
   }
 `
 
-const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'medium' }) => {
+const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'medium', componentType }) => {
   const { convertToPoolAPRFormat } = useConverter()
   const isMediumSize = useMemo(() => size === 'medium', [size])
   const displayApy = useMemo(() => {
@@ -28,7 +28,10 @@ const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, pool, size = 'med
 
   return (
     <Flex position="relative" alignItems="center">
-      <Box mr="S_12">
+      <Box
+        mr={componentType === 'myInvestment' ? 'S_16' : 'S_12'}
+        width={componentType === 'myInvestment' ? '70px' : 'auto'}
+      >
         <StyledCoin symbol={pool.tokenName} size="40px" />
       </Box>
 
