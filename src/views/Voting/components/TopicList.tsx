@@ -99,6 +99,7 @@ const TabInfos = ({ tab }) => {
                 endTimestamp: data.endTimestamp,
                 proposalType: data.proposalType,
                 proposer: data.proposer,
+                proposalIndex: data.proposalIndex,
                 choice_type: resp.data.choice_type,
                 choices: resp.data.choices,
                 content: resp.data.content,

@@ -94,7 +94,6 @@ const DetailBanner = styled(Text)`
 const CardVoting = () => {
   const proposable = useIsProposable()
   const isProposable = _.get(proposable, 'proposables')
-  console.log('isProposable', isProposable)
 
   return (
     <>
