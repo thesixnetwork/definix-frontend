@@ -58,7 +58,7 @@
   "Home": "Home",
   "Exchange": "Exchange",
   "Yield Farming": "Yield Farming",
-  "Rebalancing": "Rebalancing Farm",
+  "Rebalancing": "Rebalancing",
   "Finix": "Finix",
   "Bridge": "Bridge",
   "More": "More",
@@ -449,7 +449,16 @@
   "No liquidity found.": "No liquidity found.",
   "Go to G1": "Go to G1",
   "Menu Swap": "Swap",
-  "Sharpe detail": "The average return ratio compares to the risk-taking activities earned per unit rate of the total risk.",
-  "MDD detail": "The differentiation between the historical peak and low point through the portfolio.",
-  "ROI detail": "Estimated return on investment measures approximately over a period of time."
+  "The average return ratio compares": "The average return ratio compares to the risk-taking activities earned per unit rate of the total risk.",
+  "The differentiation between the historical": "The differentiation between the historical peak and low point through the portfolio.",
+  "Estimated return on investment measures": "Estimated return on investment measures approximately over a period of time.",
+  "Harvesting": "Harvesting",
+  "actionHarvest": "Harvest",
+  "actioncStake": "Stake",
+  "actionEarly Unstake": "Early Unstake",
+  "actionUnstake": "Unstake",
+  "actionClaim": "Claim",
+  "Claimed": "Claimed",
+  "Unstaked": "Unstaked",
+  "28 days Superstake ": "Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount. You can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended."
 }
