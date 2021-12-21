@@ -60,7 +60,7 @@ export const useAllHarvest = (farmPids: number[]) => {
 
   const harvestUsingKlipWallet = useCallback(
     async (farmPid: number) => {
-      console.log('useHarvest/harvestUsingKlipWallet] farm pid: ', farmPid)
+      // console.log('useHarvest/harvestUsingKlipWallet] farm pid: ', farmPid)
       if (farmPid === 0) {
         klipProvider.genQRcodeContactInteract(
           herodotusContract._address,
@@ -83,7 +83,7 @@ export const useAllHarvest = (farmPids: number[]) => {
 
   const harvestAllUsingKlipWallet = useCallback(
     async (pids, txIndex) => {
-      console.log('useHarvest/harvestAllUsingKlipWallet] --> pids / txIndex: ', pids, txIndex)
+      // console.log('useHarvest/harvestAllUsingKlipWallet] --> pids / txIndex: ', pids, txIndex)
       setCurrentHarvestStackIndex(txIndex)
       if (pids.length === 0) return Promise.resolve()
 
@@ -103,7 +103,7 @@ export const useAllHarvest = (farmPids: number[]) => {
 
     if (connector === 'klip') {
       await harvestAllUsingKlipWallet(farmPids, 0)
-      console.log('useHarvest/handleHarvest] done ')
+      // console.log('useHarvest/handleHarvest] done ')
       setShowModal(false)
       dispatch(fetchFarmUserDataAsync(account))
       return Promise.resolve()

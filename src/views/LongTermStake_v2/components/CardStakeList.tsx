@@ -15,18 +15,23 @@ const FlexCard = styled(Flex)`
 `
 
 const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
-  const { lockAmount, allDataLock } = usePrivateData()
+  const { allDataLock } = usePrivateData()
   const lockCount = useLockCount()
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [itemPerPage, setItemPerPage] = useState<number>(4)
+  const [dataLength, setDataLength] = useState<number>(0)
 
   useEffect(() => {
     setItemPerPage(isMobile ? 3 : 4)
   }, [isMobile])
 
+  useEffect(() => {
+    setDataLength(Number(lockCount))
+  }, [allDataLock, lockCount])
+
   return (
     <>
-      {lockAmount ? (
+      {allDataLock.length > 0 && (
         <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
           <FlexCard>
             {!isMobile && <StakeListHead />}
@@ -38,14 +43,12 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
             <StakeListPagination
               isMobile={isMobile}
               itemPerPage={itemPerPage}
-              dataLength={Number(lockCount)}
+              dataLength={dataLength}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />
           </FlexCard>
         </Card>
-      ) : (
-        <></>
       )}
     </>
   )
