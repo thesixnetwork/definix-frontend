@@ -111,7 +111,7 @@ const CardVoting = () => {
   const [userProposals, setUserProposals] = useState([])
   useEffect(() => {
     const fetch = async () => {
-      console.log('listAllProposal', listAllProposal)
+      
       let userProposalsFilter: any[] = JSON.parse(JSON.stringify(listAllProposal))
       const isParticipateds = []
       for (let i = 0; i < userProposalsFilter.length; i++) {
@@ -121,22 +121,24 @@ const CardVoting = () => {
         isParticipateds.push(isParticipated)
         userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
 
-        // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
+      
       }
-      console.log(isParticipateds)
+      
       userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
-      // console.log(isParticipateds)
+
+      
       for (let i = 0; i < userProposalsFilter.length; i++) {
         // eslint-disable-next-line
-        const metaData = (await axios.get(`https://gateway.pinata.cloud/ipfs/${listAllProposal[i].ipfsHash}`)).data
+        const metaData = (await axios.get(`https://gateway.pinata.cloud/ipfs/${userProposalsFilter[i].ipfsHash}`)).data
 
-        userProposalsFilter[i].choices = [] // metaData.choices
+        userProposalsFilter[i].choices = [] 
         userProposalsFilter[i].title = metaData.title
-        userProposalsFilter[i].endDate = metaData.end_unixtimestamp
+        userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
 
         for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
           // eslint-disable-next-line
           const votingPower = new BigNumber(
+            // eslint-disable-next-line
             await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
           )
             .div(1e18)
@@ -144,12 +146,10 @@ const CardVoting = () => {
           if (votingPower > 0) {
             userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
           }
-          console.log(votingPower)
+
         }
       }
-      // console.log(userProposalsFilter)
-      // const testmap = {}
-      // console.log("userProposalsFilter",userProposalsFilter)
+
       setUserProposals(userProposalsFilter)
     }
     fetch()
