@@ -116,10 +116,10 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
               </Text>
               <Flex flexDirection="column" alignItems="flex-end">
                 <Text textStyle="R_14M" color="deepgrey">
-                  {end} GMT+9
+                  {end}
                 </Text>
                 <Text textStyle="R_12R" color="mediumgrey">
-                  {t('*Asia/Seoul')}
+                  *GMT +9 {t('Asia/Seoul')}
                 </Text>
               </Flex>
             </Flex>

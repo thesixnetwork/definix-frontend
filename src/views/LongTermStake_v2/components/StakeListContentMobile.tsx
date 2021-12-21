@@ -43,10 +43,10 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
               </Text>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="black">
-                  {item.lockTimestamp} GMT+9
+                  {item.lockTimestamp}
                 </Text>
                 <Text ml="S_8" textStyle="R_12R" color="mediumgrey">
-                  {t('*Asia/Seoul')}
+                  *GMT +9 {t('Asia/Seoul')}
                 </Text>
               </Flex>
             </Flex>

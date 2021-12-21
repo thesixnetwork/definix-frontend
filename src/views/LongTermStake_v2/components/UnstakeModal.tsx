@@ -96,10 +96,10 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   </Text>
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text textStyle="R_14M" color="deepgrey">
-                      {periodPenalty} GMT+9
+                      {periodPenalty}
                     </Text>
                     <Text textStyle="R_12R" color="mediumgrey">
-                      {t('*Asia/Seoul')}
+                      *GMT +9 {t('Asia/Seoul')}
                     </Text>
                   </Flex>
                 </Flex>
