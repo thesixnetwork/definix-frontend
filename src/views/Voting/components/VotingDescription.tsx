@@ -59,8 +59,6 @@ const StyledTypes = styled.div<{ type: string }>`
 `
 
 const VotingDescription = ({ id, index }) => {
-  console.log('index ...', index)
-
   return (
     <>
       <Card className="mb-4">
