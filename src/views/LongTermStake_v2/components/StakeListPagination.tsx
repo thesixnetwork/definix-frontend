@@ -70,7 +70,7 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
   return (
     <>
       <Flex mt={`${isMobile ? 'S_12' : 'S_20'}`}>
-        {dataLength !== 0 && Math.ceil(currentPage / 5) !== 1 ? (
+        {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== 1 ? (
           <StyledArrow mr="S_10" alignItems="center" onClick={() => onClickArrow('left')}>
             <ArrowLeftGIcon viewBox="0 0 16 16" width={16} height={16} />
           </StyledArrow>
@@ -91,7 +91,7 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
           )
         })}
 
-        {dataLength !== 0 && Math.ceil(currentPage / 5) !== Math.ceil(dataLength / itemPerPage / 5) ? (
+        {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== Math.ceil(dataLength / itemPerPage / 5) ? (
           <StyledArrow ml="S_10" alignItems="center" onClick={() => onClickArrow('right')}>
             <ArrowRightGIcon viewBox="0 0 16 16" width={16} height={16} />
           </StyledArrow>
