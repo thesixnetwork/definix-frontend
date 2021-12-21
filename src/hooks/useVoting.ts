@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { getAbiVaultFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 import UsageFacet from '../config/abi/UsageFacet.json'
+// import VotingFacet from '../config/abi/VotingFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
@@ -136,6 +137,20 @@ export const usePropose = (
   }
 
   return { onPropose: callPropose }
+}
+
+export const getIsParticipated = async (index: number) => {
+  // const { account, connector } = useWallet()
+  const contract = getContract(IVotingFacet.abi, getVFinixVoting())
+
+  return contract.methods.isParticipated(index).call()
+}
+
+export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIndex: number, voter: string) => {
+  // const { account, connector } = useWallet()
+  const contract = getContract(IProposalFacet.abi, getVFinixVoting())
+
+  return contract.methods.getVotingPowersOfAddress(_proposalIndex, _optionIndex, voter).call()
 }
 
 // const handleContractExecute = (_executeFunction, _account) => {

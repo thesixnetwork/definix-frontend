@@ -10,7 +10,14 @@ import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
 // import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import _ from 'lodash'
+import { getContract } from 'utils/caver'
+import { useWallet } from 'klaytn-use-wallet'
+import { getVFinixVoting } from '../../../utils/addressHelpers'
+import { Voting } from '../../../state/types'
 import PaginationCustom from './Pagination'
+import IVotingFacet from '../../../config/abi/IVotingFacet.json'
+import { useAllProposalOfType, getIsParticipated } from '../../../hooks/useVoting'
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -103,6 +110,25 @@ const BtnDetails = styled(Button)`
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
+  const allProposal = useAllProposalOfType()
+  // const {account} = useWallet()
+  // const listAllProposal = _.get(allProposal, 'allProposal')
+
+  // useEffect(() => {
+  //   // const fetch = async () => {
+  //     const vfinixContract = getContract(IVotingFacet.abi,getVFinixVoting())
+  //     // for (let i = 0; i < listAllProposal.length; i++) {
+  //       // eslint-disable-next-line
+  //       // vfinixContract.methods.isParticipated(0).call().then(console.log)
+  //       // const x = await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
+  //       // console.log("xxxx",x)
+
+  //     // }
+  //   // }
+  //   // fetch()
+
+  // }, [listAllProposal])
+
   // const [currentPage, setCurrentPage] = useState(1)
   // const pages = useMemo(() => Math.ceil(total / 10), [total])
   // const onPageChange = (e, page) => {
@@ -179,10 +205,10 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   )
 }
 
-const VotingPartProposal = ({ rbAddress }) => {
+const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
   const address = getAddress(rbAddress)
   // const { account } = useWallet()
-
+  const testVots: Voting[] = []
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
@@ -195,6 +221,7 @@ const VotingPartProposal = ({ rbAddress }) => {
       voting_power: '99,999',
     },
   ])
+
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   // const { isDark } = useTheme()
@@ -218,6 +245,7 @@ const VotingPartProposal = ({ rbAddress }) => {
   const onPageChange = (e, page) => {
     setCurrentPage(page)
   }
+
   useEffect(() => {
     return () => {
       setDefault(0)

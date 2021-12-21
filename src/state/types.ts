@@ -257,11 +257,12 @@ export interface Voting {
   proposer?: any
   startTimestamp?: any
   endTimestamp?: any
-  optionsCount?: any
+  optionsCount?: BigNumber
   minimumVotingPower?: any
   totalVotingPower?: any
   voteLimit?: any
   optionVotingPower?: any
+  isParticipated?: any
 }
 
 export interface VotingState {
