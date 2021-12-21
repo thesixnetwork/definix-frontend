@@ -51,7 +51,7 @@ export const useHarvest = (farmPid: number) => {
   return { onReward: handleHarvest }
 }
 
-export const useAllHarvest = (farms: { pid: number, lpSymbol: string}[]) => {
+export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
   const { account, connector } = useWallet()
   const herodotusContract = useHerodotus()
   const dispatch = useDispatch()
@@ -94,10 +94,13 @@ export const useAllHarvest = (farms: { pid: number, lpSymbol: string}[]) => {
       } catch {
         console.log('tx failed')
       } finally {
-        setHarvestResultList((prev) => [{
-          symbol: txs[txIndex].lpSymbol,
-          isSuccess
-        }, ...prev])
+        setHarvestResultList((prev) => [
+          {
+            symbol: txs[txIndex].lpSymbol,
+            isSuccess,
+          },
+          ...prev,
+        ])
         setShowModal(false)
       }
 

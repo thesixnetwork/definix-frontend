@@ -67,7 +67,6 @@ const initData = () => {
 export const getAccount = () => account
 export const getRequestKey = () => requestKey
 
-
 export const checkResponse = async (): Promise<string> => {
   return new Promise((resolve, reject) => {
     let time = 0
