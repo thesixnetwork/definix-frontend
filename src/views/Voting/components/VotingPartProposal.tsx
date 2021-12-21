@@ -77,12 +77,14 @@ const Table = styled.table`
   border-collapse: separate;
 `
 
-const TR = styled.tr``
+const TR = styled.tr`
+ border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+`
 
 const TD = styled.td<{ align?: string }>`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  // border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   padding: 16px;
-  height: 64px;
+  // height: 64px;
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
 `
@@ -218,7 +220,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                   </TD>
                   <TD>
                     {Date.now() < +r.endDate ? (
-                      <BtnDetails as={Link} to={`/voting/detail/${r.ipfsHash}/${r.proposalIndex}`}>
+                      <BtnDetails as={Link} to={`/voting/detail/participate/${r.ipfsHash}/${r.proposalIndex}`}>
                         Deatils
                       </BtnDetails>
                     ) : (

@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
+import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiVaultFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
@@ -54,6 +55,59 @@ export const useAllProposalOfType = () => {
   }, [fastRefresh, dispatch])
 
   return { allProposal }
+}
+
+export const useAllProposalOfAddress = () => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const { account } = useWallet()
+  const [proposalOfAddress, setUserProposals] = useState([])
+  const proposal = useSelector((state: State) => state.voting.allProposal)
+
+  useEffect(() => {
+    const fetch = async () => {
+      if (account) {
+        let userProposalsFilter: any[] = JSON.parse(JSON.stringify(proposal))
+        const isParticipateds = []
+        for (let i = 0; i < userProposalsFilter.length; i++) {
+          userProposalsFilter[i].choices = []
+          // eslint-disable-next-line
+          const [isParticipated] = await Promise.all([getIsParticipated(userProposalsFilter[i].proposalIndex)])
+          isParticipateds.push(isParticipated)
+          userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
+        }
+
+        userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
+
+        for (let i = 0; i < userProposalsFilter.length; i++) {
+          // eslint-disable-next-line
+          const metaData = (await axios.get(`${process.env.REACT_APP_IPFS}/${userProposalsFilter[i].ipfsHash}`)).data
+
+          userProposalsFilter[i].choices = []
+          userProposalsFilter[i].title = metaData.title
+          userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
+
+          for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
+            // eslint-disable-next-line
+            const votingPower = new BigNumber(
+              // eslint-disable-next-line
+              await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
+            )
+              .div(1e18)
+              .toNumber()
+            if (votingPower > 0) {
+              userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
+            }
+          }
+        }
+
+        setUserProposals(userProposalsFilter)
+      }
+    }
+    fetch()
+  }, [fastRefresh, proposal, account])
+
+  return { proposalOfAddress }
 }
 
 export const useProposalIndex = (index) => {

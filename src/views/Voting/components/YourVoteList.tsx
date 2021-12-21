@@ -1,12 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
+import { Route, useRouteMatch, useParams } from 'react-router-dom'
 import _ from 'lodash'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
 import Radio from '@material-ui/core/Radio'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
-import { useAvailableVotes } from '../../../hooks/useVoting'
+import { useAvailableVotes, useAllProposalOfAddress } from '../../../hooks/useVoting'
 import CastVoteModal from '../Modals/CastVoteModal'
 // import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
@@ -33,20 +34,6 @@ const LoadingData = () => (
   </TR>
 )
 
-const CustomRadio = styled(Radio)`
-  &.MuiRadio-root {
-    color: #fcfcfc;
-  }
-
-  &.MuiFormControlLabel-label {
-    color: ${({ theme, checked }) => checked && theme.colors.success};
-  }
-
-  &.MuiRadio-colorSecondary.Mui-checked {
-    color: ${({ theme, checked }) => checked && theme.colors.success};
-  }
-`
-
 const CardTable = styled(Card)`
   position: relative;
   content: '';
@@ -55,6 +42,22 @@ const CardTable = styled(Card)`
   background-repeat: no-repeat;
   right: 0;
   overflow: auto;
+
+  a {
+    display: block;
+  }
+`
+
+const CardList = styled(Card)`
+  position: relative;
+  content: '';
+  background-color: ${({ theme }) => theme.mediaQueries.md};
+  background-size: cover;
+  background-repeat: no-repeat;
+  right: 0;
+  overflow: auto;
+  box-shadow: unset;
+  border-radius: unset;
 
   a {
     display: block;
@@ -78,17 +81,11 @@ const TD = styled.td<{ align?: string }>`
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Vote', 'Voting Power', ''])
-  // const [currentPage, setCurrentPage] = useState(1)
-  // const pages = useMemo(() => Math.ceil(total / 10), [total])
-  // const onPageChange = (e, page) => {
-  //   setCurrentPage(page)
-  // }
-
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
 
   return (
-    <CardTable>
+    <CardList>
       <Table>
         <TR>
           {cols.map((c) => (
@@ -104,76 +101,47 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
           <LoadingData />
         ) : isEmpty(rows) ? (
           <>
-            {/* {console.log('rows', rows)} */}
             <EmptyData text={empText} />
           </>
         ) : (
           <>
             {rows !== null &&
-              rows.map((r) => (
-                <TR key={`tsc-${r.block_number}`}>
-                  {/* <TD>
-                    <Text color="text" bold fontSize={isMobile ? '16px' : '20px'}>
-                      {'Proposal Topic Proposal Topic Proposal Topic Proposal'.substring(0, 38)}...
-                    </Text>
-                    <div className={isMobile ? '' : 'flex align-center'}>
-                      <Text color="text" paddingRight="8px">
-                        End Date
-                      </Text>
-                      <Text color="text" bold>
-                        12-Nov-21 15:00:00 GMT+9
-                      </Text>
-                    </div>
-                  </TD> */}
+              _.get(rows, 'choices').map((r) => (
+                <TR key="">
                   <TD>
                     <Text color="text" bold>
-                      Yes, agree with you.
+                      {r.choiceName}
                     </Text>
                   </TD>
                   <TD>
                     <div className="flex align-center">
                       <Text color="text" bold paddingRight="8px">
-                        23,143
+                        {r.votePower}
                       </Text>
                     </div>
                   </TD>
-                  <TD>
-                    {/* <BtnDetails as={Link} to="/voting/detail/participate">
-                      Deatils
-                    </BtnDetails> */}
-                    {/* <BtnClaim as={Link} to={`/voting/detail/${item.ipfsHash`}>
-                        Claim Voting Power
-                      </BtnClaim> */}
-                  </TD>
+                  <TD />
                 </TR>
               ))}
           </>
         )}
       </Table>
-    </CardTable>
+    </CardList>
   )
 }
 
 const YourVoteList = () => {
-  // const { isDark } = useTheme()
-  // const { isXl, isLg } = useMatchBreakpoints()
-  // const isMobile = !isXl && !isLg
+  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const availableVotes = useAvailableVotes()
+  const { proposalOfAddress } = useAllProposalOfAddress()
   const [onPresentConnectModal] = useModal(<CastVoteModal />)
   const [select, setSelect] = useState({})
   const [isLoading, setIsLoading] = useState(false)
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1234,
-      address: '0x00000',
-      choise: 'Yes, agree with you.',
-      voting_power: '99,999',
-    },
-  ])
+  const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
 
   return (
     <>
-      <Card className="mb-4">
+      <CardTable className="mb-4">
         <div className="pa-4 pt-3 bd-b">
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
             Your vote
@@ -181,7 +149,7 @@ const YourVoteList = () => {
         </div>
         {/* <div className="ma-3"> */}
         <TransactionTable
-          rows={transactions}
+          rows={items !== undefined && items}
           isLoading={isLoading}
           empText={
             'Don`t have any transactions in this votes.'
@@ -195,7 +163,7 @@ const YourVoteList = () => {
             Yes, agree with you.
           </Text> */}
         <div className="flex align-center ma-3">
-          <Button variant="success" radii="small" size="sm" disabled>
+          <Button variant="success" radii="small" size="sm" disabled={Date.now() < +_.get(items, 'endDate')}>
             Claim Voting Power
           </Button>
           <Text fontSize="14px" color="text" paddingLeft="14px">
@@ -203,7 +171,7 @@ const YourVoteList = () => {
           </Text>
         </div>
         {/* </div> */}
-      </Card>
+      </CardTable>
     </>
   )
 }

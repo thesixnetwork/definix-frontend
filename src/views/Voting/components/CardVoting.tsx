@@ -13,6 +13,7 @@ import {
   getIsParticipated,
   getVotingPowersOfAddress,
   useIsProposable,
+  useAllProposalOfAddress,
 } from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
 import { Voting } from '../../../state/types'
@@ -107,51 +108,9 @@ const DetailBanner = styled(Text)`
 const CardVoting = () => {
   const proposable = useIsProposable()
   const isProposable = _.get(proposable, 'proposables')
-
   const { account } = useWallet()
-  const allProposal = useAllProposalOfType()
-  const listAllProposal = _.get(allProposal, 'allProposal')
-  const [userProposals, setUserProposals] = useState([])
-  useEffect(() => {
-    const fetch = async () => {
-      let userProposalsFilter: any[] = JSON.parse(JSON.stringify(listAllProposal))
-      const isParticipateds = []
-      for (let i = 0; i < userProposalsFilter.length; i++) {
-        userProposalsFilter[i].choices = []
-        // eslint-disable-next-line
-        const [isParticipated] = await Promise.all([getIsParticipated(userProposalsFilter[i].proposalIndex)])
-        isParticipateds.push(isParticipated)
-        userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
-      }
+  const { proposalOfAddress } = useAllProposalOfAddress()
 
-      userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
-
-      for (let i = 0; i < userProposalsFilter.length; i++) {
-        // eslint-disable-next-line
-        const metaData = (await axios.get(`${process.env.REACT_APP_IPFS}/${userProposalsFilter[i].ipfsHash}`)).data
-
-        userProposalsFilter[i].choices = []
-        userProposalsFilter[i].title = metaData.title
-        userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
-
-        for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
-          // eslint-disable-next-line
-          const votingPower = new BigNumber(
-            // eslint-disable-next-line
-            await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
-          )
-            .div(1e18)
-            .toNumber()
-          if (votingPower > 0) {
-            userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
-          }
-        }
-      }
-
-      setUserProposals(userProposalsFilter)
-    }
-    fetch()
-  }, [listAllProposal, account])
   return (
     <>
       <BannerVoting>
@@ -169,7 +128,11 @@ const CardVoting = () => {
       </BannerVoting>
       <CardProposals />
 
-      {account && userProposals.length > 0 ? <VotingPartProposal rbAddress userProposals={userProposals} /> : ''}
+      {account && proposalOfAddress.length > 0 ? (
+        <VotingPartProposal rbAddress userProposals={proposalOfAddress} />
+      ) : (
+        ''
+      )}
     </>
   )
 }

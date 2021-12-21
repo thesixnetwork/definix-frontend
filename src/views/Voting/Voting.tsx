@@ -53,7 +53,7 @@ const Voting: React.FC = () => {
         <VotingInfos isParticipate={false} />
       </Route>
 
-      <Route exact path={`${path}/detail/participate`}>
+      <Route exact path={`${path}/detail/participate/:id/:proposalIndex`}>
         <VotingInfos isParticipate />
       </Route>
 
