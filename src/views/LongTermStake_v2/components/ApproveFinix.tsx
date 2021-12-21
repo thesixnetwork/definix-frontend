@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, useModal, ImgTokenFinixIcon, AlertIcon, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApprove } from 'hooks/useLongTermStake'
 import * as klipProvider from 'hooks/klipProvider'
+import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 import UnlockButton from 'components/UnlockButton'
 
@@ -62,6 +63,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   const [transactionHash, setTransactionHash] = useState<string>('')
   const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(false)
+  const { toastSuccess, toastError } = useToast()
 
   const handleApprove = useCallback(async () => {
     try {
@@ -70,12 +72,13 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
       if (txHash) {
         setTransactionHash(_.get(txHash, 'transactionHash'))
       }
+      toastSuccess(t('{{Action}} Complete', { Action: t('Approve') }))
     } catch (e) {
-      console.error(e)
+      toastError(t('{{Action}} Failed', { Action: t('Approve') }))
     } finally {
       setIsLoadingApprove(false)
     }
-  }, [onApprove])
+  }, [onApprove, toastSuccess, toastError, t])
 
   return (
     <>

@@ -3,6 +3,7 @@ import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import { useHarvest } from 'hooks/useLongTermStake'
+import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
 import { IsMobileType } from './types'
@@ -26,17 +27,19 @@ const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
   const { t } = useTranslation()
   const { handleHarvest } = useHarvest()
   const [isLoadingHarvest, setIsLoadingHarvest] = useState<boolean>(false)
+  const { toastSuccess, toastError } = useToast()
 
   const onHarvest = useCallback(async () => {
     try {
       setIsLoadingHarvest(true)
       await handleHarvest()
+      toastSuccess(t('{{Action}} Complete', { Action: t('Harvest') }))
     } catch (e) {
-      console.error(e)
+      toastError(t('{{Action}} Failed', { Action: t('Harvest') }))
     } finally {
       setIsLoadingHarvest(false)
     }
-  }, [handleHarvest])
+  }, [handleHarvest, toastSuccess, toastError, t])
 
   const renderHarvestButton = useCallback(
     () => (
