@@ -189,7 +189,7 @@ const EarningBoxTemplate: React.FC<{
   const { finixEarn } = usePrivateData()
   const longTermStakeHarvestHook = useHarvest()
   const needHarvestLongTermStake = useMemo(() => finixEarn, [finixEarn])
-  
+
   const harvestAllLength = useRef(0)
   const isHarvestingUsingKlip = useMemo(() => {
     return harvestAllLength.current > 0 && farmPoolHarvestHook.harvestResultList.length < harvestAllLength.current
@@ -203,11 +203,14 @@ const EarningBoxTemplate: React.FC<{
     } catch (error) {
       console.warn('EarningBoxTemplate/harvestLongTermStake] error: ', error)
     } finally {
-      setHarvestResultList((prev) => [{
-        symbol: 'Long-term Stake',
-        isSuccess
-      }, ...prev])
-    } 
+      setHarvestResultList((prev) => [
+        {
+          symbol: 'Long-term Stake',
+          isSuccess,
+        },
+        ...prev,
+      ])
+    }
   }, [longTermStakeHarvestHook])
   const harvestAll = useCallback(async () => {
     if (pendingTx || isHarvestingUsingKlip) return
@@ -226,11 +229,20 @@ const EarningBoxTemplate: React.FC<{
       setPendingTx(false)
       harvestAllLength.current = 0
     }
-  }, [harvestLongTermStake, farmPoolHarvestHook, needHarvestLongTermStake, myFarmPools.length, pendingTx, isHarvestingUsingKlip])
+  }, [
+    harvestLongTermStake,
+    farmPoolHarvestHook,
+    needHarvestLongTermStake,
+    myFarmPools.length,
+    pendingTx,
+    isHarvestingUsingKlip,
+  ])
 
   const showHarvestResult = useCallback(() => {
     const toastDescription = (
-      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>{harvestResultList[0].symbol}</Text>
+      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+        {harvestResultList[0].symbol}
+      </Text>
     )
     const actionText = t('Harvest')
     if (harvestResultList[0].isSuccess) {
@@ -239,7 +251,7 @@ const EarningBoxTemplate: React.FC<{
       toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
     }
   }, [toastSuccess, toastError, harvestResultList, t])
-  
+
   useEffect(() => {
     if (harvestResultList.length === 0) return
     showHarvestResult()
@@ -291,7 +303,9 @@ const EarningBoxTemplate: React.FC<{
                   disabled={myFarmPools.length <= 0}
                   onClick={harvestAll}
                 >
-                  {pendingTx && isHarvestingUsingKlip ? `${t('Harvesting')} (${currentHarvestIndex + 1}/${harvestAllLength.current})` : t('Harvest')}
+                  {pendingTx && isHarvestingUsingKlip
+                    ? `${t('Harvesting')} (${currentHarvestIndex + 1}/${harvestAllLength.current})`
+                    : t('Harvest')}
                 </Button>
               ) : (
                 <UnlockButton />

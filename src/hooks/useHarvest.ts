@@ -110,7 +110,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
     },
     [harvestUsingKlip, setShowModal],
   )
-  
+
   // const harvestUsingOthers = useCallback((farm) => {
   //   let isSuccess = false
   //   try {
@@ -137,7 +137,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
 
   const handleHarvest = useCallback(async () => {
     setHarvestResultList([])
-    
+
     if (connector === 'klip') {
       await harvestAllUsingKlip(farms, 0)
     } else {
@@ -150,7 +150,7 @@ export const useAllHarvest = (farms: { pid: number; lpSymbol: string }[]) => {
 
   return {
     onReward: handleHarvest,
-    harvestResultList
+    harvestResultList,
   }
 }
 
