@@ -24,25 +24,25 @@ const StyledTypes = styled.div<{ type: string }>`
   background-color: transparent;
   border: 1px solid
     ${({ type }) =>
-    type === 'vote'
-      ? '#30adff'
-      : type === 'core'
+      type === 'vote'
+        ? '#30adff'
+        : type === 'core'
         ? '#55bd92'
         : type === 'soon'
-          ? '#F5C858'
-          : type === 'community'
-            ? '#DA7DC1'
-            : type === 'closed' && '#6E6E6E'};
+        ? '#F5C858'
+        : type === 'community'
+        ? '#DA7DC1'
+        : type === 'closed' && '#6E6E6E'};
   color: ${({ type }) =>
     type === 'vote'
       ? '#30adff'
       : type === 'core'
-        ? '#55bd92'
-        : type === 'soon'
-          ? '#F5C858'
-          : type === 'community'
-            ? '#DA7DC1'
-            : type === 'closed' && '#6E6E6E'};
+      ? '#55bd92'
+      : type === 'soon'
+      ? '#F5C858'
+      : type === 'community'
+      ? '#DA7DC1'
+      : type === 'closed' && '#6E6E6E'};
   border-radius: 10px;
   padding: ${({ type }) => (type === 'community' ? '2px 16px' : type === 'soon' ? '10px 22px' : '10px 16px')};
   font-size: 14px;
@@ -106,15 +106,15 @@ const TabInfos = ({ tab }) => {
                 proposals_type: resp.data.proposals_type, // "core"
                 start_unixtimestamp: resp.data.start_unixtimestamp, // 1640886300
                 end_unixtimestamp: resp.data.end_unixtimestamp, // 1643652000
-                title: resp.data.title // "title"
+                title: resp.data.title, // "title"
               })
             }
           })
           .catch((e) => {
             console.log('error', e)
-          })     
+          })
       })
-      console.log("dataArray",dataArray)
+      console.log('dataArray', dataArray)
       setArray(dataArray)
     }
 
@@ -122,141 +122,141 @@ const TabInfos = ({ tab }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slowRefresh])
 
-  console.log("array >>>>", array)
+  console.log('array >>>>', array)
 
   return (
     <>
-    {array.length > 0 ? (
-      <>
-      {array.map((item) => (
-        <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}>
-          <div>
-            <Heading fontSize="18px !important">
-              {isLoading ? (
-                <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
-              ) : (
-                  <Text fontSize="18px !important" bold lineHeight="1" mr="6px">
-                    {_.get(item, 'title')}
-                  </Text>
-                )}
-            </Heading>
-            <TextHorizontal>
-              <Text fontSize="14px !important" lineHeight="1">
-                End Date
-              </Text>
-              &nbsp;
-              {isLoading ? (
-                <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
-              ) : (
-                  <Text fontSize="14px !important" bold lineHeight="1" mr="6px">
-                    {item.endTimestamp} {item.endTimestamp !== '-' && 'GMT+9'}
-                  </Text>
-                )}
-            </TextHorizontal>
-            <div className="flex">
-              {tab === 'vote' ? (
-                <>
+      {array.length > 0 ? (
+        <>
+          {array.map((item) => (
+            <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}`}>
+              <div>
+                <Heading fontSize="18px !important">
                   {isLoading ? (
-                    <>
-                      <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
-                      &nbsp;
-                      <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
-                    </>
+                    <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
                   ) : (
-                      <>
-                        <StyledTypes type="vote">
-                          <span>Vote Now</span>
-                        </StyledTypes>
-                        {item.proposalType === 0 ? (
-                          <StyledTypes type="core" className="ml-2 flex">
-                            <img src={coreIcon} alt="coreIcon" width={16} />
+                    <Text fontSize="18px !important" bold lineHeight="1" mr="6px">
+                      {_.get(item, 'title')}
+                    </Text>
+                  )}
+                </Heading>
+                <TextHorizontal>
+                  <Text fontSize="14px !important" lineHeight="1">
+                    End Date
+                  </Text>
+                  &nbsp;
+                  {isLoading ? (
+                    <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+                  ) : (
+                    <Text fontSize="14px !important" bold lineHeight="1" mr="6px">
+                      {item.endTimestamp} {item.endTimestamp !== '-' && 'GMT+9'}
+                    </Text>
+                  )}
+                </TextHorizontal>
+                <div className="flex">
+                  {tab === 'vote' ? (
+                    <>
+                      {isLoading ? (
+                        <>
+                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
                           &nbsp;
-                            <span>Core</span>
+                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
+                        </>
+                      ) : (
+                        <>
+                          <StyledTypes type="vote">
+                            <span>Vote Now</span>
                           </StyledTypes>
-                        ) : (
+                          {item.proposalType === 0 ? (
+                            <StyledTypes type="core" className="ml-2 flex">
+                              <img src={coreIcon} alt="coreIcon" width={16} />
+                              &nbsp;
+                              <span>Core</span>
+                            </StyledTypes>
+                          ) : (
                             <StyledTypes type="community" className="ml-2 flex">
                               <img src={communityIcon} alt="communityIcon" width={32} />
                               <span>Community</span>
                             </StyledTypes>
                           )}
-                      </>
-                    )}
-                </>
-              ) : tab === 'soon' ? (
-                <>
-                  {isLoading ? (
-                    <>
-                      <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
-                      &nbsp;
-                      <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
+                        </>
+                      )}
                     </>
-                  ) : (
-                      <>
-                        <StyledTypes type="soon">
-                          <span>Soon</span>
-                        </StyledTypes>
-                        {item.proposalType === 1 ? (
-                          <StyledTypes type="core" className="ml-2 flex">
-                            <img src={coreIcon} alt="coreIcon" width={16} />
+                  ) : tab === 'soon' ? (
+                    <>
+                      {isLoading ? (
+                        <>
+                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
                           &nbsp;
-                            <span>Core</span>
+                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
+                        </>
+                      ) : (
+                        <>
+                          <StyledTypes type="soon">
+                            <span>Soon</span>
                           </StyledTypes>
-                        ) : (
+                          {item.proposalType === 1 ? (
+                            <StyledTypes type="core" className="ml-2 flex">
+                              <img src={coreIcon} alt="coreIcon" width={16} />
+                              &nbsp;
+                              <span>Core</span>
+                            </StyledTypes>
+                          ) : (
                             <StyledTypes type="community" className="ml-2 flex">
                               <img src={communityIcon} alt="communityIcon" width={32} />
                               <span>Community</span>
                             </StyledTypes>
                           )}
-                      </>
-                    )}
-                </>
-              ) : (
+                        </>
+                      )}
+                    </>
+                  ) : (
                     tab === 'closed' && (
                       <>
                         {isLoading ? (
                           <>
                             <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
-                        &nbsp;
-                        <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
+                            &nbsp;
+                            <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
                           </>
                         ) : (
-                            <>
-                              <StyledTypes type="closed">
-                                <span>Closed</span>
+                          <>
+                            <StyledTypes type="closed">
+                              <span>Closed</span>
+                            </StyledTypes>
+                            {item.proposalType === 1 ? (
+                              <StyledTypes type="core" className="ml-2 flex">
+                                <img src={coreIcon} alt="coreIcon" width={16} />
+                                &nbsp;
+                                <span>Core</span>
                               </StyledTypes>
-                              {item.proposalType === 1 ? (
-                                <StyledTypes type="core" className="ml-2 flex">
-                                  <img src={coreIcon} alt="coreIcon" width={16} />
-                            &nbsp;
-                                  <span>Core</span>
-                                </StyledTypes>
-                              ) : (
-                                  <StyledTypes type="community" className="ml-2 flex">
-                                    <img src={communityIcon} alt="communityIcon" width={32} />
-                                    <span>Community</span>
-                                  </StyledTypes>
-                                )}
-                            </>
-                          )}
+                            ) : (
+                              <StyledTypes type="community" className="ml-2 flex">
+                                <img src={communityIcon} alt="communityIcon" width={32} />
+                                <span>Community</span>
+                              </StyledTypes>
+                            )}
+                          </>
+                        )}
                       </>
                     )
                   )}
-              &nbsp;
-            </div>
-          </div>
-          <Styled as={Link} to={`/voting/detail/${item.ipfsHash}`}>
-            <Image src={nextIcon} width={28} height={28} />
-          </Styled>
-        </CardTopicList>
-      ))}
-      </>
-      )
-      :(
+                  &nbsp;
+                </div>
+              </div>
+              <Styled as={Link} to={`/voting/detail/${item.ipfsHash}`}>
+                <Image src={nextIcon} width={28} height={28} />
+              </Styled>
+            </CardTopicList>
+          ))}
+        </>
+      ) : (
         <CardNotFound>
-          <Text bold fontSize="20px">No proposals found</Text>
-        </CardNotFound>    
-      )
-      }
+          <Text bold fontSize="20px">
+            No proposals found
+          </Text>
+        </CardNotFound>
+      )}
     </>
   )
 }
@@ -269,8 +269,8 @@ const TopicList = ({ isActive }) => {
       ) : isActive === 'soon' ? (
         <TabInfos tab="soon" />
       ) : (
-            <TabInfos tab="closed" />
-          )}
+        <TabInfos tab="closed" />
+      )}
     </>
   )
 }

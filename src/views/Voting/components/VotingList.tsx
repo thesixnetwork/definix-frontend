@@ -122,57 +122,56 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
             <EmptyData text={empText} />
           </>
         ) : (
-              <TBody>
-                {/* {console.log('rows',rows)} */}
-                {rows !== null &&
-                  rows.map((r) => (
-                    <TR key={`tsc-${r.block_number}`}>
-                      <TD>
-                        {account && (
-                          <div className="flex align-center">
-                            <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" >
-                              {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
-
-                            </Text>
-                            <LinkView
-                              as="a"
-                              href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`}
-                              target="_blank"
-                            >
-                              <ExternalLink size={16} color="#30ADFF" />
-                            </LinkView>
-                          </div>
-                        )}
-                      </TD>
-                      <TD>
-                        <Text color="text" bold>
-                          Yes, agree with you.
-                    </Text>
-                      </TD>
-                      <TD>
-                        <div className="flex align-center">
-                          <Text color="text" bold paddingRight="8px">
-                            23,143
-                      </Text>
+          <TBody>
+            {/* {console.log('rows',rows)} */}
+            {rows !== null &&
+              rows.map((r) => (
+                <TR key={`tsc-${r.block_number}`}>
+                  <TD>
+                    {account && (
+                      <div className="flex align-center">
+                        <Text fontSize="16px" bold lineHeight="1" color="#30ADFF">
+                          {`${account.substring(0, 6)}...${account.substring(account.length - 4)}`}
+                        </Text>
+                        <LinkView
+                          as="a"
+                          href={`${process.env.REACT_APP_KLAYTN_URL}/account/${account}`}
+                          target="_blank"
+                        >
                           <ExternalLink size={16} color="#30ADFF" />
-                        </div>
-                      </TD>
-                    </TR>
-                  ))}
-                <TR>
-                  <TD className="text-right">
-                    <PaginationCustom
-                      page={currentPage}
-                      count={pages}
-                      onChange={onPageChange}
-                      size="small"
-                      hidePrevButton
-                      hideNextButton
-                    />
+                        </LinkView>
+                      </div>
+                    )}
+                  </TD>
+                  <TD>
+                    <Text color="text" bold>
+                      Yes, agree with you.
+                    </Text>
+                  </TD>
+                  <TD>
+                    <div className="flex align-center">
+                      <Text color="text" bold paddingRight="8px">
+                        23,143
+                      </Text>
+                      <ExternalLink size={16} color="#30ADFF" />
+                    </div>
                   </TD>
                 </TR>
-              </TBody>
-            )}
+              ))}
+            <TR>
+              <TD className="text-right">
+                <PaginationCustom
+                  page={currentPage}
+                  count={pages}
+                  onChange={onPageChange}
+                  size="small"
+                  hidePrevButton
+                  hideNextButton
+                />
+              </TD>
+            </TR>
+          </TBody>
+        )}
       </Table>
     </CardTable>
   )

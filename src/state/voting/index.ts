@@ -68,7 +68,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
         ipfsHash: item.ipfsHash,
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
         proposalType: item.proposalType,
-        proposer: item.proposer
+        proposer: item.proposer,
       })
 
       return dataArray

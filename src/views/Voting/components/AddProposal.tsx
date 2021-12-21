@@ -28,7 +28,6 @@ const SuccessOptions = {
   animationData: success,
 }
 
-
 const LoadingOptions = {
   loop: true,
   autoplay: true,
@@ -266,21 +265,21 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     )
   }
 
-  console.log('isLoading ==',isLoading)
+  console.log('isLoading ==', isLoading)
   return (
     <>
       <div>
         {!isLoading ? (
-            <div style={{ position: 'absolute' }}>
-              <CardLoading />
-            </div>
-          ) : (
-            <div style={{ position: 'absolute' }}>
-              <CardResponse />
-            </div>
-          )}
+          <div style={{ position: 'absolute' }}>
+            <CardLoading />
+          </div>
+        ) : (
+          <div style={{ position: 'absolute' }}>
+            <CardResponse />
+          </div>
+        )}
       </div>
-      
+
       <form onSubmit={handleSubmit}>
         <div className={`flex align-center mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
