@@ -78,7 +78,7 @@ const Table = styled.table`
 `
 
 const TR = styled.tr`
- border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const TD = styled.td<{ align?: string }>`
