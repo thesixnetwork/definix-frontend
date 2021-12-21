@@ -42,10 +42,10 @@ const LongTermStake: React.FC = () => {
       <Box maxWidth={`${isMobile ? '100%' : '630px'}`} mx="auto" my={`${isMobile ? 'S_32' : 'S_28'}`}>
         <TitleStake />
         {/* <Wrap> */}
-        <CardTotalStake isMobile={isMobile} />
         <CardFinixStake isMobile={isMobile} />
         {!!account && <CardTotalEarn isMobile={isMobile} />}
         {!!account && <CardStakeList isMobile={isMobile} />}
+        <CardTotalStake isMobile={isMobile} />
         {/* <Working p="S_32" flexDirection="column" alignItems="center">
             <img alt="" width={236} src={repairImgX3} />
             <Text textStyle="R_16M" mb="S_16" mt="30px">
