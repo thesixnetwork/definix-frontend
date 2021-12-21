@@ -59,7 +59,9 @@ const StyledTypes = styled.div<{ type: string }>`
 `
 
 const VotingDescription = ({ id, index }) => {
-  console.log('index ...', index)
+  const voteNow = index.startEpoch < Date.now() && index.endEpoch > Date.now()
+  const soon = index.startEpoch > Date.now() && index.endEpoch > Date.now()
+  const closed = index.startEpoch < Date.now() && index.endEpoch < Date.now()
 
   return (
     <>
@@ -80,7 +82,9 @@ const VotingDescription = ({ id, index }) => {
             </Text>
           </Button>
           <div className="flex align-center">
-            <SpecialOutline color="primary">Vote Now</SpecialOutline>
+            {voteNow && <StyledTypes type="vote">Vote Now</StyledTypes>}
+            {soon && <StyledTypes type="soon">Soon</StyledTypes>}
+            {closed && <StyledTypes type="closed">Closed</StyledTypes>}
             &nbsp;
             {index.proposals_type === 'core' ? (
               <StyledTypes type="core">

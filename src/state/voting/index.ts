@@ -16,6 +16,7 @@ const initialState = {
   allProposal: [],
   indexProposal: [],
   proposals: {},
+  allProposalMap: [],
 }
 
 export const votingSlice = createSlice({
@@ -23,8 +24,9 @@ export const votingSlice = createSlice({
   initialState,
   reducers: {
     setAllProposal: (state, action) => {
-      const { allProposal } = action.payload
+      const { allProposal, allProposalMap } = action.payload
       state.allProposal = allProposal
+      state.allProposalMap = allProposalMap
     },
     setProposalIndex: (state, action) => {
       const { indexProposal } = action.payload
@@ -42,6 +44,7 @@ export const { setAllProposal, setProposalIndex, setProposal } = votingSlice.act
 
 const getAllProposalOfType = async ({ vFinixVoting }) => {
   let allProposal = []
+  let allProposalMap = []
   try {
     const calls = [
       {
@@ -85,11 +88,35 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
 
       return dataArray
     })
+
+    await Promise.all(
+      dataArray.map(async (data) => {
+        const response = await axios.get(`${voteAPI}/${data.ipfsHash}`)
+        proposalArray.push({
+          ipfsHash: data.ipfsHash,
+          endTimestamp: data.endTimestamp,
+          proposalType: data.proposalType,
+          proposer: data.proposer,
+          proposalIndex: data.proposalIndex,
+          choice_type: response.data.choice_type,
+          choices: response.data.choices,
+          content: response.data.content,
+          creator: response.data.creator,
+          proposals_type: response.data.proposals_type,
+          start_unixtimestamp: response.data.start_unixtimestamp,
+          end_unixtimestamp: response.data.end_unixtimestamp,
+          title: response.data.title,
+        })
+      }),
+    )
+
     allProposal = dataArray
+    allProposalMap = proposalArray
   } catch (error) {
     allProposal = []
+    allProposalMap = []
   }
-  return [allProposal]
+  return [allProposal, allProposalMap]
 }
 
 export const fetchAllProposalOfType = () => async (dispatch) => {
@@ -99,8 +126,8 @@ export const fetchAllProposalOfType = () => async (dispatch) => {
       vFinixVoting: getVFinixVoting(),
     }),
   )
-  const [[allProposal]] = await Promise.all(fetchPromise)
-  dispatch(setAllProposal({ allProposal }))
+  const [[allProposal, allProposalMap]] = await Promise.all(fetchPromise)
+  dispatch(setAllProposal({ allProposal, allProposalMap }))
 }
 
 const getProposalByIndex = async ({ vFinixVoting, index }) => {
@@ -184,6 +211,8 @@ const getProposal = async ({ id }) => {
             proposals_type: resp.data.proposals_type,
             start_unixtimestamp: moment(startTime).format(`DD-MMM-YY HH:mm:ss`),
             end_unixtimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
+            startEpoch: resp.data.start_unixtimestamp * 1000,
+            endEpoch: resp.data.end_unixtimestamp * 1000,
             title: resp.data.title,
           })
         }

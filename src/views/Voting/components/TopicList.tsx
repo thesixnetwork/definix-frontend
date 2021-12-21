@@ -80,54 +80,57 @@ const TextHorizontal = styled.div`
 
 const TabInfos = ({ tab }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const allProposal = useAllProposalOfType()
-  const listAllProposal = _.get(allProposal, 'allProposal')
-  const [array, setArray] = useState([])
-  const { fastRefresh } = useRefresh()
+  const allProposalMap = useAllProposalOfType()
+  const listAllProposal = _.get(allProposalMap, 'allProposalMap')
+  const [arrayMap, setArrayMap] = useState([])
 
   useEffect(() => {
-    const fetchData = async () => {
-      const dataArray = []
-      const voteAPI = process.env.REACT_APP_IPFS
-      listAllProposal.map(async (data) => {
-        await axios
-          .get(`${voteAPI}/${data.ipfsHash}`)
-          .then((resp) => {
-            if (resp.status === 200) {
-              dataArray.push({
-                ipfsHash: data.ipfsHash,
-                endTimestamp: data.endTimestamp,
-                proposalType: data.proposalType,
-                proposer: data.proposer,
-                proposalIndex: data.proposalIndex,
-                choice_type: resp.data.choice_type,
-                choices: resp.data.choices,
-                content: resp.data.content,
-                creator: resp.data.creator,
-                proposals_type: resp.data.proposals_type,
-                start_unixtimestamp: resp.data.start_unixtimestamp,
-                end_unixtimestamp: resp.data.end_unixtimestamp,
-                title: resp.data.title,
-              })
-            }
-          })
-          .catch((e) => {
-            console.log('error', e)
-          })
+    if (tab === 'vote') {
+      const votes = listAllProposal.filter((item) => {
+        return (
+          Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+        )
       })
-      setArray(dataArray)
+      setArrayMap(votes)
+      setIsLoading(false)
+    }
+    if (tab === 'soon') {
+      const votes = listAllProposal.filter((item) => {
+        return (
+          Number(_.get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
+          Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+        )
+      })
+      setArrayMap(votes)
+      setIsLoading(false)
+    }
+    if (tab === 'closed') {
+      const votes = listAllProposal.filter((item) => {
+        return (
+          Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+          Number(_.get(item, 'end_unixtimestamp')) * 1000 < Date.now()
+        )
+      })
+      setArrayMap(votes)
+      setIsLoading(false)
     }
 
-    fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fastRefresh])
+  }, [tab, listAllProposal])
 
   return (
     <>
-      {array.length > 0 ? (
+      {arrayMap.length <= 0 ? (
+        <CardNotFound>
+          <Text bold fontSize="20px">
+            No proposals found
+          </Text>
+        </CardNotFound>
+      ) : (
         <>
-          {array.map((item) => (
-            <CardTopicList as={Link} to={`/voting/detail/${item.ipfsHash}/${item.proposalIndex}`}>
+          {arrayMap.map((item) => (
+            <CardTopicList as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}/${_.get(item, 'proposalIndex')}`}>
               <div>
                 <Heading fontSize="18px !important">
                   {isLoading ? (
@@ -147,7 +150,7 @@ const TabInfos = ({ tab }) => {
                     <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
                   ) : (
                     <Text fontSize="14px !important" bold lineHeight="1" mr="6px">
-                      {item.endTimestamp} {item.endTimestamp !== '-' && 'GMT+9'}
+                      {_.get(item, 'endTimestamp')} {_.get(item, 'endTimestamp') !== '-' && 'GMT+9'}
                     </Text>
                   )}
                 </TextHorizontal>
@@ -165,7 +168,7 @@ const TabInfos = ({ tab }) => {
                           <StyledTypes type="vote">
                             <span>Vote Now</span>
                           </StyledTypes>
-                          {item.proposalType === 0 ? (
+                          {_.get(item, 'proposalType') === 0 ? (
                             <StyledTypes type="core" className="ml-2 flex">
                               <img src={coreIcon} alt="coreIcon" width={16} />
                               &nbsp;
@@ -193,7 +196,7 @@ const TabInfos = ({ tab }) => {
                           <StyledTypes type="soon">
                             <span>Soon</span>
                           </StyledTypes>
-                          {item.proposalType === 1 ? (
+                          {_.get(item, 'proposalType') === 0 ? (
                             <StyledTypes type="core" className="ml-2 flex">
                               <img src={coreIcon} alt="coreIcon" width={16} />
                               &nbsp;
@@ -222,7 +225,7 @@ const TabInfos = ({ tab }) => {
                             <StyledTypes type="closed">
                               <span>Closed</span>
                             </StyledTypes>
-                            {item.proposalType === 1 ? (
+                            {_.get(item, 'proposalType') === 0 ? (
                               <StyledTypes type="core" className="ml-2 flex">
                                 <img src={coreIcon} alt="coreIcon" width={16} />
                                 &nbsp;
@@ -242,18 +245,12 @@ const TabInfos = ({ tab }) => {
                   &nbsp;
                 </div>
               </div>
-              <Styled as={Link} to={`/voting/detail/${item.ipfsHash}`}>
+              <Styled as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}`}>
                 <Image src={nextIcon} width={28} height={28} />
               </Styled>
             </CardTopicList>
           ))}
         </>
-      ) : (
-        <CardNotFound>
-          <Text bold fontSize="20px">
-            No proposals found
-          </Text>
-        </CardNotFound>
       )}
     </>
   )

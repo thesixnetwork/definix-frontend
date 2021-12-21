@@ -49,12 +49,13 @@ export const useAllProposalOfType = () => {
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
   const allProposal = useSelector((state: State) => state.voting.allProposal)
+  const allProposalMap = useSelector((state: State) => state.voting.allProposalMap)
 
   useEffect(() => {
     dispatch(fetchAllProposalOfType())
   }, [fastRefresh, dispatch])
 
-  return { allProposal }
+  return { allProposal, allProposalMap }
 }
 
 export const useAllProposalOfAddress = () => {
