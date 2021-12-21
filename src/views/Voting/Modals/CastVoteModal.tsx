@@ -46,9 +46,11 @@ const SuccessOptions = {
 
 interface Props {
   onDismiss?: () => void
+  types?: any
   select?: any
   proposalIndex?: any
   allChoices?: any
+  singleType?: any
 }
 
 const Balance = styled.div`
@@ -134,7 +136,14 @@ const ExpandMore = styled((props) => {
   },
 }))
 
-const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null, select, proposalIndex, allChoices }) => {
+const CastVoteModal: React.FC<Props> = ({
+  onDismiss = () => null,
+  types,
+  select,
+  singleType,
+  proposalIndex,
+  allChoices,
+}) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const availableVotes = useAvailableVotes()
   const { balancevfinix } = usePrivateData()
@@ -192,6 +201,8 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null, select, propos
     return _.get(i, 'checked') === true
   })
 
+  const mapChoice = types === 'single' ? singleType : filter
+
   const handleApprove = useCallback(async () => {
     try {
       const txHash = await onApprove()
@@ -224,15 +235,27 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null, select, propos
 
   const enforcer = (nextUserInput: string, e, i, data) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
-      setSelect({
-        ...select,
-        [i]: {
-          checked: e.target.checked,
-          id: data.id,
-          value: data.value,
-          vote: new BigNumber(Number(nextUserInput.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed(),
-        },
-      })
+      if (types === 'multiple') {
+        setSelect([
+          {
+            checked: e.target.checked,
+            id: data.id,
+            value: data.value,
+            vote: new BigNumber(Number(nextUserInput.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed(),
+          },
+        ])
+      } else {
+        setSelect({
+          ...select,
+          [i]: {
+            checked: e.target.checked,
+            id: data.id,
+            value: data.value,
+            vote: new BigNumber(Number(nextUserInput.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed(),
+          },
+        })
+      }
+
       setValue(nextUserInput)
       setAmount(new BigNumber(Number(value.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed())
     }
@@ -288,7 +311,7 @@ const CastVoteModal: React.FC<Props> = ({ onDismiss = () => null, select, propos
                 </div>
               </BoxDetails>
             </Collapse>
-            {filter.map((v, index) => (
+            {mapChoice.map((v, index) => (
               <>
                 <div className="mt-3">
                   <Text color="textSubtle">Voting for</Text>

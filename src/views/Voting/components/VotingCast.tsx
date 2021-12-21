@@ -87,17 +87,17 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
-// function MyFormControlLabel(props) {
-//   const radioGroup = useRadioGroup()
+function MyFormControlLabel(props) {
+  const radioGroup = useRadioGroup()
 
-//   let checked = false
+  let checked = false
 
-//   if (radioGroup) {
-//     checked = radioGroup.value === props.value
-//   }
+  if (radioGroup) {
+    checked = radioGroup.value === props.value
+  }
 
-//   return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />
-// }
+  return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />
+}
 
 const VotingCast = ({ id, indexs, proposalIndex }) => {
   // const { isDark } = useTheme()
@@ -105,7 +105,9 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
   // const isMobile = !isXl && !isLg
   const availableVotes = useAvailableVotes()
   const [select, setSelect] = useState({})
+  const [singleType, setSingleType] = useState({})
   const choices = indexs.choices
+  const choiceType = indexs.choice_type
   const filterChoies = useMemo(() => {
     return choices
   }, [choices])
@@ -123,8 +125,24 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
     return set
   }, [choices])
   const [onPresentConnectModal] = useModal(
-    <CastVoteModal select={select} proposalIndex={proposalIndex} allChoices={allChoices} />,
+    <CastVoteModal
+      types={choiceType}
+      select={select}
+      singleType={singleType}
+      proposalIndex={proposalIndex}
+      allChoices={allChoices}
+    />,
   )
+
+  const handleRadioButton = (event, index, value) => {
+    setSingleType([
+      {
+        id: index,
+        value,
+      },
+    ])
+    setSelect(event.target.value)
+  }
 
   return (
     <>
@@ -135,7 +153,26 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
           </Text>
         </div>
         <div className="ma-3">
-          {choices &&
+          {choiceType === 'single' ? (
+            <>
+              {choices &&
+                Object.values(choices).map((c, index) => (
+                  <RadioGroup
+                    name="use-radio-group"
+                    value={select}
+                    onChange={(event, i) => handleRadioButton(event, index, c)}
+                  >
+                    <CardList checked={_.get(select, `${index}.value`)}>
+                      <MyFormControlLabel value={c} label="" control={<Radio />} />
+                      <Text fontSize="15px" bold>
+                        {c}
+                      </Text>
+                    </CardList>
+                  </RadioGroup>
+                ))}
+            </>
+          ) : (
+            choices &&
             Object.values(choices).map((c, index) => (
               <CardList checked={_.get(select, `${index}.checked`)}>
                 <FormControlLabelCustom
@@ -162,7 +199,8 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                   {c}
                 </Text>
               </CardList>
-            ))}
+            ))
+          )}
           <Button
             variant="success"
             radii="small"

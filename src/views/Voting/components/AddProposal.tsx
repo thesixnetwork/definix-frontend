@@ -146,6 +146,9 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [choiceType, setChoiceType] = useState('single')
   const { name, body, choices, startDate, startTime, endDate, endTime, ipfs } = state
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
+  const filterChoices = choices.map((choice) => {
+    return choice.value
+  })
   const { onPropose } = usePropose(
     ipfs,
     0,
@@ -153,7 +156,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     combineDateAndTime(endDate, endTime),
     choices.length,
     0,
-    1,
+    choiceType === 'single' ? 1 : filterChoices.length,
   )
 
   const updateValue = (key: string, value: string | Choice[] | Date) => {
@@ -190,10 +193,6 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const handleChoiceChange = (newChoices: Choice[]) => {
     updateValue('choices', newChoices)
   }
-
-  const filterChoices = choices.map((choice) => {
-    return choice.value
-  })
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
@@ -265,7 +264,6 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     )
   }
 
-  console.log('isLoading ==', isLoading)
   return (
     <>
       <div>
