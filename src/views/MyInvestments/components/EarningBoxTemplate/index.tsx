@@ -132,6 +132,7 @@ const TotalPriceText = styled(CurrencyText)<{ curTheme: any }>`
     margin-top: 4px;
     ${({ theme }) => theme.textStyle.R_14M};
   }
+  opacity: 0.8;
 `
 const SlideSection = styled(Box)`
   height: 112px;
@@ -217,7 +218,12 @@ const EarningBoxTemplate: React.FC<{
               height={isMobile ? '24px' : '44px'}
               viewBox="0 0 44 44"
             />
-            <Text textStyle={`R_${isMobile ? '14' : '18'}M`} color={curTheme.totalTitleColor} ml={isMobile ? 8 : 4}>
+            <Text
+              textStyle={`R_${isMobile ? '14' : '18'}M`}
+              color={curTheme.totalTitleColor}
+              style={{ opacity: '0.7' }}
+              ml={isMobile ? 8 : 4}
+            >
               {total.title}
             </Text>
           </Flex>
