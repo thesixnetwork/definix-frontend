@@ -5,10 +5,21 @@ import _ from 'lodash'
 import { Card, Heading, Text, Button } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
+import axios from 'axios'
+import BigNumber from 'bignumber.js'
 import CardProposals from './CardProposals'
-import { useAllProposalOfType, getIsParticipated, getVotingPowersOfAddress,useIsProposable } from '../../../hooks/useVoting'
+import {
+  useAllProposalOfType,
+  getIsParticipated,
+  getVotingPowersOfAddress,
+  useIsProposable,
+} from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
 import { Voting } from '../../../state/types'
+
+// import { useIsProposable } from '../../../hooks/useVoting'
+// import CardProposals from './CardProposals'
+// import VotingPartProposal from './VotingPartProposal'
 
 const BannerVoting = styled(Card)`
   width: 100%;
@@ -103,27 +114,41 @@ const CardVoting = () => {
   const [userProposals, setUserProposals] = useState([])
   useEffect(() => {
     const fetch = async () => {
-      console.log("listAllProposal",listAllProposal)
-      const anyObj: any[] = []
+      let userProposalsFilter: any[] = JSON.parse(JSON.stringify(listAllProposal))
       const isParticipateds = []
-      for (let i = 0; i < listAllProposal.length; i++) {
+      for (let i = 0; i < userProposalsFilter.length; i++) {
+        userProposalsFilter[i].choices = []
         // eslint-disable-next-line
-        isParticipateds.push(await getIsParticipated(listAllProposal[i].proposalIndex.toNumber()))
+        const [isParticipated] = await Promise.all([getIsParticipated(userProposalsFilter[i].proposalIndex)])
+        isParticipateds.push(isParticipated)
+        userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
       }
 
-      const listUserVoted = listAllProposal.filter((item, index) => isParticipateds[index])
-      console.log(isParticipateds)
-      for (let i = 0; i < listUserVoted.length; i++) {
-        const userVoted = listUserVoted[i]
-        console.log("bu")
-        console.log(i,"i",userVoted.optionsCount.toNumber())
-        // for (let j = 0; j < userVoted.optionsCount.toNumber(); j++) {
+      userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
+
+      for (let i = 0; i < userProposalsFilter.length; i++) {
+        // eslint-disable-next-line
+        const metaData = (await axios.get(`https://gateway.pinata.cloud/ipfs/${userProposalsFilter[i].ipfsHash}`)).data
+
+        userProposalsFilter[i].choices = []
+        userProposalsFilter[i].title = metaData.title
+        userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
+
+        for (let j = 0; j < userProposalsFilter[i].optionsCount; j++) {
           // eslint-disable-next-line
-          // const xxx = await getVotingPowersOfAddress(userVoted.proposalIndex.toNumber(), j, account)
-          // console.log(xxx)
-        // }
+          const votingPower = new BigNumber(
+            // eslint-disable-next-line
+            await getVotingPowersOfAddress(userProposalsFilter[i].proposalIndex, j, account),
+          )
+            .div(1e18)
+            .toNumber()
+          if (votingPower > 0) {
+            userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
+          }
+        }
       }
-      setUserProposals(listUserVoted)
+
+      setUserProposals(userProposalsFilter)
     }
     fetch()
   }, [listAllProposal, account])

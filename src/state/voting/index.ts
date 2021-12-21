@@ -79,6 +79,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
         proposalType: item.proposalType,
         proposer: item.proposer,
         proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')).toNumber(),
+        optionsCount: new BigNumber(_.get(item, 'optionsCount._hex')),
         optionVotingPower: item.optionVotingPower,
       })
 

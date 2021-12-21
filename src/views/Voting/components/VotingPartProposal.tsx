@@ -165,31 +165,47 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
                     <Text color="text" bold fontSize={isMobile ? '16px' : '20px'}>
-                      {'Proposal Topic Proposal Topic Proposal Topic Proposal'.substring(0, 38)}...
+                      {r.title.substring(0, 38)}...
                     </Text>
                     <div className={isMobile ? '' : 'flex align-center'}>
                       <Text color="text" paddingRight="8px">
                         End Date
                       </Text>
                       <Text color="text" bold>
-                        12-Nov-21 15:00:00 GMT+9
+                        {new Date(r.endDate).toLocaleString()}
+                        {/* 12-Nov-21 15:00:00 GMT+9 */}
                       </Text>
                     </div>
                   </TD>
+
                   <TD>
-                    <Text color="text" bold>
-                      Yes, agree with you.
-                    </Text>
+                    {r.choices.map((item) => (
+                      <TR>
+                        <TD>
+                          <Text color="text" bold>
+                            {item.choiceName}
+                            {/* Yes, agree with you. */}
+                          </Text>
+                        </TD>
+                      </TR>
+                    ))}
                   </TD>
                   <TD>
-                    <div className="flex align-center">
-                      <Text color="text" bold paddingRight="8px">
-                        23,143
-                      </Text>
-                    </div>
+                    {r.choices.map((item) => (
+                      <TR>
+                        <TD>
+                          <div className="flex align-center">
+                            <Text color="text" bold paddingRight="8px">
+                              {/* 23,143 */}
+                              {item.votePower}
+                            </Text>
+                          </div>
+                        </TD>
+                      </TR>
+                    ))}
                   </TD>
                   <TD>
-                    <BtnDetails as={Link} to="/voting/detail/participate">
+                    <BtnDetails as={Link} to={`/voting/detail/${r.ipfsHash}/${r.proposalIndex}`}>
                       Deatils
                     </BtnDetails>
                     {/* <BtnClaim as={Link} to={`/voting/detail/${item.ipfsHash`}>
@@ -213,14 +229,30 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
   const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const [transactions, setTransactions] = useState([
-    {
-      id: 1234,
-      address: '0x00000',
-      choise: 'Yes, agree with you.',
-      voting_power: '99,999',
-    },
-  ])
+  const [transactions, setTransactions] = useState(
+    userProposals.map((item) => {
+      return {
+        proposalIndex: item.proposalIndex,
+        ipfsHash: item.ipfsHash,
+        title: item.title,
+        address: item.proposer,
+        endDate: item.endDate,
+        choices: item.choices,
+        // voting_power: '999',
+      }
+    }),
+  )
+  // useEffect(() => {
+
+  // }, [])
+  // useState([
+  //   {
+  //     id: 1234,
+  //     address: '0x00000',
+  //     choise: 'Yes, agree with you.',
+  //     voting_power: '99,999',
+  //   },
+  // ])
 
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
@@ -231,14 +263,14 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
   const setDefault = (tab) => {
     setCurrentTab(tab)
     setCurrentPage(1)
-    setTransactions([
-      {
-        id: 1234,
-        address: '0x00000',
-        choise: 'Yes, agree with you.',
-        voting_power: '99,999',
-      },
-    ])
+    // setTransactions([
+    //   {
+    //     id: 1234,
+    //     address: '0x00000',
+    //     choise: 'Yes, agree with you.',
+    //     voting_power: '99,999',
+    //   },
+    // ])
     setTotal(0)
   }
 
