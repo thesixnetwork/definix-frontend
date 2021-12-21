@@ -21,7 +21,7 @@ interface InnerTheme {
   itemCurrencyColor: ColorStyles | string
   borderColor: ColorStyles
   bottomBg: ColorStyles | string
-  slideDotColor: ColorStyles
+  slideDotColor: ColorStyles | string
   slideDotActiveColor: ColorStyles
   harvestButtonBg: ColorStyles | string
   harvestButtonColor: string
@@ -51,7 +51,7 @@ const THEME: { [key: string]: InnerTheme } = {
     itemCurrencyColor: 'white80',
     borderColor: ColorStyles.BROWN,
     bottomBg: 'black20',
-    slideDotColor: ColorStyles.BROWN,
+    slideDotColor: '#5e515f',
     slideDotActiveColor: ColorStyles.WHITE,
     harvestButtonBg: 'brown30',
     harvestButtonColor: 'rgba(255, 255, 255, 0.1)',
