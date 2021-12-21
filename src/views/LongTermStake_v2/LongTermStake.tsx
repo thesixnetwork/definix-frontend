@@ -39,7 +39,12 @@ const LongTermStake: React.FC = () => {
 
   return (
     <>
-      <Box maxWidth={`${isMobile ? '100%' : '630px'}`} mx="auto" my={`${isMobile ? 'S_32' : 'S_28'}`}>
+      <Box
+        maxWidth={`${isMobile ? '100%' : '630px'}`}
+        mx="auto"
+        mt={`${isMobile ? 'S_32' : 'S_28'}`}
+        mb={`${isMobile ? 'S_40' : 'S_80'}`}
+      >
         <TitleStake />
         {/* <Wrap> */}
         <CardFinixStake isMobile={isMobile} />
