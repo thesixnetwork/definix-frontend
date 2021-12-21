@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, useModal, ImgTokenFinixIcon, AlertIcon, Divider } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Button, useModal, AlertIcon } from '@fingerlabs/definixswap-uikit-v2'
 import { useApprove } from 'hooks/useLongTermStake'
 import * as klipProvider from 'hooks/klipProvider'
 import { useToast } from 'state/hooks'
@@ -27,23 +27,7 @@ const FlexApprove = styled(Flex)`
   width: 100%;
 `
 
-const FlexApprroveBtn = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 32px;
-  margin-bottom: 28px;
-
-  ${({ theme }) => theme.mediaQueries.mobile} {
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 24px;
-    margin-bottom: 32px;
-  }
-`
-
 const ApproveFinix: React.FC<ApproveFinixProps> = ({
-  isMobile,
   hasAccount,
   isApproved,
   inputBalance,
@@ -83,53 +67,36 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   return (
     <>
       <FlexApprove>
-        {!isApproved && transactionHash === '' && (
-          <>
-            <Divider width="100%" backgroundColor="lightGrey50" />
-            <FlexApprroveBtn>
-              <Flex mb={`${isMobile && 'S_8'}`} alignItems="center">
-                <ImgTokenFinixIcon viewBox="0 0 48 48" width="32px" height="32px" />
-                <Text ml={`${isMobile ? 'S_10' : 'S_12'}`} textStyle="R_16M" color="mediumgrey">
-                  {t('FINIX')}
+        {!isApproved && transactionHash === '' ? (
+          <Button height="48px" mb="S_12" variant="brown" isLoading={isLoadingApprove} onClick={handleApprove}>
+            {t('Approve {{Token}}', { Token: t('FINIX') })}
+          </Button>
+        ) : (
+          <Flex flexDirection="column">
+            {hasAccount ? (
+              <Button
+                height="48px"
+                mb="S_12"
+                disabled={(!isApproved && transactionHash === '') || isError}
+                onClick={onPresentStakeModal}
+              >
+                {t('Stake')}
+              </Button>
+            ) : (
+              <UnlockButton />
+            )}
+            {hasAccount && error && (
+              <Flex alignItems="flex-start">
+                <Flex mt="S_2">
+                  <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+                </Flex>
+                <Text ml="S_4" textStyle="R_14R" color="red">
+                  {error}
                 </Text>
               </Flex>
-              {hasAccount && (
-                <Button
-                  width={`${isMobile ? '100%' : '186px'}`}
-                  variant="brown"
-                  isLoading={isLoadingApprove}
-                  onClick={handleApprove}
-                >
-                  {t('Approve {{Token}}', { Token: t('FINIX') })}
-                </Button>
-              )}
-            </FlexApprroveBtn>
-          </>
+            )}
+          </Flex>
         )}
-        <Flex flexDirection="column">
-          {hasAccount ? (
-            <Button
-              height="48px"
-              mb="S_12"
-              disabled={(!isApproved && transactionHash === '') || isError}
-              onClick={onPresentStakeModal}
-            >
-              {t('Stake')}
-            </Button>
-          ) : (
-            <UnlockButton />
-          )}
-          {hasAccount && error && (
-            <Flex alignItems="flex-start">
-              <Flex mt="S_2">
-                <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
-              </Flex>
-              <Text ml="S_4" textStyle="R_14R" color="red">
-                {error}
-              </Text>
-            </Flex>
-          )}
-        </Flex>
       </FlexApprove>
     </>
   )
