@@ -61,7 +61,7 @@ const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
               <VotingDetails id={id} index={proposal && proposal.proposal} />
-              <VotingResults getByIndex={getByIndex}/>
+              <VotingResults getByIndex={getByIndex} />
               <VotingPower />
             </div>
           </div>
