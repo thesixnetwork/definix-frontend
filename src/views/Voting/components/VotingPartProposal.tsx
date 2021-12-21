@@ -17,7 +17,7 @@ import { getVFinixVoting } from '../../../utils/addressHelpers'
 import { Voting } from '../../../state/types'
 import PaginationCustom from './Pagination'
 import IVotingFacet from '../../../config/abi/IVotingFacet.json'
-import { useAllProposalOfType, getIsParticipated } from '../../../hooks/useVoting'
+import { useAllProposalOfType ,useClaimVote} from '../../../hooks/useVoting'
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -98,6 +98,17 @@ const BtnDetails = styled(Button)`
   color: #ffffff;
 `
 
+const BtnClaim = styled(Button)`
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+  font-style: italic;
+  font-weight: normal;
+  background-color: ${({ theme }) => theme.colors.harvest};
+  color: #ffffff;
+`
+
 // const BtnClaim = styled(Button)`
 //   padding: 10px 20px;
 //   border-radius: 8px;
@@ -111,6 +122,7 @@ const BtnDetails = styled(Button)`
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
   const allProposal = useAllProposalOfType()
+  const {callClaimVote} = useClaimVote()
   // const {account} = useWallet()
   // const listAllProposal = _.get(allProposal, 'allProposal')
 
@@ -205,12 +217,17 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                     ))}
                   </TD>
                   <TD>
-                    <BtnDetails as={Link} to={`/voting/detail/${r.ipfsHash}/${r.proposalIndex}`}>
-                      Deatils
-                    </BtnDetails>
-                    {/* <BtnClaim as={Link} to={`/voting/detail/${item.ipfsHash`}>
-                      Claim Voting Power
-                    </BtnClaim> */}
+
+                    {Date.now() < +r.endDate ? (
+                      <BtnDetails as={Link} to={`/voting/detail/${r.ipfsHash}/${r.proposalIndex}`}>
+                        Deatils
+                      </BtnDetails>
+                    ) : (
+                      <BtnClaim onClick={()=>{callClaimVote(r.proposalIndex)}}>
+                        Claim Voting Power
+                      </BtnClaim> 
+                    )}
+                    
                   </TD>
                 </TR>
               ))}
@@ -301,20 +318,20 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
             //   ? 'Don`t have any transactions in this votes.'
             //   : 'You haven`t made any transactions in this votes.'
           }
-          total
+                    total
         />
-        <PaginationCustom
-          page={currentPage}
-          count={pages}
-          size="small"
-          hidePrevButton
-          hideNextButton
-          className="px-4 py-2"
-          onChange={onPageChange}
-        />
-      </CardTable>
-    </>
-  )
+                    <PaginationCustom
+                      page={currentPage}
+                      count={pages}
+                      size="small"
+                      hidePrevButton
+                      hideNextButton
+                      className="px-4 py-2"
+                      onChange={onPageChange}
+                    />
+                  </CardTable>
+                </>
+              )
 }
 
-export default VotingPartProposal
+            export default VotingPartProposal
