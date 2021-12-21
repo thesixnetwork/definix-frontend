@@ -312,4 +312,48 @@ export const useVote = (proposalIndex, votingPowers) => {
   return { onCastVote: callCastVote, serviceKey }
 }
 
+// Claim vote
+export const useClaimVote = () => {
+  const { account, connector } = useWallet()
+  const { setShowModal } = useContext(KlipModalContext())
+  const [serviceKey, setServiceKey] = useState('')
+
+  const callClaimVote = async (proposalIndex) => {
+    // console.log('proposalIndex2', votingPowers)
+    // setServiceKey(service)
+    // if (connector === 'klip') {
+    //   klipProvider.genQRcodeContactInteract(
+    //     getVFinixVoting(),
+    //     JSON.stringify(getAbiVaultFacetByName('unlock')),
+    //     JSON.stringify([
+    //       ipfsHash,
+    //       proposalType,
+    //       startTimestamp,
+    //       endTimestamp,
+    //       optionsCount,
+    //       minimumVotingPower,
+    //       voteLimit,
+    //     ]),
+    //     setShowModal,
+    //   )
+    //   await klipProvider.checkResponse()
+    //   setShowModal(false)
+    //   return new Promise((resolve, reject) => {
+    //     resolve('')
+    //   })
+    // }
+
+    const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
+    return new Promise((resolve, reject) => {
+      callContract.methods
+        .recallVotesFromProposal(proposalIndex)
+        .send({ from: account, gas: 5000000 })
+        .then(resolve)
+        .catch(reject)
+    })
+  }
+
+  return { callClaimVote }
+}
+
 export default useAvailableVotes
