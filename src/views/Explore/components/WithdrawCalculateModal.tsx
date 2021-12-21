@@ -131,7 +131,7 @@ const WithdrawCalculateModal = ({
         <Text color="text" textStyle="R_16M" mt="S_40" mb="S_12">
           {t('Withdrawal Amount')}
         </Text>
-        <Box p="S_24" pt="S_12" className="bd" borderRadius="8px" width="100%">
+        <Box p="S_24" pt="S_12" className="bd" borderRadius="8px" width="438px" maxWidth="100%">
           {tokenList.map((c) => (
             <InlineAssetRatioLabel small key={c.symbol} coin={c} column={isMobile} />
           ))}

@@ -151,7 +151,7 @@ const CalculateModal = ({
         <Text color="text" textStyle="R_16M" mt="S_40" mb="S_12">
           {t('Invest Asset Ratio')}
         </Text>
-        <Box p="S_24" pt="S_12" className="bd" borderRadius="8px" width="100%">
+        <Box p="S_24" pt="S_12" className="bd" borderRadius="8px" width="438px" maxWidth="100%">
           <VerticalAssetRatio className="pb-s12 mb-s20 bd-b" rebalance={rebalance} poolAmounts={poolAmounts} />
           <Flex color="text" alignItems="center" justifyContent="flex-end" className="mb-s16">
             <Text textStyle="R_16M" className="flex-auto">
