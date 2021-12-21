@@ -62,7 +62,9 @@ export const useProposalIndex = (index) => {
   const indexProposal = useSelector((state: State) => state.voting.indexProposal)
 
   useEffect(() => {
-    dispatch(fetchProposalIndex(index))
+    if (index) {
+      dispatch(fetchProposalIndex(index))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slowRefresh, dispatch])
 

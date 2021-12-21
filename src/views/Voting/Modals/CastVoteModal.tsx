@@ -269,10 +269,10 @@ const CastVoteModal: React.FC<Props> = ({
     const res = onCastVote()
     res
       .then((r) => {
-        console.log('onCastVote >>>>>> ', r)
+        setShowLottie(true)
       })
       .catch((e) => {
-        console.log('e >>>>>> ', e)
+        setShowLottie(false)
       })
   }
 
@@ -392,7 +392,7 @@ const CastVoteModal: React.FC<Props> = ({
             </Text>
           </CardAlert>
           {allowance > 0 || transactionHash !== '' ? (
-            <Button onClick={() => onConfirm()} fullWidth radii="small" className="mt-3">
+            <Button disabled={showLottie} onClick={() => onConfirm()} fullWidth radii="small" className="mt-3">
               Confirm
             </Button>
           ) : (

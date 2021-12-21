@@ -29,10 +29,12 @@ const VotingResults = ({ getByIndex }) => {
   const { indexProposal } = useProposalIndex(proposalIndex)
 
   const [add, setAdd] = useState({})
+  const [mapVoting, setMapVoting] = useState([])
 
   const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
   useEffect(() => {
     const dataArray = []
+    const array = []
     const fetch = async () => {
       const voteAPI = process.env.REACT_APP_IPFS
       await axios
@@ -48,39 +50,39 @@ const VotingResults = ({ getByIndex }) => {
             end_unixtimestamp: resp.data.end_unixtimestamp,
             title: resp.data.title,
           })
-          setAdd(dataArray)
         })
         .catch((e) => {
           console.log('error', e)
         })
+
+      if (voting && dataArray) {
+        const sum = voting
+          .map((datum) => new BigNumber(datum._hex).dividedBy(new BigNumber(10).pow(18)).toNumber())
+          .reduce((a, b) => a + b)
+
+        voting.filter((v, index) => {
+          _.get(dataArray, '0.choices').map((i, c) => {
+            if (index === c) {
+              array.push({
+                vote: new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
+                value: i,
+                percent: Number(
+                  (new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber() / sum) * 100,
+                ).toFixed(2),
+              })
+            }
+            return array
+          })
+
+          return array
+        })
+      }
+      setMapVoting(array)
+      await setAdd(dataArray)
     }
 
     fetch()
-  }, [id])
-
-  const mapVoting = useMemo(() => {
-    const test = []
-    if (voting) {
-      const sum = voting
-        .map((datum) => new BigNumber(datum._hex).dividedBy(new BigNumber(10).pow(18)).toNumber())
-        .reduce((a, b) => a + b)
-
-      voting.filter((v, index) => {
-        _.get(add, '0.choices').filter((i, c) => {
-          if (index === c) {
-            test.push({
-              vote: new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-              value: i,
-              percent: (new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber() / sum) * 100,
-            })
-          }
-          return test
-        })
-        return test
-      })
-    }
-    return test
-  }, [add, voting])
+  }, [id, add, voting])
 
   return (
     <>
@@ -90,7 +92,7 @@ const VotingResults = ({ getByIndex }) => {
             Current Results
           </Text>
         </div>
-        {mapVoting &&
+        {add &&
           mapVoting.map((v) => (
             <div className="ma-5">
               <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
