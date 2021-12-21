@@ -117,24 +117,19 @@ export const usePropose = (
   return { onPropose: callPropose }
 }
 
-export const getIsParticipated = async(index:number) => {
+export const getIsParticipated = async (index: number) => {
   // const { account, connector } = useWallet()
-  const contract = getContract(IVotingFacet.abi,getVFinixVoting())
-  
+  const contract = getContract(IVotingFacet.abi, getVFinixVoting())
+
   return contract.methods.isParticipated(index).call()
 }
 
-export const getVotingPowersOfAddress = async(
-  _proposalIndex:number,
-  _optionIndex:number,
-  voter:string
-) => {
+export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIndex: number, voter: string) => {
   // const { account, connector } = useWallet()
-  const contract = getContract(IProposalFacet.abi,getVFinixVoting())
-  
-  return contract.methods.getVotingPowersOfAddress(_proposalIndex,_optionIndex,voter).call()
-}
+  const contract = getContract(IProposalFacet.abi, getVFinixVoting())
 
+  return contract.methods.getVotingPowersOfAddress(_proposalIndex, _optionIndex, voter).call()
+}
 
 // const handleContractExecute = (_executeFunction, _account) => {
 //   return new Promise((resolve, reject) => {

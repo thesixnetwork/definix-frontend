@@ -64,7 +64,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
         endTimestamp: moment(endTime).format(`DD-MMM-YY HH:mm:ss`),
         proposalType: item.proposalType,
         proposer: item.proposer,
-        proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex'))
+        proposalIndex: new BigNumber(_.get(item, 'proposalIndex._hex')),
       })
 
       return dataArray

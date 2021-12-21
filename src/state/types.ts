@@ -13,12 +13,12 @@ import {
 export type TranslatableText =
   | string
   | {
-    id: number
-    fallback: string
-    data?: {
-      [key: string]: string | number
+      id: number
+      fallback: string
+      data?: {
+        [key: string]: string | number
+      }
     }
-  }
 
 export interface Farm extends FarmConfig {
   tokenAmount?: BigNumber

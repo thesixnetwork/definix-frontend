@@ -14,12 +14,10 @@ import _ from 'lodash'
 import { getContract } from 'utils/caver'
 import { useWallet } from 'klaytn-use-wallet'
 import { getVFinixVoting } from '../../../utils/addressHelpers'
-import {Voting} from "../../../state/types"
+import { Voting } from '../../../state/types'
 import PaginationCustom from './Pagination'
 import IVotingFacet from '../../../config/abi/IVotingFacet.json'
 import { useAllProposalOfType, getIsParticipated } from '../../../hooks/useVoting'
-
-
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -124,13 +122,13 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   //       // vfinixContract.methods.isParticipated(0).call().then(console.log)
   //       // const x = await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
   //       // console.log("xxxx",x)
-        
+
   //     // }
   //   // }
   //   // fetch()
 
   // }, [listAllProposal])
-  
+
   // const [currentPage, setCurrentPage] = useState(1)
   // const pages = useMemo(() => Math.ceil(total / 10), [total])
   // const onPageChange = (e, page) => {
@@ -207,11 +205,10 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   )
 }
 
-
-const VotingPartProposal = ({ rbAddress ,userProposals=[]}) => {
+const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
   const address = getAddress(rbAddress)
   // const { account } = useWallet()
-  const testVots:Voting[] = []
+  const testVots: Voting[] = []
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
@@ -225,7 +222,6 @@ const VotingPartProposal = ({ rbAddress ,userProposals=[]}) => {
     },
   ])
 
-  
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   // const { isDark } = useTheme()
@@ -249,7 +245,7 @@ const VotingPartProposal = ({ rbAddress ,userProposals=[]}) => {
   const onPageChange = (e, page) => {
     setCurrentPage(page)
   }
-  
+
   useEffect(() => {
     return () => {
       setDefault(0)
