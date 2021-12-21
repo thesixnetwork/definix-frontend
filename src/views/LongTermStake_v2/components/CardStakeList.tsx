@@ -22,7 +22,7 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
   const [dataLength, setDataLength] = useState<number>(0)
 
   useEffect(() => {
-    setItemPerPage(isMobile ? 3 : 5)
+    setItemPerPage(isMobile ? 5 : 5)
   }, [isMobile])
 
   useEffect(() => {
