@@ -16,14 +16,14 @@ const Tabs = styled(Flex)`
   width: 100%;
 `
 
-const Tab = styled(Link)<{ isMobile: boolean; focus?: boolean }>`
-  width: ${({ isMobile }) => (isMobile ? '50%' : 'auto')};
-  height: ${({ isMobile }) => (isMobile ? '56px' : '66px')};
+const Tab = styled(Link)<{ $mobile: boolean; $focus?: boolean }>`
+  width: ${({ $mobile }) => ($mobile ? '50%' : 'auto')};
+  height: ${({ $mobile }) => ($mobile ? '56px' : '66px')};
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: ${({ focus }) => (focus ? '2px solid #53515f' : 'none')};
-  padding: 0 ${({ isMobile }) => (isMobile ? '24px' : '48px')};
+  border-bottom: ${({ $focus }) => ($focus ? '2px solid #53515f' : 'none')};
+  padding: 0 ${({ $mobile }) => ($mobile ? '24px' : '48px')};
   text-align: center;
 `
 
@@ -33,12 +33,12 @@ const TabStake: React.FC<IsMobileType> = ({ isMobile }) => {
   return (
     <Wrap height={`${isMobile ? '56px' : '66px'}`}>
       <Tabs>
-        <Tab to="long-term-stake" isMobile={isMobile} focus>
+        <Tab to="long-term-stake" $mobile={isMobile} $focus>
           <Text textStyle={`${isMobile ? 'R_16B' : 'R_14B'}`} color="black">
             {t('Long-term Stake')}
           </Text>
         </Tab>
-        <Tab to="super-stake" isMobile={isMobile}>
+        <Tab to="super-stake" $mobile={isMobile}>
           <Text textStyle={`${isMobile ? 'R_16B' : 'R_14B'}`} color="mediumgrey">
             {t('Super Stake')}
           </Text>

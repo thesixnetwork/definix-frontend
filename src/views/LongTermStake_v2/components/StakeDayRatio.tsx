@@ -23,9 +23,9 @@ const FlexRatio = styled(Flex)`
   }
 `
 
-const Bar = styled.div<{ ratio: number; color: string }>`
-  background: ${({ color }) => color};
-  flex: ${({ ratio }) => (ratio <= 5 ? 5 : ratio)};
+const Bar = styled.div<{ $ratio: number; $color: string }>`
+  background: ${({ $color }) => $color};
+  flex: ${({ $ratio }) => ($ratio <= 5 ? 5 : $ratio)};
   height: 16px;
   margin-bottom: 2px;
 `
@@ -40,8 +40,8 @@ const FlexDays = styled(Flex)`
   }
 `
 
-const Dot = styled.div<{ color: string }>`
-  background: ${({ color }) => color};
+const Dot = styled.div<{ $color: string }>`
+  background: ${({ $color }) => $color};
   width: 10px;
   height: 10px;
   margin-right: 8px;
@@ -80,7 +80,7 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
       <FlexRatio>
         <Flex>
           {data.map((v) => (
-            <Bar key={v.name} ratio={v.ratio} color={v.color} />
+            <Bar key={v.name} $ratio={v.ratio} $color={v.color} />
           ))}
         </Flex>
 
@@ -89,7 +89,7 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
             return (
               <FlexDays key={v.name}>
                 <Flex alignItems="center">
-                  <Dot color={v.color} />
+                  <Dot $color={v.color} />
                   <Text textStyle="R_14R" color="deepgrey">
                     {v.name} {t('days')}
                   </Text>
