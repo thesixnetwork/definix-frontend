@@ -149,7 +149,7 @@ export const useIsProposable = () => {
 
 // Make a proposal
 export const usePropose = (
-  ipfsHash,
+  ipfsHas,
   proposalType,
   startTimestamp,
   endTimestamp,
@@ -160,7 +160,7 @@ export const usePropose = (
   const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
 
-  const callPropose = async () => {
+  const callPropose = async (ipfsHash) => {
     if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
         getVFinixVoting(),

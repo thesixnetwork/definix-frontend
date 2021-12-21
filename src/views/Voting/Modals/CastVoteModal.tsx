@@ -155,31 +155,20 @@ const CastVoteModal: React.FC<Props> = ({
   const lockTopUp = useLockTopup()
   const [selectedToken, setSelectedToken] = useState({})
   const [transactionHash, setTransactionHash] = useState('')
-  // const [sousId, setSousId] = useState(0)
-  const [period, setPeriod] = useState(0)
-  const [idLast, setIdLast] = useState(0)
 
   const [amount, setAmount] = useState('')
   const [value, setValue] = useState('0')
   const [showLottie, setShowLottie] = useState(false)
   const [selects, setSelect] = useState({})
-
-  const arrayAmounr = useMemo(() => {
-    const brr = []
-    Object.values(selects).filter((v) => brr.push(_.get(v, 'vote')))
-    return brr
-  }, [selects])
-
   const mapChoices = useMemo(() => {
     const map = []
-    allChoices.filter((v) => {
-      Object.values(selects).some((i) => {
-        if (_.get(i, 'id') === _.get(v, 'id') && _.get(i, 'vote')) {
+    allChoices.filter((v, index) => {
+      Object.values(selects).map((i) => {
+        if (_.get(i, 'id') === index && _.get(i, 'vote')) {
           map.push(_.get(i, 'vote'))
         } else {
           map.push('0')
         }
-        console.log('map', map)
         return map
       })
       return map
@@ -187,11 +176,13 @@ const CastVoteModal: React.FC<Props> = ({
     return map
   }, [allChoices, selects])
 
-  const { onCastVote, serviceKey } = useVote(proposalIndex, mapChoices)
+  const unique = mapChoices.filter(function (elem, index, self) {
+    return index === self.indexOf(elem)
+  })
+
+  const { onCastVote, serviceKey } = useVote(proposalIndex, unique)
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
   const allowance = useServiceAllowance()
-
-  const realPenaltyRate = _.get(allLockPeriod, '0.realPenaltyRate')
 
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isLg
@@ -200,7 +191,6 @@ const CastVoteModal: React.FC<Props> = ({
   const filter = Object.values(select).filter((i) => {
     return _.get(i, 'checked') === true
   })
-
   const mapChoice = types === 'single' ? singleType : filter
 
   const handleApprove = useCallback(async () => {
@@ -236,14 +226,16 @@ const CastVoteModal: React.FC<Props> = ({
   const enforcer = (nextUserInput: string, e, i, data) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
       if (types === 'multiple') {
-        setSelect([
-          {
+        setSelect({
+          ...selects,
+          [i]: {
             checked: e.target.checked,
             id: data.id,
             value: data.value,
+            amount: nextUserInput,
             vote: new BigNumber(Number(nextUserInput.replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed(),
           },
-        ])
+        })
       } else {
         setSelect({
           ...select,
@@ -275,6 +267,14 @@ const CastVoteModal: React.FC<Props> = ({
         setShowLottie(false)
       })
   }
+
+  useMemo(() => {
+    const percentOf = percent * Number(balanceOf)
+    const balance = Math.floor(percentOf * 1000000) / 1000000
+    if (percent !== 0) {
+      setValue(balance.toString())
+    }
+  }, [percent, balanceOf])
 
   return (
     <>
@@ -328,13 +328,14 @@ const CastVoteModal: React.FC<Props> = ({
                 {isMobileOrTablet ? (
                   <Balance id={_.get(v, 'id')} style={{ flexWrap: 'wrap' }}>
                     <NumberInput
+                      id={_.get(v, 'id')}
                       style={{ width: isMobileOrTablet ? '20%' : '45%' }}
                       placeholder="0.00"
-                      value={value}
+                      value={_.get(v, 'vote')}
                       onChange={(e) => handleChange(e, index, v)}
                       pattern="^[0-9]*[,]?[0-9]*$"
                     />
-                    {percent !== 1 && (
+                    {/* {percent !== 1 && (
                       <div className="flex align-center justify-end" style={{ width: 'auto' }}>
                         <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
                           25%
@@ -346,18 +347,19 @@ const CastVoteModal: React.FC<Props> = ({
                           MAX
                         </StylesButton>
                       </div>
-                    )}
+                    )} */}
                   </Balance>
                 ) : (
                   <Balance>
                     <NumberInput
+                      id={_.get(v, 'id')}
                       style={{ width: isMobileOrTablet ? '20%' : '45%' }}
                       placeholder="0.00"
-                      value={value}
+                      value={_.get(v, 'vote')}
                       onChange={(e) => handleChange(e, index, v)}
                       pattern="^[0-9]*[,]?[0-9]*$"
                     />
-                    {percent !== 1 && (
+                    {/* {percent !== 1 && (
                       <div className="flex align-center justify-end" style={{ width: 'auto' }}>
                         <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
                           25%
@@ -369,7 +371,7 @@ const CastVoteModal: React.FC<Props> = ({
                           MAX
                         </StylesButton>
                       </div>
-                    )}
+                    )} */}
                   </Balance>
                 )}
               </>

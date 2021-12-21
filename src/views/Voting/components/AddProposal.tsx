@@ -248,19 +248,17 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
         .then(async (resp) => {
           if (resp) {
             await updateValue('ipfs', resp.data.result.IpfsHash)
-            if (ipfs !== '') {
-              const res = onPropose()
-              await res
-                .then((r) => {
-                  if (_.get(r, 'status')) {
-                    setIsLoading('success')
-                    setInterval(() => setIsLoading(''), 5000)
-                  }
-                })
-                .catch((e) => {
-                  setIsLoading('')
-                })
-            }
+            const res = onPropose(resp.data.result.IpfsHash)
+            res
+              .then((r) => {
+                if (_.get(r, 'status')) {
+                  setIsLoading('success')
+                  setInterval(() => setIsLoading(''), 5000)
+                }
+              })
+              .catch((e) => {
+                setIsLoading('')
+              })
           }
         })
         .catch((e) => {
