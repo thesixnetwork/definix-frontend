@@ -248,7 +248,7 @@ const getPrivateData = async ({ vFinix, account, index, period, finix }) => {
       {
         address: vFinix,
         name: 'locksDesc',
-        params: [account, index, 10],
+        params: [account, index, 1000],
       },
     ]
     const calBalance = [

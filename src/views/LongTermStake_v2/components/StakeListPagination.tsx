@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Flex, Text, ArrowLeftGIcon, ArrowRightGIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
-import { fetchStartIndex } from 'state/longTermStake'
 
 import { IsMobileType } from './types'
 
@@ -31,15 +29,13 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
   currentPage,
   setCurrentPage,
 }) => {
-  const dispatch = useDispatch()
   const [pageNumbers, setPageNumbers] = useState<number[]>([])
 
   const onClickNumber = useCallback(
     (num: number) => {
       setCurrentPage(num)
-      dispatch(fetchStartIndex((num - 1) * itemPerPage))
     },
-    [setCurrentPage, dispatch, itemPerPage],
+    [setCurrentPage],
   )
 
   const onClickArrow = (direction: string) => {
