@@ -226,7 +226,6 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
     }),
   )
 
-
   const [total, setTotal] = useState(1)
   const pages = useMemo(() => Math.ceil(total / 10), [total])
 

@@ -125,19 +125,21 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
             <EmptyData text={empText} />
           </>
         ) : (
-              <TBody>
-                {rows !== null &&
-                  rows.map((r) => (
-                    <TR key={`tsc-${r.block_number}`}>
-                      <TD>
-                      {isLoading ?(
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ):(
-                        <>
+          <TBody>
+            {rows !== null &&
+              rows.map((r) => (
+                <TR key={`tsc-${r.block_number}`}>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <>
                         {r.transaction_hash && (
                           <div className="flex align-center">
                             <Text fontSize="16px" bold lineHeight="1" color="#30ADFF">
-                              {`${r.transaction_hash.substring(0, 6)}...${r.transaction_hash.substring(r.transaction_hash.length - 4)}`}
+                              {`${r.transaction_hash.substring(0, 6)}...${r.transaction_hash.substring(
+                                r.transaction_hash.length - 4,
+                              )}`}
                             </Text>
                             <LinkView
                               as="a"
@@ -148,67 +150,67 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                             </LinkView>
                           </div>
                         )}
-                        </>
-                        )}
-                      </TD>
-                      <TD>
-                        {isLoading ?(
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ):(
-                        <>
-                          {r.voter_addr && (
-                            <div className="flex align-center">
-                              <Text fontSize="16px" bold lineHeight="1" color="#30ADFF">
-                                {`${r.voter_addr.substring(0, 6)}...${r.voter_addr.substring(r.voter_addr.length - 4)}`}
-                              </Text>
-                              <LinkView
-                                as="a"
-                                href={`${process.env.REACT_APP_KLAYTN_URL}/account/${r.voter_addr}`}
-                                target="_blank"
-                              >
-                                <ExternalLink size={16} color="#30ADFF" />
-                              </LinkView>
-                            </div>
-                          )}
-                          </>
-                        )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ):(
-                          <Text color="text" bold>
-                          {r.voting_opt}
-                          </Text>
-                        )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ):(
+                      </>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <>
+                        {r.voter_addr && (
                           <div className="flex align-center">
-                            <Text color="text" bold paddingRight="8px">
-                              {r.voting_power}
-                            </Text>                         
+                            <Text fontSize="16px" bold lineHeight="1" color="#30ADFF">
+                              {`${r.voter_addr.substring(0, 6)}...${r.voter_addr.substring(r.voter_addr.length - 4)}`}
+                            </Text>
+                            <LinkView
+                              as="a"
+                              href={`${process.env.REACT_APP_KLAYTN_URL}/account/${r.voter_addr}`}
+                              target="_blank"
+                            >
+                              <ExternalLink size={16} color="#30ADFF" />
+                            </LinkView>
                           </div>
                         )}
-                      </TD>
-                    </TR>
-                  ))}
-                <TR>
-                  <TD className="text-right">
-                    <PaginationCustom
-                      page={currentPage}
-                      count={pages}
-                      onChange={onPageChange}
-                      size="small"
-                      hidePrevButton
-                      hideNextButton
-                    />
+                      </>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <Text color="text" bold>
+                        {r.voting_opt}
+                      </Text>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <div className="flex align-center">
+                        <Text color="text" bold paddingRight="8px">
+                          {r.voting_power}
+                        </Text>
+                      </div>
+                    )}
                   </TD>
                 </TR>
-              </TBody>
-            )}
+              ))}
+            <TR>
+              <TD className="text-right">
+                <PaginationCustom
+                  page={currentPage}
+                  count={pages}
+                  onChange={onPageChange}
+                  size="small"
+                  hidePrevButton
+                  hideNextButton
+                />
+              </TD>
+            </TR>
+          </TBody>
+        )}
       </Table>
     </CardTable>
   )
@@ -234,8 +236,8 @@ const VotingList = ({ rbAddress }) => {
         .then((resp) => {
           if (resp.data.success) {
             console.log('resp >>', resp)
-            const data = _.get(resp, "data.result")
-            const totalVote = _.get(resp, "data.total")
+            const data = _.get(resp, 'data.result')
+            const totalVote = _.get(resp, 'data.total')
             setTotalVotes(totalVote)
 
             data.map((v) =>
@@ -243,17 +245,15 @@ const VotingList = ({ rbAddress }) => {
                 voter_addr: v.voter_addr,
                 voting_opt: v.voting_opt,
                 voting_power: v.voting_power,
-                transaction_hash: v.transaction_hash
-              })
+                transaction_hash: v.transaction_hash,
+              }),
             )
-            
           }
         })
         .catch((e) => {
           console.log('error', e)
         })
       setTransactions(dataArray)
-      
     }
     fetchVotes()
   }, [id])
@@ -284,7 +284,7 @@ const VotingList = ({ rbAddress }) => {
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}
-          empText='Don`t have any transactions in this votes.'
+          empText="Don`t have any transactions in this votes."
           total
         />
         {/* <PaginationCustom
