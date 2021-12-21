@@ -111,7 +111,6 @@ const CardVoting = () => {
   const [userProposals, setUserProposals] = useState([])
   useEffect(() => {
     const fetch = async () => {
-      
       let userProposalsFilter: any[] = JSON.parse(JSON.stringify(listAllProposal))
       const isParticipateds = []
       for (let i = 0; i < userProposalsFilter.length; i++) {
@@ -120,18 +119,15 @@ const CardVoting = () => {
         const [isParticipated] = await Promise.all([getIsParticipated(userProposalsFilter[i].proposalIndex)])
         isParticipateds.push(isParticipated)
         userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
-
-      
       }
-      
+
       userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
 
-      
       for (let i = 0; i < userProposalsFilter.length; i++) {
         // eslint-disable-next-line
         const metaData = (await axios.get(`https://gateway.pinata.cloud/ipfs/${userProposalsFilter[i].ipfsHash}`)).data
 
-        userProposalsFilter[i].choices = [] 
+        userProposalsFilter[i].choices = []
         userProposalsFilter[i].title = metaData.title
         userProposalsFilter[i].endDate = +metaData.end_unixtimestamp * 1000
 
@@ -146,7 +142,6 @@ const CardVoting = () => {
           if (votingPower > 0) {
             userProposalsFilter[i].choices.push({ choiceName: metaData.choices[j], votePower: votingPower })
           }
-
         }
       }
 
