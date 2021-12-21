@@ -179,9 +179,7 @@ const EarningBoxTemplate: React.FC<{
   const balancesWithValue = useMemo(() => {
     return farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   }, [farmsWithBalance])
-  const { onReward } = useAllHarvest(
-    balancesWithValue.map((farmWithBalance) => farmWithBalance.pid),
-  )
+  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
   const { handleHarvest } = useHarvest()
 
   const harvestAll = useCallback(async () => {

@@ -87,10 +87,10 @@ export const useAllHarvest = (farmPids: number[]) => {
   //     console.log('harvest/before] pids / txIndex: ', pids, txIndex)
   //     setCurrentHarvestStackIndex(txIndex)
   //     if (pids.length === 0) return Promise.resolve()
-      
+
   //     try {
   //       const tx = await harvestUsingKlipWallet(pids[txIndex])
-  //       console.info(tx)  
+  //       console.info(tx)
   //     } catch (error) {
   //       console.log('harvest/error] ', pids[txIndex])
   //     } finally {

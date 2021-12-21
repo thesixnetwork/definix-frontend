@@ -9,7 +9,7 @@ const RESPONSE_STATE = {
   PREPARED: 'prepared',
   REQUESTED: 'requested',
   COMPLETED: 'completed',
-  CANCELED: 'canceled'
+  CANCELED: 'canceled',
 }
 
 let requestKey = ''
