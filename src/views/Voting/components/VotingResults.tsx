@@ -30,7 +30,7 @@ const VotingResults = ({ getByIndex }) => {
 
   const [add, setAdd] = useState({})
 
-  const voting = _.get(indexProposal, 'optionVotingPower')
+  const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
   useEffect(() => {
     const dataArray = []
     const fetch = async () => {
@@ -55,24 +55,8 @@ const VotingResults = ({ getByIndex }) => {
         })
     }
 
-    if (voting) {
-      const arrayVote = []
-      voting.filter((v, index) => {
-        _.get(add, '0.choices').filter((i, c) => {
-          if (index === c) {
-            arrayVote.push({
-              vote: new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-              value: i,
-            })
-          }
-          return arrayVote
-        })
-
-        return v
-      })
-    }
     fetch()
-  }, [id, voting, add])
+  }, [id])
 
   const mapVoting = useMemo(() => {
     const test = []

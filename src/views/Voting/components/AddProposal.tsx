@@ -19,8 +19,9 @@ import ModalSorry from 'uikit-dev/widgets/Modal/ModalSorry'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
 import { DatePicker, TimePicker } from 'components/DatePicker'
-import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints } from 'uikit-dev'
+import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { format, parseISO, isValid } from 'date-fns'
+import CardLoadings from '../Modals/CardLodaing'
 import AddChoices, { Choice, makeChoice, MINIMUM_CHOICES } from './AddChoices'
 import VotingPower from './VotingPower'
 
@@ -161,6 +162,26 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     choiceType === 'single' ? 1 : filterChoices.length,
   )
 
+  const CardResponse = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss}>
+        <div className="pb-6 pt-2">
+          <Lottie options={SuccessOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+
+  const CardLoading = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss}>
+        <div className="pb-6 pt-2">
+          <Lottie options={LoadingOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+
   const updateValue = (key: string, value: string | Choice[] | Date) => {
     setState((prevState) => ({
       ...prevState,
@@ -196,10 +217,13 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     updateValue('choices', newChoices)
   }
 
+  const [onPresentConnectModal] = useModal(<CardLoadings isLoading={isLoading} />)
+
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
 
     try {
+      onPresentConnectModal()
       setIsLoading('loading')
       const caver = getCaver()
       const epochTime = moment().unix()
@@ -233,61 +257,22 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 }
               })
               .catch((e) => {
-                console.log('1')
-                setIsLoading('failed')
+                setIsLoading('')
               })
           }
         })
         .catch((e) => {
-          console.log('2')
-          setIsLoading('success')
+          setIsLoading('')
         })
     } catch (e) {
-      console.log('3')
-      setIsLoading('success')
+      setIsLoading('')
     }
   }
 
   const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
 
-  const CardResponse = () => {
-    return (
-      <ModalResponses title="" onDismiss={onDismiss}>
-        <div className="pb-6 pt-2">
-          <Lottie options={SuccessOptions} height={155} width={185} />
-        </div>
-      </ModalResponses>
-    )
-  }
-
-  const CardLoading = () => {
-    return (
-      <ModalResponses title="" onDismiss={onDismiss}>
-        <div className="pb-6 pt-2">
-          <Lottie options={LoadingOptions} height={155} width={185} />
-        </div>
-      </ModalResponses>
-    )
-  }
-
   return (
     <>
-      {isLoading === 'loading' ? (
-        <div style={{ position: 'absolute' }}>
-          <ModalStake title="" onDismiss={onDismiss}>
-            <CardLoading />
-          </ModalStake>
-        </div>
-      ) : (
-        isLoading === 'success' && (
-          <div style={{ position: 'absolute' }}>
-            <ModalStake title="" onDismiss={onDismiss}>
-              <CardResponse />
-            </ModalStake>
-          </div>
-        )
-      )}
-
       <form onSubmit={handleSubmit}>
         <div className={`flex mt-2 ${isMobile ? 'flex-wrap' : ''}`}>
           <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
