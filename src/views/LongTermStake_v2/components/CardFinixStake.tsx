@@ -7,6 +7,7 @@ import { Card, Flex, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr, useAllLock, usePrivateData, useAllowance } from 'hooks/useLongTermStake'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
+import TabStake from './TabStake'
 import VFinixAprButton from './VFinixAprButton'
 import BalanceFinix from './BalanceFinix'
 import ApproveFinix from './ApproveFinix'
@@ -71,8 +72,9 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
   return (
     <>
-      <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
-        <FlexCard>
+      <Card>
+        <TabStake isMobile={isMobile} />
+        <FlexCard p={isMobile ? 'S_20' : 'S_40'}>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
           <BalanceFinix

@@ -15,6 +15,7 @@ import {
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useUnstakeId, useUnLock } from 'hooks/useLongTermStake'
+import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -34,18 +35,20 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
   const { unLock } = useUnLock()
   const [isLoadingUnLock, setIsLoadingUnLock] = useState<boolean>(false)
+  const { toastSuccess, toastError } = useToast()
 
   const handleUnLock = useCallback(async () => {
     try {
       setIsLoadingUnLock(true)
       await unLock(id)
+      toastSuccess(t('{{Action}} Complete', { Action: canBeUnlock ? t('Early Unstake') : t('Unstake') }))
     } catch (e) {
-      console.error(e)
+      toastError(t('{{Action}} Failed', { Action: canBeUnlock ? t('Early Unstake') : t('Unstake') }))
     } finally {
       setIsLoadingUnLock(false)
       onDismiss()
     }
-  }, [unLock, id, onDismiss])
+  }, [unLock, id, onDismiss, canBeUnlock, toastSuccess, toastError, t])
 
   return (
     <Modal title={`${t('Confirm Unstake')}`} onDismiss={onDismiss} mobileFull>
@@ -93,10 +96,10 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   </Text>
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text textStyle="R_14M" color="deepgrey">
-                      {periodPenalty} GMT+9
+                      {periodPenalty}
                     </Text>
                     <Text textStyle="R_12R" color="mediumgrey">
-                      {t('*Asia/Seoul')}
+                      *GMT +9 {t('Asia/Seoul')}
                     </Text>
                   </Flex>
                 </Flex>
