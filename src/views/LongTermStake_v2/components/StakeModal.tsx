@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import numeral from 'numeral'
+import BigNumber from 'bignumber.js'
 import { useTranslation, Trans } from 'react-i18next'
 import {
   Box,
@@ -13,14 +14,15 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { useLock } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
 
 interface ModalProps {
   balance: string
+  setInputBalance: React.Dispatch<React.SetStateAction<string>>
   period: number
   end: string
   earn: number
-  onOK?: () => any
   onDismiss?: () => any
 }
 
@@ -32,15 +34,9 @@ const StyledBox = styled(Box)`
   }
 `
 
-const StakeModal: React.FC<ModalProps> = ({
-  balance,
-  period,
-  end,
-  earn,
-  onOK = () => null,
-  onDismiss = () => null,
-}) => {
+const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, end, earn, onDismiss = () => null }) => {
   const { t } = useTranslation()
+  const [finixValue, setFinixValue] = useState<string>(balance)
 
   const getLockDay = (day: number) => {
     switch (day) {
@@ -54,6 +50,29 @@ const StakeModal: React.FC<ModalProps> = ({
         return ''
     }
   }
+
+  const getLevel = (day: number) => {
+    if (day === 90) return 0
+    if (day === 180) return 1
+    return 2
+  }
+
+  const { onStake, status, loadings } = useLock(getLevel(period), finixValue)
+
+  useEffect(() => {
+    if (status) {
+      setInputBalance('')
+      onDismiss()
+    }
+  }, [status, setInputBalance, onDismiss])
+
+  useEffect(() => {
+    setFinixValue(new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed())
+
+    return () => {
+      setFinixValue('')
+    }
+  }, [balance])
 
   return (
     <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
@@ -118,7 +137,9 @@ const StakeModal: React.FC<ModalProps> = ({
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={onOK}>{t('Stake')}</Button>
+        <Button isLoading={loadings === 'loading'} onClick={onStake}>
+          {t('Stake')}
+        </Button>
       </ModalFooter>
     </Modal>
   )

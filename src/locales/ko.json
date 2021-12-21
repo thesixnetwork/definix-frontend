@@ -47,7 +47,7 @@
   "Q4 2021": "2021 4분기",
   "More to be announced": "추후 업데이트 예정",
   "copyright": "Copyright © 2021 <0>SIX Network</0>. All Right Reserved",
-  "audit": "<0>Certik</0> 감사 완료",
+  "audit": "Audited By <0>Certik</0>",
   "FINIX is a ecosystem token": "FINIX는 Definix의 거버넌스 토큰으로서 Definix 생태계 유지의 핵심입니다. 플랫폼에 예치하여 FINIX를 획득하고 다양하게 활용할 수 있습니다. ",
   "Investment Privilege": "특별한 혜택",
   "FINIX token provides extra privilege": "FINIX 홀더들에게는 Definix의 금융 상품을 포함한 추가 혜택들이 제공됩니다.",
@@ -448,5 +448,8 @@
   "Connect to a wallet to view": "지갑을 연결하여 유동성을 확인하세요.",
   "No liquidity found.": "유동성을 찾을 수 없습니다.",
   "Go to G1": "G1 바로가기",
-  "Menu Swap": "스왑"
+  "Menu Swap": "스왑",
+  "Sharpe detail": "리스크 한 단위에 대한, 포트폴리오 운영으로 얻은 초과 수익의 정도를 나타내는 지표입니다.",
+  "MDD detail": "고점 대비 최대 손실폭을 의미합니다.",
+  "ROI detail": "설정한 구간 내 share 가치 증감률을 의미합니다."
 }

@@ -69,9 +69,6 @@ const App: React.FC = () => {
               <Route path="/farm">
                 <NewFarms />
               </Route>
-              {/* <Route path="/info">
-                <Info />
-              </Route> */}
               <Route path="/rebalancing">
                 <Explore />
               </Route>

@@ -14,6 +14,7 @@ interface ApproveFinixProps extends IsMobileType {
   hasAccount: boolean
   isApproved: boolean
   inputBalance: string
+  setInputBalance: React.Dispatch<React.SetStateAction<string>>
   days: number
   endDay: string
   earn: number
@@ -45,6 +46,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   hasAccount,
   isApproved,
   inputBalance,
+  setInputBalance,
   days,
   endDay,
   earn,
@@ -52,7 +54,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
 }) => {
   const { t } = useTranslation()
   const [onPresentStakeModal] = useModal(
-    <StakeModal balance={inputBalance} period={days} end={endDay} earn={earn} onOK={() => null} />,
+    <StakeModal balance={inputBalance} setInputBalance={setInputBalance} period={days} end={endDay} earn={earn} />,
     false,
   )
   const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠
@@ -106,7 +108,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
             <Button
               height="48px"
               mb="S_12"
-              disabled={isApproved || transactionHash !== '' || isError}
+              disabled={(!isApproved && transactionHash === '') || isError}
               onClick={onPresentStakeModal}
             >
               {t('Stake')}

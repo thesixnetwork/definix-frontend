@@ -79,7 +79,7 @@ const Element = () => {
     <ElementsLock className="mt-6">
       <img src={finixLocks} alt="" width="80px" height="76px" className="pos-relative" />
       <img src={isDark ? arrowWhite : arrowBlack} alt="" width="20%" className="mx-1" />
-      <img src={`/images/coins/${'FINIX'}.png`} alt="" width="40px" height="40px" className="pos-relative" />
+      {/* <img src={`/images/coins/${'FINIX'}.png`} alt="" width="40px" height="40px" className="pos-relative" /> */}
       <img src={isDark ? plusWhite : plusBlack} alt="" width="5%" className="mx-1" />
       <img src={vFinix} alt="finixLocks" width="40px" height="40px" className="pos-relative" />
     </ElementsLock>

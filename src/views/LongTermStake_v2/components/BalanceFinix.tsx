@@ -6,7 +6,6 @@ import styled from 'styled-components'
 
 interface BalanceProps {
   hasAccount: boolean
-  isApproved: boolean
   minimum: number
   inputBalance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
@@ -58,7 +57,6 @@ const StyledText = styled(Text)`
 
 const BalanceFinix: React.FC<BalanceProps> = ({
   hasAccount,
-  isApproved,
   minimum,
   inputBalance,
   setInputBalance,
@@ -80,8 +78,6 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   const onClickRate = (rate: number) => {
-    if (!hasAccount || !isApproved) return
-
     if (rate === 1) setInputBalance(String(balancefinix))
     else setInputBalance((balancefinix * rate).toFixed(2))
 
@@ -91,7 +87,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   useEffect(() => {
     if (!inputBalance) {
       setError('noInput')
-    } else if (new BigNumber(Number(`0.${inputBalance.split('.')[1] || 0}`)).decimalPlaces() > 18) {
+    } else if (new BigNumber(inputBalance).dp() > 18) {
       setError('Less than a certain amount')
     } else if (Number(inputBalance) < minimum) {
       setError('The amount of FINIX')
@@ -132,7 +128,6 @@ const BalanceFinix: React.FC<BalanceProps> = ({
             autoComplete="off"
             autoCorrect="off"
             spellCheck="false"
-            readOnly={!hasAccount || !isApproved}
           />
           <Flex mt="S_8" mb="S_12">
             <StyledAnountButton selected={selected === 0.25} onClick={() => onClickRate(0.25)}>
