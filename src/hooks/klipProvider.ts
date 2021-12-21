@@ -5,13 +5,24 @@ import QRcode from 'qrcode'
 import axios from 'axios'
 import { isMobile } from 'react-device-detect'
 
+const RESPONSE_STATE = {
+  PREPARED: 'prepared',
+  REQUESTED: 'requested',
+  COMPLETED: 'completed',
+  CANCELED: 'canceled'
+}
+
 let requestKey = ''
 let responseData: any | null = null
-let intervalCheckResult: NodeJS.Timeout
+let responseState = '' // prepared, requested, completed, canceled
+let contractResultInterval: NodeJS.Timeout
+let checkResponseInterval: NodeJS.Timeout
 let account: string
+
 const initData = () => {
   requestKey = ''
   responseData = null
+  responseState = ''
 }
 
 export const genQRcode = () => {
@@ -27,14 +38,14 @@ export const genQRcode = () => {
     if (isMobile === true) {
       const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
       // await axios.get(url)
-      intervalCheckResult = setInterval(getResultContract, 1000)
+      contractResultInterval = setInterval(getResultContract, 1000)
       openDeeplink(url)
     } else {
       QRcode.toCanvas(
         document.getElementById('qrcode'),
         `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
         () => {
-          intervalCheckResult = setInterval(getResult, 1000)
+          contractResultInterval = setInterval(getResult, 1000)
         },
       )
     }
@@ -48,19 +59,30 @@ const getResult = async () => {
   if (res.data.status == 'completed') {
     account = res.data.result.klaytn_address
     responseData = res.data.result.klaytn_address
-    clearInterval(intervalCheckResult)
+    clearInterval(contractResultInterval)
   }
 }
 
 export const getAccount = () => account
 export const getRequestKey = () => requestKey
 
+const MAX = 300000 // 5분
 export const checkResponse = async (): Promise<string> => {
-  return new Promise((resolve) => {
-    const interCheck = setInterval(() => {
-      if (responseData != undefined) {
-        clearInterval(interCheck)
-        resolve(responseData)
+  return new Promise((resolve, reject) => {
+    let time = 0
+    checkResponseInterval = setInterval(() => {
+      if (time >= MAX) {
+        reject(responseState)
+      } else {
+        time++
+        if (responseData != undefined && responseState === RESPONSE_STATE.COMPLETED) {
+          clearInterval(checkResponseInterval)
+          resolve(responseData)
+        }
+        if (responseState === RESPONSE_STATE.CANCELED) {
+          clearInterval(checkResponseInterval)
+          reject(responseState)
+        }
       }
     }, 1000)
   })
@@ -69,9 +91,14 @@ export const checkResponse = async (): Promise<string> => {
 const getResultContract = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
   const res = await axios.get(url)
-  if (res.data.status == 'completed') {
+  responseState = res.data.status.toLowerCase()
+  // console.log('klipProvider/getResultContract] ', res.data.status)
+  if (responseState == RESPONSE_STATE.COMPLETED) {
     responseData = res.data.result.tx_hash
-    clearInterval(intervalCheckResult)
+    clearInterval(contractResultInterval)
+  }
+  if (responseState === RESPONSE_STATE.CANCELED) {
+    clearInterval(contractResultInterval)
   }
 }
 export const genQRcodeContactInteract = (
@@ -82,6 +109,7 @@ export const genQRcodeContactInteract = (
   value?: string,
 ) => {
   initData()
+  clearInterval(checkResponseInterval)
   const mockData = {
     bapp: {
       name: 'definix',
@@ -98,14 +126,14 @@ export const genQRcodeContactInteract = (
     requestKey = response.data.request_key
     const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
     if (isMobile === true) {
-      intervalCheckResult = setInterval(getResultContract, 1000)
+      contractResultInterval = setInterval(getResultContract, 1000)
       setTimeout(() => {
         openDeeplink(url)
       }, 1000)
     } else {
       setShowModal(true)
       QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
-        intervalCheckResult = setInterval(getResultContract, 1000)
+        contractResultInterval = setInterval(getResultContract, 1000)
       })
     }
   })
