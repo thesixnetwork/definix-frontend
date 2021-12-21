@@ -277,16 +277,18 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     <>
       {isLoading === 'loading' ? (
         <div style={{ position: 'absolute' }}>
-          <ModalStake title=""  onDismiss={onDismiss}>
+          <ModalStake title="" onDismiss={onDismiss}>
             <CardLoading />
           </ModalStake>
         </div>
-      ) : isLoading === 'success' && (
-        <div style={{ position: 'absolute' }}>
-          <ModalStake title=""  onDismiss={onDismiss}>
-             <CardResponse />
-          </ModalStake>
-        </div>
+      ) : (
+        isLoading === 'success' && (
+          <div style={{ position: 'absolute' }}>
+            <ModalStake title="" onDismiss={onDismiss}>
+              <CardResponse />
+            </ModalStake>
+          </div>
+        )
       )}
 
       <form onSubmit={handleSubmit}>
@@ -422,7 +424,9 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
                 >
                   Publish
                 </Button>
-                <Text color="#F5C858" fontSize="14px">You need at least 10 voting power to publish a proposal.</Text>
+                <Text color="#F5C858" fontSize="14px">
+                  You need at least 10 voting power to publish a proposal.
+                </Text>
               </div>
             </CardProposals>
           </div>

@@ -170,7 +170,7 @@ const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange, setChoiceType, 
           })}
           <Button
             onClick={addChoice}
-            disabled={!hasMinimumChoices || isLoading === 'loading' ||  isLoading === 'success'}
+            disabled={!hasMinimumChoices || isLoading === 'loading' || isLoading === 'success'}
             variant="success"
             radii="small"
             className="mt-2"

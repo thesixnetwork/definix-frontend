@@ -59,7 +59,7 @@ const StyledTypes = styled.div<{ type: string }>`
 `
 
 const VotingDescription = ({ id, index }) => {
-  console.log('index ...',index)
+  console.log('index ...', index)
 
   return (
     <>
@@ -82,16 +82,20 @@ const VotingDescription = ({ id, index }) => {
           <div className="flex align-center">
             <SpecialOutline color="primary">Vote Now</SpecialOutline>
             &nbsp;
-            {index.proposals_type === "core" ? (
-               <StyledTypes type="core">
-                <img src={coreIcon} alt="coreIcon" width={16} />&nbsp;
-               <span>Core</span>
-             </StyledTypes>
-            ) : index.proposals_type === "community" && (
-              <StyledTypes type="community">
-                <img src={communityIcon} alt="communityIcon" width={16} />&nbsp;
-                <span>Community</span>
+            {index.proposals_type === 'core' ? (
+              <StyledTypes type="core">
+                <img src={coreIcon} alt="coreIcon" width={16} />
+                &nbsp;
+                <span>Core</span>
               </StyledTypes>
+            ) : (
+              index.proposals_type === 'community' && (
+                <StyledTypes type="community">
+                  <img src={communityIcon} alt="communityIcon" width={16} />
+                  &nbsp;
+                  <span>Community</span>
+                </StyledTypes>
+              )
             )}
           </div>
           <Text fontSize="32px" bold lineHeight="1" marginTop="10px">
