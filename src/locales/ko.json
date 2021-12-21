@@ -271,7 +271,7 @@
   "Return": "구간 수익률",
   "Scope": "자세히 보기",
   "My Transaction only": "내 거래만 조회하기",
-  "Invest in auto rebalancing products. ": "리밸런싱 팜을 이용해 자산을 운용해보세요.",
+  "Invest in auto rebalancing products.": "리밸런싱 팜을 이용해 자산을 운용해보세요.",
   "Total Amount": "총 토큰 수량",
   "Approved": "승인완료",
   "Calculate invest amount": "입금 금액 계산하기",
@@ -460,5 +460,5 @@
   "actionClaim": "수령",
   "Claimed": "수령됨",
   "Unstaked": "해지됨",
-  "28 days Superstake ": ""
+  "28 days Superstake ": "Super Stake는 최소 금액 없이 장기예치 풀에 FINIX를 예치할 수 있는 기능입니다. 여러 풀에서 얻은 FINIX를 한꺼번에 수확하여, 이미 예치한 장기예치 풀과 동일한 기간, 동일한 APR, 동일한 vFINIX 보너스로 예치할 수 있는데다, 이미 예치한 장기예치 풀의 예치 기간에도 영향을 미치지 않습니다."
 }

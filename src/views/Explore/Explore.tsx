@@ -104,9 +104,7 @@ const Explore: React.FC = () => {
                   isHorizontal
                   rebalance={rebalance}
                   balance={rebalance.balance}
-                  onClickViewDetail={() => {
-                    setSelectedRebalance(rebalance)
-                  }}
+                  onClickViewDetail={setSelectedRebalance}
                 />
               )
             })
