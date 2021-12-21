@@ -211,8 +211,13 @@ const EarningBoxTemplate: React.FC<{
       <MainSection>
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
-            <FireIcon style={{ marginLeft: '-8px' }} />
-            <Text textStyle={`R_${isMobile ? '14' : '18'}M`} color={curTheme.totalTitleColor} ml={4}>
+            <FireIcon
+              style={{ marginLeft: isMobile ? '0' : '-8px' }}
+              width={isMobile ? '24px' : '44px'}
+              height={isMobile ? '24px' : '44px'}
+              viewBox="0 0 44 44"
+            />
+            <Text textStyle={`R_${isMobile ? '14' : '18'}M`} color={curTheme.totalTitleColor} ml={isMobile ? 8 : 4}>
               {total.title}
             </Text>
           </Flex>
