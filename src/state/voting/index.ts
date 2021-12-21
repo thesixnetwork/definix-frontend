@@ -113,6 +113,7 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
         params: [index],
       },
     ]
+
     const [proposalByIndex] = await multicall(IProposalFacet.abi, calls)
     const resultByIndex = proposalByIndex.map((item) => {
       let startTimestamp = new Date(new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000)
