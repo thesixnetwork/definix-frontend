@@ -137,14 +137,14 @@ const WithdrawCalculateModal = ({
           ))}
           <Divider mt="S_12" mb="S_20" />
           <Flex color="text" alignItems="center" mb="S_16" flexWrap="wrap">
-            <Text textStyle="R_16M" className="flex-auto">
+            <Text textStyle="R_16M" className="flex-auto" pr="S_24">
               {t('Total Withdraw')}
             </Text>
             <Text color="black" textStyle="R_18B" ml="auto">
               {currentInput}
-            </Text>
-            <Text textStyle="R_14R" ml="S_4">
-              {t('SHR')}
+              <Text textStyle="R_14R" ml="S_4" as="span">
+                {t('SHR')}
+              </Text>
             </Text>
           </Flex>
           <Flex flexDirection="column" color="textSubtle" textStyle="R_14R">
