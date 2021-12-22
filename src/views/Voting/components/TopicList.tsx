@@ -262,7 +262,7 @@ const TabInfos = ({ tab }) => {
                   &nbsp;
                 </div>
               </div>
-              <Styled as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}`}>
+              <Styled as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}/${_.get(item, 'proposalIndex')}`}>
                 <Image src={nextIcon} width={28} height={28} />
               </Styled>
             </CardTopicList>
