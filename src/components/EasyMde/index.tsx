@@ -51,7 +51,7 @@ const TextStyled = styled.textarea`
   .CodeMirror-cursors {
     border-left: 2px solid ${({ theme }) => theme.colors.text};
   }
-`  
+`
 
 /**
  * @see https://github.com/Ionaru/easy-markdown-editor#configuration
@@ -63,7 +63,7 @@ const defaultOptions: EasyMde.Options = {
   hideIcons: ['guide', 'fullscreen', 'preview', 'side-by-side'],
   spellChecker: false,
   styleSelectedText: true,
-  theme:'red',
+  theme: 'red',
 }
 
 const SimpleMde: React.FC<SimpleMdeProps> = ({ options, onTextChange, ...props }) => {
