@@ -416,7 +416,6 @@ const AddProposal: React.FC<Props> = () => {
                     !hasMinimumChoices ||
                     isLoading === 'loading' ||
                     isLoading === 'success' ||
-                    Number(combineDateAndTime(startDate, startTime)) * 1000 < Date.now() ||
                     Number(combineDateAndTime(startDate, startTime)) * 1000 >
                       Number(combineDateAndTime(endDate, endTime)) * 1000
                   }
