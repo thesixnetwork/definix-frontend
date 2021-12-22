@@ -166,7 +166,7 @@ const YourVoteList = () => {
             variant="success"
             radii="small"
             size="sm"
-            disabled={Date.now() < +_.get(items, 'endDate')}
+            disabled={Date.now() < +_.get(items, 'endDate') || items.choices.length === 0}
           >
             Claim Voting Power
           </Button>

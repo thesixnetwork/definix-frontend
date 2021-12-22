@@ -24,9 +24,11 @@ const Wrapper = styled.div`
     color: ${({ theme }) => theme.colors.text};
   }
 
+  .CodeMirror-wrap .CodeMirror-cursor {
+    border-left: 1px solid ${({ theme }) => theme.colors.text};
+  }
+
   .editor-toolbar {
-    // background: ${({ theme }) => theme.colors.backgroundBox};
-    // border-color: ${({ theme }) => theme.colors.border};
     background: #979797;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
@@ -45,15 +47,23 @@ const Wrapper = styled.div`
   }
 `
 
+const TextStyled = styled.textarea`
+  .CodeMirror-cursors {
+    border-left: 2px solid ${({ theme }) => theme.colors.text};
+  }
+`
+
 /**
  * @see https://github.com/Ionaru/easy-markdown-editor#configuration
  */
+
 const defaultOptions: EasyMde.Options = {
   autofocus: false,
   status: false,
   hideIcons: ['guide', 'fullscreen', 'preview', 'side-by-side'],
   spellChecker: false,
-  styleSelectedText: false,
+  styleSelectedText: true,
+  theme: 'red',
 }
 
 const SimpleMde: React.FC<SimpleMdeProps> = ({ options, onTextChange, ...props }) => {
