@@ -64,39 +64,40 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
     }
   }, [onApprove, toastSuccess, toastError, t])
 
+  const statusApprove = () => {
+    return !isApproved && transactionHash === '' ? (
+      <Button height="48px" mb="S_12" variant="brown" isLoading={isLoadingApprove} onClick={handleApprove}>
+        {t('Approve {{Token}}', { Token: t('FINIX') })}
+      </Button>
+    ) : (
+      <Button
+        height="48px"
+        mb="S_12"
+        disabled={(!isApproved && transactionHash === '') || isError}
+        onClick={onPresentStakeModal}
+      >
+        {t('Stake')}
+      </Button>
+    )
+  }
+
   return (
     <>
       <FlexApprove>
-        {!isApproved && transactionHash === '' ? (
-          <Button height="48px" mb="S_12" variant="brown" isLoading={isLoadingApprove} onClick={handleApprove}>
-            {t('Approve {{Token}}', { Token: t('FINIX') })}
-          </Button>
-        ) : (
-          <Flex flexDirection="column">
-            {hasAccount ? (
-              <Button
-                height="48px"
-                mb="S_12"
-                disabled={(!isApproved && transactionHash === '') || isError}
-                onClick={onPresentStakeModal}
-              >
-                {t('Stake')}
-              </Button>
-            ) : (
-              <UnlockButton />
-            )}
-            {hasAccount && error && (
-              <Flex alignItems="flex-start">
-                <Flex mt="S_2">
-                  <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
-                </Flex>
-                <Text ml="S_4" textStyle="R_14R" color="red">
-                  {error}
-                </Text>
+        <Flex flexDirection="column">
+          {hasAccount ? statusApprove() : <UnlockButton />}
+
+          {hasAccount && error && (
+            <Flex alignItems="flex-start">
+              <Flex mt="S_2">
+                <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               </Flex>
-            )}
-          </Flex>
-        )}
+              <Text ml="S_4" textStyle="R_14R" color="red">
+                {error}
+              </Text>
+            </Flex>
+          )}
+        </Flex>
       </FlexApprove>
     </>
   )
