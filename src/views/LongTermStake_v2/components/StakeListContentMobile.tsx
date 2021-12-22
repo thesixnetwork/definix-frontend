@@ -1,5 +1,6 @@
 import React from 'react'
 import numeral from 'numeral'
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 
@@ -11,7 +12,14 @@ interface ContentProps extends IsMobileType {
 }
 
 const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+
+  const getEndDay = (endDay: string) => {
+    if (i18n.language === 'ko') {
+      return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(endDay).format(`DD-MMM-YYYY HH:mm:ss`)
+  }
 
   return (
     <>
@@ -48,7 +56,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
               </Text>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="black">
-                  {item.lockTimestamp}
+                  {getEndDay(item.lockTimestamp)}
                 </Text>
                 <Text ml="S_8" textStyle="R_12R" color="mediumgrey">
                   *GMT +9 {t('Asia/Seoul')}

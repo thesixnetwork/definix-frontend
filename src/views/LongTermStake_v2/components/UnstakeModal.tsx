@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import numeral from 'numeral'
+import moment from 'moment'
 import { useTranslation, Trans } from 'react-i18next'
 import {
   Box,
@@ -31,13 +32,20 @@ const StyledBox = styled(Box)`
 `
 
 const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
   const { unLock } = useUnLock()
   const [isLoadingUnLock, setIsLoadingUnLock] = useState<boolean>(false)
   const [vFinixError, setVFinixError] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
   const { balancevfinix } = usePrivateData()
+
+  const getEndDay = (endDay: string) => {
+    if (i18n.language === 'ko') {
+      return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(endDay).format(`DD-MMM-YYYY HH:mm:ss`)
+  }
 
   const handleUnLock = useCallback(async () => {
     try {
@@ -102,7 +110,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   </Text>
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text textStyle="R_14M" color="deepgrey">
-                      {periodPenalty}
+                      {getEndDay(periodPenalty)}
                     </Text>
                     <Text textStyle="R_12R" color="mediumgrey">
                       *GMT +9 {t('Asia/Seoul')}
@@ -132,7 +140,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
                     <Trans
                       i18nKey="Do you want to unstake?"
-                      values={{ 'Lock Up Period End': `${periodPenalty} GMT+9` }}
+                      values={{ 'Lock Up Period End': `${getEndDay(periodPenalty)} GMT+9` }}
                       components={[<strong />]}
                     />
                   </Text>
