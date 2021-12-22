@@ -470,7 +470,6 @@
   "28 days Super Staked": "28 days Super Staked",
   "Super Staked": "Super Staked",
   "This feature is only for vFINIX holder": "This feature is only for vFINIX holder\nYou have never lock in Long-term Stake. \nDo you want to start staking in the Long-term Stake to get this exclusive feature?",
-  "What is Produect Super Stake?": "What is Produect Super Stake?",
   "From your wallet": "From your wallet",
   "Pending rewards": "Pending rewards",
   "Next": "Next",
@@ -479,5 +478,7 @@
   "Diamond Hodl": "Diamond Hodl",
   "Gold Hodl": "Gold Hodl",
   "Silver Hodl": "Silver Hodl",
-  "Super Stake": "Super Stake"
+  "Super Stake": "Super Stake",
+  "still in progress super stake": "Still in progress.\nIt is available to use service on G1.",
+  "Insufficient deposit.": "Insufficient deposit."
 }

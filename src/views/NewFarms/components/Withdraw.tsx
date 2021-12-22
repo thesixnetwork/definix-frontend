@@ -178,6 +178,7 @@ const Withdraw: React.FC<{
         <StyledDivider />
 
         <ModalInput
+          type="withdraw"
           value={val}
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}

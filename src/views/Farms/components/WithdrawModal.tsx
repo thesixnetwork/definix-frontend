@@ -51,6 +51,7 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
       {renderCardHeading('mb-5', true)}
 
       <ModalInput
+        type="deposit"
         onSelectBalanceRateButton={handleSelectMax}
         onChange={handleChange}
         value={val}

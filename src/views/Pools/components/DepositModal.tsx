@@ -59,6 +59,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
       {pendingTx ? <Lottie options={options} height={164} width={164} /> : renderCardHeading('mb-5')}
 
       <ModalInput
+        type="deposit"
         value={val}
         onSelectBalanceRateButton={handleSelectMax}
         onChange={handleChange}

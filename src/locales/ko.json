@@ -470,7 +470,6 @@
   "28 days Super Staked": "28일 이내 Super Stake",
   "Super Staked": "Super Stake",
   "This feature is only for vFINIX holder": "Super Stake는 오직 vFINIX 홀더만을 위한 기능입니다. \n장기예치 풀에 FINIX를 예치하여 vFINIX도 받고, vFINIX 홀더만을 위한 특별 기능을 사용해보시겠어요?",
-  "What is Produect Super Stake?": "",
   "From your wallet": "지갑 내",
   "Pending rewards": "수확 대기 중",
   "Next": "다음",
@@ -479,5 +478,7 @@
   "Diamond Hodl": "다이아몬드 홀더",
   "Gold Hodl": "골드 홀더",
   "Silver Hodl": "실버 홀더",
-  "Super Stake": "Super Stake"
+  "Super Stake": "Super Stake",
+  "still in progress super stake": "Super Stake G2 적용 작업 중입니다. \nG1 버전에서 정상적으로 서비스 이용이 가능합니다. ",
+  "Insufficient deposit.": "예치 수량이 부족합니다."
 }

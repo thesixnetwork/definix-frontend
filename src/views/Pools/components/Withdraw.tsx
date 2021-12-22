@@ -182,6 +182,7 @@ const Withdraw: React.FC<{
         <StyledDivider />
 
         <ModalInput
+          type="withdraw"
           value={val}
           max={myStakedBalance}
           symbol={pool.stakingTokenName}

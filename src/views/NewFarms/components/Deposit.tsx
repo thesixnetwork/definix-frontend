@@ -170,6 +170,7 @@ const Deposit: React.FC<{
         <StyledDivider />
 
         <ModalInput
+          type="deposit"
           value={val}
           max={tokenBalance}
           symbol={lpTokenName}

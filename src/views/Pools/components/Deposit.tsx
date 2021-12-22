@@ -185,6 +185,7 @@ const Deposit: React.FC<{
         <StyledDivider />
 
         <ModalInput
+          type="deposit"
           value={val}
           max={maxValue}
           symbol={tokenName}
