@@ -64,7 +64,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
                 </Text>
               </Flex>
               <Text textStyle="R_14M" color="white">
-                {item.day} {t('days')}
+                {t(`${item.day} days`)}
               </Text>
             </FlexDays>
 

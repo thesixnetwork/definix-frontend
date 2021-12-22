@@ -26,6 +26,7 @@ const ButtonWrap = styled(Box)`
 `
 
 const ModalInput: React.FC<{
+  type: string // deposit, withdraw
   max: BigNumber
   symbol: string
   placeholder?: string
@@ -35,7 +36,7 @@ const ModalInput: React.FC<{
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
-}> = ({ max, onChange, value, onSelectBalanceRateButton, onClickButton, buttonName }) => {
+}> = ({ type, max, onChange, value, onSelectBalanceRateButton, onClickButton, buttonName }) => {
   const { t } = useTranslation()
 
   const maxValue = useMemo(() => getBalanceNumber(max), [max])
@@ -47,12 +48,16 @@ const ModalInput: React.FC<{
     return isEmptyBalance || isGreaterThanMyBalance || !isValidBalance
   }, [isEmptyBalance, isGreaterThanMyBalance, isValidBalance])
 
+  const insufficientBalanceMessage = useMemo(() => {
+    return type === 'deposit' ? 'Insufficient balance' : 'Insufficient deposit'
+  }, [type])
+
   const errorMessage = useMemo(() => {
-    if (isEmptyBalance) return t('Insufficient balance')
+    if (isEmptyBalance) return t(insufficientBalanceMessage)
     if (!isValidBalance) return t('The value entered is out of the valid range')
-    if (isGreaterThanMyBalance) return t('Insufficient balance')
+    if (isGreaterThanMyBalance) return t(insufficientBalanceMessage)
     return ''
-  }, [t, isEmptyBalance, isGreaterThanMyBalance, isValidBalance])
+  }, [t, isEmptyBalance, isGreaterThanMyBalance, isValidBalance, insufficientBalanceMessage])
 
   const handleButtonClick = useCallback(() => {
     if (hasError) return

@@ -233,16 +233,16 @@ export const useToast = () => {
     const push = (toast: Toast) => dispatch(pushToast(toast))
 
     return {
-      toastError: (title: string, description?: string) => {
+      toastError: (title: string, description?: any) => {
         return push({ id: new Date().toString(), type: toastTypes.DANGER, title, description })
       },
-      toastInfo: (title: string, description?: string) => {
+      toastInfo: (title: string, description?: any) => {
         return push({ id: new Date().toString(), type: toastTypes.INFO, title, description })
       },
-      toastSuccess: (title: string, description?: string) => {
+      toastSuccess: (title: string, description?: any) => {
         return push({ id: new Date().toString(), type: toastTypes.SUCCESS, title, description })
       },
-      toastWarning: (title: string, description?: string) => {
+      toastWarning: (title: string, description?: any) => {
         return push({ id: new Date().toString(), type: toastTypes.WARNING, title, description })
       },
       push,

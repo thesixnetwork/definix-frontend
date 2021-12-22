@@ -92,6 +92,10 @@ const BalanceFinix: React.FC<BalanceProps> = ({
     } else if (balancefinix < Number(inputBalance)) {
       setError('Insufficient balance')
     } else setError('')
+
+    return () => {
+      setError('')
+    }
   }, [minimum, balancefinix, inputBalance, setError])
 
   useEffect(() => {

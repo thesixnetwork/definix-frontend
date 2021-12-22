@@ -444,7 +444,9 @@ export const useRank = () => {
           const selector = _.get(userVfinixLocks, 'locks_')[i]
 
           if (selector.isUnlocked === false && selector.isPenalty === false) {
-            if (maxRank < selector.level) maxRank = selector.level
+            if (maxRank < selector.level) {
+              maxRank = typeof selector.level === 'string' ? parseInt(selector.level) : selector.level
+            }
           }
         }
         setRank(maxRank)

@@ -6,6 +6,10 @@ import styled from 'styled-components'
 
 import { IsMobileType } from './types'
 
+interface TabStakeProps extends IsMobileType {
+  superStake?: boolean
+}
+
 const Wrap = styled(Flex)`
   position: relative;
   border-bottom: 2px solid #e0e0e066;
@@ -27,19 +31,19 @@ const Tab = styled(Link)<{ $mobile: boolean; $focus?: boolean }>`
   text-align: center;
 `
 
-const TabStake: React.FC<IsMobileType> = ({ isMobile }) => {
+const TabStake: React.FC<TabStakeProps> = ({ isMobile, superStake }) => {
   const { t } = useTranslation()
 
   return (
     <Wrap height={`${isMobile ? '56px' : '66px'}`}>
       <Tabs>
-        <Tab to="long-term-stake" $mobile={isMobile} $focus>
-          <Text textStyle={`${isMobile ? 'R_16B' : 'R_14B'}`} color="black">
+        <Tab to="long-term-stake" $mobile={isMobile} $focus={!superStake}>
+          <Text textStyle={`${isMobile ? 'R_16B' : 'R_14B'}`} color={`${superStake ? 'mediumgrey' : 'black'}`}>
             {t('Long-term Stake')}
           </Text>
         </Tab>
-        <Tab to="super-stake" $mobile={isMobile}>
-          <Text textStyle={`${isMobile ? 'R_16B' : 'R_14B'}`} color="mediumgrey">
+        <Tab to="super-stake" $mobile={isMobile} $focus={superStake}>
+          <Text textStyle={`${isMobile ? 'R_16B' : 'R_14B'}`} color={`${superStake ? 'black' : 'mediumgrey'}`}>
             {t('Super Stake')}
           </Text>
         </Tab>
