@@ -87,6 +87,12 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
+const VotePowerChoice = styled.div`
+  display: flex;
+  justify-content: center;
+  width: initial;
+`
+
 function MyFormControlLabel(props) {
   const radioGroup = useRadioGroup()
 
@@ -174,9 +180,14 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                             label=""
                             control={<Radio />}
                           />
-                          <Text fontSize="15px" bold>
-                            {c}
-                          </Text>
+                         <VotePowerChoice className="flex justify-space-between" style={{width: "inherit"}}>
+                            <Text fontSize="15px" bold>
+                              {c}
+                            </Text>
+                            <Text fontSize="15px" bold>
+                              {c}
+                            </Text>
+                          </VotePowerChoice> 
                         </CardList>
                       </RadioGroup>
                     ))}
@@ -205,9 +216,14 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                       }
                       label=""
                     />
-                    <Text fontSize="15px" bold>
-                      {c}
-                    </Text>
+                    <VotePowerChoice className="flex justify-space-between" style={{width: "inherit"}}>
+                      <Text fontSize="15px" bold>
+                        {c}
+                      </Text>
+                      <Text fontSize="15px" bold>
+                        {c}
+                      </Text>
+                    </VotePowerChoice> 
                   </CardList>
                 ))
               )}

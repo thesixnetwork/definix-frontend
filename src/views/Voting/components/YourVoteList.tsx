@@ -222,17 +222,18 @@ const YourVoteList = () => {
           >
             Claim Voting Power
           </Button>
-          <Button
-            as={Link}
-            to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
-            variant="primary"
-            radii="small"
-            size="sm"
-            className="flex align-center"
-            disabled={Date.now() > +_.get(items, 'endDate')}
-          >
-            Vote more
-          </Button>
+          {Date.now() < +_.get(items, 'endDate') && (
+            <Button
+              as={Link}
+              to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
+              variant="primary"
+              radii="small"
+              size="sm"
+              className="flex align-center"
+            >
+              Vote more
+            </Button>
+          )}   
           <Text fontSize="14px" color="text" paddingLeft="14px">
             Claim will be available after the the voting time is ended.
           </Text>
