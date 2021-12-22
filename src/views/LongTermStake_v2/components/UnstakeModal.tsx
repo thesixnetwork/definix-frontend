@@ -63,7 +63,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                 </Text>
                 <Flex my="S_4" alignItems="center">
                   <Text mr="S_8" textStyle="R_14R" color="mediumgrey">
-                    {days} {t('days')}
+                    {t(`${days} days`)}
                   </Text>
                   <Flex height="12px">
                     <VDivider color="lightgrey" />
@@ -118,7 +118,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
                     <Trans
                       i18nKey="Do you want to unstake?"
-                      values={{ '15-Nov-21 14:57:20 GMT+9': `${periodPenalty} GMT+9` }}
+                      values={{ 'Lock Up Period End': `${periodPenalty} GMT+9` }}
                       components={[<strong />]}
                     />
                   </Text>
