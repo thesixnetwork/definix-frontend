@@ -67,7 +67,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   const statusApprove = () => {
     return !isApproved && transactionHash === '' ? (
       <Button height="48px" mb="S_12" variant="brown" isLoading={isLoadingApprove} onClick={handleApprove}>
-        {t('Approve {{Token}}', { Token: t('FINIX') })}
+        {t('Approve Contract')}
       </Button>
     ) : (
       <Button
