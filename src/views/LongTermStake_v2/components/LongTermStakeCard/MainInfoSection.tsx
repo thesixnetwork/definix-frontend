@@ -25,7 +25,7 @@ const MainInfoSection: React.FC = () => {
 
   return (
     <Flex position="relative" alignItems="center">
-      <Box mr="S_12">
+      <Box mr="S_12" width="70px">
         <StyledCoin symbol="VFINIX" size="" />
       </Box>
 

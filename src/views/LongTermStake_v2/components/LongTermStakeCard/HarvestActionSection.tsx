@@ -8,6 +8,7 @@ import { useHarvest } from 'hooks/useLongTermStake'
 import useConverter from 'hooks/useConverter'
 import { Button, Text, ButtonVariants, Flex, Box, Label } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
+import BalanceText from 'components/BalanceText'
 
 const Wrap = styled(Flex)`
   flex-direction: row;
@@ -40,7 +41,7 @@ const TokenLabel = styled(Label)`
 const TokenValueWrap = styled(Box)`
   margin-top: -3px;
 `
-const BalanceText = styled(Text)`
+const FinixEarnText = styled(BalanceText)`
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -109,7 +110,7 @@ const HarvestAction: React.FC<{
       <Flex>
         <TokenLabel type="token">{QuoteToken.FINIX}</TokenLabel>
         <TokenValueWrap>
-          <BalanceText>{earnings}</BalanceText>
+          <FinixEarnText value={earnings} />
           <PriceText value={earningsPrice} prefix="=" />
         </TokenValueWrap>
       </Flex>
