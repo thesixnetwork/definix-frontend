@@ -7,9 +7,9 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
-import { useFarmUser } from 'state/hooks'
+import { useFarmUser, useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import { Button, Text, ButtonVariants, Flex, Box, Label } from '@fingerlabs/definixswap-uikit-v2'
+import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
 
 const Wrap = styled(Flex)<{ isInPool: boolean }>`
@@ -90,6 +90,7 @@ const HarvestActionAirdrop: React.FC<{
   sousId?: number
   farm: any
   earnings: BigNumber
+  tokenName: string
 }> = ({
   componentType = 'pool',
   isOldSyrup = false,
@@ -98,8 +99,10 @@ const HarvestActionAirdrop: React.FC<{
   farm,
   earnings,
   needsApprovalContract,
+  tokenName
 }) => {
   const { t } = useTranslation()
+  const { toastSuccess, toastError } = useToast()
   const navigate = useHistory()
   const isInPool = useMemo(() => componentType === 'pool', [componentType])
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
@@ -107,6 +110,8 @@ const HarvestActionAirdrop: React.FC<{
   const { onReward } = useSousHarvest(sousId, isBnbPool)
   const { pendingRewards } = useFarmUser(farm.pid)
   const [pendingTx, setPendingTx] = useState(false)
+
+  const isFinixPool = useMemo(() => sousId === 0, [sousId])
 
   const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
   const getEarningsPrice = useCallback(
@@ -117,6 +122,38 @@ const HarvestActionAirdrop: React.FC<{
     [convertToPriceFormat, convertToPriceFromSymbol],
   )
   const handleGoToDetail = useCallback(() => navigate.push('/pool'), [navigate])
+
+  const showHarvestResult = useCallback((isSuccess: boolean) => {
+    if (isFinixPool) return
+
+    const toastDescription = (
+      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+        {tokenName}
+      </Text>
+    )
+    const actionText = t('Harvest')
+    if (isSuccess) {
+      toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
+    } else {
+      toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
+    }
+  }, [toastSuccess, toastError, t, tokenName, isFinixPool])
+
+  const handleHarvest = useCallback(async () => {
+    try {
+      if (pendingTx) return
+      setPendingTx(true)
+      const tx = await onReward()
+      if (!tx || tx === null) {
+        throw new Error()
+      }
+      showHarvestResult(true)
+    } catch {
+      showHarvestResult(false)
+    } finally {
+      setPendingTx(false)
+    }
+  }, [onReward, showHarvestResult, pendingTx])
 
   const renderAirDrop = useCallback(
     ({ name, value }) => (
@@ -136,17 +173,14 @@ const HarvestActionAirdrop: React.FC<{
       <Button
         variant={ButtonVariants.RED}
         width="100%"
-        disabled={!account || (needsApprovalContract && !isOldSyrup) || !earnings.toNumber() || pendingTx}
-        onClick={async () => {
-          setPendingTx(true)
-          await onReward()
-          setPendingTx(false)
-        }}
+        disabled={!account || (needsApprovalContract && !isOldSyrup) || !earnings.toNumber()}
+        isLoading={pendingTx}
+        onClick={handleHarvest}
       >
         {t('Harvest')}
       </Button>
     ),
-    [t, account, needsApprovalContract, isOldSyrup, earnings, pendingTx, onReward],
+    [t, account, needsApprovalContract, isOldSyrup, earnings, pendingTx, handleHarvest],
   )
 
   const renderDetailButton = useCallback(

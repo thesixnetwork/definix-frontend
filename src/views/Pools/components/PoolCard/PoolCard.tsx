@@ -186,9 +186,10 @@ const PoolCard: React.FC<PoolCardProps> = ({ componentType = 'pool', pool, myBal
         sousId={sousId}
         earnings={earnings}
         farm={pool.farm}
+        tokenName={tokenName}
       />
     ),
-    [componentType, isBnbPool, isOldSyrup, hasUserData, hasAllowance, sousId, earnings, pool.farm],
+    [componentType, isBnbPool, isOldSyrup, hasUserData, hasAllowance, sousId, earnings, pool.farm, tokenName],
   )
   /**
    * Link Section
