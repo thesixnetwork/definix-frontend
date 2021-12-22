@@ -36,9 +36,16 @@ export interface ExpandableSectionProps {
   lpLabel: string
   size?: string
   addLiquidityUrl?: string
+  componentType?: string
 }
 
-const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, size = 'medium', addLiquidityUrl = '' }) => {
+const CardHeading: React.FC<ExpandableSectionProps> = ({
+  farm,
+  lpLabel,
+  size = 'medium',
+  addLiquidityUrl = '',
+  componentType,
+}) => {
   const { convertToFarmAPRFormat } = useConverter()
   // We assume the token name is coin pair + lp e.g. FINIX-BNB LP, LINK-BNB LP,
   // NAR-FINIX LP. The images should be finix-bnb.svg, link-bnb.svg, nar-finix.svg
@@ -53,7 +60,11 @@ const CardHeading: React.FC<ExpandableSectionProps> = ({ farm, lpLabel, size = '
 
   return (
     <Flex position="relative">
-      <Flex className="mr-s12" alignItems="center">
+      <Flex
+        mr={componentType === 'myInvestment' ? 'S_16' : 'S_12'}
+        alignItems="center"
+        width={componentType === 'myInvestment' ? '70px' : 'auto'}
+      >
         <ImageBox>
           <StyledCoin symbol={farm.lpSymbols[0].symbol} size="40px" />
         </ImageBox>

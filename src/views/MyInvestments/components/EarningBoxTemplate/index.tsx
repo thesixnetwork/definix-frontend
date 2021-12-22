@@ -22,7 +22,7 @@ interface InnerTheme {
   itemCurrencyColor: ColorStyles | string
   borderColor: ColorStyles
   bottomBg: ColorStyles | string
-  slideDotColor: ColorStyles
+  slideDotColor: ColorStyles | string
   slideDotActiveColor: ColorStyles
   harvestButtonBg: ColorStyles | string
   harvestButtonColor: string
@@ -52,7 +52,7 @@ const THEME: { [key: string]: InnerTheme } = {
     itemCurrencyColor: 'white80',
     borderColor: ColorStyles.BROWN,
     bottomBg: 'black20',
-    slideDotColor: ColorStyles.BROWN,
+    slideDotColor: '#5e515f',
     slideDotActiveColor: ColorStyles.WHITE,
     harvestButtonBg: 'brown30',
     harvestButtonColor: 'rgba(255, 255, 255, 0.1)',
@@ -132,6 +132,7 @@ const TotalPriceText = styled(CurrencyText)<{ curTheme: any }>`
     margin-top: 4px;
     ${({ theme }) => theme.textStyle.R_14M};
   }
+  opacity: 0.8;
 `
 const SlideSection = styled(Box)`
   height: 112px;
@@ -275,8 +276,18 @@ const EarningBoxTemplate: React.FC<{
       <MainSection>
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
-            <FireIcon style={{ marginLeft: '-8px' }} />
-            <Text textStyle={`R_${isMobile ? '14' : '18'}M`} color={curTheme.totalTitleColor} ml={4}>
+            <FireIcon
+              style={{ marginLeft: isMobile ? '0' : '-8px' }}
+              width={isMobile ? '24px' : '44px'}
+              height={isMobile ? '24px' : '44px'}
+              viewBox="0 0 44 44"
+            />
+            <Text
+              textStyle={`R_${isMobile ? '14' : '18'}M`}
+              color={curTheme.totalTitleColor}
+              style={{ opacity: '0.7' }}
+              ml={isMobile ? 8 : 4}
+            >
               {total.title}
             </Text>
           </Flex>

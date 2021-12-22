@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { useTranslation, Trans } from 'react-i18next'
@@ -15,6 +15,7 @@ import {
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useLock } from 'hooks/useLongTermStake'
+import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -58,6 +59,16 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
   }
 
   const { onStake, status, loadings } = useLock(getLevel(period), finixValue)
+  const { toastSuccess, toastError } = useToast()
+
+  const onClickStake = useCallback(async () => {
+    try {
+      await onStake()
+      toastSuccess(t('{{Action}} Complete', { Action: t('Stake') }))
+    } catch (e) {
+      toastError(t('{{Action}} Failed', { Action: t('Stake') }))
+    }
+  }, [onStake, toastSuccess, toastError, t])
 
   useEffect(() => {
     if (status) {
@@ -96,7 +107,7 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
                 {t('Stake Period')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
-                {period} {t('days')}
+                {t(`${period} days`)}
               </Text>
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
@@ -105,10 +116,10 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
               </Text>
               <Flex flexDirection="column" alignItems="flex-end">
                 <Text textStyle="R_14M" color="deepgrey">
-                  {end} GMT+9
+                  {end}
                 </Text>
                 <Text textStyle="R_12R" color="mediumgrey">
-                  {t('*Asia/Seoul')}
+                  *GMT +9 {t('Asia/Seoul')}
                 </Text>
               </Flex>
             </Flex>
@@ -137,7 +148,7 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button isLoading={loadings === 'loading'} onClick={onStake}>
+        <Button isLoading={loadings === 'loading'} onClick={onClickStake}>
           {t('Stake')}
         </Button>
       </ModalFooter>

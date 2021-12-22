@@ -71,7 +71,7 @@ const Character = styled(ImageSet)`
 const CardHighAPR = () => {
   const { t } = useTranslation()
   return (
-    <Card bg={ColorStyles.ORANGE}>
+    <Card cardBg={ColorStyles.ORANGE}>
       <WrapCardBody>
         <Flex alignItems="flex-end" justifyContent="space-between">
           <Title>{t('Stake Farms with high APR')}</Title>

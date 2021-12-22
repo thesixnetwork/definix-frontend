@@ -20,6 +20,7 @@ export interface CardHeadingProps {
   isOldSyrup: boolean
   pool: PoolWithApy
   size?: string
+  componentType?: string
 }
 
 export interface StakeActionProps {

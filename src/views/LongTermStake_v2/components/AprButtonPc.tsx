@@ -25,24 +25,24 @@ const FlexVFinix = styled(Flex)`
   }
 `
 
-const FlexDays = styled(Flex)<{ focus: boolean }>`
+const FlexDays = styled(Flex)<{ $focus: boolean }>`
   justify-content: space-between;
   align-items: flex-end;
   padding: 14px 20px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
-  background-color: ${({ theme, focus }) => (focus ? theme.colors.orange : theme.colors.lightbrown)};
+  background-color: ${({ theme, $focus }) => ($focus ? theme.colors.orange : theme.colors.lightbrown)};
 `
 
-const FlexApr = styled(Flex)<{ focus: boolean }>`
+const FlexApr = styled(Flex)<{ $focus: boolean }>`
   flex-direction: column;
-  padding: ${({ focus }) => (focus ? '19px' : '20px')};
+  padding: ${({ $focus }) => ($focus ? '19px' : '20px')};
   padding-top: 20px;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
-  border-width: ${({ focus }) => (focus ? '2px' : '1px')};
+  border-width: ${({ $focus }) => ($focus ? '2px' : '1px')};
   border-style: solid;
-  border-color: ${({ theme, focus }) => (focus ? theme.colors.orange : theme.colors.lightgrey)};
+  border-color: ${({ theme, $focus }) => ($focus ? theme.colors.orange : theme.colors.lightgrey)};
   border-top: none;
 `
 
@@ -54,7 +54,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
       {data.map((item) => {
         return (
           <FlexVFinix key={item.day} onClick={() => setDays(item.day)}>
-            <FlexDays focus={days === item.day}>
+            <FlexDays $focus={days === item.day}>
               <Flex flexDirection="column">
                 <Text textStyle="R_12R" color="white">
                   {t('vFINIX')}
@@ -64,16 +64,16 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
                 </Text>
               </Flex>
               <Text textStyle="R_14M" color="white">
-                {item.day} {t('days')}
+                {t(`${item.day} days`)}
               </Text>
             </FlexDays>
 
-            <FlexApr focus={days === item.day}>
+            <FlexApr $focus={days === item.day}>
               <Flex mb="S_12" flexDirection="column">
                 <Text textStyle="R_12R" color="mediumgrey">
                   {t('APR')}
                 </Text>
-                <Text textStyle="R_18B" color="black">
+                <Text textStyle="R_18B" color={`${days === item.day ? 'red' : 'black'}`}>
                   {numeral(item.apr).format('0,0.[00]')}%
                 </Text>
               </Flex>

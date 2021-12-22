@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useClaim } from 'hooks/useLongTermStake'
+import { useToast } from 'state/hooks'
 import { fetchIdData } from 'state/longTermStake'
 
 import UnstakeModal from './UnstakeModal'
@@ -19,6 +20,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
 
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
+  const { toastSuccess, toastError } = useToast()
 
   const [onPresentUnstakeModal] = useModal(<UnstakeModal />, false)
 
@@ -27,13 +29,14 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
       try {
         setIsLoadingClaim(true)
         await onClaim(Id)
+        toastSuccess(t('{{Action}} Complete', { Action: t('Claim') }))
       } catch (e) {
-        console.error(e)
+        toastError(t('{{Action}} Failed', { Action: t('Claim') }))
       } finally {
         setIsLoadingClaim(false)
       }
     },
-    [onClaim],
+    [onClaim, toastSuccess, toastError, t],
   )
 
   const onUnStake = useCallback(

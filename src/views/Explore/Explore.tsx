@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { Route, useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 import { useRebalanceAddress, useRebalances, useRebalanceBalances } from 'state/hooks'
-import { Box, Card, Flex, Text, Toggle, useModal } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, Card, Flex, Text, Toggle, useModal, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { getAddress } from 'utils/addressHelpers'
 
@@ -39,6 +39,7 @@ const Explore: React.FC = () => {
   const rebalances = useRebalances()
   const targetRebalance = useRebalanceAddress(selectedRebalance ? getAddress(selectedRebalance.address) : undefined)
   const dispatch = useDispatch()
+  const { isMaxXl: isMobile } = useMatchBreakpoints()
   const { account } = useWallet()
   const rebalanceBalances = useRebalanceBalances(account)
   const [onPresentDisclaimersModal] = useModal(<DisclaimersModal isConfirm />, false)
@@ -82,7 +83,7 @@ const Explore: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <>
+        <Box mb={isMobile ? 'S_40' : 'S_80'}>
           <Box position="relative">
             <ListPageHeader type="rebalancing" />
             <FilterWrap>
@@ -103,9 +104,7 @@ const Explore: React.FC = () => {
                   isHorizontal
                   rebalance={rebalance}
                   balance={rebalance.balance}
-                  onClickViewDetail={() => {
-                    setSelectedRebalance(rebalance)
-                  }}
+                  onClickViewDetail={setSelectedRebalance}
                 />
               )
             })
@@ -114,7 +113,7 @@ const Explore: React.FC = () => {
               <NoResultArea useCardLayout={false} message={t('There are no farms in deposit.')} />
             </Card>
           )}
-        </>
+        </Box>
       </Route>
 
       <Route exact path={`${path}/detail`}>

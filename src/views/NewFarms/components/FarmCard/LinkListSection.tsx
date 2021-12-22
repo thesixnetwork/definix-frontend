@@ -11,6 +11,7 @@ const LinkListSection: React.FC<{
     ${({ theme }) => theme.mediaQueries.mobileXl} {
       ${({ theme }) => theme.textStyle.R_12R};
     }
+    text-decoration: underline;
   `
   return (
     <>

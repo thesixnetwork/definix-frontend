@@ -39,6 +39,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
           height: inherit;
           background: ${({ curTheme }) => curTheme.slideDotColor};
           color: transparent;
+          opacity: 1;
         }
       }
       &.slick-active {
@@ -49,6 +50,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
             border-radius: 50%;
             background: ${({ curTheme }) => curTheme.slideDotActiveColor};
             color: transparent;
+            opacity: 1;
           }
         }
       }
@@ -73,8 +75,7 @@ const NonSlider = styled(Flex)`
 const SlideItem = styled(Box)<{ index: number; curTheme: any }>`
   margin: ${({ theme }) => theme.spacing.S_20}px 0;
   padding-left: ${({ theme, index }) => (index > 0 ? theme.spacing.S_32 : theme.spacing.S_40)}px;
-  padding-right: ${({ theme }) => theme.spacing.S_32}px;
-  width: 212px;
+  width: ${({ index }) => (index > 0 ? '277' : '276')}px;
   border-left: ${({ index, curTheme, theme }) =>
     index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
 
@@ -127,6 +128,7 @@ const Slide: React.FC<{
         textStyle: `R_16M`,
         color: curTheme.itemBalanceColor,
         value: hasAccount ? value : 0,
+        postfix: 'FINIX',
       }
       return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
     },

@@ -10,11 +10,13 @@ interface CardHeadingType extends BoxProps {
   isHorizontal?: boolean
   onlyTitle?: boolean
   className?: string
+  xspacing?: string
+  yspacing?: string
   rebalance: Rebalance | any
   componentType?: string
 }
 
-const FocusImg = styled.img<{ isMediumSize: boolean }>`
+const StyledImg = styled.img<{ isMediumSize: boolean }>`
   border-radius: 6px;
   width: ${({ isMediumSize }) => (isMediumSize ? '100%' : '160px')};
   height: auto;
@@ -24,13 +26,20 @@ const FocusImg = styled.img<{ isMediumSize: boolean }>`
 
 export const CardImage = ({
   isMediumSize = true,
-  imageUrl,
+  imageUrls,
   title,
 }: {
   isMediumSize: boolean
-  imageUrl: string
+  imageUrls: string[]
   title: string
-}) => <FocusImg src={imageUrl} alt={title} isMediumSize={isMediumSize} />
+}) => (
+  <StyledImg
+    src={imageUrls[0]}
+    srcSet={`${imageUrls[1]} 2x, ${imageUrls[2]} 3x`}
+    alt={title}
+    isMediumSize={isMediumSize}
+  />
+)
 
 export const CardTitle: React.FC<{ title: string; textStyle?: string }> = ({ title, textStyle = 'R_16B' }) => {
   const { t } = useTranslation()
@@ -45,10 +54,21 @@ const CardHeading: React.FC<CardHeadingType> = ({
   isHorizontal = false,
   className = '',
   onlyTitle = false,
+  xspacing = 'S_32',
+  yspacing = 'S_24',
   rebalance = {},
   ...props
 }) => {
   const { t } = useTranslation()
+  const cardboxProps = isHorizontal
+    ? {
+        width: '100%',
+        maxWidth: '414px',
+        mb: yspacing,
+      }
+    : {
+        mr: xspacing,
+      }
 
   return (
     <Flex justifyContent="space-between" className={className} {...props}>
@@ -57,23 +77,23 @@ const CardHeading: React.FC<CardHeadingType> = ({
         justifyContent={isHorizontal ? 'center' : ''}
         alignItems={!isHorizontal && onlyTitle ? 'center' : 'start'}
       >
-        <Box mr={isHorizontal ? '' : 'S_32'} mb={isHorizontal ? 'S_24' : ''}>
-          <CardImage imageUrl={rebalance.icon[0]} title={rebalance.title} isMediumSize={isHorizontal} />
+        <Box {...cardboxProps}>
+          <CardImage imageUrls={rebalance.icon} title={rebalance.title} isMediumSize={isHorizontal} />
         </Box>
 
         {onlyTitle ? (
-          <Box mb="S_4">
+          <Box>
             <CardTitle title={t(rebalance.title)} textStyle="R_20B" />
           </Box>
         ) : (
-          <div>
+          <Box mt="S_4">
             <Box mb="S_4">
               <CardTitle title={t(rebalance.title)} />
             </Box>
             <Text textStyle="R_12R" color="textSubtle">
               {t(rebalance.description)}
             </Text>
-          </div>
+          </Box>
         )}
       </Flex>
     </Flex>

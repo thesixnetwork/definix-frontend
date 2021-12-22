@@ -23,10 +23,10 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, endDay, ear
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              {endDay} GMT+9
+              {endDay}
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
-              {t('*Asia/Seoul')}
+              *GMT +9 {t('Asia/Seoul')}
             </Text>
           </Flex>
         </Flex>
