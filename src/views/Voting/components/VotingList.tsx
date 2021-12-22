@@ -60,7 +60,7 @@ const CardList = styled(Card)`
   overflow: auto;
   box-shadow: unset;
   border-radius: unset;
-  border-bottom: 1px solid #57575b;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   a {
     display: block;
