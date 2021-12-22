@@ -105,6 +105,14 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                 </Flex>
                 <Flex mb="S_8" justifyContent="space-between">
                   <Text textStyle="R_14R" color="mediumgrey">
+                    {t('Recall vFINIX')}
+                  </Text>
+                  <Text textStyle="R_14M" color="deepgrey">
+                    {numeral(amount * multiplier).format('0, 0.[000000]')} {t('vFINIX')}
+                  </Text>
+                </Flex>
+                <Flex mb="S_8" justifyContent="space-between">
+                  <Text textStyle="R_14R" color="mediumgrey">
                     {t('You will receive')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
