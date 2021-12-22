@@ -3,7 +3,14 @@ import { useTranslation } from 'react-i18next'
 import { TitleSet, Flex } from '@fingerlabs/definixswap-uikit-v2'
 
 const TitleStake: React.FC = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+
+  const getLink = () => {
+    if (i18n.language === 'ko') {
+      return 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-staking-pool/undefined'
+    }
+    return 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool'
+  }
 
   return (
     <>
@@ -12,7 +19,7 @@ const TitleStake: React.FC = () => {
           title={t('Long-term Stake')}
           description={t('Stake FINIX to earn vFINIX')}
           linkLabel={t('Learn how to Long-term stake')}
-          link="https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-staking-pool/undefined"
+          link={getLink()}
           linkBottom
         />
       </Flex>

@@ -1,7 +1,8 @@
 import React from 'react'
 import numeral from 'numeral'
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
@@ -11,7 +12,14 @@ interface ContentProps extends IsMobileType {
 }
 
 const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+
+  const getEndDay = (endDay: string) => {
+    if (i18n.language === 'ko') {
+      return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(endDay).format(`DD-MMM-YYYY HH:mm:ss`)
+  }
 
   return (
     <>
@@ -27,14 +35,9 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                   {t(`${item.days} days`)}
                 </Text>
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
-                  <>
-                    <Flex mt="S_2">
-                      <Text textStyle="R_12R" color="red" mr="S_4">
-                        Super staked
-                      </Text>
-                      <Helper text={t('28 days Superstake')} />
-                    </Flex>
-                  </>
+                  <Text textStyle="R_12R" color="yellow">
+                    {t('28days Super Staked')}
+                  </Text>
                 )}
               </Flex>
               <Flex width="50%" flexDirection="column">
@@ -53,7 +56,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
               </Text>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="black">
-                  {item.lockTimestamp}
+                  {getEndDay(item.lockTimestamp)}
                 </Text>
                 <Text ml="S_8" textStyle="R_12R" color="mediumgrey">
                   *GMT +9 {t('Asia/Seoul')}

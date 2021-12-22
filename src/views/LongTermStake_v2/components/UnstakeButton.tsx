@@ -29,9 +29,9 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
       try {
         setIsLoadingClaim(true)
         await onClaim(Id)
-        toastSuccess(t('{{Action}} Complete', { Action: t('Claim') }))
+        toastSuccess(t('{{Action}} Complete', { Action: t('actionClaim') }))
       } catch (e) {
-        toastError(t('{{Action}} Failed', { Action: t('Claim') }))
+        toastError(t('{{Action}} Failed', { Action: t('actionClaim') }))
       } finally {
         setIsLoadingClaim(false)
       }
