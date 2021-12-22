@@ -246,20 +246,22 @@ const VotingList = ({ rbAddress }) => {
 
   const mapAllVote = useMemo(() => {
     const array = []
-    allVotesByIndex.map((v, i) => {
-      _.get(allVotesByIpfs, '0.choices').map((items, index) => {
-        if (index === Number(_.get(v, 'voting_opt'))) {
-          array.push({
-            transaction_hash: _.get(v, 'transaction_hash'),
-            voter_addr: _.get(v, 'voter_addr'),
-            voting_opt: items,
-            voting_power: _.get(v, 'voting_power'),
-          })
-        }
+    if (allVotesByIndex.length !== 0 && allVotesByIpfs.length !== 0) {
+      allVotesByIndex.map((v, i) => {
+        _.get(allVotesByIpfs, '0.choices').map((items, index) => {
+          if (index === Number(_.get(v, 'voting_opt'))) {
+            array.push({
+              transaction_hash: _.get(v, 'transaction_hash'),
+              voter_addr: _.get(v, 'voter_addr'),
+              voting_opt: items,
+              voting_power: _.get(v, 'voting_power'),
+            })
+          }
+          return array
+        })
         return array
       })
-      return array
-    })
+    }
     return array
   }, [allVotesByIndex, allVotesByIpfs])
 
@@ -276,7 +278,7 @@ const VotingList = ({ rbAddress }) => {
           </Text>
         </div>
         <TransactionTable
-          rows={mapAllVote}
+          rows={mapAllVote.length !== 0 && mapAllVote}
           isLoading={isLoading}
           empText="Don`t have any transactions in this votes."
           total

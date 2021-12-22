@@ -243,6 +243,8 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       </BtnDetails>
                     ) : (
                       <BtnClaim
+                        size="sm"
+                        // disabled={Date.now() > +r.endDate}
                         onClick={() => {
                           onHandleClaim(r.proposalIndex)
                         }}

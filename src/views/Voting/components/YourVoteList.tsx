@@ -161,6 +161,14 @@ const YourVoteList = () => {
     )
   }
 
+  useEffect(() => {
+    if (items === undefined) {
+      setIsLoading(true)
+    } else {
+      setIsLoading(false)
+    }
+  }, [items])
+
   const CardLoading = () => {
     return (
       <ModalResponses title="" onDismiss={onDismiss}>
@@ -207,36 +215,41 @@ const YourVoteList = () => {
           empText="Don`t have any transactions in this votes."
           total
         />
-        <div className="flex align-center ma-3">
-          <Button
-            onClick={() => {
-              onHandleClaim(proposalIndex)
-            }}
-            variant="success"
-            radii="small"
-            size="sm"
-            mr="6px"
-            disabled={
-              Date.now() < +_.get(items, 'endDate') || (_.get(items, 'choices') && _.get(items, 'choices').length <= 0)
-            }
-          >
-            Claim Voting Power
-          </Button>
-          <Button
-            as={Link}
-            to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
-            variant="primary"
-            radii="small"
-            size="sm"
-            className="flex align-center"
-            disabled={Date.now() > +_.get(items, 'endDate')}
-          >
-            Vote more
-          </Button>
-          <Text fontSize="14px" color="text" paddingLeft="14px">
-            Claim will be available after the the voting time is ended.
-          </Text>
-        </div>
+        {!isLoading ? (
+          <div className="flex align-center ma-3">
+            <Button
+              onClick={() => {
+                onHandleClaim(proposalIndex)
+              }}
+              variant="success"
+              radii="small"
+              size="sm"
+              mr="6px"
+              disabled={
+                Date.now() < +_.get(items, 'endDate') ||
+                (_.get(items, 'choices') && _.get(items, 'choices').length <= 0)
+              }
+            >
+              Claim Voting Power
+            </Button>
+            <Button
+              as={Link}
+              to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
+              variant="primary"
+              radii="small"
+              size="sm"
+              className="flex align-center"
+              disabled={Date.now() > +_.get(items, 'endDate')}
+            >
+              Vote more
+            </Button>
+            <Text fontSize="14px" color="text" paddingLeft="14px">
+              Claim will be available after the the voting time is ended.
+            </Text>
+          </div>
+        ) : (
+          <div className="flex align-center ma-3" />
+        )}
       </CardTable>
     </>
   )
