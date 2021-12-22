@@ -1,7 +1,7 @@
 import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
@@ -19,25 +19,20 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
         return (
           <Flex width="100%" flexDirection="column" key={item.id}>
             <Flex width="100%" alignItems="center" py="S_16">
-              <Flex width="20%" flexDirection="column">
+              <Flex width="23.5%" flexDirection="column">
                 <Text textStyle="R_14R" color="black">
                   {t(`${item.days} days`)}
                 </Text>
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
-                  <>
-                    <Flex mt="S_2">
-                      <Text textStyle="R_12R" color="red" mr="S_4">
-                        Super staked
-                      </Text>
-                      <Helper text={t('28 days Superstake')} />
-                    </Flex>
-                  </>
+                  <Text textStyle="R_12R" color="yellow">
+                    {t('28days Super Staked')}
+                  </Text>
                 )}
               </Flex>
-              <Text width="27%" textStyle="R_14R" color="black">
+              <Text width="26.5%" textStyle="R_14R" color="black">
                 {numeral(item.lockAmount).format('0, 0.[000000]')}
               </Text>
-              <Flex width="53%" justifyContent="space-between">
+              <Flex width="50%" justifyContent="space-between">
                 <Flex flexDirection="column" justifyContent="center">
                   <Text textStyle="R_14R" color="black">
                     {item.lockTimestamp}
