@@ -12,6 +12,7 @@ import { getAddress } from 'utils/addressHelpers'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import { useProposalIndex } from 'hooks/useVoting'
+import useRefresh from 'hooks/useRefresh'
 import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
@@ -238,10 +239,10 @@ const VotingList = ({ rbAddress }) => {
   const [transactions, setTransactions] = useState([])
   const [totalVotes, setTotalVotes] = useState(0)
   const [total, setTotal] = useState(1)
+  const { fastRefresh } = useRefresh()
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const limits = 15
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const [mapVoting, setMapVoting] = useState([])
   const [add, setAdd] = useState({})
 
   const { indexProposal } = useProposalIndex(proposalIndex)
@@ -276,7 +277,8 @@ const VotingList = ({ rbAddress }) => {
       setTransactions(dataArray)
     }
     fetchVotes()
-  }, [id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
 
   useEffect(() => {
     const dataArray = []
@@ -301,30 +303,13 @@ const VotingList = ({ rbAddress }) => {
           console.log('error', e)
         })
 
-      if (voting && dataArray) {
-        voting.filter((v, index) => {
-          dataArray.map((i, c) => {
-            if (Number(i.voting_opt) === index) {
-              array.push({
-                vote: new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
-                value: i,
-              })
-            }
-            return array
-          })
-          return array
-        })
-      }
-      setMapVoting(array)
+      const getchoices = _.get(dataArray, '0.choices')
       await setAdd(dataArray)
     }
 
     fetch()
-  }, [id, add, voting])
-
-  // useEffect(() => {
-
-  // }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
 
   const setDefault = (tab) => {
     setCurrentTab(tab)
