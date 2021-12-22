@@ -136,7 +136,7 @@ const ListPageHeader: React.FC<{
           w: 194,
           h: 118,
         },
-      }
+      },
     }
   }, [myInvestmentFinixImage])
   const linkLanguage = useMemo(() => (i18n.language.includes('ko') ? 'kr' : 'en'), [i18n.language])

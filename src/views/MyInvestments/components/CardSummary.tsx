@@ -17,11 +17,14 @@ function CardSummary({ products }) {
     () => products.find((product) => product.type.toLowerCase() === 'longtermstake'),
     [products],
   )
-  const hasLongTermStake = useMemo(() => longTermStake && longTermStake.data && longTermStake.data.grade !== '', [longTermStake])
+  const hasLongTermStake = useMemo(
+    () => longTermStake && longTermStake.data && longTermStake.data.grade !== '',
+    [longTermStake],
+  )
 
   return (
     <>
-      <ListPageHeader type="myInvestment" {...(hasLongTermStake ? { grade: longTermStake.data.grade } : {})}/>
+      <ListPageHeader type="myInvestment" {...(hasLongTermStake ? { grade: longTermStake.data.grade } : {})} />
 
       {hasLongTermStake && (
         <VFinixSummary grade={longTermStake.data.grade} balance={longTermStake.data.balancevfinix} />
