@@ -84,16 +84,15 @@ const VotingResults = ({ getByIndex }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fastRefresh])
 
-
   useEffect(() => {
-    if(mapVoting.length === 0){
+    if (mapVoting.length === 0) {
       setIsLoading(true)
-    }else{
+    } else {
       setIsLoading(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fastRefresh])
- 
+
   return (
     <>
       <Card className="mb-4">
@@ -102,35 +101,35 @@ const VotingResults = ({ getByIndex }) => {
             Current Results
           </Text>
         </div>
-        {isLoading ?(
+        {isLoading ? (
           <>
-           <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="30px 20px 0px" />&nbsp;
-           <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="0px 20px 30px" />
+            <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="30px 20px 0px" />
+            &nbsp;
+            <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="0px 20px 30px" />
           </>
-        ):(
+        ) : (
           <>
-          {add &&
-            mapVoting.map((v) => (
-              <div className="ma-5">
-                <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-                  {v.value}
-                </Text>
-                <div className="my-3">
-                  <BorderLinearProgress variant="determinate" value={v.percent} />
-                </div>
-                <div className="flex justify-space-between">
-                  <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                    {v.vote} Votes
+            {add &&
+              mapVoting.map((v) => (
+                <div className="ma-5">
+                  <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
+                    {v.value}
                   </Text>
-                  <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                    {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
-                  </Text>
+                  <div className="my-3">
+                    <BorderLinearProgress variant="determinate" value={v.percent} />
+                  </div>
+                  <div className="flex justify-space-between">
+                    <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                      {v.vote} Votes
+                    </Text>
+                    <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                      {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
+                    </Text>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </>
         )}
-        
       </Card>
     </>
   )
