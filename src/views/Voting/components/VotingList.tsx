@@ -354,7 +354,12 @@ const VotingList = ({ rbAddress }) => {
             Votes ({totalVotes})
           </Text>
         </div>
-        <TransactionTable rows={add&&add} isLoading={isLoading} empText="Don`t have any transactions in this votes." total />
+        <TransactionTable
+          rows={add && add}
+          isLoading={isLoading}
+          empText="Don`t have any transactions in this votes."
+          total
+        />
         <PaginationCustom
           page={currentPage}
           count={pages}
