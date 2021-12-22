@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import numeral from 'numeral'
 import { useTranslation, Trans } from 'react-i18next'
 import {
@@ -14,7 +14,7 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { useUnstakeId, useUnLock } from 'hooks/useLongTermStake'
+import { useUnstakeId, useUnLock, usePrivateData } from 'hooks/useLongTermStake'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
@@ -35,7 +35,9 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
   const { unLock } = useUnLock()
   const [isLoadingUnLock, setIsLoadingUnLock] = useState<boolean>(false)
+  const [vFinixError, setVFinixError] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
+  const { balancevfinix } = usePrivateData()
 
   const handleUnLock = useCallback(async () => {
     try {
@@ -49,6 +51,10 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
       onDismiss()
     }
   }, [unLock, id, onDismiss, canBeUnlock, toastSuccess, toastError, t])
+
+  useEffect(() => {
+    setVFinixError(balancevfinix < amount * multiplier)
+  }, [balancevfinix, amount, multiplier, setVFinixError])
 
   return (
     <Modal title={`${t('Confirm Unstake')}`} onDismiss={onDismiss} mobileFull>
@@ -137,9 +143,19 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button isLoading={isLoadingUnLock} onClick={handleUnLock}>
+        <Button isLoading={isLoadingUnLock} onClick={handleUnLock} disabled={vFinixError}>
           {canBeUnlock ? t('Early Unstake') : t('Unstake')}
         </Button>
+        {vFinixError && (
+          <Flex mt="S_12" alignItems="flex-start">
+            <Flex mt="S_2">
+              <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+            </Flex>
+            <Text ml="S_4" textStyle="R_14R" color="red">
+              {t('Insufficient vFINIX balances')}
+            </Text>
+          </Flex>
+        )}
       </ModalFooter>
     </Modal>
   )
