@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import {
@@ -20,6 +20,15 @@ import {
   ImgBridge1x,
   ImgBridge2x,
   ImgBridge3x,
+  ImgSilver1x,
+  ImgSilver2x,
+  ImgSilver3x,
+  ImgGold1x,
+  ImgGold2x,
+  ImgGold3x,
+  ImgDiamond1x,
+  ImgDiamond2x,
+  ImgDiamond3x,
 } from '@fingerlabs/definixswap-uikit-v2'
 
 const Wrap = styled(Box)`
@@ -57,63 +66,81 @@ const ImgWrap = styled(Box)`
   }
 `
 
-const ListPageHeader: React.FC<{ type: string }> = ({ type }) => {
+const ListPageHeader: React.FC<{
+  type: string
+  grade?: string
+}> = ({ type, grade }) => {
   const { t, i18n } = useTranslation()
-  const dataTable = useRef({
-    pool: {
-      title: 'Pool',
-      description: 'Deposit a single token',
-      linkLabel: 'Learn how to stake',
-      linkPath: '/pools/how-to-stake-to-definix-pool',
-      image: [ImgPool1x, ImgPool2x, ImgPool3x],
-      imageSize: {
-        w: 236,
-        h: 144,
+  const myInvestmentFinixImage = useMemo(() => {
+    if (!grade) return [ImgMyinvestmentDefault1x, ImgMyinvestmentDefault2x, ImgMyinvestmentDefault3x]
+    switch (grade.toLowerCase()) {
+      case 'diamond':
+        return [ImgDiamond1x, ImgDiamond2x, ImgDiamond3x]
+      case 'gold':
+        return [ImgGold1x, ImgGold2x, ImgGold3x]
+      case 'silver':
+        return [ImgSilver1x, ImgSilver2x, ImgSilver3x]
+      default:
+        return [ImgMyinvestmentDefault1x, ImgMyinvestmentDefault2x, ImgMyinvestmentDefault3x]
+    }
+  }, [grade])
+  const dataTable = useMemo(() => {
+    return {
+      pool: {
+        title: 'Pool',
+        description: 'Deposit a single token',
+        linkLabel: 'Learn how to stake',
+        linkPath: '/pools/how-to-stake-to-definix-pool',
+        image: [ImgPool1x, ImgPool2x, ImgPool3x],
+        imageSize: {
+          w: 236,
+          h: 144,
+        },
       },
-    },
-    farm: {
-      title: 'Farm',
-      description: 'Pairing coins to create LP',
-      linkLabel: 'Learn how to stake in Farm',
-      linkPath: '/yield-farming/how-to-yield-farm-on-definix',
-      image: [ImgFarm1x, ImgFarm2x, ImgFarm3x],
-      imageSize: {
-        w: 200,
-        h: 122,
+      farm: {
+        title: 'Farm',
+        description: 'Pairing coins to create LP',
+        linkLabel: 'Learn how to stake in Farm',
+        linkPath: '/yield-farming/how-to-yield-farm-on-definix',
+        image: [ImgFarm1x, ImgFarm2x, ImgFarm3x],
+        imageSize: {
+          w: 200,
+          h: 122,
+        },
       },
-    },
-    rebalancing: {
-      title: 'Rebalancing Farm',
-      description: 'A Farm that automatically performs',
-      linkLabel: 'Learn how to invest',
-      linkPath: '/rebalancing-farm/how-to-start-investing-in-rebalancing-farm',
-      image: [ImgRebalancing1x, ImgRebalancing2x, ImgRebalancing3x],
-      imageSize: {
-        w: 236,
-        h: 144,
+      rebalancing: {
+        title: 'Rebalancing Farm',
+        description: 'A Farm that automatically performs',
+        linkLabel: 'Learn how to invest',
+        linkPath: '/rebalancing-farm/how-to-start-investing-in-rebalancing-farm',
+        image: [ImgRebalancing1x, ImgRebalancing2x, ImgRebalancing3x],
+        imageSize: {
+          w: 236,
+          h: 144,
+        },
       },
-    },
-    myInvestment: {
-      title: 'My Investment',
-      description: 'Check your investment history and profit',
-      image: [ImgMyinvestmentDefault1x, ImgMyinvestmentDefault2x, ImgMyinvestmentDefault3x],
-      imageSize: {
-        w: 230,
-        h: 118,
+      myInvestment: {
+        title: 'My Investment',
+        description: 'Check your investment history and profit',
+        image: myInvestmentFinixImage,
+        imageSize: {
+          w: 230,
+          h: 118,
+        },
       },
-    },
-    bridge: {
-      title: 'Bridge',
-      description: 'Transfer tokens to other chains',
-      image: [ImgBridge1x, ImgBridge2x, ImgBridge3x],
-      imageSize: {
-        w: 194,
-        h: 118,
-      },
-    },
-  })
+      bridge: {
+        title: 'Bridge',
+        description: 'Transfer tokens to other chains',
+        image: [ImgBridge1x, ImgBridge2x, ImgBridge3x],
+        imageSize: {
+          w: 194,
+          h: 118,
+        },
+      }
+    }
+  }, [myInvestmentFinixImage])
   const linkLanguage = useMemo(() => (i18n.language.includes('ko') ? 'kr' : 'en'), [i18n.language])
-  const currentSet = useMemo(() => dataTable.current[type], [type])
+  const currentSet = useMemo(() => dataTable[type], [dataTable, type])
   const currentTitleSet = useMemo(() => {
     return {
       title: t(currentSet.title) || '',
