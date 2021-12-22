@@ -56,9 +56,9 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
       if (txHash) {
         setTransactionHash(_.get(txHash, 'transactionHash'))
       }
-      toastSuccess(t('{{Action}} Complete', { Action: t('Approve') }))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
     } catch (e) {
-      toastError(t('{{Action}} Failed', { Action: t('Approve') }))
+      toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
     } finally {
       setIsLoadingApprove(false)
     }

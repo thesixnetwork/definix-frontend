@@ -43,9 +43,9 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
     try {
       setIsLoadingUnLock(true)
       await unLock(id)
-      toastSuccess(t('{{Action}} Complete', { Action: canBeUnlock ? t('Early Unstake') : t('Unstake') }))
+      toastSuccess(t('{{Action}} Complete', { Action: canBeUnlock ? t('actionEarly Unstake') : t('actionUnstake') }))
     } catch (e) {
-      toastError(t('{{Action}} Failed', { Action: canBeUnlock ? t('Early Unstake') : t('Unstake') }))
+      toastError(t('{{Action}} Failed', { Action: canBeUnlock ? t('actionEarly Unstake') : t('actionUnstake') }))
     } finally {
       setIsLoadingUnLock(false)
       onDismiss()
