@@ -13,14 +13,17 @@ function CardSummary({ products }) {
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const tabs = useMemo(() => [t('Earned'), t('Net Worth')], [t])
   const [curTab, setCurTab] = useState<string>(tabs[0])
-  const longTermStake = useMemo(() => products.find((product) => product.type.toLowerCase() === 'longtermstake'), [products])
+  const longTermStake = useMemo(
+    () => products.find((product) => product.type.toLowerCase() === 'longtermstake'),
+    [products],
+  )
 
   return (
     <>
       <ListPageHeader type="myInvestment" />
 
       {longTermStake && longTermStake.data && longTermStake.data.grade !== '' && (
-        <VFinixSummary grade={longTermStake.data.grade} balance={longTermStake.data.balancevfinix}/>
+        <VFinixSummary grade={longTermStake.data.grade} balance={longTermStake.data.balancevfinix} />
       )}
 
       <Card isOverflowHidden>

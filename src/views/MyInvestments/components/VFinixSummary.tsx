@@ -1,7 +1,16 @@
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Card, Flex, ColorStyles, Text, Box, GradeSilverIcon, GradeGoldIcon, GradeDiamondIcon } from '@fingerlabs/definixswap-uikit-v2'
+import {
+  Card,
+  Flex,
+  ColorStyles,
+  Text,
+  Box,
+  GradeSilverIcon,
+  GradeGoldIcon,
+  GradeDiamondIcon,
+} from '@fingerlabs/definixswap-uikit-v2'
 import BalanceText from 'components/BalanceText'
 
 const Wrap = styled(Flex)`
@@ -77,32 +86,23 @@ const VFinixSummary: React.FC<{
     const components = {
       silver: GradeSilverIcon,
       gold: GradeGoldIcon,
-      diamond: GradeDiamondIcon
+      diamond: GradeDiamondIcon,
     }
     const Component = components[grade.toLowerCase()]
-    return (
-      <Component viewBox="0 0 44 44" width="100%" height="100%" />
-    )
+    return <Component viewBox="0 0 44 44" width="100%" height="100%" />
   }, [grade])
-
 
   return (
     <Card cardBg={ColorStyles.DEEPBROWN} mb="S_16">
       <Wrap>
         <Flex alignItems="center">
-          {grade === '' ? null : (
-            <HodlImageWrap>
-              {GradeIcon}
-            </HodlImageWrap>
-          )}
+          {grade === '' ? null : <HodlImageWrap>{GradeIcon}</HodlImageWrap>}
           <HodlText>{t(`${grade} Hodl`)}</HodlText>
         </Flex>
         <RightSection>
           <TokenName>vFINIX Balance</TokenName>
           <ValueSection>
-            <ValueText
-              value={balance}
-            />
+            <ValueText value={balance} />
             <UnitText>vFINIX</UnitText>
           </ValueSection>
         </RightSection>
