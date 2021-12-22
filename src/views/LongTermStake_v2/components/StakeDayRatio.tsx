@@ -91,7 +91,7 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
                 <Flex alignItems="center">
                   <Dot $color={v.color} />
                   <Text textStyle="R_14R" color="deepgrey">
-                    {v.name} {t('days')}
+                    {t(`${v.name} days`)}
                   </Text>
                 </Flex>
                 <Flex alignItems="center">

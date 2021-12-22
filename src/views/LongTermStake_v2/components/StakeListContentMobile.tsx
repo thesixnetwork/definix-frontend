@@ -24,7 +24,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                   {t('Stake Period')}
                 </Text>
                 <Text textStyle="R_14R" color="black">
-                  {item.days} {t('days')}
+                  {t(`${item.days} days`)}
                 </Text>
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
                   <>
