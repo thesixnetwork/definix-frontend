@@ -176,11 +176,30 @@ const CastVoteModal: React.FC<Props> = ({
     return map
   }, [allChoices, selects])
 
+  const mapChoicesForSingle = useMemo(() => {
+    const map = []
+    allChoices.filter((v, index) => {
+      const getSelects = Object.values(selects).filter((u) => {
+        return _.get(u, 'id') !== undefined
+      })
+      getSelects.map((i) => {
+        if (_.get(i, 'id') === index && _.get(i, 'vote')) {
+          map.push(_.get(i, 'vote'))
+        } else {
+          map.push('0')
+        }
+        return map
+      })
+      return map
+    })
+    return map
+  }, [allChoices, selects])
+
   const unique = mapChoices.filter(function (elem, index, self) {
     return index === self.indexOf(elem)
   })
 
-  const { onCastVote, serviceKey } = useVote(proposalIndex, unique)
+  const { onCastVote, serviceKey } = useVote()
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
   const allowance = useServiceAllowance()
 
@@ -258,7 +277,7 @@ const CastVoteModal: React.FC<Props> = ({
   }
 
   const onConfirm = () => {
-    const res = onCastVote()
+    const res = onCastVote(proposalIndex, types === 'single' ? mapChoicesForSingle : unique)
     res
       .then((r) => {
         setShowLottie(true)

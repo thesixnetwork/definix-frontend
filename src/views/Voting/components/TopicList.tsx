@@ -83,35 +83,40 @@ const TabInfos = ({ tab }) => {
   const allProposalMap = useAllProposalOfType()
   const listAllProposal = _.get(allProposalMap, 'allProposalMap')
   const [arrayMap, setArrayMap] = useState([])
+  console.log('listAllProposal', listAllProposal)
 
   useEffect(() => {
     if (tab === 'vote') {
-      const votes = listAllProposal.filter((item) => {
+      let votes = listAllProposal.filter((item) => {
         return (
           Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
           Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
         )
       })
+
+      votes = votes.sort((a, b) => _.get(a, 'end_unixtimestamp') - _.get(b, 'end_unixtimestamp'))
       setArrayMap(votes)
       setIsLoading(false)
     }
     if (tab === 'soon') {
-      const votes = listAllProposal.filter((item) => {
+      let votes = listAllProposal.filter((item) => {
         return (
           Number(_.get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
           Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
         )
       })
+      votes = votes.sort((a, b) => _.get(a, 'end_unixtimestamp') - _.get(b, 'end_unixtimestamp'))
       setArrayMap(votes)
       setIsLoading(false)
     }
     if (tab === 'closed') {
-      const votes = listAllProposal.filter((item) => {
+      let votes = listAllProposal.filter((item) => {
         return (
           Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
           Number(_.get(item, 'end_unixtimestamp')) * 1000 < Date.now()
         )
       })
+      votes = votes.sort((a, b) => _.get(a, 'end_unixtimestamp') - _.get(b, 'end_unixtimestamp'))
       setArrayMap(votes)
       setIsLoading(false)
     }

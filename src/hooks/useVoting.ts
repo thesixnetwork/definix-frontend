@@ -290,12 +290,12 @@ const handleContractExecute = (_executeFunction, _account) => {
 }
 
 // Add vote
-export const useVote = (proposalIndex, votingPowers) => {
+export const useVote = () => {
   const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
   const [serviceKey, setServiceKey] = useState('')
 
-  const callCastVote = async () => {
+  const callCastVote = async (proposalIndex, votingPowers) => {
     if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
         getVFinixVoting(),

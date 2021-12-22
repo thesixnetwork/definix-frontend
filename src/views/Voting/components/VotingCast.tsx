@@ -100,6 +100,7 @@ function MyFormControlLabel(props) {
 }
 
 const VotingCast = ({ id, indexs, proposalIndex }) => {
+  const voteNow = indexs.startEpoch < Date.now() && indexs.endEpoch > Date.now()
   // const { isDark } = useTheme()
   // const { isXl, isLg } = useMatchBreakpoints()
   // const isMobile = !isXl && !isLg
@@ -146,80 +147,86 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
 
   return (
     <>
-      <Card className="mb-4">
-        <div className="pa-4 pt-3 bd-b">
-          <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-            Cast your vote
-          </Text>
-        </div>
-        <div className="ma-3">
-          {choiceType === 'single' ? (
-            <>
-              {choices &&
+      {voteNow && (
+        <>
+          <Card className="mb-4">
+            <div className="pa-4 pt-3 bd-b">
+              <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
+                Cast your vote
+              </Text>
+            </div>
+            <div className="ma-3">
+              {choiceType === 'single' ? (
+                <>
+                  {choices &&
+                    Object.values(choices).map((c, index) => (
+                      <RadioGroup
+                        name="use-radio-group"
+                        value={select}
+                        onChange={(event, i) => handleRadioButton(event, index, c)}
+                      >
+                        <CardList checked={_.get(select, `${index}.value`)}>
+                          <MyFormControlLabel
+                            disabled={
+                              _.get(items, 'choices') !== undefined && c !== _.get(items, 'choices.0.choiceName')
+                            }
+                            value={c}
+                            label=""
+                            control={<Radio />}
+                          />
+                          <Text fontSize="15px" bold>
+                            {c}
+                          </Text>
+                        </CardList>
+                      </RadioGroup>
+                    ))}
+                </>
+              ) : (
+                choices &&
                 Object.values(choices).map((c, index) => (
-                  <RadioGroup
-                    name="use-radio-group"
-                    value={select}
-                    onChange={(event, i) => handleRadioButton(event, index, c)}
-                  >
-                    <CardList checked={_.get(select, `${index}.value`)}>
-                      <MyFormControlLabel
-                        disabled={_.get(items, 'choices') !== undefined && c !== _.get(items, 'choices.0.choiceName')}
-                        value={c}
-                        label=""
-                        control={<Radio />}
-                      />
-                      <Text fontSize="15px" bold>
-                        {c}
-                      </Text>
-                    </CardList>
-                  </RadioGroup>
-                ))}
-            </>
-          ) : (
-            choices &&
-            Object.values(choices).map((c, index) => (
-              <CardList checked={_.get(select, `${index}.checked`)}>
-                <FormControlLabelCustom
-                  control={
-                    <CustomCheckbox
-                      size="small"
-                      checked={_.get(select, `${index}.checked`)}
-                      onChange={(event, i) => {
-                        setSelect({
-                          ...select,
-                          [index]: {
-                            checked: event.target.checked,
-                            id: index,
-                            value: c,
-                          },
-                        })
-                      }}
-                      icon={<BpCheckboxIcons />}
+                  <CardList checked={_.get(select, `${index}.checked`)}>
+                    <FormControlLabelCustom
+                      control={
+                        <CustomCheckbox
+                          size="small"
+                          checked={_.get(select, `${index}.checked`)}
+                          onChange={(event, i) => {
+                            setSelect({
+                              ...select,
+                              [index]: {
+                                checked: event.target.checked,
+                                id: index,
+                                value: c,
+                              },
+                            })
+                          }}
+                          icon={<BpCheckboxIcons />}
+                        />
+                      }
+                      label=""
                     />
-                  }
-                  label=""
-                />
-                <Text fontSize="15px" bold>
-                  {c}
-                </Text>
-              </CardList>
-            ))
-          )}
-          <Button
-            variant="success"
-            radii="small"
-            marginTop="10px"
-            size="sm"
-            disabled={Number(availableVotes) <= 0 || Date.now() < _.get(indexProposal, 'startEpoch')}
-            onClick={() => {
-              onPresentConnectModal()
-            }}
-          >
-            Cast vote
-          </Button>
-        </div>
-      </Card>
+                    <Text fontSize="15px" bold>
+                      {c}
+                    </Text>
+                  </CardList>
+                ))
+              )}
+              <Button
+                variant="success"
+                radii="small"
+                marginTop="10px"
+                size="sm"
+                disabled={Number(availableVotes) <= 0 || Date.now() < _.get(indexProposal, 'startEpoch')}
+                onClick={() => {
+                  onPresentConnectModal()
+                }}
+              >
+                Cast vote
+              </Button>
+            </div>
+          </Card>
+        </>
+      )}
     </>
   )
 }
