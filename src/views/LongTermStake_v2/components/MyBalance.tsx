@@ -62,7 +62,9 @@ const MyBalance: React.FC<MyBalanceProps> = ({ isMobile, lockAmount, balancevfin
           </Text>
           <Flex alignItems="center">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              {numeral(balancevfinix).format('0,0.[000000]')}
+              {balancevfinix >= 1000000000
+                ? numeral(balancevfinix).format('0,0')
+                : numeral(balancevfinix).format('0,0.[000000]')}
             </Text>
             <Text ml="S_6" textStyle="R_12B" color="white">
               {t('vFINIX')}
@@ -76,7 +78,9 @@ const MyBalance: React.FC<MyBalanceProps> = ({ isMobile, lockAmount, balancevfin
           </Text>
           <Flex alignItems="center">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              {numeral(lockAmount).format('0,0.[000000]')}
+              {lockAmount >= 1000000000
+                ? numeral(lockAmount).format('0,0')
+                : numeral(lockAmount).format('0,0.[000000]')}
             </Text>
             <Text ml="S_6" textStyle="R_12B" color="white">
               {t('FINIX')}
