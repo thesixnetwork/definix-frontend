@@ -18,15 +18,11 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
 
 const EmptyData = ({ text }) => (
-  <TR>
-    <TD colSpan={6}>
-      <div className="flex align-center justify-center" style={{ height: '400px' }}>
-        <Text textAlign="center" color="textSubtle">
-          {text}
-        </Text>
-      </div>
-    </TD>
-  </TR>
+  <div className="flex align-center justify-center" style={{ height: '400px' }}>
+    <Text textAlign="center" color="textSubtle">
+      {text}
+    </Text>
+  </div>
 )
 
 const LoadingData = () => (
