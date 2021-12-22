@@ -4,10 +4,8 @@ import { Route, useRouteMatch, useParams } from 'react-router-dom'
 import axios from 'axios'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
-import { Card, Text } from 'uikit-dev'
-// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { Card, Text, Skeleton } from 'uikit-dev'
 import styled from 'styled-components'
-// import useTheme from 'hooks/useTheme'
 import { useProposalIndex } from 'hooks/useVoting'
 import useRefresh from 'hooks/useRefresh'
 import LinearProgress from '@material-ui/core/LinearProgress'
@@ -22,13 +20,9 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
 }))
 
 const VotingResults = ({ getByIndex }) => {
-  // const { account } = useWallet()
-  // const { isDark } = useTheme()
-  // const { isXl, isLg } = useMatchBreakpoints()
-  // const isMobile = !isXl && !isLg
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { indexProposal } = useProposalIndex(proposalIndex)
-
+  const [isLoading, setIsLoading] = useState(false)
   const [add, setAdd] = useState({})
   const [mapVoting, setMapVoting] = useState([])
   const { fastRefresh } = useRefresh()
@@ -39,6 +33,7 @@ const VotingResults = ({ getByIndex }) => {
     const dataArray = []
     const array = []
     const fetch = async () => {
+      // setIsLoading(true)
       const voteAPI = process.env.REACT_APP_IPFS
       await axios
         .get(`${voteAPI}/${id}`)
@@ -80,6 +75,7 @@ const VotingResults = ({ getByIndex }) => {
           return array
         })
       }
+      // setIsLoading(false)
       setMapVoting(array)
       await setAdd(dataArray)
     }
@@ -88,6 +84,16 @@ const VotingResults = ({ getByIndex }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fastRefresh])
 
+
+  useEffect(() => {
+    if(mapVoting.length === 0){
+      setIsLoading(true)
+    }else{
+      setIsLoading(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
+ 
   return (
     <>
       <Card className="mb-4">
@@ -96,25 +102,35 @@ const VotingResults = ({ getByIndex }) => {
             Current Results
           </Text>
         </div>
-        {add &&
-          mapVoting.map((v) => (
-            <div className="ma-5">
-              <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-                {v.value}
-              </Text>
-              <div className="my-3">
-                <BorderLinearProgress variant="determinate" value={v.percent} />
-              </div>
-              <div className="flex justify-space-between">
-                <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                  {v.vote} Votes
+        {isLoading ?(
+          <>
+           <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="30px 20px 0px" />&nbsp;
+           <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="0px 20px 30px" />
+          </>
+        ):(
+          <>
+          {add &&
+            mapVoting.map((v) => (
+              <div className="ma-5">
+                <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
+                  {v.value}
                 </Text>
-                <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                  {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
-                </Text>
+                <div className="my-3">
+                  <BorderLinearProgress variant="determinate" value={v.percent} />
+                </div>
+                <div className="flex justify-space-between">
+                  <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                    {v.vote} Votes
+                  </Text>
+                  <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                    {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
+                  </Text>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </>
+        )}
+        
       </Card>
     </>
   )

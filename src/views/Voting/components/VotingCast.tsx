@@ -87,6 +87,12 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
+const VotePowerChoice = styled.div`
+  display: flex;
+  justify-content: center;
+  width: initial;
+`
+
 function MyFormControlLabel(props) {
   const radioGroup = useRadioGroup()
 
@@ -210,9 +216,14 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                               label=""
                               control={<Radio />}
                             />
-                            <Text fontSize="15px" bold>
-                              {_.get(c, 'value')}
-                            </Text>
+                            <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
+                              <Text fontSize="15px" bold>
+                                {_.get(c, 'value')}
+                              </Text>
+                              <Text fontSize="15px" bold>
+                                {_.get(c, 'votePower') !== '' && `Your Voting Power : ${_.get(c, 'votePower')}`}
+                              </Text>
+                            </VotePowerChoice>
                           </CardList>
                         </RadioGroup>
                       ))}
@@ -241,9 +252,14 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                         }
                         label=""
                       />
-                      <Text fontSize="15px" bold>
-                        {_.get(c, 'value')}
-                      </Text>
+                      <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
+                        <Text fontSize="15px" bold>
+                          {_.get(c, 'value')}
+                        </Text>
+                        <Text fontSize="15px" bold>
+                          {_.get(c, 'votePower') !== '' && `Your Voting Power : ${_.get(c, 'votePower')}`}
+                        </Text>
+                      </VotePowerChoice>
                     </CardList>
                   ))
                 )}
