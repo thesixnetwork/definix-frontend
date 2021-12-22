@@ -18,7 +18,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
     if (i18n.language === 'ko') {
       return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
     }
-    return moment(endDay).format(`DD-MMM-YYYY HH:mm:ss`)
+    return moment(endDay).format(`DD-MMM-YY HH:mm:ss`)
   }
 
   return (
