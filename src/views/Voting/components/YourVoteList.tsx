@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { useParams,Link } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import _ from 'lodash'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
@@ -156,7 +156,9 @@ const YourVoteList = () => {
             radii="small"
             size="sm"
             mr="6px"
-            disabled={Date.now() < +_.get(items, 'endDate') ||  _.get(items, 'choices') && _.get(items, 'choices').length <= 0}
+            disabled={
+              Date.now() < +_.get(items, 'endDate') || (_.get(items, 'choices') && _.get(items, 'choices').length <= 0)
+            }
           >
             Claim Voting Power
           </Button>

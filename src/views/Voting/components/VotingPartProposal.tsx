@@ -109,7 +109,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const { callClaimVote } = useClaimVote()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
- 
+
   const timeZone = new Date().getTimezoneOffset() / 60
   const offset = timeZone === -7 && 2
   // const utcStartTimestamp = startTimestamp.getTime()

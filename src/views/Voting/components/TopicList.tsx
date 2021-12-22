@@ -154,14 +154,19 @@ const TabInfos = ({ tab }) => {
                   ) : (
                     <>
                       <Text fontSize="14px !important" lineHeight="1">
-                        {tab === 'vote' || tab === 'closed' ? "End Date" : "Start Date"}
-                      </Text>&nbsp;
+                        {tab === 'vote' || tab === 'closed' ? 'End Date' : 'Start Date'}
+                      </Text>
+                      &nbsp;
                       <Text fontSize="14px !important" bold lineHeight="1" mr="6px">
-                        {tab === 'vote' || tab === 'closed'?(
-                          <>{_.get(item, 'endTimestamp')} {_.get(item, 'endTimestamp') !== '-' && 'GMT+9'}</>
-                        ):(
-                          <>{_.get(item, 'startTimestamp')} {_.get(item, 'startTimestamp') !== '-' && 'GMT+9'}</>
-                        )} 
+                        {tab === 'vote' || tab === 'closed' ? (
+                          <>
+                            {_.get(item, 'endTimestamp')} {_.get(item, 'endTimestamp') !== '-' && 'GMT+9'}
+                          </>
+                        ) : (
+                          <>
+                            {_.get(item, 'startTimestamp')} {_.get(item, 'startTimestamp') !== '-' && 'GMT+9'}
+                          </>
+                        )}
                       </Text>
                     </>
                   )}
@@ -171,7 +176,8 @@ const TabInfos = ({ tab }) => {
                     <>
                       {isLoading ? (
                         <>
-                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%"/>&nbsp;
+                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
+                          &nbsp;
                           <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
                         </>
                       ) : (
