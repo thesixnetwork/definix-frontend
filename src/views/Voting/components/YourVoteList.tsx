@@ -137,7 +137,7 @@ const YourVoteList = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { callClaimVote } = useClaimVote()
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
-  
+
   return (
     <>
       <CardTable className="mb-4">
@@ -166,7 +166,7 @@ const YourVoteList = () => {
             variant="success"
             radii="small"
             size="sm"
-            disabled={(Date.now() < +_.get(items, 'endDate') || (items.choices.length === 0))}
+            disabled={Date.now() < +_.get(items, 'endDate') || items.choices.length === 0}
           >
             Claim Voting Power
           </Button>
