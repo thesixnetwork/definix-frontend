@@ -1,13 +1,12 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, ChangeEvent, lazy, useState, useMemo, FormEvent } from 'react'
+import React, { useEffect, ChangeEvent, lazy, useState, useMemo, FormEvent, useContext } from 'react'
 import Lottie from 'react-lottie'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import axios from 'axios'
 import Caver from 'caver-js'
 import _ from 'lodash'
 import moment from 'moment'
-import { Link } from 'react-router-dom'
-
+import { Link, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { ExternalLink } from 'react-feather'
 import times from 'lodash/times'
@@ -21,6 +20,7 @@ import loadings from 'uikit-dev/animation/farmPool.json'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { format, parseISO, isValid } from 'date-fns'
+import { Context } from '../../../uikit-dev/widgets/Modal/ModalContext'
 import CardLoadings from '../Modals/CardLodaing'
 import AddChoices, { Choice, makeChoice, MINIMUM_CHOICES } from './AddChoices'
 import VotingPower from './VotingPower'
@@ -128,7 +128,7 @@ interface Props {
   onDismiss?: () => void
 }
 
-const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
+const AddProposal: React.FC<Props> = () => {
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
   const { account } = useWallet()
@@ -144,6 +144,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     snapshot: 0,
     ipfs: '',
   })
+  const { onDismiss } = useContext(Context)
 
   const [isLoading, setIsLoading] = useState('')
   const [choiceType, setChoiceType] = useState('single')
@@ -161,6 +162,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     0,
     choiceType === 'single' ? 1 : filterChoices.length,
   )
+  const navigate = useHistory()
 
   const CardResponse = () => {
     return (
@@ -173,6 +175,7 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }
 
   const CardLoading = () => {
+    console.log('CardLoading')
     return (
       <ModalResponses title="" onDismiss={onDismiss}>
         <div className="pb-6 pt-2">
@@ -217,13 +220,14 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
     updateValue('choices', newChoices)
   }
 
-  const [onPresentConnectModal] = useModal(<CardLoadings isLoading={isLoading} />)
+  const [onPresentConnectModal] = useModal(<CardLoading />)
+  const [onPresentAccountModal] = useModal(<CardResponse />)
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
 
     try {
-      onPresentConnectModal()
+      await onPresentConnectModal()
       setIsLoading('loading')
       const caver = getCaver()
       const epochTime = moment().unix()
@@ -252,21 +256,24 @@ const AddProposal: React.FC<Props> = ({ onDismiss = () => null }) => {
             res
               .then((r) => {
                 if (_.get(r, 'status')) {
-                  setIsLoading('success')
-                  setInterval(() => setIsLoading(''), 5000)
+                  onPresentAccountModal()
+                  setInterval(() => onDismiss(), 3000)
+                  setInterval(() => navigate.push('/voting'), 3000)
+                  clearInterval()
                 }
               })
               .catch((e) => {
-                setIsLoading('')
+                onDismiss()
               })
           }
         })
         .catch((e) => {
-          setIsLoading('')
+          onDismiss()
         })
     } catch (e) {
-      setIsLoading('')
+      onDismiss()
     }
+    clearInterval()
   }
 
   const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
