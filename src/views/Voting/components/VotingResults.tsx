@@ -9,6 +9,7 @@ import { Card, Text } from 'uikit-dev'
 import styled from 'styled-components'
 // import useTheme from 'hooks/useTheme'
 import { useProposalIndex } from 'hooks/useVoting'
+import useRefresh from 'hooks/useRefresh'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
 const BorderLinearProgress = styled(LinearProgress)(() => ({
@@ -30,6 +31,7 @@ const VotingResults = ({ getByIndex }) => {
 
   const [add, setAdd] = useState({})
   const [mapVoting, setMapVoting] = useState([])
+  const { fastRefresh } = useRefresh()
 
   const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
 
@@ -83,7 +85,8 @@ const VotingResults = ({ getByIndex }) => {
     }
 
     fetch()
-  }, [id, add, voting])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
 
   return (
     <>
