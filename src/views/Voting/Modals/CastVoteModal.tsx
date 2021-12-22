@@ -210,12 +210,27 @@ const CastVoteModal: React.FC<Props> = ({
   const filter = Object.values(select).filter((i) => {
     return _.get(i, 'checked') === true
   })
+  const mergedSubjects = allChoices.map((subject) => {
+    const otherSubject = Object.values(selects).filter((element) => _.get(element, 'id') === subject.id)
+    return { ...subject, ...otherSubject }
+  })
+
+  const yes = []
+  mergedSubjects.map((v) => {
+    if (_.get(v, '0.vote') !== undefined) {
+      yes.push(_.get(v, '0.vote'))
+    } else {
+      yes.push('0')
+    }
+    return v
+  })
   const mapChoice = types === 'single' ? singleType : filter
 
   const handleApprove = useCallback(async () => {
     try {
       const txHash = await onApprove()
       if (txHash) {
+        setShowLottie(false)
         setTransactionHash(_.get(txHash, 'transactionHash'))
       }
     } catch (e) {
@@ -226,8 +241,11 @@ const CastVoteModal: React.FC<Props> = ({
   const CardResponse = () => {
     return (
       <ModalResponses title="" onDismiss={onDismiss} className="">
-        <div className="pb-6 pt-2">
+        <div className="pb-6 pt-2 text-center">
           <Lottie options={SuccessOptions} height={155} width={185} />
+          <Text fontSize="24px" color="success">
+            Your vote has been casted
+          </Text>
         </div>
       </ModalResponses>
     )
@@ -277,7 +295,7 @@ const CastVoteModal: React.FC<Props> = ({
   }
 
   const onConfirm = () => {
-    const res = onCastVote(proposalIndex, types === 'single' ? mapChoicesForSingle : unique)
+    const res = onCastVote(proposalIndex, types === 'single' ? mapChoicesForSingle : yes)
     res
       .then((r) => {
         setShowLottie(true)

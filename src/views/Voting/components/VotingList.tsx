@@ -11,7 +11,7 @@ import isEmpty from 'lodash/isEmpty'
 import { getAddress } from 'utils/addressHelpers'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
-import { useProposalIndex } from 'hooks/useVoting'
+import { useProposalIndex, useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
 import useRefresh from 'hooks/useRefresh'
 import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
@@ -115,10 +115,8 @@ const LinkView = styled(Button)`
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Transaction Hash', 'Address', 'Choice', 'Voting Power'])
-  // const [currentPage, setCurrentPage] = useState(1)
   // const pages = useMemo(() => Math.ceil(total / 10), [total])
   // const onPageChange = (e, page) => {
-  //   setCurrentPage(page)
   // }
 
   return (
@@ -236,122 +234,49 @@ const VotingList = ({ rbAddress }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
-  const [transactions, setTransactions] = useState([])
-  const [totalVotes, setTotalVotes] = useState(0)
-  const [total, setTotal] = useState(1)
-  const { fastRefresh } = useRefresh()
-  const pages = useMemo(() => Math.ceil(total / 10), [total])
-  const limits = 15
+  const limits = 10
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const [add, setAdd] = useState([])
 
   const { indexProposal } = useProposalIndex(proposalIndex)
   const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
+  const { allVotesByIndex, totalVote } = useVotesByIndex(proposalIndex, currentPage, limits)
+  const { allVotesByIpfs } = useVotesByIpfs(id)
+  const pages = useMemo(() => Math.ceil(Number(totalVote) / 10), [Number(totalVote)])
 
-  useEffect(() => {
-    const dataArray = []
-    const fetchVotes = async () => {
-      setIsLoading(true)
-      const voteAPI = process.env.REACT_APP_LIST_VOTE_API
-      await axios
-        .get(`${voteAPI}?proposalIndex=${proposalIndex}&page=${pages}&limit=${limits}`)
-        .then((resp) => {
-          if (resp.data.success) {
-            const data = _.get(resp, 'data.result')
-            const totalVote = _.get(resp, 'data.total')
-            setTotalVotes(totalVote)
-
-            data.map((v) =>
-              dataArray.push({
-                voter_addr: v.voter_addr,
-                voting_opt: v.voting_opt,
-                voting_power: v.voting_power,
-                transaction_hash: v.transaction_hash,
-              }),
-            )
-          }
-        })
-        .catch((e) => {
-          console.log('error', e)
-        })
-
-      setTransactions(dataArray)
-    }
-    fetchVotes()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fastRefresh])
-
-  useEffect(() => {
-    const dataArray = []
+  const mapAllVote = useMemo(() => {
     const array = []
-    const fetch = async () => {
-      const voteAPI = process.env.REACT_APP_IPFS
-      await axios
-        .get(`${voteAPI}/${id}`)
-        .then((resp) => {
-          dataArray.push({
-            choice_type: resp.data.choice_type,
-            choices: resp.data.choices,
-            content: resp.data.content,
-            creator: resp.data.creator,
-            proposals_type: resp.data.proposals_type,
-            start_unixtimestamp: resp.data.start_unixtimestamp,
-            end_unixtimestamp: resp.data.end_unixtimestamp,
-            title: resp.data.title,
+    allVotesByIndex.map((v, i) => {
+      _.get(allVotesByIpfs, '0.choices').map((items, index) => {
+        if (index === Number(_.get(v, 'voting_opt'))) {
+          array.push({
+            transaction_hash: _.get(v, 'transaction_hash'),
+            voter_addr: _.get(v, 'voter_addr'),
+            voting_opt: items,
+            voting_power: _.get(v, 'voting_power'),
           })
-        })
-        .catch((e) => {
-          console.log('error', e)
-        })
-
-      const getchoices = _.get(dataArray, '0.choices')
-      await transactions.map((v, i) => {
-        getchoices.map((items, index) => {
-          if (index === Number(_.get(v, 'voting_opt'))) {
-            array.push({
-              transaction_hash: _.get(v, 'transaction_hash'),
-              voter_addr: _.get(v, 'voter_addr'),
-              voting_opt: items,
-              voting_power: _.get(v, 'voting_power'),
-            })
-          }
-          return array
-        })
-
+        }
         return array
       })
-      await setAdd(array)
-      setIsLoading(false)
-    }
-    fetch()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fastRefresh])
-
-  const setDefault = (tab) => {
-    setCurrentTab(tab)
-    setCurrentPage(1)
-    setTotal(0)
-  }
+      return array
+    })
+    return array
+  }, [allVotesByIndex, allVotesByIpfs])
 
   const onPageChange = (e, page) => {
     setCurrentPage(page)
   }
-  useEffect(() => {
-    return () => {
-      setDefault(0)
-    }
-  }, [])
 
   return (
     <>
       <CardTable className="mb-4">
         <div className="pa-4 pt-3 bd-b">
           <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-            Votes ({totalVotes})
+            Votes ({Number(totalVote)})
           </Text>
         </div>
         <TransactionTable
-          rows={add && add}
+          rows={mapAllVote}
           isLoading={isLoading}
           empText="Don`t have any transactions in this votes."
           total

@@ -22,7 +22,13 @@ import IProposerFacet from '../config/abi/IProposerFacet.json'
 import { getContract } from '../utils/caver'
 import { State } from '../state/types'
 import { getFinixAddress, getVFinix, getVFinixVoting } from '../utils/addressHelpers'
-import { fetchAllProposalOfType, fetchProposalIndex, fetchProposal } from '../state/actions'
+import {
+  fetchAllProposalOfType,
+  fetchProposalIndex,
+  fetchProposal,
+  fetchVotesByIndex,
+  fetchVotesByIpfs,
+} from '../state/actions'
 import useRefresh from './useRefresh'
 
 /* eslint no-else-return: "error" */
@@ -61,6 +67,31 @@ export const useAllProposalOfType = () => {
   }, [fastRefresh, dispatch])
 
   return { allProposal, allProposalMap }
+}
+
+export const useVotesByIndex = (proposalIndex, pages, limits) => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const allVotesByIndex = useSelector((state: State) => state.voting.allVotesByIndex)
+  const totalVote = useSelector((state: State) => state.voting.totalVote)
+
+  useEffect(() => {
+    dispatch(fetchVotesByIndex(proposalIndex, pages, limits))
+  }, [fastRefresh, dispatch, proposalIndex, pages, limits])
+
+  return { allVotesByIndex, totalVote }
+}
+
+export const useVotesByIpfs = (ipfs) => {
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
+  const allVotesByIpfs = useSelector((state: State) => state.voting.allVotesByIpfs)
+
+  useEffect(() => {
+    dispatch(fetchVotesByIpfs(ipfs))
+  }, [fastRefresh, dispatch, ipfs])
+
+  return { allVotesByIpfs }
 }
 
 export const useAllProposalOfAddress = () => {
