@@ -21,7 +21,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
             <Flex width="100%" alignItems="center" py="S_16">
               <Flex width="20%" flexDirection="column">
                 <Text textStyle="R_14R" color="black">
-                  {item.days} {t('days')}
+                  {t(`${item.days} days`)}
                 </Text>
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
                   <>

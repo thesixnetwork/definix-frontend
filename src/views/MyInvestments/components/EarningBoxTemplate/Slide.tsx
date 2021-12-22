@@ -39,6 +39,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
           height: inherit;
           background: ${({ curTheme }) => curTheme.slideDotColor};
           color: transparent;
+          opacity: 1;
         }
       }
       &.slick-active {
@@ -49,6 +50,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
             border-radius: 50%;
             background: ${({ curTheme }) => curTheme.slideDotActiveColor};
             color: transparent;
+            opacity: 1;
           }
         }
       }
@@ -127,6 +129,7 @@ const Slide: React.FC<{
         textStyle: `R_16M`,
         color: curTheme.itemBalanceColor,
         value: hasAccount ? value : 0,
+        postfix: 'FINIX',
       }
       return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
     },

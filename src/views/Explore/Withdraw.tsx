@@ -69,7 +69,7 @@ const Withdraw: React.FC<WithdrawType> = ({ rebalance }) => {
           </Text>
         </Button>
       </Flex>
-      <PageTitle text={t('Withdraw')} small={isMobile} />
+      <PageTitle text={t('Withdraw')} desc={t('Withdraw your investment and get')} small={isMobile} />
 
       <div>
         <SummaryCard
