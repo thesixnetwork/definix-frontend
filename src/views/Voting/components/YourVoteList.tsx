@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams,Link } from 'react-router-dom'
 import _ from 'lodash'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
@@ -79,8 +79,6 @@ const TD = styled.td<{ align?: string }>`
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Vote', 'Voting Power', ''])
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
 
   return (
     <CardList>
@@ -129,11 +127,8 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 }
 
 const YourVoteList = () => {
-  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const availableVotes = useAvailableVotes()
+  const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { proposalOfAddress } = useAllProposalOfAddress()
-  const [onPresentConnectModal] = useModal(<CastVoteModal />)
-  const [select, setSelect] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const { callClaimVote } = useClaimVote()
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
@@ -146,16 +141,10 @@ const YourVoteList = () => {
             Your vote
           </Text>
         </div>
-        {/* <div className="ma-3"> */}
         <TransactionTable
           rows={items !== undefined && items}
           isLoading={isLoading}
-          empText={
-            'Don`t have any transactions in this votes.'
-            // currentTab === 0
-            //   ? 'Don`t have any transactions in this votes.'
-            //   : 'You haven`t made any transactions in this votes.'
-          }
+          empText="Don`t have any transactions in this votes."
           total
         />
         <div className="flex align-center ma-3">
@@ -166,15 +155,26 @@ const YourVoteList = () => {
             variant="success"
             radii="small"
             size="sm"
-            disabled={Date.now() < +_.get(items, 'endDate') || items.choices.length === 0}
+            mr="6px"
+            disabled={Date.now() < +_.get(items, 'endDate') ||  _.get(items, 'choices') && _.get(items, 'choices').length <= 0}
           >
             Claim Voting Power
+          </Button>
+          <Button
+            as={Link}
+            to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
+            variant="primary"
+            radii="small"
+            size="sm"
+            className="flex align-center"
+            disabled={Date.now() > +_.get(items, 'endDate')}
+          >
+            Vote more
           </Button>
           <Text fontSize="14px" color="text" paddingLeft="14px">
             Claim will be available after the the voting time is ended.
           </Text>
         </div>
-        {/* </div> */}
       </CardTable>
     </>
   )

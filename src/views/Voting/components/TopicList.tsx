@@ -6,7 +6,7 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
-import { Heading, Text, Button, Image, Skeleton } from '../../../uikit-dev'
+import { Heading, Text, Button, Image, Skeleton, useMatchBreakpoints } from '../../../uikit-dev'
 import nextIcon from '../../../uikit-dev/images/next.png'
 import coreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-core.png'
 import communityIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-community.png'
@@ -83,7 +83,6 @@ const TabInfos = ({ tab }) => {
   const allProposalMap = useAllProposalOfType()
   const listAllProposal = _.get(allProposalMap, 'allProposalMap')
   const [arrayMap, setArrayMap] = useState([])
-  console.log('listAllProposal', listAllProposal)
 
   useEffect(() => {
     if (tab === 'vote') {
@@ -147,16 +146,24 @@ const TabInfos = ({ tab }) => {
                   )}
                 </Heading>
                 <TextHorizontal>
-                  <Text fontSize="14px !important" lineHeight="1">
-                    End Date
-                  </Text>
-                  &nbsp;
                   {isLoading ? (
-                    <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+                    <>
+                      <Skeleton animation="pulse" variant="rect" height="26px" width="60px" /> &nbsp;
+                      <Skeleton animation="pulse" variant="rect" height="26px" width="120px" />
+                    </>
                   ) : (
-                    <Text fontSize="14px !important" bold lineHeight="1" mr="6px">
-                      {_.get(item, 'endTimestamp')} {_.get(item, 'endTimestamp') !== '-' && 'GMT+9'}
-                    </Text>
+                    <>
+                      <Text fontSize="14px !important" lineHeight="1">
+                        {tab === 'vote' || tab === 'closed' ? "End Date" : "Start Date"}
+                      </Text>&nbsp;
+                      <Text fontSize="14px !important" bold lineHeight="1" mr="6px">
+                        {tab === 'vote' || tab === 'closed'?(
+                          <>{_.get(item, 'endTimestamp')} {_.get(item, 'endTimestamp') !== '-' && 'GMT+9'}</>
+                        ):(
+                          <>{_.get(item, 'startTimestamp')} {_.get(item, 'startTimestamp') !== '-' && 'GMT+9'}</>
+                        )} 
+                      </Text>
+                    </>
                   )}
                 </TextHorizontal>
                 <div className="flex">
@@ -164,8 +171,7 @@ const TabInfos = ({ tab }) => {
                     <>
                       {isLoading ? (
                         <>
-                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
-                          &nbsp;
+                          <Skeleton animation="pulse" variant="rect" height="28px" width="34%"/>&nbsp;
                           <Skeleton animation="pulse" variant="rect" height="28px" width="34%" />
                         </>
                       ) : (

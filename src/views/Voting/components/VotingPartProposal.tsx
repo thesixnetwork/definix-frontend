@@ -1,23 +1,16 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 import { Card, Text, useMatchBreakpoints, Button } from 'uikit-dev'
-// import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
-// import moment from 'moment'
-// import numeral from 'numeral'
 import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
-// import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import _ from 'lodash'
-import { getContract } from 'utils/caver'
-import { useWallet } from 'klaytn-use-wallet'
-import { getVFinixVoting } from '../../../utils/addressHelpers'
 import { Voting } from '../../../state/types'
 import PaginationCustom from './Pagination'
-import IVotingFacet from '../../../config/abi/IVotingFacet.json'
-import { useAllProposalOfType, useClaimVote } from '../../../hooks/useVoting'
+import { useClaimVote } from '../../../hooks/useVoting'
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -113,11 +106,14 @@ const BtnClaim = styled(Button)`
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
-  const allProposal = useAllProposalOfType()
   const { callClaimVote } = useClaimVote()
-
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
+ 
+  const timeZone = new Date().getTimezoneOffset() / 60
+  const offset = timeZone === -7 && 2
+  // const utcStartTimestamp = startTimestamp.getTime()
+  // const startTime = new Date(utcStartTimestamp + 3600000 * offset)
 
   return (
     <CardList>
@@ -152,6 +148,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                         End Date
                       </Text>
                       <Text color="text" bold>
+                        {/* {console.log("r.endDate",r.endDate,moment(r.endDate).format(`DD-MMM-YY HH:mm:ss`))} */}
                         {new Date(r.endDate).toLocaleString()}
                       </Text>
                     </div>
@@ -251,12 +248,7 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
         <TransactionTable
           rows={transactions}
           isLoading={isLoading}
-          empText={
-            'Don`t have any transactions in this votes.'
-            // currentTab === 0
-            //   ? 'Don`t have any transactions in this votes.'
-            //   : 'You haven`t made any transactions in this votes.'
-          }
+          empText="Don`t have any transactions in this votes."
           total
         />
         <PaginationCustom

@@ -110,7 +110,6 @@ const VotingResults = ({ getByIndex }) => {
                   {v.vote} Votes
                 </Text>
                 <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                  {console.log('v.percent', v.percent)}
                   {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
                 </Text>
               </div>
