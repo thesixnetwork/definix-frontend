@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import useFarmsList from 'hooks/useFarmsList'
 import usePoolsList from 'hooks/usePoolsList'
 import useConverter from 'hooks/useConverter'
-import { useLockCount, useAllowance, usePrivateData, useAprCardFarmHome } from 'hooks/useLongTermStake'
+import { useLockCount, useAllowance, usePrivateData, useAprCardFarmHome, useRank } from 'hooks/useLongTermStake'
 import { fetchFarmUserDataAsync } from 'state/actions'
 import { fetchBalances, fetchRebalanceBalances } from 'state/wallet'
 import { useBalances, useRebalances, useRebalanceBalances, useFarms, usePools } from 'state/hooks'
@@ -144,9 +144,22 @@ const useMyInvestments = () => {
   const lockCount = useLockCount()
   const longTermAllowance = useAllowance()
   const longtermApr = useAprCardFarmHome()
+  const rank = useRank()
   const isApprovedLongTerm = useMemo(() => {
     return account && longTermAllowance && longTermAllowance.isGreaterThan(0)
   }, [account, longTermAllowance])
+  const grade = useMemo(() => {
+    switch (rank) {
+      case 0:
+        return 'Silver'
+      case 1:
+        return 'Gold'
+      case 2:
+        return 'Diamond'
+      default:
+        return ''
+    }
+  }, [rank])
   const stakedLongTermStake = useMemo(() => {
     const result = []
     if (isApprovedLongTerm && Number(lockCount) !== 0) {
@@ -158,12 +171,13 @@ const useMyInvestments = () => {
           apyValue: typeof longtermApr !== 'number' || Number.isNaN(longtermApr) ? 0 : longtermApr,
           lpSymbol: 'longTermStake',
           value: new BigNumber(finixPrice).times(userLongTerStake.lockAmount).toNumber(),
+          grade,
           ...userLongTerStake,
         },
       })
     }
     return result
-  }, [t, isApprovedLongTerm, lockCount, userLongTerStake, longtermApr, finixPrice])
+  }, [t, isApprovedLongTerm, lockCount, userLongTerStake, longtermApr, finixPrice, grade])
 
   useEffect(() => {
     if (account) {
