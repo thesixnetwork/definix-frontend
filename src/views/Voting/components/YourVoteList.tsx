@@ -1,15 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { Route, useRouteMatch, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import _ from 'lodash'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
-import Radio from '@material-ui/core/Radio'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
 import { useAvailableVotes, useAllProposalOfAddress, useClaimVote } from '../../../hooks/useVoting'
 import CastVoteModal from '../Modals/CastVoteModal'
-// import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
 const EmptyData = ({ text }) => (
   <TR>
