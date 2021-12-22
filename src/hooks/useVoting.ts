@@ -5,7 +5,12 @@ import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
-import { getAbiVaultFacetByName } from 'hooks/hookHelper'
+import {
+  getAbiVaultFacetByName,
+  getAbiIProposalFacetByName,
+  getAbiIUsageFacetByName,
+  getAbiIVotingFacetByName,
+} from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 import UsageFacet from '../config/abi/UsageFacet.json'
 // import VotingFacet from '../config/abi/VotingFacet.json'
@@ -164,7 +169,7 @@ export const usePropose = (
     if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
         getVFinixVoting(),
-        JSON.stringify(getAbiVaultFacetByName('unlock')),
+        JSON.stringify(getAbiIProposalFacetByName('propose')),
         JSON.stringify([
           ipfsHash,
           proposalType,
@@ -210,45 +215,6 @@ export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIn
   return contract.methods.getVotingPowersOfAddress(_proposalIndex, _optionIndex, voter).call()
 }
 
-// const handleContractExecute = (_executeFunction, _account) => {
-//   return new Promise((resolve, reject) => {
-//     _executeFunction.send({ from: _account, gas: 5000000 }).then(resolve).catch(reject)
-//   })
-// }
-
-// export const recallVotesFromProposal = () => {
-//   const { account, connector } = useWallet()
-//   const { setShowModal } = useContext(KlipModalContext())
-
-// Claim Voting Power
-//   const onRecallVotesFromProposal = async (proposalIndex) => {
-//     if (connector === 'klip') {
-//       klipProvider.genQRcodeContactInteract(
-//         getVFinixVoting(),
-//         JSON.stringify(getAbiVaultFacetByName('recallVotesFromProposal')),
-//         JSON.stringify([proposalIndex]),
-//         setShowModal,
-//       )
-//       await klipProvider.checkResponse()
-//       setShowModal(false)
-//       return new Promise((resolve, reject) => {
-//         resolve('')
-//       })
-//     }
-//     const callContract = getContract(VotingFacet.abi, getVFinixVoting())
-//     return new Promise((resolve, reject) => {
-//       handleContractExecute(callContract.methods.recallVotesFromProposal(proposalIndex), account).then(resolve).catch(reject)
-//     })
-//   }
-
-//   return { onRecallVotes: onRecallVotesFromProposal }
-// }
-
-// export const useGetProposal = (proposalId: string) => {
-//   const proposal = useSelector((state: State) => state.voting.proposals[proposalId])
-//   return proposal
-// }
-
 export const useGetProposal = (proposalId: string) => {
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
@@ -269,19 +235,19 @@ export const useApproveToService = (max) => {
   const onApprove = useCallback(async () => {
     const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
     const serviceKey = await call.methods.getServiceKey().call()
-    // if (connector === 'klip') {
-    //   klipProvider.genQRcodeContactInteract(
-    //     getFinixAddress(),
-    //     JSON.stringify(getAbiERC20ByName('approve')),
-    //     JSON.stringify([getVFinix(), klipProvider.MAX_UINT_256_KLIP]),
-    //     setShowModal,
-    //   )
-    //   const txHash = await klipProvider.checkResponse()
-    //   setShowModal(false)
-    //   return new Promise((resolve, reject) => {
-    //     resolve(txHash)
-    //   })
-    // }
+    if (connector === 'klip') {
+      klipProvider.genQRcodeContactInteract(
+        getFinixAddress(),
+        JSON.stringify(getAbiIUsageFacetByName('approveToService')),
+        JSON.stringify([serviceKey, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff']),
+        setShowModal,
+      )
+      const txHash = await klipProvider.checkResponse()
+      setShowModal(false)
+      return new Promise((resolve, reject) => {
+        resolve(txHash)
+      })
+    }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
       handleContractExecute(
@@ -294,7 +260,7 @@ export const useApproveToService = (max) => {
         .then(resolve)
         .catch(reject)
     })
-  }, [account])
+  }, [account, connector, setShowModal])
 
   return { onApprove }
 }
@@ -330,29 +296,19 @@ export const useVote = (proposalIndex, votingPowers) => {
   const [serviceKey, setServiceKey] = useState('')
 
   const callCastVote = async () => {
-    // console.log('proposalIndex2', votingPowers)
-    // setServiceKey(service)
-    // if (connector === 'klip') {
-    //   klipProvider.genQRcodeContactInteract(
-    //     getVFinixVoting(),
-    //     JSON.stringify(getAbiVaultFacetByName('unlock')),
-    //     JSON.stringify([
-    //       ipfsHash,
-    //       proposalType,
-    //       startTimestamp,
-    //       endTimestamp,
-    //       optionsCount,
-    //       minimumVotingPower,
-    //       voteLimit,
-    //     ]),
-    //     setShowModal,
-    //   )
-    //   await klipProvider.checkResponse()
-    //   setShowModal(false)
-    //   return new Promise((resolve, reject) => {
-    //     resolve('')
-    //   })
-    // }
+    if (connector === 'klip') {
+      klipProvider.genQRcodeContactInteract(
+        getVFinixVoting(),
+        JSON.stringify(getAbiIVotingFacetByName('vote')),
+        JSON.stringify([proposalIndex, votingPowers]),
+        setShowModal,
+      )
+      await klipProvider.checkResponse()
+      setShowModal(false)
+      return new Promise((resolve, reject) => {
+        resolve('')
+      })
+    }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
     return new Promise((resolve, reject) => {
@@ -371,32 +327,21 @@ export const useVote = (proposalIndex, votingPowers) => {
 export const useClaimVote = () => {
   const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
-  const [serviceKey, setServiceKey] = useState('')
 
   const callClaimVote = async (proposalIndex) => {
-    // console.log('proposalIndex2', votingPowers)
-    // setServiceKey(service)
-    // if (connector === 'klip') {
-    //   klipProvider.genQRcodeContactInteract(
-    //     getVFinixVoting(),
-    //     JSON.stringify(getAbiVaultFacetByName('unlock')),
-    //     JSON.stringify([
-    //       ipfsHash,
-    //       proposalType,
-    //       startTimestamp,
-    //       endTimestamp,
-    //       optionsCount,
-    //       minimumVotingPower,
-    //       voteLimit,
-    //     ]),
-    //     setShowModal,
-    //   )
-    //   await klipProvider.checkResponse()
-    //   setShowModal(false)
-    //   return new Promise((resolve, reject) => {
-    //     resolve('')
-    //   })
-    // }
+    if (connector === 'klip') {
+      klipProvider.genQRcodeContactInteract(
+        getVFinixVoting(),
+        JSON.stringify(getAbiIVotingFacetByName('recallVotesFromProposal')),
+        JSON.stringify([proposalIndex]),
+        setShowModal,
+      )
+      await klipProvider.checkResponse()
+      setShowModal(false)
+      return new Promise((resolve, reject) => {
+        resolve('')
+      })
+    }
 
     const callContract = getContract(IVotingFacet.abi, getVFinixVoting())
     return new Promise((resolve, reject) => {
