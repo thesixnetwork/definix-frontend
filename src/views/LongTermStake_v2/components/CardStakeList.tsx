@@ -18,10 +18,10 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
   const { allDataLock } = usePrivateData()
   const lockCount = useLockCount()
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [itemPerPage, setItemPerPage] = useState<number>(4)
+  const [itemPerPage, setItemPerPage] = useState<number>(5)
   const [lastIndex, setLastIndex] = useState<number>(5)
   const [dataLength, setDataLength] = useState<number>(0)
-  const [stakeList, setStakeList] = useState<AllDataLockType[]>(allDataLock)
+  const [stakeList, setStakeList] = useState<AllDataLockType[] | null>(allDataLock)
 
   const getCurrentData = (data: AllDataLockType[]) => {
     return data.slice(lastIndex - itemPerPage, lastIndex)
@@ -41,6 +41,10 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
 
     if (dataLength > data.length) setCurrentPage(1)
     setDataLength(data.length)
+
+    return () => {
+      setStakeList(null)
+    }
   }, [lockCount, allDataLock, dataLength])
 
   return (
