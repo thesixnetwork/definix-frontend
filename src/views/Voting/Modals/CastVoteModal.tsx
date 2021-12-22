@@ -224,6 +224,8 @@ const CastVoteModal: React.FC<Props> = ({
     }
     return v
   })
+
+  const sumData = mapChoicesForSingle.reduce((partialSum, a) => new BigNumber(partialSum).dividedBy(10 ** 18) + a, 0)
   const mapChoice = types === 'single' ? singleType : filter
 
   const handleApprove = useCallback(async () => {
@@ -431,7 +433,13 @@ const CastVoteModal: React.FC<Props> = ({
             </Text>
           </CardAlert>
           {allowance > 0 || transactionHash !== '' ? (
-            <Button disabled={showLottie} onClick={() => onConfirm()} fullWidth radii="small" className="mt-3">
+            <Button
+              disabled={showLottie || Number(String(sumData).slice(0, -1)) >= 10}
+              onClick={() => onConfirm()}
+              fullWidth
+              radii="small"
+              className="mt-3"
+            >
               Confirm
             </Button>
           ) : (
