@@ -21,12 +21,14 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
   width: 100%;
   flex: 1;
 
-  .slick-dots {
-    position: relative;
-    bottom: 0;
-    height: auto;
-    margin-bottom: ${({ theme }) => theme.spacing.S_20}px;
+  .slick-slider {
+    padding-bottom: 20px;
+  }
 
+  .slick-dots {
+    position: absolute;
+    bottom: ${({ theme }) => theme.spacing.S_20}px;
+    height: auto;
     > li {
       padding-right: ${({ theme }) => theme.spacing.S_6}px;
       width: 5px;
@@ -129,6 +131,7 @@ const Slide: React.FC<{
         color: curTheme.itemBalanceColor,
         value: hasAccount ? value : 0,
         postfix: 'FINIX',
+        style: { display: 'inline-block' },
       }
       return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
     },
@@ -143,6 +146,7 @@ const Slide: React.FC<{
           color={curTheme.itemCurrencyColor}
           value={hasAccount ? item.price : 0}
           prefix="="
+          style={{ display: 'inline-block', marginLeft: '8px' }}
         />
       )
     },
