@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import _ from 'lodash'
+import _, { map } from 'lodash'
 import Lottie from 'react-lottie'
 // import moment from 'moment'
 // import numeral from 'numeral'
@@ -160,39 +160,43 @@ const CastVoteModal: React.FC<Props> = ({
   const [value, setValue] = useState('0')
   const [showLottie, setShowLottie] = useState(false)
   const [selects, setSelect] = useState({})
+  const [checked, setChecked] = useState([])
   const mapChoices = useMemo(() => {
-    const map = []
+    const check = []
+    const mapMulti = []
     allChoices.filter((v, index) => {
       Object.values(selects).map((i) => {
         if (_.get(i, 'id') === index && _.get(i, 'vote')) {
-          map.push(_.get(i, 'vote'))
+          check.push(Number(_.get(i, 'amount')))
+          mapMulti.push(_.get(i, 'vote'))
         } else {
-          map.push('0')
+          mapMulti.push('0')
         }
-        return map
+        return mapMulti
       })
-      return map
+      return mapMulti
     })
-    return map
+    setChecked(check)
+    return mapMulti
   }, [allChoices, selects])
 
   const mapChoicesForSingle = useMemo(() => {
-    const map = []
+    const mapSingle = []
     allChoices.filter((v, index) => {
       const getSelects = Object.values(selects).filter((u) => {
         return _.get(u, 'id') !== undefined
       })
       getSelects.map((i) => {
         if (_.get(i, 'id') === index && _.get(i, 'vote')) {
-          map.push(_.get(i, 'vote'))
+          mapSingle.push(_.get(i, 'vote'))
         } else {
-          map.push('0')
+          mapSingle.push('0')
         }
-        return map
+        return mapSingle
       })
-      return map
+      return mapSingle
     })
-    return map
+    return mapSingle
   }, [allChoices, selects])
 
   const unique = mapChoices.filter(function (elem, index, self) {
@@ -225,7 +229,7 @@ const CastVoteModal: React.FC<Props> = ({
     return v
   })
 
-  const sumData = mapChoicesForSingle.reduce((partialSum, a) => new BigNumber(partialSum).dividedBy(10 ** 18) + a, 0)
+  const sumData = checked.reduce((partialSum, a) => partialSum + a, 0)
   const mapChoice = types === 'single' ? singleType : filter
 
   const handleApprove = useCallback(async () => {
@@ -433,7 +437,13 @@ const CastVoteModal: React.FC<Props> = ({
             </Text>
           </CardAlert>
           {allowance > 0 || transactionHash !== '' ? (
-            <Button disabled={showLottie} onClick={() => onConfirm()} fullWidth radii="small" className="mt-3">
+            <Button
+              disabled={showLottie || sumData < 10}
+              onClick={() => onConfirm()}
+              fullWidth
+              radii="small"
+              className="mt-3"
+            >
               Confirm
             </Button>
           ) : (
