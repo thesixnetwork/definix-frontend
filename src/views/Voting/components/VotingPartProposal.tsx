@@ -1,16 +1,33 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useMemo, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useMemo, useEffect, useContext } from 'react'
+import { Link, useParams } from 'react-router-dom'
+import Lottie from 'react-lottie'
 import moment from 'moment'
-import { Card, Text, useMatchBreakpoints, Button } from 'uikit-dev'
+import { Card, Text, useMatchBreakpoints, Button, useModal } from 'uikit-dev'
 import isEmpty from 'lodash/isEmpty'
 import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
+import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
+import success from 'uikit-dev/animation/complete.json'
+import loadings from 'uikit-dev/animation/farmPool.json'
 import _ from 'lodash'
 import { Voting } from '../../../state/types'
 import PaginationCustom from './Pagination'
 import { useClaimVote } from '../../../hooks/useVoting'
+
+const SuccessOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: success,
+}
+
+const LoadingOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: loadings,
+}
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -109,11 +126,58 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const { callClaimVote } = useClaimVote()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
+  const [isLoad, setIsLoading] = useState('')
+  const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
 
   const timeZone = new Date().getTimezoneOffset() / 60
   const offset = timeZone === -7 && 2
+  const { onDismiss } = useContext(Context)
+
+  const CardResponse = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss}>
+        <div className="pb-6 pt-2">
+          <Lottie options={SuccessOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+
+  const CardLoading = () => {
+    console.log('CardLoading')
+    return (
+      <ModalResponses title="" onDismiss={onDismiss}>
+        <div className="pb-6 pt-2">
+          <Lottie options={LoadingOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+
+  const [onPresentConnectModal] = useModal(<CardLoading />)
+  const [onPresentAccountModal] = useModal(<CardResponse />)
   // const utcStartTimestamp = startTimestamp.getTime()
   // const startTime = new Date(utcStartTimestamp + 3600000 * offset)
+
+  const onHandleClaim = (r) => {
+    onPresentConnectModal()
+    const claim = callClaimVote(r)
+    claim
+      .then((b) => {
+        onPresentAccountModal()
+        setInterval(() => setIsLoading('success'), 3000)
+      })
+      .catch((e) => {
+        setIsLoading('')
+        onDismiss()
+      })
+  }
+
+  useEffect(() => {
+    if (isLoad === 'success') {
+      onDismiss()
+    }
+  }, [isLoad, onDismiss])
 
   return (
     <CardList>
@@ -181,7 +245,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                     ) : (
                       <BtnClaim
                         onClick={() => {
-                          callClaimVote(r.proposalIndex)
+                          onHandleClaim(r.proposalIndex)
                         }}
                       >
                         Claim Voting Power

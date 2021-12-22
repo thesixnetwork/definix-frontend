@@ -257,9 +257,7 @@ const AddProposal: React.FC<Props> = () => {
               .then((r) => {
                 if (_.get(r, 'status')) {
                   onPresentAccountModal()
-                  setInterval(() => onDismiss(), 3000)
-                  //   setInterval(() => navigate.push('/voting'), 3000)
-                  clearInterval()
+                  setInterval(() => setIsLoading('success'), 3000)
                 }
               })
               .catch((e) => {
@@ -275,6 +273,13 @@ const AddProposal: React.FC<Props> = () => {
     }
     clearInterval()
   }
+
+  useEffect(() => {
+    if (isLoading === 'success') {
+      onDismiss()
+      navigate.push('/voting')
+    }
+  }, [isLoading, navigate, onDismiss])
 
   const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
 

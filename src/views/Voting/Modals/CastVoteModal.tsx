@@ -433,13 +433,7 @@ const CastVoteModal: React.FC<Props> = ({
             </Text>
           </CardAlert>
           {allowance > 0 || transactionHash !== '' ? (
-            <Button
-              disabled={showLottie || Number(String(sumData).slice(0, -1)) < 10}
-              onClick={() => onConfirm()}
-              fullWidth
-              radii="small"
-              className="mt-3"
-            >
+            <Button disabled={showLottie} onClick={() => onConfirm()} fullWidth radii="small" className="mt-3">
               Confirm
             </Button>
           ) : (
