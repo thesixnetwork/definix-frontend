@@ -247,7 +247,7 @@ const VotingList = ({ rbAddress }) => {
   const pages = useMemo(() => Math.ceil(total / 10), [total])
   const limits = 15
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const [add, setAdd] = useState({})
+  const [add, setAdd] = useState([])
 
   const { indexProposal } = useProposalIndex(proposalIndex)
   const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -255,6 +255,7 @@ const VotingList = ({ rbAddress }) => {
   useEffect(() => {
     const dataArray = []
     const fetchVotes = async () => {
+      setIsLoading(true)
       const voteAPI = process.env.REACT_APP_LIST_VOTE_API
       await axios
         .get(`${voteAPI}?proposalIndex=${proposalIndex}&page=${pages}&limit=${limits}`)
@@ -308,9 +309,24 @@ const VotingList = ({ rbAddress }) => {
         })
 
       const getchoices = _.get(dataArray, '0.choices')
-      await setAdd(dataArray)
-    }
+      await transactions.map((v, i) => {
+        getchoices.map((items, index) => {
+          if (index === Number(_.get(v, 'voting_opt'))) {
+            array.push({
+              transaction_hash: _.get(v, 'transaction_hash'),
+              voter_addr: _.get(v, 'voter_addr'),
+              voting_opt: items,
+              voting_power: _.get(v, 'voting_power'),
+            })
+          }
+          return array
+        })
 
+        return array
+      })
+      await setAdd(array)
+      setIsLoading(false)
+    }
     fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fastRefresh])
@@ -338,12 +354,7 @@ const VotingList = ({ rbAddress }) => {
             Votes ({totalVotes})
           </Text>
         </div>
-        <TransactionTable
-          rows={transactions}
-          isLoading={isLoading}
-          empText="Don`t have any transactions in this votes."
-          total
-        />
+        <TransactionTable rows={add&&add} isLoading={isLoading} empText="Don`t have any transactions in this votes." total />
         <PaginationCustom
           page={currentPage}
           count={pages}
