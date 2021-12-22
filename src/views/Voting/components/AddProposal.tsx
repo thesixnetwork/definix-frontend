@@ -257,9 +257,8 @@ const AddProposal: React.FC<Props> = () => {
                 if (_.get(r, 'status')) {
                   onPresentAccountModal()
                   setInterval(() => onDismiss(), 3000)
-                    // setInterval(() => navigate.push('/voting'), 3000)
+                  // setInterval(() => navigate.push('/voting'), 3000)
                   clearInterval()
-                  
                 }
               })
               .catch((e) => {
