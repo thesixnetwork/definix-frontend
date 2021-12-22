@@ -143,18 +143,26 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button isLoading={isLoadingUnLock} onClick={handleUnLock} disabled={vFinixError}>
-          {canBeUnlock ? t('Early Unstake') : t('Unstake')}
-        </Button>
-        {vFinixError && (
-          <Flex mt="S_12" alignItems="flex-start">
-            <Flex mt="S_2">
-              <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
-            </Flex>
-            <Text ml="S_4" textStyle="R_14R" color="red">
-              {t('Insufficient vFINIX balances')}
-            </Text>
-          </Flex>
+        {canBeUnlock ? (
+          <>
+            <Button isLoading={isLoadingUnLock} onClick={handleUnLock} disabled={vFinixError}>
+              {t('Early Unstake')}
+            </Button>
+            {vFinixError && (
+              <Flex mt="S_12" alignItems="flex-start">
+                <Flex mt="S_2">
+                  <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+                </Flex>
+                <Text ml="S_4" textStyle="R_14R" color="red">
+                  {t('Insufficient vFINIX balances')}
+                </Text>
+              </Flex>
+            )}
+          </>
+        ) : (
+          <Button isLoading={isLoadingUnLock} onClick={handleUnLock}>
+            {t('Unstake')}
+          </Button>
         )}
       </ModalFooter>
     </Modal>
