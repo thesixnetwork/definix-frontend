@@ -131,6 +131,7 @@ const Slide: React.FC<{
         color: curTheme.itemBalanceColor,
         value: hasAccount ? value : 0,
         postfix: 'FINIX',
+        style: { display: 'inline-block' },
       }
       return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
     },
@@ -145,6 +146,7 @@ const Slide: React.FC<{
           color={curTheme.itemCurrencyColor}
           value={hasAccount ? item.price : 0}
           prefix="="
+          style={{ display: 'inline-block', marginLeft: '8px' }}
         />
       )
     },
