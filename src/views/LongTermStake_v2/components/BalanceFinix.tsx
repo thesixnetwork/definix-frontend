@@ -40,11 +40,11 @@ const StyledInput = styled.input`
   }
 `
 
-const StyledAnountButton = styled(AnountButton)<{ selected: boolean }>`
+const StyledAnountButton = styled(AnountButton)<{ $selected: boolean }>`
   margin-right: 6px;
-  color: ${({ theme, selected }) => (selected ? theme.colors.white : theme.colors.deepgrey)};
-  background-color: ${({ theme, selected }) => (selected ? theme.colors.orange : 'transparent')};
-  border-color: ${({ theme, selected }) => (selected ? theme.colors.orange : theme.colors.lightgrey)};
+  color: ${({ theme, $selected }) => ($selected ? theme.colors.white : theme.colors.deepgrey)};
+  background-color: ${({ theme, $selected }) => ($selected ? theme.colors.orange : 'transparent')};
+  border-color: ${({ theme, $selected }) => ($selected ? theme.colors.orange : theme.colors.lightgrey)};
 
   &:last-child {
     margin-right: 0;
@@ -78,9 +78,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   const onClickRate = (rate: number) => {
-    if (rate === 1) setInputBalance(String(balancefinix))
-    else setInputBalance((balancefinix * rate).toFixed(2))
-
+    setInputBalance(String(balancefinix * rate))
     setSelected(rate)
   }
 
@@ -130,13 +128,13 @@ const BalanceFinix: React.FC<BalanceProps> = ({
             spellCheck="false"
           />
           <Flex mt="S_8" mb="S_12">
-            <StyledAnountButton selected={selected === 0.25} onClick={() => onClickRate(0.25)}>
+            <StyledAnountButton $selected={selected === 0.25} onClick={() => onClickRate(0.25)}>
               25%
             </StyledAnountButton>
-            <StyledAnountButton selected={selected === 0.5} onClick={() => onClickRate(0.5)}>
+            <StyledAnountButton $selected={selected === 0.5} onClick={() => onClickRate(0.5)}>
               50%
             </StyledAnountButton>
-            <StyledAnountButton selected={selected === 1} onClick={() => onClickRate(1)}>
+            <StyledAnountButton $selected={selected === 1} onClick={() => onClickRate(1)}>
               {t('MAX')}
             </StyledAnountButton>
           </Flex>

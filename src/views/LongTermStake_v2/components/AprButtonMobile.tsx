@@ -22,13 +22,13 @@ const FlexVFinix = styled(Flex)`
   }
 `
 
-const FlexDays = styled(Flex)<{ focus: boolean }>`
+const FlexDays = styled(Flex)<{ $focus: boolean }>`
   justify-content: space-between;
   align-items: flex-end;
   padding: 10px 0;
   border-radius: 8px;
-  background-color: ${({ theme, focus }) => (focus ? theme.colors.orange : theme.colors.lightbrown)};
-  box-shadow: ${({ focus }) => focus && '0 8px 10px 0 rgba(255, 104, 40, 0.19)'};
+  background-color: ${({ theme, $focus }) => ($focus ? theme.colors.orange : theme.colors.lightbrown)};
+  box-shadow: ${({ $focus }) => $focus && '0 8px 10px 0 rgba(255, 104, 40, 0.19)'};
   cursor: pointer;
 `
 
@@ -60,7 +60,7 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
           {data.map((item) => {
             return (
               <FlexVFinix key={item.day}>
-                <FlexDays focus={days === item.day} onClick={() => setDays(item.day)}>
+                <FlexDays $focus={days === item.day} onClick={() => setDays(item.day)}>
                   <Text width="100%" textAlign="center" textStyle="R_14M" color="white">
                     {item.day} {t('days')}
                   </Text>
@@ -83,13 +83,13 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
             </TextApr>
           </Flex>
           <Flex flexDirection="column" alignItems="flex-end">
-            <TextApr textStyle="R_14B" color="black">
+            <TextApr textStyle="R_14B" color="red">
               {numeral(focusDays.apr).format('0,0.[00]')}%
             </TextApr>
             <TextApr textStyle="R_14B" color="black">
               {numeral(focusDays.minStake).format('0,0')} {t('FINIX')}
             </TextApr>
-            <TextApr textStyle="R_14B" color="red">
+            <TextApr textStyle="R_14B" color="black">
               {focusDays.multiple}X
             </TextApr>
           </Flex>

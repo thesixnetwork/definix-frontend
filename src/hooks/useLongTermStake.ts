@@ -279,31 +279,23 @@ export const useLock = (level, lockFinix) => {
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setInterval(() => setLoading(''), 5000)
-          setInterval(() => setStatus(false), 5000)
+          setTimeout(() => setLoading(''), 5000)
+          setTimeout(() => setStatus(false), 5000)
         } else {
           const callContract = getContract(VaultFacet.abi, getVFinix())
-          await callContract.methods
-            .lock(level, lockFinix)
-            .estimateGas({ from: account })
-            .then((estimatedGasLimit) => {
-              callContract.methods
-                .lock(level, lockFinix)
-                .send({ from: account, gas: estimatedGasLimit })
-                .then(() => {
-                  setLoading('success')
-                  setStatus(true)
-                  setInterval(() => setLoading(''), 5000)
-                  setInterval(() => setStatus(false), 5000)
-                })
-                .catch(() => {
-                  setLoading('')
-                  setStatus(false)
-                })
-            })
+          const estimatedGasLimit = await callContract.methods.lock(level, lockFinix).estimateGas({ from: account })
+
+          await callContract.methods.lock(level, lockFinix).send({ from: account, gas: estimatedGasLimit })
+
+          setLoading('success')
+          setStatus(true)
+          setTimeout(() => setLoading(''), 5000)
+          setTimeout(() => setStatus(false), 5000)
         }
       } catch (e) {
+        setLoading('')
         setStatus(false)
+        throw e
       }
     } else {
       setStatus(false)

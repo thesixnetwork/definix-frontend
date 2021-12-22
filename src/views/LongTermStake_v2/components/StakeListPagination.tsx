@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import { Flex, Text, ArrowLeftGIcon, ArrowRightGIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
-import { useDispatch } from 'react-redux'
-import { fetchStartIndex } from 'state/longTermStake'
 
 import { IsMobileType } from './types'
 
@@ -31,15 +29,13 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
   currentPage,
   setCurrentPage,
 }) => {
-  const dispatch = useDispatch()
   const [pageNumbers, setPageNumbers] = useState<number[]>([])
 
   const onClickNumber = useCallback(
     (num: number) => {
       setCurrentPage(num)
-      dispatch(fetchStartIndex((num - 1) * itemPerPage))
     },
-    [setCurrentPage, dispatch, itemPerPage],
+    [setCurrentPage],
   )
 
   const onClickArrow = (direction: string) => {
@@ -70,7 +66,7 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
   return (
     <>
       <Flex mt={`${isMobile ? 'S_12' : 'S_20'}`}>
-        {Math.ceil(currentPage / 5) !== 1 ? (
+        {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== 1 ? (
           <StyledArrow mr="S_10" alignItems="center" onClick={() => onClickArrow('left')}>
             <ArrowLeftGIcon viewBox="0 0 16 16" width={16} height={16} />
           </StyledArrow>
@@ -91,7 +87,7 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
           )
         })}
 
-        {Math.ceil(currentPage / 5) !== Math.ceil(dataLength / itemPerPage / 5) ? (
+        {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== Math.ceil(dataLength / itemPerPage / 5) ? (
           <StyledArrow ml="S_10" alignItems="center" onClick={() => onClickArrow('right')}>
             <ArrowRightGIcon viewBox="0 0 16 16" width={16} height={16} />
           </StyledArrow>

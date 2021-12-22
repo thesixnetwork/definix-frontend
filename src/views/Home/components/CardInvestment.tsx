@@ -10,7 +10,7 @@ const CardInvestment = () => {
   const myInvestments = useMyInvestments()
 
   return (
-    <Card bg={ColorStyles.DEEPBROWN} isOverflowHidden>
+    <Card cardBg={ColorStyles.DEEPBROWN} isOverflowHidden>
       <CardBody p="0">
         <Earned isMain isMobile={isMobile} products={_.groupBy(myInvestments, 'type')} theme="dark" />
       </CardBody>

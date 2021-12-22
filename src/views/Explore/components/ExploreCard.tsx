@@ -39,7 +39,7 @@ interface ExploreCardType {
   isHorizontal: boolean
   rebalance: Rebalance | any
   balance: BigNumber
-  onClickViewDetail: () => void
+  onClickViewDetail: (rebalance: Rebalance | any) => void
 }
 
 const HorizontalStyle = styled(Card)`
@@ -179,10 +179,10 @@ const ExploreCard: React.FC<ExploreCardType> = ({
   const renderViewDetailButton = useCallback(() => {
     return (
       <Box className="mt-6">
-        <BtnViewDetail onClick={onClickViewDetail} />
+        <BtnViewDetail onClick={() => onClickViewDetail(rebalance)} />
       </Box>
     )
-  }, [onClickViewDetail])
+  }, [rebalance, onClickViewDetail])
 
   const renderYieldAPR = useCallback(() => {
     return (
@@ -203,7 +203,7 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           <Grid gridTemplateColumns={isMobile ? '1fr' : '3fr 2.5fr 4fr'} gridGap="2rem">
             <Flex alignItems="center">
               <Box width={70} mr="S_16">
-                <CardImage isMediumSize={false} imageUrl={rebalance.icon[0]} title={rebalance.title} />
+                <CardImage isMediumSize={false} imageUrls={rebalance.icon} title={rebalance.title} />
               </Box>
               <Box>
                 <CardTitle title={rebalance.title} textStyle="R_18M" />
