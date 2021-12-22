@@ -1,13 +1,30 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import Lottie from 'react-lottie'
 import _ from 'lodash'
 import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
+import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
+import success from 'uikit-dev/animation/complete.json'
+import loadings from 'uikit-dev/animation/farmPool.json'
 import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
 import { useAvailableVotes, useAllProposalOfAddress, useClaimVote } from '../../../hooks/useVoting'
 import CastVoteModal from '../Modals/CastVoteModal'
+
+const SuccessOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: success,
+}
+
+const LoadingOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: loadings,
+}
 
 const EmptyData = ({ text }) => (
   <TR>
@@ -132,6 +149,49 @@ const YourVoteList = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { callClaimVote } = useClaimVote()
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
+  const { onDismiss } = useContext(Context)
+  const [isLoad, setIsLoad] = useState('')
+  const CardResponse = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss}>
+        <div className="pb-6 pt-2">
+          <Lottie options={SuccessOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+
+  const CardLoading = () => {
+    return (
+      <ModalResponses title="" onDismiss={onDismiss}>
+        <div className="pb-6 pt-2">
+          <Lottie options={LoadingOptions} height={155} width={185} />
+        </div>
+      </ModalResponses>
+    )
+  }
+  const [onPresentConnectModal] = useModal(<CardLoading />)
+  const [onPresentAccountModal] = useModal(<CardResponse />)
+
+  const onHandleClaim = (r) => {
+    onPresentConnectModal()
+    const claim = callClaimVote(r)
+    claim
+      .then((b) => {
+        onPresentAccountModal()
+        setInterval(() => setIsLoad('success'), 3000)
+      })
+      .catch((e) => {
+        setIsLoad('')
+        onDismiss()
+      })
+  }
+
+  useEffect(() => {
+    if (isLoad === 'success') {
+      onDismiss()
+    }
+  }, [isLoad, onDismiss])
 
   return (
     <>
@@ -150,7 +210,7 @@ const YourVoteList = () => {
         <div className="flex align-center ma-3">
           <Button
             onClick={() => {
-              callClaimVote(proposalIndex)
+              onHandleClaim(proposalIndex)
             }}
             variant="success"
             radii="small"

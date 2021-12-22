@@ -144,7 +144,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   }
 
   const CardLoading = () => {
-    console.log('CardLoading')
     return (
       <ModalResponses title="" onDismiss={onDismiss}>
         <div className="pb-6 pt-2">
