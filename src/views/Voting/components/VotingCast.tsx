@@ -272,7 +272,6 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                 disabled={
                   Number(availableVotes) <= 0 || Date.now() < _.get(indexProposal, 'startEpoch') || flgDisable === 0
                 }
-                
                 onClick={() => {
                   onPresentConnectModal()
                 }}
