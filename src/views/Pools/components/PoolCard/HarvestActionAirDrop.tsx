@@ -99,7 +99,7 @@ const HarvestActionAirdrop: React.FC<{
   farm,
   earnings,
   needsApprovalContract,
-  tokenName
+  tokenName,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess, toastError } = useToast()
@@ -123,21 +123,24 @@ const HarvestActionAirdrop: React.FC<{
   )
   const handleGoToDetail = useCallback(() => navigate.push('/pool'), [navigate])
 
-  const showHarvestResult = useCallback((isSuccess: boolean) => {
-    if (isFinixPool) return
+  const showHarvestResult = useCallback(
+    (isSuccess: boolean) => {
+      if (isFinixPool) return
 
-    const toastDescription = (
-      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
-        {tokenName}
-      </Text>
-    )
-    const actionText = t('Harvest')
-    if (isSuccess) {
-      toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
-    } else {
-      toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
-    }
-  }, [toastSuccess, toastError, t, tokenName, isFinixPool])
+      const toastDescription = (
+        <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+          {tokenName}
+        </Text>
+      )
+      const actionText = t('Harvest')
+      if (isSuccess) {
+        toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
+      } else {
+        toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
+      }
+    },
+    [toastSuccess, toastError, t, tokenName, isFinixPool],
+  )
 
   const handleHarvest = useCallback(async () => {
     try {

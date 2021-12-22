@@ -102,19 +102,22 @@ const HarvestAction: React.FC<{
     return new BigNumber(finixEarningsValue).multipliedBy(finixPrice).toNumber()
   }, [finixEarningsValue, finixPrice])
 
-  const showHarvestResult = useCallback((isSuccess: boolean) => {
-    const toastDescription = (
-      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
-        {lpSymbol}
-      </Text>
-    )
-    const actionText = t('Harvest')
-    if (isSuccess) {
-      toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
-    } else {
-      toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
-    }
-  }, [toastSuccess, toastError, t, lpSymbol])
+  const showHarvestResult = useCallback(
+    (isSuccess: boolean) => {
+      const toastDescription = (
+        <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+          {lpSymbol}
+        </Text>
+      )
+      const actionText = t('Harvest')
+      if (isSuccess) {
+        toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
+      } else {
+        toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
+      }
+    },
+    [toastSuccess, toastError, t, lpSymbol],
+  )
 
   const handleHarvest = useCallback(async () => {
     try {

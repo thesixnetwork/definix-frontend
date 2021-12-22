@@ -200,7 +200,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * HarvestAction Section
    */
   const renderHarvestAction = useCallback(
-    () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} lpSymbol={lpTokenName}/>,
+    () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} lpSymbol={lpTokenName} />,
     [earnings, pid, componentType, lpTokenName],
   )
   /**
