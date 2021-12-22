@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Card, useMatchBreakpoints, Tabs } from '@fingerlabs/definixswap-uikit-v2'
 import ListPageHeader from 'components/ListPageHeader'
+import VFinixSummary from './VFinixSummary'
 import Earned from './Earned'
 import NetWorth from './NetWorth'
 
@@ -12,10 +13,16 @@ function CardSummary({ products }) {
   const isMobile = useMemo(() => !isXxl, [isXxl])
   const tabs = useMemo(() => [t('Earned'), t('Net Worth')], [t])
   const [curTab, setCurTab] = useState<string>(tabs[0])
+  const longTermStake = useMemo(() => products.find((product) => product.type.toLowerCase() === 'longtermstake'), [products])
 
   return (
     <>
       <ListPageHeader type="myInvestment" />
+
+      {longTermStake && longTermStake.data && longTermStake.data.grade !== '' && (
+        <VFinixSummary grade={longTermStake.data.grade} balance={longTermStake.data.balancevfinix}/>
+      )}
+
       <Card isOverflowHidden>
         <Tabs tabs={tabs} curTab={curTab} setCurTab={setCurTab} small={isMobile} equal={isMobile} />
         {curTab === tabs[1] ? (
