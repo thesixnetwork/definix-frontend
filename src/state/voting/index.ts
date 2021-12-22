@@ -17,6 +17,9 @@ const initialState = {
   indexProposal: [],
   proposals: {},
   allProposalMap: [],
+  allVotesByIndex: [],
+  totalVote: '',
+  allVotesByIpfs: [],
 }
 
 export const votingSlice = createSlice({
@@ -36,11 +39,21 @@ export const votingSlice = createSlice({
       const { proposals } = action.payload
       state.proposals = proposals
     },
+    setAllVoteByIndex: (state, action) => {
+      const { allVotesByIndex, totalVote } = action.payload
+      state.allVotesByIndex = allVotesByIndex
+      state.totalVote = totalVote
+    },
+    setAllVoteByIpfs: (state, action) => {
+      const { allVotesByIpfs } = action.payload
+      state.allVotesByIpfs = allVotesByIpfs
+    },
   },
 })
 
 // Actions
-export const { setAllProposal, setProposalIndex, setProposal } = votingSlice.actions
+export const { setAllProposal, setProposalIndex, setProposal, setAllVoteByIndex, setAllVoteByIpfs } =
+  votingSlice.actions
 
 const getAllProposalOfType = async ({ vFinixVoting }) => {
   let allProposal = []
@@ -247,6 +260,90 @@ export const fetchProposal = (id) => async (dispatch) => {
   )
   const [[[proposal]]] = await Promise.all(fetchPromise)
   dispatch(setProposal({ proposals: proposal }))
+}
+
+const getVotesByIndex = async ({ proposalIndex, pages, limits }) => {
+  let allVotesByIndex = []
+  let totalVote = ''
+  try {
+    const dataArray = []
+    const voteAPI = process.env.REACT_APP_LIST_VOTE_API
+    await axios
+      .get(`${voteAPI}?proposalIndex=${proposalIndex}&page=${pages}&limit=${limits}`)
+      .then(async (resp) => {
+        if (resp.data.success) {
+          const data = _.get(resp, 'data.result')
+          const total = _.get(resp, 'data.total')
+          totalVote = total
+          await data.map((v) =>
+            dataArray.push({
+              voter_addr: v.voter_addr,
+              voting_opt: v.voting_opt,
+              voting_power: v.voting_power,
+              transaction_hash: v.transaction_hash,
+            }),
+          )
+        }
+      })
+      .catch((e) => {
+        console.log('error', e)
+      })
+
+    allVotesByIndex = dataArray
+  } catch (error) {
+    allVotesByIndex = []
+  }
+  return [allVotesByIndex, totalVote]
+}
+
+const getVotesByIpfs = async (ipfs) => {
+  let allVotesByIpfs = []
+  try {
+    const dataArray = []
+    const voteAPI = process.env.REACT_APP_IPFS
+    await axios
+      .get(`${voteAPI}/${ipfs}`)
+      .then((resp) => {
+        dataArray.push({
+          choice_type: resp.data.choice_type,
+          choices: resp.data.choices,
+          content: resp.data.content,
+          creator: resp.data.creator,
+          proposals_type: resp.data.proposals_type,
+          start_unixtimestamp: resp.data.start_unixtimestamp,
+          end_unixtimestamp: resp.data.end_unixtimestamp,
+          title: resp.data.title,
+        })
+      })
+      .catch((e) => {
+        console.log('error', e)
+      })
+
+    allVotesByIpfs = dataArray
+  } catch (error) {
+    allVotesByIpfs = []
+  }
+  return [allVotesByIpfs]
+}
+
+export const fetchVotesByIndex = (proposalIndex, pages, limits) => async (dispatch) => {
+  const fetchPromise = []
+  fetchPromise.push(
+    getVotesByIndex({
+      proposalIndex,
+      pages,
+      limits,
+    }),
+  )
+  const [[allVotesByIndex, totalVote]] = await Promise.all(fetchPromise)
+  dispatch(setAllVoteByIndex({ allVotesByIndex, totalVote }))
+}
+
+export const fetchVotesByIpfs = (fff) => async (dispatch) => {
+  const fetchPromise = []
+  fetchPromise.push(getVotesByIpfs(fff))
+  const [[allVotesByIpfs]] = await Promise.all(fetchPromise)
+  dispatch(setAllVoteByIpfs({ allVotesByIpfs }))
 }
 
 export default votingSlice.reducer

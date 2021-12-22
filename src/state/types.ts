@@ -271,6 +271,9 @@ export interface VotingState {
   proposals: {}
   isProposable: boolean
   allProposalMap: []
+  totalVote: ''
+  allVotesByIndex: []
+  allVotesByIpfs: []
 }
 
 // Global state
