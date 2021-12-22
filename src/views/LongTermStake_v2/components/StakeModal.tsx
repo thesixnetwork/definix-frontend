@@ -64,9 +64,9 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
   const onClickStake = useCallback(async () => {
     try {
       await onStake()
-      toastSuccess(t('{{Action}} Complete', { Action: t('Stake') }))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actioncStake') }))
     } catch (e) {
-      toastError(t('{{Action}} Failed', { Action: t('Stake') }))
+      toastError(t('{{Action}} Failed', { Action: t('actioncStake') }))
     }
   }, [onStake, toastSuccess, toastError, t])
 

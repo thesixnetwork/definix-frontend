@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import _ from 'lodash'
 import moment from 'moment'
@@ -20,14 +21,13 @@ const FlexCard = styled(Flex)`
 `
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
+  const { i18n } = useTranslation()
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
   const [error, setError] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
-  const today = new Date()
-  const endDay = moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
   const { balancefinix } = usePrivateData()
 
   const { account } = useWallet()
@@ -70,6 +70,15 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
     }
   }
 
+  const getEndDay = () => {
+    const today = new Date()
+
+    if (i18n.language === 'ko') {
+      return moment(today.setDate(today.getDate() + days)).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
+  }
+
   return (
     <>
       <Card>
@@ -93,11 +102,11 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
             inputBalance={inputBalance}
             setInputBalance={setInputBalance}
             days={days}
-            endDay={endDay}
+            endDay={getEndDay()}
             earn={getVFinix(days, inputBalance)}
             isError={!!error}
           />
-          <EstimateVFinix hasAccount={!!account} endDay={endDay} earn={getVFinix(days, inputBalance)} />
+          <EstimateVFinix hasAccount={!!account} endDay={getEndDay()} earn={getVFinix(days, inputBalance)} />
         </FlexCard>
       </Card>
     </>
