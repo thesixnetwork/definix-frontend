@@ -180,14 +180,14 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                             label=""
                             control={<Radio />}
                           />
-                         <VotePowerChoice className="flex justify-space-between" style={{width: "inherit"}}>
+                          <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
                             <Text fontSize="15px" bold>
                               {c}
                             </Text>
                             <Text fontSize="15px" bold>
                               {c}
                             </Text>
-                          </VotePowerChoice> 
+                          </VotePowerChoice>
                         </CardList>
                       </RadioGroup>
                     ))}
@@ -216,14 +216,14 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                       }
                       label=""
                     />
-                    <VotePowerChoice className="flex justify-space-between" style={{width: "inherit"}}>
+                    <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
                       <Text fontSize="15px" bold>
                         {c}
                       </Text>
                       <Text fontSize="15px" bold>
                         {c}
                       </Text>
-                    </VotePowerChoice> 
+                    </VotePowerChoice>
                   </CardList>
                 ))
               )}

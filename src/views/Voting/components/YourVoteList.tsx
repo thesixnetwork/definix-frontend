@@ -233,7 +233,7 @@ const YourVoteList = () => {
             >
               Vote more
             </Button>
-          )}   
+          )}
           <Text fontSize="14px" color="text" paddingLeft="14px">
             Claim will be available after the the voting time is ended.
           </Text>

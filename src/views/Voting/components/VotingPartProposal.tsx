@@ -211,7 +211,8 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                         End Date
                       </Text>
                       <Text color="text" bold>
-                        {moment(r.endDate).format(`DD-MMM-YY HH:mm:ss`)} {moment(r.endDate).format(`DD-MMM-YY HH:mm:ss`) !== '-' && 'GMT+9'}
+                        {moment(r.endDate).format(`DD-MMM-YY HH:mm:ss`)}{' '}
+                        {moment(r.endDate).format(`DD-MMM-YY HH:mm:ss`) !== '-' && 'GMT+9'}
                       </Text>
                     </div>
                   </TD>
