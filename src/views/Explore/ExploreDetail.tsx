@@ -267,7 +267,8 @@ const ExploreDetail: React.FC<ExploreDetailType> = ({ rebalance: rawData }) => {
 
           const label = []
           const rebalanceData = {
-            name: 'Rebalance',
+            name: rebalance.title,
+            isRebalance: true,
             values: [],
             valuesPrice: [],
           }

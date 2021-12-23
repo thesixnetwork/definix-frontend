@@ -189,7 +189,7 @@ const EarningBoxTemplate: React.FC<{
   // long term stake
   const { finixEarn } = usePrivateData()
   const longTermStakeHarvestHook = useHarvest()
-  const needHarvestLongTermStake = useMemo(() => finixEarn, [finixEarn])
+  const needHarvestLongTermStake = useMemo(() => finixEarn > 0, [finixEarn])
 
   const harvestAllLength = useRef(0)
   const isHarvestingUsingKlip = useMemo(() => {
@@ -311,7 +311,7 @@ const EarningBoxTemplate: React.FC<{
                   variant="red"
                   className="home-harvest-button"
                   isLoading={pendingTx && !isHarvestingUsingKlip}
-                  disabled={myFarmPools.length <= 0}
+                  disabled={myFarmPools.length <= 0 && !needHarvestLongTermStake}
                   onClick={harvestAll}
                 >
                   {pendingTx && isHarvestingUsingKlip

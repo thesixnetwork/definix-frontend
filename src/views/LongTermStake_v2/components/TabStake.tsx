@@ -27,7 +27,7 @@ const Tab = styled(Link)<{ $mobile: boolean; $focus?: boolean }>`
   justify-content: center;
   align-items: center;
   border-bottom: ${({ $focus }) => ($focus ? '2px solid #53515f' : 'none')};
-  padding: 0 ${({ $mobile }) => ($mobile ? '24px' : '48px')};
+  padding: 0 ${({ $mobile }) => ($mobile ? '0px' : '48px')};
   text-align: center;
 `
 

@@ -14,13 +14,13 @@ const StakeListHead: React.FC = () => {
   return (
     <>
       <StyledFlex>
-        <Text width="20%" textStyle="R_14R" color="mediumgrey">
+        <Text width="23.5%" textStyle="R_14R" color="mediumgrey">
           {t('Stake Period')}
         </Text>
-        <Text width="27%" textStyle="R_14R" color="mediumgrey">
+        <Text width="26.5%" textStyle="R_14R" color="mediumgrey">
           {t('Amount')}
         </Text>
-        <Text width="53%" textStyle="R_14R" color="mediumgrey">
+        <Text width="50%" textStyle="R_14R" color="mediumgrey">
           {t('Period End')}
         </Text>
       </StyledFlex>

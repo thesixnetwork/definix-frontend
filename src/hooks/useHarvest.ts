@@ -17,35 +17,36 @@ export const useHarvest = (farmPid: number) => {
   const { setShowModal } = useContext(KlipModalContext())
 
   const handleHarvest = useCallback(async () => {
+    let tx = null
     if (connector === 'klip') {
       // setShowModal(true)
-
-      if (farmPid === 0) {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('leaveStaking')),
-          jsonConvert(['0']),
-          setShowModal,
-        )
-      } else {
-        klipProvider.genQRcodeContactInteract(
-          herodotusContract._address,
-          jsonConvert(getAbiHerodotusByName('deposit')),
-          jsonConvert([farmPid, '0']),
-          setShowModal,
-        )
+      try {
+        if (farmPid === 0) {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('leaveStaking')),
+            jsonConvert(['0']),
+            setShowModal,
+          )
+        } else {
+          klipProvider.genQRcodeContactInteract(
+            herodotusContract._address,
+            jsonConvert(getAbiHerodotusByName('deposit')),
+            jsonConvert([farmPid, '0']),
+            setShowModal,
+          )
+        }
+        tx = await klipProvider.checkResponse()
+      } catch (error) {
+        console.warn('useHarvest/handleHarvest] tx failed')
+      } finally {
+        setShowModal(false)
       }
-      const tx = await klipProvider.checkResponse()
-
-      setShowModal(false)
-      dispatch(fetchFarmUserDataAsync(account))
-      console.info(tx)
-      return tx
+    } else {
+      tx = await harvest(herodotusContract, farmPid, account)
     }
-
-    const txHash = await harvest(herodotusContract, farmPid, account)
     dispatch(fetchFarmUserDataAsync(account))
-    return txHash
+    return tx
   }, [account, dispatch, farmPid, herodotusContract, setShowModal, connector])
 
   return { onReward: handleHarvest }
@@ -185,19 +186,22 @@ export const useSousHarvest = (sousId, isUsingKlay = false) => {
       setShowModal(false)
       dispatch(fetchFarmUserDataAsync(account))
       console.info(tx)
+      return tx
+    }
+
+    let tx = null
+    if (sousId === 0) {
+      tx = await harvest(herodotusContract, 0, account)
+    } else if (sousId === 1) {
+      tx = await harvest(herodotusContract, 1, account)
+    } else if (isUsingKlay) {
+      tx = await soushHarvestBnb(sousChefContract, account)
     } else {
-      if (sousId === 0) {
-        await harvest(herodotusContract, 0, account)
-      } else if (sousId === 1) {
-        await harvest(herodotusContract, 1, account)
-      } else if (isUsingKlay) {
-        await soushHarvestBnb(sousChefContract, account)
-      } else {
-        await soushHarvest(sousChefContract, account)
-      }
+      tx = await soushHarvest(sousChefContract, account)
     }
     dispatch(updateUserPendingReward(sousId, account))
     dispatch(updateUserBalance(sousId, account))
+    return tx
   }, [account, dispatch, isUsingKlay, herodotusContract, sousChefContract, sousId, connector, setShowModal])
 
   return { onReward: handleHarvest }

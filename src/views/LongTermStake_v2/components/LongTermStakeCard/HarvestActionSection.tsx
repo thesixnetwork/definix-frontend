@@ -6,8 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { QuoteToken } from 'config/constants/types'
 import { useHarvest } from 'hooks/useLongTermStake'
 import useConverter from 'hooks/useConverter'
+import { useToast } from 'state/hooks'
 import { Button, Text, ButtonVariants, Flex, Box, Label } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
+import BalanceText from 'components/BalanceText'
 
 const Wrap = styled(Flex)`
   flex-direction: row;
@@ -40,7 +42,7 @@ const TokenLabel = styled(Label)`
 const TokenValueWrap = styled(Box)`
   margin-top: -3px;
 `
-const BalanceText = styled(Text)`
+const FinixEarnText = styled(BalanceText)`
   color: ${({ theme }) => theme.colors.black};
   ${({ theme }) => theme.textStyle.R_18M};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
@@ -79,6 +81,7 @@ const HarvestAction: React.FC<{
 }> = ({ title, earnings, hasReward }) => {
   const { t } = useTranslation()
   const navigate = useHistory()
+  const { toastSuccess, toastError } = useToast()
   const { convertToPriceFromSymbol, convertToPriceFormat } = useConverter()
   const { handleHarvest } = useHarvest()
   const [isLoadingHarvest, setIsLoadingHarvest] = useState(false)
@@ -93,23 +96,21 @@ const HarvestAction: React.FC<{
   const harvest = useCallback(async () => {
     try {
       setIsLoadingHarvest(true)
-      const res = await handleHarvest()
-      if (!res) {
-        // setStatus(!status)
-      }
+      await handleHarvest()
+      toastSuccess(t('{{Action}} Complete', { Action: t('Harvest') }))
     } catch (e) {
-      console.error(e)
+      toastError(t('{{Action}} Failed', { Action: t('Harvest') }))
     } finally {
       setIsLoadingHarvest(false)
     }
-  }, [handleHarvest])
+  }, [handleHarvest, toastSuccess, toastError, t])
 
   const renderAirDrop = useCallback(
     () => (
       <Flex>
         <TokenLabel type="token">{QuoteToken.FINIX}</TokenLabel>
         <TokenValueWrap>
-          <BalanceText>{earnings}</BalanceText>
+          <FinixEarnText value={earnings} />
           <PriceText value={earningsPrice} prefix="=" />
         </TokenValueWrap>
       </Flex>

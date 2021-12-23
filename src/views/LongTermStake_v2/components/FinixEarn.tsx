@@ -33,9 +33,9 @@ const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
     try {
       setIsLoadingHarvest(true)
       await handleHarvest()
-      toastSuccess(t('{{Action}} Complete', { Action: t('Harvest') }))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actionHarvest') }))
     } catch (e) {
-      toastError(t('{{Action}} Failed', { Action: t('Harvest') }))
+      toastError(t('{{Action}} Failed', { Action: t('actionHarvest') }))
     } finally {
       setIsLoadingHarvest(false)
     }

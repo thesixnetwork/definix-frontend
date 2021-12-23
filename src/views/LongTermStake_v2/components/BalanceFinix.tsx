@@ -42,9 +42,9 @@ const StyledInput = styled.input`
 
 const StyledAnountButton = styled(AnountButton)<{ $selected: boolean }>`
   margin-right: 6px;
-  color: ${({ theme, $selected }) => ($selected ? theme.colors.white : theme.colors.deepgrey)};
+  /* color: ${({ theme, $selected }) => ($selected ? theme.colors.white : theme.colors.deepgrey)};
   background-color: ${({ theme, $selected }) => ($selected ? theme.colors.orange : 'transparent')};
-  border-color: ${({ theme, $selected }) => ($selected ? theme.colors.orange : theme.colors.lightgrey)};
+  border-color: ${({ theme, $selected }) => ($selected ? theme.colors.orange : theme.colors.lightgrey)}; */
 
   &:last-child {
     margin-right: 0;
