@@ -58,7 +58,6 @@ const LeftColumnGrid = styled.div<{ area: string }>`
       margin-bottom: 20px;
     }
   }
-
 `
 
 const RightColumnGrid = styled.div<{ area: string }>`

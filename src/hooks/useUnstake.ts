@@ -92,7 +92,7 @@ export const useSousUnstake = (sousId) => {
               setShowModal,
             )
           }
-          tx = await klipProvider.checkResponse()          
+          tx = await klipProvider.checkResponse()
         } catch (error) {
           console.warn('useUnstake/handleUnStake] tx failed')
         } finally {
