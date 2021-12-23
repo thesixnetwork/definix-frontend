@@ -15,6 +15,7 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: 32px;
+  padding-bottom: 48px;
   grid-template-areas:
     'notice notice'
     ${({ isAccount }) => isAccount && `"investment investment"`}
@@ -26,6 +27,7 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     padding-top: 0;
+    padding-bottom: 20px;
     column-gap: 16px;
     grid-template-areas:
       'notice'
