@@ -26,7 +26,7 @@ const ModalBodyWrap = styled(ModalBody)`
 `
 
 const ConfirmModal = ({
-  buttonName,
+  type,
   tokenName,
   stakedBalance,
   onOK = () => null,
@@ -34,9 +34,23 @@ const ConfirmModal = ({
   goList = () => null,
 }) => {
   const { t } = useTranslation()
+  const currentTexts = useMemo(() => {
+    const textTable = {
+      deposit: {
+        title: t('Confirm Deposit'),
+        buttonName: t('Deposit'),
+        actionName: t('actionDeposit')
+      },
+      withdraw: {
+        title: t('Confirm Remove'),
+        buttonName: t('Remove'),
+        actionName: t('actionRemove')
+      }
+    }
+    return textTable[type]
+  }, [t, type])
   const { toastSuccess, toastError } = useToast()
   const [isPendingTX, setIsPendingTX] = useState(false)
-  const title = useMemo(() => t(`Confirm ${buttonName}`), [t, buttonName])
   const handleComplete = useCallback(async () => {
     if (isPendingTX) return
     try {
@@ -45,17 +59,17 @@ const ConfirmModal = ({
       if (!tx || tx === null) {
         throw new Error()
       }
-      toastSuccess(t('{{Action}} Complete', { Action: t(buttonName) }))
+      toastSuccess(t('{{Action}} Complete', { Action: currentTexts.actionName }))
       goList()
     } catch (error) {
-      toastError(t('{{Action}} Failed', { Action: t(buttonName) }))
+      toastError(t('{{Action}} Failed', { Action: currentTexts.actionName }))
     } finally {
       onDismiss()
       setIsPendingTX(false)
     }
-  }, [isPendingTX, toastSuccess, toastError, t, onOK, onDismiss, goList, buttonName])
+  }, [isPendingTX, toastSuccess, toastError, t, onOK, onDismiss, goList, currentTexts])
   return (
-    <Modal title={title} onDismiss={onDismiss} mobileFull>
+    <Modal title={currentTexts.title} onDismiss={onDismiss} mobileFull>
       <ModalBodyWrap isBody>
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
@@ -73,7 +87,7 @@ const ConfirmModal = ({
       </ModalBodyWrap>
       <ModalFooter isFooter>
         <Button lg variant={ButtonVariants.RED} isLoading={isPendingTX} onClick={handleComplete}>
-          {t(buttonName)}
+          {currentTexts.buttonName}
         </Button>
       </ModalFooter>
     </Modal>

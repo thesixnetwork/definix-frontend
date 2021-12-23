@@ -132,7 +132,7 @@ const HarvestActionAirdrop: React.FC<{
           {tokenName}
         </Text>
       )
-      const actionText = t('Harvest')
+      const actionText = t('actionHarvest')
       if (isSuccess) {
         toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
       } else {
