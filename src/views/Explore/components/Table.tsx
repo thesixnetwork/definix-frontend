@@ -1,7 +1,5 @@
 import styled from 'styled-components'
-import {
-  Text,
-} from '@fingerlabs/definixswap-uikit-v2'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
 
 export const Table = styled.table`
   width: 100%;

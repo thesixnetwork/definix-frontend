@@ -141,13 +141,11 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
             pointHoverBackgroundColor: 'white',
             tension: 0,
             backgroundColor: 'transparent',
-            ...(thisData.isRebalance
-              && {
-                  borderColor: rebalanceColor,
-                  pointBackgroundColor: rebalanceColor,
-                  pointBorderColor: rebalanceColor,
-                }
-              ),
+            ...(thisData.isRebalance && {
+              borderColor: rebalanceColor,
+              pointBackgroundColor: rebalanceColor,
+              pointBorderColor: rebalanceColor,
+            }),
           }
         }),
     }
@@ -181,7 +179,7 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
     tooltips: {
       mode: 'nearest',
       displayColors: false,
-		  intersect: false,
+      intersect: false,
       callbacks: {
         title: (tooltipItem, dataTooltip) => {
           const index = tooltipItem[0].datasetIndex
