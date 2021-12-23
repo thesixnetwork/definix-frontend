@@ -92,7 +92,13 @@ const ModalInput: React.FC<{
       )}
 
       <ButtonWrap>
-        <Button variant={ButtonVariants.RED} lg onClick={handleButtonClick} width="100%" disabled={hasError || value === ''}>
+        <Button
+          variant={ButtonVariants.RED}
+          lg
+          onClick={handleButtonClick}
+          width="100%"
+          disabled={hasError || value === ''}
+        >
           {buttonName}
         </Button>
       </ButtonWrap>
