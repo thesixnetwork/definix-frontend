@@ -37,13 +37,13 @@ const ConfirmModal = ({
       deposit: {
         title: t('Confirm Deposit'),
         buttonName: t('Deposit'),
-        actionName: t('actionDeposit')
+        actionName: t('actionDeposit'),
       },
       withdraw: {
         title: t('Confirm Remove'),
         buttonName: t('Remove'),
-        actionName: t('actionRemove')
-      }
+        actionName: t('actionRemove'),
+      },
     }
     return textTable[type]
   }, [t, type])
