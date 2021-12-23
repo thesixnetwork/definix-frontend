@@ -65,7 +65,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
     const [[proposalOfType]] = await multicall(IProposalFacet.abi, calls)
     const dataArray = []
     const proposalArray = []
-    const voteAPI = process.env.REACT_APP_IPFS
+    const voteIPFS = process.env.REACT_APP_IPFS
 
     await proposalOfType.map(async (item) => {
       let startTimestamp = new Date(new BigNumber(_.get(item, 'startTimestamp._hex')).toNumber() * 1000)
@@ -100,7 +100,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
 
     await Promise.all(
       dataArray.map(async (data) => {
-        const response = await axios.get(`${voteAPI}/${data.ipfsHash}`)
+        const response = await axios.get(`${voteIPFS}/${data.ipfsHash}`)
         proposalArray.push({
           ipfsHash: data.ipfsHash,
           endTimestamp: data.endTimestamp,
@@ -191,9 +191,9 @@ const getProposalByIndex = async ({ vFinixVoting, index }) => {
 const getProposal = async ({ id }) => {
   let proposal = []
   try {
-    const voteAPI = process.env.REACT_APP_IPFS
+    const voteIPFS = process.env.REACT_APP_IPFS
     await axios
-      .get(`${voteAPI}/${id}`)
+      .get(`${voteIPFS}/${id}`)
       .then(async (resp) => {
         if (resp.status === 200) {
           let startTimestamp = new Date(resp.data.start_unixtimestamp * 1000)
@@ -263,9 +263,9 @@ const getVotesByIndex = async ({ proposalIndex, pages, limits }) => {
   let totalVote = ''
   try {
     const dataArray = []
-    const voteAPI = process.env.REACT_APP_LIST_VOTE_API
+    const voteIPFS = process.env.REACT_APP_VOTE
     await axios
-      .get(`${voteAPI}?proposalIndex=${proposalIndex}&page=${pages}&limit=${limits}`)
+      .get(`${voteIPFS}/list_votes?proposalIndex=${proposalIndex}&page=${pages}&limit=${limits}`)
       .then(async (resp) => {
         if (resp.data.success) {
           const data = _.get(resp, 'data.result')
@@ -296,9 +296,9 @@ const getVotesByIpfs = async (ipfs) => {
   let allVotesByIpfs = []
   try {
     const dataArray = []
-    const voteAPI = process.env.REACT_APP_IPFS
+    const voteIPFS = process.env.REACT_APP_IPFS
     await axios
-      .get(`${voteAPI}/${ipfs}`)
+      .get(`${voteIPFS}/${ipfs}`)
       .then((resp) => {
         dataArray.push({
           choice_type: resp.data.choice_type,

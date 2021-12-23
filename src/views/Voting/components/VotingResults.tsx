@@ -33,9 +33,9 @@ const VotingResults = ({ getByIndex }) => {
     let dataArray = []
     const array = []
     const fetch = async () => {
-      const voteAPI = process.env.REACT_APP_IPFS
+      const voteIPFS = process.env.REACT_APP_IPFS
       await axios
-        .get(`${voteAPI}/${id}`)
+        .get(`${voteIPFS}/${id}`)
         .then((resp) => {
           dataArray.push({
             choice_type: resp.data.choice_type,

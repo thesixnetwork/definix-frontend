@@ -3,7 +3,6 @@ import React, { useEffect, ChangeEvent, lazy, useState, useMemo, FormEvent, useC
 import Lottie from 'react-lottie'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import axios from 'axios'
-import Caver from 'caver-js'
 import _ from 'lodash'
 import moment from 'moment'
 import { Link, useHistory } from 'react-router-dom'
@@ -12,16 +11,13 @@ import { ExternalLink } from 'react-feather'
 import times from 'lodash/times'
 import { usePropose } from 'hooks/useVoting'
 import { getCaver } from 'utils/caver'
-import ModalStake from 'uikit-dev/widgets/Modal/ModalStake'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
-import ModalSorry from 'uikit-dev/widgets/Modal/ModalSorry'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
 import { DatePicker, TimePicker } from 'components/DatePicker'
 import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { format, parseISO, isValid } from 'date-fns'
 import { Context } from '../../../uikit-dev/widgets/Modal/ModalContext'
-import CardLoadings from '../Modals/CardLodaing'
 import AddChoices, { Choice, makeChoice, MINIMUM_CHOICES } from './AddChoices'
 import VotingPower from './VotingPower'
 
@@ -233,7 +229,7 @@ const AddProposal: React.FC<Props> = () => {
 
       const sign = await caver.klay.sign(epochTime.toString(), account)
 
-      const voteAPI = process.env.REACT_APP_VOTE_IPFS
+      const voteAPI = process.env.REACT_APP_VOTE
       const bodyRequest = {
         message: epochTime.toString(),
         signature: sign,
@@ -247,7 +243,7 @@ const AddProposal: React.FC<Props> = () => {
       }
 
       await axios
-        .put(`${voteAPI}`, bodyRequest)
+        .put(`${voteAPI}/pinVoteToIpfs`, bodyRequest)
         .then(async (resp) => {
           if (resp) {
             await updateValue('ipfs', resp.data.result.IpfsHash)

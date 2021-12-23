@@ -13,9 +13,7 @@ import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
-import _ from 'lodash'
 import { Voting } from '../../../state/types'
-// import PaginationCustom from './Pagination'
 import { useClaimVote } from '../../../hooks/useVoting'
 
 const SuccessOptions = {
@@ -151,9 +149,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const isMobile = !isXl && !isLg
   const [isLoad, setIsLoading] = useState('')
   const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
-
-  const timeZone = new Date().getTimezoneOffset() / 60
-  const offset = timeZone === -7 && 2
   const { onDismiss } = useContext(Context)
 
   const CardResponse = () => {

@@ -3,12 +3,8 @@ import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import styled from 'styled-components'
-import { useMatchBreakpoints } from 'uikit-dev'
-
 import AddProposal from './components/AddProposal'
-import AddChoices from './components/AddChoices'
-// import AddActions from './components/AddActions'
-import VotingPower from './components/VotingPower'
+
 
 const MaxWidthLeft = styled(MaxWidth)`
   max-width: unset;
@@ -25,8 +21,6 @@ const MaxWidthLeft = styled(MaxWidth)`
 
 const VotingProposal: React.FC = () => {
   const { path } = useRouteMatch()
-  const { isXl } = useMatchBreakpoints()
-  const isMobile = !isXl
 
   return (
     <>

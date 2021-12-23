@@ -1,17 +1,13 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useEffect, useCallback } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import BigNumber from 'bignumber.js'
-import { Heading, Text, Button, Image, Skeleton, useMatchBreakpoints } from '../../../uikit-dev'
+import { Heading, Text, Button, Image, Skeleton } from '../../../uikit-dev'
 import nextIcon from '../../../uikit-dev/images/next.png'
 import coreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-core.png'
 import communityIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-community.png'
 import { useAllProposalOfType } from '../../../hooks/useVoting'
-import useRefresh from '../../../hooks/useRefresh'
 
 const Styled = styled(Button)`
   background-color: transparent;

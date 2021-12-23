@@ -6,17 +6,10 @@ import Lottie from 'react-lottie'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { Text, useMatchBreakpoints, Button, useModal } from 'uikit-dev'
-// import Checkbox from '@material-ui/core/Checkbox'
-// import FormControlLabel from '@material-ui/core/FormControlLabel'
-import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import {
-  useHarvest as useHarvestLongterm,
   useBalances,
-  useLockTopup,
-  useAllDataLock,
-  useAllLock,
   usePrivateData,
 } from 'hooks/useLongTermStake'
 import { useAvailableVotes, useVote, useApproveToService, useServiceAllowance } from 'hooks/useVoting'
@@ -184,11 +177,7 @@ const CastVoteModal: React.FC<Props> = ({
     return mapSingle
   }, [allChoices, selects])
 
-  const unique = mapChoices.filter(function (elem, index, self) {
-    return index === self.indexOf(elem)
-  })
-
-  const { onCastVote, serviceKey } = useVote()
+  const { onCastVote } = useVote()
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
   const allowance = useServiceAllowance()
 

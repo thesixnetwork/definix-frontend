@@ -10,8 +10,8 @@ import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
-import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
-import { useAvailableVotes, useAllProposalOfAddress, useClaimVote, useIsClaimable } from '../../../hooks/useVoting'
+import { Button, Card, Text, useModal } from '../../../uikit-dev'
+import { useAllProposalOfAddress, useClaimVote, useIsClaimable } from '../../../hooks/useVoting'
 
 const SuccessOptions = {
   loop: true,
