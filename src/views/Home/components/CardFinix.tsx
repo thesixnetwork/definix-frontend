@@ -104,7 +104,6 @@ const WrapInfo = styled(Flex)`
   margin-top: 42px;
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: 0;
-    border-top: 1px solid ${({ theme }) => theme.colors.border};
     padding-top: 22px;
   }
 `
