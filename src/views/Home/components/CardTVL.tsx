@@ -71,7 +71,6 @@ const TvlValue = styled(Text)`
 `
 
 const WrapCardBody = styled(CardBody)`
-  margin-top: 8px;
   padding: 40px;
 
   ${({ theme }) => theme.mediaQueries.mobileXl} {
