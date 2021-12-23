@@ -47,7 +47,6 @@ const Wrapper = styled.div`
   }
 `
 
-
 /**
  * @see https://github.com/Ionaru/easy-markdown-editor#configuration
  */

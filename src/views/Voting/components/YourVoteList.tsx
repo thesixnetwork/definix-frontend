@@ -13,7 +13,6 @@ import loadings from 'uikit-dev/animation/farmPool.json'
 import { Button, Card, Text, useModal } from '../../../uikit-dev'
 import { useAllProposalOfAddress, useClaimVote, useIsClaimable } from '../../../hooks/useVoting'
 
-
 const SuccessOptions = {
   loop: true,
   autoplay: true,
@@ -93,7 +92,6 @@ const TD = styled.td<{ align?: string }>`
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
 `
-
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Vote', 'Voting Power', ''])
@@ -227,10 +225,7 @@ const YourVoteList = () => {
               radii="small"
               size="sm"
               mr="6px"
-              disabled={
-                Date.now() < +_.get(items, 'endDate') ||
-                !isClaimable
-              }
+              disabled={Date.now() < +_.get(items, 'endDate') || !isClaimable}
             >
               Claim Voting Power
             </Button>

@@ -5,11 +5,7 @@ import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  getAbiIProposalFacetByName,
-  getAbiIUsageFacetByName,
-  getAbiIVotingFacetByName,
-} from 'hooks/hookHelper'
+import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 import UsageFacet from '../config/abi/UsageFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'

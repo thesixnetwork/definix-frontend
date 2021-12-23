@@ -141,7 +141,7 @@ const BtnClaim = styled(Button)`
 `
 
 const ColBtn = styled.div`
- text-align: -webkit-center;
+  text-align: -webkit-center;
 `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {

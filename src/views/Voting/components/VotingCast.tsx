@@ -226,8 +226,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                                   {_.get(c, 'choiceName')}
                                 </Text>
                                 <Text fontSize="15px" bold>
-                                  {_.get(c, 'votePower') !== undefined &&
-                                    `${_.get(c, 'votePower')}`}
+                                  {_.get(c, 'votePower') !== undefined && `${_.get(c, 'votePower')}`}
                                 </Text>
                               </VotePowerChoice>
                             </CardList>
