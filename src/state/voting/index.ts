@@ -3,14 +3,10 @@ import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
-import numeral from 'numeral'
 import moment from 'moment'
 import IProposalFacet from '../../config/abi/IProposalFacet.json'
-import IUsageFacet from '../../config/abi/IUsageFacet.json'
-import IVotingFacet from '../../config/abi/IVotingFacet.json'
 import multicall from '../../utils/multicall'
-import { getFinixAddress, getVFinix, getAddress, getVFinixVoting } from '../../utils/addressHelpers'
-import { getContract } from '../../utils/caver'
+import { getVFinixVoting } from '../../utils/addressHelpers'
 
 const initialState = {
   allProposal: [],

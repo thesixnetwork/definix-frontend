@@ -57,22 +57,22 @@ const Balance = styled.div`
   }
 `
 
-const StylesButton = styled(Button)`
-  padding: 11px 12px 11px 12px;
-  border: ${({ theme }) => theme.isDark && '1px solid #707070'};
-  border-radius: 8px;
-  font-size: 12px;
-  background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
-  height: 38;
-  width: auto;
-  color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
+// const StylesButton = styled(Button)`
+//   padding: 11px 12px 11px 12px;
+//   border: ${({ theme }) => theme.isDark && '1px solid #707070'};
+//   border-radius: 8px;
+//   font-size: 12px;
+//   background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
+//   height: 38;
+//   width: auto;
+//   color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
 
-  &:hover:not(:disabled):not(.button--disabled):not(:active) {
-    background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
-    border: ${({ theme }) => theme.isDark && '1px solid #707070'};
-    color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
-  }
-`
+//   &:hover:not(:disabled):not(.button--disabled):not(:active) {
+//     background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
+//     border: ${({ theme }) => theme.isDark && '1px solid #707070'};
+//     color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
+//   }
+// `
 
 const NumberInput = styled.input`
   border: none;
@@ -133,13 +133,8 @@ const CastVoteModal: React.FC<Props> = ({
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const availableVotes = useAvailableVotes()
   const { balancevfinix } = usePrivateData()
-  const { allLockPeriod } = useAllLock()
   const balanceOf = useBalances()
-  const { handleHarvest } = useHarvestLongterm()
   const { isDark } = useTheme()
-  const { levelStake, allLock } = useAllDataLock()
-  const lockTopUp = useLockTopup()
-  const [selectedToken, setSelectedToken] = useState({})
   const [transactionHash, setTransactionHash] = useState('')
 
   const [amount, setAmount] = useState('')

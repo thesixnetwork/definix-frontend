@@ -47,11 +47,6 @@ const Wrapper = styled.div`
   }
 `
 
-const TextStyled = styled.textarea`
-  .CodeMirror-cursors {
-    border-left: 2px solid ${({ theme }) => theme.colors.text};
-  }
-`
 
 /**
  * @see https://github.com/Ionaru/easy-markdown-editor#configuration

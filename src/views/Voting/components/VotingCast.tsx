@@ -191,9 +191,12 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
       {voteNow && (
         <>
           <Card className="mb-4">
-            <div className="pa-4 pt-3 bd-b">
-              <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
+            <div className="pa-4 pt-3 bd-b mt-2 flex justify-space-between align-center">
+              <Text fontSize="20px" bold lineHeight="1">
                 Cast your vote
+              </Text>
+              <Text fontSize="16px" bold lineHeight="1" color="textSubtle">
+                Your Voting Power
               </Text>
             </div>
             <div className="ma-3">
@@ -224,7 +227,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                                 </Text>
                                 <Text fontSize="15px" bold>
                                   {_.get(c, 'votePower') !== undefined &&
-                                    `Your Voting Power : ${_.get(c, 'votePower')}`}
+                                    `${_.get(c, 'votePower')}`}
                                 </Text>
                               </VotePowerChoice>
                             </CardList>
@@ -260,7 +263,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                             {_.get(c, 'choiceName')}
                           </Text>
                           <Text fontSize="15px" bold>
-                            {_.get(c, 'votePower') !== undefined && `Your Voting Power : ${_.get(c, 'votePower')}`}
+                            {_.get(c, 'votePower') !== undefined && `${_.get(c, 'votePower')}`}
                           </Text>
                         </VotePowerChoice>
                       </CardList>

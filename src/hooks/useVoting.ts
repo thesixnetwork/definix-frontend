@@ -6,14 +6,12 @@ import _ from 'lodash'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import {
-  getAbiVaultFacetByName,
   getAbiIProposalFacetByName,
   getAbiIUsageFacetByName,
   getAbiIVotingFacetByName,
 } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 import UsageFacet from '../config/abi/UsageFacet.json'
-// import VotingFacet from '../config/abi/VotingFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'

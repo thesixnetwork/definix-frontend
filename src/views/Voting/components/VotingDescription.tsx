@@ -4,25 +4,12 @@ import { ArrowBackIcon, Button, Card, Text } from 'uikit-dev'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import ReactMarkdown from 'components/ReactMarkdown'
-// import useTheme from 'hooks/useTheme'
-// import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
 import coreIcon from 'uikit-dev/images/for-ui-v2/voting/icon-core.png'
 import communityIcon from 'uikit-dev/images/for-ui-v2/voting/icon-community.png'
 
 const Description = styled(Card)`
   padding: 24px;
   font-size: 16px;
-`
-
-const SpecialOutline = styled.div`
-  background-color: unset;
-  border-radius: 10px;
-  border: 1px solid #1587c9;
-  color: #1587c9;
-  font-size: 14px;
-  font-style: italic;
-  cursor: unset;
-  padding: 8px 10px;
 `
 
 const StyledTypes = styled.div<{ type: string }>`

@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-vars */
 import React, { useState, useMemo, useEffect, useContext } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import Lottie from 'react-lottie'
@@ -14,7 +15,7 @@ import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
 import _ from 'lodash'
 import { Voting } from '../../../state/types'
-import PaginationCustom from './Pagination'
+// import PaginationCustom from './Pagination'
 import { useClaimVote } from '../../../hooks/useVoting'
 
 const SuccessOptions = {
@@ -118,12 +119,7 @@ const BtnClaim = styled(Button)`
   font-size: 12px;
   font-style: italic;
   font-weight: normal;
-  background-color: ${({ theme }) => theme.colors.harvest};
   color: #ffffff;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.harvest};
-  }
 
   ${({ theme }) => theme.mediaQueries.xs} {
     font-size: 10px;
@@ -132,10 +128,20 @@ const BtnClaim = styled(Button)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 8px;
+    padding: 10px 12px;
+    width: 60%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
     font-size: 12px;
     padding: 10px 20px;
     width: 60%;
   }
+`
+
+const ColBtn = styled.div`
+ text-align: -webkit-center;
 `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
@@ -172,8 +178,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 
   const [onPresentConnectModal] = useModal(<CardLoading />)
   const [onPresentAccountModal] = useModal(<CardResponse />)
-  // const utcStartTimestamp = startTimestamp.getTime()
-  // const startTime = new Date(utcStartTimestamp + 3600000 * offset)
 
   const onHandleClaim = (r) => {
     onPresentConnectModal()
@@ -254,13 +258,14 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                     ))}
                   </TD>
                   <TD>
-                    <div className="text-center">
+                    <ColBtn>
                       {Date.now() < +r.endDate || r.choices.length === 0 ? (
                         <BtnDetails as={Link} to={`/voting/detail/participate/${r.ipfsHash}/${r.proposalIndex}`}>
                           Details
                         </BtnDetails>
                       ) : (
                         <BtnClaim
+                          variant="success"
                           size="sm"
                           disabled={!r.isClaimable}
                           onClick={() => {
@@ -270,7 +275,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                           Claim Voting Power
                         </BtnClaim>
                       )}
-                    </div>
+                    </ColBtn>
                   </TD>
                 </TR>
               ))}
