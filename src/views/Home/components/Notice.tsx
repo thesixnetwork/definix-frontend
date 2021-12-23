@@ -68,11 +68,7 @@ const Wrap = styled(Flex)`
 const NoticeSlider = styled(Slider)`
   grid-column-start: 1;
   grid-column-end: 8;
-  margin-top: ${({ theme }) => theme.space.S_20}px;
-
-  .slick-slider {
-    margin-top: 48px;
-  }
+  margin-top: 48px;
 
   .slick-dots {
     position: relative;
@@ -148,6 +144,7 @@ const Character = styled(ImageSet)`
   height: 200px;
   align-self: flex-end;
   ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: -20px;
     width: 260px;
     height: 120px;
   }

@@ -6,7 +6,7 @@ import { NoticeProps } from './Notice'
 const Wrap = styled(Flex)`
   flex-direction: column;
   align-items: flex-start;
-  min-height: 122px;
+  min-height: 150px;
 `
 const Title = styled(Text)`
   ${({ theme }) => theme.textStyle.R_20B}
@@ -20,7 +20,7 @@ const Title = styled(Text)`
 const Content = styled(Text)`
   margin-top: 8px;
   ${({ theme }) => theme.textStyle.R_14R}
-  height: 40px;
+  min-height: 40px;
   color: ${({ theme }) => theme.colors.deepgrey};
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_12R}
