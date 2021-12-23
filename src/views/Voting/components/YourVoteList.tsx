@@ -11,8 +11,7 @@ import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
 import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
-import { useAvailableVotes, useAllProposalOfAddress, useClaimVote } from '../../../hooks/useVoting'
-import CastVoteModal from '../Modals/CastVoteModal'
+import { useAvailableVotes, useAllProposalOfAddress, useClaimVote, useIsClaimable } from '../../../hooks/useVoting'
 
 const SuccessOptions = {
   loop: true,
@@ -151,6 +150,7 @@ const YourVoteList = () => {
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
   const { onDismiss } = useContext(Context)
   const [isLoad, setIsLoad] = useState('')
+  const isClaimable = useIsClaimable(proposalIndex)
   const CardResponse = () => {
     return (
       <ModalResponses title="" onDismiss={onDismiss}>
@@ -225,10 +225,7 @@ const YourVoteList = () => {
               radii="small"
               size="sm"
               mr="6px"
-              disabled={
-                Date.now() < +_.get(items, 'endDate') ||
-                (_.get(items, 'choices') && _.get(items, 'choices').length <= 0)
-              }
+              disabled={!isClaimable}
             >
               Claim Voting Power
             </Button>
@@ -241,7 +238,9 @@ const YourVoteList = () => {
               className="flex align-center"
               disabled={Date.now() > +_.get(items, 'endDate')}
             >
-              Vote more
+              <Text fontSize="12px" color="text">
+                Vote more
+              </Text>
             </Button>
             <Text fontSize="14px" color="text" paddingLeft="14px">
               Claim will be available after the the voting time is ended.

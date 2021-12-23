@@ -142,7 +142,6 @@ const CardLodaings: React.FC<Props> = ({ onDismiss = () => null, isLoading }) =>
       </ModalResponses>
     )
   }
-  // console.log('isLoading=', isLoading)
 
   return <>{isLoading === 'loading' ? <CardLoading /> : isLoading === 'success' && <CardResponse />}</>
 }

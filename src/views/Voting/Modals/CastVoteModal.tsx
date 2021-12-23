@@ -1,11 +1,8 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import _, { map } from 'lodash'
 import Lottie from 'react-lottie'
-// import moment from 'moment'
-// import numeral from 'numeral'
-// import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { Text, useMatchBreakpoints, Button, useModal } from 'uikit-dev'
@@ -16,7 +13,6 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import {
   useHarvest as useHarvestLongterm,
-  useSousHarvest,
   useBalances,
   useLockTopup,
   useAllDataLock,
@@ -24,11 +20,9 @@ import {
   usePrivateData,
 } from 'hooks/useLongTermStake'
 import { useAvailableVotes, useVote, useApproveToService, useServiceAllowance } from 'hooks/useVoting'
-import { useLockPlus } from 'hooks/useTopUp'
 import { ChevronDown, AlertCircle } from 'react-feather'
 import { Collapse, IconButton } from '@material-ui/core'
 import success from 'uikit-dev/animation/complete.json'
-import loadings from 'uikit-dev/animation/farmPool.json'
 import ModalCastVote from 'uikit-dev/widgets/Modal/ModalCastVote'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
@@ -38,12 +32,6 @@ const SuccessOptions = {
   autoplay: true,
   animationData: success,
 }
-
-// const options = {
-//   loop: true,
-//   autoplay: true,
-//   animationData: loadings,
-// }
 
 interface Props {
   onDismiss?: () => void

@@ -109,9 +109,14 @@ export const useAllProposalOfAddress = () => {
         for (let i = 0; i < userProposalsFilter.length; i++) {
           userProposalsFilter[i].choices = []
           // eslint-disable-next-line
-          const [isParticipated] = await Promise.all([getIsParticipated(userProposalsFilter[i].proposalIndex)])
+          const [isParticipated, IsClaimable] = await Promise.all([
+            getIsParticipated(userProposalsFilter[i].proposalIndex),
+            getIsClaimable(userProposalsFilter[i].proposalIndex),
+          ])
+          // const [IsClaimable] = await Promise.all([getIsClaimable(userProposalsFilter[i].proposalIndex)])
           isParticipateds.push(isParticipated)
           userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
+          userProposalsFilter[i].IsClaimable = IsClaimable
         }
 
         userProposalsFilter = userProposalsFilter.filter((item, index) => isParticipateds[index])
@@ -239,6 +244,12 @@ export const getIsParticipated = async (index: number) => {
   return contract.methods.isParticipated(index).call()
 }
 
+export const getIsClaimable = (index: number) => {
+  const contract = getContract(IVotingFacet.abi, getVFinixVoting())
+
+  return contract.methods.isClaimable(index).call()
+}
+
 export const getVotingPowersOfAddress = async (_proposalIndex: number, _optionIndex: number, voter: string) => {
   // const { account, connector } = useWallet()
   const contract = getContract(IProposalFacet.abi, getVFinixVoting())
@@ -312,6 +323,17 @@ export const useServiceAllowance = () => {
   }, [account])
 
   return allowances
+}
+
+export const useIsClaimable = async (index: number) => {
+  const [isClaimable, setIsClaimable] = useState<boolean>()
+  useMemo(async () => {
+    const call = getContract(IVotingFacet.abi, getVFinixVoting())
+    const claim = await call.methods.isClaimable(index).call()
+    setIsClaimable(claim)
+  }, [index])
+
+  return isClaimable
 }
 
 const handleContractExecute = (_executeFunction, _account) => {
