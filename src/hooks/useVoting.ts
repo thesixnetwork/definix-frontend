@@ -302,11 +302,13 @@ export const useServiceAllowance = () => {
   const [allowances, setServiceAllowance] = useState<number>()
 
   useMemo(async () => {
-    const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
-    const serviceKey = await call.methods.getServiceKey().call()
-    const allowance = getContract(IUsageFacet.abi, getVFinix())
-    const serviceAllowance = await allowance.methods.getServiceAllowance(serviceKey, account).call()
-    setServiceAllowance(serviceAllowance)
+    if (account) {
+      const call = getContract(IServiceInfoFacet.abi, getVFinixVoting())
+      const serviceKey = await call.methods.getServiceKey().call()
+      const allowance = getContract(IUsageFacet.abi, getVFinix())
+      const serviceAllowance = await allowance.methods.getServiceAllowance(serviceKey, account).call()
+      setServiceAllowance(serviceAllowance)
+    }
   }, [account])
 
   return allowances

@@ -8,7 +8,7 @@ import Lottie from 'react-lottie'
 // import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import { Text, useMatchBreakpoints, Button } from 'uikit-dev'
+import { Text, useMatchBreakpoints, Button, useModal } from 'uikit-dev'
 // import Checkbox from '@material-ui/core/Checkbox'
 // import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { provider } from 'web3-core'
@@ -31,6 +31,7 @@ import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
 import ModalCastVote from 'uikit-dev/widgets/Modal/ModalCastVote'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
+import ConnectModal from 'uikit-dev/widgets/WalletModal/ConnectModal'
 
 const SuccessOptions = {
   loop: true,
@@ -144,7 +145,8 @@ const CastVoteModal: React.FC<Props> = ({
   proposalIndex,
   allChoices,
 }) => {
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, connect } = useWallet()
+  const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
   const availableVotes = useAvailableVotes()
   const { balancevfinix } = usePrivateData()
   const { allLockPeriod } = useAllLock()
@@ -327,6 +329,18 @@ const CastVoteModal: React.FC<Props> = ({
     return array
   }, [selects])
 
+  const rederApproveOrConnnect = () => {
+    return !account ? (
+      <Button onClick={() => onPresentConnectModal()} fullWidth radii="small" className="mt-3">
+        Connect Wallet
+      </Button>
+    ) : (
+      <Button onClick={() => handleApprove()} fullWidth radii="small" className="mt-3">
+        Approve Contract
+      </Button>
+    )
+  }
+
   return (
     <>
       {showLottie ? (
@@ -446,7 +460,11 @@ const CastVoteModal: React.FC<Props> = ({
           </CardAlert>
           {allowance > 0 || transactionHash !== '' ? (
             <Button
-              disabled={showLottie || sumData < 10 || selectT.length < mapChoice.length}
+              disabled={
+                showLottie || types === 'single'
+                  ? Number(value) < 10
+                  : sumData < 10 || selectT.length < mapChoice.length
+              }
               onClick={() => onConfirm()}
               fullWidth
               radii="small"
@@ -455,9 +473,7 @@ const CastVoteModal: React.FC<Props> = ({
               Confirm
             </Button>
           ) : (
-            <Button onClick={() => handleApprove()} fullWidth radii="small" className="mt-3">
-              Approve Contract
-            </Button>
+            rederApproveOrConnnect()
           )}
         </ModalCastVote>
       )}
