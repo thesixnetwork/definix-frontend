@@ -106,28 +106,28 @@ const VotingResults = ({ getByIndex }) => {
             <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="0px 20px 30px" />
           </>
         ) : (
-            <>
-              {add &&
-                mapVoting.map((v) => (
-                  <div className="ma-5">
-                    <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-                      {v.value}
-                    </Text>
-                    <div className="my-3">
-                      <BorderLinearProgress variant="determinate" value={v.percent === 'NaN' ? 0 : v.percent} />
-                    </div>
-                    <div className="flex justify-space-between">
-                      <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                        {v.vote} Votes
-                    </Text>
-                      <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                        {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
-                      </Text>
-                    </div>
+          <>
+            {add &&
+              mapVoting.map((v) => (
+                <div className="ma-5">
+                  <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
+                    {v.value}
+                  </Text>
+                  <div className="my-3">
+                    <BorderLinearProgress variant="determinate" value={v.percent === 'NaN' ? 0 : v.percent} />
                   </div>
-                ))}
-            </>
-          )}
+                  <div className="flex justify-space-between">
+                    <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                      {v.vote} Votes
+                    </Text>
+                    <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                      {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
+                    </Text>
+                  </div>
+                </div>
+              ))}
+          </>
+        )}
       </Card>
     </>
   )

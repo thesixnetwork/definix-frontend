@@ -36,10 +36,10 @@ const VotingDetails = ({ id, index }) => {
               <Skeleton animation="pulse" variant="rect" height="20px" width="60%" />
             ) : (
               <>
-              <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-                {id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}
-              </Text>
-              <ExternalLink size={16} color="#30ADFF" />
+                <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
+                  {id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}
+                </Text>
+                <ExternalLink size={16} color="#30ADFF" />
               </>
             )}
           </div>

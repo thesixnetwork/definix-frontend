@@ -8,10 +8,7 @@ import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import CardProposals from './CardProposals'
-import {
-  useIsProposable,
-  useAllProposalOfAddress,
-} from '../../../hooks/useVoting'
+import { useIsProposable, useAllProposalOfAddress } from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
 
 const BannerVoting = styled(Card)`

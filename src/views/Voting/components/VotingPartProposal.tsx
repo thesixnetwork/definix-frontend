@@ -120,7 +120,6 @@ const BtnClaim = styled(Button)`
   font-weight: normal;
   background-color: ${({ theme }) => theme.colors.harvest};
   color: #ffffff;
- 
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.harvest};
@@ -271,7 +270,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                           Claim Voting Power
                         </BtnClaim>
                       )}
-                    </div>                    
+                    </div>
                   </TD>
                 </TR>
               ))}
@@ -298,7 +297,7 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
         address: item.proposer,
         endDate: item.endDate,
         choices: item.choices,
-        isClaimable: item.IsClaimable
+        isClaimable: item.IsClaimable,
         // voting_power: '999',
       }
     }),

@@ -109,7 +109,10 @@ export const useAllProposalOfAddress = () => {
         for (let i = 0; i < userProposalsFilter.length; i++) {
           userProposalsFilter[i].choices = []
           // eslint-disable-next-line
-          const [isParticipated, IsClaimable] = await Promise.all([getIsParticipated(userProposalsFilter[i].proposalIndex), getIsClaimable(userProposalsFilter[i].proposalIndex)])
+          const [isParticipated, IsClaimable] = await Promise.all([
+            getIsParticipated(userProposalsFilter[i].proposalIndex),
+            getIsClaimable(userProposalsFilter[i].proposalIndex),
+          ])
           // const [IsClaimable] = await Promise.all([getIsClaimable(userProposalsFilter[i].proposalIndex)])
           isParticipateds.push(isParticipated)
           userProposalsFilter[i].IsParticipated = isParticipated // await getIsParticipated(listAllProposal[i].proposalIndex.toNumber())
