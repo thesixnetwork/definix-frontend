@@ -44,14 +44,19 @@ const LeftColumnGrid = styled.div<{ area: string }>`
   grid-column-start: 1;
   grid-column-end: 7;
 
-  ${({ theme }) => theme.mediaQueries.mobile} {
-    grid-column-start: 1;
-    grid-column-end: 13;
-  }
-
   > div {
     margin-bottom: 32px;
   }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    grid-column-start: 1;
+    grid-column-end: 13;
+
+    > div {
+      margin-bottom: 20px;
+    }
+  }
+
 `
 
 const RightColumnGrid = styled.div<{ area: string }>`
@@ -60,13 +65,17 @@ const RightColumnGrid = styled.div<{ area: string }>`
   grid-column-start: 7;
   grid-column-end: 13;
 
+  > div {
+    margin-bottom: 32px;
+  }
+
   ${({ theme }) => theme.mediaQueries.mobile} {
     grid-column-start: 1;
     grid-column-end: 13;
-  }
 
-  > div {
-    margin-bottom: 32px;
+    > div {
+      margin-bottom: 20px;
+    }
   }
 `
 
