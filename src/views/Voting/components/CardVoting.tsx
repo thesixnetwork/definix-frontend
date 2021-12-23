@@ -9,18 +9,10 @@ import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import CardProposals from './CardProposals'
 import {
-  useAllProposalOfType,
-  getIsParticipated,
-  getVotingPowersOfAddress,
   useIsProposable,
   useAllProposalOfAddress,
 } from '../../../hooks/useVoting'
 import VotingPartProposal from './VotingPartProposal'
-import { Voting } from '../../../state/types'
-
-// import { useIsProposable } from '../../../hooks/useVoting'
-// import CardProposals from './CardProposals'
-// import VotingPartProposal from './VotingPartProposal'
 
 const BannerVoting = styled(Card)`
   width: 100%;

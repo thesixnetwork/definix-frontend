@@ -108,6 +108,7 @@ const BtnDetails = styled(Button)`
   font-weight: normal;
   background-color: ${({ theme }) => theme.colors.primary};
   color: #ffffff;
+  width: 60%;
 `
 
 const BtnClaim = styled(Button)`
@@ -119,6 +120,23 @@ const BtnClaim = styled(Button)`
   font-weight: normal;
   background-color: ${({ theme }) => theme.colors.harvest};
   color: #ffffff;
+ 
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.harvest};
+  }
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 10px;
+    padding: 8px;
+    width: 100%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 12px;
+    padding: 10px 20px;
+    width: 60%;
+  }
 `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
@@ -237,21 +255,23 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                     ))}
                   </TD>
                   <TD>
-                    {Date.now() < +r.endDate || r.choices.length === 0 ? (
-                      <BtnDetails as={Link} to={`/voting/detail/participate/${r.ipfsHash}/${r.proposalIndex}`}>
-                        Details
-                      </BtnDetails>
-                    ) : (
-                      <BtnClaim
-                        size="sm"
-                        // disabled={Date.now() > +r.endDate}
-                        onClick={() => {
-                          onHandleClaim(r.proposalIndex)
-                        }}
-                      >
-                        Claim Voting Power
-                      </BtnClaim>
-                    )}
+                    <div className="text-center">
+                      {Date.now() < +r.endDate || r.choices.length === 0 ? (
+                        <BtnDetails as={Link} to={`/voting/detail/participate/${r.ipfsHash}/${r.proposalIndex}`}>
+                          Details
+                        </BtnDetails>
+                      ) : (
+                        <BtnClaim
+                          size="sm"
+                          disabled={!r.isClaimable}
+                          onClick={() => {
+                            onHandleClaim(r.proposalIndex)
+                          }}
+                        >
+                          Claim Voting Power
+                        </BtnClaim>
+                      )}
+                    </div>                    
                   </TD>
                 </TR>
               ))}
@@ -278,6 +298,7 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
         address: item.proposer,
         endDate: item.endDate,
         choices: item.choices,
+        isClaimable: item.IsClaimable
         // voting_power: '999',
       }
     }),
@@ -316,7 +337,7 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
           empText="Don`t have any transactions in this votes."
           total
         />
-        <PaginationCustom
+        {/* <PaginationCustom
           page={currentPage}
           count={pages}
           size="small"
@@ -324,7 +345,7 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
           hideNextButton
           className="px-4 py-2"
           onChange={onPageChange}
-        />
+        /> */}
       </CardTable>
     </>
   )

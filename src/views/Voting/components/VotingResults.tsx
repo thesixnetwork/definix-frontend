@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useMemo, useState } from 'react'
-import { Route, useRouteMatch, useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
@@ -30,10 +30,9 @@ const VotingResults = ({ getByIndex }) => {
   const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
 
   useEffect(() => {
-    const dataArray = []
+    let dataArray = []
     const array = []
     const fetch = async () => {
-      // setIsLoading(true)
       const voteAPI = process.env.REACT_APP_IPFS
       await axios
         .get(`${voteAPI}/${id}`)
@@ -50,7 +49,7 @@ const VotingResults = ({ getByIndex }) => {
           })
         })
         .catch((e) => {
-          console.log('error', e)
+          dataArray = []
         })
 
       if (voting && dataArray) {
@@ -75,7 +74,6 @@ const VotingResults = ({ getByIndex }) => {
           return array
         })
       }
-      // setIsLoading(false)
       setMapVoting(array)
       await setAdd(dataArray)
     }
@@ -108,28 +106,28 @@ const VotingResults = ({ getByIndex }) => {
             <Skeleton animation="pulse" variant="rect" height="40px" width="90%" margin="0px 20px 30px" />
           </>
         ) : (
-          <>
-            {add &&
-              mapVoting.map((v) => (
-                <div className="ma-5">
-                  <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-                    {v.value}
-                  </Text>
-                  <div className="my-3">
-                    <BorderLinearProgress variant="determinate" value={v.percent} />
-                  </div>
-                  <div className="flex justify-space-between">
-                    <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                      {v.vote} Votes
+            <>
+              {add &&
+                mapVoting.map((v) => (
+                  <div className="ma-5">
+                    <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
+                      {v.value}
                     </Text>
-                    <Text fontSize="12px" lineHeight="1" marginTop="10px">
-                      {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
+                    <div className="my-3">
+                      <BorderLinearProgress variant="determinate" value={v.percent === 'NaN' ? 0 : v.percent} />
+                    </div>
+                    <div className="flex justify-space-between">
+                      <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                        {v.vote} Votes
                     </Text>
+                      <Text fontSize="12px" lineHeight="1" marginTop="10px">
+                        {v.percent === 'NaN' ? <>0%</> : <>{v.percent}%</>}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-              ))}
-          </>
-        )}
+                ))}
+            </>
+          )}
       </Card>
     </>
   )

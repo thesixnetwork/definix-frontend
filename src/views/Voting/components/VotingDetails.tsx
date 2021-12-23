@@ -16,7 +16,6 @@ const VotingDetails = ({ id, index }) => {
   const { account } = useWallet()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
-  const [isLoading, setIsLoading] = useState(false)
 
   return (
     <>
@@ -33,10 +32,16 @@ const VotingDetails = ({ id, index }) => {
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
-              {id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}
-            </Text>
-            <ExternalLink size={16} color="#30ADFF" />
+            {id === '' ? (
+              <Skeleton animation="pulse" variant="rect" height="20px" width="60%" />
+            ) : (
+              <>
+              <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="6px">
+                {id && `${id.substring(0, 6)}...${id.substring(id.length - 4)}`}
+              </Text>
+              <ExternalLink size={16} color="#30ADFF" />
+              </>
+            )}
           </div>
         </div>
         <div className={`flex align-stretch ma-4 ${isMobile ? 'flex-wrap' : ''}`}>
@@ -46,8 +51,8 @@ const VotingDetails = ({ id, index }) => {
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            {isLoading ? (
-              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+            {index.creator === undefined ? (
+              <Skeleton animation="pulse" variant="rect" height="20px" width="60%" />
             ) : (
               <>
                 <Text fontSize="16px" bold lineHeight="1" color="#30ADFF" mr="2px">
@@ -68,8 +73,8 @@ const VotingDetails = ({ id, index }) => {
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            {isLoading ? (
-              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+            {index.start_unixtimestamp === undefined ? (
+              <Skeleton animation="pulse" variant="rect" height="20px" width="80%" />
             ) : (
               <>
                 <Text fontSize="16px" bold color="text" lineHeight="1">
@@ -86,8 +91,8 @@ const VotingDetails = ({ id, index }) => {
             </Text>
           </div>
           <div className={`flex align-center ${isMobile ? 'col-12' : 'col-8'}`}>
-            {isLoading ? (
-              <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
+            {index.end_unixtimestamp === undefined ? (
+              <Skeleton animation="pulse" variant="rect" height="20px" width="80%" />
             ) : (
               <>
                 <Text fontSize="16px" bold color="text" lineHeight="1">
