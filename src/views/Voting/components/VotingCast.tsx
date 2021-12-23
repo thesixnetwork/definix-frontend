@@ -116,6 +116,9 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
   const [select, setSelect] = useState({})
   const [singleType, setSingleType] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
+  const [allChoice, setAllChoice] = useState([])
+  const [flgMerge, setFlgMerge] = useState('')
   const choices = indexs.choices
   const choiceType = indexs.choice_type
   const allChoices = useMemo(() => {
@@ -136,8 +139,8 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
     const filterChecked = Object.values(select).filter((v, index) => {
       return _.get(v, 'checked') === true
     })
-    return filterChecked.length
-  }, [select])
+    return choiceType === 'single' ? Object.values(select).length : filterChecked.length
+  }, [select, choiceType])
 
   const [onPresentConnectModal] = useModal(
     <CastVoteModal
@@ -159,31 +162,29 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
     setSelect(event.target.value)
   }
 
-  const checked = useMemo(() => {
-    const arrUniq = []
-    if (_.get(items, 'choices') && choices) {
-      choices.map((v, index) => {
-        _.get(items, 'choices').filter((b) => {
-          if (_.get(b, 'choiceName') === v) {
-            arrUniq.push({
-              id: index,
-              value: v,
-              votePower: _.get(b, 'votePower'),
-            })
-          } else {
-            arrUniq.push({
-              id: index,
-              value: v,
-              votePower: '',
-            })
-          }
-          return arrUniq
-        })
-        return arrUniq
+  useEffect(() => {
+    const getData = []
+    setIsLoading(true)
+    if (choices !== undefined && _.get(items, 'choices') !== undefined) {
+      choices.map((data, index) => {
+        return getData.push({ choiceName: data })
       })
+
+      const mergeChoice = getData.map((item, row) => {
+        const found =
+          _.get(items, 'choices') !== undefined &&
+          _.get(items, 'choices').find((element) => item.choiceName === element.choiceName)
+
+        return { ...item, ...found }
+      })
+      setFlgMerge('Merge')
+      setIsLoading(false)
+      setAllChoice(mergeChoice)
+    } else if (choices !== undefined) {
+      setFlgMerge('NMerge')
+      setAllChoice(Object.values(choices))
     }
-    return arrUniq
-  }, [choices, items])
+  }, [items, choices])
 
   return (
     <>
@@ -197,31 +198,95 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
             </div>
             <div className="ma-3">
               <>
-                {choiceType === 'single' ? (
+                {flgMerge === 'Merge' ? (
+                  choiceType === 'single' ? (
+                    <>
+                      {allChoice &&
+                        allChoice.map((c, index) => (
+                          <RadioGroup
+                            name="use-radio-group"
+                            value={select}
+                            onChange={(event, i) => handleRadioButton(event, index, _.get(c, 'choiceName'))}
+                          >
+                            <CardList checked={_.get(select, `${index}.value`)}>
+                              <MyFormControlLabel
+                                disabled={
+                                  _.get(items, 'choices') !== undefined &&
+                                  _.get(c, 'choiceName') !== _.get(items, 'choices.0.choiceName')
+                                }
+                                value={_.get(c, 'choiceName')}
+                                label=""
+                                control={<Radio />}
+                              />
+                              <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
+                                <Text fontSize="15px" bold>
+                                  {_.get(c, 'choiceName')}
+                                </Text>
+                                <Text fontSize="15px" bold>
+                                  {_.get(c, 'votePower') !== undefined &&
+                                    `Your Voting Power : ${_.get(c, 'votePower')}`}
+                                </Text>
+                              </VotePowerChoice>
+                            </CardList>
+                          </RadioGroup>
+                        ))}
+                    </>
+                  ) : (
+                    allChoice &&
+                    allChoice.map((c, index) => (
+                      <CardList checked={_.get(select, `${index}.checked`)}>
+                        <FormControlLabelCustom
+                          control={
+                            <CustomCheckbox
+                              size="small"
+                              checked={_.get(select, `${index}.checked`)}
+                              onChange={(event, i) => {
+                                setSelect({
+                                  ...select,
+                                  [index]: {
+                                    checked: event.target.checked,
+                                    id: index,
+                                    value: _.get(c, 'choiceName'),
+                                  },
+                                })
+                              }}
+                              icon={<BpCheckboxIcons />}
+                            />
+                          }
+                          label=""
+                        />
+                        <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
+                          <Text fontSize="15px" bold>
+                            {_.get(c, 'choiceName')}
+                          </Text>
+                          <Text fontSize="15px" bold>
+                            {_.get(c, 'votePower') !== undefined && `Your Voting Power : ${_.get(c, 'votePower')}`}
+                          </Text>
+                        </VotePowerChoice>
+                      </CardList>
+                    ))
+                  )
+                ) : choiceType === 'single' ? (
                   <>
-                    {checked &&
-                      checked.map((c, index) => (
+                    {choices &&
+                      Object.values(choices).map((c, index) => (
                         <RadioGroup
                           name="use-radio-group"
                           value={select}
-                          onChange={(event, i) => handleRadioButton(event, index, _.get(c, 'value'))}
+                          onChange={(event, i) => handleRadioButton(event, index, c)}
                         >
                           <CardList checked={_.get(select, `${index}.value`)}>
                             <MyFormControlLabel
                               disabled={
-                                _.get(items, 'choices') !== undefined &&
-                                _.get(c, 'value') !== _.get(items, 'choices.0.choiceName')
+                                _.get(items, 'choices') !== undefined && c !== _.get(items, 'choices.0.choiceName')
                               }
-                              value={_.get(c, 'value')}
+                              value={c}
                               label=""
                               control={<Radio />}
                             />
                             <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
                               <Text fontSize="15px" bold>
-                                {_.get(c, 'value')}
-                              </Text>
-                              <Text fontSize="15px" bold>
-                                {_.get(c, 'votePower') !== '' && `Your Voting Power : ${_.get(c, 'votePower')}`}
+                                {c}
                               </Text>
                             </VotePowerChoice>
                           </CardList>
@@ -229,8 +294,8 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                       ))}
                   </>
                 ) : (
-                  checked &&
-                  checked.map((c, index) => (
+                  choices &&
+                  Object.values(choices).map((c, index) => (
                     <CardList checked={_.get(select, `${index}.checked`)}>
                       <FormControlLabelCustom
                         control={
@@ -243,7 +308,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                                 [index]: {
                                   checked: event.target.checked,
                                   id: index,
-                                  value: _.get(c, 'value'),
+                                  value: c,
                                 },
                               })
                             }}
@@ -254,10 +319,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                       />
                       <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
                         <Text fontSize="15px" bold>
-                          {_.get(c, 'value')}
-                        </Text>
-                        <Text fontSize="15px" bold>
-                          {_.get(c, 'votePower') !== '' && `Your Voting Power : ${_.get(c, 'votePower')}`}
+                          {c}
                         </Text>
                       </VotePowerChoice>
                     </CardList>

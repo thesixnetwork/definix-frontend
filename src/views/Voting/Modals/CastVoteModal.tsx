@@ -305,6 +305,14 @@ const CastVoteModal: React.FC<Props> = ({
     }
   }, [percent, balanceOf])
 
+  const selectT = useMemo(() => {
+    const array = []
+    if (selects) {
+      Object.values(selects).map((d) => _.get(d, 'amount') !== '' && array.push(_.get(d, 'amount')))
+    }
+    return array
+  }, [selects])
+
   return (
     <>
       {showLottie ? (
@@ -424,7 +432,7 @@ const CastVoteModal: React.FC<Props> = ({
           </CardAlert>
           {allowance > 0 || transactionHash !== '' ? (
             <Button
-              disabled={showLottie || sumData < 10}
+              disabled={showLottie || sumData < 10 || selectT.length < mapChoice.length}
               onClick={() => onConfirm()}
               fullWidth
               radii="small"
