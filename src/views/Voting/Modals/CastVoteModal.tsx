@@ -8,10 +8,7 @@ import useTheme from 'hooks/useTheme'
 import { Text, useMatchBreakpoints, Button, useModal } from 'uikit-dev'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
-import {
-  useBalances,
-  usePrivateData,
-} from 'hooks/useLongTermStake'
+import { useBalances, usePrivateData } from 'hooks/useLongTermStake'
 import { useAvailableVotes, useVote, useApproveToService, useServiceAllowance } from 'hooks/useVoting'
 import { ChevronDown, AlertCircle } from 'react-feather'
 import { Collapse, IconButton } from '@material-ui/core'

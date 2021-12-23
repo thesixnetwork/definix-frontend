@@ -7,7 +7,6 @@ import CardVoting from './components/CardVoting'
 import VotingInfos from './VotingInfos'
 import VotingProposal from './VotingProposal'
 
-
 const Voting: React.FC = () => {
   const { path } = useRouteMatch()
 

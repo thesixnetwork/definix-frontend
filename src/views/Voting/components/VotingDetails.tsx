@@ -40,7 +40,7 @@ const VotingDetails = ({ id, index }) => {
                 </Text>
                 <LinkView as="a" href={`${process.env.REACT_APP_IPFS}/${id}`} target="_blank">
                   <ExternalLink size={16} color="#30ADFF" />
-                </LinkView>   
+                </LinkView>
               </>
             )}
           </div>

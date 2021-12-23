@@ -5,7 +5,6 @@ import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import styled from 'styled-components'
 import AddProposal from './components/AddProposal'
 
-
 const MaxWidthLeft = styled(MaxWidth)`
   max-width: unset;
   margin: 60px 100px;
