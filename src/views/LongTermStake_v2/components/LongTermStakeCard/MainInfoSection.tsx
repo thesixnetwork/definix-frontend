@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react'
-import _ from 'lodash'
+import React, { useMemo } from 'react'
 import numeral from 'numeral'
 import styled from 'styled-components'
 // import useConverter from 'hooks/useConverter'
@@ -30,19 +29,20 @@ const MainInfoSection: React.FC = () => {
   const { allDataLock } = usePrivateData()
   const apr = useApr()
 
-  const getAPR = useCallback(() => {
-    const data = allDataLock.filter((item: AllDataLockType) => !item.isUnlocked)
-    const dataLength = data.length
+  const getAPR = useMemo(() => {
     let multiple = 1
 
-    if (dataLength === 0) return [0, 0]
-    if (dataLength === 1) return [1, numeral(_.get(data, '0').multiplier * apr).format('0,0.[00]')]
-
-    data.forEach((item) => {
-      if (_.get(item, 'multiplier') > multiple) {
-        multiple = _.get(item, 'multiplier')
+    const dataLength = allDataLock.reduce((acc: number, cur: AllDataLockType) => {
+      if (!cur.isUnlocked) {
+        if (cur.multiplier > multiple) {
+          multiple = cur.multiplier
+        }
+        return acc + 1
       }
-    })
+      return acc
+    }, 0)
+
+    if (dataLength === 0) return [0, 0]
 
     return [dataLength, numeral(multiple * apr).format('0,0.[00]')]
   }, [allDataLock, apr])
@@ -58,10 +58,10 @@ const MainInfoSection: React.FC = () => {
 
         <Flex alignItems="end">
           <Text textStyle="R_14M" color="orange" style={{ paddingBottom: '2px' }}>
-            {getAPR()[0] < 2 ? 'APR' : 'APR up to'}
+            {getAPR[0] < 2 ? 'APR' : 'APR UP TO'}
           </Text>
           <Text textStyle="R_18B" color="orange" style={{ marginLeft: '4px' }}>
-            {getAPR()[1]}%
+            {getAPR[1]}%
           </Text>
         </Flex>
       </Flex>
