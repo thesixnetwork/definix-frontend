@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Lottie from 'react-lottie'
 import _ from 'lodash'
@@ -144,13 +144,17 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 
 const YourVoteList = () => {
   const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const { proposalOfAddress } = useAllProposalOfAddress()
-  const [isLoading, setIsLoading] = useState(false)
-  const { callClaimVote } = useClaimVote()
-  const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
   const { onDismiss } = useContext(Context)
+  const [isLoading, setIsLoading] = useState(false)
   const [isLoad, setIsLoad] = useState('')
+  const { proposalOfAddress } = useAllProposalOfAddress()
   const isClaimable = useIsClaimable(proposalIndex)
+  const { callClaimVote } = useClaimVote()
+  const items = useMemo(() => {
+    const itemByIndex = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
+    return itemByIndex
+  }, [proposalIndex, proposalOfAddress])
+
   const CardResponse = () => {
     return (
       <ModalResponses title="" onDismiss={onDismiss}>

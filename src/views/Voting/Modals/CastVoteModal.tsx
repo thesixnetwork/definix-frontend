@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react'
+import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import _, { map } from 'lodash'
@@ -49,23 +49,6 @@ const Balance = styled.div`
     display: block;
   }
 `
-
-// const StylesButton = styled(Button)`
-//   padding: 11px 12px 11px 12px;
-//   border: ${({ theme }) => theme.isDark && '1px solid #707070'};
-//   border-radius: 8px;
-//   font-size: 12px;
-//   background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
-//   height: 38;
-//   width: auto;
-//   color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
-
-//   &:hover:not(:disabled):not(.button--disabled):not(:active) {
-//     background-color: ${({ theme }) => (theme.isDark ? '#ffff0000' : '#EFF4F5')};
-//     border: ${({ theme }) => theme.isDark && '1px solid #707070'};
-//     color: ${({ theme }) => (theme.isDark ? theme.colors.textSubtle : '#1587C9')};
-//   }
-// `
 
 const NumberInput = styled.input`
   border: none;
@@ -136,33 +119,16 @@ const CastVoteModal: React.FC<Props> = ({
   const [showLottie, setShowLottie] = useState(false)
   const [selects, setSelect] = useState({})
   const [checked, setChecked] = useState([])
-  const mapChoices = useMemo(() => {
-    const check = []
-    const mapMulti = []
-    allChoices.filter((v, index) => {
-      Object.values(selects).map((i) => {
-        if (_.get(i, 'id') === index && _.get(i, 'vote')) {
-          check.push(Number(_.get(i, 'amount')))
-          mapMulti.push(_.get(i, 'vote'))
-        } else {
-          mapMulti.push('0')
-        }
-        return mapMulti
-      })
-      return mapMulti
-    })
-    setChecked(check)
-    return mapMulti
-  }, [allChoices, selects])
-
   const mapChoicesForSingle = useMemo(() => {
     const mapSingle = []
+    const check = []
     allChoices.filter((v, index) => {
       const getSelects = Object.values(selects).filter((u) => {
         return _.get(u, 'id') !== undefined
       })
       getSelects.map((i) => {
         if (_.get(i, 'id') === index && _.get(i, 'vote')) {
+          check.push(Number(_.get(i, 'amount')))
           mapSingle.push(_.get(i, 'vote'))
         } else {
           mapSingle.push('0')
@@ -171,6 +137,7 @@ const CastVoteModal: React.FC<Props> = ({
       })
       return mapSingle
     })
+    setChecked(check)
     return mapSingle
   }, [allChoices, selects])
 
@@ -182,26 +149,36 @@ const CastVoteModal: React.FC<Props> = ({
   const isMobileOrTablet = !isXl && !isLg
   const [percent, setPercent] = useState(0)
   const [multiple, setMultiple] = useState(true)
-  const filter = Object.values(select).filter((i) => {
-    return _.get(i, 'checked') === true
-  })
-  const mergedSubjects = allChoices.map((subject) => {
-    const otherSubject = Object.values(selects).filter((element) => _.get(element, 'id') === subject.id)
-    return { ...subject, ...otherSubject }
-  })
+  const filter = useMemo(() => {
+    const filterCheckbox = Object.values(select).filter((i) => {
+      return _.get(i, 'checked') === true
+    })
+    return filterCheckbox
+  }, [select])
 
-  const yes = []
-  mergedSubjects.map((v) => {
-    if (_.get(v, '0.vote') !== undefined) {
-      yes.push(_.get(v, '0.vote'))
-    } else {
-      yes.push('0')
-    }
-    return v
-  })
+  const [mapChoice, setMapChoice] = useState([])
+  const mergedSubjects = useMemo(() => {
+    const merged = allChoices.map((subject) => {
+      const otherSubject = Object.values(selects).filter((element) => _.get(element, 'id') === subject.id)
+      return { ...subject, ...otherSubject }
+    })
+    return merged
+  }, [allChoices, selects])
+
+  const mapChoicesForMulti = useMemo(() => {
+    const array = []
+    mergedSubjects.map((v) => {
+      if (_.get(v, '0.vote') !== undefined) {
+        array.push(_.get(v, '0.vote'))
+      } else {
+        array.push('0')
+      }
+      return v
+    })
+    return array
+  }, [mergedSubjects])
 
   const sumData = checked.reduce((partialSum, a) => partialSum + a, 0)
-  const mapChoice = types === 'single' ? singleType : filter
 
   const handleApprove = useCallback(async () => {
     try {
@@ -272,7 +249,7 @@ const CastVoteModal: React.FC<Props> = ({
   }
 
   const onConfirm = () => {
-    const res = onCastVote(proposalIndex, types === 'single' ? mapChoicesForSingle : yes)
+    const res = onCastVote(proposalIndex, types === 'single' ? mapChoicesForSingle : mapChoicesForMulti)
     res
       .then((r) => {
         setShowLottie(true)
@@ -309,6 +286,15 @@ const CastVoteModal: React.FC<Props> = ({
       </Button>
     )
   }
+
+  useEffect(() => {
+    if (types === 'single') {
+      setMapChoice(singleType)
+    } else {
+      setMapChoice(filter)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [types])
 
   return (
     <>
