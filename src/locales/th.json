@@ -155,7 +155,7 @@
   "LP": "",
   "Select": "",
   "Pooled": "",
-  "No liquidity found": "",
+  "No liquidity found.": "",
   "Remove LP and take back tokens": "",
   "You will receive": "",
   "Receive {{Token name}}": "",
@@ -181,7 +181,7 @@
   "Don't have an LP?": "",
   "Share of Pool": "",
   "Remove LP": "",
-  "Insufficient LP deposited": "",
+  "Insufficient deposit.": "",
   "Remove LPs from the farm.": "",
   "Deposit a single token": "",
   "Learn how to stake": "",
@@ -446,7 +446,6 @@
   "Document": "",
   "Still in progress": "",
   "Connect to a wallet to view": "",
-  "No liquidity found.": "",
   "Go to G1": "",
   "Menu Swap": "",
   "The average return ratio compares": "",
@@ -480,5 +479,10 @@
   "Silver Hodl": "",
   "Super Stake": "",
   "still in progress super stake": "",
-  "Insufficient deposit.": ""
+  "actionWrap": "",
+  "actionUnwrap": "",
+  "28days super stake tooltip": "",
+  "You can’t unstake due to": "",
+  "Your balance": "",
+  "Close": ""
 }
