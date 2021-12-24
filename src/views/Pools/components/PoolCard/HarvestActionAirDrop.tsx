@@ -7,7 +7,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { QuoteToken } from 'config/constants/types'
 import { useSousHarvest } from 'hooks/useHarvest'
 import useConverter from 'hooks/useConverter'
-import { useFarmUser, useToast } from 'state/hooks'
+import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import CurrencyText from 'components/CurrencyText'
@@ -88,7 +88,7 @@ const HarvestActionAirdrop: React.FC<{
   isBnbPool?: boolean
   needsApprovalContract: boolean
   sousId?: number
-  farm: any
+  farm?: any
   earnings: BigNumber
   tokenName: string
 }> = ({
@@ -96,7 +96,6 @@ const HarvestActionAirdrop: React.FC<{
   isOldSyrup = false,
   isBnbPool = false,
   sousId,
-  farm,
   earnings,
   needsApprovalContract,
   tokenName,
@@ -108,7 +107,7 @@ const HarvestActionAirdrop: React.FC<{
   const { convertToPriceFromSymbol, convertToBalanceFormat, convertToPriceFormat } = useConverter()
   const { account } = useWallet()
   const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const { pendingRewards } = useFarmUser(farm.pid)
+  // const { pendingRewards } = useFarmUser(farm.pid)
   const [pendingTx, setPendingTx] = useState(false)
 
   const isFinixPool = useMemo(() => sousId === 0, [sousId])
