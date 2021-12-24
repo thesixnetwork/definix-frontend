@@ -432,7 +432,7 @@ const CastVoteModal: React.FC<Props> = ({
               disabled={
                 showLottie || types === 'single'
                   ? Number(value) < 10
-                  : sumData < 10 || selectT.length < mapChoice.length
+                  : sumData < 10 || selectT.length < mapChoice.length || Number(value) > Number(availableVotes)
               }
               onClick={() => onConfirm()}
               fullWidth
