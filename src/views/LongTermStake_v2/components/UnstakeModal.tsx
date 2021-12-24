@@ -89,7 +89,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
               </Flex>
             </Flex>
             <Text mt="S_4" textStyle="R_16R" color="black">
-              {numeral(amount).format('0, 0.[000000]')}
+              {numeral(amount).format('0, 0.[00]')}
             </Text>
           </Flex>
           {canBeUnlock && (
@@ -122,7 +122,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                     {t('Recall vFINIX')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(amount * multiplier).format('0, 0.[000000]')} {t('vFINIX')}
+                    {numeral(amount * multiplier).format('0, 0.[00]')} {t('vFINIX')}
                   </Text>
                 </Flex>
                 <Flex mb="S_8" justifyContent="space-between">
@@ -130,7 +130,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                     {t('You will receive')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(amount - (penaltyRate * amount) / 100).format('0, 0.[000000]')} {t('FINIX')}
+                    {numeral(amount - (penaltyRate * amount) / 100).format('0, 0.[00]')} {t('FINIX')}
                   </Text>
                 </Flex>
                 <Flex mt="S_12" alignItems="flex-start">

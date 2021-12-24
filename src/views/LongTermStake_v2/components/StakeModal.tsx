@@ -97,7 +97,7 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
               </Text>
             </Flex>
             <Text textStyle="R_16R" color="black">
-              {numeral(Number(balance)).format('0,0.[000000]')}
+              {numeral(Number(balance)).format('0,0.[00]')}
             </Text>
           </Flex>
           <Divider />

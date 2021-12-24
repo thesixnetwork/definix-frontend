@@ -27,7 +27,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
         return (
           <Flex width="100%" flexDirection="column" key={item.id}>
             <Flex width="100%" alignItems="center" py="S_16">
-              <Flex width="23.5%" flexDirection="column">
+              <Flex width="28%" flexDirection="column">
                 <Text textStyle="R_14R" color="black">
                   {t(`${item.days} days`)}
                 </Text>
@@ -37,8 +37,8 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                   </Text>
                 )}
               </Flex>
-              <Text width="26.5%" textStyle="R_14R" color="black">
-                {numeral(item.lockAmount).format('0, 0.[000000]')}
+              <Text width="22%" textStyle="R_14R" color="black">
+                {numeral(item.lockAmount).format('0, 0.[00]')}
               </Text>
               <Flex width="50%" justifyContent="space-between">
                 <Flex flexDirection="column" justifyContent="center">
