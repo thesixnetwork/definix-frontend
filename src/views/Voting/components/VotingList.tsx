@@ -115,9 +115,6 @@ const LinkView = styled(Button)`
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Transaction Hash', 'Address', 'Choice', 'Voting Power'])
-  // const pages = useMemo(() => Math.ceil(total / 10), [total])
-  // const onPageChange = (e, page) => {
-  // }
 
   return (
     <CardList>

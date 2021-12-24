@@ -39,7 +39,6 @@ const Tabs = styled(Card)`
 const CardProposals = () => {
   const [currentTab, setCurrentTab] = useState(0)
   const [currentTabHeader, setCurrentTabHeader] = useState(0)
-  // const [chartName, setChartName] = useState<TypeChartName>('Core')
 
   useEffect(
     () => () => {

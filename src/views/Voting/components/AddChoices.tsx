@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React from 'react'
+import React, { useMemo } from 'react'
 import { Button, Card, Text, Input, useMatchBreakpoints } from 'uikit-dev'
 import uniqueId from 'lodash/uniqueId'
 import styled from 'styled-components'
@@ -102,7 +102,10 @@ const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange, setChoiceType, 
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
-  const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
+  const hasMinimumChoices = useMemo(() => {
+    const minimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
+    return minimumChoices
+  }, [choices])
 
   const addChoice = () => {
     onChange([...choices, makeChoice()])

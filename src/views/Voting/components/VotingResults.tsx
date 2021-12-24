@@ -27,9 +27,9 @@ const VotingResults = ({ getByIndex }) => {
   const [mapVoting, setMapVoting] = useState([])
   const { fastRefresh } = useRefresh()
   const { proposal } = useGetProposal(id)
-  const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
 
   useEffect(() => {
+    const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
     const array = []
     let proposalMap = []
     const fetch = async () => {

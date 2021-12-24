@@ -28,7 +28,6 @@ const AddActions = () => {
   const { isDark } = useTheme()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
-  // const [startDate, setStartDate] = useState(new Date())
   const [state, setState] = useState<FormState>({
     name: '',
     body: '',

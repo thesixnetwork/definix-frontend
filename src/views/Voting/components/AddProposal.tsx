@@ -276,7 +276,12 @@ const AddProposal: React.FC<Props> = () => {
     }
   }, [isLoading, navigate, onDismiss])
 
-  const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
+  const hasMinimumChoices = useMemo(() => {
+    const minimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
+    return minimumChoices
+  }, [choices])
+
+  // const hasMinimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
 
   return (
     <>
