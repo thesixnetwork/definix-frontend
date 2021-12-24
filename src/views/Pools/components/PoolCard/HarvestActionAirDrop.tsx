@@ -132,7 +132,7 @@ const HarvestActionAirdrop: React.FC<{
           {tokenName}
         </Text>
       )
-      const actionText = t('Harvest')
+      const actionText = t('actionHarvest')
       if (isSuccess) {
         toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
       } else {
@@ -204,7 +204,7 @@ const HarvestActionAirdrop: React.FC<{
             <HarvestInfo>
               <Box>
                 {renderAirDrop({ name: 'FINIX', value: finixEarningsValue })}
-                {(farm.bundleRewards || []).map((br, bundleId) => {
+                {/* {(farm.bundleRewards || []).map((br, bundleId) => {
                   const reward = getBalanceNumber((pendingRewards[bundleId] || {}).reward) || 0
                   const allocate = br.rewardPerBlock || new BigNumber(0)
                   return reward !== 0 || allocate.toNumber() !== 0 ? (
@@ -215,7 +215,7 @@ const HarvestActionAirdrop: React.FC<{
                       })}
                     </>
                   ) : null
-                })}
+                })} */}
               </Box>
               {isInPool && <HarvestButtonSectionInPool>{renderHarvestButton()}</HarvestButtonSectionInPool>}
             </HarvestInfo>

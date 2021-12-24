@@ -245,7 +245,7 @@ const EarningBoxTemplate: React.FC<{
         {harvestResultList[0].symbol}
       </Text>
     )
-    const actionText = t('Harvest')
+    const actionText = t('actionHarvest')
     if (harvestResultList[0].isSuccess) {
       toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
     } else {

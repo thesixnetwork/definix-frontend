@@ -130,7 +130,7 @@ const Deposit: React.FC<{
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
-    <ConfirmModal buttonName="Deposit" lpSymbol={lpTokenName} stakedBalance={val} onOK={handleStake} goList={onBack} />,
+    <ConfirmModal type="deposit" lpSymbol={lpTokenName} stakedBalance={val} onOK={handleStake} goList={onBack} />,
     false,
   )
 

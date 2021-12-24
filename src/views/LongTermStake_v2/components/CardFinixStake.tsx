@@ -60,11 +60,11 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
     switch (day) {
       case 90:
-        return numeral(Number(balance)).format('0,0.[000000]')
+        return numeral(Number(balance)).format('0,0.[00]')
       case 180:
-        return numeral(Number(balance) * 2).format('0,0.[000000]')
+        return numeral(Number(balance) * 2).format('0,0.[00]')
       case 365:
-        return numeral(Number(balance) * 4).format('0,0.[000000]')
+        return numeral(Number(balance) * 4).format('0,0.[00]')
       default:
         return 0
     }

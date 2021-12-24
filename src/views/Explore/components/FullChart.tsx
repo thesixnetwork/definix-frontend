@@ -1,5 +1,5 @@
 import { get } from 'lodash'
-import React, { useMemo, useState } from 'react'
+import React, { memo, useMemo, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 import styled from 'styled-components'
 import { Checkbox, CheckboxLabel, Coin, Flex, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
@@ -113,8 +113,7 @@ const Legend = ({ fundName, selectedTokens, setSelectedTokens, tokens }) => {
 const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = '', height = 320 }) => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const { isSm, isMd } = useMatchBreakpoints()
-  const isMobile = isSm || isMd
+  const { isMaxXl: isMobile } = useMatchBreakpoints()
   const [selectedTokens, setSelectedTokens] = useState({})
   const data = () => {
     return {
@@ -141,13 +140,11 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
             pointHoverBackgroundColor: 'white',
             tension: 0,
             backgroundColor: 'transparent',
-            ...(thisData.isRebalance
-              && {
-                  borderColor: rebalanceColor,
-                  pointBackgroundColor: rebalanceColor,
-                  pointBorderColor: rebalanceColor,
-                }
-              ),
+            ...(thisData.isRebalance && {
+              borderColor: rebalanceColor,
+              pointBackgroundColor: rebalanceColor,
+              pointBorderColor: rebalanceColor,
+            }),
           }
         }),
     }
@@ -168,6 +165,7 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
       xAxes: [
         {
           ticks: {
+            display: !isMobile,
             autoSkip: true,
             maxRotation: 0,
             autoSkipPadding: 23,
@@ -181,7 +179,7 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
     tooltips: {
       mode: 'nearest',
       displayColors: false,
-		  intersect: false,
+      intersect: false,
       callbacks: {
         title: (tooltipItem, dataTooltip) => {
           const index = tooltipItem[0].datasetIndex
@@ -233,4 +231,4 @@ const FullChart = ({ fundName, tokens, isLoading, graphData = {}, className = ''
   )
 }
 
-export default FullChart
+export default memo(FullChart)

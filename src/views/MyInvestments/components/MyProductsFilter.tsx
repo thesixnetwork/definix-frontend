@@ -29,6 +29,7 @@ const DropdownWrap = styled(Box)`
   width: 128px;
   &:first-child {
     margin-right: ${({ theme }) => theme.spacing.S_8}px;
+    min-width: 176px;
   }
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     width: 50%;

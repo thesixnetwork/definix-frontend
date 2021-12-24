@@ -12,13 +12,14 @@ interface AprButtonProps {
   data: DataType[]
 }
 
-const FlexVFinix = styled(Flex)`
+const FlexVFinix = styled(Flex)<{ $focus: boolean }>`
   width: calc(100% / 3);
   margin-right: 16px;
   margin-bottom: 12px;
   flex-direction: column;
   border-radius: 8px;
   cursor: pointer;
+  box-shadow: ${({ $focus }) => ($focus ? '0 8px 10px 0 rgba(255, 104, 40, 0.2)' : 'none')};
 
   &:last-child {
     margin-right: 0;
@@ -53,7 +54,7 @@ const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data }) => {
     <>
       {data.map((item) => {
         return (
-          <FlexVFinix key={item.day} onClick={() => setDays(item.day)}>
+          <FlexVFinix key={item.day} $focus={days === item.day} onClick={() => setDays(item.day)}>
             <FlexDays $focus={days === item.day}>
               <Flex flexDirection="column">
                 <Text textStyle="R_12R" color="white">

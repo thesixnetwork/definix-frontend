@@ -68,7 +68,7 @@ const Performance: React.FC<PerformanceType> = ({
             large={!isMobile}
             title={t('Sharpe')}
             value={`${numeral(sharpRatio).format('0,0.00')}`}
-            hint={t('Sharpe detail')}
+            hint={t('The average return ratio compares')}
           />
         </Flex>
         <Flex alignItems="center" width={size.width}>
@@ -77,7 +77,7 @@ const Performance: React.FC<PerformanceType> = ({
             large={!isMobile}
             title={t('Max Drawdown')}
             value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
-            hint={t('MDD detail')}
+            hint={t('The differentiation between the historical')}
           />
         </Flex>
         <Flex alignItems="center" width={size.width} mt={isMobile ? 'S_20' : ''}>
@@ -86,7 +86,7 @@ const Performance: React.FC<PerformanceType> = ({
             large={!isMobile}
             title={t('Return')}
             value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
-            hint={t('ROI detail')}
+            hint={t('Estimated return on investment measures')}
           />
         </Flex>
       </Flex>

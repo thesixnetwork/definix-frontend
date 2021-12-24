@@ -19,33 +19,37 @@ const useStake = (pid: number) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
+      let tx = null
       if (connector === 'klip') {
         // setShowModal(true)
-        if (pid === 0) {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('enterStaking')),
-            jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal,
-          )
-        } else {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('deposit')),
-            jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal,
-          )
+        try {
+          if (pid === 0) {
+            klipProvider.genQRcodeContactInteract(
+              herodotusContract._address,
+              jsonConvert(getAbiHerodotusByName('enterStaking')),
+              jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              setShowModal,
+            )
+          } else {
+            klipProvider.genQRcodeContactInteract(
+              herodotusContract._address,
+              jsonConvert(getAbiHerodotusByName('deposit')),
+              jsonConvert([pid, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              setShowModal,
+            )
+          }
+          tx = await klipProvider.checkResponse()
+        } catch (error) {
+          console.warn('useStake/handleStake] tx failed')
+        } finally {
+          setShowModal(false)
         }
-        const tx = await klipProvider.checkResponse()
-
-        setShowModal(false)
-        dispatch(fetchFarmUserDataAsync(account))
-        console.info(tx)
       } else {
-        const txHash = await stake(herodotusContract, pid, amount, account)
-        dispatch(fetchFarmUserDataAsync(account))
-        console.info(txHash)
+        tx = await stake(herodotusContract, pid, amount, account)
       }
+      dispatch(fetchFarmUserDataAsync(account))
+      console.info(tx)
+      return tx
     },
     [account, dispatch, herodotusContract, pid, setShowModal, connector],
   )
@@ -62,39 +66,46 @@ export const useSousStake = (sousId, isUsingBnb = false) => {
 
   const handleStake = useCallback(
     async (amount: string) => {
+      let tx = null
       if (connector === 'klip') {
         // setShowModal(true)
-        if (sousId === 0) {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('enterStaking')),
-            jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal,
-          )
-        } else {
-          klipProvider.genQRcodeContactInteract(
-            herodotusContract._address,
-            jsonConvert(getAbiHerodotusByName('deposit')),
-            jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
-            setShowModal,
-          )
+        try {
+          if (sousId === 0) {
+            klipProvider.genQRcodeContactInteract(
+              herodotusContract._address,
+              jsonConvert(getAbiHerodotusByName('enterStaking')),
+              jsonConvert([new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              setShowModal,
+            )
+          } else {
+            klipProvider.genQRcodeContactInteract(
+              herodotusContract._address,
+              jsonConvert(getAbiHerodotusByName('deposit')),
+              jsonConvert([sousId, new BigNumber(amount).times(new BigNumber(10).pow(18)).toString()]),
+              setShowModal,
+            )
+          }
+          tx = await klipProvider.checkResponse()
+        } catch (error) {
+          console.warn('useStake/handleStake] tx failed')
+        } finally {
+          setShowModal(false)
         }
-        await klipProvider.checkResponse()
-        setShowModal(false)
         // dispatch(fetchFarmUserDataAsync(account))
       } else {
         if (sousId === 0) {
-          await stake(herodotusContract, 0, amount, account)
+          tx = await stake(herodotusContract, 0, amount, account)
         } else if (sousId === 1) {
-          await stake(herodotusContract, 1, amount, account)
+          tx = await stake(herodotusContract, 1, amount, account)
         } else if (isUsingBnb) {
-          await sousStakeBnb(sousChefContract, amount, account)
+          tx = await sousStakeBnb(sousChefContract, amount, account)
         } else {
-          await sousStake(sousChefContract, amount, account)
+          tx = await sousStake(sousChefContract, amount, account)
         }
       }
       dispatch(updateUserStakedBalance(sousId, account))
       dispatch(updateUserBalance(sousId, account))
+      return tx
     },
     [account, dispatch, isUsingBnb, herodotusContract, sousChefContract, sousId, setShowModal, connector],
   )

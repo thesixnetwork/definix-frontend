@@ -109,7 +109,7 @@ const HarvestAction: React.FC<{
           {lpSymbol}
         </Text>
       )
-      const actionText = t('Harvest')
+      const actionText = t('actionHarvest')
       if (isSuccess) {
         toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
       } else {
