@@ -2,7 +2,7 @@ import React from 'react'
 import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
@@ -32,9 +32,16 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                   {t(`${item.days} days`)}
                 </Text>
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
-                  <Text textStyle="R_12R" color="yellow">
-                    {t('28days Super Staked')}
-                  </Text>
+                  <Flex alignItems="center">
+                    <Text mt={`${i18n.language === 'en' && 'S_2'}`} mr="S_4" textStyle="R_12R" color="yellow">
+                      {t('28 days Super Staked')}
+                    </Text>
+                    <Helper
+                      text={`${t('28days super stake tooltip')}\n
+                        ${getEndDay(item.lockTimestamp)} ~ ${getEndDay(item.topupTimeStamp)}`}
+                      color="yellow"
+                    />
+                  </Flex>
                 )}
               </Flex>
               <Text width="22%" textStyle="R_14R" color="black">
