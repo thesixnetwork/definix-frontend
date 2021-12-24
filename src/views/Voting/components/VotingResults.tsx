@@ -6,7 +6,7 @@ import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { Card, Text, Skeleton } from 'uikit-dev'
 import styled from 'styled-components'
-import { useProposalIndex } from 'hooks/useVoting'
+import { useProposalIndex, useGetProposal } from 'hooks/useVoting'
 import useRefresh from 'hooks/useRefresh'
 import LinearProgress from '@material-ui/core/LinearProgress'
 
@@ -26,39 +26,21 @@ const VotingResults = ({ getByIndex }) => {
   const [add, setAdd] = useState({})
   const [mapVoting, setMapVoting] = useState([])
   const { fastRefresh } = useRefresh()
-
+  const { proposal } = useGetProposal(id)
   const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
 
   useEffect(() => {
-    let dataArray = []
     const array = []
+    let proposalMap = []
     const fetch = async () => {
-      const voteIPFS = process.env.REACT_APP_IPFS
-      await axios
-        .get(`${voteIPFS}/${id}`)
-        .then((resp) => {
-          dataArray.push({
-            choice_type: resp.data.choice_type,
-            choices: resp.data.choices,
-            content: resp.data.content,
-            creator: resp.data.creator,
-            proposals_type: resp.data.proposals_type,
-            start_unixtimestamp: resp.data.start_unixtimestamp,
-            end_unixtimestamp: resp.data.end_unixtimestamp,
-            title: resp.data.title,
-          })
-        })
-        .catch((e) => {
-          dataArray = []
-        })
-
-      if (voting && dataArray) {
+      proposalMap = [proposal]
+      if (voting && proposalMap) {
         const sum = voting
           .map((datum) => new BigNumber(datum._hex).dividedBy(new BigNumber(10).pow(18)).toNumber())
           .reduce((a, b) => a + b)
 
         voting.filter((v, index) => {
-          _.get(dataArray, '0.choices').map((i, c) => {
+          _.get(proposalMap, '0.choices').map((i, c) => {
             if (index === c) {
               array.push({
                 vote: new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
@@ -75,7 +57,7 @@ const VotingResults = ({ getByIndex }) => {
         })
       }
       setMapVoting(array)
-      await setAdd(dataArray)
+      await setAdd(proposal)
     }
 
     fetch()
