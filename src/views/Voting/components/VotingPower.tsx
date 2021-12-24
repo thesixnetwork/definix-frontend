@@ -41,7 +41,7 @@ const ExpandMore = styled((props) => {
 
 const VotingPower = () => {
   const { isDark } = useTheme()
-  const availableVotes = useAvailableVotes()
+  const { availableVotes } = useAvailableVotes()
   const { balancevfinix } = usePrivateData()
   const [expanded, setExpanded] = React.useState(false)
   const handleExpandClick = () => {

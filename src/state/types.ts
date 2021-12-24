@@ -274,6 +274,7 @@ export interface VotingState {
   totalVote: ''
   allVotesByIndex: []
   allVotesByIpfs: []
+  availableVotes: ''
 }
 
 // Global state

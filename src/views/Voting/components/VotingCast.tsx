@@ -9,7 +9,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import { useAvailableVotes, useAllProposalOfAddress, useProposalIndex } from 'hooks/useVoting'
 import CastVoteModal from '../Modals/CastVoteModal'
-// import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
 const CardList = styled(Card)<{ checked: boolean }>`
   width: 100%;
@@ -107,10 +106,7 @@ function MyFormControlLabel(props) {
 
 const VotingCast = ({ id, indexs, proposalIndex }) => {
   const voteNow = indexs.startEpoch < Date.now() && indexs.endEpoch > Date.now()
-  // const { isDark } = useTheme()
-  // const { isXl, isLg } = useMatchBreakpoints()
-  // const isMobile = !isXl && !isLg
-  const availableVotes = useAvailableVotes()
+  const { availableVotes } = useAvailableVotes()
   const { indexProposal } = useProposalIndex(proposalIndex)
   const { proposalOfAddress } = useAllProposalOfAddress()
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))

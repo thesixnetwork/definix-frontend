@@ -5,8 +5,9 @@ import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
 import IProposalFacet from '../../config/abi/IProposalFacet.json'
+import IUsageFacet from '../../config/abi/IUsageFacet.json'
 import multicall from '../../utils/multicall'
-import { getVFinixVoting } from '../../utils/addressHelpers'
+import { getVFinix, getVFinixVoting } from '../../utils/addressHelpers'
 
 const initialState = {
   allProposal: [],
@@ -16,6 +17,7 @@ const initialState = {
   allVotesByIndex: [],
   totalVote: '',
   allVotesByIpfs: [],
+  availableVotes: '',
 }
 
 export const votingSlice = createSlice({
@@ -44,11 +46,15 @@ export const votingSlice = createSlice({
       const { allVotesByIpfs } = action.payload
       state.allVotesByIpfs = allVotesByIpfs
     },
+    setAvailableVotes: (state, action) => {
+      const { availableVotes } = action.payload
+      state.availableVotes = availableVotes
+    },
   },
 })
 
 // Actions
-export const { setAllProposal, setProposalIndex, setProposal, setAllVoteByIndex, setAllVoteByIpfs } =
+export const { setAllProposal, setProposalIndex, setProposal, setAllVoteByIndex, setAllVoteByIpfs, setAvailableVotes } =
   votingSlice.actions
 
 const getAllProposalOfType = async ({ vFinixVoting }) => {
@@ -335,11 +341,37 @@ export const fetchVotesByIndex = (proposalIndex, pages, limits) => async (dispat
   dispatch(setAllVoteByIndex({ allVotesByIndex, totalVote }))
 }
 
-export const fetchVotesByIpfs = (fff) => async (dispatch) => {
+export const fetchVotesByIpfs = (ipfs) => async (dispatch) => {
   const fetchPromise = []
-  fetchPromise.push(getVotesByIpfs(fff))
+  fetchPromise.push(getVotesByIpfs(ipfs))
   const [[allVotesByIpfs]] = await Promise.all(fetchPromise)
   dispatch(setAllVoteByIpfs({ allVotesByIpfs }))
+}
+
+const getAvailableVotes = async (account) => {
+  let vote = 0
+  try {
+    const calls = [
+      {
+        address: getVFinix(),
+        name: 'getAvailableVotes',
+        params: [account],
+      },
+    ]
+
+    const [available] = await multicall(IUsageFacet.abi, calls)
+    vote = new BigNumber(available).dividedBy(new BigNumber(10).pow(18)).toNumber()
+  } catch (error) {
+    vote = 0
+  }
+  return [vote]
+}
+
+export const fetchAvailableVotes = (account) => async (dispatch) => {
+  const fetchPromise = []
+  fetchPromise.push(getAvailableVotes(account))
+  const [[availableVotes]] = await Promise.all(fetchPromise)
+  dispatch(setAvailableVotes({ availableVotes }))
 }
 
 export default votingSlice.reducer

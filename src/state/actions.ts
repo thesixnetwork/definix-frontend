@@ -15,6 +15,7 @@ export {
   fetchProposal,
   fetchVotesByIndex,
   fetchVotesByIpfs,
+  fetchAvailableVotes
 } from './voting'
 export { clear, remove, push } from './toasts'
 export { fetchRebalances } from './rebalance'

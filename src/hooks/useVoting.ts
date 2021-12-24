@@ -22,6 +22,7 @@ import {
   fetchProposal,
   fetchVotesByIndex,
   fetchVotesByIpfs,
+  fetchAvailableVotes,
 } from '../state/actions'
 import useRefresh from './useRefresh'
 
@@ -31,23 +32,18 @@ import useRefresh from './useRefresh'
 // const useVoting = (tokenAddress: string) => {}
 
 export const useAvailableVotes = () => {
-  const [availableVotes, setAvailableVotes] = useState<string>()
+  const { fastRefresh } = useRefresh()
+  const dispatch = useDispatch()
   const { account } = useWallet()
+  const availableVotes = useSelector((state: State) => state.voting.availableVotes)
 
-  const call = useMemo(() => {
-    async function fetchAvailableVotes() {
-      if (account) {
-        const callContract = getContract(UsageFacet.abi, getVFinix())
-        const available = await callContract.methods.getAvailableVotes(account).call({ from: account })
-        setAvailableVotes(new BigNumber(available).dividedBy(new BigNumber(10).pow(18)).toString())
-      }
+  useEffect(() => {
+    if (account) {
+      dispatch(fetchAvailableVotes(account))
     }
+  }, [fastRefresh, dispatch, account])
 
-    fetchAvailableVotes()
-    return availableVotes
-  }, [account, availableVotes])
-
-  return call
+  return { availableVotes }
 }
 
 export const useAllProposalOfType = () => {

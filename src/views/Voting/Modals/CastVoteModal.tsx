@@ -125,7 +125,7 @@ const CastVoteModal: React.FC<Props> = ({
 }) => {
   const { account, connect } = useWallet()
   const [onPresentConnectModal] = useModal(<ConnectModal login={connect} />)
-  const availableVotes = useAvailableVotes()
+  const { availableVotes } = useAvailableVotes()
   const { balancevfinix } = usePrivateData()
   const balanceOf = useBalances()
   const { isDark } = useTheme()
