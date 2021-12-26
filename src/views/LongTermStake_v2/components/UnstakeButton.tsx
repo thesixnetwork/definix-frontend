@@ -3,11 +3,12 @@ import _ from 'lodash'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
-import { useClaim } from 'hooks/useLongTermStake'
+import { useClaim, usePrivateData, useApr } from 'hooks/useLongTermStake'
 import { useToast } from 'state/hooks'
 import { fetchIdData } from 'state/longTermStake'
 
 import UnstakeModal from './UnstakeModal'
+import UnstakeImpossibleModal from './UnstakeImpossibleModal'
 import { AllDataLockType, IsMobileType } from './types'
 
 interface UnstakeButtonProps extends IsMobileType {
@@ -17,12 +18,18 @@ interface UnstakeButtonProps extends IsMobileType {
 const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   const { t } = useTranslation()
   const [isLoadingClaim, setIsLoadingClaim] = useState<boolean>(false)
+  const { balancevfinix } = usePrivateData()
+  const apr = useApr()
 
   const dispatch = useDispatch()
   const { onClaim } = useClaim()
   const { toastSuccess, toastError } = useToast()
 
   const [onPresentUnstakeModal] = useModal(<UnstakeModal />, false)
+  const [onPresentUnstakeImpossibleModal] = useModal(
+    <UnstakeImpossibleModal days={data.days} amount={data.lockAmount} apr={apr} multiplier={data.multiplier} />,
+    false,
+  )
 
   const handleClaim = useCallback(
     async (Id) => {
@@ -92,11 +99,17 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
 
   const handleCanUnlock = (item: AllDataLockType) => {
     return item.canBeUnlock ? (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={() => handleUnstake(data)}>
+      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={() => handleUnstake(item)}>
         {t('Unstake')}
       </Button>
     ) : (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={() => handleUnstake(data)}>
+      <Button
+        width={`${isMobile ? '100%' : '128px'}`}
+        variant="lightbrown"
+        onClick={() =>
+          balancevfinix < item.lockAmount * item.multiplier ? onPresentUnstakeImpossibleModal() : handleUnstake(item)
+        }
+      >
         {t('Early Unstake')}
       </Button>
     )
