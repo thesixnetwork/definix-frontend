@@ -5,7 +5,7 @@ import { useERC20 } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { AddIcon,Button, Heading, MinusIcon, Text } from 'uikit-dev'
+import { AddIcon, Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethers } from 'ethers'
 import { StakeActionProps } from './types'
@@ -35,7 +35,7 @@ const StakeAction: React.FC<StakeActionProps> = ({
   className = '',
   apolloAddress,
   veloId,
-  onPresentDeposit
+  onPresentDeposit,
 }) => {
   const TranslateString = useI18n()
 

@@ -180,11 +180,11 @@ const Farm: React.FC = () => {
       poolVelo2.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
       // poolVelo.stakingLimit = new BigNumber(balanceFinixUser)
     }
-    
+
     poolVelo2.totalStaked = new BigNumber(totalStake)
 
     const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR).div(1e18).toNumber()
-    
+
     const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
     const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
       new BigNumber(reserveFinixVelo._reserve1).div(1e18),
@@ -194,8 +194,8 @@ const Farm: React.FC = () => {
     // eslint-disable-next-line
     // debugger
     poolVelo2.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR))
-    .div(new BigNumber(totalStake).div(1e18))
-    .times(100)
+      .div(new BigNumber(totalStake).div(1e18))
+      .times(100)
     // eslint-disable-next-line
     // debugger
     setPoolVelo2(poolVelo2)
@@ -217,7 +217,7 @@ const Farm: React.FC = () => {
       contractApollo.methods.rewardPerBlock().call(),
       pairContract.methods.getReserves().call(),
     ])
-    console.log("fetch1")
+    console.log('fetch1')
     // const veloBalance = await contractVelo.methods.balanceOf(apolloAddress).call();
     // // console.log("1z",veloBalance)
     // const totalStake = await contractFinix.methods.balanceOf(apolloAddress).call()
@@ -410,7 +410,7 @@ const Farm: React.FC = () => {
                 <FlexLayout cols={listView ? 1 : 3}>
                   <Route exact path={`${path}`}>
                     <div>
-                    <PoolCard
+                      <PoolCard
                         key={poolVelo2.sousId}
                         pool={poolVelo2}
                         isHorizontal={listView}
