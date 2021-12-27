@@ -80,7 +80,7 @@ const Farm: React.FC = () => {
     stakingTokenName: QuoteToken.VELO,
     stakingLimit: 0,
     stakingTokenAddress: VeloPool[0].stakingTokenAddress,
-    contractAddress: VeloPool[1].contractAddress,
+    contractAddress: VeloPool[0].contractAddress,
     poolCategory: PoolCategory.PARTHNER,
     projectLink: '',
     tokenPerBlock: '10',
@@ -109,8 +109,8 @@ const Farm: React.FC = () => {
     tokenName: 'VELO',
     stakingTokenName: QuoteToken.VELO,
     stakingLimit: 0,
-    stakingTokenAddress: VeloPool[1].stakingTokenAddress,
-    contractAddress: VeloPool[0].contractAddress,
+    stakingTokenAddress: VeloPool[2].stakingTokenAddress,
+    contractAddress: VeloPool[2].contractAddress,
     poolCategory: PoolCategory.PARTHNER,
     projectLink: '',
     tokenPerBlock: '10',
@@ -122,6 +122,7 @@ const Farm: React.FC = () => {
   })
 
   const [amountVfinix1, setAmountVfinix1x] = useState<number>(0)
+  const [amountVfinix2, setAmountVfinix2x] = useState<number>(0)
   const phrase1TimeStamp = process.env.REACT_APP_PHRASE_1_TIMESTAMP
     ? parseInt(process.env.REACT_APP_PHRASE_1_TIMESTAMP || '', 10) || new Date().getTime()
     : new Date().getTime()
@@ -139,15 +140,29 @@ const Farm: React.FC = () => {
   }
 
   const fetch2 = useCallback(async () => {
+    // const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
+
+    // const apolloAddress = '0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f' // getAddress("poolVelo.contractAddress")
+    // const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
+
+    // const contractApollo = getContract(Apollo.abi, apolloAddress)
+    // const contractFinix = getContract(erc20, finixAddress)
+    // const [totalStake, reserveFinixVelo] = await Promise.all([
+    //   contractFinix.methods.balanceOf(apolloAddress).call(),
+    //   pairContract.methods.getReserves().call(),
+    // ])
     const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
-
-    const apolloAddress = '0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f' // getAddress("poolVelo.contractAddress")
+    const veloAddress = getAddress(AddressTokens.velo)
+    const apolloAddress = getAddress(poolVelo2.contractAddress) // getAddress("poolVelo.contractAddress")
     const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
-
+    // 0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f
     const contractApollo = getContract(Apollo.abi, apolloAddress)
     const contractFinix = getContract(erc20, finixAddress)
-    const [totalStake, reserveFinixVelo] = await Promise.all([
+    const contractVelo = getContract(erc20, veloAddress)
+    const [veloBalance, totalStake, rewardPerBlock, reserveFinixVelo] = await Promise.all([
+      contractVelo.methods.balanceOf(apolloAddress).call(),
       contractFinix.methods.balanceOf(apolloAddress).call(),
+      contractApollo.methods.rewardPerBlock().call(),
       pairContract.methods.getReserves().call(),
     ])
     if (account) {
@@ -165,25 +180,32 @@ const Farm: React.FC = () => {
       poolVelo2.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
       // poolVelo.stakingLimit = new BigNumber(balanceFinixUser)
     }
+    
     poolVelo2.totalStaked = new BigNumber(totalStake)
 
+    const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR).div(1e18).toNumber()
+    
+    const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
     const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
-      new BigNumber(reserveFinixVelo._reserve1).div(1e5),
+      new BigNumber(reserveFinixVelo._reserve1).div(1e18),
     )
     poolVelo2.pairPrice = new BigNumber(finixPervelo)
     // const x = finixPervelo.toFixed(3)
     // eslint-disable-next-line
     // debugger
-    poolVelo2.apy = new BigNumber(0)
+    poolVelo2.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR))
+    .div(new BigNumber(totalStake).div(1e18))
+    .times(100)
     // eslint-disable-next-line
     // debugger
     setPoolVelo2(poolVelo2)
+    setAmountVfinix2x(veloBalanceReward)
   }, [account, poolVelo2])
 
   const fetch1 = useCallback(async () => {
     const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
     const veloAddress = getAddress(AddressTokens.velo)
-    const apolloAddress = '0x7ddc1bD516256c269F99AD52D7C37DeD33AF0eE7' // getAddress("poolVelo.contractAddress")
+    const apolloAddress = getAddress(poolVelo1.contractAddress) // getAddress("poolVelo.contractAddress")
     const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
     // 0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f
     const contractApollo = getContract(Apollo.abi, apolloAddress)
@@ -195,6 +217,15 @@ const Farm: React.FC = () => {
       contractApollo.methods.rewardPerBlock().call(),
       pairContract.methods.getReserves().call(),
     ])
+    console.log("fetch1")
+    // const veloBalance = await contractVelo.methods.balanceOf(apolloAddress).call();
+    // // console.log("1z",veloBalance)
+    // const totalStake = await contractFinix.methods.balanceOf(apolloAddress).call()
+    // // console.log("2z",totalStake)
+    // const rewardPerBlock = await contractApollo.methods.rewardPerBlock().call()
+    // // console.log("3z",rewardPerBlock)
+    // const reserveFinixVelo = await pairContract.methods.getReserves().call()
+    // // console.log("4z",reserveFinixVelo)
     if (account) {
       const [userInfo, allowance, pendingReward, balanceFinixUser] = await Promise.all([
         contractApollo.methods.userInfo(account).call(),
@@ -379,6 +410,14 @@ const Farm: React.FC = () => {
                 <FlexLayout cols={listView ? 1 : 3}>
                   <Route exact path={`${path}`}>
                     <div>
+                    <PoolCard
+                        key={poolVelo2.sousId}
+                        pool={poolVelo2}
+                        isHorizontal={listView}
+                        veloAmount={amountVfinix2}
+                        account={account}
+                        veloId={2}
+                      />
                       <PoolCard
                         key={poolVelo1.sousId}
                         pool={poolVelo1}

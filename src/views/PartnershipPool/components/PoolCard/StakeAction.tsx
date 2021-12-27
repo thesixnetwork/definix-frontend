@@ -5,7 +5,7 @@ import { useERC20 } from 'hooks/useContract'
 import useI18n from 'hooks/useI18n'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
-import { Button, Heading, MinusIcon, Text } from 'uikit-dev'
+import { AddIcon,Button, Heading, MinusIcon, Text } from 'uikit-dev'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { ethers } from 'ethers'
 import { StakeActionProps } from './types'
@@ -34,6 +34,8 @@ const StakeAction: React.FC<StakeActionProps> = ({
   onPresentWithdraw,
   className = '',
   apolloAddress,
+  veloId,
+  onPresentDeposit
 }) => {
   const TranslateString = useI18n()
 
@@ -99,16 +101,16 @@ const StakeAction: React.FC<StakeActionProps> = ({
           <MinusIcon color="primary" />
         </Button>
 
-        {/* {!isOldSyrup && !isFinished && (
+        {!isOldSyrup && !isFinished && veloId !== 1 && (
           <Button
             variant="secondary"
-            disabled={isFinished || veloId !== 1}
+            disabled={isFinished || veloId === 1}
             onClick={onPresentDeposit}
             className="btn-secondary-disable col-6 ml-1"
           >
             <AddIcon color="primary" />
           </Button>
-        )} */}
+        )}
       </IconButtonWrapper>
     )
   }

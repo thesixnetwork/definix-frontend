@@ -234,14 +234,14 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
         </>
       )
     }
-    const showCountdown = veloId === 1
+    const showCountdown = veloId === 2
     return (
       <div>
         <div style={{ display: 'flex' }}>
           <CountDown showCom={showCountdown} />
         </div>
         <HorizontalStyle className="flex align-stretch px-5 py-6 mb-5">
-          {veloId === 1 && <PartnerPoolSash />}
+          {veloId === 2 && <PartnerPoolSash />}
           {renderCardHeading('col-3 pos-static')}
 
           <div className="col-4 bd-x flex flex-column justify-space-between px-5">
@@ -255,7 +255,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
       </div>
     )
   }
-  const showCountdown = veloId === 1
+  const showCountdown = veloId === 2
   return (
     <div style={{ margin: 'auto' }}>
       <div style={{ display: 'flex' }}>

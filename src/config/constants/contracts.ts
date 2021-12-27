@@ -47,6 +47,10 @@ export default {
     97: process.env.REACT_APP_LP_VELO_FINIX_TESTNET,
     56: process.env.REACT_APP_LP_VELO_FINIX_MAINNET,
   },
+  veloApolloNew:{
+    97: "0x9b8bA786d9BBE6f8F81DD099F618FE69ca08D2B5",
+    56: process.env.REACT_APP_LP_VELO_FINIX_MAINNET
+  },
   // configured =====================================================
   syrup: {
     97: '0x36101b46fD2C799420f32B2fE267736e72362778',
