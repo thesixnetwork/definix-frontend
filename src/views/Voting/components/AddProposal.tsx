@@ -14,12 +14,21 @@ import { getCaver } from 'utils/caver'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
-import { DatePicker, TimePicker } from 'components/DatePicker'
+
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
+import DesktopTimePicker from '@mui/lab/DesktopTimePicker';
+import DesktopDatePicker from '@mui/lab/DesktopDatePicker';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import TextField from '@mui/material/TextField';
+
 import { Box, ArrowBackIcon, Button, Card, Input, Text, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { format, parseISO, isValid } from 'date-fns'
 import { Context } from '../../../uikit-dev/widgets/Modal/ModalContext'
 import AddChoices, { Choice, makeChoice, MINIMUM_CHOICES } from './AddChoices'
 import VotingPower from './VotingPower'
+
 
 const SuccessOptions = {
   loop: true,
@@ -104,6 +113,32 @@ export const SecondaryLabel = styled(BaseLabel)`
   font-size: 12px;
   text-transform: uppercase;
 `
+
+
+const CssTextField = styled(TextField)(({ theme }) => ({
+  '& label.Mui-focused': {
+    color: theme.isDark ? "#FFFFFF" : "#979797",
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: '#979797',
+  },
+  '& .MuiOutlinedInput-root': {
+    color: theme.isDark ? "#FFFFFF" : "#979797",
+    '& fieldset': {
+      border: '1px solid',
+      borderColor: theme.isDark ? "#57575B" : "#ECECEC",
+    },
+    '&:hover fieldset': {
+      border: '1px solid #979797',
+    },
+    '&.Mui-focused fieldset': {
+      border: '2px solid #979797',
+    },
+  },
+  '& .MuiIconButton-root': {
+    color: theme.isDark ? "#EAE8E8" : "#979797",
+  }
+}));
 
 export const FormError: React.FC = ({ children }) => (
   <Text color="failure" mb="4px">
@@ -345,38 +380,78 @@ const AddProposal: React.FC<Props> = () => {
                   <Text className="mb-3" color="text" fontSize="16px">
                     Start Date
                   </Text>
-                  <DatePicker
-                    name="startDate"
-                    onChange={handleDateChange('startDate')}
-                    selected={startDate}
-                    placeholderText="YYYY/MM/DD"
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    {isMobile ? (
+                      <MobileDatePicker
+                        inputFormat="dd-MM-yyyy"
+                        value={startDate}
+                        onChange={handleDateChange('startDate')}
+                        renderInput={(params) => <CssTextField fullWidth size="small"  {...params} />}
+                      />
+                    ) : (
+                      <DesktopDatePicker
+                        inputFormat="dd-MM-yyyy"
+                        value={startDate}
+                        onChange={handleDateChange('startDate')}
+                        renderInput={(params) => <CssTextField fullWidth size="small"  {...params} />}
+                      />
+                    )}
+                  </LocalizationProvider>
                 </div>
                 <div className="mb-4">
                   <Text className="mb-3" color="text" fontSize="16px">
                     Start Time
                   </Text>
-                  <TimePicker
-                    name="startTime"
-                    onChange={handleDateChange('startTime')}
-                    selected={startTime}
-                    placeholderText="00:00"
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    {isMobile ? (
+                      <MobileTimePicker
+                        openTo="hours"
+                        views={['hours', 'minutes', 'seconds']}
+                        inputFormat="HH:mm:ss a"
+                        mask="__:__:__ _M"
+                        value={startTime}
+                        onChange={handleDateChange('startTime')}
+                        renderInput={(params) => <CssTextField fullWidth size="small" {...params} />}
+                      />
+                    ) : (
+                        <DesktopTimePicker
+                          openTo="hours"
+                          views={['hours', 'minutes', 'seconds']}
+                          inputFormat="HH:mm:ss a"
+                          mask="__:__:__ _M"
+                          value={startTime}
+                          onChange={handleDateChange('startTime')}
+                          renderInput={(params) => <CssTextField fullWidth size="small" {...params} />}
+                        />
+                      )}
+                  </LocalizationProvider>
                 </div>
                 <div className="mb-4">
                   <Text className="mb-3" color="text" fontSize="16px">
                     End Date
                   </Text>
-                  <DatePicker
-                    name="endDate"
-                    onChange={handleDateChange('endDate')}
-                    selected={endDate}
-                    placeholderText="YYYY/MM/DD"
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    {isMobile ? (
+                      <MobileDatePicker
+                        inputFormat="dd-MM-yyyy"
+                        value={endDate}
+                        onChange={handleDateChange('endDate')}
+                        renderInput={(params) => <CssTextField fullWidth size="small"  {...params} />}
+                      />
+                    ) : (
+                      <DesktopDatePicker
+                        inputFormat="dd-MM-yyyy"
+                        value={endDate}
+                        onChange={handleDateChange('endDate')}
+                        renderInput={(params) => <CssTextField fullWidth size="small"  {...params} />}
+                      />
+                    )}
+                  </LocalizationProvider>
+                  
                   {startDate !== null &&
                     startTime !== null &&
                     Number(combineDateAndTime(startDate, startTime)) * 1000 >
-                      Number(combineDateAndTime(endDate, endTime)) * 1000 && (
+                    Number(combineDateAndTime(endDate, endTime)) * 1000 && (
                       <Text className="mt-2" color="#F5C858" fontSize="14px">
                         End date must be after the start date
                       </Text>
@@ -386,12 +461,29 @@ const AddProposal: React.FC<Props> = () => {
                   <Text className="mb-3" color="text" fontSize="16px">
                     End Time
                   </Text>
-                  <TimePicker
-                    name="endTime"
-                    onChange={handleDateChange('endTime')}
-                    selected={endTime}
-                    placeholderText="00:00"
-                  />
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    {isMobile ? (
+                      <MobileTimePicker
+                        openTo="hours"
+                        views={['hours', 'minutes', 'seconds']}
+                        inputFormat="HH:mm:ss a"
+                        mask="__:__:__ _M"
+                        value={endTime}
+                        onChange={handleDateChange('endTime')}
+                        renderInput={(params) => <CssTextField fullWidth size="small" {...params} />}
+                      />
+                    ) : (
+                        <DesktopTimePicker
+                          openTo="hours"
+                          views={['hours', 'minutes', 'seconds']}
+                          inputFormat="HH:mm:ss a"
+                          mask="__:__:__ _M"
+                          value={endTime}
+                          onChange={handleDateChange('endTime')}
+                          renderInput={(params) => <CssTextField fullWidth size="small" {...params} />}
+                        />
+                      )}
+                  </LocalizationProvider>
                 </div>
                 <div className={`flex align-center ${isMobile ? 'flex-wrap' : 'my-3'}`}>
                   <div className={isMobile ? 'col-12' : 'col-4'}>
@@ -422,7 +514,7 @@ const AddProposal: React.FC<Props> = () => {
                     isLoading === 'loading' ||
                     isLoading === 'success' ||
                     Number(combineDateAndTime(startDate, startTime)) * 1000 >
-                      Number(combineDateAndTime(endDate, endTime)) * 1000
+                    Number(combineDateAndTime(endDate, endTime)) * 1000
                   }
                   type="submit"
                   variant="success"
