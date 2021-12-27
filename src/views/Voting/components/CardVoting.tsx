@@ -110,8 +110,8 @@ const CardVoting = () => {
           </DetailBanner>
         </div>
         <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
-            Make a Proposals
-          </Button>
+          Make a Proposals
+        </Button>
         {/* {isProposable && (
           <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
             Make a Proposals
