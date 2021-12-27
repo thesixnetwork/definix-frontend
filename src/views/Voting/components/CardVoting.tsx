@@ -109,14 +109,11 @@ const CardVoting = () => {
             Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
           </DetailBanner>
         </div>
-        <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
-          Make a Proposals
-        </Button>
-        {/* {isProposable && (
+        {isProposable && (
           <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
             Make a Proposals
           </Button>
-        )} */}
+        )}
       </BannerVoting>
       <CardProposals />
 
