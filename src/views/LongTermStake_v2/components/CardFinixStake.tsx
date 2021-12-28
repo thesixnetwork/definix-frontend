@@ -88,6 +88,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
   useEffect(() => {
     if (pathname === '/long-term-stake') setDays(365)
+    return () => setDays(90)
   }, [pathname])
 
   return (

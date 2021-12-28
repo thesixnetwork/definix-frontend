@@ -53,6 +53,8 @@ const VFinixAprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data,
 
     if (array.length !== 0) setPossibleSuperStake(true)
     else setPossibleSuperStake(false)
+
+    return () => setSuperStakeData([])
   }, [lockTopUp, allLock, setDays, setPossibleSuperStake, pathname])
 
   return (
