@@ -86,7 +86,8 @@ const BalanceFinix: React.FC<BalanceProps> = ({
 
   useEffect(() => {
     if (pathname === '/super-stake') {
-      setError('')
+      if (!inputBalance) setError('noInput')
+      else setError('')
       return
     }
 
