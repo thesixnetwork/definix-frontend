@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'lodash'
 import moment from 'moment'
@@ -22,6 +23,7 @@ const FlexCard = styled(Flex)`
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
   const { i18n } = useTranslation()
+  const { pathname } = useLocation()
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
   const [error, setError] = useState<string>('')
@@ -83,6 +85,10 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
     }
     return moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
   }
+
+  useEffect(() => {
+    if (pathname === '/long-term-stake') setDays(365)
+  }, [pathname])
 
   return (
     <>
