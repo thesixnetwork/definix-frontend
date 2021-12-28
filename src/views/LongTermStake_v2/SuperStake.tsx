@@ -45,7 +45,7 @@ const SuperStake: React.FC = () => {
         <TitleStake />
 
         <Card>
-          <TabStake isMobile={isMobile} superStake />
+          <TabStake isMobile={isMobile} />
           <Wrap>
             <Working p="S_32" flexDirection="column" alignItems="center">
               <img alt="" width={236} src={repairImgX3} />
