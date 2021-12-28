@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Button, FireIcon, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useHarvest } from 'hooks/useLongTermStake'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
+import SuperStakeModal from './SuperStakeModal'
 import { IsMobileType } from './types'
 
 interface FinixEarnProps extends IsMobileType {
@@ -23,11 +24,19 @@ const FlexEarn = styled(Flex)`
   }
 `
 
+const StyledButtonFlex = styled(Flex)<{ $isMobile: boolean }>`
+  width: ${({ $isMobile }) => ($isMobile ? '100%' : 'auto')};
+  flex-direction: ${({ $isMobile }) => ($isMobile ? 'row' : 'column')};
+  margin-top: ${({ $isMobile }) => ($isMobile ? '20px' : '0px')};
+`
+
 const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
   const { t } = useTranslation()
   const { handleHarvest } = useHarvest()
   const [isLoadingHarvest, setIsLoadingHarvest] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
+
+  const [onPresentsuperStakeModal] = useModal(<SuperStakeModal />, false)
 
   const onHarvest = useCallback(async () => {
     try {
@@ -43,17 +52,29 @@ const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
 
   const renderHarvestButton = useCallback(
     () => (
-      <Button
-        width={`${isMobile ? '100%' : '156px'}`}
-        mt={`${isMobile && 'S_20'}`}
-        disabled={!finixEarn}
-        isLoading={isLoadingHarvest}
-        onClick={onHarvest}
-      >
-        {t('Harvest')}
-      </Button>
+      <StyledButtonFlex $isMobile={isMobile}>
+        <Button
+          variant="red"
+          width={`${isMobile ? '50%' : '156px'}`}
+          isLoading={isLoadingHarvest}
+          disabled={!finixEarn}
+          onClick={onHarvest}
+        >
+          {t('Harvest')}
+        </Button>
+        <Button
+          variant="yellow"
+          width={`${isMobile ? '50%' : '156px'}`}
+          mt={`${!isMobile && 'S_8'}`}
+          ml={`${isMobile && 'S_8'}`}
+          disabled={!finixEarn}
+          onClick={onPresentsuperStakeModal}
+        >
+          {t('Super Stake')}
+        </Button>
+      </StyledButtonFlex>
     ),
-    [t, isMobile, finixEarn, isLoadingHarvest, onHarvest],
+    [t, isMobile, finixEarn, isLoadingHarvest, onHarvest, onPresentsuperStakeModal],
   )
 
   return (

@@ -7,6 +7,7 @@ export interface DataType {
   day: number
   apr: number
   minStake: number
+  level: number
 }
 
 export interface AllDataLockType {
