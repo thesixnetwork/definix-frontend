@@ -34,17 +34,17 @@ const KO_NOTICE_LIST: NoticeProps[] = [
   },
   {
     id: 1,
-    title: '장기예치풀 오픈 & 홀더 등급별 디자인 적용',
-    content: `이제 G2에서도 장기예치풀을 사용하실 수 있습니다.
-    새롭게 적용된 장기예치 기간별 홀더 등급 디자인도 확인해보세요.`,
-  },
-  {
-    id: 2,
     title: '여러분의 목소리를 들려주세요',
     content: `디피닉스는 홀더분들의 목소리에 항상 귀기울이고 있습니다.
     베타서비스에 불편한점, 개선점 있으시면 피드백 부탁드립니다.`,
     link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
     linkLabel: 'Beta 피드백',
+  },
+  {
+    id: 2,
+    title: 'G2 장기예치풀 오픈!',
+    content: `G2 버전에서도 장기예치풀을 사용하실 수 있습니다.
+    슈퍼스테이크도 열심히 작업 중입니다. 조금만 기다려 주세요!`,
   },
 ]
 const EN_NOTICE_LIST: NoticeProps[] = [
@@ -56,17 +56,17 @@ const EN_NOTICE_LIST: NoticeProps[] = [
   },
   {
     id: 1,
-    title: 'Long-term Stake & New HODL design has arrived',
-    content: `Long-term Stake is available on G2 now.
-    Also, check out how is your newly applied HODL design in MY.`,
-  },
-  {
-    id: 2,
     title: 'Let your voice be heard',
     content: `Definix is always listening to the voices of holders.
     If there are any inconveniences or improvements to the beta service, please give us feedback.`,
     link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
     linkLabel: 'Feedback for Beta',
+  },
+  {
+    id: 2,
+    title: 'Long-term Stake on G2 is up!',
+    content: `Long-term Stake is available on G2 now.
+    Super Stake is in the works, so please wait for a while!`,
   },
 ]
 
