@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext, useEffect, useMemo } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import Lottie from 'react-lottie'
@@ -92,6 +93,7 @@ const TD = styled.td<{ align?: string }>`
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
 `
+
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Vote', 'Voting Power', ''])

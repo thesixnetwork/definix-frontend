@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { Card, Text, Skeleton } from 'uikit-dev'

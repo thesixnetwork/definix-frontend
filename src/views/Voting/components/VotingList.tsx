@@ -1,19 +1,14 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useMemo, useEffect } from 'react'
-import axios from 'axios'
+/* eslint-disable no-unused-vars */
+import React, { useState, useMemo } from 'react'
 import _ from 'lodash'
-import BigNumber from 'bignumber.js'
 import { useParams } from 'react-router-dom'
-import { Card, Text, useMatchBreakpoints, Button, Skeleton } from 'uikit-dev'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { Card, Text, Button, Skeleton } from 'uikit-dev'
 import isEmpty from 'lodash/isEmpty'
-import { getAddress } from 'utils/addressHelpers'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
 import { useProposalIndex, useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
-import useRefresh from 'hooks/useRefresh'
-import useTheme from 'hooks/useTheme'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
 
@@ -228,15 +223,14 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 }
 
 const VotingList = ({ rbAddress }) => {
+  /* eslint-enable no-unused-vars */
   const [isLoading, setIsLoading] = useState(false)
-  const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const limits = 10
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const [add, setAdd] = useState([])
 
   const { indexProposal } = useProposalIndex(proposalIndex)
-  const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
+  // const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
   const { allVotesByIndex, totalVote } = useVotesByIndex(proposalIndex, currentPage, limits)
   const { allVotesByIpfs } = useVotesByIpfs(id)
   const pages = useMemo(() => Math.ceil(Number(totalVote) / 10), [Number(totalVote)])

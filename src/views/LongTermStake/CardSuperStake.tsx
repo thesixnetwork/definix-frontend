@@ -128,7 +128,7 @@ const BadgeExclusive = styled.div`
 `
 
 const CardSuperStake = ({ isShowRightPanel }) => {
-  /* eslint-enable no-unused-vars */
+  /* eslint-disable no-unused-vars */
   const { connect, account } = useWallet()
   const { isDark } = useTheme()
   const balanceOf = useBalances()
