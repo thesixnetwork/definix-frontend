@@ -58,6 +58,15 @@ const NumberInput = styled.input`
   color: ${({ theme }) => (theme.isDark ? '#fff' : '#000')};
   -webkit-flex: 1 1 auto;
   padding: 0px;
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  ::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  -moz-appearance: textfield;
 `
 
 const Box = styled.div<{ expand: boolean }>`
@@ -353,7 +362,8 @@ const CastVoteModal: React.FC<Props> = ({
                       placeholder="0.00"
                       value={_.get(v, 'vote')}
                       onChange={(e) => handleChange(e, index, v)}
-                      pattern="^[0-9]*[,]?[0-9]*$"
+                      pattern="[0-9.]*"
+                      type="number"
                     />
                     {/* {percent !== 1 && (
                       <div className="flex align-center justify-end" style={{ width: 'auto' }}>
@@ -377,7 +387,8 @@ const CastVoteModal: React.FC<Props> = ({
                       placeholder="0.00"
                       value={_.get(v, 'vote')}
                       onChange={(e) => handleChange(e, index, v)}
-                      pattern="^[0-9]*[,]?[0-9]*$"
+                      pattern="[0-9.]*"
+                      type="number"
                     />
                     {/* {percent !== 1 && (
                       <div className="flex align-center justify-end" style={{ width: 'auto' }}>
