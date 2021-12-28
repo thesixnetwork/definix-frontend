@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
 
 export const Table = styled.table`
   width: 100%;
@@ -50,6 +51,9 @@ export const TH = styled.th<{ align?: string; sm?: boolean; oneline?: boolean }>
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
   ${({ oneline }) => oneline && `white-space: nowrap;`};
+  ${Text} {
+    white-space: inherit;
+  }
 `
 
 export const TD = styled.td<{ align?: string; sidecolor?: string; sm?: boolean; oneline?: boolean }>`
@@ -74,4 +78,8 @@ export const TD = styled.td<{ align?: string; sidecolor?: string; sm?: boolean; 
   `};
 
   ${({ oneline }) => oneline && `white-space: nowrap;`};
+
+  ${Text} {
+    white-space: inherit;
+  }
 `

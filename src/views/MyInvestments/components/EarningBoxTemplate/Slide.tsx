@@ -21,12 +21,14 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
   width: 100%;
   flex: 1;
 
-  .slick-dots {
-    position: relative;
-    bottom: 0;
-    height: auto;
-    margin-bottom: ${({ theme }) => theme.spacing.S_20}px;
+  .slick-slider {
+    padding-bottom: 20px;
+  }
 
+  .slick-dots {
+    position: absolute;
+    bottom: ${({ theme }) => theme.spacing.S_20}px;
+    height: auto;
     > li {
       padding-right: ${({ theme }) => theme.spacing.S_6}px;
       width: 5px;
@@ -39,6 +41,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
           height: inherit;
           background: ${({ curTheme }) => curTheme.slideDotColor};
           color: transparent;
+          opacity: 1;
         }
       }
       &.slick-active {
@@ -49,6 +52,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
             border-radius: 50%;
             background: ${({ curTheme }) => curTheme.slideDotActiveColor};
             color: transparent;
+            opacity: 1;
           }
         }
       }
@@ -73,8 +77,7 @@ const NonSlider = styled(Flex)`
 const SlideItem = styled(Box)<{ index: number; curTheme: any }>`
   margin: ${({ theme }) => theme.spacing.S_20}px 0;
   padding-left: ${({ theme, index }) => (index > 0 ? theme.spacing.S_32 : theme.spacing.S_40)}px;
-  padding-right: ${({ theme }) => theme.spacing.S_32}px;
-  width: 212px;
+  width: ${({ index }) => (index > 0 ? '277' : '276')}px;
   border-left: ${({ index, curTheme, theme }) =>
     index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
 
@@ -127,6 +130,8 @@ const Slide: React.FC<{
         textStyle: `R_16M`,
         color: curTheme.itemBalanceColor,
         value: hasAccount ? value : 0,
+        postfix: 'FINIX',
+        style: { display: 'inline-block' },
       }
       return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
     },
@@ -141,6 +146,7 @@ const Slide: React.FC<{
           color={curTheme.itemCurrencyColor}
           value={hasAccount ? item.price : 0}
           prefix="="
+          style={{ display: 'inline-block', marginLeft: '8px' }}
         />
       )
     },

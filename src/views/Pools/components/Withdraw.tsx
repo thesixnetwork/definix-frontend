@@ -137,7 +137,7 @@ const Withdraw: React.FC<{
    */
   const [onPresentConfirmModal] = useModal(
     <ConfirmModal
-      buttonName="Remove"
+      type="withdraw"
       tokenName={pool.stakingTokenName}
       stakedBalance={val}
       onOK={handleUnstake}
@@ -182,6 +182,7 @@ const Withdraw: React.FC<{
         <StyledDivider />
 
         <ModalInput
+          type="withdraw"
           value={val}
           max={myStakedBalance}
           symbol={pool.stakingTokenName}

@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import numeral from 'numeral'
+import moment from 'moment'
 import { useTranslation, Trans } from 'react-i18next'
 import {
   Box,
@@ -14,7 +15,8 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { useUnstakeId, useUnLock } from 'hooks/useLongTermStake'
+import { useUnstakeId, useUnLock, usePrivateData } from 'hooks/useLongTermStake'
+import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -30,22 +32,37 @@ const StyledBox = styled(Box)`
 `
 
 const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { id, amount, canBeUnlock, penaltyRate, periodPenalty, multiplier, days, vFinixPrice } = useUnstakeId()
   const { unLock } = useUnLock()
   const [isLoadingUnLock, setIsLoadingUnLock] = useState<boolean>(false)
+  const [vFinixError, setVFinixError] = useState<boolean>(false)
+  const { toastSuccess, toastError } = useToast()
+  const { balancevfinix } = usePrivateData()
+
+  const getEndDay = (endDay: string) => {
+    if (i18n.language === 'ko') {
+      return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(endDay).format(`DD-MMM-YYYY HH:mm:ss`)
+  }
 
   const handleUnLock = useCallback(async () => {
     try {
       setIsLoadingUnLock(true)
       await unLock(id)
+      toastSuccess(t('{{Action}} Complete', { Action: canBeUnlock ? t('actionEarly Unstake') : t('actionUnstake') }))
     } catch (e) {
-      console.error(e)
+      toastError(t('{{Action}} Failed', { Action: canBeUnlock ? t('actionEarly Unstake') : t('actionUnstake') }))
     } finally {
       setIsLoadingUnLock(false)
       onDismiss()
     }
-  }, [unLock, id, onDismiss])
+  }, [unLock, id, onDismiss, canBeUnlock, toastSuccess, toastError, t])
+
+  useEffect(() => {
+    setVFinixError(balancevfinix < amount * multiplier)
+  }, [balancevfinix, amount, multiplier, setVFinixError])
 
   return (
     <Modal title={`${t('Confirm Unstake')}`} onDismiss={onDismiss} mobileFull>
@@ -60,7 +77,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                 </Text>
                 <Flex my="S_4" alignItems="center">
                   <Text mr="S_8" textStyle="R_14R" color="mediumgrey">
-                    {days} {t('days')}
+                    {t(`${days} days`)}
                   </Text>
                   <Flex height="12px">
                     <VDivider color="lightgrey" />
@@ -72,7 +89,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
               </Flex>
             </Flex>
             <Text mt="S_4" textStyle="R_16R" color="black">
-              {numeral(amount).format(0, 0)}
+              {numeral(amount).format('0, 0.[00]')}
             </Text>
           </Flex>
           {canBeUnlock && (
@@ -93,19 +110,27 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   </Text>
                   <Flex flexDirection="column" alignItems="flex-end">
                     <Text textStyle="R_14M" color="deepgrey">
-                      {periodPenalty} GMT+9
+                      {getEndDay(periodPenalty)}
                     </Text>
                     <Text textStyle="R_12R" color="mediumgrey">
-                      {t('*Asia/Seoul')}
+                      *GMT +9 {t('Asia/Seoul')}
                     </Text>
                   </Flex>
+                </Flex>
+                <Flex mb="S_8" justifyContent="space-between">
+                  <Text textStyle="R_14R" color="mediumgrey">
+                    {t('Recall vFINIX')}
+                  </Text>
+                  <Text textStyle="R_14M" color="deepgrey">
+                    {numeral(amount * multiplier).format('0, 0.[00]')} {t('vFINIX')}
+                  </Text>
                 </Flex>
                 <Flex mb="S_8" justifyContent="space-between">
                   <Text textStyle="R_14R" color="mediumgrey">
                     {t('You will receive')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(amount - (penaltyRate * amount) / 100).format('0, 0.[000000]')} {t('FINIX')}
+                    {numeral(amount - (penaltyRate * amount) / 100).format('0, 0.[00]')} {t('FINIX')}
                   </Text>
                 </Flex>
                 <Flex mt="S_12" alignItems="flex-start">
@@ -115,7 +140,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
                     <Trans
                       i18nKey="Do you want to unstake?"
-                      values={{ '15-Nov-21 14:57:20 GMT+9': `${periodPenalty} GMT+9` }}
+                      values={{ 'Lock Up Period End': `${getEndDay(periodPenalty)} GMT+9` }}
                       components={[<strong />]}
                     />
                   </Text>
@@ -126,9 +151,27 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button isLoading={isLoadingUnLock} onClick={handleUnLock}>
-          {canBeUnlock ? t('Early Unstake') : t('Unstake')}
-        </Button>
+        {canBeUnlock ? (
+          <>
+            <Button isLoading={isLoadingUnLock} onClick={handleUnLock} disabled={vFinixError}>
+              {t('Early Unstake')}
+            </Button>
+            {vFinixError && (
+              <Flex mt="S_12" alignItems="flex-start">
+                <Flex mt="S_2">
+                  <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
+                </Flex>
+                <Text ml="S_4" textStyle="R_14R" color="red">
+                  {t('Insufficient vFINIX balances')}
+                </Text>
+              </Flex>
+            )}
+          </>
+        ) : (
+          <Button isLoading={isLoadingUnLock} onClick={handleUnLock}>
+            {t('Unstake')}
+          </Button>
+        )}
       </ModalFooter>
     </Modal>
   )

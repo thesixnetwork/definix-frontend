@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import _ from 'lodash'
 import moment from 'moment'
@@ -7,6 +8,7 @@ import { Card, Flex, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr, useAllLock, usePrivateData, useAllowance } from 'hooks/useLongTermStake'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
+import TabStake from './TabStake'
 import VFinixAprButton from './VFinixAprButton'
 import BalanceFinix from './BalanceFinix'
 import ApproveFinix from './ApproveFinix'
@@ -19,14 +21,13 @@ const FlexCard = styled(Flex)`
 `
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
+  const { i18n } = useTranslation()
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
   const [error, setError] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
-  const today = new Date()
-  const endDay = moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
   const { balancefinix } = usePrivateData()
 
   const { account } = useWallet()
@@ -59,25 +60,34 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
     switch (day) {
       case 90:
-        return numeral(Number(balance)).format('0,0.[000000]')
+        return numeral(Number(balance)).format('0,0.[00]')
       case 180:
-        return numeral(Number(balance) * 2).format('0,0.[000000]')
+        return numeral(Number(balance) * 2).format('0,0.[00]')
       case 365:
-        return numeral(Number(balance) * 4).format('0,0.[000000]')
+        return numeral(Number(balance) * 4).format('0,0.[00]')
       default:
         return 0
     }
   }
 
+  const getEndDay = () => {
+    const today = new Date()
+
+    if (i18n.language === 'ko') {
+      return moment(today.setDate(today.getDate() + days)).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
+  }
+
   return (
     <>
-      <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
-        <FlexCard>
+      <Card>
+        <TabStake isMobile={isMobile} />
+        <FlexCard p={isMobile ? 'S_20' : 'S_40'}>
           <VFinixAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
           {isMobile && <Divider width="100%" backgroundColor="lightGrey50" />}
           <BalanceFinix
             hasAccount={!!account}
-            isApproved={isApproved}
             minimum={data.find((item) => item.day === days).minStake}
             inputBalance={inputBalance}
             setInputBalance={setInputBalance}
@@ -90,12 +100,13 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
             hasAccount={!!account}
             isApproved={isApproved}
             inputBalance={inputBalance}
+            setInputBalance={setInputBalance}
             days={days}
-            endDay={endDay}
+            endDay={getEndDay()}
             earn={getVFinix(days, inputBalance)}
             isError={!!error}
           />
-          <EstimateVFinix hasAccount={!!account} endDay={endDay} earn={getVFinix(days, inputBalance)} />
+          <EstimateVFinix hasAccount={!!account} endDay={getEndDay()} earn={getVFinix(days, inputBalance)} />
         </FlexCard>
       </Card>
     </>

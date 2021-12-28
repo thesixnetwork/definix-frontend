@@ -1,7 +1,8 @@
 import React from 'react'
 import numeral from 'numeral'
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
@@ -11,7 +12,14 @@ interface ContentProps extends IsMobileType {
 }
 
 const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+
+  const getEndDay = (endDay: string) => {
+    if (i18n.language === 'ko') {
+      return moment(endDay).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(endDay).format(`DD-MMM-YY HH:mm:ss`)
+  }
 
   return (
     <>
@@ -24,15 +32,27 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                   {t('Stake Period')}
                 </Text>
                 <Text textStyle="R_14R" color="black">
-                  {item.days} {t('days')}
+                  {t(`${item.days} days`)}
                 </Text>
+                {item.topup.some((topup: any) => Number(topup) === item.id) && (
+                  <Flex alignItems="center">
+                    <Text mt={`${i18n.language === 'en' && 'S_2'}`} mr="S_4" textStyle="R_12R" color="yellow">
+                      {t('28days Super Staked')}
+                    </Text>
+                    <Helper
+                      text={`${t('28days super stake tooltip')}\n\n
+                        ${getEndDay(item.lockTopupTimes)} ~ ${getEndDay(item.topupTimeStamp)}`}
+                      color="yellow"
+                    />
+                  </Flex>
+                )}
               </Flex>
               <Flex width="50%" flexDirection="column">
                 <Text mb="S_2" textStyle="R_12R" color="mediumgrey">
                   {t('Amount')}
                 </Text>
                 <Text textStyle="R_14R" color="black">
-                  {numeral(item.lockAmount).format(0, 0)} {t('FINIX')}
+                  {numeral(item.lockAmount).format('0, 0.[00]')} {t('FINIX')}
                 </Text>
               </Flex>
             </Flex>
@@ -43,10 +63,10 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
               </Text>
               <Flex alignItems="center">
                 <Text textStyle="R_14R" color="black">
-                  {item.lockTimestamp} GMT+9
+                  {getEndDay(item.lockTimestamp)}
                 </Text>
                 <Text ml="S_8" textStyle="R_12R" color="mediumgrey">
-                  {t('*Asia/Seoul')}
+                  *GMT +9 {t('Asia/Seoul')}
                 </Text>
               </Flex>
             </Flex>

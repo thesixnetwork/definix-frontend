@@ -1,11 +1,12 @@
 import _ from 'lodash'
-import React, { useCallback, useState, useMemo } from 'react'
+import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router'
 import styled from 'styled-components'
 import { useAllHarvest } from 'hooks/useHarvest'
 import { useHarvest, usePrivateData } from 'hooks/useLongTermStake'
 import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
+import { useToast } from 'state/hooks'
 import { Button, Text, Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
 import CurrencyText from 'components/CurrencyText'
@@ -21,7 +22,7 @@ interface InnerTheme {
   itemCurrencyColor: ColorStyles | string
   borderColor: ColorStyles
   bottomBg: ColorStyles | string
-  slideDotColor: ColorStyles
+  slideDotColor: ColorStyles | string
   slideDotActiveColor: ColorStyles
   harvestButtonBg: ColorStyles | string
   harvestButtonColor: string
@@ -51,13 +52,12 @@ const THEME: { [key: string]: InnerTheme } = {
     itemCurrencyColor: 'white80',
     borderColor: ColorStyles.BROWN,
     bottomBg: 'black20',
-    slideDotColor: ColorStyles.BROWN,
+    slideDotColor: '#5e515f',
     slideDotActiveColor: ColorStyles.WHITE,
     harvestButtonBg: 'brown30',
     harvestButtonColor: 'rgba(255, 255, 255, 0.1)',
   },
 }
-
 const Wrap = styled(Box)`
   display: flex;
   flex-direction: column;
@@ -132,6 +132,7 @@ const TotalPriceText = styled(CurrencyText)<{ curTheme: any }>`
     margin-top: 4px;
     ${({ theme }) => theme.textStyle.R_14M};
   }
+  opacity: 0.8;
 `
 const SlideSection = styled(Box)`
   height: 112px;
@@ -166,7 +167,10 @@ const EarningBoxTemplate: React.FC<{
 }) => {
   const { t } = useTranslation()
   const history = useHistory()
+  const { toastSuccess, toastError } = useToast()
   const [pendingTx, setPendingTx] = useState(false)
+  const [currentHarvestIndex, setCurrentHarvestIndex] = useState(0)
+  const [harvestResultList, setHarvestResultList] = useState([])
 
   const curTheme = useMemo(() => THEME[theme], [theme])
   const displayOnlyTotalPrice = useMemo(() => typeof _.get(total, 'value') !== 'number', [total])
@@ -174,25 +178,89 @@ const EarningBoxTemplate: React.FC<{
     return _.get(total, displayOnlyTotalPrice ? 'price' : 'value') || 0
   }, [displayOnlyTotalPrice, total])
 
-  const { finixEarn } = usePrivateData()
+  // farm, pool
   const farmsWithBalance = useFarmsWithBalance()
-  const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
-  const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
-  const { handleHarvest } = useHarvest()
+  const myFarmPools = useMemo(() => {
+    return farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
+  }, [farmsWithBalance])
+  const farmPoolHarvestHook = useAllHarvest(
+    myFarmPools.map((farmWithBalance) => _.pick(farmWithBalance, ['pid', 'lpSymbol'])),
+  )
+  // long term stake
+  const { finixEarn } = usePrivateData()
+  const longTermStakeHarvestHook = useHarvest()
+  const needHarvestLongTermStake = useMemo(() => finixEarn > 0, [finixEarn])
 
+  const harvestAllLength = useRef(0)
+  const isHarvestingUsingKlip = useMemo(() => {
+    return harvestAllLength.current > 0 && farmPoolHarvestHook.harvestResultList.length < harvestAllLength.current
+  }, [harvestAllLength, farmPoolHarvestHook])
+
+  const harvestLongTermStake = useCallback(async () => {
+    let isSuccess = false
+    try {
+      await longTermStakeHarvestHook.handleHarvest()
+      isSuccess = true
+    } catch (error) {
+      console.warn('EarningBoxTemplate/harvestLongTermStake] error: ', error)
+    } finally {
+      setHarvestResultList((prev) => [
+        {
+          symbol: 'Long-term Stake',
+          isSuccess,
+        },
+        ...prev,
+      ])
+    }
+  }, [longTermStakeHarvestHook])
   const harvestAll = useCallback(async () => {
+    if (pendingTx || isHarvestingUsingKlip) return
+    harvestAllLength.current = needHarvestLongTermStake ? myFarmPools.length + 1 : myFarmPools.length
     setPendingTx(true)
     try {
-      await onReward()
-      if (finixEarn) {
-        await handleHarvest()
+      await farmPoolHarvestHook.onReward()
+      if (needHarvestLongTermStake) {
+        setCurrentHarvestIndex((prev) => prev + 1)
+        await harvestLongTermStake()
       }
     } catch (error) {
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
+      setCurrentHarvestIndex(0)
       setPendingTx(false)
+      harvestAllLength.current = 0
     }
-  }, [handleHarvest, onReward, finixEarn])
+  }, [
+    harvestLongTermStake,
+    farmPoolHarvestHook,
+    needHarvestLongTermStake,
+    myFarmPools.length,
+    pendingTx,
+    isHarvestingUsingKlip,
+  ])
+
+  const showHarvestResult = useCallback(() => {
+    const toastDescription = (
+      <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+        {harvestResultList[0].symbol}
+      </Text>
+    )
+    const actionText = t('actionHarvest')
+    if (harvestResultList[0].isSuccess) {
+      toastSuccess(t('{{Action}} Complete', { Action: actionText }), toastDescription)
+    } else {
+      toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
+    }
+  }, [toastSuccess, toastError, harvestResultList, t])
+
+  useEffect(() => {
+    if (harvestResultList.length === 0) return
+    showHarvestResult()
+  }, [harvestResultList.length, showHarvestResult])
+
+  useEffect(() => {
+    setHarvestResultList(farmPoolHarvestHook.harvestResultList)
+  }, [farmPoolHarvestHook.harvestResultList, setHarvestResultList])
 
   const renderTotalValue = useCallback(() => {
     const props = {
@@ -208,8 +276,18 @@ const EarningBoxTemplate: React.FC<{
       <MainSection>
         <Box>
           <Flex alignItems="flex-end" className={`mb-s${isMobile ? '20' : '8'}`}>
-            <FireIcon style={{ marginLeft: '-8px' }} />
-            <Text textStyle={`R_${isMobile ? '14' : '18'}M`} color={curTheme.totalTitleColor} ml={4}>
+            <FireIcon
+              style={{ marginLeft: isMobile ? '0' : '-8px' }}
+              width={isMobile ? '24px' : '44px'}
+              height={isMobile ? '24px' : '44px'}
+              viewBox="0 0 44 44"
+            />
+            <Text
+              textStyle={`R_${isMobile ? '14' : '18'}M`}
+              color={curTheme.totalTitleColor}
+              style={{ opacity: '0.7' }}
+              ml={isMobile ? 8 : 4}
+            >
               {total.title}
             </Text>
           </Flex>
@@ -232,11 +310,13 @@ const EarningBoxTemplate: React.FC<{
                   width="100%"
                   variant="red"
                   className="home-harvest-button"
-                  isLoading={pendingTx}
-                  disabled={balancesWithValue.length <= 0}
+                  isLoading={pendingTx && !isHarvestingUsingKlip}
+                  disabled={myFarmPools.length <= 0 && !needHarvestLongTermStake}
                   onClick={harvestAll}
                 >
-                  {t('Harvest')}
+                  {pendingTx && isHarvestingUsingKlip
+                    ? `${t('Harvesting')} (${currentHarvestIndex + 1}/${harvestAllLength.current})`
+                    : t('Harvest')}
                 </Button>
               ) : (
                 <UnlockButton />

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import numeral from 'numeral'
+import BigNumber from 'bignumber.js'
 import { useTranslation, Trans } from 'react-i18next'
 import {
   Box,
@@ -13,14 +14,16 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { useLock } from 'hooks/useLongTermStake'
+import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
 interface ModalProps {
   balance: string
+  setInputBalance: React.Dispatch<React.SetStateAction<string>>
   period: number
   end: string
   earn: number
-  onOK?: () => any
   onDismiss?: () => any
 }
 
@@ -32,15 +35,9 @@ const StyledBox = styled(Box)`
   }
 `
 
-const StakeModal: React.FC<ModalProps> = ({
-  balance,
-  period,
-  end,
-  earn,
-  onOK = () => null,
-  onDismiss = () => null,
-}) => {
+const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, end, earn, onDismiss = () => null }) => {
   const { t } = useTranslation()
+  const [finixValue, setFinixValue] = useState<string>(balance)
 
   const getLockDay = (day: number) => {
     switch (day) {
@@ -55,6 +52,39 @@ const StakeModal: React.FC<ModalProps> = ({
     }
   }
 
+  const getLevel = (day: number) => {
+    if (day === 90) return 0
+    if (day === 180) return 1
+    return 2
+  }
+
+  const { onStake, status, loadings } = useLock(getLevel(period), finixValue)
+  const { toastSuccess, toastError } = useToast()
+
+  const onClickStake = useCallback(async () => {
+    try {
+      await onStake()
+      toastSuccess(t('{{Action}} Complete', { Action: t('actioncStake') }))
+    } catch (e) {
+      toastError(t('{{Action}} Failed', { Action: t('actioncStake') }))
+    }
+  }, [onStake, toastSuccess, toastError, t])
+
+  useEffect(() => {
+    if (status) {
+      setInputBalance('')
+      onDismiss()
+    }
+  }, [status, setInputBalance, onDismiss])
+
+  useEffect(() => {
+    setFinixValue(new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed())
+
+    return () => {
+      setFinixValue('')
+    }
+  }, [balance])
+
   return (
     <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
@@ -67,7 +97,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
             </Flex>
             <Text textStyle="R_16R" color="black">
-              {numeral(Number(balance)).format('0,0.[000000]')}
+              {numeral(Number(balance)).format('0,0.[00]')}
             </Text>
           </Flex>
           <Divider />
@@ -77,7 +107,7 @@ const StakeModal: React.FC<ModalProps> = ({
                 {t('Stake Period')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
-                {period} {t('days')}
+                {t(`${period} days`)}
               </Text>
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
@@ -86,10 +116,10 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
               <Flex flexDirection="column" alignItems="flex-end">
                 <Text textStyle="R_14M" color="deepgrey">
-                  {end} GMT+9
+                  {end}
                 </Text>
                 <Text textStyle="R_12R" color="mediumgrey">
-                  {t('*Asia/Seoul')}
+                  *GMT +9 {t('Asia/Seoul')}
                 </Text>
               </Flex>
             </Flex>
@@ -118,7 +148,9 @@ const StakeModal: React.FC<ModalProps> = ({
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={onOK}>{t('Stake')}</Button>
+        <Button isLoading={loadings === 'loading'} onClick={onClickStake}>
+          {t('Stake')}
+        </Button>
       </ModalFooter>
     </Modal>
   )

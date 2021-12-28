@@ -145,7 +145,7 @@ const Deposit: React.FC<{
    * confirm modal
    */
   const [onPresentConfirmModal] = useModal(
-    <ConfirmModal buttonName="Deposit" tokenName={tokenName} stakedBalance={val} onOK={handleStake} goList={onBack} />,
+    <ConfirmModal type="deposit" tokenName={tokenName} stakedBalance={val} onOK={handleStake} goList={onBack} />,
     false,
   )
 
@@ -185,6 +185,7 @@ const Deposit: React.FC<{
         <StyledDivider />
 
         <ModalInput
+          type="deposit"
           value={val}
           max={maxValue}
           symbol={tokenName}

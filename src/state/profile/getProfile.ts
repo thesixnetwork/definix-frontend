@@ -54,13 +54,6 @@ const getProfile = async (address: string): Promise<GetProfileResponse> => {
       nft = nfts.find((nftItem) => nftItem.bunnyId === Number(bunnyId))
 
       // Save the preview image to local storage for the exchange
-      localStorage.setItem(
-        `profile_${address}`,
-        JSON.stringify({
-          username,
-          avatar: `https://definixswap.finance/images/nfts/${nft.images.sm}`,
-        }),
-      )
     }
 
     const profile = {

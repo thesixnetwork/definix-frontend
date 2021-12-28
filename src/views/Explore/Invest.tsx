@@ -38,7 +38,7 @@ const Invest: React.FC<InvestType> = ({ rebalance }) => {
           </Text>
         </Button>
       </Flex>
-      <PageTitle text={t('Invest')} small={isMobile} />
+      <PageTitle text={t('Invest')} desc={t('Invest in auto rebalancing products.')} small={isMobile} />
 
       <SummaryCard
         rebalance={rebalance}

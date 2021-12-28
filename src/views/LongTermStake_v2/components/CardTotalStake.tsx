@@ -22,7 +22,7 @@ const CardTotalStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
   return (
     <>
-      <Card p={isMobile ? 'S_20' : 'S_40'}>
+      <Card p={isMobile ? 'S_20' : 'S_40'} mt="S_16">
         <FlexCard>
           <FinixStake
             isMobile={isMobile}

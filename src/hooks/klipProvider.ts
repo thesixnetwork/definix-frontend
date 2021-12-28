@@ -5,73 +5,115 @@ import QRcode from 'qrcode'
 import axios from 'axios'
 import { isMobile } from 'react-device-detect'
 
+const RESPONSE_STATE = {
+  PREPARED: 'prepared',
+  REQUESTED: 'requested',
+  COMPLETED: 'completed',
+  CANCELED: 'canceled',
+}
+const MAX_INTERVAL_TIME = 300 // 300 // 5분
+
 let requestKey = ''
 let responseData: any | null = null
-let intervalCheckResult: NodeJS.Timeout
+let responseState = '' // prepared, requested, completed, canceled
+let contractResultInterval: NodeJS.Timeout
+let checkResponseInterval: NodeJS.Timeout
 let account: string
+
 const initData = () => {
   requestKey = ''
   responseData = null
+  responseState = ''
 }
 
-export const genQRcode = () => {
-  initData()
-  const mockData = {
-    bapp: {
-      name: 'definix',
-    },
-    type: 'auth',
-  }
-  axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
-    requestKey = response.data.request_key
-    if (isMobile === true) {
-      const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
-      // await axios.get(url)
-      intervalCheckResult = setInterval(getResultContract, 1000)
-      openDeeplink(url)
-    } else {
-      QRcode.toCanvas(
-        document.getElementById('qrcode'),
-        `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
-        () => {
-          intervalCheckResult = setInterval(getResult, 1000)
-        },
-      )
-    }
-  })
-}
-const getResult = async () => {
-  const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
+// export const genQRcode = () => {
+//   initData()
+//   const mockData = {
+//     bapp: {
+//       name: 'definix',
+//     },
+//     type: 'auth',
+//   }
+//   axios.post('https://a2a-api.klipwallet.com/v2/a2a/prepare', mockData).then((response) => {
+//     requestKey = response.data.request_key
+//     if (isMobile === true) {
+//       const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
+//       // await axios.get(url)
+//       contractResultInterval = setInterval(getResultContract, 1000)
+//       openDeeplink(url)
+//     } else {
+//       QRcode.toCanvas(
+//         document.getElementById('qrcode'),
+//         `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`,
+//         () => {
+//           contractResultInterval = setInterval(getResult, 1000)
+//         },
+//       )
+//     }
+//   })
+// }
+// const getResult = async () => {
+//   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
 
-  const res = await axios.get(url)
+//   const res = await axios.get(url)
 
-  if (res.data.status == 'completed') {
-    account = res.data.result.klaytn_address
-    responseData = res.data.result.klaytn_address
-    clearInterval(intervalCheckResult)
-  }
-}
+//   if (res.data.status == 'completed') {
+//     account = res.data.result.klaytn_address
+//     responseData = res.data.result.klaytn_address
+//     clearInterval(contractResultInterval)
+//   }
+// }
 
 export const getAccount = () => account
 export const getRequestKey = () => requestKey
 
 export const checkResponse = async (): Promise<string> => {
-  return new Promise((resolve) => {
-    const interCheck = setInterval(() => {
-      if (responseData != undefined) {
-        clearInterval(interCheck)
-        resolve(responseData)
+  return new Promise((resolve, reject) => {
+    let time = 0
+    checkResponseInterval = setInterval(() => {
+      if (time >= MAX_INTERVAL_TIME) {
+        clearInterval(checkResponseInterval)
+        reject(responseState)
+      } else {
+        time++
+        if (responseData != undefined && responseState === RESPONSE_STATE.COMPLETED) {
+          clearInterval(checkResponseInterval)
+          resolve(responseData)
+        }
+        if (responseState === RESPONSE_STATE.CANCELED) {
+          clearInterval(checkResponseInterval)
+          reject(responseState)
+        }
       }
     }, 1000)
   })
 }
 
+const startContractResultInterval = () => {
+  let time = 0
+  contractResultInterval = setInterval(() => {
+    if (time >= MAX_INTERVAL_TIME) {
+      clearContractResultInterval()
+    } else {
+      time++
+      getResultContract()
+    }
+  }, 1000)
+}
+const clearContractResultInterval = () => {
+  clearInterval(contractResultInterval)
+}
+
 const getResultContract = async () => {
   const url = `https://a2a-api.klipwallet.com/v2/a2a/result?request_key=${requestKey}`
   const res = await axios.get(url)
-  if (res.data.status == 'completed') {
+  responseState = res.data.status.toLowerCase()
+  if (responseState == RESPONSE_STATE.COMPLETED) {
     responseData = res.data.result.tx_hash
-    clearInterval(intervalCheckResult)
+    clearInterval(contractResultInterval)
+  }
+  if (responseState === RESPONSE_STATE.CANCELED) {
+    clearInterval(contractResultInterval)
   }
 }
 export const genQRcodeContactInteract = (
@@ -82,6 +124,9 @@ export const genQRcodeContactInteract = (
   value?: string,
 ) => {
   initData()
+  clearInterval(checkResponseInterval)
+  clearContractResultInterval()
+
   const mockData = {
     bapp: {
       name: 'definix',
@@ -98,14 +143,14 @@ export const genQRcodeContactInteract = (
     requestKey = response.data.request_key
     const url = `https://klipwallet.com/?target=/a2a?request_key=${response.data.request_key}`
     if (isMobile === true) {
-      intervalCheckResult = setInterval(getResultContract, 1000)
+      startContractResultInterval()
       setTimeout(() => {
         openDeeplink(url)
       }, 1000)
     } else {
       setShowModal(true)
       QRcode.toCanvas(document.getElementById('qrcode'), url, () => {
-        intervalCheckResult = setInterval(getResultContract, 1000)
+        startContractResultInterval()
       })
     }
   })

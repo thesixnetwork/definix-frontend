@@ -68,7 +68,7 @@ const Performance: React.FC<PerformanceType> = ({
             large={!isMobile}
             title={t('Sharpe')}
             value={`${numeral(sharpRatio).format('0,0.00')}`}
-            hint="The average return ratio compares to the risk-taking activities earned per unit rate of the total risk."
+            hint={t('The average return ratio compares')}
           />
         </Flex>
         <Flex alignItems="center" width={size.width}>
@@ -77,7 +77,7 @@ const Performance: React.FC<PerformanceType> = ({
             large={!isMobile}
             title={t('Max Drawdown')}
             value={`${Math.abs(numeral(maxDrawDown).format('0,0.00'))}%`}
-            hint="The differentiation between the historical peak and low point through the portfolio."
+            hint={t('The differentiation between the historical')}
           />
         </Flex>
         <Flex alignItems="center" width={size.width} mt={isMobile ? 'S_20' : ''}>
@@ -86,7 +86,7 @@ const Performance: React.FC<PerformanceType> = ({
             large={!isMobile}
             title={t('Return')}
             value={`${numeral(returnPercent || 0).format('0,0.[00]')}%`}
-            hint="Estimated return on investment measures approximately over a period of time."
+            hint={t('Estimated return on investment measures')}
           />
         </Flex>
       </Flex>

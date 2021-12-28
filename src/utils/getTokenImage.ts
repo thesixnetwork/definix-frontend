@@ -2,7 +2,8 @@ export const getTokenImageUrl = (tokenName: string) => {
   if (!tokenName) {
     return ''
   }
-  return `/images/coins/small/${tokenName.toLowerCase()}.png`
+  return ''
+  // return `/images/coins/small/${tokenName.toLowerCase()}.png`
 }
 
 const getSplittedLpSymbols = (lpSymbol: string) => {

@@ -57,28 +57,28 @@ const MyBalance: React.FC<MyBalanceProps> = ({ isMobile, lockAmount, balancevfin
     <>
       <FlexBalance>
         <FlexFinix>
-          <Text mb="S_6" textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
+          <Text mb={`${isMobile ? 'S_2' : 'S_6'}`} textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
             {t('Your vFINIX Balance')}
           </Text>
-          <Flex alignItems="center">
+          <Flex alignItems="flex-end">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              {numeral(balancevfinix).format('0,0.[000000]')}
+              {numeral(balancevfinix).format('0,0.[00]')}
             </Text>
-            <Text ml="S_6" textStyle="R_12B" color="white">
+            <Text ml="S_6" mb="S_2" textStyle="R_12B" color="white">
               {t('vFINIX')}
             </Text>
           </Flex>
         </FlexFinix>
         {isMobile ? <Divider width="100%" color="brown" /> : <VDivider color="brown" />}
         <FlexFinix>
-          <Text mb="S_6" textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
+          <Text mb={`${isMobile ? 'S_2' : 'S_6'}`} textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
             {t('Your Total FINIX Stake')}
           </Text>
-          <Flex alignItems="center">
+          <Flex alignItems="flex-end">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              {numeral(lockAmount).format('0,0.[000000]')}
+              {numeral(lockAmount).format('0,0.[00]')}
             </Text>
-            <Text ml="S_6" textStyle="R_12B" color="white">
+            <Text ml="S_6" mb="S_2" textStyle="R_12B" color="white">
               {t('FINIX')}
             </Text>
           </Flex>

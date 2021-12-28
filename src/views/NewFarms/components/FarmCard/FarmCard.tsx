@@ -119,8 +119,16 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * CardHeading
    */
   const renderCardHeading = useCallback(
-    () => <CardHeading farm={farm} lpLabel={lpTokenName} size="small" addLiquidityUrl={addLiquidityUrl} />,
-    [farm, lpTokenName, addLiquidityUrl],
+    () => (
+      <CardHeading
+        farm={farm}
+        lpLabel={lpTokenName}
+        size="small"
+        addLiquidityUrl={addLiquidityUrl}
+        componentType={componentType}
+      />
+    ),
+    [farm, lpTokenName, addLiquidityUrl, componentType],
   )
   /**
    * IconButton
@@ -192,8 +200,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
    * HarvestAction Section
    */
   const renderHarvestAction = useCallback(
-    () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} />,
-    [earnings, pid, componentType],
+    () => <HarvestActionAirDrop componentType={componentType} pid={pid} earnings={earnings} lpSymbol={lpTokenName} />,
+    [earnings, pid, componentType, lpTokenName],
   )
   /**
    * Link Section
@@ -225,13 +233,13 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
               {renderEarningsSection()}
             </Wrap>
             {isOpenAccordion && (
-              <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" py="S_24">
+              <Box backgroundColor={ColorStyles.LIGHTGREY_20} px="S_20" pt="S_24" pb="S_28">
                 {renderHarvestAction()}
                 <Box py="S_24">{renderStakeAction()}</Box>
                 <Divider />
                 <Box pt="S_24">{renderTotalLiquiditySection()}</Box>
                 <Box pt="S_16">{renderMyBalanceSection()}</Box>
-                <Box py="S_28">{renderLinkSection()}</Box>
+                <Box pt="S_28">{renderLinkSection()}</Box>
               </Box>
             )}
           </>

@@ -8,8 +8,8 @@ import useTheme from 'hooks/useTheme'
 import React from 'react'
 import styled from 'styled-components'
 import useMatchBreakpoints from '../../hooks/useMatchBreakpoints'
-import certikWhite from '../../images/Audit/certik-white.png'
-import certik from '../../images/Audit/certik.png'
+// import certikWhite from '../../images/Audit/certik-white.png'
+// import certik from '../../images/Audit/certik.png'
 import sixWhite from '../../images/Footer-Icon/definix-logo-25.png'
 import six from '../../images/Footer-Icon/Powered-by-SIX.png'
 import facebookWhite from '../../images/for-ui-v2/footer/facebook-white.png'
@@ -94,13 +94,12 @@ const PoweredSix = ({ className = '' }) => {
 }
 
 const AuditedBy = () => {
-  const { isDark } = useTheme()
   return (
     <Logo href="https://www.certik.org/projects/sixnetwork" target="_blank" rel="noreferrer">
       <Text color="textSubtle" fontSize="9px" className="mr-2">
         Audited by
       </Text>
-      <img src={isDark ? certikWhite : certik} alt="" />
+      {/* <img src={isDark ? certikWhite : certik} alt="" /> */}
     </Logo>
   )
 }
