@@ -119,7 +119,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       <Card>
         <TabStake isMobile={isMobile} />
         <Wrap>
-          <FlexCard p={isMobile ? 'S_20' : 'S_40'}>
+          <FlexCard p={isMobile ? 'S_20' : 'S_40'} pt={pathname === '/super-stake' && 'S_32'}>
             <VFinixAprButton
               isMobile={isMobile}
               days={days}
