@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Card, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import { useLockCount, usePrivateData } from 'hooks/useLongTermStake'
 import styled from 'styled-components'
@@ -23,9 +23,12 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
   const [dataLength, setDataLength] = useState<number>(0)
   const [stakeList, setStakeList] = useState<AllDataLockType[] | null>(allDataLock)
 
-  const getCurrentData = (data: AllDataLockType[]) => {
-    return data.slice(lastIndex - itemPerPage, lastIndex)
-  }
+  const getCurrentData = useCallback(
+    (data: AllDataLockType[]) => {
+      return data.slice(lastIndex - itemPerPage, lastIndex)
+    },
+    [itemPerPage, lastIndex],
+  )
 
   useEffect(() => {
     setItemPerPage(isMobile ? 5 : 5)

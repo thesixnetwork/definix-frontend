@@ -48,7 +48,10 @@ const StakeModal: React.FC<ModalProps> = ({
   onDismiss = () => null,
 }) => {
   const { t } = useTranslation()
-  const [finixValue, setFinixValue] = useState<string>(balance)
+  const finixValue = useMemo(
+    () => new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed(),
+    [balance],
+  )
   const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
 
   const getLockDay = (day: number) => {
@@ -112,14 +115,6 @@ const StakeModal: React.FC<ModalProps> = ({
       onDismiss()
     }
   }, [superStatus, setInputBalance, onDismiss])
-
-  useEffect(() => {
-    setFinixValue(new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed())
-
-    return () => {
-      setFinixValue('')
-    }
-  }, [balance])
 
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
