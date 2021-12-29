@@ -17,7 +17,6 @@ interface ApproveFinixProps extends IsMobileType {
   inputBalance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
   days: number
-  endDay: string
   earn: number
   isError: boolean
   possibleSuperStake: boolean
@@ -34,7 +33,6 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   inputBalance,
   setInputBalance,
   days,
-  endDay,
   earn,
   isError,
   possibleSuperStake,
@@ -43,14 +41,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   const { pathname } = useLocation()
   const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
   const [onPresentStakeModal] = useModal(
-    <StakeModal
-      balance={inputBalance}
-      setInputBalance={setInputBalance}
-      days={days}
-      end={endDay}
-      earn={earn}
-      pathname={pathname}
-    />,
+    <StakeModal balance={inputBalance} setInputBalance={setInputBalance} days={days} earn={earn} pathname={pathname} />,
     false,
   )
   // const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠

@@ -1,10 +1,11 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
-import { Box, Modal, Button, ModalBody, ModalFooter, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, Flex, Modal, Button, ModalBody, ModalFooter, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
 
+import SuperConfirmStake from './SuperConfirmStake'
 import SuperAprButton from './SuperAprButton'
 import SuperInput from './SuperInput'
 import SuperEstimate from './SuperEstimate'
@@ -26,6 +27,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { isMobile } = useMatchBreakpoints()
   const [days, setDays] = useState<number>(365)
   const [error, setError] = useState<string>('')
+  const [next, setNext] = useState<boolean>(false)
   const [inputFinix, setInputFinix] = useState<string>('')
   const [inputHarvest, setInputHarvest] = useState<string>('')
   const totalFinix = useMemo(() => Number(inputFinix) + Number(inputHarvest), [inputFinix, inputHarvest])
@@ -58,30 +60,55 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
     },
   ]
 
+  useEffect(() => {
+    return () => {
+      setError('')
+      setInputFinix('')
+      setInputHarvest('')
+    }
+  }, [setError, setInputFinix, setInputHarvest])
+
   return (
     <Modal title={`${t('Super Stake')}`} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
         <StyledBox mb="S_16">
-          <SuperAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
+          {next ? (
+            <SuperConfirmStake totalFinix={totalFinix} days={days} />
+          ) : (
+            <>
+              <SuperAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
 
-          {/* 팜, 풀 자리 */}
+              {/* 팜, 풀 자리 */}
 
-          <SuperInput
-            isMobile={isMobile}
-            inputFinix={inputFinix}
-            setInputFinix={setInputFinix}
-            inputHarvest={inputHarvest}
-            error={error}
-            setError={setError}
-            balancefinix={balancefinix}
-          />
-          <SuperEstimate isMobile={isMobile} days={days} totalFinix={totalFinix} />
+              <SuperInput
+                isMobile={isMobile}
+                inputFinix={inputFinix}
+                setInputFinix={setInputFinix}
+                inputHarvest={inputHarvest}
+                error={error}
+                setError={setError}
+                balancefinix={balancefinix}
+              />
+              <SuperEstimate isMobile={isMobile} days={days} totalFinix={totalFinix} />
+            </>
+          )}
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button disabled={!!error} onClick={() => null}>
-          {t('Next')}
-        </Button>
+        {next ? (
+          <Flex width="100%">
+            <Button width="100%" variant="line" mr="S_8" onClick={() => setNext(false)}>
+              {t('Back')}
+            </Button>
+            <Button width="100%" variant="red" ml="S_8" onClick={() => null}>
+              {t('Stake')}
+            </Button>
+          </Flex>
+        ) : (
+          <Button variant="red" disabled={!!error} onClick={() => setNext(true)}>
+            {t('Next')}
+          </Button>
+        )}
       </ModalFooter>
     </Modal>
   )

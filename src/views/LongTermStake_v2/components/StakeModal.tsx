@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import _ from 'lodash'
 import numeral from 'numeral'
+import moment from 'moment'
 import BigNumber from 'bignumber.js'
 import { useTranslation, Trans } from 'react-i18next'
 import {
@@ -24,7 +25,6 @@ interface ModalProps {
   balance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
   days: number
-  end: string
   earn: number
   pathname: string
   onDismiss?: () => any
@@ -42,12 +42,11 @@ const StakeModal: React.FC<ModalProps> = ({
   balance,
   setInputBalance,
   days,
-  end,
   earn,
   pathname,
   onDismiss = () => null,
 }) => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const finixValue = useMemo(
     () => new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed(),
     [balance],
@@ -71,6 +70,15 @@ const StakeModal: React.FC<ModalProps> = ({
     if (day === 90) return 0
     if (day === 180) return 1
     return 2
+  }
+
+  const getEndDay = (day: number) => {
+    const today = new Date()
+
+    if (i18n.language === 'ko') {
+      return moment(today.setDate(today.getDate() + day)).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(today.setDate(today.getDate() + day)).format(`DD-MMM-YYYY HH:mm:ss`)
   }
 
   const { onStake, status, loadings } = useLock(getLevel(days), finixValue)
@@ -185,7 +193,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
               <Flex flexDirection="column" alignItems="flex-end">
                 <Text textStyle="R_14M" color="deepgrey">
-                  {end}
+                  {getEndDay(days)}
                 </Text>
                 <Text textStyle="R_12R" color="mediumgrey">
                   *GMT +9 {t('Asia/Seoul')}

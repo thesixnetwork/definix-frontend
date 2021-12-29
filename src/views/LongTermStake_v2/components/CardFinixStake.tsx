@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'lodash'
-import moment from 'moment'
 import numeral from 'numeral'
 import { Card, Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr, useAllLock, usePrivateData, useAllowance } from 'hooks/useLongTermStake'
@@ -45,7 +44,7 @@ const Working = styled(Flex)`
 `
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const { pathname } = useLocation()
   const [days, setDays] = useState<number>(365)
   const [inputBalance, setInputBalance] = useState<string>('')
@@ -100,15 +99,6 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
     }
   }
 
-  const getEndDay = () => {
-    const today = new Date()
-
-    if (i18n.language === 'ko') {
-      return moment(today.setDate(today.getDate() + days)).format(`YYYY-MM-DD HH:mm:ss`)
-    }
-    return moment(today.setDate(today.getDate() + days)).format(`DD-MMM-YYYY HH:mm:ss`)
-  }
-
   useEffect(() => {
     if (pathname === '/long-term-stake') setDays(365)
     return () => setDays(90)
@@ -144,12 +134,11 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
               inputBalance={inputBalance}
               setInputBalance={setInputBalance}
               days={days}
-              endDay={getEndDay()}
               earn={getVFinix(days, inputBalance)}
               isError={!!error}
               possibleSuperStake={possibleSuperStake}
             />
-            <EstimateVFinix hasAccount={hasAccount} endDay={getEndDay()} earn={getVFinix(days, inputBalance)} />
+            <EstimateVFinix hasAccount={hasAccount} days={days} earn={getVFinix(days, inputBalance)} />
           </FlexCard>
 
           {pathname === '/super-stake' && !balancevfinix && (

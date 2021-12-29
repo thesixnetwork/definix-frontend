@@ -1,15 +1,25 @@
 import React from 'react'
+import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 
 interface EstimateVFinixProps {
   hasAccount: boolean
-  endDay: string
+  days: number
   earn: number
 }
 
-const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, endDay, earn }) => {
-  const { t } = useTranslation()
+const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, days, earn }) => {
+  const { t, i18n } = useTranslation()
+
+  const getEndDay = (day: number) => {
+    const today = new Date()
+
+    if (i18n.language === 'ko') {
+      return moment(today.setDate(today.getDate() + day)).format(`YYYY-MM-DD HH:mm:ss`)
+    }
+    return moment(today.setDate(today.getDate() + day)).format(`DD-MMM-YYYY HH:mm:ss`)
+  }
 
   return (
     <>
@@ -23,7 +33,7 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, endDay, ear
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
-              {endDay}
+              {getEndDay(days)}
             </Text>
             <Text textStyle="R_12R" color="mediumgrey">
               *GMT +9 {t('Asia/Seoul')}
