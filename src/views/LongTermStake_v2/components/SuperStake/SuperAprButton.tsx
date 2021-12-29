@@ -53,7 +53,7 @@ const SuperAprButton: React.FC<SuperAprButtonProps> = ({ isMobile, days, setDays
 
   return (
     <>
-      <Flex width="100%" flexDirection="column">
+      <Flex width="100%" flexDirection="column" mb={isMobile ? 'S_40' : 'S_32'}>
         <Flex mb="S_12">
           <Text textStyle="R_12R" color="mediumgrey" mr="S_4">
             {t('What is Super Stake?')}

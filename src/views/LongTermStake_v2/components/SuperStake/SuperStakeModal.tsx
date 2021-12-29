@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import { useApr, useAllLock } from 'hooks/useLongTermStake'
 
 import SuperAprButton from './SuperAprButton'
+import SuperEstimate from './SuperEstimate'
 
 interface ModalProps {
   onDismiss?: () => any
@@ -23,6 +24,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [days, setDays] = useState<number>(365)
+  const [inputFinix, setInputFinix] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
@@ -54,8 +56,9 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   return (
     <Modal title={`${t('Super Stake')}`} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
-        <StyledBox mb="S_30">
+        <StyledBox mb="S_16">
           <SuperAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
+          <SuperEstimate isMobile={isMobile} days={days} inputFinix={inputFinix} />
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>

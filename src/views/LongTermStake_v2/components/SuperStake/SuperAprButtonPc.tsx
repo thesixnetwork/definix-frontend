@@ -16,7 +16,6 @@ interface AprButtonProps {
 const FlexVFinix = styled(Flex)<{ $focus: boolean; $myLongTerm: boolean }>`
   width: calc(100% / 3);
   margin-right: 16px;
-  margin-bottom: 32px;
   flex-direction: column;
   border-radius: 8px;
   box-shadow: ${({ $focus, $myLongTerm }) => {

@@ -68,7 +68,7 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data, superS
 
   return (
     <>
-      <Flex mb="S_24" width="100%" flexDirection="column">
+      <Flex width="100%" flexDirection="column">
         <Flex width="100%">
           {data.map((item) => {
             return (
