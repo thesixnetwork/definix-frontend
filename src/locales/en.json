@@ -468,7 +468,7 @@
   "Super Stake tooltip": "Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount.\nYou can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended.",
   "28 days Super Staked": "28 days Super Staked",
   "Super Staked": "Super Staked",
-  "This feature is only for vFINIX holder": "This feature is only for vFINIX holder\nYou have never lock in Long-term Stake. \nDo you want to start staking in the Long-term Stake to get this exclusive feature?",
+  "This feature is only for vFINIX holder": "This feature is for vFINIX holders only.\nDeposit in Long-term Staking and use Super Stakes.",
   "From your wallet": "From your wallet",
   "Pending rewards": "Pending rewards",
   "Next": "Next",
@@ -484,5 +484,7 @@
   "28days super stake tooltip": "You can stake as much as FINIX you prefer under the same lock period within 28 days",
   "You can’t unstake due to": "You can’t unstake due to insufficient vFINIX balance.",
   "Your balance": "Your balance",
-  "Close": "Close"
+  "Close": "Close",
+  "Back to Home": "Back to Home",
+  "You cannot use Super Stake.": "You cannot use Super Stake."
 }
