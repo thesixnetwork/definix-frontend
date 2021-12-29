@@ -3,9 +3,10 @@ import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Box, Modal, Button, ModalBody, ModalFooter, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
-import { useApr, useAllLock } from 'hooks/useLongTermStake'
+import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
 
 import SuperAprButton from './SuperAprButton'
+import SuperInput from './SuperInput'
 import SuperEstimate from './SuperEstimate'
 
 interface ModalProps {
@@ -24,10 +25,13 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [days, setDays] = useState<number>(365)
+  const [error, setError] = useState<string>('')
   const [inputFinix, setInputFinix] = useState<string>('')
+  const [inputHarvest, setInputHarvest] = useState<string>('')
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
+  const { balancefinix } = usePrivateData()
 
   const data = [
     {
@@ -58,11 +62,25 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
       <ModalBody isBody>
         <StyledBox mb="S_16">
           <SuperAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
+
+          {/* 팜, 풀 자리 */}
+
+          <SuperInput
+            isMobile={isMobile}
+            inputFinix={inputFinix}
+            setInputFinix={setInputFinix}
+            inputHarvest={inputHarvest}
+            error={error}
+            setError={setError}
+            balancefinix={balancefinix}
+          />
           <SuperEstimate isMobile={isMobile} days={days} inputFinix={inputFinix} />
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={() => null}>{t('Next')}</Button>
+        <Button disabled={!!error} onClick={() => null}>
+          {t('Next')}
+        </Button>
       </ModalFooter>
     </Modal>
   )
