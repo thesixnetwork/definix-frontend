@@ -8,22 +8,22 @@ import { IsMobileType } from '../types'
 
 interface EstimateVFinixProps extends IsMobileType {
   days: number
-  inputFinix: string
+  totalFinix: number
 }
 
-const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, inputFinix }) => {
+const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFinix }) => {
   const { t, i18n } = useTranslation()
 
-  const getVFinix = (day: number, balance: string) => {
+  const getVFinix = (day: number, balance: number) => {
     if (!balance) return 0
 
     switch (day) {
       case 90:
-        return numeral(Number(balance)).format('0,0.[00]')
+        return numeral(balance).format('0,0.[00]')
       case 180:
-        return numeral(Number(balance) * 2).format('0,0.[00]')
+        return numeral(balance * 2).format('0,0.[00]')
       case 365:
-        return numeral(Number(balance) * 4).format('0,0.[00]')
+        return numeral(balance * 4).format('0,0.[00]')
       default:
         return 0
     }
@@ -60,7 +60,7 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, inputFin
           </Text>
           <Flex>
             <Text textStyle="R_14M" color="deepgrey">
-              {inputFinix || 0}
+              {totalFinix || 0}
             </Text>
             <Text ml="S_4" textStyle="R_14M" color="deepgrey">
               {t('FINIX')}
@@ -73,7 +73,7 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, inputFin
           </Text>
           <Flex>
             <Text textStyle="R_14M" color="deepgrey">
-              {getVFinix(days, inputFinix)}
+              {getVFinix(days, totalFinix)}
             </Text>
             <Text ml="S_4" textStyle="R_14M" color="deepgrey">
               {t('vFINIX')}

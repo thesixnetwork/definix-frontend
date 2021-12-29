@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import _ from 'lodash'
 import { useTranslation } from 'react-i18next'
 import { Box, Modal, Button, ModalBody, ModalFooter, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
@@ -28,6 +28,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const [error, setError] = useState<string>('')
   const [inputFinix, setInputFinix] = useState<string>('')
   const [inputHarvest, setInputHarvest] = useState<string>('')
+  const totalFinix = useMemo(() => Number(inputFinix) + Number(inputHarvest), [inputFinix, inputHarvest])
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
   const minimum = _.get(allLockPeriod, '0.minimum')
@@ -74,7 +75,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
             setError={setError}
             balancefinix={balancefinix}
           />
-          <SuperEstimate isMobile={isMobile} days={days} inputFinix={inputFinix} />
+          <SuperEstimate isMobile={isMobile} days={days} totalFinix={totalFinix} />
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
