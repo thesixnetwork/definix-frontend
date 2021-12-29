@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import _ from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { useTranslation, Trans } from 'react-i18next'
@@ -14,16 +15,18 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { useLock } from 'hooks/useLongTermStake'
+import { useLock, useLockTopup, useAllDataLock } from 'hooks/useLongTermStake'
+import { useLockPlus } from 'hooks/useTopUp'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
 interface ModalProps {
   balance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
-  period: number
+  days: number
   end: string
   earn: number
+  pathname: string
   onDismiss?: () => any
 }
 
@@ -35,9 +38,18 @@ const StyledBox = styled(Box)`
   }
 `
 
-const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, end, earn, onDismiss = () => null }) => {
+const StakeModal: React.FC<ModalProps> = ({
+  balance,
+  setInputBalance,
+  days,
+  end,
+  earn,
+  pathname,
+  onDismiss = () => null,
+}) => {
   const { t } = useTranslation()
   const [finixValue, setFinixValue] = useState<string>(balance)
+  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
 
   const getLockDay = (day: number) => {
     switch (day) {
@@ -58,7 +70,7 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
     return 2
   }
 
-  const { onStake, status, loadings } = useLock(getLevel(period), finixValue)
+  const { onStake, status, loadings } = useLock(getLevel(days), finixValue)
   const { toastSuccess, toastError } = useToast()
 
   const onClickStake = useCallback(async () => {
@@ -70,12 +82,36 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
     }
   }, [onStake, toastSuccess, toastError, t])
 
+  // 슈퍼 스테이크
+  const [idLast, setIdLast] = useState<number>(0)
+  const lockTopUp = useLockTopup()
+  const { allLock } = useAllDataLock()
+
+  const { onLockPlus, status: superStatus, loadings: superLoadings } = useLockPlus(getLevel(days), idLast, finixValue)
+
+  const onClickSuperStake = useCallback(async () => {
+    try {
+      await onLockPlus()
+      toastSuccess(t('{{Action}} Complete', { Action: t('actioncStake') }))
+    } catch (e) {
+      toastError(t('{{Action}} Failed', { Action: t('actioncStake') }))
+    }
+  }, [onLockPlus, toastSuccess, toastError, t])
+  // 슈퍼스테이크
+
   useEffect(() => {
     if (status) {
       setInputBalance('')
       onDismiss()
     }
   }, [status, setInputBalance, onDismiss])
+
+  useEffect(() => {
+    if (superStatus) {
+      setInputBalance('')
+      onDismiss()
+    }
+  }, [superStatus, setInputBalance, onDismiss])
 
   useEffect(() => {
     setFinixValue(new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed())
@@ -85,8 +121,46 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
     }
   }, [balance])
 
+  useEffect(() => {
+    if (lockTopUp !== null && lockTopUp.length > 0) {
+      const arrStr = lockTopUp.map((i) => Number(i))
+      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+      let max = 0
+      for (let i = 0; i < removeTopUpId.length; i++) {
+        const selector = removeTopUpId[i]
+        const selectorPeriod = getLevel(days) + 1
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === selectorPeriod
+        ) {
+          if (Number(_.get(selector, 'id')) >= max) {
+            max = Number(_.get(selector, 'id'))
+            setIdLast(max)
+          }
+        }
+      }
+    } else {
+      let max = 0
+      for (let i = 0; i < allLock.length; i++) {
+        const selector = allLock[i]
+        const selectorPeriod = getLevel(days) + 1
+        if (
+          _.get(selector, 'isUnlocked') === false &&
+          _.get(selector, 'isPenalty') === false &&
+          _.get(selector, 'level') === selectorPeriod
+        ) {
+          if (Number(_.get(selector, 'id')) >= max) {
+            max = Number(_.get(selector, 'id'))
+            setIdLast(max)
+          }
+        }
+      }
+    }
+  }, [lockTopUp, allLock, days])
+
   return (
-    <Modal title={`${t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
+    <Modal title={`${isSuperStake ? t('Confirm Super Stake') : t('Confirm Stake')}`} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
         <StyledBox mb="S_30">
           <Flex mt="S_14" mb="S_24" justifyContent="space-between" alignItems="center">
@@ -107,7 +181,7 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
                 {t('Stake Period')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
-                {t(`${period} days`)}
+                {t(`${days} days`)}
               </Text>
             </Flex>
             <Flex mb="S_8" justifyContent="space-between">
@@ -141,14 +215,17 @@ const StakeModal: React.FC<ModalProps> = ({ balance, setInputBalance, period, en
                 <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
               </Flex>
               <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
-                <Trans i18nKey={getLockDay(period)} components={[<strong />]} />
+                <Trans i18nKey={getLockDay(days)} components={[<strong />]} />
               </Text>
             </Flex>
           </Flex>
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button isLoading={loadings === 'loading'} onClick={onClickStake}>
+        <Button
+          isLoading={isSuperStake ? superLoadings === 'loading' : loadings === 'loading'}
+          onClick={isSuperStake ? onClickSuperStake : onClickStake}
+        >
           {t('Stake')}
         </Button>
       </ModalFooter>

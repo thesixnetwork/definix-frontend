@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import UnlockButton from 'components/UnlockButton'
 
 import StakeModal from './StakeModal'
-import SuperStakeModal from './SuperStakeModal'
 import { IsMobileType } from './types'
 
 interface ApproveFinixProps extends IsMobileType {
@@ -44,10 +43,16 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   const { pathname } = useLocation()
   const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
   const [onPresentStakeModal] = useModal(
-    <StakeModal balance={inputBalance} setInputBalance={setInputBalance} period={days} end={endDay} earn={earn} />,
+    <StakeModal
+      balance={inputBalance}
+      setInputBalance={setInputBalance}
+      days={days}
+      end={endDay}
+      earn={earn}
+      pathname={pathname}
+    />,
     false,
   )
-  const [onPresentsuperStakeModal] = useModal(<SuperStakeModal />, false)
   const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠
 
   const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
@@ -66,14 +71,6 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
     }
   }, [onApprove, toastSuccess, toastError, t])
 
-  const onClickStakeButton = () => {
-    if (isSuperStake) {
-      if (possibleSuperStake) onPresentsuperStakeModal()
-    } else {
-      onPresentStakeModal()
-    }
-  }
-
   const disabledStakeButton = () => {
     if (!isApproved || isError) return true
     if (isSuperStake && !possibleSuperStake) return true
@@ -86,7 +83,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
         {t('Approve Contract')}
       </Button>
     ) : (
-      <Button height="48px" mb="S_12" disabled={disabledStakeButton()} onClick={onClickStakeButton}>
+      <Button height="48px" mb="S_12" disabled={disabledStakeButton()} onClick={onPresentStakeModal}>
         {t('Stake')}
       </Button>
     )

@@ -6,7 +6,7 @@ import { useHarvest } from 'hooks/useLongTermStake'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
 
-import SuperStakeModal from './SuperStakeModal'
+import SuperStakeModal from './SuperStake/SuperStakeModal'
 import { IsMobileType } from './types'
 
 interface FinixEarnProps extends IsMobileType {
