@@ -152,7 +152,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
             <EstimateVFinix hasAccount={hasAccount} endDay={getEndDay()} earn={getVFinix(days, inputBalance)} />
           </FlexCard>
 
-          {!balancevfinix && (
+          {pathname === '/super-stake' && !balancevfinix && (
             <Working>
               <img alt="" width={236} src={longTermImgX1} srcSet={`${longTermImgX2} 2x, ${longTermImgX3} 3x`} />
               <Text textStyle="R_18M" mt="S_24">
