@@ -276,7 +276,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                   <TD>
                     <ColBtn>
                       {Date.now() < +r.endDate || r.choices.length === 0 ? (
-                        <BtnDetails as={Link} to={`/voting/detail/participate/${r.ipfsHash}/${r.proposalIndex}`}>
+                        <BtnDetails as={Link} to={`/voting/participate/${r.ipfsHash}/${r.proposalIndex}`}>
                           Details
                         </BtnDetails>
                       ) : (
