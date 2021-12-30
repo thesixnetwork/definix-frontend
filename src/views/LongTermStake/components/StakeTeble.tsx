@@ -8,7 +8,7 @@ import FinixStakeCard from './FinixStakeCard'
 
 const StakeTable: React.FC = () => {
   // @ts-ignore
-   /* eslint-disable no-unused-vars */
+  /* eslint-disable no-unused-vars */
   const { isDark } = useTheme()
   const lockCount = useLockCount()
   const [total, setTotal] = useState(lockCount)

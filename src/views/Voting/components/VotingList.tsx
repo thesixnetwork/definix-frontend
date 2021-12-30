@@ -107,12 +107,11 @@ const LinkView = styled(Button)`
   padding-left: 2px;
 `
 
-
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Transaction Hash', 'Address', 'Choice', 'Voting Power'])
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
-  
+
   return (
     <CardList>
       <Table>

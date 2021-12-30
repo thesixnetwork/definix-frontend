@@ -138,7 +138,7 @@ const TabInfos = ({ tab }) => {
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
                   ) : (
-                    <Text fontSize={isMobile ? "14px !important" : "18px !important"}  bold lineHeight="1" mr="6px">
+                    <Text fontSize={isMobile ? '14px !important' : '18px !important'} bold lineHeight="1" mr="6px">
                       {_.get(item, 'title')}
                     </Text>
                   )}
@@ -151,11 +151,11 @@ const TabInfos = ({ tab }) => {
                     </>
                   ) : (
                     <>
-                      <Text fontSize={isMobile ? "10px !important" : "14px !important"} lineHeight="1">
+                      <Text fontSize={isMobile ? '10px !important' : '14px !important'} lineHeight="1">
                         {tab === 'vote' || tab === 'closed' ? 'End Date' : 'Start Date'}
                       </Text>
                       &nbsp;
-                      <Text fontSize={isMobile ? "10px !important" : "14px !important"} lineHeight="1" bold>
+                      <Text fontSize={isMobile ? '10px !important' : '14px !important'} lineHeight="1" bold>
                         {tab === 'vote' || tab === 'closed' ? (
                           <>
                             {_.get(item, 'endTimestamp')} {_.get(item, 'endTimestamp') !== '-' && 'GMT+9'}

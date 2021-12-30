@@ -223,7 +223,7 @@ const YourVoteList = () => {
         />
         {!isLoading ? (
           <>
-            <div className={isMobile? "flex align-center ma-3 mb-1": "flex align-center ma-3"}>
+            <div className={isMobile ? 'flex align-center ma-3 mb-1' : 'flex align-center ma-3'}>
               <Button
                 onClick={() => {
                   onHandleClaim(proposalIndex)
@@ -234,7 +234,11 @@ const YourVoteList = () => {
                 mr="6px"
                 disabled={Date.now() < +_.get(items, 'endDate') || !isClaimable}
               >
-                <Text fontSize={isMobile ? '10px' : '12px'} color={Date.now() < +_.get(items, 'endDate') || !isClaimable ? "textSubtle" : "white"} lineHeight="1">
+                <Text
+                  fontSize={isMobile ? '10px' : '12px'}
+                  color={Date.now() < +_.get(items, 'endDate') || !isClaimable ? 'textSubtle' : 'white'}
+                  lineHeight="1"
+                >
                   Claim Voting Power
                 </Text>
               </Button>
@@ -253,19 +257,19 @@ const YourVoteList = () => {
                   </Text>
                 </Button>
               )}
-              {!isMobile &&(
+              {!isMobile && (
                 <Text fontSize={isMobile ? '10px' : '12px'} color="text" paddingLeft="14px">
                   Claim will be available after the the voting time is ended.
                 </Text>
               )}
             </div>
-            {isMobile &&(
+            {isMobile && (
               <div className="mx-1 mb-3 mt-0">
                 <Text fontSize={isMobile ? '10px' : '12px'} color="text" paddingLeft="14px">
                   Claim will be available after the the voting time is ended.
                 </Text>
               </div>
-            )} 
+            )}
           </>
         ) : (
           <div className="flex align-center ma-3" />
