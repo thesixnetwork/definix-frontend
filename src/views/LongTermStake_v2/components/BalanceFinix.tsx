@@ -86,8 +86,13 @@ const BalanceFinix: React.FC<BalanceProps> = ({
 
   useEffect(() => {
     if (pathname === '/super-stake') {
-      if (!inputBalance) setError('noInput')
-      else setError('')
+      if (!inputBalance) {
+        setError('noInput')
+      } else if (new BigNumber(inputBalance).dp() > 18) {
+        setError('Less than a certain amount')
+      } else if (balancefinix < Number(inputBalance)) {
+        setError('Insufficient balance')
+      } else setError('')
       return
     }
 

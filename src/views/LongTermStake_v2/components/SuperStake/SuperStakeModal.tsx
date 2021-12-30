@@ -7,6 +7,7 @@ import { useApr, useAllLock, usePrivateData } from 'hooks/useLongTermStake'
 
 import SuperConfirmStake from './SuperConfirmStake'
 import SuperAprButton from './SuperAprButton'
+import SuperFarmPool from './SuperFarmPool'
 import SuperInput from './SuperInput'
 import SuperEstimate from './SuperEstimate'
 
@@ -30,6 +31,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const [next, setNext] = useState<boolean>(false)
   const [inputFinix, setInputFinix] = useState<string>('')
   const [inputHarvest, setInputHarvest] = useState<string>('')
+  const [harvestProgress, setHarvestProgress] = useState<number>(-1)
   const totalFinix = useMemo(() => Number(inputFinix) + Number(inputHarvest), [inputFinix, inputHarvest])
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
@@ -68,30 +70,44 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
     }
   }, [setError, setInputFinix, setInputHarvest])
 
+  useEffect(() => {
+    setInputFinix(String(Math.floor(balancefinix * 100) / 100))
+  }, [balancefinix])
+
   return (
     <Modal title={`${t('Super Stake')}`} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
         <StyledBox mb="S_16">
-          {next ? (
-            <SuperConfirmStake totalFinix={totalFinix} days={days} />
-          ) : (
-            <>
-              <SuperAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />
+          {next && <SuperConfirmStake totalFinix={totalFinix} days={days} />}
 
-              {/* 팜, 풀 자리 */}
+          <>
+            {!next && <SuperAprButton isMobile={isMobile} days={days} setDays={setDays} data={data} />}
 
-              <SuperInput
-                isMobile={isMobile}
-                inputFinix={inputFinix}
-                setInputFinix={setInputFinix}
-                inputHarvest={inputHarvest}
-                error={error}
-                setError={setError}
-                balancefinix={balancefinix}
-              />
-              <SuperEstimate isMobile={isMobile} days={days} totalFinix={totalFinix} />
-            </>
-          )}
+            <SuperFarmPool
+              days={days}
+              inputFinix={inputFinix}
+              setInputHarvest={setInputHarvest}
+              harvestProgress={harvestProgress}
+              setHarvestProgress={setHarvestProgress}
+              show={!next}
+              onDismiss={onDismiss}
+            />
+
+            {!next && (
+              <>
+                <SuperInput
+                  isMobile={isMobile}
+                  inputFinix={inputFinix}
+                  setInputFinix={setInputFinix}
+                  inputHarvest={inputHarvest}
+                  error={error}
+                  setError={setError}
+                  balancefinix={balancefinix}
+                />
+                <SuperEstimate isMobile={isMobile} days={days} totalFinix={totalFinix} />
+              </>
+            )}
+          </>
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
@@ -100,12 +116,12 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
             <Button width="100%" variant="line" mr="S_8" onClick={() => setNext(false)}>
               {t('Back')}
             </Button>
-            <Button width="100%" variant="red" ml="S_8" onClick={() => null}>
+            <Button width="100%" variant="red" ml="S_8" onClick={() => setHarvestProgress(0)}>
               {t('Stake')}
             </Button>
           </Flex>
         ) : (
-          <Button variant="red" disabled={!!error} onClick={() => setNext(true)}>
+          <Button variant="red" disabled={!(Number(inputFinix) + Number(inputHarvest))} onClick={() => setNext(true)}>
             {t('Next')}
           </Button>
         )}
