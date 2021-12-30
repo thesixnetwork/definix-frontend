@@ -93,7 +93,6 @@ const TR = styled.tr`
 const TD = styled.td<{ align?: string }>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   padding: 16px;
-  // height: 64px;
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
 `
@@ -108,6 +107,24 @@ const BtnDetails = styled(Button)`
   background-color: ${({ theme }) => theme.colors.primary};
   color: #ffffff;
   width: 60%;
+
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 10px;
+    padding: 8px;
+    width: 100%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 10px;
+    padding: 10px 12px;
+    width: 100%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 12px;
+    padding: 10px 20px;
+    width: 60%;
+  }
 `
 
 const BtnClaim = styled(Button)`
@@ -122,13 +139,13 @@ const BtnClaim = styled(Button)`
   ${({ theme }) => theme.mediaQueries.xs} {
     font-size: 10px;
     padding: 8px;
-    width: 100%;
+    height: unset;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 8px;
+    font-size: 10px;
     padding: 10px 12px;
-    width: 60%;
+    width: 100%;
   }
 
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -140,6 +157,10 @@ const BtnClaim = styled(Button)`
 
 const ColBtn = styled.div`
   text-align: -webkit-center;
+`
+
+const TextWidth = styled(Text)`
+  width: 300px;
 `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
@@ -219,9 +240,9 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
               rows.map((r) => (
                 <TR key={`tsc-${r.block_number}`}>
                   <TD>
-                    <Text color="text" bold fontSize={isMobile ? '16px' : '20px'}>
+                    <TextWidth color="text" bold fontSize={isMobile ? '14px' : '20px'}>
                       {r.title.substring(0, 38)}...
-                    </Text>
+                    </TextWidth>
                     <div className={isMobile ? '' : 'flex align-center'}>
                       <Text color="text" paddingRight="8px">
                         End Date

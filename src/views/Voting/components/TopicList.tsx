@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import _ from 'lodash'
-import { Heading, Text, Button, Image, Skeleton } from '../../../uikit-dev'
+import { Heading, Text, Button, Image, Skeleton, useMatchBreakpoints } from '../../../uikit-dev'
 import nextIcon from '../../../uikit-dev/images/next.png'
 import coreIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-core.png'
 import communityIcon from '../../../uikit-dev/images/for-ui-v2/voting/icon-community.png'
@@ -75,6 +75,8 @@ const TextHorizontal = styled.div`
 `
 
 const TabInfos = ({ tab }) => {
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg
   const [isLoading, setIsLoading] = useState(false)
   const allProposalMap = useAllProposalOfType()
   const listAllProposal = _.get(allProposalMap, 'allProposalMap')
@@ -136,7 +138,7 @@ const TabInfos = ({ tab }) => {
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
                   ) : (
-                    <Text fontSize="18px !important" bold lineHeight="1" mr="6px">
+                    <Text fontSize={isMobile ? "14px !important" : "18px !important"}  bold lineHeight="1" mr="6px">
                       {_.get(item, 'title')}
                     </Text>
                   )}
@@ -149,11 +151,11 @@ const TabInfos = ({ tab }) => {
                     </>
                   ) : (
                     <>
-                      <Text fontSize="14px !important" lineHeight="1">
+                      <Text fontSize={isMobile ? "10px !important" : "14px !important"} lineHeight="1">
                         {tab === 'vote' || tab === 'closed' ? 'End Date' : 'Start Date'}
                       </Text>
                       &nbsp;
-                      <Text fontSize="14px !important" bold lineHeight="1" mr="6px">
+                      <Text fontSize={isMobile ? "10px !important" : "14px !important"} lineHeight="1" bold>
                         {tab === 'vote' || tab === 'closed' ? (
                           <>
                             {_.get(item, 'endTimestamp')} {_.get(item, 'endTimestamp') !== '-' && 'GMT+9'}

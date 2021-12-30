@@ -2,13 +2,13 @@
 import React, { useState, useMemo } from 'react'
 import useTheme from 'hooks/useTheme'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import _ from 'lodash'
 import { useLockCount, useAllowance, usePrivateData, useAllLock } from '../../../hooks/useLongTermStake'
 import LockVfinixList from './LockVfinixList'
 import FinixStakeCard from './FinixStakeCard'
 
 const StakeTable: React.FC = () => {
   // @ts-ignore
+   /* eslint-disable no-unused-vars */
   const { isDark } = useTheme()
   const lockCount = useLockCount()
   const [total, setTotal] = useState(lockCount)

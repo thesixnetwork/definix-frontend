@@ -1,15 +1,12 @@
 /* eslint-disable no-nested-ternary */
 import React, { useMemo } from 'react'
-import { Button, Card, Text, Input, useMatchBreakpoints } from 'uikit-dev'
+import { Button, Card, Text } from 'uikit-dev'
 import uniqueId from 'lodash/uniqueId'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
 import Radio from '@material-ui/core/Radio'
-import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
-import Checkbox from '@material-ui/core/Checkbox'
+import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import InputChoice from './InputChoice'
-// import development from '../../../uikit-dev/images/for-ui-v2/voting/voting-development.png'
 
 // const InputChoice = styled(Input)`
 //   width: 100%;
@@ -31,7 +28,7 @@ const FormControlLabelCustom = styled(FormControlLabel)`
   }
 `
 
-const BpIcon = styled('span')(({ theme }) => ({
+const BpIcon = styled('span')(() => ({
   borderRadius: '50%',
   width: 16,
   height: 16,
@@ -99,9 +96,6 @@ export const MINIMUM_CHOICES = 2
 export const makeChoice = (): Choice => ({ id: uniqueId(), value: '' })
 
 const AddChoices: React.FC<ChoicesProps> = ({ choices, onChange, setChoiceType, isLoading }) => {
-  const { isDark } = useTheme()
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
   const hasMinimumChoices = useMemo(() => {
     const minimumChoices = choices.filter((choice) => choice.value.length > 0).length >= MINIMUM_CHOICES
     return minimumChoices

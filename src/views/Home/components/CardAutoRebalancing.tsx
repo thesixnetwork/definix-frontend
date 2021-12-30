@@ -438,7 +438,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
   }
 
   const { isDark } = useTheme()
-  const { lockAmount, finixEarn, balancefinix, balancevfinix } = usePrivateData()
+  const { balancevfinix } = usePrivateData()
   // Super Stake
   const [onPresentConnectModal] = useModal(
     !!balancevfinix && balancevfinix > 0 ? <SuperStakeModal /> : <StartLongTermStakeModal />,

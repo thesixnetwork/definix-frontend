@@ -10,7 +10,7 @@ import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
-import { Button, Card, Text, useModal } from '../../../uikit-dev'
+import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
 import { useAllProposalOfAddress, useClaimVote, useIsClaimable } from '../../../hooks/useVoting'
 
 const SuccessOptions = {
@@ -143,6 +143,8 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 }
 
 const YourVoteList = () => {
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg
   const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { onDismiss } = useContext(Context)
   const [isLoading, setIsLoading] = useState(false)
@@ -220,36 +222,51 @@ const YourVoteList = () => {
           total
         />
         {!isLoading ? (
-          <div className="flex align-center ma-3">
-            <Button
-              onClick={() => {
-                onHandleClaim(proposalIndex)
-              }}
-              variant="success"
-              radii="small"
-              size="sm"
-              mr="6px"
-              disabled={Date.now() < +_.get(items, 'endDate') || !isClaimable}
-            >
-              Claim Voting Power
-            </Button>
-            <Button
-              as={Link}
-              to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
-              variant="primary"
-              radii="small"
-              size="sm"
-              className="flex align-center"
-              disabled={Date.now() > +_.get(items, 'endDate')}
-            >
-              <Text fontSize="12px" color="white">
-                Vote more
-              </Text>
-            </Button>
-            <Text fontSize="12px" color="text" paddingLeft="14px">
-              Claim will be available after the the voting time is ended.
-            </Text>
-          </div>
+          <>
+            <div className={isMobile? "flex align-center ma-3 mb-1": "flex align-center ma-3"}>
+              <Button
+                onClick={() => {
+                  onHandleClaim(proposalIndex)
+                }}
+                variant="success"
+                radii="small"
+                size="sm"
+                mr="6px"
+                disabled={Date.now() < +_.get(items, 'endDate') || !isClaimable}
+              >
+                <Text fontSize={isMobile ? '10px' : '12px'} color={Date.now() < +_.get(items, 'endDate') || !isClaimable ? "textSubtle" : "white"} lineHeight="1">
+                  Claim Voting Power
+                </Text>
+              </Button>
+              {Date.now() < +_.get(items, 'endDate') && (
+                <Button
+                  as={Link}
+                  to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
+                  variant="primary"
+                  radii="small"
+                  size="sm"
+                  className="flex align-center text-center"
+                  disabled={Date.now() > +_.get(items, 'endDate')}
+                >
+                  <Text fontSize={isMobile ? '10px' : '12px'} color="white" lineHeight="1">
+                    Vote more
+                  </Text>
+                </Button>
+              )}
+              {!isMobile &&(
+                <Text fontSize={isMobile ? '10px' : '12px'} color="text" paddingLeft="14px">
+                  Claim will be available after the the voting time is ended.
+                </Text>
+              )}
+            </div>
+            {isMobile &&(
+              <div className="mx-1 mb-3 mt-0">
+                <Text fontSize={isMobile ? '10px' : '12px'} color="text" paddingLeft="14px">
+                  Claim will be available after the the voting time is ended.
+                </Text>
+              </div>
+            )} 
+          </>
         ) : (
           <div className="flex align-center ma-3" />
         )}

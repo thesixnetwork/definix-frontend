@@ -2,7 +2,6 @@
 import React, { useCallback, useState, useMemo } from 'react'
 import styled, { useTheme } from 'styled-components'
 import numeral from 'numeral'
-import _ from 'lodash'
 import { Text, useMatchBreakpoints, Button, Heading, useModal } from '../../../uikit-dev'
 import { useHarvest, usePrivateData } from '../../../hooks/useLongTermStake'
 import SuperStakeModal from '../../../uikit-dev/widgets/WalletModal/SuperStakeModal'

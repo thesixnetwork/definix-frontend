@@ -21,20 +21,31 @@ const Tabs = styled.div`
 const Tab = styled(Button)<{ active: boolean }>`
   display: flex;
   font-size: 0.875rem;
-  padding: 1.5rem 0rem 1.5rem 0rem;
+  padding: 1.5rem 0rem;
   justify-content: center;
   background: transparent !important;
   color: ${({ theme, active }) => (active ? '#30ADFF' : theme.colors.textSubtle)} !important;
   border-bottom: ${({ theme, active }) => active && '0.25rem solid #30ADFF'} !important;
-  width: 10%;
   border-radius: 0;
 
   &:hover {
     color: ${({ theme, active }) => (active ? '#30ADFF' : theme.colors.primary)} !important;
   }
 
+  ${({ theme }) => theme.mediaQueries.xs} {
+    font-size: 0.875rem;
+    width: 30%;
+  }
+
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 16px;
+    font-size: 0.775rem;
+    padding: 1.5rem 1rem;
+    width: 30%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    font-size: 0.875rem;
+    width: 10%;
   }
 `
 

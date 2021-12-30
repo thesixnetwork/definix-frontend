@@ -1,19 +1,13 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useMemo, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState, useMemo } from 'react'
 import _ from 'lodash'
-import BigNumber from 'bignumber.js'
 import { useParams } from 'react-router-dom'
 import { Card, Text, useMatchBreakpoints, Button, Skeleton } from 'uikit-dev'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import isEmpty from 'lodash/isEmpty'
-import { getAddress } from 'utils/addressHelpers'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
-import { useProposalIndex, useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
-import useRefresh from 'hooks/useRefresh'
-import useTheme from 'hooks/useTheme'
+import { useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import PaginationCustom from './Pagination'
 
@@ -102,20 +96,23 @@ const TR = styled.tr`
   
 `
 const TD = styled.td<{ align?: string }>`
-  width: 100%;
+  width: 120px;
   vertical-align: middle;
-  align-self: ${'center'};
+  align-self: center;
 `
 
 const LinkView = styled(Button)`
   background-color: unset;
   cursor: pointer;
-  padding-left: 6px;
+  padding-left: 2px;
 `
+
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
   const [cols] = useState(['Transaction Hash', 'Address', 'Choice', 'Voting Power'])
-
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg
+  
   return (
     <CardList>
       <Table>
@@ -147,7 +144,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <>
                         {r.transaction_hash && (
                           <div className="flex align-center">
-                            <Text fontSize="16px" bold lineHeight="1" color="#30ADFF">
+                            <Text fontSize={isMobile ? '12px' : '14px'} bold lineHeight="1" color="#30ADFF">
                               {`${r.transaction_hash.substring(0, 6)}...${r.transaction_hash.substring(
                                 r.transaction_hash.length - 4,
                               )}`}
@@ -171,7 +168,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <>
                         {r.voter_addr && (
                           <div className="flex align-center">
-                            <Text fontSize="16px" bold lineHeight="1" color="#30ADFF">
+                            <Text fontSize={isMobile ? '12px' : '14px'} bold lineHeight="1" color="#30ADFF">
                               {`${r.voter_addr.substring(0, 6)}...${r.voter_addr.substring(r.voter_addr.length - 4)}`}
                             </Text>
                             <LinkView
@@ -190,7 +187,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                     {isLoading ? (
                       <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
                     ) : (
-                      <Text color="text" bold>
+                      <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold>
                         {r.voting_opt}
                       </Text>
                     )}
@@ -200,7 +197,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                       <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
                     ) : (
                       <div className="flex align-center">
-                        <Text color="text" bold paddingRight="8px">
+                        <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
                           {r.voting_power}
                         </Text>
                       </div>
@@ -208,18 +205,6 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
                   </TD>
                 </TR>
               ))}
-            {/* <TR>
-                  <TD className="text-right">
-                    <PaginationCustom
-                      page={currentPage}
-                      count={pages}
-                      onChange={onPageChange}
-                      size="small"
-                      hidePrevButton
-                      hideNextButton
-                    />
-                  </TD>
-                </TR> */}
           </TBody>
         )}
       </Table>
@@ -229,14 +214,13 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 
 const VotingList = ({ rbAddress }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [currentTab, setCurrentTab] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const limits = 10
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const [add, setAdd] = useState([])
+  // const [add, setAdd] = useState([])
 
-  const { indexProposal } = useProposalIndex(proposalIndex)
-  const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
+  // const { indexProposal } = useProposalIndex(proposalIndex)
+  // const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
   const { allVotesByIndex, totalVote } = useVotesByIndex(proposalIndex, currentPage, limits)
   const { allVotesByIpfs } = useVotesByIpfs(id)
   const pages = useMemo(() => Math.ceil(Number(totalVote) / 10), [Number(totalVote)])
