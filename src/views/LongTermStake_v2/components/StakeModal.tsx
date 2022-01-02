@@ -125,6 +125,10 @@ const StakeModal: React.FC<ModalProps> = ({
   }, [superStatus, setInputBalance, onDismiss])
 
   useEffect(() => {
+    return () => setIdLast(0)
+  }, [setIdLast])
+
+  useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
       const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))

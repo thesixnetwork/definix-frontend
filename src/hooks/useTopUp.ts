@@ -39,8 +39,8 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setInterval(() => setLoading(''), 3000)
-          setInterval(() => setStatus(false), 3000)
+          setTimeout(() => setLoading(''), 3000)
+          setTimeout(() => setStatus(false), 3000)
         } else {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
           const estimatedGasLimit = await callContract.methods

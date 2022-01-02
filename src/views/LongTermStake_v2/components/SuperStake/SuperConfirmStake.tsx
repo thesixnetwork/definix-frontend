@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation, Trans } from 'react-i18next'
@@ -11,6 +11,7 @@ interface SuperConfirmStakeProps {
 
 const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days }) => {
   const { t, i18n } = useTranslation()
+  const [amount] = useState<number>(totalFinix)
 
   const getLockDay = (day: number) => {
     switch (day) {
@@ -59,7 +60,7 @@ const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days 
           </Text>
         </Flex>
         <Text textStyle="R_16R" color="black">
-          {numeral(Number(totalFinix)).format('0,0.[00]')}
+          {numeral(Number(amount)).format('0,0.[00]')}
         </Text>
       </Flex>
       <Divider />
@@ -91,7 +92,7 @@ const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days 
           </Text>
           <Flex>
             <Text textStyle="R_14M" color="deepgrey">
-              {getVFinix(days, totalFinix)}
+              {getVFinix(days, amount)}
             </Text>
             <Text ml="S_4" textStyle="R_14M" color="deepgrey">
               {t('vFINIX')}

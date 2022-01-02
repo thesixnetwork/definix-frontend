@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, AlertIcon, PlusIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
@@ -10,6 +11,7 @@ interface SuperInputProps extends IsMobileType {
   inputFinix: string
   setInputFinix: React.Dispatch<React.SetStateAction<string>>
   inputHarvest: string
+  setInputHarvest: React.Dispatch<React.SetStateAction<string>>
   error: string
   setError: React.Dispatch<React.SetStateAction<string>>
   balancefinix: number
@@ -38,6 +40,7 @@ const SuperInput: React.FC<SuperInputProps> = ({
   inputFinix,
   setInputFinix,
   inputHarvest,
+  setInputHarvest,
   error,
   setError,
   balancefinix,
@@ -61,6 +64,12 @@ const SuperInput: React.FC<SuperInputProps> = ({
       setError('Insufficient balance')
     } else setError('')
   }, [balancefinix, inputFinix, setError])
+
+  useEffect(() => {
+    if (inputHarvest) setError('')
+    if (!inputFinix && !inputHarvest) setError('noInput')
+    if (Number(inputHarvest) <= 0) setInputHarvest('')
+  }, [inputFinix, inputHarvest, setError, setInputHarvest])
 
   return (
     <Flex mt="S_24" flexDirection="column">
@@ -113,7 +122,7 @@ const SuperInput: React.FC<SuperInputProps> = ({
             inputMode="decimal"
             title="Token Amount"
             placeholder="0.00"
-            value={inputHarvest}
+            value={inputHarvest ? numeral(inputHarvest).format('0,0.[00]') : ''}
             pattern="^[0-9]*[.]?[0-9]*$"
             minLength={1}
             maxLength={79}

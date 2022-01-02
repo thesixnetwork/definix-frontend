@@ -66,14 +66,12 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
 }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { finixEarn, balancevfinix } = usePrivateData()
-  const { handleHarvest } = useHarvestLongterm()
   const { allLock } = useAllDataLock()
   const lockTopUp = useLockTopup()
   const [selectedToken, setSelectedToken] = useState({})
   const [idLast, setIdLast] = useState(0)
   const [lengthSelect, setLengthSelect] = useState(0)
   const [amount, setAmount] = useState('')
-  const [harvested, setHarvested] = useState(false)
 
   const getLevel = (day: number) => {
     if (day === 90) return 0
@@ -82,11 +80,17 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   }
 
   const { onLockPlus, status } = useLockPlus(getLevel(days), idLast, amount)
+  const { onSuperHarvest } = useSuperHarvest()
+  const { handleHarvest } = useHarvestLongterm()
   const { onReward } = useSousHarvest()
 
   useEffect(() => {
     if (status) onDismiss()
   }, [status, onDismiss])
+
+  useEffect(() => {
+    return () => setSelectedToken({})
+  }, [])
 
   // Farms
   const farmsLP = useFarms()
@@ -321,8 +325,6 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     }
   }, [lockTopUp, allLock, days])
 
-  const { onSuperHarvest } = useSuperHarvest()
-
   const _superHarvest = useCallback(() => {
     const selected = Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
     if (harvestProgress !== -1 && harvestProgress <= Object.values(selected).length) {
@@ -359,15 +361,13 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
         }
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [harvestProgress, selectedToken, handleHarvest])
+  }, [harvestProgress, setHarvestProgress, selectedToken, handleHarvest, onReward, onSuperHarvest])
 
   const lockPlus = useCallback(() => {
     onLockPlus()
       .then((res) => {
         setAmount('')
         if (res === true) {
-          setHarvested(false)
           setHarvestProgress(-1)
           setLengthSelect(0)
           setAmount('')
@@ -380,31 +380,17 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   }, [onLockPlus, setHarvestProgress])
 
   useEffect(() => {
-    if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
-      setHarvested(true)
-      if (getLevel(days) !== -Infinity) {
-        if (Object.values(selectedToken)[0]) {
-          lockPlus()
-        } else if (Object.values(selectedToken).length === 0 && inputFinix !== '' && inputFinix !== '0') {
-          lockPlus()
-        }
+    if (harvestProgress !== -1 && harvestProgress === lengthSelect && !status) {
+      if (Object.values(selectedToken)[0]) {
+        lockPlus()
+      } else if (Object.values(selectedToken).length === 0 && inputFinix !== '' && inputFinix !== '0') {
+        lockPlus()
       }
     } else if (harvestProgress !== -1) {
       _superHarvest()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [harvestProgress, _superHarvest, lockPlus])
-
-  useEffect(() => {
-    if (harvested === true) {
-      if (getLevel(days) === -Infinity) {
-        setHarvested(false)
-        setHarvestProgress(-1)
-        setLengthSelect(0)
-        setSelectedToken({})
-      }
-    }
-  }, [harvestProgress, days, harvested, setHarvestProgress])
 
   useEffect(() => {
     if (Object.values(selectedToken).length > 0 && inputFinix !== '' && inputFinix !== '0') {
@@ -454,6 +440,17 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     }
   }, [selectedToken, inputFinix])
 
+  useEffect(() => {
+    let totalPendingReward = 0
+    for (let i = 0; i < Object.values(selectedToken).length; i++) {
+      const selector = Object.values(selectedToken)[i]
+      if (_.get(selector, 'checked')) {
+        totalPendingReward += _.get(selector, 'pendingReward')
+      }
+    }
+    setInputHarvest(String(totalPendingReward))
+  }, [selectedToken, setInputHarvest])
+
   return (
     <>
       {show && (
@@ -479,11 +476,6 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                           status: false,
                           pendingReward: finixEarn,
                         },
-                      })
-                      setInputHarvest((prev) => {
-                        return event.target.checked
-                          ? (Number(prev) + Number(finixEarn)).toFixed(2)
-                          : (Number(prev) - Number(finixEarn)).toFixed(2)
                       })
                     }}
                   />
@@ -531,17 +523,6 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                               .div(new BigNumber(10).pow(18))
                               .toNumber(),
                           },
-                        })
-                        setInputHarvest((prev) => {
-                          return event.target.checked
-                            ? (
-                                Number(prev) +
-                                new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber()
-                              ).toFixed(2)
-                            : (
-                                Number(prev) -
-                                new BigNumber(d.props.farm.userData.earnings).div(new BigNumber(10).pow(18)).toNumber()
-                              ).toFixed(2)
                         })
                       }}
                     />
@@ -594,17 +575,6 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                               .div(new BigNumber(10).pow(18))
                               .toNumber(),
                           },
-                        })
-                        setInputHarvest((prev) => {
-                          return event.target.checked
-                            ? (
-                                Number(prev) +
-                                new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber()
-                              ).toFixed(2)
-                            : (
-                                Number(prev) -
-                                new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber()
-                              ).toFixed(2)
                         })
                       }}
                     />

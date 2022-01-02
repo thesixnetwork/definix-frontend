@@ -71,7 +71,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   }, [setError, setInputFinix, setInputHarvest])
 
   useEffect(() => {
-    setInputFinix(String(Math.floor(balancefinix * 100) / 100))
+    if (Math.floor(balancefinix * 100) / 100 !== 0) setInputFinix(String(Math.floor(balancefinix * 100) / 100))
   }, [balancefinix])
 
   return (
@@ -100,6 +100,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   inputFinix={inputFinix}
                   setInputFinix={setInputFinix}
                   inputHarvest={inputHarvest}
+                  setInputHarvest={setInputHarvest}
                   error={error}
                   setError={setError}
                   balancefinix={balancefinix}
@@ -121,7 +122,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
             </Button>
           </Flex>
         ) : (
-          <Button variant="red" disabled={!(Number(inputFinix) + Number(inputHarvest))} onClick={() => setNext(true)}>
+          <Button variant="red" disabled={!!error} onClick={() => setNext(true)}>
             {t('Next')}
           </Button>
         )}
