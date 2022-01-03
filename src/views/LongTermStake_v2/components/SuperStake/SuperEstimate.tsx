@@ -60,7 +60,7 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFin
           </Text>
           <Flex>
             <Text textStyle="R_14M" color="deepgrey">
-              {totalFinix || 0}
+              {numeral(totalFinix).format('0,0.[00]')}
             </Text>
             <Text ml="S_4" textStyle="R_14M" color="deepgrey">
               {t('FINIX')}

@@ -56,7 +56,7 @@ const SuperInput: React.FC<SuperInputProps> = ({
   }
 
   useEffect(() => {
-    if (!inputFinix) {
+    if (!inputFinix || !Number(inputFinix)) {
       setError('noInput')
     } else if (new BigNumber(inputFinix).dp() > 18) {
       setError('Less than a certain amount')
