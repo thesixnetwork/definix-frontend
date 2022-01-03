@@ -49,8 +49,8 @@ const ModalInput: React.FC<{
   }, [isEmptyBalance, isGreaterThanMyBalance, isValidBalance])
 
   const insufficientBalanceMessage = useMemo(() => {
-    return type === 'deposit' ? 'Insufficient balance' : 'Insufficient deposit'
-  }, [type])
+    return type === 'deposit' ? t('Insufficient balance') : t('Insufficient deposit.')
+  }, [t, type])
 
   const errorMessage = useMemo(() => {
     if (isEmptyBalance) return t(insufficientBalanceMessage)
