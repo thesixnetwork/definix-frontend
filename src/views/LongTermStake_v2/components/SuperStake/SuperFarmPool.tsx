@@ -489,7 +489,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                     VFINIX
                   </Text>
                 </Flex>
-                <Flex style={{ position: 'absolute', right: '40px' }}>
+                <Flex style={{ position: 'absolute', right: '5px' }}>
                   <Text textStyle="R_14R" color="black">
                     {`${numeral(finixEarn).format('0,0.00')}`}
                   </Text>
@@ -537,7 +537,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                       {(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}
                     </Text>
                   </Flex>
-                  <Flex style={{ position: 'absolute', right: '40px' }}>
+                  <Flex style={{ position: 'absolute', right: '5px' }}>
                     <Text textStyle="R_14R" color="black">
                       {new BigNumber(d.props.farm.userData.earnings)
                         .div(new BigNumber(10).pow(18))
@@ -588,7 +588,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                       {d.tokenName}
                     </Text>
                   </Flex>
-                  <Flex style={{ position: 'absolute', right: '40px' }}>
+                  <Flex style={{ position: 'absolute', right: '5px' }}>
                     <Text textStyle="R_14R" color="black">
                       {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
                     </Text>
