@@ -16,7 +16,7 @@ interface VFinixProps extends IsMobileType {
   setPossibleSuperStake: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const VFinixAprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data, setPossibleSuperStake }) => {
+const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data, setPossibleSuperStake }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
@@ -83,4 +83,4 @@ const VFinixAprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data,
   )
 }
 
-export default VFinixAprButton
+export default AprButton

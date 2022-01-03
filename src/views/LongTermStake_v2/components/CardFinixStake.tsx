@@ -13,7 +13,7 @@ import longTermImgX2 from 'assets/images/img-longterm@2x.png'
 import longTermImgX3 from 'assets/images/img-longterm@3x.png'
 
 import TabStake from './TabStake'
-import VFinixAprButton from './VFinixAprButton'
+import AprButton from './AprButton'
 import BalanceFinix from './BalanceFinix'
 import ApproveFinix from './ApproveFinix'
 import EstimateVFinix from './EstimateVFinix'
@@ -110,7 +110,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
         <TabStake isMobile={isMobile} />
         <Wrap>
           <FlexCard p={isMobile ? 'S_20' : 'S_40'} pt={pathname === '/super-stake' && 'S_32'}>
-            <VFinixAprButton
+            <AprButton
               isMobile={isMobile}
               days={days}
               setDays={setDays}

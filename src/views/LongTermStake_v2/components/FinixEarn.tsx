@@ -67,7 +67,6 @@ const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
           width={`${isMobile ? '50%' : '156px'}`}
           mt={`${!isMobile && 'S_8'}`}
           ml={`${isMobile && 'S_8'}`}
-          disabled={!finixEarn}
           onClick={onPresentsuperStakeModal}
         >
           {t('Super Stake')}
