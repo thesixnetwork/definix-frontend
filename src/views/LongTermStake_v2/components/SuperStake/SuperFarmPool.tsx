@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react'
 import _ from 'lodash'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
+import { useTranslation } from 'react-i18next'
 import { BLOCKS_PER_YEAR } from 'config'
 import styled from 'styled-components'
 import { Flex, Coin, Text, CheckboxLabel, Checkbox } from '@fingerlabs/definixswap-uikit-v2'
@@ -13,6 +14,7 @@ import {
   usePriceKethKusdt,
   usePriceKlayKusdt,
   usePriceSixUsd,
+  useToast,
 } from 'state/hooks'
 import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
@@ -64,6 +66,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   show,
   onDismiss,
 }) => {
+  const { t } = useTranslation()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { finixEarn, balancevfinix } = usePrivateData()
   const { allLock } = useAllDataLock()
@@ -72,6 +75,16 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   const [idLast, setIdLast] = useState(0)
   const [lengthSelect, setLengthSelect] = useState(0)
   const [amount, setAmount] = useState('')
+  const { toastSuccess, toastError } = useToast()
+
+  const showToastSuperStake = useCallback(
+    (success: boolean) => {
+      if (success) toastSuccess(t('{{Action}} Complete', { Action: t('actionSuperstake') }))
+      else toastError(t('{{Action}} Failed', { Action: t('actionSuperstake') }))
+      onDismiss()
+    },
+    [onDismiss, t, toastError, toastSuccess],
+  )
 
   const getLevel = (day: number) => {
     if (day === 90) return 0
@@ -79,14 +92,14 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     return 2
   }
 
-  const { onLockPlus, status } = useLockPlus(getLevel(days), idLast, amount)
+  const { onLockPlus, status } = useLockPlus(getLevel(days), idLast, amount, () => showToastSuperStake(false))
   const { onSuperHarvest } = useSuperHarvest()
   const { handleHarvest } = useHarvestLongterm()
   const { onReward } = useSousHarvest()
 
   useEffect(() => {
-    if (status) onDismiss()
-  }, [status, onDismiss])
+    if (status) showToastSuperStake(true)
+  }, [status, showToastSuperStake])
 
   useEffect(() => {
     return () => setSelectedToken({})
@@ -338,6 +351,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
               })
               .catch(() => {
                 setHarvestProgress(-1)
+                showToastSuperStake(false)
               })
           } else {
             // vfinix
@@ -347,6 +361,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
               })
               .catch(() => {
                 setHarvestProgress(-1)
+                showToastSuperStake(false)
               })
           }
         } else {
@@ -357,11 +372,12 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
             })
             .catch(() => {
               setHarvestProgress(-1)
+              showToastSuperStake(false)
             })
         }
       }
     }
-  }, [harvestProgress, setHarvestProgress, selectedToken, handleHarvest, onReward, onSuperHarvest])
+  }, [harvestProgress, setHarvestProgress, selectedToken, handleHarvest, onReward, onSuperHarvest, showToastSuperStake])
 
   const lockPlus = useCallback(() => {
     onLockPlus()
@@ -390,7 +406,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
       _superHarvest()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [harvestProgress, _superHarvest, lockPlus])
+  }, [harvestProgress, _superHarvest])
 
   useEffect(() => {
     if (Object.values(selectedToken).length > 0 && inputFinix !== '' && inputFinix !== '0') {

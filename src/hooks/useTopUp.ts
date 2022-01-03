@@ -18,7 +18,7 @@ const useTopUp = () => {
   return balance
 }
 
-export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
+export const useLockPlus = (level, idLastMaxLv, lockFinix, onError?) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
@@ -60,6 +60,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
                 .catch(() => {
                   setLoading('')
                   setStatus(false)
+                  if (onError) onError()
                 })
             })
           // const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
@@ -88,7 +89,7 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
     }
 
     return status
-  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv])
+  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv, onError])
 
   return { onLockPlus: stake, status, loadings }
 }
