@@ -380,7 +380,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   }, [onLockPlus, setHarvestProgress])
 
   useEffect(() => {
-    if (harvestProgress !== -1 && harvestProgress === lengthSelect && !status) {
+    if (harvestProgress !== -1 && harvestProgress === lengthSelect) {
       if (Object.values(selectedToken)[0]) {
         lockPlus()
       } else if (Object.values(selectedToken).length === 0 && inputFinix !== '' && inputFinix !== '0') {
