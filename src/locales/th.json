@@ -459,7 +459,6 @@
   "actionClaim": "",
   "Claimed": "",
   "Unstaked": "",
-  "28 days Superstake ": "",
   "90 days": "",
   "180 days": "",
   "365 days": "",
@@ -484,5 +483,12 @@
   "28days super stake tooltip": "",
   "You can’t unstake due to": "",
   "Your balance": "",
-  "Close": ""
+  "Close": "",
+  "Back to Home": "",
+  "You cannot use Super Stake.": "",
+  "Unstaking Impossible": "",
+  "Confirm Super Stake": "",
+  "Choose farm/pool": "",
+  "Total FINIX Stake": "",
+  "Don't see a pool": ""
 }

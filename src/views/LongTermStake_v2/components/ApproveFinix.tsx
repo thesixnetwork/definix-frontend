@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react'
-import _ from 'lodash'
+import React, { useState, useCallback, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Flex, Text, Button, useModal, AlertIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useApprove } from 'hooks/useLongTermStake'
 import * as klipProvider from 'hooks/klipProvider'
 import { useToast } from 'state/hooks'
@@ -17,9 +17,9 @@ interface ApproveFinixProps extends IsMobileType {
   inputBalance: string
   setInputBalance: React.Dispatch<React.SetStateAction<string>>
   days: number
-  endDay: string
   earn: number
   isError: boolean
+  possibleSuperStake: boolean
 }
 
 const FlexApprove = styled(Flex)`
@@ -33,18 +33,19 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   inputBalance,
   setInputBalance,
   days,
-  endDay,
   earn,
   isError,
+  possibleSuperStake,
 }) => {
   const { t } = useTranslation()
+  const { pathname } = useLocation()
+  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
   const [onPresentStakeModal] = useModal(
-    <StakeModal balance={inputBalance} setInputBalance={setInputBalance} period={days} end={endDay} earn={earn} />,
+    <StakeModal balance={inputBalance} setInputBalance={setInputBalance} days={days} earn={earn} pathname={pathname} />,
     false,
   )
-  const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠
+  // const [error] = useState<string>('') // UX 상황별 버튼 상태 수정으로 인해 영역만 남겨둠
 
-  const [transactionHash, setTransactionHash] = useState<string>('')
   const { onApprove } = useApprove(klipProvider.MAX_UINT_256_KLIP)
   const [isLoadingApprove, setIsLoadingApprove] = useState<boolean>(false)
   const { toastSuccess, toastError } = useToast()
@@ -52,10 +53,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
   const handleApprove = useCallback(async () => {
     try {
       setIsLoadingApprove(true)
-      const txHash = await onApprove()
-      if (txHash) {
-        setTransactionHash(_.get(txHash, 'transactionHash'))
-      }
+      await onApprove()
       toastSuccess(t('{{Action}} Complete', { Action: t('actionApprove') }))
     } catch (e) {
       toastError(t('{{Action}} Failed', { Action: t('actionApprove') }))
@@ -64,18 +62,19 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
     }
   }, [onApprove, toastSuccess, toastError, t])
 
+  const disabledStakeButton = () => {
+    if (!isApproved || isError) return true
+    if (isSuperStake && !possibleSuperStake) return true
+    return false
+  }
+
   const statusApprove = () => {
-    return !isApproved && transactionHash === '' ? (
+    return !isApproved ? (
       <Button height="48px" mb="S_12" variant="brown" isLoading={isLoadingApprove} onClick={handleApprove}>
         {t('Approve Contract')}
       </Button>
     ) : (
-      <Button
-        height="48px"
-        mb="S_12"
-        disabled={(!isApproved && transactionHash === '') || isError}
-        onClick={onPresentStakeModal}
-      >
+      <Button height="48px" mb="S_12" disabled={disabledStakeButton()} onClick={onPresentStakeModal}>
         {t('Stake')}
       </Button>
     )
@@ -87,7 +86,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
         <Flex flexDirection="column">
           {hasAccount ? statusApprove() : <UnlockButton />}
 
-          {hasAccount && error && (
+          {/* {hasAccount && error && (
             <Flex alignItems="flex-start">
               <Flex mt="S_2">
                 <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
@@ -96,7 +95,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
                 {error}
               </Text>
             </Flex>
-          )}
+          )} */}
         </Flex>
       </FlexApprove>
     </>

@@ -1,16 +1,33 @@
 import React from 'react'
+import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 
-interface EstimateVFinixProps {
-  hasAccount: boolean
+import { IsMobileType } from '../types'
+
+interface EstimateVFinixProps extends IsMobileType {
   days: number
-  earn: number
+  totalFinix: number
 }
 
-const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, days, earn }) => {
+const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFinix }) => {
   const { t, i18n } = useTranslation()
+
+  const getVFinix = (day: number, balance: number) => {
+    if (!balance) return 0
+
+    switch (day) {
+      case 90:
+        return numeral(balance).format('0,0.[00]')
+      case 180:
+        return numeral(balance * 2).format('0,0.[00]')
+      case 365:
+        return numeral(balance * 4).format('0,0.[00]')
+      default:
+        return 0
+    }
+  }
 
   const getEndDay = (day: number) => {
     const today = new Date()
@@ -23,13 +40,10 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, days, earn 
 
   return (
     <>
-      <Flex width="100%" mt="S_24" flexDirection="column">
-        <Text mb="S_20" textStyle="R_16M" color="deepgrey">
-          {t('Estimated Result')}
-        </Text>
+      <Flex width="100%" mt={isMobile ? 'S_40' : 'S_32'} flexDirection="column">
         <Flex justifyContent="space-between">
           <Text textStyle="R_14R" color="mediumgrey">
-            {t('Period End')}
+            {t('Estimated Period End')}
           </Text>
           <Flex flexDirection="column" alignItems="flex-end">
             <Text textStyle="R_14M" color="deepgrey">
@@ -42,11 +56,24 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, days, earn 
         </Flex>
         <Flex mt="S_8" justifyContent="space-between">
           <Text textStyle="R_14R" color="mediumgrey">
+            {t('Total FINIX Stake')}
+          </Text>
+          <Flex>
+            <Text textStyle="R_14M" color="deepgrey">
+              {numeral(totalFinix).format('0,0.[00]')}
+            </Text>
+            <Text ml="S_4" textStyle="R_14M" color="deepgrey">
+              {t('FINIX')}
+            </Text>
+          </Flex>
+        </Flex>
+        <Flex mt="S_8" justifyContent="space-between">
+          <Text textStyle="R_14R" color="mediumgrey">
             {t('vFINIX Earn')}
           </Text>
           <Flex>
             <Text textStyle="R_14M" color="deepgrey">
-              {hasAccount ? earn : 0}
+              {getVFinix(days, totalFinix)}
             </Text>
             <Text ml="S_4" textStyle="R_14M" color="deepgrey">
               {t('vFINIX')}
@@ -58,4 +85,4 @@ const EstimateVFinix: React.FC<EstimateVFinixProps> = ({ hasAccount, days, earn 
   )
 }
 
-export default EstimateVFinix
+export default SuperEstimate
