@@ -71,10 +71,6 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
     }
   }, [setError, setInputFinix, setInputHarvest])
 
-  useEffect(() => {
-    if (Math.floor(balancefinix * 100) / 100 !== 0) setInputFinix(String(Math.floor(balancefinix * 100) / 100))
-  }, [balancefinix])
-
   return (
     <Modal title={`${t('Super Stake')}`} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
