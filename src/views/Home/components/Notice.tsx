@@ -40,6 +40,12 @@ const KO_NOTICE_LIST: NoticeProps[] = [
     link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
     linkLabel: 'Beta 피드백',
   },
+  {
+    id: 2,
+    title: 'G2 장기예치풀 오픈!',
+    content: `G2 버전에서도 장기예치풀을 사용하실 수 있습니다.
+    슈퍼스테이크도 열심히 작업 중입니다. 조금만 기다려 주세요!`,
+  },
 ]
 const EN_NOTICE_LIST: NoticeProps[] = [
   {
@@ -55,6 +61,12 @@ const EN_NOTICE_LIST: NoticeProps[] = [
     If there are any inconveniences or improvements to the beta service, please give us feedback.`,
     link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
     linkLabel: 'Feedback for Beta',
+  },
+  {
+    id: 2,
+    title: 'Long-term Stake on G2 is up!',
+    content: `Long-term Stake is available on G2 now.
+    Super Stake is in the works, so please wait for a while!`,
   },
 ]
 

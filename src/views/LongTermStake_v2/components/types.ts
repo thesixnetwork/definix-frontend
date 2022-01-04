@@ -28,4 +28,5 @@ export interface AllDataLockType {
   voteAmount: number
   topup: any
   topupTimeStamp: string
+  lockTopupTimes: string
 }
