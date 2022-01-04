@@ -6,7 +6,7 @@ import { NoticeProps } from './Notice'
 const Wrap = styled(Flex)`
   flex-direction: column;
   align-items: flex-start;
-  min-height: 150px;
+  min-height: 100px;
 `
 const Title = styled(Text)`
   ${({ theme }) => theme.textStyle.R_20B}
@@ -15,6 +15,22 @@ const Title = styled(Text)`
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     ${({ theme }) => theme.textStyle.R_16B}
   }
+`
+
+const WrapTitle = styled(Flex)`
+  justify-content: flex-start;
+  align-items: center;
+
+  > a {
+    margin-left: 20px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    > a {
+      display: none;
+    }
+  }
+
 `
 
 const Content = styled(Text)`
@@ -28,13 +44,9 @@ const Content = styled(Text)`
 `
 
 const Link = styled.a`
-  margin-top: 20px;
   border-radius: 14px;
   background-color: ${({ theme }) => theme.colors.yellow};
   padding: 4px 14px;
-  ${({ theme }) => theme.mediaQueries.mobileXl} {
-    margin-top: 16px;
-  }
 `
 
 const LinkLabel = styled(Text)`
@@ -42,16 +54,33 @@ const LinkLabel = styled(Text)`
   color: ${({ theme }) => theme.colors.white};
 `
 
+const WrapMobileFooter = styled(Flex)`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 16px;
+    display: flex;
+  }
+`
+
 const NoticeItem: React.FC<NoticeProps> = ({ title, content, link, linkLabel }) => {
   return (
     <Wrap>
-      <Title>{title}</Title>
+      <WrapTitle>
+        <Title>{title}</Title>
+        {link && (
+          <Link href={link} target="_blank">
+            <LinkLabel>{linkLabel}</LinkLabel>
+          </Link>
+        )}
+      </WrapTitle>
       <Content>{content}</Content>
-      {link && (
-        <Link href={link} target="_blank">
-          <LinkLabel>{linkLabel}</LinkLabel>
-        </Link>
-      )}
+      <WrapMobileFooter>
+        {link && (
+          <Link href={link} target="_blank">
+            <LinkLabel>{linkLabel}</LinkLabel>
+          </Link>
+        )}
+      </WrapMobileFooter>
     </Wrap>
   )
 }

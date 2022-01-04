@@ -1,7 +1,7 @@
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
@@ -14,6 +14,9 @@ import {
   ImgHomeTopFinix2x,
   ImgHomeTopFinix3x,
   ImageSet,
+  IconButton,
+  ArrowLeftGIcon,
+  ArrowRightGIcon,
 } from '@fingerlabs/definixswap-uikit-v2'
 import NoticeItem from './NoticeItem'
 
@@ -92,7 +95,7 @@ const NoticeSlider = styled(Slider)`
     min-height: 60px;
   }
   .slick-list {
-    margin-bottom: 28px;
+    // margin-bottom: 20px;
   }
 
   .slick-dots li {
@@ -169,12 +172,28 @@ const Character = styled(ImageSet)`
   }
 `
 
+const WrapIndicator = styled(Flex)`
+  margin-bottom: 40px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    margin-top: -24px;
+  }
+`
+
+const WrapPage = styled(Flex)`
+  align-items: center;
+  padding: 0 4px;
+`
+
+
 const SliderOptions = {
   arrows: false,
   autoplay: true,
   autoplaySpeed: 10000,
   speed: 500,
-  vertical: true,
   dots: false,
   dotsClass: 'slick-dots slick-thumb',
 }
@@ -182,6 +201,8 @@ const SliderOptions = {
 const HomeNotice: React.FC = () => {
   const { i18n } = useTranslation()
   const [notices, setNotices] = useState(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
+  const [slideIndex, setSlideIndex] = useState(0);
+  const sliderRef = useRef(null);
 
   useEffect(() => {
     setNotices(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
@@ -195,12 +216,33 @@ const HomeNotice: React.FC = () => {
             <NoticeItem {...notices[0]} />
           </OneNotice>
         ) : (
-          <NoticeSlider {...SliderOptions}>
+          <NoticeSlider ref={(slickSlider) => {
+            sliderRef.current = slickSlider;
+          }} {...SliderOptions} beforeChange={(oldInex, newIndex) => {
+            setSlideIndex(newIndex);
+          }}>
             {notices.map((notice) => (
               <NoticeItem key={notice.id} {...notice} />
             ))}
           </NoticeSlider>
         )}
+        <WrapIndicator>
+          <IconButton width="16px" onClick={() => {
+            sliderRef.current.slickPrev();
+          }}>
+            <ArrowLeftGIcon />
+          </IconButton>
+          <WrapPage>
+            <Text color="brown" textStyle="R_12M">{slideIndex + 1}</Text>
+            <Text mx="4px" color="lightbrown" textStyle="R_12R">/</Text>
+            <Text color="lightbrown" textStyle="R_12R">{notices.length}</Text>
+          </WrapPage>
+          <IconButton width="16px" onClick={() => {
+            sliderRef.current.slickNext();
+          }}>
+            <ArrowRightGIcon />
+          </IconButton>
+        </WrapIndicator>
       </NoticeBox>
       <Character srcSet={[ImgHomeTopFinix1x, ImgHomeTopFinix2x, ImgHomeTopFinix3x]} alt="" width={434} height={200} />
     </Wrap>
