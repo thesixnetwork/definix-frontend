@@ -71,7 +71,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
               <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
             </Flex>
             <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
-              {t(`You can't unstake due to insufficient vFINIX balance`)}
+              {t(`You can't unstake due to`)}
             </Text>
           </Flex>
           <Flex mt="S_20" flexDirection="column">

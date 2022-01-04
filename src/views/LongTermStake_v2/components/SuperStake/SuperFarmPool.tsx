@@ -485,7 +485,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
       {show && (
         <>
           <Text mb="S_12" textStyle="R_16M" color="deepgrey">
-            Choose farm/pool you want to harvest reward
+            {t('Choose farm/pool')}
           </Text>
           <Wrap>
             {!!balancevfinix && balancevfinix > 0 && (

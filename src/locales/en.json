@@ -459,7 +459,6 @@
   "actionClaim": "Claim",
   "Claimed": "Claimed",
   "Unstaked": "Unstaked",
-  "28 days Superstake ": "Super Stake is a feature that can harvest all of your FINIX reward to stake in Long-term stake with no minimum amount.\nYou can stake as much as FINIX you prefer under the same lock period within 28 days, your lock period will not be extended.",
   "90 days": "90 days",
   "180 days": "180 days",
   "365 days": "365 days",
@@ -486,5 +485,10 @@
   "Your balance": "Your balance",
   "Close": "Close",
   "Back to Home": "Back to Home",
-  "You cannot use Super Stake.": "You cannot use Super Stake."
+  "You cannot use Super Stake.": "You cannot use Super Stake.",
+  "Unstaking Impossible": "Unstaking Impossible",
+  "Confirm Super Stake": "Confirm Super Stake",
+  "Choose farm/pool": "Choose farm/pool you want to harvest reward",
+  "Total FINIX Stake": "Total FINIX Stake",
+  "Don't see a pool": "Don't see a pool you joined? Find other LP tokens"
 }
