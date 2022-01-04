@@ -1,0 +1,15 @@
+{
+  "sheetId": "12-dWTuxdzOkJm5h_fnUZwfL9xmX9ly19SFgLcno4H3w",
+  "sheetName": "Notice",
+  "defaultValue": "",
+  "result": {
+    "en": {
+      "keyCol": ["$B", "$A"],
+      "valueCol": "$D"
+    },
+    "ko": {
+      "keyCol": ["$B", "$A"],
+      "valueCol": "$C"
+    }
+  }
+}

@@ -5,6 +5,8 @@ import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
+import EN_NOTICE from 'assets/notice/en.json';
+import KO_NOTICE from 'assets/notice/ko.json';
 
 import {
   Text,
@@ -28,50 +30,23 @@ export interface NoticeProps {
   linkLabel?: string
 }
 
-const KO_NOTICE_LIST: NoticeProps[] = [
-  {
-    id: 0,
-    title: 'Definix 클레이튼 체인 G2 Beta 런칭!',
-    content: `Definix가 클레이튼 체인을 대상으로 G2 서비스를 런칭하였습니다.
-    다양한 의견을 수렴하여 더욱 발전하는 디피닉스가 되도록 노력하겠습니다.`,
-  },
-  {
-    id: 1,
-    title: '여러분의 목소리를 들려주세요',
-    content: `디피닉스는 홀더분들의 목소리에 항상 귀기울이고 있습니다.
-    베타서비스에 불편한점, 개선점 있으시면 피드백 부탁드립니다.`,
-    link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
-    linkLabel: 'Beta 피드백',
-  },
-  {
-    id: 2,
-    title: 'G2 장기예치풀 오픈!',
-    content: `G2 버전에서도 장기예치풀을 사용하실 수 있습니다.
-    슈퍼스테이크도 열심히 작업 중입니다. 조금만 기다려 주세요!`,
-  },
-]
-const EN_NOTICE_LIST: NoticeProps[] = [
-  {
-    id: 0,
-    title: 'Definix on Klaytn Chain G2 beta launch!',
-    content: `Definix Generation 2 service has been launched on Klaytn Chain.
-    Long-term stake and Super stack are also in the works, so please wait a little bit!`,
-  },
-  {
-    id: 1,
-    title: 'Let your voice be heard',
-    content: `Definix is always listening to the voices of holders.
-    If there are any inconveniences or improvements to the beta service, please give us feedback.`,
-    link: 'https://forms.gle/x9rfWuzD9Kpa8xa47',
-    linkLabel: 'Feedback for Beta',
-  },
-  {
-    id: 2,
-    title: 'Long-term Stake on G2 is up!',
-    content: `Long-term Stake is available on G2 now.
-    Super Stake is in the works, so please wait for a while!`,
-  },
-]
+function convertNotice(list) {
+  const length = +list['length/0'];
+  const arr = Object.entries(list);
+  return arr.slice(1).reduce((acc, [key, val]) => {
+    const [noticeKey, noticeIndex] = key.split('/');
+    if (!acc[length - +noticeIndex]) {
+      acc[length - +noticeIndex] = {};
+    }
+    if (val !== '') {
+      acc[length - +noticeIndex][noticeKey] = val;
+    }
+    return acc;
+  }, [])
+}
+
+const EN_NOTICE_LIST = convertNotice(EN_NOTICE);
+const KO_NOTICE_LIST = convertNotice(KO_NOTICE);
 
 const Wrap = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
