@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useEffect, useCallback, useMemo } from 'react'
 import { Flex, Text, ArrowLeftGIcon, ArrowRightGIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
@@ -29,7 +29,15 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
   currentPage,
   setCurrentPage,
 }) => {
-  const [pageNumbers, setPageNumbers] = useState<number[]>([])
+  const pageNumbers = useMemo(() => {
+    const pageArray = []
+
+    for (let i = 1; i <= Math.ceil(dataLength / itemPerPage); i++) {
+      if (Math.ceil(i / 5) === Math.ceil(currentPage / 5)) pageArray.push(i)
+    }
+
+    return pageArray
+  }, [currentPage, dataLength, itemPerPage])
 
   const onClickNumber = useCallback(
     (num: number) => {
@@ -48,16 +56,6 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
     }
     onClickNumber(num)
   }
-
-  useEffect(() => {
-    const pageArray = []
-
-    for (let i = 1; i <= Math.ceil(dataLength / itemPerPage); i++) {
-      if (Math.ceil(i / 5) === Math.ceil(currentPage / 5)) pageArray.push(i)
-    }
-
-    setPageNumbers(pageArray)
-  }, [currentPage, dataLength, itemPerPage])
 
   useEffect(() => {
     onClickNumber(1)

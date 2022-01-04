@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import BigNumber from 'bignumber.js'
+import { useLocation } from 'react-router-dom'
 import { Flex, Text, ImgTokenFinixIcon, AnountButton, AlertIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 
@@ -66,6 +67,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
 }) => {
   const { t } = useTranslation()
   const [selected, setSelected] = useState<number>(0)
+  const { pathname } = useLocation()
 
   const onChangeBalance = (value: string) => {
     const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
@@ -83,6 +85,17 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   useEffect(() => {
+    if (pathname === '/super-stake') {
+      if (!inputBalance || !Number(inputBalance)) {
+        setError('noInput')
+      } else if (new BigNumber(inputBalance).dp() > 18) {
+        setError('Less than a certain amount')
+      } else if (balancefinix < Number(inputBalance)) {
+        setError('Insufficient balance')
+      } else setError('')
+      return
+    }
+
     if (!inputBalance) {
       setError('noInput')
     } else if (new BigNumber(inputBalance).dp() > 18) {
@@ -92,11 +105,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
     } else if (balancefinix < Number(inputBalance)) {
       setError('Insufficient balance')
     } else setError('')
-
-    return () => {
-      setError('')
-    }
-  }, [minimum, balancefinix, inputBalance, setError])
+  }, [minimum, balancefinix, inputBalance, setError, pathname])
 
   useEffect(() => {
     if (!hasAccount) {

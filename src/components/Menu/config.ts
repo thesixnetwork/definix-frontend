@@ -51,6 +51,10 @@ export const links = (t: (key: string) => string, currentLang: string) => {
           label: t('Long-term Stake'),
           href: '/long-term-stake',
         },
+        {
+          label: t('Super Stake'),
+          href: '/super-stake',
+        },
       ],
     },
     {

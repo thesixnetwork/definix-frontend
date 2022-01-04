@@ -94,6 +94,10 @@ export const useTotalFinixLock = () => {
     }
 
     fetchTotalFinixLock()
+
+    return () => {
+      setTotalFinixLock([])
+    }
   }, [fastRefresh])
 
   return totalFinixLock
@@ -424,6 +428,10 @@ export const useApr = () => {
     }
 
     fetchApr()
+
+    return () => {
+      setApr(0)
+    }
   }, [slowRefresh])
 
   return apr
