@@ -80,7 +80,8 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   const onClickRate = (rate: number) => {
-    setInputBalance(String(balancefinix * rate))
+    const value = rate === 1 ? balancefinix : balancefinix * rate
+    setInputBalance(String(Math.floor(value * 1000000) / 1000000))
     setSelected(rate)
   }
 
