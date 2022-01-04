@@ -468,7 +468,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     for (let i = 0; i < Object.values(selectedToken).length; i++) {
       const selector = Object.values(selectedToken)[i]
       if (_.get(selector, 'checked')) {
-        totalPendingReward += _.get(selector, 'pendingReward')
+        totalPendingReward += Number(numeral(_.get(selector, 'pendingReward')).format('0,0.[00]'))
       }
     }
     setInputHarvest(String(totalPendingReward))

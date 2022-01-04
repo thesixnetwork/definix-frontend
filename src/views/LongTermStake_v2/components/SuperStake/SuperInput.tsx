@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, AlertIcon, PlusIcon } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
@@ -122,7 +121,7 @@ const SuperInput: React.FC<SuperInputProps> = ({
             inputMode="decimal"
             title="Token Amount"
             placeholder="0.00"
-            value={inputHarvest ? numeral(inputHarvest).format('0,0.[00]') : ''}
+            value={inputHarvest}
             pattern="^[0-9]*[.]?[0-9]*$"
             minLength={1}
             maxLength={79}
