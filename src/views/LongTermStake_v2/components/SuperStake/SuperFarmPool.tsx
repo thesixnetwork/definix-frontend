@@ -344,42 +344,48 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     }
   }, [lockTopUp, allLock, days])
 
-  const _superHarvest = useCallback(() => {
+  const _superHarvest = useCallback(async () => {
     const selected = Object.values(selectedToken).filter((d) => _.get(d, 'checked') === true)
     if (harvestProgress !== -1 && harvestProgress <= Object.values(selected).length) {
       if (_.get(Object.values(selected)[harvestProgress], 'checked')) {
         if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
           if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
-            onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
-              .then(() => {
-                // farm
-                setHarvestProgress(harvestProgress + 1)
-              })
-              .catch(() => {
-                setHarvestProgress(-1)
-                showToastSuperStake(false)
-              })
+            // farm
+            try {
+              setIsLoadingStake('loading')
+              await onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
+              setHarvestProgress(harvestProgress + 1)
+            } catch {
+              setHarvestProgress(-1)
+              showToastSuperStake(false)
+            } finally {
+              setIsLoadingStake('')
+            }
           } else {
             // vfinix
-            handleHarvest()
-              .then(() => {
-                setHarvestProgress(harvestProgress + 1)
-              })
-              .catch(() => {
-                setHarvestProgress(-1)
-                showToastSuperStake(false)
-              })
+            try {
+              setIsLoadingStake('loading')
+              await handleHarvest()
+              setHarvestProgress(harvestProgress + 1)
+            } catch {
+              setHarvestProgress(-1)
+              showToastSuperStake(false)
+            } finally {
+              setIsLoadingStake('')
+            }
           }
         } else {
           // pool
-          onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
-            .then(() => {
-              setHarvestProgress(harvestProgress + 1)
-            })
-            .catch(() => {
-              setHarvestProgress(-1)
-              showToastSuperStake(false)
-            })
+          try {
+            setIsLoadingStake('loading')
+            await onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
+            setHarvestProgress(harvestProgress + 1)
+          } catch {
+            setHarvestProgress(-1)
+            showToastSuperStake(false)
+          } finally {
+            setIsLoadingStake('')
+          }
         }
       }
     }
