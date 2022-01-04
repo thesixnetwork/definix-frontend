@@ -92,7 +92,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     return 2
   }
 
-  const { onLockPlus, status } = useLockPlus(getLevel(days), idLast, amount, () => showToastSuperStake(false))
+  const { onLockPlus, status } = useLockPlus(getLevel(days), idLast, amount)
   const { onSuperHarvest } = useSuperHarvest()
   const { handleHarvest } = useHarvestLongterm()
   const { onReward } = useSousHarvest()
@@ -377,23 +377,24 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
         }
       }
     }
-  }, [harvestProgress, setHarvestProgress, selectedToken, handleHarvest, onReward, onSuperHarvest, showToastSuperStake])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [harvestProgress, selectedToken, handleHarvest])
 
-  const lockPlus = useCallback(() => {
-    onLockPlus()
-      .then((res) => {
+  const lockPlus = useCallback(async () => {
+    try {
+      const res = await onLockPlus()
+      setAmount('')
+      if (res === true) {
+        setHarvestProgress(-1)
+        setLengthSelect(0)
         setAmount('')
-        if (res === true) {
-          setHarvestProgress(-1)
-          setLengthSelect(0)
-          setAmount('')
-          setSelectedToken({})
-        }
-      })
-      .catch(() => {
-        setAmount('')
-      })
-  }, [onLockPlus, setHarvestProgress])
+        setSelectedToken({})
+      }
+    } catch {
+      setAmount('')
+      showToastSuperStake(false)
+    }
+  }, [onLockPlus, setHarvestProgress, showToastSuperStake])
 
   useEffect(() => {
     if (harvestProgress !== -1 && harvestProgress === lengthSelect) {

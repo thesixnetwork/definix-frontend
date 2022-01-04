@@ -18,7 +18,7 @@ const useTopUp = () => {
   return balance
 }
 
-export const useLockPlus = (level, idLastMaxLv, lockFinix, onError?) => {
+export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
   const [status, setStatus] = useState(false)
   const [loadings, setLoading] = useState('')
   const { account, connector } = useWallet()
@@ -40,56 +40,34 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix, onError?) => {
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setTimeout(() => setLoading(''), 3000)
-          setTimeout(() => setStatus(false), 3000)
+          setTimeout(() => setLoading(''), 5000)
+          setTimeout(() => setStatus(false), 5000)
         } else {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
-          await callContract.methods
+          const estimatedGasLimit = await callContract.methods
             .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })
-            .then((estimatedGasLimit) => {
-              callContract.methods
-                .lockPlus(level, idLastMaxLv, lockFinix)
-                .send({ from: account, gas: estimatedGasLimit })
-                .then(() => {
-                  setLoading('success')
-                  setStatus(true)
-                  setTimeout(() => setLoading(''), 3000)
-                  setTimeout(() => setStatus(false), 3000)
-                })
-                .catch(() => {
-                  setLoading('')
-                  setStatus(false)
-                  if (onError) onError()
-                })
-            })
-          // const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
-          // const estimatedGasLimit = await callContract.methods
-          //   .lockPlus(level, idLastMaxLv, lockFinix)
-          //   .estimateGas({ from: account })
-          // console.log(estimatedGasLimit)
 
-          // await callContract.methods
-          //   .lockPlus(level, idLastMaxLv, lockFinix)
-          //   .send({ from: account, gas: estimatedGasLimit })
-          // console.log(estimatedGasLimit)
+          await callContract.methods
+            .lockPlus(level, idLastMaxLv, lockFinix)
+            .send({ from: account, gas: estimatedGasLimit })
 
-          // setLoading('success')
-          // setStatus(true)
-          // setTimeout(() => setLoading(''), 5000)
-          // setTimeout(() => setStatus(false), 5000)
+          setLoading('success')
+          setStatus(true)
+          setTimeout(() => setLoading(''), 5000)
+          setTimeout(() => setStatus(false), 5000)
         }
       } catch (e) {
-        // setLoading('')
+        setLoading('')
         setStatus(false)
-        // throw e
+        throw e
       }
     } else {
       setStatus(false)
     }
 
     return status
-  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv, onError])
+  }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv])
 
   return { onLockPlus: stake, status, loadings }
 }
