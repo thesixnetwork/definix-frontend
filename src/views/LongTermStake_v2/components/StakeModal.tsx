@@ -81,48 +81,39 @@ const StakeModal: React.FC<ModalProps> = ({
     return moment(today.setDate(today.getDate() + day)).format(`DD-MMM-YYYY HH:mm:ss`)
   }
 
-  const { onStake, status, loadings } = useLock(getLevel(days), finixValue)
+  const { onStake, loadings } = useLock(getLevel(days), finixValue)
   const { toastSuccess, toastError } = useToast()
 
   const onClickStake = useCallback(async () => {
     try {
       await onStake()
+      setInputBalance('')
       toastSuccess(t('{{Action}} Complete', { Action: t('actioncStake') }))
     } catch (e) {
       toastError(t('{{Action}} Failed', { Action: t('actioncStake') }))
+    } finally {
+      onDismiss()
     }
-  }, [onStake, toastSuccess, toastError, t])
+  }, [onStake, toastSuccess, toastError, t, onDismiss, setInputBalance])
 
   // 슈퍼 스테이크
   const [idLast, setIdLast] = useState<number>(0)
   const lockTopUp = useLockTopup()
   const { allLock } = useAllDataLock()
 
-  const { onLockPlus, status: superStatus, loadings: superLoadings } = useLockPlus(getLevel(days), idLast, finixValue)
+  const { onLockPlus, loadings: superLoadings } = useLockPlus(getLevel(days), idLast, finixValue)
 
   const onClickSuperStake = useCallback(async () => {
     try {
       await onLockPlus()
-      toastSuccess(t('{{Action}} Complete', { Action: t('actioncStake') }))
+      setInputBalance('')
+      toastSuccess(t('{{Action}} Complete', { Action: t('actioncSuperstake') }))
     } catch (e) {
-      toastError(t('{{Action}} Failed', { Action: t('actioncStake') }))
-    }
-  }, [onLockPlus, toastSuccess, toastError, t])
-  // 슈퍼스테이크
-
-  useEffect(() => {
-    if (status) {
-      setInputBalance('')
+      toastError(t('{{Action}} Failed', { Action: t('actioncSuperstake') }))
+    } finally {
       onDismiss()
     }
-  }, [status, setInputBalance, onDismiss])
-
-  useEffect(() => {
-    if (superStatus) {
-      setInputBalance('')
-      onDismiss()
-    }
-  }, [superStatus, setInputBalance, onDismiss])
+  }, [onLockPlus, toastSuccess, toastError, t, onDismiss, setInputBalance])
 
   useEffect(() => {
     return () => setIdLast(0)
