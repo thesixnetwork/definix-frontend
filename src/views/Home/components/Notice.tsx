@@ -155,6 +155,13 @@ const Character = styled(ImageSet)`
   width: 434px;
   height: 200px;
   align-self: flex-end;
+
+  > img {
+    top: auto;
+    bottom: 0 !important;
+    height: auto;
+  }
+
   ${({ theme }) => theme.mediaQueries.mobile} {
     margin-top: -20px;
     width: 260px;
