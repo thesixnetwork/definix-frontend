@@ -98,7 +98,6 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   inputFinix={inputFinix}
                   setInputFinix={setInputFinix}
                   inputHarvest={inputHarvest}
-                  setInputHarvest={setInputHarvest}
                   error={error}
                   setError={setError}
                   balancefinix={balancefinix}
