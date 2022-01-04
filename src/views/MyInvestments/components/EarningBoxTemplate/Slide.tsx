@@ -22,7 +22,11 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
   flex: 1;
 
   .slick-slider {
-    padding-bottom: 20px;
+    padding-bottom: ${({ theme }) => (theme.spacing.S_20 + 5)}px;
+  }
+
+  .slick-list {
+    min-height: 149px;
   }
 
   .slick-dots {
@@ -85,12 +89,13 @@ const SlideItem = styled(Box)<{ index: number; curTheme: any }>`
     margin: 0;
     padding-left: 0;
     padding-right: 0;
-    padding-top: ${({ theme, index }) => theme.spacing[index > 0 ? 'S_20' : 'S_16']}px;
+    /* padding-top: ${({ theme, index }) => theme.spacing[index > 0 ? 'S_20' : 'S_16']}px; */
+    padding-top: ${({ theme }) => theme.spacing.S_16}px;
     padding-bottom: ${({ theme }) => theme.spacing.S_16}px;
     width: 100%;
     border-left: none;
-    border-top: ${({ index, curTheme, theme }) =>
-      index > 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
+    border-bottom: ${({ index, curTheme, theme }) =>
+      index <= 0 ? `1px solid ${theme.colors[curTheme.borderColor]}` : 'none'};
   }
 `
 const commonSlideOptions = {
@@ -127,7 +132,7 @@ const Slide: React.FC<{
     (item) => {
       const value = displayOnlyTotalPrice ? item.price : item.value
       const props = {
-        textStyle: `R_16M`,
+        textStyle: isMobile ? 'R_14B' : `R_16M`,
         color: curTheme.itemBalanceColor,
         value: hasAccount ? value : 0,
         postfix: 'FINIX',
@@ -135,14 +140,14 @@ const Slide: React.FC<{
       }
       return displayOnlyTotalPrice ? <CurrencyText {...props} /> : <BalanceText {...props} />
     },
-    [displayOnlyTotalPrice, curTheme, hasAccount],
+    [displayOnlyTotalPrice, isMobile, curTheme.itemBalanceColor, hasAccount],
   )
 
   const renderItemSubValue = useCallback(
     (item) => {
       return displayOnlyTotalPrice ? null : (
         <CurrencyText
-          textStyle="R_14M"
+          textStyle={isMobile ? "R_12M" :"R_14M"}
           color={curTheme.itemCurrencyColor}
           value={hasAccount ? item.price : 0}
           prefix="="
@@ -150,14 +155,18 @@ const Slide: React.FC<{
         />
       )
     },
-    [displayOnlyTotalPrice, curTheme, hasAccount],
+    [displayOnlyTotalPrice, isMobile, curTheme.itemCurrencyColor, hasAccount],
   )
 
   const renderItems = useCallback(
     (list) => {
       return list.map((item, index) => (
         <SlideItem key={item.title} index={index} curTheme={curTheme} className="slide-item">
-          <Text textStyle="R_14R" color={curTheme.itemTitleColor} className="mb-s8">
+          <Text 
+            textStyle={isMobile ? "R_12R" : "R_14R"}
+            color={curTheme.itemTitleColor}
+            mb={isMobile? "4px" : "8px"}
+          >
             {item.title}
           </Text>
           {renderItemMainValue(item)}
@@ -165,7 +174,7 @@ const Slide: React.FC<{
         </SlideItem>
       ))
     },
-    [curTheme, renderItemMainValue, renderItemSubValue],
+    [curTheme, isMobile, renderItemMainValue, renderItemSubValue],
   )
 
   if (isMobile) {
