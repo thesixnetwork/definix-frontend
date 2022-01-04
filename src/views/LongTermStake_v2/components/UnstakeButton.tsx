@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import _ from 'lodash'
 import { useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -118,10 +118,6 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   const handleNotIsunlocked = (item: AllDataLockType) => {
     return item.isPenalty ? handleClaimed(item) : handleCanUnlock(item)
   }
-
-  useEffect(() => {
-    return () => setIsLoadingClaim(false)
-  }, [setIsLoadingClaim])
 
   return <>{data.isUnlocked ? handleIsunlocked(data) : handleNotIsunlocked(data)}</>
 }
