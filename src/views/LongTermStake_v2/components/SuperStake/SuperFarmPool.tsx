@@ -554,7 +554,11 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                   <Flex alignItems="center" ml="S_4">
                     <Flex>
                       {imgs[0] && <Coin symbol={imgs[0]} size="24px" />}
-                      {imgs[1] && <Coin symbol={imgs[1]} size="24px" />}
+                      {imgs[1] && (
+                        <Flex style={{ marginLeft: '-6px', zIndex: '-1' }}>
+                          <Coin symbol={imgs[1]} size="24px" />
+                        </Flex>
+                      )}
                     </Flex>
                     <Text textStyle="R_14M" color="black" ml="S_8">
                       {(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}
