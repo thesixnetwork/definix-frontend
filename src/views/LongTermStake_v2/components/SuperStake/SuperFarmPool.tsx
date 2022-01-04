@@ -41,6 +41,7 @@ interface SuperFarmPoolProps {
   setHarvestProgress: React.Dispatch<React.SetStateAction<number>>
   show: boolean
   onDismiss: () => null
+  setIsLoadingStake: React.Dispatch<React.SetStateAction<string>>
 }
 
 const Wrap = styled.div`
@@ -65,6 +66,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   setHarvestProgress,
   show,
   onDismiss,
+  setIsLoadingStake,
 }) => {
   const { t } = useTranslation()
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
@@ -92,7 +94,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
     return 2
   }
 
-  const { onLockPlus, status } = useLockPlus(getLevel(days), idLast, amount)
+  const { onLockPlus, status, loadings } = useLockPlus(getLevel(days), idLast, amount)
   const { onSuperHarvest } = useSuperHarvest()
   const { handleHarvest } = useHarvestLongterm()
   const { onReward } = useSousHarvest()
@@ -100,6 +102,10 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   useEffect(() => {
     if (status) showToastSuperStake(true)
   }, [status, showToastSuperStake])
+
+  useEffect(() => {
+    setIsLoadingStake(loadings)
+  }, [loadings, setIsLoadingStake])
 
   useEffect(() => {
     return () => setSelectedToken({})

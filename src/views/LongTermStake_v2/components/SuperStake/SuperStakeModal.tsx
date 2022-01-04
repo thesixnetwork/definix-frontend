@@ -32,6 +32,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   const [inputFinix, setInputFinix] = useState<string>('')
   const [inputHarvest, setInputHarvest] = useState<string>('')
   const [harvestProgress, setHarvestProgress] = useState<number>(-1)
+  const [isLoadingStake, setIsLoadingStake] = useState<string>('')
   const totalFinix = useMemo(() => Number(inputFinix) + Number(inputHarvest), [inputFinix, inputHarvest])
   const apr = useApr()
   const { allLockPeriod } = useAllLock()
@@ -91,6 +92,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
               setHarvestProgress={setHarvestProgress}
               show={!next}
               onDismiss={onDismiss}
+              setIsLoadingStake={setIsLoadingStake}
             />
 
             {!next && (
@@ -117,7 +119,13 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
             <Button width="100%" variant="line" mr="S_8" onClick={() => setNext(false)}>
               {t('Back')}
             </Button>
-            <Button width="100%" variant="red" ml="S_8" onClick={() => setHarvestProgress(0)}>
+            <Button
+              width="100%"
+              variant="red"
+              ml="S_8"
+              isLoading={isLoadingStake === 'loading'}
+              onClick={() => setHarvestProgress(0)}
+            >
               {t('Stake')}
             </Button>
           </Flex>
