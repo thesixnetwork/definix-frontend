@@ -146,7 +146,7 @@ export interface LongTermState {
   id: string
   level: string
   amount: number
-  isPenalty: Boolean
+  isPenalty: boolean
   periodPenalty: string
   penaltyUnlockTimestamp: string
   penaltyFinixAmount: string
