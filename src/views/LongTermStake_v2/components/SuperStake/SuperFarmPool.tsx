@@ -81,8 +81,8 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
 
   const showToastSuperStake = useCallback(
     (success: boolean) => {
-      if (success) toastSuccess(t('{{Action}} Complete', { Action: t('actionSuperstake') }))
-      else toastError(t('{{Action}} Failed', { Action: t('actionSuperstake') }))
+      if (success) toastSuccess(t('{{Action}} Complete', { Action: t('actioncStake') }))
+      else toastError(t('{{Action}} Failed', { Action: t('actioncStake') }))
       onDismiss()
     },
     [onDismiss, t, toastError, toastSuccess],

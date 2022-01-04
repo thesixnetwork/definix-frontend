@@ -107,9 +107,9 @@ const StakeModal: React.FC<ModalProps> = ({
     try {
       await onLockPlus()
       setInputBalance('')
-      toastSuccess(t('{{Action}} Complete', { Action: t('actioncSuperstake') }))
+      toastSuccess(t('{{Action}} Complete', { Action: t('actioncStake') }))
     } catch (e) {
-      toastError(t('{{Action}} Failed', { Action: t('actioncSuperstake') }))
+      toastError(t('{{Action}} Failed', { Action: t('actioncStake') }))
     } finally {
       onDismiss()
     }
