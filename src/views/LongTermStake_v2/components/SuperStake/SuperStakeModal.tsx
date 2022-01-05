@@ -72,7 +72,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   }, [setError, setInputFinix, setInputHarvest])
 
   return (
-    <Modal title={`${t('Super Stake')}`} onDismiss={onDismiss} mobileFull>
+    <Modal title={next ? t('Confirm Super Stake') : t('Super Stake')} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
         <StyledBox mb="S_16">
           {next && <SuperConfirmStake totalFinix={totalFinix} days={days} />}
