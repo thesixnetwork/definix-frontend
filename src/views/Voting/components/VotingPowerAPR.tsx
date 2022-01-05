@@ -66,7 +66,7 @@ const VotingPowerAPR = () => {
           <div className="flex mt-4">
             <Text className="col-6" color="textSubtle">
               Vote
-          </Text>
+            </Text>
           </div>
           <Balance>
             <NumberInput
@@ -85,7 +85,7 @@ const VotingPowerAPR = () => {
               Do you want to vote? Your Voting Power (vFINIX) will be locked until the the voting time is ended.
             </Text>
           </CardAlert>
-          <div className={isMobile ? "": 'flex'}>
+          <div className={isMobile ? '' : 'flex'}>
             <Text color="textSubtle" paddingRight="10px">
               Voting Round Period
             </Text>

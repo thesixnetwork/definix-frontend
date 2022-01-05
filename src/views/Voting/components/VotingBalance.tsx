@@ -104,15 +104,24 @@ const TD = styled.td<{ align?: string }>`
 const Actions = styled(Button)`
   background-color: unset;
   cursor: pointer;
-  border: 1px solid #1587C9;
-  color: #1587C9;
+  border: 1px solid #1587c9;
+  color: #1587c9;
   padding: 8px 24px;
   margin-right: 4px;
   border-radius: 30px;
 `
 
 const TransactionTable = ({ rows, empText, isLoading, total }) => {
-  const [cols] = useState(['Rank', 'Farms/Pools', 'Current Allocation Point', 'Total Liquidity', 'Current APR', '', 'New Allocation Point', 'Estimate APR'])
+  const [cols] = useState([
+    'Rank',
+    'Farms/Pools',
+    'Current Allocation Point',
+    'Total Liquidity',
+    'Current APR',
+    '',
+    'New Allocation Point',
+    'Estimate APR',
+  ])
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
 
@@ -135,101 +144,99 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
             <EmptyData text={empText} />
           </>
         ) : (
-              <TBody>
-                {rows !== null &&
-                  rows.map((r) => (
-                    <TR key={`tsc-${r.block_number}`}>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                          <>
-                            {r.rank}
-                          </>
-                          )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                          <div className="flex">
-                            <Image src="/images/coins/FINIX.png" width={16} height={16} />
-                            <Image src="/images/coins/SIX.png" width={16} height={16} />
-                            {r.farmOrPool}
-                          </div>
-                        )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                            <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold>
-                              {r.currentAlloCationPoint}
-                            </Text>
-                          )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                            <div className="flex align-center">
-                              <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
-                                {r.totalLiquidity}
-                              </Text>
-                            </div>
-                          )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                            <div className="flex align-center">
-                              <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
-                                {r.currentAPR}
-                              </Text>
-                            </div>
-                          )}
-                      </TD> 
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                            <div className="flex align-center">
-                              <Actions as={Link} to="">
-                                <Minus width={18} height={18}/>
-                              </Actions>
-                              <Actions as={Link} to="">
-                                <Plus width={18} height={18}/>
-                              </Actions>
-                            </div>
-                          )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                            <div className="flex align-center">
-                              <Text fontSize={isMobile ? '12px' : '14px'} color="#2A9D8F" bold paddingRight="8px">
-                                {r.newAlloPoint}
-                              </Text>
-                            </div>
-                          )}
-                      </TD>
-                      <TD>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                            <div className="flex align-center">
-                              <Text fontSize={isMobile ? '12px' : '14px'} color="#2A9D8F" bold paddingRight="8px">
-                                {r.estimateAPR}
-                              </Text>
-                            </div>
-                          )}
-                      </TD>
-                    </TR>
-                  ))}
-              </TBody>
-            )}
+          <TBody>
+            {rows !== null &&
+              rows.map((r) => (
+                <TR key={`tsc-${r.block_number}`}>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <>{r.rank}</>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <div className="flex">
+                        <Image src="/images/coins/FINIX.png" width={16} height={16} />
+                        <Image src="/images/coins/SIX.png" width={16} height={16} />
+                        {r.farmOrPool}
+                      </div>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold>
+                        {r.currentAlloCationPoint}
+                      </Text>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <div className="flex align-center">
+                        <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
+                          {r.totalLiquidity}
+                        </Text>
+                      </div>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <div className="flex align-center">
+                        <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
+                          {r.currentAPR}
+                        </Text>
+                      </div>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <div className="flex align-center">
+                        <Actions as={Link} to="">
+                          <Minus width={18} height={18} />
+                        </Actions>
+                        <Actions as={Link} to="">
+                          <Plus width={18} height={18} />
+                        </Actions>
+                      </div>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <div className="flex align-center">
+                        <Text fontSize={isMobile ? '12px' : '14px'} color="#2A9D8F" bold paddingRight="8px">
+                          {r.newAlloPoint}
+                        </Text>
+                      </div>
+                    )}
+                  </TD>
+                  <TD>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                    ) : (
+                      <div className="flex align-center">
+                        <Text fontSize={isMobile ? '12px' : '14px'} color="#2A9D8F" bold paddingRight="8px">
+                          {r.estimateAPR}
+                        </Text>
+                      </div>
+                    )}
+                  </TD>
+                </TR>
+              ))}
+          </TBody>
+        )}
       </Table>
     </CardList>
   )
@@ -247,15 +254,17 @@ const VotingBalance = () => {
   const { allVotesByIpfs } = useVotesByIpfs(id)
   const pages = useMemo(() => Math.ceil(Number(totalVote) / 10), [Number(totalVote)])
 
-  const mapAllVote = [{
-    rank: 1,
-    farmOrPool: "FINIX-SIX Farm",
-    currentAlloCationPoint: "0.00%",
-    totalLiquidity: "$2,538,077",
-    currentAPR: "0.00%",
-    newAlloPoint: "0.00%",
-    estimateAPR: "0.00%" 
-  }]
+  const mapAllVote = [
+    {
+      rank: 1,
+      farmOrPool: 'FINIX-SIX Farm',
+      currentAlloCationPoint: '0.00%',
+      totalLiquidity: '$2,538,077',
+      currentAPR: '0.00%',
+      newAlloPoint: '0.00%',
+      estimateAPR: '0.00%',
+    },
+  ]
 
   const onPageChange = (e, page) => {
     setCurrentPage(page)
