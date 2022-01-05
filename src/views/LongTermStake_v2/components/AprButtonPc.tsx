@@ -86,7 +86,7 @@ const FlexApr = styled(Flex)<{ $focus: boolean; $isSuperStake: boolean; $myLongT
 const AprButtonPc: React.FC<AprButtonProps> = ({ days, setDays, data, superStakeData }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
+  const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
   const myLongTerm = useCallback((item) => superStakeData.some((v: number) => v === item.level), [superStakeData])
   const APRColor = useCallback(
     (item) => {
