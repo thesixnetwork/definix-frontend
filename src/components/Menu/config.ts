@@ -124,7 +124,7 @@ const config: MenuEntry[] = [
         href: '/voting/apr',
         notHighlight: false,
         newTab: false,
-      }
+      },
     ],
   },
 
