@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Button, useModal, Text, Flex } from '@fingerlabs/definixswap-uikit-v2'
-import { useClaim, usePrivateData, useApr } from 'hooks/useLongTermStake'
+import { useClaim, useApr } from 'hooks/useLongTermStake'
+import { useAvailableVotes } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
 import { fetchIdData } from 'state/longTermStake'
 
@@ -31,7 +32,7 @@ const StyledButton = styled(Button)`
 const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   const { t } = useTranslation()
   const [isLoadingClaim, setIsLoadingClaim] = useState<boolean>(false)
-  const { balancevfinix } = usePrivateData()
+  const { availableVotes } = useAvailableVotes()
   const apr = useApr()
 
   const dispatch = useDispatch()
@@ -67,6 +68,11 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   )
 
   const handleUnstake = (item: AllDataLockType) => {
+    if (Number(availableVotes) < item.lockAmount * item.multiplier) {
+      onPresentUnstakeImpossibleModal()
+      return
+    }
+
     onUnStake(
       _.get(item, 'id'),
       _.get(item, 'level'),
@@ -121,12 +127,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
         </Text>
       </StyledButton>
     ) : (
-      <StyledButton
-        variant="lightbrown"
-        onClick={() =>
-          balancevfinix < item.lockAmount * item.multiplier ? onPresentUnstakeImpossibleModal() : handleUnstake(item)
-        }
-      >
+      <StyledButton variant="lightbrown" onClick={() => handleUnstake(item)}>
         <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
           {t('Early Unstake')}
         </Text>
