@@ -30,7 +30,6 @@ const WrapTitle = styled(Flex)`
       display: none;
     }
   }
-
 `
 
 const Content = styled(Text)`
