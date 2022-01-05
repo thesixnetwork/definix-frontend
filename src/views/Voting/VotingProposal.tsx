@@ -1,5 +1,4 @@
 import React from 'react'
-import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import styled from 'styled-components'
@@ -24,9 +23,6 @@ const VotingProposal: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <Helmet>
-          <title>Voting - Definix - Advance Your Crypto Assets</title>
-        </Helmet>
         <MaxWidthLeft>
           <AddProposal />
         </MaxWidthLeft>

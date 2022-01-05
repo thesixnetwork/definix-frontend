@@ -1,6 +1,5 @@
 import React from 'react'
 import _ from 'lodash'
-import { Helmet } from 'react-helmet'
 import { Route, useRouteMatch, useParams } from 'react-router-dom'
 import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import styled from 'styled-components'
@@ -45,9 +44,6 @@ const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
   return (
     <>
       <Route exact path={path}>
-        <Helmet>
-          <title>Voting - Definix - Advance Your Crypto Assets</title>
-        </Helmet>
         <MaxWidthLeft>
           <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>

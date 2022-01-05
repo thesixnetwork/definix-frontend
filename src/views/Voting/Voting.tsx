@@ -12,10 +12,6 @@ const Voting: React.FC = () => {
   return (
     <>
       <Route exact path={path}>
-        <Helmet>
-          <title>Voting - Definix - Advance Your Crypto Assets</title>
-        </Helmet>
-
         {/* <StartVoting /> */}
         <TwoPanelLayout>
           <LeftPanel isShowRightPanel={false}>
