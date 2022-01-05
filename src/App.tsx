@@ -43,6 +43,7 @@ const NotFound = lazy(() => import('./views/NotFound'))
 const AirdropKlay = lazy(() => import('./views/AirdropKlay'))
 const LongTermStake = lazy(() => import('./views/LongTermStake'))
 const Voting = lazy(() => import('./views/Voting'))
+
 // const Lottery = lazy(() => import('./views/Lottery'))
 // const Ifos = lazy(() => import('./views/Ifos'))
 // const Collectibles = lazy(() => import('./views/Collectibles'))
@@ -131,6 +132,9 @@ const App: React.FC = () => {
               <LongTermStake />
             </Route>
             <Route path="/voting">
+              <Voting />
+            </Route>
+            <Route path="/apr-voting">
               <Voting />
             </Route>
             {/* <Route path="/xxx">
