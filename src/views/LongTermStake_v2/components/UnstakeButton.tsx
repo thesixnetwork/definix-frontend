@@ -17,12 +17,14 @@ interface UnstakeButtonProps extends IsMobileType {
 }
 
 const StyledButton = styled(Button)`
-  width: 128px;
+  width: 110px;
   height: 32px;
+  margin-right: 20px;
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     width: 100%;
     height: 40px;
+    margin-right: 0px;
   }
 `
 

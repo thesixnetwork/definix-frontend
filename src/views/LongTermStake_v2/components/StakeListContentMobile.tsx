@@ -37,7 +37,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
                   <Flex alignItems="center">
                     <Text mt={`${i18n.language === 'en' && 'S_2'}`} mr="S_4" textStyle="R_12R" color="yellow">
-                      {t('28 days Super Staked')}
+                      {t('Super Stake')}
                     </Text>
                     <Helper
                       text={`${t('28days super stake tooltip')}\n\n
