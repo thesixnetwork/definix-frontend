@@ -5,8 +5,8 @@ import React, { useEffect, useState, useRef } from 'react'
 import styled from 'styled-components'
 import Slider from 'react-slick'
 import { useTranslation } from 'react-i18next'
-import EN_NOTICE from 'assets/notice/en.json';
-import KO_NOTICE from 'assets/notice/ko.json';
+import EN_NOTICE from 'assets/notice/en.json'
+import KO_NOTICE from 'assets/notice/ko.json'
 
 import {
   Text,
@@ -31,22 +31,22 @@ export interface NoticeProps {
 }
 
 function convertNotice(list) {
-  const length = +list['length/0'];
-  const arr = Object.entries(list);
+  const length = +list['length/0']
+  const arr = Object.entries(list)
   return arr.slice(1).reduce((acc, [key, val]) => {
-    const [noticeKey, noticeIndex] = key.split('/');
+    const [noticeKey, noticeIndex] = key.split('/')
     if (!acc[length - +noticeIndex]) {
-      acc[length - +noticeIndex] = {};
+      acc[length - +noticeIndex] = {}
     }
     if (val !== '') {
-      acc[length - +noticeIndex][noticeKey] = val;
+      acc[length - +noticeIndex][noticeKey] = val
     }
-    return acc;
+    return acc
   }, [])
 }
 
-const EN_NOTICE_LIST = convertNotice(EN_NOTICE);
-const KO_NOTICE_LIST = convertNotice(KO_NOTICE);
+const EN_NOTICE_LIST = convertNotice(EN_NOTICE)
+const KO_NOTICE_LIST = convertNotice(KO_NOTICE)
 
 const Wrap = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -163,7 +163,6 @@ const WrapPage = styled(Flex)`
   padding: 0 4px;
 `
 
-
 const SliderOptions = {
   arrows: false,
   autoplay: true,
@@ -176,8 +175,8 @@ const SliderOptions = {
 const HomeNotice: React.FC = () => {
   const { i18n } = useTranslation()
   const [notices, setNotices] = useState(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
-  const [slideIndex, setSlideIndex] = useState(0);
-  const sliderRef = useRef(null);
+  const [slideIndex, setSlideIndex] = useState(0)
+  const sliderRef = useRef(null)
 
   useEffect(() => {
     setNotices(i18n.languages[0] === 'ko' ? KO_NOTICE_LIST : EN_NOTICE_LIST)
@@ -191,30 +190,46 @@ const HomeNotice: React.FC = () => {
             <NoticeItem {...notices[0]} />
           </OneNotice>
         ) : (
-          <NoticeSlider ref={(slickSlider) => {
-            sliderRef.current = slickSlider;
-          }} {...SliderOptions} beforeChange={(oldInex, newIndex) => {
-            setSlideIndex(newIndex);
-          }}>
+          <NoticeSlider
+            ref={(slickSlider) => {
+              sliderRef.current = slickSlider
+            }}
+            {...SliderOptions}
+            beforeChange={(oldInex, newIndex) => {
+              setSlideIndex(newIndex)
+            }}
+          >
             {notices.map((notice) => (
               <NoticeItem key={notice.id} {...notice} />
             ))}
           </NoticeSlider>
         )}
         <WrapIndicator>
-          <IconButton width="16px" onClick={() => {
-            sliderRef.current.slickPrev();
-          }}>
+          <IconButton
+            width="16px"
+            onClick={() => {
+              sliderRef.current.slickPrev()
+            }}
+          >
             <ArrowLeftGIcon />
           </IconButton>
           <WrapPage>
-            <Text color="brown" textStyle="R_12M">{slideIndex + 1}</Text>
-            <Text mx="4px" color="lightbrown" textStyle="R_12R">/</Text>
-            <Text color="lightbrown" textStyle="R_12R">{notices.length}</Text>
+            <Text color="brown" textStyle="R_12M">
+              {slideIndex + 1}
+            </Text>
+            <Text mx="4px" color="lightbrown" textStyle="R_12R">
+              /
+            </Text>
+            <Text color="lightbrown" textStyle="R_12R">
+              {notices.length}
+            </Text>
           </WrapPage>
-          <IconButton width="16px" onClick={() => {
-            sliderRef.current.slickNext();
-          }}>
+          <IconButton
+            width="16px"
+            onClick={() => {
+              sliderRef.current.slickNext()
+            }}
+          >
             <ArrowRightGIcon />
           </IconButton>
         </WrapIndicator>
