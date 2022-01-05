@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
+
 import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json'
 import { getContract } from '../utils/caver'
 import { getVFinix } from '../utils/addressHelpers'
@@ -39,31 +40,27 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setInterval(() => setLoading(''), 3000)
-          setInterval(() => setStatus(false), 3000)
+          setTimeout(() => setLoading(''), 5000)
+          setTimeout(() => setStatus(false), 5000)
         } else {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
-          await callContract.methods
+          const estimatedGasLimit = await callContract.methods
             .lockPlus(level, idLastMaxLv, lockFinix)
             .estimateGas({ from: account })
-            .then((estimatedGasLimit) => {
-              callContract.methods
-                .lockPlus(level, idLastMaxLv, lockFinix)
-                .send({ from: account, gas: estimatedGasLimit })
-                .then(() => {
-                  setLoading('success')
-                  setStatus(true)
-                  setInterval(() => setLoading(''), 3000)
-                  setInterval(() => setStatus(false), 3000)
-                })
-                .catch(() => {
-                  setLoading('')
-                  setStatus(false)
-                })
-            })
+
+          await callContract.methods
+            .lockPlus(level, idLastMaxLv, lockFinix)
+            .send({ from: account, gas: estimatedGasLimit })
+
+          setLoading('success')
+          setStatus(true)
+          setTimeout(() => setLoading(''), 5000)
+          setTimeout(() => setStatus(false), 5000)
         }
       } catch (e) {
+        setLoading('')
         setStatus(false)
+        throw e
       }
     } else {
       setStatus(false)

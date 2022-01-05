@@ -7,9 +7,9 @@ const TitleStake: React.FC = () => {
 
   const getLink = () => {
     if (i18n.language === 'ko') {
-      return 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-staking-pool/undefined'
+      return 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/long-term-stake/how-to-use-long-term-stake'
     }
-    return 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool'
+    return 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-stake/how-to-use-long-term-stake'
   }
 
   return (

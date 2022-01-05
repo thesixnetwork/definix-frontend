@@ -13,6 +13,8 @@ import MenuLink from './MenuLink'
 import { PanelProps, PushedProps } from './types'
 import UserBlock from './UserBlock'
 import FinixCoin from '../../images/finix-coin.png'
+// import g2kr from '../../images/g2-kr.png'
+import g2en from '../../images/g2-en.png'
 import CopyToClipboard from '../WalletModal/CopyToClipboard'
 import RankMenuCard from './RankMenuCard'
 
@@ -173,6 +175,10 @@ const PanelBody: React.FC<Props> = (props) => {
           <CopyToClipboard color="#000" noText toCopy={addressFinix} tooltipPos="bottom" iconWidth="16px" />
         </StyleLight>
       )}
+
+      <a href="http://g2.klaytn.definix.com" target="_blank" rel="noopener noreferrer" className="mx-2">
+        <img src={g2en} alt="" />
+      </a>
       {/* <BorderBox>
         <Heading fontSize="14px" className="mb-4">
           Wallet
