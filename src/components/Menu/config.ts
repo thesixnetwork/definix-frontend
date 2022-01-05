@@ -119,6 +119,12 @@ const config: MenuEntry[] = [
         notHighlight: false,
         newTab: false,
       },
+      {
+        label: 'APR Voting',
+        href: '/voting/apr',
+        notHighlight: false,
+        newTab: false,
+      }
     ],
   },
 

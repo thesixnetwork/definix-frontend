@@ -6,6 +6,7 @@ import { Heading } from 'uikit-dev'
 import CardVoting from './components/CardVoting'
 import VotingInfos from './VotingInfos'
 import VotingProposal from './VotingProposal'
+import APRVoting from './APRVoting'
 
 const Voting: React.FC = () => {
   const { path } = useRouteMatch()
@@ -53,6 +54,10 @@ const Voting: React.FC = () => {
 
       <Route exact path={`${path}/make-proposal`}>
         <VotingProposal />
+      </Route>
+
+      <Route exact path={`${path}/apr`}>
+        <APRVoting />
       </Route>
     </>
   )
