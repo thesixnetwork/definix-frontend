@@ -163,6 +163,14 @@ const WrapPage = styled(Flex)`
   padding: 0 4px;
 `
 
+const StyledArrowLeftGIcon = styled(ArrowLeftGIcon)`
+  fill: ${({ theme }) => theme.colors.pale};
+`
+
+const StyledArrowRightGIcon = styled(ArrowRightGIcon)`
+  fill: ${({ theme }) => theme.colors.pale};
+`
+
 const SliderOptions = {
   arrows: false,
   autoplay: true,
@@ -211,7 +219,7 @@ const HomeNotice: React.FC = () => {
               sliderRef.current.slickPrev()
             }}
           >
-            <ArrowLeftGIcon />
+            <StyledArrowLeftGIcon />
           </IconButton>
           <WrapPage>
             <Text color="brown" textStyle="R_12M">
@@ -230,7 +238,7 @@ const HomeNotice: React.FC = () => {
               sliderRef.current.slickNext()
             }}
           >
-            <ArrowRightGIcon />
+            <StyledArrowRightGIcon />
           </IconButton>
         </WrapIndicator>
       </NoticeBox>
