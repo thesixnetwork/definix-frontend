@@ -221,6 +221,7 @@ const StakeModal: React.FC<ModalProps> = ({
       </ModalBody>
       <ModalFooter isFooter>
         <Button
+          height="48px"
           isLoading={isSuperStake ? superLoadings === 'loading' : loadings === 'loading'}
           onClick={isSuperStake ? onClickSuperStake : onClickStake}
         >

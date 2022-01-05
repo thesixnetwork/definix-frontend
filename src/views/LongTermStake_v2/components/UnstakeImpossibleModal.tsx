@@ -95,7 +95,9 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={onDismiss}>{t('Close')}</Button>
+        <Button height="48px" onClick={onDismiss}>
+          {t('Close')}
+        </Button>
       </ModalFooter>
     </Modal>
   )

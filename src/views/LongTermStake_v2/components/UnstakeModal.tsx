@@ -146,11 +146,11 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
       </ModalBody>
       <ModalFooter isFooter>
         {canBeUnlock ? (
-          <Button isLoading={isLoadingUnLock} onClick={handleUnLock}>
+          <Button height="48px" isLoading={isLoadingUnLock} onClick={handleUnLock}>
             {t('Early Unstake')}
           </Button>
         ) : (
-          <Button isLoading={isLoadingUnLock} onClick={handleUnLock}>
+          <Button height="48px" isLoading={isLoadingUnLock} onClick={handleUnLock}>
             {t('Unstake')}
           </Button>
         )}
