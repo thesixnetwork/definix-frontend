@@ -33,7 +33,7 @@ const ResetCSS = createGlobalStyle`
   }
   ol,
   ul {
-    list-style: disc;
+    // list-style: disc;
     list-style-position: inside;
   }
   blockquote,

@@ -109,4 +109,8 @@ export default {
     8217: process.env.REACT_APP_VFINIX_ADDRESS_MAINNET,
     1001: process.env.REACT_APP_VFINIX_ADDRESS_TESTNET,
   },
+  vFinixVoting: {
+    8217: process.env.REACT_APP_VFINIX_VOTING_ADDRESS_MAINNET,
+    1001: process.env.REACT_APP_VFINIX_VOTING_ADDRESS_TESTNET,
+  },
 }
