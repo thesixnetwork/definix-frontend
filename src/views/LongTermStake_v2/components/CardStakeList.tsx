@@ -57,7 +57,11 @@ const CardStakeList: React.FC<IsMobileType> = ({ isMobile }) => {
           <FlexCard>
             {!isMobile && <StakeListHead />}
             {isMobile ? (
-              <StakeListContentMobile isMobile={isMobile} allDataLock={getCurrentData(stakeList)} />
+              <StakeListContentMobile
+                isMobile={isMobile}
+                allDataLock={getCurrentData(stakeList)}
+                dataLength={dataLength}
+              />
             ) : (
               <StakeListContentPc isMobile={isMobile} allDataLock={getCurrentData(stakeList)} />
             )}
