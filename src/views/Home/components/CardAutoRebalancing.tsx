@@ -130,7 +130,7 @@ const StyledBannerVoting = styled(Card)`
     content: '';
     width: 70%;
     height: 100%;
-    background: ${({ theme }) => theme.isDark ? `url(${logoVoteBannerDark})` : `url(${logoVoteBannerWhite})`};
+    background: ${({ theme }) => (theme.isDark ? `url(${logoVoteBannerDark})` : `url(${logoVoteBannerWhite})`)};
     background-size: contain;
     background-position: right center;
     background-repeat: no-repeat;
@@ -139,7 +139,6 @@ const StyledBannerVoting = styled(Card)`
     right: 0;
     opacity: 0.2;
     border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-    
   }
 
   h2 {
@@ -462,7 +461,8 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 CHANGES THAT CAN BE MADE BY YOU
               </Text>
               <Text color="textSubtle" fontSize="12px">
-                Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
+                Community Proposal is a great way to say your words and to reflects the community feeling about your
+                ideas.
               </Text>
               <div className="mt-6">
                 <SpecialButton as="a" href="/voting">
