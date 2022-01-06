@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
@@ -187,9 +188,10 @@ const CastVoteModal: React.FC<Props> = ({
     return array
   }, [mergedSubjects])
 
-  const minimum = useMemo(() => {
-    return mapChoicesForMulti.every((i) => Number(i) / 10 ** 18 >= 10)
-  }, [mapChoicesForMulti])
+  const minimum = mapChoicesForMulti.every((i) => {
+    return  Number(i) / 10 ** 18 >= 10
+  })
+
 
   const sumData = checked.reduce((partialSum, a) => partialSum + a, 0)
 
@@ -433,6 +435,8 @@ const CastVoteModal: React.FC<Props> = ({
               disabled={
                 showLottie || types === 'single' || filter.length <= 1
                   ? Number(value) < 10
+                  : filter.length <= 1 
+                  ? Number(value) < 10 
                   : !minimum || selectT.length < mapChoice.length || Number(value) > Number(availableVotes)
               }
               onClick={() => onConfirm()}
