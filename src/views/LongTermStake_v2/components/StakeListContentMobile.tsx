@@ -41,7 +41,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock,
                       {t('Super Stake')}
                     </Text>
                     <Helper
-                      text={`${t('28days super stake tooltip')}\n\n
+                      text={`${t('28days super stake tooltip')}\n
                         ${getEndDay(item.lockTopupTimes)} ~ ${getEndDay(item.topupTimeStamp)}`}
                       color="yellow"
                     />
