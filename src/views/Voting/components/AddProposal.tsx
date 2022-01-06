@@ -155,7 +155,7 @@ const AddProposal: React.FC<Props> = () => {
     combineDateAndTime(startDate, startTime),
     combineDateAndTime(endDate, endTime),
     choices.length,
-    0,
+    10,
     choiceType === 'single' ? 1 : filterChoices.length,
   )
   const navigate = useHistory()
