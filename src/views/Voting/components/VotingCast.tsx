@@ -219,11 +219,14 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                                 label=""
                                 control={<Radio />}
                               />
-                              <VotePowerChoice className="flex justify-space-between align-center" style={{ width: 'inherit' }}>
-                                <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
+                              <VotePowerChoice
+                                className="flex justify-space-between align-center"
+                                style={{ width: 'inherit' }}
+                              >
+                                <Text fontSize={isMobile ? '12px' : '15px'} bold lineHeight="1">
                                   {_.get(c, 'choiceName')}
                                 </Text>
-                                <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
+                                <Text fontSize={isMobile ? '12px' : '15px'} bold lineHeight="1">
                                   {_.get(c, 'votePower') !== undefined && `${_.get(c, 'votePower')}`}
                                 </Text>
                               </VotePowerChoice>
@@ -256,10 +259,10 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                           label=""
                         />
                         <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
-                          <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
+                          <Text fontSize={isMobile ? '12px' : '15px'} bold lineHeight="1">
                             {_.get(c, 'choiceName')}
                           </Text>
-                          <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
+                          <Text fontSize={isMobile ? '12px' : '15px'} bold lineHeight="1">
                             {_.get(c, 'votePower') !== undefined && `${_.get(c, 'votePower')}`}
                           </Text>
                         </VotePowerChoice>
@@ -285,7 +288,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                               control={<Radio />}
                             />
                             <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
-                              <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
+                              <Text fontSize={isMobile ? '12px' : '15px'} bold lineHeight="1">
                                 {c}
                               </Text>
                             </VotePowerChoice>
@@ -318,7 +321,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                         label=""
                       />
                       <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
-                        <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
+                        <Text fontSize={isMobile ? '12px' : '15px'} bold lineHeight="1">
                           {c}
                         </Text>
                       </VotePowerChoice>
