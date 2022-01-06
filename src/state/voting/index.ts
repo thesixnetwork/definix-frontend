@@ -232,7 +232,7 @@ const getProposal = async ({ id }) => {
           })
         }
       })
-      .catch((e) => {
+      .catch(() => {
         proposal = []
       })
   } catch (error) {
@@ -287,8 +287,8 @@ const getVotesByIndex = async ({ proposalIndex, pages, limits }) => {
           )
         }
       })
-      .catch((e) => {
-        console.log('error', e)
+      .catch(() => {
+        // console.log('error', e)
       })
 
     allVotesByIndex = dataArray
@@ -317,8 +317,8 @@ const getVotesByIpfs = async (ipfs) => {
           title: resp.data.title,
         })
       })
-      .catch((e) => {
-        console.log('error', e)
+      .catch(() => {
+        // console.log('error', e)
       })
 
     allVotesByIpfs = dataArray

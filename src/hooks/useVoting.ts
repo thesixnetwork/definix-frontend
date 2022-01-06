@@ -2,12 +2,12 @@
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import _ from 'lodash'
+// import _ from 'lodash'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
-import UsageFacet from '../config/abi/UsageFacet.json'
+// import UsageFacet from '../config/abi/UsageFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
@@ -86,7 +86,7 @@ export const useVotesByIpfs = (ipfs) => {
 
 export const useAllProposalOfAddress = () => {
   const { fastRefresh } = useRefresh()
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const { account } = useWallet()
   const [proposalOfAddress, setUserProposals] = useState([])
   const proposal = useSelector((state: State) => state.voting.allProposal)
@@ -209,7 +209,7 @@ export const usePropose = (
       )
       await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve('')
       })
     }
@@ -260,6 +260,7 @@ export const useGetProposal = (proposalId: string) => {
   return { proposal }
 }
 
+// eslint-disable-next-line
 export const useApproveToService = (max) => {
   const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
@@ -276,7 +277,7 @@ export const useApproveToService = (max) => {
       )
       const txHash = await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve(txHash)
       })
     }
@@ -299,7 +300,7 @@ export const useApproveToService = (max) => {
 
 export const useServiceAllowance = () => {
   const { account } = useWallet()
-  const { slowRefresh } = useRefresh()
+  // const { slowRefresh } = useRefresh()
   const [allowances, setServiceAllowance] = useState<number>()
 
   useMemo(async () => {
@@ -338,7 +339,7 @@ const handleContractExecute = (_executeFunction, _account) => {
 export const useVote = () => {
   const { account, connector } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
-  const [serviceKey, setServiceKey] = useState('')
+  const [serviceKey] = useState('')
 
   const callCastVote = async (proposalIndex, votingPowers) => {
     if (connector === 'klip') {
@@ -350,7 +351,7 @@ export const useVote = () => {
       )
       await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve('')
       })
     }
@@ -383,7 +384,7 @@ export const useClaimVote = () => {
       )
       await klipProvider.checkResponse()
       setShowModal(false)
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve('')
       })
     }
