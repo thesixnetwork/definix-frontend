@@ -189,9 +189,8 @@ const CastVoteModal: React.FC<Props> = ({
   }, [mergedSubjects])
 
   const minimum = mapChoicesForMulti.every((i) => {
-    return  Number(i) / 10 ** 18 >= 10
+    return Number(i) / 10 ** 18 >= 10
   })
-
 
   const sumData = checked.reduce((partialSum, a) => partialSum + a, 0)
 
@@ -435,8 +434,8 @@ const CastVoteModal: React.FC<Props> = ({
               disabled={
                 showLottie || types === 'single' || filter.length <= 1
                   ? Number(value) < 10
-                  : filter.length <= 1 
-                  ? Number(value) < 10 
+                  : filter.length <= 1
+                  ? Number(value) < 10
                   : !minimum || selectT.length < mapChoice.length || Number(value) > Number(availableVotes)
               }
               onClick={() => onConfirm()}
