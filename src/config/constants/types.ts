@@ -40,6 +40,7 @@ export enum QuoteToken {
   'FINIXKLAY' = 'FINIX-KLAY',
   'SIXKUSDT' = 'SIX-KUSDT',
   'KDAIKUSDT' = 'KDAI-KUSDT',
+  'KSP' = 'KSP',
 }
 
 export enum PoolCategory {
@@ -51,7 +52,7 @@ export enum PoolCategory {
 
 export interface Address {
   1001?: string
-  8217: string
+  8217?: string
 }
 
 export interface Ratio {
@@ -82,11 +83,11 @@ export interface RebalanceConfig {
 export interface FarmConfig {
   pid: number
   lpSymbol: string
-  lpAddresses: any
+  lpAddresses: Address | any
   tokenSymbol: string
-  tokenAddresses: any
+  tokenAddresses: Address | any
   quoteTokenSymbol: QuoteToken
-  quoteTokenAdresses: any
+  quoteTokenAdresses: Address | any
   multiplier?: string
   isCommunity?: boolean
   dual?: {
@@ -183,3 +184,5 @@ export type Campaign = {
   description?: TranslatableText
   badge?: string
 }
+
+export type ConnectorId = "injected" | "klip"

@@ -8,6 +8,7 @@ import VaultTopUpFeatureFacet from 'config/abi/VaultTopUpFeatureFacet.json'
 import IProposalFacet from 'config/abi/IProposalFacet.json'
 import IUsageFacet from 'config/abi/IUsageFacet.json'
 import IVotingFacet from 'config/abi/IVotingFacet.json'
+import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 
 export const getAbiHerodotusByName = (methodName: string) =>
   herodotus.find((abi) => abi.type === 'function' && abi.name === methodName)
@@ -38,3 +39,6 @@ export const getAbiIUsageFacetByName = (methodName: string) =>
 
 export const getAbiIVotingFacetByName = (methodName: string) =>
   IVotingFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
+
+export const getApproveAbi = () => erc20.find(abi => abi.type === 'function' && abi.name === 'approve')
+export const getAbiByName = (methodName) => IUniswapV2Router02ABI.find(abi => abi.type === 'function' && abi.name === methodName)

@@ -13,11 +13,11 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       items: [
         {
           label: t('Menu Swap'),
-          href: `${process.env.REACT_APP_SWAP_URL}/swap`,
+          href: `/swap`,
         },
         {
           label: t('Liquidity'),
-          href: `${process.env.REACT_APP_SWAP_URL}/liquidity`,
+          href: `/liquidity`,
         },
       ],
     },
