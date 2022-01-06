@@ -109,7 +109,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
       <Card>
         <TabStake isMobile={isMobile} />
         <Wrap>
-          <FlexCard p={isMobile ? 'S_20' : 'S_40'} pt={pathname === '/super-stake' && 'S_32'}>
+          <FlexCard p={isMobile ? 'S_20' : 'S_40'} pt={pathname.indexOf('super') > -1 && 'S_32'}>
             <AprButton
               isMobile={isMobile}
               days={days}
@@ -141,7 +141,7 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
             <EstimateVFinix hasAccount={hasAccount} days={days} earn={getVFinix(days, inputBalance)} />
           </FlexCard>
 
-          {pathname === '/super-stake' && !balancevfinix && (
+          {pathname.indexOf('super') > -1 && !balancevfinix && (
             <Working>
               <img alt="" width={236} src={longTermImgX1} srcSet={`${longTermImgX2} 2x, ${longTermImgX3} 3x`} />
               <Text textStyle="R_18M" mt="S_24">

@@ -135,3 +135,6 @@ export const getBunnySpecialAddress = () => {
 export const getVFinix = () => {
   return getAddress(addresses.vFinix)
 }
+export const getVFinixVoting = () => {
+  return getAddress(addresses.vFinixVoting)
+}

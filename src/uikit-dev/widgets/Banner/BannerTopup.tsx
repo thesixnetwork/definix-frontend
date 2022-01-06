@@ -95,8 +95,7 @@ const SuperHarvestButton = styled(Button)`
   }
 `
 const BannerTopup = () => {
-  const { isXl, isMd } = useMatchBreakpoints()
-  const isMobile = !isXl && !isMd
+  const { isXl } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl
   // Super Stake
   const farmEarnings = useFarmEarning()

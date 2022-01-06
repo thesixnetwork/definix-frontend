@@ -51,7 +51,7 @@ const StakeModal: React.FC<ModalProps> = ({
     () => new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed(),
     [balance],
   )
-  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
+  const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
 
   const getLockDay = (day: number) => {
     switch (day) {
@@ -221,6 +221,7 @@ const StakeModal: React.FC<ModalProps> = ({
       </ModalBody>
       <ModalFooter isFooter>
         <Button
+          height="48px"
           isLoading={isSuperStake ? superLoadings === 'loading' : loadings === 'loading'}
           onClick={isSuperStake ? onClickSuperStake : onClickStake}
         >
