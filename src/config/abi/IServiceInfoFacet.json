@@ -1,0 +1,354 @@
+{
+  "contractName": "IServiceInfoFacet",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getServiceId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getServiceKey",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"getServiceId\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getServiceKey\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IServiceInfoFacet.sol\":\"IServiceInfoFacet\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IServiceInfoFacet.sol\":{\"keccak256\":\"0xf9f6c5d4d4ff4ac3656b9d5d273e5e81825dfafd892baee7bb9c58dc24e33c09\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://66471a637934975b4c22d606729de4fa819c6e8e541b5e9d95ea9a1804cecac4\",\"dweb:/ipfs/QmcyeZS5r5h3zPQGwmbMnCdLiXFj7Z7eS9BUuAHseaRvp8\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\ninterface IServiceInfoFacet {\n    function getServiceId() external pure returns(bytes32);\n    function getServiceKey() external view  returns(bytes32);\n}\n",
+  "sourcePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IServiceInfoFacet.sol",
+  "ast": {
+    "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IServiceInfoFacet.sol",
+    "exportedSymbols": {
+      "IServiceInfoFacet": [
+        2785
+      ]
+    },
+    "id": 2786,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2774,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:23:17"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 2785,
+        "linearizedBaseContracts": [
+          2785
+        ],
+        "name": "IServiceInfoFacet",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "39292818",
+            "id": 2779,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getServiceId",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2775,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "112:2:17"
+            },
+            "returnParameters": {
+              "id": 2778,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2777,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2779,
+                  "src": "137:7:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2776,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "137:7:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "136:9:17"
+            },
+            "scope": 2785,
+            "src": "91:55:17",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "8eea2565",
+            "id": 2784,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getServiceKey",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2780,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "173:2:17"
+            },
+            "returnParameters": {
+              "id": 2783,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2782,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2784,
+                  "src": "199:7:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2781,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "199:7:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "198:9:17"
+            },
+            "scope": 2785,
+            "src": "151:57:17",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2786,
+        "src": "57:153:17"
+      }
+    ],
+    "src": "32:179:17"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/nonputhikanon/Works/six-network/smart-contracts/definix-vfinix-voting/contracts/interfaces/IServiceInfoFacet.sol",
+    "exportedSymbols": {
+      "IServiceInfoFacet": [
+        2785
+      ]
+    },
+    "id": 2786,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2774,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "32:23:17"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 2785,
+        "linearizedBaseContracts": [
+          2785
+        ],
+        "name": "IServiceInfoFacet",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "39292818",
+            "id": 2779,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getServiceId",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2775,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "112:2:17"
+            },
+            "returnParameters": {
+              "id": 2778,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2777,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2779,
+                  "src": "137:7:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2776,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "137:7:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "136:9:17"
+            },
+            "scope": 2785,
+            "src": "91:55:17",
+            "stateMutability": "pure",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "8eea2565",
+            "id": 2784,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getServiceKey",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2780,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "173:2:17"
+            },
+            "returnParameters": {
+              "id": 2783,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2782,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2784,
+                  "src": "199:7:17",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2781,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "199:7:17",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "198:9:17"
+            },
+            "scope": 2785,
+            "src": "151:57:17",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2786,
+        "src": "57:153:17"
+      }
+    ],
+    "src": "32:179:17"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.0+commit.c7dfd78e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.1",
+  "updatedAt": "2021-12-20T12:01:40.193Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

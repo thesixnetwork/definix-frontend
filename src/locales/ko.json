@@ -127,7 +127,7 @@
   "Full payment of KLAY": "KLAY를 모두 스왑하면 이후 거래에 차질이 생길 수 있습니다.",
   "Estimated Returns": "예상 결과",
   "Price Rate": "토큰 가격 비율",
-  "Minimum Received": "최소 예상 수령 개수",
+  "Minimum Received": "최소 수령 개수",
   "Price Impact": "가격변동률",
   "Liquidity Provider Fee": "유동성 공급자 수수료",
   "Routing": "스왑경로",

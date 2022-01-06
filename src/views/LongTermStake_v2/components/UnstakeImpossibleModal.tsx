@@ -14,7 +14,7 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { usePrivateData } from 'hooks/useLongTermStake'
+import { useAvailableVotes } from 'hooks/useVoting'
 import styled from 'styled-components'
 
 interface ModalProps {
@@ -35,7 +35,7 @@ const StyledBox = styled(Box)`
 
 const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multiplier, onDismiss = () => null }) => {
   const { t } = useTranslation()
-  const { balancevfinix } = usePrivateData()
+  const { availableVotes } = useAvailableVotes()
 
   return (
     <Modal title={`${t('Unstaking Impossible')}`} onDismiss={onDismiss} mobileFull>
@@ -71,7 +71,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
               <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
             </Flex>
             <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
-              {t(`You can't unstake due to`)}
+              {t(`You can’t unstake due to`)}
             </Text>
           </Flex>
           <Flex mt="S_20" flexDirection="column">
@@ -88,7 +88,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
                 {t('Your balance')}
               </Text>
               <Text textStyle="R_14M" color="red">
-                {numeral(balancevfinix).format('0, 0.[00]')} {t('vFINIX')}
+                {numeral(availableVotes).format('0, 0.[00]')} {t('vFINIX')}
               </Text>
             </Flex>
           </Flex>
