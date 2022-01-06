@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo, useEffect } from 'react'
 import _ from 'lodash'
-import { Button, Card, Text, useModal } from 'uikit-dev'
+import { Button, Card, Text, useModal, useMatchBreakpoints } from 'uikit-dev'
 import styled from 'styled-components'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup, { useRadioGroup } from '@material-ui/core/RadioGroup'
@@ -105,6 +105,8 @@ function MyFormControlLabel(props) {
 }
 
 const VotingCast = ({ id, indexs, proposalIndex }) => {
+  const { isXl, isLg } = useMatchBreakpoints()
+  const isMobile = !isXl && !isLg
   const voteNow = indexs.startEpoch < Date.now() && indexs.endEpoch > Date.now()
   const { availableVotes } = useAvailableVotes()
   const { indexProposal } = useProposalIndex(proposalIndex)
@@ -217,11 +219,11 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                                 label=""
                                 control={<Radio />}
                               />
-                              <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
-                                <Text fontSize="15px" bold>
+                              <VotePowerChoice className="flex justify-space-between align-center" style={{ width: 'inherit' }}>
+                                <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
                                   {_.get(c, 'choiceName')}
                                 </Text>
-                                <Text fontSize="15px" bold>
+                                <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
                                   {_.get(c, 'votePower') !== undefined && `${_.get(c, 'votePower')}`}
                                 </Text>
                               </VotePowerChoice>
@@ -254,10 +256,10 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                           label=""
                         />
                         <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
-                          <Text fontSize="15px" bold>
+                          <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
                             {_.get(c, 'choiceName')}
                           </Text>
-                          <Text fontSize="15px" bold>
+                          <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
                             {_.get(c, 'votePower') !== undefined && `${_.get(c, 'votePower')}`}
                           </Text>
                         </VotePowerChoice>
@@ -283,7 +285,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                               control={<Radio />}
                             />
                             <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
-                              <Text fontSize="15px" bold>
+                              <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
                                 {c}
                               </Text>
                             </VotePowerChoice>
@@ -316,7 +318,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                         label=""
                       />
                       <VotePowerChoice className="flex justify-space-between" style={{ width: 'inherit' }}>
-                        <Text fontSize="15px" bold>
+                        <Text fontSize={isMobile ? "12px":"15px"} bold lineHeight="1">
                           {c}
                         </Text>
                       </VotePowerChoice>

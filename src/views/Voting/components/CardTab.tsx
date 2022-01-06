@@ -45,7 +45,7 @@ const Tab = styled(Button)<{ active: boolean }>`
 
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 0.875rem;
-    width: 10%;
+    width: 16%;
   }
 `
 
