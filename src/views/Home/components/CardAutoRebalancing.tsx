@@ -11,7 +11,6 @@ import SuperStakeModal from 'uikit-dev/widgets/WalletModal/SuperStakeModal'
 import StartLongTermStakeModal from 'uikit-dev/widgets/WalletModal/StartLongTermStakeModal'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/definix-long-term-stake-with-voting-system.png'
-// import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import velo from 'uikit-dev/images/for-ui-v2/banner/velo-banner.png'
 import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
 import superStakeWhite from 'uikit-dev/images/for-ui-v2/banner/super-stake-white.png'
@@ -466,7 +465,7 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </Text>
               <div className="mt-6">
                 <SpecialButton as="a" href="/voting">
-                  <span>Interesting, I want to invest</span>
+                  <span>Interesting, I want to vote</span>
                 </SpecialButton>
               </div>
             </div>
