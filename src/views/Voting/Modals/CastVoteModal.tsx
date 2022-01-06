@@ -188,11 +188,7 @@ const CastVoteModal: React.FC<Props> = ({
     return array
   }, [mergedSubjects])
 
-  const minimum = mapChoicesForMulti.every((i) => {
-    return Number(i) / 10 ** 18 >= 10
-  })
-
-  const sumData = checked.reduce((partialSum, a) => partialSum + a, 0)
+  const minimum = Object.values(selects).every((i) => Number(_.get(i, 'amount')) >= 10)
 
   const handleApprove = useCallback(async () => {
     try {
