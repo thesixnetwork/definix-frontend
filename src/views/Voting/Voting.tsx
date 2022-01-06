@@ -1,11 +1,16 @@
 import React from 'react'
 import { Helmet } from 'react-helmet'
+import styled from 'styled-components'
 import { Route, useRouteMatch } from 'react-router-dom'
 import { LeftPanel, TwoPanelLayout, MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import { Heading } from 'uikit-dev'
 import CardVoting from './components/CardVoting'
 import VotingInfos from './VotingInfos'
 import VotingProposal from './VotingProposal'
+
+// const TutorailsLink = styled(Link)`
+//   text-decoration-line: underline;
+// `
 
 const Voting: React.FC = () => {
   const { path } = useRouteMatch()
@@ -32,7 +37,7 @@ const Voting: React.FC = () => {
                       href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
                       target="_blank"
                     >
-                      How to stake.
+                      How to voting.
                     </TutorailsLink>
                   </div> */}
                 </div>

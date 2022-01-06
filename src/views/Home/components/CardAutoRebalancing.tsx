@@ -11,13 +11,15 @@ import SuperStakeModal from 'uikit-dev/widgets/WalletModal/SuperStakeModal'
 import StartLongTermStakeModal from 'uikit-dev/widgets/WalletModal/StartLongTermStakeModal'
 import lady from 'uikit-dev/images/for-ui-v2/AUTO-RE-BALANCING-MUTUAL-FUNDS.png'
 import definixLongTerm from 'uikit-dev/images/for-ui-v2/definix-long-term-stake-with-voting-system.png'
-import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
+// import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
 import velo from 'uikit-dev/images/for-ui-v2/banner/velo-banner.png'
 import dingoxSix from 'uikit-dev/images/for-ui-v2/banner/dingoxsix.png'
 import superStakeWhite from 'uikit-dev/images/for-ui-v2/banner/super-stake-white.png'
 import superStakeBlack from 'uikit-dev/images/for-ui-v2/banner/super-stake-black.png'
 import logoDingoxSixBlack from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-black.png'
 import logoDingoxSixWhite from 'uikit-dev/images/for-ui-v2/banner/logo-dingoxsix-white.png'
+import logoVoteBannerWhite from 'uikit-dev/images/for-ui-v2/banner/logo-banner-white.png'
+import logoVoteBannerDark from 'uikit-dev/images/for-ui-v2/banner/logo-banner-dark.png'
 
 const StyledBannerLady = styled(Card)`
   width: 100%;
@@ -128,15 +130,16 @@ const StyledBannerVoting = styled(Card)`
     content: '';
     width: 70%;
     height: 100%;
-    background: url(${definixVoting});
+    background: ${({ theme }) => theme.isDark ? `url(${logoVoteBannerDark})` : `url(${logoVoteBannerWhite})`};
     background-size: contain;
-    background-position: right bottom;
+    background-position: right center;
     background-repeat: no-repeat;
     position: absolute;
     top: 0;
     right: 0;
     opacity: 0.2;
     border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+    
   }
 
   h2 {
@@ -148,13 +151,14 @@ const StyledBannerVoting = styled(Card)`
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 68px 40% 48px 24px;
+    padding: 90px 40% 48px 24px;
     border-radius: unset;
     height: 327px;
 
     &:before {
-      width: 46%;
+      width: 40%;
       opacity: 1;
+      margin-right: 10px;
     }
 
     h2 {
@@ -193,6 +197,7 @@ const StyledBannerVelo = styled(Card)`
     font-size: 12px !important;
     margin-bottom: 4px;
   }
+
   ${({ theme }) => theme.mediaQueries.sm} {
     padding: 68px 40% 48px 24px;
     border-radius: unset;
@@ -429,11 +434,11 @@ const CardAutoRebalancing = ({ className = '' }) => {
   const settings = {
     dots: true,
     infinite: true,
-    // speed: 500,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplaySpeed: 10000,
-    // autoplay: true,
+    autoplaySpeed: 10000,
+    autoplay: true,
     dotsClass: 'slick-dots slick-thumb',
   }
 
@@ -447,6 +452,26 @@ const CardAutoRebalancing = ({ className = '' }) => {
   return (
     <div>
       <StyledSlider {...settings}>
+        <div>
+          <StyledBannerVoting className={className}>
+            <div className="pos-relative" style={{ zIndex: 1 }}>
+              <Heading color="primary" lineHeight="0.5">
+                DECENTRALIZED VOTING
+              </Heading>
+              <Text color="text" fontSize="22px" bold lineHeight="1" className="mb-2">
+                CHANGES THAT CAN BE MADE BY YOU
+              </Text>
+              <Text color="textSubtle" fontSize="12px">
+                Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
+              </Text>
+              <div className="mt-6">
+                <SpecialButton as="a" href="/voting">
+                  <span>Interesting, I want to invest</span>
+                </SpecialButton>
+              </div>
+            </div>
+          </StyledBannerVoting>
+        </div>
         <div>
           <StyledBannerSuperStake className={className}>
             <div className="pos-relative" style={{ zIndex: 1 }}>
@@ -465,7 +490,6 @@ const CardAutoRebalancing = ({ className = '' }) => {
                 will not be extended.
               </Text>
               <div className="mt-6">
-                {/* <SpecialButton as={Link} to="/long-term-stake/top-up"> */}
                 <SpecialButton
                   onClick={() => {
                     onPresentConnectModal()
@@ -515,24 +539,6 @@ const CardAutoRebalancing = ({ className = '' }) => {
               </div>
             </div>
           </StyledBannerVelo>
-        </div>
-        <div>
-          <StyledBannerVoting className={className}>
-            <div className="pos-relative" style={{ zIndex: 1 }}>
-              <Heading className="mb-2" color="primary">
-                DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING
-              </Heading>
-              <Text color="textSubtle" fontSize="12px">
-                Community Proposal is a great way to say your words and to reflects the community feeling about your
-                ideas.{' '}
-              </Text>
-              <div className="mt-6">
-                <SpecialOutline as={Link} to="/">
-                  <span>Coming soon!</span>
-                </SpecialOutline>
-              </div>
-            </div>
-          </StyledBannerVoting>
         </div>
         <div>
           <StyledBannerLongTerm className={className}>
