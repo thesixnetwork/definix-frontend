@@ -39,7 +39,7 @@ const ApproveFinix: React.FC<ApproveFinixProps> = ({
 }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
+  const isSuperStake = useMemo(() => /super/.test(pathname), [pathname])
   const [onPresentStakeModal] = useModal(
     <StakeModal balance={inputBalance} setInputBalance={setInputBalance} days={days} earn={earn} pathname={pathname} />,
     false,

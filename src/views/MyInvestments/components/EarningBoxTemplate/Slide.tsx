@@ -22,7 +22,7 @@ const SliderSection = styled(Box)<{ curTheme: any }>`
   flex: 1;
 
   .slick-slider {
-    padding-bottom: ${({ theme }) => (theme.spacing.S_20 + 5)}px;
+    padding-bottom: ${({ theme }) => theme.spacing.S_20 + 5}px;
   }
 
   .slick-list {
@@ -147,7 +147,7 @@ const Slide: React.FC<{
     (item) => {
       return displayOnlyTotalPrice ? null : (
         <CurrencyText
-          textStyle={isMobile ? "R_12M" :"R_14M"}
+          textStyle={isMobile ? 'R_12M' : 'R_14M'}
           color={curTheme.itemCurrencyColor}
           value={hasAccount ? item.price : 0}
           prefix="="
@@ -162,11 +162,7 @@ const Slide: React.FC<{
     (list) => {
       return list.map((item, index) => (
         <SlideItem key={item.title} index={index} curTheme={curTheme} className="slide-item">
-          <Text 
-            textStyle={isMobile ? "R_12R" : "R_14R"}
-            color={curTheme.itemTitleColor}
-            mb={isMobile? "4px" : "8px"}
-          >
+          <Text textStyle={isMobile ? 'R_12R' : 'R_14R'} color={curTheme.itemTitleColor} mb={isMobile ? '4px' : '8px'}>
             {item.title}
           </Text>
           {renderItemMainValue(item)}

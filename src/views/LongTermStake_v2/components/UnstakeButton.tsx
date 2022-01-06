@@ -1,9 +1,11 @@
 import React, { useState, useCallback } from 'react'
 import _ from 'lodash'
 import { useDispatch } from 'react-redux'
+import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
-import { useClaim, usePrivateData, useApr } from 'hooks/useLongTermStake'
+import { Button, useModal, Text, Flex } from '@fingerlabs/definixswap-uikit-v2'
+import { useClaim, useApr } from 'hooks/useLongTermStake'
+import { useAvailableVotes } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
 import { fetchIdData } from 'state/longTermStake'
 
@@ -15,10 +17,22 @@ interface UnstakeButtonProps extends IsMobileType {
   data: AllDataLockType
 }
 
+const StyledButton = styled(Button)`
+  width: 110px;
+  height: 32px;
+  margin-right: 20px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 100%;
+    height: 40px;
+    margin-right: 0px;
+  }
+`
+
 const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   const { t } = useTranslation()
   const [isLoadingClaim, setIsLoadingClaim] = useState<boolean>(false)
-  const { balancevfinix } = usePrivateData()
+  const { availableVotes } = useAvailableVotes()
   const apr = useApr()
 
   const dispatch = useDispatch()
@@ -54,6 +68,11 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
   )
 
   const handleUnstake = (item: AllDataLockType) => {
+    if (Number(availableVotes) < item.lockAmount * item.multiplier) {
+      onPresentUnstakeImpossibleModal()
+      return
+    }
+
     onUnStake(
       _.get(item, 'id'),
       _.get(item, 'level'),
@@ -70,48 +89,49 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
 
   const handleIsunlocked = (item: AllDataLockType) => {
     return item.isPenalty ? (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" disabled>
-        {t('Claimed')}
-      </Button>
+      <StyledButton variant="lightbrown" disabled>
+        <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
+          {t('Claimed')}
+        </Text>
+      </StyledButton>
     ) : (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" disabled>
-        {t('Unstaked')}
-      </Button>
+      <StyledButton variant="lightbrown" disabled>
+        <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
+          {t('Unstaked')}
+        </Text>
+      </StyledButton>
     )
   }
 
   const handleClaimed = (item: AllDataLockType) => {
     return item.canBeClaim ? (
-      <Button
-        width={`${isMobile ? '100%' : '128px'}`}
-        variant="lightbrown"
-        isLoading={isLoadingClaim}
-        onClick={() => handleClaim(_.get(item, 'id'))}
-      >
-        {t('Claim')}
-      </Button>
+      <StyledButton variant="lightbrown" isLoading={isLoadingClaim} onClick={() => handleClaim(_.get(item, 'id'))}>
+        <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
+          {t('Claim')}
+        </Text>
+      </StyledButton>
     ) : (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" disabled>
-        {t('Claim')}
-      </Button>
+      <StyledButton variant="lightbrown" disabled>
+        <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
+          {t('Claim')}
+        </Text>
+      </StyledButton>
     )
   }
 
   const handleCanUnlock = (item: AllDataLockType) => {
     return item.canBeUnlock ? (
-      <Button width={`${isMobile ? '100%' : '128px'}`} variant="lightbrown" onClick={() => handleUnstake(item)}>
-        {t('Unstake')}
-      </Button>
+      <StyledButton variant="lightbrown" onClick={() => handleUnstake(item)}>
+        <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
+          {t('Unstake')}
+        </Text>
+      </StyledButton>
     ) : (
-      <Button
-        width={`${isMobile ? '100%' : '128px'}`}
-        variant="lightbrown"
-        onClick={() =>
-          balancevfinix < item.lockAmount * item.multiplier ? onPresentUnstakeImpossibleModal() : handleUnstake(item)
-        }
-      >
-        {t('Early Unstake')}
-      </Button>
+      <StyledButton variant="lightbrown" onClick={() => handleUnstake(item)}>
+        <Text textStyle={isMobile ? 'R_14B' : 'R_12B'} color="white">
+          {t('Early Unstake')}
+        </Text>
+      </StyledButton>
     )
   }
 
@@ -119,7 +139,7 @@ const UnstakeButton: React.FC<UnstakeButtonProps> = ({ isMobile, data }) => {
     return item.isPenalty ? handleClaimed(item) : handleCanUnlock(item)
   }
 
-  return <>{data.isUnlocked ? handleIsunlocked(data) : handleNotIsunlocked(data)}</>
+  return <Flex alignItems="center">{data.isUnlocked ? handleIsunlocked(data) : handleNotIsunlocked(data)}</Flex>
 }
 
 export default UnstakeButton

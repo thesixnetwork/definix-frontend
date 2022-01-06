@@ -72,7 +72,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
   }, [setError, setInputFinix, setInputHarvest])
 
   return (
-    <Modal title={`${t('Super Stake')}`} onDismiss={onDismiss} mobileFull>
+    <Modal title={next ? t('Confirm Super Stake') : t('Super Stake')} onDismiss={onDismiss} mobileFull>
       <ModalBody isBody>
         <StyledBox mb="S_16">
           {next && <SuperConfirmStake totalFinix={totalFinix} days={days} />}
@@ -98,7 +98,6 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                   inputFinix={inputFinix}
                   setInputFinix={setInputFinix}
                   inputHarvest={inputHarvest}
-                  setInputHarvest={setInputHarvest}
                   error={error}
                   setError={setError}
                   balancefinix={balancefinix}
@@ -112,11 +111,12 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
       <ModalFooter isFooter>
         {next ? (
           <Flex width="100%">
-            <Button width="100%" variant="line" mr="S_8" onClick={() => setNext(false)}>
+            <Button width="100%" height="48px" variant="line" mr="S_8" onClick={() => setNext(false)}>
               {t('Back')}
             </Button>
             <Button
               width="100%"
+              height="48px"
               variant="red"
               ml="S_8"
               isLoading={isLoadingStake === 'loading'}
@@ -126,7 +126,7 @@ const SuperStakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
             </Button>
           </Flex>
         ) : (
-          <Button variant="red" disabled={!!error} onClick={() => setNext(true)}>
+          <Button height="48px" variant="red" disabled={!!error} onClick={() => setNext(true)}>
             {t('Next')}
           </Button>
         )}

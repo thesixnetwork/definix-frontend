@@ -9,9 +9,10 @@ import { AllDataLockType, IsMobileType } from './types'
 
 interface ContentProps extends IsMobileType {
   allDataLock: AllDataLockType[]
+  dataLength: number
 }
 
-const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock }) => {
+const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock, dataLength }) => {
   const { t, i18n } = useTranslation()
 
   const getEndDay = (endDay: string) => {
@@ -23,7 +24,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
 
   return (
     <>
-      {allDataLock.map((item) => {
+      {allDataLock.map((item, idx) => {
         return (
           <Flex flexDirection="column" width="100%" key={item.id}>
             <Flex mb="S_16">
@@ -37,7 +38,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
                   <Flex alignItems="center">
                     <Text mt={`${i18n.language === 'en' && 'S_2'}`} mr="S_4" textStyle="R_12R" color="yellow">
-                      {t('28 days Super Staked')}
+                      {t('Super Stake')}
                     </Text>
                     <Helper
                       text={`${t('28days super stake tooltip')}\n\n
@@ -73,7 +74,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
 
             <UnstakeButton isMobile={isMobile} data={item} />
 
-            <Divider my="S_20" width="100%" backgroundColor="lightGrey50" />
+            {idx + 1 !== dataLength && <Divider my="S_20" width="100%" backgroundColor="lightGrey50" />}
           </Flex>
         )
       })}

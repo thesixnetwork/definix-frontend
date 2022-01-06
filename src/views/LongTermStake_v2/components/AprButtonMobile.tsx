@@ -76,7 +76,7 @@ const AprButtonMobile: React.FC<AprButtonProps> = ({ days, setDays, data, superS
   const { pathname } = useLocation()
 
   const focusDays = useMemo(() => data.find((item) => item.day === days), [days, data])
-  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
+  const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
   const myLongTerm = useCallback((item) => superStakeData.some((v: number) => v === item.level), [superStakeData])
 
   const onClickAPR = (item) => {

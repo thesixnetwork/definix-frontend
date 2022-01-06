@@ -79,7 +79,7 @@ const App: React.FC = () => {
               <Route path="/long-term-stake">
                 <LongTermStakeV2 />
               </Route>
-              <Route path="/super-stake">
+              <Route path="/long-term-stake/super">
                 <SuperStake />
               </Route>
               <Route path="/bridge">

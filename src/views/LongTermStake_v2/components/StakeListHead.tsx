@@ -5,7 +5,8 @@ import styled from 'styled-components'
 
 const StyledFlex = styled(Flex)`
   width: 100%;
-  padding-bottom: 8px;
+  height: 40px;
+  background-color: ${({ theme }) => theme.colors.lightGrey20};
 `
 
 const StakeListHead: React.FC = () => {
@@ -13,18 +14,19 @@ const StakeListHead: React.FC = () => {
 
   return (
     <>
-      <StyledFlex>
-        <Text width="28%" textStyle="R_14R" color="mediumgrey">
+      <Divider width="100%" backgroundColor="lightgrey" opacity="0.5" />
+      <StyledFlex alignItems="center">
+        <Text pl="S_20" width="26%" textStyle="R_12M" color="mediumgrey">
           {t('Stake Period')}
         </Text>
-        <Text width="22%" textStyle="R_14R" color="mediumgrey">
+        <Text width="22%" textStyle="R_12M" color="mediumgrey">
           {t('Amount')}
         </Text>
-        <Text width="50%" textStyle="R_14R" color="mediumgrey">
+        <Text width="52%" textStyle="R_12M" color="mediumgrey">
           {t('Period End')}
         </Text>
       </StyledFlex>
-      <Divider width="100%" backgroundColor="lightgrey" />
+      <Divider width="100%" backgroundColor="lightgrey" opacity="0.5" />
     </>
   )
 }

@@ -58,7 +58,7 @@ const MyBalance: React.FC<MyBalanceProps> = ({ isMobile, lockAmount, balancevfin
       <FlexBalance>
         <FlexFinix>
           <Text mb={`${isMobile ? 'S_2' : 'S_6'}`} textStyle={`${isMobile ? 'R_12R' : 'R_14R'}`} color="mediumgrey">
-            {t('Your vFINIX Balance')}
+            {t('vFINIX Earn')}
           </Text>
           <Flex alignItems="flex-end">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">

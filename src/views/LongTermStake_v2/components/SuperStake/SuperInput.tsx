@@ -11,7 +11,6 @@ interface SuperInputProps extends IsMobileType {
   inputFinix: string
   setInputFinix: React.Dispatch<React.SetStateAction<string>>
   inputHarvest: string
-  setInputHarvest: React.Dispatch<React.SetStateAction<string>>
   error: string
   setError: React.Dispatch<React.SetStateAction<string>>
   balancefinix: number
@@ -40,7 +39,6 @@ const SuperInput: React.FC<SuperInputProps> = ({
   inputFinix,
   setInputFinix,
   inputHarvest,
-  setInputHarvest,
   error,
   setError,
   balancefinix,
@@ -56,20 +54,14 @@ const SuperInput: React.FC<SuperInputProps> = ({
   }
 
   useEffect(() => {
-    if (!inputFinix || !Number(inputFinix)) {
+    if ((!inputFinix || !Number(inputFinix)) && (!inputHarvest || !Number(inputHarvest))) {
       setError('noInput')
     } else if (new BigNumber(inputFinix).dp() > 18) {
       setError('Less than a certain amount')
     } else if (balancefinix < Number(inputFinix)) {
       setError('Insufficient balance')
     } else setError('')
-  }, [balancefinix, inputFinix, setError])
-
-  useEffect(() => {
-    if (inputHarvest) setError('')
-    if (!inputFinix && !inputHarvest) setError('noInput')
-    if (Number(inputHarvest) <= 0) setInputHarvest('')
-  }, [inputFinix, inputHarvest, setError, setInputHarvest])
+  }, [balancefinix, inputFinix, inputHarvest, setError])
 
   return (
     <Flex mt="S_24" flexDirection="column">
@@ -122,7 +114,7 @@ const SuperInput: React.FC<SuperInputProps> = ({
             inputMode="decimal"
             title="Token Amount"
             placeholder="0.00"
-            value={inputHarvest ? numeral(inputHarvest).format('0,0.[00]') : ''}
+            value={Number(inputHarvest) > 0 ? numeral(inputHarvest).format('0,0.[00]') : ''}
             pattern="^[0-9]*[.]?[0-9]*$"
             minLength={1}
             maxLength={79}
