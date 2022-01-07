@@ -98,13 +98,13 @@ const StakeDayRatio: React.FC<StakeDayRatioProps> = ({ isMobile, getTotalFinixLo
                   <Text textStyle="R_14B" color="black">
                     {v.value}
                   </Text>
-                  <Text ml="S_4" mr="S_8" textStyle="R_14R" color="black">
+                  <Text ml="S_4" mr="S_12" textStyle="R_14R" color="black">
                     {t('FINIX')}
                   </Text>
                   <Flex height="10px">
                     <VDivider color="lightgrey" />
                   </Flex>
-                  <Text width="26px" ml="S_8" textStyle="R_14R" color="mediumgrey" textAlign="right">
+                  <Text width="30px" ml="S_8" textStyle="R_14R" color="mediumgrey" textAlign="right">
                     {v.ratio || 0}%
                   </Text>
                 </Flex>
