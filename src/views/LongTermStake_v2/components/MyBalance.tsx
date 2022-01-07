@@ -1,8 +1,8 @@
 import React from 'react'
-import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import { IsMobileType } from './types'
 
@@ -62,7 +62,7 @@ const MyBalance: React.FC<MyBalanceProps> = ({ isMobile, lockAmount, balancevfin
           </Text>
           <Flex alignItems="flex-end">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              {numeral(balancevfinix).format('0,0.[00]')}
+              {getBalanceOverBillion(balancevfinix)}
             </Text>
             <Text ml="S_6" mb="S_2" textStyle="R_12B" color="white">
               {t('vFINIX')}
@@ -76,7 +76,7 @@ const MyBalance: React.FC<MyBalanceProps> = ({ isMobile, lockAmount, balancevfin
           </Text>
           <Flex alignItems="flex-end">
             <Text textStyle={`${isMobile ? 'R_16B' : 'R_16M'}`} color="white">
-              {numeral(lockAmount).format('0,0.[00]')}
+              {getBalanceOverBillion(lockAmount)}
             </Text>
             <Text ml="S_6" mb="S_2" textStyle="R_12B" color="white">
               {t('FINIX')}
