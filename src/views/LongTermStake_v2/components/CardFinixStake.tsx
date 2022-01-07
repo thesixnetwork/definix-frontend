@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'lodash'
-import numeral from 'numeral'
 import { Card, Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr, useAllLock, usePrivateData, useAllowance } from 'hooks/useLongTermStake'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import longTermImgX1 from 'assets/images/img-longterm.png'
 import longTermImgX2 from 'assets/images/img-longterm@2x.png'
@@ -89,11 +89,11 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
     switch (day) {
       case 90:
-        return numeral(Number(balance)).format('0,0.[00]')
+        return getBalanceOverBillion(Number(balance))
       case 180:
-        return numeral(Number(balance) * 2).format('0,0.[00]')
+        return getBalanceOverBillion(Number(balance) * 2)
       case 365:
-        return numeral(Number(balance) * 4).format('0,0.[00]')
+        return getBalanceOverBillion(Number(balance) * 4)
       default:
         return 0
     }
