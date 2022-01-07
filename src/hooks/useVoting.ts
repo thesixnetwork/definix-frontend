@@ -282,17 +282,9 @@ export const useApproveToService = (max) => {
     }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(
-        callContract.methods.approveToService(
-          serviceKey,
-          max,
-        ),
-        account,
-      )
-        .then(resolve)
-        .catch(reject)
+      handleContractExecute(callContract.methods.approveToService(serviceKey, max), account).then(resolve).catch(reject)
     })
-  }, [account, connector, setShowModal,max])
+  }, [account, connector, setShowModal, max])
 
   return { onApprove }
 }
