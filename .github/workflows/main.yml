@@ -70,7 +70,7 @@ jobs:
   #       run: echo "develop"
 
   deploy-develop: 
-    needs: build-develop
+    # needs: build-develop
     runs-on: ubuntu-latest
     if: startsWith( github.ref, 'refs/tags/releases-develop/')
     steps:
