@@ -87,7 +87,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
               {getBalanceOverBillion(amount)}
             </Text>
           </Flex>
-          {canBeUnlock && (
+          {canBeUnlock ? (
             <>
               <Divider mt="S_24" />
               <Flex mt="S_24" flexDirection="column">
@@ -138,6 +138,28 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                       values={{ 'Lock Up Period End': `${getEndDay(periodPenalty)} GMT+9` }}
                       components={[<strong />]}
                     />
+                  </Text>
+                </Flex>
+              </Flex>
+            </>
+          ) : (
+            <>
+              <Divider mt="S_24" />
+              <Flex mt="S_24" flexDirection="column">
+                <Flex mb="S_8" justifyContent="space-between">
+                  <Text textStyle="R_14R" color="mediumgrey">
+                    {t('You will receive')}
+                  </Text>
+                  <Text textStyle="R_14M" color="deepgrey">
+                    {getBalanceOverBillion(amount)} {t('FINIX')}
+                  </Text>
+                </Flex>
+                <Flex mb="S_8" justifyContent="space-between">
+                  <Text textStyle="R_14R" color="mediumgrey">
+                    {t('Recall vFINIX')}
+                  </Text>
+                  <Text textStyle="R_14M" color="deepgrey">
+                    {getBalanceOverBillion(amount * multiplier)} {t('vFINIX')}
                   </Text>
                 </Flex>
               </Flex>
