@@ -32,7 +32,7 @@ const Working = styled(Flex)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 1);
   position: absolute;
   left: 0;
   top: 0;
@@ -41,6 +41,7 @@ const Working = styled(Flex)`
   border-radius: 16px;
   white-space: pre-line;
   text-align: center;
+  padding: 0 20px;
 `
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
@@ -143,11 +144,16 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
           {pathname.indexOf('super') > -1 && (!hasAccount || !balancevfinix) && (
             <Working>
-              <img alt="" width={236} src={longTermImgX1} srcSet={`${longTermImgX2} 2x, ${longTermImgX3} 3x`} />
-              <Text textStyle="R_18M" mt="S_24">
+              <img
+                alt=""
+                width={isMobile ? 200 : 236}
+                src={longTermImgX1}
+                srcSet={`${longTermImgX2} 2x, ${longTermImgX3} 3x`}
+              />
+              <Text textStyle={isMobile ? 'R_16M' : 'R_18M'} mt="S_24">
                 {t('You cannot use Super Stake.')}
               </Text>
-              <Text textStyle="R_14R" mt="S_12">
+              <Text textStyle="R_14R" mt="S_12" color="deepgrey">
                 {t('This feature is only for vFINIX holder')}
               </Text>
             </Working>
