@@ -109,6 +109,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
         const response = await axios.get(`${voteIPFS}/${data.ipfsHash}`)
         proposalArray.push({
           ipfsHash: data.ipfsHash,
+          startTimestamp: data.startTimestamp,
           endTimestamp: data.endTimestamp,
           proposalType: data.proposalType,
           proposer: data.proposer,

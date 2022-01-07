@@ -6,6 +6,10 @@ import CardVoting from './components/CardVoting'
 import VotingInfos from './VotingInfos'
 import VotingProposal from './VotingProposal'
 
+// const TutorailsLink = styled(Link)`
+//   text-decoration-line: underline;
+// `
+
 const Voting: React.FC = () => {
   const { path } = useRouteMatch()
 
@@ -27,7 +31,7 @@ const Voting: React.FC = () => {
                       href="https://sixnetwork.gitbook.io/definix-on-klaytn-en/long-term-staking-pool/how-to-stake-in-long-term-staking-pool"
                       target="_blank"
                     >
-                      How to stake.
+                      How to voting.
                     </TutorailsLink>
                   </div> */}
                 </div>
