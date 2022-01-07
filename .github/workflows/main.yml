@@ -65,7 +65,7 @@ jobs:
         with:
           node-version: '14'
       - name: init node_module
-        run: npm install
+        run: yarn
 
       - name: build development
         run: yarn build:development
