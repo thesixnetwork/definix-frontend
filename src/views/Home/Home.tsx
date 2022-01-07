@@ -128,7 +128,7 @@ const Home: React.FC = () => {
           <MaxWidthLeft>
             <div className="mb-5">
               <Heading as="h1" fontSize="32px !important" className="mb-2" textTransform="uppercase">
-                Home
+                Home test
               </Heading>
               {isLoading ? (
                 <Skeleton
