@@ -11,6 +11,14 @@ interface StakeListPaginationProps extends IsMobileType {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
 }
 
+const StyledFlex = styled(Flex)<{ $isPagination: boolean }>`
+  margin-top: ${({ $isPagination }) => ($isPagination ? '20px' : '0px')};
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 0px;
+  }
+`
+
 const StyledText = styled(Text)`
   margin: 0 2px;
   width: 24px;
@@ -63,36 +71,38 @@ const StakeListPagination: React.FC<StakeListPaginationProps> = ({
 
   return (
     <>
-      <Flex mt={`${isMobile ? 'S_12' : 'S_20'}`}>
-        {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== 1 ? (
-          <StyledArrow mr="S_10" alignItems="center" onClick={() => onClickArrow('left')}>
-            <ArrowLeftGIcon viewBox="0 0 16 16" width={16} height={16} />
-          </StyledArrow>
-        ) : (
-          <div style={{ width: '26px' }} />
-        )}
+      {pageNumbers.length > 1 && (
+        <StyledFlex $isPagination={pageNumbers.length > 1}>
+          {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== 1 ? (
+            <StyledArrow mr="S_10" alignItems="center" onClick={() => onClickArrow('left')}>
+              <ArrowLeftGIcon viewBox="0 0 16 16" width={16} height={16} />
+            </StyledArrow>
+          ) : (
+            <div style={{ width: '26px' }} />
+          )}
 
-        {pageNumbers.map((num) => {
-          return (
-            <StyledText
-              key={num}
-              textStyle={`${currentPage === num ? 'R_14B' : 'R_14R'}`}
-              color={`${currentPage === num ? 'black' : 'mediumgrey'}`}
-              onClick={() => onClickNumber(num)}
-            >
-              {num}
-            </StyledText>
-          )
-        })}
+          {pageNumbers.map((num) => {
+            return (
+              <StyledText
+                key={num}
+                textStyle={`${currentPage === num ? 'R_14B' : 'R_14R'}`}
+                color={`${currentPage === num ? 'black' : 'mediumgrey'}`}
+                onClick={() => onClickNumber(num)}
+              >
+                {num}
+              </StyledText>
+            )
+          })}
 
-        {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== Math.ceil(dataLength / itemPerPage / 5) ? (
-          <StyledArrow ml="S_10" alignItems="center" onClick={() => onClickArrow('right')}>
-            <ArrowRightGIcon viewBox="0 0 16 16" width={16} height={16} />
-          </StyledArrow>
-        ) : (
-          <div style={{ width: '26px' }} />
-        )}
-      </Flex>
+          {dataLength > itemPerPage * 5 && Math.ceil(currentPage / 5) !== Math.ceil(dataLength / itemPerPage / 5) ? (
+            <StyledArrow ml="S_10" alignItems="center" onClick={() => onClickArrow('right')}>
+              <ArrowRightGIcon viewBox="0 0 16 16" width={16} height={16} />
+            </StyledArrow>
+          ) : (
+            <div style={{ width: '26px' }} />
+          )}
+        </StyledFlex>
+      )}
     </>
   )
 }

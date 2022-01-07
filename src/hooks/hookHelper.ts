@@ -5,6 +5,9 @@ import VaultFacet from 'config/abi/VaultFacet.json'
 import RewardFacet from 'config/abi/RewardFacet.json'
 import VaultPenaltyFacet from 'config/abi/VaultPenaltyFacet.json'
 import VaultTopUpFeatureFacet from 'config/abi/VaultTopUpFeatureFacet.json'
+import IProposalFacet from 'config/abi/IProposalFacet.json'
+import IUsageFacet from 'config/abi/IUsageFacet.json'
+import IVotingFacet from 'config/abi/IVotingFacet.json'
 
 export const getAbiHerodotusByName = (methodName: string) =>
   herodotus.find((abi) => abi.type === 'function' && abi.name === methodName)
@@ -26,3 +29,12 @@ export const getAbiVaultPenaltyFacetByName = (methodName: string) =>
 
 export const VaultTopUpFeatureFacetByName = (methodName: string) =>
   VaultTopUpFeatureFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
+
+export const getAbiIProposalFacetByName = (methodName: string) =>
+  IProposalFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
+
+export const getAbiIUsageFacetByName = (methodName: string) =>
+  IUsageFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)
+
+export const getAbiIVotingFacetByName = (methodName: string) =>
+  IVotingFacet.abi.find((abi) => abi.type === 'function' && abi.name === methodName)

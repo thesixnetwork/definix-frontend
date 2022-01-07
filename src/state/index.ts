@@ -9,6 +9,7 @@ import achievementsReducer from './achievements'
 import rebalanceReducer from './rebalance'
 import walletReducer from './wallet'
 import longTermStake from './longTermStake'
+import voting from './voting'
 
 export default configureStore({
   devTools: process.env.NODE_ENV !== 'production',
@@ -23,6 +24,7 @@ export default configureStore({
     rebalances: rebalanceReducer,
     wallet: walletReducer,
     longTerm: longTermStake,
+    voting,
   },
   middleware: [...getDefaultMiddleware({ serializableCheck: false })],
 })

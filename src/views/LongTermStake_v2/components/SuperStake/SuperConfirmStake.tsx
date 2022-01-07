@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation, Trans } from 'react-i18next'
 import { Flex, Text, Divider, ImgTokenFinixIcon, AlertIcon } from '@fingerlabs/definixswap-uikit-v2'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 interface SuperConfirmStakeProps {
   totalFinix: number
@@ -40,11 +40,11 @@ const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days 
 
     switch (day) {
       case 90:
-        return numeral(balance).format('0,0.[00]')
+        return getBalanceOverBillion(balance)
       case 180:
-        return numeral(balance * 2).format('0,0.[00]')
+        return getBalanceOverBillion(balance * 2)
       case 365:
-        return numeral(balance * 4).format('0,0.[00]')
+        return getBalanceOverBillion(balance * 4)
       default:
         return 0
     }
@@ -60,7 +60,7 @@ const SuperConfirmStake: React.FC<SuperConfirmStakeProps> = ({ totalFinix, days 
           </Text>
         </Flex>
         <Text textStyle="R_16R" color="black">
-          {numeral(Number(amount)).format('0,0.[00]')}
+          {getBalanceOverBillion(Number(amount))}
         </Text>
       </Flex>
       <Divider />

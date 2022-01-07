@@ -319,7 +319,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                     <Coin symbol="VFINIX" size="24px" />
                   </Flex>
                   <Text textStyle="R_14M" color="black" ml="26px">
-                    VFINIX
+                    {t('Long-term Stake')}
                   </Text>
                 </Flex>
                 <Flex style={{ position: 'absolute', right: '5px' }}>
@@ -327,7 +327,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                     {`${numeral(finixEarn).format('0,0.00')}`}
                   </Text>
                   <Text textStyle="R_14R" color="mediumgrey" ml="S_6">
-                    FINIX
+                    {t('FINIX')}
                   </Text>
                 </Flex>
               </StyledCheckboxLabel>
@@ -377,7 +377,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                       {new BigNumber(d.userData.earnings).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}{' '}
                     </Text>
                     <Text textStyle="R_14R" color="mediumgrey" ml="S_6">
-                      FINIX
+                      {t('FINIX')}
                     </Text>
                   </Flex>
                 </StyledCheckboxLabel>
@@ -425,7 +425,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
                       {new BigNumber(d.userData.pendingReward).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
                     </Text>
                     <Text textStyle="R_14R" color="mediumgrey" ml="S_6">
-                      FINIX
+                      {t('FINIX')}
                     </Text>
                   </Flex>
                 </StyledCheckboxLabel>

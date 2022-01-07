@@ -1,17 +1,18 @@
 import React from 'react'
-import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
 
 interface ContentProps extends IsMobileType {
   allDataLock: AllDataLockType[]
+  dataLength: number
 }
 
-const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock }) => {
+const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock, dataLength }) => {
   const { t, i18n } = useTranslation()
 
   const getEndDay = (endDay: string) => {
@@ -23,7 +24,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
 
   return (
     <>
-      {allDataLock.map((item) => {
+      {allDataLock.map((item, idx) => {
         return (
           <Flex flexDirection="column" width="100%" key={item.id}>
             <Flex mb="S_16">
@@ -37,7 +38,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                 {item.topup.some((topup: any) => Number(topup) === item.id) && (
                   <Flex alignItems="center">
                     <Text mt={`${i18n.language === 'en' && 'S_2'}`} mr="S_4" textStyle="R_12R" color="yellow">
-                      {t('28 days Super Staked')}
+                      {t('Super Stake')}
                     </Text>
                     <Helper
                       text={`${t('28days super stake tooltip')}\n
@@ -52,7 +53,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
                   {t('Amount')}
                 </Text>
                 <Text textStyle="R_14R" color="black">
-                  {numeral(item.lockAmount).format('0, 0.[00]')} {t('FINIX')}
+                  {getBalanceOverBillion(item.lockAmount)} {t('FINIX')}
                 </Text>
               </Flex>
             </Flex>
@@ -73,7 +74,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock 
 
             <UnstakeButton isMobile={isMobile} data={item} />
 
-            <Divider my="S_20" width="100%" backgroundColor="lightGrey50" />
+            {idx + 1 !== dataLength && <Divider my="S_20" width="100%" backgroundColor="lightGrey50" />}
           </Flex>
         )
       })}

@@ -1,8 +1,8 @@
 import React from 'react'
-import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import { IsMobileType } from '../types'
 
@@ -19,11 +19,11 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFin
 
     switch (day) {
       case 90:
-        return numeral(balance).format('0,0.[00]')
+        return getBalanceOverBillion(balance)
       case 180:
-        return numeral(balance * 2).format('0,0.[00]')
+        return getBalanceOverBillion(balance * 2)
       case 365:
-        return numeral(balance * 4).format('0,0.[00]')
+        return getBalanceOverBillion(balance * 4)
       default:
         return 0
     }
@@ -60,7 +60,7 @@ const SuperEstimate: React.FC<EstimateVFinixProps> = ({ isMobile, days, totalFin
           </Text>
           <Flex>
             <Text textStyle="R_14M" color="deepgrey">
-              {numeral(totalFinix).format('0,0.[00]')}
+              {getBalanceOverBillion(totalFinix)}
             </Text>
             <Text ml="S_4" textStyle="R_14M" color="deepgrey">
               {t('FINIX')}

@@ -44,17 +44,17 @@ const TabStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
   return (
     <Tabs height={`${isMobile ? '56px' : '66px'}`}>
-      <Tab to="long-term-stake" $mobile={isMobile} $isSelected={pathname === '/long-term-stake'}>
+      <Tab to="/long-term-stake" $mobile={isMobile} $isSelected={pathname === '/long-term-stake'}>
         <StyledText $mobile={isMobile} $isSelected={pathname === '/long-term-stake'}>
           {t('Long-term Stake')}
         </StyledText>
         <StyledBorderBottom $isSelected={pathname === '/long-term-stake'} />
       </Tab>
-      <Tab to="super-stake" $mobile={isMobile} $isSelected={pathname === '/super-stake'}>
-        <StyledText $mobile={isMobile} $isSelected={pathname === '/super-stake'}>
+      <Tab to="/long-term-stake/super" $mobile={isMobile} $isSelected={pathname.indexOf('super') > -1}>
+        <StyledText $mobile={isMobile} $isSelected={pathname.indexOf('super') > -1}>
           {t('Super Stake')}
         </StyledText>
-        <StyledBorderBottom $isSelected={pathname === '/super-stake'} />
+        <StyledBorderBottom $isSelected={pathname.indexOf('super') > -1} />
       </Tab>
     </Tabs>
   )

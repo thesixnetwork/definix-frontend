@@ -19,7 +19,7 @@ interface VFinixProps extends IsMobileType {
 const AprButton: React.FC<VFinixProps> = ({ isMobile, days, setDays, data, setPossibleSuperStake }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
+  const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
   const [superStakeData, setSuperStakeData] = useState<number[]>([])
   const lockTopUp = useLockTopup()
   const { allLock } = useAllDataLock()

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import _ from 'lodash'
-import numeral from 'numeral'
 import moment from 'moment'
 import BigNumber from 'bignumber.js'
 import { useTranslation, Trans } from 'react-i18next'
@@ -20,6 +19,7 @@ import { useLock, useLockTopup, useAllDataLock } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 interface ModalProps {
   balance: string
@@ -51,7 +51,7 @@ const StakeModal: React.FC<ModalProps> = ({
     () => new BigNumber(parseFloat(balance)).times(new BigNumber(10).pow(18)).toFixed(),
     [balance],
   )
-  const isSuperStake = useMemo(() => pathname === '/super-stake', [pathname])
+  const isSuperStake = useMemo(() => pathname.indexOf('super') > -1, [pathname])
 
   const getLockDay = (day: number) => {
     switch (day) {
@@ -169,7 +169,7 @@ const StakeModal: React.FC<ModalProps> = ({
               </Text>
             </Flex>
             <Text textStyle="R_16R" color="black">
-              {numeral(Number(balance)).format('0,0.[00]')}
+              {getBalanceOverBillion(Number(balance))}
             </Text>
           </Flex>
           <Divider />
@@ -221,6 +221,7 @@ const StakeModal: React.FC<ModalProps> = ({
       </ModalBody>
       <ModalFooter isFooter>
         <Button
+          height="48px"
           isLoading={isSuperStake ? superLoadings === 'loading' : loadings === 'loading'}
           onClick={isSuperStake ? onClickSuperStake : onClickStake}
         >

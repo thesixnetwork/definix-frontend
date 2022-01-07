@@ -14,8 +14,9 @@ import {
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { usePrivateData } from 'hooks/useLongTermStake'
+import { useAvailableVotes } from 'hooks/useVoting'
 import styled from 'styled-components'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 interface ModalProps {
   days: number
@@ -35,7 +36,7 @@ const StyledBox = styled(Box)`
 
 const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multiplier, onDismiss = () => null }) => {
   const { t } = useTranslation()
-  const { balancevfinix } = usePrivateData()
+  const { availableVotes } = useAvailableVotes()
 
   return (
     <Modal title={`${t('Unstaking Impossible')}`} onDismiss={onDismiss} mobileFull>
@@ -62,7 +63,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
               </Flex>
             </Flex>
             <Text mt="S_4" textStyle="R_16R" color="black">
-              {numeral(amount).format('0, 0.[00]')}
+              {getBalanceOverBillion(amount)}
             </Text>
           </Flex>
           <Divider mt="S_24" />
@@ -71,7 +72,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
               <AlertIcon viewBox="0 0 16 16" width="16px" height="16px" />
             </Flex>
             <Text ml="S_4" textStyle="R_14R" color="red" width="396px">
-              {t(`You can't unstake due to`)}
+              {t(`You can’t unstake due to`)}
             </Text>
           </Flex>
           <Flex mt="S_20" flexDirection="column">
@@ -80,7 +81,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
                 {t('Recall vFINIX')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
-                {numeral(amount * multiplier).format('0, 0.[00]')} {t('vFINIX')}
+                {getBalanceOverBillion(amount * multiplier)} {t('vFINIX')}
               </Text>
             </Flex>
             <Flex justifyContent="space-between">
@@ -88,14 +89,16 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
                 {t('Your balance')}
               </Text>
               <Text textStyle="R_14M" color="red">
-                {numeral(balancevfinix).format('0, 0.[00]')} {t('vFINIX')}
+                {getBalanceOverBillion(Number(availableVotes))} {t('vFINIX')}
               </Text>
             </Flex>
           </Flex>
         </StyledBox>
       </ModalBody>
       <ModalFooter isFooter>
-        <Button onClick={onDismiss}>{t('Close')}</Button>
+        <Button height="48px" onClick={onDismiss}>
+          {t('Close')}
+        </Button>
       </ModalFooter>
     </Modal>
   )
