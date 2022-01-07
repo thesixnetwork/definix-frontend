@@ -18,6 +18,7 @@ import {
 import { useUnstakeId, useUnLock } from 'hooks/useLongTermStake'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 interface ModalProps {
   onDismiss?: () => any
@@ -83,7 +84,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
               </Flex>
             </Flex>
             <Text mt="S_4" textStyle="R_16R" color="black">
-              {numeral(amount).format('0, 0.[00]')}
+              {getBalanceOverBillion(amount)}
             </Text>
           </Flex>
           {canBeUnlock && (
@@ -116,7 +117,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                     {t('Recall vFINIX')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(amount * multiplier).format('0, 0.[00]')} {t('vFINIX')}
+                    {getBalanceOverBillion(amount * multiplier)} {t('vFINIX')}
                   </Text>
                 </Flex>
                 <Flex mb="S_8" justifyContent="space-between">
@@ -124,7 +125,7 @@ const UnstakeModal: React.FC<ModalProps> = ({ onDismiss = () => null }) => {
                     {t('You will receive')}
                   </Text>
                   <Text textStyle="R_14M" color="deepgrey">
-                    {numeral(amount - (penaltyRate * amount) / 100).format('0, 0.[00]')} {t('FINIX')}
+                    {getBalanceOverBillion(amount - (penaltyRate * amount) / 100)} {t('FINIX')}
                   </Text>
                 </Flex>
                 <Flex mt="S_12" alignItems="flex-start">

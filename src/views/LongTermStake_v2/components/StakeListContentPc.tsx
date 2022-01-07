@@ -1,8 +1,8 @@
 import React from 'react'
-import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
@@ -45,7 +45,7 @@ const StakeListContentPc: React.FC<ContentProps> = ({ isMobile, allDataLock }) =
                 )}
               </Flex>
               <Text width="22%" textStyle="R_14R" color="black">
-                {numeral(item.lockAmount).format('0, 0.[00]')}
+                {getBalanceOverBillion(item.lockAmount)}
               </Text>
               <Flex width="52%" justifyContent="space-between">
                 <Flex flexDirection="column" justifyContent="center">
