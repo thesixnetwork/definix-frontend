@@ -5,8 +5,8 @@ import React, { useMemo } from 'react'
 import { CurrencySearch } from './CurrencySearch'
 
 interface CurrencySearchModalProps {
-  isOpen?: boolean;
-  onDismiss?: () => void;
+  // isOpen?: boolean;
+  onDismiss?: () => void
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
@@ -15,13 +15,13 @@ interface CurrencySearchModalProps {
 }
 
 export default function CurrencySearchModal({
-  isOpen,
+  // isOpen,
   onDismiss,
   onCurrencySelect,
   selectedCurrency,
   otherSelectedCurrency,
 }: CurrencySearchModalProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
@@ -29,10 +29,7 @@ export default function CurrencySearchModal({
   return (
     <Modal title={t('Select a token')} mobileFull onDismiss={onDismiss}>
       <ModalBody isBody>
-        <Box
-          width={isMobile ? "100%" : "416px"}
-          height={isMobile ? "100vh" : "auto"}
-        >
+        <Box width={isMobile ? '100%' : '416px'} height={isMobile ? '100vh' : 'auto'}>
           <CurrencySearch
             onCurrencySelect={onCurrencySelect}
             selectedCurrency={selectedCurrency}

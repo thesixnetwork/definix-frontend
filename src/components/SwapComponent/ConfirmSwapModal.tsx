@@ -7,7 +7,7 @@ import { useToast } from 'state/toasts/hooks'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import KlaytnScopeLink from 'components/KlaytnScopeLink'
 import { useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
-import { ALLOWED_PRICE_IMPACT_HIGH, BLOCKED_PRICE_IMPACT_NON_EXPERT } from 'constants/index'
+import { ALLOWED_PRICE_IMPACT_HIGH, BLOCKED_PRICE_IMPACT_NON_EXPERT } from 'config/constants/index'
 import { computeTradePriceBreakdown } from 'utils/prices'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
@@ -51,7 +51,7 @@ export default function ConfirmSwapModal({
 
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
-    [originalTrade, trade]
+    [originalTrade, trade],
   )
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
 
@@ -80,7 +80,7 @@ export default function ConfirmSwapModal({
           t('{{Action}} Complete', {
             Action: t('actionSwap'),
           }),
-          <KlaytnScopeLink hash={hash} />
+          <KlaytnScopeLink hash={hash} />,
         )
         onDismiss()
         onDismissModal()
@@ -90,7 +90,7 @@ export default function ConfirmSwapModal({
         toastError(
           t('{{Action}} Failed', {
             Action: t('actionSwap'),
-          })
+          }),
         )
         onDismiss()
         onDismissModal()

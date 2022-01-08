@@ -93,7 +93,7 @@ const StyledDivider = styled(Divider)`
 
 const Withdraw: React.FC<{
   farm: FarmWithStakedValue
-  removed: boolean
+  // removed: boolean
   lpTokenName: string
   myLiquidityPrice: BigNumber
   addLiquidityUrl: string

@@ -98,6 +98,8 @@ export interface FarmConfig {
   firstToken?: any
   secondToken?: any
   tag?: string
+  firstSymbol?: string
+  secondSymbol?: string
 }
 
 export interface LongTermStakeConfig {
@@ -185,4 +187,4 @@ export type Campaign = {
   badge?: string
 }
 
-export type ConnectorId = "injected" | "klip"
+export type ConnectorId = 'injected' | 'klip'

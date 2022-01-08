@@ -88,7 +88,7 @@ const HarvestActionAirdrop: React.FC<{
   isBnbPool?: boolean
   needsApprovalContract: boolean
   sousId?: number
-  farm?: any
+  // farm?: any
   earnings: BigNumber
   tokenName: string
 }> = ({
@@ -96,6 +96,7 @@ const HarvestActionAirdrop: React.FC<{
   isOldSyrup = false,
   isBnbPool = false,
   sousId,
+  // farm,
   earnings,
   needsApprovalContract,
   tokenName,

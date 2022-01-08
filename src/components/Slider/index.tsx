@@ -1,4 +1,4 @@
-import { Box, ColorStyles, Flex, Text, textStyle } from '@fingerlabs/definixswap-uikit-v2'
+import { Box, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import React, { ChangeEvent, useCallback, useMemo, InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
 
@@ -79,7 +79,7 @@ const Slider: React.FC<SliderProps> = ({ min, max, value, onValueChanged, valueL
         onValueChanged(parseInt(target.value, 10))
       }
     },
-    [onValueChanged]
+    [onValueChanged],
   )
   const progressPercentage = useMemo(() => (value / max) * 100, [value, max])
   const isCurrentValueMaxValue = useMemo(() => value === max, [value, max])

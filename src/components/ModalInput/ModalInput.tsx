@@ -36,7 +36,18 @@ const ModalInput: React.FC<{
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
-}> = ({ type, max, onChange, value, onSelectBalanceRateButton, onClickButton, buttonName }) => {
+}> = ({
+  addLiquidityUrl,
+  placeholder,
+  symbol,
+  type,
+  max,
+  onChange,
+  value,
+  onSelectBalanceRateButton,
+  onClickButton,
+  buttonName,
+}) => {
   const { t } = useTranslation()
 
   const maxValue = useMemo(() => getBalanceNumber(max), [max])

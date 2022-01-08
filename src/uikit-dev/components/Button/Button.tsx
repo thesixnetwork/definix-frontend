@@ -22,12 +22,4 @@ const Button: React.FC<ButtonProps> = ({ startIcon, endIcon, children, external,
   )
 }
 
-Button.defaultProps = {
-  variant: variants.PRIMARY,
-  size: sizes.MD,
-  external: false,
-  isLoading: false,
-  disabled: false,
-}
-
 export default Button

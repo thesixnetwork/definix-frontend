@@ -46,3 +46,23 @@ const useI18n = () => {
 }
 
 export default useI18n
+
+// import { useContext } from 'react'
+// import { TranslationsContext } from 'hooks/TranslationsContext'
+// import { getTranslation } from 'utils/translateTextHelpers'
+
+// const useI18n = () => {
+//   const { translations } = useContext(TranslationsContext)
+
+//   return (translationId: number, fallback: string) => {
+//     if (translations[0] === 'error') {
+//       return fallback
+//     }
+//     if (translations.length > 0) {
+//       return getTranslation(translations, translationId, fallback)
+//     }
+//     return fallback
+//   }
+// }
+
+// export default useI18n

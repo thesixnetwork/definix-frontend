@@ -30,12 +30,12 @@ const SwapTokenInfo = ({
   isInput,
   trade,
   showAcceptChanges,
-  priceImpactSeverity,
-}: {
+}: // priceImpactSeverity,
+{
   isInput: boolean
   trade: Trade
   showAcceptChanges?: boolean
-  priceImpactSeverity?: 0 | 1 | 2 | 3 | 4
+  // priceImpactSeverity?: 0 | 1 | 2 | 3 | 4
 }) => {
   return (
     <Flex justifyContent="space-between" alignItems="center" height="60px">
@@ -82,12 +82,12 @@ export default function SwapModalHeader({
   onAcceptChanges?: () => void
 }) {
   const { t } = useTranslation()
-  const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
-    trade,
-    allowedSlippage,
-  ])
+  // const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [
+  //   trade,
+  //   allowedSlippage,
+  // ])
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  // const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   return (
     <Flex flexDirection="column">
@@ -100,7 +100,7 @@ export default function SwapModalHeader({
           isInput={false}
           trade={trade}
           showAcceptChanges={showAcceptChanges}
-          priceImpactSeverity={priceImpactSeverity}
+          // priceImpactSeverity={priceImpactSeverity}
         />
       </Flex>
 

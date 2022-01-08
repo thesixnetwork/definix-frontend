@@ -145,7 +145,7 @@ const Menu: React.FC<NavProps> = ({
   account,
   login,
   logout,
-  isDark,
+  isDark = false,
   toggleTheme,
   langs,
   setLang,
@@ -233,12 +233,7 @@ const Menu: React.FC<NavProps> = ({
     <Wrapper>
       <StyledNav showMenu={showMenu}>
         <Flex alignItems="center">
-          <Logo
-            isPushed={isPushed}
-            togglePush={() => setIsPushed((prevState: boolean) => !prevState)}
-            isDark={isDark}
-            href={homeLink?.href ?? '/'}
-          />
+          <Logo togglePush={() => setIsPushed((prevState: boolean) => !prevState)} href={homeLink?.href ?? '/'} />
           {!isMobile && <SwitchNetwork />}
         </Flex>
 

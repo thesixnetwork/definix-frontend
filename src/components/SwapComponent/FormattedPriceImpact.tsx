@@ -1,7 +1,7 @@
 import { useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import { Percent } from 'definixswap-sdk'
 import React, { useMemo } from 'react'
-import { ONE_BIPS } from '../../constants'
+import { ONE_BIPS } from 'config/constants'
 import { warningSeverity } from '../../utils/prices'
 import { ErrorText } from './styleds'
 
@@ -12,11 +12,11 @@ export default function FormattedPriceImpact({ priceImpact }: { priceImpact?: Pe
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
   return (
-    <ErrorText 
+    <ErrorText
       fontSize="14px"
       fontWeight="500"
       severity={warningSeverity(priceImpact)}
-      textAlign={isMobile ? "left" : "right"}
+      textAlign={isMobile ? 'left' : 'right'}
     >
       {priceImpact ? (priceImpact.lessThan(ONE_BIPS) ? '< 0.01%' : `${priceImpact.toFixed(2)}%`) : '-'}
     </ErrorText>

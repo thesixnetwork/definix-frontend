@@ -2,7 +2,7 @@ import React from 'react'
 import { TagProps } from './types'
 import { StyledTag } from './StyledTag'
 
-const Tag: React.FC<TagProps> = ({ startIcon, endIcon, children, ...props }) => (
+const Tag: React.FC<TagProps> = ({ variant = 'primary', outline = false, startIcon, endIcon, children, ...props }) => (
   <StyledTag {...props}>
     {React.isValidElement(startIcon) &&
       React.cloneElement(startIcon, {
@@ -15,10 +15,5 @@ const Tag: React.FC<TagProps> = ({ startIcon, endIcon, children, ...props }) => 
       })}
   </StyledTag>
 )
-
-Tag.defaultProps = {
-  variant: 'primary',
-  outline: false,
-}
 
 export default Tag

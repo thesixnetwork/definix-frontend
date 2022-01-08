@@ -2,14 +2,18 @@ import React, { lazy, Suspense, useEffect } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 
-import { Route, Router, Switch } from 'react-router-dom'
+import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
-import history from './routerHistory'
 import sdkConfig from './sdkconfig'
+
+import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/Liquidity/redirects'
+import RemoveLiquidity from './views/RemoveLiquidity'
+import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
+import { RedirectToSwap } from './views/Swap/redirects'
 
 Config.configure(sdkConfig)
 
@@ -24,6 +28,8 @@ const MyInvestments = lazy(() => import('./views/MyInvestments'))
 const LongTermStakeV2 = lazy(() => import('./views/LongTermStake_v2'))
 const SuperStake = lazy(() => import('./views/LongTermStake_v2/SuperStake'))
 const Bridge = lazy(() => import('./views/Bridge'))
+const Swap = lazy(() => import('./views/Swap'))
+const Liquidity = lazy(() => import('./views/Liquidity'))
 
 // This config is required for number formating
 BigNumber.config({
@@ -54,14 +60,32 @@ const App: React.FC = () => {
   useFetchPublicData()
   useFetchProfile()
 
+  // const { account } = useCaverJsReact()
+  // const { login } = useCaverJsReactForWallet()
+
+  // // wallet
+  // const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
+  // useEffect(() => {
+  //   if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
+  //     login('injected')
+  //   } else if (
+  //     !account &&
+  //     window.localStorage.getItem('accountStatus') &&
+  //     window.localStorage.getItem('userAccount') &&
+  //     checkConnector('klip')
+  //   ) {
+  //     login('klip')
+  //   }
+  // }, [account, login])
+
   return (
-    <Router history={history}>
+    <BrowserRouter>
       <GlobalStyle />
       <Suspense fallback={<></>}>
         <Menu>
           <Suspense fallback={<Loading />}>
             <Switch>
-              <Route path="/" exact>
+              <Route path="/">
                 <Home />
               </Route>
               <Route path="/pool">
@@ -85,7 +109,31 @@ const App: React.FC = () => {
               <Route path="/bridge">
                 <Bridge />
               </Route>
-
+              {/* <Route exact path="/" component={RedirectPathToSwapOnly} /> */}
+              <Route path="/swap">
+                <Swap />
+              </Route>
+              <Route path="/swap/:currencyIdA/:currencyIdB">
+                <RedirectToSwap />
+              </Route>
+              <Route path="/swap/:currencyIdA">
+                <RedirectToSwap />
+              </Route>
+              <Route path="/liquidity">
+                <Liquidity />
+              </Route>
+              <Route path="/liquidity/remove/:currencyIdA/:currencyIdB">
+                <RemoveLiquidity />
+              </Route>
+              <Route path="/liquidity/add/:currencyIdA">
+                <RedirectOldAddLiquidityPathStructure />
+              </Route>
+              <Route path="/liquidity/add/:currencyIdA/:currencyIdB">
+                <RedirectDuplicateTokenIds />
+              </Route>
+              <Route path="/liquidity/remove/:tokens">
+                <RedirectOldRemoveLiquidityPathStructure />
+              </Route>
               {/* 404 */}
               <Route>
                 <Error />
@@ -95,7 +143,7 @@ const App: React.FC = () => {
         </Menu>
         <ToastListener />
       </Suspense>
-    </Router>
+    </BrowserRouter>
   )
 }
 

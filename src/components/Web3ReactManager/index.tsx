@@ -3,7 +3,7 @@ import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 
 import { network } from '../../connectors'
 import { useEagerConnect, useInactiveListener } from '../../hooks'
-import { NetworkContextName } from '../../constants'
+import { NetworkContextName } from 'config/constants'
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
   const { active } = useCaverJsReact()

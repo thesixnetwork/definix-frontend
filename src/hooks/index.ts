@@ -1,11 +1,11 @@
 import { CaverProvider } from 'finix-caver-providers'
 import { useCaverJsReact as useCaverJsReactCore } from '@sixnetwork/caverjs-react-core'
 // eslint-disable-next-line import/no-unresolved
-import { CaverJsReactContextInterface } from '@sixnetwork/caverjs-react-core/dist/types'
 import { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
+import { NetworkContextName } from 'config/constants'
+
 import { injected } from '../connectors'
-import { NetworkContextName } from '../constants'
 
 export function useActiveWeb3React() {
   const context = useCaverJsReactCore<CaverProvider>()
@@ -16,7 +16,7 @@ export function useActiveWeb3React() {
 export function useEagerConnect() {
   const { activate, active } = useCaverJsReactCore() // specifically using useCaverJsReactCore because of what this hook does
   const [tried, setTried] = useState(false)
-  const isInjectConnect = () => window.localStorage.getItem("connector") === "injected"
+  const isInjectConnect = () => window.localStorage.getItem('connector') === 'injected'
   useEffect(() => {
     injected.isAuthorized().then((isAuthorized) => {
       const hasSignedIn = window.localStorage.getItem('accountStatus')
@@ -24,7 +24,7 @@ export function useEagerConnect() {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })
-      } else if (isMobile && window.klaytn && hasSignedIn && isInjectConnect()) {
+      } else if (isMobile && window?.klaytn && hasSignedIn && isInjectConnect()) {
         activate(injected, undefined, true).catch(() => {
           setTried(true)
         })

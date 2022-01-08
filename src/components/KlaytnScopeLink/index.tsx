@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
-import { Text, ArrowRightGIcon, ColorStyles, Box } from '@fingerlabs/definixswap-uikit-v2'
+import { Text, ArrowRightGIcon, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 
 interface IProps {
