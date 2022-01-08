@@ -2,7 +2,7 @@ import { createAction } from '@reduxjs/toolkit'
 import { TransactionResponse } from '@ethersproject/providers'
 
 export interface KlaytnTransactionResponse extends TransactionResponse {
-  transactionHash: string;
+  transactionHash: string
 }
 
 export interface SerializableTransactionReceipt {

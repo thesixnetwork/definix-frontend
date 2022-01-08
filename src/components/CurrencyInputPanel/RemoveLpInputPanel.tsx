@@ -57,14 +57,14 @@ const RemoveLpInputPanel: React.FC<IProps> = ({
         onUserInput(nextUserInput)
       }
     },
-    [onUserInput]
+    [onUserInput],
   )
 
   const onChangeInput = useCallback(
     (event) => {
       enforcer(event.target.value.replace(/,/g, '.'))
     },
-    [enforcer]
+    [enforcer],
   )
 
   const decimals = useMemo(() => 18, [])

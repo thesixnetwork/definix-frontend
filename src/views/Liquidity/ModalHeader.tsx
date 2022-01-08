@@ -1,33 +1,24 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { ColorStyles, Flex, Text, Box, Lp } from '@fingerlabs/definixswap-uikit-v2';
-import { Field } from 'state/mint/actions';
-import { Currency, TokenAmount } from 'definixswap-sdk';
+import React from 'react'
+import { useTranslation } from 'react-i18next'
+import { ColorStyles, Flex, Text, Box, Lp } from '@fingerlabs/definixswap-uikit-v2'
+import { Field } from 'state/mint/actions'
+import { Currency, TokenAmount } from 'definixswap-sdk'
 
 interface IProps {
-  noLiquidity: boolean;
+  noLiquidity: boolean
   currencies: {
-    CURRENCY_A?: Currency;
-    CURRENCY_B?: Currency;
-  };
-  liquidityMinted: TokenAmount;
+    CURRENCY_A?: Currency
+    CURRENCY_B?: Currency
+  }
+  liquidityMinted: TokenAmount
 }
 
-const ModalHeader: React.FC<IProps> = ({
-  noLiquidity,
-  currencies,
-  liquidityMinted,
-}) => {
-  const { t } = useTranslation();
+const ModalHeader: React.FC<IProps> = ({ noLiquidity, currencies, liquidityMinted }) => {
+  const { t } = useTranslation()
   return (
     <Flex flexDirection="column">
       {!noLiquidity && (
-        <Flex
-          justifyContent="space-between"
-          alignItems="center"
-          width="100%"
-          p="14px 0px"
-        >
+        <Flex justifyContent="space-between" alignItems="center" width="100%" p="14px 0px">
           <Flex alignItems="center">
             <Box mr="10px">
               <Lp
@@ -49,12 +40,7 @@ const ModalHeader: React.FC<IProps> = ({
           <Text textStyle="R_16M" color={ColorStyles.DEEPGREY}>
             {t('You are creating a pool')}
           </Text>
-          <Flex
-            justifyContent="space-between"
-            alignItems="center"
-            width="100%"
-            p="14px 0px"
-          >
+          <Flex justifyContent="space-between" alignItems="center" width="100%" p="14px 0px">
             <Flex alignItems="center">
               <Box mr="10px">
                 <Lp
@@ -73,4 +59,4 @@ const ModalHeader: React.FC<IProps> = ({
   )
 }
 
-export default React.memo(ModalHeader);
+export default React.memo(ModalHeader)

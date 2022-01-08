@@ -14,7 +14,7 @@ const Liquidity: React.FC = () => {
       i18n.language === 'ko'
         ? 'https://sixnetwork.gitbook.io/definix-on-klaytn-kr/exchange/how-to-add-liquidity'
         : 'https://sixnetwork.gitbook.io/definix-on-klaytn-en/exchange/how-to-add-liquidity',
-    [i18n.language]
+    [i18n.language],
   )
 
   const tabNames = useMemo(() => [t('Add'), t('Remove')], [t])

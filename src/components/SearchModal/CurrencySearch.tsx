@@ -93,7 +93,7 @@ export function CurrencySearch({
       onCurrencySelect(currency)
       onDismiss()
     },
-    [onDismiss, onCurrencySelect] // , audioPlay]
+    [onDismiss, onCurrencySelect], // , audioPlay]
   )
 
   // manage focus on modal show
@@ -120,13 +120,13 @@ export function CurrencySearch({
         }
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, searchQuery]
+    [filteredSortedTokens, handleCurrencySelect, searchQuery],
   )
 
-  const currencies = useMemo(() => (showETH ? [Currency.ETHER, ...filteredSortedTokens] : [...filteredSortedTokens]), [
-    filteredSortedTokens,
-    showETH,
-  ])
+  const currencies = useMemo(
+    () => (showETH ? [Currency.ETHER, ...filteredSortedTokens] : [...filteredSortedTokens]),
+    [filteredSortedTokens, showETH],
+  )
 
   return (
     <Flex flexDirection="column" height="100%">

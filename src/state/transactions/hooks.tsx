@@ -16,7 +16,6 @@ export function useTransactionAdder(): (
     approval?: { tokenAddress: string; spender: string }
     klipTx?: string
   },
-
 ) => void {
   const { chainId, account } = useActiveWeb3React()
   const dispatch = useDispatch<AppDispatch>()
@@ -29,7 +28,7 @@ export function useTransactionAdder(): (
         data,
         summary,
         approval,
-        klipTx
+        klipTx,
       }: {
         type?: string
         data?: { firstToken?: string; firstTokenAmount?: string; secondToken?: string; secondTokenAmount?: string }
@@ -41,10 +40,8 @@ export function useTransactionAdder(): (
       if (!account) return
       if (!chainId) return
       if (klipTx) {
-
         dispatch(addTransaction({ type, data, hash: klipTx, from: account, chainId, approval, summary }))
-      }
-      else if (response) {
+      } else if (response) {
         const { hash, transactionHash } = response
         if (!hash && !transactionHash) {
           throw Error('No transaction hash found.')
@@ -53,7 +50,7 @@ export function useTransactionAdder(): (
         dispatch(addTransaction({ type, data, hash: txHash, from: account, chainId, approval, summary }))
       }
     },
-    [dispatch, chainId, account]
+    [dispatch, chainId, account],
   )
 }
 
@@ -61,7 +58,7 @@ export function useTransactionAdder(): (
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
   const { chainId } = useActiveWeb3React()
 
-  const state = useSelector<AppState, AppState['transactions']>(s => s.transactions)
+  const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 
   return chainId ? state[chainId] ?? {} : {}
 }
@@ -89,7 +86,7 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
     () =>
       typeof tokenAddress === 'string' &&
       typeof spender === 'string' &&
-      Object.keys(allTransactions).some(hash => {
+      Object.keys(allTransactions).some((hash) => {
         const tx = allTransactions[hash]
         if (!tx) return false
         if (tx.receipt) {
@@ -99,6 +96,6 @@ export function useHasPendingApproval(tokenAddress: string | undefined, spender:
         if (!approval) return false
         return approval.spender === spender && approval.tokenAddress === tokenAddress && isTransactionRecent(tx)
       }),
-    [allTransactions, spender, tokenAddress]
+    [allTransactions, spender, tokenAddress],
   )
 }

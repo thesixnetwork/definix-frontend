@@ -80,7 +80,7 @@ export default React.memo(function CurrencyInputPanel({
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
     />,
-    false
+    false,
   )
 
   const decimals = useMemo(() => 18, [])
@@ -128,7 +128,6 @@ export default React.memo(function CurrencyInputPanel({
     }
     setIsMaxKlayNoti(false)
   }, [value, balance, maxTokenAmount, currency?.symbol])
-
 
   return (
     <>
@@ -193,7 +192,7 @@ export default React.memo(function CurrencyInputPanel({
                     {(currency && currency.symbol && currency.symbol.length > 20
                       ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
                           currency.symbol.length - 5,
-                          currency.symbol.length
+                          currency.symbol.length,
                         )}`
                       : currency?.symbol) || (
                       <Text textStyle="R_14B" color={ColorStyles.BLACK}>

@@ -15,26 +15,23 @@ const StyledText = styled(Text)`
 `
 
 export default function TradePrice({ price, isPriceImpactCaution = false }: TradePriceProps) {
-  const show = Boolean((price?.baseCurrency && price?.quoteCurrency))
+  const show = Boolean(price?.baseCurrency && price?.quoteCurrency)
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
-  
+
   return (
-    <Flex
-      alignItems="center"
-      justifyContent={isMobile ? "flex-start" : "flex-end"}
-      flexWrap="wrap"
-    >
+    <Flex alignItems="center" justifyContent={isMobile ? 'flex-start' : 'flex-end'} flexWrap="wrap">
       {show && !isPriceImpactCaution ? (
         <Box>
-          <Flex justifyContent={isMobile ? "flex-start" : "flex-end"}>
+          <Flex justifyContent={isMobile ? 'flex-start' : 'flex-end'}>
             <StyledText>
               1 {price?.baseCurrency?.symbol} = {price?.toSignificant(6) ?? '-'} {price?.quoteCurrency?.symbol}
             </StyledText>
           </Flex>
-          <Flex justifyContent={isMobile ? "flex-start" : "flex-end"}>
+          <Flex justifyContent={isMobile ? 'flex-start' : 'flex-end'}>
             <StyledText>
-              1 {price?.quoteCurrency?.symbol} = {price?.invert()?.toSignificant(6) ?? '-'} {price?.baseCurrency?.symbol}
+              1 {price?.quoteCurrency?.symbol} = {price?.invert()?.toSignificant(6) ?? '-'}{' '}
+              {price?.baseCurrency?.symbol}
             </StyledText>
           </Flex>
         </Box>

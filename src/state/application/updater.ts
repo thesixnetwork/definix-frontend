@@ -26,7 +26,7 @@ export default function Updater(): null {
         return s
       })
     },
-    [chainId, setState]
+    [chainId, setState],
   )
 
   // attach/detach listeners

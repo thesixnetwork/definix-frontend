@@ -168,7 +168,7 @@ const FullPositionCard = ({ pair, isLastCard = false }: PositionCardProps) => {
             pair.getLiquidityValue(pair.token1, totalPoolTokens, userPoolBalance, false),
           ]
         : [undefined, undefined],
-    [pair, totalPoolTokens, userPoolBalance]
+    [pair, totalPoolTokens, userPoolBalance],
   )
 
   return (

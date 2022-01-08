@@ -111,7 +111,7 @@ class MiniRpcProvider implements AsyncSendable {
 
   public readonly sendAsync = (
     request: { jsonrpc: '2.0'; id: number | string | null; method: string; params?: any },
-    callback: (error: any, response: any) => void
+    callback: (error: any, response: any) => void,
   ): void => {
     this.request(request.method, request.params)
       .then((result) => callback(null, { jsonrpc: '2.0', id: request.id, result }))
@@ -120,7 +120,7 @@ class MiniRpcProvider implements AsyncSendable {
 
   public readonly request = async (
     method: string | { method: string; params: unknown[] },
-    params?: any
+    params?: any,
   ): Promise<unknown> => {
     if (typeof method !== 'string') {
       return this.request(method.method, method.params)

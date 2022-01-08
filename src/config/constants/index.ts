@@ -11,7 +11,6 @@ export { farmsConfig, communityFarms }
 export { default as poolsConfig } from './pools'
 export { default as ifosConfig } from './ifo'
 
-
 Config.configure(sdkconfig)
 
 const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
@@ -19,72 +18,72 @@ const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
 
 export const ChainId = {
   MAINNET: intMainnetId,
-  TESTNET: intTestnetId
+  TESTNET: intTestnetId,
 }
 
 export const ROUTER_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_ROUTER_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_ROUTER_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_ROUTER_ADDRESS_TESTNET || '',
 }
 
 export const DEPARAM_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_DEPARAM_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_DEPARAM_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_DEPARAM_ADDRESS_TESTNET || '',
 }
 
 export const MULTICALL_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_MULTICALL_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_MULTICALL_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_MULTICALL_ADDRESS_TESTNET || '',
 }
 
 export const SIX_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_SIX_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_SIX_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_SIX_ADDRESS_TESTNET || '',
 }
 
 export const FINIX_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_FINIX_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_FINIX_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_FINIX_ADDRESS_TESTNET || '',
 }
 
 export const KSP_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_KSP_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KSP_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_KSP_ADDRESS_TESTNET || '',
 }
 
 export const KDAI_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_KDAI_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KDAI_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_KDAI_ADDRESS_TESTNET || '',
 }
 
 export const KUSDT_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_KUSDT_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_KUSDT_ADDRESS_TESTNET || '',
 }
 
 export const WKLAY_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_WKLAY_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_WKLAY_ADDRESS_TESTNET || '',
 }
 
 export const KETH_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_KETH_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KETH_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_KETH_ADDRESS_TESTNET || '',
 }
 
 export const KWBTC_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_KWBTC_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_KWBTC_ADDRESS_TESTNET || '',
 }
 
 export const KXRP_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_KXRP_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KXRP_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_KXRP_ADDRESS_TESTNET || '',
 }
 
 export const KBNB_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_KBNB_ADDRESS_MAINNET || '',
-  [intTestnetId]: process.env.REACT_APP_KBNB_ADDRESS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_KBNB_ADDRESS_TESTNET || '',
 }
 
 export const allTokenAddresses = {
@@ -116,12 +115,12 @@ export const getLpNetwork = (firstToken, secondToken) => {
 
 export const HERODOTUS_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_HERODOTUS_MAINNET || '', // ==================
-  [intTestnetId]: process.env.REACT_APP_HERODOTUS_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_HERODOTUS_TESTNET || '',
 }
 
 export const PANCAKE_MASTER_CHEF_ADDRESS = {
   [intMainnetId]: process.env.REACT_APP_PANCAKE_MASTER_CHEF_MAINNET || '', // ==================
-  [intTestnetId]: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET || ''
+  [intTestnetId]: process.env.REACT_APP_PANCAKE_MASTER_CHEF_TESTNET || '',
 }
 
 export const DAI = new Token(intMainnetId, '0xf24400CA87E2260FaA63233c2Be8e4259B214E4E', 18, 'KDAI', 'Dai Stablecoin')
@@ -137,7 +136,7 @@ export const USDT = new Token(intMainnetId, '0x72f58bF36Ce713D408a854C060FbF89A2
 
 const WETH_ONLY = {
   [intMainnetId]: [WETH(intMainnetId)],
-  [intTestnetId]: [WETH(intTestnetId)]
+  [intTestnetId]: [WETH(intTestnetId)],
 }
 
 // used to construct intermediary pairs for trading
@@ -154,7 +153,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intTestnetId, KETH_ADDRESS[intTestnetId], 18, 'KETH', 'KETH Token'),
     new Token(intTestnetId, KWBTC_ADDRESS[intTestnetId], 18, 'KWBTC', 'KWBTC Token'),
     new Token(intTestnetId, KXRP_ADDRESS[intTestnetId], 18, 'KXRP', 'KXRP Token'),
-    new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token')
+    new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
   ],
   [intMainnetId]: [
     ...WETH_ONLY[intMainnetId],
@@ -170,8 +169,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
     new Token(intMainnetId, KWBTC_ADDRESS[intMainnetId], 18, 'KWBTC', 'KWBTC Token'),
     new Token(intMainnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
     new Token(intMainnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
-    new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token')
-  ]
+    new Token(intMainnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
+  ],
 }
 
 /**
@@ -179,154 +178,154 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
  * tokens.
  */
 export const CUSTOM_BASES = {
-  [intMainnetId]: {}
+  [intMainnetId]: {},
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES = {
   ...WETH_ONLY,
-  [intMainnetId]: [...WETH_ONLY[intMainnetId], DAI, USDT]
+  [intMainnetId]: [...WETH_ONLY[intMainnetId], DAI, USDT],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR = {
   ...WETH_ONLY,
-  [intMainnetId]: [...WETH_ONLY[intMainnetId], DAI, USDT]
+  [intMainnetId]: [...WETH_ONLY[intMainnetId], DAI, USDT],
 }
 
 export const PINNED_PAIRS = {
   [intMainnetId]: [
     [
       new Token(intTestnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token')
+      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
       new Token(intTestnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, SIX_ADDRESS[intMainnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, KSP_ADDRESS[intMainnetId], 18, 'KSP', 'KLAY Swap Protocol')
+      new Token(intTestnetId, KSP_ADDRESS[intMainnetId], 18, 'KSP', 'KLAY Swap Protocol'),
     ],
     [
       new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KDAI_ADDRESS[intMainnetId], 18, 'KDAI', 'KDAI Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, KWBTC_ADDRESS[intMainnetId], 18, 'KWBTC', 'KWBTC Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intMainnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, KETH_ADDRESS[intMainnetId], 18, 'KETH', 'KETH Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KWBTC_ADDRESS[intMainnetId], 18, 'KWBTC', 'KWBTC Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KXRP_ADDRESS[intMainnetId], 18, 'KXRP', 'KXRP Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intMainnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KBNB_ADDRESS[intMainnetId], 18, 'KBNB', 'KBNB Token'),
-      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token')
-    ]
+      new Token(intTestnetId, FINIX_ADDRESS[intMainnetId], 18, 'FINIX', 'FINIX Token'),
+    ],
   ],
   [intTestnetId]: [
     [
       new Token(intTestnetId, SIX_ADDRESS[intTestnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token')
+      new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
     ],
     [
       new Token(intTestnetId, SIX_ADDRESS[intTestnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, SIX_ADDRESS[intTestnetId], 18, 'SIX', 'SIX Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
-      new Token(intTestnetId, KSP_ADDRESS[intTestnetId], 18, 'KSP', 'KLAY Swap Protocol')
+      new Token(intTestnetId, KSP_ADDRESS[intTestnetId], 18, 'KSP', 'KLAY Swap Protocol'),
     ],
     [
       new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KDAI_ADDRESS[intTestnetId], 18, 'KDAI', 'KDAI Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KETH_ADDRESS[intTestnetId], 18, 'KETH', 'KETH Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, KWBTC_ADDRESS[intTestnetId], 18, 'KWBTC', 'KWBTC Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, KXRP_ADDRESS[intTestnetId], 18, 'KXRP', 'KXRP Token'),
-      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY')
+      new Token(intTestnetId, WKLAY_ADDRESS[intTestnetId], 18, 'WKLAY', 'Wrapped KLAY'),
     ],
     [
       new Token(intTestnetId, KETH_ADDRESS[intTestnetId], 18, 'KETH', 'KETH Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KWBTC_ADDRESS[intTestnetId], 18, 'KWBTC', 'KWBTC Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KXRP_ADDRESS[intTestnetId], 18, 'KXRP', 'KXRP Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
-      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token')
+      new Token(intTestnetId, KUSDT_ADDRESS[intTestnetId], 18, 'KUSDT', 'KUSDT Token'),
     ],
     [
       new Token(intTestnetId, KBNB_ADDRESS[intTestnetId], 18, 'KBNB', 'KBNB Token'),
-      new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token')
-    ]
-  ]
+      new Token(intTestnetId, FINIX_ADDRESS[intTestnetId], 18, 'FINIX', 'FINIX Token'),
+    ],
+  ],
 }
 
 export const NetworkContextName = 'NETWORK'

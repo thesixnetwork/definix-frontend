@@ -23,38 +23,40 @@ function Balance({ balance }: { balance: CurrencyAmount }) {
   )
 }
 
-const CurrencyRow = React.memo(({
-  currency,
-  onSelect,
-  isSelected,
-  otherSelected,
-  style,
-}: {
-  currency: Currency
-  onSelect: () => void
-  isSelected: boolean
-  otherSelected: boolean
-  style: CSSProperties
-}) => {
-  const { account } = useActiveWeb3React()
-  const balance = useCurrencyBalance(account ?? undefined, currency)
+const CurrencyRow = React.memo(
+  ({
+    currency,
+    onSelect,
+    isSelected,
+    otherSelected,
+    style,
+  }: {
+    currency: Currency
+    onSelect: () => void
+    isSelected: boolean
+    otherSelected: boolean
+    style: CSSProperties
+  }) => {
+    const { account } = useActiveWeb3React()
+    const balance = useCurrencyBalance(account ?? undefined, currency)
 
-  // only show add or remove buttons if not on selected list
-  return (
-    <MenuItem
-      style={style}
-      onClick={() => (isSelected ? null : onSelect())}
-      disabled={isSelected}
-      selected={otherSelected}
-    >
-      <Flex alignItems="center">
-        <Coin size="32px" symbol={currency?.symbol} />
-        <Text ml="12px">{currency.symbol}</Text>
-      </Flex>
-      <Flex justifySelf="flex-end">{!account ? <></> : balance ? <Balance balance={balance} /> : <Loader />}</Flex>
-    </MenuItem>
-  )
-});
+    // only show add or remove buttons if not on selected list
+    return (
+      <MenuItem
+        style={style}
+        onClick={() => (isSelected ? null : onSelect())}
+        disabled={isSelected}
+        selected={otherSelected}
+      >
+        <Flex alignItems="center">
+          <Coin size="32px" symbol={currency?.symbol} />
+          <Text ml="12px">{currency.symbol}</Text>
+        </Flex>
+        <Flex justifySelf="flex-end">{!account ? <></> : balance ? <Balance balance={balance} /> : <Loader />}</Flex>
+      </MenuItem>
+    )
+  },
+)
 
 export default function CurrencyList({
   currencies,

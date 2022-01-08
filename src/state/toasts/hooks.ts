@@ -1,12 +1,7 @@
-import { Toast, toastTypes } from "@fingerlabs/definixswap-uikit-v2"
-import React, { useMemo } from "react"
-import { useDispatch } from "react-redux"
-import {
-  push as pushToast,
-  remove as removeToast,
-  clear as clearToast,
-} from './actions'
-
+import { Toast, toastTypes } from '@fingerlabs/definixswap-uikit-v2'
+import React, { useMemo } from 'react'
+import { useDispatch } from 'react-redux'
+import { push as pushToast, remove as removeToast, clear as clearToast } from './actions'
 
 export default {}
 // Toasts
