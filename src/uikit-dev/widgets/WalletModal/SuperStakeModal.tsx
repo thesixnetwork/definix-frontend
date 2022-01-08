@@ -36,7 +36,7 @@ import {
   useAllDataLock,
   useAllLock,
 } from 'hooks/useLongTermStake'
-import { useLockPlus } from 'hooks/useTopUp'
+import { useLockPlus, useBalanceTopUp } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
@@ -162,6 +162,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { allLockPeriod } = useAllLock()
   const balanceOf = useBalances()
+  const balances = useBalanceTopUp()
   const { finixEarn, balancevfinix, allDataLock } = usePrivateData()
   const { handleHarvest } = useHarvestLongterm()
   const { isDark } = useTheme()
@@ -423,11 +424,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [lockTopUp, allLock, period])
 
   useEffect(() => {
-    const balance = Math.floor(Number(balanceOf) * 100) / 100
+    const balance = Math.floor(Number(balances) * 100) / 100
     if (keyDown === false) {
       setValue(balance.toString())
     }
-  }, [value, balanceOf, keyDown])
+  }, [balances, keyDown])
 
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
