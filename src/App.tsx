@@ -39,10 +39,7 @@ BigNumber.config({
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
-
-  useEffect(() => {
-    console.warn = () => null
-  }, [])
+  const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
 
   useEffect(() => {
     if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
@@ -56,7 +53,7 @@ const App: React.FC = () => {
       connect('klip')
     }
   }, [account, connect])
-  const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
+
   useFetchPublicData()
   useFetchProfile()
 
@@ -81,68 +78,66 @@ const App: React.FC = () => {
   return (
     <BrowserRouter>
       <GlobalStyle />
-      <Suspense fallback={<></>}>
-        <Menu>
-          <Suspense fallback={<Loading />}>
-            <Switch>
-              <Route path="/">
-                <Home />
-              </Route>
-              <Route path="/pool">
-                <Pools />
-              </Route>
-              <Route path="/farm">
-                <NewFarms />
-              </Route>
-              <Route path="/rebalancing">
-                <Explore />
-              </Route>
-              <Route path="/my">
-                <MyInvestments />
-              </Route>
-              <Route path="/long-term-stake">
-                <LongTermStakeV2 />
-              </Route>
-              <Route path="/long-term-stake/super">
-                <SuperStake />
-              </Route>
-              <Route path="/bridge">
-                <Bridge />
-              </Route>
-              {/* <Route exact path="/" component={RedirectPathToSwapOnly} /> */}
-              <Route path="/swap">
-                <Swap />
-              </Route>
-              <Route path="/swap/:currencyIdA/:currencyIdB">
-                <RedirectToSwap />
-              </Route>
-              <Route path="/swap/:currencyIdA">
-                <RedirectToSwap />
-              </Route>
-              <Route path="/liquidity">
-                <Liquidity />
-              </Route>
-              <Route path="/liquidity/remove/:currencyIdA/:currencyIdB">
-                <RemoveLiquidity />
-              </Route>
-              <Route path="/liquidity/add/:currencyIdA">
-                <RedirectOldAddLiquidityPathStructure />
-              </Route>
-              <Route path="/liquidity/add/:currencyIdA/:currencyIdB">
-                <RedirectDuplicateTokenIds />
-              </Route>
-              <Route path="/liquidity/remove/:tokens">
-                <RedirectOldRemoveLiquidityPathStructure />
-              </Route>
-              {/* 404 */}
-              <Route>
-                <Error />
-              </Route>
-            </Switch>
-          </Suspense>
-        </Menu>
-        <ToastListener />
-      </Suspense>
+      <Menu>
+        <Suspense fallback={<Loading />}>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/pool">
+              <Pools />
+            </Route>
+            <Route path="/farm">
+              <NewFarms />
+            </Route>
+            <Route path="/rebalancing">
+              <Explore />
+            </Route>
+            <Route path="/my">
+              <MyInvestments />
+            </Route>
+            <Route path="/long-term-stake">
+              <LongTermStakeV2 />
+            </Route>
+            <Route path="/long-term-stake/super">
+              <SuperStake />
+            </Route>
+            <Route exact path="/bridge">
+              <Bridge />
+            </Route>
+            {/* <Route exact path="/" component={RedirectPathToSwapOnly} /> */}
+            <Route exact path="/swap">
+              <Swap />
+            </Route>
+            <Route path="/swap/:currencyIdA/:currencyIdB">
+              <RedirectToSwap />
+            </Route>
+            <Route path="/swap/:currencyIdA">
+              <RedirectToSwap />
+            </Route>
+            <Route exact path="/liquidity">
+              <Liquidity />
+            </Route>
+            <Route path="/liquidity/remove/:currencyIdA/:currencyIdB">
+              <RemoveLiquidity />
+            </Route>
+            <Route path="/liquidity/add/:currencyIdA">
+              <RedirectOldAddLiquidityPathStructure />
+            </Route>
+            <Route path="/liquidity/add/:currencyIdA/:currencyIdB">
+              <RedirectDuplicateTokenIds />
+            </Route>
+            <Route path="/liquidity/remove/:tokens">
+              <RedirectOldRemoveLiquidityPathStructure />
+            </Route>
+            {/* 404 */}
+            <Route>
+              <Error />
+            </Route>
+          </Switch>
+        </Suspense>
+      </Menu>
+      <ToastListener />
     </BrowserRouter>
   )
 }

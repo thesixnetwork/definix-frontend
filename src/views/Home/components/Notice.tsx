@@ -208,7 +208,7 @@ const HomeNotice: React.FC = () => {
             }}
           >
             {notices.map((notice) => (
-              <NoticeItem key={notice.id} {...notice} />
+              <NoticeItem key={notice} {...notice} />
             ))}
           </NoticeSlider>
         )}
