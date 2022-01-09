@@ -8,6 +8,7 @@ import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
+import useCaverJsReactForWallet from 'hooks/useCaverJsReactForWallet'
 
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -41,8 +42,9 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  const { account, connect } = useWallet()
-  // const { account, connector: connect } = useCaverJsReact()
+  // const { account, connect } = useWallet()
+  const { account } = useCaverJsReact()
+  const { login: connect } = useCaverJsReactForWallet()
   const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
 
   useEffect(() => {
