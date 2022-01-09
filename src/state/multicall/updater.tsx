@@ -1,7 +1,7 @@
 import { Contract } from '@ethersproject/contracts'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useActiveWeb3React } from '../../hooks'
 import { useMulticallContract } from '../../hooks/useContract'
 import useDebounce from '../../hooks/useDebounce'
 import chunkArray from '../../utils/chunkArray'
@@ -30,22 +30,22 @@ async function fetchChunk(
   chunk: Call[],
   minBlockNumber: number,
 ): Promise<{ results: string[]; blockNumber: number }> {
-  let resultsBlockNumber
-  let returnData
+  // let resultsBlockNumber: any
+  // let returnData: any
   try {
-    ;[resultsBlockNumber, returnData] = await multicallContract.aggregate(
+    const [resultsBlockNumber, returnData] = await multicallContract.aggregate(
       chunk.map((obj) => [obj.address, obj.callData]),
     )
+    if (resultsBlockNumber.toNumber() < minBlockNumber) {
+      throw new RetryableError('Fetched for old block number')
+    }
+    return { results: returnData, blockNumber: resultsBlockNumber.toNumber() }
     // callData = chunk.map((obj) => {return [obj.address, obj.callData]})
     // [resultsBlockNumber, returnData] = await multicallContract.methods.aggregate(chunk.map((obj) => [obj.address, obj.callData]))
   } catch (error) {
     console.info('Failed to fetch chunk inside retry', error)
     throw error
   }
-  if (resultsBlockNumber.toNumber() < minBlockNumber) {
-    throw new RetryableError('Fetched for old block number')
-  }
-  return { results: returnData, blockNumber: resultsBlockNumber.toNumber() }
 }
 
 /**
@@ -119,7 +119,7 @@ export default function Updater(): null {
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const latestBlockNumber = useBlockNumber()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
   const multicallContract = useMulticallContract()
   const cancellations = useRef<{ blockNumber: number; cancellations: (() => void)[] }>()
 

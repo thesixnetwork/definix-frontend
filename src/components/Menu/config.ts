@@ -17,7 +17,7 @@ export const links = (t: (key: string) => string, currentLang: string) => {
         },
         {
           label: t('Liquidity'),
-          href: `/liquidity`,
+          href: `/liquidity/add`,
         },
       ],
     },

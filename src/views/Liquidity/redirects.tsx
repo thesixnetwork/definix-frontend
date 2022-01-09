@@ -7,7 +7,6 @@ export function RedirectOldAddLiquidityPathStructure() {
   const params = useParams<{ currencyIdA: string }>()
   const match = params?.currencyIdA?.match(OLD_PATH_STRUCTURE)
 
-  console.log('~~~', match)
   if (match && match?.length) {
     return <Redirect to={`/add/${match[1]}/${match[2]}`} />
   }

@@ -1,64 +1,7 @@
-import { Currency, CurrencyAmount, currencyEquals } from 'definixswap-sdk'
-import React, { CSSProperties } from 'react'
-import styled from 'styled-components'
-import { Text, Flex, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-
-import Loader from '../Loader'
-// import { useActiveWeb3React } from '../../hooks'
-import { useCurrencyBalance } from '../../state/wallet/hooks'
-import { MenuItem } from './styleds'
-
-const StyledBalanceText = styled(Text)`
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 5rem;
-  text-overflow: ellipsis;
-`
-
-function Balance({ balance }: { balance: CurrencyAmount }) {
-  return (
-    <StyledBalanceText textStyle="R_16R" title={balance.toExact()}>
-      {balance.toSignificant(4)}
-    </StyledBalanceText>
-  )
-}
-
-const CurrencyRow = React.memo(
-  ({
-    currency,
-    onSelect,
-    isSelected,
-    otherSelected,
-    style,
-  }: {
-    currency: Currency
-    onSelect: () => void
-    isSelected: boolean
-    otherSelected: boolean
-    style: CSSProperties
-  }) => {
-    // const { account } = useActiveWeb3React()
-    const { account } = useWallet()
-    const balance = useCurrencyBalance(account ?? undefined, currency)
-
-    // only show add or remove buttons if not on selected list
-    return (
-      <MenuItem
-        style={style}
-        onClick={() => (isSelected ? null : onSelect())}
-        disabled={isSelected}
-        selected={otherSelected}
-      >
-        <Flex alignItems="center">
-          <Coin size="32px" symbol={currency?.symbol} />
-          <Text ml="12px">{currency.symbol}</Text>
-        </Flex>
-        <Flex justifySelf="flex-end">{!account ? <></> : balance ? <Balance balance={balance} /> : <Loader />}</Flex>
-      </MenuItem>
-    )
-  },
-)
+import React from 'react'
+import { Currency, currencyEquals } from 'definixswap-sdk'
+import { Box } from '@fingerlabs/definixswap-uikit-v2'
+import CurrencyItem from './CurrencyItem'
 
 export default function CurrencyList({
   currencies,
@@ -76,9 +19,8 @@ export default function CurrencyList({
       {currencies.map((item) => {
         const currency = item
         return (
-          <CurrencyRow
+          <CurrencyItem
             key={item.symbol}
-            style={{}}
             currency={currency}
             isSelected={Boolean(selectedCurrency && currencyEquals(selectedCurrency, currency))}
             onSelect={() => onCurrencySelect(currency)}

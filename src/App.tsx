@@ -119,7 +119,7 @@ const App: React.FC = () => {
             <Route exact path="/swap/:currencyIdA">
               <RedirectToSwap />
             </Route>
-            <Route exact strict path="/liquidity">
+            <Route exact strict path="/liquidity/add">
               <Liquidity />
             </Route>
             <Route exact path="/liquidity/add/:currencyIdA">
