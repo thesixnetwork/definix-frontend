@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'definixswap-sdk'
 import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext, useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useCallback, useMemo, useContext } from 'react'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
@@ -36,7 +36,9 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
-  const { account, chainId } = useActiveWeb3React()
+  // const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useWallet()
+
   const { setShowModal } = useContext(KlipModalContext())
   const { toastSuccess, toastError } = useToast()
   const { t } = useTranslation()

@@ -11,12 +11,12 @@ import SwapRoute from './SwapRoute'
 function TradeSummary({
   trade,
   allowedSlippage,
-  className,
+  // className,
   isPriceImpactCaution,
 }: {
   trade: Trade
   allowedSlippage: number
-  className?: string
+  // className?: string
   isPriceImpactCaution?: boolean
 }) {
   const { t } = useTranslation()
@@ -115,7 +115,7 @@ export function AdvancedSwapDetails({
       <TradeSummary
         trade={trade}
         allowedSlippage={allowedSlippage}
-        className={showRoute ? 'col-6' : 'col-12'}
+        // className={showRoute ? 'col-6' : 'col-12'}
         isPriceImpactCaution={isPriceImpactCaution}
       />
       {showRoute && (

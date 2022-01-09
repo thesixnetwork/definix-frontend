@@ -105,8 +105,8 @@ export default function ConfirmSwapModal({
             <>
               <SwapModalHeader
                 trade={trade}
-                allowedSlippage={allowedSlippage}
-                recipient={recipient}
+                // allowedSlippage={allowedSlippage}
+                // recipient={recipient}
                 showAcceptChanges={showAcceptChanges}
                 onAcceptChanges={onAcceptChanges}
               />

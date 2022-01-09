@@ -82,7 +82,8 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
       quoteTokenSymbol: farm.quoteTokenSymbol,
       tokenAddresses: farm.tokenAddresses,
     })
-    return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+    // return `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+    return `/liquidity/add/${liquidityUrlPathParts}`
   }, [farm.quoteTokenAdresses, farm.quoteTokenSymbol, farm.tokenAddresses])
   /**
    * total liquidity

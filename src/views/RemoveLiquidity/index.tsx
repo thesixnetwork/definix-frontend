@@ -2,6 +2,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { currencyEquals, ETHER, Percent, WETH } from 'definixswap-sdk'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import {
   Button,
   CardBody,
@@ -72,7 +73,8 @@ export default function RemoveLiquidity({
   )
 
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  const { account, chainId } = useActiveWeb3React()
+  // const { account, chainId } = useActiveWeb3React()
+  const { account, chainId } = useWallet()
   const [tokenA, tokenB] = useMemo(
     () => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)],
     [chainId, currencyA, currencyB],

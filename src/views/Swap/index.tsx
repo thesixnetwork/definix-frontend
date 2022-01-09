@@ -39,6 +39,7 @@ import { useAllTokens } from 'hooks/Tokens'
 import { allTokenAddresses, LIMITED_PRICE_IMPACT } from 'config/constants/index'
 import { useLocation } from 'react-router'
 import qs from 'querystring'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 const Swap: React.FC = () => {
   const [isApprovePending, setIsApprovePending] = useState<boolean>(false)
@@ -62,7 +63,8 @@ const Swap: React.FC = () => {
     [i18n.language],
   )
 
-  const { account, chainId = '' } = useActiveWeb3React()
+  // const { account, chainId = '' } = useActiveWeb3React()
+  const { account, chainId = '' } = useWallet()
 
   const [deadline] = useUserDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()

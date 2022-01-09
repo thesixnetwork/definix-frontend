@@ -1,6 +1,7 @@
 import { Currency, CurrencyAmount, Pair, Token, Trade } from 'definixswap-sdk'
 import flatMap from 'lodash.flatmap'
 import { useMemo } from 'react'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from 'config/constants'
 import { PairState, usePairs } from '../data/Reserves'
@@ -9,7 +10,8 @@ import { wrappedCurrency } from '../utils/wrappedCurrency'
 import { useActiveWeb3React } from './index'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
 
   // Base tokens for building intermediary trading routes
   const bases: Token[] = useMemo(() => (chainId ? BASES_TO_CHECK_TRADES_AGAINST[chainId] : []), [chainId])

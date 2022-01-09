@@ -3,6 +3,7 @@ import { TokenList } from '@uniswap/token-lists'
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { ChainId } from 'config/constants'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import { getNetworkLibrary, NETWORK_CHAIN_ID } from '../connectors'
 import { AppDispatch } from '../state'
@@ -12,7 +13,8 @@ import resolveENSContentHash from '../utils/resolveENSContentHash'
 import { useActiveWeb3React } from './index'
 
 export function useFetchListCallback(): (listUrl: string) => Promise<TokenList> {
-  const { chainId, library } = useActiveWeb3React()
+  const { library } = useActiveWeb3React()
+  const { chainId } = useWallet()
   const dispatch = useDispatch<AppDispatch>()
 
   const ensResolver = useCallback(

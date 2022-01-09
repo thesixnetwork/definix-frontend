@@ -1,4 +1,5 @@
 import { parseBytes32String } from '@ethersproject/strings'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Currency, ETHER, Token, currencyEquals } from 'definixswap-sdk'
 import { useMemo } from 'react'
 import { useSelectedTokenList } from '../state/lists/hooks'
@@ -11,7 +12,9 @@ import { useActiveWeb3React } from './index'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 
 export function useAllTokens(): { [address: string]: Token } {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
+
   const userAddedTokens = useUserAddedTokens()
   const allTokens = useSelectedTokenList()
 
@@ -53,7 +56,9 @@ function parseStringOrBytes32(str: string | undefined, bytes32: string | undefin
 // null if loading
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
+
   const tokens = useAllTokens()
 
   const address = isAddress(tokenAddress)

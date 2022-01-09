@@ -25,7 +25,7 @@ import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUnisw
 
 import { KlipConnector } from '@sixnetwork/klip-connector'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext, useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { Field } from 'state/burn/actions'
@@ -89,7 +89,8 @@ export default function ConfirmRemoveModal({
 }: Props) {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
-  const { account, chainId, library } = useActiveWeb3React()
+  const { library } = useActiveWeb3React()
+  const { account, chainId } = useWallet()
   const [approval] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
     ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],

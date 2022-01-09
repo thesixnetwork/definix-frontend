@@ -5,7 +5,7 @@ import tp from 'tp-js-sdk'
 import Caver from 'caver-js'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext, useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import {
   Modal,
@@ -72,7 +72,8 @@ export default function ConfirmAddModal({
   onFieldBInput,
 }: Props) {
   const { t } = useTranslation()
-  const { chainId, account, library } = useActiveWeb3React()
+  const { library } = useActiveWeb3React()
+  const { chainId, account } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
   const [txHash, setTxHash] = useState<string>('')

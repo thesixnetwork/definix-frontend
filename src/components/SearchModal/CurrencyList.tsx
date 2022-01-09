@@ -2,9 +2,10 @@ import { Currency, CurrencyAmount, currencyEquals } from 'definixswap-sdk'
 import React, { CSSProperties } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, Coin } from '@fingerlabs/definixswap-uikit-v2'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import Loader from '../Loader'
-import { useActiveWeb3React } from '../../hooks'
+// import { useActiveWeb3React } from '../../hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { MenuItem } from './styleds'
 
@@ -37,7 +38,8 @@ const CurrencyRow = React.memo(
     otherSelected: boolean
     style: CSSProperties
   }) => {
-    const { account } = useActiveWeb3React()
+    // const { account } = useActiveWeb3React()
+    const { account } = useWallet()
     const balance = useCurrencyBalance(account ?? undefined, currency)
 
     // only show add or remove buttons if not on selected list

@@ -64,7 +64,7 @@ const DepositModal: React.FC<DepositModalProps> = ({
         onSelectBalanceRateButton={handleSelectMax}
         onChange={handleChange}
         max={max}
-        symbol={tokenName}
+        // symbol={tokenName}
         // inputTitle={TranslateString(1070, 'Stake')}
       />
 

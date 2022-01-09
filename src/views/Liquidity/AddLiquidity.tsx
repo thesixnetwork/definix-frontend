@@ -16,6 +16,7 @@ import {
   Coin,
   PlusBIcon,
 } from '@fingerlabs/definixswap-uikit-v2'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Currency, currencyEquals, TokenAmount, WETH } from 'definixswap-sdk'
 import { Field } from 'state/mint/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -62,7 +63,8 @@ const AddLiquidity: React.FC = () => {
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
   const history = useHistory()
-  const { chainId, account } = useActiveWeb3React()
+  // const { chainId, account } = useActiveWeb3React()
+  const { chainId, account } = useWallet()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
 

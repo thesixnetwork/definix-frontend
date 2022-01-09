@@ -28,18 +28,18 @@ const ButtonWrap = styled(Box)`
 const ModalInput: React.FC<{
   type: string // deposit, withdraw
   max: BigNumber
-  symbol: string
-  placeholder?: string
+  // symbol: string
+  // placeholder?: string
   value: string
-  addLiquidityUrl?: string
+  // addLiquidityUrl?: string
   onChange: (e: React.FormEvent<HTMLInputElement>) => void
   onSelectBalanceRateButton: (rate: number) => void
   buttonName?: string
   onClickButton?: () => void
 }> = ({
-  addLiquidityUrl,
-  placeholder,
-  symbol,
+  // addLiquidityUrl,
+  // placeholder,
+  // symbol,
   type,
   max,
   onChange,

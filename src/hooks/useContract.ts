@@ -42,6 +42,7 @@ import WETH_ABI from 'config/constants/abis/weth.json'
 import HERODOTUS_ABI from 'config/constants/abis/herodotus.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
 import { getContract } from 'utils'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import { useActiveWeb3React } from './index'
 
@@ -148,7 +149,8 @@ function useContractForExchange(
   ABI: any,
   withSignerIfPossible = true,
 ): Contract | null {
-  const { library, account } = useActiveWeb3React()
+  const { account, chainId } = useWallet()
+  const { library } = useActiveWeb3React()
 
   return useMemo(() => {
     if (!address || !ABI || !library) return null
@@ -166,12 +168,14 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 }
 
 export function useWETHContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
   return useContractForExchange(chainId ? WETH(chainId).address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
 export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
   let address: string | undefined
   if (chainId) {
     switch (chainId) {
@@ -183,7 +187,8 @@ export function useENSRegistrarContract(withSignerIfPossible?: boolean): Contrac
 }
 
 export function useHerodotusContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
   return useContractForExchange(chainId && HERODOTUS_ADDRESS[chainId], HERODOTUS_ABI)
 }
 
@@ -200,6 +205,7 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useMulticallContract(): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
+  // const { chainId } = useActiveWeb3React()
   return useContractForExchange(chainId && MULTICALL_NETWORKS[chainId], MULTICALL_ABI, false)
 }

@@ -6,6 +6,8 @@ import useStake from 'hooks/useStake'
 import useConverter from 'hooks/useConverter'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
+import { useHistory } from 'react-router-dom'
+
 import {
   ColorStyles,
   Text,
@@ -99,6 +101,7 @@ const Deposit: React.FC<{
   addLiquidityUrl: string
   onBack: () => void
 }> = ({ farm, lpTokenName, myLiquidityPrice, addLiquidityUrl, onBack }) => {
+  const history = useHistory()
   const { t } = useTranslation()
   const { convertToBalanceFormat } = useConverter()
   const { pid } = useFarmFromSymbol(farm.lpSymbol)
@@ -173,7 +176,7 @@ const Deposit: React.FC<{
           type="deposit"
           value={val}
           max={tokenBalance}
-          symbol={lpTokenName}
+          // symbol={lpTokenName}
           buttonName={t('Deposit')}
           onSelectBalanceRateButton={handleSelectBalanceRate}
           onChange={handleChange}
@@ -188,7 +191,8 @@ const Deposit: React.FC<{
             type="button"
             variant="line"
             onClick={() => {
-              window.location.href = `${addLiquidityUrl}`
+              history.push(addLiquidityUrl)
+              // window.location.href = `${addLiquidityUrl}`
             }}
           >
             {t('Add Liquidity')}

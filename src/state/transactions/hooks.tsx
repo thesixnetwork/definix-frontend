@@ -1,3 +1,4 @@
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -17,7 +18,8 @@ export function useTransactionAdder(): (
     klipTx?: string
   },
 ) => void {
-  const { chainId, account } = useActiveWeb3React()
+  // const { chainId, account } = useActiveWeb3React()
+  const { chainId, account } = useWallet()
   const dispatch = useDispatch<AppDispatch>()
 
   return useCallback(
@@ -56,7 +58,8 @@ export function useTransactionAdder(): (
 
 // returns all the transactions for the current chain
 export function useAllTransactions(): { [txHash: string]: TransactionDetails } {
-  const { chainId } = useActiveWeb3React()
+  // const { chainId } = useActiveWeb3React()
+  const { chainId } = useWallet()
 
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 

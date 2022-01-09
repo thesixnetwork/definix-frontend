@@ -1,3 +1,4 @@
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Currency, currencyEquals, ETHER, WETH } from 'definixswap-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -35,7 +36,9 @@ export default function useWrapCallback(
 ): IProps {
   const [loading, setLoading] = useState<boolean>(false)
 
-  const { chainId, account } = useActiveWeb3React()
+  // const { chainId, account } = useActiveWeb3React()
+  const { account, chainId } = useWallet()
+
   const wethContract = useWETHContract()
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency)
   // we can always parse the amount typed as the input currency, since wrapping is 1:1

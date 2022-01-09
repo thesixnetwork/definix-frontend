@@ -16,13 +16,15 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'react-i18next'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 const LiquidityList: React.FC = () => {
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
 
-  const { account } = useActiveWeb3React()
+  // const { account } = useActiveWeb3React()
+  const { account } = useWallet()
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),

@@ -6,6 +6,9 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
+
+import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
+
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import sdkConfig from './sdkconfig'
@@ -39,6 +42,7 @@ BigNumber.config({
 
 const App: React.FC = () => {
   const { account, connect } = useWallet()
+  // const { account, connector: connect } = useCaverJsReact()
   const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
 
   useEffect(() => {
@@ -109,25 +113,25 @@ const App: React.FC = () => {
             <Route exact path="/swap">
               <Swap />
             </Route>
-            <Route path="/swap/:currencyIdA/:currencyIdB">
+            <Route exact path="/swap/:currencyIdA/:currencyIdB">
               <RedirectToSwap />
             </Route>
-            <Route path="/swap/:currencyIdA">
+            <Route exact path="/swap/:currencyIdA">
               <RedirectToSwap />
             </Route>
-            <Route exact path="/liquidity">
+            <Route exact strict path="/liquidity">
               <Liquidity />
             </Route>
-            <Route path="/liquidity/remove/:currencyIdA/:currencyIdB">
-              <RemoveLiquidity />
-            </Route>
-            <Route path="/liquidity/add/:currencyIdA">
+            <Route exact path="/liquidity/add/:currencyIdA">
               <RedirectOldAddLiquidityPathStructure />
             </Route>
-            <Route path="/liquidity/add/:currencyIdA/:currencyIdB">
+            <Route exact path="/liquidity/add/:currencyIdA/:currencyIdB">
               <RedirectDuplicateTokenIds />
             </Route>
-            <Route path="/liquidity/remove/:tokens">
+            <Route exact strict path="/liquidity/remove/:currencyIdA/:currencyIdB">
+              <RemoveLiquidity />
+            </Route>
+            <Route exact strict path="/liquidity/remove/:tokens">
               <RedirectOldRemoveLiquidityPathStructure />
             </Route>
             {/* 404 */}

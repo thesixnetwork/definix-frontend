@@ -4,6 +4,7 @@ import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SIX_ADDRESS } from 'config/constants'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import useENS from '../../hooks/useENS'
 import { useActiveWeb3React } from '../../hooks'
@@ -125,7 +126,8 @@ export function useDerivedSwapInfo(): {
   inputError?: string
   swapState: SWAP_STATE
 } {
-  const { account } = useActiveWeb3React()
+  // const { account } = useActiveWeb3React()
+  const { account } = useWallet()
 
   const {
     independentField,

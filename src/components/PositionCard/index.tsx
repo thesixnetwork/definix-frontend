@@ -14,6 +14,8 @@ import {
   Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
@@ -29,7 +31,9 @@ interface PositionCardProps {
 
 export const MinimalPositionCard = React.memo(({ pair, showUnwrapped = false, isLastCard }: PositionCardProps) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  // const { account } = useActiveWeb3React()
+  const { account } = useWallet()
+
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
 
@@ -148,7 +152,8 @@ const FullPositionCard = ({ pair, isLastCard = false }: PositionCardProps) => {
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
 
-  const { account } = useActiveWeb3React()
+  // const { account } = useActiveWeb3React()
+  const { account } = useWallet()
 
   const currency0 = useMemo(() => unwrappedToken(pair.token0), [pair.token0])
   const currency1 = useMemo(() => unwrappedToken(pair.token1), [pair.token1])

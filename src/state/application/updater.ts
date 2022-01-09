@@ -1,3 +1,4 @@
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useActiveWeb3React } from '../../hooks'
@@ -6,7 +7,8 @@ import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 import { updateBlockNumber } from './actions'
 
 export default function Updater(): null {
-  const { library, chainId } = useActiveWeb3React()
+  const { library } = useActiveWeb3React()
+  const { chainId } = useWallet()
   const dispatch = useDispatch()
 
   const windowVisible = useIsWindowVisible()

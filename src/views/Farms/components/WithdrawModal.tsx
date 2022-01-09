@@ -56,8 +56,6 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({
         onChange={handleChange}
         value={val}
         max={max}
-        symbol={tokenName}
-        // inputTitle={TranslateString(588, 'Unstake')}
       />
 
       <Button

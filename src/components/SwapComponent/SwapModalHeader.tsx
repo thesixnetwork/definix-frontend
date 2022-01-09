@@ -1,9 +1,9 @@
 import { Trade, TradeType } from 'definixswap-sdk'
 import { useTranslation } from 'react-i18next'
-import React, { useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Button, Text, Flex, Box, ChangeBottomIcon, Noti, NotiType, Coin } from '@fingerlabs/definixswap-uikit-v2'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
+// import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, warningSeverity } from '../../utils/prices'
 
 const BalanceText = styled(Text)<{ isAcceptChange: boolean }>`
   ${({ theme }) => theme.textStyle.R_16R}
@@ -68,15 +68,15 @@ const SwapTokenInfo = ({
 
 export default function SwapModalHeader({
   trade,
-  allowedSlippage = 0,
-  recipient = null,
+  // allowedSlippage = 0,
+  // recipient = null,
   showAcceptChanges = false,
   onlyCurrency = false,
   onAcceptChanges,
 }: {
   trade: Trade
-  allowedSlippage?: number
-  recipient?: string | null
+  // allowedSlippage?: number
+  // recipient?: string | null
   showAcceptChanges?: boolean
   onlyCurrency?: boolean
   onAcceptChanges?: () => void
@@ -86,7 +86,7 @@ export default function SwapModalHeader({
   //   trade,
   //   allowedSlippage,
   // ])
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  // const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   // const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   return (
