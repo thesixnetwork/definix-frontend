@@ -38,7 +38,7 @@ const Voting: React.FC = () => {
               height={147}
             />
             <Text textStyle="R_14R" color="black" mt="43px" textAlign="center">
-              {t('still in progress')}
+              {t('Still in progress')}
             </Text>
             <Button
               mt="24px"
