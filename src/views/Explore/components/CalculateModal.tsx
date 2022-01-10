@@ -19,13 +19,14 @@ import {
   ModalFooter,
   ModalBody,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiRebalanceByName } from 'hooks/hookHelper'
 import { getCustomContract } from 'utils/erc20'
 import { getAddress } from 'utils/addressHelpers'
 import { useToast } from 'state/hooks'
 import CurrencyText from 'components/CurrencyText'
+import useWallet from 'hooks/useWallet'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../../state/wallet'
 import { fetchRebalances } from '../../../state/rebalance'
 // import { useSlippage } from '../../../state/hooks'

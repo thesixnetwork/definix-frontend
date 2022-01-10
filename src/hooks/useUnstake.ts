@@ -1,6 +1,6 @@
 /* eslint no-lonely-if: 0 */
 import { useCallback, useContext } from 'react'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useDispatch } from 'react-redux'
 import {
   fetchFarmUserDataAsync,
@@ -13,6 +13,7 @@ import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { unstake, sousUnstake, sousEmegencyUnstake } from 'utils/callHelpers'
 import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
+import useWallet from './useWallet'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 const useUnstake = (pid: number) => {

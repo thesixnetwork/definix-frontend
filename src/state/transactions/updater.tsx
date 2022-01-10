@@ -44,7 +44,7 @@ export default function Updater(): null {
       .forEach((hash) => {
         // @ts-ignore
         caver?.klay
-          .getTransactionReceipt(hash)
+          ?.getTransactionReceipt(hash)
           .then((receipt) => {
             if (receipt) {
               dispatch(

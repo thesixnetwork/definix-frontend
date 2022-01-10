@@ -1,22 +1,25 @@
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core';
-import useCaverJsReactForWallet from './useCaverJsReactForWallet';
+import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
+import { useMemo } from 'react'
+import useCaverJsReactForWallet from './useCaverJsReactForWallet'
 
 const useWallet = () => {
-  const { library, account, chainId, connector, active, activate, deactivate } = useCaverJsReact();
-  const { login, logout } = useCaverJsReactForWallet();
+  const { library, account, chainId, connector, active, activate, deactivate } = useCaverJsReact()
+  const { login, logout } = useCaverJsReactForWallet()
+
+  const klaytn = useMemo(() => library?.provider || undefined, [library])
 
   return {
     account,
     chainId,
-    library,
-    klaytn: library?.provider || undefined,
+    library: library || undefined,
+    klaytn,
     connect: login,
     reset: logout,
     connector,
     active,
     activate,
-    deactivate
+    deactivate,
   }
 }
 
-export default useWallet;
+export default useWallet

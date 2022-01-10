@@ -2,13 +2,14 @@
 import { useState, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 
 import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json'
 import { getContract } from '../utils/caver'
 import { getVFinix } from '../utils/addressHelpers'
+import useWallet from './useWallet'
 /* eslint no-else-return: "error" */
 
 // @ts-ignore

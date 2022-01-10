@@ -19,12 +19,12 @@ import {
   Text,
   useModal,
 } from '@fingerlabs/definixswap-uikit-v2'
-
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useBalances, useAllowances, useToast } from 'state/hooks'
 import { fetchAllowances, fetchBalances } from 'state/wallet'
 import { simulateInvest, getReserves } from 'offline-pool'
 
+import useWallet from 'hooks/useWallet'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiERC20ByName } from 'hooks/hookHelper'
 import { getAddress } from 'utils/addressHelpers'

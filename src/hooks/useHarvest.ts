@@ -1,12 +1,13 @@
 /* eslint no-lonely-if: 0 */
 import { useCallback, useContext, useState } from 'react'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useDispatch } from 'react-redux'
 import { getAbiHerodotusByName } from 'hooks/hookHelper'
 import { fetchFarmUserDataAsync, updateUserBalance, updateUserPendingReward } from 'state/actions'
 import { soushHarvest, soushHarvestBnb, harvest } from 'utils/callHelpers'
 import { useHerodotus, useSousChef } from './useContract'
 import * as klipProvider from './klipProvider'
+import useWallet from './useWallet'
 
 const jsonConvert = (data: any) => JSON.stringify(data)
 export const useHarvest = (farmPid: number) => {

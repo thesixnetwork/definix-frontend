@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 // import _ from 'lodash'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
@@ -25,6 +25,7 @@ import {
   fetchAvailableVotes,
 } from '../state/actions'
 import useRefresh from './useRefresh'
+import useWallet from './useWallet'
 
 /* eslint no-else-return: "error" */
 

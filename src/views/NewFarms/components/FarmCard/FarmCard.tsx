@@ -3,7 +3,6 @@ import { provider } from 'web3-core'
 import React, { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { useFarmFromSymbol, useFarmUser } from 'state/hooks'
 import useConverter from 'hooks/useConverter'
 import { getContract } from 'utils/erc20'
@@ -76,6 +75,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ componentType = 'farm', farm, myBal
   const { pid, lpAddresses } = useFarmFromSymbol(farm.lpSymbol)
   const { earnings, stakedBalance, allowance } = useFarmUser(pid)
   const lpContract = useMemo(() => getContract(klaytn as provider, getAddress(lpAddresses)), [klaytn, lpAddresses])
+
   const addLiquidityUrl = useMemo(() => {
     const liquidityUrlPathParts = getLiquidityUrlPathParts({
       quoteTokenAdresses: farm.quoteTokenAdresses,

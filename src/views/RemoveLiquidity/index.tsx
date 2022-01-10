@@ -1,7 +1,7 @@
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { currencyEquals, ETHER, Percent, WETH } from 'definixswap-sdk'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory, useParams } from 'react-router-dom'
 import useWallet from 'hooks/useWallet'
 import {
   Button,
@@ -51,12 +51,10 @@ const PercentInput = styled.span`
   outline: none;
 `
 
-export default function RemoveLiquidity({
-  history,
-  match: {
-    params: { currencyIdA, currencyIdB },
-  },
-}: any) {
+export default function RemoveLiquidity() {
+  const history = useHistory()
+  const { currencyIdA, currencyIdB } = useParams<{ currencyIdA: string; currencyIdB: string }>()
+
   const [isApprovePending, setIsApprovePending] = useState<boolean>(false)
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
@@ -72,7 +70,6 @@ export default function RemoveLiquidity({
   )
 
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
-  // const { account, chainId } = useActiveWeb3React()
   const { account, chainId } = useWallet()
   const [tokenA, tokenB] = useMemo(
     () => [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)],

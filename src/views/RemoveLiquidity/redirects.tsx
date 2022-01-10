@@ -1,17 +1,15 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 
 const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40})-(0x[a-fA-F0-9]{40})$/
 
-export function RedirectOldRemoveLiquidityPathStructure({
-  match: {
-    params: { tokens },
-  },
-}: any) {
-  if (!OLD_PATH_STRUCTURE.test(tokens)) {
+export function RedirectOldRemoveLiquidityPathStructure() {
+  const params = useParams<{ tokens: string }>()
+
+  if (!OLD_PATH_STRUCTURE.test(params?.tokens)) {
     return <Redirect to="/pool" />
   }
-  const [currency0, currency1] = tokens.split('-')
+  const [currency0, currency1] = params?.tokens.split('-')
 
   return <Redirect to={`/remove/${currency0}/${currency1}`} />
 }

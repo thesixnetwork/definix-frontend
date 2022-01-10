@@ -2,7 +2,7 @@
 import { useEffect, useState, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { provider } from 'web3-core'
 import {
   getAbiERC20ByName,
@@ -33,12 +33,13 @@ import { getFinixAddress, getVFinix } from '../utils/addressHelpers'
 import useRefresh from './useRefresh'
 import { State } from '../state/types'
 import { useHerodotus } from './useContract'
+import useWallet from './useWallet'
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
 const useLongTermStake = (tokenAddress: string) => {
   const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn } = useWallet()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
