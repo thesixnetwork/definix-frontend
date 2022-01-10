@@ -87,7 +87,7 @@ const Farm: React.FC = () => {
     sortOrder: 1,
     harvest: true,
     isFinished: false,
-    tokenDecimals: 18,
+    tokenDecimals: VeloPool[0].tokenDecimals,
     pairPrice: new BigNumber(0),
   })
 
@@ -117,7 +117,7 @@ const Farm: React.FC = () => {
     sortOrder: 1,
     harvest: true,
     isFinished: false,
-    tokenDecimals: 18,
+    tokenDecimals: VeloPool[2].tokenDecimals,
     pairPrice: new BigNumber(0),
   })
 
@@ -185,7 +185,7 @@ const Farm: React.FC = () => {
 
     const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR).div(1e18).toNumber()
 
-    const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
+    const veloBalanceReward = new BigNumber(veloBalance).div(poolVelo2.tokenDecimals).toNumber()
     const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
       new BigNumber(reserveFinixVelo._reserve1).div(1e18),
     )
@@ -199,7 +199,8 @@ const Farm: React.FC = () => {
     // eslint-disable-next-line
     // debugger
     setPoolVelo2(poolVelo2)
-    setAmountVfinix2x(veloBalanceReward)
+    setAmountVfinix2x(veloBalanceReward )
+    // console.log("amountVfinix2)
   }, [account, poolVelo2])
 
   const fetch1 = useCallback(async () => {
