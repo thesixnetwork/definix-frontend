@@ -7,7 +7,6 @@ import useWallet from 'hooks/useWallet'
 import { PairState, usePairs } from '../data/Reserves'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
-
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
   // const { chainId } = useActiveWeb3React()
   const { chainId } = useWallet()

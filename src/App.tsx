@@ -6,7 +6,6 @@ import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 
-
 import useWallet from 'hooks/useWallet'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'

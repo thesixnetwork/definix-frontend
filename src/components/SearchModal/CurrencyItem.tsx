@@ -3,7 +3,7 @@ import React from 'react'
 import { Text, Flex, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { useCurrencyBalance } from 'state/wallet/hooks'
-import useWallet from 'hooks/useWallet';
+import useWallet from 'hooks/useWallet'
 
 import Loader from '../Loader'
 import { MenuItem } from './styleds'

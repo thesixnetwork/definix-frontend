@@ -14,7 +14,7 @@ import {
   Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import useWallet from 'hooks/useWallet';
+import useWallet from 'hooks/useWallet'
 import { useTotalSupply } from '../../data/TotalSupply'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'

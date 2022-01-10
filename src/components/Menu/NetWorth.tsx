@@ -27,7 +27,7 @@ import {
   usePriceSixUsd,
 } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
-import useWallet from 'hooks/useWallet';
+import useWallet from 'hooks/useWallet'
 import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 
 const NetWorth = () => {

@@ -38,7 +38,7 @@ import { useAllTokens } from 'hooks/Tokens'
 import { allTokenAddresses, LIMITED_PRICE_IMPACT } from 'config/constants/index'
 import { useLocation } from 'react-router'
 import qs from 'querystring'
-import useWallet from 'hooks/useWallet';
+import useWallet from 'hooks/useWallet'
 
 const Swap: React.FC = () => {
   const [isApprovePending, setIsApprovePending] = useState<boolean>(false)
