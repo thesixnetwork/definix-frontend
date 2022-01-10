@@ -7,7 +7,6 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import AdvancedSwapDetailsDropdown from 'components/SwapComponent/AdvancedSwapDetailsDropdown'
 import ConfirmSwapModal from 'components/SwapComponent/ConfirmSwapModal'
 import TradePrice from 'components/SwapComponent/TradePrice'
-import { useActiveWeb3React } from 'hooks'
 import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
@@ -39,7 +38,7 @@ import { useAllTokens } from 'hooks/Tokens'
 import { allTokenAddresses, LIMITED_PRICE_IMPACT } from 'config/constants/index'
 import { useLocation } from 'react-router'
 import qs from 'querystring'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { useActiveWeb3React } from 'hooks'
 
 const Swap: React.FC = () => {
   const [isApprovePending, setIsApprovePending] = useState<boolean>(false)
@@ -63,8 +62,9 @@ const Swap: React.FC = () => {
     [i18n.language],
   )
 
-  // const { account, chainId = '' } = useActiveWeb3React()
-  const { account, chainId = '' } = useWallet()
+  const { account, chainId = '' } = useActiveWeb3React()
+  // const { account, chainId = '' } = useWallet()
+  // const { account, chainId = '' } = useCaverJsReact()
 
   const [deadline] = useUserDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
@@ -161,6 +161,7 @@ const Swap: React.FC = () => {
   // )
 
   const { error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, deadline, recipient)
+  console.log('~~~swapCallbackError', swapCallbackError)
 
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const priceImpactSeverity = useMemo(() => warningSeverity(priceImpactWithoutFee), [priceImpactWithoutFee])

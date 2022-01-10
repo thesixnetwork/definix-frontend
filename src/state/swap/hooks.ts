@@ -4,8 +4,8 @@ import { ParsedQs } from 'qs'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { SIX_ADDRESS } from 'config/constants'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
+import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import useENS from '../../hooks/useENS'
 import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
@@ -127,7 +127,8 @@ export function useDerivedSwapInfo(): {
   swapState: SWAP_STATE
 } {
   // const { account } = useActiveWeb3React()
-  const { account } = useWallet()
+  // const { account } = useWallet()
+  const { account } = useCaverJsReact()
 
   const {
     independentField,

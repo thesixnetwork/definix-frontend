@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Menu as UikitMenu } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation, Trans } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
@@ -7,11 +6,17 @@ import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import useUserDeadline from 'hooks/useUserDeadline'
+import useCaverJsReactForWallet from 'hooks/useCaverJsReactForWallet'
+import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import { links } from './config'
 
-const Menu = (props) => {
-  const { account, connect, reset } = useWallet()
+const Menu: React.FC<any> = (props) => {
+  // const { account } = useWallet()
+  const {  account } = useCaverJsReact();
+  const { login: connect, logout: reset } = useCaverJsReactForWallet()
+
   const { i18n, t } = useTranslation()
+
   const [userSlippageTolerance, setUserslippageTolerance] = useUserSlippageTolerance()
   const [deadline, setDeadline] = useUserDeadline()
   const { isDark, toggleTheme } = useTheme()
@@ -47,4 +52,4 @@ const Menu = (props) => {
   )
 }
 
-export default Menu
+export default React.memo(Menu)

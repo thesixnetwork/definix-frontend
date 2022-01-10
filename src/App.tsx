@@ -1,5 +1,4 @@
 import React, { lazy, Suspense, useEffect } from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 
 import { Route, Switch, BrowserRouter } from 'react-router-dom'

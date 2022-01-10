@@ -44,7 +44,6 @@ import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
 import { getContract } from 'utils'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
-import { useActiveWeb3React } from './index'
 
 const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
 const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
@@ -151,8 +150,6 @@ function useContractForExchange(
 ): Contract | null {
   const { account } = useWallet()
   const { library } = useCaverJsReact()
-
-  console.log('~~~', library)
 
   return useMemo(() => {
     if (!address || !ABI || !library) return null

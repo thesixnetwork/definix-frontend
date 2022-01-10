@@ -6,7 +6,7 @@ import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUnisw
 import { JSBI, Percent, Router, SwapParameters, Trade, TradeType } from 'definixswap-sdk'
 import { useMemo, useContext } from 'react'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
-import { KlipModalContext, useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { KlipConnector } from '@sixnetwork/klip-connector'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE, ROUTER_ADDRESS } from 'config/constants'
@@ -55,8 +55,9 @@ function useSwapCallArguments(
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { library } = useActiveWeb3React()
-  const { account, chainId } = useWallet()
+  // const { library } = useActiveWeb3React()
+  // const { account, chainId } = useWallet()
+  const { account, chainId, library } = useCaverJsReact()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
@@ -106,9 +107,9 @@ export function useSwapCallback(
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { library } = useActiveWeb3React()
-  const { account, chainId } = useWallet()
+  // const { account, chainId } = useWallet()
 
-  const { connector } = useCaverJsReact()
+  const { connector, account, chainId } = useCaverJsReact()
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, deadline, recipientAddressOrName)
   const { setShowModal } = useContext(KlipModalContext())
   const addTransaction = useTransactionAdder()

@@ -1,11 +1,12 @@
 import React from 'react'
 import { Button, ButtonVariants, Login, useWalletModal } from '@fingerlabs/definixswap-uikit-v2'
 import { Trans, useTranslation } from 'react-i18next'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useCaverJsReactForWallet from 'hooks/useCaverJsReactForWallet'
 
 const UnlockButton = (props) => {
   const { t } = useTranslation()
-  const { connect, reset } = useWallet()
+  // const { connect, reset } = useWallet()
+  const { login: connect, logout: reset } = useCaverJsReactForWallet()
   const { onPresentConnectModal } = useWalletModal(Trans, connect as Login, reset)
 
   return (
