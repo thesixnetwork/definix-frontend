@@ -126,8 +126,8 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
       }),
     )
 
-    allProposal = dataArray
-    allProposalMap = proposalArray
+    allProposal = dataArray.sort((a, b) => a.proposalIndex - b.proposalIndex)
+    allProposalMap = proposalArray.sort((a, b) => a.proposalIndex - b.proposalIndex)
   } catch (error) {
     allProposal = []
     allProposalMap = []
