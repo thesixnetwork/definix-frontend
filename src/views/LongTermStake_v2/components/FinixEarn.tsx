@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from 'react'
-import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Button, FireIcon, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import { useHarvest } from 'hooks/useLongTermStake'
 import { useToast } from 'state/hooks'
 import styled from 'styled-components'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import SuperStakeModal from './SuperStake/SuperStakeModal'
 import { IsMobileType } from './types'
@@ -92,7 +92,7 @@ const FinixEarn: React.FC<FinixEarnProps> = ({ isMobile, finixEarn }) => {
           </Flex>
           <Flex alignItems="flex-end">
             <Text textStyle={`${isMobile ? 'R_23B' : 'R_28B'}`} color="white">
-              {numeral(finixEarn).format('0,0.[00]')}
+              {getBalanceOverBillion(finixEarn)}
             </Text>
             <Text ml="S_6" mb={`${!isMobile && 'S_4'}`} textStyle={`${isMobile ? 'R_14M' : 'R_16M'}`} color="white">
               {t('FINIX')}

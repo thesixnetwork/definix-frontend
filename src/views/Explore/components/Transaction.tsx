@@ -49,13 +49,8 @@ const Overflow = styled.div`
   overflow: auto;
 `
 
-const StyledGrid = styled(Grid)`
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 8px;
-
-  > div:nth-last-child(7) ~ div {
-    border-bottom: none;
-  }
+const StyledTH = styled(TH)<{ border: boolean }>`
+  ${({ theme, border }) => border && `border-top: 1px solid ${theme.colors.border}`};
 `
 
 const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
@@ -66,13 +61,13 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
     <Overflow>
       <Box mx={mx} minWidth="fit-content">
         <InfiniteScroll dataLength={rows.length} next={fetchMoreData} hasMore={hasMore} loader={<LoadingData />}>
-          <StyledGrid gridTemplateColumns={`repeat(${cols.length}, 1fr)`}>
+          <Grid gridTemplateColumns={`repeat(${cols.length}, 1fr)`}>
             {cols.map((c, idx) => (
-              <TH align={idx > 0 ? 'center' : null} key={c} oneline as="div">
+              <StyledTH align={idx > 0 ? 'center' : null} key={c} oneline as="div" border>
                 <Text key={c} color="mediumgrey" textStyle="R_12M">
                   {c}
                 </Text>
-              </TH>
+              </StyledTH>
             ))}
             {rows.map((r) => (
               <Fragment key={`tx-row-${r.block_number}`}>
@@ -115,7 +110,7 @@ const TransactionTable = ({ rows, mx, hasMore, fetchMoreData }) => {
                 </TD>
               </Fragment>
             ))}
-          </StyledGrid>
+          </Grid>
         </InfiniteScroll>
       </Box>
     </Overflow>

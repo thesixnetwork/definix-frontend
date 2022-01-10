@@ -23,6 +23,7 @@ Config.configure(sdkConfig)
 // Route-based code splitting
 // Only pool is included in the main bucndle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
+const Voting = lazy(() => import('./views/Voting_v2'))
 const Pools = lazy(() => import('./views/Pools'))
 const NewFarms = lazy(() => import('./views/NewFarms'))
 const Explore = lazy(() => import('./views/Explore'))
@@ -134,6 +135,9 @@ const App: React.FC = () => {
             </Route>
             <Route exact strict path="/liquidity/remove/:tokens">
               <RedirectOldRemoveLiquidityPathStructure />
+            </Route>
+            <Route path="/voting">
+              <Voting />
             </Route>
             {/* 404 */}
             <Route>

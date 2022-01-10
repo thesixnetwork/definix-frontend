@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'lodash'
-import numeral from 'numeral'
 import { Card, Flex, Text, Divider } from '@fingerlabs/definixswap-uikit-v2'
 import { useApr, useAllLock, usePrivateData, useAllowance } from 'hooks/useLongTermStake'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import longTermImgX1 from 'assets/images/img-longterm.png'
 import longTermImgX2 from 'assets/images/img-longterm@2x.png'
@@ -32,7 +32,7 @@ const Working = styled(Flex)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 1);
   position: absolute;
   left: 0;
   top: 0;
@@ -41,6 +41,7 @@ const Working = styled(Flex)`
   border-radius: 16px;
   white-space: pre-line;
   text-align: center;
+  padding: 0 20px;
 `
 
 const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
@@ -89,11 +90,11 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
 
     switch (day) {
       case 90:
-        return numeral(Number(balance)).format('0,0.[00]')
+        return getBalanceOverBillion(Number(balance))
       case 180:
-        return numeral(Number(balance) * 2).format('0,0.[00]')
+        return getBalanceOverBillion(Number(balance) * 2)
       case 365:
-        return numeral(Number(balance) * 4).format('0,0.[00]')
+        return getBalanceOverBillion(Number(balance) * 4)
       default:
         return 0
     }
@@ -141,13 +142,18 @@ const CardFinixStake: React.FC<IsMobileType> = ({ isMobile }) => {
             <EstimateVFinix hasAccount={hasAccount} days={days} earn={getVFinix(days, inputBalance)} />
           </FlexCard>
 
-          {pathname.indexOf('super') > -1 && !balancevfinix && (
+          {pathname.indexOf('super') > -1 && (!hasAccount || !balancevfinix) && (
             <Working>
-              <img alt="" width={236} src={longTermImgX1} srcSet={`${longTermImgX2} 2x, ${longTermImgX3} 3x`} />
-              <Text textStyle="R_18M" mt="S_24">
+              <img
+                alt=""
+                width={isMobile ? 200 : 236}
+                src={longTermImgX1}
+                srcSet={`${longTermImgX2} 2x, ${longTermImgX3} 3x`}
+              />
+              <Text textStyle={isMobile ? 'R_16M' : 'R_18M'} mt="S_24">
                 {t('You cannot use Super Stake.')}
               </Text>
-              <Text textStyle="R_14R" mt="S_12">
+              <Text textStyle="R_14R" mt="S_12" color="deepgrey">
                 {t('This feature is only for vFINIX holder')}
               </Text>
             </Working>

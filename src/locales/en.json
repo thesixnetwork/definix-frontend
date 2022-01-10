@@ -444,7 +444,6 @@
   "By Total staked": "Total staked",
   "Feedback": "Feedback",
   "Document": "Document",
-  "Still in progress": "Still in progress.\nIt is available to use service on G1.",
   "Connect to a wallet to view": "Connect to a wallet to view your liquidity.",
   "Go to G1": "Go to G1",
   "Menu Swap": "Swap",
@@ -477,7 +476,6 @@
   "Gold Hodl": "Gold Hodl",
   "Silver Hodl": "Silver Hodl",
   "Super Stake": "Super Stake",
-  "still in progress super stake": "Still in progress.\nIt is available to use service on G1.",
   "actionWrap": "Wrap",
   "actionUnwrap": "Unwrap",
   "28days super stake tooltip": "You can stake as much as FINIX you prefer under the same lock period within 28 days",
@@ -526,5 +524,8 @@
   "vFINIX Balance": "vFINIX Balance",
   "Confirm Voting": "Confirm Voting",
   "Total Vote": "Total Vote",
-  "Your Voting Power (vFINIX)": "Your Voting Power (vFINIX) will be locked until the voting time is ended."
+  "Your Voting Power (vFINIX)": "Your Voting Power (vFINIX) will be locked until the voting time is ended.",
+  "Release notes title": "",
+  "Release notes date": "",
+  "Still in progress": "Applying G2 is in progress.\r\nIt is available to use on G1. "
 }

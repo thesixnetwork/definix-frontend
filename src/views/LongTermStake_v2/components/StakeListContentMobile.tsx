@@ -1,8 +1,8 @@
 import React from 'react'
-import numeral from 'numeral'
 import moment from 'moment'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Divider, Helper } from '@fingerlabs/definixswap-uikit-v2'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 import UnstakeButton from './UnstakeButton'
 import { AllDataLockType, IsMobileType } from './types'
@@ -41,7 +41,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock,
                       {t('Super Stake')}
                     </Text>
                     <Helper
-                      text={`${t('28days super stake tooltip')}\n\n
+                      text={`${t('28days super stake tooltip')}\n
                         ${getEndDay(item.lockTopupTimes)} ~ ${getEndDay(item.topupTimeStamp)}`}
                       color="yellow"
                     />
@@ -53,7 +53,7 @@ const StakeListContentMobile: React.FC<ContentProps> = ({ isMobile, allDataLock,
                   {t('Amount')}
                 </Text>
                 <Text textStyle="R_14R" color="black">
-                  {numeral(item.lockAmount).format('0, 0.[00]')} {t('FINIX')}
+                  {getBalanceOverBillion(item.lockAmount)} {t('FINIX')}
                 </Text>
               </Flex>
             </Flex>

@@ -140,6 +140,10 @@ const Character = styled(ImageSet)`
   display: flex;
   justify-self: flex-end;
 
+  > img {
+    height: auto;
+  }
+
   ${({ theme }) => theme.mediaQueries.mobileXl} {
     margin-top: -30px;
     margin-right: -20px;

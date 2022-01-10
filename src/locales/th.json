@@ -444,7 +444,6 @@
   "By Total staked": "",
   "Feedback": "",
   "Document": "",
-  "Still in progress": "",
   "Connect to a wallet to view": "",
   "Go to G1": "",
   "Menu Swap": "",
@@ -477,7 +476,6 @@
   "Gold Hodl": "",
   "Silver Hodl": "",
   "Super Stake": "",
-  "still in progress super stake": "",
   "actionWrap": "",
   "actionUnwrap": "",
   "28days super stake tooltip": "",
@@ -526,5 +524,8 @@
   "vFINIX Balance": "",
   "Confirm Voting": "",
   "Total Vote": "",
-  "Your Voting Power (vFINIX)": ""
+  "Your Voting Power (vFINIX)": "",
+  "Release notes title": "",
+  "Release notes date": "",
+  "Still in progress": ""
 }

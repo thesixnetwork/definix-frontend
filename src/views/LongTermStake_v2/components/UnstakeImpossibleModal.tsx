@@ -16,6 +16,7 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useAvailableVotes } from 'hooks/useVoting'
 import styled from 'styled-components'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 
 interface ModalProps {
   days: number
@@ -62,7 +63,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
               </Flex>
             </Flex>
             <Text mt="S_4" textStyle="R_16R" color="black">
-              {numeral(amount).format('0, 0.[00]')}
+              {getBalanceOverBillion(amount)}
             </Text>
           </Flex>
           <Divider mt="S_24" />
@@ -80,7 +81,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
                 {t('Recall vFINIX')}
               </Text>
               <Text textStyle="R_14M" color="deepgrey">
-                {numeral(amount * multiplier).format('0, 0.[00]')} {t('vFINIX')}
+                {getBalanceOverBillion(amount * multiplier)} {t('vFINIX')}
               </Text>
             </Flex>
             <Flex justifyContent="space-between">
@@ -88,7 +89,7 @@ const UnstakeImpossibleModal: React.FC<ModalProps> = ({ days, amount, apr, multi
                 {t('Your balance')}
               </Text>
               <Text textStyle="R_14M" color="red">
-                {numeral(availableVotes).format('0, 0.[00]')} {t('vFINIX')}
+                {getBalanceOverBillion(Number(availableVotes))} {t('vFINIX')}
               </Text>
             </Flex>
           </Flex>

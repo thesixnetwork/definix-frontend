@@ -94,6 +94,7 @@ const NoticeSlider = styled(Slider)`
   }
 
   ${({ theme }) => theme.mediaQueries.mobile} {
+    z-index: 2;
     margin-top: 0;
     .slick-list {
       margin-bottom: 0;
