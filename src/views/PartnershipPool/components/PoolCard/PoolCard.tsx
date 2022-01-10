@@ -224,7 +224,7 @@ const PoolCard: React.FC<PoolCardVeloProps> = ({ pool, isHorizontal = false, vel
               setIsOpenAccordion={setIsOpenAccordion}
               veloId={veloId}
             />
-            
+
             <div className={`accordion-content ${isOpenAccordion ? 'show' : 'hide'}`}>
               {renderStakeAction('pa-5')}
               {renderHarvestAction('pa-5')}

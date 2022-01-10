@@ -199,7 +199,7 @@ const Farm: React.FC = () => {
     // eslint-disable-next-line
     // debugger
     setPoolVelo2(poolVelo2)
-    setAmountVfinix2x(veloBalanceReward )
+    setAmountVfinix2x(veloBalanceReward)
     // console.log("amountVfinix2)
   }, [account, poolVelo2])
 
