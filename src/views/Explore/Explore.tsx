@@ -1,4 +1,3 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -11,6 +10,7 @@ import { getAddress } from 'utils/addressHelpers'
 
 import ListPageHeader from 'components/ListPageHeader'
 import NoResultArea from 'components/NoResultArea'
+import useWallet from 'hooks/useWallet'
 import DisclaimersModal from './components/DisclaimersModal'
 import ExploreCard from './components/ExploreCard'
 import ExploreDetail from './ExploreDetail'

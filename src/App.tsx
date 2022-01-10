@@ -6,9 +6,8 @@ import { Config } from 'definixswap-sdk'
 import { useFetchProfile, useFetchPublicData } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
-import useCaverJsReactForWallet from 'hooks/useCaverJsReactForWallet'
 
+import useWallet from 'hooks/useWallet'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import sdkConfig from './sdkconfig'
@@ -42,9 +41,7 @@ BigNumber.config({
 })
 
 const App: React.FC = () => {
-  // const { account, connect } = useWallet()
-  const { account } = useCaverJsReact()
-  const { login: connect } = useCaverJsReactForWallet()
+  const { account, connect } = useWallet()
   const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
 
   useEffect(() => {
@@ -62,24 +59,6 @@ const App: React.FC = () => {
 
   useFetchPublicData()
   useFetchProfile()
-
-  // const { account } = useCaverJsReact()
-  // const { login } = useCaverJsReactForWallet()
-
-  // // wallet
-  // const checkConnector = (connector: string) => window.localStorage.getItem('connector') === connector
-  // useEffect(() => {
-  //   if (!account && window.localStorage.getItem('accountStatus') && checkConnector('injected')) {
-  //     login('injected')
-  //   } else if (
-  //     !account &&
-  //     window.localStorage.getItem('accountStatus') &&
-  //     window.localStorage.getItem('userAccount') &&
-  //     checkConnector('klip')
-  //   ) {
-  //     login('klip')
-  //   }
-  // }, [account, login])
 
   return (
     <BrowserRouter>

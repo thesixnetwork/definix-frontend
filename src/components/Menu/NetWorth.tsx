@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useDispatch } from 'react-redux'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import _ from 'lodash'
 
 import { BLOCKS_PER_YEAR } from 'config'
@@ -28,6 +27,7 @@ import {
   usePriceSixUsd,
 } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
+import useWallet from 'hooks/useWallet';
 import { fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 
 const NetWorth = () => {

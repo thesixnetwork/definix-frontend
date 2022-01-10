@@ -1,8 +1,8 @@
 import { Currency, CurrencyAmount, ETHER, JSBI, Token, TokenAmount } from 'definixswap-sdk'
 import { useMemo } from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
 import ERC20_INTERFACE from 'config/constants/abis/erc20'
+import useWallet from 'hooks/useWallet'
 import { useAllTokens } from '../../hooks/Tokens'
 import { useMulticallContract } from '../../hooks/useContract'
 import { isAddress } from '../../utils'
@@ -127,7 +127,6 @@ export function useCurrencyBalance(account?: string, currency?: Currency): Curre
 
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: TokenAmount | undefined } {
-  // const { account } = useActiveWeb3React()
   const { account } = useWallet()
   const allTokens = useAllTokens()
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])

@@ -24,8 +24,7 @@ import { Currency, Percent, TokenAmount, CurrencyAmount, Pair, Token, ETHER } fr
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 
 import { KlipConnector } from '@sixnetwork/klip-connector'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
-import { KlipModalContext, useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { Field } from 'state/burn/actions'
@@ -33,7 +32,6 @@ import { useUserDeadline, useUserSlippageTolerance } from 'state/user/hooks'
 import { KlaytnTransactionResponse } from 'state/transactions/actions'
 import { useToast } from 'state/toasts/hooks'
 
-import { useActiveWeb3React } from 'hooks'
 import * as klipProvider from 'hooks/klipProvider'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { getAbiByName } from 'hooks/hookHelper'
@@ -44,6 +42,7 @@ import { ROUTER_ADDRESS } from 'config/constants/index'
 import KlaytnScopeLink from 'components/KlaytnScopeLink'
 
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
+import useWallet from 'hooks/useWallet'
 
 interface Props extends InjectedModalProps {
   currencyA: Currency
@@ -89,13 +88,11 @@ export default function ConfirmRemoveModal({
 }: Props) {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
-  const { library } = useActiveWeb3React()
-  const { account, chainId } = useWallet()
+  const { account, chainId, connector, library } = useWallet()
   const [approval] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
     ROUTER_ADDRESS[chainId || parseInt(process.env.REACT_APP_CHAIN_ID || '0')],
   )
-  const { connector } = useCaverJsReact()
   const { setShowModal } = useContext(KlipModalContext())
   const { toastSuccess, toastError } = useToast()
 

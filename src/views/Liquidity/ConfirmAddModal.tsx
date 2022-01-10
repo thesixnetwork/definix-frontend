@@ -5,8 +5,7 @@ import tp from 'tp-js-sdk'
 import Caver from 'caver-js'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext, useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import {
   Modal,
   Box,
@@ -17,7 +16,6 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import { Currency, CurrencyAmount, Percent, Price, TokenAmount, ETHER } from 'definixswap-sdk'
 import { useTranslation } from 'react-i18next'
-import { useActiveWeb3React } from 'hooks'
 import * as klipProvider from 'hooks/klipProvider'
 import { getAbiByName } from 'hooks/hookHelper'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
@@ -32,6 +30,7 @@ import KlaytnScopeLink from 'components/KlaytnScopeLink'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { sendAnalyticsData } from 'utils/definixAnalytics'
+import useWallet from 'hooks/useWallet'
 import ModalHeader from './ModalHeader'
 import ConfirmAddModalBottom from './ConfirmAddModalBottom'
 
@@ -72,8 +71,7 @@ export default function ConfirmAddModal({
   onFieldBInput,
 }: Props) {
   const { t } = useTranslation()
-  const { library } = useActiveWeb3React()
-  const { chainId, account } = useWallet()
+  const { chainId, account, connector, library } = useWallet()
   const { setShowModal } = useContext(KlipModalContext())
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false)
   const [txHash, setTxHash] = useState<string>('')
@@ -81,7 +79,6 @@ export default function ConfirmAddModal({
   const [deadline] = useUserDeadline()
   const [allowedSlippage] = useUserSlippageTolerance()
   const addTransaction = useTransactionAdder()
-  const { connector } = useCaverJsReact()
   const { toastSuccess, toastError } = useToast()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])

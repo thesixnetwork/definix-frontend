@@ -1,8 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
-import { useActiveWeb3React } from '../../hooks'
+import useWallet from 'hooks/useWallet'
 import { useBlockNumber } from '../application/hooks'
 import { AppDispatch, AppState } from '../index'
 import { checkedTransaction, finalizeTransaction } from './actions'
@@ -27,8 +26,7 @@ export function shouldCheck(
 }
 
 export default function Updater(): null {
-  const { library } = useActiveWeb3React()
-  const { chainId } = useWallet()
+  const { chainId, library } = useWallet()
 
   const lastBlockNumber = useBlockNumber()
 

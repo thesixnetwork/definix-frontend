@@ -1,9 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Button, Card, Text, useMatchBreakpoints } from '../../../uikit-dev'
+import useWallet from 'hooks/useWallet'
 import { ExternalLink } from 'react-feather'
 import styled from 'styled-components'
+import { Button, Card, Text, useMatchBreakpoints } from '../../../uikit-dev'
 import useTheme from '../../../hooks/useTheme'
 import { DatePicker, TimePicker } from '../../../components/DatePicker'
 

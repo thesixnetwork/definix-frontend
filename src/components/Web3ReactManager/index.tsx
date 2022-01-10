@@ -1,12 +1,13 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 
+import { NetworkContextName } from 'config/constants'
+import useWallet from 'hooks/useWallet'
 import { network } from '../../connectors'
 import { useEagerConnect, useInactiveListener } from '../../hooks'
-import { NetworkContextName } from 'config/constants'
 
 export default function Web3ReactManager({ children }: { children: JSX.Element }) {
-  const { active } = useCaverJsReact()
+  const { active } = useWallet()
   const { active: networkActive, error: networkError, activate: activateNetwork } = useCaverJsReact(NetworkContextName)
 
   // try to eagerly connect to an injected provider, if it exists and has granted access already

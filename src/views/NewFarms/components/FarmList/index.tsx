@@ -1,7 +1,5 @@
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
-import { provider } from 'web3-core'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDispatch } from 'react-redux'
@@ -13,6 +11,8 @@ import { getAddress, getWklayAddress } from 'utils/addressHelpers'
 import { getTokenSymbol } from 'utils/getTokenSymbol'
 import { DropdownOption } from '@fingerlabs/definixswap-uikit-v2'
 import NoResultArea from 'components/NoResultArea'
+// eslint-disable-next-line import/no-unresolved
+import useWallet from 'hooks/useWallet'
 import FarmCard from '../FarmCard/FarmCard'
 import { FarmWithStakedValue } from '../FarmCard/types'
 
@@ -24,7 +24,8 @@ const FarmList: React.FC<{
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { slowRefresh } = useRefresh()
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn } = useWallet()
+
   const balances = useBalances(account)
   const farmsLP = useFarms()
   const farmsWithApy: FarmWithStakedValue[] = useFarmsList(farmsLP)

@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import isEmpty from 'lodash/isEmpty'
 import moment from 'moment'
@@ -23,6 +22,7 @@ import EllipsisText from 'components/EllipsisText'
 import CurrencyText from 'components/CurrencyText'
 
 import useGetRequest from 'hooks/useGetRequest'
+import useWallet from 'hooks/useWallet'
 import { TD, TH } from './Table'
 
 interface TransactionType {

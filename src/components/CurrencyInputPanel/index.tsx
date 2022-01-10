@@ -16,7 +16,7 @@ import {
   Coin,
   Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
+import useWallet from 'hooks/useWallet'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { Input as NumericalInput } from '../NumericalInput'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
@@ -69,7 +69,7 @@ export default React.memo(function CurrencyInputPanel({
   maxTokenAmount,
 }: CurrencyInputPanelProps) {
   const { t } = useTranslation()
-  const { account } = useCaverJsReact()
+  const { account } = useWallet()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const [isMaxKlayNoti, setIsMaxKlayNoti] = useState<boolean>(false)
   const [balance, setBalance] = useState<string>('')

@@ -1,9 +1,9 @@
 import React from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
-import { Text, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
+import { Text } from '@fingerlabs/definixswap-uikit-v2'
+import useWallet from 'hooks/useWallet'
 import Locked from './Locked'
 
 const Balance = () => {

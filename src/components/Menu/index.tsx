@@ -6,14 +6,11 @@ import { supportedLanguages } from 'config/localisation/languageCodes'
 import useTheme from 'hooks/useTheme'
 import useUserSlippageTolerance from 'hooks/useUserSlippageTolerance'
 import useUserDeadline from 'hooks/useUserDeadline'
-import useCaverJsReactForWallet from 'hooks/useCaverJsReactForWallet'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
+import useWallet from 'hooks/useWallet'
 import { links } from './config'
 
 const Menu: React.FC<any> = (props) => {
-  // const { account } = useWallet()
-  const {  account } = useCaverJsReact();
-  const { login: connect, logout: reset } = useCaverJsReactForWallet()
+  const { account, connect, reset } = useWallet()
 
   const { i18n, t } = useTranslation()
 

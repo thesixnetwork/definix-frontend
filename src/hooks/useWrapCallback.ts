@@ -1,4 +1,3 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Currency, currencyEquals, ETHER, WETH } from 'definixswap-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -6,8 +5,8 @@ import { useToast } from 'state/toasts/hooks'
 import { tryParseAmount } from '../state/swap/hooks'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { useCurrencyBalance } from '../state/wallet/hooks'
-import { useActiveWeb3React } from './index'
 import { useWETHContract } from './useContract'
+import useWallet from './useWallet'
 
 export enum WrapType {
   NOT_APPLICABLE,

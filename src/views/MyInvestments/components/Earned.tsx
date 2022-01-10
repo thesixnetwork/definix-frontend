@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import React, { useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { usePriceFinixUsd } from 'state/hooks'

@@ -14,10 +14,8 @@ import {
   Lp,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-
+import useWallet from 'hooks/useWallet';
 import { useTotalSupply } from '../../data/TotalSupply'
-import { useActiveWeb3React } from '../../hooks'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'

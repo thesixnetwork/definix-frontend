@@ -1,10 +1,9 @@
 import { Currency, CurrencyAmount } from 'definixswap-sdk'
-import React, { CSSProperties } from 'react'
+import React from 'react'
 import { Text, Flex, Coin } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { useCurrencyBalance } from 'state/wallet/hooks'
-import { useBalances } from 'state/hooks'
+import useWallet from 'hooks/useWallet';
 
 import Loader from '../Loader'
 import { MenuItem } from './styleds'

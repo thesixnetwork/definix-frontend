@@ -21,7 +21,6 @@ import {
   usePriceSixUsd,
 } from 'state/hooks'
 import { provider } from 'web3-core'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import { getBalanceNumber } from 'utils/formatBalance'
@@ -40,6 +39,7 @@ import {
 import { useLockPlus } from 'hooks/useTopUp'
 import success from 'uikit-dev/animation/complete.json'
 import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
+import useWallet from 'hooks/useWallet'
 import ModalStake from '../Modal/ModalStake'
 import ModalResponses from '../Modal/ModalResponses'
 import { Text } from '../../components/Text'

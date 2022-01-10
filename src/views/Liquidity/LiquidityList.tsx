@@ -4,7 +4,6 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import { usePairs } from 'data/Reserves'
 import { Pair } from 'definixswap-sdk'
-import { useActiveWeb3React } from 'hooks'
 import {
   Flex,
   Box,
@@ -16,7 +15,7 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'react-i18next'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 
 const LiquidityList: React.FC = () => {
   const { t } = useTranslation()

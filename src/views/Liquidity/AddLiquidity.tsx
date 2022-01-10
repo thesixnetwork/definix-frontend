@@ -16,7 +16,6 @@ import {
   Coin,
   PlusBIcon,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Currency, currencyEquals, TokenAmount, WETH } from 'definixswap-sdk'
 import { Field } from 'state/mint/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -27,7 +26,6 @@ import numeral from 'numeral'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { PairState } from 'data/Reserves'
 import { MinimalPositionCard } from 'components/PositionCard'
-import { useActiveWeb3React } from 'hooks'
 import { DerivedMintInfoError, useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/index'
 import { useHistory, useParams } from 'react-router-dom'
@@ -36,6 +34,7 @@ import { useCurrency } from 'hooks/Tokens'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 
+import useWallet from 'hooks/useWallet'
 import NoLiquidity from './NoLiquidity'
 import { PoolPriceBar } from './PoolPriceBar'
 import ConfirmAddModal from './ConfirmAddModal'
@@ -63,7 +62,6 @@ const AddLiquidity: React.FC = () => {
   } = useDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(noLiquidity)
   const history = useHistory()
-  // const { chainId, account } = useActiveWeb3React()
   const { chainId, account } = useWallet()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])

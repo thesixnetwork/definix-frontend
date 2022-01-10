@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useMemo } from 'react'
 import useTheme from 'hooks/useTheme'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import { useLockCount, useAllowance, usePrivateData, useAllLock } from '../../../hooks/useLongTermStake'
 import LockVfinixList from './LockVfinixList'
 import FinixStakeCard from './FinixStakeCard'

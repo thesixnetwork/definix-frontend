@@ -1,8 +1,7 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { useActiveWeb3React } from '../../hooks'
 import { AppDispatch, AppState } from '../index'
 import { addTransaction, KlaytnTransactionResponse } from './actions'
 import { TransactionDetails } from './reducer'

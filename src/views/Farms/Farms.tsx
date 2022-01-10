@@ -1,4 +1,3 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
 import FlexLayout from 'components/layout/FlexLayout'
 import { BLOCKS_PER_YEAR } from 'config'
@@ -16,7 +15,7 @@ import { useFarms, usePriceKlayKusdt, usePriceKethKusdt, usePriceFinixUsd, usePr
 import styled from 'styled-components'
 import { Heading, Text, Link, useMatchBreakpoints, useModal } from 'uikit-dev'
 import { LeftPanel, TwoPanelLayout } from 'uikit-dev/components/TwoPanelLayout'
-import { provider } from 'web3-core'
+import useWallet from 'hooks/useWallet'
 import BannerTopup from '../../uikit-dev/widgets/Banner/BannerTopup'
 import Flip from '../../uikit-dev/components/Flip'
 import FarmCard from './components/FarmCard/FarmCard'
@@ -57,7 +56,7 @@ const Farms: React.FC = () => {
   const klayPrice = usePriceKlayKusdt()
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn } = useWallet()
   const kethPriceUsd = usePriceKethKusdt()
   const { isXl, isMd } = useMatchBreakpoints()
   const isMobile = !isXl && !isMd

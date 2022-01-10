@@ -8,16 +8,15 @@ import { useMemo, useContext } from 'react'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
 import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { KlipConnector } from '@sixnetwork/klip-connector'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import { BIPS_BASE, DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE, ROUTER_ADDRESS } from 'config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { KlaytnTransactionResponse } from '../state/transactions/actions'
 import { calculateGasMargin, getRouterContract, isAddress, shortenAddress } from '../utils'
 import isZero from '../utils/isZero'
-import { useActiveWeb3React } from './index'
 import useENS from './useENS'
 import { getAbiByName } from './hookHelper'
 import * as klipProvider from './klipProvider'
+import useWallet from './useWallet'
 
 enum SwapCallbackState {
   INVALID,
@@ -55,9 +54,7 @@ function useSwapCallArguments(
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  // const { library } = useActiveWeb3React()
-  // const { account, chainId } = useWallet()
-  const { account, chainId, library } = useCaverJsReact()
+  const { account, chainId, library } = useWallet()
 
   const { address: recipientAddress } = useENS(recipientAddressOrName)
   const recipient = recipientAddressOrName === null ? account : recipientAddress
@@ -106,10 +103,7 @@ export function useSwapCallback(
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
   recipientAddressOrName: string | null, // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { library } = useActiveWeb3React()
-  // const { account, chainId } = useWallet()
-
-  const { connector, account, chainId } = useCaverJsReact()
+  const { connector, account, chainId, library } = useWallet()
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, deadline, recipientAddressOrName)
   const { setShowModal } = useContext(KlipModalContext())
   const addTransaction = useTransactionAdder()

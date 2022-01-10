@@ -1,6 +1,4 @@
 import _ from 'lodash'
-import { provider } from 'web3-core'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
@@ -13,6 +11,7 @@ import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
 import ExploreCard from 'views/Explore/components/ExploreCard'
 import LongTermStakeCard from 'views/LongTermStake_v2/components/LongTermStakeCard/LongTermStakeCard'
+import useWallet from 'hooks/useWallet'
 
 const DividerWrap = styled(Box)`
   padding: 0 ${({ theme }) => theme.spacing.S_40}px;
@@ -33,7 +32,7 @@ const MyProducts: React.FC<{
   searchKeyword: string
 }> = ({ products, currentProductType, currentOrderBy, searchKeyword }) => {
   const { t } = useTranslation()
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
+  const { account, klaytn } = useWallet()
   const balances = useBalances(account)
 
   const getTokenName = useCallback((product) => {

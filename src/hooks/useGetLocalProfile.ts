@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useActiveWeb3React } from 'hooks'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from './useWallet'
 
 const initialState = {
   profileLink: 'https://definixswap.finance/profile',
@@ -12,7 +11,6 @@ const initialState = {
  */
 const useGetLocalProfile = () => {
   const [profile, setProfile] = useState(initialState)
-  // const { account } = useActiveWeb3React()
   const { account } = useWallet()
 
   useEffect(() => {

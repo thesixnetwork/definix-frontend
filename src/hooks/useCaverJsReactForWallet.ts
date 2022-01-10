@@ -1,14 +1,14 @@
 import React, { useCallback } from 'react'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { injected, klip } from 'connectors'
+import useWallet from './useWallet'
 
 export default function useCaverJsReactForWallet(): {
   login: (connectorId: string) => void
   logout: () => void
 } {
   const { setShowModal } = React.useContext(KlipModalContext())
-  const { activate, deactivate } = useCaverJsReact()
+  const { activate, deactivate } = useWallet()
 
   const showModalKlip = useCallback(() => {
     setShowModal(true)

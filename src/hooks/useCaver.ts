@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from 'react'
 import Caver from 'caver-js'
 import { provider as ProviderType } from 'web3-core'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import getRpcUrl from 'utils/getRpcUrl'
+import useWallet from './useWallet'
 
 const RPC_URL = getRpcUrl()
 const httpProvider = new Caver.providers.HttpProvider(RPC_URL)

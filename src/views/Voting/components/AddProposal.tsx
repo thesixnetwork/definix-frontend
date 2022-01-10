@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, ChangeEvent, lazy, useState, useMemo, FormEvent, useContext } from 'react'
 import Lottie from 'react-lottie'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import axios from 'axios'
 import _ from 'lodash'
 import moment from 'moment'

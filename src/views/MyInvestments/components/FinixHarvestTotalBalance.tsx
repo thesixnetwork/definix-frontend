@@ -1,11 +1,11 @@
 import React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Flex, Text, textStyle } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'
 import useFarmEarning from 'hooks/useFarmEarning'
 import usePoolEarning from 'hooks/usePoolEarning'
 import { usePriceFinixUsd } from 'state/hooks'
+import useWallet from 'hooks/useWallet'
 import Locked from './Locked'
 
 const StyledFlex = styled(Flex)`

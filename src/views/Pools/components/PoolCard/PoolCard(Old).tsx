@@ -1,4 +1,4 @@
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import UnlockButton from 'components/UnlockButton'

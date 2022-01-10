@@ -42,8 +42,7 @@ import WETH_ABI from 'config/constants/abis/weth.json'
 import HERODOTUS_ABI from 'config/constants/abis/herodotus.json'
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from 'config/constants/multicall'
 import { getContract } from 'utils'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
+import useWallet from './useWallet'
 
 const intMainnetId = parseInt(process.env.REACT_APP_MAINNET_ID || '')
 const intTestnetId = parseInt(process.env.REACT_APP_TESTNET_ID || '')
@@ -148,8 +147,7 @@ function useContractForExchange(
   ABI: any,
   withSignerIfPossible = true,
 ): Contract | null {
-  const { account } = useWallet()
-  const { library } = useCaverJsReact()
+  const { account, library } = useWallet()
 
   return useMemo(() => {
     if (!address || !ABI || !library) return null

@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
 import { ExternalLink } from 'react-feather'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import styled from 'styled-components'
 import { Card, Text, useMatchBreakpoints, Skeleton, Button } from 'uikit-dev'
 

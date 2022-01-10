@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import multicall from 'utils/multicall'
 import { getHerodotusAddress } from 'utils/addressHelpers'
 import herodotusABI from 'config/abi/herodotus.json'
 import { farmsConfig } from 'config/constants'
 import useRefresh from './useRefresh'
+import useWallet from './useWallet'
 
 const useFarmEarning = () => {
   const [balances, setBalance] = useState([])
-  const { account }: { account: string } = useWallet()
+  const { account } = useWallet()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {

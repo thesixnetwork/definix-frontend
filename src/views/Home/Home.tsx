@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Box } from '@fingerlabs/definixswap-uikit-v2'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import CardTVL from './components/CardTVL'
 import CardTweet from './components/CardTweet'
 import HomeNotice from './components/Notice'

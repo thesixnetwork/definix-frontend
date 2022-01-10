@@ -6,8 +6,6 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Flex, Coin, Text, CheckboxLabel, Checkbox } from '@fingerlabs/definixswap-uikit-v2'
 import { useFarms, usePools, useToast } from 'state/hooks'
-import { provider } from 'web3-core'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import {
   useHarvest,
   usePrivateData,
@@ -17,6 +15,7 @@ import {
   useAllDataLock,
 } from 'hooks/useLongTermStake'
 import { useLockPlus } from 'hooks/useTopUp'
+import useWallet from 'hooks/useWallet'
 
 interface SuperFarmPoolProps {
   days: number
@@ -54,7 +53,7 @@ const SuperFarmPool: React.FC<SuperFarmPoolProps> = ({
   setIsLoadingStake,
 }) => {
   const { t } = useTranslation()
-  const { account }: { account: string; klaytn: provider } = useWallet()
+  const { account } = useWallet()
   const { finixEarn, balancevfinix } = usePrivateData()
   const { allLock } = useAllDataLock()
   const lockTopUp = useLockTopup()

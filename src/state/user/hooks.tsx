@@ -3,10 +3,9 @@ import flatMap from 'lodash.flatmap'
 import { useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
-import { useActiveWeb3React } from '../../hooks'
 // eslint-disable-next-line import/no-cycle
+import useWallet from 'hooks/useWallet'
 import { useAllTokens } from '../../hooks/Tokens'
 import { AppDispatch, AppState } from '../index'
 import {
@@ -160,7 +159,6 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
 }
 
 export function useUserAddedTokens(): Token[] {
-  // const { chainId } = useActiveWeb3React()
   const { chainId } = useWallet()
 
   const serializedTokensMap = useSelector<AppState, AppState['user']['tokens']>(({ user: { tokens } }) => tokens)
@@ -202,7 +200,6 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
-  // const { chainId } = useActiveWeb3React()
   const { chainId } = useWallet()
   const tokens = useAllTokens()
 

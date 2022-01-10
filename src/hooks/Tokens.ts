@@ -1,14 +1,13 @@
 import { parseBytes32String } from '@ethersproject/strings'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Currency, ETHER, Token, currencyEquals } from 'definixswap-sdk'
 import { useMemo } from 'react'
+import useWallet from 'hooks/useWallet'
 import { useSelectedTokenList } from '../state/lists/hooks'
 import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 // eslint-disable-next-line import/no-cycle
 import { useUserAddedTokens } from '../state/user/hooks'
 import { isAddress } from '../utils'
 
-import { useActiveWeb3React } from './index'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 
 export function useAllTokens(): { [address: string]: Token } {

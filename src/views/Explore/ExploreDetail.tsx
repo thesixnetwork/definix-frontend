@@ -8,11 +8,11 @@ import { useDispatch } from 'react-redux'
 import Color from 'color'
 import { BackIcon, Box, Button, Card, Flex, Tabs, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import useTheme from 'hooks/useTheme'
 import { getAddress } from 'utils/addressHelpers'
 import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
+import useWallet from 'hooks/useWallet'
 import { fetchAllowances, fetchBalances, fetchRebalanceBalances } from '../../state/wallet'
 import { Rebalance } from '../../state/types'
 

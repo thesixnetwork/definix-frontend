@@ -2,7 +2,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { currencyEquals, ETHER, Percent, WETH } from 'definixswap-sdk'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import {
   Button,
   CardBody,
@@ -31,7 +31,6 @@ import Slider from 'components/Slider'
 import styled from 'styled-components'
 import { ROUTER_ADDRESS } from 'config/constants'
 import RemoveLpInputPanel from 'components/CurrencyInputPanel/RemoveLpInputPanel'
-import { useActiveWeb3React } from '../../hooks'
 import { useCurrency } from '../../hooks/Tokens'
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { Field } from '../../state/burn/actions'

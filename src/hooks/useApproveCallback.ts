@@ -3,10 +3,9 @@ import { ethers } from 'ethers'
 import { MaxUint256 } from '@ethersproject/constants'
 import { Trade, TokenAmount, CurrencyAmount, ETHER } from 'definixswap-sdk'
 import { KlipConnector } from '@sixnetwork/klip-connector'
-import { KlipModalContext, useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
 import { useCallback, useMemo, useContext } from 'react'
 import { UseDeParamForExchange } from 'hooks/useDeParam'
-import { useCaverJsReact } from '@sixnetwork/caverjs-react-core'
 import { useTranslation } from 'react-i18next'
 import { useToast } from 'state/toasts/hooks'
 import { ROUTER_ADDRESS } from 'config/constants'
@@ -18,11 +17,11 @@ import { KlaytnTransactionResponse } from '../state/transactions/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { computeSlippageAdjustedAmounts } from '../utils/prices'
 import { useTokenContract } from './useContract'
-import { useActiveWeb3React } from './index'
 import * as klipProvider from './klipProvider'
 import { getApproveAbi } from './hookHelper'
 
 import { calculateGasMargin } from '../utils'
+import useWallet from './useWallet'
 
 export enum ApprovalState {
   UNKNOWN,
@@ -36,8 +35,7 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string,
 ): [ApprovalState, () => Promise<void>] {
-  // const { account, chainId } = useActiveWeb3React()
-  const { account, chainId } = useWallet()
+  const { account, chainId, connector } = useWallet()
 
   const { setShowModal } = useContext(KlipModalContext())
   const { toastSuccess, toastError } = useToast()
@@ -47,7 +45,6 @@ export function useApproveCallback(
   const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
   const pendingApproval = useHasPendingApproval(token?.address, spender)
 
-  const { connector } = useCaverJsReact()
   // const { setShowModal } = useContext(KlipModalContext())
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {

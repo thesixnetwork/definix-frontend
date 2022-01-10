@@ -1,5 +1,5 @@
 import { Contract } from '@ethersproject/contracts'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import useWallet from 'hooks/useWallet'
 import { useEffect, useMemo, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useMulticallContract } from '../../hooks/useContract'

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import { Box, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 
+import useWallet from 'hooks/useWallet'
 import TitleStake from './components/TitleStake'
 import CardTotalStake from './components/CardTotalStake'
 import CardTotalEarn from './components/CardTotalEarn'
