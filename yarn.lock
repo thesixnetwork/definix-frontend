@@ -9884,10 +9884,10 @@ defined@~1.0.0:
   resolved "https://registry.yarnpkg.com/defined/-/defined-1.0.0.tgz#c98d9bcef75674188e110969151199e39b1fa693"
   integrity sha1-yY2bzvdWdBiOEQlpFRGZ45sfppM=
 
-definixswap-sdk@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/definixswap-sdk/-/definixswap-sdk-1.0.0.tgz#67ab9306e4a5946c8bf318a377e3a2e47ee25203"
-  integrity sha512-ioYe4HiiyOGzFfQEr3qB3kiQ9ijlczBf5FOoSfgfeLVaPscD8Nd9c+i1e2TAi1QvZiqqdN9yk3GbZy6gatc8cg==
+definixswap-sdk@1.0.0-klaytn:
+  version "1.0.0-klaytn"
+  resolved "https://registry.yarnpkg.com/definixswap-sdk/-/definixswap-sdk-1.0.0-klaytn.tgz#7e98810ad8ed272df425a40a9aeb6adecc5e6270"
+  integrity sha512-3pMG2l8cxPvXSvxGJqErL1FQL8+FlnljvwRHGU5dd++nY9CxjR+JURrEk5uCI/qnZ2UU20WueU89pAguoZmysQ==
   dependencies:
     "@pancakeswap-libs/pancake-swap-core" "^0.1.0"
     big.js "^5.2.2"

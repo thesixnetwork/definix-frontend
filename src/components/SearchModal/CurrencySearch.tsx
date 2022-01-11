@@ -128,6 +128,8 @@ export function CurrencySearch({
     [filteredSortedTokens, showETH],
   )
 
+  console.log('~~~Currency', Currency.ETHER)
+
   return (
     <Flex flexDirection="column" height="100%">
       <SearchInputWithIcon>

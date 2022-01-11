@@ -74,7 +74,7 @@
     "cids": "^1.0.0",
     "copy-to-clipboard": "^3.2.0",
     "date-fns": "^2.17.0",
-    "definixswap-sdk": "1.0.0",
+    "definixswap-sdk": "1.0.0-klaytn",
     "dotenv": "^10.0.0",
     "easymde": "^2.15.0",
     "ethers": "^5.0.7",

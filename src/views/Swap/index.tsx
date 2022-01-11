@@ -159,7 +159,6 @@ const Swap: React.FC = () => {
   // )
 
   const { error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, deadline, recipient)
-  console.log('~~~swapCallbackError', swapCallbackError)
 
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const priceImpactSeverity = useMemo(() => warningSeverity(priceImpactWithoutFee), [priceImpactWithoutFee])
