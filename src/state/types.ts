@@ -263,12 +263,18 @@ export interface Voting {
   voteLimit?: any
   optionVotingPower?: any
   isParticipated?: any
+  // eslint-disable-next-line camelcase
+  proposals_type?: string;
+  title?: string;
+  content?: string;
+  choices?: string[];
+  choice_type?: 'single' | 'multi';
 }
 
 export interface VotingState {
   allProposal: Voting[]
   indexProposal: []
-  proposals: {}
+  proposals: Voting;
   isProposable: boolean
   allProposalMap: []
   totalVote: ''

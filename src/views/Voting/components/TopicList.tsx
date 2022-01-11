@@ -79,6 +79,7 @@ const TabInfos = ({ tab }) => {
   const isMobile = !isXl && !isLg
   const [isLoading, setIsLoading] = useState(false)
   const allProposalMap = useAllProposalOfType()
+  console.log(allProposalMap)
   const listAllProposal = _.get(allProposalMap, 'allProposalMap')
   const [arrayMap, setArrayMap] = useState([])
 
