@@ -7,39 +7,10 @@ export const Table = styled.table`
 `
 
 export const TR = styled.tr`
-  td,
-  th {
-    &:first-child {
-      border-left: 1px solid ${({ theme }) => theme.colors.border};
-    }
-    &:last-child {
-      border-right: 1px solid ${({ theme }) => theme.colors.border};
-    }
-  }
-
   &:first-child {
     td,
     th {
       border-top: 1px solid ${({ theme }) => theme.colors.border};
-
-      &:first-child {
-        border-top-left-radius: 8px;
-      }
-      &:last-child {
-        border-top-right-radius: 8px;
-      }
-    }
-  }
-
-  &:last-child {
-    td,
-    th {
-      &:first-child {
-        border-bottom-left-radius: 8px;
-      }
-      &:last-child {
-        border-bottom-right-radius: 8px;
-      }
     }
   }
 `

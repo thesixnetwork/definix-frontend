@@ -261,7 +261,7 @@
   "Yield": "Yield",
   "Invest": "Invest",
   "Withdraw": "Withdraw",
-  "Unlock Wallet": "Unlock Wallet",
+  "Unlock Wallet": "Connect Wallet",
   "1D": "1D",
   "1W": "1W",
   "1M": "1M",
@@ -525,7 +525,7 @@
   "Confirm Voting": "Confirm Voting",
   "Total Vote": "Total Vote",
   "Your Voting Power (vFINIX)": "Your Voting Power (vFINIX) will be locked until the voting time is ended.",
-  "Release notes title": "",
-  "Release notes date": "",
+  "Release notes title": "Definix Update",
+  "Release notes date": "17.Jan.2022",
   "Still in progress": "Applying G2 is in progress.\r\nIt is available to use on G1. "
 }

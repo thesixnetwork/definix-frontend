@@ -9,7 +9,7 @@ const Error = () => {
 
   return (
     <>
-      <ErrorBlock message={t('Unknown error')} label={t('Home')} onBack={() => history.push('/')} />
+      <ErrorBlock message={t('Unknown error')} label={t('Back to Home')} onBack={() => history.push('/')} />
     </>
   )
 }
