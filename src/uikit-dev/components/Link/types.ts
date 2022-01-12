@@ -1,8 +1,0 @@
-import { AnchorHTMLAttributes } from 'react'
-import { TextProps } from '../Text'
-
-export interface LinkProps extends TextProps, AnchorHTMLAttributes<HTMLAnchorElement> {
-  external?: boolean
-  isIconLeft?: boolean
-  noIcon?: boolean
-}

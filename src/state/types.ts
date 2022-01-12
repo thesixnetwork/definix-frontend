@@ -1,4 +1,3 @@
-import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
 import {
   CampaignType,
@@ -131,7 +130,8 @@ export interface Rebalance extends RebalanceConfig {
 // Slices states
 
 export interface ToastsState {
-  data: Toast[]
+  // data: Toast[]
+  data: any
 }
 
 export interface FarmsState {
@@ -268,6 +268,7 @@ export interface Voting {
 export interface VotingState {
   allProposal: Voting[]
   indexProposal: []
+  // eslint-disable-next-line @typescript-eslint/ban-types
   proposals: {}
   isProposable: boolean
   allProposalMap: []

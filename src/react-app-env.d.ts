@@ -10,6 +10,7 @@ interface Window {
   }
   web3?: any
   BinanceChain?: BinanceChain
+  caver?: any
 }
 
 declare module 'content-hash' {

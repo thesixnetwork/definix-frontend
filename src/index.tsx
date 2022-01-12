@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Config } from 'definixswap-sdk'
+import Caver from 'caver-js'
 
 import App from './App'
 import Providers from './Providers'
@@ -29,6 +30,18 @@ Config.configure(sdkConfig)
 window.addEventListener('error', () => {
   localStorage?.removeItem('redux_localstorage_simple_lists')
 })
+
+// import getRPCHalper from 'utils/getRPCHalper'
+// const rpcURL = process.env.REACT_APP_KLAYTN_RPC_URL;
+// console.log("rpcURL = ", rpcURL);
+
+window.addEventListener(
+  'klaytn#initialized',
+  () => {
+    window.caver = new Caver(window.klaytn)
+  },
+  false,
+)
 
 ReactDOM.render(
   <React.StrictMode>

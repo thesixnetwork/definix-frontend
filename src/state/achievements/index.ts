@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { toastTypes } from 'uikit-dev'
+// import { toastTypes } from 'uikit-dev'
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit'
 import { kebabCase } from 'lodash'
 import { push } from 'state/toasts'
@@ -39,7 +39,8 @@ export const fetchAchievements = (account: string) => async (dispatch: Dispatch)
     dispatch(setAchievements(achievements))
   } catch (error) {
     const title = 'Error fetching achievements'
-    dispatch(push({ id: kebabCase(title), type: toastTypes.DANGER, title }))
+    // dispatch(push({ id: kebabCase(title), type: toastTypes.DANGER, title }))
+    dispatch(push({ id: kebabCase(title), type: undefined, title }))
   }
 }
 

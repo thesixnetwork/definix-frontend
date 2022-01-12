@@ -9,6 +9,7 @@ import CardFinix from './components/CardFinix'
 import CardHighAPR from './components/CardHighAPR'
 import CardAudit from './components/CardAudit'
 import CardInvestment from './components/CardInvestment'
+import CardRelease from './components/CardRelease'
 
 const WrapGrid = styled.div<{ isAccount: boolean }>`
   position: relative;
@@ -21,8 +22,9 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
     ${({ isAccount }) => isAccount && `"investment investment"`}
     'tvl finix'
     'apr finix'
+    'apr release'
     'apr tweet'
-    'apr tweet'
+    'audit tweet'
     'audit tweet';
 
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -35,6 +37,7 @@ const WrapGrid = styled.div<{ isAccount: boolean }>`
       'tvl'
       'finix'
       'apr'
+      'release'
       'audit'
       'tweet';
   }
@@ -113,6 +116,9 @@ const Home: React.FC = () => {
       <LeftColumnGrid area="apr">
         <CardHighAPR />
       </LeftColumnGrid>
+      <RightColumnGrid area="release">
+        <CardRelease />
+      </RightColumnGrid>
       <RightColumnGrid area="tweet">
         <CardTweet />
       </RightColumnGrid>

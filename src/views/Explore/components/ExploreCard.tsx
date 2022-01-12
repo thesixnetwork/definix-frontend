@@ -245,6 +245,9 @@ const ExploreCard: React.FC<ExploreCardType> = ({
           <Box px="S_20" pb="S_20">
             {renderSharePrice()}
           </Box>
+          <Flex px="S_20" pb="S_20">
+            <AssetRatio isHorizontal={isHorizontal} ratio={ratio} />
+          </Flex>
           <Divider />
           <Box p="S_20">
             {renderCurrentInvestment()}

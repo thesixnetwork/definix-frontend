@@ -8,7 +8,7 @@ import { KlipModalContext, KlipModalProvider } from '@sixnetwork/klaytn-use-wall
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { Provider } from 'react-redux'
 import store from 'state'
-import { ModalProvider as OldModalProvider } from 'uikit-dev'
+// import { ModalProvider as OldModalProvider } from 'uikit-dev'
 import { ModalProvider } from '@fingerlabs/definixswap-uikit-v2'
 
 import { createCaverJsReactRoot, CaverJsReactProvider } from '@sixnetwork/caverjs-react-core'
@@ -67,9 +67,7 @@ const Providers: React.FC = ({ children }) => {
                   <BlockContextProvider>
                     <RefreshContextProvider>
                       <ModalProvider>
-                        <OldModalProvider>
                           <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
-                        </OldModalProvider>
                       </ModalProvider>
                     </RefreshContextProvider>
                   </BlockContextProvider>

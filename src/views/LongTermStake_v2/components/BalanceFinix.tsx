@@ -80,12 +80,23 @@ const BalanceFinix: React.FC<BalanceProps> = ({
   }
 
   const onClickRate = (rate: number) => {
+    if (!hasAccount) {
+      setInputBalance('')
+      setSelected(rate)
+      return
+    }
+
     const value = rate === 1 ? balancefinix : balancefinix * rate
     setInputBalance(String(Math.floor(value * 1000000) / 1000000))
     setSelected(rate)
   }
 
   useEffect(() => {
+    if (!hasAccount) {
+      setError('noInput')
+      return
+    }
+
     if (pathname.indexOf('super') > -1) {
       if (!inputBalance || !Number(inputBalance)) {
         setError('noInput')
@@ -106,7 +117,7 @@ const BalanceFinix: React.FC<BalanceProps> = ({
     } else if (balancefinix < Number(inputBalance)) {
       setError('Insufficient balance')
     } else setError('')
-  }, [minimum, balancefinix, inputBalance, setError, pathname])
+  }, [minimum, balancefinix, inputBalance, setError, pathname, hasAccount])
 
   useEffect(() => {
     if (!hasAccount) {
