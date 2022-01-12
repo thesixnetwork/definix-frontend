@@ -36,7 +36,7 @@ const Providers: React.FC = ({ children }) => {
   const klipContext = React.useContext(KlipModalContext())
 
   // const onPresent = useCallback(() => {
-    // klipContext?.setShowModal(true)
+  // klipContext?.setShowModal(true)
   // }, [klipContext])
   const onHiddenModal = useCallback(() => {
     klipContext?.setShowModal(false)
@@ -60,21 +60,21 @@ const Providers: React.FC = ({ children }) => {
             injected: injected || {},
           }}
         > */}
-          <Web3ProviderNetwork getLibrary={getLibrary}>
-            <CaverJsReactProvider getLibrary={getLibrary}>
-              <HelmetProvider>
-                <ThemeContextProvider>
-                  <BlockContextProvider>
-                    <RefreshContextProvider>
-                      <ModalProvider>
-                          <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
-                      </ModalProvider>
-                    </RefreshContextProvider>
-                  </BlockContextProvider>
-                </ThemeContextProvider>
-              </HelmetProvider>
-            </CaverJsReactProvider>
-          </Web3ProviderNetwork>
+        <Web3ProviderNetwork getLibrary={getLibrary}>
+          <CaverJsReactProvider getLibrary={getLibrary}>
+            <HelmetProvider>
+              <ThemeContextProvider>
+                <BlockContextProvider>
+                  <RefreshContextProvider>
+                    <ModalProvider>
+                      <MuiThemeProvider theme={muiTheme}>{children}</MuiThemeProvider>
+                    </ModalProvider>
+                  </RefreshContextProvider>
+                </BlockContextProvider>
+              </ThemeContextProvider>
+            </HelmetProvider>
+          </CaverJsReactProvider>
+        </Web3ProviderNetwork>
         {/* </UseWalletProvider> */}
       </KlipModalProvider>
     </Provider>
