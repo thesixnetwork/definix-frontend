@@ -9,7 +9,7 @@ import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { Button, Text, ButtonVariants, Flex, Box, Label, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 
 const Wrap = styled(Flex)<{ isInFarm: boolean }>`
   flex-direction: ${({ isInFarm }) => (isInFarm ? 'column' : 'row')};

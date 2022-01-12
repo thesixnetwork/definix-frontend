@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Rebalance } from 'state/types'
 import { getTokenName } from 'utils/getTokenSymbol'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import { Table, TD, TH, TR } from './Table'
 
 interface AssetDetailType {

@@ -3,7 +3,7 @@ import { get } from 'lodash-es'
 import { CopyToClipboard, Flex, Helper, Text, useMatchBreakpoints, VDivider } from '@fingerlabs/definixswap-uikit-v2'
 
 import { useTranslation } from 'react-i18next'
-import EllipsisText from 'components/EllipsisText'
+import EllipsisText from 'components/Text/EllipsisText'
 import { Rebalance } from '../../../state/types'
 
 import { Table, TD, TH, TR } from './Table'

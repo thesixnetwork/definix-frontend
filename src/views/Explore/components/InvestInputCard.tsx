@@ -33,7 +33,7 @@ import { getContract } from 'utils/erc20'
 import { useDispatch } from 'react-redux'
 
 import { useDeepEqualMemo } from 'hooks/useDeepEqualMemo'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import CurrencyInputPanel from './CurrencyInputPanel'
 import CalculateModal from './CalculateModal'
 import CoinWrap from './CoinWrap'

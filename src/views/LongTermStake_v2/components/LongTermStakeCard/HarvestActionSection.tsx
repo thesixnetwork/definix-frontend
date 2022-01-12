@@ -8,8 +8,8 @@ import { useHarvest } from 'hooks/useLongTermStake'
 import useConverter from 'hooks/useConverter'
 import { useToast } from 'state/hooks'
 import { Button, Text, ButtonVariants, Flex, Box, Label } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
-import BalanceText from 'components/BalanceText'
+import CurrencyText from 'components/Text/CurrencyText'
+import BalanceText from 'components/Text/BalanceText'
 
 const Wrap = styled(Flex)`
   flex-direction: row;

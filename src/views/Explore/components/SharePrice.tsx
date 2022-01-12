@@ -1,7 +1,7 @@
 import React from 'react'
 import numeral from 'numeral'
 import { useTranslation } from 'react-i18next'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import TwoLineFormat from './TwoLineFormat'
 
 interface SharePriceType {

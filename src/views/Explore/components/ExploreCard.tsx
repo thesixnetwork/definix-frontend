@@ -22,7 +22,7 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import { compact, get } from 'lodash-es'
 import useComineAmount from 'hooks/useCombineAmount'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import useWallet from 'hooks/useWallet'
 import AssetRatio from './AssetRatio'
 import CardHeading, { CardTitle, CardImage } from './CardHeading'

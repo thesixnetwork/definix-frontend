@@ -20,7 +20,7 @@ import {
   Button,
 } from '@fingerlabs/definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './PoolCard/CardHeading'
 import { PoolWithApy } from './PoolCard/types'

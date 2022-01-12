@@ -303,4 +303,4 @@ const NetWorth = () => {
   )
 }
 
-export default NetWorth
+export default React.memo(NetWorth)

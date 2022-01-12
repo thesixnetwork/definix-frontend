@@ -9,8 +9,8 @@ import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
 import { useToast } from 'state/hooks'
 import { Button, Text, Box, ColorStyles, Flex, FireIcon } from '@fingerlabs/definixswap-uikit-v2'
 import UnlockButton from 'components/UnlockButton'
-import CurrencyText from 'components/CurrencyText'
-import BalanceText from 'components/BalanceText'
+import CurrencyText from 'components/Text/CurrencyText'
+import BalanceText from 'components/Text/BalanceText'
 import Slide from './Slide'
 
 interface InnerTheme {

@@ -16,7 +16,7 @@ import {
   Button,
   ButtonVariants,
 } from '@fingerlabs/definixswap-uikit-v2'
-import BalanceText from 'components/BalanceText'
+import BalanceText from 'components/Text/BalanceText'
 
 const ButtonWrap = styled(Box)`
   margin-top: ${({ theme }) => theme.spacing.S_40}px;

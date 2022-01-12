@@ -3,8 +3,8 @@ import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box } from '@fingerlabs/definixswap-uikit-v2'
 import useConverter from 'hooks/useConverter'
-import BalanceText from 'components/BalanceText'
-import CurrencyText from 'components/CurrencyText'
+import BalanceText from 'components/Text/BalanceText'
+import CurrencyText from 'components/Text/CurrencyText'
 
 const TitleSection = styled(Text)<{ hasMb: boolean }>`
   margin-right: ${({ theme }) => theme.spacing.S_6}px;

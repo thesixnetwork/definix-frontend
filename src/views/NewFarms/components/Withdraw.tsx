@@ -18,7 +18,7 @@ import {
   useModal,
 } from '@fingerlabs/definixswap-uikit-v2'
 import ModalInput from 'components/ModalInput'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import ConfirmModal from './ConfirmModal'
 import CardHeading from './FarmCard/CardHeading'
 import { FarmWithStakedValue } from './FarmCard/types'

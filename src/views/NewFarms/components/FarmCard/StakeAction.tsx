@@ -8,7 +8,7 @@ import useConverter from 'hooks/useConverter'
 import { useFarmUnlockDate, useToast } from 'state/hooks'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { PlusIcon, MinusIcon, Button, Text, ButtonVariants, Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
-import CurrencyText from 'components/CurrencyText'
+import CurrencyText from 'components/Text/CurrencyText'
 import UnlockButton from 'components/UnlockButton'
 
 const TitleSection = styled(Text)`

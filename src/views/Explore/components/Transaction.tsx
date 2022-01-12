@@ -18,8 +18,8 @@ import {
   useMatchBreakpoints,
 } from '@fingerlabs/definixswap-uikit-v2'
 import { getAddress } from 'utils/addressHelpers'
-import EllipsisText from 'components/EllipsisText'
-import CurrencyText from 'components/CurrencyText'
+import EllipsisText from 'components/Text/EllipsisText'
+import CurrencyText from 'components/Text/CurrencyText'
 
 import useGetRequest from 'hooks/useGetRequest'
 import useWallet from 'hooks/useWallet'

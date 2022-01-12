@@ -3,7 +3,7 @@ import { Button, ButtonProps, ButtonScales, useWalletModal } from '@fingerlabs/d
 import { Trans, useTranslation } from 'react-i18next'
 import useWallet from 'hooks/useWallet'
 
-const UnlockButton: React.FC<ButtonProps> = (props) => {
+const ConnectWalletButton: React.FC<ButtonProps> = (props) => {
   const { t } = useTranslation()
   const { account, connect: login, reset: logout } = useWallet()
 
@@ -16,4 +16,4 @@ const UnlockButton: React.FC<ButtonProps> = (props) => {
   )
 }
 
-export default UnlockButton
+export default ConnectWalletButton
