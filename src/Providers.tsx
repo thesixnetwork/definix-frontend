@@ -4,7 +4,7 @@ import { BlockContextProvider } from 'contexts/BlockContext'
 import { RefreshContextProvider } from 'contexts/RefreshContext'
 import { ThemeContextProvider } from 'contexts/ThemeContext'
 
-import injected, { UseWalletProvider, KlipModalContext, KlipModalProvider } from '@sixnetwork/klaytn-use-wallet'
+import { KlipModalContext, KlipModalProvider } from '@sixnetwork/klaytn-use-wallet'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { Provider } from 'react-redux'
 import store from 'state'
@@ -35,9 +35,9 @@ const Providers: React.FC = ({ children }) => {
   )
   const klipContext = React.useContext(KlipModalContext())
 
-  const onPresent = useCallback(() => {
-    klipContext?.setShowModal(true)
-  }, [klipContext])
+  // const onPresent = useCallback(() => {
+    // klipContext?.setShowModal(true)
+  // }, [klipContext])
   const onHiddenModal = useCallback(() => {
     klipContext?.setShowModal(false)
   }, [klipContext])
@@ -53,13 +53,13 @@ const Providers: React.FC = ({ children }) => {
   return (
     <Provider store={store}>
       <KlipModalProvider>
-        <UseWalletProvider
+        {/* <UseWalletProvider
           chainId={parseInt(process.env.REACT_APP_CHAIN_ID)}
           connectors={{
             klip: { showModal: onPresent, closeModal: onHiddenModal },
             injected: injected || {},
           }}
-        >
+        > */}
           <Web3ProviderNetwork getLibrary={getLibrary}>
             <CaverJsReactProvider getLibrary={getLibrary}>
               <HelmetProvider>
@@ -77,7 +77,7 @@ const Providers: React.FC = ({ children }) => {
               </HelmetProvider>
             </CaverJsReactProvider>
           </Web3ProviderNetwork>
-        </UseWalletProvider>
+        {/* </UseWalletProvider> */}
       </KlipModalProvider>
     </Provider>
   )
