@@ -154,8 +154,12 @@ const WrapIndicator = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.mobile} {
     position: absolute;
     z-index: 1;
-    right: 0;
+    right: 20px;
     margin-top: -24px;
+
+    > button {
+      display: none;
+    }
   }
 `
 
