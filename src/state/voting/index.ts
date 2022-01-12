@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'

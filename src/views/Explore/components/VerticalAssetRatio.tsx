@@ -1,5 +1,5 @@
 import React from 'react'
-import { compact } from 'lodash'
+import { compact } from 'lodash-es'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { Flex, Text } from '@fingerlabs/definixswap-uikit-v2'

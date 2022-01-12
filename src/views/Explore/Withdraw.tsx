@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { get } from 'lodash'
+import { get } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import { getAddress } from 'utils/addressHelpers'
 import { useDispatch } from 'react-redux'

@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'

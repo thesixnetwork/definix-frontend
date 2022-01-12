@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, Pair, Token, Trade } from 'definixswap-sdk'
-import flatMap from 'lodash.flatmap'
+import { flatMap } from 'lodash-es'
 import { useMemo } from 'react'
 
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from 'config/constants'

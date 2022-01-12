@@ -1,7 +1,7 @@
 /* eslint-disable no-nested-ternary */
 import CircularProgress from '@material-ui/core/CircularProgress'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import isEmpty from 'lodash/isEmpty'
+import { isEmpty } from 'lodash-es'
 import moment from 'moment'
 import numeral from 'numeral'
 import React, { Fragment, useEffect, useMemo, useState } from 'react'

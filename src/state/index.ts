@@ -1,5 +1,5 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
-import { save, load } from 'redux-localstorage-simple'
+import { load } from 'redux-localstorage-simple'
 
 import farmsReducer from './farms'
 import finixPriceReducer from './finixPrice'

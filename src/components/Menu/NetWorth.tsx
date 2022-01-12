@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useDispatch } from 'react-redux'
-import _ from 'lodash'
+import _ from 'lodash-es'
 
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'

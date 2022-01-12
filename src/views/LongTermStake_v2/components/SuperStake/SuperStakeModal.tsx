@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { useTranslation } from 'react-i18next'
 import { Box, Flex, Modal, Button, ModalBody, ModalFooter, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'

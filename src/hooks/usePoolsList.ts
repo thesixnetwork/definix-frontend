@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { useCallback } from 'react'
 import { BLOCKS_PER_YEAR } from 'config'
 import { PoolCategory, QuoteToken } from 'config/constants/types'

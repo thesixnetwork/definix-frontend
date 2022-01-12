@@ -72,7 +72,7 @@ const BarProgress = styled.div<{ progress: number; isCurrentValueMaxValue: boole
   border-radius: 2.5px;
 `
 
-const Slider: React.FC<SliderProps> = ({ min, max, value, onValueChanged, valueLabel, ...props }) => {
+const Slider: React.FC<SliderProps> = ({ min, max, value, onValueChanged, ...props }) => {
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => {
       if (onValueChanged) {
@@ -85,7 +85,7 @@ const Slider: React.FC<SliderProps> = ({ min, max, value, onValueChanged, valueL
   const isCurrentValueMaxValue = useMemo(() => value === max, [value, max])
 
   return (
-    <Box position="relative" height="48px">
+    <Box position="relative" height="48px" {...props}>
       <Box position="absolute" width="100%">
         <BarBackground />
         <BarProgress isCurrentValueMaxValue={isCurrentValueMaxValue} progress={progressPercentage} />

@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useMemo, useCallback, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import moment from 'moment'
-import { compact, get } from 'lodash'
+import { compact, get } from 'lodash-es'
 import { Line } from 'react-chartjs-2'
 import Color from 'color'
 

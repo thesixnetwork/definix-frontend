@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { getAddress } from 'utils/addressHelpers'
-import { findIndex } from 'lodash'
+import { findIndex } from 'lodash-es'
 import { useCallback, useEffect, useState } from 'react'
 
 const useComineAmount = (rebalance, account, currentBalance) => {

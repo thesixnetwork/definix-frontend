@@ -3,7 +3,7 @@ import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
-import { get, compact, debounce } from 'lodash'
+import { get, compact, debounce } from 'lodash-es'
 import { provider } from 'web3-core'
 
 import {

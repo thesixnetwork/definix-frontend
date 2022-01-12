@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
-import { compact, get } from 'lodash'
+import { compact, get } from 'lodash-es'
 import { Box, Coin, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 
 import { useTranslation } from 'react-i18next'

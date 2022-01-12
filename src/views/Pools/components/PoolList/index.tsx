@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import useWallet from 'hooks/useWallet'
 import React, { useMemo, useCallback, useEffect } from 'react'

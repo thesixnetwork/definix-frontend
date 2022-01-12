@@ -2,12 +2,10 @@
 import { useEffect, useState, useCallback, useContext, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-// import _ from 'lodash'
 import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { getAbiIProposalFacetByName, getAbiIUsageFacetByName, getAbiIVotingFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
-// import UsageFacet from '../config/abi/UsageFacet.json'
 import IProposalFacet from '../config/abi/IProposalFacet.json'
 import IUsageFacet from '../config/abi/IUsageFacet.json'
 import IVotingFacet from '../config/abi/IVotingFacet.json'
@@ -26,11 +24,6 @@ import {
 } from '../state/actions'
 import useRefresh from './useRefresh'
 import useWallet from './useWallet'
-
-/* eslint no-else-return: "error" */
-
-// @ts-ignore
-// const useVoting = (tokenAddress: string) => {}
 
 export const useAvailableVotes = () => {
   const { fastRefresh } = useRefresh()

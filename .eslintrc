@@ -32,9 +32,9 @@
     "import/no-extraneous-dependencies": 0,
     "jsx-a11y/media-has-caption": 0,
     "import/no-cycle": 0,
-
+    
+    // End temporary rules
     // Exchange rules
-
     "max-classes-per-file": 0,
     "camelcase": 0,
     "no-alert": 0,
@@ -45,7 +45,8 @@
     "no-nested-ternary": 0,
     "default-case": 0,
     "react/require-default-props": 0,
-    "class-methods-use-this": 0
-    // End temporary rules
+    "class-methods-use-this": 0,
+
+    "no-unused-vars": "off"
   }
 }

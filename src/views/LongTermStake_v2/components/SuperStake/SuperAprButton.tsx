@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { useTranslation } from 'react-i18next'
 import { Flex, Text, Helper } from '@fingerlabs/definixswap-uikit-v2'
 import { useLockTopup, useAllDataLock } from 'hooks/useLongTermStake'

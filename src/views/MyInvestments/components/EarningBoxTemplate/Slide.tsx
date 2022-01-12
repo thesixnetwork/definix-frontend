@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import _ from 'lodash-es'
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import Slider from 'react-slick'
 import styled from 'styled-components'

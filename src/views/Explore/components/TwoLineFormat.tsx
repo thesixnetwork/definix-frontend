@@ -1,4 +1,4 @@
-import { isNil } from 'lodash'
+import { isNil } from 'lodash-es'
 import React from 'react'
 import { Flex, FlexProps, Helper, Text } from '@fingerlabs/definixswap-uikit-v2'
 

@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { BLOCKS_PER_YEAR } from 'config'
 import { QuoteToken } from 'config/constants/types'
 import { getLpImageUrlsAndSymbols } from 'utils/getTokenImage'

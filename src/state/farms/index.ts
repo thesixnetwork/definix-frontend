@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import farmsConfig from 'config/constants/farms'
 import axios from 'axios'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import fetchFarms from './fetchFarms'
 import {
   fetchFarmUserEarnings,

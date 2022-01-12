@@ -20,7 +20,7 @@ import {
   Divider,
   VDivider,
 } from '@fingerlabs/definixswap-uikit-v2'
-import { compact, get } from 'lodash'
+import { compact, get } from 'lodash-es'
 import useComineAmount from 'hooks/useCombineAmount'
 import CurrencyText from 'components/CurrencyText'
 import useWallet from 'hooks/useWallet'

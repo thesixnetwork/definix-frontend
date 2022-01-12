@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import UnlockButton from 'components/UnlockButton'
-import { get } from 'lodash'
+import { get } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import numeral from 'numeral'
 import { Link } from 'react-router-dom'

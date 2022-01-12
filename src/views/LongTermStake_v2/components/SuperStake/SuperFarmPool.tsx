@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from 'react-i18next'

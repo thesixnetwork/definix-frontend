@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useEffect, useState, useMemo } from 'react'
 import axios from 'axios'
 import BigNumber from 'bignumber.js'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import moment from 'moment'
 import { Link, Redirect } from 'react-router-dom'
 import { useDispatch } from 'react-redux'

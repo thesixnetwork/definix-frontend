@@ -1,10 +1,10 @@
 import BigNumber from 'bignumber.js'
 import { useCallback, useState, useEffect } from 'react'
-import _ from 'lodash'
-import { useActiveWeb3React } from './index'
-import { multicallForExchange } from '../utils/multicall'
+import _ from 'lodash-es'
 import { allTokenAddresses, getLpNetwork, MULTICALL_ADDRESS } from 'config/constants'
 import erc20 from 'config/constants/abis/erc20.json'
+import { useActiveWeb3React } from './index'
+import { multicallForExchange } from '../utils/multicall'
 
 const getTotalBalanceLp = async (input) => {
   const { lpAddress, pair1, pair2, multicallAddress } = input

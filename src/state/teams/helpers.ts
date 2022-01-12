@@ -1,4 +1,4 @@
-import merge from 'lodash/merge'
+import { merge } from 'lodash-es'
 import { getContract } from 'utils/caver'
 import definixProfileAbi from 'config/abi/definixProfile.json'
 import teamsList from 'config/constants/teams'

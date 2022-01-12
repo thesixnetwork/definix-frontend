@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import { compact, get } from 'lodash'
+import { compact, get } from 'lodash-es'
 import BigNumber from 'bignumber.js'
 import { getAddress } from 'utils/addressHelpers'
 import numeral from 'numeral'

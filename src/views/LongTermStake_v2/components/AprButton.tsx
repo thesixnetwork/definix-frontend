@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
-import _ from 'lodash'
+import _ from 'lodash-es'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { Flex, Text, Helper } from '@fingerlabs/definixswap-uikit-v2'
