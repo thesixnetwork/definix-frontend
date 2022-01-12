@@ -4,12 +4,15 @@
   "content/1": "Definix Generation 2 service has been launched on Klaytn Chain.\nLong-term stake and Super stack are also in the works, so please wait a little bit!",
   "link/1": "",
   "linkLabel/1": "",
+  "isShow/1": "Show",
   "title/2": "Let your voice be heard",
   "content/2": "Definix is always listening to the voices of holders.\nIf there are any inconveniences or improvements to the beta service, please give us feedback.",
   "link/2": "https://forms.gle/x9rfWuzD9Kpa8xa47",
   "linkLabel/2": "Feedback for Beta",
+  "isShow/2": "Show",
   "title/3": "Super Stake is available now on G2!",
-  "content/3": "Are you holding FINIX? No longer need to go to G1 for Super Stake.\nvFINIX Voting is soon to come, please wait for it! ",
+  "content/3": "Are you holding FINIX? No longer need to go to G1 for Super Stake.\nvFINIX Voting is soon to come on G2, please wait for it! ",
   "link/3": "",
-  "linkLabel/3": ""
+  "linkLabel/3": "",
+  "isShow/3": "Show"
 }
