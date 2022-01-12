@@ -1,17 +1,15 @@
 import React, { useState, useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { getTokenImageUrl } from 'utils/getTokenImage'
 import { useToast } from 'state/hooks'
 import {
   Button,
+  Coin,
   Modal,
   ButtonVariants,
-  Box,
   Flex,
   Text,
   ColorStyles,
-  Image,
   ModalBody,
   ModalFooter,
 } from '@fingerlabs/definixswap-uikit-v2'
@@ -73,10 +71,11 @@ const ConfirmModal = ({
       <ModalBodyWrap isBody>
         <Flex justifyContent="space-between" alignItems="center">
           <Flex alignItems="center">
-            <Box width={48} className="mr-s12">
+            <Coin symbol={tokenName} size="48px" />
+            {/* <Box width={48} className="mr-s12">
               <Image src={getTokenImageUrl(tokenName)} width={48} height={48} />
-            </Box>
-            <Text textStyle="R_16M" color={ColorStyles.BLACK}>
+            </Box> */}
+            <Text ml="12px" textStyle="R_16M" color={ColorStyles.BLACK}>
               {tokenName}
             </Text>
           </Flex>
