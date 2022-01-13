@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState, useCallback } from 'react'
+import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
@@ -14,8 +14,9 @@ import { usePrivateData } from 'hooks/useLongTermStake'
 import useRefresh from 'hooks/useRefresh'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 import Badge from './Badge'
+import VotingModal from './VotingModal'
 import { BadgeType } from '../types'
-import VoteModal from './VoteModal'
+import ConfirmModal from './ConfirmModal'
 
 const WrapContent = styled(Flex)`
   flex-direction: column;
@@ -48,7 +49,6 @@ const CardVotingContent: React.FC = () => {
   const { account } = useWallet()
   const [transactionHash, setTransactionHash] = useState('')
   const [mapVoting, setMapVoting] = useState([])
-  const [selectedIndexs, setSelectedIndexs] = useState<number[]>([]);
   const { balancevfinix } = usePrivateData()
   const { fastRefresh } = useRefresh()
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
@@ -58,8 +58,16 @@ const CardVotingContent: React.FC = () => {
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
   const isMulti = useMemo(() => proposal.choice_type === 'multi', [proposal]);
   const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix]);
+  const [selectedIndexs, setSelectedIndexs] = useState<number[]>([]);
+  const selectedVotes = useRef<string[]>([]);
+  const [votesBalance, setVotesBalance] = useState([]);
 
-  const [onPresentVoteModal] = useModal(<VoteModal />);
+  const onUserInput = useCallback((index: number, balance: BigNumber) => {
+    console.log(index, balance)
+  }, [])
+
+  const [onPresentConfirmModal] = useModal(<ConfirmModal />);
+  const [onPresentVotingModal] = useModal(<VotingModal onConfirm={onPresentConfirmModal} selectedVotes={selectedVotes.current} />);
 
   useEffect(() => {
     const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -97,10 +105,19 @@ const CardVotingContent: React.FC = () => {
   }, [fastRefresh])
 
   const onCheckChange = useCallback((isChecked: boolean, index) => {
+    function setVoteIndexs(voteIndexs) {
+      if (voteIndexs.lnegth === 0) {
+        selectedVotes.current = [];
+        return;  
+      }
+      selectedVotes.current = voteIndexs.map((voteIndex) => proposal.choices[voteIndex]);
+    }
+
     function addSelectedIndexs(addIndex) {
       const temp = selectedIndexs.slice(0);
       temp.push(addIndex)
       setSelectedIndexs(temp);
+      setVoteIndexs(temp);
     }
 
     function removeSelectedIndexs(removeIndex) {
@@ -111,9 +128,10 @@ const CardVotingContent: React.FC = () => {
           ...selectedIndexs.slice(tempIndex + 1)
         ];
         setSelectedIndexs(temp);
+        setVoteIndexs(temp);
       }
     }
-    if (isMulti) {
+    if (!isMulti) {
       if (isChecked) {
         addSelectedIndexs(index);
       } else {
@@ -123,10 +141,12 @@ const CardVotingContent: React.FC = () => {
     }
     if (isChecked) {
       setSelectedIndexs([index]);
+      setVoteIndexs([index]);
     } else {
       setSelectedIndexs([]);
+      setVoteIndexs([]);
     }
-  }, [isMulti, setSelectedIndexs, selectedIndexs]);
+  }, [isMulti, setSelectedIndexs, selectedIndexs, proposal]);
 
   const handleApprove = useCallback(async () => {
     try {
@@ -144,11 +164,11 @@ const CardVotingContent: React.FC = () => {
       return <UnlockButton width="280px" />
     } 
     if (allowance > 0 || transactionHash !== '') {
-      return <Button lg width="280px" onClick={onPresentVoteModal} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
+      return <Button lg width="280px" onClick={onPresentVotingModal} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
     }
     return <Button lg width="280px" onClick={handleApprove}>{t('Approve Contract')}</Button>
     
-  }, [account, allowance, selectedIndexs.length, t, handleApprove, transactionHash, onPresentVoteModal]);
+  }, [account, allowance, selectedIndexs.length, t, handleApprove, transactionHash, onPresentVotingModal]);
 
   return (
     <Card mt="40px" p="32px">
