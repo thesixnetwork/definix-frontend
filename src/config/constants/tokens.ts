@@ -188,7 +188,7 @@ export const allTokens = {
   BMON,
   ZOO,
   BABY,
-  VELO2
+  VELO2,
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {
