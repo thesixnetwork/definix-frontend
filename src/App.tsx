@@ -27,8 +27,8 @@ const NewFarms = lazy(() => import('./views/NewFarms'))
 const Explore = lazy(() => import('./views/Explore'))
 const Error = lazy(() => import('./views/Error'))
 const MyInvestments = lazy(() => import('./views/MyInvestments'))
-const LongTermStakeV2 = lazy(() => import('./views/LongTermStake_v2'))
-const SuperStake = lazy(() => import('./views/LongTermStake_v2/SuperStake'))
+const LongTermStake = lazy(() => import('./views/LongTermStake'))
+const SuperStake = lazy(() => import('./views/LongTermStake/SuperStake'))
 const Bridge = lazy(() => import('./views/Bridge'))
 const Swap = lazy(() => import('./views/Swap'))
 const Liquidity = lazy(() => import('./views/Liquidity'))
@@ -81,7 +81,7 @@ const App: React.FC = () => {
               <MyInvestments />
             </Route>
             <Route path="/long-term-stake">
-              <LongTermStakeV2 />
+              <LongTermStake />
             </Route>
             <Route path="/long-term-stake/super">
               <SuperStake />

@@ -10,7 +10,7 @@ import NoResultArea from 'components/NoResultArea'
 import FarmCard from 'views/NewFarms/components/FarmCard/FarmCard'
 import PoolCard from 'views/Pools/components/PoolCard/PoolCard'
 import ExploreCard from 'views/Explore/components/ExploreCard'
-import LongTermStakeCard from 'views/LongTermStake_v2/components/LongTermStakeCard/LongTermStakeCard'
+import LongTermStakeCard from 'views/LongTermStake/components/LongTermStakeCard'
 import useWallet from 'hooks/useWallet'
 
 const DividerWrap = styled(Box)`

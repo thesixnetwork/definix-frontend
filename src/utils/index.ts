@@ -5,7 +5,7 @@ import { JsonRpcSigner, CaverProvider } from 'finix-caver-providers'
 import { BigNumber } from '@ethersproject/bignumber'
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { JSBI, Percent, Token, CurrencyAmount, Currency, Trade, ETHER, currencyEquals } from 'definixswap-sdk'
-import { ChainId, ROUTER_ADDRESS } from 'config/constants'
+import { ROUTER_ADDRESS } from 'config/constants'
 import { TokenAddressMap } from '../state/lists/hooks'
 
 // returns the checksummed address if the address is valid, otherwise returns false
@@ -14,28 +14,6 @@ export function isAddress(value: any): string | false {
     return getAddress(value)
   } catch {
     return false
-  }
-}
-
-const BSCSCAN_PREFIXES: { [chainId: number]: string } = {
-  1001: 'baobab.',
-  8217: '',
-}
-
-export function getBscScanLink(chainId: number, data: string, type: 'transaction' | 'token' | 'address'): string {
-  const prefix = `https://${BSCSCAN_PREFIXES[chainId] || BSCSCAN_PREFIXES[ChainId.MAINNET]}scope.klaytn.com`
-
-  switch (type) {
-    case 'transaction': {
-      return `${prefix}/tx/${data}`
-    }
-    case 'token': {
-      return `${prefix}/token/${data}`
-    }
-    case 'address':
-    default: {
-      return `${prefix}/address/${data}`
-    }
   }
 }
 
@@ -69,12 +47,12 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 }
 
 // account is not optional
-export function getSigner(library: CaverProvider, account: string): JsonRpcSigner {
+function getSigner(library: CaverProvider, account: string): JsonRpcSigner {
   return library.getSigner(account).connectUnchecked()
 }
 
 // account is optional
-export function getProviderOrSigner(library: CaverProvider, account?: string): CaverProvider | JsonRpcSigner {
+function getProviderOrSigner(library: CaverProvider, account?: string): CaverProvider | JsonRpcSigner {
   return account ? getSigner(library, account) : library
 }
 
