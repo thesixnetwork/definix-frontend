@@ -151,7 +151,7 @@ const Farm: React.FC = () => {
     //   contractFinix.methods.balanceOf(apolloAddress).call(),
     //   pairContract.methods.getReserves().call(),
     // ])
-    const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
+    const pairContract = getContract(PairAbi, getAddress(AddressTokens.velo2FinixLP))
     const veloAddress = getAddress(AddressTokens.velo2)
     const apolloAddress = getAddress(poolVelo2.contractAddress) // getAddress("poolVelo.contractAddress")
     const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
