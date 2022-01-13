@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 
 import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from 'config/constants'
 import useWallet from 'hooks/useWallet'
-import { PairState, usePairs } from '../data/Reserves'
+import usePairs, { PairState } from 'hooks/usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {

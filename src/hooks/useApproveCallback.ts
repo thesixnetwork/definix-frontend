@@ -11,7 +11,7 @@ import { useToast } from 'state/toasts/hooks'
 import { ROUTER_ADDRESS } from 'config/constants'
 import ERC20_ABI from 'config/constants/abis/erc20.json'
 
-import { useTokenAllowance } from '../data/Allowances'
+import useTokenAllowance from 'hooks/useTokenAllowance'
 import { Field } from '../state/swap/actions'
 import { KlaytnTransactionResponse } from '../state/transactions/actions'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'

@@ -24,7 +24,7 @@ import { useTokenBalance } from 'state/wallet/hooks'
 
 import numeral from 'numeral'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { PairState } from 'data/Reserves'
+import { PairState } from 'hooks/usePairs'
 import MinimalPositionCard from 'components/PositionCard/MinimalPositionCard'
 import { DerivedMintInfoError, useDerivedMintInfo, useMintActionHandlers, useMintState } from 'state/mint/hooks'
 import { ROUTER_ADDRESS } from 'config/constants/index'

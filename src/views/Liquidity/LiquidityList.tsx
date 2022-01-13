@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import FullPositionCard from 'components/PositionCard/FullPositionCard'
 import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import { usePairs } from 'data/Reserves'
+import usePairs from 'hooks/usePairs'
 import { Pair } from 'definixswap-sdk'
 import {
   Flex,

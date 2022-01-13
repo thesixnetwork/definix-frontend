@@ -1,9 +1,9 @@
 import { Currency, CurrencyAmount, JSBI, Pair, Percent, TokenAmount } from 'definixswap-sdk'
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { usePair } from '../../data/Reserves'
-import { useTotalSupply } from '../../data/TotalSupply'
+import useTotalSupply from 'hooks/useTotalSupply'
 
+import { usePair } from 'hooks/usePairs'
 import { useActiveWeb3React } from '../../hooks'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
 import { AppDispatch, AppState } from '../index'
