@@ -1,4 +1,4 @@
-import { VELO, SIX, FINIX, WBNB, USDT, BUSD, BTCB, ETH, XRP, ADA, getLpNetwork } from './tokens'
+import {VELO2, VELO, SIX, FINIX, WBNB, USDT, BUSD, BTCB, ETH, XRP, ADA, getLpNetwork } from './tokens'
 
 export default {
   definixHerodotus: {
@@ -23,6 +23,7 @@ export default {
   six: SIX,
   finix: FINIX,
   velo: VELO,
+  velo2: VELO2, 
   finixSixLP: getLpNetwork(FINIX, SIX),
   finixBusdLP: getLpNetwork(FINIX, BUSD),
   finixBnbLP: getLpNetwork(FINIX, WBNB),

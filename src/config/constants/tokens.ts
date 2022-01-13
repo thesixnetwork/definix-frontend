@@ -156,6 +156,11 @@ export const VELO = {
   [intTestnetId]: process.env.REACT_APP_VELO_TOKEN_TESTNET,
 }
 
+export const VELO2 = {
+  [intMainnetId]: process.env.REACT_APP_VELO2_TOKEN_MAINNET,
+  [intTestnetId]: process.env.REACT_APP_VELO2_TOKEN_TESTNET,
+}
+
 export const allTokens = {
   SIX,
   FINIX,
@@ -183,6 +188,7 @@ export const allTokens = {
   BMON,
   ZOO,
   BABY,
+  VELO2
 }
 
 export const getLpAddress = (firstAddress: string, secondAddress: string, chainId: number) => {

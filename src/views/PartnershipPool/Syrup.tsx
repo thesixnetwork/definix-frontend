@@ -152,7 +152,7 @@ const Farm: React.FC = () => {
     //   pairContract.methods.getReserves().call(),
     // ])
     const pairContract = getContract(PairAbi, getAddress(AddressTokens.veloFinixLP))
-    const veloAddress = getAddress(AddressTokens.velo)
+    const veloAddress = getAddress(AddressTokens.velo2)
     const apolloAddress = getAddress(poolVelo2.contractAddress) // getAddress("poolVelo.contractAddress")
     const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
     // 0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f
@@ -218,7 +218,7 @@ const Farm: React.FC = () => {
       contractApollo.methods.rewardPerBlock().call(),
       pairContract.methods.getReserves().call(),
     ])
-    console.log('fetch1')
+    // console.log('fetch1')
     // const veloBalance = await contractVelo.methods.balanceOf(apolloAddress).call();
     // // console.log("1z",veloBalance)
     // const totalStake = await contractFinix.methods.balanceOf(apolloAddress).call()

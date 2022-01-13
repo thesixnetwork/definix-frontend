@@ -39,7 +39,7 @@ const CountDown = ({ showCom = false, margin = '0px 0px 0px 20px' }) => {
 
   useEffect(() => {
     const countdownInterval = () => {
-      const endCountDown = new Date('Jan 14, 2022 15:00:00')
+      const endCountDown = new Date(2022,2,15,15,0,0)
       const timer = endCountDown.getTime() - Date.now()
 
       if (timer <= 0) {
