@@ -269,7 +269,7 @@ export const useApproveToService = (max) => {
     const serviceKey = await call.methods.getServiceKey().call()
     if (connector === 'klip') {
       klipProvider.genQRcodeContactInteract(
-        getFinixAddress(),
+        getVFinix(),
         JSON.stringify(getAbiIUsageFacetByName('approveToService')),
         JSON.stringify([serviceKey, max]),
         setShowModal,
