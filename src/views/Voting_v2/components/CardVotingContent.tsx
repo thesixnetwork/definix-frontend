@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useMemo, useEffect, useState, useCallback } from 'react'
 import _ from 'lodash'
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { Route, useRouteMatch, useParams } from 'react-router-dom'
+import { useRouteMatch, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Card, Box, Flex, Text, CheckboxLabel, Checkbox } from '@fingerlabs/definixswap-uikit-v2'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { Card, Box, Flex, Text, CheckboxLabel, Checkbox, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import ReactMarkdown from 'components/ReactMarkdown'
-import { useAllProposalOfType, useGetProposal } from 'hooks/useVoting'
+import UnlockButton from 'components/UnlockButton'
+import * as klipProvider from 'hooks/klipProvider'
+import { useProposalIndex, useGetProposal, useServiceAllowance, useApproveToService } from 'hooks/useVoting'
+import { usePrivateData } from 'hooks/useLongTermStake'
+import useRefresh from 'hooks/useRefresh'
+import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 import Badge from './Badge'
 import { BadgeType } from '../types'
+import VoteModal from './VoteModal'
 
 const WrapContent = styled(Flex)`
   flex-direction: column;
@@ -20,57 +28,177 @@ const WrapVote = styled(Flex)`
   padding-top: 32px;
 `
 
+const Range = styled(Box)`
+  width: 100%;
+  height: 8px;
+  background-color: ${({ theme }) => theme.colors.lightGrey30};
+  border-radius: 4px;
+`
+
+const RangeValue = styled(Box)<{ width: number }>`
+  width: ${({ width }) => width}%;
+  height: 100%;
+  border-radius: 4px;
+  background-color: ${({ theme }) => theme.colors.lightbrown};
+`
+
 const CardVotingContent: React.FC = () => {
   const { t } = useTranslation();
   const { path } = useRouteMatch()
+  const { account } = useWallet()
+  const [transactionHash, setTransactionHash] = useState('')
+  const [mapVoting, setMapVoting] = useState([])
+  const [selectedIndexs, setSelectedIndexs] = useState<number[]>([]);
+  const { balancevfinix } = usePrivateData()
+  const { fastRefresh } = useRefresh()
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const proposal = useGetProposal(id)
-  const allProposal = useAllProposalOfType()
-  const listAllProposal = _.get(allProposal, 'allProposal')
-  const data = proposal.proposal;
-  // const getByIndex = listAllProposal.filter((book) => Number(book.proposalIndex) === Number(proposalIndex))
+  const { indexProposal } = useProposalIndex(proposalIndex)
+  const { proposal } = useGetProposal(id)
+  const allowance = useServiceAllowance()
+  const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
+  const isMulti = useMemo(() => proposal.choice_type === 'multi', [proposal]);
+  const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix]);
+
+  const [onPresentVoteModal] = useModal(<VoteModal />);
+
+  useEffect(() => {
+    const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
+    const array = []
+    let proposalMap = []
+    const fetch = async () => {
+      proposalMap = [proposal]
+      if (voting && proposalMap) {
+        const sum = voting
+          .map((datum) => new BigNumber(datum._hex).dividedBy(new BigNumber(10).pow(18)).toNumber())
+          .reduce((a, b) => a + b)
+
+        voting.filter((v, index) => {
+          _.get(proposalMap, '0.choices').map((i, c) => {
+            if (index === c) {
+              array.push({
+                vote: new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber(),
+                value: i,
+                percent: Number(
+                  (new BigNumber(v._hex).dividedBy(new BigNumber(10).pow(18)).toNumber() / sum) * 100,
+                ).toFixed(2),
+              })
+            }
+            return array
+          })
+
+          return array
+        })
+      }
+      setMapVoting(array)
+    }
+
+    fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fastRefresh])
+
+  const onCheckChange = useCallback((isChecked: boolean, index) => {
+    function addSelectedIndexs(addIndex) {
+      const temp = selectedIndexs.slice(0);
+      temp.push(addIndex)
+      setSelectedIndexs(temp);
+    }
+
+    function removeSelectedIndexs(removeIndex) {
+      const tempIndex = selectedIndexs.indexOf(removeIndex);
+      if (tempIndex > -1) {
+        const temp = [
+          ...selectedIndexs.slice(0, tempIndex),
+          ...selectedIndexs.slice(tempIndex + 1)
+        ];
+        setSelectedIndexs(temp);
+      }
+    }
+    if (isMulti) {
+      if (isChecked) {
+        addSelectedIndexs(index);
+      } else {
+        removeSelectedIndexs(index);
+      }
+      return;
+    }
+    if (isChecked) {
+      setSelectedIndexs([index]);
+    } else {
+      setSelectedIndexs([]);
+    }
+  }, [isMulti, setSelectedIndexs, selectedIndexs]);
+
+  const handleApprove = useCallback(async () => {
+    try {
+      const txHash = await onApprove()
+      if (txHash) {
+        setTransactionHash(_.get(txHash, 'transactionHash'))
+      }
+    } catch (e) {
+      setTransactionHash('')
+    }
+  }, [onApprove])
+
+  const renderVoteButton = useCallback(() => {
+    if (!account) {
+      return <UnlockButton width="280px" />
+    } 
+    if (allowance > 0 || transactionHash !== '') {
+      return <Button lg width="280px" onClick={onPresentVoteModal} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
+    }
+    return <Button lg width="280px" onClick={handleApprove}>{t('Approve Contract')}</Button>
+    
+  }, [account, allowance, selectedIndexs.length, t, handleApprove, transactionHash, onPresentVoteModal]);
 
   return (
     <Card mt="40px" p="32px">
       <WrapContent>
         <Flex>
           {
-            data.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
+            proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
           }
         </Flex>
-        <Text textStyle="R_18M" color="black" mt="20px">{data.title}</Text>
+        <Text textStyle="R_18M" color="black" mt="20px">{proposal.title}</Text>
         <Text textStyle="R_12R" color="mediumgrey" mt="6px">
           <span>{t('End Date')}</span>
-          <span>{data.endTimestamp}</span>
+          <span>{proposal.endTimestamp}</span>
         </Text>
         <Box mt="32px">
           <Text textStyle="R_14R" color="deepgrey" style={{
             whiteSpace: 'normal'
           }}>
-            <ReactMarkdown>{data.content}</ReactMarkdown>
+            <ReactMarkdown>{proposal.content}</ReactMarkdown>
           </Text>
         </Box>
       </WrapContent>
       <WrapVote>
-        <Flex justifyContent="space-between">
-          {data.choice_type === 'multi' && <Text color="orange" textStyle="R_14M">*{t('Plural vote')}</Text>}
+        <Flex justifyContent={isMulti ? 'space-between' : 'flex-end'}>
+          {isMulti && <Text color="orange" textStyle="R_14M">*{t('Plural vote')}</Text>}
           <Flex>
             <Text color="mediumgrey" textStyle="R_14R" mr="8px">{t('Balance')}</Text>
-            <Text color="black" textStyle="R_14B" mr="4px">123123</Text>
+            <Text color="black" textStyle="R_14B" mr="4px">{myVFinixBalance}</Text>
             <Text color="black" textStyle="R_14M">{t('vFINIX')}</Text>
           </Flex>
         </Flex>
-        {data.choices.map((choice) => <Flex flexDirection="column">
+        {proposal?.choices && proposal.choices.map((choice, index) => <Flex key={choice} flexDirection="column" pt="20px" pb="10px">
             <Flex justifyContent="space-between" alignItems="center">
-            <CheckboxLabel control={<Checkbox />} className="mr-12">
+            <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
               <Text textStyle="R_16R" color="black">{choice}</Text>
             </CheckboxLabel>
-            <Text textStyle="R_16M" color="deepgrey">80%</Text>
+            <Text textStyle="R_16M" color="deepgrey">{mapVoting[index] ? `${mapVoting[index].percent  }%` : ' '}</Text>
           </Flex>
-          <Flex mt="14px">
-          test
+          <Flex ml="36px" mt="14px">
+            <Range>
+              <RangeValue width={mapVoting[index] ? mapVoting[index].percent : 0} />
+            </Range>
+          </Flex>
+          <Flex ml="36px" mt="6px" minHeight="20px">
+            <Text textStyle="R_14R" color="mediumgrey">{mapVoting[index] ? `${mapVoting[index].vote} ${t('Votes')}` : ' '}</Text>
           </Flex>
         </Flex>)}
+        <Flex justifyContent="center" mt="22px">
+          {renderVoteButton()}
+        </Flex>
       </WrapVote>
     </Card>
   )
