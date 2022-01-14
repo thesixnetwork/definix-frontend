@@ -109,6 +109,7 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
         const response = await axios.get(`${voteIPFS}/${data.ipfsHash}`)
         proposalArray.push({
           ipfsHash: data.ipfsHash,
+          startTimestamp: data.startTimestamp,
           endTimestamp: data.endTimestamp,
           proposalType: data.proposalType,
           proposer: data.proposer,
@@ -125,8 +126,8 @@ const getAllProposalOfType = async ({ vFinixVoting }) => {
       }),
     )
 
-    allProposal = dataArray
-    allProposalMap = proposalArray
+    allProposal = dataArray.sort((a, b) => a.proposalIndex - b.proposalIndex)
+    allProposalMap = proposalArray.sort((a, b) => a.proposalIndex - b.proposalIndex)
   } catch (error) {
     allProposal = []
     allProposalMap = []
