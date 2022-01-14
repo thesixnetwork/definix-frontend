@@ -1,14 +1,20 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import _ from 'lodash'
+import BigNumber from 'bignumber.js'
+import { BLOCKS_PER_YEAR } from 'config'
 import { useParams, Link } from 'react-router-dom'
+import { useFarms, usePriceFinixUsd, usePriceKethKusdt, usePriceKlayKusdt, usePriceSixUsd } from 'state/hooks'
+import { provider } from 'web3-core'
+import { useWallet } from '@sixnetwork/klaytn-use-wallet'
+import { PoolCategory, QuoteToken } from 'config/constants/types'
 import { Card, Text, useMatchBreakpoints, Button, Skeleton, Image } from 'uikit-dev'
 import isEmpty from 'lodash/isEmpty'
-import { Minus, Plus } from 'react-feather'
 import styled from 'styled-components'
 import { useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import { FarmWithStakedValue } from 'views/Farms/components/FarmCard/types'
 import PaginationCustom from './Pagination'
 
 const EmptyData = ({ text }) => (
@@ -111,15 +117,28 @@ const Actions = styled(Button)`
   border-radius: 30px;
 `
 
-const TransactionTable = ({ rows, empText, isLoading, total }) => {
+const Coins = styled.div`
+  // padding: 16px;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  img {
+    width: 48px;
+    flex-shrink: 0;
+  }
+`
+
+const TransactionTable = ({ rows, empText, isLoading, total, klayPrice, finixPrice, kethPrice, sixPrice }) => {
   const [cols] = useState([
     'Rank',
     'Farms/Pools',
-    'Current Allocation Point',
+    'Current Vote Result',
     'Total Liquidity',
     'Current APR',
     '',
-    'New Allocation Point',
     'Estimate APR',
   ])
   const { isXl, isLg } = useMatchBreakpoints()
@@ -146,95 +165,98 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
         ) : (
           <TBody>
             {rows !== null &&
-              rows.map((r) => (
-                <TR key={`tsc-${r.block_number}`}>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <>{r.rank}</>
-                    )}
-                  </TD>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <div className="flex">
-                        <Image src="/images/coins/FINIX.png" width={16} height={16} />
-                        <Image src="/images/coins/SIX.png" width={16} height={16} />
-                        {r.farmOrPool}
-                      </div>
-                    )}
-                  </TD>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold>
-                        {r.currentAlloCationPoint}
-                      </Text>
-                    )}
-                  </TD>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <div className="flex align-center">
-                        <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
-                          {r.totalLiquidity}
+              rows.map((r) => {
+                const imgs = r.props.rows.lpSymbol.split(' ')[0].split('-')
+                return (
+                  <TR key={`tsc-${r.block_number}`}>
+                    <TD>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                      ) : (
+                        <>{r.props.rows.pid}</>
+                      )}
+                    </TD>
+                    <TD>
+                      <Coins>
+                        {isLoading ? (
+                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                        ) : (
+                          <div className="flex">
+                            {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                            {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                            {(r.props.rows.lpSymbol || '').replace(/ LP$/, '')}
+                          </div>
+                        )}
+                      </Coins>
+                    </TD>
+                    <TD>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                      ) : (
+                        <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold>
+                          {r.currentAlloCationPoint}
                         </Text>
-                      </div>
-                    )}
-                  </TD>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <div className="flex align-center">
-                        <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
-                          {r.currentAPR}
-                        </Text>
-                      </div>
-                    )}
-                  </TD>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <div className="flex align-center">
-                        <Actions as={Link} to="">
-                          <Minus width={18} height={18} />
-                        </Actions>
-                        <Actions as={Link} to="">
-                          <Plus width={18} height={18} />
-                        </Actions>
-                      </div>
-                    )}
-                  </TD>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <div className="flex align-center">
-                        <Text fontSize={isMobile ? '12px' : '14px'} color="#2A9D8F" bold paddingRight="8px">
-                          {r.newAlloPoint}
-                        </Text>
-                      </div>
-                    )}
-                  </TD>
-                  <TD>
-                    {isLoading ? (
-                      <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                    ) : (
-                      <div className="flex align-center">
-                        <Text fontSize={isMobile ? '12px' : '14px'} color="#2A9D8F" bold paddingRight="8px">
-                          {r.estimateAPR}
-                        </Text>
-                      </div>
-                    )}
-                  </TD>
-                </TR>
-              ))}
+                      )}
+                    </TD>
+                    <TD>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                      ) : (
+                        <div className="flex align-center">
+                          <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
+                            {r.props.rows.totalValueFormated === '-'
+                              ? r.props.rows.lpTotalInQuoteToken
+                              : r.props.rows.totalValueFormated}
+                            %
+                          </Text>
+                        </div>
+                      )}
+                    </TD>
+                    <TD>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                      ) : (
+                        <div className="flex align-center">
+                          <Text fontSize={isMobile ? '12px' : '14px'} color="text" bold paddingRight="8px">
+                            {new BigNumber(r.props.rows.apy.toNumber() * 100).toNumber().toFixed()}%
+                          </Text>
+                        </div>
+                      )}
+                    </TD>
+                    <TD>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                      ) : (
+                        <div className="flex align-center">
+                          <Button
+                            as={Link}
+                            to="/voting"
+                            variant="primary"
+                            radii="small"
+                            size="sm"
+                            className="flex align-center text-center"
+                          >
+                            <Text fontSize={isMobile ? '10px' : '12px'} color="white" lineHeight="1">
+                              Vote
+                            </Text>
+                          </Button>
+                        </div>
+                      )}
+                    </TD>
+                    <TD>
+                      {isLoading ? (
+                        <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
+                      ) : (
+                        <div className="flex align-center">
+                          <Text fontSize={isMobile ? '12px' : '14px'} color="#2A9D8F" bold paddingRight="8px">
+                            {r.estimateAPR}
+                          </Text>
+                        </div>
+                      )}
+                    </TD>
+                  </TR>
+                )
+              })}
           </TBody>
         )}
       </Table>
@@ -243,6 +265,7 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
 }
 
 const VotingBalance = () => {
+  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
   const [isLoading, setIsLoading] = useState(false)
@@ -254,17 +277,95 @@ const VotingBalance = () => {
   const { allVotesByIpfs } = useVotesByIpfs(id)
   const pages = useMemo(() => Math.ceil(Number(totalVote) / 10), [Number(totalVote)])
 
-  const mapAllVote = [
-    {
-      rank: 1,
-      farmOrPool: 'FINIX-SIX Farm',
-      currentAlloCationPoint: '0.00%',
-      totalLiquidity: '$2,538,077',
-      currentAPR: '0.00%',
-      newAlloPoint: '0.00%',
-      estimateAPR: '0.00%',
+  // Farms
+  const farmsLP = useFarms()
+  const klayPrice = usePriceKlayKusdt()
+  const sixPrice = usePriceSixUsd()
+  const finixPrice = usePriceFinixUsd()
+  const kethPriceUsd = usePriceKethKusdt()
+  const [listView, setListView] = useState(false)
+  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.pid !== 1 && farm.multiplier !== '0X')
+
+  const farmsList = useCallback(
+    (farmsToDisplay, removed: boolean) => {
+      const finixPriceVsKlay = finixPrice // new BigNumber(farmsLP.find((farm) => farm.pid === FINIX_POOL_PID)?.tokenPriceVsQuote || 0)
+      const farmsToDisplayWithAPY: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+        // if (!farm.tokenAmount || !farm.lpTotalInQuoteToken || !farm.lpTotalInQuoteToken) {
+        //   console.log("farm", farm)
+        //   return farm
+        // }
+        const klayApy = new BigNumber(0)
+        const totalRewardPerBlock = new BigNumber(farm.finixPerBlock)
+          .times(farm.BONUS_MULTIPLIER)
+          .div(new BigNumber(10).pow(18))
+        const finixRewardPerBlock = totalRewardPerBlock.times(farm.poolWeight)
+        const finixRewardPerYear = finixRewardPerBlock.times(BLOCKS_PER_YEAR)
+
+        let apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        let total
+        if (!farm.lpTotalInQuoteToken) {
+          total = null
+        }
+        if (farm.quoteTokenSymbol === QuoteToken.KUSDT || farm.quoteTokenSymbol === QuoteToken.KDAI) {
+          apy = finixPriceVsKlay.times(finixRewardPerYear).div(farm.lpTotalInQuoteToken) // .times(bnbPrice)
+        } else if (farm.quoteTokenSymbol === QuoteToken.KLAY) {
+          total = klayPrice.times(farm.lpTotalInQuoteToken)
+          apy = finixPrice.div(klayPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.KETH) {
+          total = kethPriceUsd.times(farm.lpTotalInQuoteToken)
+          apy = finixPrice.div(kethPriceUsd).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.FINIX) {
+          total = finixPrice.times(farm.lpTotalInQuoteToken)
+          apy = finixRewardPerYear.div(farm.lpTotalInQuoteToken)
+        } else if (farm.quoteTokenSymbol === QuoteToken.SIX) {
+          total = sixPrice.times(farm.lpTotalInQuoteToken)
+          apy = finixPrice.div(sixPrice).times(finixRewardPerYear).div(farm.lpTotalInQuoteToken)
+        } else if (farm.dual) {
+          const finixApy =
+            farm && finixPriceVsKlay.times(finixRewardPerBlock).times(BLOCKS_PER_YEAR).div(farm.lpTotalInQuoteToken)
+          const dualApy =
+            farm.tokenPriceVsQuote &&
+            new BigNumber(farm.tokenPriceVsQuote)
+              .times(farm.dual.rewardPerBlock)
+              .times(BLOCKS_PER_YEAR)
+              .div(farm.lpTotalInQuoteToken)
+
+          apy = finixApy && dualApy && finixApy.plus(dualApy)
+        }
+
+        const totalValueFormated = total
+          ? `$${Number(total).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+          : '-'
+
+        const finixApy = apy
+
+        return {
+          ...farm,
+          apy: finixApy,
+          finixApy,
+          klayApy,
+          totalValueFormated,
+          lpTotalInQuoteToken: `$${Number(farm.lpTotalInQuoteToken).toLocaleString(undefined, {
+            maximumFractionDigits: 0,
+          })}`,
+        }
+      })
+
+      return farmsToDisplayWithAPY.map((farm) => (
+        <TransactionTable
+          rows={farm && farm}
+          isLoading={isLoading}
+          empText="Don`t have any transactions in this voting balance.ddddd"
+          total
+          klayPrice={klayPrice}
+          finixPrice={finixPrice}
+          kethPrice={kethPriceUsd}
+          sixPrice={sixPrice}
+        />
+      ))
     },
-  ]
+    [sixPrice, klayPrice, kethPriceUsd, finixPrice, klaytn, account, listView],
+  )
 
   const onPageChange = (e, page) => {
     setCurrentPage(page)
@@ -282,24 +383,16 @@ const VotingBalance = () => {
               {Number(totalVote)}
             </Text>
           </div>
-          <Button
-            as={Link}
-            to="/voting"
-            variant="primary"
-            radii="small"
-            size="sm"
-            className="flex align-center text-center"
-          >
-            <Text fontSize={isMobile ? '10px' : '12px'} color="white" lineHeight="1">
-              Confirm
-            </Text>
-          </Button>
         </div>
         <TransactionTable
-          rows={mapAllVote.length !== 0 && mapAllVote}
+          rows={farmsList(activeFarms, false).length !== 0 && farmsList(activeFarms, false)}
           isLoading={isLoading}
           empText="Don`t have any transactions in this voting balance."
           total
+          klayPrice={klayPrice}
+          finixPrice={finixPrice}
+          kethPrice={kethPriceUsd}
+          sixPrice={sixPrice}
         />
         <PaginationCustom
           page={currentPage}

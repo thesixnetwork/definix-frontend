@@ -40,14 +40,14 @@ const APRVoting: React.FC = () => {
               </Heading>
             </div>
           </div>
-          <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
+          {/* <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
               <VotingPowerAPR />
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
               <VotingPower />
             </div>
-          </div>
+          </div> */}
           <VotingBalance />
         </MaxWidthLeft>
       </Route>
