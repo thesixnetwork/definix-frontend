@@ -3,6 +3,8 @@ import { BackIcon, Box, Flex, Text, Button } from '@fingerlabs/definixswap-uikit
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom';
 import CardVotingContent from './CardVotingContent';
+import YourVoteList from './YourVoteList';
+import VotingInfo from './VotingInfo';
 
 const DetailVoting: React.FC = () => {
   const { t } = useTranslation();
@@ -28,6 +30,8 @@ const DetailVoting: React.FC = () => {
         </Flex>
       </Box>
       <CardVotingContent />
+      <YourVoteList />
+      <VotingInfo />
     </>
   )
 }

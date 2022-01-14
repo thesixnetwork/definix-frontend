@@ -232,7 +232,6 @@ const YourVoteList = () => {
                 radii="small"
                 size="sm"
                 mr="6px"
-                disabled={Date.now() < +_.get(items, 'endDate') || !isClaimable}
               >
                 <Text
                   fontSize={isMobile ? '10px' : '12px'}
