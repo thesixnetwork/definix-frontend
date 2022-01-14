@@ -49,7 +49,7 @@ const CardHeading: React.FC<CardHeadingProps> = ({ isOldSyrup, apy, className = 
       </StyledFarmImages>
 
       <Heading fontSize={isHorizontal ? '20px !important' : '24px !important'} fontWeight="500 !important">
-        {isOldSyrup && '[OLD]'} VELO {TranslateString(348, 'Pool')} {veloId === 1 ? 'V2' : ''}
+        {isOldSyrup && '[OLD]'} VELO {TranslateString(348, 'Pool')} {veloId === 1 ? '(Inactive)' : ''}
       </Heading>
 
       <div className="flex align-center justify-center mt-2">
