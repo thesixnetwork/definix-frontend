@@ -5,13 +5,7 @@ import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import { BLOCKS_PER_YEAR } from 'config'
 import { useParams, Link } from 'react-router-dom'
-import {
-  useFarms,
-  usePriceFinixUsd,
-  usePriceKethKusdt,
-  usePriceKlayKusdt,
-  usePriceSixUsd,
-} from 'state/hooks'
+import { useFarms, usePriceFinixUsd, usePriceKethKusdt, usePriceKlayKusdt, usePriceSixUsd } from 'state/hooks'
 import { provider } from 'web3-core'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
