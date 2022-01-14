@@ -30,8 +30,8 @@ const VeloPool: PoolConfig[] = [
         ? process.env.REACT_APP_FINIX_ADDRESS_TESTNET
         : process.env.REACT_APP_FINIX_ADDRESS_MAINNET,
     contractAddress: {
-      97: '0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f',
-      56: '0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f',
+      97: '0x7ddc1bD516256c269F99AD52D7C37DeD33AF0eE7',
+      56: '0x7ddc1bD516256c269F99AD52D7C37DeD33AF0eE7',
     },
     poolCategory: PoolCategory.CORE,
     projectLink: 'https://definix.com/',

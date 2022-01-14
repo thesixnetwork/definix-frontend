@@ -28,6 +28,9 @@ const WithdrawModal: React.FC<WithdrawModalProps> = ({ onConfirm, onDismiss, max
   )
 
   const handleSelectMax = useCallback(() => {
+    // console.log(fullBalance)
+    // console.log(new BigNumber(fullBalance).toFixed(7).toString())
+    // console.log(new BigNumber(fullBalance).toFixed(7).toString().slice(0, -1))
     setVal(fullBalance)
   }, [fullBalance, setVal])
 
