@@ -175,7 +175,7 @@ const Farm: React.FC = () => {
 
       poolVelo2.userData.allowance = allowance
       poolVelo2.userData.stakedBalance = userInfo.amount
-      poolVelo2.userData.pendingReward = pendingReward
+      poolVelo2.userData.pendingReward = new BigNumber(pendingReward).div(1e13)
       // poolVelo.estimatePrice = new BigNumber()
       poolVelo2.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
       // poolVelo.stakingLimit = new BigNumber(balanceFinixUser)
