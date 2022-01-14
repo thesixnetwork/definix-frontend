@@ -106,7 +106,7 @@ const CardHeadingAccordion: React.FC<CardHeadingAccordionProps> = ({
           </StyledFarmImages>
 
           <Heading fontSize="16px" fontWeight="500 !important">
-            {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')} {veloId === 1 ? 'V2' : ''}
+            {isOldSyrup && '[OLD]'} {tokenName} {TranslateString(348, 'Pool')} {veloId === 1 ? '(Inactive)' : ''}
           </Heading>
         </div>
         {isOpenAccordion ? <ChevronUpIcon color="textSubtle" /> : <ChevronDownIcon color="textSubtle" />}
