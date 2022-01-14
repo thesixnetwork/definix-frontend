@@ -14,4 +14,16 @@ export enum BadgeType {
   PARTICIPATION = 'Participation'
 }
 
+export enum TransactionState {
+  NONE = 'none',
+  START = 'start',
+  SUCCESS = 'success',
+  ERROR = 'error'
+}
+
+export enum ModalState {
+  VOTING = 'voting',
+  CONFIRM = 'confirm'
+}
+
 export default {};

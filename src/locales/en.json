@@ -527,5 +527,7 @@
   "Your Voting Power (vFINIX)": "Your Voting Power (vFINIX) will be locked until the voting time is ended.",
   "Release notes title": "Definix Update",
   "Release notes date": "17.Jan.2022",
-  "Still in progress": "Applying G2 is in progress.\r\nIt is available to use on G1. "
+  "Still in progress": "Applying G2 is in progress.\r\nIt is available to use on G1. ",
+  "actionImport": "Import",
+  "Available": "Available"
 }

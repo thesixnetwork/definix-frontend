@@ -2,21 +2,23 @@ import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { useRouteMatch, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { Card, Box, Flex, Text, CheckboxLabel, Checkbox, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import ReactMarkdown from 'components/ReactMarkdown'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from 'hooks/klipProvider'
-import { useProposalIndex, useGetProposal, useServiceAllowance, useApproveToService } from 'hooks/useVoting'
+import { useProposalIndex, useGetProposal, useServiceAllowance, useApproveToService, useVote } from 'hooks/useVoting'
 import { usePrivateData } from 'hooks/useLongTermStake'
 import useRefresh from 'hooks/useRefresh'
+import { useToast } from 'state/hooks'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 import Badge from './Badge'
-import VotingModal from './VotingModal'
-import { BadgeType } from '../types'
-import ConfirmModal from './ConfirmModal'
+import VotingConfirmModal from './VotingConfirmModal'
+import { BadgeType, TransactionState } from '../types'
+
+
 
 const WrapContent = styled(Flex)`
   flex-direction: column;
@@ -45,11 +47,11 @@ const RangeValue = styled(Box)<{ width: number }>`
 
 const CardVotingContent: React.FC = () => {
   const { t } = useTranslation();
-  const { path } = useRouteMatch()
   const { account } = useWallet()
   const [transactionHash, setTransactionHash] = useState('')
   const [mapVoting, setMapVoting] = useState([])
   const { balancevfinix } = usePrivateData()
+  const { onCastVote } = useVote()
   const { fastRefresh } = useRefresh()
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { indexProposal } = useProposalIndex(proposalIndex)
@@ -60,14 +62,39 @@ const CardVotingContent: React.FC = () => {
   const myVFinixBalance = useMemo(() => getBalanceOverBillion(balancevfinix), [balancevfinix]);
   const [selectedIndexs, setSelectedIndexs] = useState<number[]>([]);
   const selectedVotes = useRef<string[]>([]);
-  const [votesBalance, setVotesBalance] = useState([]);
+  const { toastSuccess, toastError } = useToast()
+  const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE);
 
-  const onUserInput = useCallback((index: number, balance: BigNumber) => {
-    console.log(index, balance)
-  }, [])
+  const onVote = useCallback((balances: string[]) => {
+    setTrState(TransactionState.START);
+    const result = proposal.choices.map((choice, index) => {
+      const selectedIndex = selectedIndexs.indexOf(index);
+      return selectedIndex > -1 ? new BigNumber(Number(balances[selectedIndex].replace(',', ''))).times(new BigNumber(10).pow(18)).toFixed() : '0';
+    })
+    const res = onCastVote(proposalIndex, result)
+    res
+      .then(() => {
+        setTrState(TransactionState.SUCCESS);
+        toastSuccess(t('{{Action}} Complete', {
+          Action: t('actionVote')
+        }));
+      })
+      .catch(() => {
+        setTrState(TransactionState.ERROR);
+        toastError(t('{{Action}} Failed', {
+          Action: t('actionVote')
+        }));
+      })
+  }, [onCastVote, proposal.choices, proposalIndex, selectedIndexs, t, toastError, toastSuccess]);
 
-  const [onPresentConfirmModal] = useModal(<ConfirmModal />);
-  const [onPresentVotingModal] = useModal(<VotingModal onConfirm={onPresentConfirmModal} selectedVotes={selectedVotes.current} />);
+  const [onPresentVotingConfirmModal, onDismiss] = useModal(<VotingConfirmModal trState={trState} selectedVotes={selectedVotes.current} onVote={onVote} />);
+
+  useEffect(() => {
+    if ([TransactionState.SUCCESS, TransactionState.ERROR].includes(trState)) {
+      onDismiss();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trState]);
 
   useEffect(() => {
     const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -131,7 +158,7 @@ const CardVotingContent: React.FC = () => {
         setVoteIndexs(temp);
       }
     }
-    if (!isMulti) {
+    if (isMulti) {
       if (isChecked) {
         addSelectedIndexs(index);
       } else {
@@ -164,11 +191,14 @@ const CardVotingContent: React.FC = () => {
       return <UnlockButton width="280px" />
     } 
     if (allowance > 0 || transactionHash !== '') {
-      return <Button lg width="280px" onClick={onPresentVotingModal} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
+      return <Button lg width="280px" onClick={() => {
+        setTrState(TransactionState.NONE);
+        onPresentVotingConfirmModal();
+      }} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
     }
     return <Button lg width="280px" onClick={handleApprove}>{t('Approve Contract')}</Button>
     
-  }, [account, allowance, selectedIndexs.length, t, handleApprove, transactionHash, onPresentVotingModal]);
+  }, [account, allowance, selectedIndexs.length, t, handleApprove, transactionHash, onPresentVotingConfirmModal]);
 
   return (
     <Card mt="40px" p="32px">

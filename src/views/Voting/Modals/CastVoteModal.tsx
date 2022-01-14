@@ -259,6 +259,7 @@ const CastVoteModal: React.FC<Props> = ({
   }
 
   const onConfirm = () => {
+    console.log(mapChoicesForSingle)
     const res = onCastVote(proposalIndex, types === 'single' ? mapChoicesForSingle : mapChoicesForMulti)
     res
       .then((r) => {

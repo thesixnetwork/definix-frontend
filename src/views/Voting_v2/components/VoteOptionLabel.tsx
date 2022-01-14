@@ -13,7 +13,7 @@ const VoteOptionLabel: React.FC<Props> = ({ label }) => {
   return (
     <Flex alignItems="flex-start">
       <CheckBIcon />
-      <Text ml="8px" textStyle="R_14R" color="deepgrey">{label}</Text>
+      <Text ml="8px" textStyle="R_14R" color="deepgrey" width="320px">{label}</Text>
     </Flex>
   )
 }
