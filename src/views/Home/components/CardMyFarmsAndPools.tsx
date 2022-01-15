@@ -1,11 +1,18 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import BigNumber from 'bignumber.js'
 import UnlockButton from 'components/UnlockButton'
 import numeral from 'numeral'
 import { BLOCKS_PER_YEAR } from 'config'
+import { getContract } from 'utils/web3'
+import Apollo from 'config/abi/Apollo.json'
+import PairAbi from 'config/abi/uni_v2_lp.json'
+import erc20 from 'config/abi/erc20.json'
+import { VeloPool } from 'config/constants'
+import AddressTokens from 'config/constants/contracts'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
-import useFarmsWithBalance from 'hooks/useFarmsWithBalance'
+import useFarmsWithBalance, {usePoolVeloWithBalance} from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
@@ -27,6 +34,7 @@ import {
   useWalletRebalanceFetched,
   usePools,
   usePoolsIsFetched,
+  usePoolVeloIsFetched,
   usePriceBnbBusd,
   usePriceEthBnb,
   usePriceEthBusd,
@@ -39,6 +47,7 @@ import { Button, Card, ChevronRightIcon, Heading, IconButton, Skeleton, Text } f
 import Loading from 'uikit-dev/components/Loading'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { provider } from 'web3-core'
+import { PoolWithApy } from '../../PartnershipPool/components/PoolCard/types'
 import FarmCard from '../../Farms/components/FarmCard/FarmCard'
 import { fetchBalances, fetchRebalanceBalances, fetchRebalanceRewards } from '../../../state/wallet'
 import { FarmWithStakedValue } from '../../Farms/components/FarmCard/types'
@@ -204,6 +213,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
+  const poolVeloWithBalance = usePoolVeloWithBalance(0)
   const rebalances = useRebalances()
   const balances = useBalances(account) || {}
   const rebalanceBalances = useRebalanceBalances(account) || {}
@@ -214,20 +224,22 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         rebalanceBalances[typeof r.address === 'string' ? r.address : getAddress(r.address)] || new BigNumber(0)
       ).toNumber() > 0,
   )
+ 
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
+  console.log('poolVeloWithBalance',poolVeloWithBalance)
 
   const isPoolFetched = usePoolsIsFetched()
+  const isPoolVeloFetched = usePoolVeloIsFetched()
   const isFarmFetched = useFarmsIsFetched()
   const isRebalanceFetched = useRebalancesIsFetched()
   const isRebalanceBalanceFetched = useWalletRebalanceFetched()
   const isBalanceFetched = useWalletFetched()
-
   useEffect(() => {
-    if (isFarmFetched && isPoolFetched && isRebalanceFetched && isRebalanceBalanceFetched && isBalanceFetched) {
+    if (isFarmFetched && isPoolFetched && isRebalanceFetched && isRebalanceBalanceFetched && isBalanceFetched && isPoolVeloFetched) {
       setIsLoading(false)
     }
-  }, [isPoolFetched, isFarmFetched, isRebalanceFetched, isRebalanceBalanceFetched, isBalanceFetched])
+  }, [isPoolFetched, isFarmFetched, isRebalanceFetched,isPoolVeloFetched, isRebalanceBalanceFetched, isBalanceFetched])
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -587,6 +599,95 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     return new BigNumber(0)
   }
 
+
+  // VELO 
+  const [poolVelo2, setPoolVelo2] = useState<PoolWithApy>({
+    apy: new BigNumber(0),
+    rewardPerBlock: 10,
+    estimatePrice: new BigNumber(0),
+    totalStaked: new BigNumber(0),
+    startBlock: 12664423,
+    endBlock: 14392426,
+    userData: {
+      allowance: new BigNumber(0),
+      stakingTokenBalance: new BigNumber(0),
+      stakedBalance: new BigNumber(0),
+      pendingReward: new BigNumber(0),
+    },
+    sousId: 0,
+    image: '',
+    tokenName: 'VELO',
+    stakingTokenName: QuoteToken.VELO,
+    stakingLimit: 0,
+    stakingTokenAddress: VeloPool[2].stakingTokenAddress,
+    contractAddress: VeloPool[2].contractAddress,
+    poolCategory: PoolCategory.PARTHNER,
+    projectLink: '',
+    tokenPerBlock: '10',
+    sortOrder: 1,
+    harvest: true,
+    isFinished: false,
+    tokenDecimals: VeloPool[2].tokenDecimals,
+    pairPrice: new BigNumber(0),
+  })
+
+  const fetchVelo = useCallback(async () => {
+    const pairContract = getContract(PairAbi, getAddress(AddressTokens.velo2FinixLP))
+    const veloAddress = getAddress(AddressTokens.velo2)
+    const apolloAddress = getAddress(poolVelo2.contractAddress)
+    const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
+    // 0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f
+    const contractApollo = getContract(Apollo.abi, apolloAddress)
+    const contractFinix = getContract(erc20, finixAddress)
+    const contractVelo = getContract(erc20, veloAddress)
+    const [veloBalance, totalStake, rewardPerBlock, reserveFinixVelo] = await Promise.all([
+      contractVelo.methods.balanceOf(apolloAddress).call(),
+      contractFinix.methods.balanceOf(apolloAddress).call(),
+      contractApollo.methods.rewardPerBlock().call(),
+      pairContract.methods.getReserves().call(),
+    ])
+    if (account) {
+      const [userInfo, allowance, pendingReward, balanceFinixUser] = await Promise.all([
+        contractApollo.methods.userInfo(account).call(),
+        contractFinix.methods.allowance(account, apolloAddress).call(),
+        contractApollo.methods.pendingReward(account).call(),
+        contractFinix.methods.balanceOf(account).call(),
+      ])
+
+      poolVelo2.userData.allowance = allowance
+      poolVelo2.userData.stakedBalance = userInfo.amount
+      poolVelo2.userData.pendingReward = new BigNumber(pendingReward).div(1e13)
+      poolVelo2.userData.stakingTokenBalance = new BigNumber(balanceFinixUser)
+    }
+
+    poolVelo2.totalStaked = new BigNumber(totalStake)
+
+    const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR).div(1e18).toNumber()
+
+    const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
+    console.log('veloBalanceReward',veloBalanceReward)
+    const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
+      new BigNumber(reserveFinixVelo._reserve1).div(1e18),
+    )
+    poolVelo2.pairPrice = new BigNumber(finixPervelo)
+
+    poolVelo2.apy = new BigNumber(new BigNumber(finixPervelo).times(VELO_BLOCK_PER_YEAR))
+      .div(new BigNumber(totalStake).div(1e18))
+      .times(100)
+
+    setPoolVelo2(poolVelo2)
+  }, [account, poolVelo2])
+
+  useEffect(() => {
+    fetchVelo()
+  }, [fetchVelo, account])
+
+  const veloPool = [];  
+  veloPool.push(poolVelo2)
+  const stackedPoolVelo = veloPool.filter(
+    (velo) => velo.userData && Number(velo.userData.stakedBalance)
+  )
+
   const dataFarms = stackedOnlyFarms.map((f) => ({
     lpSymbol: f.lpSymbol,
     value: Number(getNetWorth(f)),
@@ -602,9 +703,15 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     value: Number(getNetWorth(r)),
   }))
 
+  const dataVeloPool = stackedPoolVelo.map((v) => ({
+    lpSymbol: v.tokenName,
+    value: Number(getNetWorth(v)),
+  }))
+
+
   const isGrouping =
-    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0
-  let arrayData = [...dataFarms, ...dataPools, ...dataRebalances]
+    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0 && stackedPoolVelo.length > 0
+  let arrayData = [...dataFarms, ...dataPools, ...dataRebalances, ...dataVeloPool]
   if (isGrouping) {
     const groupRebalance = {
       lpSymbol: 'Rebalancing',
@@ -633,13 +740,25 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         ),
       ),
     }
+    const groupPoolVelo = {
+      lpSymbol: 'PoolVelo',
+      value: Number(
+        BigNumber.sum.apply(
+          null,
+          stackedPoolVelo.map((v) => getNetWorth(v)),
+        ),
+      ),
+    }
     arrayData = []
-    if (groupRebalance.value > 0 || groupFarm.value > 0 || groupPool.value > 0) {
+  
+    if (groupRebalance.value > 0 || groupFarm.value > 0 || groupPool.value > 0 || groupPoolVelo.value > 0) {
       if (groupRebalance.value > 0) arrayData.push(groupRebalance)
       if (groupFarm.value > 0) arrayData.push(groupFarm)
       if (groupPool.value > 0) arrayData.push(groupPool)
+      if (groupPoolVelo.value > 0) arrayData.push(groupPoolVelo)
     }
   }
+
   const sorted = arrayData.sort((a, b) => b.value - a.value)
   const chartValue = sorted.map((i) => Number(i.value))
   const topThree = sorted.splice(0, 3)
@@ -687,6 +806,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     },
   }
 
+
   return (
     <Container className={className}>
       <NetWorth>
@@ -700,7 +820,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <Heading fontSize="24px !important">
               {(() => {
-                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances].map((f) => {
+                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances, ...stackedPoolVelo].map((f) => {
                   return getNetWorth(f)
                 })
                 // eslint-disable-next-line
@@ -845,7 +965,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       })}
                     </div>
                   </div>
-
                   <Text bold textTransform="uppercase" style={{ fontSize: '10px' }}>
                     {r.title}
                   </Text>
@@ -966,6 +1085,73 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   </div>
                 </Summary>
                 <IconButton size="sm" as={Link} to="/pool" className="flex flex-shrink">
+                  <ChevronRightIcon color="textDisabled" width="28" />
+                </IconButton>
+              </FarmsAndPools>
+            )
+          })}
+
+          {stackedPoolVelo.map((v) => {
+            const imgs = v.tokenName.split(' ')[0].split('-')
+            return (
+              <FarmsAndPools key={v.tokenName}>
+                <Coins>
+                  {isLoading ? (
+                    <>
+                      <div className="flex">
+                        <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                      </div>
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex">
+                      <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                    </div>
+                    <Text bold>{v.tokenName}</Text>
+                    </>
+                  )}
+                </Coins>
+                <Summary>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      APR
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    ) : (
+                      <Text bold color="success">
+                      {new BigNumber(v.apy).toNumber().toFixed(2)}%
+                    </Text>
+                  )}
+                  </div>
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      LP Staked
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    ) : (
+                      <Text bold>
+                        {new BigNumber(v.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                      </Text>
+                    )}
+                  </div>
+                  <div />
+                  <div>
+                    <Text fontSize="12px" color="textSubtle">
+                      VELO Earned
+                    </Text>
+                    {isLoading ? (
+                      <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
+                    ) : (
+                    <Text bold>
+                      {new BigNumber(v.userData.pendingReward).div(new BigNumber(10).pow(5)).toNumber().toFixed(2)}
+                    </Text>
+                    )}
+                  </div>
+                </Summary>
+                <IconButton size="sm" as={Link} to="/partnership-pool" className="flex flex-shrink">
                   <ChevronRightIcon color="textDisabled" width="28" />
                 </IconButton>
               </FarmsAndPools>
