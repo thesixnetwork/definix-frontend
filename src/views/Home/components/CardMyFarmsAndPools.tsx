@@ -12,7 +12,7 @@ import { VeloPool } from 'config/constants'
 import AddressTokens from 'config/constants/contracts'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
-import useFarmsWithBalance, {usePoolVeloWithBalance} from 'hooks/useFarmsWithBalance'
+import useFarmsWithBalance, { usePoolVeloWithBalance } from 'hooks/useFarmsWithBalance'
 import { useAllHarvest } from 'hooks/useHarvest'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
@@ -224,10 +224,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
         rebalanceBalances[typeof r.address === 'string' ? r.address : getAddress(r.address)] || new BigNumber(0)
       ).toNumber() > 0,
   )
- 
+
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
-  console.log('poolVeloWithBalance',poolVeloWithBalance)
+  console.log('poolVeloWithBalance', poolVeloWithBalance)
 
   const isPoolFetched = usePoolsIsFetched()
   const isPoolVeloFetched = usePoolVeloIsFetched()
@@ -236,10 +236,17 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const isRebalanceBalanceFetched = useWalletRebalanceFetched()
   const isBalanceFetched = useWalletFetched()
   useEffect(() => {
-    if (isFarmFetched && isPoolFetched && isRebalanceFetched && isRebalanceBalanceFetched && isBalanceFetched && isPoolVeloFetched) {
+    if (
+      isFarmFetched &&
+      isPoolFetched &&
+      isRebalanceFetched &&
+      isRebalanceBalanceFetched &&
+      isBalanceFetched &&
+      isPoolVeloFetched
+    ) {
       setIsLoading(false)
     }
-  }, [isPoolFetched, isFarmFetched, isRebalanceFetched,isPoolVeloFetched, isRebalanceBalanceFetched, isBalanceFetched])
+  }, [isPoolFetched, isFarmFetched, isRebalanceFetched, isPoolVeloFetched, isRebalanceBalanceFetched, isBalanceFetched])
 
   const harvestAllFarms = useCallback(async () => {
     setPendingTx(true)
@@ -599,8 +606,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     return new BigNumber(0)
   }
 
-
-  // VELO 
+  // VELO
   const [poolVelo2, setPoolVelo2] = useState<PoolWithApy>({
     apy: new BigNumber(0),
     rewardPerBlock: 10,
@@ -665,7 +671,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR).div(1e18).toNumber()
 
     const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
-    console.log('veloBalanceReward',veloBalanceReward)
+    console.log('veloBalanceReward', veloBalanceReward)
     const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
       new BigNumber(reserveFinixVelo._reserve1).div(1e18),
     )
@@ -682,11 +688,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     fetchVelo()
   }, [fetchVelo, account])
 
-  const veloPool = [];  
+  const veloPool = []
   veloPool.push(poolVelo2)
-  const stackedPoolVelo = veloPool.filter(
-    (velo) => velo.userData && Number(velo.userData.stakedBalance)
-  )
+  const stackedPoolVelo = veloPool.filter((velo) => velo.userData && Number(velo.userData.stakedBalance))
 
   const dataFarms = stackedOnlyFarms.map((f) => ({
     lpSymbol: f.lpSymbol,
@@ -708,9 +712,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     value: Number(getNetWorth(v)),
   }))
 
-
   const isGrouping =
-    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0 && stackedPoolVelo.length > 0
+    stackedOnlyPools.length > 0 &&
+    stakedRebalances.length > 0 &&
+    farmsList(stackedOnlyFarms, false).length > 0 &&
+    stackedPoolVelo.length > 0
   let arrayData = [...dataFarms, ...dataPools, ...dataRebalances, ...dataVeloPool]
   if (isGrouping) {
     const groupRebalance = {
@@ -750,7 +756,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
       ),
     }
     arrayData = []
-  
+
     if (groupRebalance.value > 0 || groupFarm.value > 0 || groupPool.value > 0 || groupPoolVelo.value > 0) {
       if (groupRebalance.value > 0) arrayData.push(groupRebalance)
       if (groupFarm.value > 0) arrayData.push(groupFarm)
@@ -806,7 +812,6 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     },
   }
 
-
   return (
     <Container className={className}>
       <NetWorth>
@@ -820,7 +825,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           ) : (
             <Heading fontSize="24px !important">
               {(() => {
-                const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances, ...stackedPoolVelo].map((f) => {
+                const allNetWorth = [
+                  ...stackedOnlyFarms,
+                  ...stackedOnlyPools,
+                  ...stakedRebalances,
+                  ...stackedPoolVelo,
+                ].map((f) => {
                   return getNetWorth(f)
                 })
                 // eslint-disable-next-line
@@ -1106,9 +1116,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   ) : (
                     <>
                       <div className="flex">
-                      <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
-                    </div>
-                    <Text bold>{v.tokenName}</Text>
+                        <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                      </div>
+                      <Text bold>{v.tokenName}</Text>
                     </>
                   )}
                 </Coins>
@@ -1121,9 +1131,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
                     ) : (
                       <Text bold color="success">
-                      {new BigNumber(v.apy).toNumber().toFixed(2)}%
-                    </Text>
-                  )}
+                        {new BigNumber(v.apy).toNumber().toFixed(2)}%
+                      </Text>
+                    )}
                   </div>
                   <div>
                     <Text fontSize="12px" color="textSubtle">
@@ -1145,9 +1155,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     {isLoading ? (
                       <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
                     ) : (
-                    <Text bold>
-                      {new BigNumber(v.userData.pendingReward).div(new BigNumber(10).pow(5)).toNumber().toFixed(2)}
-                    </Text>
+                      <Text bold>
+                        {new BigNumber(v.userData.pendingReward).div(new BigNumber(10).pow(5)).toNumber().toFixed(2)}
+                      </Text>
                     )}
                   </div>
                 </Summary>

@@ -8,7 +8,6 @@ import { farmsConfig, veloConfig } from 'config/constants'
 import { FarmConfig, PoolConfig } from 'config/constants/types'
 import useRefresh from './useRefresh'
 
-
 export interface FarmWithBalance extends FarmConfig {
   balance: BigNumber
 }
@@ -29,7 +28,7 @@ const useFarmsWithBalance = () => {
         name: 'pendingFinix',
         params: [farm.pid, account],
       }))
-      console.log('calls farm',calls)
+      console.log('calls farm', calls)
       const rawResults = await multicall(herodotusABI, calls)
       const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
 
@@ -46,10 +45,9 @@ const useFarmsWithBalance = () => {
 
 export default useFarmsWithBalance
 
-
 export const usePoolVeloWithBalance = (veloId: number) => {
   const [poolVeloWithBalances, setPoolVeloWithBalances] = useState<PoolVeloWithBalance[]>([])
-  console.log('poolVeloWithBalances',poolVeloWithBalances)
+  console.log('poolVeloWithBalances', poolVeloWithBalances)
   const { account } = useWallet()
   const { fastRefresh } = useRefresh()
 
@@ -61,8 +59,8 @@ export const usePoolVeloWithBalance = (veloId: number) => {
         params: [velo.sousId, account],
       }))
 
-      console.log('calls',calls)
-     
+      console.log('calls', calls)
+
       const rawResults = await multicall(herodotusABI, calls)
       const results = veloConfig.map((velo, index) => ({ ...velo, balance: new BigNumber(rawResults[index]) }))
       setPoolVeloWithBalances(results)
@@ -70,10 +68,8 @@ export const usePoolVeloWithBalance = (veloId: number) => {
 
     if (account) {
       fetchBalances()
-     
     }
   }, [account, fastRefresh, veloId])
 
   return poolVeloWithBalances
 }
-
