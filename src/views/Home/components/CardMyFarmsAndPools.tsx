@@ -13,7 +13,7 @@ import AddressTokens from 'config/constants/contracts'
 import { PoolCategory, QuoteToken } from 'config/constants/types'
 import useBlock from 'hooks/useBlock'
 import useFarmsWithBalance, { usePoolVeloWithBalance } from 'hooks/useFarmsWithBalance'
-import { useAllHarvest } from 'hooks/useHarvest'
+import { useAllHarvest, useVeloHarvest } from 'hooks/useHarvest'
 import { getAddress } from 'utils/addressHelpers'
 import useI18n from 'hooks/useI18n'
 import useRefresh from 'hooks/useRefresh'
@@ -213,7 +213,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const { account, ethereum }: { account: string; ethereum: provider } = useWallet()
   const TranslateString = useI18n()
   const farmsWithBalance = useFarmsWithBalance()
-  const poolVeloWithBalance = usePoolVeloWithBalance(0)
+  const poolVeloWithBalance = usePoolVeloWithBalance()
   const rebalances = useRebalances()
   const balances = useBalances(account) || {}
   const rebalanceBalances = useRebalanceBalances(account) || {}
@@ -227,7 +227,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
 
   const balancesWithValue = farmsWithBalance.filter((balanceType) => balanceType.balance.toNumber() > 0)
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
-  console.log('poolVeloWithBalance', poolVeloWithBalance)
+
+  const balancesVeloWithValue = poolVeloWithBalance.filter((velo) => velo.balance.toNumber() > 0 && velo.sousId === 101)
+  const { onRewardVelo } = useVeloHarvest(0)
 
   const isPoolFetched = usePoolsIsFetched()
   const isPoolVeloFetched = usePoolVeloIsFetched()
@@ -236,14 +238,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const isRebalanceBalanceFetched = useWalletRebalanceFetched()
   const isBalanceFetched = useWalletFetched()
   useEffect(() => {
-    if (
-      isFarmFetched &&
-      isPoolFetched &&
-      isRebalanceFetched &&
-      isRebalanceBalanceFetched &&
-      isBalanceFetched &&
-      isPoolVeloFetched
-    ) {
+    if (isFarmFetched && isPoolFetched && isRebalanceFetched && isRebalanceBalanceFetched && isBalanceFetched && isPoolVeloFetched) {
       setIsLoading(false)
     }
   }, [isPoolFetched, isFarmFetched, isRebalanceFetched, isPoolVeloFetched, isRebalanceBalanceFetched, isBalanceFetched])
@@ -252,12 +247,15 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     setPendingTx(true)
     try {
       await onReward()
+      if (balancesVeloWithValue.length > 0) {
+        await onRewardVelo()
+      }
     } catch (error) {
       // TODO: find a way to handle when the user rejects transaction or it fails
     } finally {
       setPendingTx(false)
     }
-  }, [onReward])
+  }, [onReward, onRewardVelo,balancesVeloWithValue])
 
   const { fastRefresh } = useRefresh()
   const dispatch = useDispatch()
@@ -606,7 +604,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     return new BigNumber(0)
   }
 
-  // VELO
+
+  // VELO 
   const [poolVelo2, setPoolVelo2] = useState<PoolWithApy>({
     apy: new BigNumber(0),
     rewardPerBlock: 10,
@@ -641,8 +640,8 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     const pairContract = getContract(PairAbi, getAddress(AddressTokens.velo2FinixLP))
     const veloAddress = getAddress(AddressTokens.velo2)
     const apolloAddress = getAddress(poolVelo2.contractAddress)
-    const finixAddress = getAddress(AddressTokens.finix) // '0x8B8647cD820966293FCAd8d0faDf6877b39F2C46'
-    // 0xd8E92beadEe1fF2Ba550458cd0c30B9D139F3E0f
+    const finixAddress = getAddress(AddressTokens.finix)
+
     const contractApollo = getContract(Apollo.abi, apolloAddress)
     const contractFinix = getContract(erc20, finixAddress)
     const contractVelo = getContract(erc20, veloAddress)
@@ -671,7 +670,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     const VELO_BLOCK_PER_YEAR = new BigNumber(rewardPerBlock).times(BLOCKS_PER_YEAR).div(1e18).toNumber()
 
     const veloBalanceReward = new BigNumber(veloBalance).div(1e18).toNumber()
-    console.log('veloBalanceReward', veloBalanceReward)
+
     const finixPervelo = new BigNumber(new BigNumber(reserveFinixVelo._reserve0).div(1e18)).dividedBy(
       new BigNumber(reserveFinixVelo._reserve1).div(1e18),
     )
@@ -688,9 +687,11 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     fetchVelo()
   }, [fetchVelo, account])
 
-  const veloPool = []
+  const veloPool = [];
   veloPool.push(poolVelo2)
-  const stackedPoolVelo = veloPool.filter((velo) => velo.userData && Number(velo.userData.stakedBalance))
+  const stackedPoolVelo = veloPool.filter(
+    (velo) => velo.userData && Number(velo.userData.stakedBalance)
+  )
 
   const dataFarms = stackedOnlyFarms.map((f) => ({
     lpSymbol: f.lpSymbol,
@@ -712,11 +713,9 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     value: Number(getNetWorth(v)),
   }))
 
+
   const isGrouping =
-    stackedOnlyPools.length > 0 &&
-    stakedRebalances.length > 0 &&
-    farmsList(stackedOnlyFarms, false).length > 0 &&
-    stackedPoolVelo.length > 0
+    stackedOnlyPools.length > 0 && stakedRebalances.length > 0 && farmsList(stackedOnlyFarms, false).length > 0 && stackedPoolVelo.length > 0
   let arrayData = [...dataFarms, ...dataPools, ...dataRebalances, ...dataVeloPool]
   if (isGrouping) {
     const groupRebalance = {
@@ -812,6 +811,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
     },
   }
 
+
   return (
     <Container className={className}>
       <NetWorth>
@@ -823,29 +823,24 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
           {isLoading ? (
             <Skeleton animation="pulse" variant="rect" height="26px" width="60%" />
           ) : (
-            <Heading fontSize="24px !important">
-              {(() => {
-                const allNetWorth = [
-                  ...stackedOnlyFarms,
-                  ...stackedOnlyPools,
-                  ...stakedRebalances,
-                  ...stackedPoolVelo,
-                ].map((f) => {
-                  return getNetWorth(f)
-                })
-                // eslint-disable-next-line
-                const totalNetWorth =
-                  _.compact(allNetWorth).length > 0
-                    ? _.compact(allNetWorth).reduce((fv, sv) => {
+              <Heading fontSize="24px !important">
+                {(() => {
+                  const allNetWorth = [...stackedOnlyFarms, ...stackedOnlyPools, ...stakedRebalances, ...stackedPoolVelo].map((f) => {
+                    return getNetWorth(f)
+                  })
+                  // eslint-disable-next-line
+                  const totalNetWorth =
+                    _.compact(allNetWorth).length > 0
+                      ? _.compact(allNetWorth).reduce((fv, sv) => {
                         return fv.plus(sv)
                       })
-                    : new BigNumber(0)
-                return totalNetWorth && Number(totalNetWorth) !== 0
-                  ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-                  : '-'
-              })()}
-            </Heading>
-          )}
+                      : new BigNumber(0)
+                  return totalNetWorth && Number(totalNetWorth) !== 0
+                    ? `$${Number(totalNetWorth).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                    : '-'
+                })()}
+              </Heading>
+            )}
           {isLoading ? (
             <>
               <Skeleton animation="pulse" variant="rect" height="20px" width="70%" className="mt-2" />
@@ -854,46 +849,46 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               <Skeleton animation="pulse" variant="rect" height="20px" width="70%" className="mt-2" />
             </>
           ) : (
-            <>
-              <div className="mt-2 flex">
-                <div
-                  className="col-2 flex flex-column justify-space-between flex-shrink pr-2"
-                  style={{ paddingTop: '6px', paddingBottom: '6px' }}
-                >
-                  {chartColors.map((color) => (
-                    <Dot
-                      style={{
-                        background: color === '#8C90A5' && arrayData.length === 3 ? 'transparent' : color,
-                      }}
-                    />
-                  ))}
-                </div>
-                <div className="col-8 flex-grow">
-                  {topThree.map((d) => (
-                    <Legend key={`legend${d.lpSymbol}`}>
-                      <Text fontSize="12px" color="textSubtle">
-                        {(d.lpSymbol || '').replace(/ LP$/, '')}
-                      </Text>
-                      <Text bold style={{ paddingLeft: '80px' }}>
-                        {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                      </Text>
-                    </Legend>
-                  ))}
+              <>
+                <div className="mt-2 flex">
+                  <div
+                    className="col-2 flex flex-column justify-space-between flex-shrink pr-2"
+                    style={{ paddingTop: '6px', paddingBottom: '6px' }}
+                  >
+                    {chartColors.map((color) => (
+                      <Dot
+                        style={{
+                          background: color === '#8C90A5' && arrayData.length === 3 ? 'transparent' : color,
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <div className="col-8 flex-grow">
+                    {topThree.map((d) => (
+                      <Legend key={`legend${d.lpSymbol}`}>
+                        <Text fontSize="12px" color="textSubtle">
+                          {(d.lpSymbol || '').replace(/ LP$/, '')}
+                        </Text>
+                        <Text bold style={{ paddingLeft: '80px' }}>
+                          {d.value ? `$${Number(d.value).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                        </Text>
+                      </Legend>
+                    ))}
 
-                  {other > 0 && (
-                    <Legend>
-                      <Text fontSize="12px" color="textSubtle">
-                        OTHER
+                    {other > 0 && (
+                      <Legend>
+                        <Text fontSize="12px" color="textSubtle">
+                          OTHER
                       </Text>
-                      <Text bold style={{ paddingLeft: '80px' }}>
-                        {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
-                      </Text>
-                    </Legend>
-                  )}
+                        <Text bold style={{ paddingLeft: '80px' }}>
+                          {other ? `$${Number(other).toLocaleString(undefined, { maximumFractionDigits: 0 })}` : '-'}
+                        </Text>
+                      </Legend>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
         </div>
       </NetWorth>
 
@@ -913,12 +908,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   <Skeleton animation="pulse" variant="rect" height="21px" />
                 </>
               ) : (
-                <>
-                  <Heading fontSize="24px !important" textAlign="center" color="textInvert">
-                    <FinixHarvestBalance />
-                  </Heading>
-                </>
-              )}
+                  <>
+                    <Heading fontSize="24px !important" textAlign="center" color="textInvert">
+                      <FinixHarvestBalance />
+                    </Heading>
+                  </>
+                )}
             </StatAll>
             <StatAll>
               <Text textAlign="center" color="textSubtle">
@@ -930,12 +925,12 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   <Skeleton animation="pulse" variant="rect" height="21px" />
                 </>
               ) : (
-                <>
-                  <Heading fontSize="24px !important" textAlign="center" color="textInvert">
-                    <FinixHarvestPool />
-                  </Heading>
-                </>
-              )}
+                  <>
+                    <Heading fontSize="24px !important" textAlign="center" color="textInvert">
+                      <FinixHarvestPool />
+                    </Heading>
+                  </>
+                )}
             </StatAll>
           </div>
           {account ? (
@@ -945,16 +940,16 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               variant="tertiary"
               className="mt-3"
               style={{ background: 'white' }}
-              disabled={balancesWithValue.length <= 0 || pendingTx}
+              disabled={balancesWithValue.length <= 0 || balancesVeloWithValue.length <= 0|| pendingTx}
               onClick={harvestAllFarms}
             >
               {pendingTx
                 ? TranslateString(548, 'Collecting FINIX')
-                : TranslateString(532, `Harvest all (${balancesWithValue.length})`)}
+                : TranslateString(532, `Harvest all (${balancesWithValue.length + balancesVeloWithValue.length})`)}
             </Button>
           ) : (
-            <UnlockButton />
-          )}
+              <UnlockButton />
+            )}
         </div>
       </HarvestAll>
 
@@ -1029,11 +1024,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                           return ''
                         })()}
                       >
-                        {`${
-                          r.sharedPricePercentDiff >= 0
+                        {`${r.sharedPricePercentDiff >= 0
                             ? `+${numeral(r.sharedPricePercentDiff).format('0,0.[00]')}`
                             : `${numeral(r.sharedPricePercentDiff).format('0,0.[00]')}`
-                        }%`}
+                          }%`}
                       </Text>
                     </div>
                   </div>
@@ -1044,10 +1038,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     {isLoading ? (
                       <Skeleton animation="pulse" variant="rect" height="21px" />
                     ) : (
-                      <Text bold>
-                        {`${numeral(rebalanceRewards[getAddress(r.address)] || new BigNumber(0)).format('0,0.[000]')}`}
-                      </Text>
-                    )}
+                        <Text bold>
+                          {`${numeral(rebalanceRewards[getAddress(r.address)] || new BigNumber(0)).format('0,0.[000]')}`}
+                        </Text>
+                      )}
                   </div>
                 </Summary>
                 <IconButton size="sm" as={Link} to="/rebalancing" className="flex flex-shrink">
@@ -1114,13 +1108,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                       <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
                     </>
                   ) : (
-                    <>
-                      <div className="flex">
-                        <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
-                      </div>
-                      <Text bold>{v.tokenName}</Text>
-                    </>
-                  )}
+                      <>
+                        <div className="flex">
+                          <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
+                        </div>
+                        <Text bold>{v.tokenName}</Text>
+                      </>
+                    )}
                 </Coins>
                 <Summary>
                   <div>
@@ -1130,10 +1124,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     {isLoading ? (
                       <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
                     ) : (
-                      <Text bold color="success">
-                        {new BigNumber(v.apy).toNumber().toFixed(2)}%
-                      </Text>
-                    )}
+                        <Text bold color="success">
+                          {new BigNumber(v.apy).toNumber().toFixed(2)}%
+                        </Text>
+                      )}
                   </div>
                   <div>
                     <Text fontSize="12px" color="textSubtle">
@@ -1142,10 +1136,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     {isLoading ? (
                       <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
                     ) : (
-                      <Text bold>
-                        {new BigNumber(v.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
-                      </Text>
-                    )}
+                        <Text bold>
+                          {new BigNumber(v.userData.stakedBalance).div(new BigNumber(10).pow(18)).toNumber().toFixed(2)}
+                        </Text>
+                      )}
                   </div>
                   <div />
                   <div>
@@ -1155,10 +1149,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     {isLoading ? (
                       <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
                     ) : (
-                      <Text bold>
-                        {new BigNumber(v.userData.pendingReward).div(new BigNumber(10).pow(5)).toNumber().toFixed(2)}
-                      </Text>
-                    )}
+                        <Text bold>
+                          {new BigNumber(v.userData.pendingReward).div(new BigNumber(10).pow(5)).toNumber().toFixed(2)}
+                        </Text>
+                      )}
                   </div>
                 </Summary>
                 <IconButton size="sm" as={Link} to="/partnership-pool" className="flex flex-shrink">
@@ -1183,14 +1177,14 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                     <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
                   </>
                 ) : (
-                  <>
-                    <div className="flex">
-                      {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
-                      {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
-                    </div>
-                    <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
-                  </>
-                )}
+                    <>
+                      <div className="flex">
+                        {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                        {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                      </div>
+                      <Text bold>{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
+                    </>
+                  )}
               </Coins>
               <Summary>
                 <div>
@@ -1200,10 +1194,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
                   ) : (
-                    <Text bold color="success">
-                      {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
-                    </Text>
-                  )}
+                      <Text bold color="success">
+                        {new BigNumber(d.props.farm.apy.toNumber() * 100).toNumber().toFixed()}%
+                      </Text>
+                    )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
@@ -1212,13 +1206,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="21px" />
                   ) : (
-                    <Text bold>
-                      {new BigNumber(d.props.farm.userData.stakedBalance)
-                        .div(new BigNumber(10).pow(18))
-                        .toNumber()
-                        .toFixed(2)}
-                    </Text>
-                  )}
+                      <Text bold>
+                        {new BigNumber(d.props.farm.userData.stakedBalance)
+                          .div(new BigNumber(10).pow(18))
+                          .toNumber()
+                          .toFixed(2)}
+                      </Text>
+                    )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
@@ -1227,10 +1221,10 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="21px" width="50%" />
                   ) : (
-                    <Text bold color="warning">
-                      {d.props.farm.multiplier}
-                    </Text>
-                  )}
+                      <Text bold color="warning">
+                        {d.props.farm.multiplier}
+                      </Text>
+                    )}
                 </div>
                 <div>
                   <Text fontSize="12px" color="textSubtle">
@@ -1239,13 +1233,13 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
                   {isLoading ? (
                     <Skeleton animation="pulse" variant="rect" height="21px" />
                   ) : (
-                    <Text bold>
-                      {new BigNumber(d.props.farm.userData.earnings)
-                        .div(new BigNumber(10).pow(18))
-                        .toNumber()
-                        .toFixed(2)}
-                    </Text>
-                  )}
+                      <Text bold>
+                        {new BigNumber(d.props.farm.userData.earnings)
+                          .div(new BigNumber(10).pow(18))
+                          .toNumber()
+                          .toFixed(2)}
+                      </Text>
+                    )}
                 </div>
               </Summary>
               <IconButton size="sm" as={Link} to="/farm" className="flex flex-shrink">

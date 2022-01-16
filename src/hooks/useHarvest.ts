@@ -31,7 +31,7 @@ export const useAllHarvest = (farmPids: number[]) => {
 
   const handleHarvest = useCallback(async () => {
     const harvestPromises = farmPids.reduce((accum, pid) => {
-      return [...accum, harvest(herodotusContract, pid, account)]
+      return [...accum, harvest(herodotusContract, pid , account)]
     }, [])
 
     return Promise.all(harvestPromises)
@@ -94,5 +94,5 @@ export const useVeloHarvest = (veloId: number) => {
     // dispatch(updateUserBalance(sousId, account))
   }, [account, sousChefContract])
 
-  return { onReward: handleHarvest }
+  return { onRewardVelo: handleHarvest }
 }

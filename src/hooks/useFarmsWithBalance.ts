@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import { useWallet } from '@binance-chain/bsc-use-wallet'
 import multicall from 'utils/multicall'
-import { getHerodotusAddress, getPairAddress } from 'utils/addressHelpers'
+import { getHerodotusAddress, getAddress } from 'utils/addressHelpers'
 import herodotusABI from 'config/abi/herodotus.json'
+import apolloABI from 'config/abi/Apollo.json'
 import { farmsConfig, veloConfig } from 'config/constants'
 import { FarmConfig, PoolConfig } from 'config/constants/types'
 import useRefresh from './useRefresh'
@@ -28,7 +29,7 @@ const useFarmsWithBalance = () => {
         name: 'pendingFinix',
         params: [farm.pid, account],
       }))
-      console.log('calls farm', calls)
+
       const rawResults = await multicall(herodotusABI, calls)
       const results = farmsConfig.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
 
@@ -45,23 +46,20 @@ const useFarmsWithBalance = () => {
 
 export default useFarmsWithBalance
 
-export const usePoolVeloWithBalance = (veloId: number) => {
+export const usePoolVeloWithBalance = () => {
   const [poolVeloWithBalances, setPoolVeloWithBalances] = useState<PoolVeloWithBalance[]>([])
-  console.log('poolVeloWithBalances', poolVeloWithBalances)
   const { account } = useWallet()
   const { fastRefresh } = useRefresh()
 
   useEffect(() => {
     const fetchBalances = async () => {
       const calls = veloConfig.map((velo) => ({
-        address: getHerodotusAddress(), // "0x32971Dd884E4010356cFfD26B819f553A1aD1a71"
-        name: 'pendingFinix',
-        params: [velo.sousId, account],
+        address: getAddress(veloConfig[2].contractAddress),
+        name: 'pendingReward',
+        params: [account],
       }))
 
-      console.log('calls', calls)
-
-      const rawResults = await multicall(herodotusABI, calls)
+      const rawResults = await multicall(apolloABI.abi, calls)
       const results = veloConfig.map((velo, index) => ({ ...velo, balance: new BigNumber(rawResults[index]) }))
       setPoolVeloWithBalances(results)
     }
@@ -69,7 +67,7 @@ export const usePoolVeloWithBalance = (veloId: number) => {
     if (account) {
       fetchBalances()
     }
-  }, [account, fastRefresh, veloId])
+  }, [account, fastRefresh])
 
   return poolVeloWithBalances
 }
