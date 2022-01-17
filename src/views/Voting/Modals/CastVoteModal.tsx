@@ -297,7 +297,7 @@ const CastVoteModal: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    if (types === 'single') {
+    if (types === 'single' || types === '') {
       setMapChoice(singleType)
     } else {
       setMapChoice(filter)
@@ -345,7 +345,7 @@ const CastVoteModal: React.FC<Props> = ({
                 <div className="mt-3">
                   <Text color="textSubtle">Voting for</Text>
                   <Text fontSize="16px" color="text" bold paddingTop="6px">
-                    {_.get(v, 'value')}
+                    {_.get(v, 'value')} {(v.lpSymbol || '').replace(/ LP$/, '')}
                   </Text>
                 </div>
                 <div className="flex mt-4">
@@ -366,18 +366,18 @@ const CastVoteModal: React.FC<Props> = ({
                       type="number"
                     />
                     {/* {percent !== 1 && (
-                      <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                          25%
-                        </StylesButton>
-                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                          50%
-                        </StylesButton>
-                        <StylesButton size="sm" onClick={() => setPercent(1)}>
-                          MAX
-                        </StylesButton>
-                      </div>
-                    )} */}
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
+                  </StylesButton>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
+                  </StylesButton>
+                </div>
+              )} */}
                   </Balance>
                 ) : (
                   <Balance>
@@ -391,18 +391,18 @@ const CastVoteModal: React.FC<Props> = ({
                       type="number"
                     />
                     {/* {percent !== 1 && (
-                      <div className="flex align-center justify-end" style={{ width: 'auto' }}>
-                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
-                          25%
-                        </StylesButton>
-                        <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
-                          50%
-                        </StylesButton>
-                        <StylesButton size="sm" onClick={() => setPercent(1)}>
-                          MAX
-                        </StylesButton>
-                      </div>
-                    )} */}
+                <div className="flex align-center justify-end" style={{ width: 'auto' }}>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.25)}>
+                    25%
+                  </StylesButton>
+                  <StylesButton className="mr-1" size="sm" onClick={() => setPercent(0.5)}>
+                    50%
+                  </StylesButton>
+                  <StylesButton size="sm" onClick={() => setPercent(1)}>
+                    MAX
+                  </StylesButton>
+                </div>
+              )} */}
                   </Balance>
                 )}
               </>
