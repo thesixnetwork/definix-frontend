@@ -229,7 +229,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
   const { onReward } = useAllHarvest(balancesWithValue.map((farmWithBalance) => farmWithBalance.pid))
 
   const balancesVeloWithValue = poolVeloWithBalance.filter((velo) => velo.balance.toNumber() > 0 && velo.sousId === 101)
-  const { onRewardVelo } = useVeloHarvest(0)
+  const { onRewardVelo } = useVeloHarvest(2)
 
   const isPoolFetched = usePoolsIsFetched()
   const isPoolVeloFetched = usePoolVeloIsFetched()
