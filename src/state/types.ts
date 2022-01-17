@@ -269,6 +269,9 @@ export interface Voting {
   content?: string;
   choices?: string[];
   choice_type?: 'single' | 'multi';
+  creator?: string;
+  start_unixtimestamp?: number;
+  end_unixtimestamp?: number;
 }
 
 export interface VotingState {

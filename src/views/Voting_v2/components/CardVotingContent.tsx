@@ -14,11 +14,16 @@ import { usePrivateData } from 'hooks/useLongTermStake'
 import useRefresh from 'hooks/useRefresh'
 import { useToast } from 'state/hooks'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
+import { Voting } from 'state/types'
 import Badge from './Badge'
 import VotingConfirmModal from './VotingConfirmModal'
 import { BadgeType, TransactionState } from '../types'
 
-
+interface Props {
+  id: string;
+  proposalIndex: string;
+  proposal: Voting;
+}
 
 const WrapContent = styled(Flex)`
   flex-direction: column;
@@ -45,7 +50,7 @@ const RangeValue = styled(Box)<{ width: number }>`
   background-color: ${({ theme }) => theme.colors.lightbrown};
 `
 
-const CardVotingContent: React.FC = () => {
+const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
   const { t } = useTranslation();
   const { account } = useWallet()
   const [transactionHash, setTransactionHash] = useState('')
@@ -53,9 +58,7 @@ const CardVotingContent: React.FC = () => {
   const { balancevfinix } = usePrivateData()
   const { onCastVote } = useVote()
   const { fastRefresh } = useRefresh()
-  const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { indexProposal } = useProposalIndex(proposalIndex)
-  const { proposal } = useGetProposal(id)
   const allowance = useServiceAllowance()
   const { onApprove } = useApproveToService(klipProvider.MAX_UINT_256_KLIP)
   const isMulti = useMemo(() => proposal.choice_type === 'multi', [proposal]);
