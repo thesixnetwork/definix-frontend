@@ -95,6 +95,7 @@ const TD = styled.td<{ align?: string }>`
   padding: 16px;
   vertical-align: middle;
   text-align: ${({ align }) => align || 'left'};
+  width: 300px;
 `
 
 const BtnDetails = styled(Button)`

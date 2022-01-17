@@ -36,7 +36,7 @@ import {
   useAllDataLock,
   useAllLock,
 } from 'hooks/useLongTermStake'
-import { useLockPlus } from 'hooks/useTopUp'
+import { useLockPlus, useBalanceTopUp } from 'hooks/useTopUp'
 import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
@@ -162,6 +162,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { allLockPeriod } = useAllLock()
   const balanceOf = useBalances()
+  const balances = useBalanceTopUp()
   const { finixEarn, balancevfinix, allDataLock } = usePrivateData()
   const { handleHarvest } = useHarvestLongterm()
   const { isDark } = useTheme()
@@ -423,11 +424,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [lockTopUp, allLock, period])
 
   useEffect(() => {
-    const balance = Math.floor(Number(balanceOf) * 1000000) / 1000000
+    const balance = Math.floor(Number(balances) * 100) / 100
     if (keyDown === false) {
-      setValue(numeral(balance).format('0.00'))
+      setValue(balance.toString())
     }
-  }, [value, balanceOf, keyDown])
+  }, [balances, keyDown])
 
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
@@ -826,7 +827,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
                 From your wallet:
                 <span style={{ color: '#0973B9' }} className="pl-2">
-                  {balanceOf ? numeral(balanceOf).format('0,0.00') : '-'} FINIX
+                  {balanceOf ? Math.floor(Number(balanceOf) * 100) / 100 : '-'} FINIX
                 </span>
               </Text>
               <Text className="col-6 pl-3" color="textSubtle" fontSize="12px" fontWeight="500">
@@ -899,7 +900,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             ) : (
               <Button
                 fullWidth
-                disabled={period === -Infinity && lengthSelect === 0 ? true : lenghtOrvalue}
+                disabled={
+                  Number(value) > Number(balanceOf) || (period === -Infinity && lengthSelect === 0)
+                    ? true
+                    : lenghtOrvalue
+                }
                 id="harvest-all"
                 radii="small"
                 className="mt-3"
