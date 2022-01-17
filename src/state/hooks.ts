@@ -95,6 +95,11 @@ export const usePoolsIsFetched = (): boolean => {
   return isFetched
 }
 
+export const usePoolVeloIsFetched = (): boolean => {
+  const isFetched = useSelector((state: State) => state.pools.isFetched)
+  return isFetched
+}
+
 export const useRebalancesIsFetched = (): boolean => {
   const isFetched = useSelector((state: State) => state.rebalances.isFetched)
   return isFetched

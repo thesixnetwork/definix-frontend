@@ -94,5 +94,5 @@ export const useVeloHarvest = (veloId: number) => {
     // dispatch(updateUserBalance(sousId, account))
   }, [account, sousChefContract])
 
-  return { onReward: handleHarvest }
+  return { onRewardVelo: handleHarvest }
 }

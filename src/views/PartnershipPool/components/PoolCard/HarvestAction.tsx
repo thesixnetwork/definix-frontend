@@ -31,7 +31,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
   const [pendingTx, setPendingTx] = useState(false)
   const finixPrice = usePriceFinixUsd()
   const { account } = useWallet()
-  const { onReward } = useVeloHarvest(veloId)
+  const { onRewardVelo } = useVeloHarvest(veloId)
 
   const rawEarningsBalance = getBalanceNumber(earnings, 5)
   const displayBalance = rawEarningsBalance.toLocaleString()
@@ -62,7 +62,7 @@ const HarvestAction: React.FC<HarvestActionProps> = ({
           onClick={async () => {
             setPendingTx(true)
 
-            await onReward()
+            await onRewardVelo()
 
             setPendingTx(false)
           }}
