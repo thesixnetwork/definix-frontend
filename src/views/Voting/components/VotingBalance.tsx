@@ -107,27 +107,25 @@ const TD = styled.td<{ align?: string }>`
   align-self: center;
 `
 
-const Actions = styled(Button)`
-  background-color: unset;
-  cursor: pointer;
-  border: 1px solid #1587c9;
-  color: #1587c9;
-  padding: 8px 24px;
-  margin-right: 4px;
-  border-radius: 30px;
-`
-
 const Coins = styled.div`
-  // padding: 16px;
-  width: 40%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+  width: 100%;
 
   img {
-    width: 48px;
+    width: 37px;
     flex-shrink: 0;
+  }
+
+  > * {
+    flex-shrink: 0;
+
+    &:nth-child(01) {
+      position: relative;
+      z-index: 1;
+    }
+    &:nth-child(02) {
+      margin-left: -8px;
+    }
   }
 `
 
@@ -177,17 +175,23 @@ const TransactionTable = ({ rows, empText, isLoading, total, klayPrice, finixPri
                       )}
                     </TD>
                     <TD>
-                      <Coins>
-                        {isLoading ? (
-                          <Skeleton animation="pulse" variant="rect" height="20px" width="70%" />
-                        ) : (
-                          <div className="flex">
-                            {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
-                            {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
+                      {isLoading ? (
+                        <>
+                        <div className="flex">
+                          <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                          <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                        </div>
+                        <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                      </>
+                      ) : (
+                        <Coins className="imgs flex align-center">
+                          {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                          {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}&nbsp;
+                          <Text fontSize="14px" bold>
                             {(r.props.rows.lpSymbol || '').replace(/ LP$/, '')}
-                          </div>
-                        )}
-                      </Coins>
+                          </Text>
+                        </Coins>
+                      )}
                     </TD>
                     <TD>
                       {isLoading ? (
@@ -234,7 +238,7 @@ const TransactionTable = ({ rows, empText, isLoading, total, klayPrice, finixPri
                             variant="primary"
                             radii="small"
                             size="sm"
-                            className="flex align-center text-center"
+                            className="flex align-center text-center px-7"
                           >
                             <Text fontSize={isMobile ? '10px' : '12px'} color="white" lineHeight="1">
                               Vote
