@@ -177,12 +177,12 @@ const TransactionTable = ({ rows, empText, isLoading, total, klayPrice, finixPri
                     <TD>
                       {isLoading ? (
                         <>
-                        <div className="flex">
-                          <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                          <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
-                        </div>
-                        <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
-                      </>
+                          <div className="flex">
+                            <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                            <Skeleton animation="pulse" variant="circle" height="48px" width="48px" className="mx-1" />
+                          </div>
+                          <Skeleton animation="pulse" variant="rect" height="21px" width="80%" />
+                        </>
                       ) : (
                         <Coins className="imgs flex align-center">
                           {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
