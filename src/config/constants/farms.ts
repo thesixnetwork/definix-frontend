@@ -1,6 +1,6 @@
 import contracts from './contracts'
 import { FarmConfig, QuoteToken } from './types'
-import { SIX, FINIX, BNB, USDT, BUSD, BTCB, ETH, XRP, ADA, getLpNetwork, getSingleLpNetwork } from './tokens'
+import { SIX, FINIX, BNB, USDT, BUSD, BTCB, ETH, XRP, ADA, getLpNetwork, getSingleLpNetwork, VELO2 } from './tokens'
 
 const farms: FarmConfig[] = [
   {
@@ -128,6 +128,33 @@ const farms: FarmConfig[] = [
     tokenAddresses: SIX,
     quoteTokenSymbol: QuoteToken.FINIX,
     quoteTokenAdresses: contracts.finix,
+  },
+  // {
+  //   pid: 91,
+  //   lpSymbol: 'BUSD-VELO LP',
+  //   lpAddresses: getLpNetwork(BUSD, VELO2),
+  //   tokenSymbol: 'VELO',
+  //   tokenAddresses: VELO2,
+  //   quoteTokenSymbol: QuoteToken.VELO,
+  //   quoteTokenAdresses: contracts.velo2,
+  // },
+  {
+    pid: 28,
+    lpSymbol: 'BNB-VELO LP',
+    lpAddresses: getLpNetwork(BNB, VELO2),
+    tokenSymbol: 'VELO',
+    tokenAddresses: VELO2,
+    quoteTokenSymbol: QuoteToken.VELO,
+    quoteTokenAdresses: contracts.velo2,
+  },
+  {
+    pid: 29,
+    lpSymbol: 'FINIX-VELO LP',
+    lpAddresses: getLpNetwork(FINIX, VELO2),
+    tokenSymbol: 'VELO',
+    tokenAddresses: VELO2,
+    quoteTokenSymbol: QuoteToken.VELO,
+    quoteTokenAdresses: contracts.velo2,
   },
 ]
 
