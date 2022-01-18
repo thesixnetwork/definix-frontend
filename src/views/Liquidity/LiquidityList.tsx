@@ -4,6 +4,7 @@ import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import usePairs from 'hooks/usePairs'
 import { Pair } from 'definixswap-sdk'
+import { useActiveWeb3React } from 'hooks'
 import {
   Flex,
   Box,
@@ -15,37 +16,36 @@ import {
 } from '@fingerlabs/definixswap-uikit-v2'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from 'react-i18next'
-import useWallet from 'hooks/useWallet'
+import { useHistory } from 'react-router-dom'
 
 const LiquidityList: React.FC = () => {
   const { t } = useTranslation()
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
+  const history = useHistory()
 
-  // const { account } = useActiveWeb3React()
-  const { account } = useWallet()
+  const { account } = useActiveWeb3React()
   const trackedTokenPairs = useTrackedTokenPairs()
   const tokenPairsWithLiquidityTokens = useMemo(
     () => trackedTokenPairs.map((tokens) => ({ liquidityToken: toV2LiquidityToken(tokens), tokens })),
-    [trackedTokenPairs],
+    [trackedTokenPairs]
   )
-  const liquidityTokens = useMemo(
-    () => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken),
-    [tokenPairsWithLiquidityTokens],
-  )
+  const liquidityTokens = useMemo(() => tokenPairsWithLiquidityTokens.map((tpwlt) => tpwlt.liquidityToken), [
+    tokenPairsWithLiquidityTokens,
+  ])
 
   const [v2PairsBalances] = useTokenBalancesWithLoadingIndicator(account ?? undefined, liquidityTokens)
   const liquidityTokensWithBalances = useMemo(
     () =>
       tokenPairsWithLiquidityTokens.filter(({ liquidityToken }) =>
-        v2PairsBalances[liquidityToken.address]?.greaterThan('0'),
+        v2PairsBalances[liquidityToken.address]?.greaterThan('0')
       ),
-    [tokenPairsWithLiquidityTokens, v2PairsBalances],
+    [tokenPairsWithLiquidityTokens, v2PairsBalances]
   )
   const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
   const allV2PairsWithLiquidity = useMemo(
     () => v2Pairs.map(([, pair]) => pair).filter((v2Pair): v2Pair is Pair => Boolean(v2Pair)),
-    [v2Pairs],
+    [v2Pairs]
   )
 
   return (
@@ -71,7 +71,12 @@ const LiquidityList: React.FC = () => {
         </Box>
       )}
       {account && allV2PairsWithLiquidity.length <= 0 && (
-        <Flex flexDirection="column" justifyContent="center" alignItems="center" p="60px">
+        <Flex
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+          p={isMobile ? '50px 0px 28px 0px' : '60px 60px 48px 60px'}
+        >
           <Box mb="24px">
             <ImgEmptyStateLiquidity />
           </Box>
@@ -89,6 +94,20 @@ const LiquidityList: React.FC = () => {
             {t('Connect to a wallet to view')}
           </Text>
           <ConnectWalletButton />
+        </Flex>
+      )}
+      {account && (
+        <Flex justifyContent="center" p={isMobile ? '0px 22px 24px 22px' : '0px 0px 40px 0px'} flexWrap="wrap">
+          <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
+            {t(`Don't see a pool`)}
+          </Text>
+          <Box
+            onClick={() => history.push('/liquidity/poolfinder')}
+          >
+            <Text ml="12px" textStyle="R_12M" style={{ textDecoration: 'underline', cursor:'pointer' }} color={ColorStyles.RED}>
+              {t('Find other LP tokens')}
+            </Text>
+          </Box>
         </Flex>
       )}
     </Box>

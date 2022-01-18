@@ -18,9 +18,10 @@ import { unwrappedToken } from '../../utils/wrappedCurrency'
 interface IProps {
   pair: Pair
   showUnwrapped?: boolean
+  isPadding?: boolean
 }
 
-const MinimalPositionCard: React.FC<IProps> = React.memo(({ pair, showUnwrapped = false }) => {
+const MinimalPositionCard: React.FC<IProps> = React.memo(({ pair, showUnwrapped = false, isPadding = true }) => {
   const { t } = useTranslation()
   const { account } = useWallet()
 
@@ -51,7 +52,7 @@ const MinimalPositionCard: React.FC<IProps> = React.memo(({ pair, showUnwrapped 
     <>
       {userPoolBalance && (
         <Flex backgroundColor={ColorStyles.WHITE} borderRadius="16px">
-          <CardBody style={{ width: '100%' }} p={isMobile ? '20px' : '40px'}>
+          <CardBody style={{ width: '100%' }} p={!isPadding ? '0px' : isMobile ? '20px' : '40px'}>
             <Flex flexDirection="column">
               <Text textStyle="R_16M" color={ColorStyles.DEEPGREY}>
                 {t('Balance LP')}

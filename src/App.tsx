@@ -32,6 +32,7 @@ const SuperStake = lazy(() => import('./views/LongTermStake/SuperStake'))
 const Bridge = lazy(() => import('./views/Bridge'))
 const Swap = lazy(() => import('./views/Swap'))
 const Liquidity = lazy(() => import('./views/Liquidity'))
+const PoolFinder = lazy(() => import('./views/PoolFinder'))
 
 // This config is required for number formating
 BigNumber.config({
@@ -113,6 +114,9 @@ const App: React.FC = () => {
             </Route>
             <Route exact strict path="/liquidity/remove/:tokens">
               <RedirectOldRemoveLiquidityPathStructure />
+            </Route>
+            <Route exact strict path="/liquidity/poolfinder">
+              <PoolFinder />
             </Route>
             {/* <Route path="/voting">
               <Voting />
