@@ -950,7 +950,7 @@ const CardMyFarmsAndPools = ({ className = '' }) => {
               variant="tertiary"
               className="mt-3"
               style={{ background: 'white' }}
-              disabled={balancesWithValue.length <= 0 || balancesVeloWithValue.length <= 0 || pendingTx}
+              disabled={(balancesWithValue.length <= 0 && balancesVeloWithValue.length <= 0) || pendingTx}
               onClick={harvestAllFarms}
             >
               {pendingTx
