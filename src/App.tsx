@@ -3,10 +3,11 @@ import BigNumber from 'bignumber.js'
 
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
-import { useFetchProfile, useFetchPublicData } from 'state/hooks'
+import { useFetchProfile, useFetchPublicData, usePriceFinixUsd } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 
 import useWallet from 'hooks/useWallet'
+import { Helmet } from 'react-helmet-async'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import sdkConfig from './sdkconfig'
@@ -60,8 +61,15 @@ const App: React.FC = () => {
   useFetchPublicData()
   useFetchProfile()
 
+  const finixPrice = usePriceFinixUsd();
+
   return (
     <BrowserRouter>
+      <Helmet>
+        <title>
+          Definix{!finixPrice ? '' : ` - ${finixPrice?.toFixed(4)} FINIX/USD`}
+        </title>
+      </Helmet>
       <GlobalStyle />
       <Menu>
         <Suspense fallback={<Loading />}>
