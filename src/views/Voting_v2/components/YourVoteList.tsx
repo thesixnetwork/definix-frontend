@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { useAllProposalOfAddress, useIsClaimable, useClaimVote } from 'hooks/useVoting'
 import { useToast } from 'state/hooks'
 import VoteOptionLabel from './VoteOptionLabel'
+import Translate from './Translate'
 
 const VoteItem = styled(Flex)`
   justify-content: space-between;
@@ -68,7 +69,7 @@ const YourVoteList = () => {
           <Text textStyle="R_16M" color="deepgrey">{t('Your Vote')}</Text>
           {
             items.choices.map(({ choiceName, votePower }) => <VoteItem>
-              <VoteOptionLabel label={choiceName} />
+              <VoteOptionLabel label={<Translate text={choiceName} type="opinion" />} />
               <Flex className="wrap-power">
                 <Text textStyle="R_14B" className="power">{votePower}</Text>
                 <Text textStyle="R_14R" ml="6px">{t('vFINIX')}</Text>

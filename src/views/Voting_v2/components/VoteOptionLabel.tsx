@@ -7,7 +7,7 @@ import {
 import styled from 'styled-components'
 
 interface Props {
-  label: string;
+  label: string | React.ReactNode;
 }
 
 const Label = styled(Text)`

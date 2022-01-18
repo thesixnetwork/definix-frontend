@@ -152,7 +152,7 @@ const WrapChoice = styled(Flex)<{ isParticipated: boolean }>`
   }
 
   .wrap-votes {
-    margin-left: 36px;
+    margin-left: ${({ isParticipated }) => isParticipated ? '0' : '36px'};
     margin-top: 6px;
   }
 
@@ -441,10 +441,10 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
             <Flex justifyContent="space-between" alignItems="center">
               {
                 isVoteMore ? <Text className="choice" textStyle="R_16R" color="black">
-                  <Translate text={choice} type={`opinion${index + 1}`} />
+                  <Translate text={choice} type="opinion" />
                 </Text> : <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
                   <Text className="choice" textStyle="R_16R" color="black">
-                    <Translate text={choice} type={`opinion${index + 1}`} />
+                    <Translate text={choice} type="opinion" />
                   </Text>
                 </CheckboxLabel>
               }

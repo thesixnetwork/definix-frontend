@@ -13,6 +13,7 @@ export default function useVoteTranslate(text, type) {
   }, [i18n.languages])
 
   const tr = useCallback(() => {
+    if (!text) return text;
     const key = `${text.split(' ').slice(0, 5).join(' ')}/${type}`
     return votings[key] ? votings[key] : text;
   }, [text, type, votings]);

@@ -18,6 +18,7 @@ import NumericalInput from 'components/NumericalInput'
 import { usePrivateData } from 'hooks/useLongTermStake'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 import VoteOptionLabel from './VoteOptionLabel'
+import Translate from './Translate'
 
 interface Props extends ModalProps {
   selectedVotes: string[];
@@ -187,7 +188,7 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
       </Flex>
       <WrapScroll>
         {selectedVotes.map((vote, index) => <Flex flexDirection="column" pt="32px">
-          <VoteOptionLabel label={vote} />
+          <VoteOptionLabel label={<Translate text={vote} type="opinion" />} />
           <InputBox mt="12px">
             <NumericalInput
               value={balances[index]}

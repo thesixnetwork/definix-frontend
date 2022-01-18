@@ -8,6 +8,7 @@ import {
   ModalProps,
 } from '@fingerlabs/definixswap-uikit-v2'
 import VoteOptionLabel from './VoteOptionLabel'
+import Translate from './Translate'
 
 interface Props extends ModalProps {
   selectedVotes: string[];
@@ -32,7 +33,7 @@ const ConfirmContentModal: React.FC<Props> = ({ selectedVotes, balances }) => {
       <VotingReceipt>
         {
           selectedVotes.map((selectedVote, index) => <Flex justifyContent="space-between">
-            <VoteOptionLabel label={selectedVote} />
+            <VoteOptionLabel label={<Translate text={selectedVote} type="opinion" />} />
             <Text textStyle="R_14M">{numeral(balances[index]).format('0,0.00')}</Text>
           </Flex>)
         }
@@ -41,7 +42,7 @@ const ConfirmContentModal: React.FC<Props> = ({ selectedVotes, balances }) => {
         <Flex justifyContent="space-between">
           <Text textStyle="R_14R" color="mediumgrey">{t('Period End')}</Text>
           <Flex flexDirection="column" alignItems="flex-end">
-            <Text textStyle="R_14M" color="deepgrey">08-Nov-21 14:57:20</Text>
+            <Text textStyle="R_14M" color="deepgrey">test</Text>
             <Text textStyle="R_12R" color="mediumgrey">*GMT+9 Asia/Seoul</Text>
           </Flex>
         </Flex>
