@@ -45,7 +45,7 @@ const StyledTypes = styled.div<{ type: string }>`
   height: 32px;
 `
 
-const VotingDescription = ({ id, index }) => {
+const VotingDescription = ({ index }) => {
   const voteNow = index.startEpoch < Date.now() && index.endEpoch > Date.now()
   const soon = index.startEpoch > Date.now() && index.endEpoch > Date.now()
   const closed = index.startEpoch < Date.now() && index.endEpoch < Date.now()

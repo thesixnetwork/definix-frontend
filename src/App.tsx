@@ -1,10 +1,11 @@
 import React, { lazy, Suspense, useEffect } from 'react'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import BigNumber from 'bignumber.js'
+import { Helmet } from 'react-helmet-async'
 
 import { Route, Router, Switch } from 'react-router-dom'
 import { Config } from 'definixswap-sdk'
-import { useFetchProfile, useFetchPublicData } from 'state/hooks'
+import { useFetchProfile, useFetchPublicData, usePriceFinixUsd } from 'state/hooks'
 import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
@@ -17,6 +18,7 @@ Config.configure(sdkConfig)
 // Only pool is included in the main bucndle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
 const Voting = lazy(() => import('./views/Voting_v2'))
+const VotingPrev = lazy(() => import('./views/Voting'))
 const Pools = lazy(() => import('./views/Pools'))
 const NewFarms = lazy(() => import('./views/NewFarms'))
 const Explore = lazy(() => import('./views/Explore'))
@@ -55,8 +57,15 @@ const App: React.FC = () => {
   useFetchPublicData()
   useFetchProfile()
 
+  const finixPrice = usePriceFinixUsd()
+
   return (
     <Router history={history}>
+      <Helmet>
+        <title>
+          Definix{!finixPrice ? '' : ` - ${finixPrice?.toFixed(4)} FINIX/USD`}
+        </title>
+      </Helmet>
       <GlobalStyle />
       <Suspense fallback={<></>}>
         <Menu>
@@ -88,6 +97,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/voting">
                 <Voting />
+              </Route>
+              <Route path="/voting_prev">
+                <VotingPrev />
               </Route>
 
               {/* 404 */}

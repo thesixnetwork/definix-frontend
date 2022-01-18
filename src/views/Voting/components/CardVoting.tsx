@@ -116,7 +116,7 @@ const CardVoting = () => {
       <CardProposals />
 
       {account && proposalOfAddress.length > 0 ? (
-        <VotingPartProposal rbAddress userProposals={proposalOfAddress} />
+        <VotingPartProposal userProposals={proposalOfAddress} />
       ) : (
         ''
       )}

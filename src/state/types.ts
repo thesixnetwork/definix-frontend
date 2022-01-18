@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
 import {
@@ -250,25 +251,43 @@ export interface AchievementState {
   data: Achievement[]
 }
 
-export interface Voting {
-  proposalIndex?: BigNumber
-  ipfsHash?: any
-  proposalType?: any
-  proposer?: any
-  startTimestamp?: any
-  endTimestamp?: any
-  optionsCount?: BigNumber
-  minimumVotingPower?: any
-  totalVotingPower?: any
-  voteLimit?: any
-  optionVotingPower?: any
-  isParticipated?: any
+export interface VotingItem {
+  choice_type: 'single' | 'multi';
+  choices: string[];
+  content: string;
+  creator: string;
+  endTimestamp: string;
+  end_unixtimestamp: number;
+  ipfsHash: string;
+  proposalIndex: number;
+  proposalType: number;
+  proposals_type: string;
+  proposer: string;
+  startTimestamp: string;
+  start_unixtimestamp: number;
+  title: string;
+  isParticipated?: boolean;
 }
+
+export interface Voting extends VotingItem {
+  // proposalIndex?: BigNumber
+  // ipfsHash: any
+  // proposalType?: any
+  // proposer?: any
+  // startTimestamp: any
+  // endTimestamp: any
+  // optionsCount?: BigNumber
+  // minimumVotingPower?: any
+  // totalVotingPower?: any
+  // voteLimit?: any
+  // optionVotingPower?: any
+}
+
 
 export interface VotingState {
   allProposal: Voting[]
   indexProposal: []
-  proposals: {}
+  proposals: Voting;
   isProposable: boolean
   allProposalMap: []
   totalVote: ''

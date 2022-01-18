@@ -1,19 +1,17 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-vars */
-import React, { useState, useMemo, useEffect, useContext } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState, useEffect, useContext } from 'react'
+import { Link } from 'react-router-dom'
 import Lottie from 'react-lottie'
 import moment from 'moment'
 import { Card, Text, useMatchBreakpoints, Button, useModal } from 'uikit-dev'
 import isEmpty from 'lodash/isEmpty'
-import { getAddress } from 'utils/addressHelpers'
 import styled from 'styled-components'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
 import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
 import success from 'uikit-dev/animation/complete.json'
 import loadings from 'uikit-dev/animation/farmPool.json'
-import { Voting } from '../../../state/types'
 import { useClaimVote } from '../../../hooks/useVoting'
 
 const SuccessOptions = {
@@ -164,13 +162,12 @@ const TextWidth = styled(Text)`
   width: 300px;
 `
 
-const TransactionTable = ({ rows, empText, isLoading, total }) => {
+const TransactionTable = ({ rows, empText, isLoading }) => {
   const [cols] = useState(['Title', 'Vote', 'Voting Power', ''])
   const { callClaimVote } = useClaimVote()
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
   const [isLoad, setIsLoading] = useState('')
-  const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { onDismiss } = useContext(Context)
 
   const CardResponse = () => {
@@ -200,11 +197,11 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
     onPresentConnectModal()
     const claim = callClaimVote(r)
     claim
-      .then((b) => {
+      .then(() => {
         onPresentAccountModal()
         setInterval(() => setIsLoading('success'), 3000)
       })
-      .catch((e) => {
+      .catch(() => {
         setIsLoading('')
         onDismiss()
       })
@@ -303,14 +300,12 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   )
 }
 
-const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
-  const address = getAddress(rbAddress)
-  const testVots: Voting[] = []
-  const [isLoading, setIsLoading] = useState(false)
-  const [currentTab, setCurrentTab] = useState(0)
-  const [currentPage, setCurrentPage] = useState(1)
+const VotingPartProposal = ({ userProposals = [] }) => {
+  const [isLoading] = useState(false)
+  const [, setCurrentTab] = useState(0)
+  const [, setCurrentPage] = useState(1)
 
-  const [transactions, setTransactions] = useState(
+  const [transactions] = useState(
     userProposals.map((item) => {
       return {
         proposalIndex: item.proposalIndex,
@@ -325,17 +320,12 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
     }),
   )
 
-  const [total, setTotal] = useState(1)
-  const pages = useMemo(() => Math.ceil(total / 10), [total])
+  const [, setTotal] = useState(1)
 
   const setDefault = (tab) => {
     setCurrentTab(tab)
     setCurrentPage(1)
     setTotal(0)
-  }
-
-  const onPageChange = (e, page) => {
-    setCurrentPage(page)
   }
 
   useEffect(() => {
@@ -356,7 +346,6 @@ const VotingPartProposal = ({ rbAddress, userProposals = [] }) => {
           rows={transactions}
           isLoading={isLoading}
           empText="Don`t have any transactions in this votes."
-          total
         />
         {/* <PaginationCustom
           page={currentPage}

@@ -1,126 +1,121 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import _ from 'lodash'
-import { Card, Heading, Text, Button } from 'uikit-dev'
-import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import definixVoting from 'uikit-dev/images/for-ui-v2/voting/voting-banner.png'
-import CardProposals from './CardProposals'
-import { useIsProposable, useAllProposalOfAddress } from '../../../hooks/useVoting'
-import VotingPartProposal from './VotingPartProposal'
+import styled from 'styled-components';
+import { Card, Flex, Tabs } from '@fingerlabs/definixswap-uikit-v2'
+import { useTranslation } from 'react-i18next'
+import { VotingItem } from 'state/types';
+import VotingList from './VotingList';
+import { useAllProposalOfType, useAllProposalOfAddress } from '../../../hooks/useVoting'
+import { FilterId, ProposalType } from '../types';
 
-const BannerVoting = styled(Card)`
+interface Props {
+  proposalType: ProposalType;
+  isParticipated: boolean;
+}
+
+const ContentArea = styled(Flex)`
   width: 100%;
-  background: ${({ theme }) => theme.colors.card};
-  padding: 28px 24px;
-  position: relative;
-  overflow: visible;
+`
 
-  &:before {
-    content: '';
-    width: 50%;
-    height: 100%;
-    background: url(${definixVoting});
-    background-size: contain;
-    background-position: right bottom;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    opacity: 0.2;
-    margin-right: 4%;
-    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
-  }
+const StyledTabs = styled(Tabs)`
+  ${({ theme }) => theme.textStyle.R_16B}
 
-  h2 {
-    font-size: 20px !important;
-  }
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    padding: 50px 0px 50px 5%;
-    align-items: center;
-
-    &:before {
-      opacity: 0.2;
-      width: 40%;
-    }
-
-    h2 {
-      font-size: 32px !important;
-      width: 80%;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    align-items: center;
-
-    &:before {
-      opacity: 0.2;
-    }
-
-    h2 {
-      font-size: 32px !important;
-      width: 80%;
-    }
-  }
-
-  ${({ theme }) => theme.mediaQueries.lg} {
-    padding: 50px 2% 50px 12%;
-    align-items: center;
-
-    &:before {
-      opacity: 1;
-      width: 20%;
-      margin-right: 14%;
-      background-position: center;
-    }
-
-    h2 {
-      font-size: 32px !important;
-      width: 70%;
-    }
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 33%;
+    padding: 18px 0;
+    ${({ theme }) => theme.textStyle.R_14B}
   }
 `
 
-const DetailBanner = styled(Text)`
-  width: 80%;
-  font-size: 14px !important;
-
-  ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 16px !important;
-    width: 60%;
-  }
-`
-
-const CardVoting = () => {
-  const proposable = useIsProposable()
-  const isProposable = _.get(proposable, 'proposables')
-  const { account } = useWallet()
+const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
+  const { t } = useTranslation();
+  const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
+  const listAllProposal: VotingItem[] = _.get(allProposalMap, 'allProposalMap')
+  const [voteList, setVoteList] = useState([]);
+  const participatedVotes = useMemo(() => {
+    return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
+  }, [proposalOfAddress]);
+  const tabs = useMemo(() => [
+    {
+      name: t('Vote Now'),
+      component: <VotingList list={voteList[0]} />,
+    },
+    {
+      name: t('Soon'),
+      component: <VotingList isStartDate list={voteList[1]} />,
+    },
+    {
+      name: t('Closed'),
+      component: <VotingList list={voteList[2]} />,
+    },
+  ], [t, voteList])
+  const [curTab, setCurTab] = useState<string>(tabs[0]?.name);
+
+  const tabNames = useRef(tabs.map(({ name }) => name));
+
+  useEffect(() => {
+    if (!listAllProposal) return;
+
+    const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
+      if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
+        return {
+          isParticipated: true,
+          ...item,
+        }
+      }
+      return item;
+    })
+
+    const filterListAllProposal = participatedAllProposal.filter((item) => {
+      if (isParticipated && !item.isParticipated) {
+        return false;
+      }
+      return proposalType === ProposalType.ALL ? true : _.get(item, 'proposals_type') === proposalType;
+    })
+
+    function getFilterList(filterId: FilterId) {
+      const list = filterListAllProposal.filter((item) => {
+        switch (filterId) {
+          case FilterId.SOON:
+            return (
+              Number(_.get(item, 'start_unixtimestamp')) * 1000 > Date.now() &&
+              Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+            )
+  
+          case FilterId.CLOSED:
+            return (
+              Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+              Number(_.get(item, 'end_unixtimestamp')) * 1000 < Date.now()
+            )
+  
+          case FilterId.NOW:
+          default:
+            return (
+              Number(_.get(item, 'start_unixtimestamp')) * 1000 < Date.now() &&
+              Number(_.get(item, 'end_unixtimestamp')) * 1000 > Date.now()
+            )
+        }
+      })
+      return list.sort((a, b) => _.get(a, 'end_unixtimestamp') - _.get(b, 'end_unixtimestamp'))
+    }
+
+
+    setVoteList([getFilterList(FilterId.NOW), getFilterList(FilterId.SOON), getFilterList(FilterId.CLOSED)])
+    
+  }, [isParticipated, listAllProposal, participatedVotes, proposalType]);
+
+  const onClickTab = (name: string) => {
+    setCurTab(name);
+  };
 
   return (
-    <>
-      <BannerVoting>
-        <div>
-          <Heading color="primary">DRIVE FORWARD TOGETHER WITH DECENTRALIZED VOTING</Heading>
-          <DetailBanner>
-            Community Proposal is a great way to say your words and to reflects the community feeling about your ideas.
-          </DetailBanner>
-        </div>
-        {isProposable && (
-          <Button variant="success" radii="small" size="sm" marginTop="10px" as={Link} to="/voting/make-proposal">
-            Make a Proposals
-          </Button>
-        )}
-      </BannerVoting>
-      <CardProposals />
-
-      {account && proposalOfAddress.length > 0 ? (
-        <VotingPartProposal rbAddress userProposals={proposalOfAddress} />
-      ) : (
-        ''
-      )}
-    </>
+    <Card mt="16px">
+      <StyledTabs tabs={tabNames.current} curTab={curTab} setCurTab={onClickTab} />
+      <ContentArea>
+        {tabs.map(({ name, component }) => (curTab === name ? component : null))}
+      </ContentArea>
+    </Card>
   )
 }
 

@@ -107,7 +107,7 @@ const LinkView = styled(Button)`
   padding-left: 2px;
 `
 
-const TransactionTable = ({ rows, empText, isLoading, total }) => {
+const TransactionTable = ({ rows, empText, isLoading }) => {
   const [cols] = useState(['Transaction Hash', 'Address', 'Choice', 'Voting Power'])
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
@@ -211,8 +211,8 @@ const TransactionTable = ({ rows, empText, isLoading, total }) => {
   )
 }
 
-const VotingList = ({ rbAddress }) => {
-  const [isLoading, setIsLoading] = useState(false)
+const VotingList = () => {
+  const [isLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const limits = 10
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
@@ -227,7 +227,7 @@ const VotingList = ({ rbAddress }) => {
   const mapAllVote = useMemo(() => {
     const array = []
     if (allVotesByIndex.length !== 0 && allVotesByIpfs.length !== 0) {
-      allVotesByIndex.map((v, i) => {
+      allVotesByIndex.map((v) => {
         _.get(allVotesByIpfs, '0.choices').map((items, index) => {
           if (index === Number(_.get(v, 'voting_opt'))) {
             array.push({
@@ -261,7 +261,6 @@ const VotingList = ({ rbAddress }) => {
           rows={mapAllVote.length !== 0 && mapAllVote}
           isLoading={isLoading}
           empText="Don`t have any transactions in this votes."
-          total
         />
         <PaginationCustom
           page={currentPage}

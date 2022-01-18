@@ -8,7 +8,6 @@ import { BLOCKS_PER_YEAR } from 'config'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { Button, Card } from 'uikit-dev'
-import { Coin as UikitCoin } from '@fingerlabs/definixswap-uikit-v2'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import {
@@ -37,8 +36,10 @@ import {
   useAllDataLock,
   useAllLock,
 } from 'hooks/useLongTermStake'
-import { useLockPlus } from 'hooks/useTopUp'
+import { useLockPlus, useBalanceTopUp } from 'hooks/useTopUp'
+import vFinix from 'uikit-dev/images/for-ui-v2/vFinix.png'
 import success from 'uikit-dev/animation/complete.json'
+import loadings from 'uikit-dev/animation/farmPool.json'
 import exclusive from 'uikit-dev/images/for-ui-v2/topup-stake/exclusive-holder.png'
 import ModalStake from '../Modal/ModalStake'
 import ModalResponses from '../Modal/ModalResponses'
@@ -49,6 +50,12 @@ const SuccessOptions = {
   loop: true,
   autoplay: true,
   animationData: success,
+}
+
+const options = {
+  loop: true,
+  autoplay: true,
+  animationData: loadings,
 }
 
 interface Props {
@@ -155,7 +162,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
   const { allLockPeriod } = useAllLock()
   const balanceOf = useBalances()
-  const { finixEarn, balancevfinix } = usePrivateData()
+  const balances = useBalanceTopUp()
+  const { finixEarn, balancevfinix, allDataLock } = usePrivateData()
   const { handleHarvest } = useHarvestLongterm()
   const { isDark } = useTheme()
   const { levelStake, allLock } = useAllDataLock()
@@ -170,6 +178,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const [date, setDate] = useState('-')
   const [sumpendingReward, setSumPendingReward] = useState('0')
   const [value, setValue] = useState('0')
+  const [isBnbPool, setIsBnbPool] = useState(false)
   const [showLottie, setShowLottie] = useState(false)
   const [pendingTx, setPendingTx] = useState(false)
   const [harvested, setHarvested] = useState(false)
@@ -179,6 +188,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const { onReward } = useSousHarvest()
   const [vFINIX, setVFINIX] = useState(0)
   const [vFinixEarn, setVFinixEarn] = useState(0)
+  const [loading, setLoading] = useState('')
 
   // Farms
   const farmsLP = useFarms()
@@ -186,7 +196,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   const sixPrice = usePriceSixUsd()
   const finixPrice = usePriceFinixUsd()
   const ethPriceUsd = usePriceKethKusdt()
-  const [listView] = useState(false)
+  const [listView, setListView] = useState(false)
   const activeFarms = farmsLP.filter((farms) => farms.pid !== 0 && farms.pid !== 1 && farms.multiplier !== '0X')
   const stackedOnlyFarms = activeFarms.filter(
     (farms) => farms.userData && new BigNumber(farms.userData.stakedBalance).isGreaterThan(0),
@@ -378,7 +388,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   useEffect(() => {
     if (lockTopUp !== null && lockTopUp.length > 0) {
       const arrStr = lockTopUp.map((i) => Number(i))
-      const removeTopUpId = allLock.filter((item) => !arrStr.includes(Number(_.get(item, 'id'))))
+      const removeTopUpId = allLock.filter((item, index) => !arrStr.includes(Number(_.get(item, 'id'))))
       let max = 0
       for (let i = 0; i < removeTopUpId.length; i++) {
         const selector = removeTopUpId[i]
@@ -414,11 +424,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
   }, [lockTopUp, allLock, period])
 
   useEffect(() => {
-    const balance = Math.floor(Number(balanceOf) * 1000000) / 1000000
+    const balance = Math.floor(Number(balances) * 100) / 100
     if (keyDown === false) {
-      setValue(numeral(balance).format('0.00'))
+      setValue(balance.toString())
     }
-  }, [value, balanceOf, keyDown])
+  }, [balances, keyDown])
 
   const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`)
 
@@ -446,30 +456,30 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
         if (!_.get(Object.values(selected)[harvestProgress], 'pools')) {
           if (_.get(Object.values(selected)[harvestProgress], 'farms')) {
             onSuperHarvest(_.get(Object.values(selected)[harvestProgress], 'pid'))
-              .then(() => {
+              .then((res) => {
                 // farm
                 setHarvestProgress(harvestProgress + 1)
               })
-              .catch(() => {
+              .catch((e) => {
                 setHarvestProgress(-1)
               })
           } else {
             // vfinix
             handleHarvest()
-              .then(() => {
+              .then((res) => {
                 setHarvestProgress(harvestProgress + 1)
               })
-              .catch(() => {
+              .catch((e) => {
                 setHarvestProgress(-1)
               })
           }
         } else {
           // pool
           onReward(_.get(Object.values(selected)[harvestProgress], 'sousId'))
-            .then(() => {
+            .then((res) => {
               setHarvestProgress(harvestProgress + 1)
             })
-            .catch(() => {
+            .catch((e) => {
               setHarvestProgress(-1)
             })
         }
@@ -494,7 +504,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
           setSelectedToken({})
         }
       })
-      .catch(() => {
+      .catch((e) => {
         setAmount('')
       })
   }, [onLockPlus])
@@ -704,7 +714,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                   />
                   <Coins>
                     <div className="flex">
-                      <UikitCoin symbol="VFINIX" size="37px" />
+                      <img src={vFinix} alt="" />
                     </div>
                   </Coins>
                   <Text className="align-center ml-2">VFINIX</Text>
@@ -746,8 +756,8 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     />
                     <Coins>
                       <div className="flex">
-                        {imgs[0] && <UikitCoin symbol={imgs[0]} size="37px" />}
-                        {imgs[1] && <UikitCoin symbol={imgs[1]} size="37px" />}
+                        {imgs[0] && <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />}
+                        {imgs[1] && <img src={`/images/coins/${imgs[1].toLowerCase()}.png`} alt="" />}
                       </div>
                     </Coins>
                     <Text className="align-center ml-2">{(d.props.farm.lpSymbol || '').replace(/ LP$/, '')}</Text>
@@ -792,8 +802,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
                     />
                     <Coins>
                       <div className="flex">
-                        <UikitCoin symbol={imgs[0]} size="37px" />
-                        {/* <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" /> */}
+                        <img src={`/images/coins/${imgs[0].toLowerCase()}.png`} alt="" />
                       </div>
                     </Coins>
                     <Text className="align-center ml-2">{d.tokenName}</Text>
@@ -818,7 +827,7 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
               <Text className="col-6" color="textSubtle" fontSize="12px" fontWeight="500">
                 From your wallet:
                 <span style={{ color: '#0973B9' }} className="pl-2">
-                  {balanceOf ? numeral(balanceOf).format('0,0.00') : '-'} FINIX
+                  {balanceOf ? Math.floor(Number(balanceOf) * 100) / 100 : '-'} FINIX
                 </span>
               </Text>
               <Text className="col-6 pl-3" color="textSubtle" fontSize="12px" fontWeight="500">
@@ -891,7 +900,11 @@ const SuperStakeModal: React.FC<Props> = ({ onDismiss = () => null }) => {
             ) : (
               <Button
                 fullWidth
-                disabled={period === -Infinity && lengthSelect === 0 ? true : lenghtOrvalue}
+                disabled={
+                  Number(value) > Number(balanceOf) || (period === -Infinity && lengthSelect === 0)
+                    ? true
+                    : lenghtOrvalue
+                }
                 id="harvest-all"
                 radii="small"
                 className="mt-3"

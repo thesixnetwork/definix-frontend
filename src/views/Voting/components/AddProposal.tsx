@@ -145,7 +145,7 @@ const AddProposal: React.FC<Props> = () => {
   const [isLoading, setIsLoading] = useState('')
   const [choiceType, setChoiceType] = useState('single')
   const { name, body, choices, startDate, startTime, endDate, endTime, ipfs } = state
-  const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
+  const [, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const filterChoices = choices.map((choice) => {
     return choice.value
   })
@@ -255,12 +255,12 @@ const AddProposal: React.FC<Props> = () => {
                   setInterval(() => setIsLoading('success'), 3000)
                 }
               })
-              .catch((e) => {
+              .catch(() => {
                 onDismiss()
               })
           }
         })
-        .catch((e) => {
+        .catch(() => {
           onDismiss()
         })
     } catch (e) {

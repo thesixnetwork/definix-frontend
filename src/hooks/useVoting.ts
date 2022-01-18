@@ -272,7 +272,7 @@ export const useApproveToService = (max) => {
       klipProvider.genQRcodeContactInteract(
         getFinixAddress(),
         JSON.stringify(getAbiIUsageFacetByName('approveToService')),
-        JSON.stringify([serviceKey, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff']),
+        JSON.stringify([serviceKey, max]),
         setShowModal,
       )
       const txHash = await klipProvider.checkResponse()
@@ -283,17 +283,9 @@ export const useApproveToService = (max) => {
     }
     const callContract = getContract(IUsageFacet.abi, getVFinix())
     return new Promise((resolve, reject) => {
-      handleContractExecute(
-        callContract.methods.approveToService(
-          serviceKey,
-          '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
-        ),
-        account,
-      )
-        .then(resolve)
-        .catch(reject)
+      handleContractExecute(callContract.methods.approveToService(serviceKey, max), account).then(resolve).catch(reject)
     })
-  }, [account, connector, setShowModal])
+  }, [account, connector, setShowModal, max])
 
   return { onApprove }
 }

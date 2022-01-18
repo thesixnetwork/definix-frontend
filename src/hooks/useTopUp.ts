@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import { useState, useCallback, useContext } from 'react'
+import { useEffect, useState, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
@@ -7,8 +7,9 @@ import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 
 import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json'
+import IKIP7 from '../config/abi/IKIP7.json'
 import { getContract } from '../utils/caver'
-import { getVFinix } from '../utils/addressHelpers'
+import { getVFinix, getFinixAddress } from '../utils/addressHelpers'
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
@@ -40,27 +41,31 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
           setShowModal(false)
           setLoading('success')
           setStatus(true)
-          setTimeout(() => setLoading(''), 5000)
-          setTimeout(() => setStatus(false), 5000)
+          setInterval(() => setLoading(''), 3000)
+          setInterval(() => setStatus(false), 3000)
         } else {
           const callContract = getContract(VaultTopUpFeatureFacetAbi.abi, getVFinix())
-          const estimatedGasLimit = await callContract.methods
-            .lockPlus(level, idLastMaxLv, lockFinix)
-            .estimateGas({ from: account })
-
           await callContract.methods
             .lockPlus(level, idLastMaxLv, lockFinix)
-            .send({ from: account, gas: estimatedGasLimit })
-
-          setLoading('success')
-          setStatus(true)
-          setTimeout(() => setLoading(''), 5000)
-          setTimeout(() => setStatus(false), 5000)
+            .estimateGas({ from: account })
+            .then((estimatedGasLimit) => {
+              callContract.methods
+                .lockPlus(level, idLastMaxLv, lockFinix)
+                .send({ from: account, gas: estimatedGasLimit })
+                .then(() => {
+                  setLoading('success')
+                  setStatus(true)
+                  setInterval(() => setLoading(''), 3000)
+                  setInterval(() => setStatus(false), 3000)
+                })
+                .catch(() => {
+                  setLoading('')
+                  setStatus(false)
+                })
+            })
         }
       } catch (e) {
-        setLoading('')
         setStatus(false)
-        throw e
       }
     } else {
       setStatus(false)
@@ -70,6 +75,27 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
   }, [account, connector, lockFinix, setShowModal, level, status, idLastMaxLv])
 
   return { onLockPlus: stake, status, loadings }
+}
+
+export const useBalanceTopUp = () => {
+  const [balance, setBalanceOf] = useState(new BigNumber(0))
+  const { account } = useWallet()
+
+  useEffect(() => {
+    async function fetchBalance() {
+      const callContract = getContract(IKIP7.abi, getFinixAddress())
+      try {
+        const balanceOf = await callContract.methods.balanceOf(account).call()
+        setBalanceOf(new BigNumber(balanceOf).dividedBy(new BigNumber(10).pow(18)))
+      } catch (e) {
+        setBalanceOf(null)
+      }
+    }
+
+    fetchBalance()
+  }, [account])
+
+  return balance
 }
 
 export default useTopUp

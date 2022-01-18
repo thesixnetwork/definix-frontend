@@ -1,6 +1,6 @@
 {
   "name": "definix-frontend",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "private": true,
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -43,7 +43,7 @@
     "@crowdin/crowdin-api-client": "^1.10.4",
     "@ethersproject/abi": "^5.0.7",
     "@ethersproject/experimental": "^5.0.1",
-    "@fingerlabs/definixswap-uikit-v2": "^0.16.19",
+    "@fingerlabs/definixswap-uikit-v2": "^0.16.20",
     "@material-ui/core": "^4.12.1",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@reduxjs/toolkit": "^1.5.0",
@@ -87,6 +87,7 @@
     "react-lottie": "^1.2.3",
     "react-magic-slider-dots": "^1.2.2",
     "react-markdown": "^6.0.2",
+    "react-paginate": "^8.1.0",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
