@@ -11,12 +11,14 @@ import * as klipProvider from 'hooks/klipProvider'
 import { useProposalIndex, useServiceAllowance, useApproveToService, useVote } from 'hooks/useVoting'
 import { usePrivateData } from 'hooks/useLongTermStake'
 import useRefresh from 'hooks/useRefresh'
+import useVoteTranslate from 'hooks/useVoteTranslate'
 import { useToast } from 'state/hooks'
 import getBalanceOverBillion from 'utils/getBalanceOverBillion'
 import { Voting } from 'state/types'
 import Badge from './Badge'
 import VotingConfirmModal from './VotingConfirmModal'
 import { BadgeType, TransactionState } from '../types'
+import Translate from './Translate'
 
 interface Props {
   id: string;
@@ -401,14 +403,18 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
             }
             {proposal.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}
           </Flex>
-          <TextTitle>{proposal.title}</TextTitle>
+          <TextTitle>
+            {useVoteTranslate(proposal.title, 'title')}
+          </TextTitle>
           <TextEndDate>
             <span>{t('End Date')}</span>
             <span>{proposal.endTimestamp}</span>
           </TextEndDate>
           <BoxContent>
             <Text className="text">
-              <ReactMarkdown>{proposal.content}</ReactMarkdown>
+              <ReactMarkdown>
+                {useVoteTranslate(proposal.content, 'content')}
+              </ReactMarkdown>
             </Text>
           </BoxContent>
         </WrapContent>
@@ -431,11 +437,15 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
           <WrapMobilePlural>
             {isMulti && <Text color="orange" textStyle="R_12M">*{t('Plural vote')}</Text>}
           </WrapMobilePlural>
-          {proposal?.choices && proposal.choices.map((choice, index) => <WrapChoice key={choice} isParticipated={isVoteMore}>
+            {proposal?.choices && proposal.choices.map((choice, index) => <WrapChoice key={choice} isParticipated={isVoteMore}>
             <Flex justifyContent="space-between" alignItems="center">
               {
-                isVoteMore ? <Text className="choice" textStyle="R_16R" color="black">{choice}</Text> : <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
-                  <Text className="choice" textStyle="R_16R" color="black">{choice}</Text>
+                isVoteMore ? <Text className="choice" textStyle="R_16R" color="black">
+                  <Translate text={choice} type={`opinion${index + 1}`} />
+                </Text> : <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
+                  <Text className="choice" textStyle="R_16R" color="black">
+                    <Translate text={choice} type={`opinion${index + 1}`} />
+                  </Text>
                 </CheckboxLabel>
               }
               <Text textStyle="R_16M" color="deepgrey" className="percent">{mapVoting[index] ? `${mapVoting[index].percent  }%` : ' '}</Text>

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Text, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next';
 import { VotingItem as Voting } from 'state/types';
+import useVoteTranslate from 'hooks/useVoteTranslate';
 import Badge from './Badge';
 import { BadgeType } from '../types';
 
@@ -58,7 +59,9 @@ const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
         }
         {item.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}
       </Flex>
-      <Text textStyle="R_14R" color="black" mt="12px">{item.title}</Text>
+      <Text textStyle="R_14R" color="black" mt="12px">
+        {useVoteTranslate(item.title, 'title')}
+      </Text>
       <TextEndDate textStyle="R_12R" color="mediumgrey" mt="6px">
         <span>{t(isStartDate ? 'Start Date' : 'End Date')}</span>
         <span>{isStartDate ? item.startTimestamp : item.endTimestamp}</span>
