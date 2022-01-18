@@ -32,6 +32,10 @@ const WrapScroll = styled(Flex)`
   margin-top: 14px;
   max-height: 382px;
   overflow-y: auto;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 0;
+  }
 `
 
 const InputBox = styled(Flex)`
@@ -50,6 +54,56 @@ const InputBox = styled(Flex)`
 const StyledAnountButton = styled(AnountButton)`
   margin-left: ${({ theme }) => theme.spacing.S_6}px;
   background: ${({ theme }) => rgba(theme.colors.lightgrey, 0.3)};
+`
+
+const StyledCoin = styled(Coin)`
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    display: none;
+  }
+`
+
+const WrapBalanceAvailable = styled(Flex)`
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    flex-direction: column;
+  }
+  
+`
+
+const WrapBalance = styled(Flex)`
+  flex-direction: column;
+  margin-left: 16px;
+
+  .finix {
+    ${({ theme }) => theme.textStyle.R_20M}
+    color: ${({ theme }) => theme.colors.black};
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
+    .finix {
+      ${({ theme }) => theme.textStyle.R_14B}
+    }
+
+    .available {
+      display: none;
+    }
+  }
+`
+
+const WrapAvailable = styled(Flex)`
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 4px;
+    align-self: flex-end;
+  }
 `
 
 const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalances, showNotis, setShowNotis }) => {
@@ -102,14 +156,14 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
   return (
     <>
       <Flex flexDirection="column">
-        <Flex alignItems="center">
-          <Coin symbol="VFINIX" size="40px" />
-          <Flex flexDirection="column" ml="16px">
+        <WrapBalanceAvailable>
+          <StyledCoin symbol="VFINIX" size="40px" />
+          <WrapBalance>
             <Text textStyle="R_14R" color="mediumgrey">{t('Balance')}</Text>
             <Flex mt="2px" alignItems="flex-end">
-              <Text textStyle="R_20M" color="black">{myVFinixBalance}</Text>
+              <Text className="finix">{myVFinixBalance}</Text>
               <Text textStyle="R_14R" color="black" ml="6px">{t('vFINIX')}</Text>
-              <Flex alignItems="center">
+              <Flex alignItems="center" className="available">
                 <VDivider mx="12px" mb="2px" style={{
                   height: '12px',
                   alignSelf: 'center'
@@ -119,8 +173,13 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
                 <Text textStyle="R_14R" color="mediumgrey" ml="2px">{t('vFINIX')}</Text>
               </Flex>
             </Flex>
-          </Flex>
-        </Flex>
+          </WrapBalance>
+          <WrapAvailable>
+            <Text textStyle="R_14R" color="mediumgrey">{t('Available')}</Text>
+            <Text textStyle="R_14M" color="mediumgrey" ml="6px">{numeral(remainVFinix).format('0,0.00')}</Text>
+            <Text textStyle="R_14R" color="mediumgrey" ml="6px">{t('vFINIX')}</Text>
+          </WrapAvailable>
+        </WrapBalanceAvailable>
       </Flex>
       <WrapScroll>
         {selectedVotes.map((vote, index) => <Flex flexDirection="column" pt="32px">
