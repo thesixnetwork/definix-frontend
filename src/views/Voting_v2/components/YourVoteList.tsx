@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import React, { useCallback, useContext, useEffect, useMemo } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
@@ -17,6 +16,22 @@ const VoteItem = styled(Flex)`
   &:last-child {
     border-bottom: none;
   }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    flex-direction: column;
+    padding: 16px 0;
+
+    .wrap-power {
+      margin-top: 8px;
+      margin-left: 24px;
+    }
+  }
+`
+
+const WrapCardBody = styled(CardBody)`
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding: 20px;
+  }
 `
 
 const YourVoteList = () => {
@@ -26,6 +41,7 @@ const YourVoteList = () => {
   const isClaimable = useIsClaimable(proposalIndex)
   const { callClaimVote } = useClaimVote()
   const { toastSuccess, toastError } = useToast()
+  console.log(proposalOfAddress)
   const items = useMemo(() => {
     const itemByIndex = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
     return itemByIndex
@@ -48,20 +64,23 @@ const YourVoteList = () => {
 
   return (
     <Card mt="20px">
-      {items && <CardBody>
+      {items && <WrapCardBody>
         <Flex flexDirection="column">
           <Text textStyle="R_16M" color="deepgrey">{t('Your Vote')}</Text>
           {
             items.choices.map(({ choiceName, votePower }) => <VoteItem>
               <VoteOptionLabel label={choiceName} />
-              <Text textStyle="R_14M">{votePower}</Text>
+              <Flex className="wrap-power">
+                <Text textStyle="R_14B" className="power">{votePower}</Text>
+                <Text textStyle="R_14R" ml="6px">{t('vFINIX')}</Text>
+              </Flex>
             </VoteItem>)
           }
         </Flex>
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" mt="8px">
           <Button lg width="280px" onClick={onClaim} disabled={Date.now() < + _.get(items, 'endDate') || !isClaimable}>{t('Claim Voting Power')}</Button>
         </Flex>
-      </CardBody>}
+      </WrapCardBody>}
     </Card>
   )
 }

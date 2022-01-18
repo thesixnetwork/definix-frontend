@@ -4,16 +4,28 @@ import {
   Text,
   CheckBIcon,
 } from '@fingerlabs/definixswap-uikit-v2'
+import styled from 'styled-components'
 
 interface Props {
   label: string;
 }
 
+const Label = styled(Text)`
+  width: 320px;
+  margin-left: 8px;
+  ${({ theme }) => theme.textStyle.R_14R}
+  color: ${({ theme }) => theme.colors.deepgrey};
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: auto;
+  }
+`
+
 const VoteOptionLabel: React.FC<Props> = ({ label }) => {
   return (
     <Flex alignItems="flex-start">
       <CheckBIcon />
-      <Text ml="8px" textStyle="R_14R" color="deepgrey" width="320px">{label}</Text>
+      <Label>{label}</Label>
     </Flex>
   )
 }

@@ -19,20 +19,40 @@ const Item = styled(Flex)`
   cursor: pointer;
 `
 
+const TextEndDate = styled(Text)`
+  margin-top: 6px;
+  display: flex;
+
+  span:nth-child(2) {
+    margin-left: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 16px;
+    flex-direction: column;
+
+    span:nth-child(2) {
+      margin-left: 0;
+      margin-top: 2px;
+    }
+
+  }
+`
+
 const VotingItem: React.FC<Props> = ({ item }) => {
   const { t } = useTranslation();
   return (
     <Item as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}/${_.get(item, 'proposalIndex')}`}>
-      <Flex mt="18px">
+      <Flex>
         {
           item.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
         }
       </Flex>
       <Text textStyle="R_14R" color="black" mt="12px">{item.title}</Text>
-      <Text textStyle="R_14R" color="mediumgrey" mt="6px">
+      <TextEndDate textStyle="R_12R" color="mediumgrey" mt="6px">
         <span>{t('End Date')}</span>
         <span>{item.endTimestamp}</span>
-      </Text>
+      </TextEndDate>
     </Item>
   )
 }

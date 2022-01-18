@@ -2,10 +2,9 @@ import React, { useMemo, useEffect, useState, useCallback, useRef } from 'react'
 import _ from 'lodash'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
-import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
-import { Card, Box, Flex, Text, CheckboxLabel, Checkbox, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
+import { Card, CardBody, Box, Flex, Text, CheckboxLabel, Checkbox, Button, useModal } from '@fingerlabs/definixswap-uikit-v2'
 import ReactMarkdown from 'components/ReactMarkdown'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from 'hooks/klipProvider'
@@ -25,15 +24,148 @@ interface Props {
   proposal: Voting;
 }
 
+const WrapCard = styled(Card)`
+  margin-top: 40px;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 28px;
+  }
+`
+
+const StyledCardBody = styled(CardBody)`
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding: 20px;
+  }
+`
+
+const TextTitle = styled(Text)`
+  ${({ theme }) => theme.textStyle.R_18M}
+  color: ${({ theme }) => theme.colors.black};
+  margin-top: 20px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 12px;
+  }
+`
+
+const TextEndDate = styled(Text)`
+  display: flex;
+  ${({ theme }) => theme.textStyle.R_12R}
+  color: ${({ theme }) => theme.colors.mediumgrey};
+  margin-top: 6px;
+
+  span:nth-child(2) {
+    margin-left: 8px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 10px;
+
+    span:nth-child(2) {
+      margin-left: 0;
+      margin-top: 2px;
+    }
+  }
+`
+
+const BoxContent = styled(Box)`
+  margin-top: 32px;
+
+  > .text {
+    ${({ theme }) => theme.textStyle.R_14R}
+    color: ${({ theme }) => theme.colors.deepgrey};
+    white-space: normal;
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    margin-top: 20px;
+
+    > .text {
+      ${({ theme }) => theme.textStyle.R_12R}
+    }
+  }
+`
+
 const WrapContent = styled(Flex)`
   flex-direction: column;
   padding-bottom: 32px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding-bottom: 20px;
+  }
 `
 
 const WrapVote = styled(Flex)`
   flex-direction: column;
   padding-top: 32px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding-top: 20px;
+  }
+`
+
+const WrapBalance = styled(Flex)<{ isMulti: boolean }>`
+  justify-content: ${({ isMulti }) => isMulti? 'space-between' : 'flex-end'};
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    display: none;
+  }
+`
+
+const WrapMobileBalance = styled(Flex)`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    display: flex;
+    justify-content: space-between;
+  }
+`
+
+const WrapMobilePlural = styled(Flex)`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    display: flex;
+    margin-top: 24px;
+  }
+`
+
+const WrapChoice = styled(Flex)`
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 10px;
+
+  .mobile-percent {
+    display: none;
+  }
+
+  .votes {
+    color: ${({ theme }) => theme.colors.mediumgrey};
+    ${({ theme }) => theme.textStyle.R_14R}
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding-top: 0;
+    padding-bottom: 24px;
+
+    .choice {
+      ${({ theme }) => theme.textStyle.R_14R}
+    }
+
+    .votes {
+      ${({ theme }) => theme.textStyle.R_12R}
+    }
+
+    .percent {
+      display: none;
+    }
+
+    .wrap-votes {
+      justify-content: space-between;
+    }
+
+    .mobile-percent {
+      display: block;
+    }
+  }
+
 `
 
 const Range = styled(Box)`
@@ -191,7 +323,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
 
   const renderVoteButton = useCallback(() => {
     if (!account) {
-      return <UnlockButton width="280px" />
+      return <UnlockButton width="280px" lg />
     } 
     if (allowance > 0 || transactionHash !== '') {
       return <Button lg width="280px" onClick={() => {
@@ -204,56 +336,67 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
   }, [account, allowance, selectedIndexs.length, t, handleApprove, transactionHash, onPresentVotingConfirmModal]);
 
   return (
-    <Card mt="40px" p="32px">
-      <WrapContent>
-        <Flex>
-          {
-            proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
-          }
-        </Flex>
-        <Text textStyle="R_18M" color="black" mt="20px">{proposal.title}</Text>
-        <Text textStyle="R_12R" color="mediumgrey" mt="6px">
-          <span>{t('End Date')}</span>
-          <span>{proposal.endTimestamp}</span>
-        </Text>
-        <Box mt="32px">
-          <Text textStyle="R_14R" color="deepgrey" style={{
-            whiteSpace: 'normal'
-          }}>
-            <ReactMarkdown>{proposal.content}</ReactMarkdown>
-          </Text>
-        </Box>
-      </WrapContent>
-      <WrapVote>
-        <Flex justifyContent={isMulti ? 'space-between' : 'flex-end'}>
-          {isMulti && <Text color="orange" textStyle="R_14M">*{t('Plural vote')}</Text>}
+    <WrapCard>
+      <StyledCardBody>
+        <WrapContent>
           <Flex>
+            {
+              proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
+            }
+          </Flex>
+          <TextTitle>{proposal.title}</TextTitle>
+          <TextEndDate>
+            <span>{t('End Date')}</span>
+            <span>{proposal.endTimestamp}</span>
+          </TextEndDate>
+          <BoxContent>
+            <Text className="text">
+              <ReactMarkdown>{proposal.content}</ReactMarkdown>
+            </Text>
+          </BoxContent>
+        </WrapContent>
+        <WrapVote>
+          <WrapBalance isMulti={isMulti}>
+            {isMulti && <Text color="orange" textStyle="R_14M">*{t('Plural vote')}</Text>}
+            <Flex>
+              <Text color="mediumgrey" textStyle="R_14R" mr="8px">{t('Balance')}</Text>
+              <Text color="black" textStyle="R_14B" mr="4px">{myVFinixBalance}</Text>
+              <Text color="black" textStyle="R_14M">{t('vFINIX')}</Text>
+            </Flex>
+          </WrapBalance>
+          <WrapMobileBalance>
             <Text color="mediumgrey" textStyle="R_14R" mr="8px">{t('Balance')}</Text>
-            <Text color="black" textStyle="R_14B" mr="4px">{myVFinixBalance}</Text>
-            <Text color="black" textStyle="R_14M">{t('vFINIX')}</Text>
+            <Flex>
+              <Text color="black" textStyle="R_14B" mr="4px">{myVFinixBalance}</Text>
+              <Text color="black" textStyle="R_14M">{t('vFINIX')}</Text>
+            </Flex>
+          </WrapMobileBalance>
+          <WrapMobilePlural>
+            {isMulti && <Text color="orange" textStyle="R_12M">*{t('Plural vote')}</Text>}
+          </WrapMobilePlural>
+          {proposal?.choices && proposal.choices.map((choice, index) => <WrapChoice key={choice}>
+              <Flex justifyContent="space-between" alignItems="center">
+              <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
+                <Text className="choice" textStyle="R_16R" color="black">{choice}</Text>
+              </CheckboxLabel>
+              <Text textStyle="R_16M" color="deepgrey" className="percent">{mapVoting[index] ? `${mapVoting[index].percent  }%` : ' '}</Text>
+            </Flex>
+            <Flex ml="36px" mt="14px">
+              <Range>
+                <RangeValue width={mapVoting[index] ? mapVoting[index].percent : 0} />
+              </Range>
+            </Flex>
+            <Flex ml="36px" mt="6px" minHeight="20px" className="wrap-votes">
+              <Text className="votes">{mapVoting[index] ? `${mapVoting[index].vote} ${t('Votes')}` : ' '}</Text>
+              <Text textStyle="R_12M" color="deepgrey" className="mobile-percent">{mapVoting[index] ? `${mapVoting[index].percent  }%` : ' '}</Text>
+            </Flex>
+          </WrapChoice>)}
+          <Flex justifyContent="center" mt="22px">
+            {renderVoteButton()}
           </Flex>
-        </Flex>
-        {proposal?.choices && proposal.choices.map((choice, index) => <Flex key={choice} flexDirection="column" pt="20px" pb="10px">
-            <Flex justifyContent="space-between" alignItems="center">
-            <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
-              <Text textStyle="R_16R" color="black">{choice}</Text>
-            </CheckboxLabel>
-            <Text textStyle="R_16M" color="deepgrey">{mapVoting[index] ? `${mapVoting[index].percent  }%` : ' '}</Text>
-          </Flex>
-          <Flex ml="36px" mt="14px">
-            <Range>
-              <RangeValue width={mapVoting[index] ? mapVoting[index].percent : 0} />
-            </Range>
-          </Flex>
-          <Flex ml="36px" mt="6px" minHeight="20px">
-            <Text textStyle="R_14R" color="mediumgrey">{mapVoting[index] ? `${mapVoting[index].vote} ${t('Votes')}` : ' '}</Text>
-          </Flex>
-        </Flex>)}
-        <Flex justifyContent="center" mt="22px">
-          {renderVoteButton()}
-        </Flex>
-      </WrapVote>
-    </Card>
+        </WrapVote>
+      </StyledCardBody>
+    </WrapCard>
   )
 }
 

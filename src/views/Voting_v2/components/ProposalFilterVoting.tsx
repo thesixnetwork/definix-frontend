@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react'
+import styled from 'styled-components';
 import { Box, Text, DropdownSet, Flex, Toggle } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next';
 import { ProposalType } from '../types';
@@ -6,6 +7,12 @@ import { ProposalType } from '../types';
 interface Props {
   setProposalType: (id: ProposalType) => void;
 }
+
+const Wrap = styled(Flex)`
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    justify-content: space-between;
+  }
+`
 
 const ProposalFilterVoting: React.FC<Props> = ({ setProposalType }) => {
   const { t } = useTranslation();
@@ -27,7 +34,7 @@ const ProposalFilterVoting: React.FC<Props> = ({ setProposalType }) => {
   ], [t])
 
   return (
-    <Flex>
+    <Wrap>
       <Box width="148px">
         <DropdownSet
           position="bottom"
@@ -43,10 +50,10 @@ const ProposalFilterVoting: React.FC<Props> = ({ setProposalType }) => {
         />
       </Box>
       <Flex ml="24px" alignItems="center">
-        <Text mr="10px">{t('Voting only')}</Text>
+        <Text width="70px" textStyle="R_14R" color="deepgrey" mr="10px">{t('Voting only')}</Text>
         <Toggle checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
       </Flex>
-    </Flex>
+    </Wrap>
   )
 }
 

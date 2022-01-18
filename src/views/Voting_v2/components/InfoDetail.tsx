@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react'
-import { Flex, LinkIcon, Text } from '@fingerlabs/definixswap-uikit-v2'
+import { CardBody, LinkIcon, Text } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import styled from 'styled-components'
@@ -12,8 +12,12 @@ interface Props {
 }
 
 
-const Wrap = styled(Flex)`
+const Wrap = styled(CardBody)`
   padding: 32px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding: 20px;
+  }
 `
 
 const WrapTable = styled.table`
@@ -38,6 +42,13 @@ const Col = styled.td`
     width: 20%;
     background-color: ${({ theme }) => theme.colors.lightGrey20};
   }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    &:nth-child(1) {
+      width: 32%;
+    }
+  }
+
 `
 
 const Link = styled.a`

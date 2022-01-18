@@ -1,18 +1,28 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useMemo, useCallback } from 'react'
+import React, { useState, useMemo } from 'react'
 import _ from 'lodash'
-import { Flex, Box, Text, LinkIcon } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, CardBody, Text, LinkIcon, Box } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
-import Pagination from './Pagination';
+import StakeListPagination from 'views/LongTermStake_v2/components/StakeListPagination'
 
 interface Props {
   id: string;
   proposalIndex: string;
 }
-const Wrap = styled(Box)`
+const Wrap = styled(CardBody)`
   padding: 32px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding: 20px;
+  }
+`
+
+const ScrollTable = styled(Box)`
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    overflow-x: auto;
+  }
 `
 
 const WrapTable = styled.table`
@@ -69,9 +79,9 @@ const Link = styled.a`
 `
 const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
   const { t } = useTranslation();
-  const [curPage, setCurPage] = useState<number>(1)
+  const [currentPage, setCurrentPage] = useState<number>(1)
   const limits = 10;
-  const { allVotesByIndex, totalVote } = useVotesByIndex(proposalIndex, curPage, limits)
+  const { allVotesByIndex, totalVote } = useVotesByIndex(proposalIndex, currentPage, limits)
   const { allVotesByIpfs } = useVotesByIpfs(id);
 
   const mapAllVote = useMemo(() => {
@@ -95,62 +105,66 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
     return array
   }, [allVotesByIndex, allVotesByIpfs])
 
-  const onChangePage = useCallback((page: number) => {
-    setCurPage(page);
-  }, [])
-
   return (
     <Wrap>
-      <WrapTable>
-        <thead>
-          <Row>
-            <TitleCol>
-              <Text textStyle="R_12M" color="mediumgrey">{t('Transaction Hash')}</Text>
-            </TitleCol>
-            <TitleCol>
-              <Text textStyle="R_12M" color="mediumgrey">{t('Address')}</Text>
-            </TitleCol>
-            <TitleCol>
-              <Text textStyle="R_12M" color="mediumgrey">{t('Choice')}</Text>
-            </TitleCol>
-            <TitleCol>
-              <Text textStyle="R_12M" color="mediumgrey">{t('Voting Power')}</Text>
-            </TitleCol>
-          </Row>
-        </thead>
-        {
-          mapAllVote.map((vote) => <Row>
-            <Col>
-              <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/tx/${vote.transaction_hash}`} target="_blank">
+      <ScrollTable>
+        <WrapTable>
+          <thead>
+            <Row>
+              <TitleCol>
+                <Text textStyle="R_12M" color="mediumgrey">{t('Transaction Hash')}</Text>
+              </TitleCol>
+              <TitleCol>
+                <Text textStyle="R_12M" color="mediumgrey">{t('Address')}</Text>
+              </TitleCol>
+              <TitleCol>
+                <Text textStyle="R_12M" color="mediumgrey">{t('Choice')}</Text>
+              </TitleCol>
+              <TitleCol>
+                <Text textStyle="R_12M" color="mediumgrey">{t('Voting Power')}</Text>
+              </TitleCol>
+            </Row>
+          </thead>
+          {
+            mapAllVote.map((vote) => <Row>
+              <Col>
+                <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/tx/${vote.transaction_hash}`} target="_blank">
+                  <Text textStyle="R_14R" color="black">
+                    {`${vote.transaction_hash.substring(0, 6)}...${vote.transaction_hash.substring(vote.transaction_hash.length - 4)}`}
+                  </Text>
+                  <LinkIcon />
+                </Link>
+              </Col>
+              <Col>
+                <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${vote.voter_addr}`} target="_blank">
+                  <Text textStyle="R_14R" color="black">
+                    {`${vote.voter_addr.substring(0, 6)}...${vote.voter_addr.substring(vote.voter_addr.length - 4)}`}
+                  </Text>
+                  <LinkIcon />
+                </Link>
+              </Col>
+              <Col>
                 <Text textStyle="R_14R" color="black">
-                  {`${vote.transaction_hash.substring(0, 6)}...${vote.transaction_hash.substring(vote.transaction_hash.length - 4)}`}
+                  {vote.voting_opt}
                 </Text>
-                <LinkIcon />
-              </Link>
-            </Col>
-            <Col>
-              <Link as="a" href={`${process.env.REACT_APP_KLAYTN_URL}/account/${vote.voter_addr}`} target="_blank">
+              </Col>
+              <Col>
                 <Text textStyle="R_14R" color="black">
-                  {`${vote.voter_addr.substring(0, 6)}...${vote.voter_addr.substring(vote.voter_addr.length - 4)}`}
+                  {vote.voting_power}
                 </Text>
-                <LinkIcon />
-              </Link>
-            </Col>
-            <Col>
-              <Text textStyle="R_14R" color="black">
-                {vote.voting_opt}
-              </Text>
-            </Col>
-            <Col>
-              <Text textStyle="R_14R" color="black">
-                {vote.voting_power}
-              </Text>
-            </Col>
-          </Row>)
-        }
-      </WrapTable>
+              </Col>
+            </Row>)
+          }
+        </WrapTable>
+      </ScrollTable>
       <Flex alignItems="center" justifyContent="center" mt="20px">
-        <Pagination curPage={curPage} totalPage={+totalVote} pageOffset={10} updatePage={onChangePage} />
+        <StakeListPagination
+          isMobile={false}
+          itemPerPage={10}
+          dataLength={+totalVote}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </Flex>
     </Wrap>
   )
