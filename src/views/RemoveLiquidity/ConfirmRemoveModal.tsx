@@ -44,7 +44,7 @@ import KlaytnScopeLink from 'components/KlaytnScopeLink'
 import { calculateGasMargin, calculateSlippageAmount, getRouterContract } from 'utils'
 import useWallet from 'hooks/useWallet'
 
-interface Props extends InjectedModalProps {
+interface IProps extends InjectedModalProps {
   currencyA: Currency
   currencyB: Currency
   parsedAmounts: {
@@ -58,15 +58,9 @@ interface Props extends InjectedModalProps {
   tokenB: Token
   signatureData: { v: number; r: string; s: string; deadline: number }
   onDismissModal: () => void
-  onUserInput: (field: Field, val: string) => void
+  onUserInput: (field: Field, val: string) => void;
+  successTxCallback?: any;
 }
-
-// const Wrap = styled(Box)`
-//   height: 100%;
-//   @media screen and (min-width: 464px) {
-//     width: 416px;
-//   }
-// `
 
 const StyledNotiIcon = styled(NotiIcon)`
   flex-shrink: 0;
@@ -85,7 +79,8 @@ export default function ConfirmRemoveModal({
   signatureData,
   onDismissModal,
   onUserInput,
-}: Props) {
+  successTxCallback
+}: IProps) {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
   const { account, chainId, connector, library } = useWallet()
@@ -366,9 +361,12 @@ export default function ConfirmRemoveModal({
         }),
         <KlaytnScopeLink hash={txHash} />,
       )
+      if(successTxCallback){
+        successTxCallback();
+      }
       onDismiss()
     }
-  }, [txHash, t, toastSuccess, onDismissModal, onDismiss])
+  }, [txHash, t, toastSuccess, onDismissModal, onDismiss, successTxCallback])
 
   useEffect(() => {
     if (errorMsg) {

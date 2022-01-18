@@ -1,11 +1,12 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Box, Flex, TitleSet, useMatchBreakpoints, Tabs, ColorStyles } from '@fingerlabs/definixswap-uikit-v2'
 import { useHistory } from 'react-router-dom'
-import AddLiquidity from './AddLiquidity'
+import LiquidityList from './LiquidityList'
 
 const Liquidity: React.FC = () => {
   const history = useHistory();
+
   const { isXl, isXxl } = useMatchBreakpoints()
   const isMobile = useMemo(() => !isXl && !isXxl, [isXl, isXxl])
   const { t, i18n } = useTranslation()
@@ -20,8 +21,8 @@ const Liquidity: React.FC = () => {
 
   const tabNames = useMemo(() => [t('Add'), t('Remove')], [t])
   const changeTab = useCallback((tab: string) => {
-    if(tab === tabNames[1]){
-      history.replace('/liquidity/list')
+    if(tab === tabNames[0]){
+      history.replace('/liquidity/add')
     }
   }, [history, tabNames]);
 
@@ -46,10 +47,10 @@ const Liquidity: React.FC = () => {
             borderRight="1px solid #ffe5c9"
             style={{ boxShadow: '0 12px 12px 0 rgba(227, 132, 0, 0.1)' }}
           >
-            <Tabs tabs={tabNames} curTab={tabNames[0]} setCurTab={changeTab} equal={isMobile} />
+            <Tabs tabs={tabNames} curTab={tabNames[1]} setCurTab={changeTab} equal={isMobile} />
           </Box>
           <Box pb={isMobile ? '40px' : '80px'}>
-            <AddLiquidity />
+            <LiquidityList />
           </Box>
         </Flex>
       </Flex>

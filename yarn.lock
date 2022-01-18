@@ -2517,10 +2517,10 @@
     "@ethersproject/properties" "^5.5.0"
     "@ethersproject/strings" "^5.5.0"
 
-"@fingerlabs/definixswap-uikit-v2@^0.16.19":
-  version "0.16.19"
-  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.16.19.tgz#01b127f2a969ac269c2afb36baf526a2b56b0ded"
-  integrity sha512-6UjvHHF10Wnc8YXT1fmSGOTJYODuqLCMMW4Pjerw92Ds+qkf4G9kXsdfxt9Y/n0gjgHKdQRsLUJWoyzJ1YbnVw==
+"@fingerlabs/definixswap-uikit-v2@^0.16.20":
+  version "0.16.20"
+  resolved "https://registry.yarnpkg.com/@fingerlabs/definixswap-uikit-v2/-/definixswap-uikit-v2-0.16.20.tgz#e0190aa422596a94ad2f7e177c456de40c11fda4"
+  integrity sha512-pvYD9PNVXb2cPFdtQU/rSi0EISIR63I0ilOwdoUCT6nBgLpUWG45CzaCVe79mPx3RrCVeQqaxyAr+zJ/U/V2ww==
   dependencies:
     "@types/lodash" "^4.14.162"
     "@types/styled-system" "^5.1.10"
@@ -8389,7 +8389,7 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
-copy-to-clipboard@^3.2.0, copy-to-clipboard@^3.3.1:
+copy-to-clipboard@*, copy-to-clipboard@^3.2.0, copy-to-clipboard@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/copy-to-clipboard/-/copy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
   integrity sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==
@@ -17886,7 +17886,7 @@ pocket-js-core@0.0.3:
   dependencies:
     axios "^0.18.0"
 
-polished@^4.1.3:
+polished@*, polished@^4.1.3:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/polished/-/polished-4.1.3.tgz#7a3abf2972364e7d97770b827eec9a9e64002cfc"
   integrity sha512-ocPAcVBUOryJEKe0z2KLd1l9EBa1r5mSwlKpExmrLzsnIzJo4axsoU9O2BjOTkDGDT4mZ0WFE5XKTlR3nLnZOA==
@@ -19482,7 +19482,7 @@ react-markdown@^6.0.2:
     unist-util-visit "^2.0.0"
     vfile "^4.0.0"
 
-react-popper-tooltip@^4.3.1:
+react-popper-tooltip@*:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/react-popper-tooltip/-/react-popper-tooltip-4.3.1.tgz#0bfdd40453395865d7a5678a160640243070528e"
   integrity sha512-/Lj1vjAEFEFxKKWnxupeS9pRrXYQlJd++OAAj/Ht3uOSqjWLtYWDXKV99e+YO6b5hV3SgXbtkHFzHH4eqlMWJA==

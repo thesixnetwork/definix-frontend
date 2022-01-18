@@ -158,7 +158,7 @@ export default function RemoveLiquidity() {
 
   useEffect(() => {
     if (!account) {
-      history.replace('/liquidity')
+      history.replace('/liquidity/list')
     }
   }, [account, history])
 
@@ -184,6 +184,7 @@ export default function RemoveLiquidity() {
         signatureData,
         onDismissModal: handleDismissConfirmation,
         onUserInput,
+        successTxCallback: () => history.replace('/liquidity/list')
       }}
     />,
   )
@@ -191,7 +192,7 @@ export default function RemoveLiquidity() {
   return (
     <Flex width="100%" flexDirection="column" alignItems="center">
       <Flex flexDirection="column" width={isMobile ? '100%' : '629px'} mb="40px">
-        <Flex mb="20px" onClick={() => history.replace('/liquidity')} style={{ cursor: 'pointer' }}>
+        <Flex mb="20px" onClick={() => history.replace('/liquidity/list')} style={{ cursor: 'pointer' }}>
           <BackIcon />
           <Text
             ml="6px"
