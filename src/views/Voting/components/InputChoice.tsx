@@ -13,7 +13,7 @@ const StyledInput = styled(Input)`
   height: 42px;
 `
 
-const InputChoice: React.FC<ChoiceProps> = ({ onRemove, onTextInput, hasMinimumChoices, ...props }) => {
+const InputChoice: React.FC<ChoiceProps> = ({ onRemove, onTextInput, ...props }) => {
   const [isWarning, setIsWarning] = useState(false)
   const [isDirty, setIsDirty] = useState(false)
 

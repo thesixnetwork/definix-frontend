@@ -1,5 +1,4 @@
 import React from 'react'
-import _ from 'lodash'
 import { Route, useRouteMatch, useParams } from 'react-router-dom'
 import { MaxWidth } from 'uikit-dev/components/TwoPanelLayout'
 import styled from 'styled-components'
@@ -12,7 +11,7 @@ import VotingList from './components/VotingList'
 import VotingDetails from './components/VotingDetails'
 import VotingResults from './components/VotingResults'
 import VotingPower from './components/VotingPower'
-import { useGetProposal, useAllProposalOfType } from '../../hooks/useVoting'
+import { useGetProposal } from '../../hooks/useVoting'
 
 const MaxWidthLeft = styled(MaxWidth)`
   max-width: unset;
@@ -37,9 +36,6 @@ const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
   const isMobile = !isXl
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const proposal = useGetProposal(id)
-  const allProposal = useAllProposalOfType()
-  const listAllProposal = _.get(allProposal, 'allProposal')
-  const getByIndex = listAllProposal.filter((book) => Number(book.proposalIndex) === Number(proposalIndex))
 
   return (
     <>
@@ -47,17 +43,17 @@ const VotingInfos: React.FC<ValueProps> = ({ isParticipate }) => {
         <MaxWidthLeft>
           <div className={`flex align-stretch mt-5 ${isMobile ? 'flex-wrap' : ''}`}>
             <div className={isMobile ? 'col-12' : 'col-8 mr-2'}>
-              <VotingDescription id={id} index={proposal && proposal.proposal} />
+              <VotingDescription index={proposal && proposal.proposal} />
               {isParticipate ? (
                 <YourVoteList />
               ) : (
-                <VotingCast id={id} indexs={proposal && proposal.proposal} proposalIndex={proposalIndex} />
+                <VotingCast indexs={proposal && proposal.proposal} proposalIndex={proposalIndex} />
               )}
-              <VotingList rbAddress />
+              <VotingList />
             </div>
             <div className={isMobile ? 'col-12 mt-5' : 'col-4 ml-3'}>
               <VotingDetails id={id} index={proposal && proposal.proposal} />
-              <VotingResults getByIndex={getByIndex} />
+              <VotingResults />
               <VotingPower />
             </div>
           </div>

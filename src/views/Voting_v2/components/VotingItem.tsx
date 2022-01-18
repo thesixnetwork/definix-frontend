@@ -4,12 +4,13 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import { Text, Flex } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next';
-import { Voting } from 'state/types';
+import { VotingItem as Voting } from 'state/types';
 import Badge from './Badge';
 import { BadgeType } from '../types';
 
 interface Props {
   item: Voting;
+  isStartDate: boolean;
 }
 
 const Item = styled(Flex)`
@@ -47,7 +48,7 @@ const TextEndDate = styled(Text)`
   }
 `
 
-const VotingItem: React.FC<Props> = ({ item }) => {
+const VotingItem: React.FC<Props> = ({ item, isStartDate }) => {
   const { t } = useTranslation();
   return (
     <Item as={Link} to={`/voting/detail/${_.get(item, 'ipfsHash')}/${_.get(item, 'proposalIndex')}`}>
@@ -59,8 +60,8 @@ const VotingItem: React.FC<Props> = ({ item }) => {
       </Flex>
       <Text textStyle="R_14R" color="black" mt="12px">{item.title}</Text>
       <TextEndDate textStyle="R_12R" color="mediumgrey" mt="6px">
-        <span>{t('End Date')}</span>
-        <span>{item.endTimestamp}</span>
+        <span>{t(isStartDate ? 'Start Date' : 'End Date')}</span>
+        <span>{isStartDate ? item.startTimestamp : item.endTimestamp}</span>
       </TextEndDate>
     </Item>
   )

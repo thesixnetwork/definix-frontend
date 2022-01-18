@@ -104,7 +104,7 @@ function MyFormControlLabel(props) {
   return <CustomRadio checked={checked} {...props} icon={<BpIcons />} />
 }
 
-const VotingCast = ({ id, indexs, proposalIndex }) => {
+const VotingCast = ({ indexs, proposalIndex }) => {
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobile = !isXl && !isLg
   const voteNow = indexs.startEpoch < Date.now() && indexs.endEpoch > Date.now()
@@ -114,10 +114,10 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
   const items = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
   const [select, setSelect] = useState({})
   const [singleType, setSingleType] = useState({})
-  const [isLoading, setIsLoading] = useState(false)
+  const [, setIsLoading] = useState(false)
   const [allChoice, setAllChoice] = useState([])
   const [flgMerge, setFlgMerge] = useState('')
-  const choices = indexs.choices
+  const {choices} = indexs
   const choiceType = indexs.choice_type
   const allChoices = useMemo(() => {
     const set = []
@@ -134,7 +134,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
   }, [choices])
 
   const flgDisable = useMemo(() => {
-    const filterChecked = Object.values(select).filter((v, index) => {
+    const filterChecked = Object.values(select).filter((v) => {
       return _.get(v, 'checked') === true
     })
     return choiceType === 'single' ? Object.values(select).length : filterChecked.length
@@ -164,11 +164,11 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
     const getData = []
     setIsLoading(true)
     if (choices !== undefined && _.get(items, 'choices') !== undefined) {
-      choices.map((data, index) => {
+      choices.map((data) => {
         return getData.push({ choiceName: data })
       })
 
-      const mergeChoice = getData.map((item, row) => {
+      const mergeChoice = getData.map((item) => {
         const found =
           _.get(items, 'choices') !== undefined &&
           _.get(items, 'choices').find((element) => item.choiceName === element.choiceName)
@@ -207,7 +207,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                           <RadioGroup
                             name="use-radio-group"
                             value={select}
-                            onChange={(event, i) => handleRadioButton(event, index, _.get(c, 'choiceName'))}
+                            onChange={(event) => handleRadioButton(event, index, _.get(c, 'choiceName'))}
                           >
                             <CardList checked={_.get(select, `${index}.value`)}>
                               <MyFormControlLabel
@@ -243,7 +243,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                             <CustomCheckbox
                               size="small"
                               checked={_.get(select, `${index}.checked`)}
-                              onChange={(event, i) => {
+                              onChange={(event) => {
                                 setSelect({
                                   ...select,
                                   [index]: {
@@ -276,7 +276,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                         <RadioGroup
                           name="use-radio-group"
                           value={select}
-                          onChange={(event, i) => handleRadioButton(event, index, c)}
+                          onChange={(event) => handleRadioButton(event, index, c)}
                         >
                           <CardList checked={_.get(select, `${index}.value`)}>
                             <MyFormControlLabel
@@ -305,7 +305,7 @@ const VotingCast = ({ id, indexs, proposalIndex }) => {
                           <CustomCheckbox
                             size="small"
                             checked={_.get(select, `${index}.checked`)}
-                            onChange={(event, i) => {
+                            onChange={(event) => {
                               setSelect({
                                 ...select,
                                 [index]: {

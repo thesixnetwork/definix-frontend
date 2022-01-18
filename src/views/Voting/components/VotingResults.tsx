@@ -18,7 +18,7 @@ const BorderLinearProgress = styled(LinearProgress)(() => ({
   },
 }))
 
-const VotingResults = ({ getByIndex }) => {
+const VotingResults = () => {
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { indexProposal } = useProposalIndex(proposalIndex)
   const [isLoading, setIsLoading] = useState(false)

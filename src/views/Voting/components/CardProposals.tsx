@@ -1,10 +1,9 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import _ from 'lodash'
 import TopicList from './TopicList'
 import CardTab from './CardTab'
-import { Card, Button } from '../../../uikit-dev'
+import { Card } from '../../../uikit-dev'
 
 const Proposals = styled(Card)`
   width: 100%;

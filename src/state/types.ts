@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Toast } from 'uikit-dev'
 import BigNumber from 'bignumber.js'
 import {
@@ -272,6 +273,24 @@ export interface Voting {
   creator?: string;
   start_unixtimestamp?: number;
   end_unixtimestamp?: number;
+}
+
+export interface VotingItem {
+  choice_type: 'single' | 'multi';
+  choices: string[];
+  content: string;
+  creator: string;
+  endTimestamp: string;
+  end_unixtimestamp: number;
+  ipfsHash: string;
+  proposalIndex: number;
+  proposalType: number;
+  proposals_type: string;
+  proposer: string;
+  startTimestamp: string;
+  start_unixtimestamp: number;
+  title: string;
+  isParticipated?: boolean;
 }
 
 export interface VotingState {

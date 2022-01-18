@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react'
 import numeral from 'numeral'
 import BigNumber from 'bignumber.js'
-import _, { map } from 'lodash'
+import _ from 'lodash'
 import Lottie from 'react-lottie'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
@@ -100,7 +100,7 @@ const CardAlert = styled.div`
 `
 
 const ExpandMore = styled((props) => {
-  const { expand, ...other } = props
+  const { ...other } = props
   return <IconButton {...other} />
 })(() => ({
   '&.MuiIconButton-root': {
@@ -124,11 +124,11 @@ const CastVoteModal: React.FC<Props> = ({
   const { isDark } = useTheme()
   const [transactionHash, setTransactionHash] = useState('')
 
-  const [amount, setAmount] = useState('')
+  const [, setAmount] = useState('')
   const [value, setValue] = useState('0')
   const [showLottie, setShowLottie] = useState(false)
   const [selects, setSelect] = useState({})
-  const [checked, setChecked] = useState([])
+  const [, setChecked] = useState([])
   const mapChoicesForSingle = useMemo(() => {
     const mapSingle = []
     const check = []
@@ -158,7 +158,7 @@ const CastVoteModal: React.FC<Props> = ({
   const { isXl, isLg } = useMatchBreakpoints()
   const isMobileOrTablet = !isXl && !isLg
   const [percent, setPercent] = useState(0)
-  const [multiple, setMultiple] = useState(true)
+  const [multiple] = useState(true)
   const filter = useMemo(() => {
     const filterCheckbox = Object.values(select).filter((i) => {
       return _.get(i, 'checked') === true
@@ -259,13 +259,12 @@ const CastVoteModal: React.FC<Props> = ({
   }
 
   const onConfirm = () => {
-    console.log(mapChoicesForSingle)
     const res = onCastVote(proposalIndex, types === 'single' ? mapChoicesForSingle : mapChoicesForMulti)
     res
-      .then((r) => {
+      .then(() => {
         setShowLottie(true)
       })
-      .catch((e) => {
+      .catch(() => {
         setShowLottie(false)
       })
   }

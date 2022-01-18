@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { useAllProposalOfType } from '../../../hooks/useVoting'
 import { Button, Heading } from '../../../uikit-dev'
 
 interface CardTabType {
@@ -25,7 +24,7 @@ const Tab = styled(Button)<{ active: boolean }>`
   justify-content: center;
   background: transparent !important;
   color: ${({ theme, active }) => (active ? '#30ADFF' : theme.colors.textSubtle)} !important;
-  border-bottom: ${({ theme, active }) => active && '0.25rem solid #30ADFF'} !important;
+  border-bottom: ${({ active }) => active && '0.25rem solid #30ADFF'} !important;
   border-radius: 0;
 
   &:hover {

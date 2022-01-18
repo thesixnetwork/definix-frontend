@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import _ from 'lodash'
 import styled from 'styled-components'
 import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
@@ -49,12 +49,12 @@ const YourVoteList = () => {
   const onClaim = useCallback((r) => {
     const claim = callClaimVote(r)
     claim
-      .then((b) => {
+      .then(() => {
         toastSuccess(t('{{Action}} Complete', {
           Action: t('actionClaim')
         }));
       })
-      .catch((e) => {
+      .catch(() => {
         toastError(t('{{Action}} Failed', {
           Action: t('actionClaim')
         }));

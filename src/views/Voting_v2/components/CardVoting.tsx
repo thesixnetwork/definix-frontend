@@ -3,7 +3,7 @@ import _ from 'lodash'
 import styled from 'styled-components';
 import { Card, Flex, Tabs } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
-import { Voting } from 'state/types';
+import { VotingItem } from 'state/types';
 import VotingList from './VotingList';
 import { useAllProposalOfType, useAllProposalOfAddress } from '../../../hooks/useVoting'
 import { FilterId, ProposalType } from '../types';
@@ -31,7 +31,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { t } = useTranslation();
   const allProposalMap = useAllProposalOfType()
   const { proposalOfAddress } = useAllProposalOfAddress()
-  const listAllProposal = _.get(allProposalMap, 'allProposalMap')
+  const listAllProposal: VotingItem[] = _.get(allProposalMap, 'allProposalMap')
   const [voteList, setVoteList] = useState([]);
   const participatedVotes = useMemo(() => {
     return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
@@ -43,7 +43,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
     },
     {
       name: t('Soon'),
-      component: <VotingList list={voteList[1]} />,
+      component: <VotingList isStartDate list={voteList[1]} />,
     },
     {
       name: t('Closed'),
@@ -57,7 +57,7 @@ const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   useEffect(() => {
     if (!listAllProposal) return;
 
-    const participatedAllProposal = listAllProposal.map((item: Voting) => {
+    const participatedAllProposal = listAllProposal.map((item: VotingItem) => {
       if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
         return {
           isParticipated: true,

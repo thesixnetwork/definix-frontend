@@ -20,10 +20,6 @@ const TextVotingOnly = styled(Text)`
   ${({ theme }) => theme.textStyle.R_14R}
   color: ${({ theme }) => theme.colors.deepgrey};
   margin-right: 10px;
-
-  ${({ theme }) => theme.mediaQueries.mobile} {
-    width: 70px;
-  }
 `
 
 const ProposalFilterVoting: React.FC<Props> = ({ isParticipated, setIsParticipated }) => {

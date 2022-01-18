@@ -93,7 +93,7 @@ const TD = styled.td<{ align?: string }>`
   text-align: ${({ align }) => align || 'left'};
 `
 
-const TransactionTable = ({ rows, empText, isLoading, total }) => {
+const TransactionTable = ({ rows, empText, isLoading }) => {
   const [cols] = useState(['Vote', 'Voting Power', ''])
 
   return (
@@ -191,11 +191,11 @@ const YourVoteList = () => {
     onPresentConnectModal()
     const claim = callClaimVote(r)
     claim
-      .then((b) => {
+      .then(() => {
         onPresentAccountModal()
         setInterval(() => setIsLoad('success'), 3000)
       })
-      .catch((e) => {
+      .catch(() => {
         setIsLoad('')
         onDismiss()
       })
@@ -219,7 +219,6 @@ const YourVoteList = () => {
           rows={items !== undefined && items}
           isLoading={isLoading}
           empText="Don`t have any transactions in this votes."
-          total
         />
         {!isLoading ? (
           <>

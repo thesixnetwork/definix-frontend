@@ -2,12 +2,13 @@ import React, { useState, useMemo } from 'react'
 import { Flex, Box, Text } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Voting } from 'state/types';
+import { VotingItem as Voting } from 'state/types';
 import StakeListPagination from 'views/LongTermStake_v2/components/StakeListPagination'
 import VotingItem from './VotingItem';
 
 interface Props {
   list: Voting[];
+  isStartDate?: boolean;
 }
 
 const List = styled(Box)`
@@ -20,7 +21,7 @@ const List = styled(Box)`
 
 const ItemPerPage = 10;
 
-const VotingList: React.FC<Props> = ({ list }) => {
+const VotingList: React.FC<Props> = ({ list, isStartDate = false }) => {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState<number>(1)
   const currentList = useMemo(() => {
@@ -32,7 +33,7 @@ const VotingList: React.FC<Props> = ({ list }) => {
     <Box width="100%" pb="20px">
       <List>
         {
-          currentList.map((item) => <VotingItem item={item} />)
+          currentList.map((item) => <VotingItem isStartDate={isStartDate} item={item} />)
         }
       </List>
       <Flex mt="12px" justifyContent="center">

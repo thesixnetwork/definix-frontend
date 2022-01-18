@@ -8,7 +8,7 @@ import { Card, CardBody, Box, Flex, Text, CheckboxLabel, Checkbox, Button, useMo
 import ReactMarkdown from 'components/ReactMarkdown'
 import UnlockButton from 'components/UnlockButton'
 import * as klipProvider from 'hooks/klipProvider'
-import { useProposalIndex, useGetProposal, useServiceAllowance, useApproveToService, useVote } from 'hooks/useVoting'
+import { useProposalIndex, useServiceAllowance, useApproveToService, useVote } from 'hooks/useVoting'
 import { usePrivateData } from 'hooks/useLongTermStake'
 import useRefresh from 'hooks/useRefresh'
 import { useToast } from 'state/hooks'

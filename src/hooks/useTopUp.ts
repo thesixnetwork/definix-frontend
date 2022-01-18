@@ -3,8 +3,6 @@ import { useEffect, useState, useCallback, useContext } from 'react'
 import BigNumber from 'bignumber.js'
 
 import { useWallet, KlipModalContext } from '@sixnetwork/klaytn-use-wallet'
-import { provider } from 'web3-core'
-import _ from 'lodash'
 import { VaultTopUpFeatureFacetByName } from 'hooks/hookHelper'
 import * as klipProvider from 'hooks/klipProvider'
 
@@ -12,14 +10,11 @@ import VaultTopUpFeatureFacetAbi from '../config/abi/VaultTopUpFeatureFacet.json
 import IKIP7 from '../config/abi/IKIP7.json'
 import { getContract } from '../utils/caver'
 import { getVFinix, getFinixAddress } from '../utils/addressHelpers'
-import useRefresh from './useRefresh'
 /* eslint no-else-return: "error" */
 
 // @ts-ignore
-const useTopUp = (tokenAddress: string) => {
-  const [balance, setBalance] = useState(new BigNumber(0))
-  const { account, klaytn }: { account: string; klaytn: provider } = useWallet()
-  const { fastRefresh } = useRefresh()
+const useTopUp = () => {
+  const [balance] = useState(new BigNumber(0))
 
   return balance
 }
@@ -57,13 +52,13 @@ export const useLockPlus = (level, idLastMaxLv, lockFinix) => {
               callContract.methods
                 .lockPlus(level, idLastMaxLv, lockFinix)
                 .send({ from: account, gas: estimatedGasLimit })
-                .then((resolve) => {
+                .then(() => {
                   setLoading('success')
                   setStatus(true)
                   setInterval(() => setLoading(''), 3000)
                   setInterval(() => setStatus(false), 3000)
                 })
-                .catch((e) => {
+                .catch(() => {
                   setLoading('')
                   setStatus(false)
                 })
