@@ -19,6 +19,7 @@
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "lang": "gsheet-to-json ./lang.json ./src/locales",
     "notice": "gsheet-to-json ./notice.json ./src/assets/notice",
+    "voting": "gsheet-to-json ./voting.json ./src/assets/voting",
     "generate:config": "ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/generateConfig"
   },
   "husky": {
