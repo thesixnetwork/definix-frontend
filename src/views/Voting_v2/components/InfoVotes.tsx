@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { useVotesByIndex, useVotesByIpfs } from 'hooks/useVoting'
 import StakeListPagination from 'views/LongTermStake_v2/components/StakeListPagination'
+import Translate from './Translate'
 
 interface Props {
   id: string;
@@ -151,7 +152,7 @@ const InfoVotes: React.FC<Props> = ({ id, proposalIndex }) => {
                   </Col>
                   <Col>
                     <Text textStyle="R_14R" color="black">
-                      {vote.voting_opt}
+                      <Translate text={vote.voting_opt} type="opinion" />
                     </Text>
                   </Col>
                   <Col>
