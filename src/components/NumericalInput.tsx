@@ -58,6 +58,9 @@ export const Input = React.memo(function InnerInput({
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === '' || inputRegex.test(escapeRegExp(nextUserInput))) {
       onUserInput(nextUserInput)
+    } else if (nextUserInput.length === 1 && Number.isNaN(+nextUserInput)) {
+      onUserInput('')
+
     }
   }
 

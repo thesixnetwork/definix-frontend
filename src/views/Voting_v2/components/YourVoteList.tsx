@@ -1,281 +1,86 @@
-/* eslint-disable no-nested-ternary */
-import React, { useState, useContext, useEffect, useMemo } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import Lottie from 'react-lottie'
+import React, { useCallback, useContext, useEffect, useMemo } from 'react'
 import _ from 'lodash'
-import isEmpty from 'lodash/isEmpty'
 import styled from 'styled-components'
-import CircularProgress from '@material-ui/core/CircularProgress'
-import ModalResponses from 'uikit-dev/widgets/Modal/ModalResponses'
-import { Context } from 'uikit-dev/widgets/Modal/ModalContext'
-import success from 'uikit-dev/animation/complete.json'
-import loadings from 'uikit-dev/animation/farmPool.json'
-import { Button, Card, Text, useModal, useMatchBreakpoints } from '../../../uikit-dev'
-import { useAllProposalOfAddress, useClaimVote, useIsClaimable } from '../../../hooks/useVoting'
+import { Card, CardBody, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
+import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { useAllProposalOfAddress, useIsClaimable, useClaimVote } from 'hooks/useVoting'
+import { useToast } from 'state/hooks'
+import VoteOptionLabel from './VoteOptionLabel'
 
-const SuccessOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: success,
-}
-
-const LoadingOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: loadings,
-}
-
-const EmptyData = ({ text }) => (
-  <TR>
-    <TD colSpan={6}>
-      <div className="flex align-center justify-center" style={{ height: '400px' }}>
-        <Text textAlign="center" color="textSubtle">
-          {text}
-        </Text>
-      </div>
-    </TD>
-  </TR>
-)
-
-const LoadingData = () => (
-  <TR>
-    <TD colSpan={6}>
-      <div className="flex align-center justify-center" style={{ height: '400px' }}>
-        <CircularProgress size={16} color="inherit" className="mr-2" />
-        <Text>Loading...</Text>
-      </div>
-    </TD>
-  </TR>
-)
-
-const CardTable = styled(Card)`
-  position: relative;
-  content: '';
-  background-color: ${({ theme }) => theme.mediaQueries.md};
-  background-size: cover;
-  background-repeat: no-repeat;
-  right: 0;
-  overflow: auto;
-
-  a {
-    display: block;
-  }
-`
-
-const CardList = styled(Card)`
-  position: relative;
-  content: '';
-  background-color: ${({ theme }) => theme.mediaQueries.md};
-  background-size: cover;
-  background-repeat: no-repeat;
-  right: 0;
-  overflow: auto;
-  box-shadow: unset;
-  border-radius: unset;
-
-  a {
-    display: block;
-  }
-`
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: separate;
-`
-
-const TR = styled.tr``
-
-const TD = styled.td<{ align?: string }>`
+const VoteItem = styled(Flex)`
+  justify-content: space-between;
+  padding: 20px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
-  padding: 16px;
-  height: 64px;
-  vertical-align: middle;
-  text-align: ${({ align }) => align || 'left'};
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    flex-direction: column;
+    padding: 16px 0;
+
+    .wrap-power {
+      margin-top: 8px;
+      margin-left: 24px;
+    }
+  }
 `
 
-const TransactionTable = ({ rows, empText, isLoading, total }) => {
-  const [cols] = useState(['Vote', 'Voting Power', ''])
-
-  return (
-    <CardList>
-      <Table>
-        <TR>
-          {cols.map((c) => (
-            <TD key={c}>
-              <Text color="textSubtle" fontSize="12px" bold>
-                {c}
-              </Text>
-            </TD>
-          ))}
-        </TR>
-
-        {isLoading ? (
-          <LoadingData />
-        ) : isEmpty(rows) ? (
-          <>
-            <EmptyData text={empText} />
-          </>
-        ) : (
-          <>
-            {rows !== null &&
-              _.get(rows, 'choices').map((r) => (
-                <TR key="">
-                  <TD>
-                    <Text color="text" bold>
-                      {r.choiceName}
-                    </Text>
-                  </TD>
-                  <TD>
-                    <div className="flex align-center">
-                      <Text color="text" bold paddingRight="8px">
-                        {r.votePower}
-                      </Text>
-                    </div>
-                  </TD>
-                  <TD />
-                </TR>
-              ))}
-          </>
-        )}
-      </Table>
-    </CardList>
-  )
-}
+const WrapCardBody = styled(CardBody)`
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    padding: 20px;
+  }
+`
 
 const YourVoteList = () => {
-  const { isXl, isLg } = useMatchBreakpoints()
-  const isMobile = !isXl && !isLg
+  const { t } = useTranslation();
   const { proposalIndex }: { id: string; proposalIndex: any } = useParams()
-  const { onDismiss } = useContext(Context)
-  const [isLoading, setIsLoading] = useState(false)
-  const [isLoad, setIsLoad] = useState('')
   const { proposalOfAddress } = useAllProposalOfAddress()
   const isClaimable = useIsClaimable(proposalIndex)
   const { callClaimVote } = useClaimVote()
+  const { toastSuccess, toastError } = useToast()
   const items = useMemo(() => {
     const itemByIndex = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
     return itemByIndex
   }, [proposalIndex, proposalOfAddress])
 
-  const CardResponse = () => {
-    return (
-      <ModalResponses title="" onDismiss={onDismiss}>
-        <div className="pb-6 pt-2">
-          <Lottie options={SuccessOptions} height={155} width={185} />
-        </div>
-      </ModalResponses>
-    )
-  }
-
-  useEffect(() => {
-    if (items === undefined) {
-      setIsLoading(true)
-    } else {
-      setIsLoading(false)
-    }
-  }, [items])
-
-  const CardLoading = () => {
-    return (
-      <ModalResponses title="" onDismiss={onDismiss}>
-        <div className="pb-6 pt-2">
-          <Lottie options={LoadingOptions} height={155} width={185} />
-        </div>
-      </ModalResponses>
-    )
-  }
-  const [onPresentConnectModal] = useModal(<CardLoading />)
-  const [onPresentAccountModal] = useModal(<CardResponse />)
-
-  const onHandleClaim = (r) => {
-    onPresentConnectModal()
+  const onClaim = useCallback((r) => {
     const claim = callClaimVote(r)
     claim
       .then((b) => {
-        onPresentAccountModal()
-        setInterval(() => setIsLoad('success'), 3000)
+        toastSuccess(t('{{Action}} Complete', {
+          Action: t('actionClaim')
+        }));
       })
       .catch((e) => {
-        setIsLoad('')
-        onDismiss()
+        toastError(t('{{Action}} Failed', {
+          Action: t('actionClaim')
+        }));
       })
-  }
-
-  useEffect(() => {
-    if (isLoad === 'success') {
-      onDismiss()
-    }
-  }, [isLoad, onDismiss])
+  }, [callClaimVote, t, toastError, toastSuccess]);
 
   return (
-    <>
-      <CardTable className="mb-4">
-        <div className="pa-4 pt-3 bd-b">
-          <Text fontSize="20px" bold lineHeight="1" marginTop="10px">
-            Your vote
-          </Text>
-        </div>
-        <TransactionTable
-          rows={items !== undefined && items}
-          isLoading={isLoading}
-          empText="Don`t have any transactions in this votes."
-          total
-        />
-        {!isLoading ? (
-          <>
-            <div className={isMobile ? 'flex align-center ma-3 mb-1' : 'flex align-center ma-3'}>
-              <Button
-                onClick={() => {
-                  onHandleClaim(proposalIndex)
-                }}
-                variant="success"
-                radii="small"
-                size="sm"
-                mr="6px"
-                disabled={Date.now() < +_.get(items, 'endDate') || !isClaimable}
-              >
-                <Text
-                  fontSize={isMobile ? '10px' : '12px'}
-                  color={Date.now() < +_.get(items, 'endDate') || !isClaimable ? 'textSubtle' : 'white'}
-                  lineHeight="1"
-                >
-                  Claim Voting Power
-                </Text>
-              </Button>
-              {Date.now() < +_.get(items, 'endDate') && (
-                <Button
-                  as={Link}
-                  to={`/voting/detail/${_.get(items, 'ipfsHash')}/${_.get(items, 'proposalIndex')}`}
-                  variant="primary"
-                  radii="small"
-                  size="sm"
-                  className="flex align-center text-center"
-                  disabled={Date.now() > +_.get(items, 'endDate')}
-                >
-                  <Text fontSize={isMobile ? '10px' : '12px'} color="white" lineHeight="1">
-                    Vote more
-                  </Text>
-                </Button>
-              )}
-              {!isMobile && (
-                <Text fontSize={isMobile ? '10px' : '12px'} color="text" paddingLeft="14px">
-                  Claim will be available after the the voting time is ended.
-                </Text>
-              )}
-            </div>
-            {isMobile && (
-              <div className="mx-1 mb-3 mt-0">
-                <Text fontSize={isMobile ? '10px' : '12px'} color="text" paddingLeft="14px">
-                  Claim will be available after the the voting time is ended.
-                </Text>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex align-center ma-3" />
-        )}
-      </CardTable>
-    </>
+    <Card mt="20px">
+      {items && <WrapCardBody>
+        <Flex flexDirection="column">
+          <Text textStyle="R_16M" color="deepgrey">{t('Your Vote')}</Text>
+          {
+            items.choices.map(({ choiceName, votePower }) => <VoteItem>
+              <VoteOptionLabel label={choiceName} />
+              <Flex className="wrap-power">
+                <Text textStyle="R_14B" className="power">{votePower}</Text>
+                <Text textStyle="R_14R" ml="6px">{t('vFINIX')}</Text>
+              </Flex>
+            </VoteItem>)
+          }
+        </Flex>
+        <Flex justifyContent="center" mt="8px">
+          <Button lg width="280px" onClick={onClaim} disabled={Date.now() < + _.get(items, 'endDate') || !isClaimable}>{t('Claim Voting Power')}</Button>
+        </Flex>
+      </WrapCardBody>}
+    </Card>
   )
 }
 

@@ -10,7 +10,7 @@ import { useWallet } from '@sixnetwork/klaytn-use-wallet'
 import { AnountButton, Flex, Noti, NotiType, Text, useMatchBreakpoints } from '@fingerlabs/definixswap-uikit-v2'
 import useToFixedFloor from 'hooks/useToFixedFloor'
 import { getTokenName } from 'utils/getTokenSymbol'
-import { Input as NumericalInput } from './NumericalInput'
+import { Input as NumericalInput } from 'components/NumericalInput'
 import CoinWrap from './CoinWrap'
 
 interface CurrencyInputPanelProps {

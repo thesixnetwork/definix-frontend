@@ -18,6 +18,7 @@ Config.configure(sdkConfig)
 // Only pool is included in the main bucndle because of it's the most visited page'
 const Home = lazy(() => import('./views/Home'))
 const Voting = lazy(() => import('./views/Voting_v2'))
+const VotingPrev = lazy(() => import('./views/Voting'))
 const Pools = lazy(() => import('./views/Pools'))
 const NewFarms = lazy(() => import('./views/NewFarms'))
 const Explore = lazy(() => import('./views/Explore'))
@@ -96,6 +97,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/voting">
                 <Voting />
+              </Route>
+              <Route path="/voting_prev">
+                <VotingPrev />
               </Route>
 
               {/* 404 */}
