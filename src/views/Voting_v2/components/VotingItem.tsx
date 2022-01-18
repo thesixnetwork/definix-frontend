@@ -17,6 +17,14 @@ const Item = styled(Flex)`
   flex-direction: column;
   padding: 18px 0;
   cursor: pointer;
+
+  .badge {
+    margin-left: 10px;
+
+    &:nth-child(1) {
+      margin-left: 0;
+    }
+  }
 `
 
 const TextEndDate = styled(Text)`
@@ -47,6 +55,7 @@ const VotingItem: React.FC<Props> = ({ item }) => {
         {
           item.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
         }
+        {item.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}
       </Flex>
       <Text textStyle="R_14R" color="black" mt="12px">{item.title}</Text>
       <TextEndDate textStyle="R_12R" color="mediumgrey" mt="6px">

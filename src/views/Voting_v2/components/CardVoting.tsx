@@ -3,12 +3,14 @@ import _ from 'lodash'
 import styled from 'styled-components';
 import { Card, Flex, Tabs } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
+import { Voting } from 'state/types';
 import VotingList from './VotingList';
-import { useAllProposalOfType } from '../../../hooks/useVoting'
+import { useAllProposalOfType, useAllProposalOfAddress } from '../../../hooks/useVoting'
 import { FilterId, ProposalType } from '../types';
 
 interface Props {
   proposalType: ProposalType;
+  isParticipated: boolean;
 }
 
 const ContentArea = styled(Flex)`
@@ -16,20 +18,24 @@ const ContentArea = styled(Flex)`
 `
 
 const StyledTabs = styled(Tabs)`
-${({ theme }) => theme.textStyle.R_16B}
+  ${({ theme }) => theme.textStyle.R_16B}
 
-${({ theme }) => theme.mediaQueries.mobile} {
+  ${({ theme }) => theme.mediaQueries.mobile} {
     width: 33%;
     padding: 18px 0;
     ${({ theme }) => theme.textStyle.R_14B}
   }
 `
 
-const CardVoting: React.FC<Props> = ({ proposalType }) => {
+const CardVoting: React.FC<Props> = ({ proposalType, isParticipated }) => {
   const { t } = useTranslation();
   const allProposalMap = useAllProposalOfType()
+  const { proposalOfAddress } = useAllProposalOfAddress()
   const listAllProposal = _.get(allProposalMap, 'allProposalMap')
   const [voteList, setVoteList] = useState([]);
+  const participatedVotes = useMemo(() => {
+    return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
+  }, [proposalOfAddress]);
   const tabs = useMemo(() => [
     {
       name: t('Vote Now'),
@@ -51,7 +57,20 @@ const CardVoting: React.FC<Props> = ({ proposalType }) => {
   useEffect(() => {
     if (!listAllProposal) return;
 
-    const filterListAllProposal = listAllProposal.filter((item) => {
+    const participatedAllProposal = listAllProposal.map((item: Voting) => {
+      if (participatedVotes.includes(_.get(item, 'ipfsHash'))) {
+        return {
+          isParticipated: true,
+          ...item,
+        }
+      }
+      return item;
+    })
+
+    const filterListAllProposal = participatedAllProposal.filter((item) => {
+      if (isParticipated && !item.isParticipated) {
+        return false;
+      }
       return proposalType === ProposalType.ALL ? true : _.get(item, 'proposals_type') === proposalType;
     })
 
@@ -84,7 +103,7 @@ const CardVoting: React.FC<Props> = ({ proposalType }) => {
 
     setVoteList([getFilterList(FilterId.NOW), getFilterList(FilterId.SOON), getFilterList(FilterId.CLOSED)])
     
-  }, [listAllProposal, proposalType]);
+  }, [isParticipated, listAllProposal, participatedVotes, proposalType]);
 
   const onClickTab = (name: string) => {
     setCurTab(name);

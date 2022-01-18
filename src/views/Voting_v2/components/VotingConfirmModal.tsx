@@ -27,12 +27,13 @@ const ModalBodyWrap = styled(ModalBody)`
   }
 `
 
-const VotingConfirmModal: React.FC<Props> = ({ onDismiss, selectedVotes, onVote, trState }) => {
+const VotingConfirmModal: React.FC<Props> = ({ onDismiss, selectedVotes, onVote }) => {
   const { t } = useTranslation();
   const [activeModal, setActiveModal] = useState<ModalState>(ModalState.VOTING);
   const [balances, setBalances] = useState<string[]>(selectedVotes.map(() => '0'));
   const [showNotis, setShowNotis] = useState<string[]>([]);
   const isNext = useMemo(() => balances.length === 0 || balances.some((balance) => !balance || +balance <= 0 || showNotis.some((showNoti) => showNoti.length > 0)), [balances, showNotis]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const isVotingModal = useMemo(() => activeModal === ModalState.VOTING, [activeModal])
 
   const onPrev = useCallback(() => {
@@ -51,7 +52,10 @@ const VotingConfirmModal: React.FC<Props> = ({ onDismiss, selectedVotes, onVote,
       <ModalFooter isFooter>
         {isVotingModal ? <Button lg onClick={onNext} disabled={isNext}>{t('Next')}</Button> : <Flex>
           <Button width="50%" mr="8px" lg variant="line" onClick={onPrev}>{t('Back')}</Button>
-          <Button width="50%" ml="8px" lg onClick={() => onVote(balances)} disabled={trState === TransactionState.START}>{t('Cast Vote')}</Button>
+          <Button width="50%" ml="8px" lg onClick={() => {
+            setIsLoading(true);
+            onVote(balances)
+          }} isLoading={isLoading}>{t('Cast Vote')}</Button>
         </Flex>}
       </ModalFooter>
     </Modal>

@@ -1,11 +1,13 @@
-import React, { useState, useMemo } from 'react'
+import React from 'react'
 import styled from 'styled-components';
-import { Box, Text, DropdownSet, Flex, Toggle } from '@fingerlabs/definixswap-uikit-v2'
+import { Text, Flex, Toggle } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next';
 import { ProposalType } from '../types';
 
 interface Props {
   setProposalType: (id: ProposalType) => void;
+  setIsParticipated: (isParticipated: boolean) => void;
+  isParticipated: boolean;
 }
 
 const Wrap = styled(Flex)`
@@ -14,28 +16,37 @@ const Wrap = styled(Flex)`
   }
 `
 
-const ProposalFilterVoting: React.FC<Props> = ({ setProposalType }) => {
+const TextVotingOnly = styled(Text)`
+  ${({ theme }) => theme.textStyle.R_14R}
+  color: ${({ theme }) => theme.colors.deepgrey};
+  margin-right: 10px;
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 70px;
+  }
+`
+
+const ProposalFilterVoting: React.FC<Props> = ({ isParticipated, setIsParticipated }) => {
   const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const options: {
-    id: ProposalType;
-    label: string;
-  }[] = useMemo(() => [
-    {
-      id: ProposalType.ALL,
-      label: t("All"),
-    },
-    {
-      id: ProposalType.CORE,
-      label: t("Core"),
-    },
-  ], [t])
+  // const [isOpen, setIsOpen] = useState(false);
+  // const [activeIndex, setActiveIndex] = useState(0);
+  // const options: {
+  //   id: ProposalType;
+  //   label: string;
+  // }[] = useMemo(() => [
+  //   {
+  //     id: ProposalType.ALL,
+  //     label: t("All"),
+  //   },
+  //   {
+  //     id: ProposalType.CORE,
+  //     label: t("Core"),
+  //   },
+  // ], [t])
 
   return (
     <Wrap>
-      <Box width="148px">
+      {/* <Box width="148px">
         <DropdownSet
           position="bottom"
           isOpen={isOpen}
@@ -48,10 +59,10 @@ const ProposalFilterVoting: React.FC<Props> = ({ setProposalType }) => {
           }}
           onButtonClick={() => setIsOpen(!isOpen)}
         />
-      </Box>
-      <Flex ml="24px" alignItems="center">
-        <Text width="70px" textStyle="R_14R" color="deepgrey" mr="10px">{t('Voting only')}</Text>
-        <Toggle checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
+      </Box> */}
+      <Flex alignItems="center">
+        <TextVotingOnly>{t('Voting only')}</TextVotingOnly>
+        <Toggle checked={isParticipated} onChange={() => setIsParticipated(!isParticipated)} />
       </Flex>
     </Wrap>
   )

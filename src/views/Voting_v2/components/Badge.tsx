@@ -26,7 +26,7 @@ const Wrap = styled(Flex)<{ type: BadgeType }>`
 
 const Badge: React.FC<Props> = ({ type }) => {
   const { t } = useTranslation();
-  return <Wrap type={type}>
+  return <Wrap type={type} className="badge">
     {type === BadgeType.PARTICIPATION && <Box mr="4px"><CheckBIcon /></Box>}
     <Text textStyle="R_12M" color={type === BadgeType.CORE ? 'orange' : 'mediumgrey'}>{t(BADGES[type].label)}</Text>
   </Wrap>

@@ -41,7 +41,6 @@ const YourVoteList = () => {
   const isClaimable = useIsClaimable(proposalIndex)
   const { callClaimVote } = useClaimVote()
   const { toastSuccess, toastError } = useToast()
-  console.log(proposalOfAddress)
   const items = useMemo(() => {
     const itemByIndex = proposalOfAddress.find((item) => item.proposalIndex === Number(proposalIndex))
     return itemByIndex

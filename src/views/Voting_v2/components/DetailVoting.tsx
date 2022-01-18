@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useMemo } from 'react'
+import _ from 'lodash'
 import styled from 'styled-components';
 import { BackIcon, Box, Flex, Text, Button } from '@fingerlabs/definixswap-uikit-v2'
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom';
-import { useGetProposal } from 'hooks/useVoting';
+import { useGetProposal, useAllProposalOfAddress, useAllProposalOfType } from 'hooks/useVoting';
 import CardVotingContent from './CardVotingContent';
 import YourVoteList from './YourVoteList';
 import VotingInfo from './VotingInfo';
@@ -25,15 +26,29 @@ const TextBack = styled(Text)`
 `
 
 const DetailVoting: React.FC = () => {
+  useAllProposalOfType()
   const { t } = useTranslation();
   const { id, proposalIndex }: { id: string; proposalIndex: any } = useParams()
   const { proposal } = useGetProposal(id)
+  const { proposalOfAddress } = useAllProposalOfAddress()
+  const participatedVotes = useMemo(() => {
+    return proposalOfAddress.map(({ ipfsHash }) => ipfsHash)
+  }, [proposalOfAddress]);
+
+  const participatedProposal = useMemo(() => {
+    if (participatedVotes.includes(id)) {
+      return {
+        isParticipated: true,
+        ...proposal,
+      }
+    }
+    return proposal;
+  }, [id, participatedVotes, proposal]);
+
 
   return (
     <Wrap>
-      <Box style={{ cursor: 'pointer' }} display="inline-flex" onClick={() => {
-        console.log('click')
-      }}>
+      <Box style={{ cursor: 'pointer' }} display="inline-flex">
         <Flex>
           <Button
             variant="text"
@@ -49,9 +64,9 @@ const DetailVoting: React.FC = () => {
           </Button>
         </Flex>
       </Box>
-      <CardVotingContent id={id} proposalIndex={proposalIndex} proposal={proposal} />
+      <CardVotingContent id={id} proposalIndex={proposalIndex} proposal={participatedProposal} />
       <YourVoteList />
-      <VotingInfo id={id} proposalIndex={proposalIndex} proposal={proposal} />
+      <VotingInfo id={id} proposalIndex={proposalIndex} proposal={participatedProposal} />
     </Wrap>
   )
 }

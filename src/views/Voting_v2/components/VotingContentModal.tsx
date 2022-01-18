@@ -99,8 +99,10 @@ const WrapBalance = styled(Flex)`
 
 const WrapAvailable = styled(Flex)`
   align-items: center;
+  display: none;
 
   ${({ theme }) => theme.mediaQueries.mobile} {
+    display: flex;
     margin-top: 4px;
     align-self: flex-end;
   }

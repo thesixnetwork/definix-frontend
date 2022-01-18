@@ -90,6 +90,14 @@ const WrapContent = styled(Flex)`
   padding-bottom: 32px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
+  .badge {
+    margin-left: 10px;
+
+    &:nth-child(1) {
+      margin-left: 0;
+    }
+  }
+
   ${({ theme }) => theme.mediaQueries.mobile} {
     padding-bottom: 20px;
   }
@@ -175,11 +183,11 @@ const Range = styled(Box)`
   border-radius: 4px;
 `
 
-const RangeValue = styled(Box)<{ width: number }>`
+const RangeValue = styled(Box)<{ width: number, isParticipated: boolean, isMax: boolean }>`
   width: ${({ width }) => width}%;
   height: 100%;
   border-radius: 4px;
-  background-color: ${({ theme }) => theme.colors.lightbrown};
+  background-color: ${({ theme, isParticipated, isMax }) => isParticipated && isMax ? theme.colors.red : theme.colors.lightbrown};
 `
 
 const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
@@ -199,6 +207,12 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
   const selectedVotes = useRef<string[]>([]);
   const { toastSuccess, toastError } = useToast()
   const [trState, setTrState] = useState<TransactionState>(TransactionState.NONE);
+  const [isVoteMore, setIsVoteMore] = useState<boolean>(!!proposal.isParticipated);
+  const maxVotingIndex = useMemo(() => {
+    const votes = mapVoting.map(({ vote }) => vote).slice(0);
+    const maxNum = votes.sort()[0];
+    return votes.indexOf(maxNum);
+  }, [mapVoting]);
 
   const onVote = useCallback((balances: string[]) => {
     setTrState(TransactionState.START);
@@ -230,6 +244,12 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trState]);
+
+  useEffect(() => {
+    if (proposal.isParticipated) {
+      setIsVoteMore(!!proposal.isParticipated)
+    }
+  }, [proposal.isParticipated])
 
   useEffect(() => {
     const voting = indexProposal && _.get(indexProposal, 'optionVotingPower')
@@ -321,11 +341,29 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
     }
   }, [onApprove])
 
+  const handleVoteMore = useCallback(() => {
+    setIsVoteMore(!isVoteMore);
+  }, [isVoteMore]);
+
   const renderVoteButton = useCallback(() => {
     if (!account) {
       return <UnlockButton width="280px" lg />
-    } 
+    }
+    if (isVoteMore) {
+      return <Button lg width="280px" onClick={handleVoteMore} variant="line">{t('Vote More')}</Button>  
+    }
     if (allowance > 0 || transactionHash !== '') {
+      if (proposal.isParticipated && !isVoteMore) {
+        return <Flex>
+          <Button width="200px" mr="8px" lg variant="line" onClick={() => {
+            setIsVoteMore(true);
+          }}>{t('Cancel')}</Button>
+          <Button width="200px" ml="8px" lg onClick={() => {
+            setTrState(TransactionState.NONE);
+            onPresentVotingConfirmModal();
+          }} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
+        </Flex>
+      }
       return <Button lg width="280px" onClick={() => {
         setTrState(TransactionState.NONE);
         onPresentVotingConfirmModal();
@@ -333,7 +371,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
     }
     return <Button lg width="280px" onClick={handleApprove}>{t('Approve Contract')}</Button>
     
-  }, [account, allowance, selectedIndexs.length, t, handleApprove, transactionHash, onPresentVotingConfirmModal]);
+  }, [account, isVoteMore, allowance, transactionHash, handleApprove, t, handleVoteMore, proposal.isParticipated, selectedIndexs.length, onPresentVotingConfirmModal]);
 
   return (
     <WrapCard>
@@ -343,6 +381,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
             {
               proposal.proposals_type === 'core' && <Badge type={BadgeType.CORE} />
             }
+            {proposal.isParticipated && <Badge type={BadgeType.PARTICIPATION} />}
           </Flex>
           <TextTitle>{proposal.title}</TextTitle>
           <TextEndDate>
@@ -375,15 +414,17 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
             {isMulti && <Text color="orange" textStyle="R_12M">*{t('Plural vote')}</Text>}
           </WrapMobilePlural>
           {proposal?.choices && proposal.choices.map((choice, index) => <WrapChoice key={choice}>
-              <Flex justifyContent="space-between" alignItems="center">
-              <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
-                <Text className="choice" textStyle="R_16R" color="black">{choice}</Text>
-              </CheckboxLabel>
+            <Flex justifyContent="space-between" alignItems="center">
+              {
+                isVoteMore ? <Text className="choice" textStyle="R_16R" color="black">{choice}</Text> : <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
+                  <Text className="choice" textStyle="R_16R" color="black">{choice}</Text>
+                </CheckboxLabel>
+              }
               <Text textStyle="R_16M" color="deepgrey" className="percent">{mapVoting[index] ? `${mapVoting[index].percent  }%` : ' '}</Text>
             </Flex>
-            <Flex ml="36px" mt="14px">
+            <Flex ml={isVoteMore ? '0' : "36px"} mt="14px">
               <Range>
-                <RangeValue width={mapVoting[index] ? mapVoting[index].percent : 0} />
+                <RangeValue width={mapVoting[index] ? mapVoting[index].percent : 0} isParticipated={isVoteMore} isMax={maxVotingIndex === index} />
               </Range>
             </Flex>
             <Flex ml="36px" mt="6px" minHeight="20px" className="wrap-votes">

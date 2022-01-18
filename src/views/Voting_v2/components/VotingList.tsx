@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { Flex, Box } from '@fingerlabs/definixswap-uikit-v2'
+import { Flex, Box, Text } from '@fingerlabs/definixswap-uikit-v2'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { Voting } from 'state/types';
@@ -45,7 +45,9 @@ const VotingList: React.FC<Props> = ({ list }) => {
         />
       </Flex>
     </Box>
-  ) : <Box width="100%" py="20px">{t('There are no proposals.')}</Box>
+  ) : <Flex width="100%" py="20px" height="280px" alignItems="center" justifyContent="center">
+      <Text textStyle="R_14R" color="deepgrey">{t('There are no proposals.')}</Text>
+    </Flex>
 }
 
 export default VotingList
