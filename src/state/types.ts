@@ -251,30 +251,6 @@ export interface AchievementState {
   data: Achievement[]
 }
 
-export interface Voting {
-  proposalIndex?: BigNumber
-  ipfsHash?: any
-  proposalType?: any
-  proposer?: any
-  startTimestamp?: any
-  endTimestamp?: any
-  optionsCount?: BigNumber
-  minimumVotingPower?: any
-  totalVotingPower?: any
-  voteLimit?: any
-  optionVotingPower?: any
-  isParticipated?: any
-  // eslint-disable-next-line camelcase
-  proposals_type?: string;
-  title?: string;
-  content?: string;
-  choices?: string[];
-  choice_type?: 'single' | 'multi';
-  creator?: string;
-  start_unixtimestamp?: number;
-  end_unixtimestamp?: number;
-}
-
 export interface VotingItem {
   choice_type: 'single' | 'multi';
   choices: string[];
@@ -292,6 +268,21 @@ export interface VotingItem {
   title: string;
   isParticipated?: boolean;
 }
+
+export interface Voting extends VotingItem {
+  // proposalIndex?: BigNumber
+  // ipfsHash: any
+  // proposalType?: any
+  // proposer?: any
+  // startTimestamp: any
+  // endTimestamp: any
+  // optionsCount?: BigNumber
+  // minimumVotingPower?: any
+  // totalVotingPower?: any
+  // voteLimit?: any
+  // optionVotingPower?: any
+}
+
 
 export interface VotingState {
   allProposal: Voting[]

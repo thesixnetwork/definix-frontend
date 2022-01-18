@@ -14,6 +14,7 @@ interface Props {
 
 const Wrap = styled(CardBody)`
   padding: 32px;
+  width: 100%;
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     padding: 20px;

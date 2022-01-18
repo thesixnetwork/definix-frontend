@@ -135,7 +135,7 @@ const WrapMobilePlural = styled(Flex)`
   }
 `
 
-const WrapChoice = styled(Flex)`
+const WrapChoice = styled(Flex)<{ isParticipated: boolean }>`
   flex-direction: column;
   padding-top: 20px;
   padding-bottom: 10px;
@@ -147,6 +147,11 @@ const WrapChoice = styled(Flex)`
   .votes {
     color: ${({ theme }) => theme.colors.mediumgrey};
     ${({ theme }) => theme.textStyle.R_14R}
+  }
+
+  .wrap-votes {
+    margin-left: 36px;
+    margin-top: 6px;
   }
 
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -167,13 +172,13 @@ const WrapChoice = styled(Flex)`
 
     .wrap-votes {
       justify-content: space-between;
+      margin-left: ${({ isParticipated }) => isParticipated ? '0' : '36px'};
     }
 
     .mobile-percent {
       display: block;
     }
   }
-
 `
 
 const Range = styled(Box)`
@@ -188,6 +193,19 @@ const RangeValue = styled(Box)<{ width: number, isParticipated: boolean, isMax: 
   height: 100%;
   border-radius: 4px;
   background-color: ${({ theme, isParticipated, isMax }) => isParticipated && isMax ? theme.colors.red : theme.colors.lightbrown};
+`
+
+const WrapVoteMore = styled(Flex)`
+  button {
+    width: 200px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.mobile} {
+    width: 100%;
+    button {
+      width: 50%;
+    }
+  }
 `
 
 const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
@@ -354,15 +372,15 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
     }
     if (allowance > 0 || transactionHash !== '') {
       if (proposal.isParticipated && !isVoteMore) {
-        return <Flex>
-          <Button width="200px" mr="8px" lg variant="line" onClick={() => {
+        return <WrapVoteMore>
+          <Button mr="8px" lg variant="line" onClick={() => {
             setIsVoteMore(true);
           }}>{t('Cancel')}</Button>
-          <Button width="200px" ml="8px" lg onClick={() => {
+          <Button ml="8px" lg onClick={() => {
             setTrState(TransactionState.NONE);
             onPresentVotingConfirmModal();
           }} disabled={selectedIndexs.length === 0}>{t('Cast Vote')}</Button>
-        </Flex>
+        </WrapVoteMore>
       }
       return <Button lg width="280px" onClick={() => {
         setTrState(TransactionState.NONE);
@@ -413,7 +431,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
           <WrapMobilePlural>
             {isMulti && <Text color="orange" textStyle="R_12M">*{t('Plural vote')}</Text>}
           </WrapMobilePlural>
-          {proposal?.choices && proposal.choices.map((choice, index) => <WrapChoice key={choice}>
+          {proposal?.choices && proposal.choices.map((choice, index) => <WrapChoice key={choice} isParticipated={isVoteMore}>
             <Flex justifyContent="space-between" alignItems="center">
               {
                 isVoteMore ? <Text className="choice" textStyle="R_16R" color="black">{choice}</Text> : <CheckboxLabel control={<Checkbox checked={selectedIndexs.indexOf(index) > -1} onChange={(e) => onCheckChange(e.target.checked, index)} />} className="mr-12">
@@ -427,7 +445,7 @@ const CardVotingContent: React.FC<Props> = ({ proposalIndex, proposal }) => {
                 <RangeValue width={mapVoting[index] ? mapVoting[index].percent : 0} isParticipated={isVoteMore} isMax={maxVotingIndex === index} />
               </Range>
             </Flex>
-            <Flex ml="36px" mt="6px" minHeight="20px" className="wrap-votes">
+            <Flex minHeight="20px" className="wrap-votes">
               <Text className="votes">{mapVoting[index] ? `${mapVoting[index].vote} ${t('Votes')}` : ' '}</Text>
               <Text textStyle="R_12M" color="deepgrey" className="mobile-percent">{mapVoting[index] ? `${mapVoting[index].percent  }%` : ' '}</Text>
             </Flex>

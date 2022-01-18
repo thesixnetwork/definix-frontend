@@ -13,6 +13,7 @@ interface Props {
 }
 const Wrap = styled(CardBody)`
   padding: 32px;
+  width: 100%;
 
   ${({ theme }) => theme.mediaQueries.mobile} {
     padding: 20px;
@@ -31,7 +32,6 @@ const WrapTable = styled.table`
 `
 
 const Row = styled.tr`
-  height: 56px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
 
   &:nth-child(1) {
@@ -42,7 +42,7 @@ const Row = styled.tr`
 
 const Col = styled.td`
   vertical-align: middle;
-  padding: 0 24px;
+  padding: 18px 24px;
   text-align: center;
 
   &:nth-child(3) {
@@ -52,16 +52,20 @@ const Col = styled.td`
 
 const TitleCol = styled.th`
   vertical-align: middle;
+  height: 56px;
   padding: 0 24px;
+  min-width: 100px;
 
   &:nth-child(1),
   &:nth-child(2),
   &:nth-child(4) {
     width: 19%;
+    min-width: 126px;
   }
 
   &:nth-child(3) {
     width: 41%;
+    min-width: 300px;
   }
 `
 

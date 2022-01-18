@@ -144,8 +144,10 @@ const VotingContentModal: React.FC<Props> = ({ selectedVotes, balances, setBalan
 
     if (new BigNumber(balances[activeInputIndex]).decimalPlaces() > 18) {
       setShowNoti(activeInputIndex, t('The value entered is out of the valid range'))
-    } else if (resultVFinix.value() < 0) {
+    } else if (new BigNumber(balances[activeInputIndex]).gt(myVFinixBalance)) {
       setShowNoti(activeInputIndex, t('Insufficient balance'))
+    } else if (new BigNumber(balances[activeInputIndex]).lt(10)) {
+      setShowNoti(activeInputIndex, t('The amount of vFINIX you are'))
     } else {
       setShowNoti(activeInputIndex, '')
     }
