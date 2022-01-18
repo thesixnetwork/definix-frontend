@@ -1,3 +1,4 @@
+import { ROUTES } from 'config/constants/routes'
 import React from 'react'
 import { Redirect, useParams } from 'react-router-dom'
 
@@ -7,7 +8,7 @@ export function RedirectOldRemoveLiquidityPathStructure() {
   const params = useParams<{ tokens: string }>()
 
   if (!OLD_PATH_STRUCTURE.test(params?.tokens)) {
-    return <Redirect to="/pool" />
+    return <Redirect to={ROUTES.POOL} />
   }
   const [currency0, currency1] = params?.tokens.split('-')
 

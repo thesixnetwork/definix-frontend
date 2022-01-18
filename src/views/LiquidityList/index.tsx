@@ -22,7 +22,7 @@ const Liquidity: React.FC = () => {
   const tabNames = useMemo(() => [t('Add'), t('Remove')], [t])
   const changeTab = useCallback((tab: string) => {
     if(tab === tabNames[0]){
-      history.replace('/liquidity/add')
+      history.push('/liquidity/add')
     }
   }, [history, tabNames]);
 

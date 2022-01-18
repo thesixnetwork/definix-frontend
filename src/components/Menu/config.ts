@@ -1,10 +1,12 @@
+import { ROUTES } from "config/constants/routes"
+
 export const links = (t: (key: string) => string, currentLang: string) => {
   return [
     {
       label: t('Home'),
       icon: 'GnbHomeNIcon',
       activeIcon: 'GnbHomeSIcon',
-      href: '/',
+      href: ROUTES.HOME,
     },
     {
       label: t('Exchange'),
@@ -13,11 +15,11 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       items: [
         {
           label: t('Menu Swap'),
-          href: `/swap`,
+          href: ROUTES.SWAP,
         },
         {
           label: t('Liquidity'),
-          href: `/liquidity/add`,
+          href: ROUTES.LIQUIDITY_ADD,
         },
       ],
     },
@@ -28,11 +30,11 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       items: [
         {
           label: t('Farm'),
-          href: '/farm',
+          href: ROUTES.FARM,
         },
         {
           label: t('Pool'),
-          href: '/pool',
+          href: ROUTES.POOL,
         },
       ],
     },
@@ -40,7 +42,7 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       label: t('Rebalancing'),
       icon: 'GnbRebalancingNIcon',
       activeIcon: 'GnbRebalancingSIcon',
-      href: '/rebalancing',
+      href: ROUTES.REBALANCING,
     },
     {
       label: t('vFINIX'),
@@ -49,11 +51,11 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       items: [
         {
           label: t('Long-term Stake'),
-          href: '/long-term-stake',
+          href: ROUTES.LONG_TERM_STAKE,
         },
         {
           label: t('Voting'),
-          href: '/voting',
+          href: ROUTES.VOTING,
         },
       ],
     },
@@ -61,7 +63,7 @@ export const links = (t: (key: string) => string, currentLang: string) => {
       label: t('Bridge'),
       icon: 'GnbBridgeNIcon',
       activeIcon: 'GnbBridgeSIcon',
-      href: '/bridge',
+      href: ROUTES.BRIDGE,
     },
     {
       label: t('More'),

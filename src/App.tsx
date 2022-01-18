@@ -8,13 +8,13 @@ import { GlobalStyle, Loading } from '@fingerlabs/definixswap-uikit-v2'
 
 import useWallet from 'hooks/useWallet'
 import { Helmet } from 'react-helmet-async'
+import { ROUTES } from 'config/constants/routes'
 import Menu from './components/Menu'
 import ToastListener from './components/ToastListener'
 import sdkConfig from './sdkconfig'
 
 import { RedirectDuplicateTokenIds, RedirectOldAddLiquidityPathStructure } from './views/Liquidity/redirects'
 import RemoveLiquidity from './views/RemoveLiquidity'
-import { RedirectOldRemoveLiquidityPathStructure } from './views/RemoveLiquidity/redirects'
 import { RedirectToSwap } from './views/Swap/redirects'
 
 Config.configure(sdkConfig)
@@ -24,8 +24,8 @@ Config.configure(sdkConfig)
 const Home = lazy(() => import('./views/Home'))
 // const Voting = lazy(() => import('./views/Voting_v2'))
 const Pools = lazy(() => import('./views/Pools'))
-const NewFarms = lazy(() => import('./views/NewFarms'))
-const Explore = lazy(() => import('./views/Explore'))
+const Farms = lazy(() => import('./views/Farms'))
+const RebalancingFarms = lazy(() => import('./views/RebalancingFarms'))
 const Error = lazy(() => import('./views/Error'))
 const MyInvestments = lazy(() => import('./views/MyInvestments'))
 const LongTermStake = lazy(() => import('./views/LongTermStake'))
@@ -75,59 +75,59 @@ const App: React.FC = () => {
       <Menu>
         <Suspense fallback={<Loading />}>
           <Switch>
-            <Route exact path="/">
+            <Route exact path={ROUTES.HOME}>
               <Home />
             </Route>
-            <Route path="/pool">
+            <Route path={ROUTES.POOL}>
               <Pools />
             </Route>
-            <Route path="/farm">
-              <NewFarms />
+            <Route path={ROUTES.FARM}>
+              <Farms />
             </Route>
-            <Route path="/rebalancing">
-              <Explore />
+            <Route path={ROUTES.REBALANCING}>
+              <RebalancingFarms />
             </Route>
-            <Route path="/my">
+            <Route path={ROUTES.MY_INVESTMENT}>
               <MyInvestments />
             </Route>
-            <Route path="/long-term-stake">
+            <Route path={ROUTES.LONG_TERM_STAKE}>
               <LongTermStake />
             </Route>
-            <Route path="/long-term-stake/super">
+            <Route path={ROUTES.SUPER_STAKE}>
               <SuperStake />
             </Route>
-            <Route exact path="/bridge">
+            <Route exact path={ROUTES.BRIDGE}>
               <Bridge />
             </Route>
             {/* <Route exact path="/" component={RedirectPathToSwapOnly} /> */}
-            <Route exact path="/swap">
+            <Route exact path={ROUTES.SWAP}>
               <Swap />
             </Route>
-            <Route exact path="/swap/:currencyIdA/:currencyIdB">
+            <Route exact path={ROUTES.SWAP_REDIRECT_AB}>
               <RedirectToSwap />
             </Route>
-            <Route exact path="/swap/:currencyIdA">
+            <Route exact path={ROUTES.SWAP_REDIRECT_A}>
               <RedirectToSwap />
             </Route>
-            <Route exact strict path="/liquidity/add">
+            <Route exact strict path={ROUTES.LIQUIDITY_ADD}>
               <Liquidity />
             </Route>
-            <Route exact strict path="/liquidity/list">
+            <Route exact strict path={ROUTES.LIQUIDITY_LIST}>
               <LiquidityList />
             </Route>
-            <Route exact path="/liquidity/add/:currencyIdA">
+            <Route exact path={ROUTES.LIQUIDITY_ADD_REDIRECT_A}>
               <RedirectOldAddLiquidityPathStructure />
             </Route>
-            <Route exact path="/liquidity/add/:currencyIdA/:currencyIdB">
+            <Route exact path={ROUTES.LIQUIDITY_ADD_REDIRECT_AB}>
               <RedirectDuplicateTokenIds />
             </Route>
-            <Route exact strict path="/liquidity/remove/:currencyIdA/:currencyIdB">
+            <Route exact strict path={ROUTES.LIQUIDITY_REMOVE_REDIRECT_AB}>
               <RemoveLiquidity />
             </Route>
-            <Route exact strict path="/liquidity/remove/:tokens">
+            {/* <Route exact strict path={ROUTES.LIQUIDITY_REMOVE_REDIRECT_TOKENS}>
               <RedirectOldRemoveLiquidityPathStructure />
-            </Route>
-            <Route exact strict path="/liquidity/poolfinder">
+            </Route> */}
+            <Route exact strict path={ROUTES.LIQUIDITY_POOL_FINDER}>
               <PoolFinder />
             </Route>
             {/* <Route path="/voting">
