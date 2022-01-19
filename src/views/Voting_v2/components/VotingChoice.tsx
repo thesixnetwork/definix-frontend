@@ -287,6 +287,7 @@ const VotingChoice: React.FC<Props> = ({ proposalIndex, proposal, participatedPr
         isVoteMore={isVoteMore}
         isChecked={selectedIndexs.indexOf(index) > -1}
         isVoted={votedChoices.includes(choice)}
+        isMulti={isMulti}
         isEndDate={isEndDate}
         onCheckChange={onCheckChange} />)}
       <Flex justifyContent="center" mt="22px">

@@ -9,6 +9,7 @@ interface Props {
   isVoteMore: boolean;
   isMax: boolean;
   isVoted: boolean;
+  isMulti: boolean;
   votingResult: {
     percent: string;
     vote: number;
@@ -20,7 +21,7 @@ interface Props {
   isChecked: boolean;
 }
 
-const WrapChoice = styled(Flex)<{ isLeft: boolean }>`
+const WrapChoice = styled(Flex)<{ isLeft: boolean, isDisabled: boolean }>`
   flex-direction: column;
   padding-top: 20px;
   padding-bottom: 10px;
@@ -39,9 +40,10 @@ const WrapChoice = styled(Flex)<{ isLeft: boolean }>`
     margin-top: 6px;
   }
 
-  .range {
-
-  }
+  ${({ isDisabled }) => isDisabled && `
+    opacity: 0.3;
+    pointer-events: none;
+  `}
   
 
   ${({ theme }) => theme.mediaQueries.mobile} {
@@ -85,7 +87,7 @@ const RangeValue = styled(Box)<{ width: number, isParticipated: boolean, isMax: 
   background-color: ${({ theme, isParticipated, isMax }) => isParticipated && isMax ? theme.colors.red : theme.colors.lightbrown};
 `
 
-const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, votingResult, isChecked, isVoted, isEndDate, onCheckChange }) => {
+const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, votingResult, isChecked, isVoted, isEndDate, isMulti, onCheckChange }) => {
   const { t } = useTranslation();
   const isLeft = useMemo(() => isVoteMore || isEndDate, [isEndDate, isVoteMore]);
 
@@ -118,7 +120,7 @@ const VotingChoiceItem: React.FC<Props> = ({ choice, index, isVoteMore, isMax, v
   }, [isEndDate, isVoteMore, isChecked, choice, isVoted, onCheckChange, index]);
 
   return (
-    <WrapChoice key={choice} isLeft={isLeft}>
+    <WrapChoice key={choice} isLeft={isLeft} isDisabled={!isMulti && !isVoted && !isVoteMore}>
       <Flex justifyContent="space-between" alignItems="center">
         {renderChoice()}
         <div className="percent">
