@@ -319,9 +319,9 @@ export const harvest = async (herodotusContract, pid, account) => {
       .catch((tx) => {
         return tx.transactionHash
       })
-      .on('transactionHash', (tx) => {
-        return tx.transactionHash
-      })
+      // .on('transactionHash', (tx) => {
+      //   return tx.transactionHash
+      // })
   }
 
   if (flagFeeDelegate === 'Y') {

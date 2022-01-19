@@ -111,7 +111,7 @@ const HarvestActionAirdrop: React.FC<{
   // const { pendingRewards } = useFarmUser(farm.pid)
   const [pendingTx, setPendingTx] = useState(false)
 
-  const isFinixPool = useMemo(() => sousId === 0, [sousId])
+  // const isFinixPool = useMemo(() => sousId === 0, [sousId])
 
   const finixEarningsValue = useMemo(() => getBalanceNumber(earnings), [earnings])
   const getEarningsPrice = useCallback(
@@ -125,7 +125,7 @@ const HarvestActionAirdrop: React.FC<{
 
   const showHarvestResult = useCallback(
     (isSuccess: boolean) => {
-      if (isFinixPool) return
+      // if (isFinixPool) return
 
       const toastDescription = (
         <Text textStyle="R_12R" color={ColorStyles.MEDIUMGREY}>
@@ -139,7 +139,7 @@ const HarvestActionAirdrop: React.FC<{
         toastError(t('{{Action}} Failed', { Action: actionText }), toastDescription)
       }
     },
-    [toastSuccess, toastError, t, tokenName, isFinixPool],
+    [toastSuccess, toastError, t, tokenName],
   )
 
   const handleHarvest = useCallback(async () => {
