@@ -14,6 +14,9 @@
   },
   "extends": "@pancakeswap-libs/eslint-config-pancake",
   "rules": {
+    "react/require-default-props": "off",
+    "react/no-unused-prop-types": "off",
+    "react/default-props-match-prop-types" : "off",
     "@typescript-eslint/no-unused-vars": "off",
     "unused-imports/no-unused-imports-ts": "warn",
     "unused-imports/no-unused-vars-ts": "warn",
